@@ -109,7 +109,7 @@ function actualizarJugadorOn ( player )
     if minutes == "60" then
         hours = tostring ( tonumber ( hours ) + 1 )
         minutes = "00"
-	call( getResourceFromName("levelsys"), "giveXp",  player, 800 )
+	call( getResourceFromName("v_levelsys"), "giveXp",  player, 800 )
     end
     setAccountData ( pAccount , "Online.minutes" , tonumber ( minutes ) )
     setAccountData ( pAccount , "Online.hours" , tonumber ( hours ) )
