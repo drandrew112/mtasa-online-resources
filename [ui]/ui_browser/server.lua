@@ -1,7 +1,6 @@
 -- ui_browser :: server.lua
--- Server-side export wrappers plus the minimal Liberty Bank logic (deposit /
--- withdraw against player cash, balance stored in account data "bank_money").
--- A dedicated bank resource can later take over the "bank_*" actions.
+-- Server-side export wrappers + the action router. Liberty Bank goes through the
+-- v_bank exports; balance persistence is entirely v_bank's job.
 
 addEvent("ui_browser:action", true)
 
@@ -21,7 +20,7 @@ function openBrowser(player)
     return true
 end
 
--- exports.ui_browser:openBrowserSite(player, "lvcars.vm")
+-- exports.ui_browser:openBrowserSite(player, "lvcars.eu")
 function openBrowserSite(player, url)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
     triggerClientEvent(player, "ui_browser:open", resourceRoot, tostring(url or "home"))
@@ -29,52 +28,50 @@ function openBrowserSite(player, url)
 end
 
 --------------------------------------------------------------------------------
--- bank
+-- Liberty Bank (via v_bank exports)
 --------------------------------------------------------------------------------
 
-local function getBank(player)
-    return math.max(0, math.floor(tonumber(getElementData(player, "bank_money")) or 0))
+local function bankReady()
+    local res = getResourceFromName("v_bank")
+    return res and getResourceState(res) == "running"
 end
 
-local function setBank(player, amount)
-    amount = math.max(0, math.floor(amount))
-    setElementData(player, "bank_money", amount)
-    local acc = getPlayerAccount(player)
-    if acc and not isGuestAccount(acc) then
-        setAccountData(acc, "bank_money", amount)
-    end
-end
-
-local function resolveAmount(arg, available)
-    if arg == "all" then return available end
-    local n = math.floor(tonumber(arg) or 0)
-    return n
-end
-
-local function bankDeposit(player, arg)
-    local cash = getPlayerMoney(player)
-    local amount = resolveAmount(arg, cash)
-    if amount <= 0 then return end
-    if cash < amount then
-        notify(player, "Liberty Bank", "You do not have that much cash.")
+-- kind = "bank_deposit" | "bank_withdraw"; arg = "<amount>" | "all"
+local function bankTransaction(player, kind, arg)
+    if not bankReady() then
+        outputServerLog("[ui_browser] Liberty Bank: v_bank resource is not running")
         return
     end
-    takePlayerMoney(player, amount)
-    setBank(player, getBank(player) + amount)
-    notify(player, "Liberty Bank", "Deposited $" .. amount .. ".")
-end
 
-local function bankWithdraw(player, arg)
-    local bank = getBank(player)
-    local amount = resolveAmount(arg, bank)
-    if amount <= 0 then return end
-    if bank < amount then
-        notify(player, "Liberty Bank", "Your balance is too low.")
-        return
+    local amount
+    if arg == "all" then
+        if kind == "bank_deposit" then
+            amount = getPlayerMoney(player)
+        else
+            amount = tonumber(getElementData(player, "bank_money")) or 0
+        end
+    else
+        amount = tonumber(arg)
     end
-    setBank(player, bank - amount)
-    givePlayerMoney(player, amount)
-    notify(player, "Liberty Bank", "Withdrew $" .. amount .. ".")
+    amount = math.floor(tonumber(amount) or 0)
+    if amount <= 0 then return end
+
+    local result
+    if kind == "bank_deposit" then
+        result = exports.v_bank:depositMoney(player, amount)
+    else
+        result = exports.v_bank:withdrawMoney(player, amount)
+    end
+
+    -- Only report + refresh when the transaction actually went through.
+    if result == true then
+        notify(player, "Liberty Bank",
+            (kind == "bank_deposit" and "Deposited $" or "Withdrew $") .. amount .. ".")
+        triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
+    else
+        outputServerLog(("[ui_browser] Liberty Bank %s %s failed: %s")
+            :format(kind, amount, tostring(result)))
+    end
 end
 
 --------------------------------------------------------------------------------
@@ -85,13 +82,8 @@ addEventHandler("ui_browser:action", root, function(url, verb, arg, category)
     local player = client
     if not isElement(player) then return end
 
-    if verb == "bank_deposit" then
-        bankDeposit(player, arg)
-        triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
-        return
-    elseif verb == "bank_withdraw" then
-        bankWithdraw(player, arg)
-        triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
+    if verb == "bank_deposit" or verb == "bank_withdraw" then
+        bankTransaction(player, verb, arg)
         return
     end
 
@@ -114,25 +106,4 @@ addEventHandler("ui_browser:action", root, function(url, verb, arg, category)
 
     outputServerLog(("[ui_browser] %s -> %s:%s (%s)")
         :format(getPlayerName(player), tostring(verb), tostring(arg), tostring(url)))
-end)
-
---------------------------------------------------------------------------------
--- load stored balance
---------------------------------------------------------------------------------
-
-local function loadBalance(player)
-    local acc = getPlayerAccount(player)
-    if acc and not isGuestAccount(acc) then
-        setElementData(player, "bank_money", tonumber(getAccountData(acc, "bank_money")) or 0)
-    end
-end
-
-addEventHandler("onPlayerLogin", root, function()
-    loadBalance(source)
-end)
-
-addEventHandler("onResourceStart", resourceRoot, function()
-    for _, player in ipairs(getElementsByType("player")) do
-        loadBalance(player)
-    end
 end)

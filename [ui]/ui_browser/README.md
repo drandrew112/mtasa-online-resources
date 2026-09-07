@@ -185,8 +185,11 @@ end)
 
 ### Built-in handlers (`server.lua`)
 
-- `bank_deposit:<amount|all>` / `bank_withdraw:<amount|all>` – moves money between
-  the player's cash and account data `bank_money`, then refreshes the page.
+- `bank_deposit:<amount|all>` / `bank_withdraw:<amount|all>` – calls the
+  `v_bank` exports (`depositMoney` / `withdrawMoney`). A "Deposited / Withdrew"
+  notification is sent **only when the export returns `true`**; the page is
+  refreshed then too. Failures (not enough cash / balance, v_bank not running)
+  are silent apart from a server log line.
 - `buy:<id>` or `buy:<id>:<colour>` – notifies the player. **TODO:** for the
   `vehicles` category, call the `[vehicles]/v_ownveh` export once it exists
   (`exports.v_ownveh:giveVehicle(player, model, colour)` or similar).
