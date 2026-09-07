@@ -1,6 +1,7 @@
+local version = "0.1.0"
 
 function setCustomGamemodeName()
     outputServerLog("FreeV Gamemode started")
-    setGameType("FreeV Open World")
+    setGameType("MTA Online v" .. version)
 end
 addEventHandler("onResourceStart", resourceRoot, setCustomGamemodeName)
