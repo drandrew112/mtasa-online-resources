@@ -1,0 +1,14 @@
+<page bg="#fdf5d0" text="#1a1a1a" heading="#000000" muted="#6b5d1f" link="#a06a00" accent="#eab308" card="#fffdf3" cardline="#e6d178">
+    <siteheader title="BizMarket" tagline="Running businesses for sale" accent="#111111" />
+
+    <catalog cols="3" sort="price">
+        <product id="biz_convenience" name="24/7 convenience store" price="$85,000">Busy corner, steady daily takings, trained staff.</product>
+        <product id="biz_carwash"     name="Car wash"              price="$130,000">Two bays, self-service and hand wash, own parking.</product>
+        <product id="biz_gasstation"  name="Gas station"           price="$420,000">Main road, shop and wash, long-term lease in place.</product>
+        <product id="biz_coffee"      name="Coffee kiosk"          price="$60,000">Small footprint, high margin, prime footfall.</product>
+        <product id="biz_garage"      name="Repair garage"         price="$175,000">Three ramps, tools included, loyal trade customers.</product>
+        <product id="biz_diner"       name="Roadside diner"        price="$150,000">Booth seating, big kitchen, breakfast rush every day.</product>
+    </catalog>
+
+    <link href="home">Back to search</link>
+</page>

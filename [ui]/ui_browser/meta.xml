@@ -1,0 +1,68 @@
+<meta>
+    <info author="DrAndrew112" name="ui_browser" type="script" version="1.2.0" />
+    <download_priority_group>997</download_priority_group>
+
+    <include resource="ui_core" />
+
+    <!-- CORE (client) -->
+    <script src="core/util.lua"     type="client" />
+    <script src="core/styles.lua"   type="client" />
+    <script src="core/registry.lua" type="client" />
+    <script src="core/markup.lua"   type="client" />
+    <script src="core/layout.lua"   type="client" />
+    <script src="core/home.lua"     type="client" />
+    <script src="core/browser.lua"  type="client" />
+
+    <!-- EXPORTS -->
+    <script src="exports.lua" type="client" />
+    <script src="server.lua"  type="server" />
+
+    <!-- ASSETS -->
+    <file src="assets/opense_logo.png" type="client" />
+
+    <!-- VIRTUAL WEBSITES -->
+    <file src="sites/bank/logo.png" type="client" />
+    <file src="sites/bizmarket/logo.png" type="client" />
+    <file src="sites/bizmarket/page.vhtml" type="client" />
+    <file src="sites/cityhomes/logo.png" type="client" />
+    <file src="sites/cityhomes/page.vhtml" type="client" />
+    <file src="sites/diamond/logo.png" type="client" />
+    <file src="sites/diamond/page.vhtml" type="client" />
+    <file src="sites/diamond/roulette.png" type="client" />
+    <file src="sites/diamond/slots.png" type="client" />
+    <file src="sites/fiero/logo.png" type="client" />
+    <file src="sites/fiero/page.vhtml" type="client" />
+    <file src="sites/legendary/akuma.png" type="client" />
+    <file src="sites/legendary/bati.png" type="client" />
+    <file src="sites/legendary/bullet.png" type="client" />
+    <file src="sites/legendary/cheetah.png" type="client" />
+    <file src="sites/legendary/faggio.png" type="client" />
+    <file src="sites/legendary/infernus.png" type="client" />
+    <file src="sites/legendary/logo.png" type="client" />
+    <file src="sites/legendary/page.vhtml" type="client" />
+    <file src="sites/legendary/sanchez.png" type="client" />
+    <file src="sites/legendary/turismo.png" type="client" />
+    <file src="sites/lvcars/blista.png" type="client" />
+    <file src="sites/lvcars/bobcat.png" type="client" />
+    <file src="sites/lvcars/elegant.png" type="client" />
+    <file src="sites/lvcars/logo.png" type="client" />
+    <file src="sites/lvcars/page.vhtml" type="client" />
+    <file src="sites/lvcars/premier.png" type="client" />
+    <file src="sites/lvcars/sadler.png" type="client" />
+    <file src="sites/lvcars/sultan.png" type="client" />
+    <file src="sites/vizair/cargobob.png" type="client" />
+    <file src="sites/vizair/dodo.png" type="client" />
+    <file src="sites/vizair/logo.png" type="client" />
+    <file src="sites/vizair/maverick.png" type="client" />
+    <file src="sites/vizair/page.vhtml" type="client" />
+    <file src="sites/vizair/shamal.png" type="client" />
+
+    <export function="openBrowser"         type="client" />
+    <export function="openBrowserSite"     type="client" />
+    <export function="registerBrowserSite" type="client" />
+    <export function="isBrowserOpen"       type="client" />
+    <export function="closeBrowser"        type="client" />
+
+    <export function="openBrowser"     type="server" />
+    <export function="openBrowserSite" type="server" />
+</meta>

@@ -1,0 +1,29 @@
+<page bg="#160a26" text="#efe6f7" heading="#ffffff" muted="#a794c0" link="#7cc4ff" accent="#db2777" card="#241238" cardline="#3d2456">
+    <siteheader title="Diamond Casino" tagline="Slots, tables and high-limit rooms" accent="#db2777" />
+
+    <card accent="#7c3aed">
+        <h2 align="center">The Diamond has not opened yet</h2>
+        <p align="center" class="muted">Membership is not on sale and the floor is closed to the public. Opening date to be announced.</p>
+    </card>
+
+    <space h="8" />
+    <h3>About this place</h3>
+    <p class="muted">A resort casino on the edge of the strip: a main gaming floor, two bars, high-limit rooms and a members-only lounge. Everything below is a preview of what is coming.</p>
+
+    <space h="10" />
+    <row gap="20">
+        <col>
+            <img src="slots.png" h="220" alt="Slot machines" />
+            <h3>Slot floor</h3>
+            <p class="muted">Rows of classic reels and video slots, from penny spins to high roller.</p>
+        </col>
+        <col>
+            <img src="roulette.png" h="220" alt="Roulette table" />
+            <h3>Table games</h3>
+            <p class="muted">Roulette, blackjack and poker, dealt by staff around the clock.</p>
+        </col>
+    </row>
+
+    <space h="8" />
+    <link href="home">Back to search</link>
+</page>

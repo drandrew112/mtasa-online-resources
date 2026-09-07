@@ -1,0 +1,14 @@
+<page bg="#e9f5ec" text="#16281c" heading="#0d1f13" muted="#4f6b58" link="#15803d" accent="#16a34a" card="#ffffff" cardline="#c4e0cc">
+    <siteheader title="CityHomes" tagline="Apartments and houses across the city" accent="#16a34a" />
+
+    <catalog cols="3" sort="price">
+        <product id="apt_downtown_studio" name="Downtown studio"        price="$65,000">Small, renovated, public transport at the door.</product>
+        <product id="apt_loft"            name="Loft apartment"         price="$155,000">Panoramic terrace, bright living room, private lift.</product>
+        <product id="house_suburb"        name="Suburban family house"  price="$240,000">Three bedrooms, double garage, walled garden with pool.</product>
+        <product id="apt_canal"           name="Canalside flat"         price="$98,000">Two rooms, water view, secure parking space.</product>
+        <product id="house_hill"          name="Hillside villa"         price="$520,000">Four bedrooms, city views, infinity pool and gym.</product>
+        <product id="apt_micro"           name="Micro apartment"        price="$34,000">Just enough room. Cheapest address in the centre.</product>
+    </catalog>
+
+    <link href="home">Back to search</link>
+</page>

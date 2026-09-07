@@ -1,0 +1,14 @@
+<page bg="#efe6d4" text="#3a2f1e" heading="#2c2114" muted="#7c6a4e" link="#8a5a2b" accent="#8a5a2b" card="#faf4e6" cardline="#d8c8a8">
+    <siteheader title="Las Venturas Cars" tagline="Certified pre-owned, family run since '92" accent="#8a5a2b" />
+
+    <catalog cols="3" sort="price">
+        <product id="blista"   name="Blista Compact" price="$12,500" img="blista.png"  colors="white,black,silver,red,blue">Compact city car with low running costs.</product>
+        <product id="bobcat"   name="Bobcat"         price="$9,800"  img="bobcat.png"  colors="white,black,red,green">Tough pickup, great for work and light off-road.</product>
+        <product id="sultan_rs" name="Sultan RS"     price="$48,000" img="sultan.png"  colors="black,silver,blue,red">All-wheel drive, sport suspension, turbo engine.</product>
+        <product id="premier"  name="Premier"        price="$22,000" img="premier.png" colors="black,white,silver">Reliable four-door saloon, cheap to insure.</product>
+        <product id="elegant"  name="Elegant"        price="$35,000" img="elegant.png" colors="black,white,silver,blue">Full-size cruiser with a smooth ride and big trunk.</product>
+        <product id="sadler"   name="Sadler"         price="$15,500" img="sadler.png"  colors="white,black,yellow,green">Double-cab utility truck, tow bar fitted.</product>
+    </catalog>
+
+    <link href="home">Back to search</link>
+</page>

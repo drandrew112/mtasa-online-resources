@@ -1,0 +1,20 @@
+<page bg="#eef6fd" text="#20303f" heading="#132433" muted="#5b7186" link="#db2777" accent="#db2777" card="#ffffff" cardline="#cfe0ee">
+    <siteheader title="VizAir" tagline="Private aircraft, cleared for takeoff" accent="#db2777" />
+
+    <tabs accent="#db2777">
+        <tab title="Airplane">
+            <catalog cols="3" sort="price">
+                <product id="shamal" name="Shamal" price="$850,000" img="shamal.png" colors="white,silver,blue">Compact private jet, transcontinental range.</product>
+                <product id="dodo"   name="Dodo"   price="$18,000"  img="dodo.png"   colors="white,red,yellow">Stubby-winged trainer. Forgiving, slow, lovable.</product>
+            </catalog>
+        </tab>
+        <tab title="Helicopter">
+            <catalog cols="3" sort="price">
+                <product id="maverick" name="Maverick" price="$120,000" img="maverick.png" colors="black,white,blue,red">Four-seat light helicopter, easy to fly.</product>
+                <product id="cargobob" name="Cargobob" price="$310,000" img="cargobob.png" colors="green,black,yellow">Heavy-lift utility helicopter with a winch.</product>
+            </catalog>
+        </tab>
+    </tabs>
+
+    <link href="home">Back to search</link>
+</page>

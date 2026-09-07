@@ -1,0 +1,10 @@
+<page bg="#0a1712" text="#eaf5ef" heading="#ffffff" muted="#8caa9c" link="#4ade80" accent="#16a34a" card="#122820" cardline="#1f4536">
+    <siteheader title="Fiero Markets" tagline="Private stakes in the city's nightlife" accent="#16a34a" />
+
+    <space h="120" />
+    <h2 align="center">Investments are currently unavailable</h2>
+    <p align="center" class="muted">There are no openings for new investors right now. Please check back later.</p>
+
+    <space h="130" />
+    <link href="home">Back to search</link>
+</page>
