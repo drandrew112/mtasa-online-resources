@@ -8,6 +8,9 @@
 /\[player_interaction\]/v_socialpanel/crews.xml
 /\[player_interaction\]/v_socialpanel/messages.xml
 
+# --- Models ---
+/\[core\]/v_modloader/
+
 # --- Szerkesztői / backup szemét ---
 *.old
 *.bak
