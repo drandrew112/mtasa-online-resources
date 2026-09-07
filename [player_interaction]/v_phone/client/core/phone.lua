@@ -44,6 +44,7 @@ end
 local function blocked()
     return getElementData(localPlayer, "interactionMenuOpen")
         or getElementData(localPlayer, "socialPanelOpen")
+        or getElementData(localPlayer, "browserOpen")
         or getElementData(localPlayer, "paused")
         or getElementData(localPlayer, "showChatInput")
         or getElementData(localPlayer, "reportPanelOpen")

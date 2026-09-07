@@ -38,6 +38,14 @@ A simplified **virtual browser** for MTA:SA. "Websites" are HTML-like markup fil
 Website addresses end in `.eu` by convention (e.g. `lvcars.eu`); it is not
 enforced, any address works.
 
+## Panel integration
+
+While the browser is open it sets `setElementData(localPlayer, "browserOpen", true)`.
+The pause menu, `v_phone` and the `ui_inac` interaction menu all check that flag
+and will not open on top of the browser. The social panel is deliberately still
+allowed. The `v_phone` **Browser** app opens this browser (and closes the phone);
+the `/browser` command still works too.
+
 ## Categories
 
 Ids (shown in this order): `entertainment`, `finance`, `business`, `vehicles`,

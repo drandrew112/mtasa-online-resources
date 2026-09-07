@@ -32,10 +32,11 @@ function BR.buildHome(query)
     local cat = query and query.cat
     local b = {}
 
-    b[#b + 1] = '<page bg="#1a73e8">'
+    b[#b + 1] = '<page bg="#0c1521" text="#e8eef5" heading="#ffffff" muted="#8fa0b3" ' ..
+        'link="#5aa9ff" accent="#1a73e8" card="#161f2e" cardline="#2b3a4f">'
     b[#b + 1] = '<space h="48" />'
     b[#b + 1] = '<brand href="home">Open SE</brand>'
-    b[#b + 1] = '<p align="center" class="onblue">The virtual web, all in one place</p>'
+    b[#b + 1] = '<p align="center" class="muted">The virtual web, all in one place</p>'
     b[#b + 1] = '<space h="14" />'
     b[#b + 1] = '<searchbox placeholder="Search the virtual web or type an address" />'
     b[#b + 1] = '<space h="26" />'
@@ -63,13 +64,13 @@ function BR.buildHome(query)
         end
         b[#b + 1] = '</card>'
     else
-        b[#b + 1] = '<h2 align="center" color="#ffffff">AI picks for you</h2>'
+        b[#b + 1] = '<h2 align="center">AI picks for you</h2>'
         b[#b + 1] = '<space h="4" />'
         b[#b + 1] = '<grid cols="3" gap="16">'
         for _, s in ipairs(BR.recommendations(3)) do b[#b + 1] = siteCardMarkup(s) end
         b[#b + 1] = '</grid>'
         b[#b + 1] = '<space h="6" />'
-        b[#b + 1] = '<p align="center" class="onblue">Pick a category above to see every site</p>'
+        b[#b + 1] = '<p align="center" class="muted">Pick a category above to see every site</p>'
     end
 
     b[#b + 1] = '</page>'

@@ -364,6 +364,9 @@ addEventHandler("onClientKey", root, function(key, press)
     -- Same for the v_admin report / reports panel.
     if getElementData(localPlayer, "reportPanelOpen") then return end
 
+    -- Same while the virtual browser (ui_browser) is open.
+    if getElementData(localPlayer, "browserOpen") then return end
+
     if not pauseMenuOpen then
         if OPEN_KEYS[key]
             and not getElementData(localPlayer, "bigmapIsVisible")

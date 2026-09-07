@@ -225,7 +225,7 @@ function BR.doOpen(url)
         st.current = nil
         st.scrollY = 0
         showCursor(true)
-        setElementData(localPlayer, "browserOpen", true)
+        setElementData(localPlayer, "browserOpen", true, false)
         uicore:toggleMoveControls(false)
         addEventHandler("onClientRender", root, onRender)
     end
@@ -239,7 +239,7 @@ function BR.close()
     st.search.focused = false
     removeEventHandler("onClientRender", root, onRender)
     showCursor(false)
-    setElementData(localPlayer, "browserOpen", false)
+    setElementData(localPlayer, "browserOpen", false, false)
     uicore:toggleMoveControls(true)
 end
 
@@ -481,40 +481,38 @@ local function drawHover()
             local top = math.max(ry, cy)
             local bot = math.min(ry + l.h, cy + ch)
             if bot > top then
-                dxDrawRectangle(cx + l.x, top, l.w, bot - top,
-                    l.cta and tocolor(0, 0, 0, 95) or wash)
+                local c = wash
+                if l.cta then c = tocolor(0, 0, 0, 95) end
+                if l.search then c = tocolor(0, 0, 0, 20) end
+                dxDrawRectangle(cx + l.x, top, l.w, bot - top, c)
             end
             return
         end
     end
 end
 
--- Cash / bank HUD, top-right of the screen, only while the browser is open.
+-- Cash / bank HUD: plain text, top-right of the screen, only while the browser
+-- is open. Cash comes from getPlayerMoney (shared); bank from element data.
 local function drawHUD()
-    local sw = guiGetScreenSize()
-    local cash = getPlayerMoney(localPlayer) or 0
-    local bank = tonumber(getElementData(localPlayer, "bank_money")) or 0
+    local sw, sh = guiGetScreenSize()
     local fmt = BR.formatMoney or function(n) return "$" .. tostring(n) end
+    local cash = fmt(getPlayerMoney(localPlayer) or 0)
+    local bank = fmt(tonumber(getElementData(localPlayer, "bank_money")) or 0)
 
-    local w = BR.sc(230)
-    local rowH = BR.sc(30)
-    local x = sw - w - BR.sc(22)
-    local y = BR.sc(22)
-    local h = rowH * 2 + BR.sc(10)
+    local scale = BR.fscale(1.5)
+    local lh = dxGetFontHeight(scale, BR.fonts.bold)
+    local rx = sw - BR.sc(24)
+    local lx = rx - BR.sc(500)
+    local y = BR.sc(20)
 
-    dxDrawRectangle(x, y, w, h, tocolor(0, 0, 0, 190))
-    dxDrawRectangle(x, y, BR.sc(4), h, tocolor(80, 220, 120, 255))
-
-    local padX = BR.sc(14)
-    dxDrawText("CASH", x + padX, y + BR.sc(5), x, y + BR.sc(5) + rowH,
-        tocolor(150, 160, 170, 255), BR.fscale(0.7), BR.fonts.bold, "left", "top")
-    dxDrawText(fmt(cash), x, y + BR.sc(5), x + w - padX, y + BR.sc(5) + rowH,
-        tocolor(80, 220, 120, 255), BR.fscale(1.05), BR.fonts.bold, "right", "top")
-
-    dxDrawText("BANK", x + padX, y + BR.sc(5) + rowH, x, y + BR.sc(5) + rowH * 2,
-        tocolor(150, 160, 170, 255), BR.fscale(0.7), BR.fonts.bold, "left", "top")
-    dxDrawText(fmt(bank), x, y + BR.sc(5) + rowH, x + w - padX, y + BR.sc(5) + rowH * 2,
-        tocolor(34, 139, 76, 255), BR.fscale(1.05), BR.fonts.bold, "right", "top")
+    local function line(text, ty, color)
+        dxDrawText(text, lx + BR.sc(2), ty + BR.sc(2), rx + BR.sc(2), ty + lh + BR.sc(2),
+            tocolor(0, 0, 0, 160), scale, BR.fonts.bold, "right", "top")
+        dxDrawText(text, lx, ty, rx, ty + lh,
+            color, scale, BR.fonts.bold, "right", "top")
+    end
+    line(cash, y, tocolor(90, 224, 128, 255))
+    line(bank, y + lh + BR.sc(4), tocolor(30, 140, 74, 255))
 end
 
 function BR.render()
@@ -577,4 +575,5 @@ end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
     math.randomseed((getTickCount() % 100000) + (getRealTime().timestamp % 100000))
+    setElementData(localPlayer, "browserOpen", false, false)
 end)

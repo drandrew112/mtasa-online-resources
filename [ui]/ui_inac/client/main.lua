@@ -96,6 +96,15 @@ registerMenu({
                     end
                 },
                 {
+                    label = "Soundoff Signal Rumbler",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "rumbler")
+                        end
+                    end
+                },
+                {
                     label = "Hella RTK-7",
                     action = function()
                         local veh = getPedOccupiedVehicle(localPlayer)
@@ -105,7 +114,7 @@ registerMenu({
                     end
                 },
                 {
-                    label = "Italian",
+                    label = "Italian ambulance",
                     action = function()
                         local veh = getPedOccupiedVehicle(localPlayer)
                         if not veh then uicore:addNotification("Error", "You need a vehicle for this")

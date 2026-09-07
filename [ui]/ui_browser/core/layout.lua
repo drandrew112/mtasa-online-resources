@@ -570,11 +570,11 @@ handlers.catbtn = function(ctx, node, x, w, y)
     local h = S(50)
     local sel = node.attrs.sel == "1"
     local accent = node.attrs.cat and BR.accentOf(node.attrs.cat)
-        or BR.parseColor(node.attrs.accent, BR.theme.primary)
-    pushRect(ctx, x, y, w, h, sel and accent or tocolor(255, 255, 255, 245))
-    if not sel then strokeRect(ctx, x, y, w, h, tocolor(255, 255, 255, 120)) end
+        or BR.parseColor(node.attrs.accent, ctx.col.accent)
+    pushRect(ctx, x, y, w, h, sel and accent or ctx.col.card)
+    strokeRect(ctx, x, y, w, h, sel and accent or ctx.col.cardLine)
     pushTextOp(ctx, BR.nodeText(node), x + S(6), y, x + w - S(6), y + h,
-        sel and tocolor(255, 255, 255, 255) or BR.theme.text, FS.p, BR.fonts.bold, "center", "center")
+        sel and tocolor(255, 255, 255, 255) or ctx.col.text, FS.p, BR.fonts.bold, "center", "center")
     registerLink(ctx, x, y, w, h, node)
     return y + h
 end
@@ -647,7 +647,7 @@ function BR.layoutPage(node, viewportW, opts)
         },
     }
     ctx.pageBg = BR.parseColor(pa.bg, BR.theme.pageBg)
-    ctx.hoverWash = ctx.dark and tocolor(255, 255, 255, 26) or tocolor(0, 0, 0, 40)
+    ctx.hoverWash = ctx.dark and tocolor(255, 255, 255, 40) or tocolor(0, 0, 0, 45)
 
     local contentW = math.max(S(120), viewportW - margin * 2)
     ctx.height = flow(ctx, node.children, margin, contentW, S(28)) + S(32)
