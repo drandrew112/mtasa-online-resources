@@ -92,6 +92,6 @@ watch these so they will not open on top of an already-open surface.
 - Where a resource has its own detailed docs, they live in its `README.md` /
   `readme.xml` (e.g. `[ui]/ui_browser`, `[core]/v_bank`).
 - Runtime-generated files that hold personal data (bans, crews, messages,
-  models) are `.gitignore`d, as is the `[tiktok]` integration.
+  models) are `.gitignore`d, as is the `[tiktok]` integration. - [mtasa-tiktok-integration](https://github.com/drandrew112/mtasa-tiktok-integration)
 - `listres.py` generates the `<resource ... />` lines for the server's
   `mtaserver.conf`.
