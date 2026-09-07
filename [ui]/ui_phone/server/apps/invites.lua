@@ -1,10 +1,10 @@
 --[[
-    v_phone / server/apps/invites.lua
+    ui_phone / server/apps/invites.lua
 
     Pending lobby invites. Other resources push them in through the exports
     below; the jobmanager is expected to be the main producer.
 
-      exports.v_phone:phoneAddInvite(player, id, title, subtitle, cbRes, cbFn)
+      exports.ui_phone:phoneAddInvite(player, id, title, subtitle, cbRes, cbFn)
         cbRes/cbFn (optional): on accept the phone calls
         call(getResourceFromName(cbRes), cbFn, player, id)
         -- e.g. v_jobmanager / jobmanagerAcceptInvite

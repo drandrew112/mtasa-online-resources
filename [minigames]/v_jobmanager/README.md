@@ -22,9 +22,9 @@ voting, checkpoint, UI, or synchronization code is executed.
   creates a new lobby, as requested.
 - Anyone in a waiting lobby can pick **Invite Player** in the lobby panel to
   open a player list; pressing Enter on a name sends that player a lobby invite.
-  The invite is delivered through `v_phone` (`phoneAddInvite`); accepting it on
+  The invite is delivered through `ui_phone` (`phoneAddInvite`); accepting it on
   the phone calls the exported `jobmanagerAcceptInvite` and drops the player
-  straight into the lobby. `v_phone` is a soft dependency — if it is not running
+  straight into the lobby. `ui_phone` is a soft dependency — if it is not running
   the invite action just reports that the phone service is unavailable.
 
 Race checkpoints, vehicles, lobby membership, deathmatch elimination, and

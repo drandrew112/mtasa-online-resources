@@ -1,5 +1,5 @@
 --[[
-    v_phone / server/core/phone.lua
+    ui_phone / server/core/phone.lua
     Transport + dispatch for the server-side app modules (server/apps/*.lua).
 
       PhoneServer.on(name, fn)      handle an RPC from a client, fn(player, ...)

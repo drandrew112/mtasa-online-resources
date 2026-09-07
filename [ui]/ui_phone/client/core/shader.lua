@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/shader.lua
+    ui_phone / client/core/shader.lua
     Texture cache + a rounded-rectangle draw helper backed by fx/rounded.fx.
 
     MTA resolves a shader element's values at frame-flush time, so a single

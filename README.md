@@ -60,7 +60,7 @@ watch these so they will not open on top of an already-open surface.
   to the player's account. It will not open while another panel is active.
 - **Social panel (`v_socialpanel`)** – `Home` / `Num 7`: friends, profiles,
   crews and messages. `Esc` closes it.
-- **Phone (`v_phone`)** – `B`: a modular, app-based phone (MyVeh, invites,
+- **Phone (`ui_phone`)** – `B`: a modular, app-based phone (MyVeh, invites,
   contacts, browser, settings). Other resources (e.g. the job manager) push
   lobby invites through the phone.
 - **Interaction menu (`ui_inac`)** – `M`: an arrow-key-driven, modular

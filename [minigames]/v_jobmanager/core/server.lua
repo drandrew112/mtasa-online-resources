@@ -41,10 +41,10 @@ local function destroyElements(elements)
     end
 end
 
--- Lobby invites are delivered to players through the v_phone resource. We keep
+-- Lobby invites are delivered to players through the ui_phone resource. We keep
 -- that a soft dependency: if the phone is not running, inviting simply fails.
 local function phoneReady()
-    local res = getResourceFromName("v_phone")
+    local res = getResourceFromName("ui_phone")
     return res and getResourceState(res) == "running"
 end
 
@@ -54,7 +54,7 @@ local function clearLobbyInvites(lobby)
     if not lobby.invited then return end
     for player in pairs(lobby.invited) do
         if isElement(player) and phoneReady() then
-            exports.v_phone:phoneRemoveInvite(player, tostring(lobby.id))
+            exports.ui_phone:phoneRemoveInvite(player, tostring(lobby.id))
         end
     end
     lobby.invited = nil
@@ -376,7 +376,7 @@ addEventHandler("jobmanager:leaveJob", resourceRoot, function()
 end)
 
 --------------------------------------------------------------------------------
--- Lobby invites (anyone in a lobby can invite; delivered via v_phone)
+-- Lobby invites (anyone in a lobby can invite; delivered via ui_phone)
 --------------------------------------------------------------------------------
 
 local function currentLobby(player)
@@ -417,7 +417,7 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
         return
     end
 
-    local ok = exports.v_phone:phoneAddInvite(
+    local ok = exports.ui_phone:phoneAddInvite(
         target,
         tostring(lobby.id),
         lobby.job.name .. " lobby",
@@ -527,7 +527,7 @@ function jobmanagerGetState(player)
     return { kind = state.kind, lobbyId = state.lobbyId, matchId = state.matchId }
 end
 
--- Called by v_phone when a player accepts a lobby invite. `id` is the lobby id
+-- Called by ui_phone when a player accepts a lobby invite. `id` is the lobby id
 -- that was passed to phoneAddInvite.
 function jobmanagerAcceptInvite(player, id)
     if not isElement(player) or getElementType(player) ~= "player" then return false end

@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/apps/browser.lua
+    ui_phone / client/apps/browser.lua
     Opens the virtual browser (ui_browser) as its own full-screen panel. The
     phone closes itself first; ui_browser then owns the foreground.
 ]]

@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/apps/settings.lua
+    ui_phone / client/apps/settings.lua
     Settings root menu. "Wallpaper" opens a sub-screen for picking the screen
     background colour (incl. a "Crew colour" option). The choice is persisted
     per account by server/apps/settings.lua.

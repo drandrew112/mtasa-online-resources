@@ -1,5 +1,5 @@
 --[[
-    v_phone / server/apps/settings.lua
+    ui_phone / server/apps/settings.lua
     Persists the chosen wallpaper per account.
 ]]
 

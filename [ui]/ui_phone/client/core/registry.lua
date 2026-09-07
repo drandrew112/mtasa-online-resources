@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/registry.lua
+    ui_phone / client/core/registry.lua
     The app registry. Every file in client/apps/ calls PhoneApp.register{...}.
 
     App definition (all optional except id + name):

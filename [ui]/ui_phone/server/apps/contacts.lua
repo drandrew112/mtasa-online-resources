@@ -1,5 +1,5 @@
 --[[
-    v_phone / server/apps/contacts.lua
+    ui_phone / server/apps/contacts.lua
     Runs (and charges for) the actions offered by Julia and Markus.
 ]]
 

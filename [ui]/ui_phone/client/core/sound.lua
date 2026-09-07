@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/sound.lua
+    ui_phone / client/core/sound.lua
     Tiny UI sound helper.
       select        -> phone opens, Enter / activate
       click         -> moving the selection

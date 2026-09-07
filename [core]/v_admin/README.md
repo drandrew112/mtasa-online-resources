@@ -175,7 +175,7 @@ Rendszer-üzenetek `sender = "SYSTEM"` néven kerülnek be.
 * Amíg egy panel nyitva van, `reportPanelOpen` element data = `true`, és **nem
   nyílik** a pause menü, INAC menü (M), telefon, social panel, és **nem megy** a
   chat `T`. (E resource-ok `otherPanelOpen`/`blocked` ellenőrzése bővült ezzel a
-  kulccsal: `ui_pause`, `ui_inac`, `v_phone`, `v_socialpanel`, `v_chat`.)
+  kulccsal: `ui_pause`, `ui_inac`, `ui_phone`, `v_socialpanel`, `v_chat`.)
 * A chat színkódolt (`#RRGGBB`): a log egy alulra igazított, tördelt, vágott DGS
   label (a DGS *memo* nem színkódolja a törzsszöveget).
 

@@ -1,5 +1,5 @@
 --[[
-    v_phone / shared/config.lua
+    ui_phone / shared/config.lua
     Values the client UI and the server logic both need.
 ]]
 

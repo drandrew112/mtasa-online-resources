@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/apps/contacts.lua
+    ui_phone / client/apps/contacts.lua
     Contact list. Enter "calls" a contact: 2s of ringing, then a menu of the
     things that contact can do. The server performs and pays for the action.
 ]]

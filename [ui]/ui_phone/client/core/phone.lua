@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/phone.lua
+    ui_phone / client/core/phone.lua
     The shell: open / close, the status + header bars, the home grid, the input
     router and the render loop. Apps plug in through PhoneApp (registry.lua).
 ]]

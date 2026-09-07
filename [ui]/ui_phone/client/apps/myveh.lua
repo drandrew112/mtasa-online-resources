@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/apps/myveh.lua
+    ui_phone / client/apps/myveh.lua
     Owned-vehicle list. A dedicated resource will feed this later; for now it is
     intentionally empty.
 ]]

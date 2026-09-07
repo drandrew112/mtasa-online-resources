@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/ui.lua
+    ui_phone / client/core/ui.lua
     Geometry, palette and the shared drawing helpers (incl. the standard list
     renderer most apps use).
 ]]

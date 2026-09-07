@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/core/net.lua
+    ui_phone / client/core/net.lua
     Thin client <-> server transport shared by every app.
 
       phoneRPC(name, ...)          -> server  (server sees it as `client`)

@@ -1,5 +1,5 @@
 <meta>
-    <info author="andrasxa" name="v_phone" type="script" version="1.0"
+    <info author="andrasxa" name="ui_phone" type="script" version="1.0"
           description="Modular in-game phone (MyVeh, Invites, Contacts, Browser, Settings)" />
     <oop>false</oop>
 

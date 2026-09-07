@@ -1,5 +1,5 @@
 --[[
-    v_phone / client/apps/invites.lua
+    ui_phone / client/apps/invites.lua
     Pending lobby invites (fed by the server, e.g. from v_jobmanager).
     Selecting one joins the lobby and closes the phone.
 ]]
