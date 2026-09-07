@@ -25,6 +25,9 @@ local function getAlpha()
 end
 
 function UI.infobox:set(text, r, g, b)
+    local s = playSound("client/sounds/infobox.wav")
+    if s then setSoundVolume(s, 1.0) end
+
     self.text = text
     self.r = r ~= nil and r or 255
     self.g = g ~= nil and g or 255

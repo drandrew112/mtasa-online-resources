@@ -38,6 +38,9 @@ local function getNotificationAlpha(n)
 end
 
 function UI:addNotification(title, text)
+    local s = playSound("client/sounds/notify.wav")
+    if s then setSoundVolume(s, 0.4) end
+
     table.insert(self.notifications, {
         title = title,
         text = text,

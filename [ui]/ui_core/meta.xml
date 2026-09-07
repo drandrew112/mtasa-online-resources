@@ -23,6 +23,8 @@
 
     <!-- FILES -->
     <file src="client/images/loading.png" type="client" />
+    <file src="client/sounds/notify.wav" type="client" />
+    <file src="client/sounds/infobox.wav" type="client" />
 
     <!-- EXPORTS -->
     <export function="setBanner" type="client" />
