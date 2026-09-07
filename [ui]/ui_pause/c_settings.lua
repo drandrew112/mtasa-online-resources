@@ -72,3 +72,15 @@ function pauseSettingsPersist(id, value)
     if not pauseSettingDef(id) then return end
     triggerServerEvent("uipause:saveSetting", localPlayer, id, value)
 end
+
+--------------------------------------------------------------------------------
+-- client -> server: ask for our saved settings
+--------------------------------------------------------------------------------
+
+-- Tell the server we are ready. Done here (not left to a server-side
+-- onResourceStart) so that "uipause:loadSettings" above is guaranteed to be
+-- added before the server ever triggers it, even on a resource restart with
+-- players already connected.
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    triggerServerEvent("uipause:clientReady", localPlayer)
+end)

@@ -4,8 +4,9 @@
 --
 --   * The client changes a setting        -> "uipause:saveSetting" -> written
 --     to the player's accountData.
---   * The player logs in (or this resource restarts) -> every saved value is
---     pushed back with "uipause:loadSettings" so the client can apply it.
+--   * The client side starts and sends "uipause:clientReady" (or the player
+--     logs in) -> every saved value is pushed back with "uipause:loadSettings"
+--     so the client can apply it.
 --
 -- Valid setting ids and their types are declared in settings_shared.lua.
 
@@ -61,14 +62,18 @@ end)
 -- push saved settings back to the client
 --------------------------------------------------------------------------------
 
-addEventHandler("onPlayerLogin", root, function()
-    setTimer(sendSaved, PUSH_DELAY, 1, source)
+-- Client side is up and has added "uipause:loadSettings": safe to push now.
+-- This also covers a resource restart with players already connected.
+addEvent("uipause:clientReady", true)
+addEventHandler("uipause:clientReady", root, function()
+    if isElement(client) then
+        sendSaved(client)
+    end
 end)
 
-addEventHandler("onResourceStart", resourceRoot, function()
-    for _, player in ipairs(getElementsByType("player")) do
-        if getElementData(player, "isLogged") == true then
-            sendSaved(player)
-        end
-    end
+-- Login after the client side is already running: the event handler is added,
+-- but a dependency (v_radar) may still be starting, so keep the cushion. The
+-- client re-applies any deferred value on the next onClientResourceStart.
+addEventHandler("onPlayerLogin", root, function()
+    setTimer(sendSaved, PUSH_DELAY, 1, source)
 end)
