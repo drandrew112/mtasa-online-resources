@@ -29,7 +29,11 @@
     <file src="sounds_dal/2.wav" />
     <file src="sounds_dal/3.wav" />
     <file src="sounds_dal/horn.wav" />
-    
-    <file src="sounds_fsvas320/italy.wav" />
+
+    <file src="sounds_rumbler/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_rumbler/SIREN_2.wav" />
+    <file src="sounds_rumbler/POLICE_WARNING.wav" />
+
+    <file src="sounds_italy/italy.wav" />
 
 </meta>

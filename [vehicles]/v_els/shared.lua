@@ -35,9 +35,18 @@ sirenTypes = {
         horn = "sounds_rtk7/horn.wav"
     },
 
+    rumbler = {
+        sirens = {
+            "sounds_rumbler/SIREN_PA20A_WAIL.wav",
+            "sounds_rumbler/SIREN_2.wav",
+            "sounds_rumbler/POLICE_WARNING.wav",
+        },
+        horn = "sounds_soundoff/AIRHORN_EQD.wav"
+    },
+
     italy = {
         sirens = {
-            "sounds_fsvas320/italy.wav",
+            "sounds_italy/italy.wav",
         },
         horn = "sounds_soundoff/AIRHORN_EQD.wav"
     },

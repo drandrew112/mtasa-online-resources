@@ -63,6 +63,13 @@ addCommandHandler("strtk", function (player)
     end
 end)
 
+addCommandHandler("rumbler", function (player)
+    local veh = getPedOccupiedVehicle(player)
+    if veh then
+        setElementData(veh, "sirenType", "rumbler", true)
+    end
+end)
+
 addCommandHandler("stitaly", function (player)
     local veh = getPedOccupiedVehicle(player)
     if veh then

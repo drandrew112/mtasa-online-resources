@@ -1,6 +1,9 @@
 local siren3D = {}
 local horn3D  = {}
 
+-- script sziréna hangereje (0.0 - 1.0), halkabbra véve
+local SIREN_VOLUME = 0.4
+
 ------------------------------------------------------------
 -- SEGÉDFÜGGVÉNYEK
 ------------------------------------------------------------
@@ -56,7 +59,7 @@ function updateVehicleSiren(veh)
 
         local s = playSound3D(path, 0, 0, 0, true)
         attachElements(s, veh)
-        setSoundVolume(s, 1)
+        setSoundVolume(s, SIREN_VOLUME)
         setSoundMinDistance(s, 1)
         setSoundMaxDistance(s, 150)
         siren3D[veh] = s
