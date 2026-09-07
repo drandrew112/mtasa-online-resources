@@ -41,7 +41,11 @@ function BR.parseColor(str, default)
 end
 
 -- URL-t normalizal es szetszed: sema levagasa, "?a=b&c=d" query elemzese.
--- Az ures / "start" / "home" utvonal mind a fooldalt jelenti.
+-- Az ures / "start" / "home" utvonal mind a fooldalt jelenti; az Open SE
+-- (kereso) az opensearchengine.com cimen el:
+--   opensearchengine.com                 -> path "home"
+--   opensearchengine.com/<kategoria>     -> path "home", query.cat = <kategoria>
+--   opensearchengine.com/results?q=...   -> path "search", query.q = ...
 function BR.parseUrl(url)
     url = tostring(url or ""):gsub("^%s+", ""):gsub("%s+$", "")
     url = url:gsub("^%a[%w%+%-%.]*://", "")
@@ -55,6 +59,19 @@ function BR.parseUrl(url)
     local query = {}
     for k, v in (q or ""):gmatch("([^&=]+)=([^&=]*)") do
         query[k:lower()] = v
+    end
+
+    if path == "opensearchengine.com" then
+        path = "home"
+    else
+        local seg = path:match("^opensearchengine%.com/(.*)$")
+        if seg == "results" then
+            path = "search"
+        elseif seg and seg ~= "" and BR.getCategory and BR.getCategory(seg) then
+            path, query.cat = "home", query.cat or seg
+        elseif seg ~= nil then
+            path = "home"
+        end
     end
 
     return { path = path, query = query, raw = url }

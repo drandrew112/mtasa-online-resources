@@ -158,15 +158,30 @@ local function loadPage(url, keepState)
     st.rtDirty = true
 end
 
+-- The address shown in the URL bar / stored in history for a parsed URL.
+local function canonicalUrl(u)
+    if u.path == "home" then
+        if u.query.cat then return "opensearchengine.com/" .. u.query.cat end
+        return "opensearchengine.com"
+    elseif u.path == "search" then
+        local q = u.query.q or ""
+        return "opensearchengine.com/results" .. (q ~= "" and ("?q=" .. q) or "")
+    end
+    local s = u.path
+    if u.query.product then s = s .. "?product=" .. u.query.product end
+    return s
+end
+BR.canonicalUrl = canonicalUrl
+
 function BR.navigate(url, push)
     local st = BR.state
-    local raw = BR.parseUrl(url).raw
-    if raw == "" then raw = "home" end
-    if raw == st.current then return end -- already here
+    local canon = canonicalUrl(BR.parseUrl(url))
+    if canon == "" then canon = "opensearchengine.com" end
+    if canon == st.current then return end -- already here
     if push ~= false and st.current then
         st.history[#st.history + 1] = st.current
     end
-    st.current = raw
+    st.current = canon
     loadPage(st.current)
 end
 
@@ -250,18 +265,7 @@ function BR.isOpen() return BR.state.open end
 --------------------------------------------------------------------------------
 
 local function displayUrl()
-    local u = BR.parseUrl(BR.state.current or "home")
-    if u.path == "home" then
-        if u.query.cat then
-            local c = BR.getCategory(u.query.cat)
-            return "opense://home/" .. (c and c.label or u.query.cat)
-        end
-        return "opense://home"
-    end
-    if u.path == "search" then
-        return "opense://results/" .. (u.query.q or "")
-    end
-    return u.path
+    return BR.state.current or "opensearchengine.com"
 end
 
 --------------------------------------------------------------------------------

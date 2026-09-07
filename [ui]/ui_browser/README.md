@@ -36,7 +36,10 @@ A simplified **virtual browser** for MTA:SA. "Websites" are HTML-like markup fil
 - `/browser [address]` – for testing.
 
 Website addresses end in `.eu` by convention (e.g. `lvcars.eu`); it is not
-enforced, any address works.
+enforced, any address works. The search engine itself lives at
+`opensearchengine.com` — `opensearchengine.com/<category>` for a category,
+`opensearchengine.com/results?q=<query>` for a search. (`home` / `search` /
+`start` still resolve there too.)
 
 ## Panel integration
 
