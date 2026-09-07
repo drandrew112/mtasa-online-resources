@@ -1,0 +1,73 @@
+<catalog type="weapon">
+	<group name="Kézi">
+		<weapon id="1" name="Vasököl" />
+	</group>
+	
+	<group name="Verekedő">
+		<weapon id="5" name="Bézbol ütő" />
+		<weapon id="15" name="Cane" />
+		<weapon id="9" name="Chainsaw" />
+		<weapon id="2" name="Golf ütő" />
+		<weapon id="7" name="Pool cue" />
+		<weapon id="8" name="Kés" />
+		<weapon id="4" name="Knife" />
+		<weapon id="3" name="Gubibot" />
+		<weapon id="6" name="Shovel" />
+	</group>
+	
+	<group name="Kispisztoly">
+		<weapon id="24" name="Desert eagle" />
+		<weapon id="22" name="Pistoly" />
+		<weapon id="23" name="Hangtompitós" />
+	</group>
+	
+	<group name="Shotgun">
+		<weapon id="26" name="Sawn-off" />
+		<weapon id="25" name="Shotgun" />
+		<weapon id="27" name="SPAZ-12" />
+	</group>
+	
+	<group name="Géppisztolyok">
+		<weapon id="29" name="MP5" />
+		<weapon id="32" name="TEC-9" />
+		<weapon id="28" name="Uzi" />
+	</group>
+	
+	<group name="Géppuskák">
+		<weapon id="30" name="AK47" />
+		<weapon id="31" name="M4" />
+	</group>
+	
+	<group name="Lövész">
+		<weapon id="33" name="Country sniper" />
+		<weapon id="34" name="Sniper" />
+	</group>
+	
+	<group name="Nehéz Fegyverek">
+		<weapon id="37" name="Lángszóró" />
+	</group>
+	
+	<group name="Gránátok">
+		<weapon id="16" name="Grenade" />
+		<weapon id="18" name="Molotov" />
+		<weapon id="39" name="Satchel" />
+		<weapon id="40" name="Satchel detonator" />
+		<weapon id="17" name="Tear gas" />
+	</group>
+	
+	<group name="Speciális">
+		<weapon id="41" name="Festékszóró" />
+		<weapon id="43" name="kamera" />
+		<weapon id="42" name="Fire extinguisher" />
+		<weapon id="45" name="Infrared goggles" />
+		<weapon id="44" name="Night vision goggles" />
+		<weapon id="46" name="Parachute" />
+	</group>
+	
+	<group name="Egyéb">
+		<weapon id="14" name="Flowers" />
+		<weapon id="10" name="Long dildo" />
+		<weapon id="11" name="Short dildo" />
+		<weapon id="12" name="Vibrator" />
+	</group>
+</catalog>

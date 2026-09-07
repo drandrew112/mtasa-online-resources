@@ -1,0 +1,1898 @@
+c_jobmanager.lua
+
+in_lobby = false
+
+job_id = nil
+lobby_id = nil
+active_job_id = nil
+
+job_name = ""
+job_desc = ""
+job_bg = ""
+job_creator = ""
+job_rating = 100
+job_min_players = 0
+job_max_players = 0
+job_openrank = 1
+job_type = nil
+
+function openLobbyPanel(lobbyID)
+    in_lobby = true
+    fadeCamera(false, 1)
+    setElementData(localPlayer, "hideHUD", true)
+    setTimer(function()
+        -- init data
+        job_id = active_lobbys[lobbyID].job_id
+        lobby_id = lobbyID
+        job_name = jobs[active_lobbys[lobbyID].job_id].name
+        job_desc = jobs[active_lobbys[lobbyID].job_id].desc
+        job_bg = jobs[active_lobbys[lobbyID].job_id].lobby.bg_img
+        job_creator = jobs[active_lobbys[lobbyID].job_id].creator
+        job_rating = jobs[active_lobbys[lobbyID].job_id].rating
+        job_min_players = jobs[active_lobbys[lobbyID].job_id].min_players
+        job_max_players = jobs[active_lobbys[lobbyID].job_id].max_players
+        job_openrank = jobs[active_lobbys[lobbyID].job_id].openrank
+        job_type = jobs[active_lobbys[lobbyID].job_id].type
+        -- set camera
+        uicore:toggleMoveControls(false)
+        local cx,cy,cz = jobs[job_id].lobby.camera.pos[1], jobs[job_id].lobby.camera.pos[2], jobs[job_id].lobby.camera.pos[3]
+        local lx,ly,lz = jobs[job_id].lobby.camera.lookAt[1], jobs[job_id].lobby.camera.lookAt[2], jobs[job_id].lobby.camera.lookAt[3]
+        setCameraMatrix(cx,cy,cz, lx,ly,lz, jobs[job_id].lobby.camera.roll, jobs[job_id].lobby.camera.fov)
+        -- open panel
+        setTimer(function()
+            fadeCamera(true, 1)
+            setTimer(function()
+                show_lobbypanel = true
+            end, 500,1)
+        end, 2000, 1)
+    end, 1000, 1)
+end
+addEvent("openLobbyPanel", true)
+addEventHandler("openLobbyPanel", getRootElement(), openLobbyPanel)
+
+function leaveLobby(isKick, reason)
+    in_lobby = false
+    local isKick = isKick or false
+    local reason = reason or false
+    if isKick then
+        local reason = reason or "No Reason"
+    else
+        triggerServerEvent("leavePlayerLobby", localPlayer, localPlayer)
+    end
+    -- close lobby panel
+    show_lobbypanel = false
+    fadeCamera(false, 1)
+    setTimer(function() 
+        if isKick then
+            local x,y,z = jobs[job_id].exit[1], jobs[job_id].exit[2], jobs[job_id].exit[3]+1
+            setElementPosition(localPlayer, x,y,z)
+        else
+            setElementPosition(localPlayer, jobs[job_id].lobby.exit[1], jobs[job_id].lobby.exit[2], jobs[job_id].lobby.exit[3]+1)
+        end
+        setElementDimension(localPlayer, 0)
+        setCameraTarget(localPlayer)
+        setTimer(function()
+            fadeCamera(true, 1)
+            uicore:toggleMoveControls(true)
+            setElementData(localPlayer, "hideHUD", false)
+            -- reset data
+            job_id = nil
+            lobby_id = nil
+            job_name = ""
+            job_desc = ""
+            job_bg = ""
+            job_creator = ""
+            job_rating = 100
+            job_min_players = 0
+            job_max_players = 0
+            job_openrank = 1
+            job_type = nil
+        end, 1500, 1)
+    end, 1000, 1)
+end
+addEvent("leaveLobby", true)
+addEventHandler("leaveLobby", getRootElement(), leaveLobby)
+
+function startJob(_active_job_id)
+    -- close lobby panel and get ready for game
+    show_lobbypanel = false
+    fadeCamera(false, 1)
+    setElementData(localPlayer, "hideHUD", true)
+    uicore:toggleMoveControls(false)
+    -- set data
+    active_job_id = _active_job_id
+end
+addEvent("startJob", true)
+addEventHandler("startJob", getRootElement(), startJob)
+
+function endJob(jobID)
+    setElementData(localPlayer, "hideHUD", true)
+    fadeCamera(false, 1)
+    -- set camera
+    local cx,cy,cz = jobs[jobID].endCamera.pos[1], jobs[jobID].endCamera.pos[2], jobs[jobID].endCamera.pos[3]
+    local lx,ly,lz = jobs[jobID].endCamera.lookAt[1], jobs[jobID].endCamera.lookAt[2], jobs[jobID].endCamera.lookAt[3]
+    setCameraMatrix(cx,cy,cz, lx,ly,lz, jobs[jobID].endCamera.roll, jobs[jobID].endCamera.fov)
+    setTimer(function()
+        uicore:toggleMoveControls(false)
+        setTimer(function()
+            -- open panel
+            fadeCamera(true, 1)
+            setTimer(function()
+                show_endJobPanel = true
+            end, 500,1)
+        end, 1000, 1)
+    end, 1000, 1)
+end
+addEvent("endJob", true)
+addEventHandler("endJob", getRootElement(), endJob)
+
+
+
+addCommandHandler("dim", function()
+    outputDebugString("dim: "..getElementDimension(localPlayer))
+end)
+
+setElementDimension(localPlayer, 0)
+uicore:toggleMoveControls(true)
+setCameraTarget(localPlayer)
+fadeCamera(true)
+
+
+###
+
+c_synctables.lua
+-- sync
+
+function client_syncTables(_active_jobs, _active_lobbys)
+    active_jobs = _active_jobs
+    active_lobbys = _active_lobbys
+end
+addEvent("syncTables", true)
+addEventHandler("syncTables", getResourceRootElement(), client_syncTables)
+
+
+###
+
+c_ui.lua
+uicore = exports.ui_core
+ui = function(z) return uicore:ui(z) end
+
+local sw,sh = guiGetScreenSize()
+
+local elementH = 30
+local help_w = dxGetTextWidth("Press E to join a lobby", 1.5, "default")
+local help_h = dxGetFontHeight(1.5, "default")
+
+local w,h = sw*0.3, ((sw*0.)*0.6)+elementH*5
+local sx,sy = 15, 20+help_h+sh*0.1
+local image_h = w*0.6
+
+show_jobmarker_panel = false
+local c_job_id = false
+
+function render_ui()
+    if in_lobby or show_lobbypanel then return end
+    if show_jobmarker_panel then
+        dxDrawRectangle(15,15, help_w+10, help_h+10, tocolor(0,0,0,255))
+        dxDrawText("Press E to join a lobby", 20,20, _,_, tocolor(255,255,255,255), 1.5, "default", "left", "top")
+
+        local job = jobs[c_job_id]
+        dxDrawRectangle(sx,sy, w,h, tocolor(0,0,0,255))
+        
+        dxDrawImage(sx,sy, w,image_h, job.lobby.bg_img)
+
+        dxDrawRectangle(sx,sy+image_h-elementH, w,elementH, tocolor(0,0,0,150))
+        dxDrawText(job.name, sx+w-5, sy+image_h-elementH/2, _,_, tocolor(255,255,255,255), 1.6, "sans", "right", "center")
+
+        local index = 0
+        dxDrawRectangle(sx,sy+image_h+(elementH*index), w,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Rating", sx+5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job.rating.."%", sx+w-5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 1
+        dxDrawRectangle(sx,sy+image_h+(elementH*index), w,elementH, tocolor(40,40,40, 255))
+        dxDrawText("By", sx+5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job.creator, sx+w-5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 2
+        dxDrawRectangle(sx,sy+image_h+(elementH*index), w,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Opens at rank", sx+5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job.openrank, sx+w-5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 3
+        dxDrawRectangle(sx,sy+image_h+(elementH*index), w,elementH, tocolor(40,40,40, 255))
+        dxDrawText("Players", sx+5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job.min_players.."-"..job.max_players, sx+w-5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 4
+        dxDrawRectangle(sx,sy+image_h+(elementH*index), w,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Type", sx+5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job.type, sx+w-5, sy+image_h+(elementH*index)+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+    end
+end
+addEventHandler("onClientRender", getRootElement(), render_ui)
+
+-- Controls
+addEventHandler("onClientKey", getRootElement(),
+function(key, isPress)
+    if in_lobby then return end
+    if isPress and show_jobmarker_panel and key=="e" then
+        cancelEvent()
+        triggerServerEvent("joinPlayerJob", localPlayer, localPlayer, c_job_id)
+    end
+end)
+
+-- Job marker enter&leave
+
+function ui_markerHit(player)
+    if player == localPlayer then
+        if getElementData(source, "job_marker") then
+            local jobID = getElementData(source, "job_id")
+            c_job_id = jobID
+            show_jobmarker_panel = true
+        end
+    end
+end
+function ui_markerLeave(player)
+    if player == localPlayer then
+        if getElementData(source, "job_marker") then
+            show_jobmarker_panel = false
+            c_job_id = false
+        end
+    end
+end
+
+addEventHandler("onClientMarkerHit", getResourceRootElement(), ui_markerHit)
+addEventHandler("onClientMarkerLeave", getResourceRootElement(), ui_markerLeave)
+
+###
+
+c_ui_endjob.lua
+local sw,sh = guiGetScreenSize()
+
+local header_color      = tocolor(0,0,0, 0)
+local secheader_color   = tocolor(0,100,150, 255)
+local infoline_txtcolor = tocolor(0,170,220, 255)
+
+local w,h               = sw*0.8,sh*0.8
+local sepLine           = 3
+local header_h          = 45+20
+local infoline_h        = 30
+local sectionW,elementH = w/3-sepLine,30
+
+show_endJobPanel = false
+endJobPanel_state = 1
+
+local selected_option = 1
+local vote_options = {"Random", 1,2,3,4,5, "Restart", "Freemode"}
+
+function render_ui_endJob()
+    if getElementData(localPlayer, "paused") then return end
+    if show_endJobPanel then
+        -- Player list
+        if endJobPanel_state == 1 then
+            --dxDrawRectangle(sw/2-w/2,sh/2-h/2, w,h, tocolor(0,0,0, 100))
+            
+            -- draw header
+            dxDrawRectangle(sw/2-w/2,sh/2-h/2, w,header_h, header_color)
+            dxDrawText(job_name, sw/2-w/2+5,sh/2-h/2+5, _,_, tocolor(255,255,255,255), 2, "default-bold", "left", "top")
+            dxDrawText(job_desc, sw/2-w/2+5,sh/2-h/2+header_h-8, _,_, tocolor(255,255,255,255), 1.5, "default", "left", "bottom")
+            
+            -- draw CENTER section
+            dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h, w,elementH, secheader_color)
+            dxDrawText("PLAYERS", sw/2-w/2+5, sh/2-h/2+header_h+elementH/2, _,_, tocolor(255,255,255, 255), 1.6, "default-bold", "left", "center")
+            
+            for i,player in ipairs(active_lobbys[lobby_id].players) do
+                dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), 5,elementH, tocolor(0,70,100, 255))
+                dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), w,elementH, tocolor(0,70,100, 150))
+                dxDrawText(player.name, sw/2-w/2+10, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.5, "default", "left", "center")
+                dxDrawText(player.level, sw/2-w/2+w-10, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+                local level_w = dxGetTextWidth(active_lobbys[lobby_id].players[i].level, 1.6, "default", false)
+                if active_lobbys[lobby_id].players[i].element == active_lobbys[lobby_id].host then -- is host
+                    local pinfo_w = dxGetTextWidth("HOST", 1.2, "default", false)
+                    dxDrawRectangle(sw/2-w/2+w-10-level_w-15-pinfo_w-5, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+5, 10+pinfo_w,elementH-10, tocolor(0,150,200, 200))
+                    dxDrawText("HOST", sw/2-w/2+w-10-level_w-15, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.2, "default", "right", "center")
+                else
+                    local pinfo_w = dxGetTextWidth("JOINED", 1.2, "default", false)
+                    dxDrawRectangle(sw/2-w/2+w-10-level_w-15-pinfo_w-5, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+5, 10+pinfo_w,elementH-10, tocolor(0,200,0, 200))
+                    dxDrawText("JOINED", sw/2-w/2+w-10-level_w-15, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.2, "default", "right", "center")
+                end
+            end
+
+        -- vote next job
+        elseif endJobPanel_state == 2 then
+            header_h = 45
+
+            local votes = 0
+            for i,v in ipairs(active_lobbys[lobby_id].players) do
+                if v.voted then
+                    votes = votes + 1
+                end
+            end
+            dxDrawText("Vote on the next Job", sw/2-w/2,sh/2-h/2, _,_, tocolor(255,255,255, 255), 2.2, "default", "left", "top")
+            dxDrawText(votes.."/"..#active_lobbys[lobby_id].players.." Votes", sw/2+w/2,sh/2-h/2, _,_, tocolor(255,255,255, 255), 2.2, "default", "right", "top")
+
+            local rows = 3
+            local cols = 3
+            local padding = 4
+            for i,v in ipairs(vote_options) do
+                local gridW = (w - (cols - 1) * padding) / cols
+                local gridH = gridW*0.6
+                --outputDebugString("gridW, gridH: "..gridW..", "..gridH)
+
+                local col = (i - 1) % cols
+                local row = math.floor((i - 1) / cols)
+                
+                local x = sw/2-w/2 + col * gridW + (col - 1) * (padding*2)
+                local y = sh/2-h/2 + header_h + row * gridH + (row - 1) * (padding*2)
+
+                if i >= 7 then gridH = gridH*0.3 end
+                dxDrawRectangle(x, y, gridW, gridH, tocolor(0,0,0, 255))
+                if i == 1 then
+                    dxDrawImage(x, y, gridW, gridH, "images/job_random.jpg")
+                    dxDrawRectangle(x,y+gridH-30, gridW,30, tocolor(0,0,0,150))
+                    dxDrawText(v, x+gridW-5, y+gridH-15, _, _, tocolor(255,255,255,255), 1.5, "default-bold", "right", "center")
+                elseif i <= 6 then
+                    dxDrawImage(x, y, gridW, gridH, jobs[v].lobby.bg_img or "files/job_bg_default.jpg")
+                    dxDrawRectangle(x,y+gridH-30, gridW,30, tocolor(0,0,0,150))
+                    dxDrawText(jobs[v].name, x+gridW-5, y+gridH-15, _, _, tocolor(255,255,255,255), 1.5, "default-bold", "right", "center")
+                else
+                    dxDrawText(v, x + gridW / 2, y + gridH / 2, _, _, tocolor(255,255,255,255), 1.5, "default-bold", "center", "center")
+                end
+            end
+            for i=1, #vote_options do
+                if selected_option == i then
+                    local gridW = (w - (cols - 1) * padding) / cols
+                    local gridH = gridW*0.6
+    
+                    local col = (i - 1) % cols
+                    local row = math.floor((i - 1) / cols)
+                    
+                    local x = sw/2-w/2 + col * gridW + (col - 1) * (padding*2)
+                    local y = sh/2-h/2 + header_h + row * gridH + (row - 1) * (padding*2)
+                    if i >= 7 then gridH = gridH*0.3 end
+
+                    local line_w = 4
+                    dxDrawLine(x, y, x + gridW, y, tocolor(255, 255, 255, 255), line_w) -- Top
+                    dxDrawLine(x, y, x, y + gridH, tocolor(255, 255, 255, 255), line_w) -- Left
+                    dxDrawLine(x + gridW, y, x + gridW, y + gridH, tocolor(255, 255, 255, 255), line_w) -- Right
+                    dxDrawLine(x, y + gridH, x + gridW, y + gridH, tocolor(255, 255, 255, 255), line_w) -- Bottom
+                end
+            end
+
+        end
+    end
+end
+addEventHandler("onClientRender", getRootElement(), render_ui_endJob)
+
+
+-- Controls
+
+addEventHandler("onClientKey", getRootElement(),
+function (key, isDown)
+    if (isDown) then
+        if getElementData(localPlayer, "paused") then return end
+        if getElementData(localPlayer, "showChatInput") then return end
+
+        if show_endJobPanel then
+            if endJobPanel_state == 1 then
+            elseif endJobPanel_state == 2 then
+                if key == "arrow_u" then -- up
+                    if selected_option > 3 then
+                        selected_option = selected_option - 3
+                    end
+                elseif key == "arrow_d" then -- down
+                    if selected_option <= 3 then
+                        selected_option = selected_option + 3
+                    elseif selected_option <= 6 then
+                        selected_option = #vote_options
+                    end
+                elseif key == "arrow_l" then -- left
+                    if selected_option % 3 ~= 1 then
+                        selected_option = selected_option - 1
+                    end
+                elseif key == "arrow_r" then -- right
+                    if selected_option % 3 ~= 0 and selected_option ~= #vote_options then
+                        selected_option = selected_option + 1
+                    end
+                elseif key == "enter" then
+                    playSound("sounds/click.wav")
+                    triggerServerEvent("onPlayerVote", localPlayer, localPlayer, lobby_id, vote_options[selected_option])
+
+                -- Leave
+                elseif (key == "backspace" or key == "escape") then
+                    cancelEvent()
+                    playSound("sounds/select.wav")
+                
+                end
+            end
+        end
+    end
+end)
+
+-- handle vote events
+
+addEvent("onVoteStart", true)
+addEventHandler("onVoteStart", root, function()
+    endJobPanel_state = 2
+end)
+
+addEvent("onVoteEnd", true)
+addEventHandler("onVoteEnd", root, function()
+    show_endJobPanel = false
+    endJobPanel_state = 1
+end)
+
+
+
+###
+
+c_ui_lobby.lua
+local sw,sh = guiGetScreenSize()
+
+local header_color      = tocolor(0,0,0, 0)
+local secheader_color   = tocolor(0,100,150, 255)
+local infoline_txtcolor = tocolor(0,170,220, 255)
+local btn_color         = tocolor(20,20,20, 150)
+local btnselect_color   = tocolor(255,255,255, 255)
+
+local w,h               = sw*0.8,sh*0.8
+local sepLine           = 3
+local header_h          = 45+20
+local infoline_h        = 30
+local sectionW,elementH = w/3-sepLine,30
+local image_h           = sectionW*0.6
+local default_image     = "images/job_bg_default.jpg"
+
+show_lobbypanel = false
+local c_menu_id = 1
+local c_selected_btn = 1
+
+function render_ui_lobby()
+    if getElementData(localPlayer, "paused") then return end
+    if show_lobbypanel then
+        --dxDrawRectangle(sw/2-w/2,sh/2-h/2, w,h, tocolor(0,0,0, 40))
+        
+        -- draw header
+        dxDrawRectangle(sw/2-w/2,sh/2-h/2, w,header_h, header_color)
+        dxDrawText(job_name, sw/2-w/2+5,sh/2-h/2+5, _,_, tocolor(255,255,255,255), 2.2, "default-bold", "left", "top")
+        dxDrawText(job_desc, sw/2-w/2+5,sh/2-h/2+header_h-8, _,_, tocolor(255,255,255,255), 1.4, "default", "left", "bottom")
+        
+        -- draw LEFT section
+        dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h, sectionW,elementH, secheader_color)
+        dxDrawText("SETTINGS", sw/2-w/2+sectionW/2, sh/2-h/2+header_h+elementH/2, _,_, btntxtcolor, 1.6, "default-bold", "center", "center")
+        
+        for i,btn in ipairs(lobby_menus[c_menu_id].btns) do
+            -- draw button
+            local btnbgcolor = btn.bg or btn_color
+            local btntxtcolor = tocolor(255,255,255, 255)
+            if (c_selected_btn == i) then
+                btnbgcolor = btnselect_color
+                btntxtcolor = tocolor(0,0,0, 255)
+            end
+            dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), sectionW,elementH, btnbgcolor)
+            dxDrawText(btn.text, sw/2-w/2+5, (sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)))+elementH/2, _,_, btntxtcolor, 1.6, "default", "left", "center")
+            -- options
+            if (btn.options) then
+                local option_text = btn.options[btn.value].text
+                if (c_selected_btn == i) then option_text = "< "..option_text.." >" end
+                dxDrawText(option_text, sw/2-w/2+(sectionW-5), (sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)))+elementH/2, _,_, btntxtcolor, 1.6, "default", "right", "center")
+            -- value
+            elseif (btn.value) then
+                --
+            end
+        end
+        local btn_desc = lobby_menus[c_menu_id].btns[c_selected_btn].desc
+        if (#btn_desc>0) then
+            dxDrawRectangle(sw/2-w/2, sh/2-h/2+header_h+elementH+#lobby_menus[c_menu_id].btns*(elementH+sepLine)+sepLine, sectionW,infoline_h, btn_color)
+            dxDrawText(btn_desc, sw/2-w/2+5,sh/2-h/2+header_h+elementH+#lobby_menus[c_menu_id].btns*(elementH+sepLine)+sepLine+elementH/2, _,_, tocolor(255,255,255,255), 1.5, "default", "left", "center")
+        end
+        
+        -- draw CENTER section
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW), sh/2-h/2+header_h, sectionW,elementH, secheader_color)
+        dxDrawText("PLAYERS "..#active_lobbys[lobby_id].players.." of "..job_min_players.."-"..job_max_players, sw/2-w/2+(sepLine+sectionW)+sectionW/2, sh/2-h/2+header_h+elementH/2, _,_, btntxtcolor, 1.6, "default-bold", "center", "center")
+        
+        for i=1, job_max_players do
+            if (active_lobbys[lobby_id].players[i]) then
+                dxDrawRectangle(sw/2-w/2+(sepLine+sectionW), sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), 5,elementH, tocolor(0,70,100, 255))
+                dxDrawRectangle(sw/2-w/2+(sepLine+sectionW), sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), sectionW,elementH, tocolor(0,70,100, 150))
+                dxDrawText(active_lobbys[lobby_id].players[i].name, sw/2-w/2+(sepLine+sectionW)+10, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.5, "default", "left", "center")
+                dxDrawText(active_lobbys[lobby_id].players[i].level, sw/2-w/2+(sepLine+sectionW)+sectionW-10, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+                local level_w = dxGetTextWidth(active_lobbys[lobby_id].players[i].level, 1.6, "default", false)
+                if active_lobbys[lobby_id].players[i].element == active_lobbys[lobby_id].host then -- is host
+                    local pinfo_w = dxGetTextWidth("HOST", 1.2, "default", false)
+                    dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)+sectionW-10-level_w-15-pinfo_w-5, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+5, 10+pinfo_w,elementH-10, tocolor(0,150,200, 200))
+                    dxDrawText("HOST", sw/2-w/2+(sepLine+sectionW)+sectionW-10-level_w-15, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.2, "default", "right", "center")
+                else
+                    local pinfo_w = dxGetTextWidth("JOINED", 1.2, "default", false)
+                    dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)+sectionW-10-level_w-15-pinfo_w-5, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+5, 10+pinfo_w,elementH-10, tocolor(0,200,0, 200))
+                    dxDrawText("JOINED", sw/2-w/2+(sepLine+sectionW)+sectionW-10-level_w-15, sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine))+elementH/2, _,_, tocolor(255,255,255,255), 1.2, "default", "right", "center")
+                end
+            else
+                dxDrawRectangle(sw/2-w/2+(sepLine+sectionW), sh/2-h/2+header_h+elementH+sepLine+((i-1)*(elementH+sepLine)), sectionW,elementH, btn_color)
+            end
+        end
+
+        -- draw RIGHT section
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h, sectionW,elementH, secheader_color)
+        dxDrawText("DETAILS", sw/2-w/2+(sepLine+sectionW)*2+sectionW/2, sh/2-h/2+header_h+elementH/2, _,_, btntxtcolor, 1.6, "default-bold", "center", "center")
+        
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH, sectionW,image_h+elementH*4, tocolor(20,20,20, 255))
+        
+        dxDrawImage(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH, sectionW, image_h, job_bg)
+        
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h-elementH, sectionW,elementH, tocolor(0,0,0, 150))
+        dxDrawText(job_name, sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h-elementH/2, _,_, tocolor(255,255,255,255), 1.6, "sans", "right", "center")
+        
+        local index = 0
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h+elementH*index, sectionW,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Rating", sw/2-w/2+(sepLine+sectionW)*2+5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job_rating.."%", sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 1
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h+elementH*index, sectionW,elementH, tocolor(40,40,40, 255))
+        dxDrawText("By", sw/2-w/2+(sepLine+sectionW)*2+5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job_creator, sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 2
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h+elementH*index, sectionW,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Opens at rank", sw/2-w/2+(sepLine+sectionW)*2+5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job_openrank, sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 3
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h+elementH*index, sectionW,elementH, tocolor(40,40,40, 255))
+        dxDrawText("Players", sw/2-w/2+(sepLine+sectionW)*2+5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job_min_players.."-"..job_max_players, sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+        index = 4
+        dxDrawRectangle(sw/2-w/2+(sepLine+sectionW)*2, sh/2-h/2+header_h+elementH+image_h+elementH*index, sectionW,elementH, tocolor(50,50,50, 255))
+        dxDrawText("Type", sw/2-w/2+(sepLine+sectionW)*2+5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "left", "center")
+        dxDrawText(job_type, sw/2-w/2+(sepLine+sectionW)*2+sectionW-5, sh/2-h/2+header_h+elementH+image_h+elementH*index+elementH/2, _,_, tocolor(255,255,255,255), 1.6, "default", "right", "center")
+    end
+end
+addEventHandler("onClientRender", getRootElement(), render_ui_lobby)
+
+
+-- Controls
+
+addEventHandler("onClientKey", getRootElement(),
+function (key, isDown)
+    if (isDown) then
+        if getElementData(localPlayer, "paused") then return end
+        if getElementData(localPlayer, "showChatInput") then return end
+
+        if show_lobbypanel then
+            if (key == "arrow_u") then
+                if (c_selected_btn==1) then
+                    c_selected_btn = #lobby_menus[c_menu_id].btns
+                else
+                    c_selected_btn = c_selected_btn-1
+                end
+                playSound("sounds/select.wav")
+            elseif (key == "arrow_d") then
+                if (c_selected_btn==#lobby_menus[c_menu_id].btns) then
+                    c_selected_btn = 1
+                else
+                    c_selected_btn = c_selected_btn+1
+                end
+                playSound("sounds/select.wav")
+            
+            elseif (key == "arrow_l") then
+                playSound("sounds/select.wav")
+                if lobby_menus[c_menu_id].btns[c_selected_btn].options then
+                    if (lobby_menus[c_menu_id].btns[c_selected_btn].value==1) then
+                        lobby_menus[c_menu_id].btns[c_selected_btn].value = #lobby_menus[c_menu_id].btns[c_selected_btn].options
+                    else
+                        lobby_menus[c_menu_id].btns[c_selected_btn].value = lobby_menus[c_menu_id].btns[c_selected_btn].value-1
+                    end
+                end
+            elseif (key == "arrow_r") then
+                playSound("sounds/select.wav")
+                if lobby_menus[c_menu_id].btns[c_selected_btn].options then
+                    if (lobby_menus[c_menu_id].btns[c_selected_btn].value==#lobby_menus[c_menu_id].btns[c_selected_btn].options) then
+                        lobby_menus[c_menu_id].btns[c_selected_btn].value = 1
+                    else
+                        lobby_menus[c_menu_id].btns[c_selected_btn].value = lobby_menus[c_menu_id].btns[c_selected_btn].value+1
+                    end
+                end
+
+            elseif (key == "backspace" or key == "escape") then
+                cancelEvent()
+                playSound("sounds/select.wav")
+                if (lobby_menus[c_menu_id].back == 0) then
+                    leaveLobby()
+                else
+                    c_menu_id = lobby_menus[c_menu_id].back
+                    c_selected_btn = 1
+                end
+
+            elseif (key == "enter") then
+                playSound("sounds/click.wav")
+                if (lobby_menus[c_menu_id].btns[c_selected_btn].set_menu) then
+                    if ( lobby_menus[c_menu_id].btns[c_selected_btn].set_menu == 0 ) then
+                        show_lobbypanel = false
+                        uicore:toggleMoveControls(true)
+                    else
+                        c_menu_id = lobby_menus[c_menu_id].btns[c_selected_btn].set_menu
+                        c_selected_btn = 1
+                    end
+                elseif lobby_menus[c_menu_id].btns[c_selected_btn].options then
+                    lobby_menus[c_menu_id].btns[c_selected_btn].options[lobby_menus[c_menu_id].btns[c_selected_btn].value].action()
+                elseif lobby_menus[c_menu_id].btns[c_selected_btn].action then
+                    lobby_menus[c_menu_id].btns[c_selected_btn].action()
+                end
+            end
+        end
+    end
+end)
+
+
+###
+
+c_ui_maps.lua
+
+lobby_menus = {
+    {
+        name = "MAIN",
+        back = 0,
+        btns = {
+            {
+                text="Players",
+                desc = "Check players",
+                options = false,
+                value = false,
+                set_menu = 3,
+                action = false,
+                hostOnly = false,
+            },
+            {
+                text="Game settings",
+                desc = "Settings for this game",
+                options = false,
+                value = false,
+                set_menu = 2,
+                action = false,
+                hostOnly = true,
+            },
+            {
+                text="Start",
+                desc = "Start the game",
+                options = false,
+                value = false,
+                set_menu = false,
+                action = function() triggerServerEvent("startJob", localPlayer, lobby_id) end,
+                hostOnly = true, -- Only the host can start
+                bg = tocolor(0,70,120, 255),
+            },
+        },
+    },
+    {
+        name = "GAME SETTINGS",
+        back = 1,
+        btns = {
+            {
+                text="Nothing here",
+                desc = "",
+                options = false,
+                value = false,
+                set_menu = false,
+                action = false,
+                hostOnly = false,
+            },
+        },
+    },
+    {
+        name = "PLAYERS",
+        back = 1,
+        btns = {
+            {
+                text="Nothing here",
+                desc = "",
+                options = false,
+                value = false,
+                set_menu = false,
+                action = false,
+                hostOnly = false,
+            },
+        },
+    },
+}
+
+
+
+###
+
+g_jobs.lua
+
+jobs = {
+
+    {
+        -- details 1
+        name = "Casino tour",
+        desc = "Discover Las Venturas casinos and take part in an amazing race that covers the most casinos.",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 2,
+        type = job_types.race,
+        -- type spec values
+        race_id = 1,
+        ctf_id = false,
+        dm_id = false,
+        -- join & leave
+        join_marker = {
+            pos = {2080.498046875,880.37799072266,7.2779870033264},
+            size = 2,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {2080.1149902344,866.00476074219,6.9432435035706},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {2056.4643554688,1750.1185302734,21.734375},
+                lookAt = {2057.4016113281,1700.0270996094,10.943309783936},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {2080.1149902344,866.00476074219,6.9432435035706},
+            bg_img = "images/job_bg_1.jpg",
+        },
+        endCamera = {
+            pos = {2026.0142822266,1006.1462402344,10.8203125},
+            lookAt = {2069.3852539062,1017.8234863281,31.8203125},
+            roll = 0,
+            fov = 90,
+        },
+    },
+    
+    {
+        -- details 2
+        name = "Los Santos Canal Tour",
+        desc = "",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = 2,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {2603.912109375,-1504.3862304688,15.5},
+            size = 4,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {1416.259765625,-1327.1859130859,13.5546875},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {1479.8425292969,-1735.7847900391,8.4},
+                lookAt = {1437.1546630859,-1712.8570556641,6.859375},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {2621.5832519531,-1489.671875,16.481575012207},
+            bg_img = "images/job_bg_2.jpg",
+        },
+        endCamera = {
+            pos = {1415.4281005859,-1325.3720703125,18},
+            lookAt = {1409.0793457031,-1360.8499755859,8},
+            roll = 0,
+            fov = 900,
+        },
+    },
+
+    {
+        -- details 3
+        name = "Los Santos Ambulance",
+        desc = "Turn on the sirens! You'll transport some patients from the Los Santos East Hospital to the LS General Hospital.",
+        creator = "DrAndrew112",
+        rating = 70,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = 3,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {2002.2019042969,-1445.7503662109,13.561367034912},
+            size = 2,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {1182.9545898438,-1313.3201904297,13.568015098572},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {1991.6333007812,-1456.3760986328,31.5546875},
+                lookAt = {2033.7987060547,-1415.2940673828,16.9921875},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {1996.1431884766,-1451.8377685547,13.5546875},
+            bg_img = "images/job_bg_3.jpg",
+        },
+        endCamera = {
+            pos = {1216.8253173828,-1311.7437744141,18.390625},
+            lookAt = {1176.6218261719,-1325.4665527344,14.030390739441},
+            roll = 0,
+            fov = 90,
+        },
+    },
+    
+    {
+        -- details 4
+        name = "LS Beach motorcycling",
+        desc = "",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = 4,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {1032.8123779297,-1847.3607177734,13.511821746826},
+            size = 2,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {167.71728515625,-1952.2193603516,3.7734375},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {755.55651855469,-1814.2392578125,15.586297988892},
+                lookAt = {809.51721191406,-1814.8460693359,15.376152038574},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {1027.1990966797,-1840.6617431641,13.586297988892},
+            bg_img = "images/job_bg_4.jpg",
+        },
+        endCamera = {
+            pos = {146.66709899902,-1940.5430908203,4.7734375},
+            lookAt = {157.10388183594,-1908.9576416016,3.7734375},
+            roll = 0,
+            fov = 90,
+        },
+    },
+
+    {
+        -- details 5
+        name = '"Follow The Damn Train, CJ!"',
+        desc = "An iconic GTA San Andreas mission gave the idea for this race. The mission involved killing enemy gang members fleeing on the top of the train. But here you just have to race and have fun!",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = false,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {1795.7633056641,-1900.0275878906,13.400864601135},
+            size = 3,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {2203.6232910156,-1883.1629638672,17.6100730896},
+                lookAt = {2195.3225097656,-1909.2009277344,13.546875},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {1808.6444091797,-1898.6468505859,13.579278945923},
+            bg_img = "images/job_bg_default.jpg",
+        },
+        endCamera = {
+            pos = {},
+            lookAt = {},
+            roll = 0,
+            fov = 90,
+        },
+    },
+    
+    {
+        -- details 6
+        name = "Mt. Chiliad",
+        desc = "Motorcycles only",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = false,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {-2391.5197753906,-2204.5004882812,33.2},
+            size = 4,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {-2236.884765625,-1723.1350097656,480.85095214844},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {-2353.5895996094,-1835.1394042969,434.2890625},
+                lookAt = {-2280.1020507812,-1763.6729736328,456.88409423828},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {-2382.8952636719,-2215.9558105469,33.2890625},
+            bg_img = "images/job_bg_default.jpg",
+        },
+        endCamera = {
+            pos = {},
+            lookAt = {},
+            roll = 0,
+            fov = 90,
+        },
+    },
+    
+    {
+        -- details 7
+        name = "",
+        desc = "",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = false,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {},
+            size = 2,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {},
+                lookAt = {},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {},
+            bg_img = "images/job_bg_default.jpg",
+        },
+        endCamera = {
+            pos = {},
+            lookAt = {},
+            roll = 0,
+            fov = 90,
+        },
+    },
+
+}
+
+--[[
+    {
+        -- details
+        name = "Job name",
+        desc = "",
+        creator = "DrAndrew112",
+        rating = 100,
+        min_players = 1,
+        max_players = 8,
+        openrank = 1,
+        type = job_types.race,
+        -- type spec values
+        race_id = false,
+        ctf_id = false,
+        dm_id = false,
+        -- join
+        join_marker = {
+            pos = {},
+            size = 2,
+            rgba = {0,150,200, 150},
+            blip_icon = 9,
+        },
+        exit = {},
+        -- lobby
+        lobby = {
+            camera = {
+                pos = {},
+                lookAt = {},
+                roll = 0,
+                fov = 90,
+            },
+            exit = {},
+            bg_img = "images/job_bg_default.jpg",
+        },
+        endCamera = {
+            pos = {},
+            lookAt = {},
+            roll = 0,
+            fov = 90,
+        },
+    },
+]]
+
+
+###
+
+meta.xml
+<meta>
+  <info author="DrAndrew112" type="script" name="jobmanager"/>
+  
+  <script src="c_ui_maps.lua" type="client"/>
+  <script src="c_ui_lobby.lua" type="client"/>
+  <script src="c_ui_endjob.lua" type="client"/>
+  <script src="c_ui.lua" type="client"/>
+  <script src="c_jobmanager.lua" type="client"/>
+
+  <script src="s_jobmanager.lua" type="server"/>
+  <script src="s_lobbymanager.lua" type="server"/>
+  <script src="s_votemanager.lua" type="server"/>
+
+  <script src="shared.lua" type="shared"/>
+  <script src="g_jobs.lua" type="shared"/>
+
+  <!-- Sync Tables -->
+  <script src="s_synctables.lua" type="server"/>
+  <script src="c_synctables.lua" type="client"/>
+  
+  <!-- Gamemodes -->
+  <script src="gamemode_ctf/shared.lua" type="shared"/>
+
+  <script src="gamemode_dm/shared.lua" type="shared"/>
+
+  <script src="gamemode_mission/shared.lua" type="shared"/>
+
+  <script src="gamemode_race/shared.lua" type="shared"/>
+  <script src="gamemode_race/s_gamemanager.lua" type="server"/>
+  <script src="gamemode_race/s_checkpoints.lua" type="server"/>
+  <script src="gamemode_race/c_gamemanager.lua" type="client"/>
+  <script src="gamemode_race/c_countdown.lua" type="client"/>
+
+  <!-- Gamemodes -->
+  <file src="sounds/select.wav" type="client"/>
+  <file src="sounds/btnfail.wav" type="client"/>
+  <file src="sounds/click.wav" type="client"/>
+
+  <file src="images/job_random.jpg" type="client" cache="false" />
+  <file src="images/job_bg_default.jpg" type="client" cache="false" />
+  <file src="images/job_bg_1.jpg" type="client" cache="false" />
+  <file src="images/job_bg_2.jpg" type="client" cache="false" />
+  <file src="images/job_bg_3.jpg" type="client" cache="false" />
+  <file src="images/job_bg_4.jpg" type="client" cache="false" />
+</meta>
+
+
+###
+
+shared.lua
+
+job_types = {
+    ctf = "Capture the Flag",
+    dm = "Deathmatch",
+    mission = "Mission",
+    race = "Race",
+}
+
+active_jobs = {}
+active_lobbys = {}
+
+function getJobDim(job_id)
+    return 1000+job_id
+end
+
+function getJobPlayers(job_id)
+    return active_jobs[job_id].players
+end
+
+
+###
+
+s_jobmanager.lua
+
+function init_jobs()
+    for i, job in ipairs(jobs) do
+        local x,y,z = job.join_marker.pos[1], job.join_marker.pos[2], job.join_marker.pos[3]
+        local r,g,b,a = job.join_marker.rgba[1], job.join_marker.rgba[2], job.join_marker.rgba[3], job.join_marker.rgba[4]
+        local marker = createMarker(x,y,z-1, "cylinder", job.join_marker.size, r,g,b,a, getRootElement())
+        local blip = createBlipAttachedTo(marker, job.join_marker.blip_icon, 2, 255,255,255,255, 0, 500, getRootElement())
+        setElementData(marker, "job_marker", true)
+        setElementData(marker, "job_id", i)
+    end
+end
+addEventHandler("onResourceStart", getResourceRootElement(), init_jobs)
+
+function joinPlayerJob(player, jobID)
+    local lobby_id = joinPlayerLobby(player, jobID)
+    if lobby_id then
+        triggerClientEvent(player, "openLobbyPanel", player, lobby_id)
+    else
+        outputDebugString("joinPlayerJob failed: lobby_id = false")
+    end
+end
+addEvent("joinPlayerJob", true)
+addEventHandler("joinPlayerJob", getRootElement(), joinPlayerJob)
+
+function startJob(lobbyID)
+    if active_lobbys[lobbyID] then
+        if #active_lobbys[lobbyID].players >= jobs[active_lobbys[lobbyID].job_id].min_players then
+            -- lock lobby
+            active_lobbys[lobbyID].locked = true
+
+            local active_job_id = #active_jobs+1
+            table.insert(active_jobs, active_job_id, {
+                job_id = active_lobbys[lobbyID].job_id,
+                host = active_lobbys[lobbyID].host,
+                players = active_lobbys[lobbyID].players,
+                lobby_id = lobbyID,
+            })
+
+            -- close lobby panel for all players in lobby
+            for i,player in ipairs(active_lobbys[lobbyID].players) do
+                triggerClientEvent(player.element, "startJob", player.element, active_job_id)
+            end
+
+            local job_type = jobs[active_lobbys[lobbyID].job_id].type
+            local race_id = jobs[active_lobbys[lobbyID].job_id].race_id
+
+            setTimer(function()
+                -- Start gamemode
+                if     job_types.ctf == job_type then
+                elseif job_types.dm == job_type then
+                elseif job_types.mission == job_type then
+                elseif job_types.race == job_type then
+                    start_race(active_job_id, race_id)
+                else
+                    outputDebugString("not enough players to start")
+                end
+            end, 2000, 1)
+        end
+    end
+end
+addEvent("startJob", true)
+addEventHandler("startJob", getRootElement(), startJob)
+
+function endJob(active_job_id)
+    local lobby_id = active_jobs[active_job_id].lobby_id
+    local job_id = active_jobs[active_job_id].job_id
+    active_lobbys[lobby_id].active_job_id = nil
+    table.remove(active_jobs, active_job_id)
+    for i,player in ipairs( active_lobbys[lobby_id].players ) do
+        triggerClientEvent( player.element, "endJob", player.element, job_id )
+    end
+    setTimer(function()
+        startVote(lobby_id)
+    end, (10)*1000, 1)
+end
+
+
+###
+
+s_lobbymanager.lua
+
+-- Creates a new lobby
+function createLobbyforJob(jobID)
+    table.insert(active_lobbys, {
+        job_id = jobID,
+        host = nil,
+        players = {},
+        locked = false,
+        active_job_id = nil,
+        vote = {isVoteActive=false, voteTimer=nil},
+    })
+    return #active_lobbys
+end
+
+-- Delete a lobby
+function deleteLobby(lobbyID)
+    if active_lobbys[lobbyID] then
+        local playersInLobby = 0
+        for i,player in ipairs(active_lobbys[lobbyID].players) do
+            kickPlayerFromLobby(player.element, "The lobby has been deleted.")
+        end
+        table.remove(active_lobbys, lobbyID)
+    end
+    return false
+end
+
+
+-- returns the first available lobby
+function getLobbyForJob(jobID)
+    for i,lobby in ipairs(active_lobbys) do
+        local lobby_id = i
+        if lobby.locked==false then
+            if lobby.job_id == jobID then
+                if #lobby.players < jobs[jobID].max_players then
+                    return lobby_id
+                end
+            end
+        end
+    end
+
+    return false
+end
+
+-- get lobby_id of player
+function getPlayerLobby(player)
+    for lobby_id,lobby in ipairs(active_lobbys) do
+        for i,v in ipairs(lobby.players) do
+            if (v.element == player) then
+                return lobby_id,i
+            end
+        end
+    end
+
+    return false
+end
+
+
+function joinPlayerLobby(player, jobID, mode)    
+    local mode = mode or "auto"
+
+    if mode == "auto" then
+        local lobby_id = getLobbyForJob(jobID)
+        if lobby_id then
+            table.insert(
+                active_lobbys[lobby_id].players,
+                {element=player, name=getPlayerName(player), level=getElementData(player, "level")}
+            )
+            setElementDimension(player, getJobDim(jobID))
+            return lobby_id
+        else
+            lobby_id = createLobbyforJob(jobID)
+            if lobby_id then
+                table.insert(
+                    active_lobbys[lobby_id].players,
+                    {element=player, name=getPlayerName(player), level=getElementData(player, "level")}
+                )
+                setElementDimension(player, getJobDim(jobID))
+                active_lobbys[lobby_id].host = player
+                return lobby_id
+            end
+        end
+    elseif mode == "new" then
+        local lobby_id = createLobbyforJob(jobID)
+        if lobby_id then
+            table.insert(
+                active_lobbys[lobby_id].players,
+                {element=player, name=getPlayerName(player), level=getElementData(player, "level")}
+            )
+            active_lobbys[lobby_id].host = player
+            return lobby_id
+        end
+    end
+
+    return false
+end
+
+-- Remove plaer from lobby
+function leavePlayerLobby(player)
+    local lobby_id, lobbyplayer_id = getPlayerLobby(player)
+    if lobby_id then
+        for i,v in ipairs(active_lobbys[lobby_id].players) do
+            if v.element == player then
+                if active_lobbys[lobby_id].host == player then
+                    if #active_lobbys[lobby_id].players >= 2 then -- player not removed yet !!
+                        active_lobbys[lobby_id].host = active_lobbys[lobby_id].players[1].element
+                    else
+                        table.remove(active_lobbys[lobby_id].players, i)
+                        deleteLobby(lobby_id)
+                        return
+                    end
+                end
+                table.remove(active_lobbys[lobby_id].players, i)
+                break
+            end
+        end
+    end
+end
+addEvent("leavePlayerLobby", true)
+addEventHandler("leavePlayerLobby", getRootElement(), leavePlayerLobby)
+
+-- Kick player from lobby
+function kickPlayerFromLobby(player, reason)
+    local lobby_id, lobbyplayer_id = getPlayerLobby(player)
+    if lobby_id then
+        for i,v in ipairs(active_lobbys[lobby_id].players) do
+            if v.element == player then
+                table.remove(active_lobbys[lobby_id].players, i)
+                triggerClientEvent(player, "leaveLobby", player, true, reason)
+                break
+            end
+        end
+    end
+end
+
+
+###
+
+s_synctables.lua
+
+
+function syncTables()
+    triggerClientEvent(getRootElement(), "syncTables", getRootElement(), active_jobs, active_lobbys)
+end
+setTimer(syncTables, 100, 0)
+
+
+###
+
+s_votemanager.lua
+
+
+function startVote(lobby_id)
+    local lobby = active_lobbys[lobby_id]
+    if not lobby then return end
+    if not lobby.vote.isVoteActive then
+        lobby.vote.isVoteActive = true
+        lobby.vote.voteTimer = setTimer(function() endVote(lobby_id, false) end, 30000, 1)
+        
+        for _, player in ipairs(lobby.players) do
+            player.voted = false
+        end
+        
+        for i,player in ipairs(lobby.players) do
+            triggerClientEvent(player.element, "onVoteStart", player.element)
+        end
+    end
+end
+
+function endVote(lobby_id, votes)
+    if not active_lobbys[lobby_id] then return end
+
+    killTimer(active_lobbys[lobby_id].vote.voteTimer)
+    active_lobbys[lobby_id].vote.isVoteActive = false
+
+    if votes then
+        -- get results
+        local maxVotes = 0
+        local selectedOption = nil
+        for key,value in pairs(votes) do
+            if value > maxVotes then
+                maxVotes = value
+                selectedOption = key
+            end
+        end
+        outputDebugString("winner vote: "..selectedOption)
+
+        -- do as voted
+        if selectedOption then
+            for i,player in ipairs(active_lobbys[lobby_id].players) do
+                triggerClientEvent(player.element, "onVoteEnd", player.element, selectedOption)
+                player.voted = nil
+            end
+
+            if selectedOption == "Freemode" then
+                deleteLobby(lobby_id)
+            elseif selectedOption == "Restart" then
+                for i,player in ipairs(active_lobbys[lobby_id].players) do
+                    triggerClientEvent(player.element, "openLobbyPanel", player.element, lobby_id)
+                end
+                active_lobbys[lobby_id].locked = false
+            elseif selectedOption == "Random" then
+                active_lobbys[lobby_id].job_id = math.random(1, #jobs)
+                setElementDimension(player, getJobDim(active_lobbys[lobby_id].job_id))
+                for i,player in ipairs(active_lobbys[lobby_id].players) do
+                    triggerClientEvent(player.element, "openLobbyPanel", player.element, lobby_id)
+                end
+                active_lobbys[lobby_id].locked = false
+            else
+                active_lobbys[lobby_id].job_id = selectedOption
+                setElementDimension(player, getJobDim(active_lobbys[lobby_id].job_id))
+                for i,player in ipairs(active_lobbys[lobby_id].players) do
+                    triggerClientEvent(player.element, "openLobbyPanel", player.element, lobby_id)
+                end
+                active_lobbys[lobby_id].locked = false
+            end
+        end
+    else
+        deleteLobby(lobby_id)
+        -- Random
+        --[[
+        for _, player in ipairs(active_lobbys[lobby_id].players) do
+            triggerClientEvent(player.element, "onVoteEnd", player.element, "Random")
+        end
+        active_lobbys[lobby_id].job_id = math.random(1, #jobs)
+        for i,player in ipairs(active_lobbys[lobby_id].players) do
+            triggerClientEvent(player.element, "openLobbyPanel", player.element, lobby_id)
+        end
+        active_lobbys[lobby_id].locked = false
+        ]]
+    end
+end
+
+
+addEvent("onPlayerVote", true)
+addEventHandler("onPlayerVote", getRootElement(), function(player, lobby_id, option)
+    if not lobby_id then return end
+
+    for i, v in ipairs(active_lobbys[lobby_id].players) do
+        if v.element == player then
+            outputDebugString("onPlayerVote: player "..v.name..", voted "..option)
+            active_lobbys[lobby_id].players[i].voted = option
+            checkVotes(lobby_id)
+            break
+        end
+    end
+end)
+
+function checkVotes(lobby_id)
+    local totalVotes = 0
+    local votes = {}
+    for i, player in ipairs(active_lobbys[lobby_id].players) do
+        if player.voted then
+            totalVotes = totalVotes + 1
+            if votes[player.voted] then
+                votes[player.voted] = votes[player.voted] + 1
+            else
+                votes[player.voted] = 1
+            end
+        end
+    end
+
+    if totalVotes == #active_lobbys[lobby_id].players then
+        endVote(lobby_id, votes)
+    end
+end
+
+
+
+###
+
+gamemode_ctf\shared.lua
+
+-- gamemode spec things
+
+ctf_games = {}
+
+
+###
+
+gamemode_dm\shared.lua
+
+-- gamemode spec things
+
+dm_games = {}
+
+
+###
+
+gamemode_mission\shared.lua
+
+-- gamemode spec things
+
+missions = {}
+
+
+###
+
+gamemode_race\c_countdown.lua
+local sw,sh = guiGetScreenSize()
+
+local show_countdown = false
+local countdown = false
+
+addEventHandler("onClientRender", getRootElement(), function()
+    if show_countdown then
+        local text = "?"
+        if countdown == 0 then
+            text = "GO!"
+        else
+            text = tostring(countdown)
+        end
+        outputDebugString(text)
+        dxDrawText(text, sw/2, sh*0.3, _,_, tocolor(255,255,255,255), 4, "pricedown", "center", "center")
+    end
+end)
+
+
+addEvent("race_countdown", true)
+addEventHandler("race_countdown", getRootElement(), function(active_job_id, race_id, _countdown)
+    show_countdown = true
+    countdown = _countdown
+    if countdown == 0 then
+        setTimer(function() show_countdown = false end, 1000, 1)
+    end
+    outputDebugString("client: "..tostring(show_countdown).." countdown: "..countdown)
+end)
+
+
+###
+
+gamemode_race\c_gamemanager.lua
+
+local currentCheckpoint = 1
+
+-- start game - triggered by serverside
+function start_race(active_job_id, raceID)
+    -- set data
+    currentCheckpoint = 1
+    setTimer(function()
+        setCameraTarget(localPlayer)
+        uicore:toggleMoveControls(true)
+        setTimer(function()
+            fadeCamera(true, 1)
+            setElementData(localPlayer, "hideHUD", false)
+        end, 1000, 1)
+    end, 1000, 1)
+end
+addEvent("start_race", true)
+addEventHandler("start_race", getRootElement(), start_race)
+
+function finish_race(active_job_id, raceID)
+    setElementData(localPlayer, "hideHUD", true)
+    uicore:toggleMoveControls(false)
+    local x,y,z = races[raceID].finishCamera.pos[1], races[raceID].finishCamera.pos[2], races[raceID].finishCamera.pos[3]
+    local lx,ly,lz = races[raceID].finishCamera.lookAt[1], races[raceID].finishCamera.lookAt[2], races[raceID].finishCamera.lookAt[3]
+    setCameraMatrix(x,y,z, lx,ly,lz, races[raceID].finishCamera.roll, races[raceID].finishCamera.fov)
+    setTimer(fadeCamera, 3800, 1, false, 1)
+end
+addEvent("finish_race", true)
+addEventHandler("finish_race", getRootElement(), finish_race)
+
+function race_nextCheckpoint(checkpointIndex, active_job_id, race_id)
+    local totalCheckpoints = #races[race_id].checkpoints
+    if checkpointIndex <= totalCheckpoints then
+        if checkpointIndex == totalCheckpoints then
+            -- Create finish checkpoint
+            triggerServerEvent("race_createCheckpoint", localPlayer, localPlayer, active_job_id, race_id, checkpointIndex, true)
+        else
+            triggerServerEvent("race_createCheckpoint", localPlayer, localPlayer, active_job_id, race_id, checkpointIndex, false)
+        end
+    end
+end
+addEvent("race_nextCheckpoint", true)
+addEventHandler("race_nextCheckpoint", getRootElement(), race_nextCheckpoint)
+
+
+
+###
+
+gamemode_race\shared.lua
+
+-- gamemode spec things
+
+races = {
+
+    { -- 1
+        settings = {
+            vehicles = {411},
+        },
+        spawnpoints = {
+            -- x,y,z,rot
+            {2064,891,7, 0},
+            {2069,891,7, 0},
+            {2064,884,7, 0},
+            {2069,884,7, 0},
+            {2064,877,7, 0},
+            {2069,877,7, 0},
+            {2064,870,7, 0},
+            {2069,870,7, 0},
+        },
+        checkpoints = {
+            -- x,y,z,size
+            {2066.5510253906,912.66162109375,8.4738731384277, 7},
+            {2073.1740722656,1028.6434326172,10.498537063599, 6},
+            {2151.0681152344,1088.1333007812,12.694139480591, 5},
+            {2187.51171875,1195.3150634766,11.03611946106, 5},
+            {2187.4768066406,1318.2052001953,10.671875, 5},
+            {2177.4645996094,1373.2165527344,10.677786827087, 5},
+            {2071.1262207031,1378.962890625,10.671875, 6},
+            {2066.6306152344,1468.9200439453,10.671875, 5},
+            {2068.1000976562,1703.0980224609,10.679658889771, 7},
+            {2100.4104003906,1770.6457519531,10.671875, 7},
+            {2152.1694335938,1888.0911865234,10.679658889771, 5},
+            {2234.8898925781,1893.1802978516,10.671875, 5},
+            {2342.3459472656,1897.1904296875,10.801558494568, 6},
+            {2350.2954101562,1940.6948242188,10.673656463623, 8},
+            {2350.3286132812,2073.4650878906,10.671875, 8},
+            {2338.9255371094,2147.3356933594,10.695717811584, 6},
+            {2204.2082519531,2149.3483886719,10.671875, 5},
+            {2133.6870117188,2142.04296875,10.671875, 5},
+            {2128.5979003906,2059.1591796875,10.671875, 7},
+            {2120.2060546875,1974.0350341797,10.697744369507, 6},
+            {2062.6489257812,1943.6854248047,11.78094291687, 5},
+            {2079.4262695312,1871.4696044922,11.137969017029, 5},
+            {2120.072265625,1848.7238769531,10.671875, 5},
+            {2091.5441894531,1789.0374755859,10.671875, 5},
+            {2048.6596679688,1598.99609375,10.671875, 7},
+            {2048.5327148438,1433.0795898438,10.671875, 7},
+            {2048.6567382812,1252.8861083984,10.671875, 7},
+        },
+        finish = {2048.6989746094,1043.1845703125,10.671875, 4},
+        finishCamera = {
+            pos = {2055.0026855469,963.38403320312,13},
+            lookAt = {2038.2066650391,1023.7522583008,9},
+            roll = 0,
+            fov = 90,
+        },
+    },
+
+    { -- 2
+        settings = {
+            vehicles = {411},
+        },
+        spawnpoints = {
+            -- x,y,z,rot
+            {2618,-1482,17, 180},
+            {2614,-1482,17, 180},
+            {2610,-1482,17, 180},
+            {2606,-1482,17, 180},
+            {2602,-1482,17, 180},
+            {2598,-1482,17, 180},
+            {2594,-1482,17, 180},
+            {2590,-1482,17, 180},
+        },
+        checkpoints = {
+            -- x,y,z,size
+            {2585.693359375,-1609.7950439453,3.6686010360718, 9},
+            {2566.009765625,-1728.2093505859,1.640625, 8},
+            {2548.8815917969,-1849.5634765625,3.7072892189026, 9},
+            {2237.0810546875,-1851.3812255859,-0.1344838142395, 6},
+            {2039.5120849609,-1852.0603027344,3.9910221099854, 6},
+            {1871.8973388672,-1823.1978759766,3.984375, 8},
+            {1604.1541748047,-1760.0285644531,3.953125, 8},
+            {1376.7550048828,-1713.4456787109,8.859375, 6},
+            {1359.0177001953,-1690.7839355469,8.609375, 7},
+            {1375.6365966797,-1545.7661132812,8.671875, 7},
+            {1408.5437011719,-1413.7241210938,8.6241798400879, 7},
+        },
+        finish = {1410.0574951172,-1364.8352050781,8.5546875},
+        finishCamera = {
+            pos = {1415.4281005859,-1325.3720703125,16.5546875},
+            lookAt = {1409.0793457031,-1360.8499755859,8.5546875},
+            roll = 0,
+            fov = 900,
+        },
+    },
+
+    { -- 3
+        settings = {
+            vehicles = {416},
+        },
+        spawnpoints = {
+            -- x,y,z,rot
+            {2008.5,-1459.8692626953,13.390625, 90},
+            {2008.5,-1467.1628417969,13.390625, 90},
+            {1993,5,-1459.8692626953,13.390625, 90},
+            {1993,5,-1467.1628417969,13.390625, 90},
+            {1978,5,-1459.8692626953,13.390625, 90},
+            {1978,5,-1467.1628417969,13.390625, 90},
+            {1963,5,-1459.8692626953,13.390625, 90},
+            {1963,5,-1467.1628417969,13.390625, 90},
+        },
+        checkpoints = {
+            -- x,y,z,size
+            {1900.7369384766,-1463.4704589844,13.3828125, 10},
+            {1810.8060302734,-1459.478515625,13.358261108398, 7},
+            {1637.5704345703,-1440.9029541016,13.3828125, 7},
+            {1501.6345214844,-1440.7559814453,13.3828125, 7},
+            {1432.5469970703,-1440.6953125,13.3828125, 7},
+            {1341.9604492188,-1400.4757080078,13.296206474304, 9},
+            {1225.5743408203,-1399.3796386719,13.151556968689, 8},
+            {1200.9066162109,-1358.3999023438,13.369773864746, 9},
+        },
+        finish = {1201.1053466797,-1321.7194824219,13.3984375},
+        finishCamera = {
+            pos = {1208.7010498047,-1288.2296142578,16.3984375},
+            lookAt = {1201.1053466797,-1321.7194824219,13.3984375},
+            roll = 0,
+            fov = 90,
+        },
+    },
+
+    { -- 4
+        settings = {
+            vehicles = {468},
+        },
+        spawnpoints = {
+            -- x,y,z,rot
+            {1022.2638549805,-1849.0992431641,13.366918563843, 90},
+            {1026.9552001953,-1850.4742431641,13.38480758667, 90},
+            {1031.1013183594,-1851.6798095703,13.449800491333, 90},
+            {1024.1365966797,-1847.8895263672,13.407541275024, 90},
+            {1028.5854492188,-1849.2054443359,13.414677619934, 90},
+            {1024.5329589844,-1845.8952636719,13.442849159241, 90},
+            {1028.5411376953,-1846.8896484375,13.445314407349, 90},
+            {1032.7690429688,-1847.9622802734,13.476652145386, 90},
+        },
+        checkpoints = {
+            -- x,y,z,size
+            {981.61553955078,-1838.7763671875,12.661380767822, 7},
+            {865.34729003906,-1823.5258789062,12.105325698853, 7},
+            {798.05059814453,-1815.1252441406,13.059891700745, 7},
+            {723.41168212891,-1810.4624023438,12.220330238342, 7},
+            {614.01049804688,-1779.4809570312,14.341364860535, 7},
+            {577.53094482422,-1772.0638427734,10.591600418091, 5},
+            {468.3434753418,-1774.8109130859,5.5956697463989, 9},
+            {388.73815917969,-1782.3579101562,5.5833673477173, 7},
+            {303.20333862305,-1775.2211914062,4.5366291999817, 7},
+            {177.23175048828,-1774.3051757812,4.0567064285278, 7},
+            {154.6643371582,-1798.0853271484,3.8156514167786, 9},
+            {154.83703613281,-1863.8820800781,3.8020837306976, 9},
+        },
+        finish = {154.88154602051,-1917.4921875,3.7734375},
+        finishCamera = {
+            pos = {146.66709899902,-1940.5430908203,4.7734375},
+            lookAt = {157.10388183594,-1908.9576416016,3.7734375},
+            roll = 0,
+            fov = 90,
+        },
+    },
+
+}
+
+--[[
+    {
+        settings = {
+            vehicles = {411},
+        },
+        spawnpoints = {
+            -- x,y,z,rot
+            {},
+        },
+        checkpoints = {
+            -- x,y,z,size
+            {, 4},
+        },
+        finish = {},
+        finishCamera = {
+            pos = {},
+            lookAt = {},
+            roll = 0,
+            fov = 90,
+        },
+    },
+]]
+
+
+###
+
+gamemode_race\s_checkpoints.lua
+local activeCheckpoints = {}
+
+function race_createCheckpoint(player, active_job_id, race_id, checkpointIndex, isFinish)
+    local checkpointData = races[race_id].checkpoints[checkpointIndex]
+    local r,g,b,a = 255,255,0,80
+    if isFinish then
+        checkpointData = races[race_id].finish
+        r,g,b,a = 0,160,210,150
+    end
+    if checkpointData then
+        local x, y, z, size = checkpointData[1], checkpointData[2], checkpointData[3], checkpointData[4]
+        outputDebugString("create checkpoint for "..getPlayerName(player).." cpid: "..checkpointIndex)
+        local checkpoint = createMarker(x, y, z, "checkpoint", size, r,g,b,a, player)
+        setElementDimension(checkpoint, getJobDim(active_jobs[active_job_id].job_id))
+        activeCheckpoints[player] = checkpoint
+        local next_checkpoint = nil
+        if not isFinish then
+            local next_checkpointData = races[race_id].checkpoints[checkpointIndex + 1]
+            local x, y, z, size = next_checkpointData[1], next_checkpointData[2], next_checkpointData[3], next_checkpointData[4]
+            next_checkpoint = createMarker(x, y, z, "checkpoint", size, 255,255,255,120, player)
+            setElementDimension(next_checkpoint, getJobDim(active_jobs[active_job_id].job_id))
+        end
+        addEventHandler("onMarkerHit", checkpoint, function(hitElement)
+            if hitElement == player then
+                destroyElement(checkpoint)
+                if not isFinish then destroyElement(next_checkpoint) end
+                if isFinish then
+                    finish_raceForPlayer(player, active_job_id, race_id)
+                else
+                    triggerClientEvent(player, "race_nextCheckpoint", player, checkpointIndex + 1, active_job_id, race_id)
+                end
+            end
+        end)
+    end
+end
+addEvent("race_createCheckpoint", true)
+addEventHandler("race_createCheckpoint", root, race_createCheckpoint)
+
+function race_startCheckpointsForPlayer(player, active_job_id, race_id)
+    race_createCheckpoint(player, active_job_id, race_id, 1, false)
+end
+
+
+###
+
+gamemode_race\s_gamemanager.lua
+
+function start_race(active_job_id, race_id)
+    setTimer(function()
+        -- spawn players
+        local vehicles = {}
+        for i,player in ipairs(active_jobs[active_job_id].players) do
+            triggerClientEvent( player.element, "start_race", player.element, active_job_id, race_id )
+            active_jobs[active_job_id].players[i].finishedRace = false
+
+            local selected_vehicle = races[race_id].settings.vehicles[1] or 411
+            local spawnpoint = races[race_id].spawnpoints[i]
+            local x,y,z,rot = spawnpoint[1], spawnpoint[2], spawnpoint[3], spawnpoint[4]
+            local veh = createVehicle(selected_vehicle, x,y,z, 0,0,rot)
+            setElementVisibleTo(veh, getRootElement()) -- érthetetlen bugot javítani akaró sor
+            setElementDimension(veh, getJobDim(active_job_id))
+            warpPedIntoVehicle(player.element, veh)
+            setElementFrozen(getPedOccupiedVehicle(player.element), true)
+            table.insert(vehicles, veh)
+        end
+        setTimer(function()
+            -- Countdown
+            local countdown = 3
+            setTimer(function()
+                if countdown == 0 then -- GO
+                    for i,player in ipairs(active_jobs[active_job_id].players) do
+                        setElementFrozen(getPedOccupiedVehicle(player.element), false)
+                        race_startCheckpointsForPlayer(player.element, active_job_id, race_id)
+                        triggerClientEvent( player.element, "race_countdown", player.element, active_job_id, race_id, countdown )
+                    end
+                else
+                    for i,player in ipairs(active_jobs[active_job_id].players) do
+                        triggerClientEvent( player.element, "race_countdown", player.element, active_job_id, race_id, countdown )
+                    end
+                    countdown = countdown - 1
+                end
+            end, 1500, 4)
+        end, 2000,1)
+    end, 1000,1)
+end
+
+function finish_raceForPlayer(player, active_job_id, race_id)
+    -- cancel onPlayerDamage
+    setElementHealth(player, 100)
+    addEventHandler("onPlayerDamage", player, function()
+        cancelEvent()
+    end)
+    -- remove from vehicle
+    local veh = getPedOccupiedVehicle(player)
+    removePedFromVehicle(player)
+    setElementPosition(0,0,3)
+
+    -- set player finished the race
+    for i,v in ipairs(active_jobs[active_job_id].players) do
+        if v.element == player then
+            active_jobs[active_job_id].players[i].finishedRace = true
+        end
+    end
+
+    triggerClientEvent( player, "finish_race", player, active_job_id, race_id )
+    setTimer(function()
+        -- remove vehicle
+        destroyElement(veh)
+        -- is that was the last player?
+    end, 5000, 1)
+    finish_race(active_job_id, race_id)
+end
+
+function finish_race(active_job_id, race_id)
+    for i,player in ipairs(active_jobs[active_job_id].players) do
+        if player.finishedRace==false then
+            return false
+        end
+    end
+    setTimer(function()
+        endJob(active_job_id)
+    end, 5000, 1)
+end
+
+
+
+
+###
+

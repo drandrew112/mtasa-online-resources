@@ -1,0 +1,46 @@
+<meta>
+    <info author="DrAndrew112" name="UI Core" type="script" version="1.1.0" />
+    <download_priority_group>999</download_priority_group>
+
+    <!-- CLIENT FILES -->
+    <script src="client/scale.lua" type="client" />
+    <script src="client/layout.lua" type="client" />
+
+    <script src="client/banner.lua" type="client" />
+    <script src="client/infobox.lua" type="client" />
+    <script src="client/subtitle.lua" type="client" />
+    <script src="client/alert.lua" type="client" />
+    <script src="client/notifications.lua" type="client" />
+    <script src="client/timer.lua" type="client" />
+    <script src="client/yoverlay.lua" type="client" />
+    <script src="client/crewTagBox.lua" type="client" />
+
+    <script src="client/main.lua" type="client" />
+
+    <!-- SHARED / EXPORTS -->
+    <script src="exports.lua" type="client" />
+    <script src="exports_s.lua" type="server" />
+
+    <!-- FILES -->
+    <file src="client/images/loading.png" type="client" />
+
+    <!-- EXPORTS -->
+    <export function="setBanner" type="client" />
+    <export function="setInfobox" type="client" />
+    <export function="drawSubtitle" type="client" />
+    <export function="setAlert" type="client" />
+    <export function="addNotification" type="client" />
+    <export function="drawLoadingText" type="client" />
+    <export function="drawTimer" type="client" />
+    <export function="drawCrewTagBox" type="client" />
+    <export function="drawCrewTagBoxForPlayer" type="client" />
+    <export function="getCrewTagBoxSize" type="client" />
+
+    <export function="ui" type="client" />
+    <export function="getScreenWH" type="client" />
+    <export function="getSafeZone" type="client" />
+
+    <export function="toggleMoveControls" type="client" />
+    <export function="toggleMoveControls_s" type="server" />
+
+</meta>

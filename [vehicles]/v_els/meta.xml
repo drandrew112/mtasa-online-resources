@@ -1,0 +1,35 @@
+<meta>
+    <script src="shared.lua" type="shared" />
+
+    <script src="client.lua" type="client" />
+
+    <script src="server.lua" type="server" />
+    <script src="lights.lua" type="server" />
+
+    <file src="sounds_fsvas320/AIRHORN_EQD.wav" />
+    <file src="sounds_fsvas320/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_fsvas320/SIREN_2.wav" />
+    <file src="sounds_fsvas320/POLICE_WARNING.wav" />
+    <file src="sounds_soundoff/AIRHORN_EQD.wav" />
+    <file src="sounds_soundoff/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_soundoff/SIREN_2.wav" />
+    <file src="sounds_soundoff/POLICE_WARNING.wav" />
+
+    <file src="sounds_rtk7/1.wav" />
+    <file src="sounds_rtk7/2.wav" />
+    <file src="sounds_rtk7/3.wav" />
+    <file src="sounds_rtk7/horn.wav" />
+
+    <file src="sounds_eriston150/1.wav" />
+    <file src="sounds_eriston150/2.wav" />
+    <file src="sounds_eriston150/3.wav" />
+    <file src="sounds_eriston150/horn.wav" />
+
+    <file src="sounds_dal/1.wav" />
+    <file src="sounds_dal/2.wav" />
+    <file src="sounds_dal/3.wav" />
+    <file src="sounds_dal/horn.wav" />
+    
+    <file src="sounds_fsvas320/italy.wav" />
+
+</meta>

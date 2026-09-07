@@ -1,0 +1,4 @@
+
+-- gamemode spec things
+
+missions = {}

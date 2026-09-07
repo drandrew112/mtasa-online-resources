@@ -1,0 +1,9 @@
+<meta>
+    <info
+        author="DrAndrew112"
+        name="FreeV"
+        type="gamemode"
+        description="FreeV core gamemode script"
+    />
+    <script src="server.lua" type="server" />
+</meta>

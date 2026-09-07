@@ -1,0 +1,110 @@
+﻿
+
+<meta>
+    <info author="Desconhecido,DrAndrew112" version="1.0" type="script" description="Radar GTAV style + navigation" />
+	<file src="files/Roboto.ttf" type="client" />
+	<file src="files/hand.ttf" type="client" />
+	<file src="files/gtaFont.ttf" type="client" />
+	<file src="files/RobotoB.ttf" type="client" />
+	<file src="files/fontawesome-webfont.ttf" type="client" />
+	<file src="files/fontawesome2.otf" type="client" />
+
+    <file src="radar/files/radar.png" type="client" />
+    <file src="radar/files/radar.jpg" type="client" />
+	<file src="radar/files/bigmap_blur.fx" type="client" />
+    <file src="radar/files/radar_mask.png" type="client" />
+	<file src="radar/files/status.png" type="client" />
+    <file src="radar/files/gpslosttext.png" type="client" />
+    <file src="radar/files/gpslosticon.png" type="client" />
+    <file src="radar/files/nosignaltext.png" type="client" />
+    <file src="radar/files/arrow.png" type="client" />
+    <file src="radar/files/tick.png" type="client" />
+    <file src="radar/files/tick_on.png" type="client" />
+
+    <file src="radar/files/blips/0.png" type="client" />
+    <file src="radar/files/blips/1.png" type="client" />
+    <file src="radar/files/blips/2.png" type="client" />
+    <file src="radar/files/blips/3.png" type="client" />
+    <file src="radar/files/blips/4.png" type="client" />
+    <file src="radar/files/blips/5.png" type="client" />
+    <file src="radar/files/blips/6.png" type="client" />
+    <file src="radar/files/blips/7.png" type="client" />
+    <file src="radar/files/blips/8.png" type="client" />
+    <file src="radar/files/blips/9.png" type="client" />
+    <file src="radar/files/blips/10.png" type="client" />
+    <file src="radar/files/blips/11.png" type="client" />
+    <file src="radar/files/blips/12.png" type="client" />
+    <file src="radar/files/blips/13.png" type="client" />
+    <file src="radar/files/blips/14.png" type="client" />
+    <file src="radar/files/blips/15.png" type="client" />
+    <file src="radar/files/blips/16.png" type="client" />
+    <file src="radar/files/blips/17.png" type="client" />
+    <file src="radar/files/blips/18.png" type="client" />
+    <file src="radar/files/blips/19.png" type="client" />
+    <file src="radar/files/blips/20.png" type="client" />
+    <file src="radar/files/blips/21.png" type="client" />
+    <file src="radar/files/blips/22.png" type="client" />
+    <file src="radar/files/blips/23.png" type="client" />
+    <file src="radar/files/blips/24.png" type="client" />
+    <file src="radar/files/blips/25.png" type="client" />
+    <file src="radar/files/blips/26.png" type="client" />
+    <file src="radar/files/blips/27.png" type="client" />
+    <file src="radar/files/blips/28.png" type="client" />
+    <file src="radar/files/blips/29.png" type="client" />
+    <file src="radar/files/blips/30.png" type="client" />
+    <file src="radar/files/blips/31.png" type="client" />
+    <file src="radar/files/blips/32.png" type="client" />
+    <file src="radar/files/blips/33.png" type="client" />
+    <file src="radar/files/blips/34.png" type="client" />
+    <file src="radar/files/blips/35.png" type="client" />
+    <file src="radar/files/blips/36.png" type="client" />
+    <file src="radar/files/blips/37.png" type="client" />
+    <file src="radar/files/blips/38.png" type="client" />
+    <file src="radar/files/blips/39.png" type="client" />
+    <file src="radar/files/blips/40.png" type="client" />
+    <file src="radar/files/blips/41.png" type="client" />
+    <file src="radar/files/blips/42.png" type="client" />
+    <file src="radar/files/blips/43.png" type="client" />
+    <file src="radar/files/blips/44.png" type="client" />
+    <file src="radar/files/blips/45.png" type="client" />
+    <file src="radar/files/blips/46.png" type="client" />
+    <file src="radar/files/blips/47.png" type="client" />
+    <file src="radar/files/blips/48.png" type="client" />
+    <file src="radar/files/blips/49.png" type="client" />
+    <file src="radar/files/blips/50.png" type="client" />
+    <file src="radar/files/blips/51.png" type="client" />
+    <file src="radar/files/blips/52.png" type="client" />
+    <file src="radar/files/blips/53.png" type="client" />
+    <file src="radar/files/blips/54.png" type="client" />
+    <file src="radar/files/blips/55.png" type="client" />
+    <file src="radar/files/blips/56.png" type="client" />
+    <file src="radar/files/blips/57.png" type="client" />
+    <file src="radar/files/blips/58.png" type="client" />
+    <file src="radar/files/blips/59.png" type="client" />
+    <file src="radar/files/blips/60.png" type="client" />
+    <file src="radar/files/blips/61.png" type="client" />
+    <file src="radar/files/blips/62.png" type="client" />
+    <file src="radar/files/blips/63.png" type="client" />
+    <file src="radar/files/blips/64.png" type="client" />
+
+    <file src="radar/files/cross.png" type="client" />
+    <script src="radar/sourceC.lua" type="client" />
+
+    <file src="radar/gps/images/dot.png" type="client" />
+
+    <script src="radar/gps/sourceC.lua" type="client" />
+    <script src="radar/gps/vehiclenodes.lua" type="client" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+    <export function="createCustomBlip" type="client" />
+    <export function="getNode" type="client" />
+	<export function="openPauseBigmap" type="client" />
+	<export function="closePauseBigmap" type="client" />
+	<export function="isPauseBigmapOpen" type="client" />
+	<export function="renderPausePreview" type="client" />
+	<export function="setShow3DBlips" type="client" />
+	<export function="getShow3DBlips" type="client" />
+	<export function="setEnable3DNavigation" type="client" />
+	<export function="getEnable3DNavigation" type="client" />
+    <min_mta_version client="1.5.6" server="1.5.6" />
+</meta>

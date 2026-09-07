@@ -1,0 +1,12 @@
+﻿pra remover o bloqueio de visualizar o mapa somente dentro do carro remove as linhas do diretorio que vou deixa abaixo
+
+
+r8_radar/radar/sourceC.lua
+
+Remove as linhas .....
+
+313
+314
+318
+
+abraços ... att srgringomta

@@ -1,0 +1,16 @@
+<meta>
+  <info author="DrAndrew112" type="script" name="GTA Online Chat"/>
+
+  <include resource="ui_core"/>
+
+  <script src="c_chat.lua" type="client"/>
+  <script src="c_mute.lua" type="client"/>
+
+  <script src="mute.lua" type="server"/>
+  <script src="s_chat.lua" type="server"/>
+
+  <script src="shared.lua" type="shared"/>
+
+  <!-- server mutePlayer(player, minutes, reason, admin_name) -->
+  <export function="mutePlayer" type="server"/>
+</meta>

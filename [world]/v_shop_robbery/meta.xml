@@ -1,0 +1,9 @@
+<meta>
+	<info author="VSCode MTA:SA Lua" type="script" name="shop_robbery" />
+	<script src="c.lua" type="client" cache="false" />
+	<script src="s.lua" type="server" />
+
+	<script src="shared.lua" type="shared" />
+
+	<include resource="ui_core" />
+</meta>

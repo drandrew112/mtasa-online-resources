@@ -1,0 +1,39 @@
+<root>
+
+<clog> 2023, Március 22.
+- A bejelentkezésnél már nem látszik a térkép
+- Egér ki/be az F2 gombbal, az egér mindig középre fog ugrani így nem kell keresgetni.
+
+2023, Március 19.
+- Új térkép
+- A "nagy","F11" térkép már W,A,S,D,Nyilak és Enter gombokkal is tökéletesen kezelhető.
+- A minimap ikonjai javítva.
+
+2023, Március 16.
+- Tátra T4 villamos SF-ben.
+- Új mentőautó.
+
+2023, Március 15.
+- Ajtót nyitni/csukni belülről már nem lehet.
+- Hangos utastájékoztató kikapcsolva.
+- Szöveges utastájékoztatás helyreállítva.
+
+2023, Március 14.
+- Bejelentkezésnél is már olvasható a changelog.
+- Járművekből random kidobálás javítva
+- Az IC chat javítva lett
+- A /me és /do parancsok már elérhetőek
+- OOC chat a B betűvel vagy a /ooc parancsal már elérhető.
+
+2023, Március 13.
+"F1" Panel változások
+- Jetpack kiszedve
+- Teleportolási lehetőségek kiszedve.
+"M" Panel (inacmenu) változások
+- Teleportok kiszedve
+- Felesleges funkciók kiszedve.
+
+2023, Március 11.
+- A nametag a szolgálatban lévő adminnak az admin nevét írja ki. A játékosoknak pedig az IC karakter nevüket írja.</clog>
+
+</root>

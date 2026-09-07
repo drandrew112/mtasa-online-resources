@@ -1,0 +1,45 @@
+<meta>
+  <info author="DrAndrew112" type="script" name="jobmanager"/>
+  
+  <script src="c_ui_maps.lua" type="client"/>
+  <script src="c_ui_lobby.lua" type="client"/>
+  <script src="c_ui_endjob.lua" type="client"/>
+  <script src="c_ui.lua" type="client"/>
+  <script src="c_jobmanager.lua" type="client"/>
+
+  <script src="s_jobmanager.lua" type="server"/>
+  <script src="s_lobbymanager.lua" type="server"/>
+  <script src="s_votemanager.lua" type="server"/>
+
+  <script src="shared.lua" type="shared"/>
+  <script src="g_jobs.lua" type="shared"/>
+
+  <!-- Sync Tables -->
+  <script src="s_synctables.lua" type="server"/>
+  <script src="c_synctables.lua" type="client"/>
+  
+  <!-- Gamemodes -->
+  <script src="gamemode_ctf/shared.lua" type="shared"/>
+
+  <script src="gamemode_dm/shared.lua" type="shared"/>
+
+  <script src="gamemode_mission/shared.lua" type="shared"/>
+
+  <script src="gamemode_race/shared.lua" type="shared"/>
+  <script src="gamemode_race/s_gamemanager.lua" type="server"/>
+  <script src="gamemode_race/s_checkpoints.lua" type="server"/>
+  <script src="gamemode_race/c_gamemanager.lua" type="client"/>
+  <script src="gamemode_race/c_countdown.lua" type="client"/>
+
+  <!-- Gamemodes -->
+  <file src="sounds/select.wav" type="client"/>
+  <file src="sounds/btnfail.wav" type="client"/>
+  <file src="sounds/click.wav" type="client"/>
+
+  <file src="images/job_random.jpg" type="client" cache="false" />
+  <file src="images/job_bg_default.jpg" type="client" cache="false" />
+  <file src="images/job_bg_1.jpg" type="client" cache="false" />
+  <file src="images/job_bg_2.jpg" type="client" cache="false" />
+  <file src="images/job_bg_3.jpg" type="client" cache="false" />
+  <file src="images/job_bg_4.jpg" type="client" cache="false" />
+</meta>

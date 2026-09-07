@@ -1,0 +1,15 @@
+<meta>
+	<info author="VSCode MTA:SA Lua" type="script" name="pausemenu" />
+	<script src="settings_shared.lua" type="shared" />
+	<script src="c_pausemenu.lua" type="client" />
+	<script src="c_settings.lua" type="client" />
+	<script src="pausemenus.lua" type="client" />
+	<script src="s_pausemenu.lua" type="server" />
+	<script src="s_settings.lua" type="server" />
+	<file src="files/Roboto.ttf" type="client" />
+	<file src="files/RobotoB.ttf" type="client" />
+	<file src="sounds/open.mp3" type="client" />
+	<file src="sounds/close.mp3" type="client" />
+	<file src="sounds/select.wav" type="client" />
+	<file src="sounds/click.wav" type="client" />
+</meta>

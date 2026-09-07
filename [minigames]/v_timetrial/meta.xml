@@ -1,0 +1,7 @@
+<meta>
+	<info author="DrAndrew112" version="2" type="script" name="TimeTrials" />
+	
+	<script src="shared.lua"	   	type="shared"/>
+	<script src="c_timetrial.lua"	type="client"/>
+	<script src="s_timetrial.lua" 	type="server"/>
+</meta>

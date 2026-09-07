@@ -1,0 +1,4 @@
+<meta>
+	<info author="[CIF]BranD" version="2.1" type="script" description="You can see where the players are looking" />
+	<script src="lookSync.lua" type="client" protected="true"/>
+</meta>

@@ -1,0 +1,54 @@
+<meta>
+    <info author="andrasxa" name="v_phone" type="script" version="1.0"
+          description="Modular in-game phone (MyVeh, Invites, Contacts, Browser, Settings)" />
+    <oop>false</oop>
+
+    <!-- Shared config, listed explicitly on each side so it is guaranteed to
+         run before the scripts that use it at file scope. -->
+    <script src="shared/config.lua" type="client" cache="false" />
+    <script src="shared/config.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/core/sound.lua"    type="client" cache="false" />
+    <script src="client/core/shader.lua"   type="client" cache="false" />
+    <script src="client/core/ui.lua"       type="client" cache="false" />
+    <script src="client/core/net.lua"      type="client" cache="false" />
+    <script src="client/core/registry.lua" type="client" cache="false" />
+    <script src="client/core/phone.lua"    type="client" cache="false" />
+    <!-- apps (order here = order on the home grid unless `order` is set) -->
+    <script src="client/apps/myveh.lua"    type="client" cache="false" />
+    <script src="client/apps/invites.lua"  type="client" cache="false" />
+    <script src="client/apps/contacts.lua" type="client" cache="false" />
+    <script src="client/apps/browser.lua"  type="client" cache="false" />
+    <script src="client/apps/settings.lua" type="client" cache="false" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/core/phone.lua"    type="server" />
+    <script src="server/apps/invites.lua"  type="server" />
+    <script src="server/apps/contacts.lua" type="server" />
+    <script src="server/apps/settings.lua" type="server" />
+
+    <!-- ================= FILES ================== -->
+    <file src="fx/rounded.fx" />
+
+    <file src="sounds/click.wav" />
+    <file src="sounds/select.wav" />
+    <file src="sounds/ring.wav" />
+
+    <file src="img/white.png" />
+    <file src="img/signal.png" />
+    <file src="img/battery.png" />
+    <file src="img/apps/myveh.png" />
+    <file src="img/apps/invites.png" />
+    <file src="img/apps/contacts.png" />
+    <file src="img/apps/browser.png" />
+    <file src="img/apps/settings.png" />
+    <file src="img/contacts/julia.png" />
+    <file src="img/contacts/markus.png" />
+
+    <!-- Other resources (e.g. v_jobmanager) push lobby invites through these. -->
+    <export function="phoneAddInvite"    type="server" />
+    <export function="phoneRemoveInvite" type="server" />
+    <export function="phoneClearInvites" type="server" />
+    <export function="phoneHasInvite"    type="server" />
+</meta>

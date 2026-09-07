@@ -1,0 +1,51 @@
+<meta>
+    <!-- Resource info -->
+    <info author="Free V" name="Account System" version="2.0.0" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/state.lua" type="client" />
+    <script src="client/theme.lua" type="client" />
+    <script src="client/userdata.lua" type="client" />
+    <script src="client/main.lua" type="client" />
+    <script src="client/music.lua" type="client" />
+    <script src="client/render.lua" type="client" />
+
+    <script src="client/panels/login.lua" type="client" />
+    <script src="client/panels/register.lua" type="client" />
+    <script src="client/panels/banned.lua" type="client" />
+
+    <!-- Assets -->
+    <config src="clog.xml" type="client" />
+    <config src="bans.xml" type="server" />
+
+    <file src="audio/ui_btn_click.mp3" />
+    <file src="audio/ui_btn_hover.mp3" />
+    <file src="audio/main_menu.mp3" />
+
+    <file src="bgs/1.png" />
+    <file src="bgs/2.png" />
+    <file src="bgs/3.png" />
+    <file src="bgs/4.png" />
+    <file src="bgs/5.png" />
+    <file src="bgs/6.png" />
+    <file src="bgs/7.png" />
+    <file src="bgs/8.png" />
+    <file src="bgs/9.png" />
+    <file src="bgs/10.png" />
+    <file src="bgs/11.png" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server.lua" type="server" />
+    <script src="savesys.lua" type="server" />
+    <script src="shared.lua" type="shared" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- server banAccount(account_name, reason, admin_name) / unbanAccount(account_name)
+         (NOT banPlayer/unbanPlayer – those are built-in MTA function names) -->
+    <export function="banAccount"   type="server" />
+    <export function="unbanAccount" type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="ui_core" />
+    <include resource="dgs" />
+</meta>

@@ -1,0 +1,7 @@
+<meta>
+	<info name="Nametag" author="DookthorAndriss" />
+	<download_priority_group>19</download_priority_group>
+
+	<script src="sourceC.lua" type="client" />
+	<!--script src="server.lua" type="server" /-->
+</meta>

@@ -1,0 +1,22 @@
+<catalog type="weather">
+	<weather id="0" name="Kék ég felhőkkel" />
+	<weather id="1" name="Kék ég felhőkkel" />
+	<weather id="2" name="Kék ég felhőkkel" />
+	<weather id="3" name="Kék ég felhőkkel" />
+	<weather id="4" name="Kék ég felhőkkel" />
+	<weather id="5" name="Kék ég felhőkkel" />
+	<weather id="6" name="Kék ég felhőkkel" />
+	<weather id="7" name="Kék ég felhőkkel" />
+	<weather id="8" name="Vihar" />
+	<weather id="9" name="Köd" />
+	<weather id="10" name="Tiszta kék ég" />
+	<weather id="11" name="Forró, hőhullámok" />
+	<weather id="12" name="Tompa, Ködös" />
+	<weather id="13" name="Tompa, Ködös" />
+	<weather id="14" name="Tompa, Ködös" />
+	<weather id="15" name="Tompa, Ködös" />
+	<weather id="16" name="Tompa, felhős, esős" />
+	<weather id="17" name="Nagyon meleg" />
+	<weather id="18" name="Nagyon meleg" />
+	<weather id="19" name="Homok vihar" />
+</catalog>

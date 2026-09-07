@@ -1,0 +1,4 @@
+<meta>
+    <info author='jbeta' version='1.5' name='joinquit' type='script' />
+	<script src="joinquit.lua" type="client" />
+</meta>

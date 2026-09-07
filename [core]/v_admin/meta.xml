@@ -1,0 +1,35 @@
+<meta>
+    <info author="andrasxa" name="v_admin" type="script" version="2.0"
+          description="Admin commands, admin jail and server-side ID manager" />
+
+    <!-- Messages are shown via the ui_core Alert element (chat is disabled) -->
+    <include resource="ui_core" />
+    <!-- Report system UI -->
+    <include resource="dgs" />
+    <!-- /ban -> v_accounts, /mute -> v_chat -->
+    <include resource="v_accounts" />
+    <include resource="v_chat" />
+
+    <!-- Shared configuration (both sides) -->
+    <script src="config.lua" type="shared" />
+
+    <!-- Server side -->
+    <script src="server/core.lua"         type="server" />
+    <script src="server/id_manager.lua"   type="server" />
+    <script src="server/announce.lua"     type="server" />
+    <script src="server/admin_manage.lua" type="server" />
+    <script src="server/report.lua"       type="server" />
+    <script src="server/teleport.lua"     type="server" />
+    <script src="server/vehicle.lua"      type="server" />
+    <script src="server/jail.lua"         type="server" />
+    <script src="server/ban.lua"          type="server" />
+    <script src="server/mute.lua"         type="server" />
+    <script src="server/misc.lua"         type="server" />
+
+    <!-- Client side -->
+    <script src="client/hud.lua"    type="client" />
+    <script src="client/noclip.lua" type="client" />
+    <script src="client/report.lua" type="client" />
+
+    <file src="pmalert.mp3" type="client" />
+</meta>

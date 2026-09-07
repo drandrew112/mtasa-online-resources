@@ -1,0 +1,8 @@
+<meta>
+	<info author="andrasxa" version="1.0.0" type="script" name="Szint rendszer" />
+	
+	<script src="client.lua" type="client"/>/>
+	<script src="server.lua" type="server"/>/>
+
+	<export function="giveXp" type="server" />
+</meta>

@@ -1,0 +1,25 @@
+<meta>
+	<info author="andrasxa" name="download" type="script" />
+	<download_priority_group>998</download_priority_group>
+
+	<script src="client.lua" type="client" />
+	<script src="server.lua" type="server" />
+
+    <file src="freev.png" type="client" />
+    <file src="rounded.fx" type="client" />
+  
+	<file src="bgs/1.png" type="client" />
+	<file src="bgs/2.png" type="client" />
+	<file src="bgs/3.png" type="client" />
+	<file src="bgs/4.png" type="client" />
+	<file src="bgs/5.png" type="client" />
+	<file src="bgs/6.png" type="client" />
+	<file src="bgs/7.png" type="client" />
+	<file src="bgs/8.png" type="client" />
+	<file src="bgs/9.png" type="client" />
+	<file src="bgs/10.png" type="client" />
+	<file src="bgs/11.png" type="client" />
+
+	<file src="sounds/music.mp3" type="client" />
+</meta>
+

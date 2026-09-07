@@ -1,0 +1,16 @@
+<meta>
+    <info type="map" version="1.0.1"></info>
+    <script src="mapeditor/mapEditorScriptingExtension_s.lua" type="server"></script>
+    <script src="mapeditor/mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>
+    <script src="client.lua" type="client" cache="false"></script>
+    <map src="map.map" dimension="0"></map> 
+
+    <file src="txd/Txd1.txd"/>
+    <file src="txd/Txd2.txd"/>
+
+    <file src="txd/police.dff"/>
+    <file src="txd/police.col"/>
+    <file src="txd/int_ppol2.col"/>
+    <file src="txd/int_ppol2.dff"/>
+    <file src="txd/int_ppol2.txd"/>
+</meta>

@@ -1,0 +1,2 @@
+-- The pause menu (tabs, settings tree, rendering and input) lives in
+-- c_pausemenu.lua. This file is kept as a placeholder for future menu content.

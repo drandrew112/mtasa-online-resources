@@ -1,0 +1,11 @@
+<meta>
+    <info name="Respawn Manager" type="script" version="1.0.0" author="DrAndrew112" description="Respawn players after death" />
+    
+    <script src="respawnpoints.lua" type="shared" />
+    
+    <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" />
+    <script src="shared.lua" type="shared" />
+
+    <file src="wasted.mp3" type="client" cache="false" />
+</meta>

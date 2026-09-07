@@ -1,0 +1,18 @@
+<meta>
+    <info author="Andris" name="Interaction Menu (Modular)" version="1.0" />
+    <script src="shared/registry.lua" type="shared" />
+    <script src="server/spawn.lua" type="server" />
+    <script src="client/state.lua" type="client" />
+    <script src="client/api.lua" type="client" />
+    <script src="client/input.lua" type="client" />
+    <script src="client/render.lua" type="client" />
+    <script src="client/main.lua" type="client" />
+    <script src="client/vehicles.lua" type="client" />
+
+    <file src="vehicles.xml" />
+    <file src="vertical_arrows.png" />
+
+    <file src="sounds/select.wav" />
+    <file src="sounds/click.wav" />
+    <file src="sounds/btnfail.wav" />
+</meta>

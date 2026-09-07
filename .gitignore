@@ -1,0 +1,17 @@
+# --- TikTok integráció (bridge, node_modules, titkok) ---
+# A szögletes zárójel a gitignore-ban karakterosztály, ezért escape-elni kell,
+# különben csak az egykarakteres "t"/"i"/"k"/"o" nevű mappákra illeszkedne.
+/\[tiktok\]/
+
+# --- Futásidőben generált adatfájlok (személyes adat, ne kerüljön verziózásba) ---
+/\[core\]/v_accounts/bans.xml
+/\[player_interaction\]/v_socialpanel/crews.xml
+/\[player_interaction\]/v_socialpanel/messages.xml
+
+# --- Szerkesztői / backup szemét ---
+*.old
+*.bak
+*.orig
+*~
+Thumbs.db
+desktop.ini

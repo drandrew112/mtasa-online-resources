@@ -1,0 +1,5 @@
+addEventHandler ("onResourceStart", getRootElement(), function ()
+	local realtime = getRealTime()
+	setMinuteDuration(60000)
+	setTime(realtime.hour, realtime.minute)
+end)

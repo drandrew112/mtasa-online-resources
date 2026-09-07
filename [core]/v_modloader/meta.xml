@@ -1,0 +1,69 @@
+<meta>
+    <info type="script" description="Automatically load any mod you want!" author="Remi-X" version="1.0.3" name="ModLoader" />
+    <script src="loader_s.lua" type="server" />
+    <script src="deleter_s.lua" type="server" />
+    <script src="handling.lua" type="server" />
+    <script src="data.lua" type="server" />
+    <script src="replacer_c.lua" type="client" />
+    
+    <file src="skins/sfemt1.txd"></file>
+    <file src="skins/sfemt1.dff"></file>
+    <file src="skins/wmyst.txd"></file>
+    <file src="skins/wmyst.dff"></file>
+    <file src="skins/ballas1.txd"></file>
+    <file src="skins/ballas1.dff"></file>
+    <file src="skins/ballas2.txd"></file>
+    <file src="skins/ballas2.dff"></file>
+    <file src="skins/ballas3.txd"></file>
+    <file src="skins/ballas3.dff"></file>
+    <file src="skins/sofybu.txd"></file>
+    <file src="skins/sofybu.dff"></file>
+    <file src="skins/wmybu.txd"></file>
+    <file src="skins/wmybu.dff"></file>
+    <file src="skins/vla1.txd"></file>
+    <file src="skins/vla1.dff"></file>
+    <file src="skins/bfybu.txd"></file>
+    <file src="skins/bfybu.dff"></file>
+    <file src="skins/bmybu.txd"></file>
+    <file src="skins/bmybu.dff"></file>
+    <file src="skins/bmyri.txd"></file>
+    <file src="skins/bmyri.dff"></file>
+    <file src="skins/bfori.txd"></file>
+    <file src="skins/bfori.dff"></file>
+    <file src="skins/dwmylc1.txd"></file>
+    <file src="skins/dwmylc1.dff"></file>
+    <file src="skins/hmogar.txd"></file>
+    <file src="skins/hmogar.dff"></file>
+    <file src="skins/dwfolc.txd"></file>
+    <file src="skins/dwfolc.dff"></file>
+    <file src="skins/dwmolc2.txd"></file>
+    <file src="skins/dwmolc2.dff"></file>
+    <file src="skins/dwmolc1.txd"></file>
+    <file src="skins/dwmolc1.dff"></file>
+    <file src="skins/bmycr.txd"></file>
+    <file src="skins/bmycr.dff"></file>
+    <file src="skins/hmydrug.txd"></file>
+    <file src="skins/hmydrug.dff"></file>
+    <file src="vehicles/firetruk.txd"></file>
+    <file src="vehicles/firetruk.dff"></file>
+    <file src="vehicles/enforcer.txd"></file>
+    <file src="vehicles/enforcer.dff"></file>
+    <file src="vehicles/trash.txd"></file>
+    <file src="vehicles/trash.dff"></file>
+    <file src="vehicles/ambulan.txd"></file>
+    <file src="vehicles/ambulan.dff"></file>
+    <file src="vehicles/police_vg.txd"></file>
+    <file src="vehicles/police_vg.dff"></file>
+    <file src="vehicles/police_sf.txd"></file>
+    <file src="vehicles/police_sf.dff"></file>
+    <file src="vehicles/police_la.txd"></file>
+    <file src="vehicles/police_la.dff"></file>
+    <file src="vehicles/streak.txd"></file>
+    <file src="vehicles/streak.dff"></file>
+    <file src="vehicles/polranger.txd"></file>
+    <file src="vehicles/polranger.dff"></file>
+    <file src="vehicles/maverick.txd"></file>
+    <file src="vehicles/maverick.dff"></file>
+    <file src="vehicles/polmav.txd"></file>
+    <file src="vehicles/polmav.dff"></file>
+</meta>

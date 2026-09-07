@@ -1,0 +1,7 @@
+<meta>
+	<info author="DrAndrew112" type="script" name="elevators" />
+
+	<script src="c_elevators.lua" type="client" cache="false" />
+	<script src="s_elevators.lua" type="server" />
+  	<script src="shared.lua" type="shared" />
+</meta>

@@ -1,0 +1,6 @@
+<meta>
+	<info author="DrAndrew112" type="script" name="headlights" />
+
+	<script src="c_headlights.lua" type="client" />
+	<script src="s_headlights.lua" type="server" />
+</meta>

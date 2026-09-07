@@ -1,0 +1,37 @@
+<meta>
+    <info author="DrAndrew112, rewritten by Codex" name="v_jobmanager" type="script" version="2.0.0" />
+
+    <script src="shared/config/jobs.lua" type="shared" />
+    <script src="mode_race/routes.lua" type="shared" />
+    <script src="mode_race/config.lua" type="shared" />
+    <script src="mode_dm/config.lua" type="shared" />
+
+    <script src="mode_race/server.lua" type="server" />
+    <script src="mode_dm/server.lua" type="server" />
+    <script src="core/server.lua" type="server" />
+
+    <script src="core/client/ui.lua" type="client" />
+    <script src="core/client/scoreboard.lua" type="client" />
+    <export function="jobmanagerJoin" type="server" />
+    <export function="jobmanagerLeave" type="server" />
+    <export function="jobmanagerGetState" type="server" />
+    <export function="jobmanagerAcceptInvite" type="server" />
+    <export function="jobmanagerRequestJobs" type="client" />
+    <export function="jobmanagerGetJobs" type="client" />
+    <export function="jobmanagerRequestLobbies" type="client" />
+    <export function="jobmanagerGetLobbies" type="client" />
+    <export function="jobmanagerJoinJob" type="client" />
+    <export function="jobmanagerJoinLobby" type="client" />
+    <export function="jobmanagerQuickJob" type="client" />
+    <export function="jobmanagerInLobby" type="client" />
+    <file src="assets/sounds/select.wav" type="client" />
+    <file src="assets/sounds/click.wav" type="client" />
+    <file src="assets/sounds/btnfail.wav" type="client" />
+    <file src="assets/fonts/Roboto.ttf" type="client" />
+    <file src="assets/fonts/RobotoB.ttf" type="client" />
+    <file src="assets/jobs/default.jpg" type="client" />
+    <file src="assets/jobs/casino_tour.jpg" type="client" />
+    <file src="assets/jobs/canal_tour.jpg" type="client" />
+    <file src="assets/jobs/beach_motorcycling.jpg" type="client" />
+    <file src="assets/jobs/ls_airport_dm.jpg" type="client" />
+</meta>

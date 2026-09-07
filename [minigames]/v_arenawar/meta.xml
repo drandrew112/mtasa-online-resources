@@ -1,0 +1,17 @@
+<meta>
+    <info author="andrasxa" name="Aréna háború" version="1.0" type="script"/>
+
+    <script src="shared.lua" type="shared"/>
+    <script src="c_vars.lua" type="client"/>
+    <script src="s_gamevars.lua" type="server"/>
+
+    <script src="c_gamemanager.lua" type="client"/>
+    <script src="c_hud.lua" type="client"/>
+    <script src="c_interface.lua" type="client"/>
+    <script src="s_gamemanager.lua" type="server"/>
+    <script src="s_playermanager.lua" type="server"/>
+    <export function="arenawarJoin" type="server"/>
+
+    <map src="maps/arenawar_0.map" dimension="1" />
+    <map src="maps/arenawar_1.map" dimension="2" />
+</meta>

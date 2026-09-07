@@ -1,0 +1,17 @@
+<meta>
+	<info author="DrAndrew112" type="script" name="socialpanel" description="Social panel: friends, profiles, crews, messaging, help" />
+	<oop>true</oop>
+
+	<!-- ui_core provides the client export addNotification(title, text) -->
+	<include resource="ui_core" />
+
+	<script src="shared.lua" type="shared" />
+
+	<script src="c_controls.lua" type="client" cache="false" />
+	<script src="c_ui.lua" type="client" cache="false" />
+
+	<script src="server.lua" type="server" />
+
+	<!-- crews.xml / messages.xml are server-only data; deliberately NOT <file> so
+	     clients cannot download them. The server reads them via xmlLoadFile. -->
+</meta>

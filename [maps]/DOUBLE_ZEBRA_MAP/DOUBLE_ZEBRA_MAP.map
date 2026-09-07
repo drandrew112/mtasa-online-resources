@@ -1,0 +1,16 @@
+<map edf:definitions="editor_main">
+    <object id="object (vegasWcoast04) (1)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1481.8" posY="-1728.1" posZ="12.3" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (2)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1374.8" posY="-1728" posZ="12.3" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (3)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1459.1" posY="-1282.5" posZ="12.3" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (4)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1497.4" posY="-1156.7" posZ="22.85" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (5)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1590.3" posY="-1156.6" posZ="22.85" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (6)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1727.5" posY="-1156.6" posZ="22.58" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (7)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1831.5" posY="-1176.7" posZ="22.58" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (vegasWcoast04) (8)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1871" posY="-1121.5" posZ="22.66" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (9)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1825.9" posY="-1683.6" posZ="12.35" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (10)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1825.9" posY="-1766.2" posZ="12.35" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (12)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1693.7" posY="-1717.5" posZ="12.35" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (13)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1693.8" posY="-1824.6" posZ="12.35" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (14)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1965.8" posY="-1825.2" posZ="12.35" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (vegasWcoast04) (15)" breakable="true" interior="0" alpha="255" model="7557" doublesided="true" scale="1" dimension="0" posX="1896" posY="-1748.1" posZ="12.35" rotX="0" rotY="0" rotZ="0"></object>
+</map>
