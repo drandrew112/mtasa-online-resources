@@ -67,30 +67,39 @@ function UI.yOverlay:draw()
     local sw, sh = UI.sw, UI.sh
 
     -- =========================
-    -- TOP RIGHT – MONEY + TIME
+    -- TOP RIGHT – MONEY (cash + bank)
     -- =========================
     local tr = UI.slots.topRight
-    local money = getPlayerMoney(localPlayer)
 
-    dxDrawText(
-        "$ "..formatMoney(money),
-        tr.x - ui(10), tr.y,
-        tr.x - ui(10), tr.y,
-        tocolor(50,200,50,alpha),
-        1.3, "pricedown", "right", "top"
-    )
+    local scale  = 1.3
+    local rx     = tr.x - ui(10)
+    local lx     = rx - ui(400)
+    local lh     = ui(28)
+    local soff   = ui(2)
+    local shadow = tocolor(0, 0, 0, alpha / 255 * 160)
 
-    local h, m = getTime()
-    if h < 10 then h = "0"..h end
-    if m < 10 then m = "0"..m end
+    local cash = getPlayerMoney(localPlayer)
+    local bank = tonumber(getElementData(localPlayer, "bank_money")) or 0
 
-    dxDrawText(
-        h..":"..m,
-        tr.x - ui(10), tr.y + ui(30),
-        tr.x - ui(10), tr.y + ui(30),
-        tocolor(240,240,240,alpha),
-        1.2, "pricedown", "right", "top"
-    )
+    -- cash (getPlayerMoney)
+    do
+        local ty = tr.y
+        local color = tocolor(50, 200, 50, alpha)
+        dxDrawText("$ "..formatMoney(cash), lx + soff, ty + soff, rx + soff, ty + lh + soff,
+            shadow, scale, "pricedown", "right", "top")
+        dxDrawText("$ "..formatMoney(cash), lx, ty, rx, ty + lh,
+            color, scale, "pricedown", "right", "top")
+    end
+
+    -- bank (elementdata bank_money)
+    do
+        local ty = tr.y + lh
+        local color = tocolor(120, 180, 255, alpha)
+        dxDrawText("$ "..formatMoney(bank), lx + soff, ty + soff, rx + soff, ty + lh + soff,
+            shadow, scale, "pricedown", "right", "top")
+        dxDrawText("$ "..formatMoney(bank), lx, ty, rx, ty + lh,
+            color, scale, "pricedown", "right", "top")
+    end
 
     -- =========================
     -- TOP CENTER – LEVEL / XP
