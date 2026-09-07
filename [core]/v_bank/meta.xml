@@ -1,0 +1,12 @@
+<meta>
+    <info author="andrasxa" name="Bank kezelo" version="1.0.0" type="script" />
+
+    <script src="server.lua" type="server" />
+
+    <!-- Server-side bank API. Cash is handled through GTA's built-in
+         take/givePlayerMoney; bank_money lives in the account + element data. -->
+    <export function="takeBankMoney" type="server" />
+    <export function="giveBankMoney" type="server" />
+    <export function="depositMoney"  type="server" />
+    <export function="withdrawMoney" type="server" />
+</meta>
