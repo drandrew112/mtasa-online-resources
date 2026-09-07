@@ -85,6 +85,9 @@ function completeRobbery(player)
     setElementData(player, "robbingProgress", nil)
 
     if isElement(npc) then
+        -- Give XP for player
+        exports.v_levelsys:giveXp(player, 200)
+        -- Stop the NPC animation and create a money bag pickup in front of the NPC
         setPedAnimation(npc, "shop", "shp_rob_handsup", -1, true, false, false)
         local x, y, z = getPositionInFrontOfElement(npc, 1.2)
         local moneyBag = createPickup(x, y, z, 3, 1550)
