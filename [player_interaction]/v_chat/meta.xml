@@ -1,5 +1,5 @@
 <meta>
-  <info author="DrAndrew112" type="script" name="GTA Online Chat"/>
+  <info author="DrAndrew112" type="script" version="1.0.0" name="GTA Online Chat"/>
 
   <include resource="ui_core"/>
 
