@@ -53,6 +53,13 @@ function drawTimer(time_left)
     UI:drawTimer(time_left)
 end
 
+-- 3 masodpercre megmutatja a kepernyon a szint / XP savot (a teljes Y overlay
+-- nelkul). A v_levelsys hivja meg minden alkalommal amikor a jatekos XP-t kap.
+function showLevelOverlay()
+    uiLog("showLevelOverlay")
+    UI.yOverlay:showLevelOnly()
+end
+
 function getScreenWH()
     return UI.sw, UI.sh
 end

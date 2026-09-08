@@ -3,6 +3,14 @@ UI.yOverlay = {
     startTick = 0,
     duration = 10000,
     fadeTime = 1000,
+
+    -- Csak a szint sav rovid megjelenitesehez (pl. XP szerzeskor).
+    levelOnly = {
+        active = false,
+        startTick = 0,
+        duration = 3000,
+        fadeTime = 400,
+    },
 }
 
 local xp_color = tocolor ( 80, 140, 230, 255 )
@@ -32,19 +40,50 @@ local function formatMoney(amount)
     return sign..formatted
 end
 
+-- Idozites -> alpha (0..255) egy {startTick, duration, fadeTime} allapotbol.
+local function fadeAlpha(state)
+    local elapsed = getTickCount() - state.startTick
+
+    local a
+    if elapsed < state.fadeTime then
+        a = elapsed / state.fadeTime * 255
+    elseif elapsed > state.duration - state.fadeTime then
+        a = (state.duration - elapsed) / state.fadeTime * 255
+    else
+        a = 255
+    end
+
+    return math.max(0, math.min(255, a))
+end
+
 local function getAlpha()
-    local now = getTickCount()
-    local elapsed = now - UI.yOverlay.startTick
+    return fadeAlpha(UI.yOverlay)
+end
 
-    if elapsed < UI.yOverlay.fadeTime then
-        return elapsed / UI.yOverlay.fadeTime * 255
-    end
+-- =========================
+-- TOP CENTER – LEVEL / XP sav
+-- =========================
+local function drawLevelBar(alpha)
+    local tc = UI.slots.topCenter
+    local level    = tonumber(getElementData(localPlayer, "level")) or 0
+    local next_lvl = level + 1
+    local xp       = tonumber(getElementData(localPlayer, "xp")) or 0
+    local next_xp  = tonumber(getElementData(localPlayer, "next_xp")) or 1
+    local prev_xp  = tonumber(getNextXp(level-1)) or 0
 
-    if elapsed > UI.yOverlay.duration - UI.yOverlay.fadeTime then
-        return (UI.yOverlay.duration - elapsed) / UI.yOverlay.fadeTime * 255
-    end
+    local barW = ui(300)
+    local barX = tc.x - barW/2
+    local barY = tc.y + ui(25)
 
-    return 255
+    local span = next_xp - prev_xp
+    local fill = (span > 0) and math.min(1, math.max(0, (xp-prev_xp)/span)) or 0
+
+    dxDrawRectangle(barX, barY, barW, ui(10), tocolor(0,0,0,alpha))
+    dxDrawRectangle(barX, barY, barW * fill, ui(10), tocolor(80,180,255,alpha))
+
+    dxDrawText(level, barX - ui(10), barY+ui(5), _,_, tocolor(255,255,255,alpha), ui(1.4), "pricedown", "right", "center")
+    dxDrawText(next_lvl, barX + barW + ui(10), barY+ui(5), _,_, tocolor(255,255,255,alpha), ui(1.4), "pricedown", "left", "center")
+    dxDrawText(xp.."/"..next_xp, tc.x, barY + ui(15), _,_, tocolor(220,220,220,alpha), ui(1.2), "arial", "center", "top")
 end
 
 bindKey("y", "down", function()
@@ -52,6 +91,29 @@ bindKey("y", "down", function()
     UI.yOverlay.active = true
     UI.yOverlay.startTick = getTickCount()
 end)
+
+-- ui_core export: rovid ideig (3 mp) megmutatja csak a szint savot.
+function UI.yOverlay:showLevelOnly()
+    self.levelOnly.active = true
+    self.levelOnly.startTick = getTickCount()
+end
+
+function UI.yOverlay:drawLevelOnly()
+    local lo = self.levelOnly
+    if not lo.active then return end
+
+    -- ha a teljes Y overlay is fut, az rajzolja a savot, ne duplazzuk
+    if self.active then return end
+
+    if getTickCount() > lo.startTick + lo.duration then
+        lo.active = false
+        return
+    end
+
+    if getElementData(localPlayer, "hideHUD") then return end
+
+    drawLevelBar(fadeAlpha(lo))
+end
 
 function UI.yOverlay:draw()
     if not self.active then return end
@@ -104,29 +166,7 @@ function UI.yOverlay:draw()
     -- =========================
     -- TOP CENTER – LEVEL / XP
     -- =========================
-    local tc = UI.slots.topCenter
-    local level    = tonumber(getElementData(localPlayer, "level")) or 0
-    local next_lvl = level + 1
-    local xp       = tonumber(getElementData(localPlayer, "xp")) or 0
-    local next_xp  = tonumber(getElementData(localPlayer, "next_xp")) or 1
-    local prev_xp  = tonumber(getNextXp(level-1)) or 0
-
-    local barW = ui(300)
-    local barX = tc.x - barW/2
-    local barY = tc.y + ui(25)
-
-    dxDrawRectangle(barX, barY, barW, ui(10), tocolor(0,0,0,alpha))
-    dxDrawRectangle(
-        barX,
-        barY,
-        barW * math.min(1, (xp-prev_xp)/(next_xp-prev_xp)),
-        ui(10),
-        tocolor(80,180,255,alpha)
-    )
-
-    dxDrawText(level, barX - ui(10), barY+ui(5), _,_, tocolor(255,255,255,alpha), ui(1.4), "pricedown", "right", "center")
-    dxDrawText(next_lvl, barX + barW + ui(10), barY+ui(5), _,_, tocolor(255,255,255,alpha), ui(1.4), "pricedown", "left", "center")
-    dxDrawText(xp.."/"..next_xp, tc.x, barY + ui(15), _,_, tocolor(220,220,220,alpha), ui(1.2), "arial", "center", "top")
+    drawLevelBar(alpha)
 
     -- =========================
     -- LEFT – PLAYER LIST

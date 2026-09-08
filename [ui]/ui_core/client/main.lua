@@ -22,4 +22,5 @@ addEventHandler("onClientRender", root, function()
     if UI.yOverlay.active then
         UI.yOverlay:draw()
     end
+    UI.yOverlay:drawLevelOnly()
 end)
