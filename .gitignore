@@ -11,6 +11,14 @@
 # --- Models ---
 /\[core\]/v_modloader/
 
+# --- v_ownveh: futásidejű járműadatbázis + a /vehspawn gyűjtőfájl ---
+# (a spawnpoints.lua kézzel karbantartott, ezért verziózódik)
+/\[vehicles\]/v_ownveh/vehicles.db
+/\[vehicles\]/v_ownveh/vehicles.db-journal
+/\[vehicles\]/v_ownveh/vehicles.db-wal
+/\[vehicles\]/v_ownveh/vehicles.db-shm
+/\[vehicles\]/v_ownveh/vehiclespawnpoints.txt
+
 # --- MySQL: csak a hitelesítő adatokat tartó config.lua marad ki ---
 # (a többi fájl - core, scripts, config.example.lua, database.sql - verziózódik)
 /\[core\]/v_mysql/config.lua
