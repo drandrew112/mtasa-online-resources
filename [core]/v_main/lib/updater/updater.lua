@@ -38,35 +38,11 @@ function updater.prototype.setDebug(self, debug)
 end
 
 function updater.prototype.setVersionFile(self, filePath, type, index)
-    assert(filePath, "Please use updater.setDetails(filePath, type, index)")
-    assert(type, "Please use 'json' or 'xml'")
-    switch {
-        type:lower(),
-        case = {
-            ["json"] = function()
-                if fileExists(filePath) then
-                    local file = fileOpen(filePath, true)
-                    if file then
-                        local fileData = fileRead(file, fileGetSize(file))
-
-                        self.localVer = fileData.version
-                        fileClose(file)
-                    end
-                else
-                    local file = fileCreate(filePath)
-                    if file then
-                        fileWrite(file, toJSON({version=self.localVer}))
-                        fileClose(file)
-                    end
-                end
-            end;
-            ["xml"] = function()
-            end;
-        }
-        default = function()
-            print("[GitUpdater]: Please use 'json' or 'xml' format.")
-        end;
-    }
+    -- NOTE: the original implementation used a broken `switch{}`/`break`
+    -- construct that does not compile under MTA's Lua 5.1. v_main's
+    -- updater.lua never calls this method (only the excluded example.lua
+    -- did), so it is reduced to a no-op that just records the path.
+    assert(filePath, "Please use updater.setVersionFile(filePath, type, index)")
     self.filePath = filePath
 end
 
