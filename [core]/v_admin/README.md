@@ -59,8 +59,8 @@ Függőség: **`dgs`** (a report UI-hoz), **`ui_core`** (Alert),
 | `adminBroadcast(text [, r, g, b, duration])` | Ugyanaz minden játékosnak. |
 | `adminInfo` | Visszafelé kompatibilis alias az `adminAlert`-re. |
 | `denyAccess(player, minLevel)` | Egységes „nincs jogosultság” üzenet. |
-| `getAdminLevel(player)` → number | Admin szint számként (vendég/ismeretlen = `0`). |
-| `hasAdminLevel(player, minLevel)` → bool | Van-e legalább `minLevel` szintje. |
+| `getAdminLevel(player)` → number | Admin szint számként (vendég/ismeretlen = `0`). **Mindig account data-ból olvas**, nem az element data tükörből. |
+| `hasAdminLevel(player, minLevel)` → bool | Van-e legalább `minLevel` szintje. Minden admin parancs ezen megy át. |
 | `getAdminTag(player)` → string | Színes rang-címke a szint alapján (pl. `[MOD]`). |
 | `getPlayerFromId(id)` → player/false | Játékos keresése `"ID"` element data alapján. |
 | `resolveTarget(player, idArg)` → player/false | Mint fent, de hibaüzenetet is küld. |
