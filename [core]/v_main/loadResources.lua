@@ -1,30 +1,29 @@
 --[[
     loadResources.lua
     ---------------------------------------------------------------------------
-    A v_main indításakor lefut. Megkeresi az összes szerver-resource-t,
-    kiolvassa a meta.xml-ekbol az <include> fuggosegeket, fuggosegi
-    (topologiai) sorrendbe allitja oket - az include-ban kert resource-ok
-    mindig elorebb kerulnek -, majd ebben a sorrendben elinditja azokat,
-    amelyek meg nem futnak.
+    Runs when v_main starts. Collects every server resource, reads the
+    <include> dependencies from their meta.xml files, sorts them into
+    dependency (topological) order - resources requested via <include> always
+    come first - then starts, in that order, the ones that are not running yet.
 
-    Igy nem kell tobbe kezzel karbantartani az mtaserver.conf resource-listajat.
+    This removes the need to hand-maintain the resource list in mtaserver.conf.
 
-    A folyamat a v_main resource indulasakor (onResourceStart) kezdodik, es
-    minden lepest a szerverkonzolba (outputServerLog) logol.
+    The process is kicked off on v_main's onResourceStart and every step is
+    logged to the server console (outputServerLog).
 ]]
 
--- Ezeket a resource-okat sosem inditjuk automatikusan.
+-- These resources are never started automatically.
 local IGNORE = {
-    [getResourceName(resource)] = true,   -- onmagunk (v_main)
-    ["ai_autoplayer"]           = true,   -- [tiktok] - kezi inditas
-    ["tiktok-live"]             = true,   -- [tiktok] - kezi inditas
+    [getResourceName(resource)] = true,   -- ourselves (v_main)
+    ["ai_autoplayer"]           = true,   -- [tiktok] - started manually
+    ["tiktok-live"]             = true,   -- [tiktok] - started manually
 }
 
 local function log(msg)
     outputServerLog("[v_main:loadResources] " .. msg)
 end
 
--- Egy resource meta.xml-jebol visszaadja az <include resource="..."> neveket.
+-- Returns the <include resource="..."> names from a resource's meta.xml.
 local function getIncludes(resName)
     local includes = {}
 
@@ -47,11 +46,11 @@ local function getIncludes(resName)
     return includes
 end
 
--- Osszegyujti a resource-okat, feloldja a fuggosegeket, majd topologiai
--- sorrendbe rendezi oket. Visszaad: name->resource map + rendezett nevlista.
+-- Collects the resources, resolves their dependencies, then sorts them into
+-- topological order. Returns: name->resource map + ordered list of names.
 local function buildOrder()
     local resources = {}   -- name -> resource element
-    local deps      = {}   -- name -> { fuggoseg-nev, ... }
+    local deps      = {}   -- name -> { dependency-name, ... }
 
     for _, res in ipairs(getResources()) do
         local name = getResourceName(res)
@@ -72,7 +71,7 @@ local function buildOrder()
         deps[name] = list
     end
 
-    -- Determinisztikus kiindulas: nevek ABC-sorrendben.
+    -- Deterministic starting point: names in alphabetical order.
     local names = {}
     for name in pairs(resources) do
         names[#names + 1] = name
@@ -80,7 +79,7 @@ local function buildOrder()
     table.sort(names)
 
     local order = {}
-    local mark  = {}   -- nil = nincs latogatva, 1 = folyamatban, 2 = kesz
+    local mark  = {}   -- nil = not visited, 1 = in progress, 2 = done
 
     local function visit(name)
         if mark[name] == 2 then return end
@@ -121,7 +120,6 @@ local function startAll()
             alreadyRunning = alreadyRunning + 1
         elseif startResource(res, true) then
             started = started + 1
-            log(("  started (%d/%d): %s"):format(started, #order, name))
         else
             failed = failed + 1
             log("  FAILED to start: " .. name)
