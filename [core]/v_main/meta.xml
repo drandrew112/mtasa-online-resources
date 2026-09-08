@@ -5,6 +5,19 @@
         type="gamemode"
         description="FreeV core gamemode script"
     />
+
+    <settings>
+        <!-- Check local files against the public GitHub repo on server start.
+             Set to [false] to disable the automatic check (the "checkupdates"
+             console command still works). -->
+        <setting name="*enableUpdateChecker" value="[true]" friendlyname="Enable update checker" group="Updater" accept="true,false" />
+    </settings>
+
     <script src="server.lua" type="server" />
     <script src="loadResources.lua" type="server" />
+
+    <!-- GitHub updater library (github.com/fresholia/mtasa-git-resource-updater) -->
+    <script src="lib/updater/classes.lua" type="server" />
+    <script src="lib/updater/updater.lua" type="server" />
+    <script src="updater.lua" type="server" />
 </meta>
