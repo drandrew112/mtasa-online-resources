@@ -13,6 +13,10 @@
 PAUSE_SETTINGS = {
     { id = "show3dblips",        type = "boolean" },
     { id = "enable3dnavigation", type = "boolean" },
+    { id = "gfx_farclip",        type = "number" },
+    { id = "gfx_modellod",       type = "number" },
+    { id = "gfx_pedlod",         type = "number" },
+    { id = "gfx_vehiclelod",     type = "number" },
 }
 
 -- accountData key prefix; the final key is e.g. "uipause.setting.show3dblips".

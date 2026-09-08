@@ -77,6 +77,11 @@ local function radarAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function drawdistanceAvailable()
+    local res = getResourceFromName("drawdistance")
+    return res and getResourceState(res) == "running"
+end
+
 local function jobsAvailable()
     local res = getResourceFromName("v_jobmanager")
     return res and getResourceState(res) == "running"
@@ -141,6 +146,43 @@ end
 -- Global (not local): c_settings.lua walks this tree by item id to apply
 -- account-saved values after login.
 SETTINGS_TREE = {
+    {
+        id = "graphics", label = "Graphics",
+        items = {
+            {
+                id = "gfx_farclip", label = "Render distance", type = "range",
+                min = 400, max = 3400, step = 200, default = 1400,
+                desc = "How far the world is drawn. Higher values cost performance.",
+                available = drawdistanceAvailable,
+                get = function() return drawdistanceAvailable() and exports.drawdistance:getFarClip() end,
+                set = function(v) if drawdistanceAvailable() then exports.drawdistance:setFarClip(v) end end,
+            },
+            {
+                id = "gfx_modellod", label = "Model LOD", type = "range",
+                min = 200, max = 2800, step = 200, default = 400,
+                desc = "Distance at which mapped objects switch to their low-detail version.",
+                available = drawdistanceAvailable,
+                get = function() return drawdistanceAvailable() and exports.drawdistance:getModelLOD() end,
+                set = function(v) if drawdistanceAvailable() then exports.drawdistance:setModelLOD(v) end end,
+            },
+            {
+                id = "gfx_pedlod", label = "Ped LOD", type = "range",
+                min = 200, max = 500, step = 200, default = 500,
+                desc = "How far away other pedestrians keep being drawn (engine limit 500).",
+                available = drawdistanceAvailable,
+                get = function() return drawdistanceAvailable() and exports.drawdistance:getPedLOD() end,
+                set = function(v) if drawdistanceAvailable() then exports.drawdistance:setPedLOD(v) end end,
+            },
+            {
+                id = "gfx_vehiclelod", label = "Vehicle LOD", type = "range",
+                min = 200, max = 500, step = 200, default = 500,
+                desc = "How far away other vehicles keep being drawn (engine limit 500).",
+                available = drawdistanceAvailable,
+                get = function() return drawdistanceAvailable() and exports.drawdistance:getVehicleLOD() end,
+                set = function(v) if drawdistanceAvailable() then exports.drawdistance:setVehicleLOD(v) end end,
+            },
+        },
+    },
     {
         id = "display", label = "Display",
         items = {
@@ -338,15 +380,25 @@ local function handleSettingsKey(key)
     elseif key == "arrow_d" then
         settingsSel = moveSel(settingsSel, 1, #cat.items)
     elseif key == "enter" or key == "arrow_l" or key == "arrow_r" then
-        if item and item.type == "toggle" then
-            local enabled = (not item.available) or item.available()
-            if enabled then
-                local newValue = not (item.get() and true or false)
-                item.set(newValue)
-                if item.id then
-                    -- persist the change to the player's account (c_settings.lua)
-                    pauseSettingsPersist(item.id, newValue)
-                end
+        if not item then return end
+        local enabled = (not item.available) or item.available()
+        if not enabled then return end
+
+        local newValue
+        if item.type == "toggle" then
+            newValue = not (item.get() and true or false)
+        elseif item.type == "range" and (key == "arrow_l" or key == "arrow_r") then
+            local cur = tonumber(item.get()) or item.default or item.min
+            local delta = (key == "arrow_r") and item.step or -item.step
+            newValue = math.max(item.min, math.min(item.max, cur + delta))
+            if newValue == cur then return end
+        end
+
+        if newValue ~= nil then
+            item.set(newValue)
+            if item.id then
+                -- persist the change to the player's account (c_settings.lua)
+                pauseSettingsPersist(item.id, newValue)
             end
         end
     end
@@ -644,14 +696,15 @@ local function drawSettingsTab(x, y, w, h)
     for i, item in ipairs(cat.items) do
         local enabled = (not item.available) or item.available()
         local value = ""
-        if item.type == "toggle" then
-            if not enabled then
-                value = "unavailable"
-            else
-                value = (item.get() and true or false) and "ON" or "OFF"
-            end
+        if not enabled then
+            value = "unavailable"
+        elseif item.type == "toggle" then
+            value = (item.get() and true or false) and "ON" or "OFF"
+        elseif item.type == "range" then
+            value = tostring(tonumber(item.get()) or item.default or item.min)
         end
-        itemRows[i] = { label = item.label, value = value, selector = enabled and item.type == "toggle", dim = not enabled }
+        local selector = enabled and (item.type == "toggle" or item.type == "range")
+        itemRows[i] = { label = item.label, value = value, selector = selector, dim = not enabled }
     end
     drawRows(rightX, listY, rightW, itemRows, settingsSel, focus == "content" and settingsCat ~= nil)
 end
