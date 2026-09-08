@@ -11,6 +11,9 @@
 # --- Models ---
 /\[core\]/v_modloader/
 
+# --- MySQL (titkok, ne kerüljön verziózásba) ---
+/\[core\]/v_mysql/
+
 # --- Szerkesztői / backup szemét ---
 *.old
 *.bak
