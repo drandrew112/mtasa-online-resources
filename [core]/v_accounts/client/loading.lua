@@ -24,7 +24,7 @@ end)
 addEventHandler("onClientRender", root, function()
     if not active then return end
     dxDrawRectangle(0, 0, screenW, screenH, tocolor(0, 0, 0, 255))
-    exports.ui_core:drawLoadingText("Loading account data")
+    exports.ui_core:drawLoadingText("Loading")
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()

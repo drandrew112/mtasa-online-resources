@@ -1,7 +1,7 @@
 -- Account System - post-login loading gate
 --
 -- After a successful login or registration the player is shown a black
--- "Loading account data" screen instead of being spawned right away. External
+-- "Loading" screen instead of being spawned right away. External
 -- data providers (currently only v_mysql's account-data sync) each report back
 -- through the exported loadingComplete(player, type). Only once every expected
 -- type has arrived - or a safety timeout elapses - is the player actually
