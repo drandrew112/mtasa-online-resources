@@ -287,4 +287,11 @@ function save_all(player)
     savePosition(player)
     saveStats(player)
     saveWeapons(player)
+
+    -- Mirror the freshly-written account data into the shared MySQL store so the
+    -- localhost and the hosted server stay in sync. No-op when v_mysql is down.
+    local mysqlRes = getResourceFromName("v_mysql")
+    if mysqlRes and getResourceState(mysqlRes) == "running" then
+        exports.v_mysql:updateAccountData(player)
+    end
 end

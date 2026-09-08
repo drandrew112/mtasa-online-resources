@@ -246,12 +246,20 @@ local function setAccountName(player, name)
     scriptedRename[player] = nil
 end
 
-local function finishLogin(player, acc, username)
-    setElementData(player, "accName", username)
-    setElementData(player, "accID", getAccountID(acc) or 0)
-    setElementData(player, "isLogged", true)
-    setAccountName(player, username)
+-- Loading steps to wait for after login before spawning. v_mysql pulls the
+-- account data from the shared database and reports "accountdata" when done.
+local function pendingLoadTypes()
+    local types = {}
+    local mysqlRes = getResourceFromName("v_mysql")
+    if mysqlRes and getResourceState(mysqlRes) == "running" then
+        types[#types + 1] = "accountdata"
+    end
+    return types
+end
 
+-- Restores the player's saved state and drops the black loading screen. Runs
+-- only once every data provider has reported in (see server/loading.lua).
+local function spawnLoggedInPlayer(player)
     loadPosition(player)
     loadHealth(player)
     loadArmor(player)
@@ -259,7 +267,21 @@ local function finishLogin(player, acc, username)
     loadStats(player)
     loadWeapons(player)
 
+    triggerClientEvent(player, "acc:loadingScreen", player, false)
     triggerClientEvent(player, "acc:setPanel", player, nil)
+end
+
+local function finishLogin(player, acc, username)
+    setElementData(player, "accName", username)
+    setElementData(player, "accID", getAccountID(acc) or 0)
+    setElementData(player, "isLogged", true)
+    setAccountName(player, username)
+
+    -- Hide the login panel, show the loading screen, wait for the data
+    -- providers, then spawn.
+    triggerClientEvent(player, "acc:setPanel", player, nil)
+    triggerClientEvent(player, "acc:loadingScreen", player, true)
+    beginLoading(player, pendingLoadTypes(), spawnLoggedInPlayer)
 end
 
 --------------------------------------------------------------------------------
@@ -343,11 +365,17 @@ function register_player(username, password)
     setElementData(player, "isLogged", true)
     setAccountName(player, username)
 
-    -- Fresh account: spawn at the default location and store a baseline.
-    loadPosition(player)
-    save_all(player)
-
+    -- Fresh account: go through the same loading gate (v_mysql simply finds no
+    -- stored data), then spawn at the default location and store a baseline -
+    -- which save_all() also mirrors into the shared database.
     triggerClientEvent(player, "acc:setPanel", player, nil)
+    triggerClientEvent(player, "acc:loadingScreen", player, true)
+    beginLoading(player, pendingLoadTypes(), function(p)
+        loadPosition(p)
+        save_all(p)
+        triggerClientEvent(p, "acc:loadingScreen", p, false)
+        triggerClientEvent(p, "acc:setPanel", p, nil)
+    end)
 end
 addEvent("register_player", true)
 addEventHandler("register_player", root, register_player)

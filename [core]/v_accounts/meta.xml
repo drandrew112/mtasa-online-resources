@@ -9,6 +9,7 @@
     <script src="client/main.lua" type="client" />
     <script src="client/music.lua" type="client" />
     <script src="client/render.lua" type="client" />
+    <script src="client/loading.lua" type="client" />
 
     <script src="client/panels/login.lua" type="client" />
     <script src="client/panels/register.lua" type="client" />
@@ -35,6 +36,7 @@
     <file src="bgs/11.png" />
 
     <!-- ================= SERVER ================= -->
+    <script src="server/loading.lua" type="server" />
     <script src="server.lua" type="server" />
     <script src="savesys.lua" type="server" />
     <script src="shared.lua" type="shared" />
@@ -44,6 +46,9 @@
          (NOT banPlayer/unbanPlayer – those are built-in MTA function names) -->
     <export function="banAccount"   type="server" />
     <export function="unbanAccount" type="server" />
+
+    <!-- Data providers (v_mysql) report a finished loading step here. -->
+    <export function="loadingComplete" type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />
