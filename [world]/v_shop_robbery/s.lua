@@ -1,5 +1,8 @@
 local robberies = {}
 
+-- Mennyi ideig NEM rabolhato a bolt egy sikeres rablas utan
+local ROB_COOLDOWN = 5 * 60 * 1000 -- 5 perc
+
 function createShop(shop, shopID)
     local blip = createBlip(shop.pos.x, shop.pos.y, shop.pos.z, 54, 1.5, 255,255,255,255, 0, 500)
     local ped = createPed(shop.npc.skin, shop.npc.pos.x, shop.npc.pos.y, shop.npc.pos.z, shop.npc.pos.rot_z)
@@ -12,7 +15,13 @@ function startRobbing(_, npc)
     if getElementData(player, "isRobbing") then return end
 
     local shopID = getElementData(npc, "shopID")
-    if not shopID or not shops[shopID] or shops[shopID].isAvail ~= true then return end
+    if not shopID or not shops[shopID] then return end
+    if shops[shopID].isAvail ~= true then
+        if shops[shopID].onCooldown then
+            triggerClientEvent(player, "v_shop_robbery:storeClosed", resourceRoot)
+        end
+        return
+    end
 
     shops[shopID].isAvail = false
     setElementData(player, "isRobbing", true)
@@ -94,13 +103,15 @@ function completeRobbery(player)
     end
 
     if shopID and shops[shopID] then
+        shops[shopID].onCooldown = true
         shops[shopID].cdTimer = setTimer(function()
             if isElement(npc) then
                 setPedAnimation(npc)
             end
             shops[shopID].isAvail = true
+            shops[shopID].onCooldown = false
             shops[shopID].cdTimer = nil
-        end, 5*1000, 1)
+        end, ROB_COOLDOWN, 1)
     end
 end
 

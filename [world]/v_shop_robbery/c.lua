@@ -75,3 +75,12 @@ function stopRobbing()
     end
 end
 addEventHandler("onClientPlayerWasted", localPlayer, stopRobbing)
+
+-- A bolt friss rablas miatt zarva van - visszajelzes a jatekosnak (max 3 mp-enkent)
+local lastClosedNotify = 0
+addEvent("v_shop_robbery:storeClosed", true)
+addEventHandler("v_shop_robbery:storeClosed", resourceRoot, function()
+    if (getTickCount() - lastClosedNotify) < 3000 then return end
+    lastClosedNotify = getTickCount()
+    uicore:setInfobox("The store is closed", 255, 80, 80)
+end)
