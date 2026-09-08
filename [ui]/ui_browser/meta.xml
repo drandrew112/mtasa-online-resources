@@ -14,8 +14,9 @@
     <script src="core/browser.lua"  type="client" />
 
     <!-- EXPORTS -->
-    <script src="exports.lua" type="client" />
-    <script src="server.lua"  type="server" />
+    <script src="exports.lua"    type="client" />
+    <script src="server.lua"     type="server" />
+    <script src="dealership.lua" type="server" />
 
     <!-- ASSETS -->
     <file src="assets/opense_logo.png" type="client" />

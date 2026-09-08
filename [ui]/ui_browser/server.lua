@@ -88,19 +88,22 @@ addEventHandler("ui_browser:action", root, function(url, verb, arg, category)
     end
 
     if verb == "buy" then
-        -- arg is "model" or "model:colour"
-        local model, colour = arg:match("^([^:]+):?(.*)$")
-        model = model or arg
-        if category == "vehicles" then
-            -- TODO: hook up [vehicles]/v_ownveh export once it exists, e.g.
-            --   exports.v_ownveh:giveVehicle(player, model, colour)
+        -- arg is "<productId>" or "<productId>:<colour>"
+        local id, colour = arg:match("^([^:]+):?(.*)$")
+        id = id or arg
+        if colour == "" then colour = nil end
+
+        if category == "vehicles" and Dealership and Dealership.isVehicleProduct(id) then
+            Dealership.purchase(player, id, colour, url)
+        elseif category == "vehicles" then
+            -- A vehicles site registered by another resource: it owns the sale.
             notify(player, "Dealership",
-                "Order noted: " .. model .. (colour ~= "" and (" (" .. colour .. ")") or ""))
+                "Order noted: " .. id .. (colour and (" (" .. colour .. ")") or ""))
         else
-            notify(player, "Purchase", "Request noted: " .. model)
+            notify(player, "Purchase", "Request noted: " .. id)
         end
         outputServerLog(("[ui_browser] %s buy %s / %s colour=%s (%s)")
-            :format(getPlayerName(player), tostring(category), model, tostring(colour), tostring(url)))
+            :format(getPlayerName(player), tostring(category), id, tostring(colour), tostring(url)))
         return
     end
 

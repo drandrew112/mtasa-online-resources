@@ -146,6 +146,7 @@ on the right.
 | --- | --- |
 | `id` | unique within the site; used in the URL (`lvcars.eu?product=sultan_rs`) and the buy action |
 | `name`, `price` | shown on the card and the detail page (`price` is sorted by its digits) |
+| `model` | **vehicles only** – GTA vehicle model id. Makes the product a real, buyable car (see the buy handler below). Omit on property / business listings. |
 | `img` | image in the site folder; omit for text-only listings (property, business) |
 | `colors` | comma list of `black white silver grey red blue green yellow orange purple`; adds swatches and appends `:<colour>` to the buy action |
 
@@ -190,9 +191,19 @@ end)
   notification is sent **only when the export returns `true`**; the page is
   refreshed then too. Failures (not enough cash / balance, v_bank not running)
   are silent apart from a server log line.
-- `buy:<id>` or `buy:<id>:<colour>` – notifies the player. **TODO:** for the
-  `vehicles` category, call the `[vehicles]/v_ownveh` export once it exists
-  (`exports.v_ownveh:giveVehicle(player, model, colour)` or similar).
+- `buy:<id>` or `buy:<id>:<colour>` – buy a catalog item.
+  - **`vehicles` category, product has a `model`** (`dealership.lua`): the car is
+    actually sold. The player is charged the product `price` – **cash first, then
+    the Liberty Bank balance** – and the vehicle is registered to their account
+    through `exports.v_ownveh:giveVehicle` (in the chosen swatch colour). On
+    success they get a "summon it from the MyVeh phone app" notice; if
+    `giveVehicle` fails they are refunded. If `v_ownveh` is not running the sale
+    is refused. The catalog is read on start from the `sites/*/page.vhtml` files
+    listed in `meta.xml`, so prices/colours live only in the markup.
+  - **`vehicles` category from a site another resource registered** (no matching
+    catalog entry): just an "Order noted" notification – that resource is
+    expected to handle the sale from its own `ui_browser:action` handler.
+  - **any other category**: a "Request noted" notification only.
 
 Everything else is only logged; hook it from your own resource.
 

@@ -4,18 +4,18 @@
     <tabs accent="#7c3aed">
         <tab title="4-Wheel">
             <catalog cols="3" sort="price">
-                <product id="turismo"  name="Turismo"  price="$185,000" img="turismo.png"  colors="red,black,purple,white">Mid-engine supercar, 0-60 in just over three seconds.</product>
-                <product id="cheetah"  name="Cheetah"  price="$142,000" img="cheetah.png"  colors="red,black,silver">Iconic rear-wheel-drive missile with brutal acceleration.</product>
-                <product id="bullet"   name="Bullet"   price="$96,000"  img="bullet.png"   colors="black,silver,blue">Clean lines, tuned for mountain roads.</product>
-                <product id="infernus" name="Infernus" price="$220,000" img="infernus.png" colors="purple,black,red,white">The benchmark exotic. Scissor doors, savage top end.</product>
+                <product id="turismo"  name="Turismo"  model="451" price="$185,000" img="turismo.png"  colors="red,black,purple,white">Mid-engine supercar, 0-60 in just over three seconds.</product>
+                <product id="cheetah"  name="Cheetah"  model="415" price="$142,000" img="cheetah.png"  colors="red,black,silver">Iconic rear-wheel-drive missile with brutal acceleration.</product>
+                <product id="bullet"   name="Bullet"   model="541" price="$96,000"  img="bullet.png"   colors="black,silver,blue">Clean lines, tuned for mountain roads.</product>
+                <product id="infernus" name="Infernus" model="411" price="$220,000" img="infernus.png" colors="purple,black,red,white">The benchmark exotic. Scissor doors, savage top end.</product>
             </catalog>
         </tab>
         <tab title="2-Wheel">
             <catalog cols="3" sort="price">
-                <product id="bati"    name="Bati 801" price="$15,000" img="bati.png"    colors="red,black,blue">Track-bred superbike, razor sharp handling.</product>
-                <product id="akuma"   name="Akuma"    price="$13,500" img="akuma.png"   colors="black,purple,red">Naked street bike with a punchy mid-range.</product>
-                <product id="sanchez" name="Sanchez"  price="$7,000"  img="sanchez.png" colors="red,black,green">Lightweight enduro, happiest in the dirt.</product>
-                <product id="faggio"  name="Faggio"   price="$1,200"  img="faggio.png"  colors="white,red,black">City scooter. Cheap, cheerful, impossible to kill.</product>
+                <product id="bati"    name="Bati 801" model="522" price="$15,000" img="bati.png"    colors="red,black,blue">Track-bred superbike, razor sharp handling.</product>
+                <product id="akuma"   name="Akuma"    model="461" price="$13,500" img="akuma.png"   colors="black,purple,red">Naked street bike with a punchy mid-range.</product>
+                <product id="sanchez" name="Sanchez"  model="468" price="$7,000"  img="sanchez.png" colors="red,black,green">Lightweight enduro, happiest in the dirt.</product>
+                <product id="faggio"  name="Faggio"   model="462" price="$1,200"  img="faggio.png"  colors="white,red,black">City scooter. Cheap, cheerful, impossible to kill.</product>
             </catalog>
         </tab>
     </tabs>
