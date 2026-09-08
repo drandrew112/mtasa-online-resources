@@ -15,32 +15,56 @@ end
 
 local sw,sh = guiGetScreenSize()
 
+-- Only watch aim direction / shots when the player is close to a shop NPC.
+local SHOP_WATCH_RANGE = 30
+local lastRobTrigger = 0
+
+local function isNearAnyShop()
+    if type(shops) ~= "table" then return false end
+    local px, py, pz = getElementPosition(localPlayer)
+    for _, shop in ipairs(shops) do
+        if shop.npc and shop.npc.pos then
+            local d = getDistanceBetweenPoints3D(px, py, pz, shop.npc.pos.x, shop.npc.pos.y, shop.npc.pos.z)
+            if d <= SHOP_WATCH_RANGE then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 setElementData(localPlayer, "isRobbing", false)
 
 function drawRobProgress()
     if getElementData(localPlayer, "isRobbing") then
         -- UI
-        local progress = (getElementData(localPlayer, "robbingProgress")*100) or 0
+        local progress = (tonumber(getElementData(localPlayer, "robbingProgress")) or 0) * 100
         dxDrawRectangle(sw/2-122, sh*0.8-2, 244, 34, tocolor(0, 0, 0, 150), true)
         dxDrawRectangle(sw/2-120, sh*0.8, 2.4 * progress, 30, tocolor(150, 150, 150, 150), true)
         dxDrawText(math.ceil(progress).."%", sw/2, sh*0.8+15, _,_, tocolor(255,255,255,255), 1.5, "default", "center", "center")
-    else
-        -- Check weapon target
-        if isPedAiming(localPlayer) then
-            local x, y, z = getPedWeaponMuzzlePosition(localPlayer)
-            local tX, tY, tZ = getPedTargetCollision(localPlayer)
+        return
+    end
 
-            local hit, hitX, hitY, hitZ, hitElement = processLineOfSight(x, y, z, tX, tY, tZ)
-            --dxDrawLine3D(x, y, z, tX, tY, tZ, tocolor(255,0,0,255), 3)
+    -- Check weapon target (only around shops)
+    if not isNearAnyShop() then return end
+    if not isPedAiming(localPlayer) then return end
 
-            if hit and getElementType(hitElement) == "ped" then
-                if getElementData(hitElement, "shopID") then
-                    if (shops[getElementData(hitElement, "shopID")].isAvail) then
-                        triggerServerEvent("startRobbing", resourceRoot, localPlayer, hitElement)
-                    end
-                end
-            end
-        end
+    local x, y, z = getPedWeaponMuzzlePosition(localPlayer)
+    if not x then return end
+
+    local tX, tY, tZ = getPedTargetCollision(localPlayer)
+    if not tX then return end
+
+    local hit, hitX, hitY, hitZ, hitElement = processLineOfSight(x, y, z, tX, tY, tZ)
+    if not hit or not isElement(hitElement) then return end
+    if getElementType(hitElement) ~= "ped" then return end
+
+    local shopID = getElementData(hitElement, "shopID")
+    if not shopID or type(shops) ~= "table" or type(shops[shopID]) ~= "table" then return end
+
+    if shops[shopID].isAvail and (getTickCount() - lastRobTrigger) > 1000 then
+        lastRobTrigger = getTickCount()
+        triggerServerEvent("startRobbing", resourceRoot, localPlayer, hitElement)
     end
 end
 addEventHandler("onClientRender", root, drawRobProgress)
@@ -51,8 +75,3 @@ function stopRobbing()
     end
 end
 addEventHandler("onClientPlayerWasted", localPlayer, stopRobbing)
-
-addEvent("shp:moneyCollected", true)
-addEventHandler("shp:moneyCollected", root, function(money)
-    uicore:setInfobox("You received $" .. money .. "!")
-end)

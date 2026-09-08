@@ -73,7 +73,7 @@ function completeRobbery(player)
     if not data then return end
 
     local npc = data.npc
-    local shopID = getElementData(npc, "shopID")
+    local shopID = (isElement(npc) and getElementData(npc, "shopID")) or getElementData(player, "robbing_shop")
     local money = math.random(2000, 10000)
 
     if data.robTimer and isTimer(data.robTimer) then
@@ -84,20 +84,13 @@ function completeRobbery(player)
     setElementData(player, "robbing_shop", nil)
     setElementData(player, "robbingProgress", nil)
 
-    if isElement(npc) then
+    if isElement(npc) and shopID and shops[shopID] then
         -- Give XP for player
         exports.v_levelsys:giveXp(player, 200)
         -- Stop the NPC animation and create a money bag pickup in front of the NPC
         setPedAnimation(npc, "shop", "shp_rob_handsup", -1, true, false, false)
-        local x, y, z = getPositionInFrontOfElement(npc, 1.2)
-        local moneyBag = createPickup(x, y, z, 3, 1550)
-        addEventHandler("onPickupHit", moneyBag, function(hitPlayer)
-            if hitPlayer == player then
-                givePlayerMoney(hitPlayer, money)
-                triggerClientEvent(hitPlayer, "shp:moneyCollected", hitPlayer, money)
-                destroyElement(moneyBag)
-            end
-        end)
+        local x, y, z = getPositionInFrontOfElement(npc, shops[shopID].npc.pickup_distance)
+        exports.v_bank:createMoneyPickup(x, y, z, money, player)
     end
 
     if shopID and shops[shopID] then

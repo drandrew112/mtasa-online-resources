@@ -13,7 +13,8 @@ shops = {
                 z = 13.793982505798,
                 rot_z = 90
             },
-            skin = 15
+            skin = 15,
+            pickup_distance = 1.2
         },
         cdTimer = nil,
         isAvail = true
@@ -31,7 +32,8 @@ shops = {
                 z = 13.540577888489,
                 rot_z = 0
             },
-            skin = 12
+            skin = 12,
+            pickup_distance = 2.5
         },
         cdTimer = nil,
         isAvail = true
@@ -42,7 +44,7 @@ shops = {
 -- hasznos cuccok
 
 function getPositionInFrontOfElement(theElement, distance)
-    assert((type(theElement) == "element" or type(theElement) == "userdata"), "Bad argument @ 'getPositionInFrontOfElement' [Expected element at argument 1, got "..(type(theElement)).."]")
+    assert(isElement(theElement), "Bad argument @ 'getPositionInFrontOfElement' [Expected element at argument 1, got "..(type(theElement)).."]")
 
     local x, y, z = getElementPosition(theElement)
     local rz = ({getElementRotation(theElement)})[3]
