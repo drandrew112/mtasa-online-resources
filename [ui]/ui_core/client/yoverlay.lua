@@ -8,7 +8,7 @@ UI.yOverlay = {
     levelOnly = {
         active = false,
         startTick = 0,
-        duration = 3000,
+        duration = 6000,
         fadeTime = 400,
     },
 }
