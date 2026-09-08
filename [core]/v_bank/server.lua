@@ -190,3 +190,51 @@ function withdrawMoney(player, amount)
     givePlayerMoney(player, amount)
     return true
 end
+
+-- Plays the "pickup money" sound effect for a player (or everyone when omitted).
+-- -> true | "player_not_found"
+function playPickupMoneySound(player)
+    if player == nil then
+        triggerClientEvent(root, "v_bank:playPickupMoneySound", root)
+        return true
+    end
+
+    player = resolvePlayer(player)
+    if not player then return "player_not_found" end
+
+    triggerClientEvent(player, "v_bank:playPickupMoneySound", player)
+    return true
+end
+
+-- Creates a money bag pickup at a position. When a player walks into it they get
+-- the cash, the pickup sound plays for them and the pickup is destroyed.
+--   money  : cash to give, positive integer
+--   player : optional - only this player can collect it; nil = anyone
+-- -> pickup element | false (invalid arguments)
+function createMoneyPickup(x, y, z, money, player)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    money = normaliseAmount(money)
+    if not (x and y and z and money) then return false end
+
+    if player ~= nil then
+        player = resolvePlayer(player)
+        if not player then return false end
+    end
+
+    local moneyBag = createPickup(x, y, z, 3, 1550)
+    if not moneyBag then return false end
+
+    local collected = false
+    addEventHandler("onPickupHit", moneyBag, function(hitPlayer)
+        if collected then return end
+        if not isElement(hitPlayer) or getElementType(hitPlayer) ~= "player" then return end
+        if player and hitPlayer ~= player then return end
+
+        collected = true
+        givePlayerMoney(hitPlayer, money)
+        triggerClientEvent(hitPlayer, "v_bank:playPickupMoneySound", hitPlayer, money)
+        destroyElement(moneyBag)
+    end)
+
+    return moneyBag
+end

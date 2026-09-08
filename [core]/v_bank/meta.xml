@@ -2,6 +2,9 @@
     <info author="andrasxa" name="Bank kezelo" version="1.0.0" type="script" />
 
     <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" />
+
+    <file src="sounds/pickup_money.wav" />
 
     <!-- Server-side bank API. Cash is handled through GTA's built-in
          take/givePlayerMoney; bank_money lives in the account + element data. -->
@@ -9,4 +12,12 @@
     <export function="giveBankMoney" type="server" />
     <export function="depositMoney"  type="server" />
     <export function="withdrawMoney" type="server" />
+
+    <!-- Sound effect. Server export fires it for a player (or all); the client
+         export is for other client-side resources. -->
+    <export function="playPickupMoneySound" type="server" />
+    <export function="playPickupMoneySound" type="client" />
+
+    <!-- Spawns a money bag pickup; auto-gives cash + plays the sound on collect. -->
+    <export function="createMoneyPickup" type="server" />
 </meta>

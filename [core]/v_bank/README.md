@@ -53,3 +53,21 @@ Elveszi a számláról és cash-ként adja oda.
 
 Az `amount` minden exportnál pozitív egész számmá kerekítődik; 0 vagy negatív
 érték `"player_not_found"`-ot ad vissza (érvénytelen bemenet).
+
+### `playPickupMoneySound([player])`
+Lejátssza a "pickup money" hangot.
+
+- **Szerver oldali export:** `exports.v_bank:playPickupMoneySound(player)` —
+  a megadott játékosnál szólal meg. `player` nélkül mindenkinél lejátszódik.
+  Visszatérés: `true` vagy `"player_not_found"`.
+- **Kliens oldali export:** `exports.v_bank:playPickupMoneySound()` —
+  a helyi játékosnál szólal meg, visszaadja a sound elemet (vagy `false`).
+
+### `createMoneyPickup(x, y, z, money [, player])` — szerver
+Létrehoz egy pénzeszsák pickupot (`1550` modell). Amikor egy játékos rálép:
+kap `money` készpénzt, lejátszódik neki a pickup hang, elindul a
+`v_bank:moneyCollected` kliens event (`money` argumentummal), és a pickup törlődik.
+
+- `money` — pozitív egész
+- `player` — opcionális; ha megadva, csak ő tudja felvenni; `nil` esetén bárki
+- Visszatérés: a pickup elem, vagy `false` (érvénytelen argumentum)
