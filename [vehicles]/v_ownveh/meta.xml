@@ -1,0 +1,38 @@
+<meta>
+    <info author="DrAndrew112" name="Owned Vehicles" type="script" version="1.0.0"
+          description="Per-account persistent vehicles (SQLite): ownership, spawn points, blips." />
+
+    <!-- Config + spawn point tables. spawnpoints.lua is hand-maintained; fill it
+         in from the /vehspawn output (vehiclespawnpoints.txt). -->
+    <script src="config.lua"      type="server" />
+    <script src="spawnpoints.lua" type="server" />
+
+    <!-- SQLite layer: connection, schema, row <-> table helpers. -->
+    <script src="db.lua" type="server" />
+
+    <!-- Runtime: spawn / store, blips, state capture, lifecycle, exports. -->
+    <script src="state.lua"    type="server" />
+    <script src="server.lua"   type="server" />
+    <script src="commands.lua" type="server" />
+
+    <!-- ================= EXPORTS (server) ================= -->
+    <!-- Acquisition / removal. This resource never touches money - the caller
+         (a shop / sell script) handles that. -->
+    <export function="giveVehicle"        type="server" />
+    <export function="deleteVehicle"      type="server" />
+
+    <!-- Retrieval. spawnOwnedVehicle puts the car on the nearest free spawn
+         point for its type; storeVehicle saves its state and removes it. -->
+    <export function="spawnOwnedVehicle"  type="server" />
+    <export function="storeVehicle"       type="server" />
+
+    <!-- isDestroyed gate. setVehicleDestroyed(id, false) is the "unlock". -->
+    <export function="setVehicleDestroyed" type="server" />
+
+    <!-- Reads. -->
+    <export function="getOwnedVehicles"   type="server" />
+    <export function="getVehicleData"     type="server" />
+    <export function="isVehicleSpawned"   type="server" />
+
+    <min_mta_version server="1.5.6" />
+</meta>
