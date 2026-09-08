@@ -11,6 +11,16 @@ UI.yOverlay = {
         duration = 6000,
         fadeTime = 400,
     },
+
+    -- Csak a penz (cash + valtozas) rovid megjelenitesehez.
+    moneyOnly = {
+        active = false,
+        startTick = 0,
+        duration = 3000,
+        fadeTime = 400,
+        kind = "add",   -- "add" vagy "take"
+        change = 0,
+    },
 }
 
 local xp_color = tocolor ( 80, 140, 230, 255 )
@@ -86,11 +96,75 @@ local function drawLevelBar(alpha)
     dxDrawText(xp.."/"..next_xp, tc.x, barY + ui(15), _,_, tocolor(220,220,220,alpha), ui(1.2), "arial", "center", "top")
 end
 
+-- =========================
+-- TOP RIGHT – MONEY sorok
+-- =========================
+local MONEY_SCALE = 1.3
+
+local function moneyMetrics()
+    local tr = UI.slots.topRight
+    local rx = tr.x - ui(10)
+    local lx = rx - ui(400)
+    return tr, lx, rx, ui(28)
+end
+
+-- Egy jobbra igazitott, arnyekolt penz-sor. Visszaadja a sormagassagot.
+local function drawMoneyRow(text, ty, color, alpha, scale)
+    local _, lx, rx, lh = moneyMetrics()
+    scale = scale or MONEY_SCALE
+    local soff = ui(2)
+    local shadow = tocolor(0, 0, 0, alpha / 255 * 160)
+    dxDrawText(text, lx + soff, ty + soff, rx + soff, ty + lh + soff,
+        shadow, scale, "pricedown", "right", "top")
+    dxDrawText(text, lx, ty, rx, ty + lh,
+        color, scale, "pricedown", "right", "top")
+    return lh
+end
+
 bindKey("y", "down", function()
     if UI.yOverlay.active then return end
     UI.yOverlay.active = true
     UI.yOverlay.startTick = getTickCount()
 end)
+
+-- ui_core export: rovid ideig megmutatja a cash-t es alatta a valtozast
+-- (+ $ 100 zolddel, - $ 100 pirossal). kind = "add" vagy "take".
+function UI.yOverlay:showMoney(kind, change)
+    local mo = self.moneyOnly
+    mo.active = true
+    mo.startTick = getTickCount()
+    mo.kind = (kind == "take") and "take" or "add"
+    mo.change = math.abs(tonumber(change) or 0)
+end
+
+function UI.yOverlay:drawMoneyOnly()
+    local mo = self.moneyOnly
+    if not mo.active then return end
+
+    -- ha a teljes Y overlay is fut, az rajzolja a penzt, ne duplazzuk
+    if self.active then return end
+
+    if getTickCount() > mo.startTick + mo.duration then
+        mo.active = false
+        return
+    end
+
+    if getElementData(localPlayer, "hideHUD") then return end
+
+    local alpha = fadeAlpha(mo)
+    local tr = moneyMetrics()
+
+    local cash = getPlayerMoney(localPlayer)
+    local lh = drawMoneyRow("$ "..formatMoney(cash), tr.y, tocolor(50, 200, 50, alpha), alpha)
+
+    local sign, col
+    if mo.kind == "take" then
+        sign, col = "- $ ", tocolor(230, 60, 60, alpha)
+    else
+        sign, col = "+ $ ", tocolor(60, 210, 60, alpha)
+    end
+    drawMoneyRow(sign..formatMoney(mo.change), tr.y + lh, col, alpha, MONEY_SCALE * 0.85)
+end
 
 -- ui_core export: rovid ideig (3 mp) megmutatja csak a szint savot.
 function UI.yOverlay:showLevelOnly()
@@ -131,37 +205,13 @@ function UI.yOverlay:draw()
     -- =========================
     -- TOP RIGHT – MONEY (cash + bank)
     -- =========================
-    local tr = UI.slots.topRight
-
-    local scale  = 1.3
-    local rx     = tr.x - ui(10)
-    local lx     = rx - ui(400)
-    local lh     = ui(28)
-    local soff   = ui(2)
-    local shadow = tocolor(0, 0, 0, alpha / 255 * 160)
+    local tr = moneyMetrics()
 
     local cash = getPlayerMoney(localPlayer)
     local bank = tonumber(getElementData(localPlayer, "bank_money")) or 0
 
-    -- cash (getPlayerMoney)
-    do
-        local ty = tr.y
-        local color = tocolor(50, 200, 50, alpha)
-        dxDrawText("$ "..formatMoney(cash), lx + soff, ty + soff, rx + soff, ty + lh + soff,
-            shadow, scale, "pricedown", "right", "top")
-        dxDrawText("$ "..formatMoney(cash), lx, ty, rx, ty + lh,
-            color, scale, "pricedown", "right", "top")
-    end
-
-    -- bank (elementdata bank_money)
-    do
-        local ty = tr.y + lh
-        local color = tocolor(120, 180, 255, alpha)
-        dxDrawText("$ "..formatMoney(bank), lx + soff, ty + soff, rx + soff, ty + lh + soff,
-            shadow, scale, "pricedown", "right", "top")
-        dxDrawText("$ "..formatMoney(bank), lx, ty, rx, ty + lh,
-            color, scale, "pricedown", "right", "top")
-    end
+    local lh = drawMoneyRow("$ "..formatMoney(cash), tr.y,       tocolor(50, 200, 50, alpha),  alpha)
+    drawMoneyRow("$ "..formatMoney(bank), tr.y + lh, tocolor(120, 180, 255, alpha), alpha)
 
     -- =========================
     -- TOP CENTER – LEVEL / XP
