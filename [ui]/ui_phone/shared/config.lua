@@ -62,6 +62,16 @@ PHONE_CONFIG.contacts = {
             { key = "job",   label = "Request Job"   },
         },
     },
+    {
+        -- Vehicle insurance. The action list is built per call from the caller's
+        -- destroyed vehicles (server/apps/contacts.lua); each claim clears the
+        -- v_ownveh isDestroyed flag for `claimCost`. With nothing to claim the
+        -- call rings out and drops back to the contact list
+        -- (client/apps/contacts.lua) - `dynamic` is the channel both sides use.
+        key = "insurance", name = "Insurance", photo = "img/contacts/insurance.png",
+        dynamic   = "insurance",
+        claimCost = 1000,
+    },
 }
 
 function PHONE_CONFIG.contactByKey(key)
@@ -74,7 +84,7 @@ end
 function PHONE_CONFIG.contactActionByKey(contactKey, actionKey)
     local c = PHONE_CONFIG.contactByKey(contactKey)
     if not c then return nil end
-    for _, a in ipairs(c.actions) do
+    for _, a in ipairs(c.actions or {}) do
         if a.key == actionKey then return a end
     end
     return nil

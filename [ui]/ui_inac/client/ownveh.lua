@@ -26,7 +26,7 @@ addEvent("ui_inac:personalVehicleList", true)
 addEventHandler("ui_inac:personalVehicleList", root, function(list)
     local items = {}
     for _, v in ipairs(list or {}) do
-        local suffix = v.spawned and "  [OUT]" or (v.isDestroyed and "  [WRECKED]" or "")
+        local suffix = v.spawned and "  [OUT]" or (v.isDestroyed and "  [DESTROYED]" or "")
         local plate  = (v.plate and v.plate ~= "") and ("  -  " .. v.plate) or ""
         items[#items + 1] = {
             label  = v.modelName .. " (ID " .. v.id .. ")" .. suffix,

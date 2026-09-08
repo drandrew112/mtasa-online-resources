@@ -27,17 +27,21 @@ Vehicles.config = {
     -- vehicle types always require a free spawn point.
     landDirectSpawnDistance = 150.0,
 
-    -- Radar blip shown on a summoned vehicle. farShow / visibleDistance make it
-    -- visible from across the map (v_radar renders native blips).
+    -- Radar blip shown on a summoned vehicle. v_radar renders native blips; it
+    -- needs "isFarVisibility" element data to pin the blip to the minimap edge
+    -- when the car is off-screen (set from farShow below) and "tooltipText" for
+    -- the hover label on the pause bigmap (set from tooltip below).
     blip = {
-        icon            = 0,
-        size            = 1,
+        icon            = 5,
+        size            = 3,
         r               = 100,
         g               = 200,
         b               = 255,
         a               = 255,
         ordering        = 0,
         visibleDistance = 5000,
+        farShow         = true,
+        tooltip         = "Personal vehicle",
     },
 
     -- Minimum admin_level (account data) allowed to use /vehspawn and

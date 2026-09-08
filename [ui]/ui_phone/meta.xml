@@ -46,6 +46,7 @@
     <file src="img/apps/settings.png" />
     <file src="img/contacts/julia.png" />
     <file src="img/contacts/markus.png" />
+    <file src="img/contacts/insurance.png" />
 
     <!-- Other resources (e.g. v_jobmanager) push lobby invites through these. -->
     <export function="phoneAddInvite"    type="server" />

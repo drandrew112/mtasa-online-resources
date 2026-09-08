@@ -2,6 +2,11 @@
     ui_phone / client/apps/contacts.lua
     Contact list. Enter "calls" a contact: 2s of ringing, then a menu of the
     things that contact can do. The server performs and pays for the action.
+
+    A contact with `dynamic = "<channel>"` (config) has no fixed action list:
+    when called, the client asks the server (`contacts:dynPull`) and the reply
+    (`contacts:dyn`) fills the menu. If that list comes back empty the call is
+    never answered - it rings out and drops back to the contact list.
 ]]
 
 local u = PhoneUI.u
@@ -9,9 +14,22 @@ local WHITE = PhoneShader.WHITE
 
 local call = nil   -- { key, phase = "ring"|"menu", start, sel }
 
+-- dynamicRows[contactKey]: nil = not fetched yet, table (maybe empty) = known.
+local dynamicRows = {}
+
+local WAIT_EXTRA_MS = 3000   -- keep ringing at most this long past callRingMs
+                             -- while still waiting for a dynamic reply
+
+local function contactIsDynamic(key)
+    local c = PHONE_CONFIG.contactByKey(key)
+    return c and c.dynamic or nil
+end
+
 local function actionsFor(key)
     local c = PHONE_CONFIG.contactByKey(key)
-    return c and c.actions or {}
+    if not c then return {} end
+    if c.dynamic then return dynamicRows[key] or {} end
+    return c.actions or {}
 end
 
 local function endCall()
@@ -23,6 +41,18 @@ local function answerCall()
     call.phase, call.sel = "menu", 1
     PhoneSound.ringStop()
 end
+
+phoneOnServer("contacts:dyn", function(contactKey, rows)
+    dynamicRows[contactKey] = type(rows) == "table" and rows or {}
+    if call and call.key == contactKey then
+        local n = #dynamicRows[contactKey]
+        if call.phase == "menu" and n == 0 then
+            endCall()                       -- claimed the last one -> hang up
+        else
+            call.sel = math.max(1, math.min(call.sel, math.max(1, n)))
+        end
+    end
+end)
 
 PhoneApp.register({
     id    = "contacts",
@@ -46,6 +76,11 @@ PhoneApp.register({
 
     onSelect = function(_, row)
         call = { key = row._key, phase = "ring", start = getTickCount(), sel = 1 }
+        local channel = contactIsDynamic(row._key)
+        if channel then
+            dynamicRows[row._key] = nil          -- forget the old list, re-ask
+            phoneRPC("contacts:dynPull", row._key)
+        end
         PhoneSound.ringStart()
     end,
 
@@ -70,9 +105,7 @@ PhoneApp.register({
             elseif key == "enter" then
                 local a = actionsFor(call.key)[call.sel]
                 if a then
-                    if call.phase ~= "menu" then
-                        PhoneSound.select()
-                    end 
+                    PhoneSound.select()
                     phoneRPC("contacts:action", call.key, a.key)
                 end
             end
@@ -87,8 +120,23 @@ PhoneApp.register({
 
         PhoneUI.rounded("call_bg", scr.x, scr.y, scr.w, scr.h, u(4), WHITE, 0, 0, 0, 185)
 
+        -- Ring -> menu (or ring -> hang up for a dynamic contact with no rows).
         if call.phase == "ring" and getTickCount() - call.start >= PHONE_CONFIG.callRingMs then
-            answerCall()
+            if contact.dynamic then
+                local rows = dynamicRows[call.key]
+                if rows == nil then
+                    if getTickCount() - call.start >= PHONE_CONFIG.callRingMs + WAIT_EXTRA_MS then
+                        endCall()
+                    end
+                elseif #rows == 0 then
+                    endCall()                       -- nobody picks up
+                else
+                    answerCall()
+                end
+            else
+                answerCall()
+            end
+            if not call then return end
         end
 
         local photo = u(96)

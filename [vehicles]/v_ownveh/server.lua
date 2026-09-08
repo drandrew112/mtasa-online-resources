@@ -68,6 +68,18 @@ local function addBlip(entry)
     local b = Vehicles.config.blip
     entry.blip = createBlipAttachedTo(entry.veh, b.icon, b.size, b.r, b.g, b.b, b.a,
         b.ordering, b.visibleDistance)
+    if not isElement(entry.blip) then return end
+
+    -- v_radar only pins a native blip to the minimap edge when it is off-screen
+    -- if it carries "isFarVisibility"; "tooltipText" is its hover label on the
+    -- pause bigmap. Without these the blip is invisible until you are almost on
+    -- top of the car, which reads as "there is no blip".
+    if b.farShow then
+        setElementData(entry.blip, "isFarVisibility", true)
+    end
+    if b.tooltip and b.tooltip ~= "" then
+        setElementData(entry.blip, "tooltipText", b.tooltip)
+    end
 end
 
 local function removeBlip(entry)

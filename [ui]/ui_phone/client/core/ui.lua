@@ -58,6 +58,7 @@ PhoneUI.C = {
     selBg   = { 255, 255, 255 },      -- used with low alpha
     accent  = { 90, 170, 255 },
     good    = tocolor(70, 200, 120, 255),
+    bad     = tocolor(255, 120, 120, 255),   -- light red (e.g. a destroyed vehicle)
     badge   = { 224, 48, 48 },
     tile    = { 44, 48, 58 },
 }
@@ -84,7 +85,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Standard list
---   rows[i] = { title=, subtitle=, image=, circle=bool, right= }
+--   rows[i] = { title=, subtitle=, image=, circle=bool, right=, rightColor= }
 --   opts    = { hint=, empty= }
 --------------------------------------------------------------------------------
 
@@ -141,7 +142,7 @@ function PhoneUI.drawList(rows, selected, opts)
         end
 
         if row.right then
-            PhoneUI.text(row.right, x + w - u(76), y, u(70), rh, PhoneUI.C.good, u(0.9), "default-bold", "right", "center")
+            PhoneUI.text(row.right, x + w - u(76), y, u(70), rh, row.rightColor or PhoneUI.C.good, u(0.9), "default-bold", "right", "center")
         end
     end
 

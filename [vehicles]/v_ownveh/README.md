@@ -80,8 +80,10 @@ the first point with **no vehicle within `spawnpointClearDist`** (config).
 `spawnOwnedVehicle` while one is out fails with `already_spawned`; the caller
 should `storeVehicle` the current one first.
 
-A summoned vehicle left on a spawn point gets a radar blip (visible map-wide via
-v_radar). The blip is **hidden** while the owner is in the driver seat, **shown**
+A summoned vehicle left on a spawn point gets a radar blip. It is tagged for
+v_radar (`isFarVisibility` + a `tooltipText` of `blip.tooltip`) so it pins to the
+minimap edge when the car is off-screen and shows a hover label on the pause
+bigmap. The blip is **hidden** while the owner is in the driver seat, **shown**
 again when they get out, and **removed for good** when the vehicle explodes
 (which also sets `isDestroyed = 1` and cleans up the wreck after
 `wreckCleanupDelay`).

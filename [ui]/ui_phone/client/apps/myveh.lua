@@ -90,16 +90,19 @@ PhoneApp.register({
 
         local rows = {}
         for _, v in ipairs(inCategory(sub)) do
-            local right
-            if     v.spawned     then right = "Out"
-            elseif v.isDestroyed then right = "Wrecked"
+            local right, rightColor
+            if v.spawned then
+                right = "Out"
+            elseif v.isDestroyed then
+                right, rightColor = "Destroyed", PhoneUI.C.bad
             end
             local plate = (v.plate and v.plate ~= "") and ("   -   " .. v.plate) or ""
             rows[#rows + 1] = {
-                title    = v.modelName .. "  (ID " .. v.id .. ")",
-                subtitle = "Model " .. v.model .. plate,
-                right    = right,
-                _id      = v.id,
+                title      = v.modelName .. "  (ID " .. v.id .. ")",
+                subtitle   = "Model " .. v.model .. plate,
+                right      = right,
+                rightColor = rightColor,
+                _id        = v.id,
             }
         end
         return rows

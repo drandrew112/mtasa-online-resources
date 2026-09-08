@@ -47,7 +47,7 @@ end)
 local REQUEST_ERRORS = {
     not_found          = "That vehicle no longer exists.",
     not_owner          = "That is not your vehicle.",
-    destroyed          = "That vehicle is wrecked.",
+    destroyed          = "That vehicle is destroyed.",
     already_spawned    = "You already have a personal vehicle out.",
     no_free_spawnpoint = "No free spawn point nearby.",
     create_failed      = "Could not spawn the vehicle.",
