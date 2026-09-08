@@ -6,4 +6,5 @@
         description="FreeV core gamemode script"
     />
     <script src="server.lua" type="server" />
+    <script src="loadResources.lua" type="server" />
 </meta>
