@@ -1,4 +1,4 @@
-local version = "0.2.0 Beta"
+local version = "0.2.1 Beta"
 
 function setCustomGamemodeName()
     local serverIP = getServerConfigSetting("serverip")
