@@ -11,8 +11,9 @@
 # --- Models ---
 /\[core\]/v_modloader/
 
-# --- MySQL (titkok, ne kerüljön verziózásba) ---
-/\[core\]/v_mysql/
+# --- MySQL: csak a hitelesítő adatokat tartó config.lua marad ki ---
+# (a többi fájl - core, scripts, config.example.lua, database.sql - verziózódik)
+/\[core\]/v_mysql/config.lua
 
 # --- Szerkesztői / backup szemét ---
 *.old
