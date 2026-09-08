@@ -15,8 +15,8 @@ addEventHandler('onClientPlayerQuit', root,
 		elseif	reason=="Quit" then title = "Player left"
 		elseif	reason=="Kicked" then title = "Player got kicked"
 		elseif	reason=="Banned" then title = "Player got banned"
-		elseif	reason=="Bad Connection" then title = "Buy internet"
-		elseif	reason=="Timed out" then title = "Player crashed"
+		elseif	reason=="Bad Connection" then title = "Player should pay for their internet"
+		elseif	reason=="Timed out" then title = "Player needs a better computer or internet"
 		end
 		uicore:addNotification(title, name)
 	end
