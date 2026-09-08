@@ -59,12 +59,8 @@ function updater.prototype.setVersionFile(self, filePath, type, index)
                         fileClose(file)
                     end
                 end
-
-                break
             end;
             ["xml"] = function()
-
-                break
             end;
         }
         default = function()
