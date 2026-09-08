@@ -1,0 +1,25 @@
+<meta>
+    <info author="DrAndrew112" name="MySQL Core" type="script" version="1.0.0" />
+    <download_priority_group>1000</download_priority_group>
+
+    <!-- Credentials + connection wrapper, then the account-data sync. -->
+    <script src="config.lua"            type="server" />
+    <script src="core/mysql.lua"        type="server" />
+    <script src="scripts/accountdata.lua" type="server" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- Generic MySQL helpers for other resources. Callbacks passed to
+         mysqlQuery are only reliable from inside this resource. -->
+    <export function="mysqlQuery"       type="server" />
+    <export function="mysqlExec"        type="server" />
+    <export function="mysqlEscape"      type="server" />
+    <export function="mysqlIsConnected" type="server" />
+
+    <!-- Account-data sync. v_accounts' save system calls this. -->
+    <export function="updateAccountData" type="server" />
+
+    <!-- Start after the account system so onPlayerLogin / exports line up.
+         v_accounts must NOT include this resource back (would be circular);
+         it calls our exports defensively instead. -->
+    <include resource="v_accounts" />
+</meta>

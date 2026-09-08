@@ -6,6 +6,14 @@
 -- through the exported loadingComplete(player, type). Only once every expected
 -- type has arrived - or a safety timeout elapses - is the player actually
 -- spawned and their saved state restored.
+--
+-- When the player is finally ready, v_accounts fires the custom server event
+--   onPlayerLoaded ( account )   -- source = player
+-- This is the point every other resource should hook to load a player's
+-- account data (NOT onPlayerLogin, which fires before the shared MySQL sync).
+-- Each consumer must addEvent("onPlayerLoaded") on its own side.
+
+addEvent("onPlayerLoaded")
 
 local LOAD_TIMEOUT = 10000 -- ms; spawn anyway if a provider never answers
 

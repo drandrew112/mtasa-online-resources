@@ -269,6 +269,10 @@ local function spawnLoggedInPlayer(player)
 
     triggerClientEvent(player, "acc:loadingScreen", player, false)
     triggerClientEvent(player, "acc:setPanel", player, nil)
+
+    -- The player is fully loaded (account data synced, saved state restored,
+    -- spawned). Other resources hook this instead of onPlayerLogin.
+    triggerEvent("onPlayerLoaded", player, getPlayerAccount(player))
 end
 
 local function finishLogin(player, acc, username)
@@ -375,6 +379,7 @@ function register_player(username, password)
         save_all(p)
         triggerClientEvent(p, "acc:loadingScreen", p, false)
         triggerClientEvent(p, "acc:setPanel", p, nil)
+        triggerEvent("onPlayerLoaded", p, getPlayerAccount(p))
     end)
 end
 addEvent("register_player", true)
