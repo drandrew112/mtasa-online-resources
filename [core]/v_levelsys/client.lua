@@ -14,3 +14,12 @@ function getNextXp(level)
     end
     return next_xp
 end
+
+-- Amikor a szerver XP-t ad (giveXp -> saveLvl), jelez, mi pedig felkerjuk a
+-- ui_core-t hogy 3 masodpercre mutassa a szint savot a kepernyon.
+addEvent("levelsys:onXpChanged", true)
+addEventHandler("levelsys:onXpChanged", localPlayer,
+    function()
+        pcall(function() exports.ui_core:showLevelOverlay() end)
+    end
+)
