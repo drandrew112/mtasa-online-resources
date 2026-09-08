@@ -5,6 +5,7 @@
         type="gamemode"
         description="FreeV core gamemode script"
     />
+    <min_mta_version server="1.5.4-9.11342" />
 
     <settings>
         <!-- Check local files against the public GitHub repo on server start.

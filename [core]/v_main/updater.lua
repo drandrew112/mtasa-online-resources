@@ -49,6 +49,9 @@ local API_TREE_URL = ("https://api.github.com/repos/%s/%s/git/trees/%s?recursive
 local IGNORE_PREFIX = {
     "[tiktok]/",
     "[core]/v_modloader/",
+    -- MTA's database-credentials protection blocks other resources from
+    -- reading v_mysql's files, so we cannot check them from here anyway.
+    "[core]/v_mysql/",
 }
 local IGNORE_EXACT = {
     ["[core]/v_accounts/bans.xml"]                      = true,
@@ -71,21 +74,19 @@ if type(updater) == "table" and type(load) == "function" then
     checker = load(updater)
     checker:setDetails({ user = REPO_USER, repo = REPO_NAME, branch = REPO_BRANCH, private = false })
     checker:setDebug(true) -- silence the built-in "progress" print path
-    checker:on("status",   function(m) log(m) end)
-    checker:on("error",    function(e) log("ERROR: " .. tostring(e)) end)
-    checker:on("outdated", function(p) log("outdated : " .. p) end)
-    checker:on("missing",  function(p) log("missing  : " .. p .. "   (in repo, not found locally)") end)
-    checker:on("complete", function(m) log(m) end)
 else
-    log("WARNING: lib/updater not loaded - falling back to plain logging.")
+    log("WARNING: lib/updater not loaded - repo config falls back to defaults.")
 end
 
+-- Single logging path. Also forwards the raw event to the lib so external
+-- listeners (checker:on(...)) keep working, but formatting lives here.
+local EVENT_PREFIX = { error = "ERROR: ", outdated = "outdated : ", missing = "missing  : " }
+
 local function emit(event, text)
-    if checker and checker.events[event] then
-        checker:pushEvent(event, text)
-    else
-        log(text)
-    end
+    local line = (EVENT_PREFIX[event] or "") .. tostring(text)
+    if event == "missing" then line = line .. "   (in repo, not found locally)" end
+    log(line)
+    if checker then checker:pushEvent(event, text) end
 end
 
 -- ---------------------------------------------------------------------------
