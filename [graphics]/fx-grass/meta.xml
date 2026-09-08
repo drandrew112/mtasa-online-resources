@@ -1,0 +1,17 @@
+<meta>
+	<info author="Krischkros" version="1.0" name="Grass Texture Replacer" description="Grass Textures Shader" type="script" />
+	
+	<script src="shader.lua" type="client" />
+	
+	<file src="shader/shader.fx" />
+	
+	<file src="img/gras07Si.png" />
+	<file src="img/txgrass0_0.png" />
+	<file src="img/txgrass0_1.png" />
+	<file src="img/txgrass0_2.png" />
+	<file src="img/txgrass0_3.png" />
+	<file src="img/txgrass1_0.png" />
+	<file src="img/txgrass1_1.png" />
+	<file src="img/txgrass1_2.png" />
+	<file src="img/txgrass1_3.png" />
+</meta>
