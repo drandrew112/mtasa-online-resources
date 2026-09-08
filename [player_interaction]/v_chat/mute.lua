@@ -107,9 +107,12 @@ function mutePlayer(player, minutes, reason, adminName)
 end
 
 -- ------------------------------------------------------------
---  Restore a mute on login (or drop it if it lapsed offline).
+--  Restore a mute once the player is loaded (or drop it if it
+--  lapsed offline). onPlayerLoaded fires after the shared MySQL
+--  account-data sync, so mute_until is up to date.
 -- ------------------------------------------------------------
-addEventHandler("onPlayerLogin", root, function()
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     local acc = getPlayerAccount(source)
     if not acc or isGuestAccount(acc) then return end
 

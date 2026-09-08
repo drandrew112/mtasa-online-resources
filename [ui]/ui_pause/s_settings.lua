@@ -71,9 +71,12 @@ addEventHandler("uipause:clientReady", root, function()
     end
 end)
 
--- Login after the client side is already running: the event handler is added,
--- but a dependency (v_radar) may still be starting, so keep the cushion. The
--- client re-applies any deferred value on the next onClientResourceStart.
-addEventHandler("onPlayerLogin", root, function()
+-- Player fully loaded (onPlayerLoaded fires after the shared MySQL account-data
+-- sync, so the stored settings are up to date). The client side is already
+-- running, but a dependency (v_radar) may still be starting, so keep the
+-- cushion. The client re-applies any deferred value on the next
+-- onClientResourceStart.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     setTimer(sendSaved, PUSH_DELAY, 1, source)
 end)

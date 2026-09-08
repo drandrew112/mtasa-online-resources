@@ -49,9 +49,11 @@ function setPlayerInAJ(player, state, minutes)
 end
 
 -- ------------------------------------------------------------
---  Restore jail state on login
+--  Restore jail state once the player is fully loaded
+--  (onPlayerLoaded fires after the shared MySQL account-data sync)
 -- ------------------------------------------------------------
-addEventHandler("onPlayerLogin", root, function()
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     local acc = getPlayerAccount(source)
     if not acc or not getAccountData(acc, "adminjail") then return end
 

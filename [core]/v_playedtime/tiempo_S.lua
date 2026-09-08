@@ -50,8 +50,9 @@ addEventHandler ( "onResourceStop" , resourceRoot ,
     end
 )
  
-addEventHandler ( "onPlayerLogin" , root ,
-    function ( _ , pAccount )
+addEvent ( "onPlayerLoaded" )
+addEventHandler ( "onPlayerLoaded" , root ,
+    function ( pAccount )
         local minutes = getAccountData ( pAccount , "Online.minutes" )
         if minutes then
             local hours = getAccountData ( pAccount , "Online.hours" )

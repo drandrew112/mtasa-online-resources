@@ -878,6 +878,10 @@ addEventHandler("onResourceStop", resourceRoot, function()
     saveMessages()
 end)
 
-addEventHandler("onPlayerLogin", root, function()
-    setTimer(pushSnapshot, 1500, 1, source) -- wait for level / played-time to load
+-- onPlayerLoaded fires after the shared MySQL account-data sync. Keep a short
+-- cushion so the other resources' onPlayerLoaded handlers (level, played-time)
+-- have run before the snapshot is built.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
+    setTimer(pushSnapshot, 500, 1, source)
 end)

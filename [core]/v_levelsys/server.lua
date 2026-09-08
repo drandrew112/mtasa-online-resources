@@ -46,8 +46,11 @@ addEventHandler ( "onResourceStart" , resourceRoot ,
     end
 )
  
-addEventHandler ( "onPlayerLogin" , root ,
-    function ( _ , pAccount )
+-- onPlayerLoaded (not onPlayerLogin): fires after v_accounts has synced the
+-- account data from the shared MySQL store.
+addEvent ( "onPlayerLoaded" )
+addEventHandler ( "onPlayerLoaded" , root ,
+    function ( pAccount )
         local level = getAccountData ( pAccount , "level" )
         local xp = getAccountData ( pAccount , "xp" )
 
@@ -126,8 +129,12 @@ function giveXp (player, add_xp)
     return true
 end
 
+-- Admin command permission check - always from account data (the element-data
+-- mirror can lag behind the shared MySQL sync).
 local function isAdmin(player)
-    return ( tonumber(getElementData(player, "acc:adminLevel")) or 0 ) > 2
+    local acc = getPlayerAccount(player)
+    if not acc or isGuestAccount(acc) then return false end
+    return ( tonumber(getAccountData(acc, "admin_level")) or 0 ) > 2
 end
 
 addCommandHandler("givexp", function(playerSource, cmd, targetName, add_xp)

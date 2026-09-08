@@ -5,7 +5,7 @@
 -- is only touched through takePlayerMoney / givePlayerMoney.
 --
 -- Persistence:
---   * onPlayerLogin / onResourceStart -> load bank_money from account -> element data
+--   * onPlayerLoaded / onResourceStart -> load bank_money from account -> element data
 --   * onPlayerQuit / onPlayerLogout / onResourceStop -> save element data -> account
 --   * every SAVE_INTERVAL ms -> save every logged in player
 --   * every export that changes bank_money -> save that player immediately
@@ -93,7 +93,10 @@ addEventHandler("onResourceStart", resourceRoot, function()
     end
 end)
 
-addEventHandler("onPlayerLogin", root, function()
+-- onPlayerLoaded (not onPlayerLogin): fires after v_accounts has synced the
+-- account data from the shared MySQL store, so bank_money is up to date.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     loadBankMoney(source)
 end)
 

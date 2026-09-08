@@ -394,9 +394,11 @@ addEventHandler("onPlayerQuit", root, function()
     closeReport(r)
 end)
 
--- An admin logs in -> give them the current list if their panel is open
+-- An admin finishes loading -> give them the current list if their panel is open
 -- (the panel asks again on /reports, this just keeps an already-open one fresh).
-addEventHandler("onPlayerLogin", root, function()
+-- onPlayerLoaded, so their synced admin_level is already in place.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     if isReportAdmin(source) then
         triggerClientEvent(source, ADMIN.events.reportAdminList, resourceRoot, reportList())
     end

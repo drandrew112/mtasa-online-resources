@@ -99,7 +99,10 @@ function syncAdminData(player)
     setElementData(player, "admin_level", level)
 end
 
-addEventHandler("onPlayerLogin", root, function()
+-- onPlayerLoaded (not onPlayerLogin): the account data has been synced from the
+-- shared MySQL store by then, so the admin_level mirror is correct.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
     syncAdminData(source)
 end)
 

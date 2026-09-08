@@ -9,7 +9,7 @@ a resource újraindítást. A **cash** a GTA saját pénze, azt csak a beépíte
 
 | Esemény | Művelet |
 | --- | --- |
-| `onPlayerLogin`, `onResourceStart` | account → element data betöltés (első login: 0) |
+| `onPlayerLoaded`, `onResourceStart` | account → element data betöltés (első login: 0) |
 | `onPlayerQuit`, `onPlayerLogout`, `onResourceStop` | element data → account mentés |
 | 5 percenként | minden bejelentkezett játékos mentése |
 | minden export ami módosít | az adott játékos azonnali mentése |

@@ -61,7 +61,9 @@ addEventHandler("phone:pull", root, function()
     runPulls(client)
 end)
 
-addEventHandler("onPlayerLogin", root, function()
-    local player = source
-    setTimer(function() runPulls(player) end, 1500, 1)   -- wait for account data to settle
+-- onPlayerLoaded fires after v_accounts has synced the account data from the
+-- shared MySQL store, so the phone data is already settled here.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
+    runPulls(source)
 end)
