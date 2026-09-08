@@ -63,6 +63,23 @@ registerMenu({
             target = "spawn_vehicle"
         },
         {
+            label = "Request vehicle",
+            type = "submenu",
+            target = "request_personal_vehicle",
+            desc = "Summon one of your personal vehicles",
+            onOpen = function()
+                triggerServerEvent("ui_inac:requestPersonalVehicleList", localPlayer)
+            end
+        },
+        {
+            label = "Restore personal vehicle",
+            type = "action",
+            desc = "Store the personal vehicle you currently have out",
+            action = function()
+                triggerServerEvent("ui_inac:storePersonalVehicle", localPlayer)
+            end
+        },
+        {
             label = "Repair vehicle",
             type = "action",
             action = function()

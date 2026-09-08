@@ -75,6 +75,7 @@ bindKey("enter", "down", function()
     if item.type == "submenu" then
         MenuState.current = item.target
         MenuState:resetSelection()
+        if item.onOpen then item.onOpen() end
         playClick()
 
     elseif item.type == "select" then

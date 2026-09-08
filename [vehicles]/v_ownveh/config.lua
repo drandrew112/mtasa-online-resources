@@ -21,6 +21,12 @@ Vehicles.config = {
     -- units of it (spawnOwnedVehicle then tries the next nearest point).
     spawnpointClearDist = 4.0,
 
+    -- LAND vehicles only: if the nearest FREE land spawn point is farther than
+    -- this (or there is none), the vehicle is spawned right at the player and
+    -- they are put straight into the driver seat (so no blip is shown). Other
+    -- vehicle types always require a free spawn point.
+    landDirectSpawnDistance = 150.0,
+
     -- Radar blip shown on a summoned vehicle. farShow / visibleDistance make it
     -- visible from across the map (v_radar renders native blips).
     blip = {
@@ -34,8 +40,32 @@ Vehicles.config = {
         visibleDistance = 5000,
     },
 
-    -- Minimum admin_level (account data) allowed to use /vehspawn.
-    spawnpointAdminLevel = 1,
+    -- Minimum admin_level (account data) allowed to use /vehspawn and
+    -- /showvehspawns.
+    spawnpointAdminLevel = 5,
+
+    -- Debug markers placed by /vehspawn (new point) and /showvehspawns (every
+    -- configured point). "checkpoint" markers, only visible to the admin who
+    -- ran the command. One colour per spawnpoint category.
+    marker = {
+        type = "checkpoint",
+        size = 4,
+        alpha = 120,
+        colors = {
+            land        = { 0,   200, 0   },
+            boats       = { 0,   120, 255 },
+            helicopters = { 255, 220, 0   },
+            airplanes   = { 255, 60,  60  },
+            new         = { 255, 255, 255 }, -- freshly placed via /vehspawn
+        },
+        -- Radar blip attached to each debug marker (tinted the category colour).
+        blip = {
+            icon            = 0,
+            size            = 2,
+            ordering        = 0,
+            visibleDistance = 5000,
+        },
+    },
 
     -- /vehspawn appends "{x, y, z, rx, ry, rz}," lines here. Git-ignored;
     -- copy the lines into spawnpoints.lua by hand.

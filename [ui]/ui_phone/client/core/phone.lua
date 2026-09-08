@@ -74,8 +74,9 @@ local function setOpen(open)
     freezeControls(open)
     if open then
         closeCurrentApp()
+        -- Opening the phone always lands on the first app of the home grid.
         state.view, state.appId, state.list = "home", nil, 1
-        state.home = state.home or 1
+        state.home = 1
         PhoneSound.select()
         phonePull()
     else

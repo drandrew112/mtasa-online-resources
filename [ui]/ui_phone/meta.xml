@@ -24,6 +24,7 @@
 
     <!-- ================= SERVER ================= -->
     <script src="server/core/phone.lua"    type="server" />
+    <script src="server/apps/myveh.lua"    type="server" />
     <script src="server/apps/invites.lua"  type="server" />
     <script src="server/apps/contacts.lua" type="server" />
     <script src="server/apps/settings.lua" type="server" />

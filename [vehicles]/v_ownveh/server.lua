@@ -35,6 +35,17 @@ local function vehicleIsEmpty(veh)
     return true
 end
 
+-- The id of the account's currently summoned vehicle, or nil. Only one owned
+-- vehicle may be out at a time.
+local function accountSpawnedId(accountName)
+    for id, entry in pairs(spawned) do
+        if entry.owner == accountName and isElement(entry.veh) then
+            return id
+        end
+    end
+    return nil
+end
+
 -- Rebuilds the owner's "owned_vehicle_ids" account data ("1,2,3"). Works for
 -- offline owners too (getAccount).
 local function refreshOwnedIds(accountName)
@@ -208,13 +219,23 @@ function deleteVehicle(id)
     return true
 end
 
--- Summons an owned vehicle onto the nearest free spawn point for its type,
--- applies its stored state and gives it a blip.
+-- Summons an owned vehicle, applies its stored state and gives it a blip.
+--
+-- Placement:
+--   * boats / helicopters / airplanes -> the closest FREE spawn point of that
+--     type, or `no_free_spawnpoint`.
+--   * land -> the closest free land spawn point; but if that point is farther
+--     than Vehicles.config.landDirectSpawnDistance (or there is none free), the
+--     vehicle spawns right at the player and they are put in the driver seat -
+--     no blip in that case (it reappears if they get out).
+--
+-- Only one owned vehicle may be summoned at a time (-> `already_spawned`).
+--
 --   player : the owner (player element)
 --   id     : vehicle id
 -- -> vehicle element | false, errorCode
 --    errorCode: invalid_player | not_found | not_owner | destroyed |
---               no_free_spawnpoint | create_failed
+--               already_spawned | no_free_spawnpoint | create_failed
 function spawnOwnedVehicle(player, id)
     if not (isElement(player) and getElementType(player) == "player") then
         return false, "invalid_player"
@@ -239,15 +260,39 @@ function spawnOwnedVehicle(player, id)
         return existing.veh
     end
 
+    -- One personal vehicle out at a time.
+    if accountSpawnedId(accountName) then
+        return false, "already_spawned"
+    end
+
     local model = tonumber(row.model)
     local category = OwnVeh.categoryOf(model)
     local px, py, pz = getElementPosition(player)
     local point = OwnVeh.pickSpawnpoint(category, px, py, pz)
-    if not point then return false, "no_free_spawnpoint" end
+
+    local direct = false
+    if category == "land" then
+        if not point then
+            direct = true
+        else
+            local d = getDistanceBetweenPoints3D(px, py, pz, point[1], point[2], point[3])
+            if d > Vehicles.config.landDirectSpawnDistance then
+                direct = true
+            end
+        end
+    elseif not point then
+        return false, "no_free_spawnpoint"
+    end
 
     local plate = (row.plate and row.plate ~= "") and row.plate or nil
-    local veh = createVehicle(model, point[1], point[2], point[3],
-        point[4], point[5], point[6], plate)
+    local veh
+    if direct then
+        local _, _, prz = getElementRotation(player)
+        veh = createVehicle(model, px, py, pz + 0.5, 0, 0, prz, plate)
+    else
+        veh = createVehicle(model, point[1], point[2], point[3],
+            point[4], point[5], point[6], plate)
+    end
     if not veh then return false, "create_failed" end
 
     OwnVeh.applyState(veh, row)
@@ -256,7 +301,13 @@ function spawnOwnedVehicle(player, id)
 
     local entry = { veh = veh, owner = accountName, blip = nil }
     spawned[id] = entry
-    addBlip(entry)
+
+    if direct then
+        -- Straight into the driver seat; owner is in it, so no blip.
+        warpPedIntoVehicle(player, veh)
+    else
+        addBlip(entry)
+    end
     return veh
 end
 
@@ -327,4 +378,35 @@ function isVehicleSpawned(id)
     local entry = spawned[tonumber(id)]
     if entry and isElement(entry.veh) then return entry.veh end
     return false
+end
+
+-- Human-readable name for a vehicle model id. A custom override in models.lua
+-- (Vehicles.modelNames) wins; otherwise GTA's built-in name is used
+-- ("Infernus", "Sparrow", ...).
+-- -> string | false
+function getModelName(model)
+    model = tonumber(model)
+    if not model then return false end
+    return Vehicles.customModelName(model) or getVehicleNameFromModel(model) or false
+end
+
+-- The id of the owned vehicle the given owner currently has summoned, or nil.
+--   who : player element or account-name string
+function getSpawnedVehicleId(who)
+    local accountName = resolveAccountName(who)
+    if not accountName then return nil end
+    return accountSpawnedId(accountName)
+end
+
+-- Stores whichever owned vehicle the owner currently has summoned (saves its
+-- state and removes it from the world). Convenience wrapper around storeVehicle
+-- for callers that only know the player, not the vehicle id.
+-- -> true | false, errorCode (invalid_account | not_spawned | occupied)
+function storePersonalVehicle(who)
+    local accountName = resolveAccountName(who)
+    if not accountName then return false, "invalid_account" end
+
+    local id = accountSpawnedId(accountName)
+    if not id then return false, "not_spawned" end
+    return storeVehicle(id)
 end
