@@ -82,5 +82,5 @@ addEvent("v_shop_robbery:storeClosed", true)
 addEventHandler("v_shop_robbery:storeClosed", resourceRoot, function()
     if (getTickCount() - lastClosedNotify) < 3000 then return end
     lastClosedNotify = getTickCount()
-    uicore:setInfobox("The store is closed", 255, 80, 80)
+    uicore:setInfobox("The store is closed")
 end)
