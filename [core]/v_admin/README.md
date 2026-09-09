@@ -115,6 +115,21 @@ Az adminnak **csak szintje van** (nincs admin név, nincs adminszolgálat).
 
 A minimum szintek a `config.lua` → `ADMIN.perms` táblában, egy helyen állíthatók.
 
+### Resource vezérlés (a `v_main` resource-ban)
+
+A resource start/stop/restart parancsok **nem itt**, hanem a `v_main`-ben vannak,
+mert az ACL-ben csak a `v_main` kap `startResource`/`stopResource`/`restartResource`
+jogot (`acl.xml` → `<group name="Admin">`). Ugyanaz a hozzáférés, mint a
+`/restartallresource`-nál: szerver konzol **vagy** bejelentkezett játékos
+`admin_level >= 5` (lásd `v_main/commandAuth.lua`), user ACL csoport nem kell.
+
+| Parancs | Min. szint | Leírás |
+|---|:---:|---|
+| `/startresource <név>` · `/startres` | 5 | Egy resource elindítása. |
+| `/stopresource <név>` · `/stopres` | 5 | Egy resource leállítása (védett: `v_main`, `v_mysql`, `v_accounts`, `v_admin`). |
+| `/restartresource <név>` · `/restartres` | 5 | Egy resource újraindítása (védett listát lásd fent → `/restartallresource`). |
+| `/restartallresource` | 5 | Minden resource sorrendhelyes újraindítása. |
+
 ---
 
 ## Report rendszer (`server/report.lua` + `client/report.lua`)

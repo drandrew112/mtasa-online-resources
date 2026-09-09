@@ -24,6 +24,7 @@
     <!-- Privileged console commands: server console or admin_level >= 5 -->
     <script src="commandAuth.lua" type="server" />
     <script src="restartAllResources.lua" type="server" />
+    <script src="manageResources.lua" type="server" />
 
     <!-- GitHub updater library (github.com/fresholia/mtasa-git-resource-updater) -->
     <script src="lib/updater/classes.lua" type="server" />
