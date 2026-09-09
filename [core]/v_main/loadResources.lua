@@ -130,6 +130,11 @@ local function startAll()
         :format(started, alreadyRunning, failed))
 end
 
+-- Exposed in v_main's shared Lua VM so restartAllResources.lua (and the
+-- "updateresources" applier) can re-run the dependency-ordered loader after
+-- stopping resources. Only starts resources that are not already running.
+loadAllResources = startAll
+
 addEventHandler("onResourceStart", resourceRoot, function()
     startAll()
 end)

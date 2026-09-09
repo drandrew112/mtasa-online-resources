@@ -7,6 +7,10 @@
     />
     <min_mta_version server="1.5.4-9.11342" />
 
+    <!-- admin_level lookups for the privileged console commands
+         (/restartallresource, /updateresources) -->
+    <include resource="v_mysql" />
+
     <settings>
         <!-- Check local files against the public GitHub repo on server start.
              Set to [false] to disable the automatic check (the "checkupdates"
@@ -17,8 +21,16 @@
     <script src="server.lua" type="server" />
     <script src="loadResources.lua" type="server" />
 
+    <!-- Privileged console commands: server console or admin_level >= 5 -->
+    <script src="commandAuth.lua" type="server" />
+    <script src="restartAllResources.lua" type="server" />
+
     <!-- GitHub updater library (github.com/fresholia/mtasa-git-resource-updater) -->
     <script src="lib/updater/classes.lua" type="server" />
     <script src="lib/updater/updater.lua" type="server" />
+
+    <!-- Shared repo-sync config + helpers, then the checker and the applier -->
+    <script src="lib/repoSync.lua" type="server" />
     <script src="updater.lua" type="server" />
+    <script src="updateResources.lua" type="server" />
 </meta>
