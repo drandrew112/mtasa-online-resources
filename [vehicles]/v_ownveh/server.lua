@@ -411,6 +411,26 @@ function getSpawnedVehicleId(who)
     return accountSpawnedId(accountName)
 end
 
+-- Persists a summoned owned vehicle's live state to the database WITHOUT
+-- removing it from the world. `which` is a vehicle id, a vehicle element, or a
+-- player element (their currently summoned vehicle). Used by e.g. v_customs so
+-- tuning survives a relog even if the player never stores the car.
+-- -> true | false, errorCode (not_spawned)
+function saveVehicle(which)
+    local id = tonumber(which)
+    if not id and isElement(which) then
+        if getElementType(which) == "vehicle" then
+            id = tonumber(getElementData(which, "ownveh:id"))
+        elseif getElementType(which) == "player" then
+            id = accountSpawnedId(resolveAccountName(which))
+        end
+    end
+    local entry = id and spawned[id]
+    if not entry then return false, "not_spawned" end
+    persistEntry(id, entry)
+    return true
+end
+
 -- Stores whichever owned vehicle the owner currently has summoned (saves its
 -- state and removes it from the world). Convenience wrapper around storeVehicle
 -- for callers that only know the player, not the vehicle id.

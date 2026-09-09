@@ -99,9 +99,23 @@ addEventHandler("onClientRender", root, function()
         "center"
     )
 
+    -- Windowing: sok elemnél (pl. a customs lista) csak egy ablaknyi látszik,
+    -- a kijelölt elem köré igazítva, hogy ne lógjon le a képernyőről.
+    local rowsTop  = titleY + titleH
+    local availH   = sh - rowsTop - sy - ui(72)
+    local maxRows  = math.max(4, math.floor(availH / itemH))
+    local total    = #menu.items
+    local firstRow = 1
+    if total > maxRows then
+        firstRow = math.min(math.max(1, MenuState.selected - math.floor(maxRows / 2)), total - maxRows + 1)
+    end
+    local lastRow    = math.min(total, firstRow + maxRows - 1)
+    local shownCount = lastRow - firstRow + 1
+
     -- Menü pontok
-    for i, item in ipairs(menu.items) do
-        local iy = titleY + titleH + (i - 1) * itemH
+    for i = firstRow, lastRow do
+        local item = menu.items[i]
+        local iy = rowsTop + (i - firstRow) * itemH
         local selected = (MenuState.selected == i)
 
         if selected then
@@ -172,8 +186,17 @@ addEventHandler("onClientRender", root, function()
         end
     end
 
+    -- Scrollbar (csak ha van elrejtett elem)
+    if total > maxRows then
+        local trackH = shownCount * itemH
+        local thumbH = math.max(ui(16), trackH * (shownCount / total))
+        local thumbY = rowsTop + (trackH - thumbH) * ((firstRow - 1) / (total - shownCount))
+        dxDrawRectangle(x + w - ui(3), rowsTop, ui(3), trackH, tocolor(0,0,0,120))
+        dxDrawRectangle(x + w - ui(3), thumbY, ui(3), thumbH, tocolor(0,170,220,255))
+    end
+
     -- 4️⃣ Vertical arrows (2px-el a menü alatt)
-    local arrowsY = titleY + titleH + (#menu.items * itemH) + ui(2)
+    local arrowsY = rowsTop + (shownCount * itemH) + ui(2)
     dxDrawRectangle(x, arrowsY, w, ui(30), tocolor(0,0,0,200))
     dxDrawImage(x + (w/2) - ui(7), arrowsY + ui(4), ui(14), ui(22), "vertical_arrows.png")
 

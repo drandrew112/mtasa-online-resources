@@ -83,6 +83,13 @@ local function endSession(player, playerGone)
         setElementFrozen(s.veh, false)
         setVehicleDamageProof(s.veh, false)
         setElementDimension(s.veh, s.prevDim or 0)
+
+        -- personal vehicle -> persist the tuning to v_ownveh straight away
+        local ownId = tonumber(getElementData(s.veh, "ownveh:id"))
+        local ownRes = getResourceFromName("v_ownveh")
+        if ownId and ownRes and getResourceState(ownRes) == "running" then
+            pcall(function() exports.v_ownveh:saveVehicle(ownId) end)
+        end
     end
     if isElement(player) and not playerGone then
         setElementDimension(player, s.prevDim or 0)

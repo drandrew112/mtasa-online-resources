@@ -229,3 +229,25 @@ end
 function Customs.price(base)
     return math.floor((tonumber(base) or 0) * (Customs.PRICE_MULT or 1) + 0.5)
 end
+
+--------------------------------------------------------------------------------
+-- Handling-flag / value maps used by both preview (client) and apply (server)
+--------------------------------------------------------------------------------
+
+Customs.WHEEL_SIZE   = { verynarrow = 1, narrow = 2, default = 0, wide = 4, verywide = 8 }
+Customs.OFFROAD      = { default = 0, dirt = 1, sand = 2 }
+Customs.AIRRIDE_DROP = { [1] = 0.01, [2] = -0.1, [3] = -0.2, [4] = -0.3, [5] = -0.45 }
+
+-- Byte-addressable handlingFlags editor (ported from old/sourceS.lua). `byte` is
+-- 1-based; front-wheel width = 3, rear = 4, offroad = 6.
+function Customs.setHandlingFlagByte(veh, byte, value)
+    local hex      = string.format("%X", getVehicleHandling(veh)["handlingFlags"])
+    local reversed = string.reverse(hex) .. string.rep("0", 8 - string.len(hex))
+    local cur, out = 1, ""
+    for ch in string.gmatch(reversed, ".") do
+        if cur == byte then ch = string.format("%X", tonumber(value)) end
+        out = out .. ch
+        cur = cur + 1
+    end
+    setVehicleHandling(veh, "handlingFlags", tonumber("0x" .. string.reverse(out)), false)
+end

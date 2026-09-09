@@ -26,6 +26,7 @@
          point for its type; storeVehicle saves its state and removes it. -->
     <export function="spawnOwnedVehicle"  type="server" />
     <export function="storeVehicle"       type="server" />
+    <export function="saveVehicle"        type="server" />
 
     <!-- isDestroyed gate. setVehicleDestroyed(id, false) is the "unlock". -->
     <export function="setVehicleDestroyed" type="server" />

@@ -41,6 +41,9 @@ local function neonOf(veh)
     return type(extras) == "table" and extras.neon or nil
 end
 
+-- used by client/preview.lua for the live neon preview
+NeonFX = { add = addNeon, remove = removeNeon }
+
 addEventHandler("onClientResourceStart", resourceRoot, function()
     for name, model in pairs(NEON_MODELS) do
         local col = engineLoadCOL("files/neons/neonCollision.col")
