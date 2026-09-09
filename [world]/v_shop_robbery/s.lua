@@ -3,10 +3,23 @@ local robberies = {}
 -- Mennyi ideig NEM rabolhato a bolt egy sikeres rablas utan
 local ROB_COOLDOWN = 5 * 60 * 1000 -- 5 perc
 
-function createShop(shop, shopID)
-    local blip = createBlip(shop.pos.x, shop.pos.y, shop.pos.z, 54, 1.5, 255,255,255,255, 0, 500)
+function spawnShopPed(shopID)
+    local shop = shops[shopID]
+    if not shop then return end
+
+    if isElement(shop.ped) then
+        destroyElement(shop.ped)
+    end
+
     local ped = createPed(shop.npc.skin, shop.npc.pos.x, shop.npc.pos.y, shop.npc.pos.z, shop.npc.pos.rot_z)
     setElementData(ped, "shopID", shopID)
+    shop.ped = ped
+    return ped
+end
+
+function createShop(shop, shopID)
+    local blip = createBlip(shop.pos.x, shop.pos.y, shop.pos.z, 54, 1.5, 255,255,255,255, 0, 500)
+    spawnShopPed(shopID)
 end
 
 function startRobbing(_, npc)
@@ -104,8 +117,14 @@ function completeRobbery(player)
 
     if shopID and shops[shopID] then
         shops[shopID].onCooldown = true
+        if isTimer(shops[shopID].cdTimer) then
+            killTimer(shops[shopID].cdTimer)
+        end
         shops[shopID].cdTimer = setTimer(function()
-            if isElement(npc) then
+            -- Ha az elozo NPC meghalt (vagy mar nem letezik), keszitsunk ujat
+            if not isElement(npc) or isPedDead(npc) then
+                spawnShopPed(shopID)
+            else
                 setPedAnimation(npc)
             end
             shops[shopID].isAvail = true
@@ -114,6 +133,28 @@ function completeRobbery(player)
         end, ROB_COOLDOWN, 1)
     end
 end
+
+-- Ha egy bolti NPC meghal (pl. rablas kozben vagy anelkul), induljon a cooldown
+-- es a lejarta utan keszuljon uj NPC a helyere
+addEventHandler("onPedWasted", root, function()
+    local shopID = getElementData(source, "shopID")
+    if not shopID or not shops[shopID] then return end
+    if shops[shopID].ped ~= source then return end
+    if shops[shopID].onCooldown then return end
+
+    shops[shopID].isAvail = false
+    shops[shopID].onCooldown = true
+
+    if isTimer(shops[shopID].cdTimer) then
+        killTimer(shops[shopID].cdTimer)
+    end
+    shops[shopID].cdTimer = setTimer(function()
+        spawnShopPed(shopID)
+        shops[shopID].isAvail = true
+        shops[shopID].onCooldown = false
+        shops[shopID].cdTimer = nil
+    end, ROB_COOLDOWN, 1)
+end)
 
 function initShops()
     for shopID, shop in ipairs(shops) do
