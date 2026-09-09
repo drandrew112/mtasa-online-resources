@@ -73,6 +73,7 @@ function setNoclip(state)
         activated = true
         pos = { getElementPosition(localPlayer) }
         setElementVelocity(localPlayer, 0, 0, 0)
+        setPedAnimation(localPlayer, "ped", "idle_stance", 0, false, false, false, false)
         setElementFrozen(localPlayer, true)
         setElementCollisionsEnabled(localPlayer, false)
         addEventHandler("onClientPreRender", root, noclipRender)
@@ -82,6 +83,7 @@ function setNoclip(state)
         removeEventHandler("onClientPreRender", root, noclipRender)
         setElementCollisionsEnabled(localPlayer, true)
         setElementFrozen(localPlayer, false)
+        setPedAnimation(localPlayer)
     end
 end
 
