@@ -1,13 +1,18 @@
 # v_ownveh
 
-Per-account **personal vehicles**. Owns one SQLite database, `vehicles.db`, that
-holds every player-owned vehicle and everything about it except health. Other
-resources (a dealership, a sell menu, the phone's *MyVeh* app) drive it through
-the exports – this resource never touches money.
+Per-account **personal vehicles**. Every player-owned vehicle and everything
+about it except health is stored in the shared MySQL database (table
+`vehicles`), reached through [`v_mysql`](../../%5Bcore%5D/v_mysql/README.md) –
+this resource never opens its own connection. Other resources (a dealership, a
+sell menu, the phone's *MyVeh* app) drive it through the exports; this resource
+never touches money.
+
+Schema: [`database.sql`](database.sql) (also part of
+[`../../main.sql`](../../main.sql)). Run it against the v_mysql database once.
 
 ## What is stored
 
-One row per vehicle in `vehicles.db` → table `vehicles`:
+One row per vehicle in the `vehicles` table:
 
 | Column | Notes |
 | --- | --- |
@@ -18,6 +23,7 @@ One row per vehicle in `vehicles.db` → table `vehicles`:
 | `paintjob` | `getVehiclePaintjob`. |
 | `upgrades` | `"id,id,id"` – `getVehicleUpgrades`. |
 | `handling` | JSON, **only** the properties that differ from the model's stock handling. |
+| `customs` | JSON, v_customs extras kept on element data (nitro, neon, air-ride, …). `{}` when none. |
 | `plate` | Number plate text. |
 | `isDestroyed` | `0/1`. When `1` the vehicle **cannot be summoned** until it is unlocked. |
 | `created_at` / `updated_at` | Unix timestamps. |
@@ -27,7 +33,7 @@ One row per vehicle in `vehicles.db` → table `vehicles`:
 For fast lookups the owner's account data carries the id list:
 
 ```lua
-getAccountData(account, "owned_vehicle_ids")  -- "1,2,3"
+exports.v_mysql:getAccData(player, "owned_vehicle_ids")  -- "1,2,3"
 ```
 
 v_ownveh rebuilds this string on every `giveVehicle` / `deleteVehicle`.
@@ -122,10 +128,10 @@ A summoned vehicle's state is written back to the database:
 | `config.lua` | Tunables (`Vehicles.config`). |
 | `spawnpoints.lua` | Hand-maintained spawn point lists (`Vehicles.spawnpoints`). |
 | `models.lua` | Custom model-name overrides for `getModelName` (`Vehicles.modelNames`). |
-| `db.lua` | SQLite connection, schema, row CRUD (`OwnVeh.db*`). |
+| `db.lua` | Row CRUD on the `vehicles` table via `v_mysql` exports (`OwnVeh.db*`). |
+| `database.sql` | `vehicles` table schema (manual setup / reference). |
 | `state.lua` | Vehicle state capture/apply, model→category, spawn point picking. |
 | `server.lua` | Runtime tracking, blips, lifecycle, the exports. |
 | `commands.lua` | `/vehspawn`, `/showvehspawns` (admin, marker helpers). |
 
-`vehicles.db` (+ its journal files) and `vehiclespawnpoints.txt` are
-git-ignored; `spawnpoints.lua` is versioned.
+`vehiclespawnpoints.txt` is git-ignored; `spawnpoints.lua` is versioned.

@@ -1,7 +1,8 @@
 # v_baml — Bank kezelo
 
 Szerver oldali bankszámla-kezelő. A `bank_money` futásidőben a player element
-data-ján él, és tükröződik az account data-ba, így túléli az újracsatlakozást és
+data-ján él, és tükröződik a közös `accounts` táblába
+(`exports.v_mysql:getAccData` / `setAccData`), így túléli az újracsatlakozást és
 a resource újraindítást. A **cash** a GTA saját pénze, azt csak a beépített
 `takePlayerMoney` / `givePlayerMoney` mozgatja.
 
@@ -10,12 +11,12 @@ a resource újraindítást. A **cash** a GTA saját pénze, azt csak a beépíte
 | Esemény | Művelet |
 | --- | --- |
 | `onPlayerLoaded`, `onResourceStart` | account → element data betöltés (első login: 0) |
-| `onPlayerQuit`, `onPlayerLogout`, `onResourceStop` | element data → account mentés |
+| `onPlayerQuit`, `onResourceStop` | element data → account mentés |
 | 5 percenként | minden bejelentkezett játékos mentése |
 | minden export ami módosít | az adott játékos azonnali mentése |
 
-Guest (be nem jelentkezett) játékosnál a `bank_money` csak futásidőben létezik,
-mentés nem történik.
+Be nem jelentkezett játékosnál a `bank_money` csak futásidőben létezik, mentés
+nem történik.
 
 ## Szerver oldali exportok
 

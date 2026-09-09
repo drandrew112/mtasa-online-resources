@@ -1,6 +1,8 @@
 <meta>
     <info author="andrasxa" name="Bank kezelo" version="1.0.0" type="script" />
 
+    <include resource="v_mysql" />
+
     <script src="server.lua" type="server" />
     <script src="client.lua" type="client" />
 

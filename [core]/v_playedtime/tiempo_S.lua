@@ -1,122 +1,90 @@
 ------------------------------------------------------------------------------------
---  RIGHTS:      All rights reserved by developers
---  DEVELOPERS:  Oscar Ernesto (The'Oskar)
--- Don't Touch This or a Cat will Die D:!!!!!!!!
+--  Played-time tracker.
+--  Online.minutes / Online.hours are stored in the shared `accounts` table
+--  (exports.v_mysql:getAccData / setAccData), keyed by the player element.
+--  "Játékidő" element data is the formatted "Hh Mm" string for the HUD.
 ------------------------------------------------------------------------------------
- 
-addEventHandler ( "onResourceStart" , resourceRoot ,
-    function ( )
-        for index , player in ipairs ( getElementsByType ( "player" ) ) do
-            local pAccount = getPlayerAccount ( player )
-            if not isGuestAccount ( pAccount ) then
-                local minutes = getAccountData ( pAccount , "Online.minutes" )
-                if minutes then
-                    local hours = getAccountData ( pAccount , "Online.hours" )
-                    if # tostring ( minutes ) == 1 then
-                        minutes = "0" .. minutes
-                    end
-                    if # tostring ( hours ) == 1 then
-                        hours = "0" .. hours
-                    end
-                    setElementData ( player , "Játékidő" , hours .. "h " .. minutes .. "m" )
-                    local timer = setTimer ( actualizarJugadorOn , 60000 , 1 , player )
-                    setElementData ( player , "Online.timer" , timer )
-                else
-                    setAccountData ( pAccount , "Online.minutes" , 0 )
-     
-              setAccountData ( pAccount , "Online.hours" , 0 )
-                    setElementData ( player , "Játékidő" , "00:00 " )
-                    local timer = setTimer ( actualizarJugadorOn , 60000 , 1 , player )
-                    setElementData ( player , "Online.timer" , timer )
-                end
-            else
-                setElementData ( player , "Játékidő" , "N/A" )
-            end
-        end
-    end
-)
- 
-addEventHandler ( "onResourceStop" , resourceRoot ,
-    function ( )
-        for index , player in ipairs ( getElementsByType ( "player" ) ) do
-            local pAccount = getPlayerAccount ( player )
-            if not isGuestAccount ( pAccount ) then
-                local timer = getElementData ( player , "Online.timer" )
-                if isTimer ( timer ) then
-                    killTimer ( timer )
-                end
-            end
-        end
-    end
-)
- 
-addEvent ( "onPlayerLoaded" )
-addEventHandler ( "onPlayerLoaded" , root ,
-    function ( pAccount )
-        local minutes = getAccountData ( pAccount , "Online.minutes" )
-        if minutes then
-            local hours = getAccountData ( pAccount , "Online.hours" )
-            if # tostring ( minutes ) == 1 then
-                minutes = "0" .. minutes
-            end
-            if # tostring ( hours ) == 1 then
-                hours = "0" .. hours
-            end
-            setElementData ( source , "Játékidő" , hours .. "h " .. minutes .. "m" )
-            local timer = setTimer ( actualizarJugadorOn , 60000 , 1 , source )
-            setElementData ( source , "Online.timer" , timer )
-        else
-            setAccountData ( pAccount , "Online.minutes" , 0 )
-            setAccountData ( pAccount , "Online.hours" , 0 )
-            setElementData ( source , "Játékidő" , "00:00" )
-            local timer = setTimer ( actualizarJugadorOn , 5000 , 1 , source )
-            setElementData ( source , "Online.timer" , timer )
-        end
-    end
-)
- 
-addEventHandler ( "onPlayerLogout" , root ,
-    function ( pAccount )
-        local timer = getElementData ( source , "Online.timer" )
-        if isTimer ( timer ) then
-            killTimer ( timer )
-        end
-    end
-)
- 
-addEventHandler ( "onPlayerJoin" , root ,
-    function ( )
-        setElementData ( source , "Játékidő" , "N/A" )
-    end
-)
- 
-addEventHandler ( "onPlayerQuit" , root ,
-    function ( )
-        local pAccount = getPlayerAccount ( source )
-        if not isGuestAccount ( pAccount ) then
-            local timer = getElementData ( source , "Online.timer" )
-            if isTimer ( timer ) then
-                killTimer ( timer )
-            end
-        end
-    end
-)
- 
-function actualizarJugadorOn ( player )
-    local pAccount = getPlayerAccount ( player )
-    local minutes = getAccountData ( pAccount , "Online.minutes" )
-    local hours = getAccountData ( pAccount , "Online.hours" )
-    minutes = tostring ( tonumber ( minutes ) + 1 )
-    if minutes == "60" then
-        hours = tostring ( tonumber ( hours ) + 1 )
-        minutes = "00"
-	call( getResourceFromName("v_levelsys"), "giveXp",  player, 800 )
-    end
-    setAccountData ( pAccount , "Online.minutes" , tonumber ( minutes ) )
-    setAccountData ( pAccount , "Online.hours" , tonumber ( hours ) )
-    if # tostring ( minutes ) == 1 then minutes = "0" .. minutes end
-    if # tostring ( hours ) == 1 then hours = "0" .. hours end
-    setElementData ( player , "Játékidő" , hours .. "h " .. minutes .. "m" )
-    local timer = setTimer ( actualizarJugadorOn , 60000 , 1 , player )
-    setElementData ( player , "Online.timer" , timer )
+
+local function getData(player, key) return exports.v_mysql:getAccData(player, key) end
+local function setData(player, key, value) return exports.v_mysql:setAccData(player, key, value) end
+
+local function isLogged(player)
+    return isElement(player) and getElementData(player, "isLogged") == true
 end
+
+local function pad2(v)
+    v = tostring(tonumber(v) or 0)
+    if #v == 1 then return "0" .. v end
+    return v
+end
+
+-- (Re)starts the minute tick for a player and refreshes their HUD string.
+local function beginTracking(player)
+    if not isLogged(player) then
+        setElementData(player, "Játékidő", "N/A")
+        return
+    end
+
+    local minutes = getData(player, "Online.minutes")
+    if minutes == nil then
+        setData(player, "Online.minutes", 0)
+        setData(player, "Online.hours", 0)
+        minutes = 0
+    end
+    local hours = getData(player, "Online.hours") or 0
+
+    setElementData(player, "Játékidő", pad2(hours) .. "h " .. pad2(minutes) .. "m")
+
+    local existing = getElementData(player, "Online.timer")
+    if isTimer(existing) then killTimer(existing) end
+    setElementData(player, "Online.timer", setTimer(actualizarJugadorOn, 60000, 1, player))
+end
+
+local function stopTracking(player)
+    local timer = getElementData(player, "Online.timer")
+    if isTimer(timer) then killTimer(timer) end
+end
+
+function actualizarJugadorOn(player)
+    if not isElement(player) or not isLogged(player) then return end
+
+    local minutes = (tonumber(getData(player, "Online.minutes")) or 0) + 1
+    local hours   = tonumber(getData(player, "Online.hours")) or 0
+    if minutes >= 60 then
+        hours = hours + 1
+        minutes = 0
+        call(getResourceFromName("v_levelsys"), "giveXp", player, 800)
+    end
+
+    setData(player, "Online.minutes", minutes)
+    setData(player, "Online.hours", hours)
+
+    setElementData(player, "Játékidő", pad2(hours) .. "h " .. pad2(minutes) .. "m")
+    setElementData(player, "Online.timer", setTimer(actualizarJugadorOn, 60000, 1, player))
+end
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    for _, player in ipairs(getElementsByType("player")) do
+        beginTracking(player)
+    end
+end)
+
+addEventHandler("onResourceStop", resourceRoot, function()
+    for _, player in ipairs(getElementsByType("player")) do
+        stopTracking(player)
+    end
+end)
+
+-- onPlayerLoaded: source = player, arg 1 = account-name string.
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, function()
+    beginTracking(source)
+end)
+
+addEventHandler("onPlayerJoin", root, function()
+    setElementData(source, "Játékidő", "N/A")
+end)
+
+addEventHandler("onPlayerQuit", root, function()
+    stopTracking(source)
+end)

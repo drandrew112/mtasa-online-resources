@@ -1,12 +1,12 @@
 -- v_mysql :: mysql core
 --
--- Thin asynchronous wrapper around dbConnect("mysql", ...). Other resources
--- never open their own connection; they use the exported helpers below
--- (mysqlQuery / mysqlExec / mysqlEscape / mysqlIsConnected).
+-- Thin wrapper around dbConnect("mysql", ...). Other resources never open their
+-- own connection; they use the exported helpers below (mysqlQuery /
+-- mysqlQuerySync / mysqlInsert / mysqlExec / mysqlEscape / mysqlIsConnected).
 --
--- The raw dbQuery callback style is only fully supported for callers inside
--- this resource (accountdata.lua). Cross-resource callers should pass no
--- callback to mysqlExec, or use mysqlQuery and read the result element data.
+-- The async mysqlQuery callback style is only fully supported for callers
+-- inside this resource. Cross-resource callers should use mysqlQuerySync /
+-- mysqlInsert (they block for the round trip) or fire-and-forget mysqlExec.
 
 local connection = nil
 local connected  = false
@@ -134,6 +134,55 @@ function mysqlQuery(callback, queryStr, ...)
         if callback then callback(result, a) end
     end
     return dbQuery(handler, connection, queryStr, ...) ~= false
+end
+
+-- Runs a SELECT and BLOCKS until the result is in (dbPoll with no timeout).
+-- Returns the result table (possibly empty), or false when there is no
+-- connection or the query failed. Use only for small, latency-tolerant
+-- lookups - it stalls the server thread for the whole round trip. Safe to call
+-- from other resources (unlike mysqlQuery's callback style).
+function mysqlQuerySync(queryStr, ...)
+    if not isElement(connection) then
+        debugLog("mysqlQuerySync skipped (no connection): %s", queryStr)
+        return false
+    end
+    debugLog("query(sync): %s", queryStr)
+    local qh = dbQuery(connection, queryStr, ...)
+    if not qh then return false end
+    local result = dbPoll(qh, -1)
+    dbFree(qh)
+    if type(result) ~= "table" then
+        mysqlLog("Query error: %s | SQL: %s", tostring(result), queryStr)
+        return false
+    end
+    return result
+end
+
+-- Runs an INSERT synchronously and returns the AUTO_INCREMENT id it produced
+-- (LAST_INSERT_ID()), or false on failure. Blocks for the round trip. The id
+-- lookup runs on the same connection with no yield in between, so nothing can
+-- slip a query ahead of it.
+function mysqlInsert(queryStr, ...)
+    if not isElement(connection) then
+        debugLog("mysqlInsert skipped (no connection): %s", queryStr)
+        return false
+    end
+    debugLog("insert(sync): %s", queryStr)
+    local qh = dbQuery(connection, queryStr, ...)
+    if not qh then return false end
+    local ok = dbPoll(qh, -1)
+    dbFree(qh)
+    if ok == false then
+        mysqlLog("Insert error | SQL: %s", queryStr)
+        return false
+    end
+    local idqh = dbQuery(connection, "SELECT LAST_INSERT_ID() AS id")
+    local res  = dbPoll(idqh, -1)
+    dbFree(idqh)
+    if type(res) == "table" and res[1] then
+        return tonumber(res[1].id)
+    end
+    return true
 end
 
 -- Runs an INSERT / UPDATE / DELETE. Fire and forget; returns whether the

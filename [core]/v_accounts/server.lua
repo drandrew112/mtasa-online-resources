@@ -1,30 +1,54 @@
 -- Account System - server side
+--
+-- The mod does NOT use MTA's built-in account system. An "account" is a row in
+-- the shared `accounts` table (see server/db.lua + [core]/v_mysql). A logged-in
+-- player is identified by the "accName" element data set here; every other
+-- resource reads/writes their data through exports.v_mysql:getAccData /
+-- setAccData. Passwords are bcrypt hashes (passwordHash / passwordVerify).
 
 local SAVE_INTERVAL = 120000 -- periodic autosave interval, in ms
 local BANS_FILE = "bans.xml"
 
--- Players currently being logged out by this script. Used to break the
--- onPlayerLogout -> logOut() -> onPlayerLogout recursion.
-local loggingOut = {}
 -- Players currently being renamed by the script on purpose, so the
 -- onPlayerChangeNick handler can allow those while still blocking manual ones.
 local scriptedRename = {}
 
 --------------------------------------------------------------------------------
+-- Small helpers
+--------------------------------------------------------------------------------
+
+-- The logged-in account name for a player, or nil.
+local function nameOf(player)
+    if not isElement(player) or getElementData(player, "isLogged") ~= true then return nil end
+    local n = getElementData(player, "accName")
+    return (type(n) == "string" and n ~= "") and n or nil
+end
+
+-- The online player logged into `accountName`, or nil.
+local function playerOnAccount(accountName)
+    if type(accountName) ~= "string" then return nil end
+    local needle = accountName:lower()
+    for _, player in ipairs(getElementsByType("player")) do
+        local n = nameOf(player)
+        if n and n:lower() == needle then return player end
+    end
+    return nil
+end
+
+--------------------------------------------------------------------------------
 -- Bans
 --------------------------------------------------------------------------------
 
--- Bans are keyed by ACCOUNT NAME (you cannot join without an account). When the
--- banned player is online at ban time their SERIAL is stored too, so a fresh
--- account on the same machine is caught on join as well. There are no temporary
--- bans: "felold" is "Never" while active and "1" once lifted.
+-- Bans are keyed by ACCOUNT NAME. When the banned player is online at ban time
+-- their SERIAL is stored too, so a fresh account on the same machine is caught
+-- on join as well. There are no temporary bans: "felold" is "Never" while
+-- active and "1" once lifted.
 
 local function currentDateString()
     local t = getRealTime()
     return ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday)
 end
 
--- Loads bans.xml, creating it if it does not exist yet.
 local function loadBansXml(createIfMissing)
     local xml = xmlLoadFile(BANS_FILE)
     if not xml and createIfMissing then
@@ -33,8 +57,8 @@ local function loadBansXml(createIfMissing)
     return xml
 end
 
--- Returns {date, admin, reason, account} for the active ban matching this
--- serial or account name, or nil when neither is banned.
+-- {date, admin, reason, account} for the active ban matching this serial or
+-- account name, or nil when neither is banned.
 local function getActiveBan(serial, accountName)
     local xml = xmlLoadFile(BANS_FILE)
     if not xml then return nil end
@@ -62,8 +86,7 @@ local function getActiveBan(serial, accountName)
 end
 
 -- A banned player stays connected but is frozen and stripped of GTA controls,
--- so all they can do is look at the ban panel. Non-GTA controls (chatbox,
--- console) are left enabled on purpose.
+-- so all they can do is look at the ban panel.
 local function applyBanState(player, ban)
     setElementData(player, "banned", true)
     setElementData(player, "banned_date", ban.date)
@@ -83,15 +106,14 @@ local function clearBanState(player)
     end
     setElementData(player, "banned", false)
 
-    local acc = getPlayerAccount(player)
-    if acc and not isGuestAccount(acc) then
+    if nameOf(player) then
         triggerClientEvent(player, "acc:setPanel", player, nil)
     else
         triggerClientEvent(player, "acc:setPanel", player, "login")
     end
 end
 
--- Checked on join (serial only – the account is not known yet).
+-- Checked on join (serial only - the account is not known yet).
 local function evaluateBan(player)
     local ban = getActiveBan(getPlayerSerial(player), nil)
     if ban then
@@ -118,34 +140,30 @@ end)
 
 --------------------------------------------------------------------------------
 -- Ban / unban API (exported as banAccount / unbanAccount)
--- NOTE: not "banPlayer"/"unbanPlayer" – those are built-in MTA functions and
+-- NOTE: not "banPlayer"/"unbanPlayer" - those are built-in MTA functions and
 -- cannot be re-exported under the same name.
 --------------------------------------------------------------------------------
 
--- Bans an account. If the account holder is online their serial is stored too
--- and they are frozen behind the ban panel immediately.
--- Returns true, or false + an error string.
 function banAccount(accountName, reason, adminName)
     if type(accountName) ~= "string" or accountName == "" then
         return false, "Invalid account name"
     end
 
-    local acc = getAccount(accountName)
-    if not acc then
+    local canonical = accountNameExists(accountName)
+    if not canonical then
         return false, "Account not found: " .. accountName
     end
-    accountName = getAccountName(acc)
+    accountName = canonical
 
     reason    = (type(reason) == "string"    and reason    ~= "") and reason    or "No reason given"
     adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
 
-    local target = getAccountPlayer(acc)
+    local target = playerOnAccount(accountName)
     local serial = isElement(target) and getPlayerSerial(target) or nil
 
     local xml = loadBansXml(true)
     if not xml then return false, "Could not open the ban file" end
 
-    -- Reuse an existing active ban node for this account, otherwise add one.
     local node
     for _, child in ipairs(xmlNodeGetChildren(xml)) do
         if xmlNodeGetAttribute(child, "account") == accountName
@@ -175,14 +193,13 @@ function banAccount(accountName, reason, adminName)
     return true
 end
 
--- Lifts every active ban for an account. Returns true, or false + an error.
 function unbanAccount(accountName)
     if type(accountName) ~= "string" or accountName == "" then
         return false, "Invalid account name"
     end
 
-    local acc = getAccount(accountName)
-    if acc then accountName = getAccountName(acc) end
+    local canonical = accountNameExists(accountName)
+    if canonical then accountName = canonical end
 
     local xml = xmlLoadFile(BANS_FILE)
     if not xml then return false, "No bans on record" end
@@ -202,7 +219,6 @@ function unbanAccount(accountName)
         return false, "No active ban for account: " .. accountName
     end
 
-    -- Free an online player sitting behind the ban panel on that account.
     for _, player in ipairs(getElementsByType("player")) do
         if getElementData(player, "banned") == true
         and getElementData(player, "banned_account") == accountName then
@@ -215,10 +231,22 @@ function unbanAccount(accountName)
 end
 
 --------------------------------------------------------------------------------
+-- Exports for other resources (identity lookups)
+--------------------------------------------------------------------------------
+
+-- The logged-in account name of a player, or false.
+function getName(player)
+    return nameOf(player) or false
+end
+
+function isLoggedIn(player)
+    return nameOf(player) ~= nil
+end
+
+--------------------------------------------------------------------------------
 -- Panel routing
 --------------------------------------------------------------------------------
 
--- The client asks which panel to show once its UI has been built.
 addEvent("acc:requestPanel", true)
 addEventHandler("acc:requestPanel", root, function()
     local player = client
@@ -226,9 +254,7 @@ addEventHandler("acc:requestPanel", root, function()
 
     if getElementData(player, "banned") == true then
         triggerClientEvent(player, "acc:setPanel", player, "banned")
-    elseif getElementData(player, "isLogged") == true
-    and not isGuestAccount(getPlayerAccount(player)) then
-        -- Already logged in (e.g. after a resource restart): no panel needed.
+    elseif nameOf(player) then
         triggerClientEvent(player, "acc:setPanel", player, nil)
     else
         triggerClientEvent(player, "acc:setPanel", player, "login")
@@ -236,7 +262,7 @@ addEventHandler("acc:requestPanel", root, function()
 end)
 
 --------------------------------------------------------------------------------
--- Helpers
+-- Login / register flow
 --------------------------------------------------------------------------------
 
 -- Renames a player without the onPlayerChangeNick guard blocking it.
@@ -246,19 +272,7 @@ local function setAccountName(player, name)
     scriptedRename[player] = nil
 end
 
--- Loading steps to wait for after login before spawning. v_mysql pulls the
--- account data from the shared database and reports "accountdata" when done.
-local function pendingLoadTypes()
-    local types = {}
-    local mysqlRes = getResourceFromName("v_mysql")
-    if mysqlRes and getResourceState(mysqlRes) == "running" then
-        types[#types + 1] = "accountdata"
-    end
-    return types
-end
-
--- Restores the player's saved state and drops the black loading screen. Runs
--- only once every data provider has reported in (see server/loading.lua).
+-- Restores the player's saved state and drops the black loading screen.
 local function spawnLoggedInPlayer(player)
     loadPosition(player)
     loadHealth(player)
@@ -270,27 +284,17 @@ local function spawnLoggedInPlayer(player)
     triggerClientEvent(player, "acc:loadingScreen", player, false)
     triggerClientEvent(player, "acc:setPanel", player, nil)
 
-    -- The player is fully loaded (account data synced, saved state restored,
-    -- spawned). Other resources hook this instead of onPlayerLogin.
-    triggerEvent("onPlayerLoaded", player, getPlayerAccount(player))
+    -- The player is fully loaded. Other resources hook this (arg 1 = account
+    -- name string) instead of the old onPlayerLogin.
+    triggerEvent("onPlayerLoaded", player, getElementData(player, "accName"))
 end
 
-local function finishLogin(player, acc, username)
+local function markLoggedIn(player, username, accId)
     setElementData(player, "accName", username)
-    setElementData(player, "accID", getAccountID(acc) or 0)
+    setElementData(player, "accID", accId or 0)
     setElementData(player, "isLogged", true)
     setAccountName(player, username)
-
-    -- Hide the login panel, show the loading screen, wait for the data
-    -- providers, then spawn.
-    triggerClientEvent(player, "acc:setPanel", player, nil)
-    triggerClientEvent(player, "acc:loadingScreen", player, true)
-    beginLoading(player, pendingLoadTypes(), spawnLoggedInPlayer)
 end
-
---------------------------------------------------------------------------------
--- Login / Register
---------------------------------------------------------------------------------
 
 function login_player(username, password)
     local player = client
@@ -304,31 +308,38 @@ function login_player(username, password)
         return
     end
 
-    local acc = getAccount(username, password)
-    if not acc then
+    local canonical = accountNameExists(username)
+    local auth = canonical and fetchAccountAuth(canonical) or nil
+    if not auth or type(auth.password) ~= "string" then
         triggerClientEvent(player, "acc:error", player, "Wrong username or password")
         return
     end
 
-    if isElement(getAccountPlayer(acc)) then
-        triggerClientEvent(player, "acc:error", player, "This account is already in use")
-        return
-    end
+    passwordVerify(password, auth.password, {}, function(matches)
+        if not isElement(player) or getElementData(player, "isLogged") == true then return end
+        if not matches then
+            triggerClientEvent(player, "acc:error", player, "Wrong username or password")
+            return
+        end
 
-    local ban = getActiveBan(getPlayerSerial(player), getAccountName(acc))
-    if ban then
-        applyBanState(player, ban)
-        triggerClientEvent(player, "acc:setPanel", player, "banned")
-        triggerClientEvent(player, "acc:error", player, "This account is banned")
-        return
-    end
+        if isElement(playerOnAccount(canonical)) then
+            triggerClientEvent(player, "acc:error", player, "This account is already in use")
+            return
+        end
 
-    if not logIn(player, acc, password) then
-        triggerClientEvent(player, "acc:error", player, "Login failed")
-        return
-    end
+        local ban = getActiveBan(getPlayerSerial(player), canonical)
+        if ban then
+            applyBanState(player, ban)
+            triggerClientEvent(player, "acc:setPanel", player, "banned")
+            triggerClientEvent(player, "acc:error", player, "This account is banned")
+            return
+        end
 
-    finishLogin(player, acc, username)
+        markLoggedIn(player, canonical, auth.id)
+        triggerClientEvent(player, "acc:setPanel", player, nil)
+        triggerClientEvent(player, "acc:loadingScreen", player, true)
+        beginLoading(player, {}, spawnLoggedInPlayer)
+    end)
 end
 addEvent("login_player", true)
 addEventHandler("login_player", root, login_player)
@@ -340,46 +351,46 @@ function register_player(username, password)
     if getElementData(player, "isLogged") == true then return end
 
     if type(username) ~= "string" or type(password) ~= "string" then return end
-    if username == "" then
-        triggerClientEvent(player, "acc:error", player, "Username missing")
+    if not username:find("^[%w_%-%.]+$") or #username < 3 or #username > 30 then
+        triggerClientEvent(player, "acc:error", player, "Username must be 3-30 chars (letters, digits, _ - .)")
         return
     end
     if #password < 5 then
         triggerClientEvent(player, "acc:error", player, "Password too short")
         return
     end
-    if getAccount(username) then
+    if accountNameExists(username) then
         triggerClientEvent(player, "acc:error", player, "Account already exists")
         return
     end
 
-    local acc = addAccount(username, password)
-    if not acc then
-        triggerClientEvent(player, "acc:error", player, "Registration failed")
-        return
-    end
+    passwordHash(password, "bcrypt", {}, function(hash)
+        if not isElement(player) or getElementData(player, "isLogged") == true then return end
+        if type(hash) ~= "string" then
+            triggerClientEvent(player, "acc:error", player, "Registration failed")
+            return
+        end
+        if accountNameExists(username) then
+            triggerClientEvent(player, "acc:error", player, "Account already exists")
+            return
+        end
 
-    if not logIn(player, acc, password) then
-        triggerClientEvent(player, "acc:error", player, "Login failed")
-        return
-    end
+        local id = createAccountRow(username, hash, nil)
+        if not id then
+            triggerClientEvent(player, "acc:error", player, "Registration failed")
+            return
+        end
 
-    setElementData(player, "accName", username)
-    setElementData(player, "accID", getAccountID(acc) or 0)
-    setElementData(player, "isLogged", true)
-    setAccountName(player, username)
-
-    -- Fresh account: go through the same loading gate (v_mysql simply finds no
-    -- stored data), then spawn at the default location and store a baseline -
-    -- which save_all() also mirrors into the shared database.
-    triggerClientEvent(player, "acc:setPanel", player, nil)
-    triggerClientEvent(player, "acc:loadingScreen", player, true)
-    beginLoading(player, pendingLoadTypes(), function(p)
-        loadPosition(p)
-        save_all(p)
-        triggerClientEvent(p, "acc:loadingScreen", p, false)
-        triggerClientEvent(p, "acc:setPanel", p, nil)
-        triggerEvent("onPlayerLoaded", p, getPlayerAccount(p))
+        markLoggedIn(player, username, id)
+        triggerClientEvent(player, "acc:setPanel", player, nil)
+        triggerClientEvent(player, "acc:loadingScreen", player, true)
+        beginLoading(player, {}, function(p)
+            loadPosition(p)
+            save_all(p)
+            triggerClientEvent(p, "acc:loadingScreen", p, false)
+            triggerClientEvent(p, "acc:setPanel", p, nil)
+            triggerEvent("onPlayerLoaded", p, getElementData(p, "accName"))
+        end)
     end)
 end
 addEvent("register_player", true)
@@ -416,24 +427,7 @@ addEventHandler("onPlayerQuit", root, function()
     if getElementData(source, "isLogged") == true then
         save_all(source)
     end
-    loggingOut[source] = nil
     scriptedRename[source] = nil
-end)
-
-addEventHandler("onPlayerLogout", root, function()
-    local player = source
-    if loggingOut[player] then return end -- re-entrant call from logOut() below
-    loggingOut[player] = true
-
-    cancelEvent() -- keep the account attached so the save still works
-    save_all(player)
-    logOut(player)
-    loggingOut[player] = nil
-
-    setElementData(player, "isLogged", false)
-    setElementData(player, "accName", false)
-    setElementData(player, "accID", false)
-    triggerClientEvent(player, "acc:setPanel", player, "login")
 end)
 
 -- Block manual nick changes, but let the script's own renames through.

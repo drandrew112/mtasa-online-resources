@@ -2,8 +2,10 @@
     v_socialpanel / server.lua
     Friends, friend requests, crews, profiles and private / crew messaging.
 
-    Storage (no external MySQL):
-      - Friends / requests / crew membership: MTA account data (per account).
+    Storage:
+      - Friends / requests / crew membership: account data in the shared
+        `accounts` table (exports.v_mysql:getAccData / setAccData). Works for
+        offline accounts too (keyed by account-name string).
       - Crews:    crews.xml     (global, cached in memory)
       - Messages: messages.xml  (global, cached in memory) -> readable later, offline too
 ]]
@@ -23,15 +25,22 @@ local saveMsgTimer
 -- Helpers
 --------------------------------------------------------------------------------
 
+-- Account data (shared `accounts` table). `who` is a player element or an
+-- account-name string; both work, online or offline.
+local function getData(who, key) return exports.v_mysql:getAccData(who, key) end
+local function setData(who, key, value) return exports.v_mysql:setAccData(who, key, value) end
+
 local function accName(player)
-    local acc = player and getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return nil end
-    return getAccountName(acc)
+    if not isElement(player) then return nil end
+    local n = exports.v_accounts:getName(player)
+    return (type(n) == "string" and n ~= "") and n or nil
 end
 
+-- Canonical account name for an input string if the account exists, else nil.
 local function accountByName(name)
     if type(name) ~= "string" or name == "" then return nil end
-    return getAccount(name) or nil
+    local canonical = exports.v_accounts:accountNameExists(name)
+    return canonical or nil
 end
 
 local function onlinePlayerByAccount(name)
@@ -50,24 +59,21 @@ local function getProgress(name, onlinePlayer)
     if onlinePlayer then
         level = getElementData(onlinePlayer, "level") or level
         playtime = getElementData(onlinePlayer, "Játékidő") or playtime
-    else
-        local acc = accountByName(name)
-        if acc then
-            level = getAccountData(acc, "level") or level
-            local h = getAccountData(acc, "Online.hours")
-            local m = getAccountData(acc, "Online.minutes")
-            if h or m then playtime = SP.formatPlaytime(h, m) end
-        end
+    elseif name then
+        level = getData(name, "level") or level
+        local h = getData(name, "Online.hours")
+        local m = getData(name, "Online.minutes")
+        if h or m then playtime = SP.formatPlaytime(h, m) end
     end
     return tostring(level), tostring(playtime)
 end
 
-local function getListFor(acc, key)
-    return SP.split(acc and getAccountData(acc, key) or "")
+local function getListFor(name, key)
+    return SP.split(name and getData(name, key) or "")
 end
 
-local function setListFor(acc, key, list)
-    if acc then setAccountData(acc, key, SP.join(list)) end
+local function setListFor(name, key, list)
+    if name then setData(name, key, SP.join(list)) end
 end
 
 local function notify(player, msg, r, g, b)
@@ -162,11 +168,10 @@ local function applyCrewIdentity(player)
         setElementData(player, "crewColor", colorV)
     end
 
-    local acc = getPlayerAccount(player)
-    if acc and not isGuestAccount(acc) then
-        if getAccountData(acc, "crewName")  ~= nameV    then setAccountData(acc, "crewName", nameV) end
-        if getAccountData(acc, "crewTag")   ~= tagV     then setAccountData(acc, "crewTag", tagV) end
-        if getAccountData(acc, "crewColor") ~= colorStr then setAccountData(acc, "crewColor", colorStr) end
+    if myName then
+        if getData(myName, "crewName")  ~= nameV    then setData(myName, "crewName", nameV) end
+        if getData(myName, "crewTag")   ~= tagV     then setData(myName, "crewTag", tagV) end
+        if getData(myName, "crewColor") ~= colorStr then setData(myName, "crewColor", colorStr) end
     end
 end
 
@@ -289,7 +294,7 @@ local function buildConversations(player, myName)
     if myCrew then
         local list = crewMsgs[myCrew.name:lower()] or {}
         local last = list[#list]
-        local seen = tonumber(getAccountData(getPlayerAccount(player), SP.KEY_CREW_SEEN)) or 0
+        local seen = tonumber(getData(player, SP.KEY_CREW_SEEN)) or 0
         local unread = 0
         for _, m in ipairs(list) do
             if m.time > seen and m.from:lower() ~= myLower then unread = unread + 1 end
@@ -308,10 +313,9 @@ end
 local function buildSnapshot(player)
     local myName = accName(player)
     if not myName then return nil end
-    local acc = getPlayerAccount(player)
 
     local friends = {}
-    for _, fn in ipairs(getListFor(acc, SP.KEY_FRIENDS)) do
+    for _, fn in ipairs(getListFor(myName, SP.KEY_FRIENDS)) do
         friends[#friends + 1] = friendEntry(fn)
     end
     table.sort(friends, function(a, b)
@@ -354,7 +358,7 @@ local function buildSnapshot(player)
     return {
         account       = myName,
         friends       = friends,
-        requests      = getListFor(acc, SP.KEY_REQ_IN),
+        requests      = getListFor(myName, SP.KEY_REQ_IN),
         crew          = crewData,
         crews         = dir,
         conversations = buildConversations(player, myName),
@@ -400,9 +404,9 @@ addEventHandler("sp:friend:add", root, function(targetName)
     if not targetAcc then
         return notify(player, "No such player: " .. targetName, 255, 120, 120)
     end
-    targetName = getAccountName(targetAcc)
+    targetName = targetAcc
 
-    local myAcc = getPlayerAccount(player)
+    local myAcc = myName
     local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
     if SP.contains(myFriends, targetName) then
         return notify(player, targetName .. " is already your friend.", 255, 200, 0)
@@ -449,7 +453,7 @@ addEventHandler("sp:friend:accept", root, function(senderName)
     local myName = accName(player)
     if not myName or type(senderName) ~= "string" then return end
 
-    local myAcc = getPlayerAccount(player)
+    local myAcc = myName
     local incoming = getListFor(myAcc, SP.KEY_REQ_IN)
     local ok, exact = SP.contains(incoming, senderName)
     if not ok then return notify(player, "No such request.", 255, 120, 120) end
@@ -482,7 +486,7 @@ addEventHandler("sp:friend:decline", root, function(senderName)
     local player = client
     local myName = accName(player)
     if not myName or type(senderName) ~= "string" then return end
-    local myAcc = getPlayerAccount(player)
+    local myAcc = myName
     local incoming = getListFor(myAcc, SP.KEY_REQ_IN)
     if not SP.contains(incoming, senderName) then return end
     setListFor(myAcc, SP.KEY_REQ_IN, SP.removeValue(incoming, senderName))
@@ -496,7 +500,7 @@ addEventHandler("sp:friend:remove", root, function(friendName)
     local myName = accName(player)
     if not myName or type(friendName) ~= "string" then return end
 
-    local myAcc = getPlayerAccount(player)
+    local myAcc = myName
     local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
     local ok, exact = SP.contains(myFriends, friendName)
     if not ok then return end
@@ -527,11 +531,11 @@ addEventHandler("sp:profile:view", root, function(name)
     if not acc then
         return triggerClientEvent(player, "sp:profile:show", player, false, name)
     end
-    name = getAccountName(acc)
+    name = acc
     local online = onlinePlayerByAccount(name)
     local level, playtime = getProgress(name, online)
     local crew = crewOf(name)
-    local myFriends = getListFor(getPlayerAccount(player), SP.KEY_FRIENDS)
+    local myFriends = getListFor(myName, SP.KEY_FRIENDS)
 
     triggerClientEvent(player, "sp:profile:show", player, {
         name      = name,
@@ -576,15 +580,14 @@ addEventHandler("sp:search", root, function(query)
     end
 
     -- Then registered accounts (offline).
-    for _, acc in ipairs(getAccounts() or {}) do
+    for _, nm in ipairs(exports.v_accounts:getAllAccountNames() or {}) do
         if #results >= SP.SEARCH_LIMIT then break end
-        local nm = getAccountName(acc)
         if nm and not seen[nm:lower()] and not nm:find("^#") and nm:lower():find(needle, 1, true) then
             seen[nm:lower()] = true
-            local h, m = getAccountData(acc, "Online.hours"), getAccountData(acc, "Online.minutes")
+            local h, m = getData(nm, "Online.hours"), getData(nm, "Online.minutes")
             results[#results + 1] = {
                 name = nm, online = false,
-                level = tostring(getAccountData(acc, "level") or "n/a"),
+                level = tostring(getData(nm, "level") or "n/a"),
                 playtime = (h or m) and SP.formatPlaytime(h, m) or "n/a",
             }
         end
@@ -630,7 +633,7 @@ local function markRead(player, myName, kind, target)
         end
         if changed then queueSaveMessages() end
     elseif kind == "crew" then
-        setAccountData(getPlayerAccount(player), SP.KEY_CREW_SEEN, tostring(getRealTime().timestamp))
+        setData(player, SP.KEY_CREW_SEEN, tostring(getRealTime().timestamp))
     end
 end
 
@@ -640,8 +643,7 @@ local function resolveTarget(myName, kind, target)
         if crew and crew.name:lower() == target:lower() then return crew.name end
         return nil
     end
-    local acc = accountByName(target)
-    return acc and getAccountName(acc) or nil
+    return accountByName(target)
 end
 
 addEvent("sp:msg:open", true)
@@ -669,7 +671,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
         if target:lower() == myName:lower() then return end
         local targetAcc = accountByName(target)
         if not targetAcc then return notify(player, "No such player: " .. target, 255, 120, 120) end
-        target = getAccountName(targetAcc)
+        target = targetAcc
 
         local key = SP.pairKey(myName, target)
         dms[key] = dms[key] or {}
@@ -733,7 +735,7 @@ addEventHandler("sp:crew:create", root, function(name, tag, r, g, b)
         name = cleanName, tag = cleanTag, color = { r, g, b },
         founder = myName, desc = "", members = { myName },
     }
-    setAccountData(getPlayerAccount(player), SP.KEY_CREW, cleanName)
+    setData(player, SP.KEY_CREW, cleanName)
     saveCrews()
     notify(player, "Crew created: " .. cleanName .. " [" .. cleanTag .. "]", 0, 220, 0)
     pushSnapshot(player)
@@ -750,7 +752,7 @@ addEventHandler("sp:crew:join", root, function(crewName)
     if #crew.members >= SP.MAX_CREW_MEMBERS then return notify(player, "That crew is full.", 255, 120, 120) end
 
     crew.members[#crew.members + 1] = myName
-    setAccountData(getPlayerAccount(player), SP.KEY_CREW, crew.name)
+    setData(player, SP.KEY_CREW, crew.name)
     saveCrews()
     notify(player, "You joined the crew " .. crew.name, 0, 220, 0)
     for _, mn in ipairs(crew.members) do
@@ -770,7 +772,7 @@ local function leaveCrew(player, silent)
     end
 
     crew.members = SP.removeValue(crew.members, myName)
-    setAccountData(getPlayerAccount(player), SP.KEY_CREW, "")
+    setData(player, SP.KEY_CREW, "")
 
     local disbanded = false
     if #crew.members == 0 then
@@ -815,7 +817,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
 
     crew.members = SP.removeValue(crew.members, exact)
     local kAcc = accountByName(exact)
-    if kAcc then setAccountData(kAcc, SP.KEY_CREW, "") end
+    if kAcc then setData(kAcc, SP.KEY_CREW, "") end
     saveCrews()
 
     local kp = onlinePlayerByAccount(exact)

@@ -1,8 +1,8 @@
--- v_ownveh :: SQLite layer
+-- v_ownveh :: database layer
 --
--- One table, `vehicles`, in Vehicles.config.dbFile. Every owned vehicle is a
--- row; the id is the vehicle's permanent identifier used by every export and
--- stored on the owner's account as "owned_vehicle_ids" ("1,2,3").
+-- Owned vehicles live in the shared MySQL database, table `vehicles` (see
+-- database.sql / ../../main.sql). Every access goes through v_mysql's exports -
+-- this resource never opens its own connection.
 --
 -- Serialisation of the wider fields:
 --   colors    "r,g,b,r,g,b,..."  (all values getVehicleColor(veh, true) returns)
@@ -14,52 +14,31 @@
 --                                 tyres, LSD doors). Empty "{}" when v_customs
 --                                 is not installed / nothing applied.
 --
--- All helpers are synchronous (dbPoll(-1)); the data set is tiny and only
--- touched on summon / store / give / delete, never per frame.
+-- All helpers are synchronous (exports.v_mysql:mysqlQuerySync blocks for the
+-- round trip); the data set is tiny and only touched on summon / store / give /
+-- delete, never per frame.
 
 OwnVeh = OwnVeh or {}
 
-local db
+local TABLE = "vehicles"
 
-local SCHEMA = [[
-CREATE TABLE IF NOT EXISTS vehicles (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    account_name TEXT    NOT NULL,
-    model        INTEGER NOT NULL,
-    colors       TEXT    NOT NULL DEFAULT '',
-    paintjob     INTEGER NOT NULL DEFAULT 3,
-    upgrades     TEXT    NOT NULL DEFAULT '',
-    handling     TEXT    NOT NULL DEFAULT '{}',
-    customs      TEXT    NOT NULL DEFAULT '{}',
-    plate        TEXT,
-    isDestroyed  INTEGER NOT NULL DEFAULT 0,
-    created_at   INTEGER NOT NULL DEFAULT 0,
-    updated_at   INTEGER NOT NULL DEFAULT 0
-)
-]]
+--------------------------------------------------------------------------------
+-- v_mysql plumbing
+--------------------------------------------------------------------------------
 
-db = dbConnect("sqlite", Vehicles.config.dbFile)
-if db then
-    dbExec(db, SCHEMA)
-    dbExec(db, "CREATE INDEX IF NOT EXISTS idx_vehicles_account ON vehicles (account_name)")
-
-    -- Migration: add `customs` to databases created before it existed.
-    local hasCustoms = false
-    for _, col in ipairs(dbPoll(dbQuery(db, "PRAGMA table_info(vehicles)"), -1) or {}) do
-        if col.name == "customs" then hasCustoms = true end
-    end
-    if not hasCustoms then
-        dbExec(db, "ALTER TABLE vehicles ADD COLUMN customs TEXT NOT NULL DEFAULT '{}'")
-    end
-else
-    outputServerLog("[v_ownveh] FATAL: could not open " .. tostring(Vehicles.config.dbFile))
+local function mysqlReady()
+    local res = getResourceFromName("v_mysql")
+    return (res and getResourceState(res) == "running") and true or false
 end
 
 local function query(sql, ...)
-    if not db then return {} end
-    local handle = dbQuery(db, sql, ...)
-    local result = dbPoll(handle, -1)
-    return result or {}
+    if not mysqlReady() then return {} end
+    return exports.v_mysql:mysqlQuerySync(sql, ...) or {}
+end
+
+local function exec(sql, ...)
+    if not mysqlReady() then return false end
+    return exports.v_mysql:mysqlExec(sql, ...) ~= false
 end
 
 local function now()
@@ -74,11 +53,11 @@ end
 -- upgrades / handling / customs / plate (all optional, already serialised).
 -- Returns the new id, or nil on failure.
 function OwnVeh.dbInsert(accountName, data)
-    if not db then return nil end
+    if not mysqlReady() then return nil end
     data = data or {}
     local ts = now()
-    local ok = dbExec(db,
-        "INSERT INTO vehicles " ..
+    local id = exports.v_mysql:mysqlInsert(
+        "INSERT INTO `" .. TABLE .. "` " ..
         "(account_name, model, colors, paintjob, upgrades, handling, customs, plate, isDestroyed, created_at, updated_at) " ..
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)",
         accountName,
@@ -90,29 +69,26 @@ function OwnVeh.dbInsert(accountName, data)
         data.customs or "{}",
         data.plate,
         ts, ts)
-    if not ok then return nil end
-
-    local row = query("SELECT last_insert_rowid() AS id")
-    return row[1] and tonumber(row[1].id) or nil
+    return (type(id) == "number") and id or nil
 end
 
 -- Full row for an id, or nil.
 function OwnVeh.dbGetById(id)
-    local row = query("SELECT * FROM vehicles WHERE id = ? LIMIT 1", tonumber(id))
+    local row = query("SELECT * FROM `" .. TABLE .. "` WHERE id = ? LIMIT 1", tonumber(id))
     return row[1]
 end
 
 -- Every row owned by an account (ascending id).
 function OwnVeh.dbGetByAccount(accountName)
-    return query("SELECT * FROM vehicles WHERE account_name = ? ORDER BY id ASC", accountName)
+    return query("SELECT * FROM `" .. TABLE .. "` WHERE account_name = ? ORDER BY id ASC", accountName)
 end
 
 -- Overwrites the mutable state columns. `state` = { colors, paintjob, upgrades,
 -- handling, customs, plate } (all serialised). Missing keys are left untouched.
 function OwnVeh.dbUpdateState(id, state)
-    if not db or not state then return end
-    dbExec(db,
-        "UPDATE vehicles SET " ..
+    if not state then return end
+    exec(
+        "UPDATE `" .. TABLE .. "` SET " ..
         "colors = COALESCE(?, colors), " ..
         "paintjob = COALESCE(?, paintjob), " ..
         "upgrades = COALESCE(?, upgrades), " ..
@@ -126,12 +102,10 @@ function OwnVeh.dbUpdateState(id, state)
 end
 
 function OwnVeh.dbSetDestroyed(id, destroyed)
-    if not db then return end
-    dbExec(db, "UPDATE vehicles SET isDestroyed = ?, updated_at = ? WHERE id = ?",
+    exec("UPDATE `" .. TABLE .. "` SET isDestroyed = ?, updated_at = ? WHERE id = ?",
         destroyed and 1 or 0, now(), tonumber(id))
 end
 
 function OwnVeh.dbDelete(id)
-    if not db then return end
-    dbExec(db, "DELETE FROM vehicles WHERE id = ?", tonumber(id))
+    exec("DELETE FROM `" .. TABLE .. "` WHERE id = ?", tonumber(id))
 end

@@ -3,6 +3,15 @@ local prefix = "#00ffffSzint Rendszer #ff0000// #ffffff"
 local xpLvlDos = 1000
 local nextLvlXp = 600
 
+-- Account data now lives in the shared `accounts` table (via v_mysql), keyed by
+-- player element or account-name string.
+local function getData(who, key) return exports.v_mysql:getAccData(who, key) end
+local function setData(who, key, value) return exports.v_mysql:setAccData(who, key, value) end
+
+local function isLogged(player)
+    return isElement(player) and getElementData(player, "isLogged") == true
+end
+
 function getNextXp(level)
     level = tonumber(level) or 1
     if level <= 0 then return 0 end
@@ -13,29 +22,35 @@ function getNextXp(level)
     return next_xp
 end
 
+-- Pushes level/xp/next_xp onto the player element and (for logged in players)
+-- persists it. `who` for the store is the player element itself.
+local function applyProgress(player)
+    local level = getData(player, "level")
+    local xp    = getData(player, "xp")
+
+    if level then
+        setElementData(player, "level", level)
+    else
+        setData(player, "level", 1)
+        setElementData(player, "level", 1)
+        level = 1
+    end
+    if xp then
+        setElementData(player, "xp", xp)
+    else
+        setData(player, "xp", 0)
+        setElementData(player, "xp", 0)
+    end
+    local next_xp = getNextXp(level or 1)
+    setData(player, "next_xp", next_xp)
+    setElementData(player, "next_xp", next_xp)
+end
+
 addEventHandler ( "onResourceStart" , resourceRoot ,
     function ( )
         for index , player in ipairs ( getElementsByType ( "player" ) ) do
-            local pAccount = getPlayerAccount ( player )
-            if not isGuestAccount ( pAccount ) then
-                local level = getAccountData ( pAccount , "level" )
-                local xp = getAccountData ( pAccount , "xp" )
-
-		if level then
-		    setElementData(player , "level" , level )
-		else
-        	    setAccountData ( pAccount , "level" , 1 )
-		    setElementData(player , "level" , 1 )
-        	end
-		if xp then
-		    setElementData(player , "xp" , xp )
-		else
-        	    setAccountData ( pAccount , "xp" , 0 )
-		    setElementData(player , "xp" , 0 )
-        	end
-		local next_xp = getNextXp(level or 1)
-		setAccountData ( pAccount , "next_xp" , next_xp )
-		setElementData ( player   , "next_xp" , next_xp )
+            if isLogged(player) then
+                applyProgress(player)
             else
                 setElementData(player , "level", "n/a")
                 setElementData(player , "xp", "n/a")
@@ -45,30 +60,12 @@ addEventHandler ( "onResourceStart" , resourceRoot ,
         end
     end
 )
- 
--- onPlayerLoaded (not onPlayerLogin): fires after v_accounts has synced the
--- account data from the shared MySQL store.
+
+-- onPlayerLoaded: arg 1 is the account-name string. source = player.
 addEvent ( "onPlayerLoaded" )
 addEventHandler ( "onPlayerLoaded" , root ,
-    function ( pAccount )
-        local level = getAccountData ( pAccount , "level" )
-        local xp = getAccountData ( pAccount , "xp" )
-
-	if level then
-	    setElementData(source , "level" , level )
-	else
-        setAccountData ( pAccount , "level" , 1 )
-	    setElementData(source , "level" , 1 )
-        end
-	if xp then
-	    setElementData(source , "xp" , xp )
-	else
-        setAccountData ( pAccount , "xp" , 0 )
-	    setElementData(source , "xp" , 0 )
-        end
-	local next_xp = getNextXp(level or 1)
-	setAccountData ( pAccount , "next_xp" , next_xp )
-	setElementData ( source   , "next_xp" , next_xp )
+    function ( )
+        applyProgress(source)
     end
 )
 
@@ -90,16 +87,13 @@ function saveLvl ( player, level, xp )
     setElementData ( player , "xp"      , xp )
     setElementData ( player , "next_xp" , next_xp )
 
-    -- Csak be van jelentkezett jatekosnal mentunk fiok-adatot
-    local pAccount = getPlayerAccount ( player )
-    if pAccount and not isGuestAccount ( pAccount ) then
-        setAccountData ( pAccount , "level"   , tonumber ( level ) )
-        setAccountData ( pAccount , "xp"      , tonumber ( xp ) )
-        setAccountData ( pAccount , "next_xp" , next_xp )
+    if isLogged(player) then
+        setData ( player , "level"   , tonumber ( level ) )
+        setData ( player , "xp"      , tonumber ( xp ) )
+        setData ( player , "next_xp" , next_xp )
     end
 
     -- Show level: a kepernyon lathato szint sav megjelenitese (ui_core, 3 mp).
-    -- A megjelenites idozitese mar kliens oldalon van, itt csak jelzunk.
     setElementData(player, "lvlsys:show", true)
     triggerClientEvent(player, "levelsys:onXpChanged", player)
 end
@@ -129,12 +123,10 @@ function giveXp (player, add_xp)
     return true
 end
 
--- Admin command permission check - always from account data (the element-data
--- mirror can lag behind the shared MySQL sync).
+-- Admin command permission check - straight from account data.
 local function isAdmin(player)
-    local acc = getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return false end
-    return ( tonumber(getAccountData(acc, "admin_level")) or 0 ) > 2
+    if not isLogged(player) then return false end
+    return ( tonumber(getData(player, "admin_level")) or 0 ) > 2
 end
 
 addCommandHandler("givexp", function(playerSource, cmd, targetName, add_xp)

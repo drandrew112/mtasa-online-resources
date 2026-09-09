@@ -36,12 +36,11 @@ end
 --  Admin data getters
 -- ------------------------------------------------------------
 
---- The player's admin level as a number (guest / unknown = 0).
+--- The player's admin level as a number (not logged in / unknown = 0).
 function getAdminLevel(player)
     if not isElement(player) or getElementType(player) ~= "player" then return 0 end
-    local acc = getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return 0 end
-    return tonumber(getAccountData(acc, "admin_level")) or 0
+    if getElementData(player, "isLogged") ~= true then return 0 end
+    return tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0
 end
 
 --- Whether the player has at least `minLevel` admin level.
@@ -87,20 +86,18 @@ end
 
 function syncAdminData(player)
     if not isElement(player) then return end
-    local acc = getPlayerAccount(player)
 
-    if not acc or isGuestAccount(acc) then
+    if getElementData(player, "isLogged") ~= true then
         setElementData(player, "admin_level", 0)
         return
     end
 
-    local level = tonumber(getAccountData(acc, "admin_level")) or 0
-    setAccountData(acc, "admin_level", level)
+    local level = tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0
+    exports.v_mysql:setAccData(player, "admin_level", level)
     setElementData(player, "admin_level", level)
 end
 
--- onPlayerLoaded (not onPlayerLogin): the account data has been synced from the
--- shared MySQL store by then, so the admin_level mirror is correct.
+-- onPlayerLoaded: source = player, arg 1 = account-name string.
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
     syncAdminData(source)

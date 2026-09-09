@@ -2,6 +2,7 @@
   <info author="DrAndrew112" type="script" version="1.0.0" name="GTA Online Chat"/>
 
   <include resource="ui_core"/>
+  <include resource="v_mysql"/>
 
   <script src="c_chat.lua" type="client"/>
   <script src="c_mute.lua" type="client"/>

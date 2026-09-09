@@ -1,17 +1,17 @@
 -- Account System - post-login loading gate
 --
 -- After a successful login or registration the player is shown a black
--- "Loading" screen instead of being spawned right away. External
--- data providers (currently only v_mysql's account-data sync) each report back
--- through the exported loadingComplete(player, type). Only once every expected
--- type has arrived - or a safety timeout elapses - is the player actually
--- spawned and their saved state restored.
+-- "Loading" screen instead of being spawned right away. External data
+-- providers may register a step to wait for through the exported
+-- loadingComplete(player, type); only once every expected step has arrived -
+-- or a safety timeout elapses - is the player spawned and their saved state
+-- restored. Today no provider registers a step, so the gate resolves at once,
+-- but the plumbing stays for future ones.
 --
 -- When the player is finally ready, v_accounts fires the custom server event
---   onPlayerLoaded ( account )   -- source = player
+--   onPlayerLoaded ( accountName )   -- source = player, arg 1 = name string
 -- This is the point every other resource should hook to load a player's
--- account data (NOT onPlayerLogin, which fires before the shared MySQL sync).
--- Each consumer must addEvent("onPlayerLoaded") on its own side.
+-- account data. Each consumer must addEvent("onPlayerLoaded") on its own side.
 
 addEvent("onPlayerLoaded")
 

@@ -1,12 +1,13 @@
 -- Bank kezelo - server side
 --
 -- bank_money is kept on the player element data at runtime and mirrored into the
--- account data so it survives reconnects / restarts. Cash is GTA's own money and
+-- account data (shared `accounts` table, via exports.v_mysql:getAccData /
+-- setAccData) so it survives reconnects / restarts. Cash is GTA's own money and
 -- is only touched through takePlayerMoney / givePlayerMoney.
 --
 -- Persistence:
 --   * onPlayerLoaded / onResourceStart -> load bank_money from account -> element data
---   * onPlayerQuit / onPlayerLogout / onResourceStop -> save element data -> account
+--   * onPlayerQuit / onResourceStop -> save element data -> account
 --   * every SAVE_INTERVAL ms -> save every logged in player
 --   * every export that changes bank_money -> save that player immediately
 
@@ -17,11 +18,11 @@ local DATA_KEY      = "bank_money"
 -- Helpers
 --------------------------------------------------------------------------------
 
--- Returns the account for a logged in, non-guest player, or nil.
+-- Returns the player when they are logged in (so their data can be persisted),
+-- or nil. The store itself is keyed by the player element.
 local function getSaveAccount(player)
-    local account = getPlayerAccount(player)
-    if not account or isGuestAccount(account) then return nil end
-    return account
+    if not isElement(player) or getElementData(player, "isLogged") ~= true then return nil end
+    return player
 end
 
 -- Current bank balance of a player (always a non-negative integer).
@@ -37,7 +38,7 @@ local function setBankMoney(player, amount)
 
     local account = getSaveAccount(player)
     if account then
-        setAccountData(account, DATA_KEY, amount)
+        exports.v_mysql:setAccData(account, DATA_KEY, amount)
     end
     return amount
 end
@@ -46,7 +47,7 @@ end
 local function saveBankMoney(player)
     local account = getSaveAccount(player)
     if not account then return end
-    setAccountData(account, DATA_KEY, getBankMoney(player))
+    exports.v_mysql:setAccData(account, DATA_KEY, getBankMoney(player))
 end
 
 -- Loads the balance from the account into element data. Seeds 0 on first login.
@@ -57,12 +58,12 @@ local function loadBankMoney(player)
         return
     end
 
-    local stored = tonumber(getAccountData(account, DATA_KEY))
+    local stored = tonumber(exports.v_mysql:getAccData(account, DATA_KEY))
     if stored then
         setElementData(player, DATA_KEY, math.max(0, math.floor(stored)))
     else
         setElementData(player, DATA_KEY, 0)
-        setAccountData(account, DATA_KEY, 0)
+        exports.v_mysql:setAccData(account, DATA_KEY, 0)
     end
 end
 
@@ -93,17 +94,10 @@ addEventHandler("onResourceStart", resourceRoot, function()
     end
 end)
 
--- onPlayerLoaded (not onPlayerLogin): fires after v_accounts has synced the
--- account data from the shared MySQL store, so bank_money is up to date.
+-- onPlayerLoaded: source = player, arg 1 = account-name string.
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
     loadBankMoney(source)
-end)
-
-addEventHandler("onPlayerLogout", root, function()
-    -- The account is still attached here (v_accounts cancels the event and logs
-    -- out itself afterwards), so the save goes through.
-    saveBankMoney(source)
 end)
 
 addEventHandler("onPlayerQuit", root, function()

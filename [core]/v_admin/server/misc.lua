@@ -86,8 +86,8 @@ addCommandHandler("listacc", function(player)
     end
 
     local n = 0
-    for _, acc in ipairs(getAccounts()) do
-        outputServerLog("[v_admin] Account: " .. getAccountName(acc))
+    for _, name in ipairs(exports.v_accounts:getAllAccountNames()) do
+        outputServerLog("[v_admin] Account: " .. name)
         n = n + 1
     end
     adminAlert(player, "#55FF55" .. n .. " accounts written to the server log.")

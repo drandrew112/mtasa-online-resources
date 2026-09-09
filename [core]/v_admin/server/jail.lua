@@ -3,10 +3,16 @@
 --  Admin jail: lock in, release, escape check, time countdown.
 --
 --  Account data:  adminjail (bool), adminjail_remTime, adminjail_admin, adminjail_indok
+--                 in the shared `accounts` table (exports.v_mysql:getAccData /
+--                 setAccData, keyed by player element)
 --  Element data :  same keys + the client HUD draws from them
 -- ============================================================
 
 local J = ADMIN.jail
+
+local function getData(player, key) return exports.v_mysql:getAccData(player, key) end
+local function setData(player, key, value) return exports.v_mysql:setAccData(player, key, value) end
+local function isLogged(player) return exports.v_accounts:isLoggedIn(player) end
 
 local ajCol = createColCuboid(
     J.colOrigin.x, J.colOrigin.y, J.colOrigin.z,
@@ -19,8 +25,7 @@ setElementInterior(ajCol, J.interior)
 -- ------------------------------------------------------------
 function setPlayerInAJ(player, state, minutes)
     if not isElement(player) then return end
-    local acc = getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return end
+    if not isLogged(player) then return end
 
     if state then
         local veh = getPedOccupiedVehicle(player)
@@ -29,18 +34,18 @@ function setPlayerInAJ(player, state, minutes)
             removePedFromVehicle(player)
         end
 
-        setAccountData(acc, "adminjail", true)
+        setData(player, "adminjail", true)
         setElementData(player, "adminjail", true)
         setElementInterior(player, J.interior)
         setElementPosition(player, J.inside.x, J.inside.y, J.inside.z)
 
         if minutes then
-            setAccountData(acc, "adminjail_remTime", minutes)
+            setData(player, "adminjail_remTime", minutes)
             setElementData(player, "adminjail_remTime", minutes)
         end
     else
         for _, key in ipairs({ "adminjail", "adminjail_remTime", "adminjail_admin", "adminjail_indok" }) do
-            setAccountData(acc, key, false)
+            setData(player, key, false)
             setElementData(player, key, false)
         end
         setElementInterior(player, 0)
@@ -54,13 +59,12 @@ end
 -- ------------------------------------------------------------
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
-    local acc = getPlayerAccount(source)
-    if not acc or not getAccountData(acc, "adminjail") then return end
+    if not isLogged(source) or not getData(source, "adminjail") then return end
 
     setElementData(source, "adminjail", true)
-    setElementData(source, "adminjail_remTime", tonumber(getAccountData(acc, "adminjail_remTime")) or 0)
-    setElementData(source, "adminjail_admin", getAccountData(acc, "adminjail_admin") or "?")
-    setElementData(source, "adminjail_indok", getAccountData(acc, "adminjail_indok") or "?")
+    setElementData(source, "adminjail_remTime", tonumber(getData(source, "adminjail_remTime")) or 0)
+    setElementData(source, "adminjail_admin", getData(source, "adminjail_admin") or "?")
+    setElementData(source, "adminjail_indok", getData(source, "adminjail_indok") or "?")
     setElementInterior(source, J.interior)
     setElementPosition(source, J.inside.x, J.inside.y, J.inside.z)
 end)
@@ -89,14 +93,13 @@ end, 1000, 0)
 -- ------------------------------------------------------------
 setTimer(function()
     for _, player in ipairs(getElementsByType("player")) do
-        local acc = getPlayerAccount(player)
-        if acc and getElementData(player, "adminjail") then
-            local remaining = (tonumber(getAccountData(acc, "adminjail_remTime")) or 0) - 1
+        if isLogged(player) and getElementData(player, "adminjail") then
+            local remaining = (tonumber(getData(player, "adminjail_remTime")) or 0) - 1
             if remaining <= 0 then
                 setPlayerInAJ(player, false)
                 adminAlert(player, "Your admin jail time is up, you have been released.", 85, 255, 85)
             else
-                setAccountData(acc, "adminjail_remTime", remaining)
+                setData(player, "adminjail_remTime", remaining)
                 setElementData(player, "adminjail_remTime", remaining)
             end
         end
@@ -121,16 +124,15 @@ addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
     local target = resolveTarget(player, idArg)
     if not target then return end
 
-    local acc = getPlayerAccount(target)
-    if not acc or isGuestAccount(acc) then
+    if not isLogged(target) then
         return adminAlert(player, "That player is not logged in.", 255, 90, 90)
     end
 
     local adminName = getPlayerName(player)
     setPlayerInAJ(target, true, minutes)
 
-    setAccountData(acc, "adminjail_admin", adminName)
-    setAccountData(acc, "adminjail_indok", reason)
+    setData(target, "adminjail_admin", adminName)
+    setData(target, "adminjail_indok", reason)
     setElementData(target, "adminjail_admin", adminName)
     setElementData(target, "adminjail_indok", reason)
 

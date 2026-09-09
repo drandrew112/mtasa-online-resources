@@ -1,5 +1,7 @@
 <meta>
 	<info author="VSCode MTA:SA Lua" type="script" name="pausemenu" />
+	<include resource="v_mysql" />
+	<include resource="v_accounts" />
 	<script src="settings_shared.lua" type="shared" />
 	<script src="c_pausemenu.lua" type="client" />
 	<script src="c_settings.lua" type="client" />

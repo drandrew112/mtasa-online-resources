@@ -37,6 +37,7 @@
 
     <!-- ================= SERVER ================= -->
     <script src="server/loading.lua" type="server" />
+    <script src="server/db.lua" type="server" />
     <script src="server.lua" type="server" />
     <script src="savesys.lua" type="server" />
     <script src="shared.lua" type="shared" />
@@ -47,10 +48,19 @@
     <export function="banAccount"   type="server" />
     <export function="unbanAccount" type="server" />
 
-    <!-- Data providers (v_mysql) report a finished loading step here. -->
+    <!-- Identity: the mod does not use MTA accounts. getName(player) -> account
+         name string | false; isLoggedIn(player) -> bool. accountNameExists /
+         getAllAccountNames read the `accounts` table (offline lookups). -->
+    <export function="getName"            type="server" />
+    <export function="isLoggedIn"         type="server" />
+    <export function="accountNameExists"  type="server" />
+    <export function="getAllAccountNames" type="server" />
+
+    <!-- Kept for the loading gate (external providers report a step done). -->
     <export function="loadingComplete" type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />
     <include resource="dgs" />
+    <include resource="v_mysql" />
 </meta>

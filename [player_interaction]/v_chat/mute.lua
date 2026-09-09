@@ -7,10 +7,18 @@
 --  (stored in account data).
 --
 --  Element data:  mute_until (epoch), mute_reason, mute_admin
---  Account data:  same keys
+--  Account data:  same keys, in the shared `accounts` table
+--                 (exports.v_mysql:getAccData / setAccData, keyed by player)
 -- ============================================================
 
 local CHECK_INTERVAL = 5000  -- expiry sweep, ms
+
+local function getData(player, key) return exports.v_mysql:getAccData(player, key) end
+local function setData(player, key, value) return exports.v_mysql:setAccData(player, key, value) end
+
+local function isLogged(player)
+    return isElement(player) and getElementData(player, "isLogged") == true
+end
 
 -- Players we have already seen muted, so the "mute expired" alert fires once.
 local seenMuted = {}
@@ -34,9 +42,8 @@ end
 local function clearMuteData(player)
     for _, key in ipairs({ "mute_until", "mute_reason", "mute_admin" }) do
         setElementData(player, key, false)
-        local acc = getPlayerAccount(player)
-        if acc and not isGuestAccount(acc) then
-            setAccountData(acc, key, false)
+        if isLogged(player) then
+            setData(player, key, false)
         end
     end
 end
@@ -46,11 +53,8 @@ function getMuteRemaining(player)
     if not isElement(player) then return 0 end
 
     local until_ = tonumber(getElementData(player, "mute_until"))
-    if not until_ then
-        local acc = getPlayerAccount(player)
-        if acc and not isGuestAccount(acc) then
-            until_ = tonumber(getAccountData(acc, "mute_until"))
-        end
+    if not until_ and isLogged(player) then
+        until_ = tonumber(getData(player, "mute_until"))
     end
     if not until_ then return 0 end
 
@@ -92,11 +96,10 @@ function mutePlayer(player, minutes, reason, adminName)
     setElementData(player, "mute_reason", reason)
     setElementData(player, "mute_admin", adminName)
 
-    local acc = getPlayerAccount(player)
-    if acc and not isGuestAccount(acc) then
-        setAccountData(acc, "mute_until", until_)
-        setAccountData(acc, "mute_reason", reason)
-        setAccountData(acc, "mute_admin", adminName)
+    if isLogged(player) then
+        setData(player, "mute_until", until_)
+        setData(player, "mute_reason", reason)
+        setData(player, "mute_admin", adminName)
     end
 
     seenMuted[player] = true
@@ -113,20 +116,19 @@ end
 -- ------------------------------------------------------------
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
-    local acc = getPlayerAccount(source)
-    if not acc or isGuestAccount(acc) then return end
+    if not isLogged(source) then return end
 
-    local until_ = tonumber(getAccountData(acc, "mute_until"))
+    local until_ = tonumber(getData(source, "mute_until"))
     if not until_ then return end
 
     if until_ > now() then
         setElementData(source, "mute_until", until_)
-        setElementData(source, "mute_reason", getAccountData(acc, "mute_reason") or "No reason given")
-        setElementData(source, "mute_admin", getAccountData(acc, "mute_admin") or "Console")
+        setElementData(source, "mute_reason", getData(source, "mute_reason") or "No reason given")
+        setElementData(source, "mute_admin", getData(source, "mute_admin") or "Console")
         seenMuted[source] = true
     else
         for _, key in ipairs({ "mute_until", "mute_reason", "mute_admin" }) do
-            setAccountData(acc, key, false)
+            setData(source, key, false)
         end
     end
 end)

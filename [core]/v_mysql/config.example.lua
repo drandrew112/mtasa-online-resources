@@ -7,11 +7,13 @@
 -- config.lua unreadable to other resources and turns meta.xml read only
 -- (see <database_credentials_protection> in mtaserver.conf).
 
--- Master switch. When false, v_mysql does NOT connect to any database:
---   * onPlayerLogin -> it answers "accountdata ready" immediately, so
---     v_accounts starts loading / spawning the player with no delay.
---   * updateAccountData() is a no-op.
--- Turn it off on servers that do not need the localhost <-> host sync.
+-- Master switch. When false, v_mysql does NOT connect to any database and every
+-- helper degrades gracefully:
+--   * getAccData() returns nil, setAccData() returns false (no persistence)
+--   * mysqlQuery/Sync/Insert/Exec are no-ops
+--   * the login shim still reports "accountdata ready" instantly
+-- Turn it off only on a throwaway server with no database at all - note that
+-- persistent systems (owned vehicles, account data) then store nothing.
 MYSQL_ENABLE_SYNC = false
 
 MYSQL_CONFIG = {

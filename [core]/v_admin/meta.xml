@@ -9,6 +9,8 @@
     <!-- /ban -> v_accounts, /mute -> v_chat -->
     <include resource="v_accounts" />
     <include resource="v_chat" />
+    <!-- admin_level + admin jail data live in the shared accounts table -->
+    <include resource="v_mysql" />
 
     <!-- Shared configuration (both sides) -->
     <script src="config.lua" type="shared" />

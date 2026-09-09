@@ -5,10 +5,9 @@
 Vehicles = Vehicles or {}
 
 Vehicles.config = {
-    -- SQLite database file (relative to this resource folder). Holds every
-    -- owned vehicle: model, colours, paintjob, upgrades, handling, plate and
-    -- the isDestroyed flag. Health is intentionally NOT stored.
-    dbFile = "vehicles.db",
+    -- Owned vehicles are stored in the shared MySQL database (table `vehicles`)
+    -- through v_mysql - see db.lua. Model, colours, paintjob, upgrades,
+    -- handling, customs and plate are persisted; health is intentionally NOT.
 
     -- Periodic autosave of every spawned owned vehicle's state, in ms.
     autosaveInterval = 120000,

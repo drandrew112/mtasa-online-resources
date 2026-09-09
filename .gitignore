@@ -11,12 +11,9 @@
 # --- Models ---
 /\[core\]/v_modloader/
 
-# --- v_ownveh: futásidejű járműadatbázis + a /vehspawn gyűjtőfájl ---
-# (a spawnpoints.lua kézzel karbantartott, ezért verziózódik)
-/\[vehicles\]/v_ownveh/vehicles.db
-/\[vehicles\]/v_ownveh/vehicles.db-journal
-/\[vehicles\]/v_ownveh/vehicles.db-wal
-/\[vehicles\]/v_ownveh/vehicles.db-shm
+# --- v_ownveh: a /vehspawn gyűjtőfájl ---
+# (a spawnpoints.lua kézzel karbantartott, ezért verziózódik; a járműadatok
+#  már a közös MySQL adatbázisban vannak, nem lokális vehicles.db-ben)
 /\[vehicles\]/v_ownveh/vehiclespawnpoints.txt
 
 # --- v_customs: a régi SA Customs kód archívuma, nem verziózandó ---

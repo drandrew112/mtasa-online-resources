@@ -4,6 +4,8 @@
 
 	<!-- ui_core provides the client export addNotification(title, text) -->
 	<include resource="ui_core" />
+	<include resource="v_mysql" />
+	<include resource="v_accounts" />
 
 	<script src="shared.lua" type="shared" />
 

@@ -13,10 +13,11 @@
 local PUSH_DELAY = 1500 -- ms after login before pushing, so client-side
                         -- dependencies (v_radar) are surely running
 
+-- Returns the player when logged in (the account-data store is keyed by the
+-- player element), or nil.
 local function accountOf(player)
-    local acc = player and getPlayerAccount(player)
-    if not acc or isGuestAccount(acc) then return nil end
-    return acc
+    if not isElement(player) or not exports.v_accounts:isLoggedIn(player) then return nil end
+    return player
 end
 
 -- Reads every saved setting for a player into a { id = value } map.
@@ -26,7 +27,7 @@ local function collectSaved(player)
 
     local out = {}
     for _, def in ipairs(PAUSE_SETTINGS) do
-        local value = pauseSettingDecode(def.id, getAccountData(acc, PAUSE_SETTING_KEY .. def.id))
+        local value = pauseSettingDecode(def.id, exports.v_mysql:getAccData(acc, PAUSE_SETTING_KEY .. def.id))
         if value ~= nil then
             out[def.id] = value
         end
@@ -55,7 +56,7 @@ addEventHandler("uipause:saveSetting", root, function(id, value)
 
     local encoded = pauseSettingEncode(id, value)
     if encoded == nil then return end
-    setAccountData(acc, PAUSE_SETTING_KEY .. id, encoded)
+    exports.v_mysql:setAccData(acc, PAUSE_SETTING_KEY .. id, encoded)
 end)
 
 --------------------------------------------------------------------------------

@@ -13,14 +13,11 @@ local spawned = {}
 --------------------------------------------------------------------------------
 
 -- Accepts a player element or an account-name string, returns the account name
--- for a real (non-guest) account, or nil.
+-- for a logged-in player (or the string as-is), or nil.
 local function resolveAccountName(who)
     if isElement(who) and getElementType(who) == "player" then
-        local account = getPlayerAccount(who)
-        if account and not isGuestAccount(account) then
-            return getAccountName(account)
-        end
-        return nil
+        local name = exports.v_accounts:getName(who)
+        return (type(name) == "string" and name ~= "") and name or nil
     elseif type(who) == "string" and who ~= "" then
         return who
     end
@@ -47,16 +44,15 @@ local function accountSpawnedId(accountName)
 end
 
 -- Rebuilds the owner's "owned_vehicle_ids" account data ("1,2,3"). Works for
--- offline owners too (getAccount).
+-- offline owners too (setAccData takes an account-name string).
 local function refreshOwnedIds(accountName)
-    local account = getAccount(accountName)
-    if not account then return end
+    if type(accountName) ~= "string" or accountName == "" then return end
 
     local ids = {}
     for _, row in ipairs(OwnVeh.dbGetByAccount(accountName)) do
         ids[#ids + 1] = tonumber(row.id)
     end
-    setAccountData(account, "owned_vehicle_ids", table.concat(ids, ","))
+    exports.v_mysql:setAccData(accountName, "owned_vehicle_ids", table.concat(ids, ","))
 end
 
 --------------------------------------------------------------------------------

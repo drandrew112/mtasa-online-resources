@@ -2,6 +2,7 @@
 	<info author="andrasxa" version="1.0.0" type="script" name="Szint rendszer" />
 
 	<include resource="ui_core" />
+	<include resource="v_mysql" />
 
 	<script src="client.lua" type="client" />
 	<script src="server.lua" type="server" />

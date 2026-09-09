@@ -1,6 +1,12 @@
 <meta>
-    <info author="DrAndrew112" name="Owned Vehicles" type="script" version="1.0.0"
-          description="Per-account persistent vehicles (SQLite): ownership, spawn points, blips." />
+    <info author="DrAndrew112" name="Owned Vehicles" type="script" version="1.1.0"
+          description="Per-account persistent vehicles (MySQL via v_mysql): ownership, spawn points, blips." />
+
+    <!-- Owned vehicles are stored in the shared MySQL database via v_mysql,
+         table `vehicles` (schema: database.sql / ../../main.sql). v_accounts
+         provides the logged-in identity (getName / isLoggedIn). -->
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
 
     <!-- Config + spawn point tables. spawnpoints.lua is hand-maintained; fill it
          in from the /vehspawn output (vehiclespawnpoints.txt). -->
@@ -8,7 +14,7 @@
     <script src="spawnpoints.lua" type="server" />
     <script src="models.lua"      type="server" />
 
-    <!-- SQLite layer: connection, schema, row <-> table helpers. -->
+    <!-- MySQL layer: row <-> table helpers on top of v_mysql's exports. -->
     <script src="db.lua" type="server" />
 
     <!-- Runtime: spawn / store, blips, state capture, lifecycle, exports. -->

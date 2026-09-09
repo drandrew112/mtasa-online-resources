@@ -1,8 +1,9 @@
 # v_mysql
 
-Shared MySQL layer for the FreeV server. Its job is to keep the **localhost dev
-server** and the **hosted server** working off one database so account data does
-not diverge between them.
+Shared MySQL layer for the FreeV server. It owns the one database connection
+and every persistent system in the mod goes through it — accounts, account
+data, owned vehicles, and anything added later. There is **no localhost ↔ host
+mirror sync**: both servers read and write the same tables.
 
 ## Setup
 
@@ -10,28 +11,27 @@ not diverge between them.
    (host / port / database / username / password). **`config.lua` is
    git-ignored** – it holds the credentials; everything else in the folder is
    versioned.
-2. Create the table: run [`database.sql`](database.sql) against that database
-   (`mysql ... < database.sql`, or paste into phpMyAdmin / Adminer).
-3. Make sure `v_mysql` is in `mtaserver.conf` **after** `v_accounts`
-   (`<resource src="v_mysql" startup="1" protected="0" />`).
+2. Create the tables: run [`../../main.sql`](../../main.sql) against that
+   database (`mysql ... < main.sql`, or paste into phpMyAdmin / Adminer).
+   `database.sql` in this folder is just the `accounts` slice of the same
+   schema.
+3. `v_mysql` has `download_priority_group 1000`, so the resource loader starts
+   it before everything else. `v_accounts` `<include>`s it.
 
-### Running without the sync
+### Running without a database
 
-Set `MYSQL_ENABLE_SYNC = false` in `config.lua` (it is the default in
-`config.example.lua`). Then v_mysql **never connects to any database**:
-
-* on login it immediately reports `accountdata` ready, so v_accounts loads and
-  spawns the player with no delay;
-* `updateAccountData()` is a no-op.
-
-So a server that does not need the localhost ↔ host sync can keep this resource
-installed and simply leave the switch off – nothing else has to change.
+Set `MYSQL_ENABLE_SYNC = false` in `config.lua` (the default in
+`config.example.lua`). Then v_mysql **never connects** and every helper degrades
+gracefully: `getAccData` returns `nil`, `setAccData` returns `false`, the
+query/exec helpers are no-ops. Nothing persists — and nobody can log in
+(v_accounts can't read the `accounts` table), so this is only for a throwaway
+test server.
 
 ## Parts
 
 ### `core/mysql.lua` — connection wrapper
 
-A thin async wrapper around `dbConnect("mysql", ...)`. Connects on start, verifies
+A thin wrapper around `dbConnect("mysql", ...)`. Connects on start, verifies
 with a round-trip `SELECT 1`, pings every 30 s and reconnects on failure.
 
 Exports (server):
@@ -39,62 +39,66 @@ Exports (server):
 | Export | Purpose |
 | --- | --- |
 | `mysqlIsConnected()` | `true` once the round-trip check has passed |
-| `mysqlQuery(callback, sql, ...)` | SELECT; `callback(result, numRows)` or `callback(false, err)`. `?` placeholders are escaped from `...`. Callback style is only reliable **inside this resource**. |
-| `mysqlExec(sql, ...)` | INSERT/UPDATE/DELETE, fire-and-forget. `?` placeholders escaped. |
+| `mysqlQuery(callback, sql, ...)` | Async SELECT; `callback(result, numRows)` or `callback(false, err)`. Callback style is only reliable **inside this resource**. |
+| `mysqlQuerySync(sql, ...)` | **Blocking** SELECT. Returns the result table (maybe empty) or `false`. Safe cross-resource. Use for small, latency-tolerant lookups only — it stalls the server thread for the round trip. |
+| `mysqlInsert(sql, ...)` | **Blocking** INSERT. Returns the new `AUTO_INCREMENT` id (`LAST_INSERT_ID()`) or `false`. |
+| `mysqlExec(sql, ...)` | INSERT/UPDATE/DELETE, fire-and-forget. |
 | `mysqlEscape(value)` | Quote/escape one value. Prefer `?` placeholders. |
 
+`?` placeholders in every helper are substituted and escaped from the varargs.
 Custom event: `mysql:connected` (at `resourceRoot`) when the link comes up.
 
-### `scripts/accountdata.lua` — account data sync
+### `scripts/accdata.lua` — account data store
 
-Mirrors every player's MTA account data 1:1 into `global_account_data`.
+**The full replacement for MTA's `getAccountData` / `setAccountData`.** The mod
+no longer uses the built-in account system at all. `who` is a **player element**
+or an **account-name string** (both work, online or offline).
 
-* **On login** (`onPlayerLogin`): the row is fetched, decoded and written back
-  into the account with `setAccountData()`, then v_accounts is told the
-  `accountdata` loading step is finished
-  (`exports.v_accounts:loadingComplete`). Every save is logged to the console.
-* **Push** — export `updateAccountData(player)` upserts the player's whole
-  current account-data snapshot. v_accounts' save system calls it on every
-  periodic autosave, logout, quit and resource stop.
-
-Stored `account_data` column format (JSON):
-
-```json
-[
-  {"key":"money-BETA","value":"1500","valueType":"int"},
-  {"key":"x","value":"1685.68","valueType":"float"},
-  {"key":"skin","value":"295","valueType":"int"}
-]
-```
-
-`valueType` is one of `string` / `int` / `float` / `boolean`.
-
-## The `onPlayerLoaded` event (in v_accounts)
-
-Because the account-data sync is **asynchronous**, anything that reads a
-player's account data must not do it on `onPlayerLogin` (that fires *before* the
-DB round trip). v_accounts instead fires a custom server event once the player
-is fully ready – account data synced, saved state restored, player spawned:
+| Export | Purpose |
+| --- | --- |
+| `getAccData(who)` | `{ key = value, ... }` copy of everything stored for the account. |
+| `getAccData(who, key)` | The single stored value, typed (`string` / `number` / `boolean`), or `nil`. |
+| `setAccData(who, key, value)` | Upsert one key. `value = nil` removes it. → `true` when queued. |
+| `setAccData(who, { key = value, ... })` | Merge several keys in **one** DB write — use this on bulk saves (e.g. v_accounts' `save_all`). |
+| `flushAccData(name)` | Drop the cache entry for an account (v_accounts calls it right after creating a row). |
 
 ```lua
-addEvent("onPlayerLoaded")               -- every consuming resource needs this
-addEventHandler("onPlayerLoaded", root, function(account)
-    local player = source
-    -- getAccountData(account, ...) is now the synced value
-end)
+local money = exports.v_mysql:getAccData(player, "bank_money") or 0
+exports.v_mysql:setAccData(player, "bank_money", money + 500)
 ```
 
-`source` = the player, argument 1 = the account. This replaces every
-`onPlayerLogin` handler in the other resources (v_bank, v_levelsys,
-v_playedtime, v_admin, v_chat, v_socialpanel, ui_pause, ui_phone). Resource
-restarts with players already online are still handled by each resource's own
-`onResourceStart` loop.
+Most keys live in the `account_data` column as a JSON object:
 
-When `MYSQL_ENABLE_SYNC = false`, `onPlayerLoaded` still fires – just with no
-delay, right after login.
+```json
+{ "bank_money": { "v": "1500", "t": "int" },
+  "skin":       { "v": "295",  "t": "int" } }
+```
+
+`t` is one of `string` / `int` / `float` / `boolean`, so a value comes back the
+same type it went in.
+
+Four keys are **promoted to real columns** so a website / tooling can edit them
+directly — `email`, `display_name`, `admin_level`, `created_at`. `getAccData` /
+`setAccData` map them transparently; callers never need to know which is which.
+
+A per-account in-memory cache serves reads without a round trip. It is filled on
+first access, updated on every `setAccData`, and dropped on `onPlayerQuit` (two
+servers share the table and do not sync live, so a cached value could otherwise
+go stale after the player leaves).
+
+## The `accounts` table
+
+| Column | Written by |
+| --- | --- |
+| `account_name` | v_accounts on register (unique key, the identity) |
+| `password` | v_accounts (bcrypt hash — `passwordHash` / `passwordVerify`) |
+| `email` | `setAccData(who, "email", …)` |
+| `display_name` | `setAccData(who, "display_name", …)` — defaults to the account name |
+| `admin_level` | `setAccData(who, "admin_level", n)` (v_admin) |
+| `account_data` | `setAccData` (everything else, JSON) |
+| `created_at` / `updated_at` | first insert / every write |
 
 ## Dependency direction
 
-`v_mysql` `<include>`s `v_accounts` so it starts after it. `v_accounts` must
-**not** include `v_mysql` back — it calls these exports defensively
-(`getResourceState` guard) so it keeps working when `v_mysql` is absent.
+`v_accounts` `<include>`s `v_mysql`. `v_mysql` includes nothing — it is the
+lowest layer.

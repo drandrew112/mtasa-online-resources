@@ -37,7 +37,7 @@ part of the base mod. The old `listres.py` script has been removed.
 
 | Folder | Contents |
 | --- | --- |
-| `[core]` | Base systems: gamemode script + resource loader + update checker (`v_main`), accounts/login (`v_accounts`), MySQL account-data sync (`v_mysql`), admin (`v_admin`), bank (`v_bank`), level system (`v_levelsys`), spawn/respawn (`v_spawnmanager`), join/quit handling (`v_joinquit`), played-time tracking (`v_playedtime`), Discord Rich Presence (`v_discordmanager`), modloader (`v_modloader`), plus gameplay scripts (`parachute`, `realdriveby`). |
+| `[core]` | Base systems: gamemode script + resource loader + update checker (`v_main`), accounts/login (`v_accounts`), shared MySQL layer (`v_mysql`), admin (`v_admin`), bank (`v_bank`), level system (`v_levelsys`), spawn/respawn (`v_spawnmanager`), join/quit handling (`v_joinquit`), played-time tracking (`v_playedtime`), Discord Rich Presence (`v_discordmanager`), modloader (`v_modloader`), plus gameplay scripts (`parachute`, `realdriveby`). |
 | `[ui]` | User interface: the UI framework (`ui_core`), pause menu (`ui_pause`), phone (`ui_phone`), virtual browser (`ui_browser`), download screen (`ui_download`), interaction menu (`ui_inac`), radar/map (`v_radar`), the DGS GUI library (`dgs`). |
 | `[player_interaction]` | Player-to-player interaction: chat (`v_chat`), nametags (`v_nametags`), social panel (`v_socialpanel`). |
 | `[minigames]` | Jobs and minigames: job manager (`v_jobmanager`), arena war (`v_arenawar`), time trial (`v_timetrial`). |
@@ -72,35 +72,44 @@ By convention most resource names start with the `v_` prefix. The UI resources
   are on its ignore list. Library:
   [fresholia/mtasa-git-resource-updater](https://github.com/fresholia/mtasa-git-resource-updater).
 
-## Accounts, loading and account-data sync
+## Data storage: the shared MySQL database
 
-- **Account / login (`v_accounts`)** – a login/register panel on connect; this
-  owns the player's account data, which the other systems also read and write.
-  After login it shows a **black loading screen** while the post-login providers
-  finish, then spawns the player and fires the custom **`onPlayerLoaded`** event.
-- **`onPlayerLoaded`** – because account data can be loaded **asynchronously**
-  (see `v_mysql`), resources must **not** read account data on `onPlayerLogin`.
-  Instead they listen for `onPlayerLoaded` (`source` = player, arg 1 = account),
-  which fires once the player is fully ready – account data synced, saved state
-  restored, spawned. Every consumer calls `addEvent("onPlayerLoaded")` itself, so
-  handler order does not matter. When the MySQL sync is off, it still fires –
-  just with no delay.
-- **MySQL account-data sync (`v_mysql`)** – keeps a **localhost dev server** and
-  the **hosted server** working off one external MySQL database so account data
-  does not diverge. On login it pulls the player's row into the account with
-  `setAccountData`; on every autosave / logout / quit it pushes the full
-  snapshot back.
-  - **Config:** copy `config.example.lua` → `config.lua` (git-ignored – it holds
-    the DB credentials; everything else in the folder, including
-    `config.example.lua` and `database.sql`, is versioned), fill in
-    `MYSQL_CONFIG`, and run `database.sql` against the database.
-  - **Master switch `MYSQL_ENABLE_SYNC`** (default `false`): when off, `v_mysql`
-    **never connects to any database** – it reports `accountdata` ready
-    instantly and `updateAccountData()` is a no-op. A server that does not need
-    the sync can leave the resource installed and simply keep the switch off.
-  - `v_mysql` `<include>`s `v_accounts` (starts after it); `v_accounts` calls
-    `v_mysql`'s exports defensively, so it keeps working when `v_mysql` is
-    absent. See [`[core]/v_mysql/README.md`](%5Bcore%5D/v_mysql/README.md).
+**Every persistent system stores its data in one shared MySQL database**,
+reached through `v_mysql`. There is no per-resource SQLite file and no
+localhost ↔ host mirror sync – both servers read and write the same tables, so
+their data never diverges. **The mod does not use MTA's built-in account
+system** (`logIn` / `getAccountData` / `setAccountData` / …) at all.
+
+- **`v_mysql`** – owns the single database connection and exposes it:
+  - `getAccData(who [, key])` / `setAccData(who, key, value)` – **the**
+    replacement for MTA's `getAccountData` / `setAccountData`. `who` is a
+    player element or an account-name string (online or offline). Values keep
+    their type. `setAccData(who, { k = v, … })` writes many keys in one go.
+    Data lives in the `accounts` table.
+  - `mysqlQuery` / `mysqlQuerySync` / `mysqlInsert` / `mysqlExec` /
+    `mysqlEscape` – generic helpers for resources with their own tables
+    (e.g. `v_ownveh` → `vehicles`).
+  - **Setup:** copy `config.example.lua` → `config.lua` (git-ignored – it holds
+    the DB credentials), fill in `MYSQL_CONFIG`, and run [`main.sql`](main.sql)
+    (the whole schema) against the database.
+  - See [`[core]/v_mysql/README.md`](%5Bcore%5D/v_mysql/README.md).
+- **Account / login (`v_accounts`)** – a login/register panel on connect. An
+  "account" is a row in the `accounts` table; the password is a **bcrypt hash**
+  (`passwordHash` / `passwordVerify`). A logged-in player is identified by the
+  `accName` element data (there is no MTA account element). Other resources call
+  `exports.v_accounts:getName(player)` / `isLoggedIn(player)` and read/write the
+  player's data through `getAccData` / `setAccData`. After login v_accounts
+  shows a **black loading screen**, restores the saved state, spawns the player
+  and fires **`onPlayerLoaded`**.
+- **`onPlayerLoaded`** – the event every resource hooks to touch a player's
+  data. `source` = player, **arg 1 = the account-name string**. Every consumer
+  calls `addEvent("onPlayerLoaded")` itself, so handler order does not matter.
+- **`main.sql`** (repo root) – the union of every table the mod needs
+  (`accounts`, `vehicles`, …), kept in sync by hand with each resource's own
+  `database.sql`. Re-runnable (`CREATE TABLE IF NOT EXISTS`).
+- **`dgs`** (vendored GUI library) still references `getPlayerAccount` for a
+  console-only debug gate; harmless (it just never triggers) and left as-is to
+  stay close to upstream.
 
 ## Main panels
 
@@ -152,7 +161,9 @@ watch these so they will not open on top of an already-open surface.
 
 - Where a resource has its own detailed docs, they live in its `README.md` /
   `readme.xml` (e.g. `[ui]/ui_browser`, `[core]/v_bank`, `[core]/v_mysql`).
-- Read account data on `onPlayerLoaded`, never on `onPlayerLogin` (see above).
+- Read/write account data with `exports.v_mysql:getAccData` / `setAccData`
+  (never MTA's `getAccountData` / `setAccountData` — the mod is off the built-in
+  account system). Touch a player's data on `onPlayerLoaded`, not before.
 - Runtime-generated files that hold personal data (bans, crews, messages,
   models) are `.gitignore`d, as is the `[tiktok]` integration
   ([mtasa-tiktok-integration](https://github.com/drandrew112/mtasa-tiktok-integration))
