@@ -1,5 +1,5 @@
 local mod_name = "MTA Online"
-local version = "0.6.1 Beta"
+local version = "0.6.2 Beta"
 
 function setCustomGamemodeName()
     local serverIP = getServerConfigSetting("serverip")
