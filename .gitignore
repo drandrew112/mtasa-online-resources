@@ -5,6 +5,8 @@
 
 # --- Futásidőben generált adatfájlok (személyes adat, ne kerüljön verziózásba) ---
 /\[core\]/v_accounts/bans.xml
+# v_socialpanel crew/üzenet/friend-request adatai már a közös MySQL adatbázisban
+# vannak; ezek a fájlok legfeljebb régi telepítésekből maradhattak itt.
 /\[player_interaction\]/v_socialpanel/crews.xml
 /\[player_interaction\]/v_socialpanel/messages.xml
 
