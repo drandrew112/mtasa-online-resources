@@ -63,7 +63,7 @@ registerMenu({
             target = "spawn_vehicle"
         },
         {
-            label = "Request vehicle",
+            label = "Request personal vehicle",
             type = "submenu",
             target = "request_personal_vehicle",
             desc = "Summon one of your personal vehicles",

@@ -7,9 +7,14 @@
     <script src="client/api.lua" type="client" />
     <script src="client/input.lua" type="client" />
     <script src="client/render.lua" type="client" />
+    <script src="client/temp.lua" type="client" />
     <script src="client/main.lua" type="client" />
     <script src="client/vehicles.lua" type="client" />
     <script src="client/ownveh.lua" type="client" />
+
+    <export function="createTempMenu" type="client" />
+    <export function="closeTempMenu" type="client" />
+    <export function="isTempMenuOpen" type="client" />
 
     <file src="vehicles.xml" />
     <file src="vertical_arrows.png" />

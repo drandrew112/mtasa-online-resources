@@ -29,6 +29,7 @@ local function otherPanelOpen()
 end
 
 bindKey("m", "down", function()
+    if isTempMenuOpen() then return end
     if not MenuState.open and otherPanelOpen() then return end
     MenuState.open = not MenuState.open
     setElementData(localPlayer, "interactionMenuOpen", MenuState.open)
@@ -85,6 +86,7 @@ bindKey("enter", "down", function()
     elseif item.type == "action" and item.action then
         item.action()
         playClick()
+        if item.closeOnSelect and isTempMenuOpen() then closeTempMenu() end
 
     elseif item.type == "spawnvehicle" then
         triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
@@ -94,6 +96,13 @@ end)
 
 bindKey("backspace", "down", function()
     if not MenuState.open then return end
+
+    if isTempMenuOpen() then
+        closeTempMenu()
+        playSelect()
+        return
+    end
+
     local menu = MenuState:getMenu()
 
     if menu.back then

@@ -1,12 +1,12 @@
 -- Personal vehicles (v_ownveh) inside the interaction menu.
 --
--- The "Request vehicle" item in the "vehicle" menu opens this submenu; its
+-- The "Request personal vehicle" item in the "vehicle" menu opens this submenu; its
 -- onOpen asks the server for the player's vehicles and the list below is
 -- rebuilt from the reply. Every row summons that vehicle through v_ownveh.
 
 registerMenu({
     id    = "request_personal_vehicle",
-    title = "Request vehicle",
+    title = "Request personal vehicle",
     back  = "vehicle",
     items = {
         { label = "Loading...", type = "action", action = function() end },

@@ -13,8 +13,9 @@ addEventHandler("onClientRender", root, function()
     local sw, sh = uicore:getScreenWH()
 
     -- Méretek
+    local hasHeader = menu.header ~= false   -- ideiglenes menuk fejlec nelkul
     local w        = ui(420)
-    local headerH  = ui(60)
+    local headerH  = hasHeader and ui(60) or 0
     local titleH   = ui(30)
     local itemH    = ui(32)
     local padding  = 0
@@ -29,19 +30,21 @@ addEventHandler("onClientRender", root, function()
     local x = sx+padding
     local y = sy+padding
 
-    -- Header
-    dxDrawRectangle(x, y, w, headerH, tocolor(0, 100, 150, 255))
-    dxDrawText(
-        "FREE V",
-        x + w/2,
-        y + headerH / 2,
-        nil, nil,
-        tocolor(255, 255, 255, 255),
-        freeVSize,
-        "pricedown",
-        "center",
-        "center"
-    )
+    -- Header (az ideiglenes menuknel nincs "FREE V" fejlec)
+    if hasHeader then
+        dxDrawRectangle(x, y, w, headerH, tocolor(0, 100, 150, 255))
+        dxDrawText(
+            "FREE V",
+            x + w/2,
+            y + headerH / 2,
+            nil, nil,
+            tocolor(255, 255, 255, 255),
+            freeVSize,
+            "pricedown",
+            "center",
+            "center"
+        )
+    end
 
     -- Title
     local titleY = y + headerH
