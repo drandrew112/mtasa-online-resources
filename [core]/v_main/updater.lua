@@ -31,7 +31,9 @@
     Triggers:
       - Automatically on v_main start, unless the "enableUpdateChecker"
         setting (meta.xml) is [false].
-      - Manually from the server console:   checkupdates
+      - Manually with the "checkupdates" command: server console, or an
+        in-game player with admin_level >= 5 (see commandAuth.lua). Results
+        are echoed to that player's F8 console as well as the server log.
 
     Repo config + all the shared helpers live in lib/repoSync.lua (RepoSync),
     so this checker and updateResources.lua can never disagree about which
@@ -59,19 +61,23 @@ end
 -- listeners (checker:on(...)) keep working, but formatting lives here.
 local EVENT_PREFIX = { error = "ERROR: ", outdated = "outdated : ", missing = "missing  : " }
 
-local function emit(event, text)
-    local line = (EVENT_PREFIX[event] or "") .. tostring(text)
-    if event == "missing" then line = line .. "   (in repo, not found locally)" end
-    log(line)
-    if checker then checker:pushEvent(event, text) end
-end
-
 -- ---------------------------------------------------------------------------
 -- the check
 -- ---------------------------------------------------------------------------
 local running = false
 
-local function runCheck(triggeredBy)
+local function runCheck(triggeredBy, player)
+    -- in-game caller: also echo every line to their F8 console
+    local echo = isElement(player) and player or nil
+
+    local function emit(event, text)
+        local line = (EVENT_PREFIX[event] or "") .. tostring(text)
+        if event == "missing" then line = line .. "   (in repo, not found locally)" end
+        log(line)
+        if echo then outputConsole("[updater] " .. line, echo) end
+        if checker then checker:pushEvent(event, text) end
+    end
+
     if running then
         emit("status", "A check is already running - ignoring this request.")
         return
@@ -162,6 +168,13 @@ addEventHandler("onResourceStart", resourceRoot, function()
 end)
 
 addCommandHandler("checkupdates", function(player)
-    if player then return end -- console only
-    runCheck("manual")
+    if not canRunAdminCommand(player) then
+        return denyAdminCommand(player, "checkupdates")
+    end
+
+    local who = isElement(player)
+        and ("player " .. getPlayerName(player) .. " (#" .. tostring(getElementData(player, "ID")) .. ")")
+        or  "console"
+
+    runCheck(who, player)
 end, false, false)
