@@ -269,7 +269,7 @@ addEventHandler("onClientRender", root, function()
     dxDrawRectangle(0, TOPBAR, sw, 4, C.accent)
 
     -- "FREE V" branding exiled to the very top-left corner.
-    dxDrawText("OpenOnline", 12, 0, 12, TOPBAR, tocolor(255, 200, 0, 120), 1.0, "pricedown", "left", "center")
+    dxDrawText("FreeV", 12, 0, 12, TOPBAR, tocolor(255, 200, 0, 120), 1.0, "pricedown", "left", "center")
 
     -- Panel title where the branding used to be.
     dxDrawText("SOCIAL PANEL", X, 0, X, TOPBAR, C.white, 1.5, "default-bold", "left", "center")
