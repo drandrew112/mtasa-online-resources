@@ -1,19 +1,19 @@
 -- v_customs :: temp-menu builder + wiring (client)
 --
--- shared/tuning.lua is a flat alphabetical list of parts. Each part becomes one
--- root entry that opens a submenu of its options. Items carry `price` and
--- `checked` (the currently fitted option) - ui_inac renders those on the right.
+-- shared/tuning.lua is an alphabetical list of parts / folders. Folders nest one
+-- level; every part opens a submenu of its options. Items carry `price` and
+-- `checked` (the currently fitted option) which ui_inac renders on the right.
 
 Menu   = Menu or {}
 uicore = exports.ui_core
 
-local menuId         = nil
-local curVeh         = nil
-local previewByPath  = {}   -- path -> Preview.onHover info
-local basePriceByPath = {}  -- path -> catalogue price (for un-checking)
-local partOfPath     = {}   -- path -> part index
-local partPaths      = {}   -- part index -> { option path, ... }
-local plateToken     = nil
+local menuId          = nil
+local curVeh          = nil
+local previewByPath   = {}   -- option path -> Preview.onHover info
+local basePriceByPath = {}   -- option path -> catalogue price
+local partOfPath      = {}   -- option path -> owning part's path prefix
+local partPaths       = {}   -- part path prefix -> { option path, ... }
+local plateToken      = nil
 
 addEvent("ui_inac:tempMenuSelect")
 addEvent("ui_inac:tempMenuHover")
@@ -38,14 +38,13 @@ local WHEEL_FLAGS = {
     front = { verynarrow = 0x100,  narrow = 0x200,  wide = 0x400,  verywide = 0x800  },
     rear  = { verynarrow = 0x1000, narrow = 0x2000, wide = 0x4000, verywide = 0x8000 },
 }
-local OFFROAD_FLAGS = { dirt = 0x100000, sand = 0x200000 }
 
-local function nearly(a, b) return math.abs((a or 0) - (b or 0)) < 0.001 end
+local function nearly(a, b) return math.abs((tonumber(a) or 0) - (tonumber(b) or 0)) < 0.001 end
 
--- Returns the option index currently active for a static part, or nil.
+-- option index currently active for a static part, or nil
 local function activeStatic(part)
     local opts = part.options
-    local h = getVehicleHandling(curVeh)
+    local h    = getVehicleHandling(curVeh)
     local orig = getOriginalHandling(getElementModel(curVeh))
     local kind = opts[1].kind
 
@@ -62,19 +61,19 @@ local function activeStatic(part)
     elseif kind == "handlingProp" then
         for i, opt in ipairs(opts) do
             if opt.data == false then
-                if nearly(h[opt.prop], orig[opt.prop]) or h[opt.prop] == orig[opt.prop] then return i end
-            elseif h[opt.prop] == opt.data or nearly(tonumber(h[opt.prop]) or -1, tonumber(opt.data) or -2) then
+                if h[opt.prop] == orig[opt.prop] or nearly(h[opt.prop], orig[opt.prop]) then return i end
+            elseif type(opt.data) == "number" then
+                if nearly(h[opt.prop], opt.data) then return i end
+            elseif h[opt.prop] == opt.data then
                 return i
             end
         end
 
     elseif kind == "wheelWidth" then
-        local flags = h.handlingFlags
-        local side  = opts[1].side
+        local flags, side = h.handlingFlags, opts[1].side
         for i, opt in ipairs(opts) do
             local f = WHEEL_FLAGS[side][opt.data]
             if not f then
-                -- "default" = no width flag on that side
                 local any = false
                 for _, ff in pairs(WHEEL_FLAGS[side]) do if isFlagSet(flags, ff) then any = true end end
                 if not any then return i end
@@ -82,27 +81,6 @@ local function activeStatic(part)
                 return i
             end
         end
-
-    elseif kind == "offroad" then
-        local flags = h.handlingFlags
-        for i, opt in ipairs(opts) do
-            local f = OFFROAD_FLAGS[opt.data]
-            if not f then
-                if not isFlagSet(flags, OFFROAD_FLAGS.dirt) and not isFlagSet(flags, OFFROAD_FLAGS.sand) then return i end
-            elseif isFlagSet(flags, f) then
-                return i
-            end
-        end
-
-    elseif kind == "nitro" then
-        local lvl = tonumber(extras().nitro) or 0
-        for i, opt in ipairs(opts) do if opt.data == lvl then return i end end
-        return 1
-
-    elseif kind == "airride" then
-        local lvl = tonumber(extras().airride) or 0
-        for i, opt in ipairs(opts) do if opt.data == lvl then return i end end
-        return 1
 
     elseif kind == "flagToggle" then
         local on
@@ -131,34 +109,32 @@ local function makeOption(path, name, base, checked, preview)
     }
 end
 
-local function opticalOptions(part, pIdx)
+local function opticalOptions(part, prefix)
     local ups = getVehicleCompatibleUpgrades(curVeh, part.slot) or {}
     local cur = getVehicleUpgradeOnSlot(curVeh, part.slot) or 0
     local items, paths = {}, {}
 
-    local defPath = pIdx .. "/1"
-    paths[1] = defPath
-    items[1] = makeOption(defPath, "Default", 0, cur == 0,
+    paths[1] = prefix .. "/1"
+    items[1] = makeOption(paths[1], "Default", 0, cur == 0,
         { kind = "optical", slot = part.slot, upgrade = 0 })
 
     for k, up in ipairs(ups) do
-        local p = pIdx .. "/" .. (k + 1)
+        local p = prefix .. "/" .. (k + 1)
         paths[k + 1] = p
         items[k + 1] = makeOption(p, part.name .. " " .. k, part.price, cur == up,
             { kind = "optical", slot = part.slot, upgrade = up })
     end
 
     if #ups == 0 then
-        items = { { label = "(not available for this vehicle)", closeOnSelect = false } }
-        paths = {}
+        return { { label = "(not available for this vehicle)", closeOnSelect = false } }, {}
     end
     return items, paths
 end
 
-local function colorOptions(part, pIdx)
+local function colorOptions(part, prefix)
     local items, paths = {}, {}
     for k, entry in ipairs(Customs.PALETTE) do
-        local p = pIdx .. "/" .. k
+        local p = prefix .. "/" .. k
         paths[k] = p
         items[k] = makeOption(p, entry.name, part.price, false,
             { kind = "color", slot = part.slot, rgb = entry.rgb })
@@ -166,40 +142,51 @@ local function colorOptions(part, pIdx)
     return items, paths
 end
 
-local function neonOptions(part, pIdx)
-    local curId = extras().neon
-    local items, paths = {}, {}
-
-    paths[1] = pIdx .. "/1"
-    items[1] = makeOption(paths[1], "Remove", 0, not curId,
-        { kind = "neon", id = false })
-
-    for k, entry in ipairs(Customs.NEONS) do
-        local p = pIdx .. "/" .. (k + 1)
-        paths[k + 1] = p
-        items[k + 1] = makeOption(p, entry.name, part.price, curId == entry.id,
-            { kind = "neon", id = entry.id })
-    end
-    return items, paths
-end
-
-local function staticOptions(part, pIdx)
+local function staticOptions(part, prefix)
     local active = activeStatic(part)
     local items, paths = {}, {}
     for k, opt in ipairs(part.options) do
-        local p = pIdx .. "/" .. k
+        local p = prefix .. "/" .. k
         paths[k] = p
-        local preview = nil
-        if opt.kind ~= "horn" and opt.kind ~= "plate" then
-            preview = { kind = opt.kind, opt = opt }
-        end
+        local preview = (opt.kind ~= "horn" and opt.kind ~= "plate") and { kind = opt.kind, opt = opt } or nil
         items[k] = makeOption(p, opt.name, opt.price, active == k, preview)
     end
     return items, paths
 end
 
 --------------------------------------------------------------------------------
--- open / close
+-- tree build
+--------------------------------------------------------------------------------
+
+local function buildPart(part, prefix)
+    local opts, paths
+    if part.group == "optical" then
+        opts, paths = opticalOptions(part, prefix)
+    elseif part.group == "color" then
+        opts, paths = colorOptions(part, prefix)
+    else
+        opts, paths = staticOptions(part, prefix)
+    end
+
+    partPaths[prefix] = paths
+    for _, p in ipairs(paths) do partOfPath[p] = prefix end
+
+    return { label = part.name, title = part.name, items = opts }
+end
+
+local function buildLevel(nodes, prefix)
+    local items = {}
+    for i, node in ipairs(nodes) do
+        local p = prefix == "" and tostring(i) or (prefix .. "/" .. i)
+        if node.folder then
+            items[i] = { label = node.name, title = node.name, items = buildLevel(node.items, p) }
+        else
+            items[i] = buildPart(node, p)
+        end
+    end
+    return items
+end
+
 --------------------------------------------------------------------------------
 
 function Menu.open(veh)
@@ -210,26 +197,10 @@ function Menu.open(veh)
     partPaths       = {}
     Preview.init(veh)
 
-    local items = {}
-    for pIdx, part in ipairs(Customs.parts) do
-        local opts, paths
-        if part.group == "optical" then
-            opts, paths = opticalOptions(part, pIdx)
-        elseif part.group == "color" then
-            opts, paths = colorOptions(part, pIdx)
-        elseif part.group == "neon" then
-            opts, paths = neonOptions(part, pIdx)
-        else
-            opts, paths = staticOptions(part, pIdx)
-        end
-
-        partPaths[pIdx] = paths
-        for _, p in ipairs(paths) do partOfPath[p] = pIdx end
-
-        items[pIdx] = { label = part.name, title = part.name, items = opts }
-    end
-
-    menuId = exports.ui_inac:createTempMenu({ title = "SA CUSTOMS", items = items }) or nil
+    menuId = exports.ui_inac:createTempMenu({
+        title = "SA CUSTOMS",
+        items = buildLevel(Customs.parts, ""),
+    }) or nil
     return menuId ~= nil
 end
 
@@ -271,13 +242,11 @@ addEventHandler("v_customs:buyResult", root, function(ok, path, charged)
         uicore:showMoney("take", tonumber(charged))
     end
 
-    -- move the tick onto the bought option within its part (not for one-shot
-    -- actions like plate / horn that have no "fitted" state)
-    local node = path and Customs.resolve(path)
+    local node    = path and Customs.resolve(path)
     local oneShot = node and (node.kind == "plate" or node.kind == "horn")
-    local pIdx = (path and not oneShot) and partOfPath[path]
-    if pIdx and partPaths[pIdx] then
-        for _, p in ipairs(partPaths[pIdx]) do
+    local prefix  = (path and not oneShot) and partOfPath[path]
+    if prefix and partPaths[prefix] then
+        for _, p in ipairs(partPaths[prefix]) do
             exports.ui_inac:updateTempMenuItem(p, {
                 checked = (p == path),
                 price   = (p == path) and false or basePriceByPath[p],

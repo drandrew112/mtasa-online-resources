@@ -27,22 +27,7 @@ local function generatePlate()
 end
 
 local function reapplySlotUpgrades(veh)
-    if getVehicleUpgradeOnSlot(veh, 8) ~= 0 then addVehicleUpgrade(veh, 1010) end
     if getVehicleUpgradeOnSlot(veh, 9) ~= 0 then addVehicleUpgrade(veh, 1087) end
-end
-
---------------------------------------------------------------------------------
--- Air-ride (also used by persist.lua)
---------------------------------------------------------------------------------
-
-function Customs.applyAirRide(veh, level)
-    level = tonumber(level) or 0
-    if level <= 0 then
-        setVehicleHandling(veh, "suspensionLowerLimit",
-            getOriginalHandling(getElementModel(veh))["suspensionLowerLimit"])
-    else
-        setVehicleHandling(veh, "suspensionLowerLimit", Customs.AIRRIDE_DROP[level] or -0.2)
-    end
 end
 
 --------------------------------------------------------------------------------
@@ -81,18 +66,6 @@ local function applyItem(player, veh, node, optIdx)
             setVehicleColor(veh, unpack(c))
         end
         return true
-
-    elseif node.group == "neon" then
-        if optIdx == 1 then
-            Customs.setExtra(veh, "neon", nil)
-            triggerClientEvent(root, "v_customs:neon", root, veh, false)
-        else
-            local entry = Customs.NEONS[(optIdx or 0) - 1]
-            if not entry then return false end
-            Customs.setExtra(veh, "neon", entry.id)
-            triggerClientEvent(root, "v_customs:neon", root, veh, entry.id)
-        end
-        return true
     end
 
     -- ---- option leaves --------------------------------------------------
@@ -120,28 +93,6 @@ local function applyItem(player, veh, node, optIdx)
 
     elseif kind == "wheelWidth" then
         Customs.setHandlingFlagByte(veh, node.side == "front" and 3 or 4, Customs.WHEEL_SIZE[node.data] or 0)
-        return true
-
-    elseif kind == "offroad" then
-        Customs.setHandlingFlagByte(veh, 6, Customs.OFFROAD[node.data] or 0)
-        return true
-
-    elseif kind == "nitro" then
-        local level = tonumber(node.data) or 0
-        if level <= 0 then
-            removeVehicleUpgrade(veh, 1010)
-            Customs.setExtra(veh, "nitro", nil)
-        else
-            addVehicleUpgrade(veh, 1010)
-            Customs.setExtra(veh, "nitro", level)
-        end
-        triggerClientEvent(root, "v_customs:nitroLevel", root, veh, level)
-        return true
-
-    elseif kind == "airride" then
-        local level = tonumber(node.data) or 0
-        Customs.applyAirRide(veh, level)
-        Customs.setExtra(veh, "airride", level > 0 and level or nil)
         return true
 
     elseif kind == "flagToggle" then
@@ -186,8 +137,8 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     if not node then return end
     if not node.group and not node.kind then return end
 
-    -- first option of an optical / neon group ("Default" / "Remove") is free
-    local freeReset = (node.group == "optical" or node.group == "neon") and optIdx == 1
+    -- first option of an optical group ("Default") is free
+    local freeReset = node.group == "optical" and optIdx == 1
     local price = freeReset and 0 or Customs.price(node.price or 0)
 
     if price > 0 and getPlayerMoney(player) < price then
@@ -201,7 +152,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
         return
     end
 
-    local custom = (node.kind == "plate" and node.data == "custom")
+    local custom  = (node.kind == "plate" and node.data == "custom")
     local charged = 0
     if not custom and price > 0 then
         takePlayerMoney(player, price)

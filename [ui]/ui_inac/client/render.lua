@@ -103,7 +103,9 @@ addEventHandler("onClientRender", root, function()
     -- a kijelölt elem köré igazítva, hogy ne lógjon le a képernyőről.
     local rowsTop  = titleY + titleH
     local availH   = sh - rowsTop - sy - ui(72)
-    local maxRows  = math.max(4, math.floor(availH / itemH))
+    -- temp menus (customs, ...) show half as many rows at once as the main menu
+    local rowDiv   = menu.temporary and 2 or 1
+    local maxRows  = math.max(4, math.floor(availH / itemH / rowDiv))
     local total    = #menu.items
     local firstRow = 1
     if total > maxRows then

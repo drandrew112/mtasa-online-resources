@@ -39,24 +39,9 @@ addEventHandler("v_customs:applyExtras", root, function(extras)
     if not isElement(veh) then return end
     extras = (type(extras) == "table") and extras or Customs.getExtras(veh)
 
-    -- Nitro: the visual bottle is GTA upgrade 1010; the level lives client-side.
-    if tonumber(extras.nitro) and tonumber(extras.nitro) > 0 then
-        addVehicleUpgrade(veh, 1010)
-    end
-
-    -- Neon: hand the colour to the neon module (client side, all clients).
-    if extras.neon then
-        triggerClientEvent(root, "v_customs:neon", root, veh, extras.neon)
-    end
-
-    -- Air-ride suspension drop.
-    if tonumber(extras.airride) and tonumber(extras.airride) > 0 then
-        Customs.applyAirRide(veh, tonumber(extras.airride))
-    end
-
-    -- LSD doors / bulletproof tyres are pure element-data flags the client
-    -- modules already react to; setElementData in v_ownveh covered that, but be
-    -- explicit so a resource restart mid-life still works.
+    -- LSD doors / bulletproof tyres are element-data flags the client modules
+    -- react to. v_ownveh already setElementData("customs:extras"); mirror the two
+    -- flags the modules key on so a mid-life resource restart still works.
     if extras.lsdDoor then
         setElementData(veh, "tuning.lsdDoor", true)
     end

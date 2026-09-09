@@ -1,16 +1,14 @@
 -- v_customs :: tuning catalogue (shared)
 --
--- A flat, alphabetically sorted list of "parts". Each part is either:
---   static : { name, options = { <option leaf>, ... } }
---   group  : { name, group = "optical"|"color"|"neon", slot?, price }
---            options are generated at menu-build time (compatible upgrades /
---            palette / neon colours); the server maps the chosen index back.
+-- Top level is an alphabetically sorted list of entries. An entry is either:
+--   folder : { name, folder = true, items = { <part>, ... } }
+--   part   : static { name, options = { <option leaf>, ... } }
+--            group  { name, group = "optical"|"color", slot?, price }
 --
 -- Option leaf : { name, price, kind, data, ... }
 --
--- Paths are "part/option" (1-based). Both sides sort `Customs.parts` the same
--- way, so the indices line up. The server (server/tuning.lua) is authoritative
--- for price and every effect.
+-- Paths are "/"-joined 1-based indices down to the option ("wheels/2/3"). The
+-- server (server/tuning.lua) is authoritative for price and every effect.
 --
 -- Handling deltas ({prop} = reset to stock, {prop, n} = stock + n) come from the
 -- original SA Customs resource (see old/sourceG.lua).
@@ -18,7 +16,7 @@
 Customs = Customs or {}
 
 --------------------------------------------------------------------------------
--- Palettes
+-- Respray palette
 --------------------------------------------------------------------------------
 
 Customs.PALETTE = {
@@ -42,19 +40,6 @@ Customs.PALETTE = {
     { name = "Beige",       rgb = { 210, 195, 160 } },
 }
 
-Customs.NEONS = {
-    { name = "White",      id = "white"     },
-    { name = "Blue",       id = "blue"      },
-    { name = "Green",      id = "green"     },
-    { name = "Red",        id = "red"       },
-    { name = "Yellow",     id = "yellow"    },
-    { name = "Pink",       id = "pink"      },
-    { name = "Orange",     id = "orange"    },
-    { name = "Light Blue", id = "lightblue" },
-    { name = "Rasta",      id = "rasta"     },
-    { name = "Ice",        id = "ice"       },
-}
-
 --------------------------------------------------------------------------------
 -- Performance packs helper (Default + Upgrade 1..4)
 --------------------------------------------------------------------------------
@@ -68,12 +53,21 @@ local function pack(name, deltaSets, prices)
     return { name = name, options = opts }
 end
 
+local function wheelSize(name, side)
+    return { name = name, options = {
+        { name = "Very Narrow", price = 20000, kind = "wheelWidth", side = side, data = "verynarrow" },
+        { name = "Narrow",      price = 10000, kind = "wheelWidth", side = side, data = "narrow" },
+        { name = "Default",     price = 5000,  kind = "wheelWidth", side = side, data = "default" },
+        { name = "Wide",        price = 10000, kind = "wheelWidth", side = side, data = "wide" },
+        { name = "Very Wide",   price = 20000, kind = "wheelWidth", side = side, data = "verywide" },
+    }}
+end
+
 --------------------------------------------------------------------------------
--- Parts
+-- Catalogue
 --------------------------------------------------------------------------------
 
 Customs.parts = {
-    -- Performance -----------------------------------------------------------
     pack("Engine", {
         { {"engineAcceleration"},    {"maxVelocity"} },
         { {"engineAcceleration", 2}, {"maxVelocity", 10} },
@@ -114,58 +108,42 @@ Customs.parts = {
         { {"mass", -400} },
     }, { 0, 4250, 7500, 11000, 15000 }),
 
-    { name = "Nitro", options = {
-        { name = "Remove", price = 0,     kind = "nitro", data = 0 },
-        { name = "25%",    price = 10000, kind = "nitro", data = 25 },
-        { name = "50%",    price = 15000, kind = "nitro", data = 50 },
-        { name = "75%",    price = 25000, kind = "nitro", data = 75 },
-        { name = "100%",   price = 30000, kind = "nitro", data = 100 },
+    -- Optical (flat) ----------------------------------------------------
+    { name = "Hood",       group = "optical", slot = 0,  price = 1000 },
+    { name = "Exhaust",    group = "optical", slot = 13, price = 2000 },
+    { name = "Spoiler",    group = "optical", slot = 2,  price = 1500 },
+    { name = "Side Skirt", group = "optical", slot = 3,  price = 1000 },
+    { name = "Roof Scoop", group = "optical", slot = 7,  price = 1000 },
+    { name = "Hydraulics", group = "optical", slot = 9,  price = 15000 },
+
+    -- Folders --------------------------------------------------------
+    { name = "Bumpers", folder = true, items = {
+        { name = "Front Bumper", group = "optical", slot = 14, price = 1000 },
+        { name = "Rear Bumper",  group = "optical", slot = 15, price = 1000 },
     }},
 
-    -- Optical (GTA upgrade slots) -----------------------------------------
-    { name = "Front Bumper", group = "optical", slot = 14, price = 1000 },
-    { name = "Rear Bumper",  group = "optical", slot = 15, price = 1000 },
-    { name = "Hood",         group = "optical", slot = 0,  price = 1000 },
-    { name = "Exhaust",      group = "optical", slot = 13, price = 2000 },
-    { name = "Spoiler",      group = "optical", slot = 2,  price = 1500 },
-    { name = "Wheels",       group = "optical", slot = 12, price = 5000 },
-    { name = "Side Skirt",   group = "optical", slot = 3,  price = 1000 },
-    { name = "Roof Scoop",   group = "optical", slot = 7,  price = 1000 },
-    { name = "Hydraulics",   group = "optical", slot = 9,  price = 15000 },
+    { name = "Wheels", folder = true, items = {
+        wheelSize("Front Wheel Size", "front"),
+        wheelSize("Rear Wheel Size", "rear"),
+        { name = "Wheel Types", group = "optical", slot = 12, price = 5000 },
+        { name = "Drive Type", options = {
+            { name = "Front Wheel Drive", price = 10000, kind = "handlingProp", prop = "driveType", data = "fwd" },
+            { name = "All Wheel Drive",   price = 10000, kind = "handlingProp", prop = "driveType", data = "awd" },
+            { name = "Rear Wheel Drive",  price = 10000, kind = "handlingProp", prop = "driveType", data = "rwd" },
+        }},
+        { name = "Bulletproof Tires", options = {
+            { name = "Off", price = 0,     kind = "flagToggle", flag = "bulletproof", data = false },
+            { name = "On",  price = 85000, kind = "flagToggle", flag = "bulletproof", data = true },
+        }},
+    }},
 
-    -- Neon ---------------------------------------------------------------
-    { name = "Neon", group = "neon", price = 5000 },
+    { name = "Respray", folder = true, items = {
+        { name = "Primary Color",   group = "color", slot = "primary",   price = 10000 },
+        { name = "Secondary Color", group = "color", slot = "secondary", price = 10000 },
+        { name = "Headlight Color", group = "color", slot = "headlight", price = 8000 },
+    }},
 
-    -- Respray ----------------------------------------------------------
-    { name = "Primary Color",   group = "color", slot = "primary",   price = 10000 },
-    { name = "Secondary Color", group = "color", slot = "secondary", price = 10000 },
-    { name = "Headlight Color", group = "color", slot = "headlight", price = 8000 },
-
-    -- Extras ---------------------------------------------------------
-    { name = "Front Wheel Size", options = {
-        { name = "Very Narrow", price = 20000, kind = "wheelWidth", side = "front", data = "verynarrow" },
-        { name = "Narrow",      price = 10000, kind = "wheelWidth", side = "front", data = "narrow" },
-        { name = "Default",     price = 5000,  kind = "wheelWidth", side = "front", data = "default" },
-        { name = "Wide",        price = 10000, kind = "wheelWidth", side = "front", data = "wide" },
-        { name = "Very Wide",   price = 20000, kind = "wheelWidth", side = "front", data = "verywide" },
-    }},
-    { name = "Rear Wheel Size", options = {
-        { name = "Very Narrow", price = 20000, kind = "wheelWidth", side = "rear", data = "verynarrow" },
-        { name = "Narrow",      price = 10000, kind = "wheelWidth", side = "rear", data = "narrow" },
-        { name = "Default",     price = 5000,  kind = "wheelWidth", side = "rear", data = "default" },
-        { name = "Wide",        price = 10000, kind = "wheelWidth", side = "rear", data = "wide" },
-        { name = "Very Wide",   price = 20000, kind = "wheelWidth", side = "rear", data = "verywide" },
-    }},
-    { name = "Offroad", options = {
-        { name = "Default", price = 2500, kind = "offroad", data = "default" },
-        { name = "Dirt",    price = 5000, kind = "offroad", data = "dirt" },
-        { name = "Sand",    price = 5000, kind = "offroad", data = "sand" },
-    }},
-    { name = "Drive Type", options = {
-        { name = "Front Wheel Drive", price = 10000, kind = "handlingProp", prop = "driveType", data = "fwd" },
-        { name = "All Wheel Drive",   price = 10000, kind = "handlingProp", prop = "driveType", data = "awd" },
-        { name = "Rear Wheel Drive",  price = 10000, kind = "handlingProp", prop = "driveType", data = "rwd" },
-    }},
+    -- Extras (flat) ------------------------------------------------
     { name = "Steering Lock", options = {
         { name = "Default", price = 7500, kind = "handlingProp", prop = "steeringLock", data = false },
         { name = "30 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 30 },
@@ -173,29 +151,15 @@ Customs.parts = {
         { name = "50 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 50 },
         { name = "60 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 60 },
     }},
-    { name = "Bulletproof Tires", options = {
-        { name = "Off", price = 0,     kind = "flagToggle", flag = "bulletproof", data = false },
-        { name = "On",  price = 85000, kind = "flagToggle", flag = "bulletproof", data = true },
-    }},
     { name = "LSD Doors", options = {
         { name = "Off", price = 0,     kind = "flagToggle", flag = "lsdDoor", data = false },
         { name = "On",  price = 35000, kind = "flagToggle", flag = "lsdDoor", data = true },
-    }},
-    { name = "Air Ride", options = {
-        { name = "Remove",  price = 0,     kind = "airride", data = 0 },
-        { name = "Level 1", price = 12000, kind = "airride", data = 1 },
-        { name = "Level 2", price = 14000, kind = "airride", data = 2 },
-        { name = "Level 3", price = 16000, kind = "airride", data = 3 },
-        { name = "Level 4", price = 18000, kind = "airride", data = 4 },
-        { name = "Level 5", price = 20000, kind = "airride", data = 5 },
     }},
     { name = "License Plate", options = {
         { name = "Random Plate",     price = 5000,  kind = "plate", data = "random" },
         { name = "Custom Plate...",  price = 15000, kind = "plate", data = "custom" },
         { name = "Reset To Default", price = 0,     kind = "plate", data = "default" },
     }},
-
-    -- Horn (stub - no effect / no preview yet) -----------------------
     { name = "Horn", options = {
         { name = "Horn 1", price = 0, kind = "horn", data = 1 },
         { name = "Horn 2", price = 0, kind = "horn", data = 2 },
@@ -211,18 +175,24 @@ table.sort(Customs.parts, function(a, b) return a.name < b.name end)
 -- Path resolution (shared)
 --------------------------------------------------------------------------------
 
--- "3/2" -> part #3, option #2. Returns:
---   static part : the option leaf
---   group  part : the part table + the option index
+-- Walks the tree. Returns:
+--   static part option -> the option leaf
+--   group  part        -> the part table + the option index
 function Customs.resolve(path)
-    local p, o
+    local node = { items = Customs.parts }
     for seg in tostring(path):gmatch("[^/]+") do
-        if not p then p = tonumber(seg) else o = tonumber(seg) end
+        local idx = tonumber(seg)
+        local children = node.items or node.options
+        if children then
+            node = children[idx]
+            if not node then return nil end
+        elseif node.group then
+            return node, idx
+        else
+            return nil
+        end
     end
-    local part = p and Customs.parts[p]
-    if not part then return nil end
-    if part.group then return part, o end
-    return part.options and part.options[o] or nil
+    return node
 end
 
 -- Applies Customs.PRICE_MULT (rounded to whole dollars).
@@ -231,15 +201,13 @@ function Customs.price(base)
 end
 
 --------------------------------------------------------------------------------
--- Handling-flag / value maps used by both preview (client) and apply (server)
+-- Handling-flag / value maps used by preview (client) and apply (server)
 --------------------------------------------------------------------------------
 
-Customs.WHEEL_SIZE   = { verynarrow = 1, narrow = 2, default = 0, wide = 4, verywide = 8 }
-Customs.OFFROAD      = { default = 0, dirt = 1, sand = 2 }
-Customs.AIRRIDE_DROP = { [1] = 0.01, [2] = -0.1, [3] = -0.2, [4] = -0.3, [5] = -0.45 }
+Customs.WHEEL_SIZE = { verynarrow = 1, narrow = 2, default = 0, wide = 4, verywide = 8 }
 
 -- Byte-addressable handlingFlags editor (ported from old/sourceS.lua). `byte` is
--- 1-based; front-wheel width = 3, rear = 4, offroad = 6.
+-- 1-based; front-wheel width = 3, rear = 4.
 function Customs.setHandlingFlagByte(veh, byte, value)
     local hex      = string.format("%X", getVehicleHandling(veh)["handlingFlags"])
     local reversed = string.reverse(hex) .. string.rep("0", 8 - string.len(hex))

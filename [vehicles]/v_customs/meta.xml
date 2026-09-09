@@ -20,23 +20,8 @@
     <script src="client/preview.lua"       type="client" />
     <script src="client/menu.lua"          type="client" />
     <script src="client/shop.lua"          type="client" />
-    <script src="client/modules/nitro.lua" type="client" />
-    <script src="client/modules/neon.lua"  type="client" />
     <script src="client/modules/door.lua"  type="client" />
     <script src="client/modules/flags.lua" type="client" />
-
-    <!-- neon tube models -->
-    <file src="files/neons/neonCollision.col" />
-    <file src="files/neons/white.dff" />
-    <file src="files/neons/blue.dff" />
-    <file src="files/neons/green.dff" />
-    <file src="files/neons/red.dff" />
-    <file src="files/neons/yellow.dff" />
-    <file src="files/neons/pink.dff" />
-    <file src="files/neons/orange.dff" />
-    <file src="files/neons/lightblue.dff" />
-    <file src="files/neons/rasta.dff" />
-    <file src="files/neons/ice.dff" />
 
     <min_mta_version server="1.5.6" client="1.5.6" />
 </meta>
