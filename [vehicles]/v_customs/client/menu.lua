@@ -271,8 +271,11 @@ addEventHandler("v_customs:buyResult", root, function(ok, path, charged)
         uicore:showMoney("take", tonumber(charged))
     end
 
-    -- move the tick onto the bought option within its part
-    local pIdx = path and partOfPath[path]
+    -- move the tick onto the bought option within its part (not for one-shot
+    -- actions like plate / horn that have no "fitted" state)
+    local node = path and Customs.resolve(path)
+    local oneShot = node and (node.kind == "plate" or node.kind == "horn")
+    local pIdx = (path and not oneShot) and partOfPath[path]
     if pIdx and partPaths[pIdx] then
         for _, p in ipairs(partPaths[pIdx]) do
             exports.ui_inac:updateTempMenuItem(p, {

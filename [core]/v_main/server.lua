@@ -1,8 +1,8 @@
-local version = "0.4.1 Beta"
+local mod_name = "MTA Online"
+local version = "0.5.0 Beta"
 
 function setCustomGamemodeName()
     local serverIP = getServerConfigSetting("serverip")
-    local namePrefix = "MTA Online"
-    setGameType(namePrefix .. " v" .. version)
+    setGameType(mod_name .. " v" .. version)
 end
 addEventHandler("onResourceStart", resourceRoot, setCustomGamemodeName)
