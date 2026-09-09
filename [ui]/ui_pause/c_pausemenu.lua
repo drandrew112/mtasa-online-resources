@@ -19,8 +19,8 @@ end
 -- The menu is a centred box at most 80% of the screen.
 local MENU_FRACTION = 0.8
 
-local ROW_H  = S(26)
-local HEAD_H = S(22)
+local ROW_H  = S(34)
+local HEAD_H = S(32)
 
 local OPEN_KEYS = { p = true, backspace = false }
 
@@ -42,6 +42,9 @@ local C = {
     value      = tocolor(188, 192, 197, 255),
     infobar    = tocolor(0, 0, 0, 200),
     accent     = tocolor(0, 130, 205, 255),
+    -- money colours match ui_core's yOverlay (yoverlay.lua)
+    cash       = tocolor(50, 200, 50, 255),
+    bank       = tocolor(120, 180, 255, 255),
 }
 
 local TABS = { "MAP", "JOBS", "SETTINGS" }
@@ -508,10 +511,10 @@ end)
 local function drawColumnHeader(x, y, w, text, right)
     dxDrawRectangle(x, y, w, HEAD_H, C.colHead)
     dxDrawText(text, x + S(12), y, x + w - S(12), y + HEAD_H,
-        C.colHeadTxt, S(1.05), FONT.head, "left", "center")
+        C.colHeadTxt, S(1.25), FONT.head, "left", "center")
     if right and right ~= "" then
         dxDrawText(right, x + S(12), y, x + w - S(12), y + HEAD_H,
-            C.colHeadTxt, S(1.0), FONT.row, "right", "center")
+            C.colHeadTxt, S(1.1), FONT.row, "right", "center")
     end
 end
 
@@ -525,7 +528,7 @@ local function drawRows(x, y, w, rows, selectedIndex, active)
 
         local labelCol = sel and C.rowSelTxt or (r.dim and C.txtDim or C.txt)
         dxDrawText(r.label, x + S(12), ry, x + w - S(12), ry + ROW_H,
-            labelCol, S(1.05), sel and FONT.rowB or FONT.row, "left", "center")
+            labelCol, S(1.18), sel and FONT.rowB or FONT.row, "left", "center")
 
         if r.badge and r.badge ~= "" then
             local bw = dxGetTextWidth(r.badge, S(0.85), FONT.rowB) + S(14)
@@ -536,7 +539,7 @@ local function drawRows(x, y, w, rows, selectedIndex, active)
             local v = r.value
             if r.selector and sel then v = "< " .. v .. " >" end
             dxDrawText(v, x + S(12), ry, x + w - S(12), ry + ROW_H,
-                sel and C.rowSelTxt or C.value, S(1.0), sel and FONT.rowB or FONT.row, "right", "center")
+                sel and C.rowSelTxt or C.value, S(1.1), sel and FONT.rowB or FONT.row, "right", "center")
         end
     end
 end
@@ -765,18 +768,30 @@ local function drawPanel()
     local fw, fh = screenW * MENU_FRACTION, screenH * MENU_FRACTION
     local fx, fy = math.floor((screenW - fw) / 2), math.floor((screenH - fh) / 2)
 
-    local headerH = S(44)
-    local tabH = S(32)
+    local headerH = S(54)
+    local tabH = S(40)
     local footerH = S(26)
 
     -- header band
     dxDrawRectangle(fx, fy, fw, headerH, C.header)
     dxDrawText("FreeV", fx + S(16), fy, fx + fw * 0.5, fy + headerH,
-        C.txt, S(1.5), FONT.logo, "left", "center")
-    dxDrawText(stripHex(getPlayerName(localPlayer)), fx + fw * 0.35, fy + S(6), fx + fw - S(16), fy + S(24),
-        C.txt, S(1.0), FONT.name, "right", "top")
-    dxDrawText(formatMoney(playerMoney()), fx + fw * 0.35, fy + S(24), fx + fw - S(16), fy + S(42),
-        C.accent, S(1.0), FONT.rowB, "right", "top")
+        C.txt, S(1.7), FONT.logo, "left", "center")
+
+    -- name, then a money row under it: cash (green), then bank (blue) directly to
+    -- its right. Colours come from ui_core's yOverlay (C.cash / C.bank).
+    local moneyL = fx + fw * 0.30
+    local moneyR = fx + fw - S(16)
+    dxDrawText(stripHex(getPlayerName(localPlayer)), moneyL, fy + S(7), moneyR, fy + S(27),
+        C.txt, S(1.1), FONT.name, "right", "top")
+
+    local moneyScale = S(1.05)
+    local cashText = formatMoney(playerMoney())
+    local bankText = formatMoney(tonumber(getElementData(localPlayer, "bank_money")) or 0)
+    local bankW = dxGetTextWidth(bankText, moneyScale, FONT.rowB)
+    dxDrawText(bankText, moneyL, fy + S(29), moneyR, fy + S(50),
+        C.bank, moneyScale, FONT.rowB, "right", "top")
+    dxDrawText(cashText, moneyL, fy + S(29), moneyR - bankW - S(10), fy + S(50),
+        C.cash, moneyScale, FONT.rowB, "right", "top")
 
     -- tab bar
     local tabY = fy + headerH + S(3)
@@ -786,11 +801,11 @@ local function drawPanel()
         local activeTab = i == selectedTab
         dxDrawRectangle(tx + (i > 1 and S(1) or 0), tabY, tabW - S(2), tabH, activeTab and C.tabSel or C.tab)
         dxDrawText(name, tx, tabY, tx + tabW, tabY + tabH,
-            activeTab and C.tabSelTxt or C.tabTxt, S(activeTab and 1.15 or 1.05),
+            activeTab and C.tabSelTxt or C.tabTxt, S(activeTab and 1.35 or 1.2),
             activeTab and FONT.head or FONT.rowB, "center", "center")
     end
-    dxDrawText("<", fx + S(6), tabY, fx + S(26), tabY + tabH, C.tabTxt, S(1.4), FONT.rowB, "center", "center")
-    dxDrawText(">", fx + fw - S(26), tabY, fx + fw - S(6), tabY + tabH, C.tabTxt, S(1.4), FONT.rowB, "center", "center")
+    dxDrawText("<", fx + S(6), tabY, fx + S(26), tabY + tabH, C.tabTxt, S(1.5), FONT.rowB, "center", "center")
+    dxDrawText(">", fx + fw - S(26), tabY, fx + fw - S(6), tabY + tabH, C.tabTxt, S(1.5), FONT.rowB, "center", "center")
 
     -- content
     local contentX = fx
