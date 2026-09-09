@@ -390,15 +390,58 @@ addCommandHandler("showplayers",
 	end
 )
 
-local textura_mini = dxCreateTexture("radar/files/radar.jpg")
-local textura = dxCreateTexture("radar/files/radar.png")
+-- Map textures. dxCreateTexture can intermittently fail right after a resource
+-- restart (the files are still being (re)mounted), and a nil minimapMap makes the
+-- minimap render as just the flat water-coloured base fill -- the "faint map" bug.
+-- So (re)create any missing texture here and keep retrying on a timer until both
+-- exist, re-applying their texture edges each time one is (re)created.
+local radarTextureFiles = {
+	minimapMap = "radar/files/radar.jpg",
+	bigmapMap  = "radar/files/radar.png",
+}
+local radarTextureRetry = nil
+
+local function applyRadarTextureEdge(name)
+	local tex = createdTextures[name]
+	if not isElement(tex) then return end
+	if name == "minimapMap" then
+		dxSetTextureEdge(tex, "border", tocolor(84, 112, 126)) -- water
+	elseif name == "bigmapMap" then
+		-- The big map PNG has transparency. Keep pixels outside the texture
+		-- transparent so they fade into the dark wash drawn behind the bigmap
+		-- instead of showing a solid black patch when zooming out past the bounds.
+		dxSetTextureEdge(tex, "border", tocolor(0, 0, 0, 0))
+	end
+end
+
+local function ensureRadarTextures()
+	local allReady = true
+	for name, file in pairs(radarTextureFiles) do
+		if not isElement(createdTextures[name]) then
+			local tex = dxCreateTexture(file)
+			if isElement(tex) then
+				createdTextures[name] = tex
+				applyRadarTextureEdge(name)
+			else
+				allReady = false
+			end
+		end
+	end
+
+	if allReady then
+		if radarTextureRetry then
+			killTimer(radarTextureRetry)
+			radarTextureRetry = nil
+		end
+	elseif not radarTextureRetry then
+		radarTextureRetry = setTimer(ensureRadarTextures, 500, 0)
+	end
+	return allReady
+end
 
 addEventHandler("onClientResourceStart", getResourceRootElement(),
 	function ()
-    createdTextures = {
-			minimapMap = textura_mini,
-			bigmapMap = textura,
-		}
+		ensureRadarTextures()
 		initFont("Roboto", "Roboto.ttf", 12)
 		initFont("RobotoB", "Roboto.ttf", 24)
 		initFont("pricedown", "Roboto.ttf", 40)
@@ -408,17 +451,6 @@ addEventHandler("onClientResourceStart", getResourceRootElement(),
 		-- Disable the built-in GTA world map: the bigmap is only reachable from
 		-- the pause menu now, and F11 must do nothing.
 		toggleControl("radar", false)
-
-		if getTexture("minimapMap") then
-			dxSetTextureEdge(getTexture("minimapMap"), "border", tocolor(84, 112, 126)) -- water
-		end
-
-		if getTexture("bigmapMap") then
-			-- The big map PNG has transparency. Keep pixels outside the texture transparent
-			-- so they fade into the dark wash drawn behind the bigmap instead of showing a
-			-- solid black patch when scrolling (zooming) out past the texture bounds.
-			dxSetTextureEdge(getTexture("bigmapMap"), "border", tocolor(0, 0, 0, 0))
-		end
 
 		for k,v in ipairs(getElementsByType("blip")) do
 			blipTooltips[v] = getElementData(v, "tooltipText")

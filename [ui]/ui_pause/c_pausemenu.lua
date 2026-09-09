@@ -202,6 +202,20 @@ SETTINGS_TREE = {
             },
         },
     },
+    {
+        id = "online", label = "Online",
+        items = {
+            {
+                id = "toggleOwnNametag", label = "Show Own Nametag", type = "toggle",
+                desc = "Show your own nametag in the 3D world.",
+                -- v_nametags stores the INVERSE: elementData "toggleOwnNametag" == true
+                -- means "hide my own nametag". The menu speaks in "show" terms, so
+                -- flip on the way in and out.
+                get = function() return not getElementData(localPlayer, "toggleOwnNametag") end,
+                set = function(v) setElementData(localPlayer, "toggleOwnNametag", not v) end,
+            },
+        },
+    },
 }
 
 --------------------------------------------------------------------------------

@@ -11,6 +11,7 @@
 
 -- Every id here must match an item id in SETTINGS_TREE (c_pausemenu.lua).
 PAUSE_SETTINGS = {
+    { id = "toggleOwnNametag",   type = "boolean" },
     { id = "show3dblips",        type = "boolean" },
     { id = "enable3dnavigation", type = "boolean" },
     { id = "gfx_farclip",        type = "number" },
