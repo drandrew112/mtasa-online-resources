@@ -1,31 +1,31 @@
-# --- TikTok integráció (bridge, node_modules, titkok) ---
-# A szögletes zárójel a gitignore-ban karakterosztály, ezért escape-elni kell,
-# különben csak az egykarakteres "t"/"i"/"k"/"o" nevű mappákra illeszkedne.
+# --- TikTok integration (bridge, node_modules, secrets) ---
+# Square brackets are a character class in gitignore, so they must be escaped,
+# otherwise this would only match single-character folders named "t"/"i"/"k"/"o".
 /\[tiktok\]/
 
-# --- Futásidőben generált adatfájlok (személyes adat, ne kerüljön verziózásba) ---
+# --- Runtime-generated data files (personal data, keep out of version control) ---
 /\[core\]/v_accounts/bans.xml
-# v_socialpanel crew/üzenet/friend-request adatai már a közös MySQL adatbázisban
-# vannak; ezek a fájlok legfeljebb régi telepítésekből maradhattak itt.
+# v_socialpanel crew/message/friend-request data now lives in the shared MySQL
+# database; these files may only linger from old installs.
 /\[player_interaction\]/v_socialpanel/crews.xml
 /\[player_interaction\]/v_socialpanel/messages.xml
 
 # --- Models ---
 /\[core\]/v_modloader/
 
-# --- v_ownveh: a /vehspawn gyűjtőfájl ---
-# (a spawnpoints.lua kézzel karbantartott, ezért verziózódik; a járműadatok
-#  már a közös MySQL adatbázisban vannak, nem lokális vehicles.db-ben)
+# --- v_ownveh: the /vehspawn collector file ---
+# (spawnpoints.lua is hand-maintained, so it is versioned; vehicle data now
+#  lives in the shared MySQL database, not a local vehicles.db)
 /\[vehicles\]/v_ownveh/vehiclespawnpoints.txt
 
-# --- v_customs: a régi SA Customs kód archívuma, nem verziózandó ---
+# --- v_customs: archive of the old SA Customs code, not to be versioned ---
 /\[vehicles\]/v_customs/old/
 
-# --- MySQL: csak a hitelesítő adatokat tartó config.lua marad ki ---
-# (a többi fájl - core, scripts, config.example.lua, database.sql - verziózódik)
+# --- MySQL: only the config.lua holding the credentials is excluded ---
+# (the other files - core, scripts, config.example.lua, database.sql - are versioned)
 /\[core\]/v_mysql/config.lua
 
-# --- Szerkesztői / backup szemét ---
+# --- Editor / backup junk ---
 *.old
 *.bak
 *.orig
