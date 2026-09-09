@@ -1,74 +1,82 @@
-# v_baml — Bank kezelo
+# v_bank — bank manager
 
-Szerver oldali bankszámla-kezelő. A `bank_money` futásidőben a player element
-data-ján él, és tükröződik a közös `accounts` táblába
-(`exports.v_mysql:getAccData` / `setAccData`), így túléli az újracsatlakozást és
-a resource újraindítást. A **cash** a GTA saját pénze, azt csak a beépített
-`takePlayerMoney` / `givePlayerMoney` mozgatja.
+Server-side bank account manager. `bank_money` lives on the player element data
+at runtime and is mirrored into the shared `accounts` table
+(`exports.v_mysql:getAccData` / `setAccData`), so it survives reconnects and
+resource restarts. **Cash** is GTA's own money and is only moved by the built-in
+`takePlayerMoney` / `givePlayerMoney`.
 
-## Perzisztencia
+Depends on `v_mysql` (`<include resource="v_mysql" />`).
 
-| Esemény | Művelet |
+## Persistence
+
+| Event | Action |
 | --- | --- |
-| `onPlayerLoaded`, `onResourceStart` | account → element data betöltés (első login: 0) |
-| `onPlayerQuit`, `onResourceStop` | element data → account mentés |
-| 5 percenként | minden bejelentkezett játékos mentése |
-| minden export ami módosít | az adott játékos azonnali mentése |
+| `onPlayerLoaded`, `onResourceStart` | account → element data load (first login: 0) |
+| `onPlayerQuit`, `onResourceStop` | element data → account save |
+| every 5 minutes | save every logged-in player |
+| every export that modifies the balance | immediate save of that player |
 
-Be nem jelentkezett játékosnál a `bank_money` csak futásidőben létezik, mentés
-nem történik.
+For a player who is not logged in, `bank_money` only exists at runtime and is
+never saved.
 
-## Szerver oldali exportok
+## Server exports
 
 ```lua
-local bank = exports.v_baml
+local bank = exports.v_bank
 ```
 
 ### `takeBankMoney(player, amount)`
-Levon a bankszámláról.
-- `true` — siker
-- `"not_enough_money"` — nincs elég pénz a számlán
-- `"player_not_found"` — érvénytelen player elem vagy `amount`
+Removes money from the bank account.
+- `true` — success
+- `"not_enough_money"` — not enough money on the account
+- `"player_not_found"` — invalid player element or `amount`
 
 ### `giveBankMoney(player, amount)`
-Hozzáad a bankszámlához.
-- `true` — siker
-- `"player_not_found"` — érvénytelen player elem vagy `amount`
+Adds money to the bank account.
+- `true` — success
+- `"player_not_found"` — invalid player element or `amount`
 
 ### `depositMoney(player, amount)`
-Elveszi a cash-t és a számlához adja.
-- `true` — siker
-- `"not_enough_cash"` — nincs elég készpénz
-- `"player_not_found"` — érvénytelen player elem vagy `amount`
+Takes cash and adds it to the account.
+- `true` — success
+- `"not_enough_cash"` — not enough cash
+- `"player_not_found"` — invalid player element or `amount`
 
 ### `withdrawMoney(player, amount)`
-Elveszi a számláról és cash-ként adja oda.
-- `true` — siker
-- `"not_enough_money"` — nincs elég pénz a számlán
-- `"player_not_found"` — érvénytelen player elem vagy `amount`
+Takes money from the account and hands it over as cash.
+- `true` — success
+- `"not_enough_money"` — not enough money on the account
+- `"player_not_found"` — invalid player element or `amount`
 
-> **Eltérés a specifikációtól:** a `withdrawMoney` a bankegyenleget vizsgálja,
-> ezért az elégtelen fedezet hibája `"not_enough_money"` (a `takeBankMoney`-val
-> egységesen), nem `"not_enough_cash"`. Ha mégis a `"not_enough_cash"` string
-> kell, a `server.lua`-ban egy sor átírásával megoldható.
+> **Deviation from the spec:** `withdrawMoney` checks the bank balance, so its
+> insufficient-funds error is `"not_enough_money"` (consistent with
+> `takeBankMoney`), not `"not_enough_cash"`. If you need the `"not_enough_cash"`
+> string instead, it is a one-line change in `server.lua`.
 
-Az `amount` minden exportnál pozitív egész számmá kerekítődik; 0 vagy negatív
-érték `"player_not_found"`-ot ad vissza (érvénytelen bemenet).
+Every export rounds `amount` to a positive integer; `0` or a negative value
+returns `"player_not_found"` (invalid input).
 
 ### `playPickupMoneySound([player])`
-Lejátssza a "pickup money" hangot.
+Plays the "pickup money" sound.
 
-- **Szerver oldali export:** `exports.v_bank:playPickupMoneySound(player)` —
-  a megadott játékosnál szólal meg. `player` nélkül mindenkinél lejátszódik.
-  Visszatérés: `true` vagy `"player_not_found"`.
-- **Kliens oldali export:** `exports.v_bank:playPickupMoneySound()` —
-  a helyi játékosnál szólal meg, visszaadja a sound elemet (vagy `false`).
+- **Server export:** `exports.v_bank:playPickupMoneySound(player)` — plays for the
+  given player. Without `player` it plays for everyone. Returns `true` or
+  `"player_not_found"`.
+- **Client export:** `exports.v_bank:playPickupMoneySound()` — plays for the local
+  player, returns the sound element (or `false`).
 
-### `createMoneyPickup(x, y, z, money [, player])` — szerver
-Létrehoz egy pénzeszsák pickupot (`1550` modell). Amikor egy játékos rálép:
-kap `money` készpénzt, lejátszódik neki a pickup hang, elindul a
-`v_bank:moneyCollected` kliens event (`money` argumentummal), és a pickup törlődik.
+### `createMoneyPickup(x, y, z, money [, player])` — server
+Creates a money bag pickup (model `1550`). When a player walks into it: they get
+`money` cash, the pickup sound plays for them, `ui_core:showMoney("add", money)`
+runs on their client, and the pickup is destroyed.
 
-- `money` — pozitív egész
-- `player` — opcionális; ha megadva, csak ő tudja felvenni; `nil` esetén bárki
-- Visszatérés: a pickup elem, vagy `false` (érvénytelen argumentum)
+- `money` — positive integer
+- `player` — optional; when given, only that player can collect it; `nil` = anyone
+- Returns: the pickup element, or `false` (invalid arguments)
+
+## Client event
+
+`v_bank:playPickupMoneySound` (triggered by the server) plays the sound on the
+client; when it carries a `money` argument it also calls
+`exports.ui_core:showMoney("add", money)`.

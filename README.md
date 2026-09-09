@@ -41,7 +41,7 @@ part of the base mod. The old `listres.py` script has been removed.
 | `[ui]` | User interface: the UI framework (`ui_core`), pause menu (`ui_pause`), phone (`ui_phone`), virtual browser (`ui_browser`), download screen (`ui_download`), interaction menu (`ui_inac`), radar/map (`v_radar`), the DGS GUI library (`dgs`). |
 | `[player_interaction]` | Player-to-player interaction: chat (`v_chat`), nametags (`v_nametags`), social panel (`v_socialpanel`). |
 | `[minigames]` | Jobs and minigames: job manager (`v_jobmanager`), arena war (`v_arenawar`), time trial (`v_timetrial`). |
-| `[vehicles]` | Vehicle features: ELS lights, headlights, car radio. |
+| `[vehicles]` | Vehicle features: personal/owned vehicles (`v_ownveh`), the tuning workshop (`v_customs`), ELS lights, headlights, car radio. |
 | `[world]` | World elements: real time/weather, store robbery, cable cars, elevators, ferris wheel. |
 | `[graphics]` | Visual enhancements: detail/sky shaders, dynamic per-pixel lighting, draw distance, grass textures, look-direction sync. |
 | `[audio]` | Audio replacements (HQ weapon sounds, train horn). |
@@ -160,7 +160,8 @@ watch these so they will not open on top of an already-open surface.
 ## Developer notes
 
 - Where a resource has its own detailed docs, they live in its `README.md` /
-  `readme.xml` (e.g. `[ui]/ui_browser`, `[core]/v_bank`, `[core]/v_mysql`).
+  `readme.xml` (e.g. `[ui]/ui_browser`, `[core]/v_bank`, `[core]/v_mysql`,
+  `[vehicles]/v_ownveh`).
 - Read/write account data with `exports.v_mysql:getAccData` / `setAccData`
   (never MTA's `getAccountData` / `setAccountData` — the mod is off the built-in
   account system). Touch a player's data on `onPlayerLoaded`, not before.

@@ -1,80 +1,82 @@
 # v_admin
 
-Admin parancsok, admin jail és szerver oldali ID kezelő MTA:SA resource.
+MTA:SA resource for admin commands, an admin jail and a server-side ID manager.
 
-Az üzenetek az **`ui_core` Alert elemével** jelennek meg (`exports.ui_core:setAlert`),
-mert a szerveren a chat le van tiltva (`showChat(false)`). Minden játékosnak szóló
-kiírás **angol**.
+Messages are shown through the **`ui_core` Alert element**
+(`exports.ui_core:setAlert`) because chat is disabled on the server
+(`showChat(false)`). Every player-facing message is **English**.
 
-**Alert szabályok:**
+**Alert rules:**
 
-* Az alertekhez **soha nem** csatoljuk az admin **rangját** (`getAdminTag`), csak
-  a **nevét** (`getPlayerName`).
-* Az adminnak és a célszemélynek **külön** üzenet megy, más szöveggel:
-  * célszemély: `Muted by <admin> (<perc> min) for <indok>`
-  * admin: `You muted <player> (<perc> min) for <indok>`
-* Az adminakciók (`/ajail`, `/ajailout`, `/ban`, `/unban`, `/mute`, teleport,
-  jármű, `/heal`) **nem** mennek ki az egész szervernek – csak az admin + a
-  célszemély kapja. Kivétel a `/af` admin felhívás (az szándékosan mindenkinek).
+* Alerts **never** include the admin's **rank** (`getAdminTag`), only their
+  **name** (`getPlayerName`).
+* The admin and the target get **separate** messages with different wording:
+  * target: `Muted by <admin> (<minutes> min) for <reason>`
+  * admin: `You muted <player> (<minutes> min) for <reason>`
+* Admin actions (`/ajail`, `/ajailout`, `/ban`, `/unban`, `/mute`, teleport,
+  vehicle, `/heal`) are **not** broadcast to the whole server — only the admin and
+  the target see them. The exception is `/af`, the admin announcement, which is
+  intentionally sent to everyone.
 
 ---
 
-## Fájlstruktúra
+## File structure
 
 ```
 v_admin/
 ├── meta.xml
-├── config.lua              – közös konfiguráció (rangok, jogszintek, jail koordináták, event nevek)
-│                             ADMIN.perms / ADMIN.titles / ADMIN.jail / ADMIN.events
+├── config.lua              – shared configuration (ranks, permission levels, jail coordinates, event names)
+│                             ADMIN.perms / ADMIN.titles / ADMIN.jail / ADMIN.events / ADMIN.report
 │
 ├── server/
-│   ├── core.lua            – admin adat betöltés/szinkron + közös segédfüggvények
-│   ├── id_manager.lua      – egyedi, újrahasznosított játékos ID-k ("ID" element data)
+│   ├── core.lua            – admin data load/sync + shared helper functions
+│   ├── id_manager.lua      – unique, reused player IDs ("ID" element data) + /myid
 │   ├── announce.lua        – /af, /adminannounce
-│   ├── admin_manage.lua    – /setadminlevel, rejtett parancs
-│   ├── report.lua          – /report, /reports (report rendszer)
+│   ├── admin_manage.lua    – /setadminlevel, hidden command
+│   ├── report.lua          – /report, /reports (report system)
 │   ├── teleport.lua        – /goto, /gethere
 │   ├── vehicle.lua         – /fixveh, /flipveh, /getout
-│   ├── jail.lua            – /ajail, /ajailout + jail időzítők, szökésellenőrzés
+│   ├── jail.lua            – /ajail, /ajailout + jail timers, escape checks
 │   ├── ban.lua             – /ban, /unban (account ban → v_accounts)
 │   ├── mute.lua            – /mute (chat mute → v_chat)
-│   └── misc.lua            – /fly (kapu), /heal, /money, /getid, /listacc
+│   └── misc.lua            – /fly (gate), /heal, /money, /getid, /listacc
 │
 └── client/
-    ├── hud.lua             – Alert fogadó, admin jail HUD
-    ├── report.lua          – report UI (DGS): játékos panel + admin report kezelő
-    └── noclip.lua          – noclip mozgás, /flyspd, N gomb
-
-Függőség: **`dgs`** (a report UI-hoz), **`ui_core`** (Alert),
-**`v_accounts`** (`/ban`, `/unban`), **`v_chat`** (`/mute`).
+    ├── hud.lua             – Alert receiver, admin jail HUD
+    ├── report.lua          – report UI (DGS): player panel + admin report manager
+    └── noclip.lua          – noclip movement, /flyspd, N key
 ```
 
+Dependencies: **`dgs`** (report UI), **`ui_core`** (Alert), **`v_accounts`**
+(`/ban`, `/unban`), **`v_chat`** (`/mute`), **`v_mysql`** (`admin_level` + admin
+jail data in the shared `accounts` table).
+
 ---
 
-## Közös segédfüggvények (`server/core.lua`)
+## Shared helper functions (`server/core.lua`)
 
-| Függvény | Leírás |
+| Function | Description |
 |---|---|
-| `adminAlert(target, text [, r, g, b, duration])` | Alert egy játékosnak / táblának (`ui_core`). Szín/idő elhagyható, a szövegben `#RRGGBB` is mehet. |
-| `adminBroadcast(text [, r, g, b, duration])` | Ugyanaz minden játékosnak. |
-| `adminInfo` | Visszafelé kompatibilis alias az `adminAlert`-re. |
-| `denyAccess(player, minLevel)` | Egységes „nincs jogosultság” üzenet. |
-| `getAdminLevel(player)` → number | Admin szint számként (vendég/ismeretlen = `0`). **Mindig account data-ból olvas**, nem az element data tükörből. |
-| `hasAdminLevel(player, minLevel)` → bool | Van-e legalább `minLevel` szintje. Minden admin parancs ezen megy át. |
-| `getAdminTag(player)` → string | Színes rang-címke a szint alapján (pl. `[MOD]`). |
-| `getPlayerFromId(id)` → player/false | Játékos keresése `"ID"` element data alapján. |
-| `resolveTarget(player, idArg)` → player/false | Mint fent, de hibaüzenetet is küld. |
-| `syncAdminData(player)` | Account admin adatainak kiírása a player elemre. |
+| `adminAlert(target, text [, r, g, b, duration])` | Alert to one player / a table (`ui_core`). Colour/duration optional, the text may contain `#RRGGBB`. |
+| `adminBroadcast(text [, r, g, b, duration])` | Same, to every player. |
+| `adminInfo` | Backwards-compatible alias for `adminAlert`. |
+| `denyAccess(player, minLevel)` | Uniform "no permission" message. |
+| `getAdminLevel(player)` → number | Admin level as a number (guest/unknown = `0`). **Always reads from account data**, not the element-data mirror. |
+| `hasAdminLevel(player, minLevel)` → bool | Whether the player has at least `minLevel`. Every admin command goes through this. |
+| `getAdminTag(player)` → string | Coloured rank label for the level (e.g. `[MOD]`). |
+| `getPlayerFromId(id)` → player/false | Find a player by `"ID"` element data. |
+| `resolveTarget(player, idArg)` → player/false | As above, but also sends an error message. |
+| `syncAdminData(player)` | Write the account's admin data onto the player element. |
 
-`server/jail.lua`: `setPlayerInAJ(player, state, minutes)` – jail be/ki kapcsolása.
+`server/jail.lua`: `setPlayerInAJ(player, state, minutes)` – toggle jail on/off.
 
 ---
 
-## Admin szintek (`config.lua` → `ADMIN.titles`)
+## Admin levels (`config.lua` → `ADMIN.titles`)
 
-| Szint | Rang |
+| Level | Rank |
 |:---:|---|
-| 0 | Player (nem admin) |
+| 0 | Player (not an admin) |
 | 1 | Trial Mod |
 | 2 | Mod |
 | 3 | Admin |
@@ -82,89 +84,92 @@ Függőség: **`dgs`** (a report UI-hoz), **`ui_core`** (Alert),
 | 5 | Dev |
 | 6 | Owner |
 
-Az adminnak **csak szintje van** (nincs admin név, nincs adminszolgálat).
+An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 6`.
 
 ---
 
-## Parancsok
+## Commands
 
-| Parancs | Min. szint | Leírás |
+| Command | Min. level | Description |
 |---|:---:|---|
-| `/af <üzenet>` · `/adminannounce` | 2 | Admin felhívás az egész szervernek. |
-| `/setadminlevel <ID> <0-6>` | 4 | Céljátékos admin szintje (csak a sajátodnál alacsonyabb; owner kivétel). |
-| `/report` | – | Játékos report panel (DGS). Egyszerre **egy** nyitott report/játékos. Admin hívás, chat, lezárás, látja ki claimelte. |
-| `/reports` | 1 | Admin report kezelő (DGS). Aktív reportok listája, claim, chat, teleport a játékoshoz, lezárás. |
-| `/goto <ID>` | 1 | Az adott játékoshoz teleportál (interior/dimension is). |
-| `/gethere <ID>` | 1 | Az adott játékost magadhoz hozza (járművel együtt). |
-| `/fixveh [ID]` | 2 | Jármű javítása (ID nélkül a sajátod). |
-| `/flipveh [ID]` | 2 | Jármű visszafordítása. |
-| `/getout <ID>` | 2 | Az adott játékost kiszedi a járműből. |
-| `/heal <ID>` | 1 | Az adott játékos életét és páncélját feltölti. |
-| `/fly` · **N gomb** | 2 | NoClip mód be/ki. |
-| `/flyspd <0.1-20>` | – | NoClip sebesség (kliens). |
-| `/ajail <ID> <perc> <indok>` | 2 | Admin jail. |
-| `/ajailout <ID>` | 2 | Kiengedés az admin jailből. |
-| `/ban <account> <indok>` | 2 | Account ban (nem jár le soha). Online játékosnál a serialt is menti. |
-| `/unban <account>` | 2 | Account ban feloldása. |
-| `/mute <ID> <perc> <indok>` | 2 | Chat mute. Nincs `/unmute` – magától lejár. |
-| `/money` | 4 | Teszt pénz (+2000 $). |
-| `/getid <név>` | – | Játékos ID-ja név(töredék) alapján. |
-| `/myid` | – | Saját ID. |
-| `/listacc` | 5 | Összes account a szerver logba. |
-| `/ichbintulajandris [szint]` | – | **Rejtett** – saját admin szint beállítása (alapból 6). Megtartva. |
+| `/af <message>` · `/adminannounce` | 2 | Admin announcement to the whole server. |
+| `/setadminlevel <ID> <0-6>` | 4 | Set a target's admin level (only below your own; owner is the exception). |
+| `/report` | – | Player report panel (DGS). One open report per player at a time. Calls an admin, chat, close, shows who claimed it. |
+| `/reports` | 1 | Admin report manager (DGS). List of active reports, claim, chat, teleport to the player, close. |
+| `/goto <ID>` | 1 | Teleport to that player (interior/dimension too). |
+| `/gethere <ID>` | 1 | Bring that player to you (with their vehicle). |
+| `/fixveh [ID]` | 2 | Repair a vehicle (yours without an ID). |
+| `/flipveh [ID]` | 2 | Flip a vehicle back over. |
+| `/getout <ID>` | 2 | Remove that player from their vehicle. |
+| `/heal <ID>` | 1 | Restore that player's health and armour. |
+| `/fly` · **N key** | 2 | NoClip mode on/off. |
+| `/flyspd <0.1-20>` | – | NoClip speed (client). |
+| `/ajail <ID> <minutes> <reason>` | 2 | Admin jail. |
+| `/ajailout <ID>` | 2 | Release from the admin jail. |
+| `/ban <account> <reason>` | 2 | Account ban (never expires). Also stores the serial for an online player. |
+| `/unban <account>` | 2 | Lift an account ban. |
+| `/mute <ID> <minutes> <reason>` | 2 | Chat mute. No `/unmute` – it expires on its own. |
+| `/money` | 4 | Test money (+$2000). |
+| `/getid <name>` | – | A player's ID from a name (fragment). |
+| `/myid` | – | Your own ID. |
+| `/listacc` | 5 | Every account, to the server log. |
+| `/ichbintulajandris [level]` | – | **Hidden** – set your own admin level (defaults to 6). |
 
-A minimum szintek a `config.lua` → `ADMIN.perms` táblában, egy helyen állíthatók.
+The minimum levels are set in one place: `config.lua` → `ADMIN.perms`.
 
-### Resource vezérlés (a `v_main` resource-ban)
+### Resource control (in the `v_main` resource)
 
-A resource start/stop/restart parancsok **nem itt**, hanem a `v_main`-ben vannak,
-mert az ACL-ben csak a `v_main` kap `startResource`/`stopResource`/`restartResource`
-jogot (`acl.xml` → `<group name="Admin">`). Ugyanaz a hozzáférés, mint a
-`/restartallresource`-nál: szerver konzol **vagy** bejelentkezett játékos
-`admin_level >= 5` (lásd `v_main/commandAuth.lua`), user ACL csoport nem kell.
+Resource start/stop/restart commands are **not here** but in `v_main`, because in
+the ACL only `v_main` has `startResource` / `stopResource` / `restartResource`
+rights (`acl.xml` → `<group name="Admin">`). Same access as
+`/restartallresource`: server console **or** a logged-in player with
+`admin_level >= 5` (see `v_main/commandAuth.lua`); no user ACL group needed.
 
-| Parancs | Min. szint | Leírás |
+| Command | Min. level | Description |
 |---|:---:|---|
-| `/startresource <név>` · `/startres` | 5 | Egy resource elindítása. |
-| `/stopresource <név>` · `/stopres` | 5 | Egy resource leállítása (védett: `v_main`, `v_mysql`, `v_accounts`, `v_admin`). |
-| `/restartresource <név>` · `/restartres` | 5 | Egy resource újraindítása (védett listát lásd fent → `/restartallresource`). |
-| `/restartallresource` | 5 | Minden resource sorrendhelyes újraindítása. |
+| `/startresource <name>` · `/startres` | 5 | Start a resource. |
+| `/stopresource <name>` · `/stopres` | 5 | Stop a resource (protected: `v_main`, `v_mysql`, `v_accounts`, `v_admin`). |
+| `/restartresource <name>` · `/restartres` | 5 | Restart a resource (same protected list). |
+| `/restartallresource` | 5 | Restart every resource in dependency order. |
 
 ---
 
-## Report rendszer (`server/report.lua` + `client/report.lua`)
+## Report system (`server/report.lua` + `client/report.lua`)
 
-A régi `/pm` és `/pmv` **megszűnt** (`pm.lua` törölve). Helyettük:
+The old `/pm` and `/pmv` are **gone**. Instead:
 
-* **`/report`** – játékos oldali DGS panel.
-  * Nincs nyitott report → beírja a problémát, „Call an admin” → a report létrejön,
-    minden online report-admin Alertet + hangjelzést kap.
-  * Egy játékosnak **egyszerre csak egy** nyitott reportja lehet.
-  * Nyitott report → chat, állapotsor („Waiting for an admin…” / „Claimed by: `<név>`”),
-    „Close report” gomb. A játékos **csak a saját** reportját látja.
-* **`/reports`** – admin oldali DGS kezelő (min. `ADMIN.perms.reports`).
-  * Bal oldalt lista, felül **két tab-gomb egymás mellett**: **`Active cases`** és
-    **`Logs`** (az aktív tab kiemelt színnel).
-    * *Active cases* – az összes aktív report (ID, játékos, állapot/claimelő).
-    * *Logs* – a lezárt reportok mentett logjai (dátum, játékos, admin);
-      egy sort kiválasztva a chat visszaolvasható (csak olvasható, időbélyeggel).
-  * Jobb oldalt a kiválasztott report: chat, **Claim**, **Teleport** (a játékoshoz),
-    **Close** (megerősítést kér). Írás egy nem-claimelt reportba automatikusan claimel.
-    A *Logs* tabon a chat/`Claim`/`Teleport`/`Close`/`Send` **nem látszik** (a log csak olvasható előzmény).
-  * Több admin is nézheti egyszerre; mindenki látja, ki claimelte.
-* Reportot **a játékos és az admin is** lezárhat (a gomb kétlépcsős: első kattintás
-  „Confirm?”, második zár). A reporter kilépésekor a report automatikusan lezárul.
-* A gombokat **saját hit-teszt** kezeli (`onClientClick` + a gomb aktuális
-  képernyő-téglalapja), mert a DGS saját klikk-eseményei (`onDgsMouseClick*`)
-  rossz elemre tüzeltek (title bar / ablak-háttér is triggerelte a gombokat).
-  Egy gomb csak akkor süt el, ha a lenyomás **és** a felengedés a téglalapján
-  belül van, és a gomb látszik + engedélyezett. A listában a kijelölt sor
-  „ragad”: üres helyre kattintva nem veszik el a megnyitott report / log.
+* **`/report`** – player-side DGS panel.
+  * No open report → type the problem, "Call an admin" → the report is created,
+    every online report-admin gets an Alert + a sound ping.
+  * A player can have **only one** open report at a time.
+  * Open report → chat, a status line ("Waiting for an admin to respond..." /
+    "Claimed by: `<name>`"), a "Close report" button. The player only sees
+    **their own** report.
+* **`/reports`** – admin-side DGS manager (min. `ADMIN.perms.reports`).
+  * List on the left, two tab buttons side by side at the top: **`Active cases`**
+    and **`Logs`** (the active tab highlighted).
+    * *Active cases* – every active report (ID, player, status/claimer).
+    * *Logs* – the saved logs of closed reports (date, player, admin); select a
+      row to read the chat back (read-only, with timestamps).
+  * The selected report is on the right: chat, **Claim**, **Teleport** (to the
+    player), **Close** (asks for confirmation). Writing into an unclaimed report
+    claims it automatically. On the *Logs* tab the chat / `Claim` / `Teleport` /
+    `Close` / `Send` controls are hidden (a log is a read-only history).
+  * Several admins can watch at once; everyone sees who claimed it.
+* **Both the player and an admin** can close a report (the button is two-step:
+  first click "Confirm?", second closes). When the reporter leaves, the report
+  closes automatically.
+* Buttons are handled by a **custom hit test** (`onClientClick` + the button's
+  current screen rectangle) because DGS's own click events (`onDgsMouseClick*`)
+  fired on the wrong element (the title bar / window background triggered
+  buttons). A button only fires when both the press **and** the release are
+  inside its rectangle and the button is visible + enabled. In the list the
+  selected row "sticks": clicking empty space does not lose the open report/log.
 
-### Log fájlok (`report_logs/`)
+### Log files (`report_logs/`)
 
-Minden lezárt report a `report_logs/` mappába kerül, **chatenként külön JSON**
-(színkódok nélkül), `report_logs/<ÉÉÉÉ-HH-NN>-<PlayerName>.json`:
+Every closed report goes to the `report_logs/` folder, **one JSON per chat**
+(without colour codes), `report_logs/<YYYY-MM-DD>-<PlayerName>.json`:
 
 ```json
 {
@@ -176,119 +181,63 @@ Minden lezárt report a `report_logs/` mappába kerül, **chatenként külön JS
 }
 ```
 
-A `report_logs/index.json` a listát tartja (a `/reports` „Saved logs” nézete
-ezt olvassa; szerver oldalon a fájl neve alapján olvassa vissza az egyeset).
-Rendszer-üzenetek `sender = "SYSTEM"` néven kerülnek be.
+`report_logs/index.json` holds the list (the `/reports` "Logs" view reads it;
+server-side a single log is read back by its file name). System messages are
+recorded with `sender = "SYSTEM"`.
 
-### UI viselkedés
+### UI behaviour
 
-* A panelek **fix, minimum méretűek** (kis monitoron sem nyomódnak össze) és
-  **mozgathatók** (címsornál fogva).
-* A jobb felső **piros X** csak elrejti a panelt (a reportot nem zárja); **ESC** is.
-* **Jobb egérgomb**: elrejti a kurzort → a karakter mozoghat; újabb jobb klikk →
-  vissza a kurzor.
-* Amíg egy panel nyitva van, `reportPanelOpen` element data = `true`, és **nem
-  nyílik** a pause menü, INAC menü (M), telefon, social panel, és **nem megy** a
-  chat `T`. (E resource-ok `otherPanelOpen`/`blocked` ellenőrzése bővült ezzel a
-  kulccsal: `ui_pause`, `ui_inac`, `ui_phone`, `v_socialpanel`, `v_chat`.)
-* A chat színkódolt (`#RRGGBB`): a log egy alulra igazított, tördelt, vágott DGS
-  label (a DGS *memo* nem színkódolja a törzsszöveget).
+* The panels have a **fixed minimum size** (they do not collapse on a small
+  monitor) and are **movable** (drag by the title bar).
+* The red **X** top-right only hides the panel (it does not close the report);
+  **ESC** too.
+* **Right mouse button**: hides the cursor → the character can move; another
+  right click → cursor back.
+* While a panel is open, `reportPanelOpen` element data = `true`, and the pause
+  menu, INAC menu (M), phone, social panel do **not** open, and chat `T` does
+  **not** work. (`ui_pause`, `ui_inac`, `ui_phone`, `v_socialpanel`, `v_chat`
+  check this key in their `otherPanelOpen` / `blocked` guard.)
+* The chat is colour-coded (`#RRGGBB`): the log is a bottom-aligned, wrapped,
+  clipped DGS label (the DGS *memo* does not colour-code its body text).
 
-Az **aktív** report állapot csak memóriában él (szerver újraindításkor elveszik),
-a **lezárt** reportok viszont a `report_logs/`-ba mentődnek. Konfiguráció:
-`config.lua` → `ADMIN.report` (min./max. hossz, chat-előzmény limit, `logDir`) és
-`ADMIN.events.report*` (esemény­nevek).
-
----
-
-## Ban és mute
-
-* **`/ban` / `/unban`** → a `v_accounts` resource exportjai:
-  `banAccount(account_name, indok, admin_name)` és `unbanAccount(account_name)`
-  (**nem** `banPlayer`/`unbanPlayer` – az MTA beépített függvényneve, azon a néven
-  nem lehet exportot hívni).
-  A ban **account alapú** (account nélkül nincs belépés), és ha a játékos éppen
-  online, a **serialja is elmentődik** a `bans.xml`-be (így ugyanarról a gépről
-  új accounttal se lehet visszajönni). **Nincs ideiglenes ban** – a `felold`
-  attribútum aktív bannál `Never`, feloldás után `1`. A bannolt játékos bent
-  marad, de le van fagyasztva a ban panel mögött (a login is elutasítja).
-* **`/mute`** → a `v_chat` resource exportja: `mutePlayer(player, perc, indok, admin_name)`.
-  A mute alatt a chat üzenetek nem mennek el, helyette `ui_core` Alert:
-  „You are muted! Time left: …”. Muteoláskor a célszemély: „Muted by `<admin>`
-  (`<perc>` min) for `<indok>`”, az admin: „You muted `<player>` (`<perc>` min) for
-  `<indok>`”. Lejáratkor: „Your mute has expired…”. A mute **túléli a relogot**
-  (account data), **nincs `/unmute`** – magától lejár.
+**Active** report state lives only in memory (lost on a server restart);
+**closed** reports are saved to `report_logs/`. Configuration:
+`config.lua` → `ADMIN.report` (min/max length, chat history limit, `logDir`) and
+`ADMIN.events.report*` (event names).
 
 ---
 
-## Element data kulcsok (más resource-ok is olvashatják)
+## Ban and mute
 
-| Kulcs | Oldal | Tartalom |
+* **`/ban` / `/unban`** → the `v_accounts` exports:
+  `banAccount(account_name, reason, admin_name)` and
+  `unbanAccount(account_name)` (**not** `banPlayer` / `unbanPlayer` — those are
+  MTA built-in function names and can't be used as export names).
+  The ban is **account-based** (no account, no login), and if the player is
+  online their **serial is also saved** to `bans.xml` (so they can't return from
+  the same machine with a new account). There is **no temporary ban** — the
+  release attribute is `Never` for an active ban, `1` after it is lifted. A
+  banned player stays connected but frozen behind the ban panel (login is
+  rejected too).
+* **`/mute`** → the `v_chat` export: `mutePlayer(player, minutes, reason, admin_name)`.
+  While muted, chat messages are dropped and a `ui_core` Alert shows instead:
+  "You are muted! Time left: …". On mute the target gets "Muted by `<admin>`
+  (`<minutes>` min) for `<reason>`", the admin gets "You muted `<player>`
+  (`<minutes>` min) for `<reason>`". On expiry: "Your mute has expired…". The
+  mute **survives a relog** (account data), there is **no `/unmute`** — it
+  expires on its own.
+
+---
+
+## Element data keys (other resources can read them too)
+
+| Key | Side | Contents |
 |---|---|---|
-| `ID` | szerver | egyedi játékos ID (szám) |
-| `admin_level` | szerver | admin szint (szám) |
-| `adminjail` | szerver | jailben van-e (bool) |
-| `adminjail_remTime` | szerver | hátralévő perc |
-| `adminjail_admin` / `adminjail_indok` | szerver | bezáró admin / indok |
-| `banned` | szerver (`v_accounts`) | bannolva van-e (bool) |
-| `banned_date` / `banned_admin` / `banned_reason` / `banned_account` | szerver (`v_accounts`) | ban adatai |
-| `mute_until` | szerver (`v_chat`) | mute vége (epoch); `mute_reason` / `mute_admin` |
-
----
-
-## Javított hibák (a régi verzióhoz képest)
-
-1. **`setadminlevel`** – a függvény első sora egy nem létező `target_acc`/`newLevel`
-   változóra hivatkozott → azonnali runtime hiba minden híváskor. Újraírva.
-2. **`setadminlevel`** – a jogosultság-ellenőrzés ki volt kommentelve, bárki bármilyen
-   szintet adhatott. Visszakerült (`ADMIN.perms.setLevel` + „nem magad fölé”).
-3. **`pm`** – rossz element data kulcsot olvasott (`acc:adminLevel`), ami mindig `nil`
-   volt → `attempt to compare nil with number`. Most `getAdminLevel()`-t használ.
-4. **`pmv`** – a `admin_name` változó soha nem volt definiálva a függvényben → hiba
-   a második `outputChatBox`-nál. Javítva.
-5. **`af` / `goto` / `gethere` / `fixveh` / `flipveh` / `aj` / `ajki`** –
-   `getElementData(player,"admin_level")` vagy `getAccountData(...)` `nil` lehetett,
-   így `nil > 0` hibát dobott, és `adminTitles[nil]` konkatenációnál elszállt.
-   Minden hívás a `nil`-biztos `getAdminLevel()` / `getAdminTag()` helperen megy át.
-6. **`s_aj.lua` szökésellenőrző timer** – `getPedOccupiedVehicle(target)` és
-   `removePedFromVehicle(target)` egy nem létező `target` globálisra hivatkozott →
-   hiba. Most a ciklusváltozó `player`-re megy.
-7. **`s_aj.lua` idő-timer** – szerver oldalon `localPlayer`-t és `target`-et használt
-   (egyik sem létezik szerveren), `perc` globális volt. Teljesen újraírva.
-8. **`s_aj.lua`** – a jail állapot csak account data-ban élt, bejelentkezéskor nem
-   töltődött vissza. Most `onPlayerLogin`-nál visszaáll (pozíció + HUD adat).
-9. **`hidddddden` (rejtett parancs)** – argumentum nélkül `tonumber(nil)` → az
-   `admin_level` `nil`-re állt. Most alapból a legmagasabb szint, tartományra szorítva.
-10. **`money`**, **`getid`**, **`listacc`** – nem volt semmilyen jogosultság-ellenőrzés.
-    `money` és `listacc` most szinthez kötött.
-11. **`flyspd` (kliens)** – `tonumber(x) > 20` hasonlítás lefutott, mielőtt ellenőrizte
-    volna, hogy `x` egyáltalán szám → hiba argumentum nélkül. Sorrend javítva.
-12. **N gomb** – a `bindKey("n", ...)` egy nem létező `noclip` parancsra volt kötve,
-    így sosem működött. Most közvetlenül kapcsol: a bind a szerver által a
-    player elemre szinkronizált `admin_level` element datát nézi, nincs
-    kliens↔szerver kör­út (a régi `requestNoclip` esemény törölve). Csak a
-    `/fly` megy szerver oldali ellenőrzésen.
-13. **`initPlayers`** – 1 másodpercenként örökké futó timer. Lecserélve
-    `onPlayerLogin` + `onResourceStart` eseményre.
-14. Minden `outputChatBox` lecserélve `ui_core` Alert elemre (a chat tiltva van),
-    a játékosnak szóló szövegek angolul.
-15. Halott kód eltávolítva (kikommentelt `gotoPlayer`, használatlan változók,
-    `adminTitles[level].." "..name` felépített, de eldobott `admintag`-ek).
-16. **Admin névnek és adminszolgálatnak vége** – az adminnak már csak *szintje* van.
-    Törölve: `/adminduty`, `/setadminname`, `getAdminName()`, `admin_name` és
-    `adminDuty` element/account data. `getAdminTag()` mostantól csak a szinthez
-    tartozó rang-címkét adja vissza (`ADMIN.titles`). A `duty.lua` `announce.lua`
-    lett (csak az admin felhívás maradt benne).
-17. **`/pm` és `/pmv` megszűnt** – `pm.lua` törölve, `ADMIN.perms.pmReply` és
-    `ADMIN.events.pmAlert` helyett a report rendszer (`ADMIN.perms.reports`,
-    `ADMIN.events.report*`) lépett. A `pmalert.mp3` hangot most a report chat
-    használja újra.
-18. **Admin szintek leszűkítve 6-ra** – `ADMIN.titles` már csak: 1 Trial Mod,
-    2 Mod, 3 Admin, 4 SuperAdmin, 5 Dev, 6 Owner. `ADMIN.maxLevel = 6`. A régi
-    7–11 szintekre hivatkozó `ADMIN.perms` értékek átkerültek a 6-os skálára
-    (`setLevel`/`money` → 4, `listAccounts` → 5).
-19. **NoClip (`/fly`, N gomb)** – csak az „ON/OFF” üzenet jelent meg, de a repülés
-    nem indult el: hiányzott a `setElementFrozen` + `setElementCollisionsEnabled`,
-    így a gravitáció és az ütközés visszahúzta a pedet. A be/ki logika egy
-    `setNoclip(state)` helperbe került (bekapcs / kikapcs / kényszer-kikapcs egy
-    helyen), `onClientResourceStop`-nál pedig visszaáll a ped állapota.
+| `ID` | server | unique player ID (number) |
+| `admin_level` | server | admin level (number) |
+| `adminjail` | server | whether jailed (bool) |
+| `adminjail_remTime` | server | minutes remaining |
+| `adminjail_admin` / `adminjail_indok` | server | jailing admin / reason |
+| `banned` | server (`v_accounts`) | whether banned (bool) |
+| `banned_date` / `banned_admin` / `banned_reason` / `banned_account` | server (`v_accounts`) | ban details |
+| `mute_until` | server (`v_chat`) | mute end (epoch); `mute_reason` / `mute_admin` |
