@@ -1,6 +1,29 @@
 uicore = exports.ui_core
 ui = function(v) return uicore:ui(v) end
 
+-- "$1,234"
+local function money(n)
+    local s = tostring(math.floor(n))
+    return "$" .. (s:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", ""))
+end
+
+-- small vector tick, centred on (cx, cy)
+local function drawTick(cx, cy, s, colour)
+    dxDrawLine(cx - s,        cy + s * 0.15, cx - s * 0.25, cy + s * 0.8, colour, ui(2))
+    dxDrawLine(cx - s * 0.25, cy + s * 0.8,  cx + s,        cy - s * 0.7, colour, ui(2))
+end
+
+-- hollow ring, centred on (cx, cy)
+local function drawRing(cx, cy, r, colour)
+    local segs, px, py = 18
+    for i = 0, segs do
+        local a = (i / segs) * math.pi * 2
+        local x, y = cx + math.cos(a) * r, cy + math.sin(a) * r
+        if px then dxDrawLine(px, py, x, y, colour, ui(1.5)) end
+        px, py = x, y
+    end
+end
+
 sw, sh = uicore:getScreenWH()
 sx, sy = uicore:getSafeZone()
 
@@ -102,6 +125,7 @@ addEventHandler("onClientRender", root, function()
 
         -- Jobb oldali érték
         local valueText = ""
+        local rightIcon = nil            -- "check" | "ring"
         if item.type == "select" and item.options then
             local opt = item.options[item.value]
             if opt then
@@ -115,6 +139,15 @@ addEventHandler("onClientRender", root, function()
                 valueText = item.format(raw)
             else
                 valueText = tostring(raw or "—")
+            end
+        elseif item.type == "action" then
+            -- temp-menu right-hand indicators
+            if item.checked then
+                rightIcon = "check"
+            elseif item.owned then
+                rightIcon = "ring"
+            elseif type(item.price) == "number" then
+                valueText = item.price > 0 and money(item.price) or "Free"
             end
         end
 
@@ -130,6 +163,12 @@ addEventHandler("onClientRender", root, function()
                 "right",
                 "center"
             )
+        elseif rightIcon == "check" then
+            drawTick(x + w - ui(20), iy + itemH / 2, ui(7),
+                selected and tocolor(0,0,0,255) or tocolor(120,220,140,255))
+        elseif rightIcon == "ring" then
+            drawRing(x + w - ui(19), iy + itemH / 2, ui(6),
+                selected and tocolor(0,0,0,255) or tocolor(190,190,190,255))
         end
     end
 
