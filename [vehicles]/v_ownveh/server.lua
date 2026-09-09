@@ -380,6 +380,7 @@ function getVehicleData(id)
         paintjob    = tonumber(row.paintjob),
         upgrades    = row.upgrades,
         handling    = row.handling,
+        customs     = row.customs,
         plate       = row.plate,
         isDestroyed = tonumber(row.isDestroyed) == 1,
     }

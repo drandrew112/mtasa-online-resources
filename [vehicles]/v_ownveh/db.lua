@@ -8,6 +8,11 @@
 --   colors    "r,g,b,r,g,b,..."  (all values getVehicleColor(veh, true) returns)
 --   upgrades  "id,id,id"         (getVehicleUpgrades)
 --   handling  JSON object        (only properties that differ from stock)
+--   customs   JSON object        (v_customs extras that live on element data and
+--                                 cannot be read back off the vehicle: nitro
+--                                 level, neon colour, air-ride, bulletproof
+--                                 tyres, LSD doors). Empty "{}" when v_customs
+--                                 is not installed / nothing applied.
 --
 -- All helpers are synchronous (dbPoll(-1)); the data set is tiny and only
 -- touched on summon / store / give / delete, never per frame.
@@ -25,6 +30,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
     paintjob     INTEGER NOT NULL DEFAULT 3,
     upgrades     TEXT    NOT NULL DEFAULT '',
     handling     TEXT    NOT NULL DEFAULT '{}',
+    customs      TEXT    NOT NULL DEFAULT '{}',
     plate        TEXT,
     isDestroyed  INTEGER NOT NULL DEFAULT 0,
     created_at   INTEGER NOT NULL DEFAULT 0,
@@ -36,6 +42,15 @@ db = dbConnect("sqlite", Vehicles.config.dbFile)
 if db then
     dbExec(db, SCHEMA)
     dbExec(db, "CREATE INDEX IF NOT EXISTS idx_vehicles_account ON vehicles (account_name)")
+
+    -- Migration: add `customs` to databases created before it existed.
+    local hasCustoms = false
+    for _, col in ipairs(dbPoll(dbQuery(db, "PRAGMA table_info(vehicles)"), -1) or {}) do
+        if col.name == "customs" then hasCustoms = true end
+    end
+    if not hasCustoms then
+        dbExec(db, "ALTER TABLE vehicles ADD COLUMN customs TEXT NOT NULL DEFAULT '{}'")
+    end
 else
     outputServerLog("[v_ownveh] FATAL: could not open " .. tostring(Vehicles.config.dbFile))
 end
@@ -56,22 +71,23 @@ end
 --------------------------------------------------------------------------------
 
 -- Inserts a new vehicle for an account. `data` may carry colors / paintjob /
--- upgrades / handling / plate (all optional, already serialised). Returns the
--- new id, or nil on failure.
+-- upgrades / handling / customs / plate (all optional, already serialised).
+-- Returns the new id, or nil on failure.
 function OwnVeh.dbInsert(accountName, data)
     if not db then return nil end
     data = data or {}
     local ts = now()
     local ok = dbExec(db,
         "INSERT INTO vehicles " ..
-        "(account_name, model, colors, paintjob, upgrades, handling, plate, isDestroyed, created_at, updated_at) " ..
-        "VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)",
+        "(account_name, model, colors, paintjob, upgrades, handling, customs, plate, isDestroyed, created_at, updated_at) " ..
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)",
         accountName,
         tonumber(data.model) or 0,
         data.colors or "",
         tonumber(data.paintjob) or 3,
         data.upgrades or "",
         data.handling or "{}",
+        data.customs or "{}",
         data.plate,
         ts, ts)
     if not ok then return nil end
@@ -92,7 +108,7 @@ function OwnVeh.dbGetByAccount(accountName)
 end
 
 -- Overwrites the mutable state columns. `state` = { colors, paintjob, upgrades,
--- handling, plate } (all serialised). Missing keys are left untouched.
+-- handling, customs, plate } (all serialised). Missing keys are left untouched.
 function OwnVeh.dbUpdateState(id, state)
     if not db or not state then return end
     dbExec(db,
@@ -101,10 +117,11 @@ function OwnVeh.dbUpdateState(id, state)
         "paintjob = COALESCE(?, paintjob), " ..
         "upgrades = COALESCE(?, upgrades), " ..
         "handling = COALESCE(?, handling), " ..
+        "customs = COALESCE(?, customs), " ..
         "plate = COALESCE(?, plate), " ..
         "updated_at = ? " ..
         "WHERE id = ?",
-        state.colors, tonumber(state.paintjob), state.upgrades, state.handling, state.plate,
+        state.colors, tonumber(state.paintjob), state.upgrades, state.handling, state.customs, state.plate,
         now(), tonumber(id))
 end
 

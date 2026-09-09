@@ -14,6 +14,7 @@
     <script src="client/timer.lua" type="client" />
     <script src="client/yoverlay.lua" type="client" />
     <script src="client/crewTagBox.lua" type="client" />
+    <script src="client/textInput.lua" type="client" />
 
     <script src="client/main.lua" type="client" />
 
@@ -46,5 +47,9 @@
 
     <export function="toggleMoveControls" type="client" />
     <export function="toggleMoveControls_s" type="server" />
+
+    <export function="openTextInput" type="client" />
+    <export function="closeTextInput" type="client" />
+    <export function="isTextInputOpen" type="client" />
 
 </meta>

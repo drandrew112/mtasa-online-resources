@@ -27,12 +27,18 @@ function OwnVeh.captureState(veh)
         end
     end
 
+    -- v_customs extras: it keeps a live table on element data ("customs:extras")
+    -- for anything that cannot be read back off the vehicle element.
+    local extras = getElementData(veh, "customs:extras")
+    local customs = (type(extras) == "table") and toJSON(extras) or "{}"
+
     return {
         model    = model,
         colors   = table.concat(colorValues, ","),
         paintjob = getVehiclePaintjob(veh),
         upgrades = table.concat(getVehicleUpgrades(veh) or {}, ","),
         handling = toJSON(handling),
+        customs  = customs,
         plate    = getVehiclePlateText(veh) or nil,
     }
 end
@@ -74,6 +80,20 @@ function OwnVeh.applyState(veh, row)
 
     if row.plate and row.plate ~= "" then
         setVehiclePlateText(veh, row.plate)
+    end
+
+    -- Hand the v_customs extras back to whoever owns them. v_customs listens for
+    -- "v_customs:applyExtras" and re-applies nitro / neon / air-ride / etc.; if
+    -- it is not running this is a no-op and the data just sits on element data.
+    if row.customs and row.customs ~= "" and row.customs ~= "{}" then
+        local extras = fromJSON(row.customs)
+        if type(extras) == "table" then
+            setElementData(veh, "customs:extras", extras)
+            local customsRes = getResourceFromName("v_customs")
+            if customsRes and getResourceState(customsRes) == "running" then
+                triggerEvent("v_customs:applyExtras", veh, extras)
+            end
+        end
     end
 end
 

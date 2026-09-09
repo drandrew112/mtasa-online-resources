@@ -19,6 +19,9 @@
 /\[vehicles\]/v_ownveh/vehicles.db-shm
 /\[vehicles\]/v_ownveh/vehiclespawnpoints.txt
 
+# --- v_customs: a régi SA Customs kód archívuma, nem verziózandó ---
+/\[vehicles\]/v_customs/old/
+
 # --- MySQL: csak a hitelesítő adatokat tartó config.lua marad ki ---
 # (a többi fájl - core, scripts, config.example.lua, database.sql - verziózódik)
 /\[core\]/v_mysql/config.lua

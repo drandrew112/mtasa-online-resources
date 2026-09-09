@@ -15,6 +15,7 @@
     <export function="createTempMenu" type="client" />
     <export function="closeTempMenu" type="client" />
     <export function="isTempMenuOpen" type="client" />
+    <export function="updateTempMenuItem" type="client" />
 
     <file src="vehicles.xml" />
     <file src="vertical_arrows.png" />

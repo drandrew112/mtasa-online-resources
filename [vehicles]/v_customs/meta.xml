@@ -1,0 +1,42 @@
+<meta>
+    <info author="drandrew112" name="Vehicle Customs" type="script" version="2.0.0"
+          description="Vehicle tuning workshop on the ui_inac temp-menu system." />
+
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+    <include resource="v_ownveh" />
+
+    <!-- shared catalogue + config -->
+    <script src="config.lua"        type="shared" />
+    <script src="shared/tuning.lua" type="shared" />
+
+    <!-- server -->
+    <script src="server/shop.lua"    type="server" />
+    <script src="server/tuning.lua"  type="server" />
+    <script src="server/persist.lua" type="server" />
+
+    <!-- client -->
+    <script src="client/camera.lua"        type="client" />
+    <script src="client/preview.lua"       type="client" />
+    <script src="client/menu.lua"          type="client" />
+    <script src="client/shop.lua"          type="client" />
+    <script src="client/modules/nitro.lua" type="client" />
+    <script src="client/modules/neon.lua"  type="client" />
+    <script src="client/modules/door.lua"  type="client" />
+    <script src="client/modules/flags.lua" type="client" />
+
+    <!-- neon tube models -->
+    <file src="files/neons/neonCollision.col" />
+    <file src="files/neons/white.dff" />
+    <file src="files/neons/blue.dff" />
+    <file src="files/neons/green.dff" />
+    <file src="files/neons/red.dff" />
+    <file src="files/neons/yellow.dff" />
+    <file src="files/neons/pink.dff" />
+    <file src="files/neons/orange.dff" />
+    <file src="files/neons/lightblue.dff" />
+    <file src="files/neons/rasta.dff" />
+    <file src="files/neons/ice.dff" />
+
+    <min_mta_version server="1.5.6" client="1.5.6" />
+</meta>

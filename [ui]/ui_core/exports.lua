@@ -68,6 +68,14 @@ function showMoney(kind, change)
     UI.yOverlay:showMoney(kind, change)
 end
 
+-- textInput.lua defines openTextInput / closeTextInput / isTextInputOpen; wrap
+-- the opener so the console keeps a trace of what asked for input.
+local _openTextInput = openTextInput
+function openTextInput(title, maxLength, defaultText)
+    uiLog("openTextInput: %s (max=%s)", tostring(title), tostring(maxLength))
+    return _openTextInput(title, maxLength, defaultText)
+end
+
 function getScreenWH()
     return UI.sw, UI.sh
 end

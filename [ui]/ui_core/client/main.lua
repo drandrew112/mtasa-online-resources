@@ -24,4 +24,6 @@ addEventHandler("onClientRender", root, function()
     end
     UI.yOverlay:drawLevelOnly()
     UI.yOverlay:drawMoneyOnly()
+
+    UI.textInput:draw()
 end)

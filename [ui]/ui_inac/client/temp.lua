@@ -9,7 +9,12 @@
 -- caller passes DATA ONLY, no callbacks. ui_inac fires client events that any
 -- resource can listen for:
 --
+--   "ui_inac:tempMenuHover"   (source localPlayer)  rootMenuId, value, path
+--       fired every time the highlighted item changes (arrows, open, submenu
+--       nav) - use it for live previews, e.g. recolouring a vehicle while the
+--       player scrolls a colour list.
 --   "ui_inac:tempMenuSelect"  (source localPlayer)  rootMenuId, value, path
+--       fired when the player presses Enter on a leaf item.
 --   "ui_inac:tempMenuClose"   (source localPlayer)  rootMenuId
 --
 -- See world_elevators for a reference consumer.
@@ -18,6 +23,7 @@ local tempIds   = {}    -- set: every menu id that belongs to the live temp menu
 local rootId    = nil   -- id of the live temp menu's root (nil = none)
 local idCounter = 0
 
+addEvent("ui_inac:tempMenuHover")
 addEvent("ui_inac:tempMenuSelect")
 addEvent("ui_inac:tempMenuClose")
 
@@ -69,7 +75,10 @@ local function registerNode(node, id, backId, pathPrefix)
             -- submenu
             local subId = id .. "/" .. idx
             registerNode({ title = src.title or src.label, items = src.items }, subId, id, itemPath)
-            items[idx] = { label = label, desc = desc, type = "submenu", target = subId }
+            items[idx] = {
+                label = label, desc = desc, type = "submenu", target = subId,
+                path = itemPath,   -- value stays nil for submenu rows
+            }
         else
             -- leaf: selecting it fires the select event with this item's value
             local value = src.value
@@ -78,6 +87,15 @@ local function registerNode(node, id, backId, pathPrefix)
                 desc          = desc,
                 type          = "action",
                 closeOnSelect = src.closeOnSelect ~= false,
+                value         = value,     -- also handed out on hover
+                path          = itemPath,
+                -- right-hand indicators (rendered like a select value):
+                --   checked -> a tick (wins over everything)
+                --   owned   -> a small ring
+                --   price   -> "$1,234" / "Free"  (number)
+                price         = src.price,
+                checked       = src.checked,
+                owned         = src.owned,
                 action        = function()
                     triggerEvent("ui_inac:tempMenuSelect", localPlayer, rid, value, itemPath)
                 end,
@@ -149,3 +167,49 @@ function closeTempMenu()
     teardown(true)
     return true
 end
+
+-- exports.ui_inac:updateTempMenuItem(path, meta)
+--   Patches the right-hand indicators of one already-registered leaf without
+--   rebuilding the menu. `path` is the "2/1"-style path from the select / hover
+--   events; `meta` may carry any of { price, checked, owned } (pass false to
+--   clear checked/owned, a number for price).
+function updateTempMenuItem(path, meta)
+    if not rootId or type(meta) ~= "table" then return false end
+
+    local segs = {}
+    for s in tostring(path):gmatch("[^/]+") do segs[#segs + 1] = tonumber(s) end
+    if #segs < 1 then return false end
+
+    local menuId = rootId
+    for i = 1, #segs - 1 do
+        menuId = menuId .. "/" .. segs[i]
+    end
+
+    local menu = MenuRegistry.menus[menuId]
+    local item = menu and menu.items[segs[#segs]]
+    if not item then return false end
+
+    if meta.price   ~= nil then item.price   = meta.price   end
+    if meta.checked ~= nil then item.checked = meta.checked or nil end
+    if meta.owned   ~= nil then item.owned   = meta.owned or nil end
+    return true
+end
+
+-- Fire "ui_inac:tempMenuHover" whenever the highlighted item changes.
+local lastHoverKey = nil
+addEventHandler("onClientRender", root, function()
+    if not isTempMenuOpen() then
+        lastHoverKey = nil
+        return
+    end
+
+    local menu = MenuState:getMenu()
+    local item = menu and menu.items[MenuState.selected]
+    if not item then return end
+
+    local key = MenuState.current .. "#" .. MenuState.selected
+    if key == lastHoverKey then return end
+    lastHoverKey = key
+
+    triggerEvent("ui_inac:tempMenuHover", localPlayer, rootId, item.value, item.path)
+end)

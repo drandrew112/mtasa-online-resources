@@ -25,6 +25,7 @@ local function otherPanelOpen()
         or getElementData(localPlayer, "browserOpen")
         or getElementData(localPlayer, "showChatInput")
         or getElementData(localPlayer, "reportPanelOpen")
+        or getElementData(localPlayer, "textInputOpen")
         or inJobLobby()
 end
 
