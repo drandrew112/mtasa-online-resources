@@ -34,7 +34,7 @@ local function toggleSelector()
     if menuId then closeSelector() else openSelector() end
 end
 
-addEventHandler("ui_inac:tempMenuSelect", root, function(id, index, floorId)
+addEventHandler("ui_inac:tempMenuSelect", root, function(id, floorId)
     if id ~= menuId then return end
 
     local elevator = elevators[elevatorId]

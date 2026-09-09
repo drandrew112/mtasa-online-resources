@@ -97,13 +97,19 @@ end)
 bindKey("backspace", "down", function()
     if not MenuState.open then return end
 
-    if isTempMenuOpen() then
-        closeTempMenu()
+    local menu = MenuState:getMenu()
+
+    -- Ideiglenes menu: submenubol egy szintet vissza, a gyokerrol bezar.
+    if menu and menu.temporary then
+        if menu.back then
+            MenuState.current = menu.back
+            MenuState:resetSelection()
+        else
+            closeTempMenu()
+        end
         playSelect()
         return
     end
-
-    local menu = MenuState:getMenu()
 
     if menu.back then
         MenuState.current = menu.back
