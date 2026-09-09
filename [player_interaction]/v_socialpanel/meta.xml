@@ -12,8 +12,12 @@
 	<script src="c_controls.lua" type="client" cache="false" />
 	<script src="c_ui.lua" type="client" cache="false" />
 
+	<!-- MySQL layer (crews, messages, friend requests) on top of v_mysql's
+	     exports. Schema: database.sql / ../../main.sql. -->
+	<script src="db.lua" type="server" />
 	<script src="server.lua" type="server" />
 
-	<!-- crews.xml / messages.xml are server-only data; deliberately NOT <file> so
-	     clients cannot download them. The server reads them via xmlLoadFile. -->
+	<!-- Crews and all messages live in the shared MySQL database now; friend
+	     lists stay in account data. No local XML data files anymore. Run
+	     database.sql / ../../main.sql against the DB before first use. -->
 </meta>

@@ -2,24 +2,22 @@
     v_socialpanel / server.lua
     Friends, friend requests, crews, profiles and private / crew messaging.
 
-    Storage:
-      - Friends / requests / crew membership: account data in the shared
-        `accounts` table (exports.v_mysql:getAccData / setAccData). Works for
-        offline accounts too (keyed by account-name string).
-      - Crews:    crews.xml     (global, cached in memory)
-      - Messages: messages.xml  (global, cached in memory) -> readable later, offline too
+    Storage (all through v_mysql - see db.lua):
+      - Friends:        account data in the shared `accounts` table
+                        (exports.v_mysql:getAccData / setAccData, key
+                        SP.KEY_FRIENDS). Works for offline accounts too.
+      - Friend requests: `friendRequests` table.
+      - Crews:           `crews` table    (global, cached in memory).
+      - Messages:        `messages` table (global, cached in memory) -> readable
+                         later, offline too.
 ]]
-
-local CREWS_FILE = "crews.xml"
-local MSGS_FILE  = "messages.xml"
 
 -- crews[ name:lower() ] = { name, tag, color={r,g,b}, founder, desc, members={accName,...} }
 local crews = {}
 
--- dms[ SP.pairKey(a,b) ]   = { {from, to, text, time, read}, ... }
--- crewMsgs[ crewName:lower() ] = { {from, text, time}, ... }
+-- dms[ SP.pairKey(a,b) ]      = { {id, from, to, text, time, read}, ... }
+-- crewMsgs[ crewName:lower() ] = { {id, from, text, time, crew}, ... }
 local dms, crewMsgs = {}, {}
-local saveMsgTimer
 
 --------------------------------------------------------------------------------
 -- Helpers
@@ -87,56 +85,12 @@ end
 --------------------------------------------------------------------------------
 
 local function loadCrews()
-    crews = {}
-    local xml = xmlLoadFile(CREWS_FILE)
-    if not xml then
-        xml = xmlCreateFile(CREWS_FILE, "crews")
-        if xml then xmlSaveFile(xml); xmlUnloadFile(xml) end
-        return
-    end
-    for _, node in ipairs(xmlNodeGetChildren(xml) or {}) do
-        local name = xmlNodeGetAttribute(node, "name")
-        if name and name ~= "" then
-            local members = {}
-            for _, m in ipairs(xmlNodeGetChildren(node) or {}) do
-                local mn = xmlNodeGetAttribute(m, "name")
-                if mn and mn ~= "" then members[#members + 1] = mn end
-            end
-            crews[name:lower()] = {
-                name    = name,
-                tag     = xmlNodeGetAttribute(node, "tag") or "CREW",
-                color   = {
-                    tonumber(xmlNodeGetAttribute(node, "r")) or 255,
-                    tonumber(xmlNodeGetAttribute(node, "g")) or 200,
-                    tonumber(xmlNodeGetAttribute(node, "b")) or 0,
-                },
-                founder = xmlNodeGetAttribute(node, "founder") or (members[1] or ""),
-                desc    = xmlNodeGetAttribute(node, "desc") or "",
-                members = members,
-            }
-        end
-    end
-    xmlUnloadFile(xml)
+    crews = SPDB.loadCrews()
 end
 
-local function saveCrews()
-    local xml = xmlCreateFile(CREWS_FILE, "crews")
-    if not xml then return end
-    for _, crew in pairs(crews) do
-        local node = xmlCreateChild(xml, "crew")
-        xmlNodeSetAttribute(node, "name", crew.name)
-        xmlNodeSetAttribute(node, "tag", crew.tag)
-        xmlNodeSetAttribute(node, "founder", crew.founder)
-        xmlNodeSetAttribute(node, "desc", crew.desc or "")
-        xmlNodeSetAttribute(node, "r", tostring(crew.color[1]))
-        xmlNodeSetAttribute(node, "g", tostring(crew.color[2]))
-        xmlNodeSetAttribute(node, "b", tostring(crew.color[3]))
-        for _, mn in ipairs(crew.members) do
-            xmlNodeSetAttribute(xmlCreateChild(node, "member"), "name", mn)
-        end
-    end
-    xmlSaveFile(xml)
-    xmlUnloadFile(xml)
+-- Persist one crew (upsert). Pass the crew table that was just mutated.
+local function saveCrew(crew)
+    SPDB.saveCrew(crew)
 end
 
 local function crewOf(name)
@@ -180,75 +134,15 @@ end
 --------------------------------------------------------------------------------
 
 local function loadMessages()
-    dms, crewMsgs = {}, {}
-    local xml = xmlLoadFile(MSGS_FILE)
-    if not xml then
-        xml = xmlCreateFile(MSGS_FILE, "messages")
-        if xml then xmlSaveFile(xml); xmlUnloadFile(xml) end
-        return
-    end
-    for _, node in ipairs(xmlNodeGetChildren(xml) or {}) do
-        local tag = xmlNodeGetName(node)
-        local from = xmlNodeGetAttribute(node, "from")
-        local time = tonumber(xmlNodeGetAttribute(node, "time")) or 0
-        local text = xmlNodeGetValue(node) or ""
-        if tag == "dm" then
-            local to = xmlNodeGetAttribute(node, "to")
-            if from and to and text ~= "" then
-                local key = SP.pairKey(from, to)
-                dms[key] = dms[key] or {}
-                table.insert(dms[key], {
-                    from = from, to = to, text = text, time = time,
-                    read = xmlNodeGetAttribute(node, "read") == "1",
-                })
-            end
-        elseif tag == "crew" then
-            local crew = xmlNodeGetAttribute(node, "crew")
-            if crew and from and text ~= "" then
-                local key = crew:lower()
-                crewMsgs[key] = crewMsgs[key] or {}
-                table.insert(crewMsgs[key], { from = from, text = text, time = time, crew = crew })
-            end
-        end
-    end
-    xmlUnloadFile(xml)
+    dms, crewMsgs = SPDB.loadMessages()
 end
 
-local function saveMessages()
-    local xml = xmlCreateFile(MSGS_FILE, "messages")
-    if not xml then return end
-    for _, list in pairs(dms) do
-        for _, m in ipairs(list) do
-            local node = xmlCreateChild(xml, "dm")
-            xmlNodeSetAttribute(node, "from", m.from)
-            xmlNodeSetAttribute(node, "to", m.to)
-            xmlNodeSetAttribute(node, "time", tostring(m.time))
-            xmlNodeSetAttribute(node, "read", m.read and "1" or "0")
-            xmlNodeSetValue(node, m.text)
-        end
-    end
-    for _, list in pairs(crewMsgs) do
-        for _, m in ipairs(list) do
-            local node = xmlCreateChild(xml, "crew")
-            xmlNodeSetAttribute(node, "crew", m.crew)
-            xmlNodeSetAttribute(node, "from", m.from)
-            xmlNodeSetAttribute(node, "time", tostring(m.time))
-            xmlNodeSetValue(node, m.text)
-        end
-    end
-    xmlSaveFile(xml)
-    xmlUnloadFile(xml)
-end
-
--- Debounced save so a burst of messages doesn't hammer the disk.
-local function queueSaveMessages()
-    if isTimer(saveMsgTimer) then killTimer(saveMsgTimer) end
-    saveMsgTimer = setTimer(saveMessages, 3000, 1)
-end
-
+-- Caps a conversation to SP.MSG_HISTORY messages, deleting the overflow rows
+-- from the DB as it drops them from the in-memory list.
 local function trimHistory(list)
     while #list > SP.MSG_HISTORY do
-        table.remove(list, 1)
+        local removed = table.remove(list, 1)
+        if removed and removed.id then SPDB.deleteMessage(removed.id) end
     end
 end
 
@@ -358,7 +252,7 @@ local function buildSnapshot(player)
     return {
         account       = myName,
         friends       = friends,
-        requests      = getListFor(myName, SP.KEY_REQ_IN),
+        requests      = SPDB.getRequestsFor(myName),
         crew          = crewData,
         crews         = dir,
         conversations = buildConversations(player, myName),
@@ -416,9 +310,10 @@ addEventHandler("sp:friend:add", root, function(targetName)
     end
 
     -- If they already sent me a request, become friends immediately.
-    local myIncoming = getListFor(myAcc, SP.KEY_REQ_IN)
-    if SP.contains(myIncoming, targetName) then
-        setListFor(myAcc, SP.KEY_REQ_IN, SP.removeValue(myIncoming, targetName))
+    local myIncoming = SPDB.getRequestsFor(myAcc)
+    local mine, mineExact = SP.contains(myIncoming, targetName)
+    if mine then
+        SPDB.removeRequest(mineExact, myAcc)
         myFriends[#myFriends + 1] = targetName
         setListFor(myAcc, SP.KEY_FRIENDS, myFriends)
 
@@ -433,12 +328,10 @@ addEventHandler("sp:friend:add", root, function(targetName)
         return pushBoth(player, tp)
     end
 
-    local tIncoming = getListFor(targetAcc, SP.KEY_REQ_IN)
-    if SP.contains(tIncoming, myName) then
+    if SP.contains(SPDB.getRequestsFor(targetAcc), myName) then
         return notify(player, "You already sent them a request.", 255, 200, 0)
     end
-    tIncoming[#tIncoming + 1] = myName
-    setListFor(targetAcc, SP.KEY_REQ_IN, tIncoming)
+    SPDB.addRequest(myName, targetAcc)
     notify(player, "Friend request sent to " .. targetName, 0, 220, 0)
     local tp = onlinePlayerByAccount(targetName)
     if tp then
@@ -454,12 +347,12 @@ addEventHandler("sp:friend:accept", root, function(senderName)
     if not myName or type(senderName) ~= "string" then return end
 
     local myAcc = myName
-    local incoming = getListFor(myAcc, SP.KEY_REQ_IN)
+    local incoming = SPDB.getRequestsFor(myAcc)
     local ok, exact = SP.contains(incoming, senderName)
     if not ok then return notify(player, "No such request.", 255, 120, 120) end
     senderName = exact
 
-    setListFor(myAcc, SP.KEY_REQ_IN, SP.removeValue(incoming, senderName))
+    SPDB.removeRequest(senderName, myAcc)
 
     local senderAcc = accountByName(senderName)
     if not senderAcc then return notify(player, "That account no longer exists.", 255, 120, 120) end
@@ -487,9 +380,9 @@ addEventHandler("sp:friend:decline", root, function(senderName)
     local myName = accName(player)
     if not myName or type(senderName) ~= "string" then return end
     local myAcc = myName
-    local incoming = getListFor(myAcc, SP.KEY_REQ_IN)
-    if not SP.contains(incoming, senderName) then return end
-    setListFor(myAcc, SP.KEY_REQ_IN, SP.removeValue(incoming, senderName))
+    local ok, exact = SP.contains(SPDB.getRequestsFor(myAcc), senderName)
+    if not ok then return end
+    SPDB.removeRequest(exact, myAcc)
     notify(player, "Request declined.", 255, 200, 0)
     pushSnapshot(player)
 end)
@@ -624,14 +517,14 @@ end
 -- explicitly opens it, never on a passive update -> no client<->server loop.
 local function markRead(player, myName, kind, target)
     if kind == "dm" then
-        local changed = false
+        local changedIds = {}
         for _, m in ipairs(dms[SP.pairKey(myName, target)] or {}) do
             if m.to:lower() == myName:lower() and not m.read then
                 m.read = true
-                changed = true
+                if m.id then changedIds[#changedIds + 1] = m.id end
             end
         end
-        if changed then queueSaveMessages() end
+        SPDB.markMessagesRead(changedIds)
     elseif kind == "crew" then
         setData(player, SP.KEY_CREW_SEEN, tostring(getRealTime().timestamp))
     end
@@ -675,9 +568,9 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
 
         local key = SP.pairKey(myName, target)
         dms[key] = dms[key] or {}
-        table.insert(dms[key], { from = myName, to = target, text = text, time = now, read = false })
+        local id = SPDB.insertDm(myName, target, text, now, false)
+        table.insert(dms[key], { id = id, from = myName, to = target, text = text, time = now, read = false })
         trimHistory(dms[key])
-        queueSaveMessages()
 
         triggerClientEvent(player, "sp:msg:data", player, "dm", target, collectThread(myName, "dm", target))
         pushSnapshot(player)
@@ -693,9 +586,9 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
         local crew = crewOf(myName)
         if not crew then return notify(player, "You are not in a crew.", 255, 120, 120) end
         crewMsgs[crew.name:lower()] = crewMsgs[crew.name:lower()] or {}
-        table.insert(crewMsgs[crew.name:lower()], { from = myName, text = text, time = now, crew = crew.name })
+        local id = SPDB.insertCrewMsg(myName, crew.name, text, now)
+        table.insert(crewMsgs[crew.name:lower()], { id = id, from = myName, text = text, time = now, crew = crew.name })
         trimHistory(crewMsgs[crew.name:lower()])
-        queueSaveMessages()
 
         for _, mn in ipairs(crew.members) do
             local mp = onlinePlayerByAccount(mn)
@@ -731,12 +624,13 @@ addEventHandler("sp:crew:create", root, function(name, tag, r, g, b)
     g = math.max(0, math.min(255, tonumber(g) or 200))
     b = math.max(0, math.min(255, tonumber(b) or 0))
 
-    crews[cleanName:lower()] = {
+    local crew = {
         name = cleanName, tag = cleanTag, color = { r, g, b },
         founder = myName, desc = "", members = { myName },
     }
+    crews[cleanName:lower()] = crew
     setData(player, SP.KEY_CREW, cleanName)
-    saveCrews()
+    saveCrew(crew)
     notify(player, "Crew created: " .. cleanName .. " [" .. cleanTag .. "]", 0, 220, 0)
     pushSnapshot(player)
 end)
@@ -753,7 +647,7 @@ addEventHandler("sp:crew:join", root, function(crewName)
 
     crew.members[#crew.members + 1] = myName
     setData(player, SP.KEY_CREW, crew.name)
-    saveCrews()
+    saveCrew(crew)
     notify(player, "You joined the crew " .. crew.name, 0, 220, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
@@ -779,12 +673,15 @@ local function leaveCrew(player, silent)
         crews[crew.name:lower()] = nil
         crewMsgs[crew.name:lower()] = nil
         disbanded = true
-    elseif myName:lower() == crew.founder:lower() then
-        crew.founder = crew.members[1] -- founder passes to the oldest member
-        notify(onlinePlayerByAccount(crew.founder), "You are now the founder of " .. crew.name .. ".", 255, 200, 0)
+        SPDB.deleteCrew(crew.name)
+        SPDB.deleteCrewMessages(crew.name)
+    else
+        if myName:lower() == crew.founder:lower() then
+            crew.founder = crew.members[1] -- founder passes to the oldest member
+            notify(onlinePlayerByAccount(crew.founder), "You are now the founder of " .. crew.name .. ".", 255, 200, 0)
+        end
+        saveCrew(crew)
     end
-    saveCrews()
-    queueSaveMessages()
 
     if not silent then
         notify(player, disbanded and ("The crew " .. crew.name .. " was disbanded.") or ("You left " .. crew.name), 255, 200, 0)
@@ -818,7 +715,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
     crew.members = SP.removeValue(crew.members, exact)
     local kAcc = accountByName(exact)
     if kAcc then setData(kAcc, SP.KEY_CREW, "") end
-    saveCrews()
+    saveCrew(crew)
 
     local kp = onlinePlayerByAccount(exact)
     notify(kp, "You were kicked from the crew " .. crew.name .. ".", 255, 120, 120)
@@ -855,7 +752,7 @@ addEventHandler("sp:crew:customize", root, function(tag, desc, r, g, b)
             math.max(0, math.min(255, tonumber(b) or crew.color[3])),
         }
     end
-    saveCrews()
+    saveCrew(crew)
     notify(player, "Crew updated.", 0, 220, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
@@ -873,11 +770,6 @@ addEventHandler("onResourceStart", resourceRoot, function()
     for _, player in ipairs(getElementsByType("player")) do
         if accName(player) then pushSnapshot(player) end
     end
-end)
-
-addEventHandler("onResourceStop", resourceRoot, function()
-    if isTimer(saveMsgTimer) then killTimer(saveMsgTimer) end
-    saveMessages()
 end)
 
 -- onPlayerLoaded fires after the shared MySQL account-data sync. Keep a short

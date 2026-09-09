@@ -17,9 +17,9 @@ SP = {
     SEARCH_MIN       = 2,     -- min query length for player search
     SEARCH_LIMIT     = 60,    -- max search results
 
-    -- Account data keys
+    -- Account data keys. Friend lists stay here; friend *requests*, crews and
+    -- messages moved to their own MySQL tables (see db.lua).
     KEY_FRIENDS   = "socialpanel:friends",    -- \n separated account names
-    KEY_REQ_IN    = "socialpanel:req_in",     -- incoming friend requests (sender names)
     KEY_CREW      = "socialpanel:crew",       -- the player's crew name, or ""
     KEY_CREW_SEEN = "socialpanel:crew_seen",  -- last-seen crew-chat timestamp
 }
