@@ -63,6 +63,7 @@ BR.accents = {
     business      = tocolor(217, 119, 6, 255),
     entertainment = tocolor(219, 39, 119, 255),
     finance       = tocolor(8, 145, 178, 255),
+    services      = tocolor(224, 60, 49, 255),
 }
 
 function BR.accentOf(catId)

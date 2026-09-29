@@ -52,7 +52,7 @@ the `/browser` command still works too.
 ## Categories
 
 Ids (shown in this order): `entertainment`, `finance`, `business`, `vehicles`,
-`realestate` (labelled "Property"). Each has an accent colour (`BR.accentOf(id)`).
+`realestate` (labelled "Property"), `services`. Each has an accent colour (`BR.accentOf(id)`).
 
 ## Registering a website
 
@@ -67,6 +67,26 @@ exports.ui_browser:registerBrowserSite("mycars.vm", {
     logo     = "sites/mycars/logo.png",     -- optional; auto-used if the file exists
 })
 ```
+
+### Web sites (real HTML pages)
+
+A site can also be a real web page rendered by CEF inside the content area
+instead of `.vhtml` markup:
+
+```lua
+exports.ui_browser:registerBrowserSite("ems-dispatch.eu", {
+    title = "EMS Dispatch", category = "services", desc = "...",
+    web   = "http://mta/erm/web/index.html",   -- a client file of that resource
+})
+```
+
+The browser page is created when the site is opened and destroyed when you
+leave it (every visit starts fresh). Mouse (all buttons, move, wheel) and
+keyboard inside the content area go to the page; the chrome's back / close
+buttons work as usual. `ui_browser:webCreated` (url, browser) is triggered on
+`localPlayer` when the page starts loading. The owning resource talks to its
+page itself (`mta.triggerEvent` in the page -> events on the browser element,
+`executeBrowserJavascript` back).
 
 Site folder layout:
 

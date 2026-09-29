@@ -112,6 +112,7 @@ local function loadPage(url, keepState)
     local st = BR.state
     local u = BR.parseUrl(url)
     local src
+    local webUrl
 
     st.site = nil
     if u.path == "home" then
@@ -124,7 +125,10 @@ local function loadPage(url, keepState)
             src = BR.buildErrorPage(u.raw, "That address was not found.")
         else
             st.site = site
-            if site.builder then
+            if site.web then
+                webUrl = site.web
+                src = '<page bg="#0f1216"></page>'
+            elseif site.builder then
                 src = site.builder(u.query) or BR.buildErrorPage(u.raw, "The site did not respond.")
             elseif site.markup and fileExists(site.markup) then
                 src = readFile(site.markup)
@@ -144,6 +148,8 @@ local function loadPage(url, keepState)
             end
         end
     end
+
+    if webUrl then BR.webOpen(webUrl) else BR.webClose() end
 
     st.node = BR.parseMarkup(src)
     if not keepState then
@@ -252,6 +258,7 @@ function BR.close()
     if not st.open then return end
     st.open = false
     st.search.focused = false
+    BR.webClose()
     removeEventHandler("onClientRender", root, onRender)
     showCursor(false)
     setElementData(localPlayer, "browserOpen", false, false)
@@ -331,7 +338,10 @@ local function pageHitTest(ax, ay)
 end
 
 addEventHandler("onClientClick", root, function(button, state, ax, ay)
-    if not BR.state.open or state ~= "down" then return end
+    if not BR.state.open then return end
+    -- web sites get every button (down and up) inside the content area
+    if BR.webActive() and BR.webMouseButton(button, state, ax, ay) then return end
+    if state ~= "down" then return end
 
     if button == "right" then
         BR.back()
@@ -353,6 +363,12 @@ end)
 
 addEventHandler("onClientKey", root, function(key, press)
     if not BR.state.open then return end
+
+    if (key == "mouse_wheel_up" or key == "mouse_wheel_down") and BR.webActive() then
+        BR.webWheel(key == "mouse_wheel_up" and 1 or -1)
+        cancelEvent()
+        return
+    end
 
     if key == "mouse_wheel_up" then
         BR.state.scrollY = BR.clamp(BR.state.scrollY - BR.sc(80), 0, maxScroll())
@@ -528,6 +544,13 @@ function BR.render()
     dxDrawRectangle(win.x, win.y, win.w, win.h, BR.theme.window)
 
     local cx, cy, cw, ch = contentRect()
+    if BR.webActive() then
+        BR.webDraw(cx, cy, cw, ch)
+        drawChrome()
+        drawHUD()
+        return
+    end
+
     local target = ensureRT(cw, ch)
     if target and BR.state.layout then
         if BR.state.rtDirty then
@@ -574,6 +597,7 @@ end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     if BR.state.open then BR.close() end
+    BR.webClose()
     if isElement(rt) then destroyElement(rt) end
 end)
 

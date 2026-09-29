@@ -10,6 +10,7 @@ BR.categories = {
     { id = "business",      label = "Business" },
     { id = "vehicles",      label = "Vehicles" },
     { id = "realestate",    label = "Property" },
+    { id = "services",      label = "Services" },
 }
 
 BR.sites = {}

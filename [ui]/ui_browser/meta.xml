@@ -12,6 +12,7 @@
     <script src="core/layout.lua"   type="client" />
     <script src="core/home.lua"     type="client" />
     <script src="core/browser.lua"  type="client" />
+    <script src="core/webview.lua"  type="client" />
 
     <!-- EXPORTS -->
     <script src="exports.lua"    type="client" />
