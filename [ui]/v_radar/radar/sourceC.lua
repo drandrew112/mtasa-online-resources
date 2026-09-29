@@ -171,24 +171,33 @@ local navigation3DColor = gps_color
 local navigation3DShadow = tocolor(0, 0, 0, 160)
 local NAVIGATION_3D_Z_OFFSET = 6
 
-function render3DNavigation()
-	if not gpsRoute then return end
-	if getElementDimension(localPlayer) ~= 0 then return end
-
-	local startIndex = tonumber(currentNode) or 1
+local function draw3DRoute(route, startIndex, color)
+	startIndex = tonumber(startIndex) or 1
 	if startIndex < 1 then startIndex = 1 end
 
-	for i = startIndex, #gpsRoute - 1 do
-		local a = gpsRoute[i]
-		local b = gpsRoute[i + 1]
+	for i = startIndex, #route - 1 do
+		local a = route[i]
+		local b = route[i + 1]
 
 		if a and b then
 			local ax, ay, az = a.x, a.y, a.z + NAVIGATION_3D_Z_OFFSET
 			local bx, by, bz = b.x, b.y, b.z + NAVIGATION_3D_Z_OFFSET
 
 			dxDrawLine3D(ax, ay, az - 0.12, bx, by, bz - 0.12, navigation3DShadow, 6)
-			dxDrawLine3D(ax, ay, az, bx, by, bz, navigation3DColor, 4)
+			dxDrawLine3D(ax, ay, az, bx, by, bz, color, 4)
 		end
+	end
+end
+
+function render3DNavigation()
+	if getElementDimension(localPlayer) ~= 0 then return end
+
+	-- Objective route (radar/objectives.lua) first, so the waypoint route draws on top.
+	if objectiveRoute then
+		draw3DRoute(objectiveRoute, objectiveRouteNode, objective_color)
+	end
+	if gpsRoute then
+		draw3DRoute(gpsRoute, currentNode, navigation3DColor)
 	end
 end
 
@@ -336,6 +345,8 @@ local blipTooltips = {
 	["blips/63.png"] = "",
 	["blips/64.png"] = "",
 	["blips/markblip.png"] = "Waypoint",
+	["blips/waypoint.png"] = "Waypoint",
+	["blips/objective.png"] = "Objective",
 	["blips/north.png"] = "North",
 }
 
@@ -618,6 +629,11 @@ function renderMinimap(x, y, w, h)
 			dxDrawRectangle(0, 0, minimapRenderSize, minimapRenderSize, tocolor(84, 112, 126, 255))
 			dxDrawImageSection(0, 0, minimapRenderSize, minimapRenderSize, remapTheSecondWay(playerPosX) - minimapRenderSize / minimapZoom / 2, remapTheFirstWay(playerPosY) - minimapRenderSize / minimapZoom / 2, minimapRenderSize / minimapZoom, minimapRenderSize / minimapZoom, getTexture("minimapMap"), 0, 0, 0, tocolor(255, 255, 255, 255))
 
+			if objectiveRouteImage then
+				local d = objectiveRouteImageData
+				dxDrawImage(minimapRenderSize / 2 + (remapTheFirstWay(playerPosX) - (d[1] + d[3] / 2)) * minimapZoom - d[3] * minimapZoom / 2, minimapRenderSize / 2 - (remapTheFirstWay(playerPosY) - (d[2] + d[4] / 2)) * minimapZoom + d[4] * minimapZoom / 2, d[3] * minimapZoom, -(d[4] * minimapZoom), objectiveRouteImage, 180, 0, 0, objective_color)
+			end
+
 			if gpsRouteImage then
 				dxDrawImage(minimapRenderSize / 2 + (remapTheFirstWay(playerPosX) - (gpsRouteImageData[1] + gpsRouteImageData[3] / 2)) * minimapZoom - gpsRouteImageData[3] * minimapZoom / 2, minimapRenderSize / 2 - (remapTheFirstWay(playerPosY) - (gpsRouteImageData[2] + gpsRouteImageData[4] / 2)) * minimapZoom + gpsRouteImageData[4] * minimapZoom / 2, gpsRouteImageData[3] * minimapZoom, -(gpsRouteImageData[4] * minimapZoom), gpsRouteImage, 180, 0, 0, gps_color)
 			end
@@ -648,6 +664,11 @@ function renderMinimap(x, y, w, h)
 
 					defaultBlipsCount = defaultBlipsCount + 1
 				end
+			end
+
+			-- Waypoint + objective blips: always far-shown, drawn on top of the rest.
+			for _, b in ipairs(getSpecialBlips()) do
+				renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)
 			end
 
 			dxSetRenderTarget()
@@ -888,6 +909,11 @@ function renderTheBigmap()
 
 		dxDrawImageSection(bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight, remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2, remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2, bigmapWidth / bigmapZoom, bigmapHeight / bigmapZoom, getTexture("bigmapMap"))
 
+		if objectiveRouteImage then
+			local d = objectiveRouteImageData
+			dxDrawImage(bigmapCenterX + (remapTheFirstWay(mapPlayerPosX) - (d[1] + d[3] / 2)) * bigmapZoom - d[3] * bigmapZoom / 2, bigmapCenterY - (remapTheFirstWay(mapPlayerPosY) - (d[2] + d[4] / 2)) * bigmapZoom + d[4] * bigmapZoom / 2, d[3] * bigmapZoom, -(d[4] * bigmapZoom), objectiveRouteImage, 180, 0, 0, objective_color)
+		end
+
 		if gpsRouteImage then
 			dxUpdateScreenSource(screenSource, true)
 			--dxSetBlendMode("add")
@@ -901,7 +927,7 @@ function renderTheBigmap()
 
 		for i = 1, #createdBlips do
 			if createdBlips[i] then
-				renderBigBlip(createdBlips[i].icon, createdBlips[i].posX, createdBlips[i].posY, mapPlayerPosX, mapPlayerPosY, createdBlips[i].renderDistance, createdBlips[i].iconSize*16, createdBlips[i].iconSize*16, createdBlips[i].color, false, i, playerRotation)
+				renderBigBlip(createdBlips[i].icon, createdBlips[i].posX, createdBlips[i].posY, mapPlayerPosX, mapPlayerPosY, createdBlips[i].renderDistance, createdBlips[i].iconSize*16, createdBlips[i].iconSize*16, createdBlips[i].color, false, i)
 			end
 		end
 
@@ -921,6 +947,10 @@ function renderTheBigmap()
 					renderBigBlip("blips/1.png", playerPosX, playerPosY, mapPlayerPosX, mapPlayerPosY, 9999, 24, 24, tocolor(160, 200, 255), v, k)
 				end
 			end
+		end
+
+		for _, b in ipairs(getSpecialBlips()) do
+			renderBigBlip(b.icon, b.x, b.y, mapPlayerPosX, mapPlayerPosY, false, 32, 32, 0xFFFFFFFF, false, b.key, b.label)
 		end
 
 		renderBigBlip("arrow.png", playerPosX, playerPosY, mapPlayerPosX, mapPlayerPosY, false, 20, 20)
@@ -1143,6 +1173,7 @@ addEventHandler("onClientRestore", getRootElement(),
 		if gpsRoute then
 			processGPSLines()
 		end
+		rebuildObjectiveRouteImage()
 	end
 )
 
@@ -1259,7 +1290,7 @@ function drawEdgeIndicator(data)
 	dxDrawLine(rX, rY, tipX, tipY, data.color, 2)
 end
 
-function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistance, blipWidth, blipHeight, blipColor, blipElement, blipId)
+function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistance, blipWidth, blipHeight, blipColor, blipElement, blipId, tooltipText)
 	--if renderDistance and getDistanceBetweenPoints2D(playerPosX, playerPosY, blipX, blipY) > renderDistance then return end
 
 	blipWidth = (blipWidth / (4 - bigmapZoom) + 3) * 2.25
@@ -1288,8 +1319,9 @@ function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistanc
 				end
 			end
 		else
-			if blipTooltips[icon] and isCursorWithinArea(cursorX, cursorY, blipX - blipHalfWidth, blipY - blipHalfHeight, blipWidth, blipHeight) then
-				visibleBlipTooltip = blipTooltips[icon]
+			local tooltip = tooltipText or blipTooltips[icon]
+			if tooltip and isCursorWithinArea(cursorX, cursorY, blipX - blipHalfWidth, blipY - blipHalfHeight, blipWidth, blipHeight) then
+				visibleBlipTooltip = tooltip
 
 				if icon == "blips/markblip.png" then
 					hoveredWaypointBlip = blipId
@@ -1340,6 +1372,18 @@ function render3DBlips()
 				end
 			end
 		end
+
+		-- Waypoint + objective blips have no distance limit.
+		for _, b in ipairs(getSpecialBlips()) do
+			local screenX, screenY = getScreenFromWorldPosition(b.x, b.y, b.z + 1)
+			if screenX and screenY then
+				local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, b.x, b.y, b.z)
+
+				dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. b.label, screenX + 1, screenY + 1 + 9 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
+				dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. b.label, screenX, screenY + 9 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
+				dxDrawImage(screenX - 12, screenY - 12, 24, 24, "radar/files/" .. b.icon, 0, 0, 0, tocolor(255, 255, 255, 230))
+			end
+		end
 	end
 end
 
@@ -1383,48 +1427,62 @@ function addGPSLine(x, y)
 end
 
 function processGPSLines()
+	if isElement(gpsRouteImage) then
+		destroyElement(gpsRouteImage)
+	end
+
+	gpsRouteImage, gpsRouteImageData = buildRouteImage(gpsLines)
+end
+
+-- Draws a route (list of {mapX, mapY} points, see addGPSLine) into a white
+-- render target; returns it with its {x, y, w, h} placement in map space. The
+-- caller tints it (purple for the waypoint, yellow for an objective).
+function buildRouteImage(lines)
+	if #lines == 0 then
+		return false, {}
+	end
+
 	local routeStartPosX, routeStartPosY = 99999, 99999
 	local routeEndPosX, routeEndPosY = -99999, -99999
 
-	for i = 1, #gpsLines do
-		if gpsLines[i][1] < routeStartPosX then
-			routeStartPosX = gpsLines[i][1]
+	for i = 1, #lines do
+		if lines[i][1] < routeStartPosX then
+			routeStartPosX = lines[i][1]
 		end
 
-		if gpsLines[i][2] < routeStartPosY then
-			routeStartPosY = gpsLines[i][2]
+		if lines[i][2] < routeStartPosY then
+			routeStartPosY = lines[i][2]
 		end
 
-		if gpsLines[i][1] > routeEndPosX then
-			routeEndPosX = gpsLines[i][1]
+		if lines[i][1] > routeEndPosX then
+			routeEndPosX = lines[i][1]
 		end
 
-		if gpsLines[i][2] > routeEndPosY then
-			routeEndPosY = gpsLines[i][2]
+		if lines[i][2] > routeEndPosY then
+			routeEndPosY = lines[i][2]
 		end
 	end
 
 	local routeWidth = (routeEndPosX - routeStartPosX) + 16
 	local routeHeight = (routeEndPosY - routeStartPosY) + 16
 
-	if isElement(gpsRouteImage) then
-		destroyElement(gpsRouteImage)
+	local routeImage = dxCreateRenderTarget(routeWidth, routeHeight, true)
+	if not routeImage then
+		return false, {}
 	end
+	local routeImageData = {routeStartPosX - 8, routeStartPosY - 8, routeWidth, routeHeight}
 
-	gpsRouteImage = dxCreateRenderTarget(routeWidth, routeHeight, true)
-	gpsRouteImageData = {routeStartPosX - 8, routeStartPosY - 8, routeWidth, routeHeight}
-
-	dxSetRenderTarget(gpsRouteImage)
+	dxSetRenderTarget(routeImage)
 	dxSetBlendMode("modulate_add")
 
-	dxDrawImage(gpsLines[1][1] - routeStartPosX + 8 - 4, gpsLines[1][2] - routeStartPosY + 8 - 4, 8, 8, "radar/gps/images/dot.png")
+	dxDrawImage(lines[1][1] - routeStartPosX + 8 - 4, lines[1][2] - routeStartPosY + 8 - 4, 8, 8, "radar/gps/images/dot.png")
 
-	for i = 2, #gpsLines do
-		if gpsLines[i - 1] then
-			local startX = gpsLines[i][1] - routeStartPosX + 8
-			local startY = gpsLines[i][2] - routeStartPosY + 8
-			local endX = gpsLines[i - 1][1] - routeStartPosX + 8
-			local endY = gpsLines[i - 1][2] - routeStartPosY + 8
+	for i = 2, #lines do
+		if lines[i - 1] then
+			local startX = lines[i][1] - routeStartPosX + 8
+			local startY = lines[i][2] - routeStartPosY + 8
+			local endX = lines[i - 1][1] - routeStartPosX + 8
+			local endY = lines[i - 1][2] - routeStartPosY + 8
 
 			dxDrawImage(startX - 4, startY - 4, 8, 8, "radar/gps/images/dot.png")
 			dxDrawLine(startX, startY, endX, endY, tocolor(255, 255, 255), 9)
@@ -1433,6 +1491,8 @@ function processGPSLines()
 
 	dxSetBlendMode("blend")
 	dxSetRenderTarget()
+
+	return routeImage, routeImageData
 end
 
 function clearGPSRoute()
@@ -1597,6 +1657,10 @@ function buildBigmapBlipMenu()
 		end
 	end
 
+	for _, b in ipairs(getSpecialBlips()) do
+		add(b.icon, b.x, b.y)
+	end
+
 	local list = {}
 	for _, icon in ipairs(order) do list[#list + 1] = groups[icon] end
 	table.sort(list, function(a, b) return a.label < b.label end)
@@ -1709,6 +1773,14 @@ function renderPausePreview(px, py, pw, ph)
 				dxDrawImage(bx - 9, by - 9, 18, 18, "radar/files/blips/" .. getBlipIcon(v) .. ".png")
 			end
 		end
+	end
+
+	-- Waypoint + objective blips: clamped to the preview edge when out of view.
+	for _, b in ipairs(getSpecialBlips()) do
+		local bx, by = toScreen(b.x, b.y)
+		bx = max(px + 8, min(px + pw - 8, bx))
+		by = max(py + 8, min(py + ph - 8, by))
+		dxDrawImage(bx - 8, by - 8, 16, 16, "radar/files/" .. b.icon)
 	end
 
 	local _, _, rot = getElementRotation(localPlayer)
