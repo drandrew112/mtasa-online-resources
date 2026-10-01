@@ -1,0 +1,45 @@
+<meta>
+    <info author="DrAndrew112" name="Med Scene Manager" version="1.0.0" type="script"
+          description="Medical scenes from JSON files: spawns vehicles + injured peds and an ERM task, auto generator, in-game scene editor" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/util.lua"     type="server" />
+    <script src="server/storage.lua"  type="server" />
+    <script src="server/builder.lua"  type="server" />
+    <script src="server/live.lua"     type="server" />
+    <script src="server/auto.lua"     type="server" />
+    <script src="server/editor.lua"   type="server" />
+    <script src="server/interact.lua" type="server" />
+    <script src="server/exports.lua"  type="server" />
+
+    <!-- ================= CLIENT (editor) ================= -->
+    <script src="client/editor.lua" type="client" />
+
+    <!-- scenes/*.json are read and written by the server only (not downloaded) -->
+
+    <!-- ================= SETTINGS ================= -->
+    <settings>
+        <!-- automatic task generator on/off (also /medsceneauto) -->
+        <setting name="*autoEnabled" value="true" />
+    </settings>
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="spawnScene"        type="server" />
+    <export function="removeScene"       type="server" />
+    <export function="getActiveScenes"   type="server" />
+    <export function="getSceneList"      type="server" />
+    <export function="getSceneData"      type="server" />
+    <export function="getAutoGenerate"   type="server" />
+    <export function="setAutoGenerate"   type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="med_erm" />
+    <include resource="medsys" />
+    <include resource="ui_inac" />
+    <include resource="ui_core" />
+    <include resource="ui_interactobject" />
+</meta>

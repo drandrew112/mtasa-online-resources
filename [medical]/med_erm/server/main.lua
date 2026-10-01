@@ -14,5 +14,6 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     for _, u in pairs(Units.list) do
         DB.endShift(u)
+        Units.untagVehicle(u)
     end
 end)

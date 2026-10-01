@@ -30,6 +30,7 @@
     <script src="client/pages/home.lua"     type="client" />
     <script src="client/pages/case.lua"     type="client" />
     <script src="client/pages/messages.lua" type="client" />
+    <script src="client/unitlabel.lua"      type="client" />
     <script src="client/webpage.lua"       type="client" />
     <script src="client/admin/panel.lua"   type="client" />
     <script src="client/admin/detail.lua"  type="client" />

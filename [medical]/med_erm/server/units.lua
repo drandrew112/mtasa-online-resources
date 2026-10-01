@@ -61,7 +61,22 @@ function Units.payload(u)
     }
 end
 
+-- 3D "EMS unit" label above the vehicle (client/unitlabel.lua).
+Units.LABEL_KEY = "erm.unit"
+
+function Units.tagVehicle(u)
+    if not isElement(u.vehicle) then return end
+    local cur = getElementData(u.vehicle, Units.LABEL_KEY)
+    if type(cur) == "table" and cur.callsign == u.callsign and cur.status == u.status then return end
+    setElementData(u.vehicle, Units.LABEL_KEY, { callsign = u.callsign, type = u.type, status = u.status })
+end
+
+function Units.untagVehicle(u)
+    if isElement(u.vehicle) then removeElementData(u.vehicle, Units.LABEL_KEY) end
+end
+
 function Units.sync(u)
+    Units.tagVehicle(u)
     local data = Units.payload(u)
     for _, p in ipairs(u.members) do
         triggerClientEvent(p, "erm:sync", resourceRoot, data)
@@ -152,6 +167,7 @@ function Units.signOut(u, reason)
     if isTimer(u.handoverTimer) then killTimer(u.handoverTimer) end
 
     DB.endShift(u)
+    Units.untagVehicle(u)
     for _, p in ipairs(u.members) do
         Units.byPlayer[p] = nil
         if isElement(p) then triggerClientEvent(p, "erm:signedOut", resourceRoot, reason or "Shift ended.") end

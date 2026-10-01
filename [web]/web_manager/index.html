@@ -1,0 +1,103 @@
+<*
+-- html pages don't see server.lua's globals, the data comes via the export
+local escapes = { ["&"] = "&amp;", ["<"] = "&lt;", [">"] = "&gt;", ['"'] = "&quot;", ["'"] = "&#39;" }
+function htmlEscape(text)
+    return (tostring(text):gsub("[&<>\"']", escapes))
+end
+*><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><* httpWrite(htmlEscape(getServerName())) *></title>
+<style>
+    :root {
+        --bg: #0f1216;
+        --panel: #161b21;
+        --panel-2: #1d232b;
+        --line: #2a323c;
+        --text: #e8ecf1;
+        --dim: #98a2ae;
+        --faint: #626c78;
+        --accent: #e03c31;
+        --ok: #2ea043;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px "Segoe UI", Roboto, system-ui, sans-serif;
+    }
+    header {
+        padding: 28px 16px 20px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+    }
+    header .inner, main { max-width: 960px; margin: 0 auto; }
+    h1 { margin: 0; font-size: 22px; font-weight: 600; }
+    h1::before {
+        content: ""; display: inline-block; width: 10px; height: 10px;
+        margin-right: 10px; border-radius: 2px; background: var(--accent);
+    }
+    header p { margin: 6px 0 0; color: var(--dim); }
+    main { padding: 24px 16px 40px; }
+    .grid {
+        display: grid; gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .card {
+        display: flex; flex-direction: column; gap: 6px;
+        padding: 16px; border: 1px solid var(--line); border-radius: 8px;
+        background: var(--panel); color: inherit; text-decoration: none;
+        transition: border-color .15s, background .15s;
+    }
+    a.card:hover { border-color: var(--accent); background: var(--panel-2); }
+    .card.off { opacity: .5; cursor: default; }
+    .card .top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card .title { font-size: 16px; font-weight: 600; }
+    .card .res { color: var(--faint); font-family: Consolas, monospace; font-size: 12px; }
+    .card .desc { color: var(--dim); flex: 1; }
+    .card .author { color: var(--faint); font-size: 12px; }
+    .badge {
+        flex: none; padding: 2px 8px; border-radius: 10px; font-size: 11px;
+        background: var(--panel-2); color: var(--dim);
+    }
+    .badge.on { background: rgba(46, 160, 67, .15); color: var(--ok); }
+    .empty { color: var(--dim); text-align: center; padding: 40px 0; }
+</style>
+</head>
+<body>
+<header>
+    <div class="inner">
+        <h1><* httpWrite(htmlEscape(getServerName())) *></h1>
+        <p>Available web interfaces</p>
+    </div>
+</header>
+<main>
+<*
+local list = call(getThisResource(), "getWebResourceList") or {}
+if #list == 0 then
+    httpWrite('<div class="empty">No resource serves a web page.</div>')
+else
+    httpWrite('<div class="grid">')
+    for _, r in ipairs(list) do
+        local body =
+            '<div class="top"><span class="title">' .. htmlEscape(r.title) .. '</span>' ..
+            (r.running and '<span class="badge on">running</span>' or '<span class="badge">stopped</span>') ..
+            '</div>' ..
+            '<span class="res">/' .. htmlEscape(r.name) .. '/</span>' ..
+            '<span class="desc">' .. htmlEscape(r.description) .. '</span>' ..
+            (r.author ~= "" and '<span class="author">' .. htmlEscape(r.author) .. '</span>' or '')
+        if r.running then
+            httpWrite('<a class="card" href="' .. htmlEscape(r.url) .. '">' .. body .. '</a>')
+        else
+            httpWrite('<div class="card off">' .. body .. '</div>')
+        end
+    end
+    httpWrite('</div>')
+end
+*>
+</main>
+</body>
+</html>

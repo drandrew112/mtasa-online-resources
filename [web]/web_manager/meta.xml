@@ -1,0 +1,14 @@
+<meta>
+    <info author="DrAndrew112" name="Web Manager" version="1.0.0" type="script"
+          description="HTTP main menu: lists every resource that serves a web page" />
+    <min_mta_version server="1.5.9" />
+
+    <script src="server.lua" type="server" />
+
+    <!-- http://<server>:<httpport>/ redirects here when this resource is
+         set as default in mtaserver.conf:
+         <resource src="web_manager" startup="1" protected="0" default="true" /> -->
+    <html src="index.html" default="true" />
+
+    <export function="getWebResourceList" type="server" />
+</meta>

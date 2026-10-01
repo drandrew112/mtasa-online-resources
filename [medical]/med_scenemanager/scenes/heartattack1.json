@@ -1,0 +1,37 @@
+{
+    "enabled": true,
+    "vehicles": [],
+    "peds": [
+      {
+        "state": {
+          "consciousness": "clinical_death"
+        },
+        "injuries": [],
+        "skin": 15,
+        "id": "p1",
+        "rot": 100.6,
+        "anim": "ko_back",
+        "pos": [
+          1335.59,
+          -1360.914,
+          13.547
+        ]
+      }
+    ],
+    "interior": 0,
+    "name": "heartattack1",
+    "weight": 1,
+    "erm": {
+      "description": "a persorn fall down on the street, possible heart attack",
+      "priority": 1,
+      "title": "Heart attack",
+      "caller": "SceneManager"
+    },
+    "format": 1,
+    "center": [
+      1335.745,
+      -1360.351,
+      13.547
+    ],
+    "dimension": 0
+  }
