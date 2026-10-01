@@ -6,7 +6,7 @@ local LABEL_KEY  = "erm.unit"
 local MAX_DIST   = 70      -- metres
 local FULL_DIST  = 15      -- full size up to this distance
 local MIN_SCALE  = 0.55
-local HEIGHT     = 0.7     -- metres above the vehicle's roof
+local HEIGHT     = 0.1     -- metres above the vehicle's roof
 
 local tagged = {}          -- [vehicle] = true
 
