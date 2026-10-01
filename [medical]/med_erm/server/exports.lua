@@ -100,6 +100,15 @@ function getUnitData(unitOrPlayer)
     return u and Units.public(u) or false
 end
 
+-- getVehicleUnit(vehicle) -> unit | false   (the unit signed in with that vehicle)
+function getVehicleUnit(vehicle)
+    if not isElement(vehicle) then return false end
+    for _, u in pairs(Units.list) do
+        if u.vehicle == vehicle then return Units.public(u) end
+    end
+    return false
+end
+
 local function typeFilter(types)
     if types == nil then return nil end
     local set = {}
@@ -151,8 +160,8 @@ function setUnitStatus(unitId, status, handoverTime)
 end
 
 -- unitCaseAction(unitId, "start" | "stop" | "onscene" | "handover") -> bool, error
--- Presses an Active Case button for the unit, with the tablet's rules
--- (e.g. "onscene" only while responding, "handover" only after the scene).
+-- Case flow actions with the tablet's rules ("stop" only ends the lights &
+-- siren log, "onscene" only while responding, "handover" only after the scene).
 function unitCaseAction(unitId, action)
     local u = Units.get(unitId)
     if not u then return false, "Unit not found" end

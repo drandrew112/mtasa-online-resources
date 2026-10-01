@@ -32,9 +32,9 @@ function setAlert(text, r, g, b, duration)
     UI.alert:set(text, r, g, b, duration)
 end
 
-function addNotification(title, text)
+function addNotification(title, text, silent)
     uiLog("addNotification: %s | %s", tostring(title), tostring(text))
-    UI:addNotification(title, text)
+    UI:addNotification(title, text, silent == true)
 end
 
 function drawLoadingText(text)
@@ -84,6 +84,39 @@ function getSafeZone()
     return UI.safe.x, UI.safe.y
 end
 
+-- Az enter_exit-et csak a gomb (pl. Enter, F) felengedése után kapcsoljuk vissza:
+-- ha egy menü Enterre zárul, a még lenyomott gombot a GTA új kiszállásnak venné.
+local enterExitPending = false
+
+local function isEnterExitHeld()
+    for key in pairs(getBoundKeys("enter_exit") or {}) do
+        if getKeyState(key) then return true end
+    end
+    return false
+end
+
+local function enableEnterExitOnRelease()
+    if isEnterExitHeld() then return end
+    removeEventHandler("onClientRender", root, enableEnterExitOnRelease)
+    enterExitPending = false
+    toggleControl("enter_exit", true)
+end
+
+local function setEnterExit(v)
+    if v and isEnterExitHeld() then
+        if not enterExitPending then
+            enterExitPending = true
+            addEventHandler("onClientRender", root, enableEnterExitOnRelease)
+        end
+        return
+    end
+    if enterExitPending then
+        removeEventHandler("onClientRender", root, enableEnterExitOnRelease)
+        enterExitPending = false
+    end
+    toggleControl("enter_exit", v)
+end
+
 function toggleMoveControls(v)
     toggleControl("forwards", v)
     toggleControl("backwards", v)
@@ -102,7 +135,7 @@ function toggleMoveControls(v)
     toggleControl("walk", v)
     toggleControl("group_control_forwards", v)
     toggleControl("group_control_back", v)
-    toggleControl("enter_exit", v)
+    setEnterExit(v)
     toggleControl("vehicle_fire", v)
     toggleControl("vehicle_secondary_fire", v)
     toggleControl("steer_forward", v)

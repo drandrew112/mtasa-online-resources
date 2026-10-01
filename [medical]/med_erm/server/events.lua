@@ -16,6 +16,9 @@
 --       cancelEvent() = no automatic finish; the caller ends it with
 --       exports.erm:completeHandover(unitId) or times it with setHandoverTime
 --   onErmUnitHandoverComplete (unitId, taskId | false)
+--   onErmUnitHandoverRequest  (unitId, taskId | false)   CANCELLABLE:
+--       no longer fired: the tablet has no Handover button any more (the
+--       event stays registered so existing listeners keep loading)
 --   onErmMessage              (messageId, channel, target, from, fromDispatch, text)
 
 Events = {}
@@ -25,6 +28,7 @@ local NAMES = {
     "onErmTaskAssigned", "onErmTaskUnassigned", "onErmTaskClosed",
     "onErmUnitSignIn", "onErmUnitSignOut", "onErmUnitStatusChange",
     "onErmUnitHandoverStart", "onErmUnitHandoverComplete", "onErmMessage",
+    "onErmUnitHandoverRequest",
 }
 
 for _, name in ipairs(NAMES) do

@@ -20,4 +20,5 @@
     <export function="getStretcherState" type="server" />
     <export function="getStretcherPatient" type="server" />
     <export function="getPatientStretcher" type="server" />
+    <export function="takePatientOff" type="server" />
 </meta>

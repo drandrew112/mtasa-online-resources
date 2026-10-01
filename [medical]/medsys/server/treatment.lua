@@ -2,7 +2,7 @@
 --
 -- Examining[medic] = target                      -- open examination panels
 -- Watchers[target] = { [medic] = true }          -- reverse index for the per-tick panel updates
--- Treatments[medic] = { target, action, sessionId, aborted }
+-- Treatments[medic] = { target, action, option, sessionId, timer, aborted }
 -- Locks[target] = { [action] = medic }           -- one medic per procedure per patient
 
 addEvent("onMedicalStateChange", false)
@@ -14,6 +14,7 @@ addEvent("onMedicalTreatment", false)
 addEvent("medic:requestExamine", true)
 addEvent("medic:closeExamine", true)
 addEvent("medic:requestTreatment", true)
+addEvent("medic:requestTransport", true)
 
 local Examining = {}
 local Watchers = {}
@@ -131,9 +132,12 @@ local function isResourceRunning(name)
     return resource and getResourceState(resource) == "running"
 end
 
--- resource     minigame resource that has to be running
+-- resource     minigame resource that has to be running (none for a timed procedure)
 -- can(state)   -> true | false, reason
+-- validate(state, option) optional, checks the option sent by the panel (e.g. the medicine)
 -- start(medic, target, state) -> session id or false
+-- duration     timed procedure without a minigame: it succeeds after this many seconds
+-- progress(option) text of the progress bar of a timed procedure
 -- stop(medic)  aborts the minigame (it fires its finish event)
 -- cleanup(state) optional, runs when the procedure ends in any way
 -- finishEvent  the minigame's result event, sessionArg = position of the session id in it
@@ -276,17 +280,43 @@ PROCEDURES.airway = {
     end,
 }
 
+PROCEDURES.medication = {
+    duration = MEDIC.DRUG_TIME,
+    animated = true,
+    can = function(state)
+        if state.ivAccess then return true end
+        return false, "Needs IV access"
+    end,
+    validate = function(state, drugId)
+        if MEDIC_DRUGS[drugId] then return true end
+        return false, "Unknown medicine"
+    end,
+    progress = function(drugId)
+        return "Giving " .. MEDIC_DRUGS[drugId].name .. "..."
+    end,
+    stop = function() end, -- releaseTreatment kills the timer
+    apply = function(state, success, drugId)
+        local drug = MEDIC_DRUGS[drugId]
+        if not success or not drug then return "The medicine was not given" end
+        state.drugs[#state.drugs + 1] = { id = drugId, untilTick = getTickCount() + drug.duration * 1000 }
+        return drug.name .. " given"
+    end,
+}
+
 -- The actions the panel can offer right now: { [action] = true | reason }
-local function getAvailability(state)
+local function getAvailability(state, target)
     local result = {}
+    local dead = not state or state.dead
     for action, procedure in pairs(PROCEDURES) do
-        if not state or state.dead then
+        if dead then
             result[action] = "Patient is dead"
         else
             local ok, reason = procedure.can(state)
             result[action] = ok or reason
         end
     end
+    local ok, reason = canRequestTransport(target, state)
+    result.transport = ok or reason
     return result
 end
 
@@ -294,7 +324,8 @@ end
 local function getPanelSnapshot(target)
     local state = getLivePatient(target)
     local snapshot = state and buildSnapshot(state) or buildDefaultSnapshot(target)
-    snapshot.actions = getAvailability(state)
+    snapshot.actions = getAvailability(state, target)
+    snapshot.transportPhase, snapshot.transportTimeLeft = getTransportStatus(target)
     return snapshot
 end
 
@@ -376,6 +407,23 @@ addEventHandler("medic:closeExamine", resourceRoot, function()
     closeExamination(client, false)
 end)
 
+-- spot = { x, y, z, rotation, canDrive } picked by the client next to the body, or nil
+addEventHandler("medic:requestTransport", resourceRoot, function(target, spot)
+    local medic = client
+    if Examining[medic] ~= target then return end
+    local ok, reason
+    if not canAttend(medic, target, MEDIC.PANEL_RANGE) then
+        ok, reason = false, "Too far from the patient"
+    else
+        ok, reason = requestTransport(medic, target, spot)
+    end
+    if ok then
+        openExamination(medic, target, ("Transport requested - arrives in %d s"):format(MEDIC.TRANSPORT_DELAY))
+    else
+        triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
+    end
+end)
+
 ---------------------------------------------------------------------------
 -- Treatment lifecycle
 ---------------------------------------------------------------------------
@@ -400,6 +448,10 @@ local function releaseTreatment(medic)
     if not treatment then return nil end
     Treatments[medic] = nil
 
+    if treatment.timer then
+        if isTimer(treatment.timer) then killTimer(treatment.timer) end
+        treatment.timer = nil
+    end
     local target, action = treatment.target, treatment.action
     local locks = Locks[target]
     if locks and locks[action] == medic then
@@ -426,34 +478,40 @@ local function finishTreatment(medic, success, ...)
     if not state or state.dead then return end
 
     local message = PROCEDURES[treatment.action].apply(state, success, ...)
-    triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true)
+    triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true, treatment.option)
     if isElement(medic) then
         openExamination(medic, target, message, not success)
     end
 end
 
 for action, procedure in pairs(PROCEDURES) do
-    addEventHandler(procedure.finishEvent, root, function(success, ...)
-        local treatment = Treatments[source]
-        if not treatment or treatment.action ~= action then return end
-        local sessionId = select(procedure.sessionArg - 1, ...)
-        if sessionId ~= treatment.sessionId then return end
-        finishTreatment(source, success, ...)
-    end)
+    if procedure.finishEvent then
+        addEventHandler(procedure.finishEvent, root, function(success, ...)
+            local treatment = Treatments[source]
+            if not treatment or treatment.action ~= action then return end
+            local sessionId = select(procedure.sessionArg - 1, ...)
+            if sessionId ~= treatment.sessionId then return end
+            finishTreatment(source, success, ...)
+        end)
+    end
 end
 
--- Starts a procedure. Returns true, or false + reason.
-function startTreatment(medic, target, action)
+-- Starts a procedure. option: e.g. the medicine id. Returns true, or false + reason.
+function startTreatment(medic, target, action, option)
     local procedure = PROCEDURES[action]
     if not procedure then return false, "Unknown procedure" end
     if Treatments[medic] then return false, "You are busy" end
     if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return false, "Too far from the patient" end
-    if not isResourceRunning(procedure.resource) then return false, "Equipment unavailable" end
+    if procedure.resource and not isResourceRunning(procedure.resource) then return false, "Equipment unavailable" end
 
     local state = getLivePatient(target)
     if not state or state.dead then return false, "Patient is dead" end
     local ok, reason = procedure.can(state)
     if not ok then return false, reason end
+    if procedure.validate then
+        ok, reason = procedure.validate(state, option)
+        if not ok then return false, reason end
+    end
 
     local locks = Locks[target]
     if locks and isElement(locks[action]) then
@@ -463,10 +521,20 @@ function startTreatment(medic, target, action)
     closeExamination(medic)
     Locks[target] = locks or {}
     Locks[target][action] = medic
-    Treatments[medic] = { target = target, action = action }
+    Treatments[medic] = { target = target, action = action, option = option }
     refreshSubscription(medic, target)
     triggerClientEvent(medic, "medic:busy", resourceRoot, true)
     if procedure.animated then lockMedic(medic, target, true) end
+
+    if procedure.duration then
+        local treatment = Treatments[medic]
+        treatment.timer = setTimer(function()
+            treatment.timer = nil
+            finishTreatment(medic, true, option)
+        end, procedure.duration * 1000, 1)
+        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option), procedure.duration * 1000)
+        return true
+    end
 
     local sessionId = procedure.start(medic, target, state)
     if not sessionId then
@@ -495,10 +563,10 @@ function stopTreatmentsOn(target, reopen)
     Locks[target] = nil
 end
 
-addEventHandler("medic:requestTreatment", resourceRoot, function(target, action)
+addEventHandler("medic:requestTreatment", resourceRoot, function(target, action, option)
     local medic = client
     if Examining[medic] ~= target then return end
-    local ok, reason = startTreatment(medic, target, action)
+    local ok, reason = startTreatment(medic, target, action, option)
     if not ok then
         triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
     end

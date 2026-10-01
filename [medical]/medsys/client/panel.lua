@@ -1,6 +1,8 @@
 -- Patient examination panel (DX). The server opens it (medic:panelOpen), pushes a snapshot
 -- every simulation step while it is open (medic:panelUpdate) and closes it when a procedure
 -- starts. The buttons only send requests, the server validates and runs everything.
+-- "Medication" opens a medicine list inside the panel. "Transport" (a stable patient, or the
+-- only button of a dead one) calls a vehicle; the client picks a free spot for it.
 
 addEvent("medic:panelOpen", true)
 addEvent("medic:panelUpdate", true)
@@ -43,7 +45,7 @@ local CONSCIOUSNESS_COLOR = {
 }
 local BLEEDING_COLOR = { [0] = C.good, C.warn, C.orange, C.bad }
 
-local panel -- { target, name, data, message, messageError, messageTick, pending, hover }
+local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu }
 local fonts
 
 local function ensureFonts()
@@ -74,6 +76,8 @@ local function heartRateColor(hr)
 end
 
 local function pressureColor(systolic)
+    if systolic >= 180 then return C.bad end
+    if systolic >= 140 then return C.warn end
     if systolic >= 90 then return C.good end
     if systolic >= 70 then return C.warn end
     return C.bad
@@ -217,16 +221,80 @@ end
 
 -- Returns the buttons with their rectangles (also used for the click hit test)
 local function getButtons()
-    local count = #MEDIC_ACTION_ORDER
+    local order = panel.data.dead and MEDIC_DEAD_ACTION_ORDER or MEDIC_ACTION_ORDER
+    local count = #order
     local gap = s(10)
     local bw = (W - PAD * 2 - gap * (count - 1)) / count
     local bh = s(50)
     local by = Y + H - PAD - bh
     local list = {}
-    for i, action in ipairs(MEDIC_ACTION_ORDER) do
+    for i, action in ipairs(order) do
         list[i] = { action = action, x = X + PAD + (i - 1) * (bw + gap), y = by, w = bw, h = bh }
     end
     return list
+end
+
+-- Medicine cards of the medication list (drawn over the injury list)
+local DRUG_AREA_Y = s(368)
+local DRUG_CARD_H = s(84)
+
+local function getDrugCards()
+    local list = {}
+    local y = Y + DRUG_AREA_Y + s(24)
+    for i, id in ipairs(MEDIC_DRUG_ORDER) do
+        list[i] = { id = id, x = X + PAD, y = y, w = W - PAD * 2, h = DRUG_CARD_H }
+        y = y + DRUG_CARD_H + s(8)
+    end
+    return list
+end
+
+local function drawDrugMenu(cx, cy)
+    local x, y = X + PAD, Y + DRUG_AREA_Y
+    local bottom = Y + H - PAD - s(50) - s(34)
+    dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
+    dxDrawText("MEDICATION  -  given through the IV line", x, y, X + W - PAD, y + s(20), C.muted, 1,
+        fonts.small, "left", "top")
+    for _, card in ipairs(getDrugCards()) do
+        local drug = MEDIC_DRUGS[card.id]
+        local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
+        dxDrawRectangle(card.x, card.y, card.w, card.h, hovered and C.button or C.tile)
+        dxDrawRectangle(card.x, card.y, s(4), card.h, C.accent)
+        local tx = card.x + s(14)
+        dxDrawText(drug.name, tx, card.y + s(8), card.x + card.w, card.y + s(30), C.text, 1, fonts.bold, "left", "top")
+        dxDrawText(drug.class, tx, card.y + s(8), card.x + card.w - s(12), card.y + s(30), C.spo2, 1,
+            fonts.small, "right", "top")
+        dxDrawText(drug.desc, tx, card.y + s(32), card.x + card.w - s(12), card.y + card.h - s(6), C.muted, 1,
+            fonts.small, "left", "top", true, true)
+    end
+end
+
+-- A free spot for the transport vehicle next to the body: the boot faces the body, the
+-- vehicle can stand there (nothing in the way along its length) and, if possible, drive off.
+local SPOT_DISTANCE = 5.5
+local SPOT_DIRECTIONS = 16
+
+local function findTransportSpot(target)
+    local bx, by, bz = getElementPosition(target)
+    local fallback
+    for i = 0, SPOT_DIRECTIONS - 1 do
+        local a = i / SPOT_DIRECTIONS * math.pi * 2
+        local dx, dy = math.cos(a), math.sin(a)
+        local x, y = bx + dx * SPOT_DISTANCE, by + dy * SPOT_DISTANCE
+        local ground = getGroundPosition(x, y, bz + 3)
+        if ground and ground ~= 0 and math.abs(ground - bz) < 1.5 then
+            local z = ground + 1
+            local clear = isLineOfSightClear(bx, by, bz + 0.5, x, y, z, true, true, true, true, false, false, false, target)
+                and isLineOfSightClear(x - dx * 3, y - dy * 3, z, x + dx * 3, y + dy * 3, z, true, true, true, true, false, false, false, target)
+                and isLineOfSightClear(x - dy * 1.3, y + dx * 1.3, z, x + dy * 1.3, y - dx * 1.3, z, true, true, true, true, false, false, false, target)
+            if clear then
+                local rotation = -math.deg(math.atan2(dx, dy)) -- the front points away from the body
+                local canDrive = isLineOfSightClear(x, y, z, x + dx * 15, y + dy * 15, z, true, true, true, true, false, false, false, target)
+                if canDrive then return { x, y, z, rotation, true } end
+                fallback = fallback or { x, y, z, rotation, false }
+            end
+        end
+    end
+    return fallback
 end
 
 local function getCloseButton()
@@ -236,18 +304,19 @@ end
 
 local function drawButtons(cx, cy)
     local hoverReason
-    for _, button in ipairs(getButtons()) do
+    local buttons = getButtons()
+    for _, button in ipairs(buttons) do
         local info = MEDIC_ACTIONS[button.action]
         local available = panel.data.actions and panel.data.actions[button.action]
         local enabled = available == true and not panel.pending
         local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
 
-        local bg = enabled and (hovered and C.buttonHover or C.button) or C.buttonOff
+        local selected = button.action == "medication" and panel.drugMenu
+        local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
         dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
-        dxDrawText(info.label, button.x, button.y + s(6), button.x + button.w, button.y + s(30),
-            enabled and C.text or C.muted, 1, fonts.bold, "center", "top")
-        dxDrawText(info.game, button.x, button.y + s(28), button.x + button.w, button.y + button.h - s(4),
-            C.muted, 1, fonts.small, "center", "top")
+        local label = (#buttons == 1 and info.wideLabel) or info.label
+        dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
+            enabled and C.text or C.muted, 1, fonts.bold, "center", "center")
 
         if hovered and not enabled and type(available) == "string" then hoverReason = available end
     end
@@ -303,16 +372,53 @@ local function render()
     -- vitals
     y = drawVitals(x, y + s(52), data) + s(12)
 
-    -- treatment status line
-    local iv = data.ivAccess and "IV access: in place" or "IV access: none"
-    local airway = data.intubated and "Airway: secured" or "Airway: not secured"
-    dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
-    dxDrawText(airway, x + s(190), y, x + W, y + s(22), data.intubated and C.good or C.muted, 1, fonts.body, "left", "center")
-    dxDrawText(("Pain: %d/10"):format(math.floor(data.pain / 10 + 0.5)), x, y, X + W - PAD, y + s(22),
-        data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
+    -- transport status, nil when none was requested
+    local elapsed = math.floor((getTickCount() - panel.dataTick) / 1000)
+    local transportText
+    if data.transportPhase == "waiting" then
+        transportText = "Transport: on the way, arrives in "
+            .. formatTime(math.max(0, (data.transportTimeLeft or 0) - elapsed))
+    elseif data.transportPhase then
+        transportText = "Transport: the patient is being loaded"
+    end
+
+    -- treatment status line (the transport status for a dead body)
+    if data.dead then
+        dxDrawText(transportText or "Transport: not requested", x, y, x + W, y + s(22),
+            transportText and C.warn or C.muted, 1, fonts.body, "left", "center")
+    else
+        local iv = data.ivAccess and "IV access: in place" or "IV access: none"
+        local airway = data.intubated and "Airway: secured" or "Airway: not secured"
+        dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
+        dxDrawText(airway, x + s(190), y, x + W, y + s(22), data.intubated and C.good or C.muted, 1, fonts.body, "left", "center")
+        dxDrawText(("Pain: %d/10"):format(math.floor(data.pain / 10 + 0.5)), x, y, X + W - PAD, y + s(22),
+            data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
+    end
     y = y + s(32)
 
+    -- active medicines, transport of a living patient
+    if data.drugs and #data.drugs > 0 and not data.dead then
+        local parts = {}
+        for i, dose in ipairs(data.drugs) do
+            parts[i] = ("%s (%s)"):format(dose.name, formatTime(math.max(0, dose.timeLeft - elapsed)))
+        end
+        dxDrawText("Medication: " .. table.concat(parts, ", "), x, y - s(8), X + W - PAD, y + s(14), C.spo2, 1,
+            fonts.body, "left", "center", true)
+        y = y + s(24)
+    end
+    if transportText and not data.dead then
+        dxDrawText(transportText, x, y - s(8), X + W - PAD, y + s(14), C.warn, 1, fonts.body, "left", "center", true)
+        y = y + s(24)
+    end
+
     drawInjuries(x, y, data)
+    if panel.drugMenu then
+        if data.dead or not (data.actions and data.actions.medication == true) then
+            panel.drugMenu = false
+        else
+            drawDrugMenu(cx, cy)
+        end
+    end
 
     -- buttons, then the message / hint line above them
     local hoverReason = drawButtons(cx, cy)
@@ -346,11 +452,29 @@ local function onClick(button, state)
         return
     end
     if panel.pending then return end
+    if panel.drugMenu then
+        for _, card in ipairs(getDrugCards()) do
+            if isInside(card.x, card.y, card.w, card.h, cx, cy) then
+                panel.pending = true
+                panel.drugMenu = false
+                triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "medication", card.id)
+                return
+            end
+        end
+    end
     for _, btn in ipairs(getButtons()) do
         if isInside(btn.x, btn.y, btn.w, btn.h, cx, cy) and panel.data.actions
             and panel.data.actions[btn.action] == true then
-            panel.pending = true
-            triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, btn.action)
+            if btn.action == "medication" then
+                panel.drugMenu = not panel.drugMenu
+            elseif btn.action == "transport" then
+                panel.pending = true
+                triggerServerEvent("medic:requestTransport", resourceRoot, panel.target, findTransportSpot(panel.target))
+            else
+                panel.pending = true
+                panel.drugMenu = false
+                triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, btn.action)
+            end
             return
         end
     end
@@ -360,7 +484,11 @@ local function onKey(key, press)
     if not panel or not press then return end
     if key == "backspace" then
         cancelEvent()
-        closePanel(true)
+        if panel.drugMenu then
+            panel.drugMenu = false -- back to the injury list first
+        else
+            closePanel(true)
+        end
     end
 end
 

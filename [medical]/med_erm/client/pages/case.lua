@@ -1,14 +1,53 @@
--- Active Case: task details + response buttons.
+-- Active Case: task details + response / case buttons.
 --
 --   Start Response -> En Route (lights & siren log starts)
---   End Response   -> stops the log (status: On Scene)
---   On Scene       -> stops the log, marks the scene reached
---   Handover       -> hospital handover (30 s by default, or run by an external
---                     resource), then the server frees the unit
+--   End Response   -> stops the log
+--   Leave Case     -> the unit leaves the task (only while another unit stays on it)
+--   Close Case     -> closes the task with a reason (false call, broken scene, ...)
+--
+-- On Scene is set by the server when the unit reaches the scene, the handover
+-- is started by the hospital.
 
 local s = Gfx.s
 
 Pages.case = {}
+
+local reasonToken, reasonTask
+
+local function askCloseReason(t)
+    local res = getResourceFromName("ui_core")
+    if not res or getResourceState(res) ~= "running" then return end
+    reasonTask = t.id
+    reasonToken = exports.ui_core:openTextInput(string.format("Reason for closing case #%d", t.id), 90, "")
+end
+
+addEvent("ui_core:textInputResult")
+addEventHandler("ui_core:textInputResult", root, function(token, text)
+    if token ~= reasonToken then return end
+    reasonToken = nil
+    local t = State.task
+    if not text or not t or t.id ~= reasonTask then return end
+    text = text:gsub("^%s+", ""):gsub("%s+$", "")
+    if #text < 3 then
+        State.notify("EMS Tablet", "Give a reason for closing the case.")
+        return
+    end
+    Tablet.confirm = {
+        title = string.format("Close case #%d?", t.id),
+        text  = "Reason: " .. text,
+        label = "Close Case",
+        action = function() triggerServerEvent("erm:closeCase", resourceRoot, text) end,
+    }
+end)
+
+local function askLeave(t)
+    Tablet.confirm = {
+        title = string.format("Leave case #%d?", t.id),
+        text  = "Your unit will be released from the case. The other units stay on it.",
+        label = "Leave Case",
+        action = function() triggerServerEvent("erm:leaveCase", resourceRoot) end,
+    }
+end
 
 local function distanceText(t)
     local px, py = getElementPosition(localPlayer)
@@ -25,7 +64,7 @@ end
 function Pages.case.draw(x, y, w, h)
     local u, t = State.unit, State.task
     local pad = s(18)
-    local ix, iw = x + pad, w - pad - s(6)
+    local ix, iw = x + pad, w - pad * 2
 
     if not t then
         Gfx.text("Active Case", ix, y + s(14), iw, s(26), Theme.text, Gfx.font(15, true))
@@ -91,16 +130,16 @@ function Pages.case.draw(x, y, w, h)
     local bw = (iw - gap * 3) / 4
     local handover = u.status == "handover"
     local buttons = {
-        { "Start Response", "start",    Config.STATUS.enroute.color,  not u.responding and not handover },
-        { "End Response",   "stop",     { 84, 94, 108 },              u.responding },
-        { "On Scene",       "onscene",  Config.STATUS.onscene.color,  u.responding },
-        { "Handover",       "handover", Config.STATUS.handover.color, u.reachedScene and not handover },
+        { "Start Response", Config.STATUS.enroute.color, not u.responding and not handover,
+            function() triggerServerEvent("erm:caseAction", resourceRoot, "start") end },
+        { "End Response", { 84, 94, 108 }, u.responding,
+            function() triggerServerEvent("erm:caseAction", resourceRoot, "stop") end },
+        { "Leave Case", { 48, 56, 66 }, #t.units > 1 and not handover,
+            function() askLeave(t) end },
+        { "Close Case", { 200, 50, 45 }, not handover,
+            function() askCloseReason(t) end },
     }
     for i, b in ipairs(buttons) do
-        Gfx.button(ix + (i - 1) * (bw + gap), by, bw, btnH, b[1], {
-            color = b[3],
-            disabled = not b[4],
-            textColor = b[2] == "handover" and tocolor(25, 25, 25) or nil,
-        }, function() triggerServerEvent("erm:caseAction", resourceRoot, b[2]) end)
+        Gfx.button(ix + (i - 1) * (bw + gap), by, bw, btnH, b[1], { color = b[2], disabled = not b[3] }, b[4])
     end
 end

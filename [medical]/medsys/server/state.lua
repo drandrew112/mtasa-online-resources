@@ -16,8 +16,11 @@
 --     nextInjuryId  = 1,
 --     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (fluid rate)
 --     intubated     = false,                -- airway secured
+--     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
+--     drugs         = { { id, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
 --     apneaRate     = nil,                  -- %/s SpO2 fall while an intubation attempt runs
 --     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
+--     tachyTick     = nil,                  -- getTickCount() since the pulse is at ARREST_HEART_RATE+
 --     arrestTick    = nil,                  -- getTickCount() of the cardiac arrest
 --     deathTick     = nil,                  -- getTickCount() of biological death (arrestTick + DEATH_TIME)
 --     knockoutState = nil, knockoutUntil = nil, -- forced dazed / unconscious state and its end
@@ -51,6 +54,8 @@ local function newState(element)
         ivAccess = false,
         ivQuality = 0,
         intubated = false,
+        hypertension = 0,
+        drugs = {},
         consciousness = "stable",
         dead = false,
         animated = false,
@@ -136,6 +141,15 @@ function getPatientPain(state)
     return math.min(100, pain)
 end
 
+-- Sum of an effect field (e.g. "systolic") over the active medicine doses
+function getDrugEffect(state, field)
+    local total = 0
+    for _, dose in ipairs(state.drugs) do
+        total = total + (MEDIC_DRUGS[dose.id][field] or 0)
+    end
+    return total
+end
+
 function isInClinicalDeath(state)
     return state.arrestTick ~= nil and not state.dead
 end
@@ -163,6 +177,13 @@ function buildSnapshot(state)
     end
 
     local systolic, diastolic = round(state.systolic), round(state.diastolic)
+    local now = getTickCount()
+    local drugs = {}
+    for i, dose in ipairs(state.drugs) do
+        drugs[i] = { id = dose.id, name = MEDIC_DRUGS[dose.id].name,
+            timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)) }
+    end
+
     local deathTimeLeft
     if isInClinicalDeath(state) then
         deathTimeLeft = math.max(0, math.ceil((state.deathTick - getTickCount()) / 1000))
@@ -185,6 +206,7 @@ function buildSnapshot(state)
         injuries = injuries,
         ivAccess = state.ivAccess,
         intubated = state.intubated,
+        drugs = drugs,
         clinicalDeath = isInClinicalDeath(state),
         deathTimeLeft = deathTimeLeft,
         dead = state.dead,
@@ -253,6 +275,7 @@ function cardiacArrest(state)
     local now = getTickCount()
     state.arrestTick = now
     state.deathTick = now + MEDIC.DEATH_TIME * 1000
+    state.tachyTick = nil
     state.heartRate, state.systolic, state.diastolic = 0, 0, 0
     state.knockoutState, state.knockoutUntil = nil, nil
 

@@ -24,8 +24,9 @@ local function deliver(msg)
     end
 end
 
--- from: display name, fromDispatch: true when sent from the web console.
-function Chat.post(channel, target, from, fromDispatch, text)
+-- from: display name, fromDispatch: true when sent from the web console,
+-- fromUnit: id of the sending unit (tablet), so its own messages show as SENT.
+function Chat.post(channel, target, from, fromDispatch, text, fromUnit)
     text = cleanText(text, 300)
     if text == "" then return false, "Empty message" end
 
@@ -61,6 +62,7 @@ function Chat.post(channel, target, from, fromDispatch, text)
         label        = label,
         from         = cleanText(from, 40),
         fromDispatch = fromDispatch and true or false,
+        fromUnit     = tonumber(fromUnit) or 0,
         text         = text,
         units        = recipients,
     }

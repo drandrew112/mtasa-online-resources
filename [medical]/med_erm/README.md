@@ -132,19 +132,30 @@ signed in; after sign-in every crew member can open it anywhere.
   always in the crew. Optional **unit number** (1-999) gives the callsign
   `<TYPE>-<NN>` (e.g. 7 + ALS -> `ALS-07`); left empty, the server assigns the
   lowest free number.
-- **Status column** (right): Available (green), En Route (red),
-  On Scene (blue), Handover (yellow).
+- **Status** (pill in the header): Available (green), En Route (red),
+  On Scene (blue), Handover (yellow). There are no manual status buttons.
 - **Menu** (three lines, top right): Home, Active Case, Messages, End Shift.
-- **Home**: active case + cases closed in this shift.
+- **Home**: shift time, active case + cases closed in this shift.
 - The active case is placed on the radar with `v_radar`'s `addObjective`
   (yellow marker + automatic route), updated/removed with the task. It is
   removed once the player arrives (`Config.ARRIVE_RADIUS`, 30 m) or the unit
-  sets On Scene, and does not come back for that task.
-- **Active Case**: Start Response / End Response / On Scene / Handover.
-  Start enables On Scene and End; On Scene stops the response; starting again
-  from On Scene sets En Route again. Every start/stop is written to the task's
-  lights & siren log. Handover lasts 30 s, then the server sets the unit
-  Available, and the task is closed once its last unit has handed over.
+  is On Scene, and does not come back for that task.
+- **On Scene is automatic**: once the unit's vehicle or a crew member is within
+  `Config.ARRIVE_RADIUS` of the unit's own task, the server sets On Scene (stops
+  the lights & siren log). Scenes of tasks assigned to other units never count.
+- **Active Case**: Start Response / End Response / Leave Case / Close Case.
+  Start sets En Route and starts the lights & siren log, End stops the log.
+  Leave Case releases the unit (only while another unit stays on the case).
+  Close Case asks for a reason (false call, broken scene, ...) and closes the
+  task; the reason is stored as `<callsign>: <reason>`. The handover is
+  started by the hospital (med_hospitals) and the task is closed once its last
+  unit has handed over.
+- **Start Response reminder**: the driver of a unit with an active case, not
+  yet on scene, gets a notification when driving off (above
+  `Config.RESPONSE_WARN_SPEED`, 15 km/h) without Start Response.
+- **Messages**: two channels, *Dispatch* (the unit's thread with the
+  dispatchers; broadcasts show up here) and *Case* (case chat: every unit on
+  the active task + the dispatchers). Unread counts per channel.
 
 ## Database (data/erm.db)
 
@@ -181,6 +192,7 @@ exports.erm:getTasks([status [, source]])  -- open tasks, optional filters
 -- units
 exports.erm:getUnits()
 exports.erm:getUnitData(unitIdOrPlayer)    -- incl. x, y, z, zone
+exports.erm:getVehicleUnit(vehicle)        -- unit signed in with that vehicle
 exports.erm:getFreeUnits([types])          -- no task + Available; types "ALS" or {"ALS","BLS"}
 local unit, dist = exports.erm:getNearestFreeUnit(x, y [, z [, types]])
 exports.erm:setUnitStatus(unitId, "available" | "enroute" | "onscene" | "handover" [, handoverMs])
@@ -226,12 +238,11 @@ Triggered on erm's resourceRoot – listen with `addEventHandler(name, root, fn)
 | `onErmUnitHandoverComplete` | unitId, taskId \| false |
 | `onErmMessage` | messageId, channel, target, from, fromDispatch, text |
 
-**Arrival**: `setUnitStatus(unitId, "onscene")` does what the tablet's On
+**Arrival**: `setUnitStatus(unitId, "onscene")` does what the automatic On
 Scene does (stops the lights & siren log, marks the scene reached, removes the
-radar objective, enables Handover).
+radar objective).
 
-**Handover under external control**: the handover starts either from the
-tablet or from `setUnitStatus(unitId, "handover")`; `onErmUnitHandoverStart`
+**Handover under external control**: the handover starts from `setUnitStatus(unitId, "handover")`; `onErmUnitHandoverStart`
 fires first. Call `cancelEvent()` in it to switch off the automatic 30 s
 finish, run your marker / animation, then call `completeHandover(unitId)`
 (or `setHandoverTime(unitId, ms)` to let ERM finish it after ms). The unit

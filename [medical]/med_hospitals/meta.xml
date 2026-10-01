@@ -1,0 +1,40 @@
+<meta>
+    <info author="DrAndrew112" name="med_hospitals" version="1.0" type="script"
+          description="Hospitals: ambulance bays + stretcher handover with ERM, free treatment marker" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/hospitals.lua"  type="server" />
+    <script src="server/handover.lua"   type="server" />
+    <script src="server/heal.lua"       type="server" />
+    <script src="server/objectives.lua" type="server" />
+    <script src="server/exports.lua"    type="server" />
+
+    <!-- ================= CLIENT (3D labels) ================= -->
+    <script src="client/labels.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf"  type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- hospitals.json is read by the server only (not downloaded) -->
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="getHospitals"                  type="server" />
+    <export function="getHospital"                   type="server" />
+    <export function="getNearestHospital"            type="server" />
+    <export function="setObjectiveToNearestHospital" type="server" />
+    <export function="setObjectiveToHospital"        type="server" />
+    <export function="removeHospitalObjective"       type="server" />
+    <export function="getVehicleHospitalBay"         type="server" />
+    <export function="getUnitHospitalHandover"       type="server" />
+    <export function="isPlayerHealing"               type="server" />
+    <export function="reloadHospitals"               type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="med_erm" />
+    <include resource="med_stretcher" />
+    <include resource="medsys" />
+    <include resource="v_radar" />
+</meta>

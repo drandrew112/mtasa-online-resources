@@ -584,4 +584,14 @@ function getStretcherPatient(obj)
 end
 function getPatientStretcher(ped) return patientOf[ped] or false end
 
+-- Takes the patient lying on the stretcher off (detached, lying / standing anim reset).
+-- Returns the ped, or false. The caller decides where they go (e.g. a hospital handover).
+function takePatientOff(obj)
+    local s = Stretchers[obj]
+    if not s or not s.patient then return false end
+    local ped = s.patient
+    removePatient(s, false)
+    return ped
+end
+
 function getPusherStretcher(player) return pusherOf[player] end

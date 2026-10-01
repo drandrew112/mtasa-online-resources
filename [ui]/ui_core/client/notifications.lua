@@ -37,9 +37,12 @@ local function getNotificationAlpha(n)
     return 255
 end
 
-function UI:addNotification(title, text)
-    local s = playSound("client/sounds/notify.wav")
-    if s then setSoundVolume(s, 0.4) end
+-- silent = true skips the notify sound (the caller plays its own).
+function UI:addNotification(title, text, silent)
+    if not silent then
+        local s = playSound("client/sounds/notify.wav")
+        if s then setSoundVolume(s, 0.4) end
+    end
 
     table.insert(self.notifications, {
         title = title,

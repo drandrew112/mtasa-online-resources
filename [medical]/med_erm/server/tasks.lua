@@ -137,7 +137,7 @@ function Tasks.assign(id, unitId)
     DB.shiftTaskStart(u.shiftId, t.id, u.callsign)
     Tasks.save(t)
     Tasks.syncUnits(t)
-    Units.notify(u, "New case assigned", string.format("#%d P%d - %s (%s)", t.id, t.priority, t.title, t.zone))
+    Units.notify(u, "New case assigned", string.format("#%d P%d - %s (%s)", t.id, t.priority, t.title, t.zone), true)
     Events.fire("onErmTaskAssigned", t.id, u.id)
     return true
 end
@@ -159,6 +159,24 @@ function Tasks.unassign(id, unitId, silent, outcome)
     Tasks.save(t)
     Tasks.syncUnits(t)
     Events.fire("onErmTaskUnassigned", t.id, tonumber(unitId))
+    return true
+end
+
+-- A unit leaves its task on its own (tablet). At least one unit has to stay;
+-- the leaving unit gets the task credited to its shift.
+function Tasks.leave(id, unitId)
+    local t, u = Tasks.get(id), Units.get(unitId)
+    if not t or not u or u.task ~= t.id then return false, "Your unit is not on this case." end
+    if #t.units < 2 then return false, "The last unit cannot leave the case. Close it instead." end
+    if u.status == "handover" then return false, "Handover in progress." end
+
+    Units.creditTask(u, t)
+    Tasks.unassign(t.id, u.id, true, "left")
+    Units.notify(u, "Case left", string.format("You left case #%d.", t.id))
+    for _, otherId in ipairs(t.units) do
+        local o = Units.get(otherId)
+        if o then Units.notify(o, "Unit left", string.format("%s left case #%d.", u.callsign, t.id)) end
+    end
     return true
 end
 

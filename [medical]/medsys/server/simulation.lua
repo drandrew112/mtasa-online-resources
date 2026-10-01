@@ -4,9 +4,12 @@
 -- Model per step:
 --   blood volume  <- bleeding (per wound level) + burn plasma loss, IV fluids, slow compensation
 --   SpO2          <- drifts to the lowest target of the airway causes / shock, recovers otherwise
---   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia
+--   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia;
+--                    the pulse always rises as the pressure falls (baroreflex)
 --   consciousness <- derived from SpO2, systolic pressure, pain and forced knockouts
---   SpO2 <= ARREST_SPO2 or blood <= ARREST_BLOOD -> cardiac arrest (clinical death)
+--   medicines     <- shift the circulation targets while they work (MEDIC_DRUGS)
+--   SpO2 <= ARREST_SPO2, blood <= ARREST_BLOOD or systolic <= ARREST_SYSTOLIC -> cardiac arrest
+--   pulse >= ARREST_HEART_RATE for ARREST_TACHY_TIME seconds                  -> cardiac arrest
 --   clinical death longer than DEATH_TIME        -> biological death
 
 local simTimer
@@ -86,21 +89,40 @@ local function updateCirculation(state, dt, bloodFraction, pain)
     local loss = 1 - bloodFraction
     local spo2 = state.spo2
 
-    -- compensation: tachycardia with blood loss, pain and hypoxia
-    local heartRate = MEDIC.HEART_RATE + loss * 170 + pain * 0.25
-    if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
     -- blood pressure holds until ~15% loss (class I), then falls
     local systolic = MEDIC.SYSTOLIC - math.max(0, loss - 0.15) * 250 + pain * 0.1
-    -- severe hypoxia: bradycardia and collapse before the arrest
-    if spo2 < 50 then
-        heartRate = 20 + spo2
-        systolic = systolic * (spo2 / 50)
-    end
+        + state.hypertension + getDrugEffect(state, "systolic")
+    if spo2 < 50 then systolic = systolic * (spo2 / 50) end -- severe hypoxia: collapse before the arrest
     systolic = math.max(0, systolic)
-
-    state.heartRate = approach(state.heartRate, heartRate, MEDIC.HR_RATE * dt)
     state.systolic = approach(state.systolic, systolic, MEDIC.BP_RATE * dt)
     state.diastolic = approach(state.diastolic, systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC), MEDIC.BP_RATE * dt)
+
+    -- the pulse follows the actual pressure: the lower it is, the faster the heart beats,
+    -- whatever lowered it (blood loss, medicine, ...). On top: early compensation of the
+    -- blood loss (the pressure still holds), pain and hypoxia.
+    local heartRate = MEDIC.HEART_RATE + math.max(0, MEDIC.SYSTOLIC - state.systolic) * MEDIC.BARO_REFLEX
+        + math.min(loss, 0.3) * 100 + pain * 0.25
+    if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
+    -- severe hypoxia: the heart muscle fails, bradycardia before the arrest
+    if spo2 < 50 then heartRate = 20 + spo2 end
+    state.heartRate = approach(state.heartRate, heartRate, MEDIC.HR_RATE * dt)
+end
+
+-- True when the pulse has been at the extreme limit for long enough to stop the heart
+local function updateTachycardia(state, now)
+    if state.heartRate < MEDIC.ARREST_HEART_RATE then
+        state.tachyTick = nil
+        return false
+    end
+    state.tachyTick = state.tachyTick or now
+    return now - state.tachyTick >= MEDIC.ARREST_TACHY_TIME * 1000
+end
+
+-- Expired medicine doses wear off
+local function updateDrugs(state, now)
+    for i = #state.drugs, 1, -1 do
+        if now >= state.drugs[i].untilTick then table.remove(state.drugs, i) end
+    end
 end
 
 local CONSCIOUSNESS_RANK = { stable = 1, dazed = 2, unconscious = 3 }
@@ -127,6 +149,7 @@ end
 local function canDischarge(state)
     return #state.injuries == 0 and state.baseBleeding == 0 and state.extraPain == 0
         and not state.knockoutUntil and not state.arrestTick
+        and state.hypertension == 0 and #state.drugs == 0
         and state.consciousness == "stable"
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
         and state.spo2 >= MEDIC.DISCHARGE_SPO2
@@ -143,6 +166,7 @@ local function stepPatient(state, dt, now)
     local bloodFraction = state.bloodVolume / MEDIC.BLOOD_VOLUME
     updateSpO2(state, dt, arrested, bloodFraction)
     state.extraPain = math.max(0, state.extraPain - PAIN_FADE * dt)
+    updateDrugs(state, now)
 
     if arrested then
         if now >= state.deathTick then
@@ -154,7 +178,8 @@ local function stepPatient(state, dt, now)
     local pain = getPatientPain(state)
     updateCirculation(state, dt, bloodFraction, pain)
 
-    if state.spo2 <= MEDIC.ARREST_SPO2 or bloodFraction <= MEDIC.ARREST_BLOOD then
+    if state.spo2 <= MEDIC.ARREST_SPO2 or bloodFraction <= MEDIC.ARREST_BLOOD
+        or state.systolic <= MEDIC.ARREST_SYSTOLIC or updateTachycardia(state, now) then
         cardiacArrest(state)
         return
     end

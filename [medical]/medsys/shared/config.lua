@@ -30,6 +30,10 @@ MEDIC = {
     -- Cardiac arrest (clinical death) triggers
     ARREST_SPO2 = 0,            -- SpO2 at or below this -> pulse 0
     ARREST_BLOOD = 0.5,         -- blood volume fraction at or below this -> pulse 0
+    ARREST_SYSTOLIC = 30,       -- systolic pressure (mmHg) at or below this -> pulse 0 (e.g. a drug overdose)
+    ARREST_HEART_RATE = 200,    -- a pulse at or above this...
+    ARREST_TACHY_TIME = 5,      -- ...for this many seconds -> the heart stops
+    BARO_REFLEX = 0.7,          -- BPM added per mmHg the systolic pressure is below SYSTOLIC
     DEATH_TIME = 300,           -- seconds of clinical death before biological death
 
     -- Consciousness thresholds (checked from the worst down)
@@ -63,6 +67,18 @@ MEDIC = {
     -- during the apnoeic attempt (%/s per mg_airway difficulty)
     PREOX_SPO2 = 95,
     APNEA_RATE = { easy = 0.35, normal = 0.5, hard = 0.65, nightmare = 0.8 },
+    -- Medication (needs IV access, no minigame): the medic kneels for this many seconds
+    DRUG_TIME = 3,
+
+    -- Transport requested from the panel (peds only): a dead body, or a living patient whose
+    -- condition is stable. The vehicle appears at a free spot next to the patient (picked by the
+    -- requesting medic's client), loads the patient and leaves.
+    TRANSPORT_DELAY = 30,       -- seconds until the vehicle arrives
+    TRANSPORT_LOAD_TIME = 5,    -- seconds the vehicle stands there before the patient disappears
+    TRANSPORT_LEAVE_TIME = 3,   -- seconds after loading before the vehicle is removed
+    TRANSPORT_VEHICLE = { dead = 442, alive = 416 }, -- Romero (hearse) / Ambulance
+    TRANSPORT_DRIVER = { dead = 70, alive = 274 },   -- driver skin
+    TRANSPORT_SPOT_RANGE = 15,  -- metres: the vehicle spot sent by the client must be this close to the body
 
     -- Animations
     ANIM_DOWN = { "PED", "KO_shot_front" },
@@ -101,6 +117,10 @@ MEDIC_TEST = {
             injuries = {}, set = { { "consciousness", "clinical_death" } } },
         { id = "minor_burn", label = "Minor burn", desc = "Scalded hand, conscious and stable",
             injuries = { { "burn", 1 } } },
+        { id = "hypertension", label = "Hypertensive crisis", desc = "Very high blood pressure - give Captopril",
+            injuries = {}, set = { { "hypertension", 70 }, { "systolic", 190 }, { "diastolic", 125 } } },
+        { id = "dead_body", label = "Dead body", desc = "Biological death - request transport",
+            injuries = {}, set = { { "consciousness", "dead" } } },
     },
 }
 
@@ -155,12 +175,31 @@ MEDIC_CONSCIOUSNESS = {
 
 -- Treatment actions offered on the examination panel
 MEDIC_ACTIONS = {
-    bandage = { label = "Bandage", game = "Arrows" },
-    cpr = { label = "CPR", game = "CPR" },
-    iv = { label = "IV access", game = "IV" },
-    airway = { label = "Intubate", game = "Airway" },
+    bandage = { label = "Bandage" },
+    cpr = { label = "CPR" },
+    iv = { label = "IV access" },
+    airway = { label = "Intubate" },
+    medication = { label = "Medication" },
+    transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: the only button
 }
-MEDIC_ACTION_ORDER = { "bandage", "cpr", "iv", "airway" }
+MEDIC_ACTION_ORDER = { "bandage", "cpr", "iv", "airway", "medication", "transport" }
+MEDIC_DEAD_ACTION_ORDER = { "transport" } -- the only button when the patient is dead
+
+-- Medicines (given through the IV access). name = the active ingredient, desc = what it is for,
+-- in plain words for players without medical knowledge.
+-- systolic = change of the target systolic pressure (mmHg) while it works, duration in seconds.
+-- The effects of several doses add up.
+MEDIC_DRUGS = {
+    captopril = {
+        name = "Captopril",
+        class = "Blood pressure lowering",
+        desc = "Lowers high blood pressure. It lowers a normal or low pressure too: "
+            .. "given to a patient in shock it can stop the heart.",
+        systolic = -40,
+        duration = 600,
+    },
+}
+MEDIC_DRUG_ORDER = { "captopril" }
 
 -- Accepts 1-3 or "minor"/"serious"/"critical" (also "mild"/"severe")
 local SEVERITY_NAMES = { minor = 1, mild = 1, serious = 2, severe = 2, critical = 3 }

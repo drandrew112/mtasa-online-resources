@@ -166,10 +166,10 @@
     "name": "mva1",
     "weight": 1,
     "erm": {
-      "description": "",
+      "description": "Two cars collided at an intersection. One person is injured.",
       "priority": 2,
-      "title": "Medical emergency",
-      "caller": "Caller"
+      "title": "Car accident",
+      "caller": "SceneManager"
     },
     "format": 1,
     "center": [

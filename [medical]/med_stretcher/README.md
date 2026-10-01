@@ -70,6 +70,7 @@ exports.med_stretcher:getStretcherVehicle(stretcher)
 exports.med_stretcher:getStretcherState(stretcher)  -- "stowed" | "ground" | "pushing"
 exports.med_stretcher:getStretcherPatient(stretcher) -- lying on it, or seated in its ambulance
 exports.med_stretcher:getPatientStretcher(ped)
+exports.med_stretcher:takePatientOff(stretcher)     -- detaches the lying patient, returns them
 ```
 
 Element data: `stretcher.state` (`stowed`/`moving`/`ground`/`pushing`), `stretcher.vehicle`, `stretcher.patient` (on the object),

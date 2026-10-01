@@ -1,4 +1,4 @@
--- The unit tablet: frame, header, hamburger menu, status column, input.
+-- The unit tablet: frame, header, hamburger menu, input.
 -- Pages live in client/pages/*.lua and register themselves in Pages.
 
 Tablet = {
@@ -11,7 +11,7 @@ Pages = {}
 
 local s = Gfx.s
 local W, H = 720, 470          -- design size (scaled by Gfx.s)
-local HEADER_H, STATUS_W = 46, 150
+local HEADER_H = 46
 
 local function frame()
     local w, h = s(W), s(H)
@@ -165,52 +165,6 @@ local function drawConfirm(sx, sy, sw, sh)
     end)
 end
 
----------------------------------------------------------------- status column
-
-local function drawStatusColumn(x, y, w, h)
-    local u = State.unit
-    local px, pw = x + s(4), w - s(14)
-    Gfx.round(px, y + s(12), pw, h - s(24), s(8), Theme.panel)
-    Gfx.label("UNIT STATUS", px + s(12), y + s(20), pw)
-
-    local by = y + s(42)
-    local bh = math.min(s(56), (h - s(42) - s(96)) / #Config.STATUS_ORDER - s(8))
-    for _, key in ipairs(Config.STATUS_ORDER) do
-        local st = Config.STATUS[key]
-        local active = u.status == key
-        local bx, bw = px + s(8), pw - s(16)
-        local hov = Gfx.hover(bx, by, bw, bh)
-        if active then
-            Gfx.round(bx, by, bw, bh, s(6), Gfx.rgb(st.color))
-        else
-            Gfx.round(bx, by, bw, bh, s(6), hov and Theme.line or Theme.panel2)
-            Gfx.round(bx, by, s(5), bh, s(2), Gfx.rgb(st.color))
-        end
-        local tc = active and (key == "handover" and tocolor(25, 25, 25) or tocolor(255, 255, 255)) or Theme.dim
-        Gfx.text(st.label, bx + s(14), by, bw - s(20), bh, tc, Gfx.font(10, true))
-        if not active then
-            Gfx.hit(bx, by, bw, bh, function() triggerServerEvent("erm:setStatus", resourceRoot, key) end)
-        end
-        by = by + bh + s(8)
-    end
-
-    -- live info under the buttons
-    local iy = y + h - s(98)
-    local serverNow = State.serverNow()
-    if u.status == "handover" then
-        Gfx.label("HANDOVER", px + s(12), iy, pw)
-        Gfx.text(u.handoverEnds > 0 and string.format("%d s left", math.max(0, u.handoverEnds - serverNow)) or "In progress",
-            px + s(12), iy + s(16), pw - s(24), s(22),
-            Gfx.rgb(Config.STATUS.handover.color), Gfx.font(12, true))
-    elseif u.responding then
-        Gfx.label("LIGHTS & SIREN", px + s(12), iy, pw)
-        Gfx.text(State.formatDuration(serverNow - u.responseFrom), px + s(12), iy + s(16), pw - s(24), s(22),
-            Gfx.rgb(Config.STATUS.enroute.color), Gfx.font(12, true))
-    end
-    Gfx.label("ON DUTY", px + s(12), iy + s(44), pw)
-    Gfx.text(State.formatDuration(serverNow - u.startedAt), px + s(12), iy + s(60), pw - s(24), s(20), Theme.text, Gfx.font(11, true))
-end
-
 ---------------------------------------------------------------- render
 
 local function render()
@@ -238,10 +192,8 @@ local function render()
     local cy, ch = sy + s(HEADER_H), sh - s(HEADER_H)
 
     if State.unit then
-        local stw = s(STATUS_W)
-        drawStatusColumn(sx + sw - stw, cy, stw, ch)
         local page = Pages[Tablet.page] or Pages.home
-        page.draw(sx, cy, sw - stw, ch)
+        page.draw(sx, cy, sw, ch)
     else
         Login.draw(sx, cy, sw, ch)
     end
@@ -278,11 +230,33 @@ local function onKey(key, press)
     end
 end
 
+-- While the tablet is open, clicks must not shoot and F / Enter must not get
+-- in or out of the vehicle. Only controls that were enabled get re-enabled.
+local LOCKED_CONTROLS = { "fire", "action", "aim_weapon", "vehicle_fire", "vehicle_secondary_fire", "enter_exit" }
+local lockedControls = {}
+
+local function lockControls()
+    for _, control in ipairs(LOCKED_CONTROLS) do
+        if isControlEnabled(control) then
+            toggleControl(control, false)
+            lockedControls[#lockedControls + 1] = control
+        end
+    end
+end
+
+local function unlockControls()
+    for _, control in ipairs(lockedControls) do toggleControl(control, true) end
+    lockedControls = {}
+end
+
+addEventHandler("onClientResourceStop", resourceRoot, unlockControls)
+
 function Tablet.show()
     if Tablet.open then return end
     Tablet.open = true
     Tablet.menu, Tablet.confirm = false, nil
     showCursor(true, false)
+    lockControls()
     addEventHandler("onClientRender", root, render)
     addEventHandler("onClientClick", root, onClick)
     addEventHandler("onClientKey", root, onKey)
@@ -297,6 +271,7 @@ function Tablet.close()
     removeEventHandler("onClientRender", root, render)
     removeEventHandler("onClientClick", root, onClick)
     removeEventHandler("onClientKey", root, onKey)
+    unlockControls()
     if not getElementData(localPlayer, "textInputOpen") then showCursor(false) end
 end
 

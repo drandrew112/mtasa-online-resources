@@ -36,6 +36,7 @@
     <script src="client/admin/detail.lua"  type="client" />
     <file src="client/fonts/Roboto.ttf"  type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />
+    <file src="sounds/tablet_alert.mp3"  type="client" />
 
     <!-- ================= WEB (dispatcher console) =================
          http://<server>:<httpport>/erm/  - no MTA login (see README for ACL) -->
@@ -66,6 +67,7 @@
     <export function="getTasks"           type="server" />
     <export function="getUnits"           type="server" />
     <export function="getUnitData"        type="server" />
+    <export function="getVehicleUnit"     type="server" />
     <export function="getFreeUnits"       type="server" />
     <export function="getNearestFreeUnit" type="server" />
     <export function="setUnitStatus"      type="server" />

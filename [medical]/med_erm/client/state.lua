@@ -4,7 +4,8 @@ State = {
     unit       = nil,   -- own unit (nil = not signed in)
     task       = nil,   -- active task of the unit
     messages   = {},
-    unread     = 0,
+    unread     = 0,     -- total, shown on the menu
+    unreadBy   = { dispatch = 0, case = 0 },
     timeOffset = 0,     -- serverTime - local time
 }
 
@@ -29,10 +30,12 @@ function State.formatDuration(sec)
     return string.format("%02d:%02d", sec / 60, sec % 60)
 end
 
-function State.notify(title, text)
+-- alert = true: play sounds/tablet_alert.mp3 and keep ui_core's notification silent.
+function State.notify(title, text, alert)
+    if alert then playSound("sounds/tablet_alert.mp3") end
     local res = getResourceFromName("ui_core")
     if res and getResourceState(res) == "running" then
-        exports.ui_core:addNotification(title, text)
+        exports.ui_core:addNotification(title, text, alert == true)
     else
         outputChatBox("#E03C31[" .. title .. "] #FFFFFF" .. text, 255, 255, 255, true)
     end
@@ -100,10 +103,20 @@ addEventHandler("erm:sync", resourceRoot, function(data)
     updateObjective()
 end)
 
+-- Tablet channel of a message: "case" (task chat) or "dispatch" (direct + broadcast).
+function State.channelOf(msg)
+    return msg.channel == "task" and "case" or "dispatch"
+end
+
+function State.markRead(channel)
+    State.unreadBy[channel] = 0
+    State.unread = State.unreadBy.dispatch + State.unreadBy.case
+end
+
 addEvent("erm:messages", true)
 addEventHandler("erm:messages", resourceRoot, function(list)
     State.messages = list or {}
-    State.unread = 0
+    State.unread, State.unreadBy = 0, { dispatch = 0, case = 0 }
 end)
 
 addEvent("erm:message", true)
@@ -111,23 +124,50 @@ addEventHandler("erm:message", resourceRoot, function(msg)
     table.insert(State.messages, msg)
     while #State.messages > 100 do table.remove(State.messages, 1) end
 
-    local reading = Tablet.open and Tablet.page == "messages"
-    if not reading then State.unread = State.unread + 1 end
-    if msg.fromDispatch and not reading then
-        State.notify(msg.channel == "broadcast" and "Dispatch broadcast" or "Dispatch", msg.text)
+    local own = not msg.fromDispatch and State.unit and msg.fromUnit == State.unit.id
+    if own then return end
+
+    local channel = State.channelOf(msg)
+    local reading = Tablet.open and Tablet.page == "messages" and Pages.messages.channel == channel
+    if not reading then
+        State.unreadBy[channel] = State.unreadBy[channel] + 1
+        State.unread = State.unread + 1
+        local title = msg.channel == "broadcast" and "Dispatch broadcast"
+            or channel == "case" and (msg.label or "Case chat") or "Dispatch"
+        State.notify(title, msg.fromDispatch and msg.text or (msg.from:gsub("#%x%x%x%x%x%x", "") .. ": " .. msg.text))
     end
 end)
 
 addEvent("erm:signedOut", true)
 addEventHandler("erm:signedOut", resourceRoot, function(reason)
     State.unit, State.task = nil, nil
-    State.messages, State.unread = {}, 0
+    State.messages, State.unread, State.unreadBy = {}, 0, { dispatch = 0, case = 0 }
     updateObjective()
     if Tablet.open then Tablet.close() end
     State.notify("EMS Tablet", reason or "Signed out.")
 end)
 
 addEvent("erm:notify", true)
-addEventHandler("erm:notify", resourceRoot, function(title, text)
-    State.notify(title, text)
+addEventHandler("erm:notify", resourceRoot, function(title, text, alert)
+    State.notify(title, text, alert)
 end)
+
+-- Driver of a unit with an active case drives off (not yet on scene) without
+-- Start Response: remind once per departure.
+local wasMoving = false
+setTimer(function()
+    local u, t = State.unit, State.task
+    local veh = getPedOccupiedVehicle(localPlayer)
+    if not u or not t or not veh or getVehicleOccupant(veh, 0) ~= localPlayer
+        or not Config.TABLET_VEHICLES[getElementModel(veh)] then
+        wasMoving = false
+        return
+    end
+    local vx, vy, vz = getElementVelocity(veh)
+    local moving = (vx * vx + vy * vy + vz * vz) ^ 0.5 * 180 > Config.RESPONSE_WARN_SPEED
+    if moving and not wasMoving and not u.responding and not u.reachedScene and u.status ~= "handover" then
+        State.notify("EMS Tablet", string.format("Case #%d is active but Start Response is off. Open the tablet (%s) and start the response.",
+            t.id, Config.TABLET_KEY:upper()))
+    end
+    wasMoving = moving
+end, 500, 0)

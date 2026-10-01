@@ -33,6 +33,8 @@ local SETTERS = {
     spo2 = setNumber("spo2", 0, 100),
     bloodVolume = setNumber("bloodVolume", 0, MEDIC.BLOOD_VOLUME),
     pain = setNumber("extraPain", 0, 100),
+    -- mmHg added to the target systolic pressure until set back to 0 (lasting high blood pressure)
+    hypertension = setNumber("hypertension", 0, 120),
 
     -- 0 stops every bleeding, 1-3 sets a bleeding that is not tied to an injury
     bleeding = function(state, value)
@@ -98,7 +100,7 @@ local SETTERS = {
 }
 
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
--- bloodVolume, pain, ivAccess, intubated. The simulation keeps running from the new value.
+-- bloodVolume, pain, hypertension, ivAccess, intubated. The simulation keeps running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end

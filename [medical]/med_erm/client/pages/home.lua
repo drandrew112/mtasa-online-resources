@@ -7,13 +7,14 @@ Pages.home = {}
 function Pages.home.draw(x, y, w, h)
     local u, t = State.unit, State.task
     local pad = s(18)
-    local ix, iw = x + pad, w - pad - s(6)
+    local ix, iw = x + pad, w - pad * 2
     local cy = y + s(14)
 
     Gfx.text("Home", ix, cy, iw, s(26), Theme.text, Gfx.font(15, true))
     local crew = {}
     for _, m in ipairs(u.members) do crew[#crew + 1] = (m.name:gsub("#%x%x%x%x%x%x", "")) end
-    Gfx.text(Gfx.fit("Shift since " .. State.formatClock(u.startedAt) .. "  ·  Crew: " .. table.concat(crew, ", "), iw, Gfx.font(9)),
+    Gfx.text(Gfx.fit("Shift since " .. State.formatClock(u.startedAt)
+        .. " (" .. State.formatDuration(State.serverNow() - u.startedAt) .. ")  ·  Crew: " .. table.concat(crew, ", "), iw, Gfx.font(9)),
         ix, cy + s(24), iw, s(18), Theme.dim, Gfx.font(9))
 
     -- active case ------------------------------------------------------------

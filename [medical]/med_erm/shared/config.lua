@@ -18,9 +18,13 @@ Config.UNIT_TYPES = { "SOLO", "DOC", "BLS", "ALS", "HELI" }
 -- Radius (metres) in which other players can be added to a crew.
 Config.ADD_MEMBER_RADIUS = 10
 
--- Distance (metres) at which a crew member counts as arrived: the radar
--- objective of the task is removed (also removed when the unit sets On Scene).
+-- Scene radius (metres). Within it the radar objective of the task is removed
+-- and the unit switches to On Scene automatically (only at its own task).
 Config.ARRIVE_RADIUS = 30
+
+-- Speed (km/h) above which the driver of a unit with an active case, not yet
+-- on scene, is warned when Start Response is off.
+Config.RESPONSE_WARN_SPEED = 15
 
 -- Minimum admin_level (v_mysql account data) for /ermadmin.
 Config.ADMIN_LEVEL = 1
@@ -34,8 +38,7 @@ Config.MAX_MESSAGES = 500
 -- Closed tasks shown on the dispatcher page.
 Config.RECENT_CLOSED = 30
 
--- Unit statuses. Order = order of the status buttons on the tablet.
-Config.STATUS_ORDER = { "available", "enroute", "onscene", "handover" }
+-- Unit statuses.
 Config.STATUS = {
     available = { label = "Available", color = { 46, 160, 67 } },   -- green
     enroute   = { label = "En Route",  color = { 218, 54, 51 } },   -- red

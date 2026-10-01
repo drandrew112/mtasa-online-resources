@@ -83,9 +83,10 @@ function Units.sync(u)
     end
 end
 
-function Units.notify(u, title, text)
+-- alert = true plays the tablet alert sound instead of the ui_core one.
+function Units.notify(u, title, text, alert)
     for _, p in ipairs(u.members) do
-        triggerClientEvent(p, "erm:notify", resourceRoot, title, text)
+        triggerClientEvent(p, "erm:notify", resourceRoot, title, text, alert)
     end
 end
 
@@ -310,8 +311,13 @@ function Units.caseAction(u, action)
         if u.status == "handover" then return false, "Handover in progress." end
         return Units.setStatus(u, "enroute")
     elseif action == "stop" then
+        -- only the log stops; On Scene is set automatically at the scene
         if not u.responseEntry then return false, "Response not started." end
-        return Units.setStatus(u, "onscene")
+        stopResponse(u)
+        Units.sync(u)
+        local t = Tasks.get(u.task)
+        if t then Tasks.syncUnits(t) end
+        return true
     elseif action == "onscene" then
         if not u.responseEntry then return false, "Start the response first." end
         return Units.setStatus(u, "onscene")
@@ -356,3 +362,29 @@ function Units.publicList()
     table.sort(out, function(a, b) return a.id < b.id end)
     return out
 end
+
+---------------------------------------------------------------- automatic On Scene
+
+-- Vehicle or any crew member within Config.ARRIVE_RADIUS of the unit's OWN
+-- task. Scenes of tasks assigned to other units never count.
+local function atScene(u, t)
+    local elements = { unpack(u.members) }
+    if isElement(u.vehicle) then elements[#elements + 1] = u.vehicle end
+    for _, e in ipairs(elements) do
+        if isElement(e) then
+            local x, y = getElementPosition(e)
+            if getDistanceBetweenPoints2D(x, y, t.x, t.y) <= Config.ARRIVE_RADIUS then return true end
+        end
+    end
+    return false
+end
+
+setTimer(function()
+    for _, u in pairs(Units.list) do
+        local t = u.task and Tasks.get(u.task)
+        if t and not u.reachedScene and u.status ~= "handover" and atScene(u, t) then
+            Units.setStatus(u, "onscene")
+            Units.notify(u, "On scene", string.format("Arrived at case #%d.", t.id))
+        end
+    end
+end, 1000, 0)

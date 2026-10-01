@@ -11,11 +11,13 @@ scripts hurt people through the exports, and the future EMS job script builds on
 shared/config.lua      MEDIC tunables, injury definitions, labels
 server/state.lua       patient registry + data structure, snapshots, state transitions
 server/simulation.lua  one global timer, physiology step for every patient
-server/treatment.lua   examination sessions, procedures (minigames), locks, panel updates
+server/treatment.lua   examination sessions, procedures (minigames, medication), locks, panel updates
+server/transport.lua   "Transport": hearse for a dead body, ambulance for a stable patient
 server/exports.lua     public API
 server/interaction.lua "Examine patient" entry in the ui_interactobject world menu
 client/panel.lua       DX examination panel
 client/interaction.lua turns the world menus off during procedures / while the player is down
+client/progress.lua    progress bar of a timed procedure (medication)
 client/patient.lua     local player's own condition (overlay, control lock)
 ```
 
@@ -47,6 +49,8 @@ Patients[element] = {
     injuries      = { { id, type, severity, bleeding, treated, tick }, ... },
     ivAccess      = false, ivQuality = 0,
     intubated     = false,
+    hypertension  = 0,                    -- mmHg on the target systolic pressure
+    drugs         = { { id, untilTick }, ... }, -- active medicine doses
     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
     arrestTick    = nil, deathTick = nil, -- clinical death start / biological death time
     knockoutState = nil, knockoutUntil = nil,
@@ -60,14 +64,20 @@ Patients[element] = {
 - **Blood**: every wound bleeds at `BLEED_RATE[level]` ml/s (mild 1.5 / severe 5 / critical 12),
   and burns lose plasma. IV access restores fluids up to 90%, and the body slowly compensates
   while nothing bleeds. Without circulation, bleeding drops to 20%.
-- **Heart rate / blood pressure** move towards targets based on the blood loss (shock classes:
-  compensated to ~15%, then the pressure falls), pain (tachycardia) and hypoxia (bradycardia
-  below 50% SpO2).
+- **Blood pressure** moves towards a target based on the blood loss (shock classes: compensated
+  to ~15%, then the pressure falls), medicines and `hypertension`.
+- **Heart rate** always rises as the actual systolic pressure falls below 120 (`BARO_REFLEX`
+  BPM / mmHg, whatever lowered it), plus early blood-loss compensation, pain and hypoxia.
+  Below 50% SpO2 the heart fails (bradycardia) before the arrest.
 - **SpO2** drifts to the lowest target of the airway causes (suffocation, inhalation burn) or of
   shock, and recovers otherwise. A secured airway removes the airway causes.
 - **Consciousness**: `unconscious` below 70% SpO2 or 65 mmHg systolic, and `dazed` below 88% /
   90 mmHg or at pain 70+.
-- **Cardiac arrest** when the SpO2 reaches `ARREST_SPO2` (0) or the blood volume falls to 50%. The
+- **Medicines** shift the target systolic pressure while they work (`MEDIC_DRUGS`, doses add up).
+  `hypertension` (setMedicalState) is a lasting offset on the same target.
+- **Cardiac arrest** when the SpO2 reaches `ARREST_SPO2` (0), the blood volume falls to 50% or the
+  systolic pressure falls to `ARREST_SYSTOLIC` (30, e.g. Captopril given in shock), or the pulse
+  stays at `ARREST_HEART_RATE` (200) or above for `ARREST_TACHY_TIME` (5 s). The
   pulse and blood pressure go to 0, and a `DEATH_TIME` (300 s) countdown starts. When it runs
   out: biological death (`killPed`).
 
@@ -96,6 +106,18 @@ away (`PANEL_RANGE`).
 | CPR | mg_cpr | clinical death | ROSC chance (accuracy, +IV, +airway, 0 when the blood loss is too high), otherwise +45 s on the death timer |
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
 | Intubate | mg_airway | unconscious / clinical death, no tube | airway secured, suffocation treated. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
+| Medication | – (3 s, `DRUG_TIME`) | IV access in place | opens the medicine list (name, what it is for, warning); the picked one is given after 3 s |
+| Transport | – | ped only: a living patient with consciousness **Stable**, or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
+
+Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
+
+| medicine | for | effect |
+|---|---|---|
+| Captopril | high blood pressure | target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
+
+The transport spot is picked by the requesting medic's client (ground check + line of sight, boot
+towards the body); the server only accepts it within `TRANSPORT_SPOT_RANGE`. Without a free spot
+the patient is simply taken away when the time is up. Players cannot be transported.
 
 The server checks every request (distance, role, patient state, one medic per procedure per
 patient). When the minigame ends, the panel reopens with the result.
@@ -107,11 +129,12 @@ local data = exports.medical_system:getMedicalState(element)
 -- { consciousness, consciousnessLabel, heartRate, systolic, diastolic, bloodPressure = "120/80",
 --   spo2, bleeding (0-3), bleedingLabel, bloodVolume, bloodPercent, pain,
 --   injuries = { { id, type, label, severity, severityLabel, bleeding, treated, treatedLabel } },
---   ivAccess, intubated, clinicalDeath, deathTimeLeft, dead, isPatient }
+--   ivAccess, intubated, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient }
 
 exports.medical_system:setMedicalState(element, key, value) -- true / false
 --   heartRate     0 = cardiac arrest, > 0 during clinical death = return of circulation
 --   systolic, diastolic, spo2, bloodVolume, pain (0-100, fades)
+--   hypertension  mmHg added to the target systolic pressure until set back to 0 (lasting high BP)
 --   bleeding      0 stops every bleeding, 1-3 adds a bleeding that is not tied to an injury
 --   ivAccess, intubated   booleans
 --   consciousness "stable" (wakes / revives), "dazed" / "unconscious" (forced for KNOCKOUT_TIME),
@@ -146,7 +169,9 @@ addEventHandler("onMedicalStateChange", root, function(newState, oldState) end) 
 addEventHandler("onMedicalCardiacArrest", root, function() end)                            -- clinical death started
 addEventHandler("onMedicalRevived", root, function() end)                                  -- ROSC
 addEventHandler("onMedicalDeath", root, function() end)                                    -- biological death
-addEventHandler("onMedicalTreatment", root, function(medic, action, success) end)          -- source = patient
+addEventHandler("onMedicalTreatment", root, function(medic, action, success, option) end)  -- source = patient, option = medicine id
+addEventHandler("onMedicalTransportRequested", root, function(medic, kind) end)            -- source = ped, kind = "alive" | "dead"
+addEventHandler("onMedicalPatientTransported", root, function(medic, kind) end)            -- source = ped, right before it is destroyed
 ```
 
 ## Lifecycle
