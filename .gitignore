@@ -25,8 +25,6 @@
 # (the other files - core, scripts, config.example.lua, database.sql - are versioned)
 /\[core\]/v_mysql/config.lua
 
-/erm
-
 # --- Editor / backup junk ---
 *.old
 *.bak
