@@ -17,6 +17,7 @@ local IGNORE = {
     [getResourceName(resource)] = true,   -- ourselves (v_main)
     ["ai_autoplayer"]           = true,   -- [tiktok] - started manually
     ["tiktok-live"]             = true,   -- [tiktok] - started manually
+    ["train-stations-passed"] = true,     -- [tiktok] - started manually
 }
 
 local function log(msg)
