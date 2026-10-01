@@ -23,13 +23,49 @@
 
     function place(m) {
         const [mx, my] = toMap(m._x, m._y);
-        m.style.left = (ox + mx * zoom) + 'px';
-        m.style.top = (oy + my * zoom) + 'px';
+        m._sx = ox + mx * zoom;
+        m._sy = oy + my * zoom;
+        m.style.left = m._sx + 'px';
+        m.style.top = (m._sy - (m._dy || 0)) + 'px';
+    }
+
+    // Unit labels that would cover each other are stacked upwards: the lowest
+    // one on screen keeps its spot, the others are pushed above it. Labels
+    // moved off their anchor drop the little position dot (.stacked).
+    const LABEL_GAP = 2, LABEL_LIFT = 6;   // LIFT = .unit-label margin-top
+    function stackLabels() {
+        const labels = [];
+        markers.forEach(m => { if (m._kind === 'u') labels.push(m); });
+        labels.sort((a, b) => (b._sy - a._sy) || (a._sx - b._sx) || (a._id - b._id));
+
+        const placed = [];   // { l, r, t, b }
+        for (const m of labels) {
+            if (!m._w) { m._w = m.offsetWidth; m._h = m.offsetHeight; }
+            const l = m._sx - m._w / 2, r = m._sx + m._w / 2;
+            let b = m._sy - LABEL_LIFT;
+            for (let moved = true; moved;) {
+                moved = false;
+                for (const p of placed) {
+                    if (l < p.r && r > p.l && b > p.t - LABEL_GAP && b - m._h < p.b + LABEL_GAP) {
+                        b = p.t - LABEL_GAP;
+                        moved = true;
+                    }
+                }
+            }
+            placed.push({ l, r, t: b - m._h, b });
+            const dy = m._sy - LABEL_LIFT - b;
+            if (dy !== (m._dy || 0)) {
+                m._dy = dy;
+                m.style.top = (m._sy - dy) + 'px';
+            }
+            m.classList.toggle('stacked', dy > 0);
+        }
     }
 
     function apply() {
         img.style.transform = `translate(${ox}px, ${oy}px) scale(${zoom})`;
         markers.forEach(place);
+        stackLabels();
     }
 
     function fit() {
@@ -150,8 +186,9 @@
             seen.add(key);
             const m = markers.get(key) || makeMarker(key, 'u', u.id);
             const drop = m.classList.contains('drop-ok') ? ' drop-ok' : '';
-            m.className = 'unit-label bg-' + u.status + ' ' + u.status + drop;
-            m.textContent = u.callsign;
+            const stacked = m.classList.contains('stacked') ? ' stacked' : '';
+            m.className = 'unit-label bg-' + u.status + ' ' + u.status + drop + stacked;
+            if (m.textContent !== u.callsign) { m.textContent = u.callsign; m._w = 0; }
             m._x = u.x; m._y = u.y;
             place(m);
             ERM.ui.updateTip(m, ERM.app.unitTip(u.id));
@@ -164,6 +201,7 @@
                 markers.delete(key);
             }
         });
+        stackLabels();
     }
 
     img.addEventListener('load', fit);

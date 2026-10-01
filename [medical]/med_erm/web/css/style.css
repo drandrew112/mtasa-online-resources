@@ -422,6 +422,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select:
     background: inherit;
     border: 1px solid #000a;
 }
+.unit-label.stacked::after { display: none; }
 .unit-label.drop-ok { outline: 3px solid #fff; }
 .bg-available { background: var(--available); }
 .bg-enroute   { background: var(--enroute); }
