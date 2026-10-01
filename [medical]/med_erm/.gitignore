@@ -1,0 +1,3 @@
+# runtime database (tasks + shifts)
+data/*.db
+data/*.db-journal
