@@ -85,7 +85,7 @@ end)
 addEventHandler("onPlayerWorkDutyStart", root, function(workId, skin)
     if workId ~= EMS.WORK_ID then return end
     setMedic(source, true)
-    notify(source, "You are on duty. Take an ambulance at the vehicle point.")
+    --notify(source, "You are on duty. Take an ambulance at the vehicle point.")
     EmsModules.fire("onDutyStart", source, skin)
 end)
 
