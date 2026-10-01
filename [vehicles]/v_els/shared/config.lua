@@ -13,6 +13,9 @@ sirenVehicles = {
 
 DEFAULT_SIREN_TYPE = "fsvas320"
 
+-- csend két szirénahang között váltáskor (ms, 0 = azonnali); a kürt mindig azonnal szól
+SIREN_SWITCH_DELAY = 10
+
 -- /elseditor minimum admin_level (v_mysql account data)
 ELS_ADMIN_LEVEL = 1
 

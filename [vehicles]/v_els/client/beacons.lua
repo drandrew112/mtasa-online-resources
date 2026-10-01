@@ -91,6 +91,10 @@ function Beacons.prepare(layout)
     layout.env = env
 end
 
+function Beacons.hasLayout(model)
+    return layouts[model] ~= nil
+end
+
 local function setLayout(model, layout)
     if layout then Beacons.prepare(layout) end
     layouts[model] = layout or nil

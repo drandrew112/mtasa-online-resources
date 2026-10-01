@@ -62,6 +62,13 @@ long side lies along the model's y axis (`rz = 0`). The in/out path is `STOW_OFF
 with timings `DOOR_TIME` / `ALIGN_TIME` / `SLIDE_TIME` / `LOWER_TIME`.
 Set `SELF_DATA_KEY` (e.g. `"isMedic"`) to show the menus only to medics.
 
+## Medic role
+
+With medsys `MEDIC.REQUIRE_MEDIC_ROLE = true` the stretcher menus are visible only to players with the
+medsys medic role (`exports.medsys:setPlayerMedic`), and every selection is checked again on the server.
+The setting is asked from medsys once (again only when medsys restarts); visibility follows
+`onPlayerMedicChange`. A pusher who loses the role puts the stretcher down.
+
 ## Server exports
 
 ```lua

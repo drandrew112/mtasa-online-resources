@@ -13,6 +13,39 @@ local function isIORunning()
 end
 
 -- ---------------------------------------------------------------------------------------------
+-- Medic role (medsys). With the role required, only medics see and use the stretcher menus.
+-- ---------------------------------------------------------------------------------------------
+
+local MEDSYS_RESOURCE = "medsys"
+local roleRequired     -- nil = not asked yet; medsys is asked once (again only if it restarts)
+
+addEvent("onPlayerMedicChange") -- fired by medsys
+
+local function isMedsysRunning()
+    local res = getResourceFromName(MEDSYS_RESOURCE)
+    return res and getResourceState(res) == "running"
+end
+
+local function isRoleRequired()
+    if roleRequired == nil and isMedsysRunning() then
+        roleRequired = exports.medsys:isMedicRoleRequired() == true
+    end
+    return roleRequired == true
+end
+
+function hasStretcherAccess(player)
+    if not isRoleRequired() then return true end
+    return isMedsysRunning() and exports.medsys:isPlayerMedic(player) == true
+end
+
+-- nil = everyone; while pushed only the pusher; with the role required only the medics
+local function visibleFor(s)
+    if s.state == "pushing" then return s.pusher end
+    if not isRoleRequired() then return nil end
+    return isMedsysRunning() and exports.medsys:getMedicPlayers() or {}
+end
+
+-- ---------------------------------------------------------------------------------------------
 -- Menu contents
 -- ---------------------------------------------------------------------------------------------
 
@@ -57,7 +90,7 @@ end
 
 local function register(s)
     if not isIORunning() then return end
-    s.menuId = exports.ui_interactobject:addInteractMenu(s.object, stretcherDef(s))
+    s.menuId = exports.ui_interactobject:addInteractMenu(s.object, stretcherDef(s), visibleFor(s))
     if s.menuId then menuOwner[s.menuId] = s end
 end
 
@@ -69,8 +102,7 @@ function onStretcherChanged(s)
     if not s.menuId or not isIORunning() then return end
     local io = exports.ui_interactobject
     io:updateInteractMenu(s.menuId, stretcherDef(s))
-    -- while pushed, only the pusher sees the menu
-    io:setInteractMenuVisibleTo(s.menuId, s.state == "pushing" and s.pusher or nil)
+    io:setInteractMenuVisibleTo(s.menuId, visibleFor(s))
 end
 
 function onStretcherDestroyed(s)
@@ -86,6 +118,26 @@ addEventHandler("onResourceStart", root, function(started)
     if getResourceName(started) ~= IO_RESOURCE then return end
     menuOwner = {}
     for _, s in pairs(Stretchers) do register(s) end
+end)
+
+-- A medic got / lost the role: update who sees the menus; a pusher who lost it lets go.
+addEventHandler("onPlayerMedicChange", root, function(enabled)
+    if not isRoleRequired() then return end
+    if not enabled then
+        local s = Stretchers[getPusherStretcher(source)]
+        if s then releaseStretcher(s) end
+    end
+    if not isIORunning() then return end
+    for _, s in pairs(Stretchers) do
+        if s.menuId then exports.ui_interactobject:setInteractMenuVisibleTo(s.menuId, visibleFor(s)) end
+    end
+end)
+
+-- medsys (re)started: its setting may have changed, ask again and refresh the menus
+addEventHandler("onResourceStart", root, function(started)
+    if getResourceName(started) ~= MEDSYS_RESOURCE then return end
+    roleRequired = nil
+    for _, s in pairs(Stretchers) do onStretcherChanged(s) end
 end)
 
 addEventHandler("onResourceStop", root, function(stopped)
@@ -132,6 +184,7 @@ addEventHandler("stretcher:pickPatient", resourceRoot, function(obj, ped)
     local s = Stretchers[obj]
     if not s or s.state ~= "ground" or s.patient then return end
     if isPedDead(player) or getPatientStretcher(player) or getPusherStretcher(player) then return end
+    if not hasStretcherAccess(player) then return end
     local px, py, pz = getElementPosition(player)
     local x, y, z = getElementPosition(obj)
     if getDistanceBetweenPoints3D(px, py, pz, x, y, z) > STRETCHER.SELECT_MAX_DISTANCE + 2 then return end
@@ -159,5 +212,6 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
     if not action or not Stretchers[s.object] then return end
     -- the patient cannot move their own stretcher
     if getPatientStretcher(source) then return end
+    if not hasStretcherAccess(source) then return notify(source, "Only medics can handle the stretcher.") end
     action(s, source)
 end)

@@ -53,19 +53,46 @@ local function isNear(medic, target, range)
     return getDistanceBetweenPoints3D(x1, y1, z1, x2, y2, z2) <= range + RANGE_TOLERANCE
 end
 
--- Medic role, kept on the server only (element data could be set by the client itself)
+-- Medic role. The server table is the authority; the element data copy (MEDIC.DATA_ROLE) only
+-- lets clients (e.g. the EMS tablet) know it, and client-side changes to it are reverted.
 local Medics = {}
 
+addEvent("onPlayerMedicChange") -- source: player, arg: enabled
+
+-- Is the medic role checked at all (MEDIC.REQUIRE_MEDIC_ROLE). Fixed while the resource runs,
+-- so other resources query it once.
+function isMedicRoleRequired()
+    return MEDIC.REQUIRE_MEDIC_ROLE == true
+end
+
+-- Does the player hold the medic role (the bare flag, whether or not the role is required)
 function isPlayerMedic(player)
-    if not MEDIC.REQUIRE_MEDIC_ROLE then return true end
     return Medics[player] == true
 end
 
+-- May the player work as a medic: always when the role is not required, otherwise with the role
+function hasMedicAccess(player)
+    return not MEDIC.REQUIRE_MEDIC_ROLE or Medics[player] == true
+end
+
+local function syncMedicData(player)
+    if Medics[player] then
+        setElementData(player, MEDIC.DATA_ROLE, true)
+    else
+        removeElementData(player, MEDIC.DATA_ROLE)
+    end
+end
+
+-- Gives (true) or takes (false) the medic role
 function setPlayerMedic(player, enabled)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
-    Medics[player] = enabled and true or nil
+    enabled = enabled and true or false
+    if (Medics[player] == true) == enabled then return true end
+    Medics[player] = enabled or nil
+    syncMedicData(player)
     if not enabled and MEDIC.REQUIRE_MEDIC_ROLE and Examining[player] then closeExamination(player) end
     updateInteractVisibility()
+    triggerEvent("onPlayerMedicChange", player, enabled)
     return true
 end
 
@@ -75,6 +102,10 @@ function getMedicPlayers()
     return list
 end
 
+addEventHandler("onElementDataChange", root, function(key)
+    if key == MEDIC.DATA_ROLE and client then syncMedicData(source) end
+end)
+
 -- Can this player work on the patient at all (not a check of a specific procedure)
 local function canAttend(medic, target, range)
     if not isElement(medic) or getElementType(medic) ~= "player" then return false end
@@ -82,7 +113,7 @@ local function canAttend(medic, target, range)
     if isPedDead(medic) or isPedInVehicle(medic) or isPedInVehicle(target) then return false end
     local own = Patients[medic]
     if own and medicIsDown(own.consciousness) then return false end
-    if not isPlayerMedic(medic) then return false end
+    if not hasMedicAccess(medic) then return false end
     return isNear(medic, target, range)
 end
 
@@ -597,6 +628,9 @@ end)
 
 -- Medics must not stay frozen when the resource stops mid-procedure
 addEventHandler("onResourceStop", resourceRoot, function()
+    for player in pairs(Medics) do
+        if isElement(player) then removeElementData(player, MEDIC.DATA_ROLE) end
+    end
     for medic, treatment in pairs(Treatments) do
         if isElement(medic) and PROCEDURES[treatment.action].animated then
             lockMedic(medic, treatment.target, false)

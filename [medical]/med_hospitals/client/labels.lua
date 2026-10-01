@@ -19,6 +19,7 @@ local STYLE = {
     bay      = { color = { 230, 190, 40 },  icon = "P" },
     handover = { color = { 56, 132, 244 },  icon = "cross" },
     heal     = { color = { 46, 160, 67 },   icon = "cross" },
+    bayRestricted = { color = { 218, 54, 51 }, icon = "!" },
 }
 
 local markers = {}   -- list of hospital markers of this resource
@@ -139,6 +140,10 @@ addEventHandler("onClientRender", root, function()
             local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
             local prog = progress and progress.marker == m and progress or nil
             local occupied = kind == "bay" and getElementData(m, HOSP_DATA.OCCUPIED)
+            -- a non-ambulance vehicle in a bay: red "Ambulances Only" label even though occupied
+            if kind == "bay" and getElementData(m, HOSP_DATA.RESTRICTED) then
+                kind, occupied = "bayRestricted", false
+            end
 
             if STYLE[kind] and dist <= maxDist and not occupied then
                 local lz = z + HOSP.LABEL_HEIGHT

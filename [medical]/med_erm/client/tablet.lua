@@ -251,6 +251,23 @@ end
 
 addEventHandler("onClientResourceStop", resourceRoot, unlockControls)
 
+-- medsys medic role: with the role required (asked from medsys once), only medics get the
+-- "ambulance only" hint. Without medsys nothing is required.
+local medicRoleRequired
+
+local function isMedsysRunning()
+    local res = getResourceFromName("medsys")
+    return res and getResourceState(res) == "running"
+end
+
+local function hasMedicRole()
+    if not isMedsysRunning() then return true end
+    if medicRoleRequired == nil then
+        medicRoleRequired = exports.medsys:isMedicRoleRequired() == true
+    end
+    return not medicRoleRequired or exports.medsys:isPlayerMedic(localPlayer) == true
+end
+
 function Tablet.show()
     if Tablet.open then return end
     Tablet.open = true
@@ -286,7 +303,9 @@ function Tablet.toggle()
 
     local veh = inTabletVehicle()
     if not veh then
-        State.notify("EMS Tablet", "The tablet can only be used inside an ambulance until you sign in.")
+        if hasMedicRole() then
+            State.notify("EMS Tablet", "The tablet can only be used inside an ambulance until you sign in.")
+        end
         return
     end
     Login.reset(veh)

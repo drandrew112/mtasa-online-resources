@@ -32,6 +32,18 @@ Removes money from the bank account.
 - `"not_enough_money"` — not enough money on the account
 - `"player_not_found"` — invalid player element or `amount`
 
+### `forceTakeMoney(player, amount)`
+Takes the amount from the bank account whatever the balance is: the balance may
+go **negative** (debt). Deposits / `giveBankMoney` add to it as usual, so the next
+money the player puts in pays the debt off first. Use it for fines. The player sees
+`- $ <amount>` in the ui_core money overlay (`showMoney("take", amount)` via the
+`v_bank:moneyTaken` client event).
+- `true, newBalance` — always succeeds for a valid player
+- `"player_not_found"` — invalid player element or `amount`
+
+While the balance is negative, `takeBankMoney` and `withdrawMoney` fail with
+`"not_enough_money"`.
+
 ### `giveBankMoney(player, amount)`
 Adds money to the bank account.
 - `true` — success

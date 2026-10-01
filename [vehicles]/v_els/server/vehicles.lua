@@ -9,9 +9,10 @@ end
 ------------------------------------------------------------
 
 -- A gyári szirénát a GTA hangja miatt mindig felülírjuk (silent = true).
--- Ha a modellnek van saját elrendezése, a fényeket a kliens rajzolja, ezért a gyári
--- sziréna láthatatlan (1-es típus); a bekapcsolt állapot így csak a forgalmat
--- állítja félre. Saját elrendezés nélkül marad a gyári villogó.
+-- Ha a modellnek van saját elrendezése, a fényeket a kliens rajzolja: a gyári
+-- sziréna láthatatlan (1-es típus) és sosem kapcsol be, mert bekapcsolva a GTA
+-- a talajon/környezeten is villogtatja a saját fényeffektjeit.
+-- Saját elrendezés nélkül marad a gyári villogó.
 --
 -- Járművenként csak egyszer állítjuk be: a korábbi verzió minden beszálláskor
 -- remove+add-olta a szirénákat, emiatt a kliensen eltűntek a fények.
@@ -19,6 +20,11 @@ end
 local INVISIBLE, QUINTUPLE = 1, 6
 
 local configured = {} -- [veh] = "model:custom" | "model:native"
+
+-- a gyári sziréna csak saját elrendezés nélküli modellen és bekapcsolt fénynél ég
+local function wantsNativeSirens(veh)
+    return getElementData(veh, "mkjState") == true and not Layouts.get(getElementModel(veh))
+end
 
 local function applySirens(veh, model, key)
     removeVehicleSirens(veh)
@@ -41,7 +47,7 @@ local function ensureSirens(veh)
     if configured[veh] ~= key then
         applySirens(veh, model, key)
     end
-    setVehicleSirensOn(veh, getElementData(veh, "mkjState") == true)
+    setVehicleSirensOn(veh, wantsNativeSirens(veh))
 end
 
 -- új elrendezés mentésekor az adott modell járműveit átállítjuk
@@ -126,8 +132,17 @@ addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
 
     setElementData(veh, key, value)
 
+    -- sziréna hang csak égő fényekkel: a sziréna felkapcsolja a fényt, a fény
+    -- lekapcsolása leállítja a szirénát. A kürt (sirenHorn) ettől független.
+    if key == "sirenState" and value and not getElementData(veh, "mkjState") then
+        key = "mkjState"
+        setElementData(veh, key, true)
+    elseif key == "mkjState" and not value and getElementData(veh, "sirenState") then
+        setElementData(veh, "sirenState", false)
+    end
+
     if key == "mkjState" then
-        setVehicleSirensOn(veh, value)
+        setVehicleSirensOn(veh, wantsNativeSirens(veh))
     end
 end)
 

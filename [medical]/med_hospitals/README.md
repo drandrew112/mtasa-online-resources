@@ -36,6 +36,16 @@ The `onErmUnitHandoverRequest` listener stays in place but the event is no longe
 After a resource restart or `/hospreload`, a unit already in Handover whose vehicle is in a bay is
 taken over again.
 
+### Ambulances only
+
+A vehicle in a bay that is **not an on-duty ERM unit's vehicle** (an off-duty ambulance or any
+other vehicle) turns the bay marker **red** with an "Ambulances Only" label, and its driver gets a
+chat warning. While the vehicle stays in the bay, the driver is fined `HOSP.BAY_FINE` ($500) every
+`HOSP.BAY_FINE_INTERVAL` (10 s), the first one 10 s after the warning, through
+`exports.v_bank:forceTakeMoney` (from the bank account, which may go negative). Getting out of the
+vehicle does not stop the fines; a new driver is warned and gets a fresh 10 s. Nothing is enforced
+while `med_erm` is stopped (on-duty units cannot be told apart).
+
 ## hospitals.json
 
 ```json
@@ -96,10 +106,12 @@ onHospitalHandoverStart    (unitId, hospitalId)
 onHospitalHandoverLeft     (unitId, hospitalId)                 -- left the bay -> En Route
 onHospitalPatientHandover  (hospitalId, unitId, patient, medic, taskId | false)  -- before the ped is removed
 onHospitalPlayerHealed     (player, hospitalId)
+onHospitalBayFine          (player, vehicle, hospitalId, amount) -- non-ambulance fined in a bay
 ```
 
 ## Dependencies
 
+- `v_bank` (optional, checked at runtime): `forceTakeMoney` for the bay fines.
 - `med_erm`: units and handover. It got `getVehicleUnit` and `onErmUnitHandoverRequest` for this resource.
 - `med_stretcher`: stretcher state. It got `takePatientOff` for this resource.
 - `medsys`: healing.

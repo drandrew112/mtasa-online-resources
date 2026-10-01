@@ -147,9 +147,14 @@ local injuryId = exports.medical_system:applyInjury(element, injuryType, severit
 
 exports.medical_system:healCompletely(element) -- everything back to baseline, health 100
 
+-- medic role (work_ems gives / takes it; only enforced when MEDIC.REQUIRE_MEDIC_ROLE = true)
+exports.medsys:setPlayerMedic(player, true)   -- give; false takes it away
+exports.medsys:isPlayerMedic(player)          -- the bare flag
+exports.medsys:hasMedicAccess(player)         -- not required, or has the role
+exports.medsys:isMedicRoleRequired()          -- the config value; ask it once, it does not change at runtime
+exports.medsys:getMedicPlayers()              -- every player with the role
+
 -- for the EMS job script
-exports.medical_system:setPlayerMedic(player, true)   -- only used when MEDIC.REQUIRE_MEDIC_ROLE = true
-exports.medical_system:isPlayerMedic(player)
 exports.medical_system:openExamination(medic, target) -- open the panel from your own interaction
 exports.medical_system:closeExamination(medic)
 ```
@@ -160,6 +165,17 @@ exports.medical_system:closeExamination(medic)
 | fracture | – / – / mild (open) | high pain | Bandage (splint) |
 | burn | – | plasma loss, pain, critical = inhalation injury (SpO2 → 80%) | Bandage (dressing), Intubate for the airway |
 | suffocation | – | SpO2 → 88% / 65% / 0% | Intubate |
+
+## Medic role
+
+With `MEDIC.REQUIRE_MEDIC_ROLE = true` only players given the role by `setPlayerMedic` can examine or
+treat, see the "Examine patient" world menu, handle the stretcher (`med_stretcher`) and get the
+"ambulance only" hint of the EMS tablet (`med_erm`). The role lives in a server table; the server
+copies it to the `medic.role` element data so clients can read it, and reverts client changes.
+The role is not saved: it is gone after a reconnect or a medsys restart, work_ems has to give it again.
+Client exports for UI decisions: `isPlayerMedic([player])`, `hasMedicAccess([player])`,
+`isMedicRoleRequired()`. The `onPlayerMedicChange(enabled)` server event (source: player) fires on
+every change.
 
 ## Events (server, for other scripts)
 

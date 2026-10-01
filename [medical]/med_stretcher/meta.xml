@@ -4,6 +4,8 @@
 
     <!-- world menus on the stretcher and the ambulance -->
     <include resource="ui_interactobject" />
+    <!-- medic role check (MEDIC.REQUIRE_MEDIC_ROLE) -->
+    <include resource="medsys" />
 
     <script src="shared/config.lua" type="shared" />
 

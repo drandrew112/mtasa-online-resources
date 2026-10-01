@@ -9,6 +9,7 @@
     <!-- ================= SERVER ================= -->
     <script src="server/hospitals.lua"  type="server" />
     <script src="server/handover.lua"   type="server" />
+    <script src="server/restricted.lua" type="server" />
     <script src="server/heal.lua"       type="server" />
     <script src="server/objectives.lua" type="server" />
     <script src="server/exports.lua"    type="server" />

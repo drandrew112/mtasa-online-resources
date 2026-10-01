@@ -25,15 +25,16 @@ local function getSaveAccount(player)
     return player
 end
 
--- Current bank balance of a player (always a non-negative integer).
+-- Current bank balance of a player (an integer; negative = debt from forceTakeMoney,
+-- paid off by the next deposits).
 local function getBankMoney(player)
     local money = tonumber(getElementData(player, DATA_KEY)) or 0
-    return math.max(0, math.floor(money))
+    return math.floor(money)
 end
 
 -- Sets the runtime balance and, when possible, persists it to the account.
 local function setBankMoney(player, amount)
-    amount = math.max(0, math.floor(tonumber(amount) or 0))
+    amount = math.floor(tonumber(amount) or 0)
     setElementData(player, DATA_KEY, amount)
 
     local account = getSaveAccount(player)
@@ -60,7 +61,7 @@ local function loadBankMoney(player)
 
     local stored = tonumber(exports.v_mysql:getAccData(account, DATA_KEY))
     if stored then
-        setElementData(player, DATA_KEY, math.max(0, math.floor(stored)))
+        setElementData(player, DATA_KEY, math.floor(stored))
     else
         setElementData(player, DATA_KEY, 0)
         exports.v_mysql:setAccData(account, DATA_KEY, 0)
@@ -135,6 +136,21 @@ function takeBankMoney(player, amount)
 
     setBankMoney(player, balance - amount)
     return true
+end
+
+-- Takes the amount from the bank account no matter what: the balance may go
+-- negative (debt), which the player's next deposits pay off. For fines.
+-- -> true, newBalance | "player_not_found"
+function forceTakeMoney(player, amount)
+    player = resolvePlayer(player)
+    if not player then return "player_not_found" end
+
+    amount = normaliseAmount(amount)
+    if not amount then return "player_not_found" end
+
+    local balance = setBankMoney(player, getBankMoney(player) - amount)
+    triggerClientEvent(player, "v_bank:moneyTaken", resourceRoot, amount)
+    return true, balance
 end
 
 -- Adds bank money. -> true | "player_not_found"

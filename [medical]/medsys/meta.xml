@@ -24,6 +24,7 @@
     <script src="client/interaction.lua" type="client" />
     <script src="client/progress.lua" type="client" />
     <script src="client/patient.lua" type="client" />
+    <script src="client/role.lua" type="client" />
     <script src="client/test.lua" type="client" /> <!-- only runs when MEDIC_TEST.ENABLED -->
 
     <file src="assets/fonts/Roboto.ttf" type="client" />
@@ -35,9 +36,17 @@
     <export function="applyInjury" type="server" />
     <export function="healCompletely" type="server" />
 
-    <!-- medics / examination (for the EMS job script) -->
+    <!-- medic role (work_ems gives / takes it; med_stretcher and med_erm check it) -->
     <export function="setPlayerMedic" type="server" />
     <export function="isPlayerMedic" type="server" />
+    <export function="hasMedicAccess" type="server" />
+    <export function="isMedicRoleRequired" type="server" />
+    <export function="getMedicPlayers" type="server" />
+    <export function="isPlayerMedic" type="client" />
+    <export function="hasMedicAccess" type="client" />
+    <export function="isMedicRoleRequired" type="client" />
+
+    <!-- examination (for the EMS job script) -->
     <export function="openExamination" type="server" />
     <export function="closeExamination" type="server" />
 </meta>

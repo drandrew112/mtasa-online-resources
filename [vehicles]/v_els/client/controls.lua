@@ -24,7 +24,7 @@ bindKey("0", "down", function()
     end
 end)
 
--- 1: SZIRÉNA BE/KI (mindig az első hanggal indul)
+-- 1: SZIRÉNA BE/KI (mindig az első hanggal indul; kikapcsolt fényt a szerver felkapcsolja)
 bindKey("1", "down", function()
     local veh = getControlledSirenVehicle()
     if veh then
@@ -60,6 +60,18 @@ bindKey("4", "down", function()
     if veh then
         requestData(veh, "elsPattern", nextIndex(getElementData(veh, "elsPattern"), #ELS_PATTERNS))
     end
+end)
+
+-- GTA-ban a kürt ki/be kapcsolja a gyári szirénát. Saját fényes modellen ezt
+-- visszakapcsoljuk, különben a GTA fényeffektjei villognának (a sofőr szinkronizálja).
+bindKey("horn", "down", function()
+    local veh = getControlledSirenVehicle()
+    if not veh or not Beacons.hasLayout(getElementModel(veh)) then return end
+    setTimer(function()
+        if isElement(veh) and getVehicleSirensOn(veh) then
+            setVehicleSirensOn(veh, false)
+        end
+    end, 50, 1)
 end)
 
 ------------------------------------------------------------

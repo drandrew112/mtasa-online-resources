@@ -158,12 +158,26 @@ local function buildHospital(h)
     if h.heal then buildPoint(h, h.heal, "heal", 1, HOSP.HEAL_COLOR) end
 end
 
--- Bay visuals: an occupied bay's marker is invisible (alpha 0).
-function setBayOccupied(bay, occupied)
+-- Bay visuals: an occupied bay's marker is invisible (alpha 0), a bay with a non-ambulance
+-- vehicle in it is red (server/restricted.lua).
+local function refreshBayMarker(bay)
     if not isElement(bay.marker) then return end
-    local c = HOSP.BAY_COLOR
-    setMarkerColor(bay.marker, c[1], c[2], c[3], occupied and 0 or c[4])
-    setElementData(bay.marker, HOSP_DATA.OCCUPIED, occupied and true or false)
+    local c = bay.restricted and HOSP.BAY_RESTRICTED_COLOR or HOSP.BAY_COLOR
+    setMarkerColor(bay.marker, c[1], c[2], c[3], (bay.occupied and not bay.restricted) and 0 or c[4])
+    setElementData(bay.marker, HOSP_DATA.OCCUPIED, bay.occupied and true or false)
+    setElementData(bay.marker, HOSP_DATA.RESTRICTED, bay.restricted and true or false)
+end
+
+function setBayOccupied(bay, occupied)
+    bay.occupied = occupied and true or false
+    refreshBayMarker(bay)
+end
+
+function setBayRestricted(bay, restricted)
+    restricted = restricted and true or false
+    if bay.restricted == restricted then return end
+    bay.restricted = restricted
+    refreshBayMarker(bay)
 end
 
 local function destroyAll()

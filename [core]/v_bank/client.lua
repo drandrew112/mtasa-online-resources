@@ -24,3 +24,11 @@ addEventHandler("v_bank:playPickupMoneySound", root, function(money)
     end
     playPickupMoneySound()
 end)
+
+-- Server-side forceTakeMoney: shows the full amount taken (cash + bank) in ui_core.
+addEvent("v_bank:moneyTaken", true)
+addEventHandler("v_bank:moneyTaken", root, function(amount)
+    if tonumber(amount) then
+        exports.ui_core:showMoney("take", amount)
+    end
+end)

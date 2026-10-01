@@ -8,6 +8,7 @@ MEDIC = {
     -- the vitals are written in "subscribe" mode so only the players examining / treating
     -- the patient receive them (mg_airway reads SPO2 / HEART_RATE from the patient).
     DATA_STATUS = "medic.status",
+    DATA_ROLE = "medic.role",     -- true on players with the medic role (set by the server only)
     DATA_SPO2 = "spo2",
     DATA_HEART_RATE = "heartRate",
 
@@ -50,7 +51,9 @@ MEDIC = {
     -- Interaction (the "Examine patient" world menu comes from ui_interactobject)
     INTERACT_RANGE = 2.5,       -- metres: menu range and the range to start a procedure
     PANEL_RANGE = 4.0,          -- the panel closes beyond this
-    REQUIRE_MEDIC_ROLE = false, -- true: only players flagged with setPlayerMedic can examine / treat
+    REQUIRE_MEDIC_ROLE = false, -- true: only players flagged with setPlayerMedic can examine / treat,
+                                -- see the stretcher menus (med_stretcher) and the EMS tablet hint (med_erm)
+                                -- (and use the stretcher; the EMS tablet hint shows to them only)
 
     -- Treatments
     IV_FLUID_RATE = 4,          -- ml/s restored with IV access (scaled by the cannulation quality)
