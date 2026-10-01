@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="mg_arrows" version="1.0" type="script" description="Arrow-key timing minigame, driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <script src="shared.lua" type="shared" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onArrowsGameFinish -->
+    <export function="startArrowsGame" type="server" />
+    <export function="stopArrowsGame" type="server" />
+    <export function="isArrowsGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientArrowsGameFinish -->
+    <export function="startArrowsGame" type="client" />
+    <export function="stopArrowsGame" type="client" />
+    <export function="isArrowsGameActive" type="client" />
+</meta>

@@ -1,0 +1,23 @@
+<meta>
+    <info author="DrAndrew112" name="med_stretcher" version="1.0" type="script" description="Ambulance stretcher: take out, push, carry a patient and load them into the ambulance" />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- world menus on the stretcher and the ambulance -->
+    <include resource="ui_interactobject" />
+
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/stretcher.lua" type="server" />
+    <script src="server/interaction.lua" type="server" />
+
+    <script src="client/stretcher.lua" type="client" />
+    <script src="client/push.lua" type="client" />
+    <script src="client/select.lua" type="client" />
+
+    <!-- for the EMS job script -->
+    <export function="getVehicleStretcher" type="server" />
+    <export function="getStretcherVehicle" type="server" />
+    <export function="getStretcherState" type="server" />
+    <export function="getStretcherPatient" type="server" />
+    <export function="getPatientStretcher" type="server" />
+</meta>

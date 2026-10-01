@@ -1,0 +1,41 @@
+<meta>
+    <info author="DrAndrew112" name="medical_system" version="1.0" type="script" description="Medical state simulation and patient examination for players and peds, driven through exports" />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- treatment minigames -->
+    <include resource="mg_arrows" />
+    <include resource="mg_cpr" />
+    <include resource="mg_intravenous" />
+    <include resource="mg_airway" />
+    <!-- "Examine patient" world menu -->
+    <include resource="ui_interactobject" />
+
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/state.lua" type="server" />
+    <script src="server/simulation.lua" type="server" />
+    <script src="server/treatment.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+    <script src="server/interaction.lua" type="server" />
+    <script src="server/test.lua" type="server" /> <!-- only runs when MEDIC_TEST.ENABLED -->
+
+    <script src="client/panel.lua" type="client" />
+    <script src="client/interaction.lua" type="client" />
+    <script src="client/patient.lua" type="client" />
+    <script src="client/test.lua" type="client" /> <!-- only runs when MEDIC_TEST.ENABLED -->
+
+    <file src="assets/fonts/Roboto.ttf" type="client" />
+    <file src="assets/fonts/RobotoB.ttf" type="client" />
+
+    <!-- medical data -->
+    <export function="getMedicalState" type="server" />
+    <export function="setMedicalState" type="server" />
+    <export function="applyInjury" type="server" />
+    <export function="healCompletely" type="server" />
+
+    <!-- medics / examination (for the EMS job script) -->
+    <export function="setPlayerMedic" type="server" />
+    <export function="isPlayerMedic" type="server" />
+    <export function="openExamination" type="server" />
+    <export function="closeExamination" type="server" />
+</meta>

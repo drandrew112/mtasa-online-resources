@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="mg_cpr" version="1.0" type="script" description="CPR rhythm minigame (chest compressions), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <script src="shared.lua" type="shared" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onCPRGameFinish -->
+    <export function="startCPRGame" type="server" />
+    <export function="stopCPRGame" type="server" />
+    <export function="isCPRGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientCPRGameFinish -->
+    <export function="startCPRGame" type="client" />
+    <export function="stopCPRGame" type="client" />
+    <export function="isCPRGameActive" type="client" />
+</meta>

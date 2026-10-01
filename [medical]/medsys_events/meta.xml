@@ -1,0 +1,21 @@
+<meta>
+    <info author="DrAndrew112" name="medsys_events" version="1.0" type="script" description="In-game events (falls, gunshots, melee, crashes, fire, drowning ...) that injure players through the medsys exports" />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- the medical system: every injury goes through its exports -->
+    <include resource="medsys" />
+
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/medsys.lua" type="server" />
+    <script src="server/rules.lua" type="server" />
+    <script src="server/damage.lua" type="server" />
+    <script src="server/vehicle.lua" type="server" />
+    <script src="server/effects.lua" type="server" />
+
+    <script src="client/detect.lua" type="client" />
+    <script src="client/effects.lua" type="client" />
+
+    <!-- body part / cause of the injuries this resource made (medsys does not store them) -->
+    <export function="getInjuryDetails" type="server" />
+</meta>

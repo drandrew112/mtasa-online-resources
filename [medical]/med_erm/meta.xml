@@ -1,0 +1,92 @@
+<meta>
+    <info author="DrAndrew112" name="Emergency Response Manager" version="1.0.0" type="script"
+          description="EMS dispatch: web dispatcher console + in-vehicle unit tablet" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/util.lua"    type="server" />
+    <script src="server/events.lua"  type="server" />
+    <script src="server/db.lua"      type="server" />
+    <script src="server/tasks.lua"   type="server" />
+    <script src="server/units.lua"   type="server" />
+    <script src="server/chat.lua"    type="server" />
+    <script src="server/tablet.lua"  type="server" />
+    <script src="server/dispatchers.lua" type="server" />
+    <script src="server/http.lua"    type="server" />
+    <script src="server/webbridge.lua" type="server" />
+    <script src="server/autodispatch.lua" type="server" />
+    <script src="server/admin.lua"   type="server" />
+    <script src="server/exports.lua" type="server" />
+    <script src="server/main.lua"    type="server" />
+
+    <!-- ================= CLIENT (tablet) ================= -->
+    <script src="client/gfx.lua"            type="client" />
+    <script src="client/state.lua"          type="client" />
+    <script src="client/tablet.lua"         type="client" />
+    <script src="client/pages/login.lua"    type="client" />
+    <script src="client/pages/home.lua"     type="client" />
+    <script src="client/pages/case.lua"     type="client" />
+    <script src="client/pages/messages.lua" type="client" />
+    <script src="client/webpage.lua"       type="client" />
+    <script src="client/admin/panel.lua"   type="client" />
+    <script src="client/admin/detail.lua"  type="client" />
+    <file src="client/fonts/Roboto.ttf"  type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= WEB (dispatcher console) =================
+         http://<server>:<httpport>/erm/  - no MTA login (see README for ACL) -->
+    <!-- web/http.html sends web/index.html with the css / js inlined (those
+         files are client files too, served as octet-stream on their own path) -->
+    <html src="web/http.html"     default="true" />
+    <html src="web/img/map.png"   raw="true" />
+
+    <!-- the same page as a local CEF page inside ui_browser (ems-dispatch.eu);
+         the map comes from v_radar's client files there -->
+    <file src="web/index.html"    type="client" />
+    <file src="web/css/style.css" type="client" />
+    <file src="web/js/api.js"     type="client" />
+    <file src="web/js/map.js"     type="client" />
+    <file src="web/js/ui.js"      type="client" />
+    <file src="web/js/chat.js"    type="client" />
+    <file src="web/js/app.js"     type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- automation API (server/exports.lua), events: server/events.lua -->
+    <export function="createTask"         type="server" />
+    <export function="updateTask"         type="server" />
+    <export function="setTaskPriority"    type="server" />
+    <export function="assignUnit"         type="server" />
+    <export function="unassignUnit"       type="server" />
+    <export function="closeTask"          type="server" />
+    <export function="getTask"            type="server" />
+    <export function="getTasks"           type="server" />
+    <export function="getUnits"           type="server" />
+    <export function="getUnitData"        type="server" />
+    <export function="getFreeUnits"       type="server" />
+    <export function="getNearestFreeUnit" type="server" />
+    <export function="setUnitStatus"      type="server" />
+    <export function="unitCaseAction"     type="server" />
+    <export function="setHandoverTime"    type="server" />
+    <export function="completeHandover"   type="server" />
+    <export function="sendMessage"        type="server" />
+
+    <!-- web console API (called via /erm/call/<name>, first arg = session token) -->
+    <export function="ermLogin"       type="server" http="true" />
+    <export function="ermLogout"      type="server" http="true" />
+    <export function="ermGetState"    type="server" http="true" />
+    <export function="ermSetPriority" type="server" http="true" />
+    <export function="ermAssign"      type="server" http="true" />
+    <export function="ermUnassign"    type="server" http="true" />
+    <export function="ermCloseTask"   type="server" http="true" />
+    <export function="ermCreateTask"  type="server" http="true" />
+    <export function="ermSendMessage" type="server" http="true" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="v_accounts" />
+    <include resource="ui_core" />
+    <include resource="v_radar" />
+    <include resource="ui_browser" />
+</meta>

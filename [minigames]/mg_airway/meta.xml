@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="mg_airway" version="1.0" type="script" description="Endotracheal intubation minigame (airway management), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <script src="shared.lua" type="shared" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onAirwayGameFinish -->
+    <export function="startAirwayGame" type="server" />
+    <export function="stopAirwayGame" type="server" />
+    <export function="isAirwayGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientAirwayGameFinish -->
+    <export function="startAirwayGame" type="client" />
+    <export function="stopAirwayGame" type="client" />
+    <export function="isAirwayGameActive" type="client" />
+</meta>

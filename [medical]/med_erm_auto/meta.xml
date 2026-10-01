@@ -1,0 +1,13 @@
+<meta>
+    <info author="DrAndrew112" name="ERM Auto Dispatch" version="1.0.0" type="script"
+          description="Automatic dispatcher for med_erm: prioritizes tasks and sends the nearest free unit" />
+    <min_mta_version server="1.5.9" />
+
+    <script src="server/main.lua" type="server" />
+
+    <!-- on/off switch (also toggled from /ermadmin in med_erm) -->
+    <export function="getAutoDispatch" type="server" />
+    <export function="setAutoDispatch" type="server" />
+
+    <include resource="med_erm" />
+</meta>

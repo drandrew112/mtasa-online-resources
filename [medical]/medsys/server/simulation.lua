@@ -1,0 +1,194 @@
+-- Physiology simulation. One global timer steps every patient in the registry; it only
+-- runs while there is at least one patient.
+--
+-- Model per step:
+--   blood volume  <- bleeding (per wound level) + burn plasma loss, IV fluids, slow compensation
+--   SpO2          <- drifts to the lowest target of the airway causes / shock, recovers otherwise
+--   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia
+--   consciousness <- derived from SpO2, systolic pressure, pain and forced knockouts
+--   SpO2 <= ARREST_SPO2 or blood <= ARREST_BLOOD -> cardiac arrest (clinical death)
+--   clinical death longer than DEATH_TIME        -> biological death
+
+local simTimer
+local lastTick
+
+local BLOOD_REGEN = 0.3         -- ml/s the body compensates while nothing bleeds
+local IV_MAX_VOLUME = 0.9       -- IV fluids restore the volume up to this fraction
+local ARREST_SPO2_RATE = 1.5    -- %/s the SpO2 falls without circulation
+local SHOCK_SPO2 = { 0.65, 85, 0.3 } -- below this blood fraction the SpO2 drifts to 85% at 0.3%/s
+local PAIN_FADE = 1             -- external pain points lost per second
+
+local function approach(value, target, step)
+    if value < target then
+        return math.min(target, value + step)
+    end
+    return math.max(target, value - step)
+end
+
+local function updateBlood(state, dt, arrested)
+    local loss = MEDIC.BLEED_RATE[getPatientBleeding(state)]
+    for _, injury in ipairs(state.injuries) do
+        local def = MEDIC_INJURIES[injury.type]
+        if def.loss then
+            loss = loss + def.loss[injury.severity] * (injury.treated and def.treatedLoss or 1)
+        end
+    end
+    if arrested then loss = loss * MEDIC.ARREST_BLEED_FACTOR end
+
+    local gain = 0
+    local maxVolume = MEDIC.BLOOD_VOLUME
+    if state.ivAccess and state.bloodVolume < MEDIC.BLOOD_VOLUME * IV_MAX_VOLUME then
+        gain = MEDIC.IV_FLUID_RATE * (0.5 + state.ivQuality / 200)
+        maxVolume = MEDIC.BLOOD_VOLUME * IV_MAX_VOLUME
+    elseif loss == 0 and not arrested then
+        gain = BLOOD_REGEN
+    end
+
+    local volume = state.bloodVolume - loss * dt
+    if gain > 0 and volume < maxVolume then
+        volume = math.min(maxVolume, volume + gain * dt)
+    end
+    state.bloodVolume = math.max(0, math.min(MEDIC.BLOOD_VOLUME, volume))
+end
+
+local function updateSpO2(state, dt, arrested, bloodFraction)
+    if state.apneaRate then
+        state.spo2 = math.max(0, state.spo2 - state.apneaRate * dt)
+        return
+    end
+    if arrested then
+        state.spo2 = math.max(0, state.spo2 - ARREST_SPO2_RATE * dt)
+        return
+    end
+
+    local target, rate = MEDIC.SPO2, MEDIC.SPO2_RECOVERY
+    if not state.intubated then
+        for _, injury in ipairs(state.injuries) do
+            local def = MEDIC_INJURIES[injury.type]
+            local value = def.spo2 and def.spo2[injury.severity]
+            if value and value < target then
+                target, rate = value, def.spo2Rate
+            end
+        end
+    end
+    if bloodFraction < SHOCK_SPO2[1] and SHOCK_SPO2[2] < target then
+        target, rate = SHOCK_SPO2[2], SHOCK_SPO2[3]
+    end
+
+    if state.spo2 > target then
+        state.spo2 = math.max(target, state.spo2 - rate * dt)
+    else
+        state.spo2 = math.min(target, state.spo2 + MEDIC.SPO2_RECOVERY * dt)
+    end
+end
+
+local function updateCirculation(state, dt, bloodFraction, pain)
+    local loss = 1 - bloodFraction
+    local spo2 = state.spo2
+
+    -- compensation: tachycardia with blood loss, pain and hypoxia
+    local heartRate = MEDIC.HEART_RATE + loss * 170 + pain * 0.25
+    if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
+    -- blood pressure holds until ~15% loss (class I), then falls
+    local systolic = MEDIC.SYSTOLIC - math.max(0, loss - 0.15) * 250 + pain * 0.1
+    -- severe hypoxia: bradycardia and collapse before the arrest
+    if spo2 < 50 then
+        heartRate = 20 + spo2
+        systolic = systolic * (spo2 / 50)
+    end
+    systolic = math.max(0, systolic)
+
+    state.heartRate = approach(state.heartRate, heartRate, MEDIC.HR_RATE * dt)
+    state.systolic = approach(state.systolic, systolic, MEDIC.BP_RATE * dt)
+    state.diastolic = approach(state.diastolic, systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC), MEDIC.BP_RATE * dt)
+end
+
+local CONSCIOUSNESS_RANK = { stable = 1, dazed = 2, unconscious = 3 }
+
+local function deriveConsciousness(state, pain, now)
+    local status = "stable"
+    if state.spo2 < MEDIC.UNCONSCIOUS_SPO2 or state.systolic < MEDIC.UNCONSCIOUS_SYSTOLIC then
+        status = "unconscious"
+    elseif state.spo2 < MEDIC.DAZED_SPO2 or state.systolic < MEDIC.DAZED_SYSTOLIC or pain >= MEDIC.DAZED_PAIN then
+        status = "dazed"
+    end
+
+    if state.knockoutUntil then
+        if now >= state.knockoutUntil then
+            state.knockoutState, state.knockoutUntil = nil, nil
+        elseif CONSCIOUSNESS_RANK[state.knockoutState] > CONSCIOUSNESS_RANK[status] then
+            status = state.knockoutState
+        end
+    end
+    return status
+end
+
+-- True when there is nothing left to simulate or show for this patient
+local function canDischarge(state)
+    return #state.injuries == 0 and state.baseBleeding == 0 and state.extraPain == 0
+        and not state.knockoutUntil and not state.arrestTick
+        and state.consciousness == "stable"
+        and state.bloodVolume >= MEDIC.BLOOD_VOLUME
+        and state.spo2 >= MEDIC.DISCHARGE_SPO2
+        and math.abs(state.heartRate - MEDIC.HEART_RATE) < 2
+        and math.abs(state.systolic - MEDIC.SYSTOLIC) < 2
+        and not isPatientAttended(state.element)
+end
+
+local function stepPatient(state, dt, now)
+    if state.dead then return end
+
+    local arrested = state.arrestTick ~= nil
+    updateBlood(state, dt, arrested)
+    local bloodFraction = state.bloodVolume / MEDIC.BLOOD_VOLUME
+    updateSpO2(state, dt, arrested, bloodFraction)
+    state.extraPain = math.max(0, state.extraPain - PAIN_FADE * dt)
+
+    if arrested then
+        if now >= state.deathTick then
+            biologicalDeath(state)
+        end
+        return
+    end
+
+    local pain = getPatientPain(state)
+    updateCirculation(state, dt, bloodFraction, pain)
+
+    if state.spo2 <= MEDIC.ARREST_SPO2 or bloodFraction <= MEDIC.ARREST_BLOOD then
+        cardiacArrest(state)
+        return
+    end
+
+    setConsciousness(state, deriveConsciousness(state, pain, now))
+end
+
+local function simulate()
+    local now = getTickCount()
+    local dt = math.min(5, (now - lastTick) / 1000)
+    lastTick = now
+
+    for element, state in pairs(Patients) do
+        if isElement(element) then
+            stepPatient(state, dt, now)
+            if Patients[element] == state then
+                writeVitalsData(state)
+                sendPanelUpdates(state)
+                if canDischarge(state) then removePatient(element) end
+            end
+        else
+            removePatient(element, true)
+        end
+    end
+end
+
+function startSimulation()
+    if simTimer then return end
+    lastTick = getTickCount()
+    simTimer = setTimer(simulate, MEDIC.TICK, 0)
+end
+
+function stopSimulation()
+    if not simTimer then return end
+    if isTimer(simTimer) then killTimer(simTimer) end
+    simTimer = nil
+end

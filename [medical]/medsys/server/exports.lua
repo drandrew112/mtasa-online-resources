@@ -1,0 +1,151 @@
+-- Public API for other resources (see README.md).
+
+local function clamp(value, min, max)
+    return math.max(min, math.min(max, value))
+end
+
+local function toBoolean(value)
+    return value == true or value == 1 or value == "true"
+end
+
+-- Returns every medical parameter of a ped / player as a table (a copy), or false.
+-- Elements that are not in the registry are healthy (or dead, if they are dead).
+function getMedicalState(element)
+    if not isValidPatient(element) then return false end
+    local state = Patients[element]
+    if state then return buildSnapshot(state) end
+    return buildDefaultSnapshot(element)
+end
+
+local function setNumber(field, min, max)
+    return function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        state[field] = clamp(value, min, max)
+        return true
+    end
+end
+
+-- key -> setter(state, value) -> success
+local SETTERS = {
+    systolic = setNumber("systolic", 0, 300),
+    diastolic = setNumber("diastolic", 0, 200),
+    spo2 = setNumber("spo2", 0, 100),
+    bloodVolume = setNumber("bloodVolume", 0, MEDIC.BLOOD_VOLUME),
+    pain = setNumber("extraPain", 0, 100),
+
+    -- 0 stops every bleeding, 1-3 sets a bleeding that is not tied to an injury
+    bleeding = function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        value = clamp(math.floor(value), 0, 3)
+        state.baseBleeding = value
+        if value == 0 then
+            for _, injury in ipairs(state.injuries) do injury.bleeding = 0 end
+        end
+        return true
+    end,
+
+    -- 0 = cardiac arrest, above 0 during clinical death = return of circulation
+    heartRate = function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        if value <= 0 then
+            cardiacArrest(state)
+            return true
+        end
+        restoreCirculation(state)
+        state.heartRate = clamp(value, 1, 250)
+        return true
+    end,
+
+    ivAccess = function(state, value)
+        state.ivAccess = toBoolean(value)
+        state.ivQuality = state.ivAccess and 100 or 0
+        return true
+    end,
+
+    intubated = function(state, value)
+        state.intubated = toBoolean(value)
+        for _, injury in ipairs(state.injuries) do
+            if injury.type == "suffocation" then injury.treated = state.intubated end
+        end
+        return true
+    end,
+
+    -- stable: wakes / revives the patient (vitals keep deciding afterwards)
+    -- dazed / unconscious: forced for MEDIC.KNOCKOUT_TIME seconds
+    -- clinical_death: cardiac arrest, dead: biological death
+    consciousness = function(state, value)
+        if value == "clinical_death" then
+            cardiacArrest(state)
+        elseif value == "dead" then
+            biologicalDeath(state)
+        elseif value == "stable" or value == "dazed" or value == "unconscious" then
+            restoreCirculation(state)
+            if value == "stable" then
+                state.knockoutState, state.knockoutUntil = nil, nil
+            else
+                state.knockoutState = value
+                state.knockoutUntil = getTickCount() + MEDIC.KNOCKOUT_TIME * 1000
+            end
+            setConsciousness(state, value)
+        else
+            return false
+        end
+        return true
+    end,
+}
+
+-- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
+-- bloodVolume, pain, ivAccess, intubated. The simulation keeps running from the new value.
+function setMedicalState(element, key, value)
+    local setter = SETTERS[key]
+    if not setter or not isValidPatient(element) then return false end
+    local state = getPatient(element, true)
+    if not state or state.dead then return false end
+    local ok = setter(state, value)
+    if ok and not state.dead then writeVitalsData(state) end
+    return ok
+end
+
+-- Adds an injury. injuryType: "gunshot" | "fracture" | "burn" | "suffocation",
+-- severity: 1-3 or "minor" | "serious" | "critical". Returns the injury id, or false.
+function applyInjury(element, injuryType, severity)
+    local def = MEDIC_INJURIES[injuryType]
+    severity = medicNormalizeSeverity(severity)
+    if not def or not severity or not isValidPatient(element) or isPedDead(element) then return false end
+
+    local state = getPatient(element, true)
+    if not state or state.dead then return false end
+
+    local id = state.nextInjuryId
+    state.nextInjuryId = id + 1
+    state.injuries[#state.injuries + 1] = {
+        id = id,
+        type = injuryType,
+        severity = severity,
+        bleeding = def.bleed[severity],
+        treated = false,
+        tick = getTickCount(),
+    }
+    -- an airway that is already secured covers a new suffocation cause
+    if injuryType == "suffocation" and state.intubated then
+        state.injuries[#state.injuries].treated = true
+    end
+    triggerEvent("onMedicalInjury", element, injuryType, severity, id)
+    return id
+end
+
+-- Resets every parameter to the baseline and drops the element from the registry.
+-- A living ped / player also gets its health back to 100.
+function healCompletely(element)
+    if not isValidPatient(element) then return false end
+    resetPatient(element)
+    if not isPedDead(element) then
+        setElementHealth(element, 100)
+    end
+    return true
+end
+
+addEvent("onMedicalInjury", false)

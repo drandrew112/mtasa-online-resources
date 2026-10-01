@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMS Dispatch</title>
+    <script>
+        // MTA serves every <html> file at its path inside the resource
+        // (/erm/web/css/style.css), while this page is the default one at /erm/.
+        // Resolve all relative asset URLs against /<resource>/web/.
+        document.write('<base href="/' + (location.pathname.split('/').filter(Boolean)[0] || 'erm') + '/web/">');
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="locked">
+    <div class="login" id="login">
+        <form class="login-box" id="loginForm" autocomplete="off">
+            <span class="logo big"><i></i><i></i></span>
+            <h1>EMS Dispatch</h1>
+            <p>Sign in with your dispatcher code</p>
+            <input id="loginCode" type="password" placeholder="Dispatcher code" maxlength="32" autofocus>
+            <div class="login-error" id="loginError"></div>
+            <button class="btn primary" type="submit" id="loginBtn">Sign in</button>
+        </form>
+    </div>
+
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo"><i></i><i></i></span>
+            <div>
+                <strong>EMS Dispatch</strong>
+                <small>Emergency Response Manager</small>
+            </div>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="top-right">
+            <span class="auto-badge" id="autoBadge" hidden title="Automatic dispatch (med_erm_auto) is prioritizing tasks and assigning the nearest free unit">
+                <i></i>AUTO DISPATCH
+            </span>
+            <span class="who" id="who"></span>
+            <button class="btn small" id="logoutBtn">Sign out</button>
+            <span class="conn" id="conn" title="Connection"></span>
+            <span class="clock" id="clock">--:--:--</span>
+        </div>
+    </header>
+
+    <main class="layout">
+        <!-- tasks -->
+        <aside class="panel tasks-panel">
+            <div class="panel-head">
+                <div class="tabs">
+                    <button class="tab active" data-tab="active">Active <b id="countActive">0</b></button>
+                    <button class="tab" data-tab="closed">Closed <b id="countClosed">0</b></button>
+                </div>
+                <button class="btn small" id="newTaskBtn" title="Create a task (or right-click the map)">+ New</button>
+            </div>
+            <div class="priority-bar" id="priorityBar">
+                <div class="sel" id="selInfo">Select a task to set its priority</div>
+                <div class="prio-buttons">
+                    <button class="prio p1" data-prio="1" disabled>P1</button>
+                    <button class="prio p2" data-prio="2" disabled>P2</button>
+                    <button class="prio p3" data-prio="3" disabled>P3</button>
+                    <button class="prio p4" data-prio="4" disabled>P4</button>
+                </div>
+            </div>
+            <ul class="list" id="taskList"></ul>
+        </aside>
+
+        <!-- map -->
+        <section class="map-wrap">
+            <div class="map" id="map">
+                <img id="mapImg" alt="" draggable="false">
+                <div class="markers" id="markers"></div>
+            </div>
+            <div class="map-tools">
+                <button class="btn icon" id="zoomIn" title="Zoom in">+</button>
+                <button class="btn icon" id="zoomOut" title="Zoom out">−</button>
+                <button class="btn icon" id="zoomFit" title="Fit map">⤢</button>
+            </div>
+            <div class="legend" id="legend"></div>
+        </section>
+
+        <!-- units + chat -->
+        <aside class="side">
+            <div class="panel units-panel">
+                <div class="panel-head">
+                    <h2>Units <b id="countUnits">0</b></h2>
+                </div>
+                <ul class="list" id="unitList"></ul>
+            </div>
+            <div class="panel chat-panel">
+                <div class="panel-head">
+                    <h2>Messages</h2>
+                    <select id="chatChannel"></select>
+                </div>
+                <div class="chat-log" id="chatLog"></div>
+                <form class="chat-input" id="chatForm" autocomplete="off">
+                    <input id="chatText" maxlength="300" placeholder="Type a message…">
+                    <button class="btn primary" type="submit">Send</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <div class="ctx" id="ctx" hidden></div>
+    <div class="tooltip" id="tooltip" hidden></div>
+    <div class="modal-back" id="modal" hidden><div class="modal" id="modalBox"></div></div>
+    <div class="toasts" id="toasts"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

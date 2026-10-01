@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="mg_intravenous" version="1.0" type="script" description="IV cannulation minigame (needle into the vein, then withdraw it), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <script src="shared.lua" type="shared" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onIVGameFinish -->
+    <export function="startIVGame" type="server" />
+    <export function="stopIVGame" type="server" />
+    <export function="isIVGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientIVGameFinish -->
+    <export function="startIVGame" type="client" />
+    <export function="stopIVGame" type="client" />
+    <export function="isIVGameActive" type="client" />
+</meta>
