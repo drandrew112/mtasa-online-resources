@@ -117,3 +117,11 @@ onHospitalBayFine          (player, vehicle, hospitalId, amount) -- non-ambulanc
 - `medsys`: healing.
 - `v_radar`: objective.
 - `v_mysql`: admin level, optional.
+
+## Tutorial handover (for the work_ems tutorial)
+
+`createTutorialHandover(player, hospitalId, dimension [, vehicle])` → id copies one hospital's bay
+and handover markers into another dimension, visible to that player only. There is no ERM unit or
+case, and no fines. A patient pushed on the stretcher of the given ambulance into the handover
+marker for `HANDOVER_TIME` fires `onHospitalTutorialHandover(id, patient, hospitalId)` (source = the
+player). A ped patient is then destroyed. `destroyTutorialHandover(id)` removes the copy.

@@ -49,4 +49,10 @@
     <!-- examination (for the EMS job script) -->
     <export function="openExamination" type="server" />
     <export function="closeExamination" type="server" />
+    <export function="isExaminationOpen" type="client" />
+    <export function="getExaminationPanelLayout" type="client" />
+
+    <!-- tutorials (work_ems): no transport for these patients -->
+    <export function="setTutorialPatient" type="server" />
+    <export function="isTutorialPatient" type="server" />
 </meta>

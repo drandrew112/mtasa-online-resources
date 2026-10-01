@@ -118,12 +118,22 @@ function save_all(player)
     d.health        = getElementHealth(player)
     d.armor         = getPedArmor(player)
     d["money-BETA"] = getPlayerMoney(player)
-    d.skin          = getElementModel(player)
+    -- on duty (work_core): save the civilian skin, not the work outfit
+    d.skin          = tonumber(getElementData(player, "work.civilSkin")) or getElementModel(player)
 
-    local x, y, z = getElementPosition(player)
-    d.x, d.y, d.z  = x, y, z
-    d.interior     = getElementInterior(player)
-    d.dimension    = getElementDimension(player)
+    -- a script may keep the player somewhere temporary (e.g. the work_ems tutorial in its own
+    -- dimension): server-only data "save.position" = { x, y, z, interior, dimension } is saved instead
+    local saved = getElementData(player, "save.position")
+    if type(saved) == "table" and tonumber(saved[1]) and tonumber(saved[2]) and tonumber(saved[3]) then
+        d.x, d.y, d.z  = tonumber(saved[1]), tonumber(saved[2]), tonumber(saved[3])
+        d.interior     = tonumber(saved[4]) or 0
+        d.dimension    = tonumber(saved[5]) or 0
+    else
+        local x, y, z = getElementPosition(player)
+        d.x, d.y, d.z  = x, y, z
+        d.interior     = getElementInterior(player)
+        d.dimension    = getElementDimension(player)
+    end
 
     for i, statId in ipairs(SAVED_STAT_IDS) do
         d["stat" .. i] = getPedStat(player, statId)
@@ -136,3 +146,10 @@ function save_all(player)
 
     exports.v_mysql:setAccData(player, d)
 end
+
+-- "save.position" is set by server scripts only: a client cannot pick where it is saved
+addEventHandler("onElementDataChange", root, function(key, old)
+    if key == "save.position" and client then
+        if old == nil then removeElementData(source, key) else setElementData(source, key, old, false) end
+    end
+end)

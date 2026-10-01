@@ -1,5 +1,8 @@
 -- Client-side copy of the unit state pushed by the server.
 
+-- Tutorial (demo) mode, filled in by client/tutorial.lua
+TabletTutorial = { active = false }
+
 State = {
     unit       = nil,   -- own unit (nil = not signed in)
     task       = nil,   -- active task of the unit
@@ -46,7 +49,7 @@ local function radarRunning()
     return res and getResourceState(res) == "running"
 end
 
-local function updateObjective()
+function State.updateObjective()
     local t = State.task
     if not radarRunning() then
         objectiveId, objectiveTask = nil, nil
@@ -83,7 +86,7 @@ setTimer(function()
     local x, y = getElementPosition(localPlayer)
     if getDistanceBetweenPoints2D(x, y, t.x, t.y) <= Config.ARRIVE_RADIUS then
         arrivedTask = t.id
-        updateObjective()
+        State.updateObjective()
     end
 end, 1000, 0)
 
@@ -91,16 +94,17 @@ end, 1000, 0)
 addEventHandler("onClientResourceStart", root, function(res)
     if getResourceName(res) == "v_radar" then
         objectiveId, objectiveTask = nil, nil
-        updateObjective()
+        State.updateObjective()
     end
 end)
 
 addEvent("erm:sync", true)
 addEventHandler("erm:sync", resourceRoot, function(data)
+    if TabletTutorial.active then return end -- tutorial: demo data only
     State.unit = data.unit
     State.task = data.task or nil
     State.timeOffset = data.serverTime - getRealTime().timestamp
-    updateObjective()
+    State.updateObjective()
 end)
 
 -- Tablet channel of a message: "case" (task chat) or "dispatch" (direct + broadcast).
@@ -115,12 +119,18 @@ end
 
 addEvent("erm:messages", true)
 addEventHandler("erm:messages", resourceRoot, function(list)
+    if TabletTutorial.active then return end
     State.messages = list or {}
     State.unread, State.unreadBy = 0, { dispatch = 0, case = 0 }
 end)
 
 addEvent("erm:message", true)
 addEventHandler("erm:message", resourceRoot, function(msg)
+    if TabletTutorial.active then return end
+    State.receiveMessage(msg)
+end)
+
+function State.receiveMessage(msg)
     table.insert(State.messages, msg)
     while #State.messages > 100 do table.remove(State.messages, 1) end
 
@@ -136,13 +146,14 @@ addEventHandler("erm:message", resourceRoot, function(msg)
             or channel == "case" and (msg.label or "Case chat") or "Dispatch"
         State.notify(title, msg.fromDispatch and msg.text or (msg.from:gsub("#%x%x%x%x%x%x", "") .. ": " .. msg.text))
     end
-end)
+end
 
 addEvent("erm:signedOut", true)
 addEventHandler("erm:signedOut", resourceRoot, function(reason)
+    if TabletTutorial.active then return end
     State.unit, State.task = nil, nil
     State.messages, State.unread, State.unreadBy = {}, 0, { dispatch = 0, case = 0 }
-    updateObjective()
+    State.updateObjective()
     if Tablet.open then Tablet.close() end
     State.notify("EMS Tablet", reason or "Signed out.")
 end)

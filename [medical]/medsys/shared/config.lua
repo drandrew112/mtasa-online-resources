@@ -51,7 +51,7 @@ MEDIC = {
     -- Interaction (the "Examine patient" world menu comes from ui_interactobject)
     INTERACT_RANGE = 2.5,       -- metres: menu range and the range to start a procedure
     PANEL_RANGE = 4.0,          -- the panel closes beyond this
-    REQUIRE_MEDIC_ROLE = false, -- true: only players flagged with setPlayerMedic can examine / treat,
+    REQUIRE_MEDIC_ROLE = true,  -- true: only players flagged with setPlayerMedic can examine / treat,
                                 -- see the stretcher menus (med_stretcher) and the EMS tablet hint (med_erm)
                                 -- (and use the stretcher; the EMS tablet hint shows to them only)
 

@@ -36,7 +36,7 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
         title = string.format("Close case #%d?", t.id),
         text  = "Reason: " .. text,
         label = "Close Case",
-        action = function() triggerServerEvent("erm:closeCase", resourceRoot, text) end,
+        action = function() Tablet.send("erm:closeCase", text) end,
     }
 end)
 
@@ -45,7 +45,7 @@ local function askLeave(t)
         title = string.format("Leave case #%d?", t.id),
         text  = "Your unit will be released from the case. The other units stay on it.",
         label = "Leave Case",
-        action = function() triggerServerEvent("erm:leaveCase", resourceRoot) end,
+        action = function() Tablet.send("erm:leaveCase") end,
     }
 end
 
@@ -131,9 +131,9 @@ function Pages.case.draw(x, y, w, h)
     local handover = u.status == "handover"
     local buttons = {
         { "Start Response", Config.STATUS.enroute.color, not u.responding and not handover,
-            function() triggerServerEvent("erm:caseAction", resourceRoot, "start") end },
+            function() Tablet.send("erm:caseAction", "start") end },
         { "End Response", { 84, 94, 108 }, u.responding,
-            function() triggerServerEvent("erm:caseAction", resourceRoot, "stop") end },
+            function() Tablet.send("erm:caseAction", "stop") end },
         { "Leave Case", { 48, 56, 66 }, #t.units > 1 and not handover,
             function() askLeave(t) end },
         { "Close Case", { 200, 50, 45 }, not handover,

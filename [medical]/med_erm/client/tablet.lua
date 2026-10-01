@@ -31,9 +31,17 @@ local function inTabletVehicle()
     return veh and Config.TABLET_VEHICLES[getElementModel(veh)] and veh or false
 end
 
+-- Every tablet request goes through here: in tutorial mode (client/tutorial.lua) it is
+-- answered locally and never reaches the server.
+function Tablet.send(name, ...)
+    if TabletTutorial.active then return TabletTutorial.handle(name, ...) end
+    triggerServerEvent(name, resourceRoot, ...)
+end
+
 function Tablet.setPage(page)
     Tablet.page = page
     Tablet.menu = false
+    TabletTutorial.report("page", page)
 end
 
 ---------------------------------------------------------------- header
@@ -102,7 +110,7 @@ local function drawMenu(screen)
                     title = "End shift?",
                     text  = "Your unit will be signed out and released from its active case.",
                     label = "End Shift",
-                    action = function() triggerServerEvent("erm:signOut", resourceRoot) end,
+                    action = function() Tablet.send("erm:signOut") end,
                 }
             end, nil, nil, true },
         }
@@ -278,6 +286,7 @@ function Tablet.show()
     addEventHandler("onClientClick", root, onClick)
     addEventHandler("onClientKey", root, onKey)
     playSoundFrontEnd(1)
+    TabletTutorial.report("open")
 end
 
 function Tablet.close()
@@ -290,6 +299,7 @@ function Tablet.close()
     removeEventHandler("onClientKey", root, onKey)
     unlockControls()
     if not getElementData(localPlayer, "textInputOpen") then showCursor(false) end
+    TabletTutorial.report("close")
 end
 
 function Tablet.toggle()

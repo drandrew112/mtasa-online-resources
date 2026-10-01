@@ -70,3 +70,9 @@ end)
 addEventHandler("onPlayerQuit", root, function()
     Units.removeMember(source, "Disconnected.")
 end)
+
+-- Losing the medsys medic role (e.g. going off duty in work_ems) leaves the unit
+addEvent("onPlayerMedicChange")
+addEventHandler("onPlayerMedicChange", root, function(enabled)
+    if not enabled then Units.removeMember(source, "You are no longer on duty as a medic.") end
+end)

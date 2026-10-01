@@ -1,0 +1,38 @@
+<meta>
+    <info author="DrAndrew112" name="work_ems" version="1.0.0" type="script"
+          description="EMS work on work_core: duty gives the medsys medic role, ambulances with A- plates" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/modules.lua" type="server" />
+    <script src="server/main.lua"    type="server" />
+    <!-- modules go here, after server/modules.lua -->
+
+    <!-- ================= TUTORIAL MODULE (tutorial/, see tutorial/README.md) ================= -->
+    <script src="tutorial/config.lua"         type="shared" />
+    <script src="tutorial/server/session.lua" type="server" />
+    <script src="tutorial/client/card.lua"    type="client" />
+    <script src="tutorial/client/steps.lua"   type="client" />
+    <file src="tutorial/client/fonts/Roboto.ttf"  type="client" />
+    <file src="tutorial/client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/main.lua" type="client" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="isPlayerEms"   type="server" />
+    <export function="getEmsPlayers" type="server" />
+    <export function="getEmsWorkId"  type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="work_core" />
+    <include resource="medsys" />
+    <include resource="ui_core" />
+    <!-- tutorial: tablet demo mode, stretcher, hospital handover copy -->
+    <include resource="med_erm" />
+    <include resource="med_stretcher" />
+    <include resource="med_hospitals" />
+</meta>

@@ -202,3 +202,12 @@ function sendMessage(channel, target, text, from)
     if from == "" then from = "Dispatch" end
     return Chat.post(channel, tonumber(target), from, true, text)
 end
+
+-- removePlayerFromUnit(player [, reason]) -> bool
+-- Takes the player out of their unit (the unit signs out when nobody is left), e.g. before
+-- a tutorial. The reason is shown on the player's tablet.
+function removePlayerFromUnit(player, reason)
+    if not isElement(player) or not Units.ofPlayer(player) then return false end
+    Units.removeMember(player, reason and tostring(reason) or nil)
+    return true
+end

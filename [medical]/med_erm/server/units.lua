@@ -93,9 +93,18 @@ end
 ---------------------------------------------------------------- sign in / out
 
 -- unitNumber: digits chosen on the tablet, "" / nil = automatic.
+-- medsys medic role (work_ems gives it on duty): with the role required only medics can be
+-- unit members. Without medsys nothing is required.
+local function hasMedicAccess(player)
+    local res = getResourceFromName("medsys")
+    if not res or getResourceState(res) ~= "running" then return true end
+    return exports.medsys:hasMedicAccess(player) == true
+end
+
 function Units.signIn(player, unitType, candidates, unitNumber)
     if Units.byPlayer[player] then return false, "You are already signed in." end
     if not isAccountLoggedIn(player) then return false, "You are not logged in." end
+    if not hasMedicAccess(player) then return false, "Only on-duty medics can sign in." end
 
     local veh = getPedOccupiedVehicle(player)
     if not veh or not Config.TABLET_VEHICLES[getElementModel(veh)] then
@@ -123,6 +132,8 @@ function Units.signIn(player, unitType, candidates, unitNumber)
                 return false, getPlayerName(p) .. " is already in another unit."
             elseif not isAccountLoggedIn(p) then
                 return false, getPlayerName(p) .. " is not logged in."
+            elseif not hasMedicAccess(p) then
+                return false, getPlayerName(p) .. " is not an on-duty medic."
             elseif getDistanceBetweenPoints3D(px, py, pz, x, y, z) > Config.ADD_MEMBER_RADIUS + 5 then
                 return false, getPlayerName(p) .. " is too far away."
             end

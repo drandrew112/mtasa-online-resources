@@ -30,6 +30,7 @@
     <script src="client/pages/home.lua"     type="client" />
     <script src="client/pages/case.lua"     type="client" />
     <script src="client/pages/messages.lua" type="client" />
+    <script src="client/tutorial.lua"       type="client" />
     <script src="client/unitlabel.lua"      type="client" />
     <script src="client/webpage.lua"       type="client" />
     <script src="client/admin/panel.lua"   type="client" />
@@ -75,6 +76,15 @@
     <export function="setHandoverTime"    type="server" />
     <export function="completeHandover"   type="server" />
     <export function="sendMessage"        type="server" />
+    <export function="removePlayerFromUnit" type="server" />
+
+    <!-- tablet tutorial (demo) mode, client/tutorial.lua (work_ems tutorial) -->
+    <export function="startTabletTutorial"      type="client" />
+    <export function="stopTabletTutorial"       type="client" />
+    <export function="isTabletTutorial"         type="client" />
+    <export function="setTabletTutorialCase"    type="client" />
+    <export function="setTabletTutorialUnit"    type="client" />
+    <export function="addTabletTutorialMessage" type="client" />
 
     <!-- web console API (called via /erm/call/<name>, first arg = session token) -->
     <export function="ermLogin"       type="server" http="true" />

@@ -14,6 +14,22 @@ addEvent("onMedicalPatientTransported", false) -- source = patient, (medic, kind
 
 local Transports = {}
 
+-- Tutorial patients (setTutorialPatient): transport is refused for them
+local TutorialPatients = {}
+
+-- Marks a ped / player as a tutorial patient (e.g. the EMS tutorial): no transport can be requested
+function setTutorialPatient(element, enabled)
+    if not isValidPatient(element) then return false end
+    TutorialPatients[element] = enabled and true or nil
+    return true
+end
+
+function isTutorialPatient(element)
+    return TutorialPatients[element] == true
+end
+
+addEventHandler("onElementDestroy", root, function() TutorialPatients[source] = nil end)
+
 local function isBodyDead(target)
     local state = Patients[target]
     return (state and state.dead) or isPedDead(target)
@@ -24,6 +40,7 @@ function canRequestTransport(target, state)
     if not isElement(target) or getElementType(target) ~= "ped" then
         return false, "Players cannot be transported"
     end
+    if TutorialPatients[target] then return false, "Not available in the tutorial" end
     local transport = Transports[target]
     if transport then
         if transport.phase == "waiting" then return false, "Transport is on the way" end

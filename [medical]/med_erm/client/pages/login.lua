@@ -169,7 +169,7 @@ function Login.draw(x, y, w, h)
         font = Gfx.font(11, true),
         disabled = not Login.unitType,
     }, function()
-        triggerServerEvent("erm:signIn", resourceRoot, Login.unitType, Login.members, Login.unitNumber)
+        Tablet.send("erm:signIn", Login.unitType, Login.members, Login.unitNumber)
     end)
 end
 

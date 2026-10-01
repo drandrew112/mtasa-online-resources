@@ -8,6 +8,7 @@ addEvent("medic:panelOpen", true)
 addEvent("medic:panelUpdate", true)
 addEvent("medic:panelClose", true)
 addEvent("medic:panelMessage", true)
+addEvent("onClientMedicPanel", false) -- source: localPlayer, (open, target) - e.g. for the EMS tutorial
 
 local screenW, screenH = guiGetScreenSize()
 local scale = math.max(0.65, screenH / 1080)
@@ -354,8 +355,13 @@ local function render()
     dxDrawRectangle(bx, by, bs, bs, isInside(bx, by, bs, bs, cx, cy) and C.buttonHover or C.button)
     dxDrawText("X", bx, by, bx + bs, by + bs, C.text, 1, fonts.bold, "center", "center")
 
+    -- section rectangles, read by getExaminationPanelLayout (e.g. tutorial highlights)
+    local layout = { panel = { X, Y, W, H } }
+    panel.layout = layout
+
     -- consciousness banner
     local y = Y + s(70)
+    layout.consciousness = { x, y, W - PAD * 2, s(40) }
     local stateColor = CONSCIOUSNESS_COLOR[data.consciousness] or C.text
     dxDrawRectangle(x, y, W - PAD * 2, s(40), C.tile)
     dxDrawRectangle(x, y, s(6), s(40), stateColor)
@@ -370,7 +376,10 @@ local function render()
     end
 
     -- vitals
-    y = drawVitals(x, y + s(52), data) + s(12)
+    local vitalsY = y + s(52)
+    y = drawVitals(x, vitalsY, data) + s(12)
+    layout.vitals = { x, vitalsY, W - PAD * 2, y - s(12) - vitalsY }
+    layout.status = { x, y, W - PAD * 2, s(22) }
 
     -- transport status, nil when none was requested
     local elapsed = math.floor((getTickCount() - panel.dataTick) / 1000)
@@ -411,7 +420,8 @@ local function render()
         y = y + s(24)
     end
 
-    drawInjuries(x, y, data)
+    local injuriesEnd = drawInjuries(x, y, data)
+    layout.injuries = { x, y, W - PAD * 2, injuriesEnd - y }
     if panel.drugMenu then
         if data.dead or not (data.actions and data.actions.medication == true) then
             panel.drugMenu = false
@@ -422,6 +432,9 @@ local function render()
 
     -- buttons, then the message / hint line above them
     local hoverReason = drawButtons(cx, cy)
+    local buttons = getButtons()
+    layout.buttons = { buttons[1].x, buttons[1].y, W - PAD * 2, buttons[1].h }
+    layout.buttonList = buttons
     local messageY = Y + H - PAD - s(50) - s(30)
     local text, color
     if hoverReason then
@@ -503,6 +516,17 @@ function closePanel(notifyServer)
     if notifyServer then
         triggerServerEvent("medic:closeExamine", resourceRoot)
     end
+    triggerEvent("onClientMedicPanel", localPlayer, false)
+end
+
+function isExaminationOpen()
+    return panel ~= nil
+end
+
+-- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
+-- injuries, buttons, plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
+function getExaminationPanelLayout()
+    return panel and panel.layout or false
 end
 
 addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, message, isError)
@@ -522,6 +546,7 @@ addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, me
         addEventHandler("onClientClick", root, onClick)
         addEventHandler("onClientKey", root, onKey)
         showCursor(true)
+        triggerEvent("onClientMedicPanel", localPlayer, true, target)
     end
 end)
 

@@ -1,0 +1,61 @@
+<meta>
+    <info author="DrAndrew112" name="work_core" version="1.0.0" type="script"
+          description="Work system core: work registry, duty markers + outfit selector, duty vehicle markers, one work per player" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/registry.lua" type="server" />
+    <script src="server/duty.lua"     type="server" />
+    <script src="server/markers.lua"  type="server" />
+    <script src="server/vehicles.lua" type="server" />
+    <script src="server/requests.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/state.lua"  type="client" />
+    <script src="client/menus.lua"  type="client" />
+    <script src="client/labels.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf"  type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <!-- registry -->
+    <export function="registerWork"           type="server" />
+    <export function="unregisterWork"         type="server" />
+    <export function="isWorkRegistered"       type="server" />
+    <export function="getWork"                type="server" />
+    <export function="getWorks"               type="server" />
+    <!-- duty -->
+    <export function="getPlayerWork"          type="server" />
+    <export function="isPlayerOnDuty"         type="server" />
+    <export function="getWorkPlayers"         type="server" />
+    <export function="getPlayerWorkSkin"      type="server" />
+    <export function="setPlayerOnDuty"        type="server" />
+    <export function="setPlayerOffDuty"       type="server" />
+    <export function="setPlayerWorkSkin"      type="server" />
+    <export function="setElementVisibleToWork" type="server" />
+    <!-- markers -->
+    <export function="createDutyMarker"        type="server" />
+    <export function="createDutyVehicleMarker" type="server" />
+    <export function="destroyWorkMarker"       type="server" />
+    <export function="getWorkMarkers"          type="server" />
+    <!-- vehicles -->
+    <export function="getPlayerWorkVehicle"    type="server" />
+    <export function="destroyPlayerWorkVehicle" type="server" />
+    <export function="getVehicleWork"          type="server" />
+    <export function="getWorkVehicleOwner"     type="server" />
+
+    <!-- ================= CLIENT EXPORTS ================= -->
+    <export function="getPlayerWork"          type="client" />
+    <export function="isPlayerOnDuty"         type="client" />
+    <export function="getWorkPlayers"         type="client" />
+    <export function="getWork"                type="client" />
+    <export function="getWorks"               type="client" />
+    <export function="getVehicleWork"         type="client" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+</meta>

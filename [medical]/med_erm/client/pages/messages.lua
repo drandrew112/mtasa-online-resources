@@ -27,7 +27,7 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     if token ~= inputToken then return end
     inputToken = nil
     if text and text:gsub("%s", "") ~= "" then
-        triggerServerEvent("erm:sendMessage", resourceRoot, text, Pages.messages.channel)
+        Tablet.send("erm:sendMessage", text, Pages.messages.channel)
         Gfx.scroll.messages = 0
     end
 end)

@@ -12,6 +12,7 @@
     <script src="server/restricted.lua" type="server" />
     <script src="server/heal.lua"       type="server" />
     <script src="server/objectives.lua" type="server" />
+    <script src="server/tutorial.lua"   type="server" />
     <script src="server/exports.lua"    type="server" />
 
     <!-- ================= CLIENT (3D labels) ================= -->
@@ -32,6 +33,9 @@
     <export function="getUnitHospitalHandover"       type="server" />
     <export function="isPlayerHealing"               type="server" />
     <export function="reloadHospitals"               type="server" />
+    <!-- tutorial handover (work_ems tutorial): private markers in another dimension, no ERM -->
+    <export function="createTutorialHandover"        type="server" />
+    <export function="destroyTutorialHandover"       type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="med_erm" />

@@ -221,3 +221,11 @@ most `MAX_PEDS` test peds (the oldest is removed), and they are removed when the
 Everything is in `shared/config.lua` → `MEDIC` (tick, bleed rates, thresholds, death time, ROSC
 chances, key, ranges, role requirement), `MEDIC_INJURIES` (injury effects). The minigame
 resources are `<include>`d. Turn off their `TEST_COMMAND`s in production.
+
+## Tutorial support
+
+- Server: `setTutorialPatient(element, enabled)` / `isTutorialPatient(element)`: no transport can be
+  requested for this patient.
+- Client: `isExaminationOpen()` and `getExaminationPanelLayout()`. The layout gives the screen
+  rectangles of the panel sections: panel, consciousness, vitals, status, injuries, buttons and
+  buttonList. The event `onClientMedicPanel(open, target)` fires with source = localPlayer.

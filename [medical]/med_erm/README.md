@@ -280,3 +280,12 @@ and sends the nearest free unit automatically – see its README.
 running) and `ermGetState` returns `auto = { available, enabled }`, shown as
 the **AUTO DISPATCH** badge in the web console's top bar (HTTP page and
 in-game site – http.html inlines index.html, so both get it).
+
+## Tablet tutorial mode (client, for the work_ems tutorial)
+
+`startTabletTutorial()` / `stopTabletTutorial()` / `isTabletTutorial()`: in tutorial mode every
+tablet request (`Tablet.send`) is answered locally with demo data: sign-in, Start/End Response
+and messages. Server pushes are ignored. `setTabletTutorialCase(task)`,
+`setTabletTutorialUnit(fields)` and `addTabletTutorialMessage(text [, channel])` drive the demo.
+Each step is reported through `onClientErmTabletTutorial(action, ...)` (source = localPlayer).
+Server export `removePlayerFromUnit(player [, reason])`.
