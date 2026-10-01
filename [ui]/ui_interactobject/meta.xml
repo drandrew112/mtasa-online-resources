@@ -1,0 +1,45 @@
+<meta>
+    <info author="DrAndrew112" name="ui_interactobject" version="1.0" type="script" description="3D world-space interaction menus on objects, peds, players and vehicles, driven through exports" />
+    <min_mta_version client="1.5.8" server="1.5.8" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/util.lua" type="shared" />
+
+    <script src="server/registry.lua" type="server" />
+
+    <script src="client/registry.lua" type="client" />
+    <script src="client/scan.lua" type="client" />
+    <script src="client/view.lua" type="client" />
+    <script src="client/input.lua" type="client" />
+    <script src="client/render.lua" type="client" />
+
+    <file src="assets/fonts/Roboto.ttf" />
+    <file src="assets/fonts/RobotoB.ttf" />
+    <file src="assets/sounds/select.wav" />
+    <file src="assets/sounds/click.wav" />
+    <file src="assets/sounds/btnfail.wav" />
+
+    <!-- server: menus synced to every (or the listed) players, selection arrives via onInteractMenuSelect -->
+    <export function="addInteractMenu" type="server" />
+    <export function="addInteractTypeMenu" type="server" />
+    <export function="updateInteractMenu" type="server" />
+    <export function="setInteractMenuItems" type="server" />
+    <export function="setInteractMenuEnabled" type="server" />
+    <export function="setInteractMenuVisibleTo" type="server" />
+    <export function="removeInteractMenu" type="server" />
+    <export function="isInteractMenu" type="server" />
+    <export function="closeInteractMenuFor" type="server" />
+
+    <!-- client: local-only menus, selection arrives via onClientInteractMenuSelect -->
+    <export function="addInteractMenu" type="client" />
+    <export function="addInteractTypeMenu" type="client" />
+    <export function="updateInteractMenu" type="client" />
+    <export function="setInteractMenuItems" type="client" />
+    <export function="setInteractMenuEnabled" type="client" />
+    <export function="removeInteractMenu" type="client" />
+    <export function="isInteractMenu" type="client" />
+    <export function="isInteractMenuOpen" type="client" />
+    <export function="getInteractTarget" type="client" />
+    <export function="closeInteractMenu" type="client" />
+    <export function="setInteractionDisabled" type="client" />
+</meta>
