@@ -1,0 +1,38 @@
+{
+    "enabled": true,
+    "vehicles": [],
+    "peds": [
+      {
+        "state": {
+          "diastolic": 100,
+          "systolic": 170
+        },
+        "injuries": [],
+        "skin": 11,
+        "id": "p1",
+        "rot": 14.6,
+        "anim": "sit",
+        "pos": [
+          1724.911,
+          -1872.52,
+          13.564
+        ]
+      }
+    ],
+    "interior": 0,
+    "name": "hypertension1",
+    "weight": 1,
+    "erm": {
+      "description": "The patient is experiencing a sudden onset of dizziness, a severe throbbing headache, and palpitations while waiting for her train.",
+      "priority": 2,
+      "title": "Hypertension",
+      "caller": "SceneManager"
+    },
+    "format": 1,
+    "center": [
+      1724.121,
+      -1873.499,
+      13.564
+    ],
+    "dimension": 0
+  }
