@@ -151,6 +151,9 @@ local function runCheck(triggeredBy, player)
             else
                 emit("status", "Run 'updateresources' (or 'git pull') to bring the files above up to date.")
             end
+            if notInstalled > 0 then
+                emit("status", "Resources that exist in the repo but not here are installed by 'updateresources'.")
+            end
         end
     )
 end
