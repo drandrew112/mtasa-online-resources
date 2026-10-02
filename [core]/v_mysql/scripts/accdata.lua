@@ -21,9 +21,10 @@
 -- setAccData map them transparently, so callers never care which is which.
 --
 -- A per-account in-memory cache serves reads without a round trip. It is
--- filled on first access, updated on every setAccData, and dropped on
--- onPlayerQuit (two servers share this table and do not sync live, so a cached
--- value could otherwise go stale after the player leaves).
+-- filled on first access (only for accounts logged in on this server), updated
+-- on every setAccData, flushed on login and dropped after onPlayerQuit (two
+-- servers share this table and do not sync live, so a cached value could
+-- otherwise go stale after the player leaves).
 
 local TABLE = "accounts"
 
@@ -104,6 +105,16 @@ end
 -- Cache / persistence
 --------------------------------------------------------------------------------
 
+-- Is an account logged in on THIS server right now?
+local function isOnline(name)
+    for _, p in ipairs(getElementsByType("player")) do
+        if getElementData(p, "accName") == name then return true end
+    end
+    return false
+end
+
+-- Only accounts logged in here are cached: an offline account may be played on
+-- the other server meanwhile, so name-based reads/writes for it always hit the DB.
 local function load(name)
     local c = cache[name]
     if c then return c end
@@ -120,7 +131,7 @@ local function load(name)
         c.data.admin_level   = tonumber(res[1].admin_level) or 0
         c.data.created_at    = tonumber(res[1].created_at) or 0
     end
-    cache[name] = c
+    if isOnline(name) then cache[name] = c end
     return c
 end
 
@@ -143,11 +154,15 @@ local function persist(name, c)
         ts)
 end
 
--- Forget an account on quit so a later login reads fresh from the DB.
+-- Forget an account on quit so a later login reads fresh from the DB. Deferred
+-- one tick: other resources' onPlayerQuit handlers (v_accounts save_all, ...)
+-- run after this one and would otherwise re-fill the cache for good.
 addEventHandler("onPlayerQuit", root, function()
     local n = getElementData(source, "accName")
     if type(n) == "string" and n ~= "" then
-        cache[n] = nil
+        setTimer(function()
+            if not isOnline(n) then cache[n] = nil end
+        end, 50, 1)
     end
 end)
 

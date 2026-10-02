@@ -290,6 +290,9 @@ local function spawnLoggedInPlayer(player)
 end
 
 local function markLoggedIn(player, username, accId)
+    -- always start a session from the DB, not a copy cached on this server earlier
+    -- (the other server may have changed the account since)
+    exports.v_mysql:flushAccData(username)
     setElementData(player, "accName", username)
     setElementData(player, "accID", accId or 0)
     setElementData(player, "isLogged", true)
