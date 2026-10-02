@@ -69,9 +69,15 @@ local SETTERS = {
 
     intubated = function(state, value)
         state.intubated = toBoolean(value)
+        if state.intubated then state.oxygenMask = false end
         for _, injury in ipairs(state.injuries) do
             if injury.type == "suffocation" then injury.treated = state.intubated end
         end
+        return true
+    end,
+
+    oxygenMask = function(state, value)
+        state.oxygenMask = toBoolean(value) and not state.intubated
         return true
     end,
 
@@ -100,7 +106,7 @@ local SETTERS = {
 }
 
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
--- bloodVolume, pain, hypertension, ivAccess, intubated. The simulation keeps running from the new value.
+-- bloodVolume, pain, hypertension, ivAccess, intubated, oxygenMask. The simulation keeps running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end

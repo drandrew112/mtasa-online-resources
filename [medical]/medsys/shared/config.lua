@@ -72,6 +72,19 @@ MEDIC = {
     APNEA_RATE = { easy = 0.35, normal = 0.5, hard = 0.65, nightmare = 0.8 },
     -- Medication (needs IV access, no minigame): the medic kneels for this many seconds
     DRUG_TIME = 3,
+    -- Oxygen mask (no minigame, put on / taken off in OXYGEN_TIME seconds). Weaker than the tube:
+    -- the SpO2 targets of the airway problems and of shock are only lifted by OXYGEN_SPO2_BONUS,
+    -- so a critical airway problem still needs intubation.
+    OXYGEN_TIME = 3,
+    OXYGEN_SPO2 = 100,          -- SpO2 target on the mask without any airway problem
+    OXYGEN_SPO2_BONUS = 10,     -- added to the SpO2 target of the airway problems / shock
+    OXYGEN_RECOVERY = 2,        -- the SpO2 recovers this many times faster
+    OXYGEN_APNEA_FACTOR = 0.5,  -- a paralysed patient desaturates this much slower on the mask
+    -- Rapid sequence intubation (RSI): the induction (sedation) first, then the muscle relaxant.
+    PARALYSIS_ONSET = 15,       -- seconds until the muscle relaxant stops the breathing
+    PARALYSIS_SPO2_RATE = 0.25, -- %/s the SpO2 falls without own breathing (until intubated)
+    PANIC_HEART_RATE = 50,      -- an awake patient under the muscle relaxant panics: BPM...
+    PANIC_SYSTOLIC = 35,        -- ...and mmHg added to the targets
 
     -- Transport requested from the panel (peds only): a dead body, or a living patient whose
     -- condition is stable. The vehicle appears at a free spot next to the patient (picked by the
@@ -182,19 +195,62 @@ MEDIC_ACTIONS = {
     cpr = { label = "CPR" },
     iv = { label = "IV access" },
     airway = { label = "Intubate" },
+    oxygen = { label = "O2 mask", activeLabel = "Remove O2" }, -- activeLabel: while the mask is on
     medication = { label = "Medication" },
     transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: the only button
 }
-MEDIC_ACTION_ORDER = { "bandage", "cpr", "iv", "airway", "medication", "transport" }
+MEDIC_ACTION_ORDER = { "bandage", "cpr", "iv", "airway", "oxygen", "medication", "transport" }
 MEDIC_DEAD_ACTION_ORDER = { "transport" } -- the only button when the patient is dead
 
 -- Medicines (given through the IV access). name = the active ingredient, desc = what it is for,
--- in plain words for players without medical knowledge.
--- systolic = change of the target systolic pressure (mmHg) while it works, duration in seconds.
--- The effects of several doses add up.
+-- in plain words for players without medical knowledge (keep it to two lines on the panel).
+-- Effects while a dose works (duration in seconds):
+--   systolic / heartRate  change of the target systolic pressure (mmHg) / pulse (BPM), doses add up
+--   analgesia             fraction of the pain taken away (doses add up, max 1)
+--   sedation              the patient is unconscious (RSI induction)
+--   paralysis             after MEDIC.PARALYSIS_ONSET the patient cannot move or breathe (RSI);
+--                         an awake patient panics (MEDIC.PANIC_*)
+--   roscBonus             added to the ROSC chance of CPR (does not add up)
 MEDIC_DRUGS = {
+    ketamine = {
+        name = "Ketamine (Calypsol)",
+        class = "Anaesthetic - RSI step 1",
+        desc = "Puts the patient to sleep and takes away all pain, raises the blood pressure a little. "
+            .. "Intubation: give it BEFORE the muscle relaxant.",
+        sedation = true,
+        analgesia = 1,
+        systolic = 15,
+        heartRate = 8,
+        duration = 600,
+    },
+    rocuronium = {
+        name = "Rocuronium bromide (Esmeron)",
+        class = "Muscle relaxant - RSI step 2",
+        desc = "Paralyses the muscles and stops the breathing: the SpO2 falls until the patient is "
+            .. "intubated. An awake patient panics - put them to sleep first.",
+        paralysis = true,
+        duration = 2400,
+    },
+    fentanyl = {
+        name = "Fentanyl",
+        class = "Painkiller",
+        desc = "Strong painkiller for a patient who is awake. Lowers the blood pressure slightly.",
+        analgesia = 0.7,
+        systolic = -10,
+        duration = 1800,
+    },
+    epinephrine = {
+        name = "Adrenalin (Tonogen)",
+        class = "Heart stimulant",
+        desc = "Raises the pulse and the blood pressure. In cardiac arrest it makes CPR more likely "
+            .. "to restart the heart. Too many doses drive the pulse dangerously high.",
+        heartRate = 30,
+        systolic = 30,
+        roscBonus = 0.15,
+        duration = 300,
+    },
     captopril = {
-        name = "Captopril",
+        name = "Captopril (Tensiomin)",
         class = "Blood pressure lowering",
         desc = "Lowers high blood pressure. It lowers a normal or low pressure too: "
             .. "given to a patient in shock it can stop the heart.",
@@ -202,7 +258,7 @@ MEDIC_DRUGS = {
         duration = 600,
     },
 }
-MEDIC_DRUG_ORDER = { "captopril" }
+MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril" }
 
 -- Accepts 1-3 or "minor"/"serious"/"critical" (also "mild"/"severe")
 local SEVERITY_NAMES = { minor = 1, mild = 1, serious = 2, severe = 2, critical = 3 }

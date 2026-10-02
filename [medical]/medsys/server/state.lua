@@ -16,8 +16,11 @@
 --     nextInjuryId  = 1,
 --     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (fluid rate)
 --     intubated     = false,                -- airway secured
+--     oxygenMask    = false,                -- oxygen mask on
 --     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
---     drugs         = { { id, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
+--     drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
+--     aware         = true,                 -- awake apart from the medicines (their sedation / paralysis)
+--     panic         = false,                -- awake under the muscle relaxant
 --     apneaRate     = nil,                  -- %/s SpO2 fall while an intubation attempt runs
 --     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
 --     tachyTick     = nil,                  -- getTickCount() since the pulse is at ARREST_HEART_RATE+
@@ -54,9 +57,12 @@ local function newState(element)
         ivAccess = false,
         ivQuality = 0,
         intubated = false,
+        oxygenMask = false,
         hypertension = 0,
         drugs = {},
         consciousness = "stable",
+        aware = true,
+        panic = false,
         dead = false,
         animated = false,
         sent = {},
@@ -125,7 +131,7 @@ function getPatientBleeding(state)
     return level
 end
 
--- Pain 0-100 from the injuries (treated ones hurt less) plus the external pain
+-- Pain 0-100 from the injuries (treated ones hurt less) plus the external pain, minus the painkillers
 function getPatientPain(state)
     local pain = state.extraPain
     for _, injury in ipairs(state.injuries) do
@@ -138,7 +144,7 @@ function getPatientPain(state)
             pain = pain + value * 0.25
         end
     end
-    return math.min(100, pain)
+    return math.min(100, pain) * (1 - math.min(1, getDrugEffect(state, "analgesia")))
 end
 
 -- Sum of an effect field (e.g. "systolic") over the active medicine doses
@@ -148,6 +154,40 @@ function getDrugEffect(state, field)
         total = total + (MEDIC_DRUGS[dose.id][field] or 0)
     end
     return total
+end
+
+-- Highest value of an effect field over the active doses (effects that do not add up)
+function getDrugMax(state, field)
+    local best = 0
+    for _, dose in ipairs(state.drugs) do
+        local value = MEDIC_DRUGS[dose.id][field]
+        if value and value > best then best = value end
+    end
+    return best
+end
+
+-- Is any active dose of a medicine with this flag (e.g. "paralysis") in the body
+function hasDrugEffect(state, field)
+    for _, dose in ipairs(state.drugs) do
+        if MEDIC_DRUGS[dose.id][field] then return true end
+    end
+    return false
+end
+
+-- The anaesthetic keeps the patient asleep
+function isSedated(state)
+    return hasDrugEffect(state, "sedation")
+end
+
+-- The muscle relaxant works (its onset is over): no movement, no own breathing
+function isParalyzed(state, now)
+    now = now or getTickCount()
+    for _, dose in ipairs(state.drugs) do
+        if MEDIC_DRUGS[dose.id].paralysis and now - dose.tick >= MEDIC.PARALYSIS_ONSET * 1000 then
+            return true
+        end
+    end
+    return false
 end
 
 function isInClinicalDeath(state)
@@ -206,6 +246,9 @@ function buildSnapshot(state)
         injuries = injuries,
         ivAccess = state.ivAccess,
         intubated = state.intubated,
+        oxygenMask = state.oxygenMask,
+        sedated = isSedated(state),
+        paralyzed = isParalyzed(state, now),
         drugs = drugs,
         clinicalDeath = isInClinicalDeath(state),
         deathTimeLeft = deathTimeLeft,
@@ -278,6 +321,7 @@ function cardiacArrest(state)
     state.tachyTick = nil
     state.heartRate, state.systolic, state.diastolic = 0, 0, 0
     state.knockoutState, state.knockoutUntil = nil, nil
+    state.panic = false
 
     setConsciousness(state, "clinical_death")
     writeVitalsData(state)

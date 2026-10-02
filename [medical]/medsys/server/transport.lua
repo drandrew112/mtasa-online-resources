@@ -1,6 +1,6 @@
 -- Transport requested from the examination panel ("Transport"). Useful when the ambulance
 -- crews on the scene cannot take every patient: a hearse comes for a dead body, an ambulance
--- for a living patient whose condition is stable. Only peds (a player cannot be removed, and a
+-- for a living patient who is stable or intubated. Only peds (a player cannot be removed, and a
 -- dead player respawns on its own).
 --
 -- Transports[ped] = { medic, kind, arriveTick, spot, timer, vehicle, driver, phase }
@@ -46,8 +46,10 @@ function canRequestTransport(target, state)
         if transport.phase == "waiting" then return false, "Transport is on the way" end
         return false, "The patient is being loaded"
     end
-    if not isBodyDead(target) and state and state.consciousness ~= "stable" then
-        return false, "Only a stable patient can be transported"
+    -- a living patient: stable, or intubated with a pulse (the RSI medicines keep it asleep)
+    if not isBodyDead(target) and state and state.consciousness ~= "stable"
+        and not (state.intubated and state.consciousness == "unconscious") then
+        return false, "Only a stable or intubated patient can be transported"
     end
     return true
 end

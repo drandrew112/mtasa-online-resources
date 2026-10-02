@@ -1,8 +1,9 @@
 -- Patient examination panel (DX). The server opens it (medic:panelOpen), pushes a snapshot
 -- every simulation step while it is open (medic:panelUpdate) and closes it when a procedure
 -- starts. The buttons only send requests, the server validates and runs everything.
--- "Medication" opens a medicine list inside the panel. "Transport" (a stable patient, or the
--- only button of a dead one) calls a vehicle; the client picks a free spot for it.
+-- "Medication" opens a medicine grid inside the panel (the hovered one is described under it).
+-- "O2 mask" puts the oxygen mask on / takes it off. "Transport" (a stable or intubated patient,
+-- or the only button of a dead one) calls a vehicle; the client picks a free spot for it.
 
 addEvent("medic:panelOpen", true)
 addEvent("medic:panelUpdate", true)
@@ -235,38 +236,49 @@ local function getButtons()
     return list
 end
 
--- Medicine cards of the medication list (drawn over the injury list)
+-- Medicine cards of the medication grid (drawn over the injury list, two columns)
 local DRUG_AREA_Y = s(368)
-local DRUG_CARD_H = s(84)
+local DRUG_CARD_H = s(46)
+local DRUG_GAP = s(6)
 
 local function getDrugCards()
     local list = {}
-    local y = Y + DRUG_AREA_Y + s(24)
+    local top = Y + DRUG_AREA_Y + s(24)
+    local cw = (W - PAD * 2 - DRUG_GAP) / 2
     for i, id in ipairs(MEDIC_DRUG_ORDER) do
-        list[i] = { id = id, x = X + PAD, y = y, w = W - PAD * 2, h = DRUG_CARD_H }
-        y = y + DRUG_CARD_H + s(8)
+        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        list[i] = { id = id, x = X + PAD + col * (cw + DRUG_GAP), y = top + row * (DRUG_CARD_H + DRUG_GAP),
+            w = cw, h = DRUG_CARD_H }
     end
     return list
 end
 
-local function drawDrugMenu(cx, cy)
+-- Draws the grid and, under it (over the message line), the description of the hovered medicine
+-- hoverReason: a disabled button's reason is shown there instead of the placeholder
+local function drawDrugMenu(cx, cy, hoverReason)
     local x, y = X + PAD, Y + DRUG_AREA_Y
-    local bottom = Y + H - PAD - s(50) - s(34)
+    local bottom = Y + H - PAD - s(50) - s(6)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
     dxDrawText("MEDICATION  -  given through the IV line", x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
+    local hoveredDrug, cardsBottom = nil, y
     for _, card in ipairs(getDrugCards()) do
         local drug = MEDIC_DRUGS[card.id]
         local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
+        if hovered then hoveredDrug = drug end
         dxDrawRectangle(card.x, card.y, card.w, card.h, hovered and C.button or C.tile)
         dxDrawRectangle(card.x, card.y, s(4), card.h, C.accent)
         local tx = card.x + s(14)
-        dxDrawText(drug.name, tx, card.y + s(8), card.x + card.w, card.y + s(30), C.text, 1, fonts.bold, "left", "top")
-        dxDrawText(drug.class, tx, card.y + s(8), card.x + card.w - s(12), card.y + s(30), C.spo2, 1,
-            fonts.small, "right", "top")
-        dxDrawText(drug.desc, tx, card.y + s(32), card.x + card.w - s(12), card.y + card.h - s(6), C.muted, 1,
-            fonts.small, "left", "top", true, true)
+        dxDrawText(drug.name, tx, card.y + s(5), card.x + card.w - s(8), card.y + s(26), C.text, 1, fonts.bold,
+            "left", "top", true)
+        dxDrawText(drug.class, tx, card.y + s(25), card.x + card.w - s(8), card.y + card.h, C.spo2, 1,
+            fonts.small, "left", "top", true)
+        cardsBottom = card.y + card.h
     end
+    if not hoveredDrug and hoverReason then return end
+    local text = hoveredDrug and hoveredDrug.desc or "Point at a medicine to see what it does."
+    dxDrawText(text, x, cardsBottom + s(8), X + W - PAD, bottom, hoveredDrug and C.text or C.muted, 1,
+        fonts.small, "left", "top", true, true)
 end
 
 -- A free spot for the transport vehicle next to the body: the boot faces the body, the
@@ -315,9 +327,12 @@ local function drawButtons(cx, cy)
         local selected = button.action == "medication" and panel.drugMenu
         local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
         dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
-        local label = (#buttons == 1 and info.wideLabel) or info.label
+        local label = (#buttons == 1 and info.wideLabel)
+            or (info.activeLabel and button.action == "oxygen" and panel.data.oxygenMask and info.activeLabel)
+            or info.label
+        local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
         dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
-            enabled and C.text or C.muted, 1, fonts.bold, "center", "center")
+            enabled and C.text or C.muted, 1, font, "center", "center")
 
         if hovered and not enabled and type(available) == "string" then hoverReason = available end
     end
@@ -397,9 +412,11 @@ local function render()
             transportText and C.warn or C.muted, 1, fonts.body, "left", "center")
     else
         local iv = data.ivAccess and "IV access: in place" or "IV access: none"
-        local airway = data.intubated and "Airway: secured" or "Airway: not secured"
+        local airway = data.intubated and "Airway: secured" or (data.oxygenMask and "Airway: O2 mask")
+            or "Airway: not secured"
         dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
-        dxDrawText(airway, x + s(190), y, x + W, y + s(22), data.intubated and C.good or C.muted, 1, fonts.body, "left", "center")
+        dxDrawText(airway, x + s(190), y, x + W, y + s(22), (data.intubated or data.oxygenMask) and C.good or C.muted,
+            1, fonts.body, "left", "center")
         dxDrawText(("Pain: %d/10"):format(math.floor(data.pain / 10 + 0.5)), x, y, X + W - PAD, y + s(22),
             data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
     end
@@ -422,16 +439,16 @@ local function render()
 
     local injuriesEnd = drawInjuries(x, y, data)
     layout.injuries = { x, y, W - PAD * 2, injuriesEnd - y }
+
+    -- buttons, the medicine grid, then the message / hint line above the buttons
+    local hoverReason = drawButtons(cx, cy)
     if panel.drugMenu then
         if data.dead or not (data.actions and data.actions.medication == true) then
             panel.drugMenu = false
         else
-            drawDrugMenu(cx, cy)
+            drawDrugMenu(cx, cy, hoverReason)
         end
     end
-
-    -- buttons, then the message / hint line above them
-    local hoverReason = drawButtons(cx, cy)
     local buttons = getButtons()
     layout.buttons = { buttons[1].x, buttons[1].y, W - PAD * 2, buttons[1].h }
     layout.buttonList = buttons
@@ -439,6 +456,8 @@ local function render()
     local text, color
     if hoverReason then
         text, color = hoverReason, C.muted
+    elseif panel.drugMenu then
+        text = nil -- the medicine description is there
     elseif panel.message and getTickCount() - panel.messageTick < MESSAGE_TIME then
         text, color = panel.message, panel.messageError and C.bad or C.good
     elseif panel.pending then

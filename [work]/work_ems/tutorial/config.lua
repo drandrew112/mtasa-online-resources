@@ -50,7 +50,7 @@ TUTORIAL = {
         { id = "iv", label = "IV access", resource = "mg_intravenous",
           desc = "Push the needle into the vein, then pull it back. Needed for fluids and medicines." },
         { id = "airway", label = "Intubation", resource = "mg_airway",
-          desc = "Place the breathing tube while the oxygen level falls. Used for unconscious patients "
-              .. "who cannot breathe on their own." },
+          desc = "Place the breathing tube while the oxygen level falls. On a patient put to sleep (Ketamine) "
+              .. "and relaxed (Rocuronium), or in cardiac arrest." },
     },
 }

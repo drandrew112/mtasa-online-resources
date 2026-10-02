@@ -129,8 +129,9 @@ local EXAMINE = {
     { text = "The injuries: their severity and whether they are treated. This patient has a minor burn.",
       next = true, panel = "injuries" },
     { text = "The treatments. A grey button cannot be used now - hover it to see why.\n\n"
-          .. "Bandage: wounds, burns, fractures  ·  CPR: stopped heart  ·  IV access  ·  Intubate: unconscious "
-          .. "patient  ·  Medication  ·  Transport: calls a vehicle for a stable or dead patient (off in the tutorial).",
+          .. "Bandage: wounds, burns, fractures  ·  CPR: stopped heart  ·  IV access  ·  Intubate: after Ketamine, "
+          .. "then Rocuronium (or in cardiac arrest)  ·  O2 mask: raises the oxygen level  ·  Medication  ·  "
+          .. "Transport: calls a vehicle for a stable, intubated or dead patient (off in the tutorial).",
       next = true, panel = "buttons" },
     { text = "Dress the burn: press Bandage.\n\nPress the matching arrow key when an arrow reaches the target.",
       wait = "bandage:ok", panel = "bandage" },

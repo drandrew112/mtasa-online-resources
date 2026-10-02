@@ -168,7 +168,7 @@ end
 -- validate(state, option) optional, checks the option sent by the panel (e.g. the medicine)
 -- start(medic, target, state) -> session id or false
 -- duration     timed procedure without a minigame: it succeeds after this many seconds
--- progress(option) text of the progress bar of a timed procedure
+-- progress(option, state) text of the progress bar of a timed procedure
 -- stop(medic)  aborts the minigame (it fires its finish event)
 -- cleanup(state) optional, runs when the procedure ends in any way
 -- finishEvent  the minigame's result event, sessionArg = position of the session id in it
@@ -228,6 +228,7 @@ PROCEDURES.cpr = {
             chance = MEDIC.ROSC_BASE + math.max(0, percent - 70) * MEDIC.ROSC_PER_PERCENT
             if state.ivAccess then chance = chance + MEDIC.ROSC_IV_BONUS end
             if state.intubated then chance = chance + MEDIC.ROSC_AIRWAY_BONUS end
+            chance = chance + getDrugMax(state, "roscBonus") -- adrenaline
         end
 
         if math.random() < chance then
@@ -273,11 +274,18 @@ PROCEDURES.iv = {
 
 PROCEDURES.airway = {
     resource = "mg_airway",
+    -- In cardiac arrest the tube goes in straight away. Otherwise only with RSI: the anaesthetic
+    -- (sedation) and the muscle relaxant (after its onset) both have to work. Given in the wrong
+    -- order the patient panics while the breathing stops (simulation.lua).
     can = function(state)
         if state.intubated then return false, "Airway already secured" end
-        if state.consciousness ~= "unconscious" and state.consciousness ~= "clinical_death" then
-            return false, "Patient is conscious"
+        if isInClinicalDeath(state) then return true end
+        if not isSedated(state) then
+            if state.consciousness ~= "unconscious" then return false, "Patient is conscious - give Ketamine first" end
+            return false, "Give Ketamine first (induction)"
         end
+        if not hasDrugEffect(state, "paralysis") then return false, "Give Rocuronium (muscle relaxant)" end
+        if not isParalyzed(state) then return false, "Waiting for the muscle relaxant to work" end
         return true
     end,
     start = function(medic, target, state)
@@ -304,10 +312,31 @@ PROCEDURES.airway = {
             return reason == "desaturated" and "Intubation failed - patient desaturated" or "Intubation failed"
         end
         state.intubated = true
+        state.oxygenMask = false
         for _, injury in ipairs(state.injuries) do
             if injury.type == "suffocation" then injury.treated = true end
         end
         return "Airway secured - patient ventilated"
+    end,
+}
+
+-- Puts the oxygen mask on / takes it off (the button label follows it)
+PROCEDURES.oxygen = {
+    duration = MEDIC.OXYGEN_TIME,
+    animated = true,
+    can = function(state)
+        if state.intubated then return false, "Ventilated through the tube" end
+        return true
+    end,
+    progress = function(_, state)
+        return state.oxygenMask and "Removing the oxygen mask..." or "Putting on the oxygen mask..."
+    end,
+    stop = function() end, -- releaseTreatment kills the timer
+    apply = function(state, success)
+        if not success then return "The oxygen mask was not changed" end
+        if state.intubated then return "Ventilated through the tube" end
+        state.oxygenMask = not state.oxygenMask
+        return state.oxygenMask and "Oxygen mask on" or "Oxygen mask removed"
     end,
 }
 
@@ -329,7 +358,8 @@ PROCEDURES.medication = {
     apply = function(state, success, drugId)
         local drug = MEDIC_DRUGS[drugId]
         if not success or not drug then return "The medicine was not given" end
-        state.drugs[#state.drugs + 1] = { id = drugId, untilTick = getTickCount() + drug.duration * 1000 }
+        local now = getTickCount()
+        state.drugs[#state.drugs + 1] = { id = drugId, tick = now, untilTick = now + drug.duration * 1000 }
         return drug.name .. " given"
     end,
 }
@@ -563,7 +593,7 @@ function startTreatment(medic, target, action, option)
             treatment.timer = nil
             finishTreatment(medic, true, option)
         end, procedure.duration * 1000, 1)
-        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option), procedure.duration * 1000)
+        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state), procedure.duration * 1000)
         return true
     end
 

@@ -49,8 +49,10 @@ Patients[element] = {
     injuries      = { { id, type, severity, bleeding, treated, tick }, ... },
     ivAccess      = false, ivQuality = 0,
     intubated     = false,
+    oxygenMask    = false,
     hypertension  = 0,                    -- mmHg on the target systolic pressure
-    drugs         = { { id, untilTick }, ... }, -- active medicine doses
+    drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses
+    aware, panic  = true, false,          -- awake apart from the medicines / awake under the muscle relaxant
     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
     arrestTick    = nil, deathTick = nil, -- clinical death start / biological death time
     knockoutState = nil, knockoutUntil = nil,
@@ -70,10 +72,12 @@ Patients[element] = {
   BPM / mmHg, whatever lowered it), plus early blood-loss compensation, pain and hypoxia.
   Below 50% SpO2 the heart fails (bradycardia) before the arrest.
 - **SpO2** drifts to the lowest target of the airway causes (suffocation, inhalation burn) or of
-  shock, and recovers otherwise. A secured airway removes the airway causes.
+  shock, and recovers otherwise. A secured airway removes the airway causes, the O2 mask lifts
+  the targets by 10. Under Rocuronium without a tube there is no breathing: the SpO2 only falls.
 - **Consciousness**: `unconscious` below 70% SpO2 or 65 mmHg systolic, and `dazed` below 88% /
   90 mmHg or at pain 70+.
-- **Medicines** shift the target systolic pressure while they work (`MEDIC_DRUGS`, doses add up).
+- **Medicines** shift the target pressure / pulse, take away pain, sedate or paralyse while they
+  work (`MEDIC_DRUGS`, doses add up). Sedation / paralysis force `unconscious`.
   `hypertension` (setMedicalState) is a lasting offset on the same target.
 - **Cardiac arrest** when the SpO2 reaches `ARREST_SPO2` (0), the blood volume falls to 50% or the
   systolic pressure falls to `ARREST_SYSTOLIC` (30, e.g. Captopril given in shock), or the pulse
@@ -105,15 +109,25 @@ away (`PANEL_RANGE`).
 | Bandage | mg_arrows | an untreated wound / fracture / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), fracture splinted, burn dressed |
 | CPR | mg_cpr | clinical death | ROSC chance (accuracy, +IV, +airway, 0 when the blood loss is too high), otherwise +45 s on the death timer |
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
-| Intubate | mg_airway | unconscious / clinical death, no tube | airway secured, suffocation treated. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
-| Medication | – (3 s, `DRUG_TIME`) | IV access in place | opens the medicine list (name, what it is for, warning); the picked one is given after 3 s |
-| Transport | – | ped only: a living patient with consciousness **Stable**, or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
+| Intubate | mg_airway | no tube, and clinical death, or RSI: Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
+| O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
+| Medication | – (3 s, `DRUG_TIME`) | IV access in place | opens the medicine grid (name, group; the hovered one is described under it); the picked one is given after 3 s |
+| Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
 
 Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
 
 | medicine | for | effect |
 |---|---|---|
-| Captopril | high blood pressure | target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
+| Ketamine (Calypsol) | RSI step 1 (induction) | 10 min: unconscious, no pain, systolic +15, pulse +8 |
+| Rocuronium bromide (Esmeron) | RSI step 2 (muscle relaxant) | 40 min: after 15 s (`PARALYSIS_ONSET`) the patient cannot move (unconscious) or breathe: SpO2 −0.25%/s until intubated (half with the O2 mask). An **awake** patient (no Ketamine) panics: pulse +50, systolic +35, until it passes out or gets Ketamine |
+| Fentanyl | pain of an awake patient | 30 min: pain −70%, systolic −10 |
+| Adrenalin (Tonogen) | heart stimulant / cardiac arrest | 5 min: pulse +30, systolic +30, +15% ROSC chance for CPR (does not add up). Several doses can push the pulse to the arrest limit |
+| Captopril (Tensiomin) | high blood pressure | target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
+
+RSI order: Ketamine first, then Rocuronium, wait for the onset, intubate. The wrong order is
+punished by the medicines themselves (panic, then the breathing stops in an awake patient).
+An intubated patient never wakes up with the tube in: it stays unconscious until it is fully
+stable and no medicine keeps it asleep, then the tube comes out.
 
 The transport spot is picked by the requesting medic's client (ground check + line of sight, boot
 towards the body); the server only accepts it within `TRANSPORT_SPOT_RANGE`. Without a free spot
@@ -129,14 +143,14 @@ local data = exports.medical_system:getMedicalState(element)
 -- { consciousness, consciousnessLabel, heartRate, systolic, diastolic, bloodPressure = "120/80",
 --   spo2, bleeding (0-3), bleedingLabel, bloodVolume, bloodPercent, pain,
 --   injuries = { { id, type, label, severity, severityLabel, bleeding, treated, treatedLabel } },
---   ivAccess, intubated, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient }
+--   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient }
 
 exports.medical_system:setMedicalState(element, key, value) -- true / false
 --   heartRate     0 = cardiac arrest, > 0 during clinical death = return of circulation
 --   systolic, diastolic, spo2, bloodVolume, pain (0-100, fades)
 --   hypertension  mmHg added to the target systolic pressure until set back to 0 (lasting high BP)
 --   bleeding      0 stops every bleeding, 1-3 adds a bleeding that is not tied to an injury
---   ivAccess, intubated   booleans
+--   ivAccess, intubated, oxygenMask   booleans
 --   consciousness "stable" (wakes / revives), "dazed" / "unconscious" (forced for KNOCKOUT_TIME),
 --                 "clinical_death", "dead"
 -- The simulation continues from the new value (e.g. a heart rate drifts back to its target).
