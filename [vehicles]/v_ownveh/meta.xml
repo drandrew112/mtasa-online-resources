@@ -12,7 +12,6 @@
          in from the /vehspawn output (vehiclespawnpoints.txt). -->
     <script src="config.lua"      type="server" />
     <script src="spawnpoints.lua" type="server" />
-    <script src="models.lua"      type="server" />
 
     <!-- MySQL layer: row <-> table helpers on top of v_mysql's exports. -->
     <script src="db.lua" type="server" />
@@ -41,7 +40,6 @@
     <export function="getOwnedVehicles"   type="server" />
     <export function="getVehicleData"     type="server" />
     <export function="isVehicleSpawned"   type="server" />
-    <export function="getModelName"       type="server" />
     <export function="getSpawnedVehicleId" type="server" />
 
     <!-- "Put the current personal vehicle away" - stores whatever the player

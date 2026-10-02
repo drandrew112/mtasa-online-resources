@@ -52,7 +52,6 @@ All exports return `false, "<errorCode>"` on failure.
 | `getOwnedVehicles(who)` | `{ { id, model, plate, isDestroyed, spawned }, … }`. |
 | `getVehicleData(id)` | Raw stored row (with `account_name`). |
 | `isVehicleSpawned(id)` | The live `vehicle` element if summoned, else `false`. |
-| `getModelName(model)` | Display name for a model id. A `models.lua` override (`Vehicles.modelNames[id]`) wins, otherwise `getVehicleNameFromModel`. → `string`. |
 | `getSpawnedVehicleId(who)` | Id of the vehicle the owner currently has summoned, or `nil`. |
 | `storePersonalVehicle(who)` | Store whatever the player has summoned (wrapper around `storeVehicle`). → `true`. Errors: `not_spawned`, `occupied`. |
 
@@ -127,7 +126,6 @@ A summoned vehicle's state is written back to the database:
 | --- | --- |
 | `config.lua` | Tunables (`Vehicles.config`). |
 | `spawnpoints.lua` | Hand-maintained spawn point lists (`Vehicles.spawnpoints`). |
-| `models.lua` | Custom model-name overrides for `getModelName` (`Vehicles.modelNames`). |
 | `db.lua` | Row CRUD on the `vehicles` table via `v_mysql` exports (`OwnVeh.db*`). |
 | `database.sql` | `vehicles` table schema (manual setup / reference). |
 | `state.lua` | Vehicle state capture/apply, model→category, spawn point picking. |

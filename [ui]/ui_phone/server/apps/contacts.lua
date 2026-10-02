@@ -56,7 +56,7 @@ local function destroyedVehicles(player)
         if v.isDestroyed then
             out[#out + 1] = {
                 id        = v.id,
-                modelName = exports.v_ownveh:getModelName(v.model) or ("Vehicle " .. tostring(v.model)),
+                modelName = exports.veh_manager:getModelName(v.model) or ("Vehicle " .. tostring(v.model)),
                 plate     = v.plate,
             }
         end

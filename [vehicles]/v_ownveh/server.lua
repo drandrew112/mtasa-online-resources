@@ -389,16 +389,6 @@ function isVehicleSpawned(id)
     return false
 end
 
--- Human-readable name for a vehicle model id. A custom override in models.lua
--- (Vehicles.modelNames) wins; otherwise GTA's built-in name is used
--- ("Infernus", "Sparrow", ...).
--- -> string | false
-function getModelName(model)
-    model = tonumber(model)
-    if not model then return false end
-    return Vehicles.customModelName(model) or getVehicleNameFromModel(model) or false
-end
-
 -- The id of the owned vehicle the given owner currently has summoned, or nil.
 --   who : player element or account-name string
 function getSpawnedVehicleId(who)

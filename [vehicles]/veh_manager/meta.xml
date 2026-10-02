@@ -1,0 +1,14 @@
+<meta>
+    <info author="DrAndrew112" name="Vehicle Manager" type="script" version="1.0.0"
+          description="Central vehicle info: display names for vehicle models (models.json)." />
+
+    <script src="models.lua" type="server" />
+
+    <!-- Model id -> display name overrides, loaded by models.lua. -->
+    <file src="models.json" download="false" />
+
+    <!-- ================= EXPORTS (server) ================= -->
+    <export function="getModelName" type="server" />
+
+    <min_mta_version server="1.5.6" />
+</meta>

@@ -24,7 +24,7 @@ local function buildList(player)
         out[#out + 1] = {
             id          = v.id,
             model       = v.model,
-            modelName   = exports.v_ownveh:getModelName(v.model) or ("Vehicle " .. tostring(v.model)),
+            modelName   = exports.veh_manager:getModelName(v.model) or ("Vehicle " .. tostring(v.model)),
             plate       = v.plate,
             isDestroyed = v.isDestroyed,
             spawned     = v.spawned,
