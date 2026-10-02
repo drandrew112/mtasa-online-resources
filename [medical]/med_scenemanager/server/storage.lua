@@ -125,15 +125,23 @@ function Storage.reload()
     Storage.names, Storage.summary = {}, {}
     local index = msmDecodeJSON(msmReadFile(MSM.INDEX_FILE) or "")
     local list = index and (index.scenes or index) or {}
-    local missing = 0
+    local missing, formatted = 0, 0
 
     for _, name in ipairs(type(list) == "table" and list or {}) do
         name = tostring(name):gsub("%.json$", "")
         if msmValidName(name) and not Storage.summary[name] then
-            local data = msmDecodeJSON(msmReadFile(scenePath(name)))
+            local content = msmReadFile(scenePath(name))
+            local data = msmDecodeJSON(content)
             if data then
+                local scene = Storage.normalize(data, name)
                 Storage.names[#Storage.names + 1] = name
-                Storage.summary[name] = makeSummary(name, Storage.normalize(data, name))
+                Storage.summary[name] = makeSummary(name, scene)
+                -- older / hand-edited files are rewritten in the editor's format (key order, layout)
+                local json = msmEncodeJSON(scene)
+                if json and json ~= content then
+                    msmWriteFile(scenePath(name), json)
+                    formatted = formatted + 1
+                end
             else
                 missing = missing + 1
                 msmLog("scene '%s' is listed in the index but %s could not be read", name, scenePath(name))
@@ -141,8 +149,13 @@ function Storage.reload()
         end
     end
     sortNames()
-    if not index then writeIndex() end
-    msmLog("%d scene(s) loaded%s", #Storage.names, missing > 0 and (" (" .. missing .. " unreadable)") or "")
+    -- reformat the index too, but never drop the entries of files that could not be read
+    if not index or (missing == 0 and msmEncodeJSON({ scenes = Storage.names }) ~= msmReadFile(MSM.INDEX_FILE)) then
+        writeIndex()
+    end
+    msmLog("%d scene(s) loaded%s%s", #Storage.names,
+        formatted > 0 and (", " .. formatted .. " file(s) reformatted") or "",
+        missing > 0 and (" (" .. missing .. " unreadable)") or "")
     return #Storage.names
 end
 

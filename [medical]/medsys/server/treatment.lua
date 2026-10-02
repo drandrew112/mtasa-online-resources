@@ -33,7 +33,8 @@ local function getDisplayName(element)
     if getElementType(element) == "player" then
         return (getPlayerName(element):gsub("#%x%x%x%x%x%x", ""))
     end
-    return "Unknown patient"
+    local name = getElementData(element, MEDIC.DATA_NAME)
+    return type(name) == "string" and name ~= "" and name or "Unknown patient"
 end
 
 -- The registered patient, registering it if it is alive (dead bodies are not simulated)

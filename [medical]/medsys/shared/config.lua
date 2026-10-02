@@ -11,6 +11,7 @@ MEDIC = {
     DATA_ROLE = "medic.role",     -- true on players with the medic role (set by the server only)
     DATA_SPO2 = "spo2",
     DATA_HEART_RATE = "heartRate",
+    DATA_NAME = "medic.name",     -- optional patient name on peds (set by e.g. med_scenemanager)
 
     -- Baseline (healthy) values
     BLOOD_VOLUME = 5000,        -- ml

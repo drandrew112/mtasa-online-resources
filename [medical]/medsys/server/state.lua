@@ -20,6 +20,8 @@
 --     intubated     = false,                -- airway secured
 --     oxygenMask    = false,                -- oxygen mask on
 --     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
+--     restShift     = { systolic, diastolic, heartRate }, -- lasting target shifts (setMedicalState resting*)
+--     spo2Limit     = nil,                  -- lasting SpO2 target cap (setMedicalState restingSpo2)
 --     drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
 --     aware         = true,                 -- awake apart from the medicines (their sedation / paralysis)
 --     panic         = false,                -- awake under the muscle relaxant
@@ -61,6 +63,8 @@ local function newState(element)
         intubated = false,
         oxygenMask = false,
         hypertension = 0,
+        restShift = { systolic = 0, diastolic = 0, heartRate = 0 },
+        spo2Limit = nil,
         drugs = {},
         consciousness = "stable",
         aware = true,
@@ -113,6 +117,8 @@ function isPatientHealthy(state)
     return #state.injuries == 0 and state.baseBleeding == 0 and state.extraPain == 0
         and not state.knockoutUntil and not state.arrestTick and not state.dead
         and state.hypertension == 0 and #state.drugs == 0
+        and state.restShift.systolic == 0 and state.restShift.diastolic == 0
+        and state.restShift.heartRate == 0 and not state.spo2Limit
         and state.consciousness == "stable"
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
         and state.spo2 >= MEDIC.DISCHARGE_SPO2

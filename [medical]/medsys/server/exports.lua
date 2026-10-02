@@ -26,6 +26,31 @@ local function setNumber(field, min, max)
     end
 end
 
+-- Steady-state circulation targets of the patient as it is now
+local function currentTargets(state)
+    local bloodFraction = state.bloodVolume / MEDIC.BLOOD_VOLUME
+    local pain = getPatientPain(state)
+    local systolic = getCirculationTargets(state, bloodFraction, pain)
+    return getCirculationTargets(state, bloodFraction, pain, systolic)
+end
+
+-- Resting value: shifts the simulation's target so that the patient settles at this value
+-- (with its current injuries / blood loss / pain / medicines) and stays there; later changes
+-- (more blood loss, medicines, the pain fading) act on top. Also sets the current value.
+-- index: 1 systolic, 2 diastolic, 3 heart rate
+local function setResting(field, index, min, max)
+    return function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        value = clamp(value, min, max)
+        state.restShift[field] = 0
+        local natural = select(index, currentTargets(state))
+        state.restShift[field] = value - natural
+        if not state.arrestTick then state[field] = value end
+        return true
+    end
+end
+
 -- key -> setter(state, value) -> success
 local SETTERS = {
     systolic = setNumber("systolic", 0, 300),
@@ -35,6 +60,20 @@ local SETTERS = {
     pain = setNumber("extraPain", 0, 100),
     -- mmHg added to the target systolic pressure until set back to 0 (lasting high blood pressure)
     hypertension = setNumber("hypertension", 0, 120),
+
+    -- lasting values the patient holds (see setResting); set systolic before diastolic / heartRate
+    restingSystolic = setResting("systolic", 1, 40, 260),
+    restingDiastolic = setResting("diastolic", 2, 20, 160),
+    restingHeartRate = setResting("heartRate", 3, 30, 190),
+    -- lasting SpO2 cap (chronic hypoxia), the oxygen mask lifts it, intubation removes it
+    restingSpo2 = function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        value = clamp(value, 1, 100)
+        state.spo2Limit = value < MEDIC.SPO2 and value or nil
+        if not state.arrestTick then state.spo2 = value end
+        return true
+    end,
 
     -- 0 stops every bleeding, 1-3 sets a bleeding that is not tied to an injury
     bleeding = function(state, value)
@@ -106,7 +145,8 @@ local SETTERS = {
 }
 
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
--- bloodVolume, pain, hypertension, ivAccess, intubated, oxygenMask. The simulation keeps running from the new value.
+-- bloodVolume, pain, hypertension, restingSystolic, restingDiastolic, restingHeartRate, restingSpo2,
+-- ivAccess, intubated, oxygenMask. The simulation keeps running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end

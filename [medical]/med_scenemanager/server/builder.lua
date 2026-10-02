@@ -179,7 +179,9 @@ function Builder.applyMedical(ped, entry)
     end
     local state = type(entry.state) == "table" and entry.state or {}
     for _, key in ipairs(MSM_STATE_ORDER) do
-        if state[key] ~= nil then medsys:setMedicalState(ped, key, state[key]) end
+        if state[key] ~= nil then
+            medsys:setMedicalState(ped, MSM_STATE_RESTING[key] or key, state[key])
+        end
     end
     return true
 end

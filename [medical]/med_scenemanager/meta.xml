@@ -5,6 +5,7 @@
 
     <!-- ================= SHARED ================= -->
     <script src="shared/config.lua" type="shared" />
+    <script src="shared/names.lua"  type="shared" />
 
     <!-- ================= SERVER ================= -->
     <script src="server/util.lua"     type="server" />

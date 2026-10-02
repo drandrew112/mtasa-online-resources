@@ -81,10 +81,99 @@ function msmDecodeJSON(content)
     return nil
 end
 
--- Pretty JSON without MTA's outer [ ] wrapper
+---------------------------------------------------------------- JSON writer
+
+-- Key order of the written files (scene, erm, vehicle, ped, injury, medical state, index).
+-- Keys missing from the list follow in alphabetical order.
+local KEY_ORDER = {
+    "format", "name", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
+    "title", "description", "caller", "priority",
+    "id", "model", "skin", "pos", "rot", "anim", "frozen", "vehicle", "seat",
+    "locked", "engine", "lightsOn", "sirens", "health", "colors", "paintjob", "plate", "variant",
+    "upgrades", "doors", "panels", "lights", "wheels",
+    "injuries", "type", "severity", "state",
+    "scenes",
+}
+for _, key in ipairs(MSM_STATE_ORDER) do KEY_ORDER[#KEY_ORDER + 1] = key end
+local KEY_RANK = {}
+for i, key in ipairs(KEY_ORDER) do
+    if not KEY_RANK[key] then KEY_RANK[key] = i end
+end
+
+local EMPTY_OBJECTS = { state = true } -- every other empty table is written as []
+local ALWAYS_EXPANDED = { erm = true }  -- never on one line (its description is often long)
+local INDENT = "    "
+local INLINE_WIDTH = 100 -- containers of plain values up to this many characters stay on one line
+
+local ESCAPES = { ['"'] = '\\"', ["\\"] = "\\\\", ["\b"] = "\\b", ["\f"] = "\\f",
+    ["\n"] = "\\n", ["\r"] = "\\r", ["\t"] = "\\t" }
+
+local function encodeString(value)
+    return '"' .. value:gsub('[%c"\\]', function(c)
+        return ESCAPES[c] or ("\\u%04x"):format(c:byte())
+    end) .. '"'
+end
+
+local function encodeNumber(value)
+    if value ~= value or value == math.huge or value == -math.huge then return "0" end
+    if value == math.floor(value) and math.abs(value) < 1e15 then return ("%d"):format(value) end
+    return ("%.10g"):format(value)
+end
+
+local function isArray(t)
+    local count = 0
+    for _ in pairs(t) do count = count + 1 end
+    return count == #t
+end
+
+local function sortedKeys(t)
+    local keys = {}
+    for k in pairs(t) do keys[#keys + 1] = tostring(k) end
+    table.sort(keys, function(a, b)
+        local ra, rb = KEY_RANK[a], KEY_RANK[b]
+        if ra and rb then return ra < rb end
+        if ra or rb then return ra ~= nil end
+        return a < b
+    end)
+    return keys
+end
+
+local function encodeValue(value, depth, key)
+    local kind = type(value)
+    if kind == "string" then return encodeString(value) end
+    if kind == "number" then return encodeNumber(value) end
+    if kind == "boolean" then return tostring(value) end
+    if kind ~= "table" then return "null" end
+
+    if next(value) == nil then return EMPTY_OBJECTS[key] and "{}" or "[]" end
+
+    local array = isArray(value)
+    local parts, plain = {}, true
+    if array then
+        for i, v in ipairs(value) do
+            parts[i] = encodeValue(v, depth + 1)
+            if type(v) == "table" then plain = false end
+        end
+    else
+        for i, k in ipairs(sortedKeys(value)) do
+            local v = value[k]
+            if v == nil then v = value[tonumber(k)] end
+            parts[i] = encodeString(k) .. ": " .. encodeValue(v, depth + 1, k)
+            if type(v) == "table" then plain = false end
+        end
+    end
+    local open, close = array and "[" or "{", array and "]" or "}"
+
+    if plain and not ALWAYS_EXPANDED[key] then
+        local line = array and (open .. table.concat(parts, ", ") .. close)
+            or (open .. " " .. table.concat(parts, ", ") .. " " .. close)
+        if #line + #INDENT * depth <= INLINE_WIDTH then return line end
+    end
+    local pad = INDENT:rep(depth + 1)
+    return open .. "\n" .. pad .. table.concat(parts, ",\n" .. pad) .. "\n" .. INDENT:rep(depth) .. close
+end
+
+-- Pretty JSON with a fixed key order (KEY_ORDER); short lists / objects stay on one line
 function msmEncodeJSON(value)
-    local json = toJSON(value, false, "spaces")
-    if not json then return nil end
-    local inner = json:match("^%[%s*(.-)%s*%]%s*$")
-    return (inner or json) .. "\n"
+    return encodeValue(value, 0) .. "\n"
 end

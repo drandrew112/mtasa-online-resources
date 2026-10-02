@@ -9,6 +9,7 @@ generator and an in-game scene editor.
 
 ```
 shared/config.lua     MSM tunables, ped poses, injury / vitals presets, damage + colour presets
+shared/names.lua      ped name database (male / female first names, female skin list)
 server/util.lua       permission (v_mysql admin_level), JSON + file helpers
 server/storage.lua    scenes/index.json + scenes/<name>.json, in-memory summary list
 server/builder.lua    scene entry <-> vehicle / ped element (capture, apply, medsys)
@@ -26,6 +27,12 @@ scenes/               index.json + one JSON file per scene
 MTA cannot list a directory, so `scenes/index.json` lists the scene names
 (`{ "scenes": [ "name", ... ] }`). The editor keeps it up to date. If you add a JSON by
 hand, also add its name to the index and run `/medscenereload`.
+
+The files are written by our own JSON writer (`msmEncodeJSON` in server/util.lua): fixed key
+order (`KEY_ORDER`: scene → erm → vehicles → peds, every entry id / model / skin / pos / rot
+first), 4-space indent, short lists and plain objects (pos, colors, an injury, state) on one
+line. On every start / `/medscenereload` the scene files and the index are re-read and rewritten in
+this format when they differ (hand-edited files get normalized as well).
 
 On start every file is read once and only a **summary** stays in memory (name, title,
 priority, centre, weight, enabled, counts). The full scene is read from its file when it
@@ -57,8 +64,15 @@ is spawned or opened in the editor.
 }
 ```
 
-`state` keys are applied in the order of `MSM_STATE_ORDER`: bloodVolume, spo2, heartRate,
-systolic, diastolic, pain, bleeding, ivAccess, consciousness.
+`state` keys are applied in the order of `MSM_STATE_ORDER`: bloodVolume, pain, bleeding,
+ivAccess, spo2, systolic, diastolic, heartRate, consciousness. The vitals (spo2, systolic,
+diastolic, heartRate) go to medsys as its lasting `resting*` keys (`MSM_STATE_RESTING`): the
+patient settles at and holds them (later blood loss, medicines, oxygen, the pain fading act on
+top). A plain `systolic` etc. would drift back to normal within seconds.
+
+Every live scene ped gets a random English first name on spawn (`shared/names.lua`, female or
+male list by the skin), stored as element data `medic.name` (`MSM.DATA_NAME`); medsys shows it
+as the patient name.
 
 ## Live scenes
 

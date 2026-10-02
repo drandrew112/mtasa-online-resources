@@ -28,6 +28,7 @@ MSM = {
     },
 
     -- Live scenes
+    DATA_NAME = "medic.name",    -- random first name of a live scene ped (shared/names.lua), shown by medsys
     MEDSYS_DELAY = 300,          -- ms after spawning before the injuries are applied (client sync)
     CLEANUP_DELAY = 30,          -- s after the task closed before the scene may be removed...
     CLEANUP_RANGE = 120,         -- ...once no player is within this many metres of it
@@ -80,7 +81,18 @@ MSM_SEVERITY = { "Minor", "Serious", "Critical" }
 
 -- medsys setMedicalState keys the editor can preset, applied in this order.
 -- presets = values offered in the menu (the last word of the label is the value).
-MSM_STATE_ORDER = { "bloodVolume", "spo2", "heartRate", "systolic", "diastolic", "pain", "bleeding", "ivAccess", "consciousness" }
+-- The vitals go after pain / bleeding and systolic before diastolic / heart rate: they are set as
+-- lasting resting values (MSM_STATE_RESTING) computed from what is already applied.
+MSM_STATE_ORDER = { "bloodVolume", "pain", "bleeding", "ivAccess", "spo2", "systolic", "diastolic", "heartRate", "consciousness" }
+
+-- Editor keys sent to medsys as its lasting "resting" keys: a plain systolic / heartRate / ...
+-- only sets the current value and the simulation drifts it back to normal within seconds.
+MSM_STATE_RESTING = {
+    spo2 = "restingSpo2",
+    systolic = "restingSystolic",
+    diastolic = "restingDiastolic",
+    heartRate = "restingHeartRate",
+}
 MSM_STATE = {
     consciousness = { label = "Consciousness", presets = {
         { "Stable", "stable" }, { "Dazed", "dazed" }, { "Unconscious", "unconscious" },

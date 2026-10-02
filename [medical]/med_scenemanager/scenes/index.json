@@ -1,9 +1,3 @@
 {
-    "scenes": [
-      "heartattack1",
-      "heartattack2",
-      "hypertension1",
-      "mva1",
-      "mva2"
-    ]
-  }
+    "scenes": ["heartattack1", "heartattack2", "hypertension1", "mva1", "mva2", "stunt_park_accident1"]
+}

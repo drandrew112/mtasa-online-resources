@@ -3,10 +3,11 @@
 --
 -- Model per step:
 --   blood volume  <- bleeding (per wound level) + burn plasma loss, IV fluids, slow compensation
---   SpO2          <- drifts to the lowest target of the airway causes / shock, recovers otherwise;
+--   SpO2          <- drifts to the lowest target of the airway causes / shock / restingSpo2, recovers otherwise;
 --                    the oxygen mask lifts the targets, the muscle relaxant stops the breathing
 --   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia;
---                    the pulse always rises as the pressure falls (baroreflex)
+--                    the pulse always rises as the pressure falls (baroreflex); the resting
+--                    setters (restingSystolic, ...) add lasting shifts to these targets
 --   consciousness <- derived from SpO2, systolic pressure, pain and forced knockouts
 --   medicines     <- shift the circulation targets, ease the pain, sedate / paralyse (MEDIC_DRUGS);
 --                    an awake patient under the muscle relaxant panics (pulse and pressure jump)
@@ -85,6 +86,10 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
             end
         end
     end
+    -- lasting low SpO2 of the patient (setMedicalState "restingSpo2"), the mask lifts it too
+    if state.spo2Limit and not state.intubated and state.spo2Limit + bonus < target then
+        target, rate = state.spo2Limit + bonus, MEDIC.SPO2_RECOVERY
+    end
     if bloodFraction < SHOCK_SPO2[1] and SHOCK_SPO2[2] + bonus < target then
         target, rate = SHOCK_SPO2[2] + bonus, SHOCK_SPO2[3]
     end
@@ -97,28 +102,44 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
     end
 end
 
-local function updateCirculation(state, dt, bloodFraction, pain)
+-- Physiological targets of the circulation: systolic, diastolic, heart rate.
+-- systolicNow is the pressure the pulse reacts to (baroreflex); the simulation passes the
+-- actual one, the resting setters (exports.lua) the steady state (the systolic target).
+function getCirculationTargets(state, bloodFraction, pain, systolicNow)
+    local shift = state.restShift
     local loss = 1 - bloodFraction
     local spo2 = state.spo2
 
     -- blood pressure holds until ~15% loss (class I), then falls
     local systolic = MEDIC.SYSTOLIC - math.max(0, loss - 0.15) * 250 + pain * 0.1
-        + state.hypertension + getDrugEffect(state, "systolic")
+        + state.hypertension + shift.systolic + getDrugEffect(state, "systolic")
         + (state.panic and MEDIC.PANIC_SYSTOLIC or 0)
-    if spo2 < 50 then systolic = systolic * (spo2 / 50) end -- severe hypoxia: collapse before the arrest
+    local diastolic = systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC) + shift.diastolic
+    if spo2 < 50 then -- severe hypoxia: collapse before the arrest
+        systolic = systolic * (spo2 / 50)
+        diastolic = diastolic * (spo2 / 50)
+    end
     systolic = math.max(0, systolic)
-    state.systolic = approach(state.systolic, systolic, MEDIC.BP_RATE * dt)
-    state.diastolic = approach(state.diastolic, systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC), MEDIC.BP_RATE * dt)
+    diastolic = math.max(0, math.min(systolic - 10, diastolic))
 
     -- the pulse follows the actual pressure: the lower it is, the faster the heart beats,
     -- whatever lowered it (blood loss, medicine, ...). On top: early compensation of the
     -- blood loss (the pressure still holds), pain and hypoxia.
-    local heartRate = MEDIC.HEART_RATE + math.max(0, MEDIC.SYSTOLIC - state.systolic) * MEDIC.BARO_REFLEX
-        + math.min(loss, 0.3) * 100 + pain * 0.25
+    systolicNow = systolicNow or systolic
+    local heartRate = MEDIC.HEART_RATE + math.max(0, MEDIC.SYSTOLIC - systolicNow) * MEDIC.BARO_REFLEX
+        + math.min(loss, 0.3) * 100 + pain * 0.25 + shift.heartRate
         + getDrugEffect(state, "heartRate") + (state.panic and MEDIC.PANIC_HEART_RATE or 0)
     if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
     -- severe hypoxia: the heart muscle fails, bradycardia before the arrest
     if spo2 < 50 then heartRate = 20 + spo2 end
+    return systolic, diastolic, math.max(0, heartRate)
+end
+
+local function updateCirculation(state, dt, bloodFraction, pain)
+    local systolic, diastolic = getCirculationTargets(state, bloodFraction, pain, state.systolic)
+    state.systolic = approach(state.systolic, systolic, MEDIC.BP_RATE * dt)
+    state.diastolic = approach(state.diastolic, diastolic, MEDIC.BP_RATE * dt)
+    local _, _, heartRate = getCirculationTargets(state, bloodFraction, pain, state.systolic)
     state.heartRate = approach(state.heartRate, heartRate, MEDIC.HR_RATE * dt)
 end
 

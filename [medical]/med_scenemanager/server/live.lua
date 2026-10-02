@@ -103,6 +103,7 @@ function Live.spawn(name, source)
         if ped then
             scene.peds[#scene.peds + 1] = ped
             setElementData(ped, "msm.scene", id, false)
+            setElementData(ped, MSM.DATA_NAME, msmRandomName(getElementModel(ped)))
             Builder.applyPedPose(ped, entry)
             -- let the ped reach the clients first, so medsys' animations sync
             setTimer(function()

@@ -1,180 +1,71 @@
 {
+    "format": 1,
+    "name": "mva2",
     "enabled": true,
+    "weight": 1,
+    "center": [1821.966, -1751.603, 13.383],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car crash",
+        "description": "Two cars collided, 1 person injured",
+        "caller": "SceneManager",
+        "priority": 2
+    },
     "vehicles": [
-      {
-        "upgrades": [],
-        "wheels": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "engine": false,
-        "variant": [
-          255,
-          255
-        ],
-        "locked": false,
-        "plate": "UOSX 0T5",
-        "lights": [
-          1,
-          1,
-          0,
-          0
-        ],
-        "paintjob": 3,
-        "id": "v1",
-        "rot": [
-          359.43,
-          0.43,
-          45.74
-        ],
-        "pos": [
-          1826.269,
-          -1749.163,
-          13.151
-        ],
-        "colors": [
-          57,
-          90,
-          131,
-          245,
-          245,
-          245,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "health": 408,
-        "model": 436,
-        "panels": [
-          3,
-          2,
-          2,
-          1,
-          2,
-          3,
-          1
-        ],
-        "lightsOn": false,
-        "doors": [
-          2,
-          0,
-          2,
-          3,
-          0,
-          0
-        ],
-        "frozen": false
-      },
-      {
-        "sirens": false,
-        "upgrades": [],
-        "wheels": [
-          1,
-          0,
-          0,
-          0
-        ],
-        "engine": false,
-        "variant": [
-          255,
-          255
-        ],
-        "locked": false,
-        "plate": "97EV Z69",
-        "lights": [
-          1,
-          1,
-          0,
-          0
-        ],
-        "paintjob": 3,
-        "id": "v2",
-        "rot": [
-          358.91,
-          358.6,
-          6.01
-        ],
-        "pos": [
-          1824.259,
-          -1752.072,
-          13.166
-        ],
-        "colors": [
-          158,
-          164,
-          171,
-          151,
-          149,
-          146,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "health": 420,
-        "model": 475,
-        "panels": [
-          3,
-          2,
-          2,
-          1,
-          2,
-          3,
-          1
-        ],
-        "doors": [
-          2,
-          0,
-          3,
-          3,
-          0,
-          0
-        ],
-        "lightsOn": false,
-        "frozen": false
-      }
+        {
+            "id": "v1",
+            "model": 436,
+            "pos": [1826.269, -1749.163, 13.151],
+            "rot": [359.43, 0.43, 45.74],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 408,
+            "colors": [57, 90, 131, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "UOSX 0T5",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 475,
+            "pos": [1824.259, -1752.072, 13.166],
+            "rot": [358.91, 358.6, 6.01],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "sirens": false,
+            "health": 420,
+            "colors": [158, 164, 171, 151, 149, 146, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "97EV Z69",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 3, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [1, 0, 0, 0]
+        }
     ],
     "peds": [
-      {
-        "state": [],
-        "injuries": [
-          {
-            "severity": 2,
-            "type": "fracture"
-          }
-        ],
-        "skin": 41,
-        "id": "p1",
-        "rot": 267.8,
-        "anim": "injured",
-        "pos": [
-          1822.115,
-          -1753.042,
-          13.383
-        ]
-      }
-    ],
-    "interior": 0,
-    "name": "mva2",
-    "weight": 1,
-    "erm": {
-      "description": "Two cars collided, 1 person injured",
-      "priority": 2,
-      "title": "Car crash",
-      "caller": "SceneManager"
-    },
-    "format": 1,
-    "center": [
-      1821.966,
-      -1751.603,
-      13.383
-    ],
-    "dimension": 0
-  }
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [1822.115, -1753.042, 13.383],
+            "rot": 267.8,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

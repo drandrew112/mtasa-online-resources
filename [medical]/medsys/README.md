@@ -83,7 +83,8 @@ Patients[element] = {
   90 mmHg or at pain 70+.
 - **Medicines** shift the target pressure / pulse, take away pain, sedate or paralyse while they
   work (`MEDIC_DRUGS`, doses add up). Sedation / paralysis force `unconscious`.
-  `hypertension` (setMedicalState) is a lasting offset on the same target.
+  `hypertension` and the `resting*` keys (setMedicalState) are lasting offsets on the same targets
+  (a patient with one of them is never discharged as healthy).
 - **Cardiac arrest** when the SpO2 reaches `ARREST_SPO2` (0), the blood volume falls to 50% or the
   systolic pressure falls to `ARREST_SYSTOLIC` (30, e.g. Captopril given in shock), or the pulse
   stays at `ARREST_HEART_RATE` (200) or above for `ARREST_TACHY_TIME` (5 s). The
@@ -159,6 +160,10 @@ exports.medical_system:setMedicalState(element, key, value) -- true / false
 --   heartRate     0 = cardiac arrest, > 0 during clinical death = return of circulation
 --   systolic, diastolic, spo2, bloodVolume, pain (0-100, fades)
 --   hypertension  mmHg added to the target systolic pressure until set back to 0 (lasting high BP)
+--   restingSystolic, restingDiastolic, restingHeartRate
+--                 lasting values: the target is shifted so the patient settles at (and holds) this
+--                 value with its current injuries / pain / medicines; set systolic first
+--   restingSpo2   lasting SpO2 cap (chronic hypoxia), the oxygen mask lifts it, intubation removes it
 --   bleeding      0 stops every bleeding, 1-3 adds a bleeding that is not tied to an injury
 --   ivAccess, intubated, oxygenMask   booleans
 --   consciousness "stable" (wakes / revives), "dazed" / "unconscious" (forced for KNOCKOUT_TIME),
