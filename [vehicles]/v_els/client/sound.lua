@@ -9,6 +9,30 @@ local SOUND_MAX_DIST = 150
 local activeSound = {}
 -- [veh] = timer, ami váltáskor SIREN_SWITCH_DELAY után indítja az új szirénahangot
 local pendingStart = {}
+-- [veh] = másodlagos szirénahang (a fő mellett szól, kürt alatt szünetel)
+local secondarySound = {}
+
+local function createVehicleSound(veh, path, volume)
+    local s = playSound3D(path, 0, 0, 0, true)
+    if not s then return end
+    attachElements(s, veh)
+    setSoundVolume(s, volume)
+    setSoundMinDistance(s, SOUND_MIN_DIST)
+    setSoundMaxDistance(s, SOUND_MAX_DIST)
+    return s
+end
+
+local function stopSecondarySound(veh)
+    local s = secondarySound[veh]
+    if s and isElement(s) then
+        destroyElement(s)
+    end
+    secondarySound[veh] = nil
+end
+
+local function getSirenConfig(veh)
+    return sirenTypes[getElementData(veh, "sirenType") or getDefaultSirenType(getElementModel(veh))]
+end
 
 local function stopVehicleSound(veh)
     local s = activeSound[veh]
@@ -26,7 +50,7 @@ end
 
 -- path, volume, isHorn
 local function getSoundPath(veh)
-    local cfg = sirenTypes[getElementData(veh, "sirenType") or DEFAULT_SIREN_TYPE]
+    local cfg = getSirenConfig(veh)
     if not cfg then return end
 
     -- kürt alatt a fő sziréna szünetel
@@ -45,13 +69,25 @@ local function playVehicleSound(veh)
     local path, volume = getSoundPath(veh)
     if not path then return end
 
-    local s = playSound3D(path, 0, 0, 0, true)
-    if not s then return end
-    attachElements(s, veh)
-    setSoundVolume(s, volume)
-    setSoundMinDistance(s, SOUND_MIN_DIST)
-    setSoundMaxDistance(s, SOUND_MAX_DIST)
-    activeSound[veh] = s
+    activeSound[veh] = createVehicleSound(veh, path, volume)
+end
+
+local function getSecondaryPath(veh)
+    if getElementData(veh, "sirenHorn") then return end
+    if not (getElementData(veh, "sirenState") and getElementData(veh, "sirenSecondary")) then return end
+    local cfg = getSirenConfig(veh)
+    return cfg and cfg.secondary or nil
+end
+
+local function updateSecondarySound(veh)
+    stopSecondarySound(veh)
+    if not isElementStreamedIn(veh) then return end
+    if not sirenVehicles[getElementModel(veh)] then return end
+
+    local path = getSecondaryPath(veh)
+    if path then
+        secondarySound[veh] = createVehicleSound(veh, path, SIREN_VOLUME)
+    end
 end
 
 local function updateVehicleSound(veh)
@@ -71,11 +107,16 @@ local function updateVehicleSound(veh)
     end
 end
 
-local soundDataKeys = { sirenState = true, sirenIndex = true, sirenHorn = true, sirenType = true }
+local soundDataKeys     = { sirenState = true, sirenIndex = true, sirenHorn = true, sirenType = true }
+local secondaryDataKeys = { sirenState = true, sirenSecondary = true, sirenHorn = true, sirenType = true }
 
 addEventHandler("onClientElementDataChange", root, function(dataName)
-    if soundDataKeys[dataName] and getElementType(source) == "vehicle" then
+    if getElementType(source) ~= "vehicle" then return end
+    if soundDataKeys[dataName] then
         updateVehicleSound(source)
+    end
+    if secondaryDataKeys[dataName] then
+        updateSecondarySound(source)
     end
 end)
 
@@ -83,12 +124,16 @@ end)
 addEventHandler("onClientElementStreamIn", root, function()
     if getElementType(source) == "vehicle" then
         updateVehicleSound(source)
+        updateSecondarySound(source)
     end
 end)
 
 local function onVehicleGone()
     if activeSound[source] or pendingStart[source] then
         stopVehicleSound(source)
+    end
+    if secondarySound[source] then
+        stopSecondarySound(source)
     end
 end
 addEventHandler("onClientElementStreamOut", root, onVehicleGone)

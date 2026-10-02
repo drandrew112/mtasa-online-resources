@@ -10,7 +10,8 @@ Vehicles = Vehicles or {}
 
 Vehicles.modelNames = {
     -- [596] = "LSPD Cruiser",
-    -- [416] = "Rescue Ambulance",
+    [416] = "Mercedes Sprinter (HU)",
+    [456] = "Mission Row Ambulance",
 }
 
 -- Custom name for a model id, or nil when there is no override.

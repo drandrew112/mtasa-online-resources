@@ -1,4 +1,4 @@
--- Sofőr vezérlés (0-4 gombok) és /debugels kijelzés.
+-- Sofőr vezérlés (0-5 gombok) és /debugels kijelzés.
 
 -- a jármű, amit a localPlayer sofőrként vezet, ha ELS-es
 function getControlledSirenVehicle()
@@ -38,7 +38,7 @@ bindKey("2", "down", function()
     local veh = getControlledSirenVehicle()
     if not veh then return end
 
-    local cfg = sirenTypes[getElementData(veh, "sirenType") or DEFAULT_SIREN_TYPE]
+    local cfg = sirenTypes[getElementData(veh, "sirenType") or getDefaultSirenType(getElementModel(veh))]
     if cfg and #cfg.sirens > 0 then
         requestData(veh, "sirenIndex", nextIndex(getElementData(veh, "sirenIndex"), #cfg.sirens))
     end
@@ -54,8 +54,20 @@ end
 bindKey("3", "down", function() setHorn(true) end)
 bindKey("3", "up",   function() setHorn(false) end)
 
--- 4: KÖVETKEZŐ VILLOGÁSI MINTA
+-- 4: MÁSODLAGOS SZIRÉNA BE/KI (csak szóló fő szirénánál, ha a típusnak van ilyen hangja)
 bindKey("4", "down", function()
+    local veh = getControlledSirenVehicle()
+    if not veh then return end
+
+    local secondary = getElementData(veh, "sirenSecondary") == true
+    local cfg = sirenTypes[getElementData(veh, "sirenType") or getDefaultSirenType(getElementModel(veh))]
+    if secondary or (cfg and cfg.secondary and getElementData(veh, "sirenState")) then
+        requestData(veh, "sirenSecondary", not secondary)
+    end
+end)
+
+-- 5: KÖVETKEZŐ VILLOGÁSI MINTA
+bindKey("5", "down", function()
     local veh = getControlledSirenVehicle()
     if veh then
         requestData(veh, "elsPattern", nextIndex(getElementData(veh, "elsPattern"), #ELS_PATTERNS))
@@ -97,7 +109,8 @@ local function drawDebug()
                  "\nSiren state: " .. onOff(sirenState)
 
     if sirenState then
-        text = text .. "\nSiren index: #FFFF00" .. tostring(getElementData(veh, "sirenIndex") or "?") .. "#FFFFFF"
+        text = text .. "\nSiren index: #FFFF00" .. tostring(getElementData(veh, "sirenIndex") or "?") .. "#FFFFFF" ..
+                       "\nSecondary: " .. onOff(getElementData(veh, "sirenSecondary"))
     end
     text = text .. "\nHorn state: " .. onOff(getElementData(veh, "sirenHorn"))
 

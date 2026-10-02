@@ -3,7 +3,10 @@
 -- 0 keeps it lengthwise to the ambulance / the medic.
 
 STRETCHER = {
-    VEHICLE_MODEL = 416,           -- Ambulance
+    VEHICLE_MODELS = {             -- ambulances that carry a stretcher
+        [416] = true,              -- Mercedes Sprinter (HU)
+        [456] = true,              -- Mission Row Ambulance
+    },
     OBJECT_MODEL = 2146,           -- hospital trolley
 
     -- Size: every client scales the model so its longest side is TARGET_LENGTH metres

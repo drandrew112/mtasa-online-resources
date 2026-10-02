@@ -453,7 +453,7 @@ local function destroyStretcher(obj, destroying)
 end
 
 local function isAmbulance(vehicle)
-    return getElementType(vehicle) == "vehicle" and getElementModel(vehicle) == STRETCHER.VEHICLE_MODEL
+    return getElementType(vehicle) == "vehicle" and STRETCHER.VEHICLE_MODELS[getElementModel(vehicle)] == true
 end
 
 -- Every ambulance gets a stretcher; vehicles that are no longer ambulances lose theirs.

@@ -2,16 +2,27 @@
 -- JÁRMŰVEK
 ------------------------------------------------------------
 
--- csak ezeken a modelleken működik az ELS
+-- csak ezeken a modelleken működik az ELS; az érték a modell alap szirénatípusa
+-- (sirenTypes kulcs, true = DEFAULT_SIREN_TYPE)
 sirenVehicles = {
-    [416] = true, -- Ambulance
-    [596] = true, -- Police LS
-    [597] = true, -- Police SF
-    [598] = true, -- Police LV
-    [490] = true, -- FBI Rancher
+    [416] = "fsvas320",   -- Mercedes Sprinter (HU)
+    [456] = "soundoff",   -- Mission Row Ambulance
+    [596] = "hella_rtk7", -- Police LS
+    [597] = "hella_rtk7", -- Police SF
+    [598] = "hella_rtk7", -- Police LV
+    [599] = "rumbler",    -- Police Ranger
+    [490] = true,         -- FBI Rancher
 }
 
 DEFAULT_SIREN_TYPE = "fsvas320"
+
+function getDefaultSirenType(model)
+    local sirenType = sirenVehicles[model]
+    if type(sirenType) == "string" and sirenTypes[sirenType] then
+        return sirenType
+    end
+    return DEFAULT_SIREN_TYPE
+end
 
 -- csend két szirénahang között váltáskor (ms, 0 = azonnali); a kürt mindig azonnal szól
 SIREN_SWITCH_DELAY = 10
@@ -23,6 +34,11 @@ ELS_ADMIN_LEVEL = 1
 -- SZIRÉNA HANGOK
 ------------------------------------------------------------
 
+-- sirens:    fő szirénahangok (2-es gomb lépteti)
+-- horn:      kürt (3-as gomb)
+-- secondary: másodlagos szirénahang a fő mellé (4-es gomb, csak szóló fő szirénánál),
+--            false = a típusnak nincs másodlagos hangja
+
 sirenTypes = {
     fsvas320 = {
         sirens = {
@@ -31,6 +47,7 @@ sirenTypes = {
             "sounds_fsvas320/POLICE_WARNING.wav",
         },
         horn = "sounds_fsvas320/AIRHORN_EQD.wav",
+        secondary = "sounds_fsvas320/POLICE_WARNING.wav",
     },
 
     soundoff = {
@@ -40,6 +57,7 @@ sirenTypes = {
             "sounds_soundoff/POLICE_WARNING.wav",
         },
         horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        secondary = false,
     },
 
     hella_rtk7 = {
@@ -49,6 +67,7 @@ sirenTypes = {
             "sounds_rtk7/3.wav",
         },
         horn = "sounds_rtk7/horn.wav",
+        secondary = false,
     },
 
     rumbler = {
@@ -58,6 +77,7 @@ sirenTypes = {
             "sounds_rumbler/POLICE_WARNING.wav",
         },
         horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        secondary = false,
     },
 
     italy = {
@@ -65,6 +85,7 @@ sirenTypes = {
             "sounds_italy/italy.wav",
         },
         horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        secondary = false,
     },
 
     eriston = {
@@ -74,6 +95,7 @@ sirenTypes = {
             "sounds_eriston150/2.wav",
         },
         horn = "sounds_eriston150/horn.wav",
+        secondary = false,
     },
 
     dal = {
@@ -83,6 +105,7 @@ sirenTypes = {
             "sounds_dal/3.wav",
         },
         horn = "sounds_dal/horn.wav",
+        secondary = false,
     },
 }
 
@@ -145,6 +168,7 @@ SIREN_DATA_KEYS = {
     sirenState = "boolean", -- sziréna hang
     sirenIndex = "number",  -- hang sorszáma a sirenTypes[type].sirens-ben
     sirenHorn  = "boolean", -- kürt (lenyomva tartva)
+    sirenSecondary = "boolean", -- másodlagos szirénahang (csak a fő szirénával együtt)
     sirenType  = "string",  -- sirenTypes kulcs
     elsPattern = "number",  -- ELS_PATTERNS index
 }

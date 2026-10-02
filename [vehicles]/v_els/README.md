@@ -10,9 +10,14 @@ Emergency lights and sirens for the models in `sirenVehicles` (`shared/config.lu
 | 1 | Siren on/off (starts with the first tone) |
 | 2 | Next siren tone |
 | 3 | Air horn (hold) |
-| 4 | Next flash pattern (`elsPattern`) |
+| 4 | Secondary siren tone on/off (`sirenSecondary`), only while the main siren is on |
+| 5 | Next flash pattern (`elsPattern`) |
 
 Siren sound commands: `/stfs`, `/stso`, `/strtk`, `/rumbler`, `/stitaly`, `/eriston`, `/dal`. Debug overlay: `/debugels`.
+
+Each model gets its default siren type from `sirenVehicles` (a `sirenTypes` key, or `true` for `DEFAULT_SIREN_TYPE`). The default is only applied to a vehicle that has no valid type yet; a type already set is never overwritten. The commands above change it per vehicle.
+
+Every siren type can have a `secondary` tone (`false` = none) that plays on top of the main siren. It can only be turned on while the main siren is on, turns off with it, and pauses while the horn is held. Only `fsvas320` has one for now (its third tone).
 
 ## Lights
 

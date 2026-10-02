@@ -35,7 +35,7 @@ local function nearbyPlayers()
             local d = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
             local added = false
             for _, m in ipairs(Login.members) do if m == p then added = true end end
-            if d <= Config.ADD_MEMBER_RADIUS and not added then
+            if d <= Config.ADD_MEMBER_RADIUS and not added and Tablet.hasMedicRole(p) then
                 out[#out + 1] = { player = p, dist = d }
             end
         end
@@ -162,7 +162,7 @@ function Login.draw(x, y, w, h)
     -- footer ----------------------------------------------------------------
     local fy = y + h - s(58)
     dxDrawRectangle(ix, fy - s(10), iw, 1, Theme.line)
-    Gfx.text(string.format("Only players within %d m can be added to the crew.", Config.ADD_MEMBER_RADIUS),
+    Gfx.text(string.format("Only on-duty medics within %d m can be added to the crew.", Config.ADD_MEMBER_RADIUS),
         ix, fy, iw - s(170), s(42), Theme.faint, Gfx.font(9))
     Gfx.button(ix + iw - s(160), fy, s(160), s(42), "Sign In", {
         color = { 46, 160, 67 },
@@ -187,11 +187,11 @@ function Login.drawPicker(sx, sy, sw, sh)
     Gfx.round(x, y, w, h, s(10), Theme.panel)
     Gfx.hit(x, y, w, h, function() end)       -- clicks inside don't close
     Gfx.text("Add crew member", x + s(18), y + s(14), w - s(36), s(24), Theme.text, Gfx.font(13, true))
-    Gfx.text("Players near you", x + s(18), y + s(36), w - s(36), s(18), Theme.dim, Gfx.font(9))
+    Gfx.text("On-duty medics near you", x + s(18), y + s(36), w - s(36), s(18), Theme.dim, Gfx.font(9))
 
     local ly = y + s(64)
     if #list == 0 then
-        Gfx.text("No players nearby.", x + s(18), ly, w - s(36), rowH, Theme.faint, Gfx.font(10))
+        Gfx.text("No medics nearby.", x + s(18), ly, w - s(36), rowH, Theme.faint, Gfx.font(10))
     end
     local offset = Gfx.getScroll("picker", #list - visible)
     Gfx.scrollArea("picker", x, ly, w, visible * rowH)

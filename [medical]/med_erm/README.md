@@ -124,7 +124,7 @@ shifts from before it existed fall back to their `closed_tasks` list.
 
 ## Tablet (J)
 
-Opens only inside an ambulance (`Config.TABLET_VEHICLES`: 416, 563) while not
+Opens only inside an ambulance (`Config.TABLET_VEHICLES`: 416, 456, 563) while not
 signed in; after sign-in every crew member can open it anywhere.
 
 - **Sign-in**: plate filled automatically, unit type (SOLO, DOC, BLS, ALS,

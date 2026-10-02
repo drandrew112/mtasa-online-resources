@@ -176,7 +176,8 @@ end
 ---------------------------------------------------------------- render
 
 local function render()
-    if getElementData(localPlayer, "browserOpen") or (not State.unit and not inTabletVehicle()) then
+    if getElementData(localPlayer, "browserOpen") or (not State.unit and not inTabletVehicle())
+        or (not TabletTutorial.active and not Tablet.hasMedicRole()) then
         Tablet.close()
         return
     end
@@ -259,21 +260,12 @@ end
 
 addEventHandler("onClientResourceStop", resourceRoot, unlockControls)
 
--- medsys medic role: with the role required (asked from medsys once), only medics get the
--- "ambulance only" hint. Without medsys nothing is required.
-local medicRoleRequired
-
-local function isMedsysRunning()
+-- medsys medic role: with the role required, only medics can open the tablet and be added
+-- to a crew. Without medsys nothing is required. UI only, the server checks it on sign-in.
+function Tablet.hasMedicRole(player)
     local res = getResourceFromName("medsys")
-    return res and getResourceState(res) == "running"
-end
-
-local function hasMedicRole()
-    if not isMedsysRunning() then return true end
-    if medicRoleRequired == nil then
-        medicRoleRequired = exports.medsys:isMedicRoleRequired() == true
-    end
-    return not medicRoleRequired or exports.medsys:isPlayerMedic(localPlayer) == true
+    if not res or getResourceState(res) ~= "running" then return true end
+    return exports.medsys:hasMedicAccess(player or localPlayer) == true
 end
 
 function Tablet.show()
@@ -305,6 +297,11 @@ end
 function Tablet.toggle()
     if Tablet.open then Tablet.close() return end
     if not canUseKeys() then return end
+    if not TabletTutorial.active and not Tablet.hasMedicRole() then
+        -- only a hint inside an ambulance, J stays silent for everyone else
+        if inTabletVehicle() then State.notify("EMS Tablet", "Only on-duty medics can use the tablet.") end
+        return
+    end
 
     if State.unit then
         Tablet.show()
@@ -313,9 +310,7 @@ function Tablet.toggle()
 
     local veh = inTabletVehicle()
     if not veh then
-        if hasMedicRole() then
-            State.notify("EMS Tablet", "The tablet can only be used inside an ambulance until you sign in.")
-        end
+        State.notify("EMS Tablet", "The tablet can only be used inside an ambulance until you sign in.")
         return
     end
     Login.reset(veh)

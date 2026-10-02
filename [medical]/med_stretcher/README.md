@@ -1,7 +1,7 @@
 # med_stretcher
 
 Ambulance stretcher for patient transport, together with `medical_system` and the future `work_ems`.
-Every Ambulance (model 416) gets its own stretcher object (model 2146). The object is scaled on
+Every ambulance (`STRETCHER.VEHICLE_MODELS`: 416, 456) gets its own stretcher object (model 2146). The object is scaled on
 every client so its longest side is `STRETCHER.TARGET_LENGTH` metres. While the stretcher is not
 in use, it is attached inside the vehicle, invisible and without collisions.
 

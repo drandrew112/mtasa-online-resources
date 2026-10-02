@@ -7,7 +7,7 @@ is in the `[medical]` resources.
 - **Duty marker** (work_core): choose an outfit (276 OMSZ, 274, 275) and you go on duty. This
   gives `exports.medsys:setPlayerMedic(player, true)`. Going off duty or quitting takes it away.
   After a medsys restart the role is given back.
-- **Duty vehicle marker**: Ambulance (416) only, for now. The plate is `A-` plus 4 random digits
+- **Duty vehicle marker**: Mercedes Sprinter (HU) (416) and Mission Row Ambulance (456). The plate is `A-` plus 4 random digits
   (work_core `platePrefix`). v_els, med_stretcher and med_erm handle the vehicle by its model.
 - **med_erm**: only medics can sign in on the tablet (J). Losing the role removes the player
   from their unit.

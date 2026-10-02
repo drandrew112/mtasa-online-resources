@@ -1,7 +1,7 @@
 -- ELS-es járművek: elementData állapot, gyári sziréna beállítása, kliens kérések.
 
 function isSirenVehicle(veh)
-    return isElement(veh) and sirenVehicles[getElementModel(veh)] == true
+    return isElement(veh) and sirenVehicles[getElementModel(veh)] ~= nil
 end
 
 ------------------------------------------------------------
@@ -68,6 +68,11 @@ local function sirenCount(veh)
     return cfg and #cfg.sirens or 0
 end
 
+local function hasSecondary(veh)
+    local cfg = sirenTypes[getElementData(veh, "sirenType")]
+    return cfg and cfg.secondary and true or false
+end
+
 local function isIndex(value, max)
     return value % 1 == 0 and value >= 1 and value <= max
 end
@@ -80,6 +85,9 @@ local function isValidValue(veh, key, value)
         return sirenTypes[value] ~= nil
     elseif key == "sirenIndex" then
         return isIndex(value, sirenCount(veh))
+    elseif key == "sirenSecondary" then
+        -- bekapcsolni csak szóló fő szirénával és másodlagos hanggal rendelkező típusnál lehet
+        return not value or (getElementData(veh, "sirenState") == true and hasSecondary(veh))
     elseif key == "elsPattern" then
         return isIndex(value, #ELS_PATTERNS)
     end
@@ -90,13 +98,17 @@ local function setSirenType(veh, sirenType)
     setElementData(veh, "sirenType", sirenType)
     -- más típusnak kevesebb hangja lehet, ezért az elsőre állunk
     setElementData(veh, "sirenIndex", 1)
+    if getElementData(veh, "sirenSecondary") and not hasSecondary(veh) then
+        setElementData(veh, "sirenSecondary", false)
+    end
 end
 
-local DEFAULTS = { mkjState = false, sirenState = false, elsPattern = 1 }
+local DEFAULTS = { mkjState = false, sirenState = false, sirenSecondary = false, elsPattern = 1 }
 
+-- a már beállított szirénatípust nem írjuk felül, csak a hiányzót / érvénytelent
 local function initVehicleData(veh)
-    if getElementData(veh, "sirenType") == nil then
-        setSirenType(veh, DEFAULT_SIREN_TYPE)
+    if not sirenTypes[getElementData(veh, "sirenType")] then
+        setSirenType(veh, getDefaultSirenType(getElementModel(veh)))
     end
     for key, value in pairs(DEFAULTS) do
         if getElementData(veh, key) == nil then
@@ -133,12 +145,16 @@ addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
     setElementData(veh, key, value)
 
     -- sziréna hang csak égő fényekkel: a sziréna felkapcsolja a fényt, a fény
-    -- lekapcsolása leállítja a szirénát. A kürt (sirenHorn) ettől független.
+    -- lekapcsolása leállítja a szirénát. A fő sziréna leállása a másodlagos hangot
+    -- is leállítja. A kürt (sirenHorn) ettől független.
     if key == "sirenState" and value and not getElementData(veh, "mkjState") then
         key = "mkjState"
         setElementData(veh, key, true)
     elseif key == "mkjState" and not value and getElementData(veh, "sirenState") then
         setElementData(veh, "sirenState", false)
+    end
+    if not getElementData(veh, "sirenState") and getElementData(veh, "sirenSecondary") then
+        setElementData(veh, "sirenSecondary", false)
     end
 
     if key == "mkjState" then

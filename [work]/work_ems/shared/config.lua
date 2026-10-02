@@ -16,11 +16,12 @@ EMS = {
     },
 
     -- Vehicles offered at the duty vehicle markers. Plates: PLATE_PREFIX + PLATE_DIGITS random digits.
-    -- Only the Ambulance for now (no emergency doctor car / helicopter yet).
+    -- Ambulances only for now (no emergency doctor car / helicopter yet).
     PLATE_PREFIX = "A-",
     PLATE_DIGITS = 4,
     VEHICLES = {
-        { model = 416, name = "Ambulance" },
+        { model = 416, name = "Mercedes Sprinter (HU)" },
+        { model = 456, name = "Mission Row Ambulance" },
     },
 
     -- Stations: a duty marker and (optionally) a duty vehicle marker with spawn points.

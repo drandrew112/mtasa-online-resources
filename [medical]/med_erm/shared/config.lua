@@ -6,9 +6,10 @@ Config = {}
 Config.TABLET_KEY = "j"
 
 -- Vehicle models the tablet can be opened in while NOT signed in.
--- 416 = Ambulance, 563 = Raindance (air ambulance for HELI units).
+-- 416 = Mercedes Sprinter (HU), 456 = Mission Row Ambulance, 563 = Raindance (air ambulance for HELI units).
 Config.TABLET_VEHICLES = {
     [416] = true,
+    [456] = true,
     [563] = true,
 }
 
