@@ -58,17 +58,15 @@ end
 -- Is the element standing behind the ambulance (next to the rear doors)?
 function isAtVehicleRear(element, vehicle)
     if not isElement(element) or not isElement(vehicle) or not sameWorld(element, vehicle) then return false end
-    local rx, ry, rz = offsetOf(vehicle, unpack(STRETCHER.REAR_POINT))
+    local rx, ry, rz = offsetOf(vehicle, unpack(vehicleOffset(vehicle, "REAR_POINT")))
     local ex, ey, ez = getElementPosition(element)
     return getDistanceBetweenPoints3D(rx, ry, rz, ex, ey, ez) <= STRETCHER.REAR_RANGE
 end
 
--- Is the stretcher close enough to the rear of its ambulance to be loaded?
+-- Is the stretcher inside the square load zone behind its ambulance (shared/util.lua)?
 function isStretcherAtRear(s)
     if not sameWorld(s.object, s.vehicle) then return false end
-    local ox, oy, oz = offsetOf(s.vehicle, unpack(STRETCHER.OUT_OFFSET))
-    local x, y, z = stretcherPosition(s)
-    return getDistanceBetweenPoints3D(ox, oy, oz, x, y, z) <= STRETCHER.LOAD_RANGE
+    return isInLoadZone(s.vehicle, stretcherPosition(s))
 end
 
 local function isDown(ped)
@@ -239,7 +237,8 @@ end
 -- Stretcher positions
 -- ---------------------------------------------------------------------------------------------
 
--- Hidden inside the ambulance
+-- Hidden inside the ambulance. Invisible and without collisions, so it is parked at the rear
+-- doors (STOWED_MENU_POINT): its menu is reached there, not at the real cargo position.
 local function stow(s)
     clearPusher(s)
     local obj, vehicle = s.object, s.vehicle
@@ -249,7 +248,7 @@ local function stow(s)
     setElementFrozen(obj, false)
     setElementCollisionsEnabled(obj, false)
     setElementAlpha(obj, 0)
-    local o = STRETCHER.STOW_OFFSET
+    local o = vehicleOffset(vehicle, "STOWED_MENU_POINT")
     attachElements(obj, vehicle, o[1], o[2], o[3], o[4], o[5], o[6])
     setState(s, "stowed")
 end
@@ -285,7 +284,7 @@ function takeOutStretcher(s, player)
     local obj, vehicle = s.object, s.vehicle
     holdVehicle(s, true)
 
-    local st, ed, out = STRETCHER.STOW_OFFSET, STRETCHER.EDGE_OFFSET, STRETCHER.OUT_OFFSET
+    local st, ed, out = vehicleOffset(vehicle, "STOW_OFFSET"), vehicleOffset(vehicle, "EDGE_OFFSET"), vehicleOffset(vehicle, "OUT_OFFSET")
     local sx, sy, sz = offsetOf(vehicle, st[1], st[2], st[3])
     local ex, ey, ez = offsetOf(vehicle, ed[1], ed[2], ed[3])
     local ox, oy, oz = offsetOf(vehicle, out[1], out[2], out[3])
@@ -349,7 +348,7 @@ function loadStretcher(s, player)
     holdVehicle(s, true)
     setState(s, "moving")
 
-    local st, ed, out = STRETCHER.STOW_OFFSET, STRETCHER.EDGE_OFFSET, STRETCHER.OUT_OFFSET
+    local st, ed, out = vehicleOffset(vehicle, "STOW_OFFSET"), vehicleOffset(vehicle, "EDGE_OFFSET"), vehicleOffset(vehicle, "OUT_OFFSET")
     local sx, sy, sz = offsetOf(vehicle, st[1], st[2], st[3])
     local ex, ey, ez = offsetOf(vehicle, ed[1], ed[2], ed[3])
     local ox, oy, oz = offsetOf(vehicle, out[1], out[2], out[3])

@@ -8,7 +8,9 @@ in use, it is attached inside the vehicle, invisible and without collisions.
 ## Interaction (ui_interactobject, `X` + number keys)
 
 There is only one menu, on the stretcher object. While the stretcher is inside the ambulance, you
-reach that menu at the rear of the ambulance.
+reach that menu at the rear of the ambulance: the hidden object is parked at `STOWED_MENU_POINT`
+(the rear doors), not at its real cargo position. Each client then moves it onto the model's real rear
+doors (rear door dummies, or the back of the bounding box).
 
 | state | options |
 |---|---|
@@ -24,7 +26,8 @@ reach that menu at the rear of the ambulance.
 
   A patient who was loaded with it rides out on it.
 - **Load**:
-  - The stretcher must be within `LOAD_RANGE` of `OUT_OFFSET`.
+  - The stretcher must be inside the square load zone behind the ambulance (`LOAD_ZONE_CENTER` / `LOAD_ZONE_SIZE`).
+    While pushing, the pusher sees the zone on the ground (client/zone.lua): white = outside, green = inside.
   - The doors open, the stretcher lines up, then it is lifted to the rear edge and slides in.
   - The patient is warped onto a free rear seat (`REAR_SEATS`), and the doors close.
   - A player patient cannot get out (`onVehicleStartExit` is cancelled) and cannot be jacked.
@@ -59,7 +62,8 @@ reach that menu at the rear of the ambulance.
 
 `shared/config.lua`: all offsets are `{ x, y, z, rx, ry, rz }` in the parent's local space. The stretcher's
 long side lies along the model's y axis (`rz = 0`). The in/out path is `STOW_OFFSET` / `EDGE_OFFSET` / `OUT_OFFSET`,
-with timings `DOOR_TIME` / `ALIGN_TIME` / `SLIDE_TIME` / `LOWER_TIME`.
+with timings `DOOR_TIME` / `ALIGN_TIME` / `SLIDE_TIME` / `LOWER_TIME`. `MODEL_Y_SHIFT` moves all of these
+(and `STOWED_MENU_POINT` / `REAR_POINT`) back or forward per ambulance model.
 Set `SELF_DATA_KEY` (e.g. `"isMedic"`) to show the menus only to medics.
 
 ## Medic role

@@ -25,12 +25,37 @@ end
 -- Visibility / collisions
 -- ---------------------------------------------------------------------------------------------
 
+-- Vehicle-local y of the rear doors: the rear door dummies of the (possibly modded) model, or the
+-- back of its bounding box. nil if neither can be read.
+local function rearDoorY(vehicle)
+    local sum, count = 0, 0
+    for _, name in ipairs({ "door_lr_dummy", "door_rr_dummy" }) do
+        local _, y = getVehicleComponentPosition(vehicle, name)
+        if y and y < 0 then sum, count = sum + y, count + 1 end
+    end
+    if count > 0 then return sum / count end
+    local _, y0 = getElementBoundingBox(vehicle)
+    return y0
+end
+
+-- The server parks the stowed (hidden) stretcher at an estimated rear point (STOWED_MENU_POINT);
+-- here it is moved locally onto the real rear doors, so its menu appears on them.
+local function placeStowed(obj)
+    local vehicle = getElementAttachedTo(obj)
+    if not vehicle or getElementType(vehicle) ~= "vehicle" or not isElementStreamedIn(vehicle) then return end
+    local y = rearDoorY(vehicle)
+    if not y then return end
+    local o = STRETCHER.STOWED_MENU_POINT
+    setElementAttachedOffsets(obj, o[1], y, o[3], o[4], o[5], o[6])
+end
+
 local function applyStretcher(obj)
     if not isElement(obj) then return end
     local state = getElementData(obj, D.STATE)
     if not state then return end
 
     setObjectScale(obj, getFitScale(obj))
+    if state == "stowed" then placeStowed(obj) end
     -- stowed: invisible and without collisions, so it cannot push the ambulance around;
     -- moving / pushing: no collisions with the vehicle, the pusher, the patient or anybody on the way
     setElementAlpha(obj, state == "stowed" and 0 or 255)
@@ -70,6 +95,11 @@ addEventHandler("onClientElementStreamIn", root, function()
     local elementType = getElementType(source)
     if elementType == "object" then
         applyStretcher(source)
+    elseif elementType == "vehicle" then
+        -- the stowed stretcher may have streamed in before its ambulance
+        for _, obj in ipairs(getAttachedElements(source)) do
+            if getElementType(obj) == "object" and getElementData(obj, D.STATE) == "stowed" then placeStowed(obj) end
+        end
     elseif elementType == "ped" or elementType == "player" then
         applyPatient(source)
     end

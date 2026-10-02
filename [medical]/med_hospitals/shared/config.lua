@@ -22,6 +22,9 @@ HOSP = {
     HANDOVER_SIZE = 1.6,
     HANDOVER_TIME = 5000,
     HANDOVER_COLOR = { 56, 132, 244, 110 },
+    -- the marker (and its label) is visible only to the players on duty in this work_core work;
+    -- false = visible to everyone. Everyone sees it while work_core is stopped.
+    HANDOVER_WORK = "ems",
 
     -- Free treatment (heal) marker: 15 s, medsys healCompletely
     HEAL_SIZE = 1.4,
@@ -51,6 +54,7 @@ HOSP_DATA = {
     NAME = "hosp.name",            -- hospital name
     OCCUPIED = "hosp.occupied",    -- bay: a vehicle is parked in it
     RESTRICTED = "hosp.restricted",-- bay: a non-ambulance vehicle is in it (red marker)
+    TUTORIAL = "hosp.tutorial",    -- private tutorial marker: labelled regardless of HANDOVER_WORK
 }
 
 HOSP_TEXT = {

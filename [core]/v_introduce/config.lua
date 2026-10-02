@@ -49,6 +49,8 @@ INTRO = {
     },
 
     FADE_TIME = 1.0,                   -- seconds of a camera fade
+    CLIENT_WAIT = 180,                 -- seconds to wait for a client still downloading the
+                                       -- resources; then the player is released, next login retries
     -- Continue is locked on a scene for: text length / READ_CHARS_PER_SEC, or CAMERA_LOCK_SHARE of
     -- a camera ride's duration - at least MIN_SCENE_TIME, at most MAX_SCENE_TIME seconds.
     -- Task and accept scenes have no waiting time: Continue unlocks as soon as they are done.

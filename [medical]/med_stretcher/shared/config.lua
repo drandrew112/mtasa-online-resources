@@ -16,9 +16,18 @@ STRETCHER = {
 
     -- Path in / out of the ambulance (vehicle-local offsets). Taking out runs
     -- STOW -> EDGE (slide to the rear doors) -> OUT (down, behind the vehicle); loading runs it backwards.
-    STOW_OFFSET = { 0, -1.6, 0.0, 0, 0, 0 },   -- inside the cargo area (hidden while not in use)
+    STOW_OFFSET = { 0, -1.6, 0.0, 0, 0, 0 },   -- inside the cargo area: the take-out slide starts here
+    -- While stowed the (invisible) object is parked at the rear doors so its menu is there. Every
+    -- client moves it onto the model's real rear doors (door dummies / bounding box, client/stretcher.lua);
+    -- this y is only the server-side estimate (used for its range check) and the fallback.
+    STOWED_MENU_POINT = { 0, -3.7, 0.0, 0, 0, 0 },
     EDGE_OFFSET = { 0, -3.7, 0.0 },            -- at the rear doors, still at floor height
     OUT_OFFSET = { 0, -4.7, -0.55 },           -- on the ground behind the vehicle
+    -- Per-model shift along the vehicle's y axis (negative = further back), applied to
+    -- STOW / EDGE / OUT_OFFSET, STOWED_MENU_POINT, REAR_POINT and LOAD_ZONE_CENTER
+    MODEL_Y_SHIFT = {
+        [456] = -0.8,              -- Mission Row Ambulance
+    },
     DOOR_TIME = 600,               -- ms, the rear doors open / close
     ALIGN_TIME = 500,              -- ms, loading: the stretcher lines up behind the vehicle
     SLIDE_TIME = 1200,             -- ms, STOW <-> EDGE
@@ -29,7 +38,16 @@ STRETCHER = {
     -- Where the medic stands to take the stretcher out / how close it must be to be loaded
     REAR_POINT = { 0, -4.0, 0 },   -- vehicle-local, behind the rear doors
     REAR_RANGE = 2.5,              -- medic within this of REAR_POINT (take out)
-    LOAD_RANGE = 3.0,              -- stretcher within this of OUT_OFFSET (load)
+
+    -- Load zone: a square on the ground behind the ambulance. The stretcher can only be loaded while
+    -- its centre is inside it. While pushing, the pusher sees it: white = outside, green = inside.
+    LOAD_ZONE_CENTER = { 0, -4.7 },  -- vehicle-local x, y (MODEL_Y_SHIFT applies)
+    LOAD_ZONE_SIZE = 2.6,            -- metres, side of the square
+    LOAD_ZONE_HEIGHT = 3.0,          -- max height difference to the vehicle origin
+    LOAD_ZONE_COLOR = { 255, 255, 255 },
+    LOAD_ZONE_OK_COLOR = { 60, 220, 90 },
+    LOAD_ZONE_FILL_ALPHA = 60,
+    LOAD_ZONE_LINE_ALPHA = 220,
 
     -- Pushing: attached in front of the medic, no collisions. The medic walks with GTA's own
     -- movement (forced to walk speed, synced natively). A looped setPedAnimation walk cannot be used:

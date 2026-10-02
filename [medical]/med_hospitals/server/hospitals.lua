@@ -130,6 +130,13 @@ end
 
 ---------------------------------------------------------------- world elements
 
+-- Handover markers are visible only to the HOSP.HANDOVER_WORK players on duty (work_core keeps
+-- it in sync on duty changes). Re-applied when work_core (re)starts.
+function setHandoverVisibility(marker)
+    if not HOSP.HANDOVER_WORK or not isElement(marker) or not isResourceRunning("work_core") then return end
+    exports.work_core:setElementVisibleToWork(marker, HOSP.HANDOVER_WORK)
+end
+
 local function buildPoint(h, point, kind, index, color)
     point.hospital, point.kind, point.index = h, kind, index
     local marker = track(createMarker(point.x, point.y, point.z, "cylinder", point.size,
@@ -153,7 +160,9 @@ local function buildHospital(h)
         setElementData(bay.marker, HOSP_DATA.OCCUPIED, false)
     end
     for i, point in ipairs(h.handover) do
-        buildPoint(h, point, "handover", i, HOSP.HANDOVER_COLOR)
+        if buildPoint(h, point, "handover", i, HOSP.HANDOVER_COLOR) then
+            setHandoverVisibility(point.marker)
+        end
     end
     if h.heal then buildPoint(h, h.heal, "heal", 1, HOSP.HEAL_COLOR) end
 end
@@ -243,4 +252,9 @@ addEventHandler("onResourceStart", resourceRoot, function()
             outputDebugString("[med_hospitals] " .. err, 1)
         end
     end, 500, 1)
+end)
+
+addEventHandler("onResourceStart", root, function(res)
+    if getResourceName(res) ~= "work_core" then return end
+    for point in eachPoint("handover") do setHandoverVisibility(point.marker) end
 end)

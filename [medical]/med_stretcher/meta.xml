@@ -8,6 +8,7 @@
     <include resource="medsys" />
 
     <script src="shared/config.lua" type="shared" />
+    <script src="shared/util.lua" type="shared" />
 
     <script src="server/stretcher.lua" type="server" />
     <script src="server/interaction.lua" type="server" />
@@ -15,6 +16,7 @@
     <script src="client/stretcher.lua" type="client" />
     <script src="client/push.lua" type="client" />
     <script src="client/select.lua" type="client" />
+    <script src="client/zone.lua" type="client" />
 
     <!-- for the EMS job script -->
     <export function="getVehicleStretcher" type="server" />

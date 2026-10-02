@@ -96,6 +96,40 @@ function Session.isIn(player)
     return sessions[player] ~= nil
 end
 
+---------------------------------------------------------------- client handshake
+
+-- On the first connection the client may still be downloading when the session starts (the
+-- account panel runs before every resource has arrived). intro:start is only sent once the
+-- client side of v_introduce reported itself (intro:ready); a session waiting for it is
+-- delivered then. A repeated intro:ready resends the modules from the current one.
+local clientReady = {}   -- player -> true
+
+local function deliver(s)
+    if not s.ready or not clientReady[s.player] then return end
+    local modules = {}
+    for i = s.index, #s.copies do modules[#modules + 1] = s.copies[i] end
+    s.moduleStart = getTickCount()
+    s.delivered = true
+    send(s.player, "intro:start", {
+        mode = s.mode,
+        modules = modules,
+        offset = s.index - 1,
+        total = #s.copies,
+        dimension = s.dimension,
+    })
+end
+
+addEvent("intro:ready", true)
+addEventHandler("intro:ready", resourceRoot, function()
+    local player = client
+    clientReady[player] = true
+    local s = sessions[player]
+    if s then
+        if s.vehicle then placeOnStage(s) end   -- a resent scene asks for it again
+        deliver(s)
+    end
+end)
+
 ---------------------------------------------------------------- start
 
 -- opts = { modules = { def, ... }, mode = "full" | "new" | "preview" }
@@ -132,13 +166,16 @@ function Session.start(player, opts)
     later(s, fadeMs() + 200, function()
         placeOnStage(s)
         s.ready = true
-        s.moduleStart = getTickCount()
-        send(player, "intro:start", {
-            mode = s.mode,
-            modules = s.copies,
-            dimension = s.dimension,
-        })
+        deliver(s)   -- now, or when the client has finished downloading (intro:ready)
         triggerEvent("onIntroStart", player, s.mode)
+    end)
+    -- the client never reported (download error ...): do not leave the player frozen;
+    -- nothing is marked as seen, the next login tries again
+    later(s, INTRO.CLIENT_WAIT * 1000, function()
+        if not s.delivered then
+            outputDebugString("[v_introduce] " .. getPlayerName(player) .. ": client not ready, introduction postponed", 2)
+            Session.finish(player, "stopped")
+        end
     end)
     return true
 end
@@ -304,6 +341,7 @@ addEventHandler("onPlayerSpawn", root, function()
 end)
 
 addEventHandler("onPlayerQuit", root, function()
+    clientReady[source] = nil
     local s = sessions[source]
     if s then cleanup(s) end   -- save.position stays: v_accounts saves the original position
 end)

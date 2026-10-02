@@ -4,7 +4,7 @@
 
 local R = {
     active = false,
-    modules = nil, mIndex = 0, sIndex = 0,
+    modules = nil, mIndex = 0, sIndex = 0, offset = 0, total = 0,
     module = nil, scene = nil, handler = nil,
     sceneStart = 0, minTime = 0,
     keyTicks = {},
@@ -14,11 +14,13 @@ local R = {
 
 local function handlerOf(scene) return Scenes[scene.type] end
 
+-- chapter number in the whole session (a resent session starts at a later module: R.offset)
+local function chapter() return R.offset + R.mIndex end
+
 local function stepLabel()
-    local total = #R.modules
     local prefix = R.mode == "new" and "What's new  ·  " or ""
     local title = R.module.update and ("Update: " .. R.module.title) or R.module.title
-    return ("%sChapter %d / %d  ·  %s"):format(prefix, R.mIndex, total, title)
+    return ("%sChapter %d / %d  ·  %s"):format(prefix, chapter(), R.total, title)
 end
 
 -- nextScene: the scene that follows in the same module (keeps the practice vehicle if it needs it)
@@ -133,7 +135,7 @@ local function render()
 
     if h.letterbox then Draw.letterbox() end
     if h.render then h.render(sc, R) end
-    Draw.progress(R.mIndex, #R.modules, R.stepLabel)
+    Draw.progress(chapter(), R.total, R.stepLabel)
 
     local ready, state = continueState()
     if h.autoNext then
@@ -177,6 +179,8 @@ addEventHandler("intro:start", resourceRoot, function(payload)
     R.active = true
     R.mode = payload.mode
     R.modules = payload.modules or {}
+    R.offset = tonumber(payload.offset) or 0
+    R.total = tonumber(payload.total) or #R.modules
     R.keyTicks = {}
     R.waiting, R.transition, R.toast = false, false, nil
     Mirror.dimension = payload.dimension
@@ -196,6 +200,12 @@ end)
 addEvent("intro:reward", true)
 addEventHandler("intro:reward", resourceRoot, function(_, xp)
     R.toast = { text = ("+%d XP"):format(xp), tick = getTickCount() }
+end)
+
+-- every handler above exists now: the server may send intro:start (first connection: the
+-- session may have been waiting for this while the client was downloading)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    triggerServerEvent("intro:ready", resourceRoot)
 end)
 
 ---------------------------------------------------------------- exports

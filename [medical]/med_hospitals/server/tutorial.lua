@@ -30,6 +30,7 @@ local function buildTutorialPoint(t, raw, kind, color)
     end
     setElementData(marker, HOSP_DATA.KIND, kind)
     setElementData(marker, HOSP_DATA.NAME, t.hospital.name)
+    setElementData(marker, HOSP_DATA.TUTORIAL, true)
     if kind == "bay" then setElementData(marker, HOSP_DATA.OCCUPIED, false) end
     return { marker = marker, col = col, kind = kind }
 end

@@ -24,8 +24,22 @@ local STYLE = {
 
 local markers = {}   -- list of hospital markers of this resource
 local progress = nil -- { marker, start, duration, text }
+local seesHandover = true -- handover labels only for the HOSP.HANDOVER_WORK players on duty
+
+local function updateHandoverAccess()
+    local res = getResourceFromName("work_core")
+    if not HOSP.HANDOVER_WORK or not res or getResourceState(res) ~= "running" then
+        seesHandover = true
+    else
+        seesHandover = exports.work_core:isPlayerOnDuty(localPlayer, HOSP.HANDOVER_WORK) and true or false
+    end
+end
+
+addEvent("onClientPlayerWorkChange")
+addEventHandler("onClientPlayerWorkChange", localPlayer, updateHandoverAccess)
 
 local function refresh()
+    updateHandoverAccess()
     markers = {}
     for _, m in ipairs(getElementsByType("marker", resourceRoot)) do
         if getElementData(m, HOSP_DATA.KIND) then markers[#markers + 1] = m end
@@ -145,7 +159,7 @@ addEventHandler("onClientRender", root, function()
                 kind, occupied = "bayRestricted", false
             end
 
-            if STYLE[kind] and dist <= maxDist and not occupied then
+            if STYLE[kind] and dist <= maxDist and not occupied and (kind ~= "handover" or seesHandover or getElementData(m, HOSP_DATA.TUTORIAL)) then
                 local lz = z + HOSP.LABEL_HEIGHT
                 if isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
                     local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
