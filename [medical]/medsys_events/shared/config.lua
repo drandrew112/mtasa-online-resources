@@ -23,7 +23,6 @@ MEDEV = {
     PLAYER_ARREST_DEATH_DELAY = 0,
 
     MAX_INJURIES = 12,          -- no new injury beyond this many on one element
-    EFFECT_CHECK = 2000,        -- ms between two checks of the injury effects (treated / healed)
 
     -- Bare-fisted punch into a vehicle (client detects it, server validates)
     PUNCH_REACH = 1.1,          -- metres in front of the chest
@@ -223,10 +222,4 @@ MEDEV_PUNCH = {
     pain = 20,                  -- every punch hurts a little
     severity = { 1, 1 },        -- hand / forearm fracture
     WORLD_FACTOR = 0.6,         -- chance multiplier for walls / objects (MEDEV.PUNCH_WORLD)
-}
-
--- Effects of the injuries on the player's controls. part is a group (leg / arm / ...) or an
--- exact body part. untreated / treated = the controls disabled while such an injury exists.
-MEDEV_EFFECTS = {
-    { type = "fracture", part = "leg", untreated = { "sprint", "jump" }, treated = { "sprint" } },
 }

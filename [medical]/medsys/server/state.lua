@@ -28,7 +28,6 @@
 --     deathTick     = nil,                  -- getTickCount() of biological death (arrestTick + DEATH_TIME)
 --     knockoutState = nil, knockoutUntil = nil, -- forced dazed / unconscious state and its end
 --     dead          = false,                -- biological death, the simulation stops
---     animated      = false,                -- the down animation was played by us
 --     sent          = { spo2, heartRate },  -- last values written to element data
 -- }
 
@@ -64,7 +63,6 @@ local function newState(element)
         aware = true,
         panic = false,
         dead = false,
-        animated = false,
         sent = {},
     }
 end
@@ -100,10 +98,6 @@ function removePatient(element, leaving)
         removeElementData(element, MEDIC.DATA_STATUS)
         removeElementData(element, MEDIC.DATA_SPO2)
         removeElementData(element, MEDIC.DATA_HEART_RATE)
-        if state.animated and not state.dead then setPedAnimation(element) end
-        if getElementType(element) == "player" then
-            triggerClientEvent(element, "medic:selfStatus", resourceRoot, false)
-        end
     end
     return true
 end
@@ -273,42 +267,14 @@ end
 -- State transitions
 ---------------------------------------------------------------------------
 
-local function playDownAnimation(state)
-    local element = state.element
-    if isPedInVehicle(element) or isPedDead(element) then return end
-    setPedAnimation(element, MEDIC.ANIM_DOWN[1], MEDIC.ANIM_DOWN[2], -1, false, false, false, true)
-    state.animated = true
-end
-
-local function playGetUpAnimation(state)
-    if not state.animated then return end
-    state.animated = false
-    if isPedInVehicle(state.element) then return end
-    setPedAnimation(state.element, MEDIC.ANIM_GETUP[1], MEDIC.ANIM_GETUP[2], -1, false, false, true, false)
-end
-
--- Tells a player patient its own condition (overlay + control lock on the client)
-function notifyPatient(state)
-    local element = state.element
-    if getElementType(element) ~= "player" then return end
-    local snapshot = state.arrestTick and buildSnapshot(state)
-    triggerClientEvent(element, "medic:selfStatus", resourceRoot, state.consciousness,
-        snapshot and snapshot.deathTimeLeft or nil)
-end
-
+-- The animations (down / get up) and what a player patient experiences (screen, control lock)
+-- belong to medsys_effects, which follows the status element data and these events.
 function setConsciousness(state, status)
     local old = state.consciousness
     if old == status then return end
     state.consciousness = status
 
     setElementData(state.element, MEDIC.DATA_STATUS, status)
-    if medicIsDown(status) and not medicIsDown(old) then
-        playDownAnimation(state)
-    elseif not medicIsDown(status) and medicIsDown(old) then
-        playGetUpAnimation(state)
-    end
-
-    notifyPatient(state)
     triggerEvent("onMedicalStateChange", state.element, status, old)
 end
 
@@ -348,7 +314,6 @@ function biologicalDeath(state, killElement)
     state.dead = true
     state.arrestTick, state.deathTick = nil, nil
     state.heartRate, state.systolic, state.diastolic, state.spo2 = 0, 0, 0, 0
-    state.animated = false
 
     setConsciousness(state, "dead")
     writeVitalsData(state)
@@ -393,14 +358,13 @@ end
 addEventHandler("onPlayerWasted", root, onWasted)
 addEventHandler("onPedWasted", root, onWasted)
 
--- Element data and animations outlive the resource, clean them up
+-- Element data outlives the resource, clean it up
 addEventHandler("onResourceStop", resourceRoot, function()
-    for element, state in pairs(Patients) do
+    for element in pairs(Patients) do
         if isElement(element) then
             removeElementData(element, MEDIC.DATA_STATUS)
             removeElementData(element, MEDIC.DATA_SPO2)
             removeElementData(element, MEDIC.DATA_HEART_RATE)
-            if state.animated and not state.dead then setPedAnimation(element) end
         end
     end
 end)

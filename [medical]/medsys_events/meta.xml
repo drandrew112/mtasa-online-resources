@@ -11,10 +11,8 @@
     <script src="server/rules.lua" type="server" />
     <script src="server/damage.lua" type="server" />
     <script src="server/vehicle.lua" type="server" />
-    <script src="server/effects.lua" type="server" />
 
     <script src="client/detect.lua" type="client" />
-    <script src="client/effects.lua" type="client" />
 
     <!-- body part / cause of the injuries this resource made (medsys does not store them) -->
     <export function="getInjuryDetails" type="server" />

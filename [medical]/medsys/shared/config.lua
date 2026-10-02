@@ -96,9 +96,7 @@ MEDIC = {
     TRANSPORT_DRIVER = { dead = 70, alive = 274 },   -- driver skin
     TRANSPORT_SPOT_RANGE = 15,  -- metres: the vehicle spot sent by the client must be this close to the body
 
-    -- Animations
-    ANIM_DOWN = { "PED", "KO_shot_front" },
-    ANIM_GETUP = { "PED", "getup_front" },
+    -- The patient animations and the player's own screen effects live in medsys_effects.
 }
 
 -- Test module (server/test.lua, client/test.lua): spawns injured peds in front of an admin.

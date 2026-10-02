@@ -238,7 +238,6 @@ PROCEDURES.cpr = {
         -- good compressions keep the brain perfused: the death timer is pushed back
         local now = getTickCount()
         state.deathTick = math.min(now + MEDIC.DEATH_TIME * 1000, state.deathTick + MEDIC.CPR_TIME_BONUS * 1000)
-        notifyPatient(state)
         if chance == 0 then return "No pulse - too much blood lost, give fluids" end
         return "No pulse yet - continue CPR"
     end,

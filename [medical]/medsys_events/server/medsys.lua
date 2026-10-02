@@ -46,7 +46,6 @@ function medApplyInjury(element, injuryType, severity, part, cause)
     if not id then return false end
 
     triggerEvent("onMedicalEventInjury", element, id, injuryType, severity, part, cause)
-    refreshEffects(element)
     return id
 end
 
@@ -155,7 +154,6 @@ end)
 
 local function forget()
     InjuryInfo[source] = nil
-    clearEffects(source)
 end
 addEventHandler("onPlayerQuit", root, forget)
 addEventHandler("onElementDestroy", root, function()

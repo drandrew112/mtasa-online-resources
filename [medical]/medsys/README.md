@@ -18,7 +18,6 @@ server/interaction.lua "Examine patient" entry in the ui_interactobject world me
 client/panel.lua       DX examination panel
 client/interaction.lua turns the world menus off during procedures / while the player is down
 client/progress.lua    progress bar of a timed procedure (medication)
-client/patient.lua     local player's own condition (overlay, control lock)
 ```
 
 **Where the data lives**
@@ -29,11 +28,14 @@ client/patient.lua     local player's own condition (overlay, control lock)
 | `medic.status` (consciousness) | element data, broadcast | everyone, but only written on state changes |
 | `spo2`, `heartRate` | element data, **subscribe** mode | only the medics examining / treating the patient (mg_airway reads them) |
 | panel snapshot | `medic:panelUpdate` event | only the medics with the panel open, once per tick |
-| own condition | `medic:selfStatus` event | the player patient, only on state changes |
 
 Only elements that are not perfectly healthy are in the registry. The simulation timer runs only
 while there is at least one patient. A patient with nothing left to simulate (no injuries, full
 vitals, nobody examining it) is dropped automatically.
+
+The down / get-up animations of the patients and everything a player patient experiences
+(blackout, control lock, pain / bleeding screen effects) are in **medsys_effects**, which follows
+the `medic.status` element data and the medsys events.
 
 ## Data structure (server)
 

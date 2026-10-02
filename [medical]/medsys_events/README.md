@@ -1,8 +1,8 @@
 # medsys_events
 
 In-game events that injure players through the **medsys** exports. GTA still takes the health;
-this resource adds the medical side (injuries, bleeding, pain, SpO2, knockouts). The player does
-not see any of it yet; that comes with a later medsys update.
+this resource adds the medical side (injuries, bleeding, pain, SpO2, knockouts). What the player
+feels from it (screen, controls, animations) is done by **medsys_effects**.
 
 ## What hurts
 
@@ -25,7 +25,8 @@ Players have **no clinical death**: when medsys stops a player's heart, the play
 (`PLAYER_DEATH_IS_FINAL`), so CPR never applies to players. Peds are untouched by this rule and
 are only injured with `APPLY_TO_PEDS = true`.
 
-Untreated leg fractures disable sprint + jump, splinted ones sprint (`MEDEV_EFFECTS`).
+What the injuries do to the player (disabled controls, limping, screen effects) is in
+**medsys_effects**; it reads the body parts through `getInjuryDetails`.
 
 ## Export / event
 

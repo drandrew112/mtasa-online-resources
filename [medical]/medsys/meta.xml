@@ -23,7 +23,6 @@
     <script src="client/panel.lua" type="client" />
     <script src="client/interaction.lua" type="client" />
     <script src="client/progress.lua" type="client" />
-    <script src="client/patient.lua" type="client" />
     <script src="client/role.lua" type="client" />
     <script src="client/test.lua" type="client" /> <!-- only runs when MEDIC_TEST.ENABLED -->
 
