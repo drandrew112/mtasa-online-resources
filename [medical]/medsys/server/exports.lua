@@ -156,4 +156,8 @@ function healCompletely(element)
     return true
 end
 
+function isPatientPersistent(element)
+    return Persistent[element] == true
+end
+
 addEvent("onMedicalInjury", false)

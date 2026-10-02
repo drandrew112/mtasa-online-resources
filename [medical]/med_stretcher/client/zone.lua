@@ -1,5 +1,6 @@
--- Load zone: while the local player pushes a stretcher, the square behind its ambulance is drawn
--- on the ground: white while the stretcher is outside, green once it is inside and can be loaded.
+-- Load zone: while the local player pushes a stretcher, the rectangle behind its ambulance is drawn
+-- on the ground: white while the stretcher is outside, orange while it is inside but does not point
+-- into the ambulance, green once it can be loaded.
 -- Only the pusher sees it. The server checks the same zone (shared/util.lua) when loading.
 
 local D = STRETCHER_DATA
@@ -33,16 +34,21 @@ addEventHandler("onClientRender", root, function()
     local vx, vy, vz = getElementPosition(vehicle)
     if getDistanceBetweenPoints3D(px, py, pz, vx, vy, vz) > DRAW_DISTANCE then return end
 
-    local inside = isInLoadZone(vehicle, getElementPosition(stretcher))
-    local rgb = inside and STRETCHER.LOAD_ZONE_OK_COLOR or STRETCHER.LOAD_ZONE_COLOR
+    -- same as the server: the stretcher's yaw follows the pusher's heading
+    local _, _, prz = getElementRotation(localPlayer)
+    local rgb = STRETCHER.LOAD_ZONE_COLOR
+    if isInLoadZone(vehicle, getElementPosition(stretcher)) then
+        rgb = isLoadAligned(vehicle, prz + STRETCHER.PUSH_OFFSET[6])
+            and STRETCHER.LOAD_ZONE_OK_COLOR or STRETCHER.LOAD_ZONE_ANGLE_COLOR
+    end
 
     local m = getElementMatrix(vehicle)
-    local cx, cy, half = getLoadZone(vehicle)
+    local cx, cy, halfW, halfL = getLoadZone(vehicle)
     local c = {
-        { cornerOnGround(m, cx - half, cy - half, vz) },
-        { cornerOnGround(m, cx + half, cy - half, vz) },
-        { cornerOnGround(m, cx + half, cy + half, vz) },
-        { cornerOnGround(m, cx - half, cy + half, vz) },
+        { cornerOnGround(m, cx - halfW, cy - halfL, vz) },
+        { cornerOnGround(m, cx + halfW, cy - halfL, vz) },
+        { cornerOnGround(m, cx + halfW, cy + halfL, vz) },
+        { cornerOnGround(m, cx - halfW, cy + halfL, vz) },
     }
 
     if dxDrawPrimitive3D then

@@ -16,7 +16,7 @@ local scale = math.max(0.65, screenH / 1080)
 
 local function s(value) return value * scale end
 
-local W, H = s(640), s(660)
+local W, H = s(640), s(850)
 local X, Y = (screenW - W) / 2, (screenH - H) / 2
 local PAD = s(20)
 local ECG_SECONDS = 3
@@ -221,17 +221,36 @@ local function drawInjuries(x, y, data)
     return y
 end
 
--- Returns the buttons with their rectangles (also used for the click hit test)
+-- Button rows (MEDIC_ACTION_GROUPS) at the bottom of the panel, a group label on the left of each
+local BUTTON_H = s(42)
+local BUTTON_GAP = s(8)
+local GROUP_LABEL_W = s(150)
+
+-- Returns the rows { group, y, buttons = { { action, x, y, w, h } } } and the top of the first row
+local function getButtonRows()
+    local groups = panel.data.dead and MEDIC_DEAD_ACTION_GROUPS or MEDIC_ACTION_GROUPS
+    local top = Y + H - PAD - #groups * BUTTON_H - (#groups - 1) * BUTTON_GAP
+    local bx = X + PAD + GROUP_LABEL_W
+    local areaW = W - PAD * 2 - GROUP_LABEL_W
+    local rows = {}
+    for gi, group in ipairs(groups) do
+        local y = top + (gi - 1) * (BUTTON_H + BUTTON_GAP)
+        local count = #group.actions
+        local bw = (areaW - BUTTON_GAP * (count - 1)) / count
+        local row = { group = group, y = y, buttons = {} }
+        for i, action in ipairs(group.actions) do
+            row.buttons[i] = { action = action, x = bx + (i - 1) * (bw + BUTTON_GAP), y = y, w = bw, h = BUTTON_H }
+        end
+        rows[gi] = row
+    end
+    return rows, top
+end
+
+-- Returns all buttons with their rectangles (also used for the click hit test)
 local function getButtons()
-    local order = panel.data.dead and MEDIC_DEAD_ACTION_ORDER or MEDIC_ACTION_ORDER
-    local count = #order
-    local gap = s(10)
-    local bw = (W - PAD * 2 - gap * (count - 1)) / count
-    local bh = s(50)
-    local by = Y + H - PAD - bh
     local list = {}
-    for i, action in ipairs(order) do
-        list[i] = { action = action, x = X + PAD + (i - 1) * (bw + gap), y = by, w = bw, h = bh }
+    for _, row in ipairs((getButtonRows())) do
+        for _, button in ipairs(row.buttons) do list[#list + 1] = button end
     end
     return list
 end
@@ -257,7 +276,8 @@ end
 -- hoverReason: a disabled button's reason is shown there instead of the placeholder
 local function drawDrugMenu(cx, cy, hoverReason)
     local x, y = X + PAD, Y + DRUG_AREA_Y
-    local bottom = Y + H - PAD - s(50) - s(6)
+    local _, buttonsTop = getButtonRows()
+    local bottom = buttonsTop - s(6)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
     dxDrawText("MEDICATION  -  given through the IV line", x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
@@ -315,26 +335,42 @@ local function getCloseButton()
     return X + W - PAD - size, Y + s(16), size, size
 end
 
+local function drawGroupLabel(group, y)
+    local lx, lw = X + PAD, GROUP_LABEL_W - BUTTON_GAP
+    dxDrawRectangle(lx, y, lw, BUTTON_H, C.tile)
+    dxDrawRectangle(lx, y, s(4), BUTTON_H, C.accent)
+    local tx = lx + s(12)
+    if group.tag then
+        dxDrawText(group.tag, tx, y + s(3), lx + lw, y + s(23), C.text, 1, fonts.bold, "left", "top")
+        dxDrawText(group.label, tx, y + s(22), lx + lw - s(4), y + BUTTON_H, C.muted, 1, fonts.small,
+            "left", "top", true)
+    else
+        dxDrawText(group.label, tx, y, lx + lw, y + BUTTON_H, C.muted, 1, fonts.bold, "left", "center", true)
+    end
+end
+
 local function drawButtons(cx, cy)
     local hoverReason
-    local buttons = getButtons()
-    for _, button in ipairs(buttons) do
-        local info = MEDIC_ACTIONS[button.action]
-        local available = panel.data.actions and panel.data.actions[button.action]
-        local enabled = available == true and not panel.pending
-        local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
+    for _, row in ipairs((getButtonRows())) do
+        drawGroupLabel(row.group, row.y)
+        for _, button in ipairs(row.buttons) do
+            local info = MEDIC_ACTIONS[button.action]
+            local available = panel.data.actions and panel.data.actions[button.action]
+            local enabled = available == true and not panel.pending
+            local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
 
-        local selected = button.action == "medication" and panel.drugMenu
-        local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
-        dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
-        local label = (#buttons == 1 and info.wideLabel)
-            or (info.activeLabel and button.action == "oxygen" and panel.data.oxygenMask and info.activeLabel)
-            or info.label
-        local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
-        dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
-            enabled and C.text or C.muted, 1, font, "center", "center")
+            local selected = button.action == "medication" and panel.drugMenu
+            local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
+            dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
+            local label = (#row.buttons == 1 and info.wideLabel)
+                or (info.activeLabel and button.action == "oxygen" and panel.data.oxygenMask and info.activeLabel)
+                or info.label
+            local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
+            dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
+                enabled and C.text or C.muted, 1, font, "center", "center")
 
-        if hovered and not enabled and type(available) == "string" then hoverReason = available end
+            if hovered and not enabled and type(available) == "string" then hoverReason = available end
+        end
     end
     return hoverReason
 end
@@ -424,13 +460,18 @@ local function render()
 
     -- active medicines, transport of a living patient
     if data.drugs and #data.drugs > 0 and not data.dead then
-        local parts = {}
+        dxDrawText("ACTIVE MEDICATION", x, y - s(8), X + W - PAD, y + s(10), C.muted, 1, fonts.small, "left", "top")
+        y = y + s(12)
+        local colW = (W - PAD * 2) / 2
+        local rowH = s(20)
         for i, dose in ipairs(data.drugs) do
-            parts[i] = ("%s (%s)"):format(dose.name, formatTime(math.max(0, dose.timeLeft - elapsed)))
+            local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+            local dx, dy = x + col * colW, y + row * rowH
+            dxDrawText(formatTime(math.max(0, dose.timeLeft - elapsed)), dx, dy, dx + colW - s(12), dy + rowH,
+                C.muted, 1, fonts.body, "right", "center")
+            dxDrawText(dose.name, dx, dy, dx + colW - s(62), dy + rowH, C.spo2, 1, fonts.body, "left", "center", true)
         end
-        dxDrawText("Medication: " .. table.concat(parts, ", "), x, y - s(8), X + W - PAD, y + s(14), C.spo2, 1,
-            fonts.body, "left", "center", true)
-        y = y + s(24)
+        y = y + math.ceil(#data.drugs / 2) * rowH + s(10)
     end
     if transportText and not data.dead then
         dxDrawText(transportText, x, y - s(8), X + W - PAD, y + s(14), C.warn, 1, fonts.body, "left", "center", true)
@@ -449,10 +490,10 @@ local function render()
             drawDrugMenu(cx, cy, hoverReason)
         end
     end
-    local buttons = getButtons()
-    layout.buttons = { buttons[1].x, buttons[1].y, W - PAD * 2, buttons[1].h }
-    layout.buttonList = buttons
-    local messageY = Y + H - PAD - s(50) - s(30)
+    local _, buttonsTop = getButtonRows()
+    layout.buttons = { x, buttonsTop, W - PAD * 2, Y + H - PAD - buttonsTop }
+    layout.buttonList = getButtons()
+    local messageY = buttonsTop - s(30)
     local text, color
     if hoverReason then
         text, color = hoverReason, C.muted

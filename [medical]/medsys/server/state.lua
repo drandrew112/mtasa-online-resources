@@ -1,6 +1,8 @@
 -- Patient registry and the medical state data structure.
 --
--- Only elements that are not perfectly healthy are kept in the registry (Patients).
+-- Only elements that are not perfectly healthy are kept in the registry (Patients), except the
+-- persistent ones (setPatientPersistent, e.g. every player via medsys_events): they always stay in
+-- it, so they always carry the status element data and can always be examined.
 -- The state is server-only: clients receive the status string as element data and full
 -- snapshots only while they examine the patient.
 --
@@ -32,6 +34,7 @@
 -- }
 
 Patients = {}
+Persistent = {} -- [element] = true: never discharged, re-registered after a reset / respawn
 
 local patientCount = 0
 
@@ -98,6 +101,33 @@ function removePatient(element, leaving)
         removeElementData(element, MEDIC.DATA_STATUS)
         removeElementData(element, MEDIC.DATA_SPO2)
         removeElementData(element, MEDIC.DATA_HEART_RATE)
+        -- a persistent patient starts over with a fresh (healthy) state (a dead one at its spawn)
+        if Persistent[element] and not isPedDead(element) then getPatient(element, true) end
+    end
+    if leaving then Persistent[element] = nil end
+    return true
+end
+
+-- Nothing is wrong with the patient (back to the baseline), see canDischarge in simulation.lua
+function isPatientHealthy(state)
+    return #state.injuries == 0 and state.baseBleeding == 0 and state.extraPain == 0
+        and not state.knockoutUntil and not state.arrestTick and not state.dead
+        and state.hypertension == 0 and #state.drugs == 0
+        and state.consciousness == "stable"
+        and state.bloodVolume >= MEDIC.BLOOD_VOLUME
+        and state.spo2 >= MEDIC.DISCHARGE_SPO2
+        and math.abs(state.heartRate - MEDIC.HEART_RATE) < 2
+        and math.abs(state.systolic - MEDIC.SYSTOLIC) < 2
+end
+
+-- persistent = true keeps the element in the registry even while healthy (registers it now)
+function setPatientPersistent(element, persistent)
+    if not isValidPatient(element) then return false end
+    if persistent then
+        Persistent[element] = true
+        if not isPedDead(element) then getPatient(element, true) end -- a dead one: at its spawn
+    else
+        Persistent[element] = nil
     end
     return true
 end
@@ -224,7 +254,9 @@ function buildSnapshot(state)
     end
 
     return {
-        isPatient = Patients[state.element] == state,
+        -- registered and not just a healthy persistent element: it needs care
+        isPatient = Patients[state.element] == state
+            and not (Persistent[state.element] and isPatientHealthy(state)),
         consciousness = state.consciousness,
         consciousnessLabel = MEDIC_CONSCIOUSNESS[state.consciousness],
         heartRate = round(state.heartRate),
@@ -345,6 +377,7 @@ local function onLeave()
         stopTreatmentsOn(source)
         removePatient(source, true)
     end
+    Persistent[source] = nil
 end
 addEventHandler("onElementDestroy", root, onLeave)
 addEventHandler("onPlayerQuit", root, onLeave)
@@ -373,6 +406,8 @@ end)
 addEventHandler("onPlayerSpawn", root, function()
     if Patients[source] then
         stopTreatmentsOn(source)
-        removePatient(source)
+        removePatient(source) -- re-registers a persistent one
+    elseif Persistent[source] then
+        getPatient(source, true)
     end
 end)

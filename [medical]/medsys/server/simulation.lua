@@ -164,14 +164,7 @@ end
 
 -- True when there is nothing left to simulate or show for this patient
 local function canDischarge(state)
-    return #state.injuries == 0 and state.baseBleeding == 0 and state.extraPain == 0
-        and not state.knockoutUntil and not state.arrestTick
-        and state.hypertension == 0 and #state.drugs == 0
-        and state.consciousness == "stable"
-        and state.bloodVolume >= MEDIC.BLOOD_VOLUME
-        and state.spo2 >= MEDIC.DISCHARGE_SPO2
-        and math.abs(state.heartRate - MEDIC.HEART_RATE) < 2
-        and math.abs(state.systolic - MEDIC.SYSTOLIC) < 2
+    return not Persistent[state.element] and isPatientHealthy(state)
         and not isPatientAttended(state.element)
 end
 

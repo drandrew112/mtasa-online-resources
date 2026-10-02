@@ -25,6 +25,9 @@ Players have **no clinical death**: when medsys stops a player's heart, the play
 (`PLAYER_DEATH_IS_FINAL`), so CPR never applies to players. Peds are untouched by this rule and
 are only injured with `APPLY_TO_PEDS = true`.
 
+Every player gets a **medical status** (`setPatientPersistent`) on join / resource start, so a
+medic can examine anyone, healthy or not. It is taken back when medsys_events stops.
+
 What the injuries do to the player (disabled controls, limping, screen effects) is in
 **medsys_effects**; it reads the body parts through `getInjuryDetails`.
 

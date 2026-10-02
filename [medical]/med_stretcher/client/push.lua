@@ -1,4 +1,5 @@
--- Pushing the stretcher. The pusher walks with GTA's own on-foot movement (forced to walk speed),
+-- Pushing the stretcher. The pusher walks with GTA's own on-foot movement (forced to walk speed
+-- unless the sprint key is held),
 -- which MTA syncs natively; the stretcher is attached in front of them. A looped walk animation via
 -- setPedAnimation cannot be used: its root motion is drawn forward and snaps back on every loop.
 -- While a pusher stands still, every client plays PUSH_IDLE_ANIM (arms forward) on them locally
@@ -7,7 +8,7 @@
 local D = STRETCHER_DATA
 
 local pushers = {}     -- ped -> { anim, x, y, tick, moving }
-local local_ = nil     -- { keys, lockedControls, stillSince } while the local player pushes
+local local_ = nil     -- { keys, sprintKeys, lockedControls, stillSince } while the local player pushes
 
 local IDLE_DELAY = 150 -- ms standing still before the idle pose comes back
 local MOVE_CONTROLS = { "forwards", "backwards", "left", "right" }
@@ -16,26 +17,36 @@ local MOVE_CONTROLS = { "forwards", "backwards", "left", "right" }
 -- Local player
 -- ---------------------------------------------------------------------------------------------
 
-local function readBoundKeys()
+local function readBoundKeys(controls)
     local keys = {}
-    for _, control in ipairs(MOVE_CONTROLS) do
+    for _, control in ipairs(controls) do
         for key in pairs(getBoundKeys(control) or {}) do keys[#keys + 1] = key end
     end
     return keys
 end
 
--- Is a movement key held? Read from the keys, because the idle pose makes GTA ignore the controls.
-local function wantsToMove()
+local function isAnyKeyDown(keys)
     if isChatBoxInputActive() or isConsoleActive() or isMainMenuActive() then return false end
-    for _, key in ipairs(local_.keys) do
+    for _, key in ipairs(keys) do
         if getKeyState(key) then return true end
     end
     return false
 end
 
+-- Is a movement key held? Read from the keys, because the idle pose makes GTA ignore the controls.
+local function wantsToMove()
+    return isAnyKeyDown(local_.keys)
+end
+
+-- Sprinting is allowed: the forced walk is dropped while the sprint key is held
+local function wantsToSprint()
+    return isAnyKeyDown(local_.sprintKeys)
+end
+
 local function startLocal()
     if local_ then return end
-    local_ = { keys = readBoundKeys(), lockedControls = {}, stillSince = getTickCount() }
+    local_ = { keys = readBoundKeys(MOVE_CONTROLS), sprintKeys = readBoundKeys({ "sprint" }),
+        lockedControls = {}, stillSince = getTickCount() }
     for _, control in ipairs(STRETCHER.PUSH_LOCKED_CONTROLS) do
         if isControlEnabled(control) then
             toggleControl(control, false)
@@ -78,7 +89,7 @@ local function updatePushers()
         if not isElement(ped) then
             pushers[ped] = nil
         elseif isElementStreamedIn(ped) and not isPedDead(ped) then
-            if ped == localPlayer then setPedControlState(localPlayer, "walk", true) end
+            if ped == localPlayer then setPedControlState(localPlayer, "walk", not wantsToSprint()) end
             local moving = isMoving(ped, p)
             if moving and p.anim then
                 p.anim = false

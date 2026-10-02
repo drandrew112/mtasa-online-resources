@@ -63,7 +63,17 @@ function isAtVehicleRear(element, vehicle)
     return getDistanceBetweenPoints3D(rx, ry, rz, ex, ey, ez) <= STRETCHER.REAR_RANGE
 end
 
--- Is the stretcher inside the square load zone behind its ambulance (shared/util.lua)?
+-- World yaw of the stretcher. While pushed it follows the pusher's heading.
+local function stretcherYaw(s)
+    if s.state == "pushing" and isElement(s.pusher) then
+        local _, _, rz = getElementRotation(s.pusher)
+        return rz + STRETCHER.PUSH_OFFSET[6]
+    end
+    local _, _, rz = getElementRotation(s.object)
+    return rz
+end
+
+-- Is the stretcher inside the load zone behind its ambulance (shared/util.lua)?
 function isStretcherAtRear(s)
     if not sameWorld(s.object, s.vehicle) then return false end
     return isInLoadZone(s.vehicle, stretcherPosition(s))
@@ -326,6 +336,9 @@ function loadStretcher(s, player)
     if not isStretcherAtRear(s) then
         return false, "Bring the stretcher to the rear doors of the ambulance."
     end
+    if not isLoadAligned(vehicle, stretcherYaw(s)) then
+        return false, "Turn the stretcher to face into the ambulance."
+    end
 
     local seat
     if s.patient then
@@ -337,8 +350,7 @@ function loadStretcher(s, player)
 
     -- let go of the pusher, keep the current world position
     local x, y, z = stretcherPosition(s)
-    local _, _, rz = getElementRotation(s.state == "pushing" and s.pusher or obj)
-    if s.state == "pushing" then rz = rz + STRETCHER.PUSH_OFFSET[6] end
+    local rz = stretcherYaw(s)
     clearPusher(s)
     if isElementAttached(obj) then detachElements(obj) end
     setElementFrozen(obj, false)

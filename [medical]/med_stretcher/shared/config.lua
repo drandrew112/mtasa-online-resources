@@ -39,24 +39,29 @@ STRETCHER = {
     REAR_POINT = { 0, -4.0, 0 },   -- vehicle-local, behind the rear doors
     REAR_RANGE = 2.5,              -- medic within this of REAR_POINT (take out)
 
-    -- Load zone: a square on the ground behind the ambulance. The stretcher can only be loaded while
-    -- its centre is inside it. While pushing, the pusher sees it: white = outside, green = inside.
+    -- Load zone: a narrow rectangle on the ground behind the ambulance. The stretcher can only be
+    -- loaded while its centre is inside it and it points into the ambulance (its yaw within
+    -- LOAD_ZONE_MAX_ANGLE of the stowed yaw). While pushing, the pusher sees it:
+    -- white = outside, orange = inside but turned wrong, green = can be loaded.
     LOAD_ZONE_CENTER = { 0, -4.7 },  -- vehicle-local x, y (MODEL_Y_SHIFT applies)
-    LOAD_ZONE_SIZE = 2.6,            -- metres, side of the square
+    LOAD_ZONE_WIDTH = 1.2,           -- metres, across the vehicle (x)
+    LOAD_ZONE_LENGTH = 2.4,          -- metres, along the vehicle (y)
     LOAD_ZONE_HEIGHT = 3.0,          -- max height difference to the vehicle origin
+    LOAD_ZONE_MAX_ANGLE = 30,        -- degrees, max yaw difference to the stowed direction
     LOAD_ZONE_COLOR = { 255, 255, 255 },
+    LOAD_ZONE_ANGLE_COLOR = { 255, 150, 40 },
     LOAD_ZONE_OK_COLOR = { 60, 220, 90 },
     LOAD_ZONE_FILL_ALPHA = 60,
     LOAD_ZONE_LINE_ALPHA = 220,
 
-    -- Pushing: attached in front of the medic, no collisions. The medic walks with GTA's own
-    -- movement (forced to walk speed, synced natively). A looped setPedAnimation walk cannot be used:
+    -- Pushing: attached in front of the medic, no collisions. The medic moves with GTA's own
+    -- movement (forced to walk speed unless sprinting, synced natively). A looped setPedAnimation walk cannot be used:
     -- its root motion is drawn forward and snaps back on every loop. PUSH_IDLE_ANIM is played locally
     -- on every client while the pusher stands still.
     PUSH_OFFSET = { 0, 1.5, -0.55, 0, 0, 0 },
     PED_HEIGHT = 1.0,              -- a standing ped's origin above its feet
     PUSH_IDLE_ANIM = { "CARRY", "crry_prtial" },  -- standing, arms forward
-    PUSH_LOCKED_CONTROLS = { "sprint", "jump", "crouch", "fire", "aim_weapon", "enter_exit",
+    PUSH_LOCKED_CONTROLS = { "jump", "crouch", "fire", "aim_weapon", "enter_exit",
         "enter_passenger", "next_weapon", "previous_weapon" },
 
     -- On the ground (after releasing)

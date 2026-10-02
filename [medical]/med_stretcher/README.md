@@ -26,15 +26,18 @@ doors (rear door dummies, or the back of the bounding box).
 
   A patient who was loaded with it rides out on it.
 - **Load**:
-  - The stretcher must be inside the square load zone behind the ambulance (`LOAD_ZONE_CENTER` / `LOAD_ZONE_SIZE`).
-    While pushing, the pusher sees the zone on the ground (client/zone.lua): white = outside, green = inside.
+  - The stretcher must be inside the narrow load zone behind the ambulance (`LOAD_ZONE_CENTER` /
+    `LOAD_ZONE_WIDTH` / `LOAD_ZONE_LENGTH`) and point into the ambulance: its yaw within
+    `LOAD_ZONE_MAX_ANGLE` (30°) of the stowed direction.
+    While pushing, the pusher sees the zone on the ground (client/zone.lua): white = outside,
+    orange = inside but turned wrong, green = can be loaded.
   - The doors open, the stretcher lines up, then it is lifted to the rear edge and slides in.
   - The patient is warped onto a free rear seat (`REAR_SEATS`), and the doors close.
   - A player patient cannot get out (`onVehicleStartExit` is cancelled) and cannot be jacked.
 - **Push**:
   - The stretcher is attached in front of the medic with collisions off.
-  - The medic walks with GTA's normal movement. It is forced to walk speed and synced natively; sprint,
-    jump and weapons are locked.
+  - The medic walks with GTA's normal movement. It is forced to walk speed unless the sprint key is held
+    (sprinting is allowed) and synced natively; jump and weapons are locked.
   - While the medic stands still, every client plays `PUSH_IDLE_ANIM` locally (arms forward).
   - The medic's own client drops this pose as soon as a movement key is pressed.
 - **Place patient**: opens the patient selector (`client/select.lua`).

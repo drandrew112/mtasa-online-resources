@@ -152,6 +152,26 @@ end)
 -- Lifecycle
 ---------------------------------------------------------------------------
 
+-- Every player has a medical status (medsys keeps them registered even while healthy), so a
+-- medic can always examine them. A dead / not yet spawned player gets it at its spawn.
+local function setPersistent(player, persistent)
+    local ms = medsys()
+    if ms then ms:setPatientPersistent(player, persistent) end
+end
+
+addEventHandler("onPlayerJoin", root, function() setPersistent(source, true) end)
+
+addEventHandler("onResourceStart", root, function(startedResource)
+    if startedResource == resource or getResourceName(startedResource) == MEDEV.MEDSYS then
+        for _, player in ipairs(getElementsByType("player")) do setPersistent(player, true) end
+    end
+end)
+
+-- without us medsys discharges the healthy players again
+addEventHandler("onResourceStop", resourceRoot, function()
+    for _, player in ipairs(getElementsByType("player")) do setPersistent(player, false) end
+end)
+
 local function forget()
     InjuryInfo[source] = nil
 end

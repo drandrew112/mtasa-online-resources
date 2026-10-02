@@ -92,6 +92,10 @@ end)
 addEventHandler("onPlayerWorkDutyEnd", root, function(workId, reason)
     if workId ~= EMS.WORK_ID then return end
     setMedic(source, false)
+    -- off duty = out of the ERM unit (the unit signs out when nobody is left)
+    if isRunning("med_erm") then
+        exports.med_erm:removePlayerFromUnit(source, "You went off duty.")
+    end
     EmsModules.fire("onDutyEnd", source, reason)
 end)
 

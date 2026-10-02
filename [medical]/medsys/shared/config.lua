@@ -195,10 +195,18 @@ MEDIC_ACTIONS = {
     airway = { label = "Intubate" },
     oxygen = { label = "O2 mask", activeLabel = "Remove O2" }, -- activeLabel: while the mask is on
     medication = { label = "Medication" },
-    transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: the only button
+    transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: alone in its row
 }
-MEDIC_ACTION_ORDER = { "bandage", "cpr", "iv", "airway", "oxygen", "medication", "transport" }
-MEDIC_DEAD_ACTION_ORDER = { "transport" } -- the only button when the patient is dead
+-- Button rows of the examination panel (ABCDE approach, E is not used for now).
+-- tag = the big letters on the row label (optional), label = the text under them
+MEDIC_ACTION_GROUPS = {
+    { tag = "AB", label = "Airway, Breathing", actions = { "airway", "oxygen" } },
+    { tag = "CD", label = "Circulation, Disability", actions = { "bandage", "cpr", "iv", "medication" } },
+    { label = "Transport", actions = { "transport" } },
+}
+MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
+    { label = "Transport", actions = { "transport" } },
+}
 
 -- Medicines (given through the IV access). name = the active ingredient, desc = what it is for,
 -- in plain words for players without medical knowledge (keep it to two lines on the panel).

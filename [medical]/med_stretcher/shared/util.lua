@@ -17,16 +17,24 @@ function worldToLocal(element, x, y, z)
            dx * m[3][1] + dy * m[3][2] + dz * m[3][3]
 end
 
--- Vehicle-local centre (x, y) and half side of the square load zone
+-- Vehicle-local centre (x, y), half width (x) and half length (y) of the load zone
 function getLoadZone(vehicle)
     local c = vehicleOffset(vehicle, "LOAD_ZONE_CENTER")
-    return c[1], c[2], STRETCHER.LOAD_ZONE_SIZE / 2
+    return c[1], c[2], STRETCHER.LOAD_ZONE_WIDTH / 2, STRETCHER.LOAD_ZONE_LENGTH / 2
 end
 
 -- Is the world point (the stretcher) inside the load zone of the vehicle?
 function isInLoadZone(vehicle, x, y, z)
     local lx, ly, lz = worldToLocal(vehicle, x, y, z)
-    local cx, cy, half = getLoadZone(vehicle)
-    return math.abs(lx - cx) <= half and math.abs(ly - cy) <= half
+    local cx, cy, halfW, halfL = getLoadZone(vehicle)
+    return math.abs(lx - cx) <= halfW and math.abs(ly - cy) <= halfL
         and math.abs(lz) <= STRETCHER.LOAD_ZONE_HEIGHT
+end
+
+-- Does a stretcher with this world yaw point into the vehicle (within LOAD_ZONE_MAX_ANGLE of the
+-- stowed direction)?
+function isLoadAligned(vehicle, yaw)
+    local _, _, vrz = getElementRotation(vehicle)
+    local diff = (yaw - (vrz + STRETCHER.STOW_OFFSET[6]) + 180) % 360 - 180
+    return math.abs(diff) <= STRETCHER.LOAD_ZONE_MAX_ANGLE
 end

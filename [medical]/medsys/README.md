@@ -31,7 +31,10 @@ client/progress.lua    progress bar of a timed procedure (medication)
 
 Only elements that are not perfectly healthy are in the registry. The simulation timer runs only
 while there is at least one patient. A patient with nothing left to simulate (no injuries, full
-vitals, nobody examining it) is dropped automatically.
+vitals, nobody examining it) is dropped automatically. Persistent elements
+(`setPatientPersistent`, medsys_events makes every player persistent) are never dropped: they
+always carry the status data (so they can always be examined) and get a fresh state after a reset
+or a respawn. `isPatient` in the snapshot is false for a healthy persistent element (= needs care).
 
 The down / get-up animations of the patients and everything a player patient experiences
 (blackout, control lock, pain / bleeding screen effects) are in **medsys_effects**, which follows
@@ -106,12 +109,17 @@ bleeding, skin (instead of a blood volume number), IV / airway status, pain, the
 the clinical death countdown. Close it with **X** or **Backspace**. It also closes when you walk
 away (`PANEL_RANGE`).
 
+The buttons are grouped into rows by `MEDIC_ACTION_GROUPS` (config): **AB** (Airway, Breathing:
+Intubate, O2 mask), **CD** (Circulation, Disability: Bandage, CPR, IV access, Medication) and
+Transport. A dead body only gets the Transport row (`MEDIC_DEAD_ACTION_GROUPS`). Active medicines
+are listed one per line (two columns) with their remaining time.
+
 | button | minigame | available when | success |
 |---|---|---|---|
 | Bandage | mg_arrows | an untreated wound / fracture / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), fracture splinted, burn dressed |
 | CPR | mg_cpr | clinical death | ROSC chance (accuracy, +IV, +airway, 0 when the blood loss is too high), otherwise +45 s on the death timer |
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
-| Intubate | mg_airway | no tube, and clinical death, or RSI: Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
+| Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
 | Medication | – (3 s, `DRUG_TIME`) | IV access in place | opens the medicine grid (name, group; the hovered one is described under it); the picked one is given after 3 s |
 | Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
@@ -162,6 +170,9 @@ local injuryId = exports.medical_system:applyInjury(element, injuryType, severit
 --   severity:   1-3 or "minor" | "serious" | "critical"
 
 exports.medical_system:healCompletely(element) -- everything back to baseline, health 100
+
+exports.medsys:setPatientPersistent(element, true) -- stays registered while healthy; false: normal again
+exports.medsys:isPatientPersistent(element)
 
 -- medic role (work_ems gives / takes it; only enforced when MEDIC.REQUIRE_MEDIC_ROLE = true)
 exports.medsys:setPlayerMedic(player, true)   -- give; false takes it away

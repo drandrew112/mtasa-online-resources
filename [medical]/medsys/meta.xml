@@ -34,6 +34,8 @@
     <export function="setMedicalState" type="server" />
     <export function="applyInjury" type="server" />
     <export function="healCompletely" type="server" />
+    <export function="setPatientPersistent" type="server" />
+    <export function="isPatientPersistent" type="server" />
 
     <!-- medic role (work_ems gives / takes it; med_stretcher and med_erm check it) -->
     <export function="setPlayerMedic" type="server" />

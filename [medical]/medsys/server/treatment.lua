@@ -273,14 +273,15 @@ PROCEDURES.iv = {
 
 PROCEDURES.airway = {
     resource = "mg_airway",
-    -- In cardiac arrest the tube goes in straight away. Otherwise only with RSI: the anaesthetic
-    -- (sedation) and the muscle relaxant (after its onset) both have to work. Given in the wrong
-    -- order the patient panics while the breathing stops (simulation.lua).
+    -- Only with RSI (also in cardiac arrest): the anaesthetic (sedation) and the muscle relaxant
+    -- (after its onset) both have to work. Given in the wrong order the patient panics while the
+    -- breathing stops (simulation.lua).
     can = function(state)
         if state.intubated then return false, "Airway already secured" end
-        if isInClinicalDeath(state) then return true end
         if not isSedated(state) then
-            if state.consciousness ~= "unconscious" then return false, "Patient is conscious - give Ketamine first" end
+            if state.consciousness == "stable" or state.consciousness == "dazed" then
+                return false, "Patient is conscious - give Ketamine first"
+            end
             return false, "Give Ketamine first (induction)"
         end
         if not hasDrugEffect(state, "paralysis") then return false, "Give Rocuronium (muscle relaxant)" end
