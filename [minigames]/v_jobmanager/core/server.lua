@@ -486,7 +486,9 @@ addEventHandler("onResourceStart", resourceRoot, function()
     for _, job in ipairs(jobs) do
         local marker = createMarker(job.marker[1], job.marker[2], job.marker[3] - 1, "cylinder", 2, 50, 160, 255, 120)
         jobMarkers[marker] = job
-        createBlipAttachedTo(marker, 9, 2, 50, 160, 255, 255)
+        local blip = createBlipAttachedTo(marker, 9, 2, 50, 160, 255, 255)
+        -- v_radar shows this as the blip's name (bigmap hover, bigmap blip menu, 3D blips)
+        setElementData(blip, "tooltipText", job.name)
     end
 end)
 

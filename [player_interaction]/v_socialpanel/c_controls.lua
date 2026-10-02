@@ -199,8 +199,15 @@ end)
 -- Panelek kozotti osszeferhetetlenseg: a social panel nem nyilhat meg, ha mar
 -- egy masik panel (INAC menu, telefon) vagy a chat input aktiv, illetve ha a
 -- jatekos a pause menuben van. (Zarni mindig lehet.)
+-- v_introduce: a szerver bemutato alatt csak az a panel nyilhat, amit eppen tanit
+local function introBlocks(id)
+    local allow = getElementData(localPlayer, "intro.allow")
+    return type(allow) == "table" and not allow[id]
+end
+
 local function otherPanelOpen()
-    return getElementData(localPlayer, "interactionMenuOpen")
+    return introBlocks("social")
+        or getElementData(localPlayer, "interactionMenuOpen")
         or getElementData(localPlayer, "phoneOpen")
         or getElementData(localPlayer, "showChatInput")
         or getElementData(localPlayer, "paused")

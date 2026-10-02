@@ -64,6 +64,19 @@ local playerMinimapZoom = 0.5
 local minimapZoom = playerMinimapZoom
 local minimapIsVisible = true
 
+-- Exported: the minimap's screen rectangle (v_introduce highlights it). -> x, y, w, h
+function getMinimapRect()
+	return minimapPosX, minimapPosY, minimapWidth, minimapHeight
+end
+
+-- The map works in every dimension: private sessions (v_introduce, workshops, lobbies) run
+-- outside dimension 0. false: only dimension 0, as before. Interiors have no signal either way.
+MAP_IN_EVERY_DIMENSION = true
+
+function dimensionHasMap()
+	return MAP_IN_EVERY_DIMENSION or getElementDimension(localPlayer) == 0
+end
+
 -- The bigmap is a full-screen part of the pause menu (ui_pause).
 local bigmapPosX = 0
 local bigmapPosY = 0
@@ -190,7 +203,7 @@ local function draw3DRoute(route, startIndex, color)
 end
 
 function render3DNavigation()
-	if getElementDimension(localPlayer) ~= 0 then return end
+	if not dimensionHasMap() then return end
 
 	-- Objective route (radar/objectives.lua) first, so the waypoint route draws on top.
 	if objectiveRoute then
@@ -350,6 +363,18 @@ local blipTooltips = {
 	["blips/north.png"] = "North",
 }
 
+-- Per-element blip name: the "tooltipText" element data of a blip element (e.g. the job
+-- name of a v_jobmanager blip). Read lazily, so blips created with the data already set
+-- (no data-change event on the client) are named too. Falls back to the icon's name.
+function getBlipName(blip)
+	local name = blipTooltips[blip]
+	if name == nil then
+		name = isElement(blip) and getElementData(blip, "tooltipText") or false
+		blipTooltips[blip] = name
+	end
+	return name ~= "" and name or nil
+end
+
 local blipTooltip_fontsize = 1
 local visibleBlipTooltip = false
 local hoveredWaypointBlip = false
@@ -464,7 +489,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement(),
 		toggleControl("radar", false)
 
 		for k,v in ipairs(getElementsByType("blip")) do
-			blipTooltips[v] = getElementData(v, "tooltipText")
+			blipTooltips[v] = getElementData(v, "tooltipText") or false
 		end
 
 		for k,v in ipairs(mainBlips) do
@@ -513,7 +538,7 @@ addEventHandler("onClientElementDataChange", getRootElement(),
 		end
 
 		if getElementType(source) == "blip" and dataName == "tooltipText" then
-			blipTooltips[source] = getElementData(source, dataName)
+			blipTooltips[source] = getElementData(source, dataName) or false
 		end
 	end
 )
@@ -545,7 +570,6 @@ addEventHandler("onClientRender", getRootElement(),
 )
 
 function renderMinimap(x, y, w, h)
-	local playerDimension = getElementDimension(localPlayer)
 	local int = getElementInterior(localPlayer)
 	if int == 0 then
 
@@ -615,7 +639,7 @@ function renderMinimap(x, y, w, h)
 
 		farshowBlipsData = {}
 
-		if playerDimension == 0 then
+		if dimensionHasMap() then
 			local remapPlayerPosX, remapPlayerPosY = remapTheFirstWay(playerPosX), remapTheFirstWay(playerPosY)
 			-- Unique-key base for blipTableId (createdBlips use their own index 1..n).
 			local farBlipsCount = 10000
@@ -781,7 +805,7 @@ function renderTheBigmap()
 
 	dxDrawOuterBorder(bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight, 5, tocolor(0, 0, 0, 60))
 
-	if getElementDimension(localPlayer) == 0 then
+	if dimensionHasMap() then
 		local playerPosX, playerPosY, playerPosZ = getElementPosition(localPlayer)
 
 		cursorX, cursorY = getHudCursorPos()
@@ -1314,8 +1338,9 @@ function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistanc
 			if isCursorWithinArea(cursorX, cursorY, blipX - blipHalfWidth, blipY - blipHalfHeight, blipWidth, blipHeight) then
 				if getElementType(blipElement) == "player" and playerCanSeePlayers then
 					visibleBlipTooltip = getPlayerName(blipElement)
-				elseif blipTooltips[icon] then
-					visibleBlipTooltip = blipTooltips[icon]
+				else
+					local tooltip = getBlipName(blipElement) or blipTooltips[icon]
+					if tooltip and tooltip ~= "" then visibleBlipTooltip = tooltip end
 				end
 			end
 		else
@@ -1332,7 +1357,7 @@ function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistanc
 end
 
 function render3DBlips()
-	if getElementDimension(localPlayer) == 0 then
+	if dimensionHasMap() then
 		local playerPosX, playerPosY, playerPosZ = getElementPosition(localPlayer)
 
 		local blipTable = getElementsByType("blip")
@@ -1348,8 +1373,8 @@ function render3DBlips()
 							local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, blipPosX, blipPosY, blipPosZ)
 							local blipIcon = getBlipIcon(blipTable[i])
 
-							dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. (blipTooltips[blipTable[i]] or ""), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
-							dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. (blipTooltips[blipTable[i]] or ""), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
+							dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. (getBlipName(blipTable[i]) or ""), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
+							dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. (getBlipName(blipTable[i]) or ""), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
 							dxDrawImage(screenX - 9*1.5, screenY - 7.5*1.5, 18*1.5, 15*1.5, "radar/files/blips/" .. blipIcon .. ".png", 0, 0, 0, tocolor(255, 255, 255, 200))
 						end
 					end
@@ -1609,6 +1634,7 @@ addEventHandler("onClientVehicleExit", getRootElement(),
 
 addEventHandler("onClientElementDestroy", getRootElement(),
 	function ()
+		blipTooltips[source] = nil
 		if occupiedVehicle == source then
 			occupiedVehicle = false
 		end
@@ -1633,7 +1659,7 @@ end
 function buildBigmapBlipMenu()
 	local groups, order = {}, {}
 
-	local function add(icon, x, y)
+	local function add(icon, x, y, name)
 		local label = blipTooltips[icon]
 		if not label or label == "" then return end
 		local g = groups[icon]
@@ -1642,7 +1668,7 @@ function buildBigmapBlipMenu()
 			groups[icon] = g
 			order[#order + 1] = icon
 		end
-		g.positions[#g.positions + 1] = { x, y }
+		g.positions[#g.positions + 1] = { x, y, name }
 	end
 
 	for i = 1, #createdBlips do
@@ -1653,7 +1679,7 @@ function buildBigmapBlipMenu()
 	for _, v in ipairs(getElementsByType("blip")) do
 		if getElementAttachedTo(v) ~= localPlayer then
 			local x, y = getElementPosition(v)
-			add("blips/" .. getBlipIcon(v) .. ".png", x, y)
+			add("blips/" .. getBlipIcon(v) .. ".png", x, y, getBlipName(v))
 		end
 	end
 
@@ -1717,7 +1743,18 @@ function drawBigmapBlipMenu()
 			sel and tocolor(12, 16, 22) or tocolor(150, 162, 176), 0.78, getFont("Roboto"), "right", "center")
 	end
 
-	dxDrawText("Up/Down: type     Left/Right: step", lx, ly + panelH + respc(4), lx + panelW, ly + panelH + respc(20),
+	-- name of the focused blip (e.g. which job) under the panel
+	local hintY = ly + panelH + respc(4)
+	local cat = bigmapBlipMenu[blipMenuSel]
+	local focused = blipMenuFocus and cat and cat.positions[blipMenuIndex]
+	if focused and focused[3] then
+		dxDrawRectangle(lx, hintY, panelW, rowH, tocolor(0, 0, 0, 175))
+		dxDrawText(focused[3], lx + respc(10), hintY, lx + panelW - respc(10), hintY + rowH,
+			0xFFFFFFFF, 0.85, getFont("Roboto"), "center", "center", true)
+		hintY = hintY + rowH + respc(4)
+	end
+
+	dxDrawText("Up/Down: type     Left/Right: step", lx, hintY, lx + panelW, hintY + respc(16),
 		tocolor(210, 216, 224), 0.72, getFont("Roboto"), "center", "top")
 end
 
@@ -1732,7 +1769,7 @@ function renderPausePreview(px, py, pw, ph)
 
 	dxDrawRectangle(px, py, pw, ph, tocolor(18, 28, 38, 255))
 
-	if getElementDimension(localPlayer) ~= 0 or getElementInterior(localPlayer) ~= 0 then
+	if not dimensionHasMap() or getElementInterior(localPlayer) ~= 0 then
 		dxDrawImage(px + pw / 2 - 32, py + ph / 2 - 40, 64, 64, "radar/files/gpslosticon.png")
 		dxDrawText("NO SIGNAL", px, py + ph / 2 + 28, px + pw, py + ph / 2 + 48, 0xFFFFFFFF, 1, "default-bold", "center", "center")
 		dxDrawOuterBorder(px, py, pw, ph, 2, tocolor(0, 0, 0, 220))

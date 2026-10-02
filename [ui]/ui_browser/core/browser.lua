@@ -240,6 +240,9 @@ local function onRender() BR.render() end
 
 function BR.doOpen(url)
     local st = BR.state
+    -- v_introduce: while the server introduction runs only the panel it teaches may open
+    local introAllow = getElementData(localPlayer, "intro.allow")
+    if not st.open and type(introAllow) == "table" and not introAllow.browser then return end
     if not st.open then
         st.open = true
         st.history = {}

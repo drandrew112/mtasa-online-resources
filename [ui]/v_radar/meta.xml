@@ -109,6 +109,7 @@
 	<export function="getShow3DBlips" type="client" />
 	<export function="setEnable3DNavigation" type="client" />
 	<export function="getEnable3DNavigation" type="client" />
+	<export function="getMinimapRect" type="client" />
 	<export function="addObjective" type="client" />
 	<export function="updateObjective" type="client" />
 	<export function="removeObjective" type="client" />

@@ -1,0 +1,61 @@
+<meta>
+    <info author="DrAndrew112" name="v_introduce" version="1.0.0" type="script"
+          description="Mandatory, modular server introduction for new players (chapters in modules/)" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/registry.lua" type="server" />
+    <script src="server/progress.lua" type="server" />
+    <script src="server/session.lua"  type="server" />
+    <script src="server/admin.lua"    type="server" />
+
+    <!-- chapters: plain data, after server/registry.lua -->
+    <script src="modules/01_welcome.lua"     type="server" />
+    <script src="modules/02_hud.lua"         type="server" />
+    <script src="modules/03_social.lua"      type="server" />
+    <script src="modules/04_phone.lua"       type="server" />
+    <script src="modules/05_interaction.lua" type="server" />
+    <script src="modules/06_money.lua"       type="server" />
+    <script src="modules/07_vehicles.lua"    type="server" />
+    <script src="modules/08_work.lua"        type="server" />
+    <script src="modules/09_activities.lua"  type="server" />
+    <script src="modules/10_health.lua"      type="server" />
+    <script src="modules/11_settings.lua"    type="server" />
+    <script src="modules/12_rules.lua"       type="server" />
+    <script src="modules/13_finish.lua"      type="server" />
+
+    <!-- update modules: news for players who already finished the introduction
+         (copy updates/_TEMPLATE.lua, then list the new file here) -->
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/draw.lua"   type="client" />
+    <script src="client/lock.lua"   type="client" />
+    <script src="client/mirror.lua" type="client" />
+    <script src="client/scenes.lua" type="client" />
+    <script src="client/rules.lua"  type="client" />
+    <script src="client/runner.lua" type="client" />
+
+    <file src="rules.txt" type="client" />
+    <file src="assets/sounds/task_done.wav" type="client" />
+    <file src="assets/fonts/Roboto.ttf"  type="client" />
+    <file src="assets/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- server: isInIntro(player) -> bool; startIntro(player, "full" | "new");
+         resetIntro(player | accountName); registerModule(def) -> ok, err; unregisterModule(id) -->
+    <export function="isInIntro"        type="server" />
+    <export function="startIntro"       type="server" />
+    <export function="resetIntro"       type="server" />
+    <export function="registerModule"   type="server" />
+    <export function="unregisterModule" type="server" />
+    <!-- client: isIntroActive() -> bool; getIntroAllow() -> { panelId = true } | nil -->
+    <export function="isIntroActive" type="client" />
+    <export function="getIntroAllow" type="client" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
+</meta>

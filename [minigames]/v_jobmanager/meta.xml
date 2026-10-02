@@ -12,6 +12,7 @@
 
     <script src="core/client/ui.lua" type="client" />
     <script src="core/client/scoreboard.lua" type="client" />
+    <script src="core/client/markers.lua" type="client" />
     <export function="jobmanagerJoin" type="server" />
     <export function="jobmanagerLeave" type="server" />
     <export function="jobmanagerGetState" type="server" />

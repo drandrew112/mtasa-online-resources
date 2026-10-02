@@ -94,7 +94,7 @@ local function makeObjectiveRoute(obj)
 end
 
 function updateObjectiveRoute()
-	if #objectives ~= 1 or getElementDimension(localPlayer) ~= 0 or getElementInterior(localPlayer) ~= 0 then
+	if #objectives ~= 1 or not dimensionHasMap() or getElementInterior(localPlayer) ~= 0 then
 		if routeTarget then
 			clearObjectiveRoute()
 		end

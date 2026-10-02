@@ -15,6 +15,9 @@ local secondarySound = {}
 local function createVehicleSound(veh, path, volume)
     local s = playSound3D(path, 0, 0, 0, true)
     if not s then return end
+    -- a 3D hang a 0-s dimenzióban születik: a jármű dimenziójában kell szólnia (pl. v_introduce, műhely)
+    setElementDimension(s, getElementDimension(veh))
+    setElementInterior(s, getElementInterior(veh))
     attachElements(s, veh)
     setSoundVolume(s, volume)
     setSoundMinDistance(s, SOUND_MIN_DIST)
@@ -138,3 +141,10 @@ local function onVehicleGone()
 end
 addEventHandler("onClientElementStreamOut", root, onVehicleGone)
 addEventHandler("onClientElementDestroy", root, onVehicleGone)
+
+-- dimenzióváltáskor a hangok mennek a járművel
+addEventHandler("onClientElementDimensionChange", root, function(_, newDimension)
+    local main, second = activeSound[source], secondarySound[source]
+    if isElement(main) then setElementDimension(main, newDimension) end
+    if isElement(second) then setElementDimension(second, newDimension) end
+end)

@@ -6,7 +6,8 @@ local MENU_FRACTION = 0.8
 local HEAD_H = S(22)
 local INFO_H = S(26)
 
--- Jobs can only be browsed / joined through the pause menu (ui_pause). This
+-- Jobs are browsed / joined through the pause menu (ui_pause) or with E in a job
+-- marker (core/client/markers.lua). This
 -- resource owns the waiting-lobby panel (GTA V mission-lobby style) and the
 -- client<->server plumbing.
 local panel, lobby, selected = nil, nil, 1
@@ -15,7 +16,6 @@ local panel, lobby, selected = nil, nil, 1
 local inviteMenu = nil
 local cachedJobs = {}
 local cachedLobbies = {}
-local nearbyJob = nil
 
 local FONT = { row = "default", rowB = "default-bold", head = "default-bold", title = "default-bold" }
 
@@ -98,16 +98,6 @@ addEventHandler("jobmanager:closeUi", resourceRoot, close)
 
 addEvent("jobmanager:matchStarted", true)
 addEventHandler("jobmanager:matchStarted", resourceRoot, close)
-
-addEvent("jobmanager:showJoinHint", true)
-addEventHandler("jobmanager:showJoinHint", resourceRoot, function(_, name)
-    nearbyJob = name or "this job"
-end)
-
-addEvent("jobmanager:hideJoinHint", true)
-addEventHandler("jobmanager:hideJoinHint", resourceRoot, function()
-    nearbyJob = nil
-end)
 
 --------------------------------------------------------------------------------
 -- race countdown (3, 2, 1, GO)
@@ -293,11 +283,6 @@ addEventHandler("onClientRender", root, function()
     if countdownText and getTickCount() < countdownUntil then
         dxDrawText(countdownText, 0, screenH * 0.32, screenW, screenH * 0.32 + S(140),
             tocolor(255, 255, 255, 235), S(6), "pricedown", "center", "center")
-    end
-
-    if nearbyJob and not panel and not getElementData(localPlayer, "paused") then
-        dxDrawText("Press BACKSPACE to open the pause menu and join " .. nearbyJob,
-            0, screenH - S(70), screenW, screenH - S(40), tocolor(255, 255, 255), S(1.1), FONT.rowB, "center", "center")
     end
 
     if panel ~= "lobby" or not lobby then return end

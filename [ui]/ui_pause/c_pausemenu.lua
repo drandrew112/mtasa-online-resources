@@ -437,7 +437,10 @@ addEventHandler("onClientKey", root, function(key, press)
     if getElementData(localPlayer, "browserOpen") then return end
 
     if not pauseMenuOpen then
+        -- v_introduce: while the server introduction runs only the panel it teaches may open
+        local introAllow = getElementData(localPlayer, "intro.allow")
         if OPEN_KEYS[key]
+            and not (type(introAllow) == "table" and not introAllow.pause)
             and not getElementData(localPlayer, "bigmapIsVisible")
             and not getElementData(localPlayer, "interactionMenuOpen")
             and not getElementData(localPlayer, "scoreboardOpen")

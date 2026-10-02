@@ -15,7 +15,9 @@ voting, checkpoint, UI, or synchronization code is executed.
 
 ## Current flow
 
-- Walk into a job marker to join or create its waiting lobby.
+- Every job marker has a 3D DX label (job name, type, player count). Standing in
+  the marker and pressing **E** joins a waiting lobby of that job or opens a new
+  one (`core/client/markers.lua`).
 - The first player is host and starts it with `/startjob`.
 - Leave a waiting lobby with `/leavejob`.
 - `/quickjob` joins one randomly selected existing lobby with room. It never

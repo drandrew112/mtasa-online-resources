@@ -18,8 +18,15 @@ end
 -- Panelek kozotti osszeferhetetlenseg: az INAC menu nem nyilhat meg, ha mar
 -- egy masik panel (social panel, telefon) vagy a chat input aktiv, ha a jatekos
 -- a pause menuben van, vagy ha egy job-lobbyban var. (Zarni mindig lehet.)
+-- v_introduce: a szerver bemutato alatt csak az a panel nyilhat, amit eppen tanit
+local function introBlocks(id)
+    local allow = getElementData(localPlayer, "intro.allow")
+    return type(allow) == "table" and not allow[id]
+end
+
 local function otherPanelOpen()
-    return getElementData(localPlayer, "paused")
+    return introBlocks("interaction")
+        or getElementData(localPlayer, "paused")
         or getElementData(localPlayer, "socialPanelOpen")
         or getElementData(localPlayer, "phoneOpen")
         or getElementData(localPlayer, "browserOpen")

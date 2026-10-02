@@ -37,7 +37,7 @@ part of the base mod. The old `listres.py` script has been removed.
 
 | Folder | Contents |
 | --- | --- |
-| `[core]` | Base systems: gamemode script + resource loader + update checker (`v_main`), accounts/login (`v_accounts`), shared MySQL layer (`v_mysql`), admin (`v_admin`), bank (`v_bank`), level system (`v_levelsys`), spawn/respawn (`v_spawnmanager`), join/quit handling (`v_joinquit`), played-time tracking (`v_playedtime`), Discord Rich Presence (`v_discordmanager`), modloader (`v_modloader`), plus gameplay scripts (`parachute`, `realdriveby`). |
+| `[core]` | Base systems: gamemode script + resource loader + update checker (`v_main`), accounts/login (`v_accounts`), shared MySQL layer (`v_mysql`), admin (`v_admin`), bank (`v_bank`), level system (`v_levelsys`), spawn/respawn (`v_spawnmanager`), join/quit handling (`v_joinquit`), the mandatory server introduction for new players (`v_introduce`), played-time tracking (`v_playedtime`), Discord Rich Presence (`v_discordmanager`), modloader (`v_modloader`), plus gameplay scripts (`parachute`, `realdriveby`). |
 | `[ui]` | User interface: the UI framework (`ui_core`), pause menu (`ui_pause`), phone (`ui_phone`), virtual browser (`ui_browser`), download screen (`ui_download`), interaction menu (`ui_inac`), radar/map (`v_radar`), the DGS GUI library (`dgs`). |
 | `[player_interaction]` | Player-to-player interaction: chat (`v_chat`), nametags (`v_nametags`), social panel (`v_socialpanel`). |
 | `[minigames]` | Jobs and minigames: job manager (`v_jobmanager`), arena war (`v_arenawar`), time trial (`v_timetrial`). |

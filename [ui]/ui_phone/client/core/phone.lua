@@ -41,8 +41,15 @@ local function inJobLobby()
     return exports.v_jobmanager:jobmanagerInLobby() and true or false
 end
 
+-- v_introduce: while the server introduction runs only the panel it teaches may open
+local function introBlocks(id)
+    local allow = getElementData(localPlayer, "intro.allow")
+    return type(allow) == "table" and not allow[id]
+end
+
 local function blocked()
-    return getElementData(localPlayer, "interactionMenuOpen")
+    return introBlocks("phone")
+        or getElementData(localPlayer, "interactionMenuOpen")
         or getElementData(localPlayer, "socialPanelOpen")
         or getElementData(localPlayer, "browserOpen")
         or getElementData(localPlayer, "paused")
@@ -66,6 +73,11 @@ local function closeCurrentApp()
     if app and app.close then app:close() end
 end
 
+-- local element data "phoneApp" = id of the open app (v_introduce waits for it in a task)
+local function setAppData(id)
+    if getElementData(localPlayer, "phoneApp") ~= id then setElementData(localPlayer, "phoneApp", id, false) end
+end
+
 local function setOpen(open)
     open = open and true or false
     if open == state.open then return end
@@ -83,6 +95,7 @@ local function setOpen(open)
         closeCurrentApp()
         state.view, state.appId = "home", nil
     end
+    setAppData(nil)
 end
 
 function Phone.close() setOpen(false) end
@@ -108,6 +121,7 @@ local function enterApp(app)
     if not app then return end
     if app.open and app:open() == false then return end  -- Browser refuses entry
     state.view, state.appId, state.list = "app", app.id, 1
+    setAppData(app.id)
     PhoneSound.select()
 end
 
@@ -161,6 +175,7 @@ local function handleKey(key)
     elseif key == "backspace" then
         if app and app.close then app:close() end
         state.view, state.appId = "home", nil
+        setAppData(nil)
         PhoneSound.select()
     end
 end

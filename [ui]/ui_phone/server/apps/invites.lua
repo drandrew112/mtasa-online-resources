@@ -27,6 +27,8 @@ end
 
 function phoneAddInvite(player, id, title, subtitle, cbRes, cbFn)
     if not isElement(player) or getElementType(player) ~= "player" or id == nil then return false end
+    -- nobody can invite a player who is in the server introduction (v_introduce)
+    if getElementData(player, "intro.active") then return false end
     id = tostring(id)
 
     invites[player] = invites[player] or {}

@@ -18,6 +18,10 @@ function updateRadio(veh)
     if not station then return end
 
     local s = playSound3D(station.url, 0, 0, 0, true)
+    if not s then return end
+    -- a 3D hang a 0-s dimenzióban születik: a jármű dimenziójában kell szólnia (pl. v_introduce, műhely)
+    setElementDimension(s, getElementDimension(veh))
+    setElementInterior(s, getElementInterior(veh))
     attachElements(s, veh)
     setSoundMaxDistance(s, 50)
 
@@ -85,4 +89,10 @@ function applyStation()
 end
 
 --bindKey("q", "up", applyStation)
+
+-- dimenzióváltáskor a rádió hangja megy a járművel
+addEventHandler("onClientElementDimensionChange", root, function(_, newDimension)
+    local s = vehicleSounds[source]
+    if isElement(s) then setElementDimension(s, newDimension) end
+end)
 

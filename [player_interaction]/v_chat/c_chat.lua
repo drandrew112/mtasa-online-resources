@@ -118,6 +118,9 @@ end)
 bindKey("t", "down", function()
     -- Ha barmelyik panel nyitva van, a chatet ne lehessen megnyitni.
     if getElementData(localPlayer, "showChatInput") then return end
+    -- v_introduce: a szerver bemutato alatt csak akkor, ha eppen a chatet tanitja
+    local introAllow = getElementData(localPlayer, "intro.allow")
+    if type(introAllow) == "table" and not introAllow.chat then return end
     if getElementData(localPlayer, "interactionMenuOpen")
     or getElementData(localPlayer, "socialPanelOpen")
     or getElementData(localPlayer, "phoneOpen")
