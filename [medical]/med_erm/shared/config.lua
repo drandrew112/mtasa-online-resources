@@ -22,9 +22,9 @@ Config.ADD_MEMBER_RADIUS = 10
 -- and the unit switches to On Scene automatically (only at its own task).
 Config.ARRIVE_RADIUS = 30
 
--- Speed (km/h) above which the driver of a unit with an active case, not yet
--- on scene, is warned when Start Response is off.
-Config.RESPONSE_WARN_SPEED = 15
+-- Speed (km/h) above which Start Response is switched on automatically when the
+-- driver of a unit with an active case drives off (to the scene, or away from it).
+Config.RESPONSE_AUTO_SPEED = 5
 
 -- Minimum admin_level (v_mysql account data) for /ermadmin.
 Config.ADMIN_LEVEL = 1

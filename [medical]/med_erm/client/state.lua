@@ -163,22 +163,29 @@ addEventHandler("erm:notify", resourceRoot, function(title, text, alert)
     State.notify(title, text, alert)
 end)
 
--- Driver of a unit with an active case drives off (not yet on scene) without
--- Start Response: remind once per departure.
-local wasMoving = false
+-- Driver of a unit with an active case drives off without Start Response: the
+-- response is started automatically, once per leg (to the scene, then away from
+-- it). Ending it by hand is respected for the rest of that leg.
+local autoStarted = {}   -- ["<task id>:go" | "<task id>:scene"] = true
 setTimer(function()
     local u, t = State.unit, State.task
     local veh = getPedOccupiedVehicle(localPlayer)
-    if not u or not t or not veh or getVehicleOccupant(veh, 0) ~= localPlayer
-        or not Config.TABLET_VEHICLES[getElementModel(veh)] then
-        wasMoving = false
+    if not u or not t or u.responding or u.status == "handover" or not veh
+        or getVehicleOccupant(veh, 0) ~= localPlayer or not Config.TABLET_VEHICLES[getElementModel(veh)] then
         return
     end
+    local leg = t.id .. (u.reachedScene and ":scene" or ":go")
+    if autoStarted[leg] then return end
+
     local vx, vy, vz = getElementVelocity(veh)
-    local moving = (vx * vx + vy * vy + vz * vz) ^ 0.5 * 180 > Config.RESPONSE_WARN_SPEED
-    if moving and not wasMoving and not u.responding and not u.reachedScene and u.status ~= "handover" then
-        State.notify("EMS Tablet", string.format("Case #%d is active but Start Response is off. Open the tablet (%s) and start the response.",
-            t.id, Config.TABLET_KEY:upper()))
+    if (vx * vx + vy * vy + vz * vz) ^ 0.5 * 180 <= Config.RESPONSE_AUTO_SPEED then return end
+    -- leaving the scene: moving the ambulance around on scene does not count
+    if u.reachedScene then
+        local x, y = getElementPosition(veh)
+        if getDistanceBetweenPoints2D(x, y, t.x, t.y) <= Config.ARRIVE_RADIUS then return end
     end
-    wasMoving = moving
+
+    autoStarted[leg] = true
+    Tablet.send("erm:caseAction", "start")
+    State.notify("EMS Tablet", string.format("Response started automatically for case #%d.", t.id))
 end, 500, 0)

@@ -89,7 +89,8 @@ local TABLET = {
       wait = "tablet:page:case", tablet = true },
     { text = "The Active Case page: the priority (P1 is the most urgent, P4 the least), the title, the location "
           .. "and distance, the caller and the description. On a real case a yellow route on the GPS leads you "
-          .. "to the scene.\n\nPress Start Response when you set off: lights & siren, status En Route.",
+          .. "to the scene.\n\nStart Response means lights & siren and status En Route. It switches on by itself "
+          .. "when you drive off (to the scene or away from it), but you can also press it - do it now.",
       wait = "tablet:caseAction:start", tablet = true },
     { text = "The rest is automatic: your status becomes On Scene when you arrive, and Handover when you park "
           .. "in a hospital's ambulance bay with the patient.\n\nLeave Case releases your unit while another unit "

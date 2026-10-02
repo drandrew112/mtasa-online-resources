@@ -150,9 +150,11 @@ signed in; after sign-in every crew member can open it anywhere.
   task; the reason is stored as `<callsign>: <reason>`. The handover is
   started by the hospital (med_hospitals) and the task is closed once its last
   unit has handed over.
-- **Start Response reminder**: the driver of a unit with an active case, not
-  yet on scene, gets a notification when driving off (above
-  `Config.RESPONSE_WARN_SPEED`, 15 km/h) without Start Response.
+- **Automatic Start Response**: when the driver of a unit with an active case
+  drives off (above `Config.RESPONSE_AUTO_SPEED`, 15 km/h) without Start
+  Response, the response is started automatically - once on the way to the
+  scene and once when leaving it (beyond `Config.ARRIVE_RADIUS`). End Response
+  still works by hand and is not overridden again on the same leg.
 - **Messages**: two channels, *Dispatch* (the unit's thread with the
   dispatchers; broadcasts show up here) and *Case* (case chat: every unit on
   the active task + the dispatchers). Unread counts per channel.
