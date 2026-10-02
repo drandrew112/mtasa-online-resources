@@ -46,7 +46,14 @@ local function setResting(field, index, min, max)
         state.restShift[field] = 0
         local natural = select(index, currentTargets(state))
         state.restShift[field] = value - natural
-        if not state.arrestTick then state[field] = value end
+        if not state.arrestTick then
+            state[field] = value
+            -- the diastolic and the pulse follow the systolic: jump to their new targets as well
+            if field == "systolic" then
+                local _, diastolic, heartRate = currentTargets(state)
+                state.diastolic, state.heartRate = diastolic, heartRate
+            end
+        end
         return true
     end
 end

@@ -22,6 +22,7 @@
 --     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
 --     restShift     = { systolic, diastolic, heartRate }, -- lasting target shifts (setMedicalState resting*)
 --     spo2Limit     = nil,                  -- lasting SpO2 target cap (setMedicalState restingSpo2)
+--     jitter        = { systolic, heartRate }, -- current random target offsets (natural variation)
 --     drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
 --     aware         = true,                 -- awake apart from the medicines (their sedation / paralysis)
 --     panic         = false,                -- awake under the muscle relaxant
@@ -65,6 +66,7 @@ local function newState(element)
         hypertension = 0,
         restShift = { systolic = 0, diastolic = 0, heartRate = 0 },
         spo2Limit = nil,
+        jitter = { systolic = 0, heartRate = 0 },
         drugs = {},
         consciousness = "stable",
         aware = true,
@@ -122,8 +124,8 @@ function isPatientHealthy(state)
         and state.consciousness == "stable"
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
         and state.spo2 >= MEDIC.DISCHARGE_SPO2
-        and math.abs(state.heartRate - MEDIC.HEART_RATE) < 2
-        and math.abs(state.systolic - MEDIC.SYSTOLIC) < 2
+        and math.abs(state.heartRate - MEDIC.HEART_RATE) < MEDIC.HR_JITTER + 2
+        and math.abs(state.systolic - MEDIC.SYSTOLIC) < MEDIC.BP_JITTER + 2
 end
 
 -- persistent = true keeps the element in the registry even while healthy (registers it now)

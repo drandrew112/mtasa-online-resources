@@ -273,32 +273,40 @@ local function getDrugCards()
 end
 
 -- Draws the grid and, under it (over the message line), the description of the hovered medicine
+-- IV medicines need the IV line in place, oral ones can always be given
+local function isDrugUsable(drug)
+    return not medicDrugNeedsIV(drug) or (panel and panel.data and panel.data.ivAccess) == true
+end
+
 -- hoverReason: a disabled button's reason is shown there instead of the placeholder
 local function drawDrugMenu(cx, cy, hoverReason)
     local x, y = X + PAD, Y + DRUG_AREA_Y
     local _, buttonsTop = getButtonRows()
     local bottom = buttonsTop - s(6)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
-    dxDrawText("MEDICATION  -  given through the IV line", x, y, X + W - PAD, y + s(20), C.muted, 1,
+    dxDrawText("MEDICATION  -  through the IV line unless marked oral", x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
-    local hoveredDrug, cardsBottom = nil, y
+    local hoveredDrug, hoveredOff, cardsBottom = nil, false, y
     for _, card in ipairs(getDrugCards()) do
         local drug = MEDIC_DRUGS[card.id]
+        local usable = isDrugUsable(drug)
         local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
-        if hovered then hoveredDrug = drug end
-        dxDrawRectangle(card.x, card.y, card.w, card.h, hovered and C.button or C.tile)
-        dxDrawRectangle(card.x, card.y, s(4), card.h, C.accent)
+        if hovered then hoveredDrug, hoveredOff = drug, not usable end
+        dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or hovered and C.button or C.tile)
+        dxDrawRectangle(card.x, card.y, s(4), card.h, usable and C.accent or C.line)
         local tx = card.x + s(14)
-        dxDrawText(drug.name, tx, card.y + s(5), card.x + card.w - s(8), card.y + s(26), C.text, 1, fonts.bold,
-            "left", "top", true)
-        dxDrawText(drug.class, tx, card.y + s(25), card.x + card.w - s(8), card.y + card.h, C.spo2, 1,
-            fonts.small, "left", "top", true)
+        dxDrawText(drug.name, tx, card.y + s(5), card.x + card.w - s(8), card.y + s(26), usable and C.text or C.muted,
+            1, fonts.bold, "left", "top", true)
+        local class = medicDrugNeedsIV(drug) and drug.class or (drug.class .. "  -  oral")
+        dxDrawText(class, tx, card.y + s(25), card.x + card.w - s(8), card.y + card.h, usable and C.spo2 or C.muted,
+            1, fonts.small, "left", "top", true)
         cardsBottom = card.y + card.h
     end
     if not hoveredDrug and hoverReason then return end
     local text = hoveredDrug and hoveredDrug.desc or "Point at a medicine to see what it does."
-    dxDrawText(text, x, cardsBottom + s(8), X + W - PAD, bottom, hoveredDrug and C.text or C.muted, 1,
-        fonts.small, "left", "top", true, true)
+    if hoveredOff then text = "Needs IV access.  " .. text end
+    dxDrawText(text, x, cardsBottom + s(8), X + W - PAD, bottom,
+        hoveredOff and C.warn or hoveredDrug and C.text or C.muted, 1, fonts.small, "left", "top", true, true)
 end
 
 -- A free spot for the transport vehicle next to the body: the boot faces the body, the
@@ -528,6 +536,7 @@ local function onClick(button, state)
     if panel.drugMenu then
         for _, card in ipairs(getDrugCards()) do
             if isInside(card.x, card.y, card.w, card.h, cx, cy) then
+                if not isDrugUsable(MEDIC_DRUGS[card.id]) then return end
                 panel.pending = true
                 panel.drugMenu = false
                 triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "medication", card.id)

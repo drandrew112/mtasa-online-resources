@@ -49,6 +49,9 @@ local function pedItems(entry)
         for i, preset in ipairs(def.presets) do
             values[#values + 1] = { label = mark(current == preset[2], preset[1]), value = { a = "state", k = key, i = i }, closeOnSelect = false }
         end
+        if def.min then
+            values[#values + 1] = { label = ("Custom value... (%d-%d)"):format(def.min, def.max), value = { a = "stateCustom", k = key } }
+        end
         state[#state + 1] = {
             label = ("%s: %s"):format(def.label, current == nil and "-" or msmStateValueLabel(key, current)),
             items = values,
@@ -343,6 +346,23 @@ local PED = {
             if not preset then return true end
             entry.state[value.k] = preset[2]
         end
+    end,
+    stateCustom = function(session, entry, ped, value)
+        local key = value.k
+        local def = MSM_STATE[key]
+        if not def or not def.min then return true end
+        local prompt = ("%s (%d-%d %s)"):format(def.label, def.min, def.max, def.unit or "")
+        Editor.askText(session.player, prompt, 3, tostring(entry.state[key] or ""), function(text)
+            local number = tonumber(text)
+            if not number or number < def.min or number > def.max then
+                msmNotify(session.player, "Scene editor", ("Enter a number between %d and %d"):format(def.min, def.max))
+                return
+            end
+            entry.state[key] = math.floor(number + 0.5)
+            Editor.refreshElement(session, "ped", entry)
+            Editor.markDirty(session)
+        end)
+        return true
     end,
     skin = function(session, entry)
         Editor.askText(session.player, "Ped skin ID", 3, tostring(entry.skin or 0), function(text)

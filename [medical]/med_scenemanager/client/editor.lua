@@ -1,4 +1,4 @@
--- Scene editor, client side: top banner, the E menu (ui_inac temp menu), text input
+-- Scene editor, client side: top banner, the R menu (ui_inac temp menu), text input
 -- bridge (ui_core) and 3D labels over the scene elements. All decisions are made by
 -- the server (server/editor.lua); this file only shows the state and sends actions.
 
@@ -190,7 +190,7 @@ local function drawBanner()
     dxDrawRectangle(x, y, w, 3 * scale, tocolor(229, 72, 77, 255))
     dxDrawText("Med Scene Editor", x, y + 6 * scale, x + w, y + 34 * scale,
         tocolor(255, 255, 255), 1.6 * scale, "default-bold", "center", "center")
-    local sub = "Press E to show menu"
+    local sub = "Press " .. MSM.KEY_MENU:upper() .. " to show menu"
     if state.scene then
         sub = sub .. "   |   " .. (state.scene.file or "unsaved scene") .. (state.scene.dirty and " *" or "")
     end

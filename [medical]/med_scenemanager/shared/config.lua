@@ -52,7 +52,7 @@ MSM = {
     EDITOR_DIMENSION = 47000,    -- + session number; every editor works in a private dimension
     LABEL_RANGE = 35,            -- m, 3D labels over the scene elements
     INTERACT_RANGE = 6,          -- m, ui_interactobject menus on the scene elements
-    KEY_MENU = "e",
+    KEY_MENU = "r",              -- not E: that is ui_interactobject's key (KEY_NEXT)
     PED_SKINS = { 7, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 25, 26, 29, 30, 40, 41 }, -- new peds get one of these
 }
 
@@ -100,14 +100,18 @@ MSM_STATE = {
     bloodVolume = { label = "Blood volume", presets = {
         { "5000 ml (full)", 5000 }, { "4250 ml (-15%)", 4250 }, { "3750 ml (-25%)", 3750 },
         { "3250 ml (-35%)", 3250 }, { "2800 ml (-44%)", 2800 } } },
-    spo2 = { label = "SpO2", presets = {
+    -- min / max: the menu also offers "Custom value..." in this range (= medsys resting* limits)
+    spo2 = { label = "SpO2", min = 1, max = 100, unit = "%", presets = {
         { "98 %", 98 }, { "90 %", 90 }, { "82 %", 82 }, { "72 %", 72 }, { "60 %", 60 } } },
-    heartRate = { label = "Heart rate", presets = {
+    heartRate = { label = "Heart rate", min = 30, max = 190, unit = "bpm", presets = {
         { "45 bpm", 45 }, { "72 bpm", 72 }, { "110 bpm", 110 }, { "135 bpm", 135 }, { "160 bpm", 160 } } },
-    systolic = { label = "Systolic BP", presets = {
-        { "60 mmHg", 60 }, { "80 mmHg", 80 }, { "100 mmHg", 100 }, { "120 mmHg", 120 }, { "170 mmHg", 170 } } },
-    diastolic = { label = "Diastolic BP", presets = {
-        { "40 mmHg", 40 }, { "55 mmHg", 55 }, { "80 mmHg", 80 }, { "100 mmHg", 100 } } },
+    -- the diastolic follows the systolic (about 2/3 of it) unless it is set as well
+    systolic = { label = "Systolic BP", min = 40, max = 260, unit = "mmHg", presets = {
+        { "60 mmHg", 60 }, { "80 mmHg", 80 }, { "100 mmHg", 100 }, { "120 mmHg", 120 }, { "150 mmHg", 150 },
+        { "170 mmHg", 170 }, { "190 mmHg", 190 }, { "210 mmHg", 210 }, { "230 mmHg", 230 } } },
+    diastolic = { label = "Diastolic BP", min = 20, max = 160, unit = "mmHg", presets = {
+        { "40 mmHg", 40 }, { "55 mmHg", 55 }, { "80 mmHg", 80 }, { "100 mmHg", 100 }, { "115 mmHg", 115 },
+        { "130 mmHg", 130 }, { "145 mmHg", 145 } } },
     pain = { label = "Extra pain", presets = {
         { "0", 0 }, { "30", 30 }, { "60", 60 }, { "90", 90 } } },
     bleeding = { label = "Extra bleeding", presets = {
@@ -150,5 +154,5 @@ function msmStateValueLabel(key, value)
     for _, p in ipairs(def.presets) do
         if p[2] == value then return p[1] end
     end
-    return tostring(value)
+    return def.unit and (tostring(value) .. " " .. def.unit) or tostring(value)
 end

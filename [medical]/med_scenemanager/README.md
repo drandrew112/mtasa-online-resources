@@ -15,10 +15,10 @@ server/storage.lua    scenes/index.json + scenes/<name>.json, in-memory summary 
 server/builder.lua    scene entry <-> vehicle / ped element (capture, apply, medsys)
 server/live.lua       live scenes: spawn, ERM task, cleanup after the task closed
 server/auto.lua       automatic generator + /medscenerandom, /medsceneauto, /medscenelist ...
-server/editor.lua     editor sessions, E menu actions, load / save
+server/editor.lua     editor sessions, R menu actions, load / save
 server/interact.lua   ui_interactobject menus on the editor's vehicles / peds
 server/exports.lua    public API
-client/editor.lua     banner, E menu (ui_inac temp menu), text input (ui_core), 3D labels
+client/editor.lua     banner, R menu (ui_inac temp menu), text input (ui_core), 3D labels
 scenes/               index.json + one JSON file per scene
 ```
 
@@ -111,11 +111,11 @@ the `autoEnabled` setting.
 ## Editor
 
 `/medsceneeditor` moves you into a private dimension (`EDITOR_DIMENSION` + n). A banner
-at the top shows **Med Scene Editor / Press E to show menu**. Leaving the editor unloads
+at the top shows **Med Scene Editor / Press R to show menu**. Leaving the editor unloads
 the scene and puts you back where you started. Dying or quitting does the same. The editor
 never starts the medsys simulation. Injuries / vitals only take effect in live scenes.
 
-**E menu** (ui_inac temp menu):
+**R menu** (ui_inac temp menu):
 
 - no scene: **New scene** (centred on you), **Load scene**, Exit editor
 - scene loaded:
@@ -137,8 +137,8 @@ never starts the medsys simulation. Injuries / vitals only take effect in live s
 
 Each scene file can be open in only one editor at a time.
 
-**Key note:** `E` is also ui_interactobject's "next menu" key. When two or more X menus are
-in range, pressing E also moves their focus. Change `MSM.KEY_MENU` if that is a problem.
+**Key note:** the editor menu is on `R` (`MSM.KEY_MENU`), not E: E is ui_interactobject's
+"next menu" key and the two clashed.
 
 ## Exports (server)
 

@@ -51,6 +51,14 @@ function canRequestTransport(target, state)
         and not (state.intubated and state.consciousness == "unconscious") then
         return false, "Only a stable or intubated patient can be transported"
     end
+    -- a living patient's blood pressure must be in a safe range for the ride
+    if not isBodyDead(target) and state then
+        if state.systolic < MEDIC.TRANSPORT_MIN_SYSTOLIC then
+            return false, ("Blood pressure too low for transport (systolic below %d)"):format(MEDIC.TRANSPORT_MIN_SYSTOLIC)
+        elseif state.systolic > MEDIC.TRANSPORT_MAX_SYSTOLIC then
+            return false, ("Blood pressure too high for transport (systolic above %d)"):format(MEDIC.TRANSPORT_MAX_SYSTOLIC)
+        end
+    end
     return true
 end
 

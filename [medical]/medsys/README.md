@@ -72,7 +72,9 @@ Patients[element] = {
   and burns lose plasma. IV access restores fluids up to 90%, and the body slowly compensates
   while nothing bleeds. Without circulation, bleeding drops to 20%.
 - **Blood pressure** moves towards a target based on the blood loss (shock classes: compensated
-  to ~15%, then the pressure falls), medicines and `hypertension`.
+  to ~15%, then the pressure falls), medicines and `hypertension`. The pressure / pulse targets
+  wander randomly by up to `BP_JITTER` (4 mmHg) / `HR_JITTER` (2 BPM), so the values never sit still;
+  the diastolic follows the systolic.
 - **Heart rate** always rises as the actual systolic pressure falls below 120 (`BARO_REFLEX`
   BPM / mmHg, whatever lowered it), plus early blood-loss compensation, pain and hypoxia.
   Below 50% SpO2 the heart fails (bradycardia) before the arrest.
@@ -122,8 +124,8 @@ are listed one per line (two columns) with their remaining time.
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
-| Medication | – (3 s, `DRUG_TIME`) | IV access in place | opens the medicine grid (name, group; the hovered one is described under it); the picked one is given after 3 s |
-| Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
+| Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); the picked one is given after 3 s |
+| Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), with a systolic pressure between `TRANSPORT_MIN_SYSTOLIC` and `TRANSPORT_MAX_SYSTOLIC` (90-180), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
 
 Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
 
@@ -133,7 +135,7 @@ Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
 | Rocuronium bromide (Esmeron) | RSI step 2 (muscle relaxant) | 40 min: after 15 s (`PARALYSIS_ONSET`) the patient cannot move (unconscious) or breathe: SpO2 −0.25%/s until intubated (half with the O2 mask). An **awake** patient (no Ketamine) panics: pulse +50, systolic +35, until it passes out or gets Ketamine |
 | Fentanyl | pain of an awake patient | 30 min: pain −70%, systolic −10 |
 | Adrenalin (Tonogen) | heart stimulant / cardiac arrest | 5 min: pulse +30, systolic +30, +15% ROSC chance for CPR (does not add up). Several doses can push the pulse to the arrest limit |
-| Captopril (Tensiomin) | high blood pressure | target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
+| Captopril (Tensiomin) | high blood pressure | oral (no IV needed). Target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
 
 RSI order: Ketamine first, then Rocuronium, wait for the onset, intubate. The wrong order is
 punished by the medicines themselves (panic, then the breathing stops in an awake patient).

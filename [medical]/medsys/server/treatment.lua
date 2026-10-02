@@ -344,13 +344,13 @@ PROCEDURES.oxygen = {
 PROCEDURES.medication = {
     duration = MEDIC.DRUG_TIME,
     animated = true,
-    can = function(state)
-        if state.ivAccess then return true end
-        return false, "Needs IV access"
-    end,
+    -- the menu always opens (oral medicines), IV medicines are checked one by one
+    can = function() return true end,
     validate = function(state, drugId)
-        if MEDIC_DRUGS[drugId] then return true end
-        return false, "Unknown medicine"
+        local drug = MEDIC_DRUGS[drugId]
+        if not drug then return false, "Unknown medicine" end
+        if medicDrugNeedsIV(drug) and not state.ivAccess then return false, "Needs IV access" end
+        return true
     end,
     progress = function(drugId)
         return "Giving " .. MEDIC_DRUGS[drugId].name .. "..."

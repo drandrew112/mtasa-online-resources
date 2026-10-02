@@ -1,7 +1,7 @@
 -- In-game scene editor (/medsceneeditor toggles it).
 --
 -- Every editor works in a private dimension. The scene being edited is a set of real
--- vehicles / peds in that dimension (no medsys simulation). The E menu (ui_inac temp
+-- vehicles / peds in that dimension (no medsys simulation). The R menu (ui_inac temp
 -- menu, client/editor.lua) sends actions here; the elements themselves are edited
 -- through ui_interactobject menus (server/interact.lua). Nothing is written to disk
 -- until Save / Save as.
@@ -116,7 +116,7 @@ end
 
 ---------------------------------------------------------------- client state
 
--- Everything the E menu needs
+-- Everything the R menu needs
 function Editor.sync(session)
     local player = session.player
     local state = { active = true, scenes = {} }
@@ -387,7 +387,7 @@ local function addVehicle(session, text)
     Builder.captureVehicle(vehicle, entry)
     warpPedIntoVehicle(player, vehicle, 0)
     Editor.markDirty(session)
-    msmNotify(player, "Scene editor", entry.id .. " created. Drive it into place, then save its position (E menu or X).")
+    msmNotify(player, "Scene editor", entry.id .. " created. Drive it into place, then save its position (R menu or X).")
 end
 
 -- Saves the position + state of the scene vehicle the player sits in

@@ -29,6 +29,12 @@ MEDIC = {
     BP_RATE = 2,
     SPO2_RECOVERY = 0.4,
 
+    -- Natural variation: the pressure / pulse targets wander randomly by up to this much
+    -- (a new random offset every JITTER_TIME seconds on average; the diastolic follows the systolic)
+    BP_JITTER = 4,              -- mmHg systolic
+    HR_JITTER = 2,              -- BPM
+    JITTER_TIME = 3,
+
     -- Cardiac arrest (clinical death) triggers
     ARREST_SPO2 = 0,            -- SpO2 at or below this -> pulse 0
     ARREST_BLOOD = 0.5,         -- blood volume fraction at or below this -> pulse 0
@@ -96,6 +102,8 @@ MEDIC = {
     TRANSPORT_VEHICLE = { dead = 442, alive = 416 }, -- Romero (hearse) / Ambulance
     TRANSPORT_DRIVER = { dead = 70, alive = 274 },   -- driver skin
     TRANSPORT_SPOT_RANGE = 15,  -- metres: the vehicle spot sent by the client must be this close to the body
+    TRANSPORT_MIN_SYSTOLIC = 90,  -- a living patient is only transported with a systolic pressure
+    TRANSPORT_MAX_SYSTOLIC = 180, -- in this range (stabilise it first: fluids / Captopril)
 
     -- The patient animations and the player's own screen effects live in medsys_effects.
 }
@@ -259,13 +267,19 @@ MEDIC_DRUGS = {
     captopril = {
         name = "Captopril (Tensiomin)",
         class = "Blood pressure lowering",
-        desc = "Lowers high blood pressure. It lowers a normal or low pressure too: "
-            .. "given to a patient in shock it can stop the heart.",
+        desc = "Tablet under the tongue, no IV needed. Lowers high blood pressure. It lowers a normal "
+            .. "or low pressure too: given to a patient in shock it can stop the heart.",
+        route = "oral", -- no IV access needed
         systolic = -40,
         duration = 600,
     },
 }
 MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril" }
+
+-- route = "oral" (tablet, spray, ...) needs no IV access; every other medicine goes through the IV line
+function medicDrugNeedsIV(drug)
+    return drug.route ~= "oral"
+end
 
 -- Accepts 1-3 or "minor"/"serious"/"critical" (also "mild"/"severe")
 local SEVERITY_NAMES = { minor = 1, mild = 1, serious = 2, severe = 2, critical = 3 }

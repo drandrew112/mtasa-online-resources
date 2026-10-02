@@ -135,11 +135,27 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     return systolic, diastolic, math.max(0, heartRate)
 end
 
+-- Natural variation: now and then a new random offset on the pressure / pulse targets
+local function updateJitter(state, dt)
+    local jitter = state.jitter
+    if math.random() < dt / MEDIC.JITTER_TIME then
+        jitter.systolic = (math.random() * 2 - 1) * MEDIC.BP_JITTER
+        jitter.heartRate = (math.random() * 2 - 1) * MEDIC.HR_JITTER
+    end
+    return jitter
+end
+
 local function updateCirculation(state, dt, bloodFraction, pain)
+    local jitter = updateJitter(state, dt)
     local systolic, diastolic = getCirculationTargets(state, bloodFraction, pain, state.systolic)
+    if systolic > 0 then
+        diastolic = math.max(0, diastolic + jitter.systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC))
+        systolic = math.max(0, systolic + jitter.systolic)
+    end
     state.systolic = approach(state.systolic, systolic, MEDIC.BP_RATE * dt)
     state.diastolic = approach(state.diastolic, diastolic, MEDIC.BP_RATE * dt)
     local _, _, heartRate = getCirculationTargets(state, bloodFraction, pain, state.systolic)
+    if heartRate > 0 then heartRate = heartRate + jitter.heartRate end
     state.heartRate = approach(state.heartRate, heartRate, MEDIC.HR_RATE * dt)
 end
 
