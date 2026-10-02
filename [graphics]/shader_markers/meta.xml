@@ -1,0 +1,12 @@
+<meta>
+    <info name="shader_markers" author="drandrew112" type="script" version="1.0.0" description="Modern gradient rendering for cylinder markers (keeps original marker colors)" />
+
+    <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" />
+
+    <file src="fx/marker_wall.fx" />
+    <file src="fx/marker_ground.fx" />
+
+    <export function="getMarkerOriginalColor" type="client" />
+    <export function="setMarkerShaderEnabled" type="client" />
+</meta>
