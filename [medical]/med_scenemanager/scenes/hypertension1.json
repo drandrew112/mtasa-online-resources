@@ -21,7 +21,7 @@
             "rot": 14.6,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 170, "diastolic": 100 }
+            "state": { "systolic": 190, "diastolic": 130 }
         }
     ]
 }
