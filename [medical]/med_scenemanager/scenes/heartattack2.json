@@ -1,0 +1,37 @@
+{
+    "enabled": true,
+    "vehicles": [],
+    "peds": [
+      {
+        "state": {
+          "consciousness": "clinical_death"
+        },
+        "injuries": [],
+        "skin": 7,
+        "id": "p1",
+        "rot": 351.3,
+        "anim": "ko_back",
+        "pos": [
+          2320.199,
+          -1715.58,
+          13.547
+        ]
+      }
+    ],
+    "interior": 0,
+    "name": "heartattack2",
+    "weight": 1,
+    "erm": {
+      "description": "A person got a heart attack at the store.",
+      "priority": 2,
+      "title": "Heart attack at a store",
+      "caller": "SceneManager"
+    },
+    "format": 1,
+    "center": [
+      2320.199,
+      -1715.58,
+      13.547
+    ],
+    "dimension": 0
+  }

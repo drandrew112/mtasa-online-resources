@@ -1,7 +1,9 @@
 {
     "scenes": [
       "heartattack1",
+      "heartattack2",
       "hypertension1",
-      "mva1"
+      "mva1",
+      "mva2"
     ]
   }
