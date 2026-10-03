@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension2",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [1433, 2624, 11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, nosebleed",
+        "description": "A woman got off the train dizzy with a nosebleed that will not stop. She sat down on the platform and a station worker gave her tissues.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [1433, 2624, 11.393],
+            "rot": 277,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 172, "diastolic": 100, "heartRate": 94, "consciousness": "stable" }
+        }
+    ]
+}

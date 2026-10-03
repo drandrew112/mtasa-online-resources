@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "montgomery_heartattack5",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [1245.256, 164.337, 19.617],

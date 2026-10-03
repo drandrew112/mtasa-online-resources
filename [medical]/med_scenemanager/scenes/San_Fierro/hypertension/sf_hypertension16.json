@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension16",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2295.25, 966.25, 65.107],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy and weak",
+        "description": "A man in his sixties feels dizzy and weak after standing in the sun. He thinks he took a double dose of his salt pills by mistake.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 20,
+            "pos": [-2295.25, 966.25, 65.107],
+            "rot": 270,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 166, "diastolic": 94, "heartRate": 84, "consciousness": "stable" }
+        }
+    ]
+}

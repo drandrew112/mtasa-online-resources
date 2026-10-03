@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension10",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2772.65, -1649.95, 11.716],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pregnant, confused",
+        "description": "A heavily pregnant woman is suddenly confused and cannot remember where she was going. Her ankles and hands are badly swollen and she complained of flashing lights in her eyes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [2772.65, -1649.95, 11.716],
+            "rot": 89.8,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 205, "diastolic": 122, "heartRate": 96, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "fern-ridge_heartattack5",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [531.896, 114.063, 23.021],

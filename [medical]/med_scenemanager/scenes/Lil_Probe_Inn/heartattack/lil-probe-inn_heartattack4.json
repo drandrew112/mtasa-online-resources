@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "lil-probe-inn_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-56.576, 1336.981, 11.08],

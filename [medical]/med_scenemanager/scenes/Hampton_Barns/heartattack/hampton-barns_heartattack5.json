@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "hampton-barns_heartattack5",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [693.352, 322.61, 20.233],

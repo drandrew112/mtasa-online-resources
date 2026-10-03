@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "leafy-hollow_heartattack5",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-876.709, -1800.349, 89.396],

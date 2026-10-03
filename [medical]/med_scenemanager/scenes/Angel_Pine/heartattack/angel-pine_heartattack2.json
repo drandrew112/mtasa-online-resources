@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "angel-pine_heartattack2",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-2121.723, -2392.378, 30.625],

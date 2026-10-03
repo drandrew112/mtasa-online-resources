@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension18",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2137.25, 1380.925, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, unsteady",
+        "description": "A man is unsteady on his feet and cannot answer simple questions. His brother says he was fine at breakfast but complained of a sore head.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2137.25, 1380.925, 10.82],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 192, "diastolic": 116, "heartRate": 94, "consciousness": "dazed" }
+        }
+    ]
+}

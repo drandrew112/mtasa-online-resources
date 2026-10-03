@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "sf_hypertension15",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2077.956, -300.675, 35.561],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pregnant, headache, swelling",
+        "description": "A pregnant woman at around thirty weeks has a severe headache and pain under her ribs. Her face and fingers are puffy.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [-2077.956, -300.675, 35.561],
+            "rot": 270.3,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 198,
+                "diastolic": 118,
+                "heartRate": 100,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension13",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2286.573, 2129, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Flushed, uneasy",
+        "description": "A woman feels flushed and uneasy, with a mild headache and tingling in her fingers. Her smartwatch keeps warning her about her heart.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [2286.573, 2129, 10.82],
+            "rot": 270.3,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 162, "diastolic": 96, "heartRate": 90, "consciousness": "stable" }
+        }
+    ]
+}

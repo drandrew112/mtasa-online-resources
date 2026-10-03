@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_hypertension13",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2076.471, 102.965, 32.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, frothy cough",
+        "description": "A woman is struggling to breathe and coughing up pink froth. She says she has felt her heart pounding since the morning and her legs are swollen.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [-2076.471, 102.965, 32.23],
+            "rot": 266.3,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 222,
+                "diastolic": 132,
+                "heartRate": 106,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

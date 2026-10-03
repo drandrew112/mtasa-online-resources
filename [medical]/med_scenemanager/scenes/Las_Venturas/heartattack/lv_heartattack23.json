@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "lv_heartattack23",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [1654.75, 1180.289, 10.82],

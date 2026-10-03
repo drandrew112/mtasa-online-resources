@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension18",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2631.181, -1823.026, 12.243],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nosebleed on a bench",
+        "description": "A woman reading on the grass has had a nosebleed for fifteen minutes. She feels dizzy and her head aches. She ran out of her tablets last week.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2631.181, -1823.026, 12.243],
+            "rot": 0,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 172, "diastolic": 100, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

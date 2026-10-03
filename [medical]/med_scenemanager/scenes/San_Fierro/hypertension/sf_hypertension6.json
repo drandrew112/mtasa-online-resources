@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension6",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1938.605, 334.85, 34.003],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Flushed, pounding heart",
+        "description": "A student on his way to an exam feels his heart pounding and his face burning up. He took a friend's diet pills to stay focused last night.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [-1938.605, 334.85, 34.003],
+            "rot": 84.2,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 176, "diastolic": 104, "heartRate": 100, "consciousness": "stable" }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension11",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1618.054, 1244.946, 7.177],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, headache",
+        "description": "An older lady is wandering slowly and repeating the same question. Her granddaughter says she complained of a terrible headache an hour ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-1618.054, 1244.946, 7.177],
+            "rot": 225,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 190, "diastolic": 114, "heartRate": 88, "consciousness": "dazed" }
+        }
+    ]
+}

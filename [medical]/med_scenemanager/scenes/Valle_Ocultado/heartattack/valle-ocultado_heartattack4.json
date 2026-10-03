@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "valle-ocultado_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-751.794, 2717.325, 47.31],

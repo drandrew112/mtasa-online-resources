@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "lv_hypertension21",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2183.27, 1135.013, 12.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, nosebleed",
+        "description": "An older woman feels dizzy and has a slow nosebleed. She is on blood thinners and her daughter is worried.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [2183.27, 1135.013, 12.67],
+            "rot": 153.6,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 180,
+                "diastolic": 108,
+                "heartRate": 98,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

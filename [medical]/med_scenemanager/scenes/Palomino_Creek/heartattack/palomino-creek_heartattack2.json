@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "palomino-creek_heartattack2",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [2227.242, -22.566, 26.484],

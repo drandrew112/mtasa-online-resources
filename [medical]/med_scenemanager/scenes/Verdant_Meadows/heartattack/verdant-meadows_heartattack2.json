@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "verdant-meadows_heartattack2",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [46.313, 2670.74, 55.407],

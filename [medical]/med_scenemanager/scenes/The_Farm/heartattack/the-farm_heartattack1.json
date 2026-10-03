@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "the-farm_heartattack1",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-1099.723, -1003.004, 129.219],

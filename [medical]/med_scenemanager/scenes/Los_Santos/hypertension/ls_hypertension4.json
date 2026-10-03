@@ -1,0 +1,36 @@
+{
+    "format": 1,
+    "name": "ls_hypertension4",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [847.125, -1762.125, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest tightness, blurred vision",
+        "description": "A man jogging through Marina sat down on the sidewalk with a crushing tightness in his chest and says everything has gone blurry. Bystanders say he is red in the face, short of breath and keeps asking for water.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [847.125, -1762.125, 13.55],
+            "rot": 270,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 93,
+                "systolic": 230,
+                "diastolic": 140,
+                "heartRate": 110,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

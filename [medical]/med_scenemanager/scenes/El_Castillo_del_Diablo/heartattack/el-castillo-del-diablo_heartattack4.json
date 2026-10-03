@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "el-castillo-del-diablo_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-167.17, 2472.084, 21.013],

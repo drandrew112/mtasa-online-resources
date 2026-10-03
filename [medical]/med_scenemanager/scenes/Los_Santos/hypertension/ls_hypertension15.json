@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "ls_hypertension15",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2434, -1822, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pounding heart after workout",
+        "description": "A man doing an outdoor workout feels his heart pounding out of his chest and his head throbbing. His gym bag is full of pre-workout powder.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [2434, -1822, 13.547],
+            "rot": 0,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "systolic": 182,
+                "diastolic": 106,
+                "heartRate": 112,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

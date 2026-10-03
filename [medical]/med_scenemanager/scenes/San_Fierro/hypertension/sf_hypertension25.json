@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension25",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2801.575, -160.25, 7.188],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slow to respond",
+        "description": "A man is slow to respond and keeps asking what day it is. A coworker says he complained of a terrible headache before lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-2801.575, -160.25, 7.188],
+            "rot": 0,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 190, "diastolic": 114, "heartRate": 94, "consciousness": "dazed" }
+        }
+    ]
+}

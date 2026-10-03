@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "el-quebrados_heartattack3",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-1538.186, 2560.096, 55.836],

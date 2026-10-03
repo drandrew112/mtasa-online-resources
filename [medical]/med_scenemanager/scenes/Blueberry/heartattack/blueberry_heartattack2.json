@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "blueberry_heartattack2",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [174.011, -149.101, 1.578],

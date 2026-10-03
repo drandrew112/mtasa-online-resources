@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "bayside_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-2654.653, 2478.295, 35.33],

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_hypertension5",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2379.45, -150.692, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crushing headache, vomiting",
+        "description": "A woman in her fifties collapsed onto the pavement holding her head, describing the worst headache she has ever had. She vomited and now refuses to open her eyes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-2379.45, -150.692, 35.32],
+            "rot": 0.5,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 231,
+                "diastolic": 138,
+                "heartRate": 112,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

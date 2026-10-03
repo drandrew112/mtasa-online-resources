@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_hypertension3",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [1039, 2446, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Headache, breathless",
+        "description": "A heavy-set man is struggling to breathe and has a crushing headache. Park staff found him sitting by the path, grey and sweating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1039, 2446, 10.82],
+            "rot": 160,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 228,
+                "diastolic": 136,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

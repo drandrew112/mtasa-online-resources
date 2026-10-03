@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension19",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2436.411, 961.277, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Headache, palpitations",
+        "description": "A nurse coming off a night shift has a pounding headache and palpitations. She checked her own pressure and does not like the number.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [2436.411, 961.277, 10.82],
+            "rot": 67.7,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 168, "diastolic": 98, "heartRate": 100, "consciousness": "stable" }
+        }
+    ]
+}

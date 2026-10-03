@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "sf_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-2519.625, 778.25, 43.678],

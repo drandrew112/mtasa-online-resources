@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension24",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [924.95, -1654.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy spell, missed meds",
+        "description": "A retired bus driver had a dizzy spell and grabbed a lamp post. He admits he stopped his tablets because they made him tired.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [924.95, -1654.25, 13.547],
+            "rot": 180,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 164, "diastolic": 96, "heartRate": 86, "consciousness": "stable" }
+        }
+    ]
+}

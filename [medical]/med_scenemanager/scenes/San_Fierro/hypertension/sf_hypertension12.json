@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension12",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2162.024, -470.871, 45.641],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pressure behind eyes",
+        "description": "A gym-goer who took a pre-workout supplement says there is a strong pressure behind his eyes and his ears are ringing.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-2162.024, -470.871, 45.641],
+            "rot": 45.1,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 174, "diastolic": 100, "heartRate": 94, "consciousness": "stable" }
+        }
+    ]
+}

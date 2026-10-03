@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "ls_hypertension2",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [1479.5, -1724.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of his life",
+        "description": "An office worker stepped out of a meeting near Pershing Square clutching his head, says it feels like it is about to split open. He stopped his blood pressure pills last month because he felt fine. Now the lights hurt his eyes and he has vomited twice into a planter.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1479.5, -1724.25, 13.547],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "systolic": 220,
+                "diastolic": 135,
+                "heartRate": 96,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

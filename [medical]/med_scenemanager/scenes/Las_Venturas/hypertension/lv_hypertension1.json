@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_hypertension1",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2852, 1290, 11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, running for train",
+        "description": "A man ran to catch his train and is now on the platform with chest pain and a racing heart. He is red in the face and sweating heavily.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [2852, 1290, 11.391],
+            "rot": 313,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "systolic": 212,
+                "diastolic": 128,
+                "heartRate": 110,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

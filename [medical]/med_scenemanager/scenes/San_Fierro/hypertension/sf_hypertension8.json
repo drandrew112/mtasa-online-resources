@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "sf_hypertension8",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2864.248, 990.559, 41.171],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Headache, blurred vision",
+        "description": "A taxi driver got out of his cab because the road started to blur. He has a band-like headache and his neck feels stiff.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-2864.248, 990.559, 41.171],
+            "rot": 222.6,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 184,
+                "diastolic": 112,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

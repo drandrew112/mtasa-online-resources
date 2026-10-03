@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "ls_hypertension6",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [1244.613, -1931.289, 31.151],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, ringing ears",
+        "description": "A woman carrying grocery bags had to sit down because the street started spinning. She says there is a loud ringing in her ears and her face feels hot.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [1244.613, -1931.289, 31.151],
+            "rot": 204.6,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 178,
+                "diastolic": 104,
+                "heartRate": 98,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension9",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2036.625, 1166.05, 45.445],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Panic, chest tight",
+        "description": "A woman who just received bad news on the phone is breathing fast and says her chest feels tight. Her own home monitor showed a high reading this morning too.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [-2036.625, 1166.05, 45.445],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 170, "diastolic": 102, "heartRate": 108, "consciousness": "stable" }
+        }
+    ]
+}

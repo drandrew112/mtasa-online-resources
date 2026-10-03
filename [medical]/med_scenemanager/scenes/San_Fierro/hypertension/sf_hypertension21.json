@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_hypertension21",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2699.45, 256.375, 4.328],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Headache, breathless",
+        "description": "A man is fighting for breath with a pounding headache. He says he has been coughing at night and sleeping sitting up for a week.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [-2699.45, 256.375, 4.328],
+            "rot": 0,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 226,
+                "diastolic": 134,
+                "heartRate": 104,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

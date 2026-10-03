@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension1",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1957, 140, 27.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused traveller",
+        "description": "A woman with a suitcase is confused on the platform and does not know which train she was waiting for. A station worker says she complained of a pounding headache and blurred vision.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-1957, 140, 27.688],
+            "rot": 130,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 184, "diastolic": 110, "heartRate": 98, "consciousness": "dazed" }
+        }
+    ]
+}

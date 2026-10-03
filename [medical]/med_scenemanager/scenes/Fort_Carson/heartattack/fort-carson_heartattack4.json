@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "fort-carson_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [11.052, 1155.875, 19.74],

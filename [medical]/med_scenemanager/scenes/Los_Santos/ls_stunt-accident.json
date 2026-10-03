@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "ls_stunt-accident",
+    "category": "",
     "enabled": true,
     "weight": 1,
     "center": [1953.462, -1810.008, 13.547],

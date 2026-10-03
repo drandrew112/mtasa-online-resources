@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension9",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2902.242, -1605.821, 11.047],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Light-headed after argument",
+        "description": "Two neighbours were shouting at each other over a parking spot when one of them went pale, clutched the railing and sat down. He says his head feels like it is in a vice.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [2902.242, -1605.821, 11.047],
+            "rot": 162.2,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 168, "diastolic": 98, "heartRate": 88, "consciousness": "stable" }
+        }
+    ]
+}

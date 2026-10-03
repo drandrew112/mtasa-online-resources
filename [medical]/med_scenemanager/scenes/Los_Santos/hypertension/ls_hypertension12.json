@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension12",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2790.963, -1382.982, 21.428],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Blurred vision, headache",
+        "description": "An elderly woman waiting for a friend says the letters on the shop signs have gone blurry and doubled. She has a dull headache and feels sick to her stomach.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2790.963, -1382.982, 21.428],
+            "rot": 22.3,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 182, "diastolic": 102, "heartRate": 90, "consciousness": "stable" }
+        }
+    ]
+}

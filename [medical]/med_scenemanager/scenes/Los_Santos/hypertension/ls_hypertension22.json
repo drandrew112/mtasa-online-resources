@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension22",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [584.291, -1574.627, 16.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Numb arm, slurred words",
+        "description": "An older man sitting on a bench says his left hand has gone numb and tingly. His speech is slightly slurred and he keeps losing his train of thought.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [584.291, -1574.627, 16.18],
+            "rot": 271,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 218, "diastolic": 130, "heartRate": 98, "consciousness": "dazed" }
+        }
+    ]
+}

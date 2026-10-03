@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension23",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2691.822, 1058.345, 6.813],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Blurry vision, worried",
+        "description": "A woman with diabetes says her vision went blurry and her head is throbbing. She checked her sugar and it was fine.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2691.822, 1058.345, 6.813],
+            "rot": 345.2,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 174, "diastolic": 104, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

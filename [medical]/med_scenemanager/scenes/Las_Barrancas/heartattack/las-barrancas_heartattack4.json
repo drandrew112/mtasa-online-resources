@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "las-barrancas_heartattack4",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-818.375, 1485, 19.769],

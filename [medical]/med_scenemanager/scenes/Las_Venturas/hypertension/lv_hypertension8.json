@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension8",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2639.854, 1520.975, 10.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy after standing",
+        "description": "An elderly woman felt dizzy and had to sit down. She took her blood pressure pills twice this morning by mistake, then a different one again.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [2639.854, 1520.975, 10.29],
+            "rot": 332.4,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 170, "diastolic": 100, "heartRate": 90, "consciousness": "stable" }
+        }
+    ]
+}

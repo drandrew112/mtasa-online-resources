@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension19",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2816.7, 121.125, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throbbing headache",
+        "description": "A hairdresser on a cigarette break says a throbbing headache has been building for hours and now she can barely see straight.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [-2816.7, 121.125, 7.18],
+            "rot": 0,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 176, "diastolic": 102, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

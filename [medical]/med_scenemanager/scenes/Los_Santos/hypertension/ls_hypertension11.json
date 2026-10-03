@@ -1,0 +1,36 @@
+{
+    "format": 1,
+    "name": "ls_hypertension11",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2932.958, -1400.553, 10.938],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pressure, very high BP",
+        "description": "A builder on his lunch break felt a heavy pressure across his chest and a racing heart. Coworkers say he is beetroot red and sweating. He takes pills for blood pressure but skips them on work days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [2932.958, -1400.553, 10.938],
+            "rot": 185.9,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 226,
+                "diastolic": 136,
+                "heartRate": 114,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

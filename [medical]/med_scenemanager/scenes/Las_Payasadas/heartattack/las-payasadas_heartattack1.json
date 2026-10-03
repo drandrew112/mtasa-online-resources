@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "las-payasadas_heartattack1",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-250, 2650.75, 62.658],

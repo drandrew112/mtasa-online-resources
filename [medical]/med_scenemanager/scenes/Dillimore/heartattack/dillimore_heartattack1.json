@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "dillimore_heartattack1",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [805.5, -602.125, 16.336],

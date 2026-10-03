@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "lv_hypertension4",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [1124.375, 1200.925, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, restless",
+        "description": "A young man feels his heart racing and cannot sit still. He took cold medicine with decongestant several times today.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [1124.375, 1200.925, 10.82],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 172, "diastolic": 102, "heartRate": 108, "consciousness": "stable" }
+        }
+    ]
+}

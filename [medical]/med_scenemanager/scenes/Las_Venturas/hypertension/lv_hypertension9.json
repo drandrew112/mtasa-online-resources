@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_hypertension9",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2419.838, 1764.143, 10.813],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, very high BP",
+        "description": "A man has a crushing pain in his chest and his heart is racing. He is clammy and says his blood pressure has been out of control for months.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [2419.838, 1764.143, 10.813],
+            "rot": 22.3,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "systolic": 218,
+                "diastolic": 132,
+                "heartRate": 110,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

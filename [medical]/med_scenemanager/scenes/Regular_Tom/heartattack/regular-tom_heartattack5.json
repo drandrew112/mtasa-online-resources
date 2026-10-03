@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "regular-tom_heartattack5",
+    "category": "heartattack",
     "enabled": true,
     "weight": 1,
     "center": [-371.025, 1822.158, 50.265],

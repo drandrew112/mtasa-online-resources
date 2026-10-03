@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "sf_hypertension3",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2846.45, 408.25, 4.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Racing heart, sweaty",
+        "description": "A woman feels her heart racing and her palms are sweaty. She just walked out of a stressful court hearing.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-2846.45, 408.25, 4.5],
+            "rot": 0,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 174, "diastolic": 102, "heartRate": 100, "consciousness": "stable" }
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "format": 1,
     "name": "mva1",
+    "category": "mva",
     "enabled": true,
     "weight": 1,
     "center": [1850.661, -1462.587, 13.398],

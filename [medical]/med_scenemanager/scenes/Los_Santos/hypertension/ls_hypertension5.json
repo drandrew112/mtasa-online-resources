@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypertension5",
+    "category": "hypertension",
+    "enabled": true,
+    "weight": 1,
+    "center": [2301.635, -1899.732, 13.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pounding headache, dizzy",
+        "description": "A delivery driver pulled over and sat on the curb with a pounding headache at the back of his skull. He ran out of his blood pressure tablets a week ago and has been drinking coffee all day to stay awake.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [2301.635, -1899.732, 13.61],
+            "rot": 182.3,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 186, "diastolic": 108, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}
