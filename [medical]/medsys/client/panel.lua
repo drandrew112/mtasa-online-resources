@@ -419,7 +419,10 @@ local function render()
     y = drawVitals(x, vitalsY, data, cx, cy) + s(12)
     layout.vitals = { x, vitalsY, W - PAD * 2, y - s(12) - vitalsY }
     layout.monitorButton = panel.monitorButton -- nil once the monitor is attached
-    layout.lifepak = data.monitor and getLifepakRect(X, Y) or nil
+    if data.monitor then
+        layout.lifepak = getLifepakRect(X, Y)
+        layout.lifepakScreen, layout.lifepakKeypad = getLifepakParts(X, Y)
+    end
     layout.status = { x, y, W - PAD * 2, s(22) }
 
     -- transport status, nil when none was requested
@@ -588,8 +591,8 @@ function isExaminationOpen()
 end
 
 -- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
--- injuries, buttons, monitorButton (until the monitor is attached), lifepak (the monitor window,
--- while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
+-- injuries, buttons, monitorButton (until the monitor is attached), lifepak / lifepakScreen /
+-- lifepakKeypad (the monitor window and its parts, while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
 function getExaminationPanelLayout()
     return panel and panel.layout or false
 end

@@ -2,10 +2,11 @@
 -- optional rows (minigame list), buttons and a "Skip tutorial" link, plus a pulsing highlight
 -- around a screen rectangle (e.g. a section of the examination panel).
 --
--- Card.show(spec)   spec = { title, step, text, note, noteColor, rows, buttons, modal }
+-- Card.show(spec)   spec = { title, step, text, note, noteColor, rows, buttons, modal, side }
 --   rows    = { { title, desc, status, statusColor, button = { label, fn, disabled } } }
 --   buttons = { { label, fn, primary, disabled } }
 --   modal   = true: the card shows the cursor itself
+--   side    = "right": on the right edge (e.g. while the Lifepak window is left of the exam panel)
 -- Card.hide(), Card.setHidden(bool) (e.g. while a minigame runs), Card.highlight(rect | nil)
 -- Buttons work whenever the cursor is visible; TUTORIAL.CURSOR_KEY toggles it.
 
@@ -120,7 +121,11 @@ local function drawHighlight()
     -- connector from the card to the rectangle
     if Card.bounds then
         local bx, by, bw = Card.bounds[1], Card.bounds[2], Card.bounds[3]
-        dxDrawLine(bx + bw, by + s(30), x, y + h / 2, color, s(2), true)
+        if bx > x then
+            dxDrawLine(bx, by + s(30), x + w, y + h / 2, color, s(2), true)
+        else
+            dxDrawLine(bx + bw, by + s(30), x, y + h / 2, color, s(2), true)
+        end
     end
 end
 
@@ -152,7 +157,7 @@ local function render()
     h = h + s(34) + PAD
 
     local y = math.max(s(20), (sh - h) / 2 - s(60))
-    local x = X
+    local x = spec.side == "right" and sw - X - W or X
     Card.bounds = { x, y, W, h }
 
     dxDrawRectangle(x - 1, y - 1, W + 2, h + 2, C.edge, true)

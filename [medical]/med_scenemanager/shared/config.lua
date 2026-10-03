@@ -39,6 +39,9 @@ MSM = {
     CLEANUP_FORCE = 600,         -- s after the task closed: removed even with players around
     MAX_LIFETIME = 60 * 60,      -- s, a scene whose task never closes is closed + removed
     CHECK_INTERVAL = 5000,       -- ms, cleanup + generator tick
+    -- getSceneAt: a point within this many metres of an open scene (centre, peds,
+    -- vehicles) belongs to it - e.g. ui_phone refuses an ambulance call there
+    CALL_RADIUS = 80,
 
     -- Automatic generator. It only works while med_erm has free units, and the
     -- average gap between two scenes is divided by the number of free units.

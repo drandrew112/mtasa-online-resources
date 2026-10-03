@@ -7,6 +7,9 @@
     when called, the client asks the server (`contacts:dynPull`) and the reply
     (`contacts:dyn`) fills the menu. If that list comes back empty the call is
     never answered - it rings out and drops back to the contact list.
+
+    An action may ask for text: the server pushes `contacts:prompt` and the
+    ui_core text input's answer goes back on `contacts:promptResult`.
 ]]
 
 local u = PhoneUI.u
@@ -52,6 +55,27 @@ phoneOnServer("contacts:dyn", function(contactKey, rows)
             call.sel = math.max(1, math.min(call.sel, math.max(1, n)))
         end
     end
+end)
+
+-- Text prompt asked by the server for a contact action (e.g. Emergency Services:
+-- title + description). The answer goes back on "contacts:promptResult",
+-- text = false when cancelled (or ui_core is not running).
+local promptToken, promptContact, promptStep
+
+addEvent("ui_core:textInputResult")
+addEventHandler("ui_core:textInputResult", root, function(token, text)
+    if not promptToken or token ~= promptToken then return end
+    promptToken = nil
+    phoneRPC("contacts:promptResult", promptContact, promptStep, text)
+end)
+
+phoneOnServer("contacts:prompt", function(contactKey, step, title, maxLen)
+    local ok, token = pcall(function() return exports.ui_core:openTextInput(title, maxLen, "") end)
+    if not ok or not token then
+        phoneRPC("contacts:promptResult", contactKey, step, false)
+        return
+    end
+    promptToken, promptContact, promptStep = token, contactKey, step
 end)
 
 PhoneApp.register({

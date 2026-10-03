@@ -12,6 +12,17 @@ function removeScene(instanceId)
     return Live.remove(tonumber(instanceId), "removed by export")
 end
 
+-- getSceneAt(x, y, z [, radius]) -> instanceId, sceneName, taskId | false
+-- The open scene (its task is not closed yet) within radius (default MSM.CALL_RADIUS)
+-- of the point - its centre, peds or vehicles. ui_phone refuses an ambulance call there.
+function getSceneAt(x, y, z, radius)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z) or 0
+    if not x or not y then return false end
+    local scene = Live.sceneAt(x, y, z, tonumber(radius) or MSM.CALL_RADIUS)
+    if not scene then return false end
+    return scene.id, scene.name, scene.taskId or false
+end
+
 -- getActiveScenes() -> { { id, name, taskId, source, center, createdAt, closed, peds, vehicles }, ... }
 function getActiveScenes()
     local out = {}

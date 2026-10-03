@@ -3,6 +3,9 @@
 -- A scene lives until its ERM task closes. After that it is removed once no player
 -- is near it (CLEANUP_DELAY / CLEANUP_RANGE), at the latest after CLEANUP_FORCE.
 -- A scene whose task never closes is closed after MAX_LIFETIME.
+-- When the last patient of a scene is taken away by a medsys transport ("Request
+-- transport") and no other scene ped is left (none on a stretcher / in an ambulance),
+-- the task is closed: there is nobody left to hand over at a hospital.
 --
 -- Events (on this resource's root):
 --   onMedSceneSpawned (instanceId, sceneName, taskId | false)
@@ -55,6 +58,23 @@ function Live.public(scene)
         createdAt = scene.createdAt, closed = scene.closedAt ~= nil,
         peds = #scene.peds, vehicles = #scene.vehicles,
     }
+end
+
+-- Open scene (task not closed yet) within radius of a point -> scene | nil
+function Live.sceneAt(x, y, z, radius)
+    for _, scene in pairs(Live.scenes) do
+        if not scene.closedAt then
+            local points = { scene.center }
+            for _, list in ipairs({ scene.peds, scene.vehicles }) do
+                for _, element in ipairs(list) do
+                    if isElement(element) then points[#points + 1] = { getElementPosition(element) } end
+                end
+            end
+            for _, p in ipairs(points) do
+                if getDistanceBetweenPoints3D(x, y, z, p[1], p[2], p[3]) <= radius then return scene end
+            end
+        end
+    end
 end
 
 ---------------------------------------------------------------- spawn
@@ -166,6 +186,33 @@ addEventHandler("onErmTaskClosed", root, function(taskId)
     if scene and not scene.closedAt then
         scene.closedAt = getTickCount()
     end
+end)
+
+-- medsys "Request transport": source = the ped, fired right before it is destroyed
+local function onPatientTransported()
+    local id = getElementData(source, "msm.scene")
+    local scene = id and Live.scenes[id]
+    if not scene or scene.closedAt or not scene.taskId or not ermRunning() then return end
+    for _, ped in ipairs(scene.peds) do
+        if ped ~= source and isElement(ped) then return end -- a patient is still left
+    end
+    local task = exports[MSM.ERM]:getTask(scene.taskId)
+    if task and task.status ~= "closed" then
+        exports[MSM.ERM]:closeTask(scene.taskId, "Completed - patients transported")
+    end
+end
+
+-- (re)attached whenever medsys (re)starts and registers the event again
+local function hookMedsys()
+    if not msmResourceRunning(MSM.MEDSYS) then return end
+    for _, fn in ipairs(getEventHandlers("onMedicalPatientTransported", root) or {}) do
+        if fn == onPatientTransported then return end
+    end
+    addEventHandler("onMedicalPatientTransported", root, onPatientTransported)
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if res == resource or getResourceName(res) == MSM.MEDSYS then hookMedsys() end
 end)
 
 local function anyPlayerNear(scene)

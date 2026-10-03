@@ -18,9 +18,14 @@ dimension, starting at `TUTORIAL.DIMENSION_BASE`.
    Home page, a demo case arrives, Active Case, Start Response, the automatic statuses, Messages,
    close the tablet.
 2. **Examination.** A patient with a minor burn (medsys `setTutorialPatient`, no transport). The
-   steps: open the panel (X, 1), the card highlights each panel section (consciousness, vitals,
-   IV/airway/pain, injuries, buttons), then the player bandages the burn with mg_arrows. A failed
-   bandage can be retried.
+   steps: open the panel (X, 1), the card highlights each panel section (consciousness, pulse /
+   bleeding / skin, IV/airway/pain, injuries, the AB / CD / Transport button rows), the player
+   attaches the monitor (the button in the heart rate tile), the card explains the Lifepak screen
+   (HR + ECG + rhythm name, SpO2, NIBP) and the defibrillator keys (CHARGE, SHOCK, ANALYZE, SYNC,
+   SOUND; shock only VF / pulseless VT), then the player bandages the burn with mg_arrows. A failed
+   bandage can be retried. A bandage or monitor done earlier than its sub-step is accepted (the
+   sub-step is a polled `check`). While the panel is open the card sits on the right, because the
+   Lifepak window is drawn left of the panel.
 3. **Minigames.** A panel offers mg_arrows, mg_cpr, mg_intravenous and mg_airway with no patient.
    The player can play them any number of times. Continue needs `MIN_GAMES` successful runs.
 4. **Stretcher.** A healthy person stands behind the ambulance. The player takes out the
@@ -49,7 +54,8 @@ show it themselves, and `M` toggles it. Every card has a "Skip tutorial" link (c
   `setTabletTutorialUnit`, `addTabletTutorialMessage`, and the event `onClientErmTabletTutorial`.
   Server: `removePlayerFromUnit`.
 - **medsys:** server `setTutorialPatient`. Client `isExaminationOpen`,
-  `getExaminationPanelLayout`, and the event `onClientMedicPanel`.
+  `getExaminationPanelLayout` (incl. `monitorButton`, `lifepakScreen`, `lifepakKeypad`), and the
+  event `onClientMedicPanel`.
 - **med_hospitals:** `createTutorialHandover`, `destroyTutorialHandover`, and the event
   `onHospitalTutorialHandover`.
 - **v_accounts:** the server-only element data `save.position`.

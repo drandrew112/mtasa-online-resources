@@ -72,6 +72,20 @@ PHONE_CONFIG.contacts = {
         dynamic   = "insurance",
         claimCost = 1000,
     },
+    {
+        -- Emergency Services (server/apps/emergency.lua). Only EMS works for now:
+        -- the caller types a title + description and a med_erm task is created at
+        -- the caller's position. Refused while no ambulance unit is signed in, or
+        -- at an open med_scenemanager scene (an ambulance is already on its way).
+        key = "emergency", name = "Emergency Services", photo = "img/contacts/emergency.png",
+        actions = {
+            { key = "ems", label = "Ambulance (EMS)"      },
+            { key = "pd",  label = "Police (PD)"          },
+            { key = "fd",  label = "Fire Department (FD)" },
+        },
+        titleMax = 60,     -- characters of the ERM task title
+        descMax  = 200,    -- characters of the ERM task description
+    },
 }
 
 function PHONE_CONFIG.contactByKey(key)

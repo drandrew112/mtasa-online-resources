@@ -373,3 +373,10 @@ function getLifepakRect(panelX, panelY)
     local lx, ly = getOrigin(panelX, panelY)
     return { lx, ly, LW, LH }
 end
+
+-- Screen and keypad rectangles { x, y, w, h } of the window (for the panel layout, e.g. tutorial highlights)
+function getLifepakParts(panelX, panelY)
+    local lx, ly = getOrigin(panelX, panelY)
+    local _, kx, kw = getButtons(lx, ly)
+    return { lx + s(10), ly + s(10), LW - s(190), LH - s(20) }, { kx, ly + s(10), kw, LH - s(20) }
+end

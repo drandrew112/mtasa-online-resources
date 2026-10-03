@@ -111,6 +111,14 @@ within `CLEANUP_RANGE` for `CLEANUP_DELAY` seconds, and at the latest after
 `CLEANUP_FORCE`. A task that never closes is closed after `MAX_LIFETIME`. When this
 resource stops, its open tasks are closed.
 
+When the last patient of a scene is taken away by a medsys transport ("Request transport")
+and no other scene ped is left (none on a stretcher or in an ambulance), the task is closed
+("Completed - patients transported"). A patient taken to a hospital by the ambulance still
+ends the case with the hospital handover, as before.
+
+An open scene (task not closed) also blocks ambulance calls from the phone (ui_phone
+Emergency Services) within `CALL_RADIUS` (80 m) of its centre, peds or vehicles: `getSceneAt`.
+
 ## Automatic generator
 
 It only runs while med_erm has **free units** (no task, Available). It waits a random
@@ -171,6 +179,7 @@ Each scene file can be open in only one editor at a time.
 ```lua
 local id, warning = exports.med_scenemanager:spawnScene(name)   -- false, error on failure
 exports.med_scenemanager:removeScene(id)
+exports.med_scenemanager:getSceneAt(x, y, z [, radius])  -- instanceId, sceneName, taskId | false (open scene near the point)
 exports.med_scenemanager:getActiveScenes()   -- { { id, name, taskId, source, center, createdAt, closed, peds, vehicles } }
 exports.med_scenemanager:getSceneList()      -- summaries
 exports.med_scenemanager:getSceneData(name)  -- full scene from its file

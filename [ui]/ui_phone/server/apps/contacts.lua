@@ -7,6 +7,7 @@
                        v_ownveh vehicles. "contacts:dynPull" -> push the list on
                        "contacts:dyn"; a claim comes back through "contacts:action"
                        with the vehicle id as the action key.
+      Emergency      : EMS / PD / FD, see server/apps/emergency.lua.
 ]]
 
 --------------------------------------------------------------------------------
@@ -135,6 +136,10 @@ end)
 PhoneServer.on("contacts:action", function(player, contactKey, actionKey)
     if contactKey == "insurance" then
         insuranceClaim(player, actionKey)
+        return
+    end
+    if contactKey == "emergency" then
+        emergencyCall(player, actionKey)   -- server/apps/emergency.lua
         return
     end
 

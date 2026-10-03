@@ -32,6 +32,7 @@
     <export function="spawnScene"        type="server" />
     <export function="removeScene"       type="server" />
     <export function="getActiveScenes"   type="server" />
+    <export function="getSceneAt"        type="server" />
     <export function="getSceneList"      type="server" />
     <export function="getSceneData"      type="server" />
     <export function="getAutoGenerate"   type="server" />

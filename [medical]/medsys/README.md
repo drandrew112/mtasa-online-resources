@@ -336,5 +336,6 @@ resources are `<include>`d. Turn off their `TEST_COMMAND`s in production.
 - Server: `setTutorialPatient(element, enabled)` / `isTutorialPatient(element)`: no transport can be
   requested for this patient.
 - Client: `isExaminationOpen()` and `getExaminationPanelLayout()`. The layout gives the screen
-  rectangles of the panel sections: panel, consciousness, vitals, status, injuries, buttons and
-  buttonList. The event `onClientMedicPanel(open, target)` fires with source = localPlayer.
+  rectangles of the panel sections: panel, consciousness, vitals, status, injuries, buttons,
+  buttonList, monitorButton (until the monitor is attached) and lifepak / lifepakScreen /
+  lifepakKeypad (while it is attached). The event `onClientMedicPanel(open, target)` fires with source = localPlayer.

@@ -193,8 +193,20 @@ bindKey(cfg.openKey, "down", function()
     if state.open then setOpen(false) else Phone.open() end
 end)
 
+-- A ui_core text input (e.g. Emergency Services) owns the keyboard while it is
+-- open, and the Enter / Esc that closes it must not reach the phone either.
+local textInputQuietUntil = 0
+addEventHandler("onClientElementDataChange", localPlayer, function(key, _, new)
+    if key == "textInputOpen" and not new then textInputQuietUntil = getTickCount() + 250 end
+end, false)
+
 addEventHandler("onClientKey", root, function(key, press)
     if not state.open or not press then return end
+    if getElementData(localPlayer, "textInputOpen") then return end
+    if getTickCount() < textInputQuietUntil then
+        if NAV[key] or key == "escape" then cancelEvent() end
+        return
+    end
     if NAV[key] then
         cancelEvent()
         handleKey(key)

@@ -46,7 +46,9 @@ TUTORIAL = {
           desc = "Press the arrow keys when the arrows reach the target. Used for bandages, "
               .. "dressings and splints." },
         { id = "cpr", label = "CPR", resource = "mg_cpr",
-          desc = "Press SPACE in a steady rhythm (100-120 per minute). Used when the heart has stopped." },
+          desc = "Press SPACE in a steady rhythm (100-120 per minute). Used when the heart has stopped. "
+              .. "On a patient, good compressions can change the heart rhythm: the game stops and the panel "
+              .. "shows the new rhythm." },
         { id = "iv", label = "IV access", resource = "mg_intravenous",
           desc = "Push the needle into the vein, then pull it back. Needed for fluids and medicines." },
         { id = "airway", label = "Intubation", resource = "mg_airway",

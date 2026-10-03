@@ -119,28 +119,41 @@ local EXAMINE = {
           .. "then press 1: Examine patient.",
       wait = "panel:open" },
     { text = "This is the examination panel. The top bar is the consciousness: Stable, Dazed, Unconscious, "
-          .. "Clinical death or Dead.",
+          .. "Clinical death or Dead. In clinical death a countdown runs next to it.",
       next = true, panel = "consciousness" },
-    { text = "The vital signs: heart rate with the ECG, blood pressure, oxygen saturation (SpO2) and bleeding "
-          .. "with the skin colour. Green is normal; yellow, orange and red are worse. They change live.",
+    { text = "Without equipment you only see what you can feel and see: the pulse (heart rate), the bleeding "
+          .. "and the skin (pale = blood loss, blue = too little oxygen).\n\nGreen is normal; yellow, orange and "
+          .. "red are worse. The values change live.",
       next = true, panel = "vitals" },
-    { text = "IV access, airway and pain. Medicines can only be given through an IV access.",
+    { text = "IV access, airway and pain. Most medicines need an IV access; the ones marked oral do not.",
       next = true, panel = "status" },
     { text = "The injuries: their severity and whether they are treated. This patient has a minor burn.",
       next = true, panel = "injuries" },
-    { text = "The treatments. A grey button cannot be used now - hover it to see why.\n\n"
-          .. "Bandage: wounds, burns, fractures  ·  CPR: stopped heart  ·  IV access  ·  Intubate: after Ketamine, "
-          .. "then Rocuronium (or in cardiac arrest)  ·  O2 mask: raises the oxygen level  ·  Medication  ·  "
-          .. "Transport: calls a vehicle for a stable, intubated or dead patient (off in the tutorial).",
+    { text = "The treatments, in rows. A grey button cannot be used now - hover it to see why.\n\n"
+          .. "AB (airway, breathing): Intubate - after Ketamine, then Rocuronium (or in cardiac arrest)  ·  "
+          .. "O2 mask.\nCD (circulation): Bandage - wounds, burns, fractures  ·  CPR - stopped heart  ·  "
+          .. "IV access  ·  Medication - a list of medicines, point at one to read what it does.\n"
+          .. "Transport: a vehicle for a stable, intubated or dead patient (off in the tutorial).",
       next = true, panel = "buttons" },
+    { text = "Blood pressure, oxygen level (SpO2) and the heart rhythm (ECG) need the monitor.\n\n"
+          .. "Click Attach monitor / defibrillator in the heart rate tile.",
+      check = function() return panelRect("lifepak") ~= nil end, panel = "monitorButton" },
+    { text = "The Lifepak 15 monitor. Top: the heart rate with the ECG and the name of the rhythm under it - "
+          .. "you do not have to read the ECG. Bottom: SpO2 with its wave and the blood pressure (NIBP: the "
+          .. "upper value big, the lower one under it, the mean in brackets).\n\nThe monitor beeps on every heart beat.",
+      next = true, panel = "lifepakScreen" },
+    { text = "The defibrillator. CHARGE (200 J), then SHOCK when it flashes. Only two rhythms need a shock: VF and "
+          .. "pulseless VT. ANALYZE checks an unresponsive patient for you and charges if a shock is needed. SYNC is "
+          .. "for VT with a pulse, SOUND mutes the beep and the alarm.\n\n"
+          .. "Never shock a patient with a normal rhythm - it stops the heart. Do not shock this patient.",
+      next = true, panel = "lifepakKeypad" },
     { text = "Dress the burn: press Bandage.\n\nPress the matching arrow key when an arrow reaches the target.",
-      wait = "bandage:ok", panel = "bandage" },
+      check = function() return T.bandaged == true end, panel = "bandage" },
     { text = "Well done, the burn is dressed - the injury list shows it as Dressed.\n\nClose the panel "
           .. "(the X in its corner, or Backspace) whenever you like.",
       next = true,
       leave = function() serverNext() end },
 }
-local EXAMINE_DONE = #EXAMINE
 
 ---------------------------------------------------------------- card builders
 
@@ -154,6 +167,8 @@ local function subCard(list, step)
     local def = list[T.sub]
     if not def then return nil end
     local spec = { step = STEP_LABELS[step], title = def.title, text = def.text, note = T.note, noteColor = T.noteColor }
+    -- the Lifepak window opens left of the panel, where the card would cover it
+    if step == "examine" and panelOpen() then spec.side = "right" end
 
     local blocked
     if def.tablet and not tabletOpen() then
@@ -253,7 +268,8 @@ local function doneCard()
         text = "You know the basics now:\n\n"
             .. "·  Go on duty, take an ambulance at the vehicle point and sign in on the tablet (" .. TABLET_KEY .. ").\n"
             .. "·  Cases come from the dispatchers or the automatic dispatcher. Press Start Response and follow the route.\n"
-            .. "·  Examine the patient (X, 1) and treat what the panel shows.\n"
+            .. "·  Examine the patient (X, 1), attach the monitor for the blood pressure, SpO2 and ECG, and treat "
+            .. "what the panel shows. Shock only VF and pulseless VT.\n"
             .. "·  Load the patient with the stretcher, park in a hospital's ambulance bay and push the stretcher "
             .. "into the handover marker.\n\n"
             .. "You can watch this tutorial again any time with /" .. TUTORIAL.COMMAND .. ".",
@@ -299,9 +315,16 @@ local function signal(name)
     refresh()
 end
 
--- The panel / tablet state changes the notes and highlights: keep the card current
+-- The panel / tablet state changes the notes and highlights: keep the card current, and move on
+-- from a "check" sub-step once its condition holds (also when it was done before the step came)
 setTimer(function()
-    if T.active and (T.step == "tablet" or T.step == "examine") then refresh() end
+    if not T.active or (T.step ~= "tablet" and T.step ~= "examine") then return end
+    local def = (T.step == "tablet" and TABLET or EXAMINE)[T.sub]
+    if def and def.check and def.check() then
+        if def.leave then def.leave() end
+        return nextSub()
+    end
+    refresh()
 end, 250, 0)
 
 ---------------------------------------------------------------- server events
@@ -317,7 +340,7 @@ handle("ems:tut:offer", function()
     Card.show({
         title = "EMS tutorial",
         text = "Is this your first shift? The tutorial shows you the EMS tablet, the examination panel, "
-            .. "the treatment minigames, the stretcher and the hospital handover. It takes about 10 minutes "
+            .. "the monitor / defibrillator, the treatment minigames, the stretcher and the hospital handover. It takes about 10 minutes "
             .. "in a private copy of the world.\n\nIt is not required: you can skip it now and start it any "
             .. "time later with /" .. TUTORIAL.COMMAND .. ".",
         buttons = {
@@ -338,7 +361,7 @@ local function toggleCursor() Card.toggleCursor() end
 
 handle("ems:tut:begin", function(vehicle)
     T.active, T.vehicle, T.step, T.sub = true, vehicle, nil, 1
-    T.games, T.running, T.note, T.tabletOpen = {}, false, nil, false
+    T.games, T.running, T.note, T.tabletOpen, T.bandaged = {}, false, nil, false, false
     T.stretcher = { state = "none" }
     tablet("startTabletTutorial")
     bindKey(TUTORIAL.CURSOR_KEY, "down", toggleCursor)
@@ -347,14 +370,14 @@ end)
 
 handle("ems:tut:step", function(step)
     T.step, T.sub, T.note = step, 1, nil
-    if step == "examine" then T.tabletOpen = false end
+    if step == "examine" then T.tabletOpen, T.bandaged = false, false end
     refresh()
 end)
 
 handle("ems:tut:info", function(kind, data)
     if kind == "bandage" then
         if data then
-            T.sub = EXAMINE_DONE
+            T.bandaged = true -- the bandage sub-step moves on (check), even when it was done early
             T.note = nil
         else
             T.note, T.noteColor = "The bandage did not hold. The panel is open again - press Bandage once more.", Card.colors.bad

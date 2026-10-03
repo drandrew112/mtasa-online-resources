@@ -30,6 +30,7 @@
     <script src="server/apps/myveh.lua"    type="server" />
     <script src="server/apps/invites.lua"  type="server" />
     <script src="server/apps/contacts.lua" type="server" />
+    <script src="server/apps/emergency.lua" type="server" />
     <script src="server/apps/settings.lua" type="server" />
 
     <!-- ================= FILES ================== -->
@@ -50,6 +51,7 @@
     <file src="img/contacts/julia.png" />
     <file src="img/contacts/markus.png" />
     <file src="img/contacts/insurance.png" />
+    <file src="img/contacts/emergency.png" />
 
     <!-- Other resources (e.g. v_jobmanager) push lobby invites through these. -->
     <export function="phoneAddInvite"    type="server" />
