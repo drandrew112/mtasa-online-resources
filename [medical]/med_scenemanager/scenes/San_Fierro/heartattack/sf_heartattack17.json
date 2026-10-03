@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack17",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1999.525, -1.875, 34.311],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man down, no breathing",
+        "description": "A man arguing about the price of sourdough collapsed on the sidewalk outside the bakery. Not breathing. The baker is on the phone, flour everywhere.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 147,
+            "pos": [-1999.525, -1.875, 34.311],
+            "rot": 168,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

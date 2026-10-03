@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "regular-tom_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-397.36, 1714.901, 40.558],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, pounding head",
+        "description": "A man leaning on his fence by the road has chest pain and a splitting headache. He has not taken his pills in months.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 68,
+            "pos": [-397.36, 1714.901, 40.558],
+            "rot": 223,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

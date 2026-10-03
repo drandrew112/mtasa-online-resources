@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack16",
+    "enabled": true,
+    "weight": 1,
+    "center": [754.801, -1681.1, 11.806],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed mid-sentence",
+        "description": "A woman arguing loudly on her phone dropped mid-sentence and went face down on the sidewalk. Her phone is still on speaker. Bystanders say she is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 224,
+            "pos": [754.801, -1681.1, 11.806],
+            "rot": 155,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

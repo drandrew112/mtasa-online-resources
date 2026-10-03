@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-quebrados_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1538.186, 2560.096, 55.836],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Faint and confused",
+        "description": "An old man waiting at the gas station keeps fainting. Slow pulse, cold, confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [-1538.186, 2560.096, 55.836],
+            "rot": 296,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

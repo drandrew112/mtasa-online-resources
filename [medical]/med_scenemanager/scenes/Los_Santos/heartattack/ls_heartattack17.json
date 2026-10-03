@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack17",
+    "enabled": true,
+    "weight": 1,
+    "center": [2406.75, -2116.463, 13.554],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain after the gym",
+        "description": "A bodybuilder left the gym, sat on the curb and now cannot catch his breath. Tight chest, sweating, tingling in his arm. He swears it is just \"a really good pump\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 183,
+            "pos": [2406.75, -2116.463, 13.554],
+            "rot": 303,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

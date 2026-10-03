@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [703.577, -492.025, 16.336],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, near faint",
+        "description": "A woman leaving the barber shop sat down by the road with a pounding heart and tunnel vision. She says it feels like \"a bird trapped in her chest\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [703.577, -492.025, 16.336],
+            "rot": 208,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

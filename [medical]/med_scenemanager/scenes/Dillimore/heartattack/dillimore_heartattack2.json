@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [594.16, -638.884, 21.966],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pressure, short of breath",
+        "description": "The diner waitress walked outside holding her chest. Short of breath, pain spreading into her left arm. The breakfast rush is still going on without her.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [594.16, -638.884, 21.966],
+            "rot": 295,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-876.709, -1800.349, 89.396],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, pounding head",
+        "description": "A woman living in a cabin walked to the road for help. Crushing headache and chest pain. She ran out of her pills a week ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [-876.709, -1800.349, 89.396],
+            "rot": 355,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

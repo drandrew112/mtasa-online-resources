@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "las-payasadas_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-180.016, 2741.601, 62.688],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, gasping",
+        "description": "A local found an old man lying by the road, gasping only every few seconds. Nobody can feel a pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [-180.016, 2741.601, 62.688],
+            "rot": 213,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack22",
+    "enabled": true,
+    "weight": 1,
+    "center": [1453.001, -882.999, 54.645],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed at the bus stop",
+        "description": "A man in a security guard uniform collapsed against the bus stop sign and slid to the ground. No pulse, gasping once in a while. The bus driver is honking for help.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [1453.001, -882.999, 54.645],
+            "rot": 143,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

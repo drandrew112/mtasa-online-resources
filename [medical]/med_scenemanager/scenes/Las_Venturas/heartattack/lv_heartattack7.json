@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack7",
+    "enabled": true,
+    "weight": 1,
+    "center": [1237.375, 2060.225, 13.584],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A showgirl in full costume collapsed on the sidewalk on her way to work. Feathers everywhere. A bystander says she is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 231,
+            "pos": [1237.375, 2060.225, 13.584],
+            "rot": 122,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

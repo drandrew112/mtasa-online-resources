@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "palomino-creek_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [2526.75, 94.101, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "A retired farmer keeps sitting down by the road on his way to the diner. His pulse is slow, he is pale and keeps asking what day it is.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2526.75, 94.101, 26.484],
+            "rot": 30,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-barrancas_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-767.079, 1570.177, 27.014],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, sweating",
+        "description": "A road worker sat down by the road with chest pressure and drenched in sweat. He keeps saying it is just the sun.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 147,
+            "pos": [-767.079, 1570.177, 27.014],
+            "rot": 11,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

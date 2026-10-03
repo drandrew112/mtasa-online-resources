@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "fort-carson_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-258.625, 1205.75, 19.742],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man down, no breathing",
+        "description": "A motel guest collapsed by the road in the desert heat. Not breathing. The motel owner is on the phone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-258.625, 1205.75, 19.742],
+            "rot": 66,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

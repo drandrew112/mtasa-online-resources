@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [2430.545, 779.268, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A street performer dressed as an Elvis impersonator was found motionless on the sidewalk. No pulse, not breathing. The crowd has not realised it is not part of the act.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [2430.545, 779.268, 10.82],
+            "rot": 349,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

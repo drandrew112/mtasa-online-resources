@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [2277.238, 2506.125, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after a jackpot",
+        "description": "A man celebrating a big win shouted, threw his hands up, then collapsed on the sidewalk. Not breathing. He is still holding his winning ticket.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [2277.238, 2506.125, 10.82],
+            "rot": 245,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

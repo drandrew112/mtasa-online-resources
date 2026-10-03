@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "regular-tom_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-381.812, 1865.423, 53.853],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man down, no breathing",
+        "description": "An old prospector collapsed by the road in the heat. Not breathing. His mule is standing next to him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [-381.812, 1865.423, 53.853],
+            "rot": 296,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

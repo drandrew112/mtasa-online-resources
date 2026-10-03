@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack11",
+    "enabled": true,
+    "weight": 1,
+    "center": [2335.6, 1928.675, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "No signs of life",
+        "description": "A security guard found a man face down on the sidewalk in the early morning. Cold, no breathing, no pulse. His hotel key card is still in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 182,
+            "pos": [2335.6, 1928.675, 10.82],
+            "rot": 158,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

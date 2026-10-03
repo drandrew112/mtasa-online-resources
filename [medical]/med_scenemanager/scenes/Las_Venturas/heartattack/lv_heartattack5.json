@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [2304.412, 1366.125, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "An elderly woman leaving the buffet keeps nearly fainting on the sidewalk. Her pulse is very slow and she looks pale. Her husband is holding her handbag and three plates of dessert.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2304.412, 1366.125, 10.82],
+            "rot": 185,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

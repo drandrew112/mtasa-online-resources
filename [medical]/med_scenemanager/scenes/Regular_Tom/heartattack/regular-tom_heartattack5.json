@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "regular-tom_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-371.025, 1822.158, 50.265],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "An elderly woman keeps fainting by the road, slow pulse, pale and confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 76,
+            "pos": [-371.025, 1822.158, 50.265],
+            "rot": 114,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [424.815, 2670.48, 60.038],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, near faint",
+        "description": "A skydiving student sat by the road with her heart racing long after her jump. Pale and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [424.815, 2670.48, 60.038],
+            "rot": 79,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "regular-tom_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-335.468, 1742.175, 42.969],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, short of breath",
+        "description": "A woman carrying water jugs home sat down by the road with chest pain and shortness of breath.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-335.468, 1742.175, 42.969],
+            "rot": 341,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

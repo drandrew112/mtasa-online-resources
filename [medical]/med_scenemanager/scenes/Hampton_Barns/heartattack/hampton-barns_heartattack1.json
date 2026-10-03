@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "hampton-barns_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [723.09, 310.904, 20.188],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crushing chest pain",
+        "description": "A farmhand was stacking hay bales when crushing chest pain dropped him to his knees by the road. His jaw and arm hurt too.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [723.09, 310.904, 20.188],
+            "rot": 229,
+            "anim": "hold_side",
+            "injuries": [],
+            "state": {
+                "pain": 90,
+                "spo2": 91,
+                "systolic": 150,
+                "diastolic": 95,
+                "heartRate": 118,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

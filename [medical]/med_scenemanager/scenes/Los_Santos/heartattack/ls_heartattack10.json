@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack10",
+    "enabled": true,
+    "weight": 1,
+    "center": [2729.875, -1040.75, 55.999],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "An elderly woman waiting for the bus nearly fainted twice. A nurse passing by says her pulse is \"way too slow\" and she looks like wet paper.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [2729.875, -1040.75, 55.999],
+            "rot": 253,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

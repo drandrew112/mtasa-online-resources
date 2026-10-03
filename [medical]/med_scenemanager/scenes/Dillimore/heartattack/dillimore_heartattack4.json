@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "dillimore_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [688.8, -585, 16.328],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, cold",
+        "description": "The mailman found a man lying face down next to the road early in the morning. Cold to the touch, no breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [688.8, -585, 16.328],
+            "rot": 205,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

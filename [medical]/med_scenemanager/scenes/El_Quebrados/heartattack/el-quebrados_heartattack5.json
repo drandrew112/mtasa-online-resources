@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-quebrados_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1434.053, 2662.822, 55.836],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, nauseous, pale",
+        "description": "A woman running the corner shop sat by the road with nausea and an ache in her jaw. She thinks it is the heat.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [-1434.053, 2662.822, 55.836],
+            "rot": 131,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

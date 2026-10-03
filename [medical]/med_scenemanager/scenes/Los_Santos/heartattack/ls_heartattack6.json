@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack6",
+    "enabled": true,
+    "weight": 1,
+    "center": [2438.5, -1556.875, 24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed while jogging",
+        "description": "A jogger in neon running gear stopped mid-stride, wobbled and folded onto the sidewalk. His smartwatch is still beeping about a personal best. Witnesses say he is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [2438.5, -1556.875, 24],
+            "rot": 242,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

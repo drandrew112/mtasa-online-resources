@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "las-payasadas_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-250, 2650.75, 62.658],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, no pulse",
+        "description": "A tourist taking a photo with the giant chicken statue collapsed by the road. Not breathing, no pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 58,
+            "pos": [-250, 2650.75, 62.658],
+            "rot": 275,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

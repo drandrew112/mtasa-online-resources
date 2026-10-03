@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack18",
+    "enabled": true,
+    "weight": 1,
+    "center": [1678.875, -1290.875, 14.039],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man down, CPR needed",
+        "description": "A tourist in a Hawaiian shirt collapsed in the middle of taking a selfie. His wife is screaming for help. He is blue around the lips and not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1678.875, -1290.875, 14.039],
+            "rot": 1,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

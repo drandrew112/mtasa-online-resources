@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-383.802, 2485.807, 40.315],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, cold",
+        "description": "A passing driver spotted a man lying face down by the desert road. Cold, not breathing, no pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-383.802, 2485.807, 40.315],
+            "rot": 130,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

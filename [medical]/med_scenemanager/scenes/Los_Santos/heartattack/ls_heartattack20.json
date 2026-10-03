@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack20",
+    "enabled": true,
+    "weight": 1,
+    "center": [2817.257, -1842.195, 11.133],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Faint and confused",
+        "description": "An older man keeps sitting down every few steps, confused and grey. His wife says his heart pills ran out last week and he \"did not want to bother anyone\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [2817.257, -1842.195, 11.133],
+            "rot": 116,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

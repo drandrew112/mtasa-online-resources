@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-payasadas_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-169.119, 2622.951, 63.619],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, nauseous, pale",
+        "description": "A trucker stopped for fried chicken and now sits by the road with nausea, jaw ache and cold sweat. He blames the chicken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-169.119, 2622.951, 63.619],
+            "rot": 155,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

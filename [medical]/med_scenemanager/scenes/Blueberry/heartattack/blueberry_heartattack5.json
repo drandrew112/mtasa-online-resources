@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [176.148, 70.135, 2.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, uneasy",
+        "description": "An elderly woman walking back from church had to sit by the road. She is short of breath, sweaty and just \"feels wrong\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [176.148, 70.135, 2.43],
+            "rot": 241,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

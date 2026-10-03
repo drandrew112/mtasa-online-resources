@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-751.794, 2717.325, 47.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "A woman photographing the strange rock formations sat by the road with dizziness and a very slow pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 211,
+            "pos": [-751.794, 2717.325, 47.31],
+            "rot": 105,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

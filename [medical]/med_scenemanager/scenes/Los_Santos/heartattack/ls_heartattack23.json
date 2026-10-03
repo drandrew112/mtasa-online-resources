@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack23",
+    "enabled": true,
+    "weight": 1,
+    "center": [2077.337, -2180.136, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, uneasy",
+        "description": "A retired man walking his groceries home had to sit on the sidewalk. Short of breath, heavy feeling in his chest, he \"just doesn't feel right\". His milk is getting warm.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [2077.337, -2180.136, 13.547],
+            "rot": 338,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

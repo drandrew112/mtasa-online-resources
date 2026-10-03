@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "montgomery_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [1377.394, 429.295, 19.855],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, nauseous, pale",
+        "description": "A motel housekeeper sat down by the road with nausea, cold sweat and an ache in her jaw. She thinks it is the cleaning chemicals.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [1377.394, 429.295, 19.855],
+            "rot": 148,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack11",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1944.876, 1277.487, 7.188],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "No signs of life",
+        "description": "A newspaper seller found an old man slumped face down on the sidewalk near his stand. No breathing, no pulse. He might have been there since dawn.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 183,
+            "pos": [-1944.876, 1277.487, 7.188],
+            "rot": 174,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

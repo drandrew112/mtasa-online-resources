@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack15",
+    "enabled": true,
+    "weight": 1,
+    "center": [2523.999, -1823.769, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, pounding head",
+        "description": "A furious driver got out of his car to argue about a parking spot, then grabbed his chest and leaned on a wall. Pounding headache and crushing chest pain. The other driver called it in.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [2523.999, -1823.769, 13.547],
+            "rot": 331,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

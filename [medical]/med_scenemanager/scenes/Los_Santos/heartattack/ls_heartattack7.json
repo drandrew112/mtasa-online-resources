@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack7",
+    "enabled": true,
+    "weight": 1,
+    "center": [1255.273, -2216.925, 18.264],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pressure, sweating",
+        "description": "A woman walking her tiny dog sat down hard on the sidewalk, grey and sweating. She describes an elephant sitting on her chest. The dog refuses to let anyone near her.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 88,
+            "pos": [1255.273, -2216.925, 18.264],
+            "rot": 279,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

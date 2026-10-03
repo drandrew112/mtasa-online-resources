@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack8",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2824.375, 1247.6, 5.602],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Tired, chest feels heavy",
+        "description": "A fisherman on his way home sat down on the sidewalk, short of breath and heavy in the chest. He smells of fish, is very polite and insists he can walk.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2824.375, 1247.6, 5.602],
+            "rot": 345,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

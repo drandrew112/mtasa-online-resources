@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2519.625, 778.25, 43.678],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crushing chest pain",
+        "description": "A software engineer on a walking meeting is clutching his chest on the pavement. Crushing pain, numb left arm. His laptop is still open on the bench and the call is still connected.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [-2519.625, 778.25, 43.678],
+            "rot": 252,
+            "anim": "hold_side",
+            "injuries": [],
+            "state": {
+                "pain": 90,
+                "spo2": 91,
+                "systolic": 150,
+                "diastolic": 95,
+                "heartRate": 118,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

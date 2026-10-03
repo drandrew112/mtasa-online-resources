@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-887.716, 2732.518, 45.857],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A wandering artist was found lying by the road in the hidden valley. No pulse, occasional gasps.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 68,
+            "pos": [-887.716, 2732.518, 45.857],
+            "rot": 35,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

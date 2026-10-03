@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack14",
+    "enabled": true,
+    "weight": 1,
+    "center": [2470.367, 2765.759, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Faint and confused",
+        "description": "A retired man on a casino bus tour keeps fainting on the sidewalk. Confused, sweaty and very slow pulse. The tour guide is counting heads and is one short.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2470.367, 2765.759, 10.82],
+            "rot": 21,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

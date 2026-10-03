@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "lv_heartattack9",
+    "enabled": true,
+    "weight": 1,
+    "center": [2589.75, 700.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, grey skin",
+        "description": "Passers-by found a man in a loud shirt lying on the sidewalk, barely breathing and grey. His sunglasses are still on.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 95,
+            "pos": [2589.75, 700.25, 10.82],
+            "rot": 346,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

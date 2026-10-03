@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack13",
+    "enabled": true,
+    "weight": 1,
+    "center": [1906, -1253.875, 13.559],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, nauseous, pale",
+        "description": "A woman in a business suit sat down on the curb in the middle of a phone call. She feels sick, exhausted and has \"weird jaw pain\". She wants to be back in her meeting in ten minutes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [1906, -1253.875, 13.559],
+            "rot": 31,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

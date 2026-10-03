@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [380.458, 2337.659, 25.457],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A mechanic from the hangar found a man lying by the road. No pulse, occasional gasps.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [380.458, 2337.659, 25.457],
+            "rot": 215,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

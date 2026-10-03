@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "hampton-barns_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [646.662, 318.287, 20.225],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nausea and weakness",
+        "description": "A farmer's wife sat down by the road with nausea, cold sweat and a strange pressure between her shoulders. She blames the heat.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 211,
+            "pos": [646.662, 318.287, 20.225],
+            "rot": 26,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

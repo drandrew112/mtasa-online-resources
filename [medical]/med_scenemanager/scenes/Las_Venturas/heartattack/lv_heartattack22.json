@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack22",
+    "enabled": true,
+    "weight": 1,
+    "center": [1977.25, 940.625, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, near faint",
+        "description": "A poker player who has not slept in two days sat on the sidewalk with his heart hammering. He is pale and seeing spots. He says he still has a tournament at noon.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [1977.25, 940.625, 10.82],
+            "rot": 29,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

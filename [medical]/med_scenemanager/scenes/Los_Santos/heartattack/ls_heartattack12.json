@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack12",
+    "enabled": true,
+    "weight": 1,
+    "center": [246.04, -1602.159, 33.247],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Not breathing",
+        "description": "A street vendor found his neighbour face down beside a shopping cart. Cold to the touch, not breathing. Nobody knows how long he has been there.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [246.04, -1602.159, 33.247],
+            "rot": 271,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "las-barrancas_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-837.574, 1573.738, 25.574],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A truck driver stopped at the diner, walked out and collapsed by the road. Not breathing. His coffee is still on the counter.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 261,
+            "pos": [-837.574, 1573.738, 25.574],
+            "rot": 165,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

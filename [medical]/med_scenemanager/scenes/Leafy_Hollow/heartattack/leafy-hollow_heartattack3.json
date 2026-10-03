@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1080.86, -1642.394, 76.397],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Racing heart, dizzy",
+        "description": "A birdwatcher sat down by the road with her heart racing wildly. She is pale and dizzy, binoculars still around her neck.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 89,
+            "pos": [-1080.86, -1642.394, 76.397],
+            "rot": 23,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

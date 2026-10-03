@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "fern-ridge_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [1222.521, -131.865, 39.507],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain on the trail",
+        "description": "A woman walking her dogs along the ridge road sat down with chest pain and cold sweat. The dogs refuse to leave her side.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [1222.521, -131.865, 39.507],
+            "rot": 122,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "palomino-creek_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [2271.25, 149.125, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "An old fisherman walking back from the river with his catch dropped by the road. Not breathing. His bucket of trout is flapping all over the asphalt.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 95,
+            "pos": [2271.25, 149.125, 26.484],
+            "rot": 296,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

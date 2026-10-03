@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack18",
+    "enabled": true,
+    "weight": 1,
+    "center": [2220.25, 1780.625, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nausea, cold sweat",
+        "description": "An older woman sitting on the sidewalk says she has felt sick and exhausted all day, with a strange ache between her shoulder blades. She thought it was the hotel mattress.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [2220.25, 1780.625, 10.82],
+            "rot": 291,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

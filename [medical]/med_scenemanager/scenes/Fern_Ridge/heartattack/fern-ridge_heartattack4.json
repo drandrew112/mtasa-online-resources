@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "fern-ridge_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [1282.794, -68.215, 35.395],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "A camper on his way to fetch water keeps nearly blacking out by the road. Pale, sweaty, very slow pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [1282.794, -68.215, 35.395],
+            "rot": 110,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

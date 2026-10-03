@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "fort-carson_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-108.504, 1158.143, 19.741],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Racing heart, dizzy",
+        "description": "A young waitress sat by the road with her heart racing after a double shift. Pale, dizzy and she nearly fell twice.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [-108.504, 1158.143, 19.741],
+            "rot": 154,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

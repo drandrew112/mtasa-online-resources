@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack10",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2197.75, -77.5, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, severe headache",
+        "description": "A woman leaning on a wall in front of her apartment has a splitting headache and chest pain. She says her blood pressure meds \"make her sleepy\" so she stopped them.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [-2197.75, -77.5, 35.32],
+            "rot": 218,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

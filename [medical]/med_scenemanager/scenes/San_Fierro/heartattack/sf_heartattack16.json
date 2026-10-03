@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack16",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2131.75, 658.25, 52.367],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, short of breath",
+        "description": "A cable car mechanic sat down on the curb after his shift, short of breath with chest pain spreading to his back. He jokes that the hills finally won.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 182,
+            "pos": [-2131.75, 658.25, 52.367],
+            "rot": 274,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

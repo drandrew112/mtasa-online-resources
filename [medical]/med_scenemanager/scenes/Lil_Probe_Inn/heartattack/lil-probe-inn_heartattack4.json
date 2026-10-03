@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-56.576, 1336.981, 11.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Racing heart, dizzy",
+        "description": "A trucker who drank too many energy drinks sat by the road with a racing heart, pale and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-56.576, 1336.981, 11.08],
+            "rot": 333,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

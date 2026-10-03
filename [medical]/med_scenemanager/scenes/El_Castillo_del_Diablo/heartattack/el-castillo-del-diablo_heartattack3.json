@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-300.02, 2529.252, 34.758],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "A photographer chasing the sunset sat by the road with dizziness and a very slow pulse. Her water bottle is empty.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-300.02, 2529.252, 34.758],
+            "rot": 336,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

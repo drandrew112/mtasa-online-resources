@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "las-payasadas_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-328.539, 2693.525, 62.688],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fainted, very fast pulse",
+        "description": "A young woman said her heart was \"buzzing\" and then passed out by the road. Breathing but not waking up.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 89,
+            "pos": [-328.539, 2693.525, 62.688],
+            "rot": 41,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "spo2": 84,
+                "systolic": 70,
+                "diastolic": 40,
+                "heartRate": 182,
+                "consciousness": "unconscious",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

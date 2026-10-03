@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack22",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2132.25, 976.75, 80],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, near faint",
+        "description": "A student drinking his fifth espresso of the day sat on the sidewalk with a pounding heart and tunnel vision. His friends say he \"studied for 40 hours straight\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [-2132.25, 976.75, 80],
+            "rot": 209,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "angel-pine_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2008.04, -2562.12, 39.059],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, slow pulse",
+        "description": "An old man coming back from the general store keeps nearly fainting. His pulse is slow and his lips are pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [-2008.04, -2562.12, 39.059],
+            "rot": 302,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

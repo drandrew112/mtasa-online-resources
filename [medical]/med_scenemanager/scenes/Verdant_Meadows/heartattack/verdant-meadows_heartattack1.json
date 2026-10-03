@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [415.386, 2365.64, 25.658],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, no pulse",
+        "description": "A pilot climbed out of his plane at the old airstrip, walked to the road and collapsed. Not breathing, no pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [415.386, 2365.64, 25.658],
+            "rot": 221,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

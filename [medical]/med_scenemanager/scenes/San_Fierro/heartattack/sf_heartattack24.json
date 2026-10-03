@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack24",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2599.625, 498.25, 14.605],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Severe chest pain",
+        "description": "A taxi driver stopped his cab, got out and lay down on the sidewalk with severe chest pain. The meter is still running.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 58,
+            "pos": [-2599.625, 498.25, 14.605],
+            "rot": 161,
+            "anim": "hold_side",
+            "injuries": [],
+            "state": {
+                "pain": 90,
+                "spo2": 91,
+                "systolic": 150,
+                "diastolic": 95,
+                "heartRate": 118,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

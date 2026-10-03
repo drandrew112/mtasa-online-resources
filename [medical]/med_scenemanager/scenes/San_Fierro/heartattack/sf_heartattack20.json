@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack20",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1578.003, 491.868, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, gasping",
+        "description": "A homeless man known to the neighbourhood collapsed on the sidewalk and is gasping only every few seconds. A shop owner says she cannot feel a pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-1578.003, 491.868, 7.18],
+            "rot": 230,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

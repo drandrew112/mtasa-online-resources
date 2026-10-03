@@ -50,6 +50,31 @@ function msmValidName(name)
         and name:match(MSM.NAME_PATTERN) ~= nil and name ~= "index"
 end
 
+-- Valid category id, "" (none), or - when value is nil - the first category found in the name
+function msmCategory(value, name)
+    if value == nil then
+        name = tostring(name or ""):lower()
+        for _, c in ipairs(MSM_CATEGORIES) do
+            if name:find(c.id, 1, true) then return c.id end
+        end
+        return ""
+    end
+    for _, c in ipairs(MSM_CATEGORIES) do
+        if c.id == value then return c.id end
+    end
+    return ""
+end
+
+-- Settlement folder of a position: Los_Santos, San_Fierro, Las_Venturas or the zone (village) name
+function msmSettlementFolder(center, interior)
+    if (tonumber(interior) or 0) ~= 0 then return MSM.INTERIOR_FOLDER end
+    local x, y, z = center[1], center[2], center[3]
+    local city = getZoneName(x, y, z, true)
+    local zone = MSM.CITY_FOLDERS[city] and city or getZoneName(x, y, z, false)
+    local folder = tostring(zone or ""):gsub("'", ""):gsub("[^%w%-]+", "_"):gsub("^_+", ""):gsub("_+$", "")
+    return folder ~= "" and folder or "Unknown"
+end
+
 ---------------------------------------------------------------- files
 
 function msmReadFile(path)
@@ -86,7 +111,7 @@ end
 -- Key order of the written files (scene, erm, vehicle, ped, injury, medical state, index).
 -- Keys missing from the list follow in alphabetical order.
 local KEY_ORDER = {
-    "format", "name", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
+    "format", "name", "category", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
     "title", "description", "caller", "priority",
     "id", "model", "skin", "pos", "rot", "anim", "frozen", "vehicle", "seat",
     "locked", "engine", "lightsOn", "sirens", "health", "colors", "paintjob", "plate", "variant",

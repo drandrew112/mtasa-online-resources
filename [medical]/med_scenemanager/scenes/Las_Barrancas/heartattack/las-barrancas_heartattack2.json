@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-barrancas_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-857.263, 1437.728, 14.387],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, very high BP",
+        "description": "A woman screaming at a broken vending machine is now leaning on a wall with chest pain and a pounding headache.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 216,
+            "pos": [-857.263, 1437.728, 14.387],
+            "rot": 199,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

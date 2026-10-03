@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2408.626, 268.866, 35.172],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down in the fog",
+        "description": "A dog walker found a man lying on the damp sidewalk in thick fog. No pulse, not breathing, glasses broken next to him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [-2408.626, 268.866, 35.172],
+            "rot": 211,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

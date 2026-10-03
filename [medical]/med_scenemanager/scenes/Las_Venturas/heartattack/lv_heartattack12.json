@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack12",
+    "enabled": true,
+    "weight": 1,
+    "center": [2637.25, 1946.125, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed mid-argument",
+        "description": "A man shouting at a slot machine attendant stormed outside and dropped face down on the sidewalk. Witnesses say he is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2637.25, 1946.125, 10.82],
+            "rot": 298,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

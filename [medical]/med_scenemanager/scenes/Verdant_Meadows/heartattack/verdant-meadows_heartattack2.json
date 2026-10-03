@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [46.313, 2670.74, 55.407],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, sweating",
+        "description": "An aviation hobbyist is sitting by the road with chest pressure and sweat. He says it hit him right after landing.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 183,
+            "pos": [46.313, 2670.74, 55.407],
+            "rot": 350,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "regular-tom_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-368.736, 1796.388, 48.473],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A local found his neighbour lying by the road in the dust. No pulse, gasping now and then.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [-368.736, 1796.388, 48.473],
+            "rot": 298,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

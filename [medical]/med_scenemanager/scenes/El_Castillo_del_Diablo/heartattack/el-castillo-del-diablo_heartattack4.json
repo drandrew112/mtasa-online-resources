@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [-167.17, 2472.084, 21.013],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A biker stopped to admire the canyon, took off his helmet and collapsed by the road. Not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [-167.17, 2472.084, 21.013],
+            "rot": 128,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

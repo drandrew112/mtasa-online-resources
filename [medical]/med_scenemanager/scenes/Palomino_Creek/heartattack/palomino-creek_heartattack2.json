@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "palomino-creek_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [2227.242, -22.566, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, sweating",
+        "description": "The bank teller stepped out for fresh air and sat down by the road, grey and sweating, pressing on her chest. She says it feels like a sack of feed on her ribs.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [2227.242, -22.566, 26.484],
+            "rot": 201,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

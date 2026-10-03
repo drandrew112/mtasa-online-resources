@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1591.55, -486.575, 6.318],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed on the hill",
+        "description": "A man pushing a bike up one of the steep San Fierro streets stopped, coughed once and toppled onto the sidewalk. Not breathing. His bike rolled halfway down the block.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 20,
+            "pos": [-1591.55, -486.575, 6.318],
+            "rot": 150,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

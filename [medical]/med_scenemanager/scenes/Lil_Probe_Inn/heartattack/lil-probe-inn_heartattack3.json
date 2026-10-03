@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-57.655, 1358.634, 10.415],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Faint and confused",
+        "description": "An old regular keeps fainting outside the bar. Very slow pulse, he claims he saw lights in the sky.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [-57.655, 1358.634, 10.415],
+            "rot": 195,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

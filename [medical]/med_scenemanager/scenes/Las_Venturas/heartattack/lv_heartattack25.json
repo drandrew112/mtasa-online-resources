@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack25",
+    "enabled": true,
+    "weight": 1,
+    "center": [1875.75, 1280.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, cold",
+        "description": "A morning jogger found a man lying face down on the sidewalk in the desert dawn. Cold to the touch, not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [1875.75, 1280.5, 10.82],
+            "rot": 335,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

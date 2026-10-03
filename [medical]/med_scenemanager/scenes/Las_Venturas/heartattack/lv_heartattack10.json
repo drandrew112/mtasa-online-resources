@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack10",
+    "enabled": true,
+    "weight": 1,
+    "center": [2208.607, 880.612, 8.248],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, pounding head",
+        "description": "A woman who just lost her savings at the tables is leaning against a wall with chest pain and a pounding headache. She keeps saying she was \"so close\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [2208.607, 880.612, 8.248],
+            "rot": 44,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

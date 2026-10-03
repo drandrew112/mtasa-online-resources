@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "angel-pine_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2117.757, -2458.963, 30.625],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A lumberjack in a checked shirt collapsed by the road outside the sawmill. Not breathing. His coworkers are shouting for help.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2117.757, -2458.963, 30.625],
+            "rot": 125,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

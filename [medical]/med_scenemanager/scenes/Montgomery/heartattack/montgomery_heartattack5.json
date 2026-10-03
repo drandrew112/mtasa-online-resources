@@ -1,0 +1,34 @@
+{
+    "format": 1,
+    "name": "montgomery_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [1245.256, 164.337, 19.617],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, grey skin",
+        "description": "A woman was found slumped by the road outside the laundromat. Barely breathing, grey, cold and clammy. Her laundry basket is tipped over.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1245.256, 164.337, 19.617],
+            "rot": 116,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack18",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2379.25, 2.815, 35.313],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nausea and weakness",
+        "description": "An older woman sitting on the sidewalk says she has had heartburn all day, now with nausea and cold sweat. She is sure it was the clam chowder.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [-2379.25, 2.815, 35.313],
+            "rot": 294,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

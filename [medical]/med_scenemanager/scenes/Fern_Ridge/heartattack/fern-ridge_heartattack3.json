@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "fern-ridge_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [521.96, 30.355, 22.594],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down by the road",
+        "description": "A logger found a man lying by the road under the pines. No pulse, only an occasional gasp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [521.96, 30.355, 22.594],
+            "rot": 13,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

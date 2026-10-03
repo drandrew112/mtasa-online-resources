@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [594.625, -500.625, 16.336],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Faint and confused",
+        "description": "An old man filling up his pickup at the gas station keeps fainting. His pulse is very slow and he does not remember paying.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 183,
+            "pos": [594.625, -500.625, 16.336],
+            "rot": 127,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

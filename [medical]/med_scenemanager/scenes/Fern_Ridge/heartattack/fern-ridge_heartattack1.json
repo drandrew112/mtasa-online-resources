@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "fern-ridge_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [1256.412, 7.682, 26.944],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hiker down, not breathing",
+        "description": "A hiker came out of the woods onto the road, waved at a passing car and collapsed. The driver says he is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [1256.412, 7.682, 26.944],
+            "rot": 167,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

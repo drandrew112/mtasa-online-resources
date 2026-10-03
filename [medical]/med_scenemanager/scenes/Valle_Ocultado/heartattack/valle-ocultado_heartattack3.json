@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-725.664, 2689.964, 52.774],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A hermit who lives in the valley walked to the road for help and collapsed. Not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [-725.664, 2689.964, 52.774],
+            "rot": 309,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

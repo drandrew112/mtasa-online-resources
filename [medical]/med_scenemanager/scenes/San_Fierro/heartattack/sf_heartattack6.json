@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack6",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2742.653, 407.292, 4.367],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Heart racing, can't stand",
+        "description": "A cyclist sat down on the curb after a sprint and cannot get his heart to slow down. He is pale and his watch reads over 170. He keeps trying to get back on the bike.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [-2742.653, 407.292, 4.367],
+            "rot": 199,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

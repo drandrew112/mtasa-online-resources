@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-barrancas_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-765.875, 1508.935, 25.375],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Palpitations, near faint",
+        "description": "A tourist sat down by the road with her heart pounding wildly after crossing the bridge on foot. Pale and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 129,
+            "pos": [-765.875, 1508.935, 25.375],
+            "rot": 332,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "ls_heartattack8",
+    "enabled": true,
+    "weight": 1,
+    "center": [1404.599, -1965.06, 40.871],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A delivery rider found a man lying motionless next to his scooter, helmet still on. No breathing, nobody can feel a pulse. The pizza is still warm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 182,
+            "pos": [1404.599, -1965.06, 40.871],
+            "rot": 130,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "blueberry_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [175.625, -259.25, 1.578],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, no pulse",
+        "description": "A truck driver at the depot was unloading crates when he grabbed his chest and fell next to the road. No pulse, not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [175.625, -259.25, 1.578],
+            "rot": 182,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

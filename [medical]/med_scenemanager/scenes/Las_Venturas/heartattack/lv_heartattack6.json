@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "lv_heartattack6",
+    "enabled": true,
+    "weight": 1,
+    "center": [1805, 2180.225, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Heart racing, dizzy",
+        "description": "A bachelor party guest is sitting on the sidewalk, chest pounding and the world spinning. His friends admit to \"a few\" energy drinks and \"maybe more than a few\" shots.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [1805, 2180.225, 10.82],
+            "rot": 56,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

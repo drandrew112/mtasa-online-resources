@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack11",
+    "enabled": true,
+    "weight": 1,
+    "center": [2684.042, -1506.745, 30.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Racing heart, dizzy",
+        "description": "A young man says his heart is \"going like a drum solo\" after a night out. He is pale, sweaty and keeps sliding sideways on the pavement.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2684.042, -1506.745, 30.6],
+            "rot": 312,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 90,
+                "systolic": 90,
+                "diastolic": 60,
+                "heartRate": 175,
+                "consciousness": "dazed",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

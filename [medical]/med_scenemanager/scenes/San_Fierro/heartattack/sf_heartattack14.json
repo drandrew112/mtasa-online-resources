@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "sf_heartattack14",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2208.75, 815.75, 49.446],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fainting spells",
+        "description": "A man in a tuxedo, on his way to a wedding, keeps fainting on the sidewalk. Slow pulse, sweaty, confused. He is the groom and very late.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [-2208.75, 815.75, 49.446],
+            "rot": 278,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 92,
+                "systolic": 85,
+                "diastolic": 50,
+                "heartRate": 42,
+                "consciousness": "dazed",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

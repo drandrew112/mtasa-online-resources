@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "bayside_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2570.964, 2498.871, 20.949],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A yacht owner walking up from the marina collapsed by the road. Not breathing. His captain's hat rolled into the gutter.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [-2570.964, 2498.871, 20.949],
+            "rot": 101,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

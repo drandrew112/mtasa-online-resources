@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "bayside_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2500.888, 2391.867, 15.789],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, uneasy",
+        "description": "An old sailor sat by the road, short of breath with a heavy chest. He says the sea air \"isn't working today\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [-2500.888, 2391.867, 15.789],
+            "rot": 307,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

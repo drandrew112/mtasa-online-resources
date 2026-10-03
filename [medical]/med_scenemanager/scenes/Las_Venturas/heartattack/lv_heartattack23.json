@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lv_heartattack23",
+    "enabled": true,
+    "weight": 1,
+    "center": [1654.75, 1180.289, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Not breathing, face down",
+        "description": "A woman collapsed face down on the sidewalk outside a souvenir shop. The shop owner says she is not breathing and her face is turning grey.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [1654.75, 1180.289, 10.82],
+            "rot": 31,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

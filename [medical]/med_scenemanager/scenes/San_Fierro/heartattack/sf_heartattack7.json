@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack7",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2450.939, 1083.88, 55.727],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A street musician stopped playing her violin, swayed and went down on the sidewalk. The crowd thought it was part of the show. It is not. She is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2450.939, 1083.88, 55.727],
+            "rot": 72,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

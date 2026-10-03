@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-65.641, 1401.186, 9.662],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, not breathing",
+        "description": "A UFO enthusiast in a tinfoil hat collapsed outside the Lil' Probe Inn. Not breathing. The other regulars say he \"was taken\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [-65.641, 1401.186, 9.662],
+            "rot": 247,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

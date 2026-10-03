@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "ls_heartattack25",
+    "enabled": true,
+    "weight": 1,
+    "center": [1201.466, -954.379, 42.922],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, very high BP",
+        "description": "A man checking his blood pressure on a pharmacy machine walked out and sat down on the sidewalk. The printout says \"seek medical attention\" in bold. Now his chest hurts too.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 68,
+            "pos": [1201.466, -954.379, 42.922],
+            "rot": 139,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

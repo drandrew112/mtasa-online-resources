@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "name": "ls_stunt-accident",
+    "enabled": true,
+    "weight": 1,
+    "center": [1953.462, -1810.008, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stunt park accident",
+        "description": "A young man fell off his BMX at the stunt park next to the Southern gas station. He broke his leg and an arm.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 481,
+            "pos": [1953.448, -1810.001, 12.996],
+            "rot": [357.81, 0, 65.99],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "QKAP 1VO",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 37,
+            "pos": [1953.396, -1808.004, 13.547],
+            "rot": 288.1,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

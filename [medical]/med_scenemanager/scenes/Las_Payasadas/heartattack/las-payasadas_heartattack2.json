@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-payasadas_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-247.7, 2758.391, 62.688],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain in the heat",
+        "description": "A woman waiting for the bus in the desert sun sat down with tight chest pain and cold sweat despite the heat.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-247.7, 2758.391, 62.688],
+            "rot": 241,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

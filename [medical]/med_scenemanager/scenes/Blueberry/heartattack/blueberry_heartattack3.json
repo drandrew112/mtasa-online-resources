@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [236.087, -373.741, 8.296],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, very high BP",
+        "description": "A woman who measured her blood pressure at the pharmacy got a reading \"off the chart\". Now her chest hurts and her head is pounding.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [236.087, -373.741, 8.296],
+            "rot": 47,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

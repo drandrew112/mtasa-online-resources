@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "sf_heartattack25",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2614.125, 961.25, 78.242],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, cold",
+        "description": "A street sweeper found a man lying face down at the edge of the sidewalk. Cold skin, not breathing. A half-eaten sandwich lies next to him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-2614.125, 961.25, 78.242],
+            "rot": 195,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

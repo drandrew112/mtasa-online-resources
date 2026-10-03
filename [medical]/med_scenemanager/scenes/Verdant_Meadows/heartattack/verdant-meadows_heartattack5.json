@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [381.598, 2361.107, 25.501],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nausea, cold sweat",
+        "description": "An older woman who came to watch the planes sat down by the road feeling sick, sweaty and short of breath.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [381.598, 2361.107, 25.501],
+            "rot": 100,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

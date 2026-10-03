@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "palomino-creek_heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [2309, -20.875, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A neighbour found a woman lying motionless next to the road with her dog standing guard. No breathing, no pulse anyone can find.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 231,
+            "pos": [2309, -20.875, 26.484],
+            "rot": 181,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

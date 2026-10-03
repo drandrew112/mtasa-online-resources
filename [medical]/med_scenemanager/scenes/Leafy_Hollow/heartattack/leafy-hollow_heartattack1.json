@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_heartattack1",
+    "enabled": true,
+    "weight": 1,
+    "center": [-892.869, -1762.223, 80.119],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found down, no pulse",
+        "description": "A forest ranger found a man lying by the road in the hollow. No pulse, gasping only once in a while.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [-892.869, -1762.223, 80.119],
+            "rot": 169,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "bayside_heartattack2",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2604.467, 2380.143, 9.714],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, sweating",
+        "description": "A retired woman walking her poodle sat down by the road with chest pain and cold sweat. The poodle is barking at everyone.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-2604.467, 2380.143, 9.714],
+            "rot": 52,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

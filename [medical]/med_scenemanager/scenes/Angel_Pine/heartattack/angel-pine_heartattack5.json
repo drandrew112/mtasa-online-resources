@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "angel-pine_heartattack5",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2185.902, -2485.014, 30.625],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain, very high BP",
+        "description": "A furious woman who just had her car towed is leaning on a wall with chest pain and a pounding headache.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-2185.902, -2485.014, 30.625],
+            "rot": 16,
+            "anim": "lean",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}
