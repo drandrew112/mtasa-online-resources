@@ -1,4 +1,8 @@
--- Scene files: scenes/<name>.json, listed in scenes/index.json.
+-- Scene files: scenes/<Settlement>/[<category>/]<name>.json, listed in scenes/index.json
+-- as paths relative to scenes/ without .json (e.g. "Los_Santos/heartattack/ls_heartattack1").
+-- Scene names stay unique over all folders. The settlement comes from the scene centre
+-- (msmSettlementFolder), the category from the scene's "category" key; both are applied
+-- on save, so a scene moves to its new folder when its centre / category changes.
 --
 -- On start every file is read once and only a short summary is kept in memory
 -- (Storage.summary). The full data is read from the file again whenever a module
@@ -6,13 +10,34 @@
 
 Storage = {
     names = {},     -- ordered scene names (the index)
-    summary = {},   -- [name] = { name, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }
+    summary = {},   -- [name] = { name, path, category, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }
+    paths = {},     -- [name] = path relative to scenes/, without .json
 }
 
 local FORMAT = 1
 
-local function scenePath(name)
-    return MSM.SCENE_DIR .. name .. ".json"
+local function filePath(path)
+    return MSM.SCENE_DIR .. path .. ".json"
+end
+
+-- Index entry -> path, scene name | nil. Every folder must be a plain name (no "..").
+local function parseEntry(entry)
+    local path = tostring(entry):gsub("\\", "/"):gsub("%.json$", "")
+    if path:sub(1, 1) == "/" or path:sub(-1) == "/" or path:find("//", 1, true) then return nil end
+    local name
+    for part in path:gmatch("[^/]+") do
+        if not part:match(MSM.NAME_PATTERN) then return nil end
+        name = part
+    end
+    if not msmValidName(name) then return nil end
+    return path, name
+end
+
+-- Where a scene belongs: <Settlement>/[<category>/]<name>
+function Storage.pathFor(name, scene)
+    local folder = msmSettlementFolder(scene.center, scene.interior)
+    if scene.category ~= "" then folder = folder .. "/" .. scene.category end
+    return folder .. "/" .. name
 end
 
 local function num(value, default)
@@ -33,6 +58,7 @@ function Storage.normalize(data, name)
     local scene = {
         format = FORMAT,
         name = name or data.name,
+        category = msmCategory(data.category, name or data.name),
         enabled = data.enabled ~= false,
         weight = math.max(0, num(data.weight, 1)),
         center = vec3(data.center, { 0, 0, 3 }),
@@ -98,6 +124,8 @@ end
 local function makeSummary(name, scene)
     return {
         name = name,
+        path = Storage.paths[name],
+        category = scene.category,
         title = scene.erm.title,
         priority = scene.erm.priority,
         center = { scene.center[1], scene.center[2], scene.center[3] },
@@ -112,8 +140,15 @@ end
 
 ---------------------------------------------------------------- index
 
+local function indexJSON()
+    local paths = {}
+    for i, name in ipairs(Storage.names) do paths[i] = Storage.paths[name] end
+    table.sort(paths, function(a, b) return a:lower() < b:lower() end)
+    return msmEncodeJSON({ scenes = paths })
+end
+
 local function writeIndex()
-    msmWriteFile(MSM.INDEX_FILE, msmEncodeJSON({ scenes = Storage.names }))
+    msmWriteFile(MSM.INDEX_FILE, indexJSON())
 end
 
 local function sortNames()
@@ -122,35 +157,44 @@ end
 
 -- Re-reads the index and every scene file (summaries only).
 function Storage.reload()
-    Storage.names, Storage.summary = {}, {}
+    Storage.names, Storage.summary, Storage.paths = {}, {}, {}
     local index = msmDecodeJSON(msmReadFile(MSM.INDEX_FILE) or "")
     local list = index and (index.scenes or index) or {}
     local missing, formatted = 0, 0
 
-    for _, name in ipairs(type(list) == "table" and list or {}) do
-        name = tostring(name):gsub("%.json$", "")
-        if msmValidName(name) and not Storage.summary[name] then
-            local content = msmReadFile(scenePath(name))
+    for _, entry in ipairs(type(list) == "table" and list or {}) do
+        local path, name = parseEntry(entry)
+        if not path then
+            msmLog("invalid index entry '%s' skipped", tostring(entry))
+        elseif Storage.summary[name] then
+            msmLog("duplicate scene name '%s': %s skipped", name, filePath(path))
+        else
+            local content = msmReadFile(filePath(path))
             local data = msmDecodeJSON(content)
             if data then
                 local scene = Storage.normalize(data, name)
                 Storage.names[#Storage.names + 1] = name
+                Storage.paths[name] = path
                 Storage.summary[name] = makeSummary(name, scene)
                 -- older / hand-edited files are rewritten in the editor's format (key order, layout)
                 local json = msmEncodeJSON(scene)
                 if json and json ~= content then
-                    msmWriteFile(scenePath(name), json)
+                    msmWriteFile(filePath(path), json)
                     formatted = formatted + 1
+                end
+                if path ~= Storage.pathFor(name, scene) then
+                    msmLog("scene '%s' is in %s, its centre / category says %s (moved on the next save)",
+                        name, filePath(path), filePath(Storage.pathFor(name, scene)))
                 end
             else
                 missing = missing + 1
-                msmLog("scene '%s' is listed in the index but %s could not be read", name, scenePath(name))
+                msmLog("scene '%s' is listed in the index but %s could not be read", name, filePath(path))
             end
         end
     end
     sortNames()
     -- reformat the index too, but never drop the entries of files that could not be read
-    if not index or (missing == 0 and msmEncodeJSON({ scenes = Storage.names }) ~= msmReadFile(MSM.INDEX_FILE)) then
+    if not index or (missing == 0 and indexJSON() ~= msmReadFile(MSM.INDEX_FILE)) then
         writeIndex()
     end
     msmLog("%d scene(s) loaded%s%s", #Storage.names,
@@ -172,26 +216,36 @@ end
 -- Full scene data straight from the file -> scene | nil, error
 function Storage.load(name)
     if not msmValidName(name) then return nil, "Invalid scene name" end
-    local data = msmDecodeJSON(msmReadFile(scenePath(name)))
-    if not data then return nil, "Scene file not found or invalid: " .. scenePath(name) end
+    local path = Storage.paths[name]
+    if not path then return nil, "Unknown scene: " .. name end
+    local data = msmDecodeJSON(msmReadFile(filePath(path)))
+    if not data then return nil, "Scene file not found or invalid: " .. filePath(path) end
     return Storage.normalize(data, name)
 end
 
--- Writes the scene file and updates the index + summary -> true | false, error
+-- Writes the scene file into its settlement / category folder (the old file is removed
+-- when that changed) and updates the index + summary -> true, file | false, error
 function Storage.save(name, scene)
     if not msmValidName(name) then return false, "Invalid name (letters, digits, _ and -, max " .. MSM.NAME_MAX .. ")" end
     scene = Storage.normalize(scene, name)
+    local path = Storage.pathFor(name, scene)
     local json = msmEncodeJSON(scene)
-    if not json or not msmWriteFile(scenePath(name), json) then
-        return false, "Could not write " .. scenePath(name)
+    if not json or not msmWriteFile(filePath(path), json) then
+        return false, "Could not write " .. filePath(path)
     end
+    local old = Storage.paths[name]
+    if old and old ~= path and fileExists(filePath(old)) then
+        fileDelete(filePath(old))
+        msmLog("scene '%s' moved: %s -> %s", name, filePath(old), filePath(path))
+    end
+    Storage.paths[name] = path
     if not Storage.summary[name] then
         Storage.names[#Storage.names + 1] = name
         sortNames()
     end
     Storage.summary[name] = makeSummary(name, scene)
     writeIndex()
-    return true
+    return true, filePath(path)
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()

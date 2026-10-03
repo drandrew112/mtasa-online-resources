@@ -20,7 +20,7 @@ function getActiveScenes()
     return out
 end
 
--- getSceneList() -> summaries { { name, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }, ... }
+-- getSceneList() -> summaries { { name, path, category, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }, ... }
 function getSceneList()
     return msmCopy(Storage.list())
 end
@@ -57,7 +57,8 @@ function getCatalog()
 end
 
 -- saveSceneData(name, scene [, overwrite]) -> true | false, "exists" | error
--- Writes scenes/<name>.json (normalized, editor format) and updates the index.
+-- Writes scenes/<Settlement>/[<category>/]<name>.json (normalized, editor format) and updates
+-- the index. scene.category: "heartattack" | "mva" | "" (missing = taken from the name).
 -- A scene that is open in the in-game editor is never overwritten.
 function saveSceneData(name, scene, overwrite)
     name = tostring(name)

@@ -4,8 +4,12 @@ MSM = {
     ERM = "med_erm",            -- dispatch resource (tasks, units)
     MEDSYS = "medsys",          -- medical resource (injuries, vitals)
 
-    SCENE_DIR = "scenes/",      -- one <name>.json per scene
-    INDEX_FILE = "scenes/index.json", -- list of scene names (MTA cannot list a directory)
+    SCENE_DIR = "scenes/",      -- scenes/<Settlement>/[<category>/]<name>.json
+    INDEX_FILE = "scenes/index.json", -- list of scene paths (MTA cannot list a directory)
+    -- Settlement folder: the city (getZoneName citiesonly) for these, the zone name
+    -- (village, area) anywhere else. Spaces -> _, apostrophes dropped: Los_Santos, Lil_Probe_Inn
+    CITY_FOLDERS = { ["Los Santos"] = true, ["San Fierro"] = true, ["Las Venturas"] = true },
+    INTERIOR_FOLDER = "Interiors", -- scenes with interior ~= 0 (zone names are meaningless there)
     NAME_PATTERN = "^[%w_%-]+$",
     NAME_MAX = 40,
 
@@ -68,6 +72,14 @@ MSM_ANIMS = {
     { id = "crouch",    label = "Crouching",         anim = { "PED", "cower" }, loop = true },
     { id = "hold_side", label = "Holding side",      anim = { "CRACK", "crckidle2" }, loop = true },
     { id = "lean",      label = "Leaning",           anim = { "GANGS", "leanIDLE" }, loop = true },
+}
+
+-- Scene categories: subfolder inside the settlement folder. "" = no category (no subfolder).
+-- A file without a "category" key gets the first id found in its name.
+MSM_CATEGORIES = {
+    { id = "heartattack", label = "Heart attack" },
+    { id = "mva",         label = "Motor vehicle accident" },
+    { id = "hypertension", label = "Hypertension" },
 }
 
 -- Injury types / severities offered by the editor (medsys applyInjury)

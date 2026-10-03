@@ -132,6 +132,9 @@ function Editor.sync(session)
         local d = scene.data
         state.scene = {
             file = scene.file or false, dirty = scene.dirty,
+            path = scene.file and Storage.file(scene.file) or false,
+            target = MSM.SCENE_DIR .. Storage.pathFor(scene.file or "<name>", d) .. ".json",
+            category = d.category,
             erm = d.erm, enabled = d.enabled, weight = d.weight,
             center = d.center, interior = d.interior,
             vehicles = {}, peds = {},
@@ -253,9 +256,13 @@ local function writeScene(session, name)
         return false
     end
     cleanReferences(session)
-    local ok, err = Storage.save(name, scene.data)
+    -- a new scene without a category takes the one in its name (ls_heartattack26)
+    if not scene.file and scene.data.category == "" then
+        scene.data.category = msmCategory(nil, name)
+    end
+    local ok, result = Storage.save(name, scene.data)
     if not ok then
-        msmNotify(session.player, "Scene editor", "Save failed: " .. tostring(err))
+        msmNotify(session.player, "Scene editor", "Save failed: " .. tostring(result))
         return false
     end
     if scene.file ~= name then
@@ -265,7 +272,7 @@ local function writeScene(session, name)
     end
     scene.data.name = name
     scene.dirty = false
-    msmNotify(session.player, "Scene editor", "Saved: " .. MSM.SCENE_DIR .. name .. ".json")
+    msmNotify(session.player, "Scene editor", "Saved: " .. result)
     msmLog("%s saved scene '%s'", getPlayerName(session.player), name)
     return true
 end
@@ -483,6 +490,9 @@ SCENE_ACTIONS = {
     end,
     enabled = function(session)
         session.scene.data.enabled = not session.scene.data.enabled
+    end,
+    category = function(session, id)
+        if type(id) == "string" then session.scene.data.category = msmCategory(id) end
     end,
     weight = function(session, w)
         w = tonumber(w)
