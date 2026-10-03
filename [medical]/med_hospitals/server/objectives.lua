@@ -1,5 +1,6 @@
 -- v_radar objective (yellow blip + auto route) to a hospital, one per player.
--- Removed automatically within HOSP.ARRIVE_RADIUS of the hospital, on quit and on reload.
+-- Removed automatically within HOSP.ARRIVE_RADIUS of the hospital (unless set with keep = true,
+-- then only the caller removes it), on quit and on reload.
 
 local objectives = {}  -- [player] = { id, hospital }
 
@@ -13,14 +14,14 @@ function removePlayerObjective(player)
     return true
 end
 
--- -> objectiveId | false, error
-function setPlayerObjective(player, h, label)
+-- keep = true: not removed on arrival -> objectiveId | false, error
+function setPlayerObjective(player, h, label, keep)
     if not isElement(player) or getElementType(player) ~= "player" then return false, "Invalid player" end
     if not radarRunning() then return false, "v_radar is not running" end
     removePlayerObjective(player)
     local id = exports.v_radar:addObjective(player, h.x, h.y, h.z, label or h.name)
     if not id then return false, "v_radar refused the objective" end
-    objectives[player] = { id = id, hospital = h }
+    objectives[player] = { id = id, hospital = h, keep = keep and true or false }
     return id
 end
 
@@ -40,7 +41,7 @@ local function checkArrivals()
     for player, o in pairs(objectives) do
         if not isElement(player) then
             objectives[player] = nil
-        else
+        elseif not o.keep then
             local x, y = getElementPosition(player)
             if getDistanceBetweenPoints2D(x, y, o.hospital.x, o.hospital.y) <= HOSP.ARRIVE_RADIUS then
                 removePlayerObjective(player)

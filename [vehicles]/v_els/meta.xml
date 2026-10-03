@@ -38,12 +38,16 @@
     <file src="sounds_eriston150/horn.wav" />
     <file src="sounds_dal/1.wav" />
     <file src="sounds_dal/2.wav" />
-    <file src="sounds_dal/3.wav" />
+    <file src="sounds_dal/2_loop.wav" />
     <file src="sounds_dal/horn.wav" />
     <file src="sounds_rumbler/SIREN_PA20A_WAIL.wav" />
     <file src="sounds_rumbler/SIREN_2.wav" />
     <file src="sounds_rumbler/POLICE_WARNING.wav" />
     <file src="sounds_italy/italy.wav" />
+    <file src="sounds_code3_Z3/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_code3_Z3/SIREN_2.wav" />
+    <file src="sounds_code3_Z3/POLICE_WARNING.wav" />
+    <file src="sounds_code3_Z3/AIRHORN_EQD.wav" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="dynamic_lighting" />

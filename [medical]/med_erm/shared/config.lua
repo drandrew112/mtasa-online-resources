@@ -23,6 +23,11 @@ Config.ADD_MEMBER_RADIUS = 10
 -- and the unit switches to On Scene automatically (only at its own task).
 Config.ARRIVE_RADIUS = 30
 
+-- Distance (metres) from the scene after which a unit that reached it counts as
+-- departed: the crew gets a radar objective to the nearest hospital (med_hospitals),
+-- removed when the unit gets the Handover status.
+Config.HOSPITAL_DEPART_RADIUS = 50
+
 -- Speed (km/h) above which Start Response is switched on automatically when the
 -- driver of a unit with an active case drives off (to the scene, or away from it).
 Config.RESPONSE_AUTO_SPEED = 5

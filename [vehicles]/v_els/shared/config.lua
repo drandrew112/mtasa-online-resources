@@ -11,7 +11,7 @@ sirenVehicles = {
     [597] = "hella_rtk7", -- Police SF
     [598] = "hella_rtk7", -- Police LV
     [599] = "rumbler",    -- Police Ranger
-    [490] = true,         -- FBI Rancher
+    [490] = "code3_z3",       -- FBI Rancher (Mercedes V-Class)
 }
 
 DEFAULT_SIREN_TYPE = "fsvas320"
@@ -38,6 +38,11 @@ ELS_ADMIN_LEVEL = 1
 -- horn:      kürt (3-as gomb)
 -- secondary: másodlagos szirénahang a fő mellé (4-es gomb, csak szóló fő szirénánál),
 --            false = a típusnak nincs másodlagos hangja
+-- volume:    hangerő szorzó a típus minden hangjára (alapból 1.0), ezzel hozható
+--            szinkronba a túl hangos / túl halk hangkészlet
+-- hornVolume: külön szorzó a kürtre (alapból a volume)
+-- intro:     { [hang sorszáma] = fájl } egyszer szóló bevezető, utána a sirens[i] loopol;
+--            a loop fájlnak a bevezető végének kell lennie (pl. 0.5 mp-től kivágva)
 
 sirenTypes = {
     fsvas320 = {
@@ -98,15 +103,27 @@ sirenTypes = {
         secondary = false,
     },
 
-    dal = {
+    dal = { -- Armcom DAL-257
         sirens = {
             "sounds_dal/1.wav",
-            "sounds_dal/2.wav",
-            "sounds_dal/3.wav",
+            "sounds_dal/2_loop.wav",
         },
         horn = "sounds_dal/horn.wav",
         secondary = false,
+        intro = { [2] = "sounds_dal/2.wav" },
     },
+
+    code3_z3 = {
+        sirens = {
+            "sounds_code3_Z3/SIREN_PA20A_WAIL.wav",
+            "sounds_code3_Z3/SIREN_2.wav",
+            "sounds_code3_Z3/POLICE_WARNING.wav",
+        },
+        horn = "sounds_code3_Z3/AIRHORN_EQD.wav",
+        secondary = false,
+        volume = 0.6,
+    },
+
 }
 
 ------------------------------------------------------------

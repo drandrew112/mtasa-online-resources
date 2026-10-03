@@ -140,6 +140,12 @@ signed in; after sign-in every crew member can open it anywhere.
   (yellow marker + automatic route), updated/removed with the task. It is
   removed once the player arrives (`Config.ARRIVE_RADIUS`, 30 m) or the unit
   is On Scene, and does not come back for that task.
+- **Transport to hospital** (server/hospitalroute.lua): once a unit that reached
+  its scene is farther than `Config.HOSPITAL_DEPART_RADIUS` (50 m) from it, every
+  crew member gets a radar objective to the nearest hospital (med_hospitals
+  `getNearestHospital` + `setObjectiveToHospital(..., keep = true)`). It is removed
+  when the unit gets the Handover status (ambulance bay) and is not set again for
+  that case. Needs med_hospitals running; nothing happens without it.
 - **On Scene is automatic**: once the unit's vehicle or a crew member is within
   `Config.ARRIVE_RADIUS` of the unit's own task, the server sets On Scene (stops
   the lights & siren log). Scenes of tasks assigned to other units never count.

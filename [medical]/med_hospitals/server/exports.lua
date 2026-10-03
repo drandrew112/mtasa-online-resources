@@ -54,25 +54,26 @@ function getNearestHospital(x, y, z)
     return h.id, h.name, dist
 end
 
--- setObjectiveToNearestHospital(player [, label]) -> hospitalId, objectiveId | false, error
+-- setObjectiveToNearestHospital(player [, label [, keep]]) -> hospitalId, objectiveId | false, error
 -- v_radar objective (yellow blip + route) to the nearest hospital's first ambulance bay.
--- Replaces the player's previous hospital objective; removed on arrival.
-function setObjectiveToNearestHospital(player, label)
+-- Replaces the player's previous hospital objective; removed on arrival, or with keep = true
+-- only by removeHospitalObjective.
+function setObjectiveToNearestHospital(player, label, keep)
     if not isElement(player) or getElementType(player) ~= "player" then return false, "Invalid player" end
     local x, y, z = getElementPosition(player)
     local h = findNearestHospital(x, y, z, getElementInterior(player), getElementDimension(player))
         or findNearestHospital(x, y, z)
     if not h then return false, "No hospitals" end
-    local id, err = setPlayerObjective(player, h, label)
+    local id, err = setPlayerObjective(player, h, label, keep)
     if not id then return false, err end
     return h.id, id
 end
 
--- setObjectiveToHospital(player, hospitalId [, label]) -> objectiveId | false, error
-function setObjectiveToHospital(player, hospitalId, label)
+-- setObjectiveToHospital(player, hospitalId [, label [, keep]]) -> objectiveId | false, error
+function setObjectiveToHospital(player, hospitalId, label, keep)
     local h = Hospitals.byId[tostring(hospitalId)]
     if not h then return false, "Hospital not found" end
-    return setPlayerObjective(player, h, label)
+    return setPlayerObjective(player, h, label, keep)
 end
 
 -- removeHospitalObjective(player) -> bool

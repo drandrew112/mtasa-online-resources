@@ -18,6 +18,7 @@
     <script src="server/http.lua"    type="server" />
     <script src="server/webbridge.lua" type="server" />
     <script src="server/autodispatch.lua" type="server" />
+    <script src="server/hospitalroute.lua" type="server" />
     <script src="server/admin.lua"   type="server" />
     <script src="server/exports.lua" type="server" />
     <script src="server/main.lua"    type="server" />

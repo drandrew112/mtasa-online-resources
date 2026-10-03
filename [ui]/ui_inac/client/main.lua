@@ -95,29 +95,38 @@ registerMenu({
             value = 1,
             options = {
                 {
+                    label = "Armcom DAL-257",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "dal")
+                        end
+                    end
+                },
+                {
+                    label = "Code3 Z3",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "code3_z3")
+                        end
+                    end
+                },
+                {
+                    label = "Eriston 150",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "eriston")
+                        end
+                    end
+                },
+                {
                     label = "Federal signal AS-320",
                     action = function()
                         local veh = getPedOccupiedVehicle(localPlayer)
                         if not veh then uicore:addNotification("Error", "You need a vehicle for this")
                         else setElementData(veh, "sirenType", "fsvas320")
-                        end
-                    end
-                },
-                {
-                    label = "Soundoff Signal",
-                    action = function()
-                        local veh = getPedOccupiedVehicle(localPlayer)
-                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
-                        else setElementData(veh, "sirenType", "soundoff")
-                        end
-                    end
-                },
-                {
-                    label = "Soundoff Signal Rumbler",
-                    action = function()
-                        local veh = getPedOccupiedVehicle(localPlayer)
-                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
-                        else setElementData(veh, "sirenType", "rumbler")
                         end
                     end
                 },
@@ -140,11 +149,20 @@ registerMenu({
                     end
                 },
                 {
-                    label = "Eriston 150",
+                    label = "Soundoff Signal",
                     action = function()
                         local veh = getPedOccupiedVehicle(localPlayer)
                         if not veh then uicore:addNotification("Error", "You need a vehicle for this")
-                        else setElementData(veh, "sirenType", "eriston")
+                        else setElementData(veh, "sirenType", "soundoff")
+                        end
+                    end
+                },
+                {
+                    label = "Soundoff Signal Rumbler",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "rumbler")
                         end
                     end
                 },

@@ -85,8 +85,8 @@ while `med_erm` is stopped (on-duty units cannot be told apart).
 exports.med_hospitals:getHospitals()                       -- { {id, name, x, y, z, interior, dimension, bays, handoverMarkers, heal}, ... }
 exports.med_hospitals:getHospital(id)                      -- every point, bays with their parked vehicle
 exports.med_hospitals:getNearestHospital(element | x, y, z)    -- id, name, distance
-exports.med_hospitals:setObjectiveToNearestHospital(player [, label])  -- hospitalId, objectiveId
-exports.med_hospitals:setObjectiveToHospital(player, hospitalId [, label])  -- objectiveId
+exports.med_hospitals:setObjectiveToNearestHospital(player [, label [, keep]])  -- hospitalId, objectiveId; keep = not removed on arrival
+exports.med_hospitals:setObjectiveToHospital(player, hospitalId [, label [, keep]])  -- objectiveId
 exports.med_hospitals:removeHospitalObjective(player)
 exports.med_hospitals:getVehicleHospitalBay(vehicle)       -- hospitalId, bayIndex | false
 exports.med_hospitals:getUnitHospitalHandover(unitId)      -- hospitalId | false

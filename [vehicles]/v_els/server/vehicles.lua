@@ -208,6 +208,7 @@ local typeCommands = {
     stitaly = "italy",
     eriston = "eriston",
     dal     = "dal",
+    code3   = "code3_z3",
 }
 
 for command, sirenType in pairs(typeCommands) do
