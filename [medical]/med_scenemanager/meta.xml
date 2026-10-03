@@ -36,6 +36,8 @@
     <export function="getSceneData"      type="server" />
     <export function="getAutoGenerate"   type="server" />
     <export function="setAutoGenerate"   type="server" />
+    <export function="getCatalog"        type="server" />
+    <export function="saveSceneData"     type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="med_erm" />

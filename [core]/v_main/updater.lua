@@ -59,7 +59,10 @@ end
 
 -- Single logging path. Also forwards the raw event to the lib so external
 -- listeners (checker:on(...)) keep working, but formatting lives here.
-local EVENT_PREFIX = { error = "ERROR: ", outdated = "outdated : ", missing = "missing  : " }
+local EVENT_PREFIX = {
+    error = "ERROR: ", outdated = "outdated : ", missing = "missing  : ",
+    notinst = "not inst.: ", loose = "no res.  : ",
+}
 
 -- ---------------------------------------------------------------------------
 -- the check
@@ -115,6 +118,9 @@ local function runCheck(triggeredBy, player)
             local roots = RepoSync.buildResourceRoots(parsed.tree)
 
             local checked, outdated, missing, ignored, notInstalled = 0, 0, 0, 0, 0
+            -- not-installed files grouped per repo resource folder, plus repo
+            -- files outside every resource (README, .gitignore, ...)
+            local notInstRes, notInstOrder, looseFiles = {}, {}, {}
 
             for _, entry in ipairs(parsed.tree) do
                 if entry.type == "blob" and entry.path and entry.sha then
@@ -124,8 +130,17 @@ local function runCheck(triggeredBy, player)
                         ignored = ignored + 1
                     else
                         local resName, subPath = RepoSync.mapToResource(repoPath, roots)
-                        if not resName or not getResourceFromName(resName) then
+                        if not resName then
                             notInstalled = notInstalled + 1
+                            looseFiles[#looseFiles + 1] = repoPath
+                        elseif not getResourceFromName(resName) then
+                            notInstalled = notInstalled + 1
+                            local dir = repoPath:sub(1, #repoPath - #subPath - 1)
+                            if not notInstRes[dir] then
+                                notInstRes[dir] = 0
+                                notInstOrder[#notInstOrder + 1] = dir
+                            end
+                            notInstRes[dir] = notInstRes[dir] + 1
                         else
                             local localData = RepoSync.readLocalFile(":" .. resName .. "/" .. subPath)
                             if not localData then
@@ -151,8 +166,20 @@ local function runCheck(triggeredBy, player)
             else
                 emit("status", "Run 'updateresources' (or 'git pull') to bring the files above up to date.")
             end
-            if notInstalled > 0 then
-                emit("status", "Resources that exist in the repo but not here are installed by 'updateresources'.")
+            if #notInstOrder > 0 then
+                table.sort(notInstOrder)
+                emit("status", ("Resources in the repo but not installed here (%d):"):format(#notInstOrder))
+                for _, dir in ipairs(notInstOrder) do
+                    emit("notinst", ("%s   (%d files)"):format(dir, notInstRes[dir]))
+                end
+                emit("status", "These are installed by 'updateresources', or copy the folders above manually.")
+            end
+            if #looseFiles > 0 then
+                table.sort(looseFiles)
+                emit("status", ("Repo files outside any resource (%d):"):format(#looseFiles))
+                for _, path in ipairs(looseFiles) do
+                    emit("loose", path)
+                end
             end
         end
     )

@@ -24,6 +24,25 @@ local function drawRing(cx, cy, r, colour)
     end
 end
 
+-- szavanként tördeli a szöveget, hogy beleférjen maxW szélességbe
+local function wrapText(text, maxW, scale, font)
+    local lines = {}
+    for para in (tostring(text) .. "\n"):gmatch("(.-)\n") do
+        local line = ""
+        for word in para:gmatch("%S+") do
+            local try = line == "" and word or (line .. " " .. word)
+            if line ~= "" and dxGetTextWidth(try, scale, font) > maxW then
+                lines[#lines + 1] = line
+                line = word
+            else
+                line = try
+            end
+        end
+        lines[#lines + 1] = line
+    end
+    return lines
+end
+
 sw, sh = uicore:getScreenWH()
 sx, sy = uicore:getSafeZone()
 
@@ -204,14 +223,18 @@ addEventHandler("onClientRender", root, function()
 
     -- 5️⃣ Leírás sor (5px-el az arrow sor alatt)
     local descY = arrowsY + ui(30) + ui(2)
-    dxDrawRectangle(x, descY, w, ui(30), tocolor(20,20,20,170))
     local desc = menu.items[MenuState.selected].desc or ""
+    local descPadX = ui(12)
+    local lines = wrapText(desc, w - descPadX * 2, itemSize, "default")
+    local lineH = dxGetFontHeight(itemSize, "default")
+    local descH = math.max(ui(30), #lines * lineH + ui(10))
+    dxDrawRectangle(x, descY, w, descH, tocolor(20,20,20,170))
     dxDrawText(
-        desc,
-        x + ui(12),
-        descY + ui(15),
-        x + w - ui(12),
-        nil,
+        table.concat(lines, "\n"),
+        x + descPadX,
+        descY,
+        x + w - descPadX,
+        descY + descH,
         tocolor(255,255,255,255),
         itemSize,
         "default",

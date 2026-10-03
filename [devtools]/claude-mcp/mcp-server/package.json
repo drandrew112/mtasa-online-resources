@@ -1,0 +1,26 @@
+{
+  "name": "mta-world-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that exposes a live Multi Theft Auto: San Andreas world (through the claude-mcp bridge resource) to Claude",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "mta-world-mcp": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test test/*.test.js",
+    "check": "node src/cli.js status",
+    "docs": "node scripts/gen-tool-docs.js",
+    "smoke": "node test/mcp.smoke.mjs"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.25.2"
+  }
+}

@@ -150,7 +150,11 @@ exports.med_scenemanager:getActiveScenes()   -- { { id, name, taskId, source, ce
 exports.med_scenemanager:getSceneList()      -- summaries
 exports.med_scenemanager:getSceneData(name)  -- full scene from its file
 exports.med_scenemanager:getAutoGenerate() / setAutoGenerate(bool [, by])
+exports.med_scenemanager:getCatalog()        -- editor tables: anims, injuries, state keys / presets / order, damage presets, skins...
+exports.med_scenemanager:saveSceneData(name, scene [, overwrite]) -- true | false, 'exists' | error (never a scene open in the editor)
 ```
+
+`getCatalog` / `saveSceneData` are used by the claude-mcp medical module (`[devtools]/claude-mcp/docs/medical.md`).
 
 Events (resource root): `onMedSceneSpawned(id, name, taskId|false)`,
 `onMedSceneRemoved(id, name, reason)`, `onMedSceneAutoChange(enabled, by)`.

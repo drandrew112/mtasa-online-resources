@@ -28,6 +28,10 @@
 # --- medsys: reference materials, not to be versioned ---
 /\[medical\]/medsys/reference/
 
+# --- claude-mcp: Node.js dependencies and saved screenshots ---
+/\[devtools\]/claude-mcp/mcp-server/node_modules/
+/\[devtools\]/claude-mcp/screenshots/
+
 # --- Editor / backup junk ---
 *.old
 *.bak
