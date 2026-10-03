@@ -4,6 +4,10 @@
 -- "Medication" opens a medicine grid inside the panel (the hovered one is described under it).
 -- "O2 mask" puts the oxygen mask on / takes it off. "Transport" (a stable or intubated patient,
 -- or the only button of a dead one) calls a vehicle; the client picks a free spot for it.
+-- The panel shows the pulse (palpated) and the bleeding / skin only. Until the monitor is attached
+-- the ECG area is the "attach the monitor" button; with it the ECG runs with the rhythm name under
+-- it, the monitor beeps on every QRS and the Lifepak 15 window (lifepak.lua) appears left of the
+-- panel with the SpO2 and the blood pressure.
 
 addEvent("medic:panelOpen", true)
 addEvent("medic:panelUpdate", true)
@@ -20,7 +24,6 @@ local W, H = s(640), s(850)
 local X, Y = (screenW - W) / 2, (screenH - H) / 2
 local PAD = s(20)
 local ECG_SECONDS = 3
-local ECG_SEGMENTS = 90
 local MESSAGE_TIME = 5000
 local MAX_INJURY_ROWS = 5
 
@@ -77,20 +80,6 @@ local function heartRateColor(hr)
     return C.bad
 end
 
-local function pressureColor(systolic)
-    if systolic >= 180 then return C.bad end
-    if systolic >= 140 then return C.warn end
-    if systolic >= 90 then return C.good end
-    if systolic >= 70 then return C.warn end
-    return C.bad
-end
-
-local function spo2Color(spo2)
-    if spo2 >= 94 then return C.good end
-    if spo2 >= 88 then return C.warn end
-    return C.bad
-end
-
 -- What the medic sees on the skin instead of a blood volume number
 local function describeSkin(data)
     if data.dead then return "Cold, mottled", C.dead end
@@ -104,39 +93,18 @@ local function formatTime(seconds)
     return ("%02d:%02d"):format(math.floor(seconds / 60), seconds % 60)
 end
 
----------------------------------------------------------------------------
--- ECG trace
----------------------------------------------------------------------------
-
--- One heartbeat, phase 0..1 -> amplitude (-0.3..1)
-local function ecgWave(p)
-    if p < 0.08 then return 0 end
-    if p < 0.16 then return 0.12 * math.sin((p - 0.08) / 0.08 * math.pi) end
-    if p < 0.26 then return 0 end
-    if p < 0.29 then return -0.15 * (p - 0.26) / 0.03 end
-    if p < 0.32 then return -0.15 + 1.15 * (p - 0.29) / 0.03 end
-    if p < 0.35 then return 1.0 - 1.3 * (p - 0.32) / 0.03 end
-    if p < 0.38 then return -0.3 + 0.3 * (p - 0.35) / 0.03 end
-    if p < 0.50 then return 0 end
-    if p < 0.66 then return 0.25 * math.sin((p - 0.5) / 0.16 * math.pi) end
-    return 0
+local function rhythmColor(rhythm)
+    local def = MEDIC_RHYTHMS[rhythm]
+    if not def or def.shockable then return C.bad end
+    if not def.pulse then return C.orange end
+    if rhythm == "VT_WITH_PULSE" then return C.bad end
+    if rhythm ~= "SINUS" then return C.warn end
+    return C.good
 end
 
-local function drawECG(x, y, w, h, hr, color)
-    local now = getTickCount() / 1000
-    local mid = y + h * 0.65
-    local lastX, lastY
-    for i = 0, ECG_SEGMENTS do
-        local px = x + w * i / ECG_SEGMENTS
-        local amplitude = 0
-        if hr > 0 then
-            local t = now - ECG_SECONDS * (1 - i / ECG_SEGMENTS)
-            amplitude = ecgWave((t * hr / 60) % 1)
-        end
-        local py = mid - amplitude * h * 0.6
-        if lastX then dxDrawLine(lastX, lastY, px, py, color, math.max(1, s(2))) end
-        lastX, lastY = px, py
-    end
+-- Is the monitor button usable (the ECG area of the heart rate tile)
+local function canAttachMonitor()
+    return panel.data.actions and panel.data.actions.monitor == true and not panel.pending
 end
 
 ---------------------------------------------------------------------------
@@ -148,43 +116,45 @@ local function drawTile(x, y, w, h, title)
     dxDrawText(title, x + s(12), y + s(8), x + w, y + s(26), C.muted, 1, fonts.small, "left", "top")
 end
 
-local function drawVitals(x, y, data)
+local function drawVitals(x, y, data, cx, cy)
     local tw, th = (W - PAD * 2 - s(10)) / 2, s(96)
-    local x2, y2 = x + tw + s(10), y + th + s(10)
+    local x2 = x + tw + s(10)
     local dead = data.dead or data.clinicalDeath
+    local monitored = data.monitor ~= nil
 
-    -- heart rate + ECG
+    -- heart rate (palpated, no monitor needed) + the ECG of the monitor
     drawTile(x, y, tw, th, "HEART RATE")
     local hrColor = heartRateColor(data.heartRate)
     dxDrawText(dead and "---" or tostring(data.heartRate), x + s(12), y + s(24), x + tw * 0.45, y + s(64),
         hrColor, 1, fonts.big, "left", "top")
-    dxDrawText("BPM", x + s(12), y + s(64), x + tw, y + s(84), C.muted, 1, fonts.small, "left", "top")
-    drawECG(x + tw * 0.4, y + s(26), tw * 0.56, th - s(36), data.heartRate, hrColor)
+    dxDrawText(dead and "no pulse" or "BPM", x + s(12), y + s(64), x + tw, y + s(84), C.muted, 1, fonts.small,
+        "left", "top")
+    local ex, ew = x + tw * 0.4, tw * 0.56
+    if monitored then
+        ecgDraw("ecg", ex, y + s(8), ew, s(54), ECG_SECONDS, C.good, math.max(1, s(2)), 0.62, 0.55)
+        dxDrawText(data.rhythmLabel or "", ex, y + s(62), ex + ew, y + th - s(4), rhythmColor(data.rhythm), 1,
+            fonts.small, "left", "top", true, true)
+        panel.monitorButton = nil
+    else
+        -- the monitor button sits where the ECG will be
+        local bx, by, bw, bh = ex, y + s(14), ew, th - s(28)
+        local enabled = canAttachMonitor()
+        local hovered = enabled and isInside(bx, by, bw, bh, cx, cy)
+        dxDrawRectangle(bx, by, bw, bh, enabled and (hovered and C.buttonHover or C.button) or C.buttonOff)
+        dxDrawText("Attach monitor /\ndefibrillator", bx, by, bx + bw, by + bh, enabled and C.text or C.muted, 1,
+            fonts.bold, "center", "center", true, true)
+        panel.monitorButton = { bx, by, bw, bh }
+    end
 
-    -- blood pressure
-    drawTile(x2, y, tw, th, "BLOOD PRESSURE")
-    dxDrawText(dead and "---/---" or data.bloodPressure, x2 + s(12), y + s(24), x2 + tw, y + s(64),
-        pressureColor(data.systolic), 1, fonts.big, "left", "top")
-    dxDrawText("mmHg", x2 + s(12), y + s(64), x2 + tw, y + s(84), C.muted, 1, fonts.small, "left", "top")
-
-    -- SpO2 with a bar
-    drawTile(x, y2, tw, th, "OXYGEN SATURATION (SpO2)")
-    local spo2Col = spo2Color(data.spo2)
-    dxDrawText(dead and "--" or (data.spo2 .. "%"), x + s(12), y2 + s(24), x + tw, y2 + s(64),
-        spo2Col, 1, fonts.big, "left", "top")
-    local barX, barY, barW, barH = x + s(12), y2 + th - s(18), tw - s(24), s(6)
-    dxDrawRectangle(barX, barY, barW, barH, C.line)
-    dxDrawRectangle(barX, barY, barW * (dead and 0 or data.spo2 / 100), barH, spo2Col)
-
-    -- bleeding + skin
-    drawTile(x2, y2, tw, th, "BLEEDING")
-    dxDrawText(data.bleedingLabel, x2 + s(12), y2 + s(24), x2 + tw, y2 + s(56),
+    -- bleeding + skin (the SpO2 and the blood pressure are only on the Lifepak)
+    drawTile(x2, y, tw, th, "BLEEDING")
+    dxDrawText(data.bleedingLabel, x2 + s(12), y + s(24), x2 + tw, y + s(56),
         BLEEDING_COLOR[data.bleeding] or C.text, 1, fonts.title, "left", "top")
     local skin, skinColor = describeSkin(data)
-    dxDrawText("Skin:", x2 + s(12), y2 + s(62), x2 + tw, y2 + s(84), C.muted, 1, fonts.body, "left", "top")
-    dxDrawText(skin, x2 + s(52), y2 + s(62), x2 + tw, y2 + s(84), skinColor, 1, fonts.body, "left", "top")
+    dxDrawText("Skin:", x2 + s(12), y + s(62), x2 + tw, y + s(84), C.muted, 1, fonts.body, "left", "top")
+    dxDrawText(skin, x2 + s(52), y + s(62), x2 + tw, y + s(84), skinColor, 1, fonts.body, "left", "top")
 
-    return y2 + th
+    return y + th
 end
 
 local function drawInjuries(x, y, data)
@@ -403,6 +373,16 @@ local function render()
         cx, cy = rx * screenW, ry * screenH
     end
 
+    -- monitor: the signal runs (and beeps) only while it is attached
+    ecgSetInput(data.rhythm, data.ecgRate, data.spo2)
+    ecgSetBeep(data.monitor ~= nil and data.monitor.sound ~= false) -- SOUND button of the Lifepak
+    ecgUpdate()
+    if data.monitor then
+        drawLifepak(X, Y, data, getTickCount() - panel.dataTick, cx, cy, panel.pending)
+    else
+        stopLifepakSounds()
+    end
+
     dxDrawRectangle(X, Y, W, H, C.bg)
     dxDrawRectangle(X, Y, W, s(4), C.accent)
 
@@ -436,8 +416,10 @@ local function render()
 
     -- vitals
     local vitalsY = y + s(52)
-    y = drawVitals(x, vitalsY, data) + s(12)
+    y = drawVitals(x, vitalsY, data, cx, cy) + s(12)
     layout.vitals = { x, vitalsY, W - PAD * 2, y - s(12) - vitalsY }
+    layout.monitorButton = panel.monitorButton -- nil once the monitor is attached
+    layout.lifepak = data.monitor and getLifepakRect(X, Y) or nil
     layout.status = { x, y, W - PAD * 2, s(22) }
 
     -- transport status, nil when none was requested
@@ -532,7 +514,18 @@ local function onClick(button, state)
         closePanel(true)
         return
     end
+    if panel.data.monitor and clickLifepak(X, Y, panel.target, panel.data, getTickCount() - panel.dataTick, cx, cy,
+            panel.pending) then
+        return
+    end
     if panel.pending then return end
+    local mb = panel.monitorButton
+    if mb and canAttachMonitor() and isInside(mb[1], mb[2], mb[3], mb[4], cx, cy) then
+        panel.pending = true
+        panel.drugMenu = false
+        triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "monitor")
+        return
+    end
     if panel.drugMenu then
         for _, card in ipairs(getDrugCards()) do
             if isInside(card.x, card.y, card.w, card.h, cx, cy) then
@@ -578,6 +571,8 @@ end
 function closePanel(notifyServer)
     if not panel then return end
     panel = nil
+    ecgSetBeep(false)
+    stopLifepakSounds()
     removeEventHandler("onClientRender", root, render)
     removeEventHandler("onClientClick", root, onClick)
     removeEventHandler("onClientKey", root, onKey)
@@ -593,7 +588,8 @@ function isExaminationOpen()
 end
 
 -- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
--- injuries, buttons, plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
+-- injuries, buttons, monitorButton (until the monitor is attached), lifepak (the monitor window,
+-- while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
 function getExaminationPanelLayout()
     return panel and panel.layout or false
 end
@@ -601,6 +597,7 @@ end
 addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, message, isError)
     ensureFonts()
     local wasOpen = panel ~= nil
+    if not wasOpen or panel.target ~= target then ecgReset() end
     panel = {
         target = target,
         name = name,

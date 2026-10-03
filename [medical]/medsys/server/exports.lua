@@ -127,6 +127,12 @@ local SETTERS = {
         return true
     end,
 
+    -- monitor / defibrillator attached (true) or taken off (false)
+    monitor = function(state, value)
+        if toBoolean(value) then attachMonitor(state) else state.monitor = nil end
+        return true
+    end,
+
     -- stable: wakes / revives the patient (vitals keep deciding afterwards)
     -- dazed / unconscious: forced for MEDIC.KNOCKOUT_TIME seconds
     -- clinical_death: cardiac arrest, dead: biological death
@@ -151,9 +157,43 @@ local SETTERS = {
     end,
 }
 
+-- Heart rhythm (MEDIC_RHYTHMS key). A pulseless one is a cardiac arrest in that rhythm,
+-- VT_WITH_PULSE a lasting VT (only a shock ends it), a sinus one moves the resting pulse into its
+-- range (bradycardia < 60, tachycardia > 100) when it is outside. A patient already in cardiac
+-- arrest only takes a pulseless rhythm: a rhythm with a pulse sets ASYSTOLE instead.
+SETTERS.rhythm = function(state, value)
+    local def = MEDIC_RHYTHMS[value]
+    if not def then return false end
+    if not def.pulse then
+        if isInClinicalDeath(state) then setRhythm(state, value) else cardiacArrest(state, nil, value) end
+        return true
+    end
+    -- a patient in cardiac arrest can only get a pulseless rhythm: anything else is asystole
+    if isInClinicalDeath(state) then
+        setRhythm(state, "ASYSTOLE")
+        return true
+    end
+    if value == "VT_WITH_PULSE" then
+        startVT(state)
+        state.heartRate = MEDIC.VT_RATE
+        return true
+    end
+    state.vtTick = nil
+    local hr = state.heartRate
+    if value == "SINUS_BRADY" and hr >= MEDIC.BRADY_RATE then
+        SETTERS.restingHeartRate(state, 48)
+    elseif value == "SINUS_TACHY" and hr <= MEDIC.TACHY_RATE then
+        SETTERS.restingHeartRate(state, 125)
+    elseif value == "SINUS" and (hr < MEDIC.BRADY_RATE or hr > MEDIC.TACHY_RATE) then
+        SETTERS.restingHeartRate(state, MEDIC.HEART_RATE)
+    end
+    refreshPulseRhythm(state)
+    return true
+end
+
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
 -- bloodVolume, pain, hypertension, restingSystolic, restingDiastolic, restingHeartRate, restingSpo2,
--- ivAccess, intubated, oxygenMask. The simulation keeps running from the new value.
+-- ivAccess, intubated, oxygenMask, monitor, rhythm. The simulation keeps running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end

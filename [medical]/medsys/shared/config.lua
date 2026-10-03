@@ -105,7 +105,71 @@ MEDIC = {
     TRANSPORT_MIN_SYSTOLIC = 90,  -- a living patient is only transported with a systolic pressure
     TRANSPORT_MAX_SYSTOLIC = 180, -- in this range (stabilise it first: fluids / Captopril)
 
+    -- Monitor / defibrillator (Lifepak 15). Attached once (timed procedure), it shows the ECG
+    -- with the rhythm name, the SpO2 and the blood pressure (without it only the pulse, the
+    -- bleeding and the skin are known), and it can shock the patient.
+    MONITOR_TIME = 4,           -- seconds to put on the electrodes
+    -- Sinus rhythm names by rate (Basic ECG: bradycardia < 60, tachycardia > 100)
+    BRADY_RATE = 60,
+    TACHY_RATE = 100,
+    VT_HEART_RATE = 170,        -- a pulse at or above this is ventricular tachycardia (with pulse)
+    -- Lasting VT with pulse (after a ROSC, a shock, setMedicalState "rhythm"): the heart beats at
+    -- VT_RATE, the pressure drops, and without cardioversion it turns pulseless after VT_DEGRADE_TIME
+    VT_RATE = 180,
+    VT_SYSTOLIC_DROP = 30,
+    VT_DEGRADE_TIME = 120,
+    ROSC_VT_CHANCE = 0.15,      -- a restored heart beats in VT with pulse instead of a sinus rhythm
+    -- Untreated arrest rhythms get worse (paused while CPR runs): seconds in the rhythm
+    PVT_DEGRADE_TIME = 60,      -- pulseless VT -> VF
+    VF_DEGRADE_TIME = 240,      -- VF -> asystole
+    PEA_DEGRADE_TIME = 180,     -- PEA -> asystole
+    -- CPR: after CPR_CHANGE_MIN seconds of good compressions the rhythm can change at any moment
+    -- (on average every CPR_CHANGE_TIME seconds); a change stops the CPR minigame
+    CPR_CHANGE_MIN = 10,
+    CPR_CHANGE_TIME = 12,
+    CPR_SHOCKABLE_ROSC = 0.25,  -- the ROSC chance of CPR is multiplied by this in VF / pulseless VT
+    CPR_TO_SHOCKABLE = 0.5,     -- a change in PEA / asystole that is not a ROSC goes to VF this often
+    -- Defibrillation
+    DEFIB_ENERGY = 200,         -- joules (biphasic), fixed: the ENERGY SELECT buttons are inactive
+    DEFIB_CHARGE_TIME = 4.73,   -- seconds to charge = the length of sounds/defib_charge.wav (the charge bar follows it)
+    DEFIB_DISARM_TIME = 60,     -- a charge not delivered in this many seconds is dumped
+    DEFIB_ANALYZE_TIME = 4,     -- seconds of the ANALYZE rhythm analysis (AED mode, charges when advised)
+    SHOCK_SUCCESS = 0.5,        -- a shock ends VF / pulseless VT with this chance
+    SHOCK_ROSC = 0.35,          -- after a successful shock the pulse returns with this chance (+ IV,
+                                -- airway, adrenaline bonuses), otherwise PEA or asystole follows
+    SHOCK_ROSC_PEA = 0.6,       -- share of PEA among the non-ROSC outcomes (the rest is asystole)
+    CARDIOVERSION_SYNC = 0.75,  -- SYNC shock on VT with pulse: chance to convert it
+    CARDIOVERSION_UNSYNC = 0.45,-- unsynchronised shock on VT with pulse: chance to convert it...
+    SHOCK_PULSE_VF = 0.3,       -- ...or it causes VF this often (a shock on a sinus rhythm always stops the heart)
+    SHOCK_PAIN = 60,            -- pain points of a shock on a patient who is not down
+
     -- The patient animations and the player's own screen effects live in medsys_effects.
+}
+
+-- Heart rhythms (ECG). label = shown under the ECG curve (most players cannot read an ECG),
+-- pulse = the heart pumps (palpable pulse), shockable = defibrillation can end it (VF, pVT only),
+-- wave = the curve the client draws (client/ecg.lua)
+MEDIC_RHYTHMS = {
+    SINUS = { label = "Normal Sinus Rhythm", pulse = true, wave = "sinus" },
+    SINUS_BRADY = { label = "Sinus Bradycardia", pulse = true, wave = "sinus" },
+    SINUS_TACHY = { label = "Sinus Tachycardia", pulse = true, wave = "sinus" },
+    VT_WITH_PULSE = { label = "Ventricular Tachycardia with Pulse", pulse = true, wave = "vt" },
+    VF = { label = "Ventricular Fibrillation", shockable = true, wave = "vf" },
+    PULSELESS_VT = { label = "Pulseless Ventricular Tachycardia", shockable = true, wave = "vt" },
+    PEA = { label = "Pulseless Electrical Activity - continue CPR", wave = "pea" },
+    ASYSTOLE = { label = "Asystole", wave = "flat" },
+}
+
+-- Rhythm a cardiac arrest starts with, by its cause (weights). default: a forced arrest
+-- (setMedicalState consciousness = clinical_death) or an unknown cause.
+MEDIC_ARREST_RHYTHMS = {
+    hypoxia = { PEA = 0.5, ASYSTOLE = 0.5 },
+    hypovolemia = { PEA = 0.7, ASYSTOLE = 0.3 },
+    hypotension = { PEA = 0.6, VF = 0.2, ASYSTOLE = 0.2 },
+    tachycardia = { VF = 0.6, PULSELESS_VT = 0.4 },
+    vt = { PULSELESS_VT = 0.7, VF = 0.3 },
+    shock = { VF = 1 },
+    default = { ASYSTOLE = 1 }, -- a forced arrest is asystole unless a rhythm is given (setMedicalState "rhythm")
 }
 
 -- Test module (server/test.lua, client/test.lua): spawns injured peds in front of an admin.
@@ -138,6 +202,12 @@ MEDIC_TEST = {
             injuries = { { "suffocation", 2 } }, set = { { "consciousness", "unconscious" } } },
         { id = "cardiac_arrest", label = "Cardiac arrest", desc = "No pulse, clinical death - start CPR",
             injuries = {}, set = { { "consciousness", "clinical_death" } } },
+        { id = "vf_arrest", label = "Cardiac arrest - VF", desc = "Shockable rhythm - monitor, CPR and shock",
+            injuries = {}, set = { { "rhythm", "VF" } } },
+        { id = "asystole", label = "Cardiac arrest - asystole", desc = "Non-shockable - CPR and adrenaline",
+            injuries = {}, set = { { "rhythm", "ASYSTOLE" } } },
+        { id = "vt_pulse", label = "VT with pulse", desc = "Wide fast rhythm, pulse present - SYNC cardioversion",
+            injuries = {}, set = { { "rhythm", "VT_WITH_PULSE" } } },
         { id = "minor_burn", label = "Minor burn", desc = "Scalded hand, conscious and stable",
             injuries = { { "burn", 1 } } },
         { id = "hypertension", label = "Hypertensive crisis", desc = "Very high blood pressure - give Captopril",
@@ -207,6 +277,7 @@ MEDIC_ACTIONS = {
     transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: alone in its row
 }
 -- Button rows of the examination panel (ABCDE approach, E is not used for now).
+-- The monitor ("monitor" procedure) has no row button: it is attached from the heart rate tile.
 -- tag = the big letters on the row label (optional), label = the text under them
 MEDIC_ACTION_GROUPS = {
     { tag = "AB", label = "Airway, Breathing", actions = { "airway", "oxygen" } },

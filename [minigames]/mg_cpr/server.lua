@@ -4,8 +4,9 @@
 addEvent("onCPRGameFinish", false)
 addEvent("mg_cpr:onResult", true)
 addEvent("mg_cpr:ready", true)
+addEvent("mg_cpr:progress", true)
 
-local sessions = {} -- [player] = { id, duration, options, ped, animated, startTick, timer }
+local sessions = {} -- [player] = { id, duration, options, ped, animated, startTick, timer, progress }
 local lastId = 0
 
 local function finishSession(player, reason, good, total, avgBPM)
@@ -15,6 +16,8 @@ local function finishSession(player, reason, good, total, avgBPM)
 
     if isTimer(session.timer) then killTimer(session.timer) end
 
+    -- a stopped game reports what was done until then
+    if not good and session.progress then good, total = session.progress.good, session.progress.total end
     good, total = good or 0, total or 0
     local success = reason == "completed" and cprIsSuccess(good, total, session.options.passPercent)
 
@@ -61,16 +64,30 @@ function startCPRGame(player, duration, ped, options)
     return session.id
 end
 
--- Aborts a running game. onCPRGameFinish fires with reason "cancelled".
-function stopCPRGame(player)
+-- Aborts a running game. onCPRGameFinish fires with success = false, the compressions counted so
+-- far and reason (default "cancelled", e.g. "interrupted" when the patient changed).
+function stopCPRGame(player, reason)
     if not sessions[player] then return false end
     triggerClientEvent(player, "mg_cpr:stop", resourceRoot)
-    finishSession(player, "cancelled")
+    finishSession(player, type(reason) == "string" and reason or "cancelled")
     return true
 end
 
 function isCPRGameActive(player)
     return sessions[player] ~= nil
+end
+
+-- The running game so far (the client reports it every second):
+-- elapsed seconds of compressions, good, total, percent, passing (the accuracy is at the pass limit).
+-- false when the player is not playing.
+function getCPRGameProgress(player)
+    local session = sessions[player]
+    if not session then return false end
+    local elapsed = math.max(0, (getTickCount() - session.startTick) / 1000 - CPR.COUNTDOWN)
+    elapsed = math.min(elapsed, session.duration)
+    local progress = session.progress or { good = 0, total = 0 }
+    return elapsed, progress.good, progress.total, cprPercent(progress.good, progress.total),
+        cprIsSuccess(progress.good, progress.total, session.options.passPercent)
 end
 
 -- The client has placed itself next to the ped, start the (synced) animation
@@ -81,6 +98,17 @@ addEventHandler("mg_cpr:ready", resourceRoot, function(sessionId)
 
     session.animated = true
     setPedAnimation(player, CPR.ANIM_BLOCK, CPR.ANIM_NAME, -1, true, false, false, false)
+end)
+
+addEventHandler("mg_cpr:progress", resourceRoot, function(sessionId, good, total)
+    local session = sessions[client]
+    if not session or session.id ~= sessionId then return end
+    good, total = math.floor(tonumber(good) or -1), math.floor(tonumber(total) or -1)
+    local elapsed = math.max(0, (getTickCount() - session.startTick) / 1000 - CPR.COUNTDOWN)
+    if good < 0 or total < good or good > cprMaxGood(math.min(elapsed + 1, session.duration), session.options) then
+        return
+    end
+    session.progress = { good = good, total = total }
 end)
 
 addEventHandler("mg_cpr:onResult", resourceRoot, function(sessionId, good, judged, missed, avgBPM)

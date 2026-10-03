@@ -156,6 +156,22 @@ onKey = function(button, press)
     game.pressTick = now
 end
 
+-- Server-started game: the compressions so far go to the server every second (getCPRGameProgress)
+local PROGRESS_INTERVAL = 1000
+
+local function reportProgress(now, t)
+    if not game.sessionId or t < 0 or game.resultTick then return end
+    if game.progressTick and now - game.progressTick < PROGRESS_INTERVAL then return end
+    game.progressTick = now
+    local missed = game.missed
+    if game.lastPress then
+        missed = missed + cprTrailingMissed(t - game.lastPress, game.options)
+    else
+        missed = missed + cprStartMissed(t, game.options)
+    end
+    triggerServerEvent("mg_cpr:progress", resourceRoot, game.sessionId, game.good, game.judged + missed)
+end
+
 local function endRound(now)
     if game.lastPress then
         game.missed = game.missed + cprTrailingMissed(game.duration - game.lastPress, game.options)
@@ -269,6 +285,7 @@ render = function()
     if not game.resultTick and t >= game.duration then
         endRound(now)
     end
+    reportProgress(now, t)
 
     drawPanel(now, t)
 

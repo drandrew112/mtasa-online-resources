@@ -65,7 +65,8 @@ is spawned or opened in the editor.
 ```
 
 `state` keys are applied in the order of `MSM_STATE_ORDER`: bloodVolume, pain, bleeding,
-ivAccess, spo2, systolic, diastolic, heartRate, consciousness. The vitals (spo2, systolic,
+ivAccess, spo2, systolic, diastolic, heartRate, consciousness, rhythm (medsys heart rhythm, e.g.
+`"VF"`; a pulseless one starts the patient in cardiac arrest with that rhythm). The vitals (spo2, systolic,
 diastolic, heartRate) go to medsys as its lasting `resting*` keys (`MSM_STATE_RESTING`): the
 patient settles at and holds them (later blood loss, medicines, oxygen, the pain fading act on
 top). A plain `systolic` etc. would drift back to normal within seconds.

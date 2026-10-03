@@ -33,9 +33,15 @@ function State.formatDuration(sec)
     return string.format("%02d:%02d", sec / 60, sec % 60)
 end
 
+-- Tablet alarm volume; MTA amplifies values above 1.0.
+local ALERT_VOLUME = 3.0
+
 -- alert = true: play sounds/tablet_alert.mp3 and keep ui_core's notification silent.
 function State.notify(title, text, alert)
-    if alert then playSound("sounds/tablet_alert.mp3") end
+    if alert then
+        local snd = playSound("sounds/tablet_alert.mp3")
+        if snd then setSoundVolume(snd, ALERT_VOLUME) end
+    end
     local res = getResourceFromName("ui_core")
     if res and getResourceState(res) == "running" then
         exports.ui_core:addNotification(title, text, alert == true)

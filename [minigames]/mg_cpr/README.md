@@ -12,9 +12,16 @@ the `MEDIC/CPR` animation loops for the whole game. Without a ped there is no an
 
 ```lua
 local id = exports.mg_cpr:startCPRGame(player, duration, ped, options) -- session id or false
-exports.mg_cpr:stopCPRGame(player)      -- fires onCPRGameFinish with reason "cancelled"
+exports.mg_cpr:stopCPRGame(player, reason) -- fires onCPRGameFinish with reason (default "cancelled")
 exports.mg_cpr:isCPRGameActive(player)
+-- the running game so far (the client reports it every second), false when not playing:
+local elapsed, good, total, percent, passing = exports.mg_cpr:getCPRGameProgress(player)
 ```
+
+- `stopCPRGame` reports the compressions counted until then (`success` is always false);
+  medsys stops it with `"interrupted"` when the patient's heart rhythm changes during CPR
+- `getCPRGameProgress`: `elapsed` = seconds of compressions (without the countdown), `passing` =
+  the accuracy so far reaches `passPercent`
 
 - `duration` – seconds of compressions, default `30` (clamped to 5–300); a 3 s countdown comes first
 - `ped` – optional ped/player being resuscitated (`nil` = no positioning, no animation)
@@ -27,7 +34,7 @@ Result:
 addEventHandler("onCPRGameFinish", root, function(success, good, total, percent, reason, sessionId, avgBPM)
     -- source = player
     -- total = judged compressions + missed ones
-    -- reason: "completed" | "cancelled" | "died" | "quit" | "timeout" | "invalid"
+    -- reason: "completed" | "cancelled" | "died" | "quit" | "timeout" | "invalid" | stopCPRGame's reason
 end)
 ```
 

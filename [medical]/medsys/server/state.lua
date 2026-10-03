@@ -28,6 +28,11 @@
 --     panic         = false,                -- awake under the muscle relaxant
 --     apneaRate     = nil,                  -- %/s SpO2 fall while an intubation attempt runs
 --     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
+--     rhythm        = "SINUS",              -- heart rhythm (MEDIC_RHYTHMS), server/rhythm.lua
+--     rhythmTick    = 0,                    -- getTickCount() since the current rhythm (arrest rhythms worsen)
+--     ecgRate       = 0,                    -- electrical rate of a pulseless VT / PEA (the others: heartRate / 0)
+--     vtTick        = nil,                  -- lasting VT with pulse since (turns pulseless after VT_DEGRADE_TIME)
+--     monitor       = nil,                  -- monitor / defibrillator attached: { energy, sync, chargeTick, ... }
 --     tachyTick     = nil,                  -- getTickCount() since the pulse is at ARREST_HEART_RATE+
 --     arrestTick    = nil,                  -- getTickCount() of the cardiac arrest
 --     deathTick     = nil,                  -- getTickCount() of biological death (arrestTick + DEATH_TIME)
@@ -69,6 +74,11 @@ local function newState(element)
         jitter = { systolic = 0, heartRate = 0 },
         drugs = {},
         consciousness = "stable",
+        rhythm = "SINUS",
+        rhythmTick = getTickCount(),
+        ecgRate = 0,
+        vtTick = nil,
+        monitor = nil,
         aware = true,
         panic = false,
         dead = false,
@@ -120,7 +130,7 @@ function isPatientHealthy(state)
         and not state.knockoutUntil and not state.arrestTick and not state.dead
         and state.hypertension == 0 and #state.drugs == 0
         and state.restShift.systolic == 0 and state.restShift.diastolic == 0
-        and state.restShift.heartRate == 0 and not state.spo2Limit
+        and state.restShift.heartRate == 0 and not state.spo2Limit and not state.vtTick
         and state.consciousness == "stable"
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
         and state.spo2 >= MEDIC.DISCHARGE_SPO2
@@ -256,6 +266,14 @@ function buildSnapshot(state)
             timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)) }
     end
 
+    local rhythm = MEDIC_RHYTHMS[state.rhythm]
+    local ecgRate = 0
+    if rhythm.pulse then
+        ecgRate = round(state.heartRate)
+    elseif not state.dead then
+        ecgRate = state.ecgRate
+    end
+
     local deathTimeLeft
     if isInClinicalDeath(state) then
         deathTimeLeft = math.max(0, math.ceil((state.deathTick - getTickCount()) / 1000))
@@ -284,6 +302,10 @@ function buildSnapshot(state)
         sedated = isSedated(state),
         paralyzed = isParalyzed(state, now),
         drugs = drugs,
+        rhythm = state.rhythm,
+        rhythmLabel = rhythm.label,
+        ecgRate = ecgRate,              -- rate of the ECG complexes (the pulse is heartRate)
+        monitor = getMonitorSnapshot(state, now), -- nil while no monitor is attached
         clinicalDeath = isInClinicalDeath(state),
         deathTimeLeft = deathTimeLeft,
         dead = state.dead,
@@ -297,6 +319,7 @@ function buildDefaultSnapshot(element)
         state.dead = true
         state.consciousness = "dead"
         state.heartRate, state.systolic, state.diastolic, state.spo2 = 0, 0, 0, 0
+        state.rhythm = "ASYSTOLE"
     end
     local snapshot = buildSnapshot(state)
     snapshot.isPatient = false
@@ -318,13 +341,15 @@ function setConsciousness(state, status)
     triggerEvent("onMedicalStateChange", state.element, status, old)
 end
 
--- Pulse 0: clinical death starts, the death timer runs
-function cardiacArrest(state)
+-- Pulse 0: clinical death starts, the death timer runs.
+-- cause: picks the starting rhythm (MEDIC_ARREST_RHYTHMS), rhythm: forces it (pulseless only)
+function cardiacArrest(state, cause, rhythm)
     if state.arrestTick or state.dead then return end
     local now = getTickCount()
     state.arrestTick = now
     state.deathTick = now + MEDIC.DEATH_TIME * 1000
-    state.tachyTick = nil
+    state.tachyTick, state.vtTick = nil, nil
+    setRhythm(state, rhythm or pickArrestRhythm(cause), now)
     state.heartRate, state.systolic, state.diastolic = 0, 0, 0
     state.knockoutState, state.knockoutUntil = nil, nil
     state.panic = false
@@ -342,6 +367,8 @@ function restoreCirculation(state)
     state.systolic = MEDIC.ROSC_SYSTOLIC
     state.diastolic = MEDIC.ROSC_SYSTOLIC * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC)
     state.spo2 = math.max(state.spo2, MEDIC.ROSC_SPO2)
+    state.vtTick = nil
+    refreshPulseRhythm(state)
 
     setConsciousness(state, "unconscious")
     writeVitalsData(state)
@@ -354,6 +381,9 @@ function biologicalDeath(state, killElement)
     state.dead = true
     state.arrestTick, state.deathTick = nil, nil
     state.heartRate, state.systolic, state.diastolic, state.spo2 = 0, 0, 0, 0
+    state.vtTick = nil
+    setRhythm(state, "ASYSTOLE")
+    if state.monitor then state.monitor.chargeTick, state.monitor.analyzeTick = nil, nil end
 
     setConsciousness(state, "dead")
     writeVitalsData(state)

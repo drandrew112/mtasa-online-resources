@@ -118,6 +118,11 @@ local function canAttend(medic, target, range)
     return isNear(medic, target, range)
 end
 
+-- Global wrapper for the other server files (rhythm.lua: the defibrillator buttons)
+function canMedicAttend(medic, target, range)
+    return canAttend(medic, target, range)
+end
+
 -- True while anyone has the panel open on / is treating this element (it must not be discharged)
 function isPatientAttended(element)
     return Watchers[element] ~= nil or Locks[element] ~= nil
@@ -216,30 +221,21 @@ PROCEDURES.cpr = {
     start = function(medic, target)
         return exports.mg_cpr:startCPRGame(medic, MEDIC.CPR_DURATION, target)
     end,
-    stop = function(medic) exports.mg_cpr:stopCPRGame(medic) end,
+    -- reason "interrupted": a rhythm change / a shock stops it (interruptProcedure)
+    stop = function(medic, reason) exports.mg_cpr:stopCPRGame(medic, reason) end,
     finishEvent = "onCPRGameFinish",
     sessionArg = 6, -- success, good, total, percent, reason, sessionId, avgBPM
-    apply = function(state, success, _, _, percent)
+    -- The heart restarts (or the rhythm changes) during the compressions, see checkCPRChange in
+    -- rhythm.lua: a round that reaches its end saw no change.
+    apply = function(state, success)
         if not isInClinicalDeath(state) then return nil end
         if not success then return "Ineffective compressions" end
-
-        local bloodFraction = state.bloodVolume / MEDIC.BLOOD_VOLUME
-        local chance = 0
-        if bloodFraction > MEDIC.ARREST_BLOOD + 0.02 then
-            chance = MEDIC.ROSC_BASE + math.max(0, percent - 70) * MEDIC.ROSC_PER_PERCENT
-            if state.ivAccess then chance = chance + MEDIC.ROSC_IV_BONUS end
-            if state.intubated then chance = chance + MEDIC.ROSC_AIRWAY_BONUS end
-            chance = chance + getDrugMax(state, "roscBonus") -- adrenaline
-        end
-
-        if math.random() < chance then
-            restoreCirculation(state)
-            return "Pulse restored (ROSC)"
-        end
         -- good compressions keep the brain perfused: the death timer is pushed back
-        local now = getTickCount()
-        state.deathTick = math.min(now + MEDIC.DEATH_TIME * 1000, state.deathTick + MEDIC.CPR_TIME_BONUS * 1000)
-        if chance == 0 then return "No pulse - too much blood lost, give fluids" end
+        extendDeathTimer(state, MEDIC.CPR_TIME_BONUS)
+        if not canRestartHeart(state) then return "No pulse - too much blood lost, give fluids" end
+        if state.monitor and MEDIC_RHYTHMS[state.rhythm].shockable then
+            return "Shockable rhythm - charge and shock!"
+        end
         return "No pulse yet - continue CPR"
     end,
 }
@@ -338,6 +334,23 @@ PROCEDURES.oxygen = {
         if state.intubated then return "Ventilated through the tube" end
         state.oxygenMask = not state.oxygenMask
         return state.oxygenMask and "Oxygen mask on" or "Oxygen mask removed"
+    end,
+}
+
+-- Monitor / defibrillator: ECG electrodes and pads, once per patient (it stays on)
+PROCEDURES.monitor = {
+    duration = MEDIC.MONITOR_TIME,
+    animated = true,
+    can = function(state)
+        if state.monitor then return false, "Monitor attached" end
+        return true
+    end,
+    progress = function() return "Attaching the monitor / defibrillator pads..." end,
+    stop = function() end, -- releaseTreatment kills the timer
+    apply = function(state, success)
+        if not success then return "The monitor was not attached" end
+        attachMonitor(state)
+        return "Monitor attached: " .. MEDIC_RHYTHMS[state.rhythm].label
     end,
 }
 
@@ -539,11 +552,53 @@ local function finishTreatment(medic, success, ...)
     local state = isElement(target) and Patients[target]
     if not state or state.dead then return end
 
-    local message = PROCEDURES[treatment.action].apply(state, success, ...)
+    local message, isError
+    if treatment.interrupt then
+        -- stopped by the patient's change (interruptProcedure): it counts as done, nothing to apply
+        success, message, isError = true, treatment.interrupt, treatment.interruptError
+    else
+        message = PROCEDURES[treatment.action].apply(state, success, ...)
+        isError = not success
+    end
     triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true, treatment.option)
     if isElement(medic) then
-        openExamination(medic, target, message, not success)
+        openExamination(medic, target, message, isError)
     end
+end
+
+-- The medic running this procedure on the target, or nil
+function getProcedureMedic(target, action)
+    local locks = Locks[target]
+    local medic = locks and locks[action]
+    local treatment = medic and Treatments[medic]
+    if treatment and treatment.target == target and treatment.action == action then return medic end
+    return nil
+end
+
+-- Stops a running procedure because the patient changed (e.g. the rhythm during CPR). The
+-- medic gets the panel back with the message; no result is applied.
+function interruptProcedure(medic, message, isError)
+    local treatment = Treatments[medic]
+    if not treatment then return false end
+    treatment.interrupt, treatment.interruptError = message, isError == true
+    PROCEDURES[treatment.action].stop(medic, "interrupted") -- fires the finish event
+    if Treatments[medic] == treatment then finishTreatment(medic, false) end -- it did not
+    return true
+end
+
+-- Shows a line on the panel of everyone examining the target
+function notifyExaminers(target, message, isError)
+    local watchers = Watchers[target]
+    if not watchers then return end
+    local list = {}
+    for medic in pairs(watchers) do
+        if isElement(medic) then list[#list + 1] = medic end
+    end
+    if #list > 0 then triggerClientEvent(list, "medic:panelMessage", resourceRoot, message, isError == true) end
+end
+
+function isExaminingPatient(medic, target)
+    return Examining[medic] == target
 end
 
 for action, procedure in pairs(PROCEDURES) do

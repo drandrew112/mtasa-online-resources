@@ -15,6 +15,8 @@
 --   SpO2 <= ARREST_SPO2, blood <= ARREST_BLOOD or systolic <= ARREST_SYSTOLIC -> cardiac arrest
 --   pulse >= ARREST_HEART_RATE for ARREST_TACHY_TIME seconds                  -> cardiac arrest
 --   clinical death longer than DEATH_TIME        -> biological death
+--   heart rhythm  <- named from the pulse (sinus / brady / tachy / VT), an arrest starts with a rhythm
+--                    picked by its cause and worsens untreated; CPR and shocks change it (rhythm.lua)
 
 local simTimer
 local lastTick
@@ -114,6 +116,7 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     local systolic = MEDIC.SYSTOLIC - math.max(0, loss - 0.15) * 250 + pain * 0.1
         + state.hypertension + shift.systolic + getDrugEffect(state, "systolic")
         + (state.panic and MEDIC.PANIC_SYSTOLIC or 0)
+        - (state.vtTick and MEDIC.VT_SYSTOLIC_DROP or 0) -- VT: the ventricles barely fill
     local diastolic = systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC) + shift.diastolic
     if spo2 < 50 then -- severe hypoxia: collapse before the arrest
         systolic = systolic * (spo2 / 50)
@@ -132,6 +135,8 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
     -- severe hypoxia: the heart muscle fails, bradycardia before the arrest
     if spo2 < 50 then heartRate = 20 + spo2 end
+    -- lasting VT with pulse: the ventricles set the rate
+    if state.vtTick then heartRate = MEDIC.VT_RATE end
     return systolic, diastolic, math.max(0, heartRate)
 end
 
@@ -217,8 +222,11 @@ local function stepPatient(state, dt, now)
     -- awake under the muscle relaxant (no anaesthetic): panic
     state.panic = state.aware and hasDrugEffect(state, "paralysis") and not isSedated(state)
 
+    updateMonitor(state, now)
+
     if arrested then
-        if now >= state.deathTick then
+        updateArrestRhythm(state, dt, now)
+        if isInClinicalDeath(state) and now >= state.deathTick then
             biologicalDeath(state)
         end
         return
@@ -227,9 +235,20 @@ local function stepPatient(state, dt, now)
     local pain = getPatientPain(state)
     updateCirculation(state, dt, bloodFraction, pain)
 
-    if state.spo2 <= MEDIC.ARREST_SPO2 or bloodFraction <= MEDIC.ARREST_BLOOD
-        or state.systolic <= MEDIC.ARREST_SYSTOLIC or updateTachycardia(state, now) then
-        cardiacArrest(state)
+    local cause
+    if state.spo2 <= MEDIC.ARREST_SPO2 then
+        cause = "hypoxia"
+    elseif bloodFraction <= MEDIC.ARREST_BLOOD then
+        cause = "hypovolemia"
+    elseif state.systolic <= MEDIC.ARREST_SYSTOLIC then
+        cause = "hypotension"
+    elseif updateTachycardia(state, now) then
+        cause = "tachycardia"
+    elseif updatePulseRhythm(state, now) then
+        cause = "vt" -- the VT with pulse lasted too long
+    end
+    if cause then
+        cardiacArrest(state, cause)
         return
     end
 

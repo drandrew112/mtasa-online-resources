@@ -13,6 +13,7 @@
     <script src="shared/config.lua" type="shared" />
 
     <script src="server/state.lua" type="server" />
+    <script src="server/rhythm.lua" type="server" />
     <script src="server/simulation.lua" type="server" />
     <script src="server/treatment.lua" type="server" />
     <script src="server/transport.lua" type="server" />
@@ -20,6 +21,8 @@
     <script src="server/interaction.lua" type="server" />
     <script src="server/test.lua" type="server" /> <!-- only runs when MEDIC_TEST.ENABLED -->
 
+    <script src="client/ecg.lua" type="client" />
+    <script src="client/lifepak.lua" type="client" />
     <script src="client/panel.lua" type="client" />
     <script src="client/interaction.lua" type="client" />
     <script src="client/progress.lua" type="client" />
@@ -28,6 +31,11 @@
 
     <file src="assets/fonts/Roboto.ttf" type="client" />
     <file src="assets/fonts/RobotoB.ttf" type="client" />
+    <file src="sounds/ecg_beep.wav" type="client" />
+    <file src="sounds/defib_charge.wav" type="client" />
+    <file src="sounds/defib_charge_complate.wav" type="client" />
+    <file src="sounds/defib_ready_loop.wav" type="client" />
+    <file src="sounds/lifepak_alarm_loop.wav" type="client" />
 
     <!-- medical data -->
     <export function="getMedicalState" type="server" />

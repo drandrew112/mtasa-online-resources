@@ -11,11 +11,14 @@ scripts hurt people through the exports, and the future EMS job script builds on
 shared/config.lua      MEDIC tunables, injury definitions, labels
 server/state.lua       patient registry + data structure, snapshots, state transitions
 server/simulation.lua  one global timer, physiology step for every patient
+server/rhythm.lua      heart rhythm (ECG), rhythm changes during CPR, monitor / defibrillator
 server/treatment.lua   examination sessions, procedures (minigames, medication), locks, panel updates
 server/transport.lua   "Transport": hearse for a dead body, ambulance for a stable patient
 server/exports.lua     public API
 server/interaction.lua "Examine patient" entry in the ui_interactobject world menu
 client/panel.lua       DX examination panel
+client/ecg.lua         ECG / pleth signal of the monitor (ring buffers) + the beat beep
+client/lifepak.lua     "Lifepak 15" monitor / defibrillator window left of the panel
 client/interaction.lua turns the world menus off during procedures / while the player is down
 client/progress.lua    progress bar of a timed procedure (medication)
 ```
@@ -59,6 +62,10 @@ Patients[element] = {
     drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses
     aware, panic  = true, false,          -- awake apart from the medicines / awake under the muscle relaxant
     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
+    rhythm        = "SINUS",              -- MEDIC_RHYTHMS key, rhythmTick = since when
+    ecgRate       = 0,                    -- electrical rate of a pulseless VT / PEA
+    vtTick        = nil,                  -- lasting VT with pulse since
+    monitor       = nil,                  -- { energy, sync, chargeTick, analyzeTick, advice, message, shocks }
     arrestTick    = nil, deathTick = nil, -- clinical death start / biological death time
     knockoutState = nil, knockoutUntil = nil,
     apneaRate     = nil,                  -- SpO2 fall during an intubation attempt
@@ -93,6 +100,36 @@ Patients[element] = {
   pulse and blood pressure go to 0, and a `DEATH_TIME` (300 s) countdown starts. When it runs
   out: biological death (`killPed`).
 
+**Heart rhythm** (`server/rhythm.lua`, `MEDIC_RHYTHMS`): SINUS, SINUS_BRADY (< 60), SINUS_TACHY
+(> 100), VT_WITH_PULSE, VF, PULSELESS_VT, PEA, ASYSTOLE. Only VF and pulseless VT are shockable.
+
+- With a pulse the rhythm is named from the rate; at `VT_HEART_RATE` (170) and above it is VT with
+  pulse. A *lasting* VT with pulse (after a ROSC with `ROSC_VT_CHANCE`, an unsynchronised shock,
+  or `setMedicalState(el, "rhythm", "VT_WITH_PULSE")`) holds the pulse at `VT_RATE`, drops the
+  pressure by `VT_SYSTOLIC_DROP` and turns pulseless after `VT_DEGRADE_TIME` (120 s) unless a
+  shock converts it.
+- An arrest starts with a rhythm picked by its cause (`MEDIC_ARREST_RHYTHMS`): hypoxia /
+  blood loss → PEA or asystole, the 200+ pulse → VF / pVT, a forced arrest (consciousness
+  `clinical_death`, heartRate 0) → **asystole**, unless a pulseless rhythm is given with
+  `setMedicalState(el, "rhythm", ...)` (e.g. med_scenemanager). A patient in arrest only takes a
+  pulseless rhythm: a rhythm with a pulse is turned into asystole.
+- Untreated it worsens: pVT → VF after 60 s, VF → asystole after 240 s, PEA → asystole after
+  180 s. CPR pauses this.
+- **CPR**: once the compressions ran `CPR_CHANGE_MIN` (10 s) **and the accuracy so far passes**
+  (`exports.mg_cpr:getCPRGameProgress`), the rhythm can change at any moment (on average every
+  `CPR_CHANGE_TIME` s). The change stops the CPR minigame (`stopCPRGame(medic, "interrupted")`)
+  and the panel reopens with the news. Possible changes: the pulse returns (ROSC chance: accuracy,
+  +IV, +airway, +adrenaline; ×`CPR_SHOCKABLE_ROSC` in VF / pVT; 0 when too much blood is lost),
+  PEA / asystole → VF (`CPR_TO_SHOCKABLE`), PEA ↔ asystole, VF ↔ pVT. A ROSC is not always a
+  sinus rhythm (VT with pulse).
+- **Shock** (monitor window): in VF / pVT it works with `SHOCK_SUCCESS`; a working shock gives a pulse with `SHOCK_ROSC` (+ the same bonuses), otherwise PEA or
+  asystole follows, so CPR goes on. A failed one leaves VF (pVT may turn VF). PEA / asystole: no
+  effect. VT with pulse: SYNC cardioversion converts it with `CARDIOVERSION_SYNC`, an
+  unsynchronised shock with `CARDIOVERSION_UNSYNC` (or causes VF with `SHOCK_PULSE_VF`). A shock
+  on a sinus rhythm (normal / brady / tachy) **always** stops the heart (VF), synced or not; an
+  awake patient gets `SHOCK_PAIN`. The shock stops a CPR
+  running on the patient ("Stand clear").
+
 Unconscious / arrested patients play `PED/KO_shot_front`, and they get up (`getup_front`) when
 they wake. Player patients get their controls locked and see a dazed vignette, or a blackout
 with the resuscitation countdown.
@@ -107,10 +144,40 @@ players flagged by `setPlayerMedic` see it. Other resources (e.g. a stretcher) c
 menu to the same patient; `ui_interactobject` merges them into one panel. While a procedure runs,
 or while the player is down, the world menus are switched off for that player.
 
-Picking it opens the panel. It shows consciousness, heart rate with an ECG trace, blood pressure, SpO2,
-bleeding, skin (instead of a blood volume number), IV / airway status, pain, the injury list and
-the clinical death countdown. Close it with **X** or **Backspace**. It also closes when you walk
-away (`PANEL_RANGE`).
+Picking it opens the panel. It shows consciousness, the heart rate (palpated pulse), bleeding,
+skin (instead of a blood volume number), IV / airway status, pain, the injury list and the
+clinical death countdown. **Blood pressure, SpO2 and the ECG need the monitor**: the panel has
+only the heart rate and the bleeding / skin tiles, SpO2 and NIBP are on the Lifepak screen. Until
+the monitor is attached the ECG area of the heart rate tile is the *Attach monitor /
+defibrillator* button (the only place to attach it, it has no button in the rows). With the monitor the ECG
+runs with the rhythm name under it (most players cannot read an ECG), the monitor beeps
+(`sounds/ecg_beep.wav`) on every QRS complex while the panel is open, and the **Lifepak 15**
+window appears left of the panel. Close the panel with **X** or **Backspace**. It also closes
+when you walk away (`PANEL_RANGE`).
+
+The Lifepak window: HR (the counted QRS rate; `---` in VF, PEA and asystole: a PEA has broad low
+waves without an R wave, no pulse and no beep), SpO2 and NIBP (`---` without a pulse), the ECG with the rhythm name, the pleth wave, the clock, the selected energy and
+a status line. Buttons:
+
+| button | what it does |
+|---|---|
+| ENERGY SELECT ▼▲ | inactive (greyed out): the energy is fixed at `DEFIB_ENERGY` (200 J) |
+| CHARGE | charges in `DEFIB_CHARGE_TIME` (4.73 s = the length of `defib_charge.wav`, the charge bar follows it); an undelivered charge is dumped after `DEFIB_DISARM_TIME` (60 s) |
+| SHOCK | flashes when charged; delivers the shock (see Heart rhythm), everyone at the panel sees the result |
+| ANALYZE | AED mode, unresponsive patient only: `DEFIB_ANALYZE_TIME` (4 s), then SHOCK ADVISED (and it charges on its own) or NO SHOCK ADVISED |
+| SYNC | synchronised shock (cardioversion of VT with pulse) |
+| SOUND | ECG beep + alarm on / off for this patient (LED = on). Stored on the patient's monitor: a new patient starts with it on. The defibrillator sounds always play |
+
+Screen rows: status bar (shocks, clock, SYNC, energy), message line (analysis / charge bar /
+advice), HR + ECG + rhythm name (the tallest row), then SpO2 + pleth and NIBP at the bottom
+(systolic, the diastolic under it, the mean pressure in brackets beside it).
+
+Sounds (only for the medics at the panel): `ecg_beep.wav` on every QRS, `defib_charge.wav` while
+charging, `defib_charge_complate.wav` + the `defib_ready_loop.wav` loop while charged,
+`lifepak_alarm_loop.wav` while the rhythm is VF / pulseless VT / PEA / VT with pulse (not in asystole).
+
+The monitor state is per patient (every medic at the panel sees the same device), the server
+runs it (`medic:defib` requests).
 
 The buttons are grouped into rows by `MEDIC_ACTION_GROUPS` (config): **AB** (Airway, Breathing:
 Intubate, O2 mask), **CD** (Circulation, Disability: Bandage, CPR, IV access, Medication) and
@@ -120,11 +187,12 @@ are listed one per line (two columns) with their remaining time.
 | button | minigame | available when | success |
 |---|---|---|---|
 | Bandage | mg_arrows | an untreated wound / fracture / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), fracture splinted, burn dressed |
-| CPR | mg_cpr | clinical death | ROSC chance (accuracy, +IV, +airway, 0 when the blood loss is too high), otherwise +45 s on the death timer |
+| CPR | mg_cpr | clinical death | +45 s on the death timer; after 10 s of good compressions the rhythm can change (pulse back, or another arrest rhythm), which stops the minigame early. A round that ends without a change: "continue CPR" / "shockable rhythm - shock" |
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
 | Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); the picked one is given after 3 s |
+| Attach monitor / defibrillator (heart rate tile) | – (4 s, `MONITOR_TIME`) | once per patient | ECG electrodes + pads: BP / SpO2 / ECG visible, Lifepak window, defibrillation |
 | Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), with a systolic pressure between `TRANSPORT_MIN_SYSTOLIC` and `TRANSPORT_MAX_SYSTOLIC` (90-180), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
 
 Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
@@ -156,7 +224,9 @@ local data = exports.medical_system:getMedicalState(element)
 -- { consciousness, consciousnessLabel, heartRate, systolic, diastolic, bloodPressure = "120/80",
 --   spo2, bleeding (0-3), bleedingLabel, bloodVolume, bloodPercent, pain,
 --   injuries = { { id, type, label, severity, severityLabel, bleeding, treated, treatedLabel } },
---   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient }
+--   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient,
+--   rhythm, rhythmLabel, ecgRate (ECG complexes / min), monitor = nil | { energy, sync, shocks, chargeLeft, charged,
+--   analyzeLeft, advice, adviceAge, message, messageAge } }
 
 exports.medical_system:setMedicalState(element, key, value) -- true / false
 --   heartRate     0 = cardiac arrest, > 0 during clinical death = return of circulation
@@ -167,7 +237,10 @@ exports.medical_system:setMedicalState(element, key, value) -- true / false
 --                 value with its current injuries / pain / medicines; set systolic first
 --   restingSpo2   lasting SpO2 cap (chronic hypoxia), the oxygen mask lifts it, intubation removes it
 --   bleeding      0 stops every bleeding, 1-3 adds a bleeding that is not tied to an injury
---   ivAccess, intubated, oxygenMask   booleans
+--   ivAccess, intubated, oxygenMask, monitor   booleans (monitor = the monitor / defibrillator is attached)
+--   rhythm        MEDIC_RHYTHMS key: a pulseless one (VF, PULSELESS_VT, PEA, ASYSTOLE) = cardiac arrest in it,
+--                 VT_WITH_PULSE = lasting VT (only a shock ends it), SINUS / SINUS_BRADY / SINUS_TACHY
+--                 revive and move the resting pulse into the range when it is outside
 --   consciousness "stable" (wakes / revives), "dazed" / "unconscious" (forced for KNOCKOUT_TIME),
 --                 "clinical_death", "dead"
 -- The simulation continues from the new value (e.g. a heart rate drifts back to its target).
@@ -220,6 +293,7 @@ addEventHandler("onMedicalCardiacArrest", root, function() end)                 
 addEventHandler("onMedicalRevived", root, function() end)                                  -- ROSC
 addEventHandler("onMedicalDeath", root, function() end)                                    -- biological death
 addEventHandler("onMedicalTreatment", root, function(medic, action, success, option) end)  -- source = patient, option = medicine id
+addEventHandler("onMedicalDefibrillation", root, function(medic, joules, rhythmBefore, rhythmAfter) end) -- source = patient
 addEventHandler("onMedicalTransportRequested", root, function(medic, kind) end)            -- source = ped, kind = "alive" | "dead"
 addEventHandler("onMedicalPatientTransported", root, function(medic, kind) end)            -- source = ped, right before it is destroyed
 ```
@@ -247,7 +321,8 @@ read from `v_mysql` account data, not from element data. The ped is placed
 - `/medtest clear` destroys your test peds
 
 Scenarios (in `MEDIC_TEST.SCENARIOS`): torso / limb gunshot, hemorrhagic shock, car crash, fall
-from height, house fire, drowning, overdose, cardiac arrest, minor burn. Each admin can have at
+from height, house fire, drowning, overdose, cardiac arrest (random rhythm), VF arrest, asystole,
+VT with pulse, minor burn, hypertensive crisis, dead body. Each admin can have at
 most `MAX_PEDS` test peds (the oldest is removed), and they are removed when the admin quits.
 
 ## Config

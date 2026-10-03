@@ -10,6 +10,7 @@
     <export function="startCPRGame" type="server" />
     <export function="stopCPRGame" type="server" />
     <export function="isCPRGameActive" type="server" />
+    <export function="getCPRGameProgress" type="server" />
 
     <!-- client: local-only game, result arrives via onClientCPRGameFinish -->
     <export function="startCPRGame" type="client" />

@@ -83,7 +83,8 @@ MSM_SEVERITY = { "Minor", "Serious", "Critical" }
 -- presets = values offered in the menu (the last word of the label is the value).
 -- The vitals go after pain / bleeding and systolic before diastolic / heart rate: they are set as
 -- lasting resting values (MSM_STATE_RESTING) computed from what is already applied.
-MSM_STATE_ORDER = { "bloodVolume", "pain", "bleeding", "ivAccess", "spo2", "systolic", "diastolic", "heartRate", "consciousness" }
+-- rhythm goes last: a pulseless one is a cardiac arrest in that rhythm (medsys MEDIC_RHYTHMS)
+MSM_STATE_ORDER = { "bloodVolume", "pain", "bleeding", "ivAccess", "spo2", "systolic", "diastolic", "heartRate", "consciousness", "rhythm" }
 
 -- Editor keys sent to medsys as its lasting "resting" keys: a plain systolic / heartRate / ...
 -- only sets the current value and the simulation drifts it back to normal within seconds.
@@ -117,6 +118,11 @@ MSM_STATE = {
     bleeding = { label = "Extra bleeding", presets = {
         { "None", 0 }, { "Mild", 1 }, { "Severe", 2 }, { "Critical", 3 } } },
     ivAccess = { label = "IV access", presets = { { "No", false }, { "Yes", true } } },
+    rhythm = { label = "Heart rhythm", presets = {
+        { "Normal sinus rhythm", "SINUS" }, { "Sinus bradycardia", "SINUS_BRADY" },
+        { "Sinus tachycardia", "SINUS_TACHY" }, { "VT with pulse", "VT_WITH_PULSE" },
+        { "VF (arrest, shockable)", "VF" }, { "Pulseless VT (arrest, shockable)", "PULSELESS_VT" },
+        { "PEA (arrest)", "PEA" }, { "Asystole (arrest)", "ASYSTOLE" } } },
 }
 
 -- Vehicle damage presets of the editor (health + door/panel/light states)
