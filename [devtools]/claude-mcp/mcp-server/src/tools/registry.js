@@ -64,9 +64,9 @@ export function wrap(def, ctx) {
 }
 
 /** Builds the context helpers shared by tools. */
-export function makeContext({ bridge, roads, config }) {
+export function makeContext({ bridge, roads, config, cache }) {
   const ctx = {
-    bridge, roads, config,
+    bridge, roads, config, cache,
     call: (category, action, params, opts) => bridge.call(category, action, params, opts),
 
     /**

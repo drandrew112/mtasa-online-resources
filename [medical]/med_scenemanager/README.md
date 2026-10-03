@@ -118,7 +118,8 @@ It only runs while med_erm has **free units** (no task, Available). It waits a r
 next scene. It allows at most `PENDING_PER_UNIT` waiting (unassigned) scene tasks per free
 unit and `MAX_ACTIVE` live scenes. The scene is a weighted random pick among enabled,
 inactive scenes. A scene is skipped when a player is closer than `MIN_PLAYER_DISTANCE` or
-another live scene is closer than `MIN_SCENE_DISTANCE`. On / off: `/medsceneauto on|off` or
+another live scene is closer than `MIN_SCENE_DISTANCE`, or when no free unit is within
+`MAX_UNIT_DISTANCE` (2D, interior scenes are always in range; 0 = no limit). On / off: `/medsceneauto on|off` or
 the `autoEnabled` setting.
 
 ## Commands (admin_level >= `MIN_ADMIN_LEVEL`, from v_mysql)

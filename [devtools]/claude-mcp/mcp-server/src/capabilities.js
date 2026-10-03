@@ -18,10 +18,16 @@ export const MODULES = {
   visual: 'Real screenshots (current view or computed camera views) and an in-game debug overlay.',
   player: 'Probe player state, teleport, camera.',
   dev: 'Debug log, Lua execution, export calls, resource control, element data.',
+  cache: 'Persistent data cache (survives restarts): list / get / put / delete, cached surface maps of whole cities and surface-patch search (parks, plazas, beaches). Check cache_list before generating expensive data.',
   medical: 'Medical scenes on top of the generic modules: patients, injuries, medsys states, templates, EMS-access validation, med_scenemanager export.',
 };
 
 export const WORKFLOWS = [
+  {
+    name: 'find_parks_or_areas_by_surface',
+    goal: 'Find grass parks / plazas / beaches across a city without rescanning',
+    steps: ['cache_list {kind:"surface_map"}', 'build_surface_map {city} (repeat while complete = false; skipped when cached)', 'find_surface_patches {city, surfaces:["grass"], maxRoadDistance}', 'get_area_summary / capture_view on the spot', 'cache_put verified spots for reuse'],
+  },
   {
     name: 'orient_yourself',
     goal: 'Understand where you are and what is around',

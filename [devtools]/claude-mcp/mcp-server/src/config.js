@@ -21,6 +21,8 @@ export const config = {
   vehicleNodesPath: env.VEHICLE_NODES || path.resolve(here, '../../assets/vehiclenodes.lua'),
   // where screenshots are also written (empty = not saved)
   screenshotDir: env.MCP_SCREENSHOT_DIR ?? path.resolve(here, '../../screenshots'),
+  // persistent data cache (surface maps, verified spots...)
+  cacheDir: env.MCP_CACHE_DIR || path.resolve(here, '../../cache'),
   version: '1.0.0',
 };
 

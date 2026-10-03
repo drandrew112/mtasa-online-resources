@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { config } from './config.js';
 import { Bridge } from './bridge.js';
 import { RoadGraph } from './roads/graph.js';
+import { DataCache } from './cache.js';
 import { TOOLS, makeContext, wrap } from './tools/registry.js';
 import { buildCapabilityMap, WORKFLOWS } from './capabilities.js';
 import './tools/system.js';
@@ -16,6 +17,7 @@ import './tools/workspace.js';
 import './tools/visual.js';
 import './tools/dev.js';
 import './tools/medical.js';
+import './tools/cache.js';
 
 export async function createContext() {
   const bridge = new Bridge();
@@ -26,7 +28,7 @@ export async function createContext() {
   } catch (err) {
     process.stderr.write(`[mta-world-mcp] road graph not loaded (${config.vehicleNodesPath}): ${err.message}\n`);
   }
-  return makeContext({ bridge, roads, config });
+  return makeContext({ bridge, roads, config, cache: new DataCache(config.cacheDir) });
 }
 
 export function createServer(ctx) {

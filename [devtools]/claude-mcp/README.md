@@ -51,6 +51,7 @@ Check without an MCP client: `node src/cli.js status` (in `mcp-server/`).
 - [MCP tool reference](docs/tools.md) (generated)
 - [HTTP API of the bridge](docs/http-api.md)
 - [Medical module](docs/medical.md)
+- [Data cache (surface maps, verified spots)](docs/cache.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
 ## Security note

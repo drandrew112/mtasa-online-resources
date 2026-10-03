@@ -28,6 +28,7 @@ defineTool({
       mcp: { version: ctx.config.version, uptimeSec: Math.round((Date.now() - started) / 1000), tools: TOOLS.length, node: process.version, memoryMB: Math.round(process.memoryUsage().rss / 1048576) },
       connection: ctx.bridge.stats(),
       roadNetwork: ctx.roads.stats(),
+      cache: ctx.cache.stats(),
     };
     try {
       const s = await ctx.call('status', 'get', {});

@@ -1,2 +1,4 @@
 exports/*
 !exports/.gitkeep
+cache/*
+!cache/.gitkeep
