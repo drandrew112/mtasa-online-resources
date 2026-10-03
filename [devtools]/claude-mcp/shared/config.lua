@@ -13,6 +13,7 @@ CMCP = {
     -- probe streaming range: the client only has collision / models loaded near its camera
     PROBE_RANGE = 280,          -- m, beyond this a world query focuses the probe camera first
     FOCUS_SETTLE = 1500,        -- ms wait after moving the camera for streaming
+    CAMERA_WAIT = 45000,        -- ms a job waits for a probe camera another job is using
 
     -- scan limits
     MAX_RADIUS = 400,

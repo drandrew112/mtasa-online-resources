@@ -11,7 +11,7 @@ generator and an in-game scene editor.
 shared/config.lua     MSM tunables, ped poses, injury / vitals presets, damage + colour presets
 shared/names.lua      ped name database (male / female first names, female skin list)
 server/util.lua       permission (v_mysql admin_level), JSON + file helpers
-server/storage.lua    scenes/index.json + scenes/<name>.json, in-memory summary list
+server/storage.lua    scenes/index.json + scenes/<Settlement>/[<category>/]<name>.json, summaries
 server/builder.lua    scene entry <-> vehicle / ped element (capture, apply, medsys)
 server/live.lua       live scenes: spawn, ERM task, cleanup after the task closed
 server/auto.lua       automatic generator + /medscenerandom, /medsceneauto, /medscenelist ...
@@ -19,14 +19,37 @@ server/editor.lua     editor sessions, R menu actions, load / save
 server/interact.lua   ui_interactobject menus on the editor's vehicles / peds
 server/exports.lua    public API
 client/editor.lua     banner, R menu (ui_inac temp menu), text input (ui_core), 3D labels
-scenes/               index.json + one JSON file per scene
+scenes/               index.json + <Settlement>/[<category>/]<name>.json per scene
 ```
 
 ## Scene files
 
-MTA cannot list a directory, so `scenes/index.json` lists the scene names
-(`{ "scenes": [ "name", ... ] }`). The editor keeps it up to date. If you add a JSON by
-hand, also add its name to the index and run `/medscenereload`.
+Scenes are grouped by settlement, then by category:
+
+```
+scenes/Los_Santos/heartattack/ls_heartattack1.json
+scenes/Los_Santos/mva/mva1.json
+scenes/Los_Santos/hypertension/hypertension1.json
+scenes/Los_Santos/ls_stunt-accident.json        (no category: no subfolder)
+scenes/Lil_Probe_Inn/heartattack/lil-probe-inn_heartattack1.json
+```
+
+- **Settlement** is automatic, from the scene centre: `Los_Santos`, `San_Fierro`,
+  `Las_Venturas` (`getZoneName(..., true)`), anywhere else the zone name (village / area,
+  `getZoneName(..., false)`), spaces → `_`, apostrophes dropped. Interior scenes go to `Interiors`.
+- **Category** is the scene's `"category"` key: `heartattack`, `mva`, `hypertension` (`MSM_CATEGORIES`) or
+  `""` (none). A file without the key gets the first category found in its name. In the
+  editor: R menu → *Category*.
+- Scene names stay unique over all folders and never contain the folder.
+
+Both are applied on every save, so a scene whose centre or category changed is moved to
+its new folder (the old file is deleted). On load a file in the "wrong" folder only logs a
+warning; it moves on its next save.
+
+MTA cannot list a directory, so `scenes/index.json` lists the scene paths relative to
+`scenes/`, without `.json` (`{ "scenes": [ "Los_Santos/mva/mva1", ... ] }`). The editor keeps
+it up to date. If you add a JSON by hand, also add its path to the index and run
+`/medscenereload`.
 
 The files are written by our own JSON writer (`msmEncodeJSON` in server/util.lua): fixed key
 order (`KEY_ORDER`: scene → erm → vehicles → peds, every entry id / model / skin / pos / rot
@@ -126,7 +149,7 @@ never starts the medsys simulation. Injuries / vitals only take effect in live s
     in it. Drive it into place, then *Save my vehicle position & state*. The list teleports you to a vehicle.
   - **Random generator**: enabled, weight
   - **Teleport to scene** (ERM centre), **Save** (only after the first Save as),
-    **Save as** (file name), **Leave scene** (asks when there are unsaved changes)
+    **Save as** (file name; folder from centre + category), **Category**, **Leave scene** (asks when there are unsaved changes)
 
 **X menu on the elements** (ui_interactobject, only you see it):
 

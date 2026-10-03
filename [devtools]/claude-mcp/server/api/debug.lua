@@ -9,7 +9,7 @@ end)
 
 addEvent("cmcp:clientLog", true)
 addEventHandler("cmcp:clientLog", resourceRoot, function(entries)
-    if Probe.get() ~= client or type(entries) ~= "table" then return end
+    if not Probe.clients[client] or type(entries) ~= "table" then return end
     for i = 1, math.min(#entries, 50) do
         local e = entries[i]
         Util.addLog(tostring(e.level), "client", tostring(e.message), { file = e.file, line = e.line, player = getPlayerName(client) })

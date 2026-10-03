@@ -75,6 +75,15 @@ local function sceneMenu(scene)
           desc = "Higher = picked more often" },
     }
 
+    local categories = { item("None", "category", "", "No category subfolder", { checked = scene.category == "" }) }
+    for _, c in ipairs(MSM_CATEGORIES) do
+        categories[#categories + 1] = item(c.label, "category", c.id, "Subfolder: " .. c.id, { checked = scene.category == c.id })
+    end
+    local categoryLabel = "None"
+    for _, c in ipairs(MSM_CATEGORIES) do
+        if c.id == scene.category then categoryLabel = c.label end
+    end
+
     local function confirm(label, action, desc)
         if not scene.dirty then return item(label, action, nil, desc) end
         return { label = label, title = "Unsaved changes", desc = "There are unsaved changes", items = {
@@ -90,9 +99,11 @@ local function sceneMenu(scene)
             { label = ("Peds (%d)"):format(#scene.peds), title = "Peds", items = pedItems },
             { label = ("Vehicles (%d)"):format(#scene.vehicles), title = "Vehicles", items = vehItems },
             { label = "Random generator", title = "Random generator", items = genItems },
+            { label = "Category: " .. categoryLabel, title = "Category", items = categories,
+              desc = "Folder: scenes/<settlement>/<category>/. The settlement comes from the centre." },
             item("Teleport to scene", "teleport", nil, "To the ERM task centre"),
-            item("Save", "save", nil, scene.file and (scene.file .. ".json") or "Never saved - use Save as"),
-            item("Save as ...", "saveas", nil, "Saved into the scenes folder under the given name"),
+            item("Save", "save", nil, scene.file and scene.target or "Never saved - use Save as"),
+            item("Save as ...", "saveas", nil, "Saved as " .. scene.target),
             confirm("Leave scene", "leave", "Back to the main menu"),
             confirm("Exit editor", "exit"),
         },

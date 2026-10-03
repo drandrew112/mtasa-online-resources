@@ -3,13 +3,15 @@
 local function playerState(p)
     local d = Props.describe(p, "medium")
     d.name = getPlayerName(p)
-    d.probe = Probe.get() == p
+    d.probe = Probe.clients[p] ~= nil and Probe.alive(p) or false
+    d.primaryProbe = Probe.primary() == p
+    d.runningJobs = Probe.load[p] or 0
     local c = Probe.clients[p]
     if c and c.info then
         d.camera = c.info.camera and {
             position = M.vec(c.info.camera[1], c.info.camera[2], c.info.camera[3]),
             target = M.vec(c.info.camera[4], c.info.camera[5], c.info.camera[6]),
-            fixed = Probe.focused == p,
+            fixed = Probe.camOwner[p] ~= nil,
         } or nil
         d.fps = c.info.fps
         d.windowActive = c.info.windowActive
@@ -28,7 +30,7 @@ local function target(p)
         if getElementType(el) ~= "player" then fail("INVALID_PARAMS", "'" .. p.player .. "' is not a player.") end
         return el
     end
-    return Probe.require()
+    return Probe.require({ primary = true })
 end
 
 Api.register("player", "get", function(p)
@@ -86,7 +88,6 @@ Api.register("camera", "set", function(p)
     local tx, ty, tz = Resolve.point(p.target, "target")
     if not z or not tz then fail("INVALID_PARAMS", "camera position and target need a z.") end
     setCameraMatrix(pl, x, y, z, tx, ty, tz, P.num(p, "roll", 0), P.num(p, "fov", 70, 5, 170))
-    Probe.focused = nil
     return { fixed = true, position = M.vec(x, y, z), target = M.vec(tx, ty, tz),
         note = "The camera stays fixed until camera reset (set_camera mode 'reset')." }
 end, { mutates = true, desc = "Fixes the player's camera at a matrix." })

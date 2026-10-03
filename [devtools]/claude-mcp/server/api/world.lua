@@ -7,7 +7,7 @@ Resolve = {}
 function Resolve.point(spec, name)
     name = name or "center"
     if spec == nil or spec == "player" or spec == "probe" then
-        local pl = Probe.get()
+        local pl = Probe.primary()
         if not pl then
             fail("NO_PROBE_CLIENT", "'" .. name .. "' defaults to the probe player, but no player is connected.",
                 { retryable = true, suggestion = "Pass explicit coordinates {x, y, z} or join the server." })
@@ -16,7 +16,8 @@ function Resolve.point(spec, name)
         local _, _, rz = getElementRotation(pl)
         return x, y, z, { kind = "player", heading = rz, element = pl, dimension = getElementDimension(pl), interior = getElementInterior(pl) }
     elseif spec == "camera" then
-        local pl = Probe.require()
+        local pl = Probe.primary()
+        if not pl then fail("NO_PROBE_CLIENT", "'camera' needs a connected probe client.", { retryable = true }) end
         local cam = Probe.clients[pl].info.camera
         if not cam then fail("PROBE_NOT_READY", "Camera position not reported yet.", { retryable = true }) end
         return cam[1], cam[2], cam[3], { kind = "camera", heading = M.headingTo(cam[1], cam[2], cam[4], cam[5]), dimension = getElementDimension(pl), interior = getElementInterior(pl) }
@@ -33,7 +34,7 @@ function Resolve.point(spec, name)
 end
 
 local function probeDim()
-    local pl = Probe.get()
+    local pl = Probe.primary()
     return pl and getElementDimension(pl) or 0, pl and getElementInterior(pl) or 0
 end
 
@@ -120,7 +121,7 @@ Api.register("world", "raycast", function(p)
         rays[1] = { sx, sy, sz, sx + dx / l * len, sy + dy / l * len, sz + dz / l * len }
     end
     if mode == "camera" then
-        return Probe.call("camera", { aim = true, distance = P.num(p, "length", 300, 1, 3000), options = opts })
+        return Probe.call("camera", { aim = true, distance = P.num(p, "length", 300, 1, 3000), options = opts }, nil, Probe.require({ primary = true }))
     end
     if p.focus ~= false and rays[1] then Probe.focus(rays[1][1], rays[1][2], rays[1][3]) end
     local r = Probe.call("rays", { rays = rays, options = opts })
@@ -202,7 +203,7 @@ end, { async = true, desc = "Area inspection: elements + world geometry scan + z
 
 -- context: "what is around me"
 Api.register("world", "context", function(p)
-    local pl = Probe.get()
+    local pl = Probe.primary()
     local x, y, z, info = Resolve.point(p.center)
     local detail = P.str(p, "detail", "low", { "low", "medium", "high" })
     local radius = P.num(p, "radius", detail == "low" and 40 or 70, 5, 300)
@@ -221,6 +222,7 @@ Api.register("world", "context", function(p)
     local list, counts, total = Resolve.elementsNear(x, y, z, radius, { "vehicle", "ped", "player", "object" }, info.dimension, nil, detail == "high" and 60 or 25, "low")
     out.nearby = { radius = radius, total = total, counts = counts, elements = list }
     if pl then
+        Probe.focus(x, y, z, p.focus)
         local g = Probe.call("ground", { points = { { x, y, z } }, includeObjects = true, slopeRadius = 1.5, above = 2 })
         out.ground = g.points and g.points[1]
         out.geometry = Probe.call("scanArea", { center = { x, y, z }, radius = radius, detail = detail == "high" and "medium" or "low" }, 30000)
@@ -278,6 +280,7 @@ Api.register("world", "lineOfSight", function(p)
     for _, k in ipairs({ "from", "to" }) do
         if type(p[k]) == "string" then ignore[#ignore + 1] = Refs.resolve(p[k]) end
     end
+    Probe.focus((sx + ex) / 2, (sy + ey) / 2, (sz + ez) / 2, p.focus)
     return Probe.call("los", { from = { sx, sy, sz + lift }, to = { ex, ey, ez + lift }, ignore = ignore, options = p.options })
 end, { async = true, desc = "Whether two points / entities see each other, with the blocking hit." })
 

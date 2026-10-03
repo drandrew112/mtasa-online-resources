@@ -48,7 +48,7 @@ function Registry.createWorkspace(p)
         fail("WORKSPACE_EXISTS", "Workspace '" .. name .. "' already exists.",
             { retryable = false, suggestion = "Use it as is, clear it with clear_workspace, or pick another name." })
     end
-    local probe = Probe.get()
+    local probe = Probe.primary()
     local prefix = p.prefix or (name == CMCP.DEFAULT_WORKSPACE and CMCP.ID_PREFIX or name)
     if not validName(prefix) then prefix = CMCP.ID_PREFIX end
     local ws = {

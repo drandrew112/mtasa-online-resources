@@ -319,7 +319,8 @@ Api.register("medical", "export", function(p)
                 { suggestion = err == "exists" and "Pass overwrite = true or another name." or nil })
         end
         out.saved = true
-        out.file = "[medical]/med_scenemanager/scenes/" .. name .. ".json"
+        -- med_scenemanager returns scenes/<Settlement>/[<category>/]<name>.json (older versions: nothing)
+        out.file = "[medical]/med_scenemanager/" .. (type(err) == "string" and err or ("scenes/" .. name .. ".json"))
     end
     return out
 end, { desc = "Exports a medical scene in the med_scenemanager JSON format (optionally saves it)." })
@@ -418,6 +419,9 @@ Api.register("medical", "validate", function(p)
             if isElement(e.element) and not getPedOccupiedVehicle(e.element) then list[#list + 1] = { element = e.element, id = e.id } end
         end
         if #list > 0 then
+            local els = {}
+            for _, it in ipairs(list) do els[#els + 1] = it.element end
+            Entities.focusOn(els)
             access = Probe.call("medicalAccess", { patients = list, ambulanceModel = tonumber(p.ambulanceModel) or 416 }, 20000)
             for _, d in ipairs(access.errors or {}) do errors[#errors + 1] = d end
             for _, d in ipairs(access.warnings or {}) do warnings[#warnings + 1] = d end

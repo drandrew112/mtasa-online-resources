@@ -45,6 +45,7 @@ local function bridgeStatus()
             players = #players, maxPlayers = getMaxPlayers(), gameType = getGameType(), mapName = getMapName(),
         },
         probe = Probe.info(),
+        probes = Probe.list(),
         players = players,
         workspaces = workspaces,
         entityCount = Registry.count(),

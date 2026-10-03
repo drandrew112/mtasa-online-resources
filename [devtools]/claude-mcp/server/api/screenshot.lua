@@ -36,6 +36,7 @@ function Screens.take(player, width, height, quality)
         fail("SCREENSHOT_DISABLED", "The probe player's client does not allow screen uploads.",
             { retryable = false, suggestion = "In MTA: Settings > Advanced > 'Allow screen upload' = Yes, then retry." })
     elseif status == "minimized" then
+        if Probe.clients[player] then Probe.clients[player].minimized = true end
         fail("SCREENSHOT_MINIMIZED", "The game window is minimized; nothing can be captured.",
             { retryable = true, suggestion = "Restore the MTA window (it may stay in the background but not minimized)." })
     elseif status == "timeout" then
@@ -129,21 +130,21 @@ function Screens.viewMatrix(p)
     return { tx, ty - 0.01, tz + math.max(dist, 8) * 1.4, tx, ty, tz }, "top"
 end
 
--- capture: { width, height, quality, view, target, workspace, distance, height, yaw, position, hideHud, daylight, settle, overlay }
+-- capture: { width, height, quality, view, target, workspace, distance, height, yaw, position, hideHud, daylight (default true), settle, overlay }
 Api.register("screenshot", "capture", function(p)
-    local player = Probe.require()
+    -- the current view is the primary's own view; computed views go to the least busy visible probe
+    local current = (p.view or "orbit") == "current"
+    local player = Probe.require({ primary = current, screen = true })
+    Probe.lockCamera(player, true)
     local w = P.int(p, "width", 1280, 160, CMCP.SHOT_MAX_W)
     local h = P.int(p, "height", 720, 120, CMCP.SHOT_MAX_H)
     local quality = P.int(p, "quality", 70, 10, 100)
     Screens.lastViewNote = nil
     local matrix, mode = Screens.viewMatrix(p)
     if matrix then
+        local job = Async.self()
+        if job then job.cameraMoved = true end
         setCameraMatrix(player, matrix[1], matrix[2], matrix[3], matrix[4], matrix[5], matrix[6], 0, P.num(p, "fov", 70, 10, 120))
-        Probe.focused = player
-        Async.defer(function()
-            if isElement(player) then setCameraTarget(player, player) end
-            Probe.focused = nil
-        end)
     end
     if p.overlay ~= nil and (p.overlay == true) ~= (Overlay.state.enabled == true) then
         local before = Overlay.state.enabled
@@ -151,7 +152,8 @@ Api.register("screenshot", "capture", function(p)
         Overlay.push()
         Async.defer(function() Overlay.state.enabled = before Overlay.push() end)
     end
-    local prep = { hideHud = p.hideHud ~= false, daylight = p.daylight == true }
+    -- daytime unless the caller asks otherwise (daylight = false keeps the real time / weather)
+    local prep = { hideHud = p.hideHud ~= false, daylight = p.daylight ~= false }
     Probe.call("capturePrepare", prep)
     Async.defer(function() if isElement(player) then triggerClientEvent(player, "cmcp:captureRestore", resourceRoot) end end)
     Async.sleep(matrix and P.int(p, "settle", 900, 100, 10000) or 250)
@@ -164,6 +166,8 @@ Api.register("screenshot", "capture", function(p)
         camera = matrix and { position = M.vec(matrix[1], matrix[2], matrix[3]), target = M.vec(matrix[4], matrix[5], matrix[6]) }
             or (cam and { position = M.vec(cam[1], cam[2], cam[3]), target = M.vec(cam[4], cam[5], cam[6]) }),
         overlay = Overlay.state.enabled == true,
+        daylight = prep.daylight,
+        probe = getPlayerName(player),
         takenAt = getRealTime().timestamp,
     }
 end, { async = true, desc = "JPEG screenshot of the probe client, optionally from a computed camera view." })
@@ -171,8 +175,8 @@ end, { async = true, desc = "JPEG screenshot of the probe client, optionally fro
 ---------------------------------------------------------------- overlay
 
 function Overlay.push()
-    local pl = Probe.get()
-    if not pl then return false end
+    local workers = Probe.workers()
+    if #workers == 0 then return false end
     local s = Overlay.state
     local items = {}
     if s.enabled then
@@ -184,7 +188,7 @@ function Overlay.push()
             end
         end
     end
-    triggerClientEvent(pl, "cmcp:overlay", resourceRoot, {
+    triggerClientEvent(workers, "cmcp:overlay", resourceRoot, {
         enabled = s.enabled == true, labels = s.labels, boxes = s.boxes, axes = s.axes, items = items,
         lines = s.lines, points = s.points, nodes = s.nodes, maxDistance = s.maxDistance or 250,
     })

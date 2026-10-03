@@ -33,8 +33,8 @@ addCommandHandler("mcp", function(player, _, sub)
         Overlay.push()
         say(player, "Overlay " .. (Overlay.state.enabled and "on" or "off") .. ".")
     else
-        local p = Probe.get()
-        say(player, string.format("instance %s | probe: %s | workspaces: %d | entities: %d | requests: %d (%d errors)",
-            Api.instance(), p and getPlayerName(p) or "none", #Registry.order, Registry.count(), Api.stats.requests, Api.stats.errors))
+        local p = Probe.primary()
+        say(player, string.format("instance %s | probe: %s (+%d workers) | workspaces: %d | entities: %d | requests: %d (%d errors)",
+            Api.instance(), p and getPlayerName(p) or "none", math.max(0, #Probe.workers() - 1), #Registry.order, Registry.count(), Api.stats.requests, Api.stats.errors))
     end
 end)

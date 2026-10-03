@@ -32,7 +32,7 @@ function Refs.resolve(id)
     local el = Refs.byRef[id]
     if el and isElement(el) then return el, Registry and Registry.byElement[el] end
     if id == "probe" or id == "player" then
-        local p = Probe.get()
+        local p = Probe.primary()
         return p, nil
     end
     local p = getPlayerFromName(id)
