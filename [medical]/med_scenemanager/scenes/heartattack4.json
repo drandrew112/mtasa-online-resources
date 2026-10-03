@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "heartattack4",
+    "enabled": true,
+    "weight": 1,
+    "center": [1479.5, -1725.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "\tChest pain, sweating",
+        "description": "Caller reports a man in his sixties sitting on the pavement at Pershing Square, pale and drenched in sweat, pressing a fist to his chest. The pain started on his lunch walk and is spreading into his left arm and jaw. He keeps insisting it is just the burrito.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [1479.5, -1725.25, 13.547],
+            "rot": 180,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 93,
+                "systolic": 165,
+                "diastolic": 100,
+                "heartRate": 112,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

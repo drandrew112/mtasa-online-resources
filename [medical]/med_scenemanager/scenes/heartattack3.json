@@ -1,0 +1,27 @@
+{
+    "format": 1,
+    "name": "heartattack3",
+    "enabled": true,
+    "weight": 1,
+    "center": [415.964, -1430.286, 32.537],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, no pulse",
+        "description": "A shopper in a tailored suit grabbed his chest outside a designer boutique and hit the pavement face-up, bags of overpriced shoes everywhere. Store staff say he is not breathing and they cannot find a pulse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [415.964, -1430.286, 32.537],
+            "rot": 306.1,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}
