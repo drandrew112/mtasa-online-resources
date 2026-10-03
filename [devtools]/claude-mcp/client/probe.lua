@@ -377,11 +377,25 @@ end
 local frames, fps = 0, 0
 addEventHandler("onClientPreRender", root, function() frames = frames + 1 end)
 
+local minimized = false
+
 local function info()
     local cx, cy, cz, tx, ty, tz = getCameraMatrix()
     local sw, sh = guiGetScreenSize()
-    return { camera = { cx, cy, cz, tx, ty, tz }, fps = fps, screen = { sw, sh }, windowActive = isMTAWindowActive and isMTAWindowActive() or false }
+    return { camera = { cx, cy, cz, tx, ty, tz }, fps = fps, screen = { sw, sh }, windowActive = isMTAWindowActive and isMTAWindowActive() or false, minimized = minimized }
 end
+
+-- the server gives screenshot work only to clients whose window is not minimized
+addEventHandler("onClientMinimize", root, function()
+    minimized = true
+    triggerServerEvent("cmcp:heartbeat", resourceRoot, info())
+end)
+addEventHandler("onClientRestore", root, function()
+    minimized = false
+    local i = info()
+    i.restored = true
+    triggerServerEvent("cmcp:heartbeat", resourceRoot, i)
+end)
 
 setTimer(function()
     fps = frames

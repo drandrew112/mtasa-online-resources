@@ -31,7 +31,7 @@ defineTool({
     };
     try {
       const s = await ctx.call('status', 'get', {});
-      Object.assign(out, { bridge: s.bridge, mta: s.server, probe: s.probe, players: s.players, workspaces: s.workspaces, entityCount: s.entityCount, jobs: s.jobs, bridgeRequests: s.requests, integrations: s.integrations, settings: s.settings });
+      Object.assign(out, { bridge: s.bridge, mta: s.server, probe: s.probe, probes: s.probes, players: s.players, workspaces: s.workspaces, entityCount: s.entityCount, jobs: s.jobs, bridgeRequests: s.requests, integrations: s.integrations, settings: s.settings });
     } catch (e) {
       out.bridge = { reachable: false, error: { code: e.code, message: e.message, suggestion: e.extra?.suggestion } };
     }

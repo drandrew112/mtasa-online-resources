@@ -17,20 +17,32 @@ export function saveShot(ctx, base64, label) {
   }
 }
 
-async function capture(a, ctx, label) {
+async function shoot(a, ctx, label) {
   const p = { ...a };
   if (p.target) p.target = await ctx.bridgePoint(p.target);
   if (p.position) p.position = await ctx.bridgePoint(p.position);
-  const r = await ctx.call('screenshot', 'capture', p, { timeoutMs: 60000 });
+  let r;
+  try {
+    r = await ctx.call('screenshot', 'capture', p, { timeoutMs: 60000 });
+  } catch (err) {
+    // the bridge now knows that window is minimized and gives the retry to another probe
+    if (err?.code !== 'SCREENSHOT_MINIMIZED' || p.view === 'current') throw err;
+    r = await ctx.call('screenshot', 'capture', p, { timeoutMs: 60000 });
+  }
   const { image, ...meta } = r;
   meta.savedTo = saveShot(ctx, image, label);
-  return { __mcp: true, content: [{ type: 'text', text: JSON.stringify(meta) }, { type: 'image', data: image, mimeType: r.mimeType || 'image/jpeg' }] };
+  return { meta, image, mimeType: r.mimeType || 'image/jpeg' };
+}
+
+async function capture(a, ctx, label) {
+  const { meta, image, mimeType } = await shoot(a, ctx, label);
+  return { __mcp: true, content: [{ type: 'text', text: JSON.stringify(meta) }, { type: 'image', data: image, mimeType }] };
 }
 
 const shotInput = {
   width: z.number().int().min(160).max(1920).optional(), height: z.number().int().min(120).max(1080).optional(),
   quality: z.number().int().min(10).max(100).optional(), hideHud: z.boolean().optional().describe('hide the custom UI (v_radar minimap, ui_core overlays via the hideHUD element data) and the chat during the shot, restored afterwards (default true). The GTA HUD is never touched.'),
-  daylight: z.boolean().optional().describe('force 12:00 clear weather on the probe client during the shot'),
+  daylight: z.boolean().optional().describe('default true: 12:00 clear weather on the probe client during the shot, the real time / weather is restored right after. false = keep the current time / weather (night shots, weather checks).'),
   overlay: z.boolean().optional().describe('draw entity ids / bounding boxes / heading arrows in the shot'),
 };
 
@@ -62,6 +74,47 @@ defineTool({
   sideEffects: 'Temporarily moves the probe player\'s camera (restored after the shot).',
   related: ['capture_screenshot', 'set_debug_overlay', 'inspect_workspace'],
   async handler(a, ctx) { return capture({ view: 'orbit', ...a }, ctx, a.view || 'orbit'); },
+});
+
+const viewInput = {
+  view: z.enum(['orbit', 'top', 'front', 'back', 'left', 'right', 'free']).optional(),
+  target: point.optional(), workspace: z.string().optional(), position: point.optional(),
+  distance: z.number().optional(), cameraHeight: z.number().optional(), yaw: z.number().optional(), fov: z.number().optional(),
+  avoidOcclusion: z.boolean().optional(), targetLift: z.number().optional(), settle: z.number().int().optional(),
+};
+
+defineTool({
+  name: 'capture_views',
+  module: 'visual', kind: 'read', needsProbe: true,
+  title: 'Several screenshots in parallel',
+  description: 'Takes several capture_view shots at once. Each shot is its own bridge job, so with several probe clients connected they run in parallel on different game clients (one client takes them one after another). Shared settings (size, quality, daylight, overlay, target / workspace...) go at the top level, each entry of views overrides them. Failed shots are reported per view; the others are still returned.',
+  input: {
+    ...shotInput, ...viewInput,
+    views: z.array(z.object({ ...viewInput, label: z.string().optional() })).min(1).max(12),
+  },
+  returns: ['image/jpeg per view', 'per-view camera / probe / error'],
+  sideEffects: 'Temporarily moves probe cameras (restored after each shot).',
+  related: ['capture_view', 'get_status'],
+  async handler(a, ctx) {
+    const { views, ...common } = a;
+    const results = await Promise.allSettled(views.map((v, i) => {
+      const { label, ...spec } = v;
+      const merged = { view: 'orbit', ...common, ...spec };
+      return shoot(merged, ctx, label || `${merged.view}${i + 1}`);
+    }));
+    const content = [];
+    results.forEach((r, i) => {
+      const label = views[i].label || `${views[i].view || common.view || 'orbit'} #${i + 1}`;
+      if (r.status === 'fulfilled') {
+        content.push({ type: 'text', text: JSON.stringify({ view: label, ...r.value.meta }) });
+        content.push({ type: 'image', data: r.value.image, mimeType: r.value.mimeType });
+      } else {
+        const e = r.reason || {};
+        content.push({ type: 'text', text: JSON.stringify({ view: label, ok: false, error: { code: e.code, message: e.message } }) });
+      }
+    });
+    return { __mcp: true, content };
+  },
 });
 
 defineTool({
@@ -112,7 +165,7 @@ defineTool({
   name: 'select_probe',
   module: 'player', kind: 'mutate', needsProbe: false,
   title: 'Choose the probe client',
-  description: 'Makes a connected player (name or el_player ref) the probe client used for raycasts, measurements and screenshots. Use when several game clients are connected (get_player_state all=true shows windowActive per client); screenshots need a non-minimized window.',
+  description: 'Makes a connected player (name or el_player ref) the PRIMARY probe: the one meant by "player" / "probe" / "camera", the player and camera tools and current-view screenshots. With several game clients connected, the other ready clients in the same dimension still take parallel work (each request goes to the least busy one; get_status lists them under probes). Screenshot work skips minimized windows.',
   input: { player: z.string() },
   returns: ['probe'],
   sideEffects: 'Changes which client answers geometry queries.',

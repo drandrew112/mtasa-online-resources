@@ -154,6 +154,8 @@ Each diagnostic has `entity`, `type`, `message` and often `value` /
 - `capture_view`: computed cameras (orbit / front / back / left / right / top /
   free) around an entity, point, road node or a whole workspace; candidate views
   are ray-tested so the camera does not end up inside a building.
+- `capture_views`: several computed views in one call, taken in parallel (one
+  bridge job per view, spread over the probe clients).
 - `set_debug_overlay`: ids, bounding boxes, heading arrows, lines, points, road
   nodes and paths drawn in the game (and in screenshots).
 
@@ -162,3 +164,19 @@ returned as MCP images and saved under `screenshots/`.
 During the shot the custom UI (v_radar minimap, ui_core overlays) is hidden
 through the shared `hideHUD` element data and the chat is hidden; both are
 restored afterwards (`hideHud: false` keeps them). The GTA HUD is never touched.
+Shots are taken in daylight by default: the probe client is held at 12:00 with
+clear weather for the shot only and its real time / weather is restored right
+after (`daylight: false` keeps the current time / weather).
+
+## Several probe clients
+
+Every ready game client in the primary probe's dimension / interior is a
+worker. Each bridge job is bound to one probe the first time it needs one and
+keeps it until it ends; the least busy probe wins (fewest running jobs, camera
+not in use by another job, closest to the query point). Parallel tool calls
+therefore run on different clients. The primary probe (`select_probe`,
+`/mcp probe` or the `probePlayer` setting) is still the one meant by
+`player` / `probe` / `camera`, by the player and camera tools and by
+current-view screenshots. A job that moves a probe camera owns it until it
+ends; others that need it wait (`PROBE_BUSY` after 45 s). Screenshot work skips
+minimized windows. `get_status` lists the workers under `probes`.

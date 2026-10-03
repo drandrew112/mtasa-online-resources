@@ -2,7 +2,7 @@
 
 ```
 Claude / MCP client
-   │  MCP (stdio): 67 tools, resources mta://capability-map, mta://road-network, workflow_* prompts
+   │  MCP (stdio): 68 tools, resources mta://capability-map, mta://road-network, workflow_* prompts
    ▼
 Node.js MCP server  (mcp-server/src)
    │  tools/*.js        tool definitions (+ capability metadata) — the single source of truth
@@ -15,7 +15,7 @@ claude-mcp bridge resource (MTA server side)
    │  router.lua        one exported http function per category, localhost check, envelopes
    │  async.lua         every request is a coroutine "job"; waits yield; results pushed / polled
    │  registry.lua      workspaces + entities (semantic id ↔ element), loss detection
-   │  probe.lua         probe client selection, client RPC, camera focus for far queries
+   │  probe.lua         probe selection + per-job load balancing, client RPC, camera ownership / focus
    │  api/*.lua         status, player/camera, world, roads, models, entities, placement,
    │                    workspace, validation, screenshot, scene, medical, debug
    ▼  triggerClientEvent / triggerLatentServerEvent
