@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose3",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1678.875, -1290.875, 14.039],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Agitated man, chest pain",
+        "description": "A young man in a suit is pacing outside a Downtown club, sweating, says his heart is going to explode and that someone is following him. His friends admit he took cocaine.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [1678.875, -1290.875, 14.039],
+            "rot": 250,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

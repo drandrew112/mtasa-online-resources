@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia1",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2406.75, -2116.463, 13.554],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Dock workers say their colleague is acting drunk, sweating and talking nonsense, but he does not drink. He skipped lunch. There is an insulin pen in his jacket.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2406.75, -2116.463, 13.554],
+            "rot": 180,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {
+                "glucose": 40
+            }
+        }
+    ]
+}

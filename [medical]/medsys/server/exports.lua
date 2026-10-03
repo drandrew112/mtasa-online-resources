@@ -127,6 +127,22 @@ local SETTERS = {
         return true
     end,
 
+    -- blood glucose (mg/dL): the current and the lasting (resting) value the patient drifts back to
+    glucose = function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        value = clamp(value, MEDIC.GLUCOSE_MIN, MEDIC.GLUCOSE_MAX)
+        state.glucose, state.glucoseRest = value, value
+        return true
+    end,
+    -- only the current glucose (it drifts back to the resting one)
+    glucoseNow = function(state, value)
+        value = tonumber(value)
+        if not value then return false end
+        state.glucose = clamp(value, MEDIC.GLUCOSE_MIN, MEDIC.GLUCOSE_MAX)
+        return true
+    end,
+
     -- monitor / defibrillator attached (true) or taken off (false)
     monitor = function(state, value)
         if toBoolean(value) then attachMonitor(state) else state.monitor = nil end
@@ -134,14 +150,14 @@ local SETTERS = {
     end,
 
     -- stable: wakes / revives the patient (vitals keep deciding afterwards)
-    -- dazed / unconscious: forced for MEDIC.KNOCKOUT_TIME seconds
+    -- confused / dazed / unconscious: forced for MEDIC.KNOCKOUT_TIME seconds
     -- clinical_death: cardiac arrest, dead: biological death
     consciousness = function(state, value)
         if value == "clinical_death" then
             cardiacArrest(state)
         elseif value == "dead" then
             biologicalDeath(state)
-        elseif value == "stable" or value == "dazed" or value == "unconscious" then
+        elseif value == "stable" or value == "confused" or value == "dazed" or value == "unconscious" then
             restoreCirculation(state)
             if value == "stable" then
                 state.knockoutState, state.knockoutUntil = nil, nil
@@ -193,7 +209,7 @@ end
 
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
 -- bloodVolume, pain, hypertension, restingSystolic, restingDiastolic, restingHeartRate, restingSpo2,
--- ivAccess, intubated, oxygenMask, monitor, rhythm. The simulation keeps running from the new value.
+-- glucose, glucoseNow, ivAccess, intubated, oxygenMask, monitor, rhythm. The simulation keeps running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end
@@ -204,7 +220,9 @@ function setMedicalState(element, key, value)
     return ok
 end
 
--- Adds an injury. injuryType: "gunshot" | "fracture" | "burn" | "suffocation",
+-- Adds an injury or a medical condition. injuryType: a MEDIC_INJURIES key ("gunshot", "fracture",
+-- "burn", "suffocation", "head_injury", "stroke", "opioid", "sedative", "stimulant", "alcohol",
+-- "postictal", "asthma", "copd", "pulmonary_edema"),
 -- severity: 1-3 or "minor" | "serious" | "critical". Returns the injury id, or false.
 function applyInjury(element, injuryType, severity)
     local def = MEDIC_INJURIES[injuryType]
@@ -223,6 +241,7 @@ function applyInjury(element, injuryType, severity)
         bleeding = def.bleed[severity],
         treated = false,
         tick = getTickCount(),
+        side = injuryType == "stroke" and (math.random() < 0.5 and "left" or "right") or nil,
     }
     -- an airway that is already secured covers a new suffocation cause
     if injuryType == "suffocation" and state.intubated then

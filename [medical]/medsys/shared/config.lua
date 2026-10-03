@@ -143,6 +143,38 @@ MEDIC = {
     SHOCK_PULSE_VF = 0.3,       -- ...or it causes VF this often (a shock on a sinus rhythm always stops the heart)
     SHOCK_PAIN = 60,            -- pain points of a shock on a patient who is not down
 
+    -- Blood glucose (mg/dL; the glucometer also shows mmol/L). setMedicalState "glucose" sets the
+    -- current and the resting value, the current one drifts back to the resting one.
+    DATA_BREATH = "medic.breath", -- breathing key (MEDIC_BREATHING), broadcast for medsys_effects
+    GLUCOSE = 95,               -- healthy resting value
+    GLUCOSE_DRIFT = 0.08,       -- mg/dL per second towards the resting value
+    GLUCOSE_MIN = 10, GLUCOSE_MAX = 900,
+    GLUCOSE_IV_RATE = 0.12,     -- mg/dL/s an IV line (fluids) lowers a value above GLUCOSE_IV_ABOVE
+    GLUCOSE_IV_ABOVE = 180,
+    HYPO_GLUCOSE = 70,          -- below: sweating, the pulse rises (HYPO_HEART_RATE per mg/dL, max 25)
+    HYPO_HEART_RATE = 0.5,
+    HYPO_ARREST_GLUCOSE = 20,   -- below this for HYPO_ARREST_TIME seconds -> cardiac arrest
+    HYPO_ARREST_TIME = 240,
+    HYPER_LOSS_ABOVE = 300,     -- above: osmotic fluid loss, HYPER_LOSS ml/s at +300 mg/dL
+    HYPER_LOSS = 0.6,
+    KUSSMAUL_GLUCOSE = 350,     -- above: deep, rapid breathing and acetone breath (ketoacidosis)
+    -- consciousness by the glucose (the worst matching line counts)
+    GLUCOSE_LOW_CONSCIOUSNESS = { { 30, "unconscious" }, { 45, "dazed" }, { 58, "confused" } },
+    GLUCOSE_HIGH_CONSCIOUSNESS = { { 700, "unconscious" }, { 550, "dazed" }, { 420, "confused" } },
+    GLUCOMETER_TIME = 5,        -- seconds from the finger prick to the reading
+    GLUCOMETER_LOW = 20,        -- the meter shows "LO" below and "HI" above these
+    GLUCOMETER_HIGH = 600,
+
+    -- Neuro exam (D of ABCDE): timed, once done its findings stay on the panel (updated live)
+    NEURO_TIME = 4,
+
+    -- Stroke: an untreated stroke gets one severity worse after this many seconds; a systolic
+    -- pressure outside STROKE_SAFE_SYSTOLIC (too low: less blood to the brain, too high: bleeding)
+    -- makes it STROKE_BAD_BP_FACTOR times faster. Only the hospital treats it.
+    STROKE_PROGRESS_TIME = 480,
+    STROKE_SAFE_SYSTOLIC = { 130, 220 },
+    STROKE_BAD_BP_FACTOR = 2.5,
+
     -- The patient animations and the player's own screen effects live in medsys_effects.
 }
 
@@ -169,6 +201,7 @@ MEDIC_ARREST_RHYTHMS = {
     tachycardia = { VF = 0.6, PULSELESS_VT = 0.4 },
     vt = { PULSELESS_VT = 0.7, VF = 0.3 },
     shock = { VF = 1 },
+    hypoglycemia = { PEA = 0.5, ASYSTOLE = 0.5 },
     default = { ASYSTOLE = 1 }, -- a forced arrest is asystole unless a rhythm is given (setMedicalState "rhythm")
 }
 
@@ -214,6 +247,18 @@ MEDIC_TEST = {
             injuries = {}, set = { { "hypertension", 70 }, { "systolic", 190 }, { "diastolic", 125 } } },
         { id = "dead_body", label = "Dead body", desc = "Biological death - request transport",
             injuries = {}, set = { { "consciousness", "dead" } } },
+        { id = "stroke", label = "Stroke", desc = "Neuro exam: FAST positive - keep the BP safe, transport",
+            injuries = { { "stroke", 2 } } },
+        { id = "hypo", label = "Hypoglycaemia", desc = "Glucose 32 mg/dL - Glucose 40% IV",
+            injuries = {}, set = { { "glucose", 32 } } },
+        { id = "dka", label = "Diabetic ketoacidosis", desc = "Glucose 520, dehydrated - fluids, insulin",
+            injuries = {}, set = { { "glucose", 520 }, { "bloodVolume", 4100 } } },
+        { id = "opioid", label = "Opioid overdose", desc = "Slow breathing, pinpoint pupils - Naloxone",
+            injuries = { { "opioid", 2 } } },
+        { id = "asthma", label = "Asthma attack", desc = "Wheezing, SpO2 falling - Salbutamol, O2",
+            injuries = { { "asthma", 2 } } },
+        { id = "drunk", label = "Alcohol intoxication", desc = "Confused, smells of alcohol",
+            injuries = { { "alcohol", 1 } } },
     },
 }
 
@@ -221,6 +266,17 @@ MEDIC_TEST = {
 -- pain[severity] = pain points, spo2[severity] = SpO2 the patient drifts to while untreated,
 -- spo2Rate = how fast (%/s) the SpO2 falls towards that target.
 -- treat = the procedure that resolves it, treatedPain = pain multiplier once treated.
+-- Optional fields (mostly for the medical conditions below):
+--   hidden        not listed on the panel: only its findings show (neuro exam, breathing, skin)
+--   treatDrugs    medicines (MEDIC_DRUGS ids) that treat it, see MEDIC_DRUGS.treats
+--   treatedSpo2   spo2 targets once treated (nil: a treated one does not lower the SpO2)
+--   systolic / heartRate[severity]  added to the circulation targets (treatedVitals scales them once treated)
+--   consciousness[severity]  the patient is at least this far down ("confused" / "dazed" / "unconscious")
+--   breathing[severity]      what the breathing looks like (MEDIC_BREATHING key)
+--   duration[severity]       seconds until it wears off on its own (e.g. after a seizure)
+--   neuro[severity]          findings of the neuro exam ({ text, level }, level 1-3 = colour)
+--   progress = true          a stroke: gets worse over time (MEDIC.STROKE_*)
+-- Conditions without a prehospital treatment show "Needs hospital" (hospital = the cure).
 MEDIC_INJURIES = {
     gunshot = {
         label = "Gunshot wound",
@@ -241,6 +297,7 @@ MEDIC_INJURIES = {
         treatedLoss = 0.3,
         pain = { 35, 65, 90 },
         spo2 = { nil, nil, 80 },        -- inhalation injury swells the airway
+        treatedSpo2 = { nil, nil, 80 }, -- the dressing does not help the airway
         spo2Rate = 0.3,
         treat = "bandage", treatedLabel = "Dressed", treatedPain = 0.5,
     },
@@ -252,6 +309,159 @@ MEDIC_INJURIES = {
         spo2Rate = 0.8,
         treat = "airway", treatedLabel = "Airway secured", treatedPain = 1,
     },
+
+    -- Visible, hospital only: head injury (fall, crash). Cushing reflex when severe.
+    head_injury = {
+        label = "Head injury",
+        bleed = { 0, 0, 0 },
+        pain = { 25, 40, 50 },
+        consciousness = { "confused", "dazed", "unconscious" },
+        systolic = { 0, 10, 40 }, heartRate = { 0, -5, -25 },
+        spo2 = { nil, nil, 86 }, spo2Rate = 0.3,
+        breathing = { nil, nil, "snoring" },
+        neuro = {
+            { { "Scalp haematoma, asks the same questions again", 1 } },
+            { { "Scalp haematoma, vomited twice", 2 }, { "Drowsy, keeps closing the eyes", 2 } },
+            { { "Pupils: UNEQUAL - one is wide and slow", 3 }, { "Blood / clear fluid from the ear", 3 } },
+        },
+        treatedPain = 1,
+    },
+
+    ---------------------------------------------------------------- medical conditions (hidden)
+    stroke = {
+        label = "Stroke", hidden = true, progress = true,
+        bleed = { 0, 0, 0 },
+        pain = { 0, 0, 0 },
+        systolic = { 25, 40, 55 }, heartRate = { 0, 0, -5 },
+        consciousness = { nil, "confused", "unconscious" },
+        spo2 = { nil, nil, 86 }, spo2Rate = 0.25,
+        breathing = { nil, nil, "snoring" },
+        -- %s = the affected side ("left" / "right"), the gaze turns to the other one
+        neuro = {
+            { { "FAST: face droops on the %s side", 3 }, { "FAST: speech slurred", 3 } },
+            { { "FAST: face droops on the %s side", 3 }, { "FAST: %s arm drifts down, weak grip", 3 },
+                { "FAST: speech slurred, words mixed up", 3 } },
+            { { "%s side paralysed", 3 }, { "Eyes deviated to one side", 3 } },
+        },
+    },
+    opioid = {
+        label = "Opioid overdose", hidden = true, treatDrugs = { "naloxone" }, treatedVitals = 0,
+        bleed = { 0, 0, 0 },
+        pain = { 0, 0, 0 },
+        consciousness = { "dazed", "unconscious", "unconscious" },
+        systolic = { -10, -20, -30 }, heartRate = { -8, -14, -20 },
+        spo2 = { 90, 76, 50 }, spo2Rate = 0.35,
+        breathing = { "slow", "slow", "agonal" },
+        neuro = {
+            { { "Pupils: pinpoint", 2 }, { "Needle marks on the arms", 1 } },
+            { { "Pupils: pinpoint", 3 }, { "Needle marks on the arms", 1 } },
+            { { "Pupils: pinpoint", 3 }, { "Syringe lying next to the patient", 1 } },
+        },
+    },
+    sedative = { -- sleeping pills / benzodiazepines (often with alcohol): no antidote, support only
+        label = "Sedative overdose", hidden = true,
+        bleed = { 0, 0, 0 },
+        pain = { 0, 0, 0 },
+        consciousness = { "dazed", "unconscious", "unconscious" },
+        systolic = { -10, -20, -35 }, heartRate = { -5, -10, -15 },
+        spo2 = { nil, 86, 72 }, spo2Rate = 0.25,
+        breathing = { nil, "slow", "snoring" },
+        neuro = {
+            { { "Pupils: normal size, sluggish", 1 }, { "Slurred speech, very sleepy", 2 } },
+            { { "Pupils: normal size, sluggish", 1 }, { "Empty pill packets nearby", 2 } },
+            { { "Pupils: sluggish", 2 }, { "Empty pill packets nearby", 2 }, { "No gag reflex", 3 } },
+        },
+    },
+    stimulant = { -- cocaine / amphetamine: Midazolam calms it
+        label = "Stimulant intoxication", hidden = true, treatDrugs = { "midazolam" }, treatedVitals = 0.3,
+        bleed = { 0, 0, 0 },
+        pain = { 10, 20, 30 },
+        consciousness = { "confused", "confused", "dazed" },
+        systolic = { 25, 45, 65 }, heartRate = { 30, 50, 70 },
+        breathing = { "rapid", "rapid", "rapid" },
+        neuro = {
+            { { "Pupils: dilated", 2 }, { "Agitated, talks fast", 1 } },
+            { { "Pupils: dilated", 2 }, { "Agitated, jaw clenching, sweating", 2 } },
+            { { "Pupils: dilated", 3 }, { "Paranoid, hot to the touch", 3 } },
+        },
+    },
+    alcohol = {
+        label = "Alcohol intoxication", hidden = true,
+        bleed = { 0, 0, 0 },
+        pain = { 0, 0, 0 },
+        consciousness = { "confused", "dazed", "unconscious" },
+        systolic = { -5, -10, -18 }, heartRate = { 10, 15, 20 },
+        spo2 = { nil, nil, 85 }, spo2Rate = 0.2, -- vomit in the airway
+        breathing = { nil, nil, "snoring" },
+        neuro = {
+            { { "Smells strongly of alcohol", 1 }, { "Slurred speech, unsteady", 1 } },
+            { { "Smells strongly of alcohol", 1 }, { "Vomited, cannot stand", 2 } },
+            { { "Smells strongly of alcohol", 1 }, { "Vomit around the mouth", 3 } },
+        },
+    },
+    postictal = { -- after an epileptic seizure, wears off by itself
+        label = "Post-seizure state", hidden = true,
+        bleed = { 0, 0, 0 },
+        pain = { 5, 10, 10 },
+        consciousness = { "confused", "dazed", "unconscious" },
+        heartRate = { 15, 20, 25 },
+        duration = { 240, 480, 720 },
+        neuro = {
+            { { "Bitten tongue", 2 }, { "Does not remember what happened", 1 } },
+            { { "Bitten tongue, wet trousers", 2 }, { "Very sleepy", 1 } },
+            { { "Bitten tongue, wet trousers", 2 }, { "Snoring, hard to wake", 3 } },
+        },
+    },
+
+    -- breathing (lung) conditions
+    asthma = {
+        label = "Asthma attack", hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.2,
+        bleed = { 0, 0, 0 },
+        pain = { 10, 15, 20 },
+        heartRate = { 15, 25, 40 },
+        spo2 = { 93, 86, 74 }, treatedSpo2 = { nil, 95, 90 }, spo2Rate = 0.3,
+        breathing = { "wheeze", "wheeze", "silent" },
+        neuro = { { { "Speaks in full sentences", 1 } }, { { "Speaks in short phrases only", 2 } },
+            { { "Cannot speak, exhausted", 3 } } },
+    },
+    copd = { -- chronic lung disease flare-up: Salbutamol helps a little, oxygen helps more
+        label = "COPD exacerbation", hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.5,
+        bleed = { 0, 0, 0 },
+        pain = { 5, 10, 15 },
+        heartRate = { 10, 20, 30 },
+        spo2 = { 90, 84, 76 }, treatedSpo2 = { 92, 88, 83 }, spo2Rate = 0.2,
+        breathing = { "wheeze", "laboured", "laboured" },
+        neuro = { { { "Pursed-lip breathing, long-time smoker", 1 } },
+            { { "Pursed-lip breathing, sits leaning forward", 2 } },
+            { { "Exhausted, drowsy from the CO2", 3 } } },
+    },
+    pulmonary_edema = { -- fluid on the lungs (heart failure): Nitroglycerin + oxygen
+        label = "Pulmonary oedema", hidden = true, treatDrugs = { "nitroglycerin" }, treatedVitals = 0.3,
+        bleed = { 0, 0, 0 },
+        pain = { 10, 15, 20 },
+        systolic = { 25, 40, 55 }, heartRate = { 15, 25, 35 },
+        spo2 = { 90, 82, 70 }, treatedSpo2 = { 95, 91, 86 }, spo2Rate = 0.25,
+        breathing = { "crackles", "crackles", "crackles" },
+        neuro = { { { "Swollen ankles", 1 } }, { { "Swollen ankles, pink frothy sputum", 2 } },
+            { { "Pink frothy sputum, drowning feeling", 3 } } },
+    },
+}
+
+-- What the breathing looks like. level: 0 normal - 3 critical (panel colour),
+-- dyspnea = the patient visibly struggles for air (medsys_effects animation)
+MEDIC_BREATHING = {
+    normal = { label = "Normal", level = 0 },
+    rapid = { label = "Rapid", level = 1 },
+    wheeze = { label = "Wheezing", level = 2, dyspnea = true },
+    laboured = { label = "Laboured", level = 2, dyspnea = true },
+    crackles = { label = "Laboured, crackles", level = 2, dyspnea = true },
+    kussmaul = { label = "Deep and rapid", level = 2, dyspnea = true },
+    silent = { label = "Silent chest, exhausted", level = 3, dyspnea = true },
+    slow = { label = "Slow, shallow", level = 2 },
+    snoring = { label = "Snoring", level = 3 },
+    agonal = { label = "Gasping", level = 3 },
+    none = { label = "Not breathing", level = 3 },
+    ventilated = { label = "Ventilated", level = 0 },
 }
 
 MEDIC_SEVERITY = { "Minor", "Serious", "Critical" }
@@ -260,6 +470,7 @@ MEDIC_BLEEDING = { [0] = "None", "Mild", "Severe", "Critical" }
 -- Consciousness states from the best to the worst
 MEDIC_CONSCIOUSNESS = {
     stable = "Stable",
+    confused = "Confused",  -- awake but disoriented (intoxication, after a seizure, glucose, stroke)
     dazed = "Dazed",
     unconscious = "Unconscious",
     clinical_death = "Clinical death",
@@ -274,6 +485,8 @@ MEDIC_ACTIONS = {
     airway = { label = "Intubate" },
     oxygen = { label = "O2 mask", activeLabel = "Remove O2" }, -- activeLabel: while the mask is on
     medication = { label = "Medication" },
+    neuro = { label = "Neuro exam", activeLabel = "Neuro exam done" },
+    glucometer = { label = "Glucometer", activeLabel = "Put meter away" }, -- client-side device window
     transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: alone in its row
 }
 -- Button rows of the examination panel (ABCDE approach, E is not used for now).
@@ -281,7 +494,8 @@ MEDIC_ACTIONS = {
 -- tag = the big letters on the row label (optional), label = the text under them
 MEDIC_ACTION_GROUPS = {
     { tag = "AB", label = "Airway, Breathing", actions = { "airway", "oxygen" } },
-    { tag = "CD", label = "Circulation, Disability", actions = { "bandage", "cpr", "iv", "medication" } },
+    { tag = "C", label = "Circulation", actions = { "bandage", "cpr", "iv", "medication" } },
+    { tag = "D", label = "Disability", actions = { "neuro", "glucometer" } },
     { label = "Transport", actions = { "transport" } },
 }
 MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
@@ -297,6 +511,11 @@ MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
 --   paralysis             after MEDIC.PARALYSIS_ONSET the patient cannot move or breathe (RSI);
 --                         an awake patient panics (MEDIC.PANIC_*)
 --   roscBonus             added to the ROSC chance of CPR (does not add up)
+--   glucose               mg/dL added to the blood glucose at once (when given)
+--   glucoseRate           mg/dL per second while the dose works (insulin: negative)
+--   treats                conditions (MEDIC_INJURIES ids) it treats when given
+--   awake = true          only for a patient who can swallow (stable / confused)
+-- route: nil = through the IV line; "oral" / "inhaled" / "nasal" = no IV access needed
 MEDIC_DRUGS = {
     ketamine = {
         name = "Ketamine (Calypsol)",
@@ -344,12 +563,77 @@ MEDIC_DRUGS = {
         systolic = -40,
         duration = 600,
     },
+    nitroglycerin = {
+        name = "Nitroglycerin spray",
+        class = "Vasodilator",
+        desc = "Spray under the tongue. Lowers the blood pressure fast and clears fluid from the lungs "
+            .. "(pulmonary oedema). Never with a low pressure.",
+        route = "oral",
+        systolic = -30,
+        treats = { "pulmonary_edema" },
+        duration = 600,
+    },
+    glucose = {
+        name = "Glucose 40%",
+        class = "Blood sugar raising",
+        desc = "Raises a low blood sugar within seconds (about +100 mg/dL). Check the glucometer before "
+            .. "and after - it wears off, measure again.",
+        glucose = 100,
+        duration = 60,
+    },
+    glucose_gel = {
+        name = "Oral glucose gel",
+        class = "Blood sugar raising",
+        desc = "Sugar gel into the cheek for an AWAKE patient who can swallow (about +40 mg/dL). "
+            .. "Unconscious patient: give Glucose 40% IV.",
+        route = "oral",
+        awake = true,
+        glucose = 40,
+        duration = 60,
+    },
+    insulin = {
+        name = "Insulin (Actrapid)",
+        class = "Blood sugar lowering",
+        desc = "Slowly lowers a very high blood sugar (ketoacidosis). Given to a patient with a normal "
+            .. "or low sugar it causes a dangerous hypoglycaemia.",
+        glucoseRate = -0.35,
+        duration = 900,
+    },
+    naloxone = {
+        name = "Naloxone (Narcan)",
+        class = "Opioid antidote - nasal",
+        desc = "Nasal spray. Reverses an opioid (heroin, fentanyl) overdose: the breathing and the "
+            .. "consciousness come back. No effect on other poisonings.",
+        route = "nasal",
+        treats = { "opioid" },
+        duration = 1800,
+    },
+    salbutamol = {
+        name = "Salbutamol (Ventolin)",
+        class = "Bronchodilator - nebuliser",
+        desc = "Nebulised: opens the airways in an asthma or COPD attack (wheezing). Raises the pulse a little.",
+        route = "inhaled",
+        heartRate = 12,
+        treats = { "asthma", "copd" },
+        duration = 900,
+    },
+    midazolam = {
+        name = "Midazolam (Dormicum)",
+        class = "Sedative",
+        desc = "Calms an agitated patient (cocaine, amphetamine): lowers the pulse and the pressure. "
+            .. "Makes the breathing weaker - watch the SpO2.",
+        systolic = -15,
+        heartRate = -15,
+        treats = { "stimulant" },
+        duration = 1200,
+    },
 }
-MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril" }
+MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril", "nitroglycerin",
+    "glucose", "glucose_gel", "insulin", "naloxone", "salbutamol", "midazolam" }
 
--- route = "oral" (tablet, spray, ...) needs no IV access; every other medicine goes through the IV line
+-- a route ("oral", "inhaled", "nasal") needs no IV access; every other medicine goes through the IV line
 function medicDrugNeedsIV(drug)
-    return drug.route ~= "oral"
+    return drug.route == nil or drug.route == "iv"
 end
 
 -- Accepts 1-3 or "minor"/"serious"/"critical" (also "mild"/"severe")
@@ -361,6 +645,14 @@ function medicNormalizeSeverity(severity)
     severity = math.floor(tonumber(severity) or 0)
     if severity < 1 or severity > 3 then return nil end
     return severity
+end
+
+-- Order of the living consciousness states (the worse one wins)
+MEDIC_CONSCIOUSNESS_RANK = { stable = 1, confused = 2, dazed = 3, unconscious = 4 }
+
+-- Glucose in the meter's second unit
+function medicGlucoseMmol(mgdl)
+    return mgdl / 18.0
 end
 
 function medicIsDown(status)

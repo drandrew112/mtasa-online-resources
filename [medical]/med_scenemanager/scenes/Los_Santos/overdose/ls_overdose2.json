@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_overdose2",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2902.242, -1605.821, 11.047],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman took pills, very sleepy",
+        "description": "A woman's flatmate found her outside with empty pill packets and a bottle of vodka. She left a note. She is very drowsy and only mumbles when spoken to.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2902.242, -1605.821, 11.047],
+            "rot": 20,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall3",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2034.355, -1023.193, 35.689],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman fell from a ladder",
+        "description": "An elderly woman fell from a ladder while picking fruit in her garden and hit her head. She is confused and keeps asking what happened. Her husband says she takes blood thinners.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [2034.355, -1023.193, 35.689],
+            "rot": 135,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

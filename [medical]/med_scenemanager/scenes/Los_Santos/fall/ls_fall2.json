@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall2",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1404.599, -1965.06, 40.871],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man fell off a roof",
+        "description": "A man cleaning the gutters fell off the roof of his house in Verdant Bluffs and landed on his feet. He is screaming in pain, both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 59,
+            "pos": [1404.599, -1965.06, 40.871],
+            "rot": 210,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

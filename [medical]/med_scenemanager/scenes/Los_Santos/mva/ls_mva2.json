@@ -1,32 +1,32 @@
 {
     "format": 1,
-    "name": "mva1",
+    "name": "ls_mva2",
     "category": "mva",
     "enabled": true,
     "weight": 1,
-    "center": [1850.661, -1462.587, 13.398],
+    "center": [1821.966, -1751.603, 13.383],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car accident",
-        "description": "Two cars collided at an intersection. One person is injured.",
+        "title": "Car crash",
+        "description": "Two cars collided, 1 person injured",
         "caller": "SceneManager",
         "priority": 2
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 412,
-            "pos": [1848.88, -1466.635, 13.225],
-            "rot": [0.23, 0.15, 48.21],
+            "model": 436,
+            "pos": [1826.269, -1749.163, 13.151],
+            "rot": [359.43, 0.43, 45.74],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
-            "colors": [101, 106, 121, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "health": 408,
+            "colors": [57, 90, 131, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "7664 8HO",
+            "plate": "UOSX 0T5",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [2, 0, 2, 3, 0, 0],
@@ -36,20 +36,21 @@
         },
         {
             "id": "v2",
-            "model": 413,
-            "pos": [1851.414, -1463.75, 13.482],
-            "rot": [358.93, 359.99, 94.92],
+            "model": 475,
+            "pos": [1824.259, -1752.072, 13.166],
+            "rot": [358.91, 358.6, 6.01],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
+            "sirens": false,
             "health": 420,
-            "colors": [63, 62, 69, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [158, 164, 171, 151, 149, 146, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "989X HZ9",
+            "plate": "97EV Z69",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
+            "doors": [2, 0, 3, 3, 0, 0],
             "panels": [3, 2, 2, 1, 2, 3, 1],
             "lights": [1, 1, 0, 0],
             "wheels": [1, 0, 0, 0]
@@ -58,14 +59,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 29,
-            "pos": [1847.915, -1468.522, 13.398],
-            "rot": -134.8,
-            "anim": "ko_back",
+            "skin": 41,
+            "pos": [1822.115, -1753.042, 13.383],
+            "rot": 267.8,
+            "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {}
         }
     ]
 }

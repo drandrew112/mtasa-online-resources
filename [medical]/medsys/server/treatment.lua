@@ -15,6 +15,7 @@ addEvent("medic:requestExamine", true)
 addEvent("medic:closeExamine", true)
 addEvent("medic:requestTreatment", true)
 addEvent("medic:requestTransport", true)
+addEvent("medic:measureGlucose", true)
 
 local Examining = {}
 local Watchers = {}
@@ -276,7 +277,7 @@ PROCEDURES.airway = {
     can = function(state)
         if state.intubated then return false, "Airway already secured" end
         if not isSedated(state) then
-            if state.consciousness == "stable" or state.consciousness == "dazed" then
+            if state.consciousness == "stable" or state.consciousness == "confused" or state.consciousness == "dazed" then
                 return false, "Patient is conscious - give Ketamine first"
             end
             return false, "Give Ketamine first (induction)"
@@ -363,6 +364,9 @@ PROCEDURES.medication = {
         local drug = MEDIC_DRUGS[drugId]
         if not drug then return false, "Unknown medicine" end
         if medicDrugNeedsIV(drug) and not state.ivAccess then return false, "Needs IV access" end
+        if drug.awake and state.consciousness ~= "stable" and state.consciousness ~= "confused" then
+            return false, "The patient cannot swallow"
+        end
         return true
     end,
     progress = function(drugId)
@@ -374,7 +378,32 @@ PROCEDURES.medication = {
         if not success or not drug then return "The medicine was not given" end
         local now = getTickCount()
         state.drugs[#state.drugs + 1] = { id = drugId, tick = now, untilTick = now + drug.duration * 1000 }
+        if drug.glucose then
+            state.glucose = math.min(MEDIC.GLUCOSE_MAX, state.glucose + drug.glucose)
+        end
+        for _, condition in ipairs(drug.treats or {}) do
+            for _, injury in ipairs(state.injuries) do
+                if injury.type == condition then injury.treated = true end
+            end
+        end
         return drug.name .. " given"
+    end,
+}
+
+-- Neuro exam (D of ABCDE): responsiveness, pupils, FAST. Its findings stay on the panel.
+PROCEDURES.neuro = {
+    duration = MEDIC.NEURO_TIME,
+    animated = true,
+    can = function(state)
+        if state.neuroChecked then return false, "Neuro exam done - findings below" end
+        return true
+    end,
+    progress = function() return "Checking responsiveness, pupils, face, arms and speech..." end,
+    stop = function() end, -- releaseTreatment kills the timer
+    apply = function(state, success)
+        if not success then return "The neuro exam was interrupted" end
+        state.neuroChecked = true
+        return "Neuro exam done"
     end,
 }
 
@@ -392,6 +421,7 @@ local function getAvailability(state, target)
     end
     local ok, reason = canRequestTransport(target, state)
     result.transport = ok or reason
+    result.glucometer = dead and "Patient is dead" or true -- a device, measured from its own window
     return result
 end
 
@@ -400,6 +430,9 @@ local function getPanelSnapshot(target)
     local state = getLivePatient(target)
     local snapshot = state and buildSnapshot(state) or buildDefaultSnapshot(target)
     snapshot.actions = getAvailability(state, target)
+    -- the panel shows what the medic sees: the glucose only comes from the glucometer, the hidden
+    -- conditions only through their findings
+    snapshot.glucose, snapshot.conditions = nil, nil
     snapshot.transportPhase, snapshot.transportTimeLeft = getTransportStatus(target)
     return snapshot
 end
@@ -497,6 +530,39 @@ addEventHandler("medic:requestTransport", resourceRoot, function(target, spot)
     else
         triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
     end
+end)
+
+-- Glucometer: finger prick, the reading comes after MEDIC.GLUCOMETER_TIME seconds (not continuous).
+-- The medic keeps the panel and can move; the reading is taken at the end. Result event:
+-- medic:glucoseResult (target, value mg/dL | false, error text)
+local Glucometers = {} -- [medic] = timer
+
+addEventHandler("medic:measureGlucose", resourceRoot, function(target)
+    local medic = client
+    local function fail(reason)
+        triggerClientEvent(medic, "medic:glucoseResult", resourceRoot, target, false, reason)
+    end
+    if Examining[medic] ~= target then return end
+    if Glucometers[medic] then return fail("Measuring...") end
+    if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return fail("Too far from the patient") end
+    local state = getLivePatient(target)
+    if not state or state.dead then return fail("No blood flow - no reading") end
+
+    Glucometers[medic] = setTimer(function()
+        Glucometers[medic] = nil
+        if not isElement(medic) or not isElement(target) then return end
+        if not canAttend(medic, target, MEDIC.PANEL_RANGE) then return fail("Moved away - measure again") end
+        local now = Patients[target]
+        local value = now and not now.dead and math.floor(now.glucose + 0.5) or MEDIC.GLUCOSE
+        triggerClientEvent(medic, "medic:glucoseResult", resourceRoot, target, value)
+        triggerEvent("onMedicalTreatment", target, medic, "glucometer", true, value)
+    end, MEDIC.GLUCOMETER_TIME * 1000, 1)
+end)
+
+addEventHandler("onPlayerQuit", root, function()
+    local timer = Glucometers[source]
+    if timer and isTimer(timer) then killTimer(timer) end
+    Glucometers[source] = nil
 end)
 
 ---------------------------------------------------------------------------

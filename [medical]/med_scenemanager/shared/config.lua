@@ -42,6 +42,7 @@ MSM = {
     -- getSceneAt: a point within this many metres of an open scene (centre, peds,
     -- vehicles) belongs to it - e.g. ui_phone refuses an ambulance call there
     CALL_RADIUS = 80,
+    FALSE_CALL_CLOSE = 45,       -- s after the first unit is On Scene, a scene without patients closes its task
 
     -- Automatic generator. It only works while med_erm has free units, and the
     -- average gap between two scenes is divided by the number of free units.
@@ -76,6 +77,11 @@ MSM_ANIMS = {
     { id = "crouch",    label = "Crouching",         anim = { "PED", "cower" }, loop = true },
     { id = "hold_side", label = "Holding side",      anim = { "CRACK", "crckidle2" }, loop = true },
     { id = "lean",      label = "Leaning",           anim = { "GANGS", "leanIDLE" }, loop = true },
+    -- breathing difficulty / intoxication
+    { id = "tired",     label = "Bent over, panting", anim = { "PED", "IDLE_tired" }, loop = true },
+    { id = "cough",     label = "Coughing, choking", anim = { "PED", "gas_cwr" }, loop = true },
+    { id = "drunk",     label = "Swaying (drunk)",   anim = { "BAR", "dnk_stndM_loop" }, loop = true },
+    { id = "vomit",     label = "Vomiting",          anim = { "FOOD", "EAT_Vomit_P" }, loop = true },
 }
 
 -- Scene categories: subfolder inside the settlement folder. "" = no category (no subfolder).
@@ -84,6 +90,20 @@ MSM_CATEGORIES = {
     { id = "heartattack", label = "Heart attack" },
     { id = "mva",         label = "Motor vehicle accident" },
     { id = "hypertension", label = "Hypertension" },
+    { id = "stroke",      label = "Stroke" },
+    { id = "diabetes",    label = "Diabetes (high glucose)" },
+    { id = "hypoglycemia", label = "Hypoglycaemia (low glucose)" },
+    { id = "overdose",    label = "Overdose / poisoning" },
+    { id = "breathing",   label = "Breathing difficulty" },
+    { id = "fall",        label = "Fall from height" },
+    { id = "shooting",    label = "Shooting" },
+    { id = "hitbycar",    label = "Pedestrian hit by car" },
+    { id = "motorcycle",  label = "Motorcycle crash" },
+    { id = "drowning",    label = "Drowning" },
+    { id = "mci",         label = "Mass casualty (multi-vehicle)" },
+    { id = "airport",     label = "Airport" },
+    { id = "false",       label = "False call" },
+    { id = "deadbody",    label = "Dead body" },
 }
 
 -- Injury types / severities offered by the editor (medsys applyInjury)
@@ -92,6 +112,17 @@ MSM_INJURIES = {
     { id = "fracture",    label = "Fracture" },
     { id = "burn",        label = "Burn" },
     { id = "suffocation", label = "Suffocation" },
+    { id = "head_injury", label = "Head injury" },
+    -- medical conditions (medsys shows only their findings)
+    { id = "stroke",      label = "Stroke" },
+    { id = "opioid",      label = "Opioid overdose" },
+    { id = "sedative",    label = "Sedative (pill) overdose" },
+    { id = "stimulant",   label = "Stimulant (cocaine) intoxication" },
+    { id = "alcohol",     label = "Alcohol intoxication" },
+    { id = "postictal",   label = "After a seizure (postictal)" },
+    { id = "asthma",      label = "Asthma attack" },
+    { id = "copd",        label = "COPD exacerbation" },
+    { id = "pulmonary_edema", label = "Pulmonary oedema" },
 }
 MSM_SEVERITY = { "Minor", "Serious", "Critical" }
 
@@ -100,7 +131,8 @@ MSM_SEVERITY = { "Minor", "Serious", "Critical" }
 -- The vitals go after pain / bleeding and systolic before diastolic / heart rate: they are set as
 -- lasting resting values (MSM_STATE_RESTING) computed from what is already applied.
 -- rhythm goes last: a pulseless one is a cardiac arrest in that rhythm (medsys MEDIC_RHYTHMS)
-MSM_STATE_ORDER = { "bloodVolume", "pain", "bleeding", "ivAccess", "spo2", "systolic", "diastolic", "heartRate", "consciousness", "rhythm" }
+-- glucose goes before the vitals: a low / high one moves the pulse and the consciousness
+MSM_STATE_ORDER = { "bloodVolume", "pain", "bleeding", "ivAccess", "glucose", "spo2", "systolic", "diastolic", "heartRate", "consciousness", "rhythm" }
 
 -- Editor keys sent to medsys as its lasting "resting" keys: a plain systolic / heartRate / ...
 -- only sets the current value and the simulation drifts it back to normal within seconds.
@@ -112,8 +144,8 @@ MSM_STATE_RESTING = {
 }
 MSM_STATE = {
     consciousness = { label = "Consciousness", presets = {
-        { "Stable", "stable" }, { "Dazed", "dazed" }, { "Unconscious", "unconscious" },
-        { "Clinical death (cardiac arrest)", "clinical_death" } } },
+        { "Stable", "stable" }, { "Confused", "confused" }, { "Dazed", "dazed" }, { "Unconscious", "unconscious" },
+        { "Clinical death (cardiac arrest)", "clinical_death" }, { "Dead (biological death)", "dead" } } },
     bloodVolume = { label = "Blood volume", presets = {
         { "5000 ml (full)", 5000 }, { "4250 ml (-15%)", 4250 }, { "3750 ml (-25%)", 3750 },
         { "3250 ml (-35%)", 3250 }, { "2800 ml (-44%)", 2800 } } },
@@ -129,6 +161,10 @@ MSM_STATE = {
     diastolic = { label = "Diastolic BP", min = 20, max = 160, unit = "mmHg", presets = {
         { "40 mmHg", 40 }, { "55 mmHg", 55 }, { "80 mmHg", 80 }, { "100 mmHg", 100 }, { "115 mmHg", 115 },
         { "130 mmHg", 130 }, { "145 mmHg", 145 } } },
+    -- blood glucose mg/dL (lasting: the patient drifts back to it), medsys "glucose"
+    glucose = { label = "Blood glucose", min = 10, max = 900, unit = "mg/dL", presets = {
+        { "25 mg/dL (severe hypo)", 25 }, { "40 mg/dL", 40 }, { "55 mg/dL", 55 }, { "95 mg/dL (normal)", 95 },
+        { "280 mg/dL", 280 }, { "450 mg/dL", 450 }, { "600 mg/dL (ketoacidosis)", 600 } } },
     pain = { label = "Extra pain", presets = {
         { "0", 0 }, { "30", 30 }, { "60", 60 }, { "90", 90 } } },
     bleeding = { label = "Extra bleeding", presets = {

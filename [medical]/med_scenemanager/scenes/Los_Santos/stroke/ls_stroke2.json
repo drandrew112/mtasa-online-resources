@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke2",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2729.875, -1040.75, 55.999],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman confused at the bus stop",
+        "description": "A woman at the Los Flores bus stop is confused and cannot lift her right arm. Her speech is jumbled, a passer-by thought she was drunk. She was fine when she got off the previous bus.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [2729.875, -1040.75, 55.999],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

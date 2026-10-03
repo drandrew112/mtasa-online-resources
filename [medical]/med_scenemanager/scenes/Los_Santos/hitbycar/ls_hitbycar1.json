@@ -1,0 +1,72 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar1",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2486.0, -1666.0, 13.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Kid hit by a reversing car",
+        "description": "A car reversing out of a driveway on Grove Street hit a boy on a bicycle. The boy is crying, his arm looks broken and his knee is bleeding. The driver stopped and is with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 481,
+            "pos": [2487.2, -1665.0, 13.64],
+            "rot": [0, 0, 70],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS01 137",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 466,
+            "pos": [2483.5, -1662.0, 13.84],
+            "rot": [0, 0, 200],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS02 174",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [2486.0, -1666.0, 13.5],
+            "rot": 150,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

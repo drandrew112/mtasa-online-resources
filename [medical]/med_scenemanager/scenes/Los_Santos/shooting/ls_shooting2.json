@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting2",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1994.635, -1621.884, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Robbery, cashier shot",
+        "description": "An armed robbery at the Idlewood diner. The cashier was shot in the shoulder and a customer was hit in the leg by a stray bullet. The robber has fled.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 205,
+            "pos": [1994.635, -1621.884, 13.547],
+            "rot": 180,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p2",
+            "skin": 100,
+            "pos": [1996.435, -1620.684, 13.747],
+            "rot": 90,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

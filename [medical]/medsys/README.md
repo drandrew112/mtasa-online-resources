@@ -180,8 +180,8 @@ The monitor state is per patient (every medic at the panel sees the same device)
 runs it (`medic:defib` requests).
 
 The buttons are grouped into rows by `MEDIC_ACTION_GROUPS` (config): **AB** (Airway, Breathing:
-Intubate, O2 mask), **CD** (Circulation, Disability: Bandage, CPR, IV access, Medication) and
-Transport. A dead body only gets the Transport row (`MEDIC_DEAD_ACTION_GROUPS`). Active medicines
+Intubate, O2 mask), **C** (Circulation: Bandage, CPR, IV access, Medication), **D** (Disability:
+Neuro exam, Glucometer) and Transport. A dead body only gets the Transport row (`MEDIC_DEAD_ACTION_GROUPS`). Active medicines
 are listed one per line (two columns) with their remaining time.
 
 | button | minigame | available when | success |
@@ -192,6 +192,8 @@ are listed one per line (two columns) with their remaining time.
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
 | Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); the picked one is given after 3 s |
+| Neuro exam | – (4 s, `NEURO_TIME`) | once per patient | its findings stay under the injuries (updated live): responsiveness (AVPU), pupils, FAST (face, arm, speech) and the clues of the hidden conditions (needle marks, alcohol smell, bitten tongue, acetone breath...) |
+| Glucometer | – (client device) | living patient | holds out the meter right of the panel. MEASURE pricks the finger: the reading comes after `GLUCOMETER_TIME` (5 s), in mg/dL and mmol/L (`LO` < 20, `HI` > 600). Not continuous: measure again to see a change. The meter remembers the last reading of every patient (MEM) |
 | Attach monitor / defibrillator (heart rate tile) | – (4 s, `MONITOR_TIME`) | once per patient | ECG electrodes + pads: BP / SpO2 / ECG visible, Lifepak window, defibrillation |
 | Transport | – | ped only: a living patient with consciousness **Stable** or intubated (with a pulse), with a systolic pressure between `TRANSPORT_MIN_SYSTOLIC` and `TRANSPORT_MAX_SYSTOLIC` (90-180), or a dead body (then it is the only button, "Request transport") | after `TRANSPORT_DELAY` (30 s) an ambulance (alive) / hearse (dead) arrives at a free spot next to the patient, loads it (5 s), the ped is removed and the vehicle drives off |
 
@@ -204,6 +206,38 @@ Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
 | Fentanyl | pain of an awake patient | 30 min: pain −70%, systolic −10 |
 | Adrenalin (Tonogen) | heart stimulant / cardiac arrest | 5 min: pulse +30, systolic +30, +15% ROSC chance for CPR (does not add up). Several doses can push the pulse to the arrest limit |
 | Captopril (Tensiomin) | high blood pressure | oral (no IV needed). Target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
+| Nitroglycerin spray | pulmonary oedema, high BP | oral. Systolic −30 for 10 min, treats pulmonary oedema |
+| Glucose 40% | low blood glucose | IV. +100 mg/dL at once; the glucose drifts back to the patient's resting value: measure again |
+| Oral glucose gel | low glucose, awake patient | oral, only stable / confused (it must swallow). +40 mg/dL |
+| Insulin (Actrapid) | very high glucose (ketoacidosis) | IV. −0.35 mg/dL/s for 15 min: on a normal glucose it causes hypoglycaemia |
+| Naloxone (Narcan) | opioid overdose | nasal. Treats the opioid overdose (breathing, consciousness, pupils back) |
+| Salbutamol (Ventolin) | asthma, COPD | inhaled. Treats the wheezing (the SpO2 targets rise), pulse +12 |
+| Midazolam (Dormicum) | stimulant intoxication | IV. Pulse −15, systolic −15, treats the stimulant intoxication |
+
+### Medical conditions, glucose, breathing
+
+Conditions are `MEDIC_INJURIES` entries with extra fields (see the config comment), applied with
+`applyInjury` like any injury. **Hidden** ones (stroke, opioid / sedative / stimulant overdose,
+alcohol, postictal, asthma, COPD, pulmonary oedema) are not listed on the panel: they show only
+through the consciousness, the breathing, the skin and the neuro exam. `head_injury` is visible
+and, like the stroke, has no prehospital treatment (*Needs hospital*). A condition can lower the
+SpO2, shift the pressure / pulse, force a consciousness, change the breathing; a medicine in its
+`treatDrugs` treats it. `postictal` wears off by itself; an untreated **stroke** gets one severity
+worse every `STROKE_PROGRESS_TIME` (480 s), `STROKE_BAD_BP_FACTOR` times faster with a systolic
+outside 130-220 (do not over-lower the pressure, Captopril only for a really high one).
+
+**Confused** is a consciousness level between Stable and Dazed (`MEDIC_CONSCIOUSNESS_RANK`).
+
+Blood glucose (`state.glucose`, mg/dL) drifts to its resting value (`setMedicalState "glucose"`
+sets both, `"glucoseNow"` only the current one). Low (< 70): sweating, faster pulse, confused
+< 58, dazed < 45, unconscious < 30, cardiac arrest after `HYPO_ARREST_TIME` below 20. High: fluid
+loss above 300 (dehydration), Kussmaul breathing and acetone breath above 350, confused ≥ 420,
+dazed ≥ 550, unconscious ≥ 700. An IV line slowly lowers a glucose above 180.
+
+The **Breathing** line of the bleeding tile (`MEDIC_BREATHING`): normal, rapid, wheezing,
+laboured, crackles, deep and rapid (Kussmaul), silent chest, slow, snoring, gasping, not breathing,
+ventilated. It is broadcast as `medic.breath` element data; medsys_effects plays the struggling for
+air animation on dyspnoeic peds.
 
 RSI order: Ketamine first, then Rocuronium, wait for the onset, intubate. The wrong order is
 punished by the medicines themselves (panic, then the breathing stops in an awake patient).

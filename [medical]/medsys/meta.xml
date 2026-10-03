@@ -23,6 +23,7 @@
 
     <script src="client/ecg.lua" type="client" />
     <script src="client/lifepak.lua" type="client" />
+    <script src="client/glucometer.lua" type="client" />
     <script src="client/panel.lua" type="client" />
     <script src="client/interaction.lua" type="client" />
     <script src="client/progress.lua" type="client" />

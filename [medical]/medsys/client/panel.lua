@@ -8,6 +8,9 @@
 -- the ECG area is the "attach the monitor" button; with it the ECG runs with the rhythm name under
 -- it, the monitor beeps on every QRS and the Lifepak 15 window (lifepak.lua) appears left of the
 -- panel with the SpO2 and the blood pressure.
+-- The D row: "Neuro exam" (timed, its findings stay listed under the injuries) and "Glucometer"
+-- (holds out the meter, glucometer.lua draws it right of the panel). The breathing and the skin are
+-- always visible; the hidden conditions (stroke, overdose, ...) only show through these findings.
 
 addEvent("medic:panelOpen", true)
 addEvent("medic:panelUpdate", true)
@@ -25,7 +28,8 @@ local X, Y = (screenW - W) / 2, (screenH - H) / 2
 local PAD = s(20)
 local ECG_SECONDS = 3
 local MESSAGE_TIME = 5000
-local MAX_INJURY_ROWS = 5
+local MAX_INJURY_ROWS = 4
+local MAX_NEURO_ROWS = 7
 
 local C = {
     bg = tocolor(16, 18, 24, 240),
@@ -40,17 +44,20 @@ local C = {
     bad = tocolor(235, 70, 70, 255),
     dead = tocolor(120, 120, 130, 255),
     spo2 = tocolor(90, 200, 255, 255),
+    confused = tocolor(230, 215, 90, 255),
     button = tocolor(38, 42, 54, 255),
     buttonHover = tocolor(215, 55, 65, 255),
     buttonOff = tocolor(30, 32, 40, 255),
 }
 
 local CONSCIOUSNESS_COLOR = {
-    stable = C.good, dazed = C.warn, unconscious = C.orange, clinical_death = C.bad, dead = C.dead,
+    stable = C.good, confused = C.confused, dazed = C.warn, unconscious = C.orange, clinical_death = C.bad, dead = C.dead,
 }
 local BLEEDING_COLOR = { [0] = C.good, C.warn, C.orange, C.bad }
+local LEVEL_COLOR = { [0] = C.good, C.warn, C.orange, C.bad } -- breathing / neuro finding levels
 
-local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu }
+local keptGlucometer -- { target, tick }: the meter was out when the panel closed
+local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu, glucometer }
 local fonts
 
 local function ensureFonts()
@@ -85,7 +92,9 @@ local function describeSkin(data)
     if data.dead then return "Cold, mottled", C.dead end
     if data.spo2 < 85 then return "Cyanotic", C.bad end
     if data.bloodPercent < 70 then return "Pale, cold, clammy", C.orange end
+    if data.skinSign == "sweaty" then return "Pale, sweaty", C.warn end
     if data.bloodPercent < 85 then return "Pale", C.warn end
+    if data.skinSign == "dry" then return "Dry, warm", C.warn end
     return "Warm, normal", C.good
 end
 
@@ -117,7 +126,7 @@ local function drawTile(x, y, w, h, title)
 end
 
 local function drawVitals(x, y, data, cx, cy)
-    local tw, th = (W - PAD * 2 - s(10)) / 2, s(96)
+    local tw, th = (W - PAD * 2 - s(10)) / 2, s(118)
     local x2 = x + tw + s(10)
     local dead = data.dead or data.clinicalDeath
     local monitored = data.monitor ~= nil
@@ -146,13 +155,17 @@ local function drawVitals(x, y, data, cx, cy)
         panel.monitorButton = { bx, by, bw, bh }
     end
 
-    -- bleeding + skin (the SpO2 and the blood pressure are only on the Lifepak)
+    -- bleeding + skin + breathing (the SpO2 and the blood pressure are only on the Lifepak)
     drawTile(x2, y, tw, th, "BLEEDING")
     dxDrawText(data.bleedingLabel, x2 + s(12), y + s(24), x2 + tw, y + s(56),
         BLEEDING_COLOR[data.bleeding] or C.text, 1, fonts.title, "left", "top")
     local skin, skinColor = describeSkin(data)
     dxDrawText("Skin:", x2 + s(12), y + s(62), x2 + tw, y + s(84), C.muted, 1, fonts.body, "left", "top")
-    dxDrawText(skin, x2 + s(52), y + s(62), x2 + tw, y + s(84), skinColor, 1, fonts.body, "left", "top")
+    dxDrawText(skin, x2 + s(88), y + s(62), x2 + tw - s(6), y + s(84), skinColor, 1, fonts.body, "left", "top", true)
+    local breath = MEDIC_BREATHING[data.breathing or "normal"] or MEDIC_BREATHING.normal
+    dxDrawText("Breathing:", x2 + s(12), y + s(86), x2 + tw, y + s(108), C.muted, 1, fonts.body, "left", "top")
+    dxDrawText(breath.label, x2 + s(88), y + s(86), x2 + tw - s(6), y + s(108), LEVEL_COLOR[breath.level] or C.text,
+        1, fonts.body, "left", "top", true)
 
     return y + th
 end
@@ -178,7 +191,7 @@ local function drawInjuries(x, y, data)
             dxDrawText("Bleeding: " .. MEDIC_BLEEDING[injury.bleeding], x + s(300), y, x + s(460), y + rowH,
                 BLEEDING_COLOR[injury.bleeding], 1, fonts.body, "left", "center")
         end
-        local status = injury.treated and injury.treatedLabel or "Untreated"
+        local status = injury.treated and injury.treatedLabel or (injury.hospital and "Needs hospital") or "Untreated"
         dxDrawText(status, x, y, x + W - PAD * 2, y + rowH, injury.treated and C.good or C.muted, 1,
             fonts.body, "right", "center")
         y = y + rowH
@@ -189,6 +202,27 @@ local function drawInjuries(x, y, data)
         y = y + s(18)
     end
     return y
+end
+
+-- Findings of the neuro exam (after the "Neuro exam" procedure), two columns, until maxY
+local function drawNeuro(x, y, data, maxY)
+    local findings = data.neuro
+    if not findings or #findings == 0 or data.dead then return y end
+    y = y + s(8)
+    dxDrawText("NEURO EXAM", x, y, x + W, y + s(20), C.muted, 1, fonts.small, "left", "top")
+    y = y + s(20)
+    local rowH, colW = s(19), (W - PAD * 2) / 2
+    local rows = math.max(0, math.min(MAX_NEURO_ROWS, math.ceil(#findings / 2), math.floor((maxY - y) / rowH)))
+    for i = 1, math.min(#findings, rows * 2) do
+        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        local fx, fy = x + col * colW, y + row * rowH
+        local finding = findings[i]
+        local color = LEVEL_COLOR[finding[2]] or C.text
+        dxDrawRectangle(fx, fy + s(6), s(4), s(8), color)
+        dxDrawText(finding[1], fx + s(10), fy, fx + colW - s(6), fy + rowH,
+            finding[2] == 0 and C.muted or C.text, 1, fonts.small, "left", "center", true)
+    end
+    return y + rows * rowH
 end
 
 -- Button rows (MEDIC_ACTION_GROUPS) at the bottom of the panel, a group label on the left of each
@@ -227,15 +261,16 @@ end
 
 -- Medicine cards of the medication grid (drawn over the injury list, two columns)
 local DRUG_AREA_Y = s(368)
-local DRUG_CARD_H = s(46)
-local DRUG_GAP = s(6)
+local DRUG_CARD_H = s(42)
+local DRUG_GAP = s(5)
+local DRUG_COLUMNS = 3
 
 local function getDrugCards()
     local list = {}
     local top = Y + DRUG_AREA_Y + s(24)
-    local cw = (W - PAD * 2 - DRUG_GAP) / 2
+    local cw = (W - PAD * 2 - DRUG_GAP * (DRUG_COLUMNS - 1)) / DRUG_COLUMNS
     for i, id in ipairs(MEDIC_DRUG_ORDER) do
-        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        local col, row = (i - 1) % DRUG_COLUMNS, math.floor((i - 1) / DRUG_COLUMNS)
         list[i] = { id = id, x = X + PAD + col * (cw + DRUG_GAP), y = top + row * (DRUG_CARD_H + DRUG_GAP),
             w = cw, h = DRUG_CARD_H }
     end
@@ -254,7 +289,7 @@ local function drawDrugMenu(cx, cy, hoverReason)
     local _, buttonsTop = getButtonRows()
     local bottom = buttonsTop - s(6)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
-    dxDrawText("MEDICATION  -  through the IV line unless marked oral", x, y, X + W - PAD, y + s(20), C.muted, 1,
+    dxDrawText("MEDICATION  -  through the IV line unless marked oral / inhaled / nasal", x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
     local hoveredDrug, hoveredOff, cardsBottom = nil, false, y
     for _, card in ipairs(getDrugCards()) do
@@ -264,11 +299,13 @@ local function drawDrugMenu(cx, cy, hoverReason)
         if hovered then hoveredDrug, hoveredOff = drug, not usable end
         dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or hovered and C.button or C.tile)
         dxDrawRectangle(card.x, card.y, s(4), card.h, usable and C.accent or C.line)
-        local tx = card.x + s(14)
-        dxDrawText(drug.name, tx, card.y + s(5), card.x + card.w - s(8), card.y + s(26), usable and C.text or C.muted,
-            1, fonts.bold, "left", "top", true)
-        local class = medicDrugNeedsIV(drug) and drug.class or (drug.class .. "  -  oral")
-        dxDrawText(class, tx, card.y + s(25), card.x + card.w - s(8), card.y + card.h, usable and C.spo2 or C.muted,
+        local tx = card.x + s(12)
+        local nameFont = dxGetTextWidth(drug.name, 1, fonts.bold) > card.w - s(18) and fonts.small or fonts.bold
+        dxDrawText(drug.name, tx, card.y + s(4), card.x + card.w - s(6), card.y + s(24), usable and C.text or C.muted,
+            1, nameFont, "left", "top", true)
+        local class = drug.class
+        if not medicDrugNeedsIV(drug) and not class:find(" - ", 1, true) then class = class .. " - " .. drug.route end
+        dxDrawText(class, tx, card.y + s(23), card.x + card.w - s(6), card.y + card.h, usable and C.spo2 or C.muted,
             1, fonts.small, "left", "top", true)
         cardsBottom = card.y + card.h
     end
@@ -337,11 +374,15 @@ local function drawButtons(cx, cy)
             local enabled = available == true and not panel.pending
             local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
 
-            local selected = button.action == "medication" and panel.drugMenu
+            local selected = (button.action == "medication" and panel.drugMenu)
+                or (button.action == "glucometer" and panel.glucometer)
             local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
             dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
+            local active = (button.action == "oxygen" and panel.data.oxygenMask)
+                or (button.action == "glucometer" and panel.glucometer)
+                or (button.action == "neuro" and panel.data.neuroChecked)
             local label = (#row.buttons == 1 and info.wideLabel)
-                or (info.activeLabel and button.action == "oxygen" and panel.data.oxygenMask and info.activeLabel)
+                or (info.activeLabel and active and info.activeLabel)
                 or info.label
             local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
             dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
@@ -382,6 +423,8 @@ local function render()
     else
         stopLifepakSounds()
     end
+    if panel.glucometer and data.dead then panel.glucometer = false end
+    if panel.glucometer then drawGlucometer(X, Y, W, cx, cy, false) end
 
     dxDrawRectangle(X, Y, W, H, C.bg)
     dxDrawRectangle(X, Y, W, s(4), C.accent)
@@ -473,6 +516,10 @@ local function render()
 
     local injuriesEnd = drawInjuries(x, y, data)
     layout.injuries = { x, y, W - PAD * 2, injuriesEnd - y }
+    local _, rowsTop = getButtonRows()
+    local neuroEnd = drawNeuro(x, injuriesEnd, data, rowsTop - s(34))
+    layout.neuro = neuroEnd > injuriesEnd and { x, injuriesEnd, W - PAD * 2, neuroEnd - injuriesEnd } or nil
+    layout.glucometer = panel.glucometer and getGlucometerRect(X, Y, W) or nil
 
     -- buttons, the medicine grid, then the message / hint line above the buttons
     local hoverReason = drawButtons(cx, cy)
@@ -521,6 +568,11 @@ local function onClick(button, state)
             panel.pending) then
         return
     end
+    if panel.glucometer then
+        local hit = clickGlucometer(X, Y, W, panel.target, cx, cy, false)
+        if hit == "close" then panel.glucometer = false end
+        if hit then return end
+    end
     if panel.pending then return end
     local mb = panel.monitorButton
     if mb and canAttachMonitor() and isInside(mb[1], mb[2], mb[3], mb[4], cx, cy) then
@@ -545,6 +597,9 @@ local function onClick(button, state)
             and panel.data.actions[btn.action] == true then
             if btn.action == "medication" then
                 panel.drugMenu = not panel.drugMenu
+            elseif btn.action == "glucometer" then
+                panel.glucometer = not panel.glucometer
+                resetGlucometer(panel.target)
             elseif btn.action == "transport" then
                 panel.pending = true
                 triggerServerEvent("medic:requestTransport", resourceRoot, panel.target, findTransportSpot(panel.target))
@@ -573,6 +628,7 @@ end
 -- notifyServer = true when the client closes it on its own
 function closePanel(notifyServer)
     if not panel then return end
+    keptGlucometer = panel.glucometer and { target = panel.target, tick = getTickCount() } or nil
     panel = nil
     ecgSetBeep(false)
     stopLifepakSounds()
@@ -591,7 +647,8 @@ function isExaminationOpen()
 end
 
 -- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
--- injuries, buttons, monitorButton (until the monitor is attached), lifepak / lifepakScreen /
+-- injuries, neuro (after the neuro exam), glucometer (while held out), buttons, monitorButton
+-- (until the monitor is attached), lifepak / lifepakScreen /
 -- lifepakKeypad (the monitor window and its parts, while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
 function getExaminationPanelLayout()
     return panel and panel.layout or false
@@ -601,7 +658,15 @@ addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, me
     ensureFonts()
     local wasOpen = panel ~= nil
     if not wasOpen or panel.target ~= target then ecgReset() end
+    -- the meter stays out on the same patient, also over a procedure (that closes the panel)
+    local glucometer = wasOpen and panel.target == target and panel.glucometer or false
+    if not glucometer and keptGlucometer and keptGlucometer.target == target
+        and getTickCount() - keptGlucometer.tick < 60000 then
+        glucometer = true
+    end
+    keptGlucometer = nil
     panel = {
+        glucometer = glucometer,
         target = target,
         name = name,
         data = data,

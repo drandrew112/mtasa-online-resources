@@ -29,8 +29,14 @@ end
 
 local function animKeyFor(element, status)
     if not status or isPedDead(element) then return nil end
-    local byState = MEDFX_STATE_ANIM[getElementType(element)]
-    return byState and byState[status] or nil
+    local elementType = getElementType(element)
+    local byState = MEDFX_STATE_ANIM[elementType]
+    local key = byState and byState[status] or nil
+    -- struggling for air while up: bent over and panting (the confused sway gives way to it)
+    if (status == "stable" or status == "confused") and MEDFX_DYSPNEA[getElementData(element, MEDFX.DATA_BREATH)] then
+        key = MEDFX_DYSPNEA_ANIM[elementType] or key
+    end
+    return key
 end
 
 local function updateAnim(element)
@@ -136,6 +142,14 @@ function refreshPlayer(player)
     end
 
     local controls, walk = injuryEffects(player, snapshot)
+    if MEDFX_DYSPNEA[snapshot.breathing] then
+        local seen = {}
+        for _, control in ipairs(controls) do seen[control] = true end
+        for _, control in ipairs(MEDFX_DYSPNEA_PLAYER.controls) do
+            if not seen[control] then controls[#controls + 1] = control end
+        end
+        table.sort(controls)
+    end
     local stateDef = MEDFX_STATES[snapshot.consciousness]
     if stateDef and stateDef.walk then walk = stateDef.walk end
     if stateDef and stateDef.lock then walk = nil end
@@ -174,7 +188,7 @@ local function track(element)
 end
 
 addEventHandler("onElementDataChange", root, function(key)
-    if key == MEDFX.DATA_STATUS then track(source) end
+    if key == MEDFX.DATA_STATUS or key == MEDFX.DATA_BREATH then track(source) end
 end)
 
 -- medsys fires it on every state transition (backup for the data change)

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_deadbody3",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [246.04, -1602.159, 33.247],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Neighbour not answering",
+        "description": "A woman says her elderly neighbour is lying in front of his door in Rodeo and is not answering. She has not seen him for two days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [246.04, -1602.159, 33.247],
+            "rot": 300,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "consciousness": "dead"
+            }
+        }
+    ]
+}

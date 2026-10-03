@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "ls_drowning3",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2817.257, -1842.195, 11.133],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell into the sea",
+        "description": "A man fell off the rocks at Playa del Seville after a party. His friends pulled him out, he is coughing, shivering and smells of alcohol.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [2817.257, -1842.195, 11.133],
+            "rot": 120,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": {
+                "spo2": 88
+            }
+        }
+    ]
+}

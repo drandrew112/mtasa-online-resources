@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar2",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1319.674, -1660.839, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit and run",
+        "description": "A pedestrian was hit by a car on the crosswalk in Commerce. The car did not stop and drove off at high speed. The victim is lying on the road and is not answering.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [1319.674, -1660.839, 13.547],
+            "rot": 20,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,139 @@
+{
+    "format": 1,
+    "name": "ls_mci3",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1683.0, -2251.0, 13.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shuttle bus crash at the airport",
+        "description": "An airport shuttle bus crashed into two taxis in front of the terminal. Many passengers are hurt, people are lying on the road. Airport security is on scene.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 431,
+            "pos": [1683.0, -2254.5, 13.9],
+            "rot": [0, 0, 270],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS16 692",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 420,
+            "pos": [1693.5, -2253.0, 13.1],
+            "rot": [0, 0, 240],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS17 729",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 420,
+            "pos": [1672.0, -2256.0, 13.1],
+            "rot": [0, 0, 300],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS18 766",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [1680.0, -2247.5, 13.6],
+            "rot": 40,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p2",
+            "skin": 61,
+            "pos": [1688.0, -2248.0, 13.6],
+            "rot": 160,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": {
+                "bloodVolume": 4200
+            }
+        },
+        {
+            "id": "p3",
+            "skin": 141,
+            "pos": [1675.0, -2246.5, 13.6],
+            "rot": 250,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 147,
+            "pos": [1692.0, -2247.0, 13.6],
+            "rot": 120,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 35
+            }
+        },
+        {
+            "id": "p5",
+            "skin": 17,
+            "pos": [1697.0, -2258.5, 13.45],
+            "rot": 300,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

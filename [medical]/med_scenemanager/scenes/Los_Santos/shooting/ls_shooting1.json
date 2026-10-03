@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "ls_shooting1",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2486.0, -1666.0, 13.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Drive-by shooting on Grove Street. Witnesses report several shots from a passing car. Two young men are on the ground, one of them is not moving. Police are on the way.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [2486.0, -1666.0, 13.5],
+            "rot": 40,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": {
+                "bloodVolume": 3700
+            }
+        },
+        {
+            "id": "p2",
+            "skin": 106,
+            "pos": [2488.2, -1667.5, 13.7],
+            "rot": 300,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

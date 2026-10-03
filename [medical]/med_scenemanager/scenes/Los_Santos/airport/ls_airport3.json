@@ -1,0 +1,71 @@
+{
+    "format": 1,
+    "name": "ls_airport3",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1714.0, -2394.0, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic passenger unwell",
+        "description": "A long-haul passenger is sweating, shaking and confused next to the plane. The flight was delayed for hours and he had no food. He mentions he is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 519,
+            "pos": [1717.0, -2409.5, 14.6],
+            "rot": [0, 0, 270],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS22 914",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 583,
+            "pos": [1726.0, -2397.0, 13.1],
+            "rot": [0, 0, 0],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS23 951",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 147,
+            "pos": [1714.0, -2394.0, 13.6],
+            "rot": 180,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {
+                "glucose": 46
+            }
+        }
+    ]
+}

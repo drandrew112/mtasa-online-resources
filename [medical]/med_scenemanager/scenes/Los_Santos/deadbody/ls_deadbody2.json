@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "ls_deadbody2",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [1938.0, -1955.0, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not responding near the railway",
+        "description": "Railway workers found a man lying on the tracks in Willowfield. He does not answer when they call him. They do not dare to go closer.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 137,
+            "pos": [1938.0, -1955.0, 13.6],
+            "rot": 200,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": {
+                "consciousness": "dead"
+            }
+        }
+    ]
+}

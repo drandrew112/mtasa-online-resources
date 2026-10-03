@@ -1,0 +1,75 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle1",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [1821.966, -1751.603, 13.383],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist vs car",
+        "description": "A motorbike crashed into a car turning left at an intersection in Idlewood. The rider flew over the car and is lying on the road. His helmet is cracked.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [1823.466, -1752.603, 13.783],
+            "rot": [0, 0, 120],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS04 248",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 405,
+            "pos": [1827.5, -1748.0, 13.9],
+            "rot": [0, 0, 10],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS05 285",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 247,
+            "pos": [1818.966, -1749.603, 13.583],
+            "rot": 300,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {
+                "bloodVolume": 4500
+            }
+        }
+    ]
+}

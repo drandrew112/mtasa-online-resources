@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle3",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [847.125, -1762.125, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter rider hit a car door",
+        "description": "A pizza delivery rider on a scooter hit a car door that opened in front of him in Marina. He is sitting on the pavement, his wrist is swollen and his leg is scraped.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [848.925, -1763.325, 13.95],
+            "rot": [0, 0, 260],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS07 359",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 155,
+            "pos": [847.125, -1762.125, 13.55],
+            "rot": 180,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

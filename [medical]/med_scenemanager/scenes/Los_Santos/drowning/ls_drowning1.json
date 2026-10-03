@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "ls_drowning1",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [226.529, -1740.245, 4.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swimmer pulled out, not breathing",
+        "description": "Lifeguards pulled a swimmer out of the water at Santa Maria Beach and carried him up to the promenade. He is not breathing. A bystander has started chest compressions.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 154,
+            "pos": [226.529, -1740.245, 4.37],
+            "rot": 90,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": {
+                "spo2": 40,
+                "rhythm": "PEA"
+            }
+        }
+    ]
+}

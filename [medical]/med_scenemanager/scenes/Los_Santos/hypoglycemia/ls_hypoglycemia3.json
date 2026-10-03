@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia3",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1015.75, -1413.0, 13.199],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "A pensioner was found lying on the pavement in Market, unresponsive but breathing. Neighbours say he lives alone and injects insulin. Nobody has seen him eat since yesterday.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [1015.75, -1413.0, 13.199],
+            "rot": 300,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "glucose": 24
+            }
+        }
+    ]
+}

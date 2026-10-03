@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing1",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2054.0, -1202.0, 23.747],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teenager cannot breathe",
+        "description": "A teenager at the Glen Park basketball court cannot catch his breath, wheezing loudly. His inhaler is empty. He can only say a few words at a time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [2060.0, -1198.0, 23.947],
+            "rot": 160,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

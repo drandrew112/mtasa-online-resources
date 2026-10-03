@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_diabetes3",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1906.0, -1253.875, 13.559],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teenager sick and confused",
+        "description": "A teenage girl on her way home from school sat down and started to throw up. Her friend says she has lost a lot of weight lately and drinks litres of soda. Now she seems a bit confused and her breath smells strange.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [1906.0, -1253.875, 13.559],
+            "rot": 60,
+            "anim": "vomit",
+            "injuries": [],
+            "state": {
+                "bloodVolume": 4300,
+                "glucose": 440
+            }
+        }
+    ]
+}

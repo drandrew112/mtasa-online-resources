@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing2",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2790.963, -1382.982, 21.428],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker short of breath",
+        "description": "An elderly man with a long history of smoking has been getting more and more breathless since a cold last week. Today he cannot walk to the corner shop, his lips look bluish.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 95,
+            "pos": [2790.963, -1382.982, 21.428],
+            "rot": 330,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -46,8 +46,8 @@ function canRequestTransport(target, state)
         if transport.phase == "waiting" then return false, "Transport is on the way" end
         return false, "The patient is being loaded"
     end
-    -- a living patient: stable, or intubated with a pulse (the RSI medicines keep it asleep)
-    if not isBodyDead(target) and state and state.consciousness ~= "stable"
+    -- a living patient: stable (or only confused), or intubated with a pulse (the RSI medicines keep it asleep)
+    if not isBodyDead(target) and state and state.consciousness ~= "stable" and state.consciousness ~= "confused"
         and not (state.intubated and state.consciousness == "unconscious") then
         return false, "Only a stable or intubated patient can be transported"
     end

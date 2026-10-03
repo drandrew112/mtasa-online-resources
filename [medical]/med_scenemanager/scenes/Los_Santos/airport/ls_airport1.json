@@ -1,0 +1,60 @@
+{
+    "format": 1,
+    "name": "ls_airport1",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1580.0, -2402.0, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Passenger confused after landing",
+        "description": "A private jet passenger could not walk straight down the stairs after landing. The pilot says she suddenly started slurring her words and cannot hold her coffee in her left hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 519,
+            "pos": [1575.0, -2414.5, 14.6],
+            "rot": [0, 0, 90],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS19 803",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [1580.0, -2402.0, 13.6],
+            "rot": 200,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p2",
+            "skin": 61,
+            "pos": [1583.0, -2404.0, 13.6],
+            "rot": 160,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

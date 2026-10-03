@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke3",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2180.385, -1252.014, 23.989],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man found collapsed, snoring",
+        "description": "A neighbour found a man lying in front of his house in Jefferson. He is breathing loudly, snoring, and does not wake up when they shake him. Unknown how long he has been there.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [2180.385, -1252.014, 23.989],
+            "rot": 30,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": {}
+        }
+    ]
+}

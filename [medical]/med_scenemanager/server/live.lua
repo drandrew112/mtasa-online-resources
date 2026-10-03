@@ -6,6 +6,8 @@
 -- When the last patient of a scene is taken away by a medsys transport ("Request
 -- transport") and no other scene ped is left (none on a stretcher / in an ambulance),
 -- the task is closed: there is nobody left to hand over at a hospital.
+-- A scene without patients (a false call: nobody there, or only people who are fine) closes its
+-- task MSM.FALSE_CALL_CLOSE seconds after a unit reports On Scene.
 --
 -- Events (on this resource's root):
 --   onMedSceneSpawned (instanceId, sceneName, taskId | false)
@@ -79,6 +81,17 @@ end
 
 ---------------------------------------------------------------- spawn
 
+-- Peds that get injuries / a medical state (the rest are bystanders)
+local function countPatients(data)
+    local count = 0
+    for _, entry in ipairs(data.peds) do
+        if #(entry.injuries or {}) > 0 or next(type(entry.state) == "table" and entry.state or {}) then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 local function createTask(scene, data)
     if not ermRunning() then return false, "med_erm is not running" end
     local c, erm = data.center, data.erm
@@ -86,7 +99,7 @@ local function createTask(scene, data)
         scene = scene.name,
         sceneInstance = scene.id,
         priority = erm.priority,
-        patients = #data.peds,
+        patients = scene.patients,
     }
     local id, err = exports[MSM.ERM]:createTask(erm.title, erm.description, c[1], c[2], c[3], erm.caller, nil, meta)
     return id, err
@@ -103,7 +116,7 @@ function Live.spawn(name, source)
     local scene = {
         id = id, name = name, source = source or "script",
         center = data.center, createdAt = getTickCount(),
-        vehicles = {}, peds = {},
+        vehicles = {}, peds = {}, patients = countPatients(data),
     }
 
     local vehiclesById = {}
@@ -186,6 +199,23 @@ addEventHandler("onErmTaskClosed", root, function(taskId)
     if scene and not scene.closedAt then
         scene.closedAt = getTickCount()
     end
+end)
+
+-- False call: a unit of a scene without patients arrived, the task closes a bit later
+addEventHandler("onErmUnitStatusChange", root, function(unitId, status)
+    if status ~= "onscene" or not ermRunning() then return end
+    local unit = exports[MSM.ERM]:getUnitData(unitId)
+    local id = unit and unit.task ~= 0 and Live.byTask[unit.task]
+    local scene = id and Live.scenes[id]
+    if not scene or scene.patients > 0 or scene.closedAt or scene.falseCallTimer then return end
+    local taskId = scene.taskId
+    scene.falseCallTimer = setTimer(function()
+        if not Live.scenes[id] or scene.closedAt or not ermRunning() then return end
+        local task = exports[MSM.ERM]:getTask(taskId)
+        if task and task.status ~= "closed" then
+            exports[MSM.ERM]:closeTask(taskId, "False call - no patient found on scene")
+        end
+    end, MSM.FALSE_CALL_CLOSE * 1000, 1)
 end)
 
 -- medsys "Request transport": source = the ped, fired right before it is destroyed

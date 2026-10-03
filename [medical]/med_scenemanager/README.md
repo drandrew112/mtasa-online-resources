@@ -98,6 +98,13 @@ Every live scene ped gets a random English first name on spawn (`shared/names.lu
 male list by the skin), stored as element data `medic.name` (`MSM.DATA_NAME`); medsys shows it
 as the patient name.
 
+Categories (subfolders, `MSM_CATEGORIES`): heartattack, mva, hypertension, stroke, diabetes,
+hypoglycemia, overdose, breathing, fall, shooting, hitbycar, motorcycle, drowning, mci, airport,
+false, deadbody. Ped state keys also take `glucose` (mg/dL, lasting) and the consciousness
+`confused` / `dead`; injuries also take the medsys conditions (head_injury, stroke, opioid,
+sedative, stimulant, alcohol, postictal, asthma, copd, pulmonary_edema). Extra poses: tired (bent
+over, panting), cough, drunk, vomit.
+
 ## Live scenes
 
 `Live.spawn` creates the vehicles, then the peds (seated or posed). It applies medsys
@@ -118,6 +125,9 @@ ends the case with the hospital handover, as before.
 
 An open scene (task not closed) also blocks ambulance calls from the phone (ui_phone
 Emergency Services) within `CALL_RADIUS` (80 m) of its centre, peds or vehicles: `getSceneAt`.
+
+A scene without patients (only bystanders, or no peds at all: a **false call**) closes its task
+`FALSE_CALL_CLOSE` (45) seconds after the first unit reports On Scene.
 
 ## Automatic generator
 

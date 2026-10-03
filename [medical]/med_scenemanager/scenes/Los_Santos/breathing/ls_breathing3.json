@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing3",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [404.707, -1113.44, 26.986],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman drowning in her own lungs",
+        "description": "A woman in Richman woke up gasping for air, she says she feels like she is drowning. She is coughing up pink froth. She has a heart condition and her ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [404.707, -1113.44, 26.986],
+            "rot": 45,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

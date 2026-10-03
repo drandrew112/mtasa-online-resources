@@ -8,6 +8,7 @@ MEDFX = {
 
     -- Element data (written by the server, read by every client)
     DATA_STATUS = "medic.status", -- medsys: consciousness
+    DATA_BREATH = "medic.breath", -- medsys: breathing key (nil = normal)
     DATA_ANIM = "medfx.anim",     -- key of MEDFX_ANIMS the element must play, nil = none
     DATA_BLOCK = "medfx.block",   -- set through setAnimationBlocked: no forced animation
     DATA_STRETCHER = "stretcher.on", -- med_stretcher: the patient lies on a stretcher
@@ -34,14 +35,37 @@ MEDFX_ANIMS = {
         anim = { "BEACH", "ParkSit_M_loop" }, loop = true,
         accept = { { "BEACH", "ParkSit_M_loop" }, { "BEACH", "ParkSit_W_loop" }, { "PED", "cower" },
             { "SWEET", "Sweet_injuredloop" }, { "CRACK", "crckidle1" }, { "CRACK", "crckidle2" },
-            { "CRACK", "crckidle3" }, { "CRACK", "crckidle4" } },
+            { "CRACK", "crckidle3" }, { "CRACK", "crckidle4" }, { "PED", "IDLE_tired" }, { "PED", "gas_cwr" },
+            { "FOOD", "EAT_Vomit_P" }, { "BAR", "dnk_stndM_loop" } },
+    },
+    -- a confused ped sways on its feet (intoxication, after a seizure, low glucose)
+    confused_ped = {
+        anim = { "BAR", "dnk_stndM_loop" }, loop = true,
+        accept = { { "BAR", "dnk_stndM_loop" }, { "BAR", "dnk_stndF_loop" }, { "FOOD", "EAT_Vomit_P" },
+            { "BEACH", "ParkSit_M_loop" }, { "BEACH", "ParkSit_W_loop" }, { "PED", "cower" },
+            { "CRACK", "crckidle1" }, { "CRACK", "crckidle2" }, { "CRACK", "crckidle3" }, { "CRACK", "crckidle4" },
+            { "GANGS", "leanIDLE" }, { "PED", "IDLE_tired" }, { "PED", "gas_cwr" }, { "SWEET", "Sweet_injuredloop" } },
+    },
+    -- struggling for air (asthma, COPD, pulmonary oedema, ketoacidosis): bent over, panting
+    dyspnea_ped = {
+        anim = { "PED", "IDLE_tired" }, loop = true,
+        accept = { { "PED", "IDLE_tired" }, { "PED", "gas_cwr" }, { "BEACH", "ParkSit_M_loop" },
+            { "BEACH", "ParkSit_W_loop" }, { "GANGS", "leanIDLE" }, { "PED", "cower" },
+            { "CRACK", "crckidle1" }, { "CRACK", "crckidle2" }, { "CRACK", "crckidle3" }, { "CRACK", "crckidle4" } },
     },
 }
+
+-- Breathing keys (medsys MEDIC_BREATHING) of a patient visibly struggling for air
+MEDFX_DYSPNEA = { wheeze = true, laboured = true, crackles = true, kussmaul = true, silent = true }
+-- Animation of a dyspnoeic ped that is otherwise up (stable / confused); the down states keep theirs
+MEDFX_DYSPNEA_ANIM = { ped = "dyspnea_ped" }
+-- What a dyspnoeic player experiences (no running out of breath)
+MEDFX_DYSPNEA_PLAYER = { controls = { "sprint", "jump" } }
 
 -- Consciousness -> forced animation key, per element type (nil = no forced animation)
 MEDFX_STATE_ANIM = {
     player = { unconscious = "down", clinical_death = "down" },
-    ped = { dazed = "dazed_ped", unconscious = "down", clinical_death = "down" },
+    ped = { confused = "confused_ped", dazed = "dazed_ped", unconscious = "down", clinical_death = "down" },
 }
 
 -- What the local player experiences in each consciousness state
@@ -51,6 +75,7 @@ MEDFX_STATE_ANIM = {
 --   controls  = extra disabled controls
 --   blackout  = black screen with a title / subtitle
 MEDFX_STATES = {
+    confused = { shake = 20, walk = 126 },
     dazed = { shake = 40, walk = 126, controls = { "sprint", "jump" } },
     unconscious = { lock = true, blackout = { title = "UNCONSCIOUS", sub = "You passed out. Wait for medical help." } },
     clinical_death = { lock = true, blackout = { title = "CLINICAL DEATH",

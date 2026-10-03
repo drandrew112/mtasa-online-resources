@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_diabetes2",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [2772.65, -1649.95, 11.716],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman sitting outside her house in East Beach, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [2772.65, -1649.95, 11.716],
+            "rot": 270,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "bloodVolume": 3900,
+                "glucose": 760
+            }
+        }
+    ]
+}

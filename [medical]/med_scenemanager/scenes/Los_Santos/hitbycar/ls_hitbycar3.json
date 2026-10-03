@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar3",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1683.2, -1848.99, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hit by a van",
+        "description": "A delivery van reversing near Unity Station knocked down an elderly woman. She is sitting on the ground holding her hip and cannot stand up. The driver is very upset.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 413,
+            "pos": [1684.82, -1852.91, 13.1],
+            "rot": [0, 0, 157],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS03 211",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 197,
+            "pos": [1683.2, -1848.99, 13.6],
+            "rot": 250,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

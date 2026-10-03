@@ -5,7 +5,7 @@
 
 InjuryInfo = {}
 
-local KNOCKOUT_RANK = { stable = 1, dazed = 2, unconscious = 3, clinical_death = 4, dead = 5 }
+local KNOCKOUT_RANK = { stable = 1, confused = 2, dazed = 3, unconscious = 4, clinical_death = 5, dead = 6 }
 
 local function medsys()
     local resource = getResourceFromName(MEDEV.MEDSYS)

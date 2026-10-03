@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false2",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1255.273, -2216.925, 18.264],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help. Caller hung up.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

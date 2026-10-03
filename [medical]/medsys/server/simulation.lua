@@ -8,7 +8,11 @@
 --   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia;
 --                    the pulse always rises as the pressure falls (baroreflex); the resting
 --                    setters (restingSystolic, ...) add lasting shifts to these targets
---   consciousness <- derived from SpO2, systolic pressure, pain and forced knockouts
+--   glucose       <- drifts to its resting value; glucose / insulin doses, IV fluids dilute a high one;
+--                    low: sweating, faster pulse, confusion -> coma -> arrest; high: fluid loss, coma
+--   conditions    <- stroke, overdoses, lung diseases... (MEDIC_INJURIES condition fields) shift the
+--                    targets, lower the SpO2 and the consciousness; some wear off, a stroke worsens
+--   consciousness <- derived from SpO2, systolic pressure, pain, conditions, glucose and forced knockouts
 --   medicines     <- shift the circulation targets, ease the pain, sedate / paralyse (MEDIC_DRUGS);
 --                    an awake patient under the muscle relaxant panics (pulse and pressure jump)
 --   intubated patient: kept down until stable (and no medicine keeps it asleep), then extubated
@@ -41,6 +45,10 @@ local function updateBlood(state, dt, arrested)
         if def.loss then
             loss = loss + def.loss[injury.severity] * (injury.treated and def.treatedLoss or 1)
         end
+    end
+    -- very high glucose: the kidneys flush water out (dehydration)
+    if state.glucose > MEDIC.HYPER_LOSS_ABOVE then
+        loss = loss + MEDIC.HYPER_LOSS * math.min(2, (state.glucose - MEDIC.HYPER_LOSS_ABOVE) / 300)
     end
     if arrested then loss = loss * MEDIC.ARREST_BLEED_FACTOR end
 
@@ -81,10 +89,9 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
     local target, rate = mask and MEDIC.OXYGEN_SPO2 or MEDIC.SPO2, MEDIC.SPO2_RECOVERY
     if not state.intubated then
         for _, injury in ipairs(state.injuries) do
-            local def = MEDIC_INJURIES[injury.type]
-            local value = def.spo2 and def.spo2[injury.severity]
+            local value = getInjuryValue(injury, "spo2")
             if value and value + bonus < target then
-                target, rate = value + bonus, def.spo2Rate
+                target, rate = value + bonus, MEDIC_INJURIES[injury.type].spo2Rate or MEDIC.SPO2_RECOVERY
             end
         end
     end
@@ -115,7 +122,7 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     -- blood pressure holds until ~15% loss (class I), then falls
     local systolic = MEDIC.SYSTOLIC - math.max(0, loss - 0.15) * 250 + pain * 0.1
         + state.hypertension + shift.systolic + getDrugEffect(state, "systolic")
-        + (state.panic and MEDIC.PANIC_SYSTOLIC or 0)
+        + (state.panic and MEDIC.PANIC_SYSTOLIC or 0) + getConditionSum(state, "systolic")
         - (state.vtTick and MEDIC.VT_SYSTOLIC_DROP or 0) -- VT: the ventricles barely fill
     local diastolic = systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC) + shift.diastolic
     if spo2 < 50 then -- severe hypoxia: collapse before the arrest
@@ -132,6 +139,11 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     local heartRate = MEDIC.HEART_RATE + math.max(0, MEDIC.SYSTOLIC - systolicNow) * MEDIC.BARO_REFLEX
         + math.min(loss, 0.3) * 100 + pain * 0.25 + shift.heartRate
         + getDrugEffect(state, "heartRate") + (state.panic and MEDIC.PANIC_HEART_RATE or 0)
+        + getConditionSum(state, "heartRate")
+    -- low glucose: adrenaline response
+    if state.glucose < MEDIC.HYPO_GLUCOSE then
+        heartRate = heartRate + math.min(25, (MEDIC.HYPO_GLUCOSE - state.glucose) * MEDIC.HYPO_HEART_RATE)
+    end
     if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
     -- severe hypoxia: the heart muscle fails, bradycardia before the arrest
     if spo2 < 50 then heartRate = 20 + spo2 end
@@ -181,7 +193,48 @@ local function updateDrugs(state, now)
     end
 end
 
-local CONSCIOUSNESS_RANK = { stable = 1, dazed = 2, unconscious = 3 }
+local CONSCIOUSNESS_RANK = MEDIC_CONSCIOUSNESS_RANK
+
+-- Blood glucose: drifts to the resting value, medicines and IV fluids move it
+local function updateGlucose(state, dt, now)
+    local glucose = state.glucose
+    local rest = state.glucoseRest
+    if glucose < rest then
+        glucose = math.min(rest, glucose + MEDIC.GLUCOSE_DRIFT * dt)
+    else
+        glucose = math.max(rest, glucose - MEDIC.GLUCOSE_DRIFT * dt)
+    end
+    glucose = glucose + getDrugEffect(state, "glucoseRate") * dt
+    if state.ivAccess and glucose > MEDIC.GLUCOSE_IV_ABOVE then
+        glucose = glucose - MEDIC.GLUCOSE_IV_RATE * dt
+    end
+    state.glucose = math.max(MEDIC.GLUCOSE_MIN, math.min(MEDIC.GLUCOSE_MAX, glucose))
+
+    if state.glucose < MEDIC.HYPO_ARREST_GLUCOSE then
+        state.hypoTick = state.hypoTick or now
+    else
+        state.hypoTick = nil
+    end
+end
+
+-- Conditions that wear off (after a seizure) and the stroke that gets worse
+local function updateConditions(state, dt, now)
+    for i = #state.injuries, 1, -1 do
+        local injury = state.injuries[i]
+        local def = MEDIC_INJURIES[injury.type]
+        if def.duration and now - injury.tick >= def.duration[injury.severity] * 1000 then
+            table.remove(state.injuries, i)
+        elseif def.progress and injury.severity < 3 then
+            local safe = MEDIC.STROKE_SAFE_SYSTOLIC
+            local factor = (state.systolic < safe[1] or state.systolic > safe[2]) and MEDIC.STROKE_BAD_BP_FACTOR or 1
+            injury.progress = (injury.progress or 0) + dt * factor
+            if injury.progress >= MEDIC.STROKE_PROGRESS_TIME then
+                injury.progress = 0
+                injury.severity = injury.severity + 1
+            end
+        end
+    end
+end
 
 local function deriveConsciousness(state, pain, now)
     local status = "stable"
@@ -190,6 +243,9 @@ local function deriveConsciousness(state, pain, now)
     elseif state.spo2 < MEDIC.DAZED_SPO2 or state.systolic < MEDIC.DAZED_SYSTOLIC or pain >= MEDIC.DAZED_PAIN then
         status = "dazed"
     end
+    -- stroke, intoxication, glucose...: at least this far down
+    local forced = getConditionConsciousness(state)
+    if forced and CONSCIOUSNESS_RANK[forced] > CONSCIOUSNESS_RANK[status] then status = forced end
     state.aware = status ~= "unconscious"
     -- the anaesthetic and the muscle relaxant keep the patient down
     if isSedated(state) or isParalyzed(state, now) then status = "unconscious" end
@@ -219,6 +275,7 @@ local function stepPatient(state, dt, now)
     updateSpO2(state, dt, arrested, bloodFraction, now)
     state.extraPain = math.max(0, state.extraPain - PAIN_FADE * dt)
     updateDrugs(state, now)
+    updateGlucose(state, dt, now)
     -- awake under the muscle relaxant (no anaesthetic): panic
     state.panic = state.aware and hasDrugEffect(state, "paralysis") and not isSedated(state)
 
@@ -232,6 +289,7 @@ local function stepPatient(state, dt, now)
         return
     end
 
+    updateConditions(state, dt, now)
     local pain = getPatientPain(state)
     updateCirculation(state, dt, bloodFraction, pain)
 
@@ -242,6 +300,8 @@ local function stepPatient(state, dt, now)
         cause = "hypovolemia"
     elseif state.systolic <= MEDIC.ARREST_SYSTOLIC then
         cause = "hypotension"
+    elseif state.hypoTick and now - state.hypoTick >= MEDIC.HYPO_ARREST_TIME * 1000 then
+        cause = "hypoglycemia"
     elseif updateTachycardia(state, now) then
         cause = "tachycardia"
     elseif updatePulseRhythm(state, now) then

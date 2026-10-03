@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia2",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2438.5, -1556.875, 24.0],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and sweaty",
+        "description": "A jogger sat down on the pavement, shaking, pale and drenched in sweat. He says he feels weak and his heart is racing. He is diabetic and went running before breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [2438.5, -1556.875, 24.0],
+            "rot": 75,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "glucose": 52
+            }
+        }
+    ]
+}

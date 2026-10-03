@@ -27,7 +27,11 @@
 --     aware         = true,                 -- awake apart from the medicines (their sedation / paralysis)
 --     panic         = false,                -- awake under the muscle relaxant
 --     apneaRate     = nil,                  -- %/s SpO2 fall while an intubation attempt runs
---     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
+--     glucose       = 95, glucoseRest = 95, -- blood glucose mg/dL now / resting (setMedicalState "glucose")
+--     hypoTick      = nil,                  -- getTickCount() since the glucose is below HYPO_ARREST_GLUCOSE
+--     neuroChecked  = false,                -- the neuro exam was done (its findings show on the panel)
+--     breathing     = "normal",             -- last breathing key written to element data (MEDIC.DATA_BREATH)
+--     consciousness = "stable",             -- stable | confused | dazed | unconscious | clinical_death | dead
 --     rhythm        = "SINUS",              -- heart rhythm (MEDIC_RHYTHMS), server/rhythm.lua
 --     rhythmTick    = 0,                    -- getTickCount() since the current rhythm (arrest rhythms worsen)
 --     ecgRate       = 0,                    -- electrical rate of a pulseless VT / PEA (the others: heartRate / 0)
@@ -69,6 +73,10 @@ local function newState(element)
         intubated = false,
         oxygenMask = false,
         hypertension = 0,
+        glucose = MEDIC.GLUCOSE,
+        glucoseRest = MEDIC.GLUCOSE,
+        hypoTick = nil,
+        neuroChecked = false,
         restShift = { systolic = 0, diastolic = 0, heartRate = 0 },
         spo2Limit = nil,
         jitter = { systolic = 0, heartRate = 0 },
@@ -117,6 +125,7 @@ function removePatient(element, leaving)
         removeElementData(element, MEDIC.DATA_STATUS)
         removeElementData(element, MEDIC.DATA_SPO2)
         removeElementData(element, MEDIC.DATA_HEART_RATE)
+        removeElementData(element, MEDIC.DATA_BREATH)
         -- a persistent patient starts over with a fresh (healthy) state (a dead one at its spawn)
         if Persistent[element] and not isPedDead(element) then getPatient(element, true) end
     end
@@ -132,6 +141,7 @@ function isPatientHealthy(state)
         and state.restShift.systolic == 0 and state.restShift.diastolic == 0
         and state.restShift.heartRate == 0 and not state.spo2Limit and not state.vtTick
         and state.consciousness == "stable"
+        and state.glucoseRest == MEDIC.GLUCOSE and math.abs(state.glucose - MEDIC.GLUCOSE) < 10
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
         and state.spo2 >= MEDIC.DISCHARGE_SPO2
         and math.abs(state.heartRate - MEDIC.HEART_RATE) < MEDIC.HR_JITTER + 2
@@ -162,6 +172,143 @@ function writeVitalsData(state)
         state.sent.heartRate = heartRate
         setElementData(state.element, MEDIC.DATA_HEART_RATE, heartRate, "subscribe")
     end
+    -- the breathing is broadcast (it rarely changes): medsys_effects animates the struggle for air
+    local breathing = getBreathing(state)
+    if state.breathing ~= breathing then
+        state.breathing = breathing
+        if breathing == "normal" then
+            removeElementData(state.element, MEDIC.DATA_BREATH)
+        else
+            setElementData(state.element, MEDIC.DATA_BREATH, breathing)
+        end
+    end
+end
+
+---------------------------------------------------------------------------
+-- Medical conditions (MEDIC_INJURIES with the condition fields)
+---------------------------------------------------------------------------
+
+-- Value of a per-severity field of an injury, nil when it has none. A treated one uses
+-- treatedSpo2 for "spo2" and is scaled by treatedVitals for the circulation fields.
+function getInjuryValue(injury, field)
+    local def = MEDIC_INJURIES[injury.type]
+    if field == "spo2" and injury.treated then
+        return def.treatedSpo2 and def.treatedSpo2[injury.severity]
+    end
+    local list = def[field]
+    local value = list and list[injury.severity]
+    if value and injury.treated and (field == "systolic" or field == "heartRate") then
+        value = value * (def.treatedVitals or 1)
+    elseif value and injury.treated and def.treatDrugs and (field == "consciousness" or field == "breathing") then
+        value = nil -- the medicine took it away
+    end
+    return value
+end
+
+-- Sum of a numeric condition field (systolic / heartRate) over the injuries
+function getConditionSum(state, field)
+    local total = 0
+    for _, injury in ipairs(state.injuries) do
+        total = total + (getInjuryValue(injury, field) or 0)
+    end
+    return total
+end
+
+-- The worst consciousness the conditions and the glucose force on the patient, or nil
+function getConditionConsciousness(state)
+    local worst, rank = nil, 1
+    local function consider(status)
+        local r = status and MEDIC_CONSCIOUSNESS_RANK[status]
+        if r and r > rank then worst, rank = status, r end
+    end
+    for _, injury in ipairs(state.injuries) do consider(getInjuryValue(injury, "consciousness")) end
+    for _, line in ipairs(MEDIC.GLUCOSE_LOW_CONSCIOUSNESS) do
+        if state.glucose < line[1] then consider(line[2]) break end
+    end
+    for _, line in ipairs(MEDIC.GLUCOSE_HIGH_CONSCIOUSNESS) do
+        if state.glucose >= line[1] then consider(line[2]) break end
+    end
+    return worst
+end
+
+local BREATH_RANK = { normal = 0, rapid = 1, kussmaul = 2, wheeze = 3, laboured = 3, crackles = 3,
+    slow = 4, silent = 5, snoring = 5, agonal = 6 }
+
+-- Key of MEDIC_BREATHING: what the medic sees and hears
+function getBreathing(state, now)
+    if state.dead or state.arrestTick then return "none" end
+    if state.intubated then return "ventilated" end
+    if isParalyzed(state, now) then return "none" end
+    local best = "normal"
+    local function consider(key)
+        if key and BREATH_RANK[key] > BREATH_RANK[best] then best = key end
+    end
+    for _, injury in ipairs(state.injuries) do consider(getInjuryValue(injury, "breathing")) end
+    if state.glucose >= MEDIC.KUSSMAUL_GLUCOSE then consider("kussmaul") end
+    if state.spo2 < 85 then consider("laboured") end
+    if state.spo2 < 40 then consider("agonal") end
+    if best == "normal" and (state.heartRate > 115 or getPatientPain(state) >= 60) then best = "rapid" end
+    return best
+end
+
+-- What the skin shows on top of the colour: "sweaty" (low glucose, stimulants), "dry" (high glucose)
+function getSkinSign(state)
+    if state.dead then return nil end
+    if state.glucose < MEDIC.HYPO_GLUCOSE then return "sweaty" end
+    for _, injury in ipairs(state.injuries) do
+        if injury.type == "stimulant" and not injury.treated then return "sweaty" end
+    end
+    if state.glucose >= MEDIC.HYPER_LOSS_ABOVE then return "dry" end
+    return nil
+end
+
+local function capitalize(text)
+    return (text:gsub("^%l", string.upper))
+end
+
+-- Findings of the neuro exam { { text, level 0-3 } }: responsiveness (AVPU), pupils, FAST and
+-- the clues of the conditions
+function getNeuroFindings(state)
+    local list = {}
+    local function add(text, level) list[#list + 1] = { text, level or 0 } end
+    if state.dead or state.arrestTick then
+        add("Unresponsive, pupils fixed and dilated", 3)
+        return list
+    end
+
+    local status = state.consciousness
+    if status == "stable" then
+        add("Alert and oriented", 0)
+    elseif status == "confused" then
+        add("Awake but confused, disoriented", 1)
+    elseif status == "dazed" then
+        add("Drowsy, responds to voice", 2)
+    elseif isSedated(state) or isParalyzed(state) then
+        add("Sedated - not assessable", 1)
+        return list
+    else
+        add("Responds to pain only", 3)
+    end
+
+    local pupils, fast = false, false
+    for _, injury in ipairs(state.injuries) do
+        local def = MEDIC_INJURIES[injury.type]
+        local findings = def.neuro and not (injury.treated and def.treatDrugs) and def.neuro[injury.severity]
+        for _, finding in ipairs(findings or {}) do
+            local text = finding[1]
+            if text:find("%s", 1, true) then text = text:format(injury.side or "left") end
+            add(capitalize(text), finding[2])
+            if text:find("Pupils", 1, true) then pupils = true end
+            if injury.type == "stroke" then fast = true end
+        end
+    end
+    if state.glucose < MEDIC.HYPO_GLUCOSE then add("Sweaty, trembling, pale", 2) end
+    if state.glucose >= MEDIC.KUSSMAUL_GLUCOSE then add("Fruity (acetone) smell on the breath", 2) end
+    if not pupils then add("Pupils: equal, react to light", 0) end
+    if not fast then
+        add(status == "unconscious" and "FAST: not assessable" or "FAST: negative (face, arms, speech normal)", 0)
+    end
+    return list
 end
 
 -- Effective bleeding level (0-3): the worst of the wounds and the unattributed bleeding
@@ -179,7 +326,7 @@ function getPatientPain(state)
     for _, injury in ipairs(state.injuries) do
         local def = MEDIC_INJURIES[injury.type]
         local value = def.pain[injury.severity]
-        if injury.treated then value = value * def.treatedPain end
+        if injury.treated then value = value * (def.treatedPain or 1) end
         if value > pain then
             pain = value + (pain * 0.25) -- the worst one dominates, the rest adds a little
         else
@@ -243,10 +390,11 @@ end
 -- Full medical data as a plain table (safe to hand out, it is a copy)
 function buildSnapshot(state)
     local bleeding = getPatientBleeding(state)
-    local injuries = {}
-    for i, injury in ipairs(state.injuries) do
+    -- visible injuries (the panel lists them), and the hidden conditions (only for the exports)
+    local injuries, conditions = {}, {}
+    for _, injury in ipairs(state.injuries) do
         local def = MEDIC_INJURIES[injury.type]
-        injuries[i] = {
+        local entry = {
             id = injury.id,
             type = injury.type,
             label = def.label,
@@ -254,8 +402,11 @@ function buildSnapshot(state)
             severityLabel = MEDIC_SEVERITY[injury.severity],
             bleeding = injury.bleeding,
             treated = injury.treated,
-            treatedLabel = injury.treated and def.treatedLabel or nil,
+            treatedLabel = injury.treated and (def.treatedLabel or "Treated") or nil,
+            hospital = not def.treat and not def.treatDrugs or nil, -- no prehospital treatment
         }
+        local list = def.hidden and conditions or injuries
+        list[#list + 1] = entry
     end
 
     local systolic, diastolic = round(state.systolic), round(state.diastolic)
@@ -296,6 +447,13 @@ function buildSnapshot(state)
         bloodPercent = round(state.bloodVolume / MEDIC.BLOOD_VOLUME * 100),
         pain = round(getPatientPain(state)),
         injuries = injuries,
+        conditions = conditions,        -- hidden medical conditions (stroke, overdose, ...)
+        glucose = round(state.glucose), -- mg/dL (the panel snapshot drops it: only the glucometer tells)
+        breathing = getBreathing(state, now),
+        breathingLabel = MEDIC_BREATHING[getBreathing(state, now)].label,
+        skinSign = getSkinSign(state),
+        neuroChecked = state.neuroChecked,
+        neuro = state.neuroChecked and getNeuroFindings(state) or nil,
         ivAccess = state.ivAccess,
         intubated = state.intubated,
         oxygenMask = state.oxygenMask,
@@ -436,6 +594,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
             removeElementData(element, MEDIC.DATA_STATUS)
             removeElementData(element, MEDIC.DATA_SPO2)
             removeElementData(element, MEDIC.DATA_HEART_RATE)
+            removeElementData(element, MEDIC.DATA_BREATH)
         end
     end
 end)

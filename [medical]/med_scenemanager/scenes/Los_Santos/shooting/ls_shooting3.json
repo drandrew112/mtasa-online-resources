@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "ls_shooting3",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2203.191, -1067.587, 41.998],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shot several times",
+        "description": "A man was shot several times in Las Colinas. A neighbour heard the shots and found him on the pavement in a pool of blood. He is barely responsive.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [2203.191, -1067.587, 41.998],
+            "rot": 60,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {
+                "bloodVolume": 3200
+            }
+        }
+    ]
+}

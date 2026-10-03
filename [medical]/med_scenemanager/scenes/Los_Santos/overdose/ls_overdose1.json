@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose1",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2523.999, -1823.769, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Not breathing properly in an alley",
+        "description": "A man is lying in an alley behind the shops in Ganton, lips going blue, barely breathing. His friend says they \"took something\" a few minutes ago. There is a syringe on the ground.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 134,
+            "pos": [2523.999, -1823.769, 13.547],
+            "rot": 110,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": {}
+        }
+    ]
+}

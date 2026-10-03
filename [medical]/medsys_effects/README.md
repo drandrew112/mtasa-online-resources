@@ -44,6 +44,12 @@ exports.medsys_effects:setAnimationBlocked(ped, false)
 exports.medsys_effects:getForcedAnimation(ped)          -- "down" | "dazed_ped" | false
 ```
 
+Confused peds sway (`confused_ped`: `BAR/dnk_stndM_loop`). A ped that is up (stable / confused)
+and struggles for air (medsys `medic.breath` in `MEDFX_DYSPNEA`: wheezing, laboured, crackles,
+Kussmaul, silent chest) is bent over panting (`dyspnea_ped`: `PED/IDLE_tired`); coughing, sitting
+and leaning poses are accepted. A dyspnoeic player cannot sprint or jump (`MEDFX_DYSPNEA_PLAYER`),
+a confused one gets a light shake and the drunk walk.
+
 ## Player effects
 
 Sent only to the player, only when something changed (`medfx:state`):

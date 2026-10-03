@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_diabetes1",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [2054.0, -1202.0, 23.747],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young man vomiting, breathing fast",
+        "description": "A young man in Glen Park has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago. He is very thirsty and weak.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [2054.0, -1202.0, 23.747],
+            "rot": 140,
+            "anim": "tired",
+            "injuries": [],
+            "state": {
+                "bloodVolume": 4100,
+                "glucose": 520
+            }
+        }
+    ]
+}

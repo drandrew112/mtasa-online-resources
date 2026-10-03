@@ -1,0 +1,71 @@
+{
+    "format": 1,
+    "name": "ls_airport2",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1812.0, -2396.0, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Passenger collapsed on the tarmac",
+        "description": "A passenger collapsed while walking from the plane to the bus. The cabin crew says he has no pulse and they are doing CPR. The plane has an AED but it was not used yet.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 577,
+            "pos": [1817.6, -2426.0, 13.7],
+            "rot": [0, 0, 90],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS20 840",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 485,
+            "pos": [1820.0, -2398.0, 13.1],
+            "rot": [0, 0, 0],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS21 877",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 120,
+            "pos": [1812.0, -2396.0, 13.6],
+            "rot": 90,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": {
+                "rhythm": "VF"
+            }
+        }
+    ]
+}

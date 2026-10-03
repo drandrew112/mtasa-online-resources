@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false1",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1479.5, -1725.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "Caller saw a person lying on the ground at Pershing Square. Caller did not stop.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}
