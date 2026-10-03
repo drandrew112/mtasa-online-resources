@@ -49,6 +49,7 @@ MSM = {
         MAX_ACTIVE = 12,         -- live scenes at once (any source)
         MIN_PLAYER_DISTANCE = 150, -- no scene closer than this to any player (pop-in)
         MIN_SCENE_DISTANCE = 60, -- no scene closer than this to another live scene
+        MAX_UNIT_DISTANCE = 1500, -- no scene farther than this (2D, m) from the nearest free unit; 0 = off
         UNIT_TYPES = nil,        -- nil = every unit type counts as free, or e.g. { "ALS", "BLS" }
     },
 

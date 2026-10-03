@@ -3,7 +3,8 @@
 -- Works only while med_erm has free units (no task, status Available). The next
 -- scene comes after a random INTERVAL_MIN..INTERVAL_MAX seconds divided by the number
 -- of free units, so more free units -> more scenes. At most PENDING_PER_UNIT waiting
--- (unassigned) scene tasks per free unit are allowed at a time.
+-- (unassigned) scene tasks per free unit are allowed at a time. A scene is only
+-- generated within MAX_UNIT_DISTANCE of a free unit, so an ambulance can reach it in time.
 
 Auto = {
     enabled = true,
@@ -13,10 +14,14 @@ Auto = {
 
 addEvent("onMedSceneAutoChange", false)
 
-local function freeUnits()
-    if not msmResourceRunning(MSM.ERM) then return 0 end
+local function freeUnitList()
+    if not msmResourceRunning(MSM.ERM) then return {} end
     local units = exports[MSM.ERM]:getFreeUnits(MSM.AUTO.UNIT_TYPES)
-    return type(units) == "table" and #units or 0
+    return type(units) == "table" and units or {}
+end
+
+local function freeUnits()
+    return #freeUnitList()
 end
 
 local function randomDelay(free)
@@ -45,15 +50,32 @@ local function nearestSceneDistance(c)
     return best
 end
 
+-- 2D distance to the nearest free unit. Interior scenes have no world position to
+-- compare with, they always count as in range.
+local function nearestUnitDistance(c, interior, units)
+    if interior ~= 0 then return 0 end
+    local best = math.huge
+    for _, u in ipairs(units) do
+        if u.x and u.y then
+            best = math.min(best, getDistanceBetweenPoints2D(u.x, u.y, c[1], c[2]))
+        end
+    end
+    return best
+end
+
 -- Weighted random pick from the summary list.
--- checkDistance: respect MIN_PLAYER_DISTANCE / MIN_SCENE_DISTANCE (the generator does)
+-- checkDistance: respect MIN_PLAYER_DISTANCE / MIN_SCENE_DISTANCE / MAX_UNIT_DISTANCE
+-- (the generator does)
 function Auto.pickScene(checkDistance)
     local candidates, total = {}, 0
+    local maxUnit = tonumber(MSM.AUTO.MAX_UNIT_DISTANCE) or 0
+    local units = (checkDistance and maxUnit > 0) and freeUnitList() or nil
     for _, s in ipairs(Storage.list()) do
         local ok = s.enabled and s.weight > 0 and not Live.isActive(s.name)
         if ok and checkDistance then
             ok = nearestPlayerDistance(s.center, s.interior, s.dimension) >= MSM.AUTO.MIN_PLAYER_DISTANCE
                 and nearestSceneDistance(s.center) >= MSM.AUTO.MIN_SCENE_DISTANCE
+                and (not units or nearestUnitDistance(s.center, s.interior, units) <= maxUnit)
         end
         if ok then
             candidates[#candidates + 1] = s
@@ -91,7 +113,7 @@ local function tick()
 
     local name = Auto.pickScene(true)
     if not name then
-        Auto.nextAt = now + 15000 -- nothing usable right now (players nearby, all active ...)
+        Auto.nextAt = now + 15000 -- nothing usable right now (players nearby, units too far, all active ...)
         return
     end
     local id, err = Live.spawn(name, "auto")
