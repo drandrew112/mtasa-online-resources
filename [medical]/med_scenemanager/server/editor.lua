@@ -123,7 +123,7 @@ function Editor.sync(session)
     for _, s in ipairs(Storage.list()) do
         local lockedBy = Editor.locks[s.name]
         state.scenes[#state.scenes + 1] = {
-            name = s.name, title = s.title, peds = s.peds, vehicles = s.vehicles,
+            name = s.name, path = s.path, title = s.title, peds = s.peds, vehicles = s.vehicles,
             locked = lockedBy ~= nil and lockedBy ~= player,
         }
     end

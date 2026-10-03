@@ -223,6 +223,11 @@ function Storage.load(name)
     return Storage.normalize(data, name)
 end
 
+-- File of a loaded scene (scenes/.../<name>.json) or nil
+function Storage.file(name)
+    return Storage.paths[name] and filePath(Storage.paths[name])
+end
+
 -- Writes the scene file into its settlement / category folder (the old file is removed
 -- when that changed) and updates the index + summary -> true, file | false, error
 function Storage.save(name, scene)

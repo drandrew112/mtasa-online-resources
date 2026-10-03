@@ -141,7 +141,8 @@ never starts the medsys simulation. Injuries / vitals only take effect in live s
 
 **R menu** (ui_inac temp menu):
 
-- no scene: **New scene** (centred on you), **Load scene**, Exit editor
+- no scene: **New scene** (centred on you), **Load scene** (follows the folders: settlement →
+  its scenes + category subfolders, e.g. Los Santos → Heart attack → ls_heartattack1), Exit editor
 - scene loaded:
   - **ERM task**: title, description, caller, priority P1-P4, *Set centre to my position*
   - **Peds**: *Add ped here* (your position + heading), list (teleport to it)
