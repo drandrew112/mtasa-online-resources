@@ -8,7 +8,9 @@
 -- (driven, standing or automatic - automatic trains have no synced vehicle position on the
 -- server), and a stretch follows curves and stops exactly where the station begins.
 
-local core = exports.rw_core
+-- looked up on every call: a reloaded rw_core is a new resource and a cached exports table
+-- would keep calling the old one (everything froze after rw_core reloaded)
+local core = setmetatable({}, { __index = function(_, fn) return function(_, ...) return exports.rw_core[fn](nil, ...) end end })
 Crossings = {}
 local lengths, closedTrack = {}, { [0] = true }
 

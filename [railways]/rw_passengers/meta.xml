@@ -1,0 +1,40 @@
+<meta>
+    <info author="DrAndrew112" name="Railway passengers" version="1.0.0" type="script"
+          description="Sunline Rail passengers: boarding / leaving through ui_interactobject, coach interiors (dimension = coach id), windows" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua"    type="shared" />
+    <script src="shared/interiors.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/coaches.lua"    type="server" />
+    <script src="server/passengers.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/cabin.lua"   type="client" />
+    <script src="client/ride.lua"    type="client" />
+    <script src="client/sounds.lua"  type="client" />
+    <script src="client/display.lua" type="client" />
+    <script src="client/scenery.lua" type="client" />
+    <script src="client/windows.lua" type="client" />
+    <file src="shaders/windows.fx"   type="client" />
+    <file src="sounds/chime.wav"     type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="getCoachByDimension" type="server" />
+    <export function="getCoachDimension"   type="server" />
+    <export function="getPassengers"       type="server" />
+    <export function="getPlayerRide"       type="server" />
+    <export function="removePassenger"     type="server" />
+    <export function="setBoardingLocked"   type="server" />
+    <export function="debugCoachMenus"     type="server" />
+    <export function="isInTrain"           type="client" />
+    <export function="getMyRide"           type="client" />
+
+    <include resource="rw_customtracks" />   <!-- ride sounds -->
+    <include resource="rw_core" />            <!-- consists, fonts -->
+    <include resource="rw_timetable" />
+    <include resource="ui_core" />
+    <include resource="ui_interactobject" />
+</meta>

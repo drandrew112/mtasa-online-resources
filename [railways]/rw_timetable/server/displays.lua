@@ -2,7 +2,9 @@
 -- station (scheduled time, train, destination / origin, track, remark); clients near a
 -- display ask for it every few seconds and draw it on the wall (client/displays.lua).
 
-local core = exports.rw_core
+-- looked up on every call: a reloaded rw_core is a new resource and a cached exports table
+-- would keep calling the old one (everything froze after rw_core reloaded)
+local core = setmetatable({}, { __index = function(_, fn) return function(_, ...) return exports.rw_core[fn](nil, ...) end end })
 local B = TT.BOARD
 
 local function now() return getRealTime().timestamp end

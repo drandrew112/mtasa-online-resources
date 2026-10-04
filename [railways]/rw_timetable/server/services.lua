@@ -2,7 +2,9 @@
 -- stops (standing in the platform zone, doors open long enough, door side), departures,
 -- delays, completion. The loco timetable module talks to this through the rw:tt:* events.
 
-local core = exports.rw_core
+-- looked up on every call: a reloaded rw_core is a new resource and a cached exports table
+-- would keep calling the old one (everything froze after rw_core reloaded)
+local core = setmetatable({}, { __index = function(_, fn) return function(_, ...) return exports.rw_core[fn](nil, ...) end end })
 Services = {}           -- [consistId] = service
 local taken = {}        -- [tripId] = consistId
 local finished = {}     -- [tripId] = { delay, at } (station boards show "arrived")

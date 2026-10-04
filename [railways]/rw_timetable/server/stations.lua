@@ -1,7 +1,9 @@
 -- Stations: platform zones on every route track, "is this train standing at a station",
 -- door sides, and trip generation from the lines.
 
-local core = exports.rw_core
+-- looked up on every call: a reloaded rw_core is a new resource and a cached exports table
+-- would keep calling the old one (everything froze after rw_core reloaded)
+local core = setmetatable({}, { __index = function(_, fn) return function(_, ...) return exports.rw_core[fn](nil, ...) end end })
 
 Stations = {}          -- [id] = { def, zones = { [track] = { lo, hi, center } } }
 StationList = {}

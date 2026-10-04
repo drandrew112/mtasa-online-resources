@@ -13,11 +13,13 @@ left out of the whole system on purpose.
 | `rw_loco` | Cab simulation: BR 232 panel, timetable module, vigilance device (Sifa) |
 | `rw_auto` | Automatic (NPC) trains for every trip nobody took, automatic switch setting |
 | `rw_crossings` | Level crossings: the game's barriers replaced, closed while a train is near |
+| `rw_passengers` | Passengers: boarding / leaving through interact objects at released doors, coach interiors (Shamal cabin, dimension = coach id), info display, announcements, window shader, see `rw_passengers/DESIGN.md` |
 
 The load order is `rw_customtracks` → `rw_core` → `rw_signals` → `rw_timetable` → `rw_loco` → `rw_auto`, and
 `rw_crossings` after `rw_timetable` (each one `<include>`s what it needs; `v_main` starts
-them in dependency order). Travelling is free for now; tickets (bought at an interact
-object) and coach interiors are planned.
+them in dependency order). `rw_passengers` after `rw_timetable`.
+Travelling is free for now; tickets (bought at an interact object) are planned and can refuse
+boarding through the cancellable `onPlayerBoardTrain` event.
 
 ## The network
 

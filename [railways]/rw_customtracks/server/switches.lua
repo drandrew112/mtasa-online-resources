@@ -218,10 +218,6 @@ local function route(t)
     else
         r = walkAhead(seg, s, dir)
     end
-    -- distance from the leading end to every node on the route
-    local g0 = Net.segment(seg)
-    local dist = dir > 0 and g0.len - s or s
-    local horizon = math.max(SW.HORIZON_MIN, t.v * t.v / (2 * NET.SIM.BRAKE) + SW.HORIZON_EXTRA)
     local owner = ownerOf(t)
     local want = {}
     local limit, reason = r.length - SW.DEST_GAP, "destination"
@@ -229,28 +225,9 @@ local function route(t)
         if r.deadEnd then limit, reason = r.length - 2, "end of track"
         else limit, reason = r.length, "line" end
     end
-    for i, nodeId in ipairs(r.nodes) do
-        if i > 1 then dist = dist + Net.length(r.steps[i][1]) end
-        local node = Net.node(nodeId)
-        local g = node and node.group
-        local st = g and r.settings[g]
-        if st then
-            if dist > horizon then
-                limit, reason = math.min(limit, dist - SW.AUTHORITY_GAP), "horizon"
-                break
-            end
-            local ok, err = true, nil
-            if not (inf(g).reserved == owner and Net.getState(g) == st) then
-                ok, err = Switches.reserve(owner, { [g] = st })
-            end
-            if not ok then
-                limit, reason = math.min(limit, dist - SW.AUTHORITY_GAP), err
-                break
-            end
-            want[g] = true
-        end
-    end
-    -- moving block: never closer than TRAIN_GAP to another train on the route
+    -- red signals and the moving block (never closer than TRAIN_GAP to another train) come
+    -- first: switches past them are not reserved, so a train held at a signal or behind another
+    -- train never locks the points the others need (that deadlocked the network)
     local base = 0
     for i, step in ipairs(r.steps) do
         local sid, sdir = step[1], step[2]
@@ -275,6 +252,33 @@ local function route(t)
             end
         end
         base = base + (sdir > 0 and Net.length(sid) - entry or entry)
+    end
+
+    -- the switches up to the horizon, but only those the train can reach before stopping
+    local g0 = Net.segment(seg)
+    local dist = dir > 0 and g0.len - s or s
+    local horizon = math.max(SW.HORIZON_MIN, t.v * t.v / (2 * NET.SIM.BRAKE) + SW.HORIZON_EXTRA)
+    for i, nodeId in ipairs(r.nodes) do
+        if i > 1 then dist = dist + Net.length(r.steps[i][1]) end
+        local node = Net.node(nodeId)
+        local g = node and node.group
+        local st = g and r.settings[g]
+        if st then
+            if dist > limit then break end
+            if dist > horizon then
+                limit, reason = math.min(limit, dist - SW.AUTHORITY_GAP), "horizon"
+                break
+            end
+            local ok, err = true, nil
+            if not (inf(g).reserved == owner and Net.getState(g) == st) then
+                ok, err = Switches.reserve(owner, { [g] = st })
+            end
+            if not ok then
+                limit, reason = math.min(limit, dist - SW.AUTHORITY_GAP), err
+                break
+            end
+            want[g] = true
+        end
     end
 
     t.authority = { u = uLead + sgn * math.max(0, limit), sign = sgn, reason = reason, remaining = limit, routeLength = r.length }

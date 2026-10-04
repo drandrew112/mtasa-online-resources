@@ -4,7 +4,9 @@
 -- on the platform side when the train stands at a station, otherwise on the side away from
 -- other tracks.
 
-local core = exports.rw_core
+-- looked up on every call: a reloaded rw_core is a new resource and a cached exports table
+-- would keep calling the old one (everything froze after rw_core reloaded)
+local core = setmetatable({}, { __index = function(_, fn) return function(_, ...) return exports.rw_core[fn](nil, ...) end end })
 local Doors = {}        -- [consistId] = { lead, objs = {}, menus = {} }
 local menuOwner = {}    -- [menuId] = consistId
 
