@@ -94,7 +94,9 @@ body {
     flex: none;
 }
 .tag.grey { background: var(--grey); }
-.tag.green { background: var(--green); }
+.tag.green, .tag.ontime { background: var(--green); }
+.tag.early { background: var(--yellow); }
+.tag.late { background: var(--red); }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 .dot.st { background: #fff; border: 2px solid var(--accent); }
 .dot.sig { background: var(--green); width: 7px; height: 7px; }
@@ -166,7 +168,9 @@ table.tt tr.done td { color: var(--muted); }
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,.45);
 }
-.m.train.green { background: var(--green); }
+.m.train.ontime { background: var(--green); }
+.m.train.early { background: var(--yellow); color: #1a1a1a; }
+.m.train.late { background: var(--red); }
 .m.train.sel { outline: 2px solid var(--sun); }
 .m.train.dim { opacity: .3; }
 .m.train::after {

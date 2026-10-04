@@ -17,6 +17,9 @@
 
     /* ---------------------------------------------------------------- helpers */
     const trainLabel = c => c.service ? c.service.trip : (c.label || 'Train ' + c.id);
+    // label colour, only for trains in service: on time = green, early = yellow, late = red
+    const PUNCT_CLS = { ontime: ' ontime', early: ' early', late: ' late' };
+    const punctCls = c => c.service ? (PUNCT_CLS[RWWEB.delay(c.service.delay || 0).cls] || '') : '';
     const stationName = id => {
         const s = net && arr(net.stations).find(s => s.id === id);
         return s ? s.name : id;
@@ -104,7 +107,7 @@
         for (const c of consists) {
             const key = 'tr:' + c.id;
             keep.add(key);
-            const cls = 'm train' + (c.service ? ' green' : '') + (selTrain === c.id ? ' sel' : '');
+            const cls = 'm train' + punctCls(c) + (selTrain === c.id ? ' sel' : '');
             const m = RWMap.marker(key, c.x, c.y, cls, esc(trainLabel(c)), () => selectTrain(c.id));
             if (!m._hover) {
                 m._hover = true;
@@ -144,7 +147,7 @@
         const st = hoverStation || selStation;
         const related = st ? trainsAt(st) : null;
         for (const c of arr(state && state.consists)) {
-            const cls = 'm train' + (c.service ? ' green' : '') + (selTrain === c.id ? ' sel' : '') +
+            const cls = 'm train' + punctCls(c) + (selTrain === c.id ? ' sel' : '') +
                 (related && !related.has(c.id) ? ' dim' : '');
             RWMap.marker('tr:' + c.id, c.x, c.y, cls);
         }
@@ -180,7 +183,7 @@
             return;
         }
         const s = c.service;
-        $('trainTag').className = 'tag ' + (s ? 'green' : 'grey');
+        $('trainTag').className = 'tag' + (punctCls(c) || ' grey');
         $('trainName').textContent = trainLabel(c);
         $('trainSub').innerHTML = s ? esc(s.name) + ': ' + esc(stationName(s.from)) + ' &rarr; ' + esc(stationName(s.to))
             : 'No active timetable';
