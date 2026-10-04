@@ -237,7 +237,7 @@ local function route(t)
             local dd
             if p.dir == sdir and sdir > 0 and p.s >= entry then dd = base + p.s - entry
             elseif p.dir == sdir and sdir < 0 and p.s <= entry then dd = base + entry - p.s end
-            if dd and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, "signal " .. tostring(p.id) end
+            if dd and dd >= SW.STOP_PASSING and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, "signal " .. tostring(p.id) end
         end
         for _, o in pairs(Trains.all()) do
             if o ~= t and o.dim == t.dim then

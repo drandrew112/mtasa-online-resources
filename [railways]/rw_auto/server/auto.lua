@@ -241,7 +241,7 @@ local function stepTrain(train)
 
     -- running towards stop k: the network stops it at the platform (destination)
     if st.arrived and abs(st.speed) < 0.1 then
-        train.phase = train.k >= #plan.stops and "end" or "dwell"
+        train.phase = (train.k >= #plan.stops or train.orphan) and "end" or "dwell"
         train.arrivedAt = nowMs()
         return
     end
@@ -278,8 +278,24 @@ addEventHandler("onResourceStart", resourceRoot, function()
     setTimer(schedule, AUTO.SCHEDULE, 0)
 end)
 
+-- a restarted rw_timetable has lost the services of our trains: without one they would run
+-- "not in service" for ever (nothing retires them). Each ends at its next stop instead.
+local function orphan(train)
+    if train.orphan then return end
+    train.orphan = true
+    if train.chainTrip and reservedTrip[train.chainTrip] == train.id then reservedTrip[train.chainTrip] = nil end
+    train.chainTrip = nil
+    if train.phase == "dwell" then
+        train.phase, train.arrivedAt = "end", nowMs()
+    end
+    rlog("warn", "service lost (rw_timetable restarted) - the train is taken out of service at its next stop", train.id)
+end
+
 addEventHandler("onResourceStart", root, function(res)
-    if getResourceName(res) == "rw_timetable" then setTimer(function() pcall(loadZones) end, 1000, 1) end
+    if getResourceName(res) == "rw_timetable" then
+        for _, train in pairs(Trains) do orphan(train) end
+        setTimer(function() pcall(loadZones) end, 1000, 1)
+    end
 end)
 
 addEventHandler("onResourceStop", resourceRoot, function()

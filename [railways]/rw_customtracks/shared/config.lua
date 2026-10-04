@@ -108,6 +108,9 @@ NET = {
         DEST_GAP      = 1,     -- stop this far before the destination point (m)
         TRAIN_GAP     = 30,    -- stop this far behind another train on the route
         STOP_GAP      = 8,     -- stop this far before a red signal (rw_signals stop points)
+        STOP_PASSING  = 3,     -- a red signal closer than this (m) to the head is being passed: the
+                               -- train's own block entry turns it red (rw_core's extent is ~0.5 m
+                               -- longer than the network's), it must not stop the train for good
         WRONG_WAY     = 4,     -- route cost factor of a metre run against the line's direction
                                -- (NET.LINES dir), so trains cross over to the right track at the
                                -- first chance instead of running wrong-way to a slightly shorter one
