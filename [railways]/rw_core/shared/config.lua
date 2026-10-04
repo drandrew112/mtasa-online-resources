@@ -49,9 +49,9 @@ RW = {
         { id = "unity_1e", name = "Unity Station, track 1 (to LV)",    track = 0, x = 1745, y = -1953.8, dir = -1 },
         { id = "unity_2", name = "Unity Station, track 2 (from SF)",   track = 3, x = 1745, y = -1957.9, dir = -1 },
         { id = "unity_e", name = "Unity East yard, track 2",           track = 3, x = 2150, y = -1957.9, dir = 1 },
-        -- the second track ends inside the Cranberry hall, too short for a train: LS-bound trains
-        -- start on the main line and cross to track 2 at switch W19 south of the station
         { id = "cranb_2", name = "Cranberry Station (to LS)",          track = 0, x = -1944.1, y = 150, dir = -1 },
+        -- Cranberry track 2 = the second track's through platform (anticlockwise ICs from SF start here)
+        { id = "cranb_2t", name = "Cranberry Station, track 2 (to LS)", track = 3, x = -1947.8, y = 150, dir = -1 },
         { id = "cranb_1", name = "Cranberry Station (to LV)",          track = 0, x = -1944.1, y = 150, dir = 1 },
         -- Cranberry hall track 3 (dead end, line 5): LS-bound regionals start here facing south
         { id = "cranb_3", name = "Cranberry Station, track 3 (to LS)", track = 5, x = -1933.5, y = 95, dir = -1 },
@@ -64,7 +64,7 @@ RW = {
     -- Depots: railway staff open the depot menu in these markers (E). spawns = ids above.
     DEPOTS = {
         { name = "Unity Station depot", x = 1771.5, y = -1936.5, z = 13.56, spawns = { "unity_1", "unity_1e", "unity_2", "unity_e" } },
-        { name = "Cranberry depot",     x = -1957.0, y = 140.0,  z = 27.5, spawns = { "cranb_2", "cranb_1", "cranb_3" } },
+        { name = "Cranberry depot",     x = -1957.0, y = 140.0,  z = 27.5, spawns = { "cranb_2", "cranb_1", "cranb_2t", "cranb_3" } },
         { name = "Yellow Bell depot",   x = 1433.0, y = 2624.0,  z = 11.82, spawns = { "yb_ls", "yb_lv" } },
         { name = "Linden depot",        x = 2852.0, y = 1290.0,  z = 11.82, spawns = { "lin_ls", "lin_sf" } },
     },

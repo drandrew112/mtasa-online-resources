@@ -35,10 +35,14 @@ TT = {
     --   * RB SL2 Cranberry track 3 :10/:25/:40/:55 -> Unity (crosses to the second track at W19)
     --   * IC SL3 clockwise Unity :06/:36, IC SL4 anticlockwise Unity :05/:35 - 6-9 min between
     --     them and the regionals on the shared LS - SF tracks
+    --   * IC SL5 clockwise Cranberry track 1 :10/:40 (Unity :24, 6 min after the RB),
+    --     IC SL6 anticlockwise Cranberry track 2 :15/:45 (5 min after the RB, 4 before SL4).
+    --     They end on the same through track (:01 / :06) and are removed; the next train is
+    --     created 55 s before :10 / :15 - the hall tracks 3 / 4 are too short for the 4-coach ICs
     --   * the two single-track stretches between Yellow Bell and Linden (rw_signals SINGLE):
-    --     SL4 holds them :10-:13, SL3 :19-:22 (+30) - the ICs never meet there
-    --   * Cranberry throat: SL1 enters track 4 at ~:07, SL2 leaves track 3 at ~:10, SL3 passes
-    --     at ~:13 (+15 / +30)
+    --     SL4 :10-:13, SL5 :15-:18, SL3 :19-:22, SL6 :28-:31 (+30) - opposing ICs never meet there
+    --   * Cranberry throat: SL5 arrives ~:01, SL1 enters track 4 ~:07, SL2 leaves track 3 ~:10,
+    --     SL3 passes ~:13, SL6 leaves ~:15, SL4 leaves ~:19 (+30)
     -- auto = what rw_auto spawns for the trip (rw_core preset + spawn point).
     -- track = the line the trip normally uses, a stop's own track overrides it (station
     -- displays; a train standing in the station shows its real track, e.g. after a diversion).
@@ -65,6 +69,18 @@ TT = {
           stops = { { station = "unity", dep = 0 }, { station = "linden", arr = 4, dep = 5 }, { station = "yellowbell", arr = 8, dep = 9 },
                     { station = "cranberry", arr = 13, dep = 14 }, { station = "market", arr = 18, dep = 19 }, { station = "unity", arr = 21 } },
           consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "unity_2" } },
+        -- IC clockwise circle from SF: Cranberry - Yellow Bell - Linden - Unity - Market - Cranberry (main line, track 1)
+        { id = "SL5", prefix = "IC", base = 2201, name = "Sunline Circle", from = "cranberry", to = "cranberry",
+          first = 10, last = 24 * 60 - 1, headway = 30, track = 0,
+          stops = { { station = "cranberry", dep = 0 }, { station = "yellowbell", arr = 4, dep = 5 }, { station = "linden", arr = 8, dep = 9 },
+                    { station = "unity", arr = 13, dep = 14 }, { station = "market", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "cranb_1" } },
+        -- IC anticlockwise circle from SF: Cranberry - Market - Unity - Linden - Yellow Bell - Cranberry (second track, track 2)
+        { id = "SL6", prefix = "IC", base = 2202, name = "Sunline Circle", from = "cranberry", to = "cranberry",
+          first = 15, last = 24 * 60 - 1, headway = 30, track = 3,
+          stops = { { station = "cranberry", dep = 0 }, { station = "market", arr = 4, dep = 5 }, { station = "unity", arr = 7, dep = 8 },
+                    { station = "linden", arr = 12, dep = 13 }, { station = "yellowbell", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "cranb_2t" } },
     },
 
     TAKE_BEFORE = 15 * 60,   -- a trip can be taken this long before its departure (s)

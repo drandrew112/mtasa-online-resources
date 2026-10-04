@@ -94,16 +94,22 @@ Bell – Linden – Unity) use the main line, LS-bound / anticlockwise trains th
 | SL2 RB | Cranberry – Market – Unity | 15 min (:10) | Cranberry track 3, W21 / W19 onto the second track |
 | SL3 IC | Unity – Market – Cranberry – Yellow Bell – Linden – Unity | 30 min (:06, :36) | main line |
 | SL4 IC | Unity – Linden – Yellow Bell – Cranberry – Market – Unity | 30 min (:05, :35) | second track |
+| SL5 IC | Cranberry – Yellow Bell – Linden – Unity – Market – Cranberry | 30 min (:10, :40) | main line, Cranberry track 1 |
+| SL6 IC | Cranberry – Market – Unity – Linden – Yellow Bell – Cranberry | 30 min (:15, :45) | second track, Cranberry track 2 |
 
 - Running times: Unity–Market 2, Market–Cranberry 4, Cranberry–Yellow Bell 4, Yellow
   Bell–Linden 3, Linden–Unity 4 min, 1 min dwell. Automatic trains run at line speed
   (105–120 km/h) and wait at the platform when they are early.
-- On the LS – SF tracks the ICs run 6–9 minutes from the regionals.
+- On the LS – SF tracks trains run at least 4 minutes apart (ICs 5–9 minutes from the regionals).
 - Cranberry: the regionals use the hall's dead-end tracks (4 in, 3 out), the main line
-  platforms stay free for the ICs. Throat: SL1 enters track 4 at ~:07, SL2 leaves track 3 at
-  ~:10, SL3 passes at ~:13 (+15 / +30).
-- Single track in LV: SL4 is between Linden and Yellow Bell :10–:13, SL3 :19–:22 (+30) – the
-  ICs never meet there; the entry signals protect it anyway.
+  platforms stay free for the ICs (the 4-coach ICs do not fit the hall tracks). SL5 / SL6 end
+  on their through track (track 1 at :01, track 2 at :06) and are removed; the next one is
+  created 55 s before :10 / :15 (spawns `cranb_1` / `cranb_2t`) – no long standing.
+  Throat: SL5 arrives ~:01, SL1 enters track 4 ~:07, SL2 leaves track 3 ~:10, SL3 passes ~:13,
+  SL6 leaves ~:15, SL4 leaves ~:19 (+30).
+- Single track in LV: between Linden and Yellow Bell SL4 runs :10–:13, SL5 :15–:18, SL3
+  :19–:22, SL6 :28–:31 (+30) – opposing ICs never meet there; the entry signals protect it anyway.
+- 8 ICs an hour fill the LS – SF tracks (Unity departures to SF :00 RB, :06 IC, :15 RB, :24 IC).
 - Hall tracks 3 / 4 are rw_customtracks lines 5 / 6 (open lines from W21a to the buffers).
 
 Every station has a passenger display on a wall (departures and arrivals in separate
