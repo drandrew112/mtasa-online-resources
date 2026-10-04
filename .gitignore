@@ -29,6 +29,7 @@
 /\[medical\]/medsys/reference/
 
 # --- claude-mcp: Node.js dependencies and saved screenshots ---
+/\[devtools\]/claude-mcp/
 /\[devtools\]/claude-mcp/mcp-server/node_modules/
 /\[devtools\]/claude-mcp/screenshots/
 
