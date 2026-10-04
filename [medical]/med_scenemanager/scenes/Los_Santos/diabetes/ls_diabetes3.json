@@ -4,7 +4,7 @@
     "category": "diabetes",
     "enabled": true,
     "weight": 1,
-    "center": [1906.0, -1253.875, 13.559],
+    "center": [1906, -1253.875, 13.559],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,14 +18,11 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [1906.0, -1253.875, 13.559],
+            "pos": [1906, -1253.875, 13.559],
             "rot": 60,
             "anim": "vomit",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4300,
-                "glucose": 440
-            }
+            "state": { "bloodVolume": 4300, "glucose": 440 }
         }
     ]
 }

@@ -4,7 +4,7 @@
     "category": "deadbody",
     "enabled": true,
     "weight": 1,
-    "center": [1785.0, -1946.0, 13.55],
+    "center": [1785, -1946, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,7 +18,7 @@
         {
             "id": "p1",
             "skin": 79,
-            "pos": [1785.0, -1946.0, 13.55],
+            "pos": [1785, -1946, 13.55],
             "rot": 90,
             "anim": "ko_front",
             "injuries": [
@@ -26,9 +26,7 @@
                 { "type": "head_injury", "severity": 3 },
                 { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

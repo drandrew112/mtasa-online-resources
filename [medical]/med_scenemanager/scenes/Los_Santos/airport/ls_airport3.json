@@ -4,7 +4,7 @@
     "category": "airport",
     "enabled": true,
     "weight": 1,
-    "center": [1714.0, -2394.0, 13.6],
+    "center": [1714, -2394, 13.6],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -17,7 +17,7 @@
         {
             "id": "v1",
             "model": 519,
-            "pos": [1717.0, -2409.5, 14.6],
+            "pos": [1717, -2409.5, 14.6],
             "rot": [0, 0, 270],
             "frozen": false,
             "locked": false,
@@ -37,7 +37,7 @@
         {
             "id": "v2",
             "model": 583,
-            "pos": [1726.0, -2397.0, 13.1],
+            "pos": [1726, -2397, 13.1],
             "rot": [0, 0, 0],
             "frozen": false,
             "locked": false,
@@ -59,13 +59,11 @@
         {
             "id": "p1",
             "skin": 147,
-            "pos": [1714.0, -2394.0, 13.6],
+            "pos": [1714, -2394, 13.6],
             "rot": 180,
             "anim": "drunk",
             "injuries": [],
-            "state": {
-                "glucose": 46
-            }
+            "state": { "glucose": 46 }
         }
     ]
 }

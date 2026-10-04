@@ -4,7 +4,7 @@
     "category": "hypoglycemia",
     "enabled": true,
     "weight": 1,
-    "center": [1015.75, -1413.0, 13.199],
+    "center": [1015.75, -1413, 13.199],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,13 +18,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [1015.75, -1413.0, 13.199],
+            "pos": [1015.75, -1413, 13.199],
             "rot": 300,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 24
-            }
+            "state": { "glucose": 24 }
         }
     ]
 }

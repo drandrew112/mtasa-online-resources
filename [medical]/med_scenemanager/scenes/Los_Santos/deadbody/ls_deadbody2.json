@@ -4,7 +4,7 @@
     "category": "deadbody",
     "enabled": true,
     "weight": 1,
-    "center": [1938.0, -1955.0, 13.6],
+    "center": [1938, -1955, 13.6],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,16 +18,14 @@
         {
             "id": "p1",
             "skin": 137,
-            "pos": [1938.0, -1955.0, 13.6],
+            "pos": [1938, -1955, 13.6],
             "rot": 200,
             "anim": "ko_back",
             "injuries": [
                 { "type": "fracture", "severity": 3 },
                 { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

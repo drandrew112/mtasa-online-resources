@@ -24,10 +24,7 @@
             "injuries": [
                 { "type": "suffocation", "severity": 3 }
             ],
-            "state": {
-                "spo2": 40,
-                "rhythm": "PEA"
-            }
+            "state": { "spo2": 40, "rhythm": "PEA" }
         }
     ]
 }

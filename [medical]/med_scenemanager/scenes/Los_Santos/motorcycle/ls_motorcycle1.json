@@ -37,7 +37,7 @@
         {
             "id": "v2",
             "model": 405,
-            "pos": [1827.5, -1748.0, 13.9],
+            "pos": [1827.5, -1748, 13.9],
             "rot": [0, 0, 10],
             "frozen": false,
             "locked": false,
@@ -67,9 +67,7 @@
                 { "type": "head_injury", "severity": 2 },
                 { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4500
-            }
+            "state": { "bloodVolume": 4500 }
         }
     ]
 }

@@ -4,7 +4,7 @@
     "category": "stroke",
     "enabled": true,
     "weight": 1,
-    "center": [134.0, -1742.0, 6.543],
+    "center": [134, -1742, 6.543],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,7 +18,7 @@
         {
             "id": "p1",
             "skin": 94,
-            "pos": [134.0, -1742.0, 6.543],
+            "pos": [134, -1742, 6.543],
             "rot": 200,
             "anim": "sit",
             "injuries": [

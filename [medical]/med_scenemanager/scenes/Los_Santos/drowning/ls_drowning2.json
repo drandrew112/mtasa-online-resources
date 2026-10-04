@@ -24,9 +24,7 @@
             "injuries": [
                 { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 78
-            }
+            "state": { "spo2": 78 }
         }
     ]
 }

@@ -1,0 +1,82 @@
+-- rw_core settings (server + client)
+
+RW = {
+    -- the railway company running the network (web map, ui_browser site, UI texts)
+    COMPANY       = "Sunline Rail",
+    COMPANY_SHORT = "SLR",
+    SITE_URL      = "sunline-rail.sa",          -- ui_browser address (services category)
+
+    -- Railway role ("vasutas jog"): with REQUIRE_RAILWAY_ROLE, only role holders may assemble /
+    -- spawn trains and throw switches. Driving is open to everyone either way. The role is
+    -- given by other resources (work_traindriver later) or admins (/rwrole).
+    REQUIRE_RAILWAY_ROLE = false,
+    DATA_ROLE   = "rw.role",                     -- player element data mirror (server-owned)
+    ADMIN_LEVEL = 1,                             -- v_mysql admin_level for /rwrole, /rwdespawn
+
+    -- "tracks" = the lines of rw_customtracks (0 = main line loop, 3 = second track loop); a
+    -- track position (tp) is the distance along the line. Trains elsewhere (yards, crossovers,
+    -- Cranberry tracks 3 / 4) have no track.
+    TRACKS      = { 0, 3 },
+    TRACK_NAMES = { [0] = "Main line", [3] = "Second track", [5] = "Cranberry track 3", [6] = "Cranberry track 4" },
+
+    -- consist extent on a line (the network trains use rw_customtracks NET.STOCK lengths)
+    CAR_SPACING = 20.87,
+    HALF_LENGTH = 11,                            -- metres from a vehicle centre to its end
+
+    -- rolling stock. kind = loco | coach | wagon. module = rw_loco module that drives it.
+    -- numbers = running number range of a locomotive class: every spawned locomotive gets a
+    -- free one at random, the train is called after it ("BR 232 1112") while it has no service.
+    VEHICLES = {
+        br232     = { model = 538, kind = "loco",  name = "BR 232",          module = "br232", numbers = { 1001, 1399 } },
+        passenger = { model = 570, kind = "coach", name = "Passenger coach", passenger = true, seats = 64 },
+    },
+    MAX_CARRIAGES = 4,
+
+    -- ready-made compositions offered in the depot menu
+    PRESETS = {
+        { id = "light", name = "BR 232 light engine",  loco = "br232", cars = {} },
+        { id = "re2",   name = "BR 232 + 2 coaches",   loco = "br232", cars = { "passenger", "passenger" } },
+        { id = "re3",   name = "BR 232 + 3 coaches",   loco = "br232", cars = { "passenger", "passenger", "passenger" } },
+        { id = "re4",   name = "BR 232 + 4 coaches",   loco = "br232", cars = { "passenger", "passenger", "passenger", "passenger" } },
+    },
+
+    -- Spawn points: the lead's centre lands on (x, y) projected onto `track`; dir = +1 faces
+    -- increasing track position, -1 the other way. Main line (0) +1 runs
+    -- Unity -> Market -> Cranberry -> Yellow Bell -> Linden -> Unity; second track (3) +1 runs
+    -- towards San Fierro.
+    SPAWNS = {
+        { id = "unity_1", name = "Unity Station, track 1 (to SF)",     track = 0, x = 1745, y = -1953.8, dir = 1 },
+        { id = "unity_1e", name = "Unity Station, track 1 (to LV)",    track = 0, x = 1745, y = -1953.8, dir = -1 },
+        { id = "unity_2", name = "Unity Station, track 2 (from SF)",   track = 3, x = 1745, y = -1957.9, dir = -1 },
+        { id = "unity_e", name = "Unity East yard, track 2",           track = 3, x = 2150, y = -1957.9, dir = 1 },
+        -- the second track ends inside the Cranberry hall, too short for a train: LS-bound trains
+        -- start on the main line and cross to track 2 at switch W19 south of the station
+        { id = "cranb_2", name = "Cranberry Station (to LS)",          track = 0, x = -1944.1, y = 150, dir = -1 },
+        { id = "cranb_1", name = "Cranberry Station (to LV)",          track = 0, x = -1944.1, y = 150, dir = 1 },
+        -- Cranberry hall track 3 (dead end, line 5): LS-bound regionals start here facing south
+        { id = "cranb_3", name = "Cranberry Station, track 3 (to LS)", track = 5, x = -1933.5, y = 95, dir = -1 },
+        { id = "yb_ls",   name = "Yellow Bell Station (to SF)",        track = 0, x = 1433, y = 2632.3, dir = -1 },
+        { id = "yb_lv",   name = "Yellow Bell Station (to Linden)",    track = 0, x = 1433, y = 2632.3, dir = 1 },
+        { id = "lin_ls",  name = "Linden Station (to LS)",             track = 0, x = 2854.6, y = 1292, dir = 1 },
+        { id = "lin_sf",  name = "Linden Station (to Yellow Bell)",    track = 0, x = 2854.6, y = 1292, dir = -1 },
+    },
+
+    -- Depots: railway staff open the depot menu in these markers (E). spawns = ids above.
+    DEPOTS = {
+        { name = "Unity Station depot", x = 1771.5, y = -1936.5, z = 13.56, spawns = { "unity_1", "unity_1e", "unity_2", "unity_e" } },
+        { name = "Cranberry depot",     x = -1957.0, y = 140.0,  z = 27.5, spawns = { "cranb_2", "cranb_1", "cranb_3" } },
+        { name = "Yellow Bell depot",   x = 1433.0, y = 2624.0,  z = 11.82, spawns = { "yb_ls", "yb_lv" } },
+        { name = "Linden depot",        x = 2852.0, y = 1290.0,  z = 11.82, spawns = { "lin_ls", "lin_sf" } },
+    },
+    DEPOT_KEY = "e",
+
+
+    -- 3D info board above the locomotives (client/trainlabel.lua)
+    LABEL = {
+        MAX_DIST  = 90,        -- metres from the camera
+        FULL_DIST = 20,        -- full size up to this distance
+        MIN_SCALE = 0.55,
+        HEIGHT    = -2,       -- metres above the locomotive roof
+        TOGGLE_CMD = "rwlabels",
+    },
+}

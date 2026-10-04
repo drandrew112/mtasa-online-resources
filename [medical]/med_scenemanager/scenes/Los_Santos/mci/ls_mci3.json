@@ -4,7 +4,7 @@
     "category": "mci",
     "enabled": true,
     "weight": 1,
-    "center": [1683.0, -2251.0, 13.5],
+    "center": [1683, -2251, 13.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -17,7 +17,7 @@
         {
             "id": "v1",
             "model": 431,
-            "pos": [1683.0, -2254.5, 13.9],
+            "pos": [1683, -2254.5, 13.9],
             "rot": [0, 0, 270],
             "frozen": false,
             "locked": false,
@@ -37,7 +37,7 @@
         {
             "id": "v2",
             "model": 420,
-            "pos": [1693.5, -2253.0, 13.1],
+            "pos": [1693.5, -2253, 13.1],
             "rot": [0, 0, 240],
             "frozen": false,
             "locked": false,
@@ -57,7 +57,7 @@
         {
             "id": "v3",
             "model": 420,
-            "pos": [1672.0, -2256.0, 13.1],
+            "pos": [1672, -2256, 13.1],
             "rot": [0, 0, 300],
             "frozen": false,
             "locked": false,
@@ -79,7 +79,7 @@
         {
             "id": "p1",
             "skin": 93,
-            "pos": [1680.0, -2247.5, 13.6],
+            "pos": [1680, -2247.5, 13.6],
             "rot": 40,
             "anim": "ko_back",
             "injuries": [
@@ -91,20 +91,18 @@
         {
             "id": "p2",
             "skin": 61,
-            "pos": [1688.0, -2248.0, 13.6],
+            "pos": [1688, -2248, 13.6],
             "rot": 160,
             "anim": "injured",
             "injuries": [
                 { "type": "fracture", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 4200
-            }
+            "state": { "bloodVolume": 4200 }
         },
         {
             "id": "p3",
             "skin": 141,
-            "pos": [1675.0, -2246.5, 13.6],
+            "pos": [1675, -2246.5, 13.6],
             "rot": 250,
             "anim": "sit",
             "injuries": [
@@ -115,18 +113,16 @@
         {
             "id": "p4",
             "skin": 147,
-            "pos": [1692.0, -2247.0, 13.6],
+            "pos": [1692, -2247, 13.6],
             "rot": 120,
             "anim": "crouch",
             "injuries": [],
-            "state": {
-                "pain": 35
-            }
+            "state": { "pain": 35 }
         },
         {
             "id": "p5",
             "skin": 17,
-            "pos": [1697.0, -2258.5, 13.45],
+            "pos": [1697, -2258.5, 13.45],
             "rot": 300,
             "anim": "ko_front",
             "injuries": [

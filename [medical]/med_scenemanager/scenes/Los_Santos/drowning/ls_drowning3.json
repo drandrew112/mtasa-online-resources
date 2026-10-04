@@ -25,9 +25,7 @@
                 { "type": "suffocation", "severity": 1 },
                 { "type": "alcohol", "severity": 1 }
             ],
-            "state": {
-                "spo2": 88
-            }
+            "state": { "spo2": 88 }
         }
     ]
 }

@@ -22,9 +22,7 @@
             "rot": 180,
             "anim": "drunk",
             "injuries": [],
-            "state": {
-                "glucose": 40
-            }
+            "state": { "glucose": 40 }
         }
     ]
 }

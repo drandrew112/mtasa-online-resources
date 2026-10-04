@@ -4,7 +4,7 @@
     "category": "shooting",
     "enabled": true,
     "weight": 1,
-    "center": [2486.0, -1666.0, 13.5],
+    "center": [2486, -1666, 13.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -18,15 +18,13 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [2486.0, -1666.0, 13.5],
+            "pos": [2486, -1666, 13.5],
             "rot": 40,
             "anim": "ko_back",
             "injuries": [
                 { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3700
-            }
+            "state": { "bloodVolume": 3700 }
         },
         {
             "id": "p2",

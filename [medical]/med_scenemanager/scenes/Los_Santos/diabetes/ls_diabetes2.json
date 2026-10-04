@@ -22,10 +22,7 @@
             "rot": 270,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3900,
-                "glucose": 760
-            }
+            "state": { "bloodVolume": 3900, "glucose": 760 }
         }
     ]
 }

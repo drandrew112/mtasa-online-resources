@@ -25,9 +25,7 @@
                 { "type": "gunshot", "severity": 3 },
                 { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 3200
-            }
+            "state": { "bloodVolume": 3200 }
         }
     ]
 }

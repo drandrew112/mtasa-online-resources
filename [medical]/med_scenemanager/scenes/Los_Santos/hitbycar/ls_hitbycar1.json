@@ -4,7 +4,7 @@
     "category": "hitbycar",
     "enabled": true,
     "weight": 1,
-    "center": [2486.0, -1666.0, 13.5],
+    "center": [2486, -1666, 13.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -17,7 +17,7 @@
         {
             "id": "v1",
             "model": 481,
-            "pos": [2487.2, -1665.0, 13.64],
+            "pos": [2487.2, -1665, 13.64],
             "rot": [0, 0, 70],
             "frozen": false,
             "locked": false,
@@ -37,7 +37,7 @@
         {
             "id": "v2",
             "model": 466,
-            "pos": [2483.5, -1662.0, 13.84],
+            "pos": [2483.5, -1662, 13.84],
             "rot": [0, 0, 200],
             "frozen": false,
             "locked": false,
@@ -59,7 +59,7 @@
         {
             "id": "p1",
             "skin": 22,
-            "pos": [2486.0, -1666.0, 13.5],
+            "pos": [2486, -1666, 13.5],
             "rot": 150,
             "anim": "injured",
             "injuries": [
