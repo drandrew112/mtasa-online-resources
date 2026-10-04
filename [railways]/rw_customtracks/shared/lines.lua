@@ -129,6 +129,21 @@ end
 
 function Lines.onLine(id, seg) local L = lines[id] return L and L.bySeg[seg] ~= nil end
 
+-- running along `seg` in `dir` (+1 = towards b) is against the normal direction of its lines
+-- (NET.LINES dir): only when the segment is on a directional line and none of them runs that way
+-- (the single-track stretches shared by both lines are right-way in both directions)
+function Lines.isWrongWay(seg, dir)
+    local wrong = false
+    for _, e in ipairs(segLines[seg] or {}) do
+        local def = NET.LINES and NET.LINES[e.line]
+        if def and def.dir then
+            if e.piece.dir * def.dir == dir then return false end
+            wrong = true
+        end
+    end
+    return wrong
+end
+
 -- world point -> x, y, z, dirX, dirY (unit, increasing tp)
 function Lines.pointAt(id, tp)
     local seg, s, dir = Lines.toNet(id, tp)

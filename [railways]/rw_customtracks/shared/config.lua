@@ -46,9 +46,12 @@ NET = {
 
     -- lines (shared/lines.lua): the "track" numbers the other rw_ resources use (as before: 0 = main
     -- line loop, 3 = second track), now with their own continuous tp along the network
+    -- dir = the normal running direction in line tp (directional double track: clockwise / SF-bound
+    -- on the main line, anticlockwise / LS-bound on the second track); the router avoids running
+    -- against it (SWITCHES.WRONG_WAY)
     LINES = {
-        [0] = { start = "M01", families = { "M" } },
-        [3] = { start = "S01", families = { "S", "N", "NB", "NC", "M" } },
+        [0] = { start = "M01", families = { "M" }, dir = 1 },
+        [3] = { start = "S01", families = { "S", "N", "NB", "NC", "M" }, dir = -1 },
         -- Cranberry hall dead-end tracks (open lines from W21a to their buffer stops, +1 = north):
         -- 5 = track 3 (C02 / C03), 6 = track 4 (C02 / P401)
         [5] = { start = "C02", families = { "C" } },
@@ -105,6 +108,9 @@ NET = {
         DEST_GAP      = 1,     -- stop this far before the destination point (m)
         TRAIN_GAP     = 30,    -- stop this far behind another train on the route
         STOP_GAP      = 8,     -- stop this far before a red signal (rw_signals stop points)
+        WRONG_WAY     = 4,     -- route cost factor of a metre run against the line's direction
+                               -- (NET.LINES dir), so trains cross over to the right track at the
+                               -- first chance instead of running wrong-way to a slightly shorter one
         LOOKAHEAD     = 2000,  -- trains without a destination: authority looks this far ahead
         ROUTER_TICK   = 250,   -- ms
         REPAIR_TIME   = 120,   -- s until a trailed (damaged) switch is repaired automatically

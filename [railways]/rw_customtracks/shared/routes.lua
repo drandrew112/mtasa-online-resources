@@ -8,6 +8,8 @@
 -- opts.maxLength (default 30 km), opts.avoid = { [group] = true } groups that must not be used,
 -- opts.switchPenalty (default 300 m): extra cost of taking a diverging leg, so trains keep to their
 -- track instead of hopping over to a slightly shorter parallel one.
+-- opts.wrongWay (default NET.SWITCHES.WRONG_WAY): cost factor of the metres run against a line's
+-- direction (Lines.isWrongWay), so a train crosses back to the right track at the first crossover.
 
 local function legOptions(node, ref)
     -- -> { { ref, group, state } } ways on from `ref` through `node`
@@ -63,6 +65,10 @@ function Net.findRoute(fromSeg, fromS, fromDir, toSeg, toS, toDir, opts)
     local maxLength = opts.maxLength or 30000
     local avoid = opts.avoid or {}
     local penalty = opts.switchPenalty or 300
+    local wrongWay = opts.wrongWay or (NET.SWITCHES and NET.SWITCHES.WRONG_WAY) or 1
+    local function factor(seg, dir)
+        return (wrongWay ~= 1 and Lines and Lines.isWrongWay(seg, dir)) and wrongWay or 1
+    end
     if not Net.segment(fromSeg) or not Net.segment(toSeg) then return nil, "unknown segment" end
     fromDir = fromDir == -1 and -1 or 1
 
@@ -83,7 +89,7 @@ function Net.findRoute(fromSeg, fromS, fromDir, toSeg, toS, toDir, opts)
         local s0 = cur.start or (cur.dir > 0 and 0 or g.len)
         local toEnd = cur.dir > 0 and g.len - s0 or s0
         local dEnd = (cur.len or cur.d) + toEnd
-        local cEnd = cur.d + toEnd
+        local cEnd = cur.d + toEnd * factor(cur.seg, cur.dir)
         if dEnd <= maxLength then
             local e = cur.dir > 0 and "b" or "a"
             local nodeId = cur.dir > 0 and g.b or g.a
@@ -113,7 +119,7 @@ function Net.findRoute(fromSeg, fromS, fromDir, toSeg, toS, toDir, opts)
                         -- reaching the target: queue it so a cheaper way found later still wins
                         local entry = ndir > 0 and 0 or Net.length(nid)
                         local total = dEnd + math.abs(toS - entry)
-                        push(heap, { goal = true, d = cost + math.abs(toS - entry),
+                        push(heap, { goal = true, d = cost + math.abs(toS - entry) * factor(nid, ndir),
                             result = { length = total, settings = settings, steps = steps, nodes = nodes } })
                     end
                     local key = nid .. "|" .. ndir
