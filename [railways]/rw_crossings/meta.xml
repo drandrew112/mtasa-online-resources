@@ -1,0 +1,15 @@
+<meta>
+    <info author="DrAndrew112" name="Railway level crossings" version="1.0.0" type="script"
+          description="Sunline Rail level crossings: replaces the game's barriers, closes them while a train is in the crossing zone" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"          type="shared" />
+    <script src="shared/crossings_data.lua"  type="server" />
+    <script src="server/crossings.lua"       type="server" />
+    <script src="client/lights.lua"          type="client" />
+
+    <export function="getCrossings" type="server" />
+
+    <include resource="rw_core" />
+    <include resource="rw_timetable" />
+</meta>

@@ -85,9 +85,18 @@ Api.register("debug", "exec", function(p)
     return { success = true, results = values, count = n, printed = printed }
 end, { mutates = true, async = true, desc = "Runs Lua on the server or the probe client (dev only)." })
 
--- resources: { action = list|info|start|stop|restart, name, filter }
+-- resources: { action = list|info|start|stop|restart|refresh, name, filter }
 Api.register("debug", "resources", function(p)
-    local action = P.str(p, "action", "list", { "list", "info", "start", "stop", "restart" })
+    local action = P.str(p, "action", "list", { "list", "info", "start", "stop", "restart", "refresh" })
+    if action == "refresh" then
+        -- picks up newly added / changed resource folders (refreshResources)
+        local before = #getResources()
+        if not refreshResources(false) then
+            fail("ACL_DENIED_OR_FAILED", "refreshResources failed.", { suggestion = "The bridge needs function.refreshResources (Admin group)." })
+        end
+        if p.wait ~= false then Async.sleep(500) end
+        return { success = true, action = "refresh", before = before, after = #getResources() }
+    end
     if action == "list" then
         local out = {}
         local q = p.filter and tostring(p.filter):lower()

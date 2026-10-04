@@ -1,0 +1,32 @@
+<meta>
+    <info author="DrAndrew112" name="Railway locomotives" version="1.0.0" type="script"
+          description="Sunline Rail locomotive simulation: cab panels (BR 232), timetable module, vigilance device (Sifa)" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/loco.lua"   type="server" />
+    <script src="server/cab.lua"    type="server" />
+
+    <script src="client/gfx.lua"                 type="client" />
+    <script src="client/core.lua"                type="client" />
+    <script src="client/modules/br232.lua"       type="client" />
+    <script src="client/modules/timetable.lua"   type="client" />
+    <script src="client/modules/sifa.lua"        type="client" />
+
+    <file src="fonts/Roboto.ttf"        type="client" />
+    <file src="fonts/RobotoB.ttf"       type="client" />
+    <!-- temporary: the medsys Lifepak alarm, until the real Sifa sound arrives -->
+    <file src="sounds/sifa_alarm.wav"   type="client" />
+
+    <export function="getLocoState" type="server" />
+    <export function="setLocoState" type="server" />
+    <export function="getSifaState" type="client" />
+
+    <include resource="rw_core" />
+    <include resource="rw_signals" />
+    <include resource="rw_timetable" />
+    <include resource="ui_core" />
+    <include resource="ui_interactobject" />
+    <include resource="v_radar" />
+</meta>

@@ -1,0 +1,39 @@
+<meta>
+    <info author="DrAndrew112" name="Railway timetable" version="1.0.0" type="script"
+          description="Sunline Rail timetables: stations, lines, services (trips), stop / door / delay monitoring, station displays" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"    type="shared" />
+    <script src="server/stations.lua"  type="server" />
+    <script src="server/services.lua"  type="server" />
+    <script src="server/displays.lua"  type="server" />
+    <script src="client/notify.lua"    type="client" />
+    <script src="client/displays.lua"  type="client" />
+
+    <file src="fonts/Roboto.ttf"       type="client" />
+    <file src="fonts/RobotoB.ttf"      type="client" />
+
+    <!-- stations / trips -->
+    <export function="getStations"           type="server" />
+    <export function="isConsistAtStation"    type="server" />
+    <export function="getTripsOverview"      type="server" />
+    <export function="getAllServices"        type="server" />
+    <export function="getServicesForConsist" type="server" />
+    <!-- services -->
+    <export function="assignService"         type="server" />
+    <export function="cancelService"         type="server" />
+    <export function="getConsistService"     type="server" />
+    <export function="canOpenDoors"          type="server" />
+    <!-- rw_auto -->
+    <export function="getTripState"          type="server" />
+    <export function="getStationZones"       type="server" />
+    <export function="getTripPlan"           type="server" />
+    <export function="cancelTrip"            type="server" />
+    <export function="isTripCancelled"       type="server" />
+    <!-- station displays -->
+    <export function="getStationBoard"       type="server" />
+    <export function="getStationBoards"      type="server" />
+
+    <include resource="rw_core" />
+    <include resource="ui_core" />
+</meta>

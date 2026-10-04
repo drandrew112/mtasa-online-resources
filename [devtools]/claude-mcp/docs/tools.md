@@ -554,7 +554,7 @@ Related: place_entity, orient_entity
 
 **mutating** · probe: no
 
-Changes properties of an entity: vehicle damage preset / colours / plate / engine / lights / sirens / locks / doors open, ped skin / pose (animation) / seat in a vehicle / exit, object scale, common frozen / alpha / collisions / health / model, plus free meta. Returns applied keys, warnings and the full new state.
+Changes properties of an entity: vehicle damage preset / colours / plate / engine / lights / sirens / locks / doors open, ped (or player, e.g. the probe) skin / pose (animation) / seat in a vehicle / exit, object scale, common frozen / alpha / collisions / health / model, plus free meta. Returns applied keys, warnings and the full new state.
 
 | parameter | type | required | description |
 |---|---|---|---|
@@ -1057,21 +1057,21 @@ Side effects: Depends on the called function.
 
 Related: manage_resources, execute_lua
 
-### `manage_resources` — Resources: list / info / start / stop / restart
+### `manage_resources` — Resources: list / info / start / stop / restart / refresh
 
 **mutating** · probe: no
 
-list (with filter) and info (state, failure reason, exports, version) are read-only; start / stop / restart change the server and need ACL rights for claude-mcp (see docs/troubleshooting.md). The bridge cannot restart itself through this tool.
+list (with filter) and info (state, failure reason, exports, version) are read-only; start / stop / restart change the server and need ACL rights for claude-mcp (see docs/troubleshooting.md). refresh rescans the resource folders so newly added resources can be started. The bridge cannot restart itself through this tool.
 
 | parameter | type | required | description |
 |---|---|---|---|
-| action | string (list, info, start, stop, restart) | yes |  |
+| action | string (list, info, start, stop, restart, refresh) | yes |  |
 | name | string |  |  |
 | filter | string |  |  |
 
 Returns: resources[] | info | new state
 
-Side effects: start/stop/restart affect the running server.
+Side effects: start/stop/restart/refresh affect the running server.
 
 Related: get_debug_log
 

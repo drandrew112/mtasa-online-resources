@@ -218,7 +218,7 @@ function Props.apply(el, props, entity)
             for k, v in pairs(props.doorsOpen) do setVehicleDoorOpenRatio(el, tonumber(k) or 0, tonumber(v) or 0, 0) end
             did("doorsOpen")
         end
-    elseif typ == "ped" then
+    elseif typ == "ped" or typ == "player" then
         if props.skin ~= nil then
             if setElementModel(el, math.floor(tonumber(props.skin) or 0)) then
                 if entity then entity.model = getElementModel(el) end

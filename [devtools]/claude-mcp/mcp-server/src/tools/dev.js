@@ -39,11 +39,11 @@ defineTool({
 defineTool({
   name: 'manage_resources',
   module: 'dev', kind: 'mutate', needsProbe: false,
-  title: 'Resources: list / info / start / stop / restart',
-  description: 'list (with filter) and info (state, failure reason, exports, version) are read-only; start / stop / restart change the server and need ACL rights for claude-mcp (see docs/troubleshooting.md). The bridge cannot restart itself through this tool.',
-  input: { action: z.enum(['list', 'info', 'start', 'stop', 'restart']), name: z.string().optional(), filter: z.string().optional() },
+  title: 'Resources: list / info / start / stop / restart / refresh',
+  description: 'list (with filter) and info (state, failure reason, exports, version) are read-only; start / stop / restart change the server and need ACL rights for claude-mcp (see docs/troubleshooting.md). refresh rescans the resource folders so newly added resources can be started. The bridge cannot restart itself through this tool.',
+  input: { action: z.enum(['list', 'info', 'start', 'stop', 'restart', 'refresh']), name: z.string().optional(), filter: z.string().optional() },
   returns: ['resources[] | info | new state'],
-  sideEffects: 'start/stop/restart affect the running server.',
+  sideEffects: 'start/stop/restart/refresh affect the running server.',
   related: ['get_debug_log'],
   async handler(a, ctx) { return ctx.call('debug', 'resources', a); },
 });

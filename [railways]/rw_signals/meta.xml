@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="Railway signals" version="1.0.0" type="script"
+          description="Sunline Rail block signalling: station + automatic block signals, direction lock, SPAD detection" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"   type="shared" />
+    <script src="server/signals.lua"  type="server" />
+    <script src="client/signals.lua"  type="client" />
+
+    <export function="getSignalList"    type="server" />
+    <export function="getSignalAspects" type="server" />
+    <export function="getSignal"        type="server" />
+    <export function="getSignalAhead"   type="server" />
+    <export function="getSignalAhead"   type="client" />
+    <export function="getSignalAspect"  type="client" />
+
+    <include resource="rw_core" />
+</meta>

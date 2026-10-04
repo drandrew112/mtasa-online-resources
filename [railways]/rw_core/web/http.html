@@ -1,0 +1,23 @@
+<*
+-- HTTP entry of the network map (http://<server>:<httpport>/rw_core/).
+-- web/index.html, css and js are also client files (the in-game ui_browser loads them as a
+-- local CEF page) and MTA serves client files as application/octet-stream, which browsers
+-- refuse as a stylesheet - so the HTTP page is sent as one document with css / js inlined.
+
+local function read(path)
+    local f = fileOpen(path, true)
+    if not f then return "" end
+    local content = fileRead(f, fileGetSize(f))
+    fileClose(f)
+    return content
+end
+
+local page = read("web/index.html")
+page = page:gsub('<link rel="stylesheet" href="css/style%.css">', function()
+    return "<style>\n" .. read("web/css/style.css") .. "\n</style>"
+end)
+page = page:gsub('<script src="(js/[%w_]+%.js)"></script>', function(path)
+    return "<script>\n" .. read("web/" .. path) .. "\n</script>"
+end)
+httpWrite(page)
+*>

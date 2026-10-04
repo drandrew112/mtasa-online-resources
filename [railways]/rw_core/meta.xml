@@ -1,0 +1,85 @@
+<meta>
+    <info author="DrAndrew112" name="Railway core" version="1.0.0" type="script"
+          description="Sunline Rail network core: tracks, consists (every railway vehicle spawns here), switches, railway role, network web map" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua"    type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/track.lua"    type="server" />
+    <script src="server/role.lua"     type="server" />
+    <script src="server/consist.lua"  type="server" />
+    <script src="server/switches.lua" type="server" />
+    <script src="server/depot.lua"    type="server" />
+    <script src="server/web.lua"      type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/role.lua"     type="client" />
+    <script src="client/depot.lua"    type="client" />
+    <script src="client/webpage.lua"  type="client" />
+    <script src="client/trainlabel.lua" type="client" />
+    <file src="fonts/Roboto.ttf"  type="client" />
+    <file src="fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= WEB (network map) =================
+         http://<server>:<httpport>/rw_core/ ; in game: ui_browser "sunline-rail.sa" (services).
+         web/http.html sends web/index.html with css / js inlined (see the file). -->
+    <html src="web/http.html"   default="true" />
+    <html src="web/img/map.png" raw="true" />
+    <file src="web/game.html"     type="client" />
+    <file src="web/index.html"    type="client" />
+    <file src="web/css/style.css" type="client" />
+    <file src="web/js/api.js"     type="client" />
+    <file src="web/js/map.js"     type="client" />
+    <file src="web/js/app.js"     type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- consists: every railway vehicle is spawned through these -->
+    <export function="spawnConsist"       type="server" />
+    <export function="destroyConsist"     type="server" />
+    <export function="addCarriage"        type="server" />
+    <export function="removeCarriage"     type="server" />
+    <export function="transferConsist"    type="server" />
+    <export function="setConsistSpeed"    type="server" />
+    <export function="setConsistVirtual"  type="server" />
+    <export function="isConsistAuto"      type="server" />
+    <export function="getConsist"         type="server" />
+    <export function="getConsists"        type="server" />
+    <export function="getVehicleConsist"  type="server" />
+    <export function="getConsistByDriver" type="server" />
+    <export function="getSpawnPoint"      type="server" />
+    <!-- track geometry helpers (call them once, not per frame) -->
+    <export function="projectToTrack"     type="server" />
+    <export function="getTrackPoint"      type="server" />
+    <export function="getTrackLength"     type="server" />
+    <export function="getTrackDelta"      type="server" />
+    <export function="getTrackPolyline"   type="server" />
+    <!-- switches -->
+    <export function="getSwitches"        type="server" />
+    <export function="getSwitchState"     type="server" />
+    <export function="setSwitchState"     type="server" />
+    <export function="setSwitchReserved"  type="server" />
+    <!-- railway role ("vasutas jog") -->
+    <export function="setPlayerRailway"      type="server" />
+    <export function="isPlayerRailway"       type="server" />
+    <export function="hasRailwayAccess"      type="server" />
+    <export function="isRailwayRoleRequired" type="server" />
+    <export function="getRailwayPlayers"     type="server" />
+    <export function="isRailwayAdmin"        type="server" />
+    <export function="isPlayerRailway"       type="client" />
+    <export function="hasRailwayAccess"      type="client" />
+    <export function="isRailwayRoleRequired" type="client" />
+    <!-- network map web API -->
+    <export function="rwGetNetwork" type="server" http="true" />
+    <export function="rwGetState"   type="server" http="true" />
+    <export function="rwGetBoards"  type="server" http="true" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="ui_core" />
+    <include resource="rw_customtracks" />
+    <include resource="ui_inac" />
+    <include resource="ui_interactobject" />
+    <include resource="ui_browser" />
+    <include resource="v_radar" />
+</meta>

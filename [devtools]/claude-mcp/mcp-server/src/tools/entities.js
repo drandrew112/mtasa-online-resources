@@ -66,7 +66,7 @@ defineTool({
   name: 'modify_entity',
   module: 'entities', kind: 'mutate', needsProbe: false,
   title: 'Change entity properties',
-  description: 'Changes properties of an entity: vehicle damage preset / colours / plate / engine / lights / sirens / locks / doors open, ped skin / pose (animation) / seat in a vehicle / exit, object scale, common frozen / alpha / collisions / health / model, plus free meta. Returns applied keys, warnings and the full new state.',
+  description: 'Changes properties of an entity: vehicle damage preset / colours / plate / engine / lights / sirens / locks / doors open, ped (or player, e.g. the probe) skin / pose (animation) / seat in a vehicle / exit, object scale, common frozen / alpha / collisions / health / model, plus free meta. Returns applied keys, warnings and the full new state.',
   input: { id: z.string(), properties },
   returns: ['applied[]', 'warnings[]', 'entity (high detail)'],
   sideEffects: 'Changes element state.',

@@ -1,0 +1,101 @@
+<meta>
+    <info author="DrAndrew112" name="Railway custom tracks" version="0.3.0" type="script"
+          description="Sunline Rail custom track network (replaces GTA tracks): graph, geometry, trains (puppets), debug drawing. See DESIGN.md" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- source/ is Lime's old custom train tracks script, kept only as an example (not loaded).
+         The network data (data/network/*.json) is read by the server only and sent to the clients. -->
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua"    type="shared" />
+    <script src="shared/geometry.lua"  type="shared" />
+    <script src="shared/network.lua"   type="shared" />
+    <script src="shared/trainpath.lua" type="shared" />
+    <script src="shared/routes.lua"    type="shared" />
+    <script src="shared/lines.lua"     type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/network.lua"  type="server" />
+    <script src="server/validate.lua" type="server" />
+    <script src="server/trains.lua"   type="server" />
+    <script src="server/switches.lua" type="server" />
+    <script src="server/integration.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/network.lua"   type="client" />
+    <script src="client/debugdraw.lua" type="client" />
+    <script src="client/trains.lua"    type="client" />
+    <script src="client/sweeper.lua"   type="client" />
+    <script src="client/sounds.lua"    type="client" />
+    <script src="client/switches.lua"  type="client" />
+    <file src="sounds/run.wav"    type="client" />
+    <file src="sounds/brake.wav"  type="client" />
+    <file src="sounds/clack.wav"  type="client" />
+    <file src="sounds/squeal.wav" type="client" />
+
+    <!-- ================= EXPORTS: network ================= -->
+    <export function="netPutSegment"    type="server" />
+    <export function="netDeleteSegment" type="server" />
+    <export function="netPutNode"       type="server" />
+    <export function="netDeleteNode"    type="server" />
+    <export function="netPutGroup"      type="server" />
+    <export function="netDeleteGroup"   type="server" />
+    <export function="netPutCrossing"   type="server" />
+    <export function="netGetSegment"    type="server" />
+    <export function="netGetNode"       type="server" />
+    <export function="netSave"          type="server" />
+    <export function="netReload"        type="server" />
+    <export function="netSummary"       type="server" />
+    <export function="netListSegments"  type="server" />
+    <export function="netValidate"      type="server" />
+    <export function="netProject"       type="server" />
+    <export function="netPointAt"       type="server" />
+    <export function="netAdvance"       type="server" />
+    <export function="netGetSwitch"     type="server" />
+    <export function="netSetSwitch"     type="server" />
+
+    <export function="netIsReady"       type="client" />
+    <export function="netProject"       type="client" />
+    <export function="netPointAt"       type="client" />
+
+    <!-- ================= EXPORTS: trains ================= -->
+    <export function="spawnNetTrain"        type="server" />
+    <export function="destroyNetTrain"      type="server" />
+    <export function="setNetTrainControl"   type="server" />
+    <export function="getNetTrain"          type="server" />
+    <export function="getNetTrains"         type="server" />
+    <export function="setNetTrainDriver"    type="server" />
+    <export function="addNetTrainRider"     type="server" />
+    <export function="removeNetTrainPlayer" type="server" />
+
+    <!-- ================= EXPORTS: switches / routes ================= -->
+    <export function="getNetSwitches"         type="server" />
+    <export function="findNetRoute"           type="server" />
+    <export function="reserveNetRoute"        type="server" />
+    <export function="releaseNetRoute"        type="server" />
+    <export function="setNetTrainDestination" type="server" />
+
+    <!-- ================= EXPORTS: integration (phase 4) ================= -->
+    <export function="getNetLines"        type="server" />
+    <export function="lineProject"        type="server" />
+    <export function="linePoint"          type="server" />
+    <export function="lineLength"         type="server" />
+    <export function="lineDelta"          type="server" />
+    <export function="linePolyline"       type="server" />
+    <export function="lineToNet"          type="server" />
+    <export function="setNetTrainLineDestination" type="server" />
+    <export function="getNetLinePoints"   type="server" />
+    <export function="setNetStopPoints"   type="server" />
+    <export function="getNetStopPoints"   type="server" />
+    <export function="spawnNetTrainOnLine" type="server" />
+    <export function="setNetTrainComposition" type="server" />
+    <export function="setNetTrainLock"    type="server" />
+    <export function="setNetTrainEmergency" type="server" />
+    <export function="setNetTrainData"    type="server" />
+    <export function="getNetTrainByElement" type="server" />
+    <export function="getNetTrainByPlayer" type="server" />
+    <export function="netGetMyTrain"      type="client" />
+    <export function="netCab"             type="client" />
+    <export function="netSetHudEnabled"   type="client" />
+    <export function="lineProject"        type="client" />
+</meta>

@@ -47,6 +47,7 @@ part of the base mod. The old `listres.py` script has been removed.
 | `[audio]` | Audio replacements (HQ weapon sounds, train horn). |
 | `[maps]` | Map and object data (interiors, stunt parks, garages, custom props). |
 | `[npc]` | Group reserved for later expansion (currently empty). |
+| `[railways]` | Sunline Rail, the LS-SF railway: track/consist/switch core with a network web map (`rw_core`), block signals (`rw_signals`), timetables (`rw_timetable`), cab simulation with the BR 232 panel and vigilance device (`rw_loco`). See `[railways]/README.md`. |
 | `v_modmenu` | F1 free-roam / test menu (for development). |
 
 By convention most resource names start with the `v_` prefix. The UI resources

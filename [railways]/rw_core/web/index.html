@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sunline Rail - Network map</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="top">
+        <div class="brand">
+            <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+                <circle cx="20" cy="22" r="9" fill="var(--sun)"/>
+                <g stroke="var(--sun)" stroke-width="2.4" stroke-linecap="round">
+                    <line x1="20" y1="4" x2="20" y2="8"/><line x1="7" y1="10" x2="10" y2="13"/>
+                    <line x1="33" y1="10" x2="30" y2="13"/><line x1="2" y1="22" x2="6" y2="22"/>
+                    <line x1="34" y1="22" x2="38" y2="22"/>
+                </g>
+                <rect x="2" y="31" width="36" height="3" rx="1.5" fill="var(--accent)"/>
+            </svg>
+            <div>
+                <div class="name" id="companyName">Sunline Rail</div>
+                <div class="sub">Live network map</div>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat"><span id="statTrains">0</span><label>trains</label></div>
+            <div class="stat"><span id="statService">0</span><label>in service</label></div>
+            <div class="stat"><span id="statPunct">-</span><label>avg delay</label></div>
+        </div>
+        <div class="clock" id="clock">--:--</div>
+    </header>
+
+    <main class="layout">
+        <aside class="boards left" id="trainPanel">
+            <header class="board-head">
+                <i class="tag grey" id="trainTag"></i>
+                <div class="grow">
+                    <h3 id="trainName">Trains</h3>
+                    <div class="muted" id="trainSub"></div>
+                </div>
+                <select id="trainPick" title="Train"></select>
+            </header>
+            <section class="board-sec train-info">
+                <h2>Train</h2>
+                <div class="board-list" id="trainInfo"><p class="muted">Loading...</p></div>
+            </section>
+            <section class="board-sec">
+                <h2>Timetable</h2>
+                <div class="board-list" id="trainStops"><p class="muted">Loading...</p></div>
+            </section>
+            <section class="panel legend">
+                <div><i class="tag grey"></i> No timetable</div>
+                <div><i class="tag green"></i> In service</div>
+                <div><i class="dot st"></i> Station</div>
+                <div><i class="dot sig"></i> Signal</div>
+            </section>
+        </aside>
+
+        <section class="map-wrap">
+            <div class="map" id="map">
+                <img id="mapImg" alt="" draggable="false">
+                <canvas id="mapCanvas"></canvas>
+                <div id="markers"></div>
+            </div>
+            <div class="map-tools">
+                <button class="btn" id="zoomIn" title="Zoom in">+</button>
+                <button class="btn" id="zoomOut" title="Zoom out">&minus;</button>
+                <button class="btn" id="zoomFit" title="Show the network">&#x2922;</button>
+            </div>
+            <div class="offline" id="offline" hidden>Connection lost - retrying...</div>
+        </section>
+
+        <aside class="boards" id="boards">
+            <header class="board-head">
+                <div class="grow">
+                    <h3 id="boardName">Stations</h3>
+                    <div class="muted" id="boardCity"></div>
+                </div>
+                <select id="boardPick" title="Station"></select>
+            </header>
+            <section class="board-sec">
+                <h2><span class="ico">&#x2197;</span> Departures</h2>
+                <div class="board-list" id="depList"><p class="muted">Loading...</p></div>
+            </section>
+            <section class="board-sec">
+                <h2><span class="ico">&#x2198;</span> Arrivals</h2>
+                <div class="board-list" id="arrList"><p class="muted">Loading...</p></div>
+            </section>
+        </aside>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

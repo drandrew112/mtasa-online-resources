@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="Railway automatic trains" version="1.0.0" type="script"
+          description="Sunline Rail automatic (NPC) trains: runs every timetable trip nobody took, on time, with automatic switch setting" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"  type="shared" />
+    <script src="server/auto.lua"    type="server" />
+
+    <export function="getAutoTrains" type="server" />
+
+    <include resource="rw_customtracks" />
+    <include resource="rw_core" />
+    <include resource="rw_signals" />
+    <include resource="rw_timetable" />
+    <include resource="rw_loco" />
+</meta>
