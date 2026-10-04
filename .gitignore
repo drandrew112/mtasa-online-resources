@@ -33,6 +33,9 @@
 /\[devtools\]/claude-mcp/mcp-server/node_modules/
 /\[devtools\]/claude-mcp/screenshots/
 
+# --- railway logs ---
+/\[railways\]/rw_core/logs/
+
 # --- Editor / backup junk ---
 *.old
 *.bak
