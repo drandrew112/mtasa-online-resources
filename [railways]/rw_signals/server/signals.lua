@@ -330,7 +330,7 @@ local function computeOccupancy(consists, switches)
     end
     -- a reversed crossover joins the blocks it connects
     for _, w in ipairs(switches) do
-        if w.state == "reverse" then
+        if w.state == "reverse" and w.a and w.b then
             local ra, rb = routeOfTrack(w.a.track), routeOfTrack(w.b.track)
             local _, ba = ra and blockAt(ra, w.a.tp)
             local _, bb = rb and blockAt(rb, w.b.tp)

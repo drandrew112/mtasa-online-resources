@@ -12,15 +12,42 @@ addEventHandler("onNetSwitchChange", root, function(group, state)
     triggerEvent("onRailSwitchChange", root, group, state, false)
 end)
 
--- { { id, name, state, locked, reserved, x, y } }
+-- static geometry of a switch group (cached; the network only changes on a rebuild):
+-- x, y = first node; a / b = { track, tp } of a crossover's two legs on two different lines
+-- (rw_signals joins the blocks of a reversed crossover), nil for other switches
+local geometry = {}
+local LEG_DIST = 8          -- m from a node to the line it sits on
+
+local function geometryOf(s)
+    local g = geometry[s.id]
+    if g then return g end
+    g = { x = 0, y = 0 }
+    local legs = {}
+    for k, nid in ipairs(s.nodes or {}) do
+        local node = net():netGetNode(nid)
+        if node then
+            if k == 1 then g.x, g.y = node.x or 0, node.y or 0 end
+            local track, tp = Track.nearest(node.x or 0, node.y or 0, LEG_DIST, RW.TRACKS)
+            if track then
+                if not legs[1] then legs[1] = { track = track, tp = tp }
+                elseif legs[1].track ~= track and not legs[2] then legs[2] = { track = track, tp = tp } end
+            end
+        end
+    end
+    if legs[1] and legs[2] then g.a, g.b = legs[1], legs[2] end
+    geometry[s.id] = g
+    return g
+end
+
+addEventHandler("onNetNetworkRebuilt", root, function() geometry = {} end)
+
+-- { { id, name, state, locked, reserved, damaged, spring, x, y, a, b } }
 function getSwitches()
     local t = {}
     for _, s in ipairs(net():getNetSwitches() or {}) do
-        local x, y = 0, 0
-        local node = s.nodes and s.nodes[1] and net():netGetNode(s.nodes[1])
-        if node then x, y = node.x or 0, node.y or 0 end
+        local g = geometryOf(s)
         t[#t + 1] = { id = s.id, name = s.name, state = s.state, locked = s.locked, reserved = s.reserved, damaged = s.damaged,
-            spring = s.spring, x = x, y = y }
+            spring = s.spring, x = g.x, y = g.y, a = g.a, b = g.b }
     end
     return t
 end
