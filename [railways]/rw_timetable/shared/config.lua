@@ -72,6 +72,7 @@ TT = {
                              -- belongs to rw_auto, which creates its train 55 s before departure.
     DOOR_MIN    = 15,        -- doors must stay open this long for a stop to count (s)
     STOP_SPEED  = 2,         -- km/h: below this the train counts as standing
+    LOG_DELAY_WARN = 3,      -- rw_core railway log: a delay growing to this many minutes is a warning
     EARLY_DEP   = 30,        -- leaving more than this before the departure time is "early" (s)
     FINAL_WAIT  = 60,        -- at the last stop the trip completes after this standing (s)...
                              -- ...or once the doors were open for DOOR_MIN

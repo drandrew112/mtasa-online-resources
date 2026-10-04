@@ -42,3 +42,27 @@ detail shows the number. `client/trainlabel.lua` draws a 3D board above every lo
 ## Commands
 
 `/rwrole [player] [on|off]`, `/rwdespawn [running number | id]` (admin_level >= `RW.ADMIN_LEVEL`).
+
+## Railway log (server/log.lua)
+
+Every railway event in one log: the newest `RW.LOG.KEEP` entries in memory and a daily file
+`rw_core/logs/rail_YYYY-MM-DD.log` (`2026-10-04 12:03:07 WARN  stuck   [BR 232 1112 / SL1 1015] stuck for 2 min 10 s: train ahead (BR 232 1200)`).
+
+| category | what |
+|---|---|
+| train   | spawn / removal (reason) / composition, driver takes / leaves the cab, crossing between lines (debug) |
+| service | service start / completion summary / cancellation, cancelled trips |
+| stop    | arrival + departure per station with delay, early departure, stop not served, wrong door side |
+| delay   | the delay of a service changes by a minute (warn from `TT.LOG_DELAY_WARN` min) |
+| hold    | standing at a red signal / behind a train / without a route for `HOLD_MIN` s, and when it clears |
+| stuck   | held for `STUCK_AFTER` s, or an automatic train standing that long outside a station |
+| switch  | thrown (route of which train / spring / forced), trailed (damaged), repaired |
+| signal  | aspect changes (debug, frequent) |
+| spad / safety | signal passed at danger, emergency brake, Sifa brake, ATP overrun, collisions |
+| auto / loco   | rw_auto problems (no route, cannot spawn, cancelled), engine, doors (debug) |
+
+- `railLog(category, level, text, consistId?, data?)` - write an entry (level debug / info / warn / error).
+- `getRailLog({ category, level, train, match, since, limit })` - entries, oldest first.
+- `railTrainTag(consistId)` - "BR 232 1112 / SL1 1015".
+- `/rwlog [warn | <category> | all | <text>] [count]` (railway admins) - no filter = everything but debug.
+  Text matches the train tag or the message ("1112", "SL3", "W19", "Market").

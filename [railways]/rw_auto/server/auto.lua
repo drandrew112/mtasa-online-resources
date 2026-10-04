@@ -26,6 +26,11 @@ local zones = {}        -- [station] = { [track] = zone }
 local states = {}       -- [id] = latest network state (onNetTrainStates)
 local abs, min, max = math.abs, math.min, math.max
 
+-- rw_core railway log (category "auto")
+local function rlog(level, text, consistId)
+    pcall(function() core:railLog("auto", level, text, consistId) end)
+end
+
 local function now() return getRealTime().timestamp end
 local function nowMs() return getTickCount() end
 
@@ -87,6 +92,7 @@ local function headFor(train, k)
     local z = track and zones[stop.station][track]
     if not z then
         outputDebugString(("[rw_auto] train %d: no platform for %s"):format(train.id, tostring(stop.station)), 2)
+        rlog("error", ("no platform for %s"):format(tostring(stop.station)), train.id)
         return false
     end
     local tp = z.center + train.dir * AUTO.STOP_AHEAD
@@ -95,7 +101,10 @@ local function headFor(train, k)
     if info and not info.closed then tp = max(AUTO.END_GAP, min(info.length - AUTO.END_GAP, tp)) end
     train.target = { track = track, tp = tp }
     local ok, err = net:setNetTrainLineDestination(train.id, track, train.target.tp, train.dir)
-    if not ok then outputDebugString(("[rw_auto] train %d: no route to %s (%s)"):format(train.id, stop.station, tostring(err)), 2) end
+    if not ok then
+        outputDebugString(("[rw_auto] train %d: no route to %s (%s)"):format(train.id, stop.station, tostring(err)), 2)
+        rlog("warn", ("no route to %s (%s)"):format(stop.station, tostring(err)), train.id)
+    end
     return ok
 end
 
@@ -137,6 +146,7 @@ local function spawnFor(plan)
     local ok, why = tt:assignService(id, plan.id, false, true)
     if not ok then
         outputDebugString(("[rw_auto] %s: service not assigned (%s)"):format(plan.number, tostring(why)), 2)
+        rlog("warn", ("%s: service not assigned (%s)"):format(plan.number, tostring(why)), id)
     end
     startTrip(train, plan)
     return id
@@ -158,6 +168,7 @@ local function schedule()
                     handled[id] = { kind = "skip", dep = trip.depTimestamp }
                     tt:cancelTrip(id, "no train available")
                     outputDebugString(("[rw_auto] %s cancelled: no train could start it in time"):format(trip.id))
+                    rlog("warn", ("%s cancelled: no train could start it in time"):format(trip.id))
                 else
                     local plan = tt:getTripPlan(id)
                     if plan then
@@ -165,6 +176,7 @@ local function schedule()
                         if not ok and not waitWarned[id] then
                             waitWarned[id] = true
                             outputDebugString(("[rw_auto] %s waits: %s"):format(plan.number, tostring(err)))
+                            rlog("warn", ("%s: automatic train cannot be created yet (%s)"):format(plan.number, tostring(err)))
                         end
                     end
                 end
@@ -248,7 +260,11 @@ local function tick()
     if not running("rw_timetable") or not running("rw_loco") or not running("rw_customtracks") then return end
     for _, train in pairs(Trains) do
         local ok, err = pcall(stepTrain, train)
-        if not ok then outputDebugString("[rw_auto] train " .. train.id .. ": " .. tostring(err), 1) end
+        if not ok then
+            outputDebugString("[rw_auto] train " .. train.id .. ": " .. tostring(err), 1)
+            if train.lastErr ~= err then rlog("error", "script error: " .. tostring(err), train.id) end
+            train.lastErr = err
+        end
     end
 end
 

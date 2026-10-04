@@ -461,6 +461,7 @@ local function step(t, dt)
             t.u = A.sign > 0 and A.u or A.u + t.length
             if math.abs(v) > SIM.CRASH_SPEED then
                 log("train %d overran its authority (%s) at %.1f km/h", t.id, tostring(A.reason), math.abs(v) * 3.6)
+                triggerEvent("onNetTrainOverrun", resourceRoot, t.id, A.reason, math.abs(v))
             end
             v, a = 0, 0
             dirtySnap = true
@@ -698,8 +699,9 @@ function setNetTrainDriver(p, id) return Trains.setDriver(p, id) end
 function addNetTrainRider(p, id, car) return Trains.addRider(p, id, car) end
 function removeNetTrainPlayer(p) return Trains.removePlayer(p) end
 
-addEvent("onNetTrainCrash", false)
-addEvent("onNetTrainTrailedSwitch", false)
+addEvent("onNetTrainCrash", false)            -- (trainId, hit = train id | "end", speed m/s)
+addEvent("onNetTrainTrailedSwitch", false)    -- (trainId, nodeId)
+addEvent("onNetTrainOverrun", false)          -- (trainId, authority reason, speed m/s)
 
 addEventHandler("onResourceStop", resourceRoot, function()
     for id in pairs(trains) do Trains.destroy(id, "resource stopped") end

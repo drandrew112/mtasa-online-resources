@@ -15,7 +15,8 @@ local lastSync, syncDirty = 0, true
 local lastSent = {}
 local log = NetServer.log
 
-addEvent("onNetSwitchChange", false)     -- (group, state, reason)
+addEvent("onNetSwitchChange", false)     -- (group, state, reason, owner|nil)
+addEvent("onNetSwitchRepaired", false)   -- (group)
 addEvent("onNetTrainArrived", false)     -- (trainId)
 
 local function inf(g)
@@ -89,7 +90,7 @@ function Switches.throw(group, state, opts)
     Net.setState(group, state)
     syncDirty = true
     Trains.onSwitchChanged(group)
-    triggerEvent("onNetSwitchChange", resourceRoot, group, state, opts.reason or (opts.owner and "route") or "forced")
+    triggerEvent("onNetSwitchChange", resourceRoot, group, state, opts.reason or (opts.owner and "route") or "forced", opts.owner)
     return true
 end
 
@@ -318,6 +319,7 @@ setTimer(function()
         if i.damaged and now - i.damaged > SW.REPAIR_TIME * 1000 and not Switches.isLocked(g) then
             i.damaged = nil
             log("switch %s repaired", g)
+            triggerEvent("onNetSwitchRepaired", resourceRoot, g)
             syncDirty = true
         end
     end

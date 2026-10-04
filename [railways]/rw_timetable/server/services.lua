@@ -20,6 +20,18 @@ local function tell(player, text, ok)
     if isElement(player) then triggerClientEvent(player, "rw:tt:notify", resourceRoot, text, ok and true or false) end
 end
 
+-- rw_core railway log
+local function rlog(category, level, text, consistId)
+    pcall(function() core:railLog(category, level, text, consistId) end)
+end
+
+-- "+2 min" / "on time" / "-1 min" (early)
+local function fmtDelay(d)
+    d = (d or 0) >= 0 and math.floor(d / 60) or math.ceil(d / 60)
+    if d == 0 then return "on time" end
+    return (d > 0 and "+" or "") .. d .. " min"
+end
+
 local function driverOf(c) return c and isElement(c.lead) and getVehicleOccupant(c.lead, 0) or nil end
 
 ------------------------------------------------------------------ checks
@@ -290,6 +302,8 @@ local function tick()
                 if inZone and standing then
                     rec.state, rec.actArr = "stopped", t
                     rec.side = platformSide(st, c.track, c.tp, c.dir)
+                    rlog("stop", "info", ("%s: arrived at %s, %s"):format(s.trip.number, st.name,
+                        stop.arr and fmtDelay(t - stop.arr) or "no planned arrival"), id)
                     changed = true
                 elseif inZone then
                     rec.passing = true
@@ -297,6 +311,7 @@ local function tick()
                     rec.state = "skipped"
                     s.next = k + 1
                     tell(driver, ("%s passed without stopping - stop not served."):format(st.name))
+                    rlog("stop", "warn", ("%s: passed %s without stopping - stop not served"):format(s.trip.number, st.name), id)
                     triggerEvent("onRailServiceStop", c.lead, id, s.trip.id, k, rec)
                     changed = true
                 end
@@ -309,6 +324,7 @@ local function tick()
                         if not rec.wrongSide then
                             rec.wrongSide = true
                             tell(driver, "The platform is on the " .. rec.side .. " - wrong doors released!")
+                            rlog("stop", "warn", ("%s: wrong side doors released at %s (platform on the %s)"):format(s.trip.number, st.name, rec.side), id)
                         end
                     else
                         rec.doorTime = rec.doorTime + dt
@@ -339,6 +355,10 @@ local function tick()
                     if rec.state == "skipped" then
                         tell(driver, ("%s: doors were not open for %d s - stop not served."):format(st.name, TT.DOOR_MIN))
                     end
+                    rlog("stop", (rec.early or rec.state == "skipped") and "warn" or "info", ("%s: departed %s, %s%s%s"):format(
+                        s.trip.number, st.name, stop.dep and fmtDelay(rec.actDep - stop.dep) or "",
+                        rec.early and " - EARLY departure" or "",
+                        rec.state == "skipped" and (" - doors open %d s only, stop not served"):format(math.floor(rec.doorTime)) or ""), id)
                     triggerEvent("onRailServiceStop", c.lead, id, s.trip.id, k, rec)
                     s.next = k + 1
                     changed = true
@@ -347,7 +367,12 @@ local function tick()
 
             if Services[id] then
                 local d = delayOf(s)
-                if math.floor(d / 60) ~= math.floor(s.delay / 60) then changed = true end
+                if math.floor(d / 60) ~= math.floor(s.delay / 60) then
+                    changed = true
+                    local m, was = math.floor(d / 60), math.floor(s.delay / 60)
+                    rlog("delay", m >= TT.LOG_DELAY_WARN and m > was and "warn" or "info", ("%s: delay %s %s"):format(
+                        s.trip.number, m > was and "grew to" or "fell to", m > 0 and ("+" .. m .. " min") or "on time"), id)
+                end
                 s.delay = d
                 if changed or getTickCount() - (s.lastSync or 0) > TT.SYNC_EVERY * 1000 then sync(s, c) end
             end
@@ -383,6 +408,7 @@ end
 -- state of a trip: { taken, consist, auto, done } (rw_auto asks before creating a train)
 -- A trip no train will run (rw_auto could not start it in time). Boards show "Cancelled".
 function cancelTrip(tripId, reason)
+    rlog("service", "warn", ("trip %s cancelled: %s"):format(tostring(tripId), tostring(reason or "cancelled")))
     if taken[tripId] or finished[tripId] then return false end
     cancelled[tripId] = { reason = reason or "cancelled", at = now() }
     return true

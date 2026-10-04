@@ -26,6 +26,7 @@ local memory = {}     -- [consistId] = { head, lastDir, track }
 local clientsReady = {}
 
 addEvent("onRailSignalPassedAtDanger")   -- source: lead vehicle, (consistId, signalId, signalName)
+addEvent("onRailSignalChange")           -- source: resourceRoot, (signalId, aspect, previous aspect|nil, signalName)
 
 local function proj(track, x, y, maxD)
     local t, tp = core:projectToTrack(x, y, track, maxD or 40)
@@ -421,6 +422,7 @@ local function computeAspects()
             s.aspect = a
             changes[id] = a
             any = true
+            triggerEvent("onRailSignalChange", resourceRoot, id, a, s.prevAspect, s.name)
         end
     end
     -- on change, and every few seconds (rw_customtracks may have restarted)

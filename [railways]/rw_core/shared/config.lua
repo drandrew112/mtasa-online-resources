@@ -71,6 +71,27 @@ RW = {
     DEPOT_KEY = "e",
 
 
+    -- Railway event log (server/log.lua): services, delays, hold-ups, switches, signals, trains.
+    -- Kept in memory (KEEP newest entries, /rwlog, export getRailLog) and appended to a daily
+    -- file logs/rail_YYYY-MM-DD.log inside rw_core.
+    LOG = {
+        KEEP        = 3000,
+        FILE        = true,
+        FILE_DIR    = "logs/",
+        FLUSH_EVERY = 2000,        -- ms between file writes (entries are buffered)
+        -- categories that are recorded at all (signal aspect changes are frequent)
+        CATEGORIES  = {
+            train = true, service = true, delay = true, stop = true, hold = true, stuck = true,
+            switch = true, signal = true, spad = true, safety = true, auto = true, loco = true,
+        },
+        DEBUG_LEVEL = "warn",      -- these levels and above also go to the server debug output
+        HOLD_MIN    = 3,           -- s standing at a restriction before a hold is logged
+        BLOCK_DIST  = 60,          -- m: a standing train this close to its authority end is held
+        STUCK_AFTER = 120,         -- s held (or an automatic train standing) -> "stuck" warning
+        CMD         = "rwlog",     -- /rwlog [category|train number|all] [count] (railway admins)
+        CMD_LINES   = 15,
+    },
+
     -- 3D info board above the locomotives (client/trainlabel.lua)
     LABEL = {
         MAX_DIST  = 90,        -- metres from the camera

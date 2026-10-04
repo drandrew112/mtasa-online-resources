@@ -13,6 +13,7 @@
     <script src="server/switches.lua" type="server" />
     <script src="server/depot.lua"    type="server" />
     <script src="server/web.lua"      type="server" />
+    <script src="server/log.lua"      type="server" />
 
     <!-- ================= CLIENT ================= -->
     <script src="client/role.lua"     type="client" />
@@ -70,6 +71,10 @@
     <export function="isPlayerRailway"       type="client" />
     <export function="hasRailwayAccess"      type="client" />
     <export function="isRailwayRoleRequired" type="client" />
+    <!-- railway event log (server/log.lua) -->
+    <export function="railLog"      type="server" />
+    <export function="getRailLog"   type="server" />
+    <export function="railTrainTag" type="server" />
     <!-- network map web API -->
     <export function="rwGetNetwork" type="server" http="true" />
     <export function="rwGetState"   type="server" http="true" />
