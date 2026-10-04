@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" version="2.0.0" name="rw_trainhorn" description="Train horn (start / loop / end, hold to sound)" type="script" />
+    <min_mta_version server="1.5.0" client="1.5.0" />
+
+    <script src="server.lua" type="server" />
+    <script src="client.lua" type="client" />
+
+    <file src="horn_start.wav" />
+    <file src="horn_loop.wav" />
+    <file src="horn_end.wav" />
+
+    <!-- server: setTrainHorn(train, state) / soundTrainHorn(train, durationMs) / isTrainHornOn(train) -->
+    <export function="setTrainHorn" type="server" />
+    <export function="soundTrainHorn" type="server" />
+    <export function="isTrainHornOn" type="server" />
+</meta>
