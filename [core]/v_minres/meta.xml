@@ -1,0 +1,12 @@
+<meta>
+    <info author="DrAndrew112" name="v_minres" version="1.0.0" type="script"
+          description="Blocks the whole UI with a full-screen warning while the player's resolution is below the required minimum" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <script src="config.lua" type="client" />
+    <script src="client.lua" type="client" />
+
+    <file src="pixel.png" />
+
+    <include resource="dgs" />
+</meta>
