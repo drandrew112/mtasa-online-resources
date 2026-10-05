@@ -3,9 +3,14 @@
     <download_priority_group>1000</download_priority_group>
 
     <!-- Credentials + connection wrapper, then the account-data store. -->
-    <script src="config.lua"          type="server" />
-    <script src="core/mysql.lua"      type="server" />
-    <script src="scripts/accdata.lua" type="server" />
+    <script src="config.lua"            type="server" />
+    <script src="core/mysql.lua"        type="server" />
+    <script src="scripts/connguard.lua" type="server" />
+    <script src="scripts/accdata.lua"   type="server" />
+
+    <!-- Freezes everyone with a "database issues" banner instead of letting a
+         lost connection stall the server and time every client out. -->
+    <script src="client/guard.lua" type="client" />
 
     <!-- ================= EXPORTS ================= -->
     <!-- Generic MySQL helpers for other resources. Callbacks passed to

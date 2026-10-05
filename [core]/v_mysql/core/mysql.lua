@@ -46,6 +46,23 @@ local function scheduleReconnect()
     end, MYSQL_RECONNECT_INTERVAL, 1)
 end
 
+-- Flips `connected` and fires mysql:connected / mysql:disconnected, but only
+-- on an actual transition - callers can call this as often as they like
+-- (every failed ping, every failed reconnect attempt) without spamming the
+-- event or re-freezing players who are already frozen for it.
+local function setConnected(newState)
+    if newState == connected then return end
+    connected = newState
+    if newState then
+        mysqlLog("Connected to %s@%s:%d/%s",
+            MYSQL_CONFIG.username, MYSQL_CONFIG.host, MYSQL_CONFIG.port, MYSQL_CONFIG.database)
+        triggerEvent("mysql:connected", resourceRoot)
+    else
+        mysqlLog("Connection lost/unavailable")
+        triggerEvent("mysql:disconnected", resourceRoot)
+    end
+end
+
 -- Verifies a fresh connection with a trivial query. dbConnect() returns an
 -- element immediately even when the server is unreachable, so the real check
 -- has to be a round trip.
@@ -54,14 +71,9 @@ local function verifyConnection()
         local result = dbPoll(qh, 0)
         dbFree(qh)
         if type(result) == "table" then
-            if not connected then
-                connected = true
-                mysqlLog("Connected to %s@%s:%d/%s",
-                    MYSQL_CONFIG.username, MYSQL_CONFIG.host, MYSQL_CONFIG.port, MYSQL_CONFIG.database)
-                triggerEvent("mysql:connected", resourceRoot)
-            end
+            setConnected(true)
         else
-            connected = false
+            setConnected(false)
             mysqlLog("Connection check failed, reconnecting in %ds", MYSQL_RECONNECT_INTERVAL / 1000)
             if isElement(connection) then destroyElement(connection) end
             connection = nil
@@ -72,7 +84,7 @@ end
 
 function connectDatabase()
     if isElement(connection) then destroyElement(connection) end
-    connected  = false
+    setConnected(false)
     connection = dbConnect("mysql", hostString(), MYSQL_CONFIG.username, MYSQL_CONFIG.password,
         "share=1;autoreconnect=1")
 
@@ -100,7 +112,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
     if isTimer(pingTimer) then killTimer(pingTimer) end
     if isElement(connection) then destroyElement(connection) end
     connection = nil
-    connected  = false
+    setConnected(false)
 end)
 
 --------------------------------------------------------------------------------
