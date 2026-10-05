@@ -53,7 +53,7 @@ end
 
 -- createDutyMarker(workId, x, y, z [, opts]) -> marker | false
 --   opts: size, color {r,g,b[,a]} (default: work colour), interior, dimension,
---         blip (icon id), blipDistance
+--         blip (icon id; false or omitted = no blip), blipDistance
 function createDutyMarker(workId, x, y, z, opts)
     local marker = baseMarker("duty", workId, x, y, z, opts, WORK.DUTY_MARKER_SIZE, WORK.DUTY_MARKER_ALPHA)
     return marker or false
@@ -111,7 +111,7 @@ end
 
 -- createDutyVehicleMarker(workId, x, y, z, vehicles [, opts]) -> marker | false
 --   Only players on duty in the work see and use it (opts.public = true: everyone sees it).
---   opts: size, color, interior, dimension, blip, blipDistance, public,
+--   opts: size, color, interior, dimension, blip (false or omitted = no blip), blipDistance, public,
 --         spawns (one point or a list; the first free one is used; default: the marker),
 --         rotation (vehicle rotation when spawning at the marker)
 function createDutyVehicleMarker(workId, x, y, z, vehicles, opts)

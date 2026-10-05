@@ -55,7 +55,7 @@ spawn point `{ x, y, z, rot }`.
 | `registerWork(id, def)` → bool | `def`: `name`, `description`, `color {r,g,b}`, `skins` (model ids or `{ model, name }`). Registering again from the same resource updates the work. |
 | `unregisterWork(id)` → bool | |
 | `isWorkRegistered(id)`, `getWork(id)`, `getWorks()` | copies of the definitions (`resource` = owner) |
-| `createDutyMarker(workId, x, y, z [, opts])` → marker | `opts`: `size`, `color {r,g,b[,a]}`, `interior`, `dimension`, `blip` (icon), `blipDistance` |
+| `createDutyMarker(workId, x, y, z [, opts])` → marker | `opts`: `size`, `color {r,g,b[,a]}`, `interior`, `dimension`, `blip` (icon id; `false` or omitted = no blip), `blipDistance` |
 | `createDutyVehicleMarker(workId, x, y, z, vehicles [, opts])` → marker | `vehicles`: model ids or `{ model, name, color = {setVehicleColor args}, plate, platePrefix, plateDigits, data = {elementData} }`. `platePrefix` (e.g. `"A-"`) gives every spawned vehicle a unique plate of the prefix and random digits (`plateDigits`, default: up to 8 characters); it overrides `plate`. `opts`: the duty marker opts plus `spawns` (one point or a list of `{x,y,z,rot}`; the first free one is used; the default is the marker itself), `rotation`, and `public` (by default only players on duty in the work see it) |
 | `destroyWorkMarker(marker)`, `getWorkMarkers([workId])` | |
 | `getPlayerWork(player)` → id \| false | |
