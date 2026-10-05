@@ -13,12 +13,14 @@
     <script src="server/builder.lua"  type="server" />
     <script src="server/live.lua"     type="server" />
     <script src="server/auto.lua"     type="server" />
+    <script src="server/summon.lua"   type="server" />
     <script src="server/editor.lua"   type="server" />
     <script src="server/interact.lua" type="server" />
     <script src="server/exports.lua"  type="server" />
 
     <!-- ================= CLIENT (editor) ================= -->
     <script src="client/editor.lua" type="client" />
+    <script src="client/summon.lua" type="client" />
 
     <!-- scenes/*.json are read and written by the server only (not downloaded) -->
 

@@ -18,6 +18,7 @@ MSM = {
     -- Commands
     CMD_EDITOR = "medsceneeditor",
     CMD_RANDOM = "medscenerandom",   -- /medscenerandom [scene name]
+    CMD_SUMMON = "medscenesummon",   -- pick & spawn an exact scene from a menu
     CMD_AUTO = "medsceneauto",       -- /medsceneauto [on|off]
     CMD_LIST = "medscenelist",       -- active scenes
     CMD_CLEAR = "medsceneclear",     -- /medsceneclear [instance id | all]

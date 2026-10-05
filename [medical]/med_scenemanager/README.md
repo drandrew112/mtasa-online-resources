@@ -15,10 +15,12 @@ server/storage.lua    scenes/index.json + scenes/<Settlement>/[<category>/]<name
 server/builder.lua    scene entry <-> vehicle / ped element (capture, apply, medsys)
 server/live.lua       live scenes: spawn, ERM task, cleanup after the task closed
 server/auto.lua       automatic generator + /medscenerandom, /medsceneauto, /medscenelist ...
+server/summon.lua     /medscenesummon: menu pick -> spawn
 server/editor.lua     editor sessions, R menu actions, load / save
 server/interact.lua   ui_interactobject menus on the editor's vehicles / peds
 server/exports.lua    public API
 client/editor.lua     banner, R menu (ui_inac temp menu), text input (ui_core), 3D labels
+client/summon.lua     /medscenesummon menu (ui_inac temp menu, same folder tree as Load scene)
 scenes/               index.json + <Settlement>/[<category>/]<name>.json per scene
 ```
 
@@ -146,6 +148,7 @@ the `autoEnabled` setting.
 |---|---|
 | `/medsceneeditor` | toggles the editor |
 | `/medscenerandom [name]` | spawns a random (or the named) scene now, free units not required |
+| `/medscenesummon` | pick an exact scene from a menu (ui_inac) and spawn it, no typing needed |
 | `/medsceneauto [on\|off]` | generator status / switch |
 | `/medscenelist` | live scenes |
 | `/medsceneclear [id\|all]` | removes live scenes (and closes their tasks) |
