@@ -42,7 +42,7 @@ EMS = {
         {
             name = "LS Country General Hospital",
             duty = { 2011.27, -1436.85, 12.55 },
-            blip = 22,
+            blip = false,
             vehicle = {
                 marker = { 2003.23, -1444.75, 12.56 },
                 spawns = {
@@ -55,7 +55,7 @@ EMS = {
         {
             name = "LV General Hospital",
             duty = { 1600.46, 1817.23, 9.82 },
-            blip = 22,
+            blip = false,
             vehicle = {
                 marker = { 1591.24, 1818.71, 9.82 },
                 spawns = {
@@ -70,7 +70,7 @@ EMS = {
         {
             name = "SF Medical Center",
             duty = { -2652.48511, 637.51929, 14.45312 },
-            blip = 22,
+            blip = false,
             vehicle = {
                 marker = { -2646.46, 635.51, 13.45 },
                 spawns = {
