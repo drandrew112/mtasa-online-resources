@@ -43,8 +43,9 @@ TUTORIAL = {
     MIN_GAMES = 1,
     GAMES = {
         { id = "arrows", label = "Bandage", resource = "mg_arrows",
-          desc = "Press the arrow keys when the arrows reach the target. Used for bandages, "
-              .. "dressings and splints." },
+          desc = "Press the arrow keys when the arrows reach the target. Used for bandages and dressings." },
+        { id = "splinting", label = "Splint", resource = "mg_splinting",
+          desc = "Press SPACE when the gauge needle is centred to cinch each wrap. Used for fractures." },
         { id = "cpr", label = "CPR", resource = "mg_cpr",
           desc = "Press SPACE in a steady rhythm (100-120 per minute). Used when the heart has stopped. "
               .. "On a patient, good compressions can change the heart rhythm: the game stops and the panel "

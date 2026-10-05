@@ -155,6 +155,17 @@ local function findBandageTarget(state)
     return best
 end
 
+-- The fracture a splint goes on: the worst untreated one
+local function findSplintTarget(state)
+    local best
+    for _, injury in ipairs(state.injuries) do
+        if not injury.treated and MEDIC_INJURIES[injury.type].treat == "splint" then
+            if not best or injury.severity > best.severity then best = injury end
+        end
+    end
+    return best
+end
+
 local function worstSeverity(state, injuryType)
     local worst = 0
     for _, injury in ipairs(state.injuries) do
@@ -210,6 +221,32 @@ PROCEDURES.bandage = {
         end
         state.baseBleeding = math.max(0, state.baseBleeding - 2)
         return "Bleeding controlled"
+    end,
+}
+
+PROCEDURES.splint = {
+    resource = "mg_splinting",
+    can = function(state)
+        if findSplintTarget(state) then return true end
+        return false, "No fracture to splint"
+    end,
+    start = function(medic, target, state)
+        local injury = findSplintTarget(state)
+        local severity = injury.severity
+        return exports.mg_splinting:startSplintGame(medic, target, 6 + severity * 2, { speed = 0.85 + severity * 0.15 })
+    end,
+    stop = function(medic) exports.mg_splinting:stopSplintGame(medic) end,
+    finishEvent = "onSplintGameFinish",
+    sessionArg = 6, -- success, hits, total, percent, reason, sessionId
+    apply = function(state, success)
+        if not success then return "The splint did not hold" end
+        local injury = findSplintTarget(state)
+        if injury then
+            local def = MEDIC_INJURIES[injury.type]
+            injury.treated = true
+            return ("%s: %s"):format(def.label, def.treatedLabel:lower())
+        end
+        return "Fracture splinted"
     end,
 }
 

@@ -288,7 +288,7 @@ MEDIC_INJURIES = {
         label = "Fracture",
         bleed = { 0, 0, 1 },            -- a critical one is an open fracture
         pain = { 40, 60, 85 },
-        treat = "bandage", treatedLabel = "Splinted", treatedPain = 0.4,
+        treat = "splint", treatedLabel = "Splinted", treatedPain = 0.4,
     },
     burn = {
         label = "Burn",
@@ -480,6 +480,7 @@ MEDIC_CONSCIOUSNESS = {
 -- Treatment actions offered on the examination panel
 MEDIC_ACTIONS = {
     bandage = { label = "Bandage" },
+    splint = { label = "Splint" },
     cpr = { label = "CPR" },
     iv = { label = "IV access" },
     airway = { label = "Intubate" },
@@ -494,7 +495,7 @@ MEDIC_ACTIONS = {
 -- tag = the big letters on the row label (optional), label = the text under them
 MEDIC_ACTION_GROUPS = {
     { tag = "AB", label = "Airway, Breathing", actions = { "airway", "oxygen" } },
-    { tag = "C", label = "Circulation", actions = { "bandage", "cpr", "iv", "medication" } },
+    { tag = "C", label = "Circulation", actions = { "bandage", "splint", "cpr", "iv", "medication" } },
     { tag = "D", label = "Disability", actions = { "neuro", "glucometer" } },
     { label = "Transport", actions = { "transport" } },
 }

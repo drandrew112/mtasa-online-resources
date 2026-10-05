@@ -180,13 +180,14 @@ The monitor state is per patient (every medic at the panel sees the same device)
 runs it (`medic:defib` requests).
 
 The buttons are grouped into rows by `MEDIC_ACTION_GROUPS` (config): **AB** (Airway, Breathing:
-Intubate, O2 mask), **C** (Circulation: Bandage, CPR, IV access, Medication), **D** (Disability:
+Intubate, O2 mask), **C** (Circulation: Bandage, Splint, CPR, IV access, Medication), **D** (Disability:
 Neuro exam, Glucometer) and Transport. A dead body only gets the Transport row (`MEDIC_DEAD_ACTION_GROUPS`). Active medicines
 are listed one per line (two columns) with their remaining time.
 
 | button | minigame | available when | success |
 |---|---|---|---|
-| Bandage | mg_arrows | an untreated wound / fracture / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), fracture splinted, burn dressed |
+| Bandage | mg_arrows | an untreated wound / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), burn dressed |
+| Splint | mg_splinting | an untreated fracture | the limb is realigned and the splint secured: fracture splinted |
 | CPR | mg_cpr | clinical death | +45 s on the death timer; after 10 s of good compressions the rhythm can change (pulse back, or another arrest rhythm), which stops the minigame early. A round that ends without a change: "continue CPR" / "shockable rhythm - shock" |
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
@@ -303,7 +304,7 @@ exports.medical_system:closeExamination(medic)
 | injury | bleeding (minor/serious/critical) | other effects | treated by |
 |---|---|---|---|
 | gunshot | mild / severe / critical | pain | Bandage |
-| fracture | – / – / mild (open) | high pain | Bandage (splint) |
+| fracture | – / – / mild (open) | high pain | Splint |
 | burn | – | plasma loss, pain, critical = inhalation injury (SpO2 → 80%) | Bandage (dressing), Intubate for the airway |
 | suffocation | – | SpO2 → 88% / 65% / 0% | Intubate |
 

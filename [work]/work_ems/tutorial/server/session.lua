@@ -333,6 +333,9 @@ local GAMES = {
     airway = { start = function(p) return exports.mg_airway:startAirwayGame(p, nil, { difficulty = "easy" }) end,
                stop = function(p) exports.mg_airway:stopAirwayGame(p) end,
                event = "onAirwayGameFinish", sessionArg = 6 },
+    splinting = { start = function(p) return exports.mg_splinting:startSplintGame(p, nil, 6) end,
+               stop = function(p) exports.mg_splinting:stopSplintGame(p) end,
+               event = "onSplintGameFinish", sessionArg = 6 },
 }
 
 local function gameDef(id)

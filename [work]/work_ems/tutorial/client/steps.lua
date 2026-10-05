@@ -131,8 +131,8 @@ local EXAMINE = {
       next = true, panel = "injuries" },
     { text = "The treatments, in rows. A grey button cannot be used now - hover it to see why.\n\n"
           .. "AB (airway, breathing): Intubate - after Ketamine, then Rocuronium (or in cardiac arrest)  ·  "
-          .. "O2 mask.\nCD (circulation): Bandage - wounds, burns, fractures  ·  CPR - stopped heart  ·  "
-          .. "IV access  ·  Medication - a list of medicines, point at one to read what it does.\n"
+          .. "O2 mask.\nCD (circulation): Bandage - wounds, burns  ·  Splint - fractures  ·  "
+          .. "CPR - stopped heart  ·  IV access  ·  Medication - a list of medicines, point at one to read what it does.\n"
           .. "Transport: a vehicle for a stable, intubated or dead patient (off in the tutorial).",
       next = true, panel = "buttons" },
     { text = "Blood pressure, oxygen level (SpO2) and the heart rhythm (ECG) need the monitor.\n\n"

@@ -1,0 +1,18 @@
+<meta>
+    <info author="DrAndrew112" name="mg_splinting" version="1.0" type="script" description="Fracture splinting minigame (press a key when the gauge needle is centred, repeated for each wrap), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <script src="shared.lua" type="shared" />
+    <script src="client.lua" type="client" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onSplintGameFinish -->
+    <export function="startSplintGame" type="server" />
+    <export function="stopSplintGame" type="server" />
+    <export function="isSplintGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientSplintGameFinish -->
+    <export function="startSplintGame" type="client" />
+    <export function="stopSplintGame" type="client" />
+    <export function="isSplintGameActive" type="client" />
+</meta>

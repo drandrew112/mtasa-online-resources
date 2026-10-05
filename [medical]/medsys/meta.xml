@@ -7,6 +7,7 @@
     <include resource="mg_cpr" />
     <include resource="mg_intravenous" />
     <include resource="mg_airway" />
+    <include resource="mg_splinting" />
     <!-- "Examine patient" world menu -->
     <include resource="ui_interactobject" />
 
