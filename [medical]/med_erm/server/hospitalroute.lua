@@ -1,8 +1,9 @@
 -- Transport to hospital: when a unit that reached its scene drives away from it
--- (Config.HOSPITAL_DEPART_RADIUS), every crew member gets a v_radar objective to
--- the nearest hospital (med_hospitals). The objective stays until the unit gets
--- the Handover status (med_hospitals ambulance bay), then it is removed for good
--- for that case. Nothing happens while med_hospitals is stopped.
+-- (u.leftScene, Config.HOSPITAL_DEPART_RADIUS - units.lua), every crew member gets
+-- a v_radar objective to the nearest hospital (med_hospitals). Returning to the
+-- scene (On Scene again) removes it, the next departure sets it again. After the
+-- Handover status (med_hospitals ambulance bay) it is removed for good for that
+-- case. Nothing happens while med_hospitals is stopped.
 
 local routes = {}  -- [unitId] = { task = taskId, hospital = hospitalId, players = { [player] = true } }
 local done   = {}  -- [unitId] = taskId whose handover already started (no new route for it)
@@ -27,14 +28,6 @@ local function clearRoute(unitId)
     if not r then return end
     routes[unitId] = nil
     for p in pairs(r.players) do removeObjective(p) end
-end
-
--- The unit's vehicle (on foot: its first member) is out of the scene radius.
-local function departed(u, t)
-    local e = isElement(u.vehicle) and u.vehicle or u.members[1]
-    if not isElement(e) then return false end
-    local x, y = getElementPosition(e)
-    return getDistanceBetweenPoints2D(x, y, t.x, t.y) > Config.HOSPITAL_DEPART_RADIUS, e
 end
 
 local function startRoute(u, t, e)
@@ -94,12 +87,17 @@ setTimer(function()
         end
         if done[u.id] and (not t or done[u.id] ~= t.id) then done[u.id] = nil end
 
-        if t and u.reachedScene and u.status ~= "handover" and done[u.id] ~= t.id then
+        if r and not u.leftScene then
+            clearRoute(u.id)  -- back on scene
+            r = nil
+        end
+
+        if t and u.reachedScene and u.leftScene and u.status ~= "handover" and done[u.id] ~= t.id then
             if r then
                 reconcile(u, r)
             else
-                local away, e = departed(u, t)
-                if away then startRoute(u, t, e) end
+                local e = Units.sceneElement(u)
+                if e then startRoute(u, t, e) end
             end
         end
     end

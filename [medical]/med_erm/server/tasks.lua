@@ -133,7 +133,7 @@ function Tasks.assign(id, unitId)
     t.assignedAt = t.assignedAt or now()
 
     u.task = t.id
-    u.reachedScene = false
+    u.reachedScene, u.leftScene, u.sceneLeg = false, false, 0
     DB.shiftTaskStart(u.shiftId, t.id, u.callsign)
     Tasks.save(t)
     Tasks.syncUnits(t)

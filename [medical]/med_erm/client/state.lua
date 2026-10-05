@@ -170,9 +170,9 @@ addEventHandler("erm:notify", resourceRoot, function(title, text, alert)
 end)
 
 -- Driver of a unit with an active case drives off without Start Response: the
--- response is started automatically, once per leg (to the scene, then away from
+-- response is started automatically, once per leg (to the scene, then each time away from
 -- it). Ending it by hand is respected for the rest of that leg.
-local autoStarted = {}   -- ["<task id>:go" | "<task id>:scene"] = true
+local autoStarted = {}   -- ["<task id>:go" | "<task id>:scene<sceneLeg>"] = true
 setTimer(function()
     local u, t = State.unit, State.task
     local veh = getPedOccupiedVehicle(localPlayer)
@@ -180,7 +180,8 @@ setTimer(function()
         or getVehicleOccupant(veh, 0) ~= localPlayer or not Config.TABLET_VEHICLES[getElementModel(veh)] then
         return
     end
-    local leg = t.id .. (u.reachedScene and ":scene" or ":go")
+    -- each return to the scene (sceneLeg) starts a new departure leg
+    local leg = t.id .. (u.reachedScene and (":scene" .. (u.sceneLeg or 0)) or ":go")
     if autoStarted[leg] then return end
 
     local vx, vy, vz = getElementVelocity(veh)

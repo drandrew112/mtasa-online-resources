@@ -51,6 +51,7 @@ function Units.payload(u)
             responding   = u.responseEntry and true or false,
             responseFrom = u.responseEntry and u.responseEntry.start or 0,
             reachedScene = u.reachedScene,
+            sceneLeg     = u.sceneLeg or 0,
             handoverEnds = u.handoverEnds or 0,
             startedAt    = u.startedAt,
             members      = members,
@@ -222,7 +223,7 @@ end
 function Units.releaseTask(u)
     stopResponse(u)
     u.task = nil
-    u.reachedScene = false
+    u.reachedScene, u.leftScene, u.sceneLeg = false, false, 0
     local old = u.status
     if u.status ~= "handover" then u.status = "available" end
     Units.sync(u)
@@ -390,12 +391,44 @@ local function atScene(u, t)
     return false
 end
 
+-- The element that leaves / returns to the scene: the vehicle, on foot the first member.
+function Units.sceneElement(u)
+    if isElement(u.vehicle) then return u.vehicle end
+    return isElement(u.members[1]) and u.members[1] or nil
+end
+
+local function sceneDistance(u, t)
+    local e = Units.sceneElement(u)
+    if not e then return nil end
+    local x, y = getElementPosition(e)
+    return getDistanceBetweenPoints2D(x, y, t.x, t.y)
+end
+
+-- First arrival: any crew member or the vehicle at the scene. After that the
+-- unit counts as departed (u.leftScene, hospital objective in hospitalroute.lua)
+-- beyond Config.HOSPITAL_DEPART_RADIUS, and as back on scene (On Scene again)
+-- when its vehicle returns within Config.ARRIVE_RADIUS.
 setTimer(function()
     for _, u in pairs(Units.list) do
         local t = u.task and Tasks.get(u.task)
-        if t and not u.reachedScene and u.status ~= "handover" and atScene(u, t) then
-            Units.setStatus(u, "onscene")
-            Units.notify(u, "On scene", string.format("Arrived at case #%d.", t.id))
+        if t and u.status ~= "handover" then
+            if not u.reachedScene then
+                if atScene(u, t) then
+                    u.leftScene, u.sceneLeg = false, 0
+                    Units.setStatus(u, "onscene")
+                    Units.notify(u, "On scene", string.format("Arrived at case #%d.", t.id))
+                end
+            else
+                local d = sceneDistance(u, t)
+                if d and not u.leftScene and d > Config.HOSPITAL_DEPART_RADIUS then
+                    u.leftScene = true
+                elseif d and u.leftScene and d <= Config.ARRIVE_RADIUS then
+                    u.leftScene = false
+                    u.sceneLeg = (u.sceneLeg or 0) + 1
+                    Units.setStatus(u, "onscene")  -- also syncs the new sceneLeg
+                    Units.notify(u, "On scene", string.format("Back at case #%d.", t.id))
+                end
+            end
         end
     end
 end, 1000, 0)

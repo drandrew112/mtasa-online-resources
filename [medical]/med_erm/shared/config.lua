@@ -25,7 +25,8 @@ Config.ARRIVE_RADIUS = 30
 
 -- Distance (metres) from the scene after which a unit that reached it counts as
 -- departed: the crew gets a radar objective to the nearest hospital (med_hospitals),
--- removed when the unit gets the Handover status.
+-- removed when the unit gets the Handover status. Coming back within ARRIVE_RADIUS
+-- sets On Scene again and removes it until the next departure.
 Config.HOSPITAL_DEPART_RADIUS = 50
 
 -- Speed (km/h) above which Start Response is switched on automatically when the
