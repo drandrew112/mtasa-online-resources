@@ -25,6 +25,10 @@ WORK = {
     SPAWN_Z_OFFSET = 1.0,             -- added when the vehicle spawns at the marker itself
     EXPLODED_CLEANUP = 8000,          -- ms after which an exploded work vehicle is removed
 
+    -- Payment receipt (client/payment.lua), shown after a successful payWork()
+    PAYMENT_DURATION = 7000,          -- ms on screen before it fades out on its own
+    PAYMENT_FADE = 350,               -- ms fade in / fade out
+
     -- /workpos (prints marker / spawn positions)
     ADMIN_LEVEL = 3,
 

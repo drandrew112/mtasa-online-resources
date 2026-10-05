@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="work_core" version="1.0.0" type="script"
-          description="Work system core: work registry, duty markers + outfit selector, duty vehicle markers, one work per player" />
+          description="Work system core: work registry, duty markers + outfit selector, duty vehicle markers, payments, one work per player" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
     <!-- ================= SHARED ================= -->
@@ -12,11 +12,13 @@
     <script src="server/markers.lua"  type="server" />
     <script src="server/vehicles.lua" type="server" />
     <script src="server/requests.lua" type="server" />
+    <script src="server/payment.lua"  type="server" />
 
     <!-- ================= CLIENT ================= -->
-    <script src="client/state.lua"  type="client" />
-    <script src="client/menus.lua"  type="client" />
-    <script src="client/labels.lua" type="client" />
+    <script src="client/state.lua"   type="client" />
+    <script src="client/menus.lua"   type="client" />
+    <script src="client/labels.lua"  type="client" />
+    <script src="client/payment.lua" type="client" />
     <file src="client/fonts/Roboto.ttf"  type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />
 
@@ -46,6 +48,8 @@
     <export function="destroyPlayerWorkVehicle" type="server" />
     <export function="getVehicleWork"          type="server" />
     <export function="getWorkVehicleOwner"     type="server" />
+    <!-- payment -->
+    <export function="payWork"                 type="server" />
 
     <!-- ================= CLIENT EXPORTS ================= -->
     <export function="getPlayerWork"          type="client" />

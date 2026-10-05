@@ -10,6 +10,8 @@ that all works share:
 - **one work at a time**: a player on duty in a work cannot go on duty in another
 - **queries**: which players are doing a given work, so a work script can create elements that
   only those players see
+- **payments**: `payWork()` pays an itemised amount into the player's bank account and shows a
+  timed receipt; every work computes its own amounts, work_core only pays and displays
 
 "Having a work" and "being on duty" mean the same thing here. A player has a work while on duty
 in it, and has none after going off duty.
@@ -40,6 +42,14 @@ addEventHandler("onPlayerWorkDutyStart", root, function(workId, skin)
     if workId ~= "ems" then return end
     -- source = the player
 end)
+
+-- Pay the player: each work computes its own amounts, work_core only deposits the total and
+-- shows the itemised receipt.
+exports.work_core:payWork(player, "ems", {
+    { label = "Base pay",        amount = 150 },
+    { label = "Distance bonus",  amount = 40 },
+    { label = "Equipment fee",   amount = -20 },
+}, "Call finished")
 ```
 
 When the resource that registered a work stops, the work is unregistered automatically. Its
@@ -67,6 +77,7 @@ spawn point `{ x, y, z, rot }`.
 | `setElementVisibleToWork(element, workId \| false)` | marker / blip / radar area visible **only to players on duty in the work**. It stays in sync as players go on and off duty, and new players do not see it. |
 | `getPlayerWorkVehicle(player)`, `destroyPlayerWorkVehicle(player)` | |
 | `getVehicleWork(vehicle)`, `getWorkVehicleOwner(vehicle)` | |
+| `payWork(player, workId, items [, reason])` → `true, total` \| `false, err` | `items`: `{ { label, amount }, ... }`, shown on the receipt in this order. The positive total is deposited via `exports.v_bank:giveBankMoney` (fails if `v_bank` is not running); a total `<= 0` is not paid but the receipt is still shown. `reason`: optional text shown under the total. `workId` only needs to resolve a name/colour for the receipt — it does not have to be the player's current work. |
 
 ## Server events (source = player, unless noted otherwise)
 
@@ -77,6 +88,7 @@ spawn point `{ x, y, z, rot }`.
 | `onPlayerWorkSkinChange` | `workId, skin` |
 | `onPlayerWorkDutyEnd` | `workId, reason`: `"player"`, `"script"`, `"quit"`, `"unregistered"` or `"shutdown"` |
 | `onWorkVehicleSpawn` | source = the vehicle. Args: `player, workId, model`. Use it for liveries, sirens, or unit registration. |
+| `onPlayerWorkPaid` | `workId, total, items, reason`. Fired after a successful `payWork()` (whether or not anything was actually transferred). |
 | `onWorkCoreStart` | source = root. Fired when work_core starts, so work resources can register again. |
 
 ## Client exports and events
@@ -102,4 +114,8 @@ data. `onClientPlayerWorkChange(newWorkId | false, oldWorkId | false)`, where so
 - Every client request is validated by the server: the player is at the marker, the outfit or
   vehicle belongs to the work, and there is a cooldown. Clients cannot set the `work.*` element
   data; the server reverts any attempt.
+- **Payment receipt**: itemised list + total, fades in, stays for `WORK.PAYMENT_DURATION` (a
+  shrinking bar under the card shows the time left), then fades out on its own. Pressing ENTER
+  skips straight to the next queued receipt. Only one is shown at a time; further `payWork()`
+  calls for the same player queue up and show one after another.
 - Settings are in `shared/config.lua`. UI text is in English.
