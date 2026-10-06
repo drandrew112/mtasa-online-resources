@@ -27,7 +27,7 @@ RW = {
     -- numbers = running number range of a locomotive class: every spawned locomotive gets a
     -- free one at random, the train is called after it ("BR 232 1112") while it has no service.
     VEHICLES = {
-        br232     = { model = 538, kind = "loco",  name = "BR 232",          module = "br232", numbers = { 1001, 1399 } },
+        br232     = { model = 538, kind = "loco",  name = "BR 232",          module = "br232", numbers = { 1101, 1199 } },
         passenger = { model = 570, kind = "coach", name = "Passenger coach", passenger = true, seats = 64 },
     },
     MAX_CARRIAGES = 4,
