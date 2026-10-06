@@ -122,7 +122,7 @@ addEventHandler("onResourceStart", resourceRoot, function()
         local m = createMarker(def.x, def.y, def.z - 1, "cylinder", 1.4, 80, 160, 255, 120)
         setElementData(m, "rw.depot", i)
         depots[#depots + 1] = { def = def, marker = m }
-        local blip = createBlipAttachedTo(m, 0, 2, 80, 160, 255, 255, 0, 250)
+        local blip = createBlipAttachedTo(m, 11, 2, 80, 160, 255, 255, 0, 250)
         setElementData(blip, "tooltipText", RW.COMPANY .. " - " .. def.name)
     end
 end)
