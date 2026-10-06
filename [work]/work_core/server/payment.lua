@@ -28,6 +28,11 @@ local function normaliseItems(list)
     return out, total
 end
 
+function isResourceRunning(name)
+    local res = getResourceFromName(name)
+    return res and getResourceState(res) == "running"
+end
+
 -- payWork(player, workId, items [, reason]) -> true, total | false, errorText
 --   items = { { label = "Base pay", amount = 150 }, { label = "Distance bonus", amount = 40 },
 --             { label = "Equipment fee", amount = -20 }, ... }  -- shown in this order
@@ -59,3 +64,21 @@ function payWork(player, workId, items, reason)
     end
     return true, total
 end
+
+function testEMSPayment(player)
+    return payWork(player, "ems", {
+        { label = "Patient Treatment", amount = 2500 },
+        { label = "Emergency Response Bonus", amount = 750 },
+        { label = "Medical Supplies Fee", amount = -300 },
+    }, "Shift completed")
+end
+
+addCommandHandler("testemsreceipt", function(player)
+    local success, result = testEMSPayment(player)
+
+    if success then
+        outputChatBox("EMS receipt test completed. Total: $" .. result, player, 0, 255, 0)
+    else
+        outputChatBox("EMS receipt test failed: " .. tostring(result), player, 255, 0, 0)
+    end
+end)
