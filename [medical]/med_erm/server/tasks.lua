@@ -132,7 +132,7 @@ function Tasks.assign(id, unitId)
     if not hasValue(t.unitLog, u.callsign) then t.unitLog[#t.unitLog + 1] = u.callsign end
     t.assignedAt = t.assignedAt or now()
 
-    u.task = t.id
+    u.task, u.taskAssignedAt = t.id, now()
     u.reachedScene, u.leftScene, u.sceneLeg = false, false, 0
     DB.shiftTaskStart(u.shiftId, t.id, u.callsign)
     Tasks.save(t)
@@ -151,6 +151,7 @@ function Tasks.unassign(id, unitId, silent, outcome)
 
     if u then
         DB.shiftTaskEnd(u.shiftId, t.id, outcome or "released")
+        Units.creditTask(u, t, outcome or "released")
         Units.releaseTask(u)
         if not silent then
             Units.notify(u, "Case released", string.format("You were released from case #%d.", t.id))
@@ -170,7 +171,7 @@ function Tasks.leave(id, unitId)
     if #t.units < 2 then return false, "The last unit cannot leave the case. Close it instead." end
     if u.status == "handover" then return false, "Handover in progress." end
 
-    Units.creditTask(u, t)
+    Units.creditTask(u, t, "left")
     Tasks.unassign(t.id, u.id, true, "left")
     Units.notify(u, "Case left", string.format("You left case #%d.", t.id))
     for _, otherId in ipairs(t.units) do
@@ -195,7 +196,7 @@ function Tasks.close(id, reason)
         local u = Units.get(unitId)
         if u then
             DB.shiftTaskEnd(u.shiftId, t.id, "task closed")
-            Units.creditTask(u, t)
+            Units.creditTask(u, t, "task closed")
             Units.releaseTask(u)
             Units.notify(u, "Case closed", string.format("Case #%d has been closed.", t.id))
         end

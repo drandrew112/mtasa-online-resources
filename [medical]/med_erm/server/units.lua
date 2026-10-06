@@ -149,6 +149,7 @@ function Units.signIn(player, unitType, candidates, unitNumber)
         plate       = trim(getVehiclePlateText(veh)),
         vehicle     = veh,
         members     = members,
+        roster      = { unpack(members) },  -- full sign-in crew; unlike members, never shrinks
         accounts    = {},
         status      = "available",
         task        = nil,
@@ -180,6 +181,7 @@ function Units.signOut(u, reason)
     if isTimer(u.handoverTimer) then killTimer(u.handoverTimer) end
 
     DB.endShift(u)
+    Payment.payUnit(u)
     Units.untagVehicle(u)
     for _, p in ipairs(u.members) do
         Units.byPlayer[p] = nil
@@ -222,7 +224,7 @@ end
 -- Called by Tasks when the unit leaves its task (unassign / close / handover).
 function Units.releaseTask(u)
     stopResponse(u)
-    u.task = nil
+    u.task, u.taskAssignedAt = nil, nil
     u.reachedScene, u.leftScene, u.sceneLeg = false, false, 0
     local old = u.status
     if u.status ~= "handover" then u.status = "available" end
@@ -230,12 +232,18 @@ function Units.releaseTask(u)
     if old ~= u.status then Events.fire("onErmUnitStatusChange", u.id, u.status, old) end
 end
 
-function Units.creditTask(u, t)
+-- outcome: how the unit's work on the task ended ("handover", "left",
+-- "task closed", "released", "shift ended", ...) - rated by Config.PAY.RATES
+-- at shift-end payment (server/payment.lua). duration: time (s) the unit
+-- actually worked the task, from Tasks.assign to this call.
+function Units.creditTask(u, t, outcome)
     for _, c in ipairs(u.closedTasks) do
         if c.id == t.id then return end
     end
+    local duration = math.max(0, now() - (u.taskAssignedAt or t.assignedAt or now()))
     u.closedTasks[#u.closedTasks + 1] = {
         id = t.id, title = t.title, zone = t.zone, priority = t.priority or 0, closedAt = now(),
+        outcome = outcome or "released", duration = duration,
     }
     DB.updateShift(u)
 end
@@ -248,7 +256,7 @@ function Units.finishHandover(u)
     local t = u.task and Tasks.get(u.task)
     local taskId = t and t.id or false
     if t then
-        Units.creditTask(u, t)
+        Units.creditTask(u, t, "handover")
         Tasks.unassign(t.id, u.id, true, "handover")
         if #t.units == 0 then
             Tasks.close(t.id, "Completed - handover by " .. u.callsign)

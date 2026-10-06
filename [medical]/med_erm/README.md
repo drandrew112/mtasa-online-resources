@@ -165,6 +165,27 @@ signed in; after sign-in every crew member can open it anywhere.
   dispatchers; broadcasts show up here) and *Case* (case chat: every unit on
   the active task + the dispatchers). Unread counts per channel.
 
+## Shift-end payment (server/payment.lua)
+
+When a unit signs out (End Shift, the last member leaving, or disbanding),
+it is paid for every task credited to its shift (`u.closedTasks`, same list the
+tablet's Home page counts): one itemised line per task, via `work_core`'s
+`payWork()` export, so the receipt shows exactly why. Rates and the work id:
+`Config.PAY` (shared/config.lua).
+
+- The amount per task is `base + perMinute * minutesWorked`, rated by how the
+  unit's work on it ended (`outcome`: `handover`, `left`, `task closed`,
+  `released`, `shift ended`, ...). A full hospital handover pays the most;
+  `shift ended` (signed out mid-case) is rated 0/0 by default - the task still
+  counts on the Home page, but nothing is paid for it.
+- The total is split evenly among everyone who was ever part of the shift's
+  crew (sign-in roster), not just whoever is still in the unit at sign-out.
+  Only accounts with a live player element (still connected under the same
+  element - a reconnect does not count) actually receive their share; a
+  disconnected one is skipped.
+- Needs `work_core` running (soft dependency, same as every other optional
+  integration here); without it nothing is paid, nothing else changes.
+
 ## Database (data/erm.db)
 
 - `tasks`: id, title, description, caller, position, zone, priority, status,

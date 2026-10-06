@@ -12,6 +12,7 @@
     <script src="server/db.lua"      type="server" />
     <script src="server/tasks.lua"   type="server" />
     <script src="server/units.lua"   type="server" />
+    <script src="server/payment.lua" type="server" />
     <script src="server/chat.lua"    type="server" />
     <script src="server/tablet.lua"  type="server" />
     <script src="server/dispatchers.lua" type="server" />

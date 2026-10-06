@@ -59,3 +59,23 @@ Config.PRIORITY_COLORS = {
     [3] = { 255, 197, 61 },
     [4] = { 62, 155, 255 },
 }
+
+-- Shift-end payment (server/payment.lua): paid via work_core's payWork() export
+-- when a unit signs out, one itemised line per task it worked (u.closedTasks),
+-- split evenly among everyone who was ever part of the shift (u.roster). Needs
+-- work_core running; WORK_ID only has to resolve a name/colour for the receipt.
+Config.PAY = {
+    WORK_ID = "ems",
+    -- base money per minute spent on the task, by closedTasks outcome.
+    -- "default" covers any outcome not listed here; base = perMinute = 0
+    -- credits the task (it still counts on the unit's Home page) without
+    -- paying anything for it.
+    RATES = {
+        handover        = { base = 5000, perMinute = 400 },  -- full hospital handover
+        released        = { base = 2000,  perMinute = 200 },  -- taken off the case by dispatch
+        left            = { base = 2000,  perMinute = 100 },  -- handed to another unit
+        ["task closed"] = { base = 2000,  perMinute = 100 },  -- case closed while still on it
+        ["shift ended"] = { base = 1000,   perMinute = 100 },  -- shift ended mid-case, no payout
+        default         = { base = 1000,  perMinute = 100 },
+    },
+}
