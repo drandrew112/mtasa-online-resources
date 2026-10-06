@@ -2,6 +2,7 @@ local uicore = exports["ui_core"]
 local sw,sh = uicore:getScreenWH()
 local safe_x, safe_y = uicore:getSafeZone()
 
+local isDownloading = false
 local res_name = "res_name"
 local file_name = "file_name"
 local file_size = "file_size"
@@ -12,6 +13,7 @@ local total = "96"
 local discord = "https://discord.gg/pGagxbRkS4"
 
 local bg_img = "bgs/"..tostring(math.random(1,11))..".png"
+local allow_music = false
 local music = false
 local musicPath = "sounds/music.mp3"
 
@@ -88,7 +90,9 @@ addEventHandler("onClientRender", root, render)
 
 function on_fileDownload (res, file, size, state)
     if not music then
-        music = playSound(musicPath, true)
+        if allow_music then
+            music = playSound(musicPath, true)
+        end
     end
     --if state=="failed" then 
         res_name = getResourceName( res )
@@ -106,12 +110,18 @@ addEventHandler ("onClientTransferBoxProgressChange", root, function (downloaded
 end)
 
 function on_TransferBoxVisibilityChange (state)
-    if state==false then
+    if state==true then
+        isDownloading = true
+    elseif state==false then
+        isDownloading = false
+
         stopSound(music)
         music = false
         fadeCamera(true)
         setElementData(localPlayer, "download_screen", false)
         restoreHud()
+
+        triggerEvent("download:finished", root)
     end
 end
 addEventHandler ("onClientTransferBoxVisibilityChange", root, on_TransferBoxVisibilityChange)
@@ -142,3 +152,10 @@ addCommandHandler("downloadtest", function()
         setElementData(localPlayer, "download_screen", false)
     end
 end)
+
+
+-- exports
+
+function isDownloadingActive()
+    return isDownloading
+end

@@ -21,5 +21,7 @@
 	<file src="bgs/11.png" type="client" />
 
 	<file src="sounds/music.mp3" type="client" />
+
+	<export function="isDownloadingActive" type="client" />
 </meta>
 
