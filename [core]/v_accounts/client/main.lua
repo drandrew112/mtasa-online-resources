@@ -18,7 +18,7 @@ function uiSound(path)
     end
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, function()
+function init_panels()
     Panels.login = LoginPanel:create()
     Panels.register = RegisterPanel:create()
     Panels.banned = BannedPanel:create()
@@ -33,6 +33,15 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 
     -- The server decides whether we get the login panel or the ban lockdown.
     triggerServerEvent("acc:requestPanel", localPlayer)
+end
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    local download_active = exports["ui_download"]:isDownloadingActive()
+    if download_active then
+        addEventHandler("download:finished", root, init_panels)
+    else
+        init_panels()
+    end
 end)
 
 addEvent("acc:setPanel", true)
