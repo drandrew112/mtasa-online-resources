@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_choking-in-restaurant1",
+    "category": "",
+    "enabled": true,
+    "weight": 1,
+    "center": [1565.236, -1885.933, 13.558],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man choking in restaurant",
+        "description": "A man suddenly started choking while eating at a restaurant. He is struggling to breathe and appears unable to clear the obstruction. Staff members are calling for an ambulance.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [1564.267, -1886.093, 13.558],
+            "rot": -47.1,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

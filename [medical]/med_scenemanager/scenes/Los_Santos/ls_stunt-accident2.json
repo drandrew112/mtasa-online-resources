@@ -1,24 +1,24 @@
 {
     "format": 1,
-    "name": "ls_stunt-accident",
+    "name": "ls_stunt-accident2",
     "category": "",
     "enabled": true,
     "weight": 1,
-    "center": [1953.462, -1810.008, 13.547],
+    "center": [1875.853, -1372.854, 13.556],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Stunt park accident",
-        "description": "A young man fell off his BMX at the stunt park next to the Southern gas station. He broke his leg and an arm.",
+        "title": "BMX stunt goes wrong",
+        "description": "A BMX rider crashed while landing a jump at the stunt park. He was thrown over the handlebars and hit the concrete. He is conscious but dazed, with severe arm and leg pain.",
         "caller": "SceneManager",
-        "priority": 3
+        "priority": 2
     },
     "vehicles": [
         {
             "id": "v1",
             "model": 481,
-            "pos": [1953.448, -1810.001, 12.996],
-            "rot": [357.81, 0, 65.99],
+            "pos": [1880.513, -1356.633, 12.869],
+            "rot": [2.91, 88.24, 123.45],
             "frozen": false,
             "locked": false,
             "engine": false,
@@ -26,7 +26,7 @@
             "health": 1000,
             "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "QKAP 1VO",
+            "plate": "27CQ JXK",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [0, 0, 0, 0, 0, 0],
@@ -38,15 +38,15 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 37,
-            "pos": [1953.396, -1808.004, 13.547],
-            "rot": 288.1,
+            "skin": 27,
+            "pos": [1880.553, -1354.823, 13.505],
+            "rot": 185.1,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": {}
+            "state": { "pain": 60, "consciousness": "dazed" }
         }
     ]
 }
