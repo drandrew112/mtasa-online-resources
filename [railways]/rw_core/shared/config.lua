@@ -64,9 +64,9 @@ RW = {
     -- Depots: railway staff open the depot menu in these markers (E). spawns = ids above.
     DEPOTS = {
         { name = "Unity Station depot", x = 1771.5, y = -1936.5, z = 13.56, spawns = { "unity_1", "unity_1e", "unity_2", "unity_e" } },
-        { name = "Cranberry depot",     x = -1957.0, y = 140.0,  z = 27.5, spawns = { "cranb_2", "cranb_1", "cranb_2t", "cranb_3" } },
-        { name = "Yellow Bell depot",   x = 1433.0, y = 2624.0,  z = 11.82, spawns = { "yb_ls", "yb_lv" } },
-        { name = "Linden depot",        x = 2852.0, y = 1290.0,  z = 11.82, spawns = { "lin_ls", "lin_sf" } },
+        { name = "Cranberry depot",     x = -1957.51904, y = 175.79410, z = 26.28125, spawns = { "cranb_2", "cranb_1", "cranb_2t", "cranb_3" } },
+        --{ name = "Yellow Bell depot",   x = 1433.0, y = 2624.0,  z = 11.82, spawns = { "yb_ls", "yb_lv" } },
+        --{ name = "Linden depot",        x = 2852.0, y = 1290.0,  z = 11.82, spawns = { "lin_ls", "lin_sf" } },
     },
     DEPOT_KEY = "e",
 
