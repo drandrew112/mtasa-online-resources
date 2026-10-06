@@ -84,6 +84,7 @@ RW = {
             train = true, service = true, delay = true, stop = true, hold = true, stuck = true,
             switch = true, signal = true, spad = true, safety = true, auto = true, loco = true,
         },
+        DEBUG_ENABLED = false,     -- log to server debug output (outputDebugString)
         DEBUG_LEVEL = "warn",      -- these levels and above also go to the server debug output
         HOLD_MIN    = 3,           -- s standing at a restriction before a hold is logged
         BLOCK_DIST  = 60,          -- m: a standing train this close to its authority end is held

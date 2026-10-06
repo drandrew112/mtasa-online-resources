@@ -70,7 +70,9 @@ function railLog(category, level, text, train, data)
         e.tag and ("[" .. e.tag .. "] ") or "", e.text)
     if L.FILE then pending[#pending + 1] = { day, line } end
     if LEVELS[level] >= LEVELS[L.DEBUG_LEVEL] then
-        outputDebugString("[rw_log] " .. line:sub(12), level == "error" and 1 or 2)
+        if L.DEBUG_ENABLED then
+            outputDebugString("[rw_log] " .. line:sub(12), level == "error" and 1 or 2)
+        end
     end
     return seq
 end
