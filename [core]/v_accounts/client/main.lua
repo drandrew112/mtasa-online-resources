@@ -35,6 +35,7 @@ function init_panels()
     triggerServerEvent("acc:requestPanel", localPlayer)
 end
 
+addEvent("download:finished", true)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     local download_active = exports["ui_download"]:isDownloadingActive()
     if download_active then
