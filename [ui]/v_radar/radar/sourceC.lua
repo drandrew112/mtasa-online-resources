@@ -263,10 +263,10 @@ local mainBlips = {
 	{2853.9965820312,1290.9426269531,11.390625, "blips/47.png", false, 300}, -- Train station: LV East
 	
 	-- Airports
-	{1627.2409667969,-2286.3374023438,94.1328125, "blips/5.png", false, 500}, -- Airport: LS
-	{1678.9660644531,1447.7465820312,47.7780418396, "blips/5.png", false, 500}, -- Airport: LV
-	{365.31829833984,2537.0776367188,16.664966583252, "blips/5.png", false, 500}, -- Airport: Desert (near LV)
-	{-1275.8029785156,53.749702453613,89.233612060547, "blips/5.png", false, 500}, -- Airport: SF
+	{1627.2409667969,-2286.3374023438,94.1328125, "blips/10.png", false, 500}, -- Airport: LS
+	{1678.9660644531,1447.7465820312,47.7780418396, "blips/10.png", false, 500}, -- Airport: LV
+	{365.31829833984,2537.0776367188,16.664966583252, "blips/10.png", false, 500}, -- Airport: Desert (near LV)
+	{-1275.8029785156,53.749702453613,89.233612060547, "blips/10.png", false, 500}, -- Airport: SF
 	
 	-- Hospitals
 	{-2649.4216308594,608.18615722656,14.453125, "blips/22.png", false, 300}, -- Hospital: SF Med center
@@ -297,12 +297,12 @@ local blipTooltips = {
 	["blips/2.png"] = "",
 	["blips/3.png"] = "",
 	["blips/4.png"] = "",
-	["blips/5.png"] = "Airport",
+	["blips/5.png"] = "Personal Vehicle",
 	["blips/6.png"] = "Weaponshop",
 	["blips/7.png"] = "Cablecar",
 	["blips/8.png"] = "Stunt park",
 	["blips/9.png"] = "Job",
-	["blips/10.png"] = "Fire Department",
+	["blips/10.png"] = "Airport",
 	["blips/11.png"] = "",
 	["blips/12.png"] = "",
 	["blips/13.png"] = "",
