@@ -1,0 +1,39 @@
+<meta>
+    <info author="DrAndrew112" name="Web API" version="1.0.0" type="script"
+          description="Shared web UI toolkit: components, map, HTTP + ui_browser transport, page builder. Provided by OpenSanAndreas" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/main.lua"   type="server" />
+    <script src="server/bridge.lua" type="server" />
+    <script src="server/page.lua"   type="server" />
+    <script src="server/demo.lua"   type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/sites.lua"  type="client" />
+    <script src="client/bridge.lua" type="client" />
+
+    <!-- Shared page assets. In game they are local CEF files (http://mta/web_api/osa.css);
+         over HTTP the page builder inlines them (client files are served as octet-stream). -->
+    <file src="osa.css"     type="client" />
+    <file src="osa.js"      type="client" />
+    <file src="loader.html" type="client" />
+
+    <!-- demo / documentation page: http://<server>:<httpport>/web_api/ -->
+    <html src="demo/http.html" default="true" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- server: app registry -->
+    <export function="registerApp"   type="server" />
+    <export function="unregisterApp" type="server" />
+    <export function="getApps"       type="server" />
+    <!-- server: HTTP page builder (call it from the app's <html> script) -->
+    <export function="renderPage"    type="server" />
+    <export function="getAssetRefs"  type="server" />
+    <!-- server: who is calling an http="true" export right now -->
+    <export function="getCallerId"     type="server" />
+    <export function="getCallerPlayer" type="server" />
+    <!-- demo page API -->
+    <export function="osaDemoState" type="server" http="true" />
+    <export function="osaDemoEcho"  type="server" http="true" />
+</meta>

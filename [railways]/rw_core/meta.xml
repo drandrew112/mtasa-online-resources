@@ -18,21 +18,17 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/role.lua"     type="client" />
     <script src="client/depot.lua"    type="client" />
-    <script src="client/webpage.lua"  type="client" />
     <script src="client/trainlabel.lua" type="client" />
     <file src="fonts/Roboto.ttf"  type="client" />
     <file src="fonts/RobotoB.ttf" type="client" />
 
     <!-- ================= WEB (network map) =================
-         http://<server>:<httpport>/rw_core/ ; in game: ui_browser "sunline-rail.sa" (services).
-         web/http.html sends web/index.html with css / js inlined (see the file). -->
-    <html src="web/http.html"   default="true" />
-    <html src="web/img/map.png" raw="true" />
-    <file src="web/game.html"     type="client" />
+         Built on web_api. http://<server>:<httpport>/rw_core/ ; in game: ui_browser
+         "sunline-rail.sa" (services), registered in server/web.lua. web/http.html asks
+         web_api to send web/index.html with css / js inlined. The map image is v_radar's. -->
+    <html src="web/http.html"     default="true" />
     <file src="web/index.html"    type="client" />
     <file src="web/css/style.css" type="client" />
-    <file src="web/js/api.js"     type="client" />
-    <file src="web/js/map.js"     type="client" />
     <file src="web/js/app.js"     type="client" />
 
     <!-- ================= EXPORTS ================= -->
@@ -86,5 +82,6 @@
     <include resource="ui_inac" />
     <include resource="ui_interactobject" />
     <include resource="ui_browser" />
+    <include resource="web_api" />
     <include resource="v_radar" />
 </meta>

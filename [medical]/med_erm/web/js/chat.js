@@ -66,7 +66,7 @@
         const list = messages.filter(m => keyOf(m) === current);
         const nearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
         if (!list.length) {
-            log.innerHTML = '<div class="empty">No messages in this channel.</div>';
+            log.innerHTML = '<div class="osa-empty">No messages in this channel.</div>';
         } else {
             log.innerHTML = list.map(m => `
                 <div class="msg${m.fromDispatch ? '' : ' incoming'}">

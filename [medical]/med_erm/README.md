@@ -18,7 +18,7 @@ erm/
 │  ├─ tablet.lua           client -> server events of the tablet
 │  ├─ dispatchers.lua      dispatcher codes (data/dispatchers.json) + sessions
 │  ├─ http.lua             web console API (http="true" exports)
-│  ├─ webbridge.lua        same API for the in-game (ui_browser) console
+│  ├─ webapp.lua           registers the in-game console (ui_browser site) with web_api
 │  ├─ admin.lua            /ermadmin permission + history queries
 │  ├─ events.lua           server events for other resources (onErm...)
 │  ├─ exports.lua          automation API (exports for other resources)
@@ -28,10 +28,9 @@ erm/
 │  ├─ state.lua            unit state from the server, task objective (v_radar), notifications
 │  ├─ tablet.lua           frame, header, hamburger menu, status column, input
 │  ├─ pages/               login, home, case (Active Case), messages
-│  ├─ webpage.lua          ems-dispatch.eu site in ui_browser + call bridge
 │  ├─ admin/               /ermadmin panel (panel.lua lists, detail.lua views)
 │  └─ fonts/               Roboto (copied from v_radar)
-├─ web/                    dispatcher console (index.html, css/, js/, img/map.png)
+├─ web/                    dispatcher console on web_api (index.html, http.html, css/, js/)
 └─ data/                   dispatchers.json (codes); erm.db is created here
 ```
 
@@ -52,12 +51,13 @@ guests on every resource that has `<html>` files or `http="true"` exports –
 currently only erm; add `resource.<name>.http = false` for any future one that
 must stay private.
 
-The page is served by `web/http.html` (default page, server-side template):
-it sends `web/index.html` with `css/style.css` and `js/*.js` inlined. Those
-files are client files too (for the in-game version) and MTA serves client
-files on their own path as `application/octet-stream`, which browsers refuse
-as a stylesheet – so they must not be linked directly over HTTP. Only the map
-(`web/img/map.png`, `<base href="/erm/web/">`) is loaded separately.
+The page is built on the shared **web_api** toolkit (components, map, HTTP + in-game transport,
+"Provided by OpenSanAndreas" credit; see `web_api/README.md`). It is served by `web/http.html`
+(default page, server-side template): it reads `web/index.html` and the css / js it links and
+web_api sends them as one document with everything inlined (those files are client files too, for
+the in-game version, and MTA serves client files as `application/octet-stream`, which browsers
+refuse as a stylesheet). The map is v_radar's bigmap (`/v_radar/radar/files/radar.png`), whatever
+its pixel size.
 
 **Dispatcher login**: the page shows only a login panel until a valid
 dispatcher code is entered, and asks again after every reload (the session
@@ -89,12 +89,12 @@ within a minute lock that client out for a minute.
 The same console is a website in the in-game virtual browser (`ui_browser`,
 category **Services**, address `ems-dispatch.eu`) and behaves exactly like the
 HTTP page (same login, map, drag & drop, right-click menus, chat). It is the
-same `web/` page loaded as a local CEF page (`http://mta/erm/web/index.html`,
-ui_browser's `web` site type). There is no HTTP in game, so `web/js/api.js`
-detects `mta.triggerEvent` and sends the API calls through
-`client/webpage.lua` -> `server/webbridge.lua`, which runs the same
-`http.lua` functions. The map image comes from v_radar's client files there,
-so only the small html/css/js files are downloaded by players.
+same `web/` page, opened through web_api's `loader.html` as a local CEF page. There is no HTTP in
+game, so web_api relays the page's API calls to the same `http.lua` functions (only the
+`http="true"` exports of `meta.xml`; `server/webapp.lua` registers the site). `http.lua` asks
+`exports.web_api:getCallerId(hostname)` who is calling (HTTP address or `player:<serial>`) for
+the login rate limit. The map image is v_radar's, so only the small html/css/js files are
+downloaded by players.
 
 Task -> unit dragging is mouse-event based (not HTML5 drag & drop), because
 the offscreen CEF of MTA does not support native DnD.

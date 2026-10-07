@@ -48,7 +48,7 @@
                 inflight = false;
                 return lock();
             } else if (r && r.ok) {
-                ERM.serverOffset = r.time - Math.floor(Date.now() / 1000);
+                OSA.time.sync(r.time);
                 S.units = arr(r.units).map(u => (u.members = arr(u.members), u.accounts = arr(u.accounts), u));
                 S.tasks = arr(r.tasks).map(normaliseTask);
                 S.closed = arr(r.closed).map(normaliseTask);
@@ -57,10 +57,10 @@
                 S.loaded = true;
                 render();
             }
-            $('conn').className = 'conn ok';
+            $('conn').className = 'osa-conn ok';
             $('conn').title = 'Connected';
         } catch (e) {
-            $('conn').className = 'conn bad';
+            $('conn').className = 'osa-conn bad';
             $('conn').title = 'Disconnected: ' + e.message;
         }
         inflight = false;
@@ -127,21 +127,21 @@
         const list = S.tab === 'active' ? sortTasks(S.tasks) : S.closed;
         let html;
         if (!list.length) {
-            html = `<li class="empty">${S.tab === 'active' ? 'No active tasks.' : 'No closed tasks yet.'}</li>`;
+            html = `<li class="osa-empty">${S.tab === 'active' ? 'No active tasks.' : 'No closed tasks yet.'}</li>`;
         } else {
             html = list.map(t => {
-                const prio = t.priority ? `<span class="badge p${t.priority}">P${t.priority}</span>` : '<span class="badge">--</span>';
+                const prio = t.priority ? `<span class="osa-badge p${t.priority}">P${t.priority}</span>` : '<span class="osa-badge">--</span>';
                 const chips = t.status === 'closed'
                     ? `<div class="task-meta"><span>${esc(t.closeReason)}</span><span>${esc(t.closedLabel)}</span></div>`
                     : (t.units.length
-                        ? `<div class="chips">${t.units.map(u => `<span class="chip bg-${u.status} ${u.status}">${esc(u.callsign)}</span>`).join('')}</div>`
+                        ? `<div class="chips">${t.units.map(u => `<span class="osa-chip bg-${u.status} ${u.status}">${esc(u.callsign)}</span>`).join('')}</div>`
                         : '');
                 return `<li class="task pr-${t.priority || 0} ${t.status}${t.id === S.selected ? ' selected' : ''}"
                             data-id="${t.id}" data-drag="${isActive(t) && t.priority ? '1' : '0'}">
                     <div class="task-top">
                         <span class="task-id">#${t.id}</span>${prio}
                         <span class="task-title">${esc(t.title)}</span>
-                        <span class="pill ${t.status}">${ERM.TASK_STATUS[t.status] || t.status}</span>
+                        <span class="osa-pill ${t.status}">${ERM.TASK_STATUS[t.status] || t.status}</span>
                     </div>
                     <div class="task-meta"><span>${esc(t.zone)}</span><span>${ERM.age(t.createdAt)}</span></div>
                     ${chips}
@@ -160,7 +160,7 @@
         const list = S.units.slice().sort((a, b) => a.callsign.localeCompare(b.callsign));
         let html;
         if (!list.length) {
-            html = '<li class="empty">No units on duty.<br>Crews sign in on the tablet (J) in an ambulance.</li>';
+            html = '<li class="osa-empty">No units on duty.<br>Crews sign in on the tablet (J) in an ambulance.</li>';
         } else {
             html = list.map(u => {
                 let status = ERM.STATUS[u.status] || u.status;
@@ -196,7 +196,7 @@
     function renderStats() {
         const count = s => S.units.filter(u => u.status === s).length;
         const tcount = s => S.tasks.filter(t => t.status === s).length;
-        const stat = (label, n, color) => `<span class="stat">${color ? `<i class="dot" style="background:${color}"></i>` : ''}${label} <b>${n}</b></span>`;
+        const stat = (label, n, color) => `<span class="osa-stat">${color ? `<i class="osa-dot" style="background:${color}"></i>` : ''}${label} <b>${n}</b></span>`;
         $('stats').innerHTML =
             stat('Units', S.units.length) +
             stat('Available', count('available'), STATUS_COLOR.available) +
@@ -505,22 +505,17 @@
     }));
 
     function syncTabs() {
-        document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === S.tab));
+        document.querySelectorAll('.osa-tab').forEach(x => x.classList.toggle('active', x.dataset.tab === S.tab));
         lastTaskHtml = '';
         renderTasks();
     }
-    document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => { S.tab = b.dataset.tab; syncTabs(); }));
+    document.querySelectorAll('.osa-tab').forEach(b => b.addEventListener('click', () => { S.tab = b.dataset.tab; syncTabs(); }));
 
     $('newTaskBtn').addEventListener('click', () => {
         S.picking = true;
         $('map').style.cursor = 'crosshair';
         ERM.toast('Click on the map to place the new task (right-click also works).', true);
     });
-
-
-    $('legend').innerHTML = Object.keys(STATUS_COLOR).map(s =>
-        `<span><i style="background:${STATUS_COLOR[s]}"></i>${ERM.STATUS[s]}</span>`).join('') +
-        '<span><i style="background:#e5484d;border:2px solid #fff"></i>Task</span>';
 
     setInterval(() => {
         const d = new Date();

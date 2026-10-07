@@ -1,6 +1,6 @@
--- Network map web API. The same two functions serve the HTTP page (POST /rw_core/call/<fn>,
--- exports with http="true") and the in-game ui_browser page (mta.triggerEvent bridge,
--- client/webpage.lua -> "rw:web:call"). Read-only, no login.
+-- Network map web API. The same functions serve the HTTP page (POST /rw_core/call/<fn>,
+-- exports with http="true") and the in-game ui_browser page (web_api's bridge). Read-only,
+-- no login.
 -- Stations / trips come from rw_timetable and signals from rw_signals when they run (no hard
 -- dependency: they include rw_core, not the other way round).
 
@@ -87,16 +87,15 @@ function rwGetBoards()
     return { ok = true, boards = call("rw_timetable", "getStationBoards", BOARD_ROWS) or {} }
 end
 
--- in-game page bridge
-local ALLOWED = { rwGetNetwork = true, rwGetState = true, rwGetBoards = true }
-addEvent("rw:web:call", true)
-addEventHandler("rw:web:call", resourceRoot, function(localId, fn)
-    local player = client
-    if not isElement(player) or not ALLOWED[fn] then return end
-    local ok, result = pcall(_G[fn])
-    if not ok then
-        outputDebugString("[rw_core] web " .. tostring(fn) .. ": " .. tostring(result), 1)
-        result = { ok = false, error = "Server error" }
-    end
-    triggerLatentClientEvent(player, "rw:web:result", 200000, false, resourceRoot, localId, result)
-end)
+-- in-game page: a ui_browser site served by web_api (it relays the page's calls to the
+-- http="true" exports above)
+local function registerSite()
+    exports.web_api:registerApp({
+        title       = RW.COMPANY,
+        site        = RW.SITE_URL,
+        category    = "services",
+        description = RW.COMPANY .. " - live network map: trains, stations and timetables.",
+    })
+end
+addEventHandler("onResourceStart", resourceRoot, registerSite)
+addEventHandler("onWebApiStart", root, registerSite)

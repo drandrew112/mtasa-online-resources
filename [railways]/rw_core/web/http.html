@@ -1,23 +1,19 @@
 <*
--- HTTP entry of the network map (http://<server>:<httpport>/rw_core/).
--- web/index.html, css and js are also client files (the in-game ui_browser loads them as a
--- local CEF page) and MTA serves client files as application/octet-stream, which browsers
--- refuse as a stylesheet - so the HTTP page is sent as one document with css / js inlined.
+-- HTTP entry of the network map (http://<server>:<httpport>/rw_core/): web_api sends
+-- web/index.html with the css / js it links inlined (in game the same files load as a local
+-- CEF page, and MTA serves client files with a content type browsers refuse for css).
+local PAGE = "web/index.html"
 
 local function read(path)
-    local f = fileOpen(path, true)
-    if not f then return "" end
+    local f = fileExists(path) and fileOpen(path, true)
+    if not f then return nil end
     local content = fileRead(f, fileGetSize(f))
     fileClose(f)
     return content
 end
 
-local page = read("web/index.html")
-page = page:gsub('<link rel="stylesheet" href="css/style%.css">', function()
-    return "<style>\n" .. read("web/css/style.css") .. "\n</style>"
-end)
-page = page:gsub('<script src="(js/[%w_]+%.js)"></script>', function(path)
-    return "<script>\n" .. read("web/" .. path) .. "\n</script>"
-end)
-httpWrite(page)
+local html = read(PAGE)
+local files = {}
+for _, path in ipairs(exports.web_api:getAssetRefs(html, PAGE)) do files[path] = read(path) end
+httpWrite(exports.web_api:renderPage(html, files, PAGE))
 *>

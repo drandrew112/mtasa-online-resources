@@ -15,7 +15,7 @@ Network core of Sunline Rail (see `../README.md` for the whole system).
 | `projectToTrack(x, y [, track])`, `getTrackPoint(track, tp)`, `getTrackLength`, `getTrackDelta`, `getTrackPolyline` | geometry (call once, not per frame) |
 | `getSwitches()`, `getSwitchState(id)`, `setSwitchState(id, state [, player])` | `"normal"` / `"reverse"` |
 | `setPlayerRailway`, `isPlayerRailway`, `hasRailwayAccess`, `isRailwayRoleRequired`, `getRailwayPlayers`, `isRailwayAdmin` | railway role |
-| `rwGetNetwork()`, `rwGetState()`, `rwGetBoards()` | web map API (`http="true"`); `rwGetBoards` = every station's departure / arrival board (rw_timetable `getStationBoards`, 12 rows) for the right-hand station panel |
+| `rwGetNetwork()`, `rwGetState()`, `rwGetBoards()` | web map API (`http="true"`, built on `web_api`: HTTP page at `/rw_core/`, in game the `sunline-rail.sa` ui_browser site, registered in `server/web.lua`); `rwGetBoards` = every station's departure / arrival board (rw_timetable `getStationBoards`, 12 rows) for the right-hand station panel |
 
 Client exports: `isPlayerRailway`, `hasRailwayAccess`, `isRailwayRoleRequired`.
 

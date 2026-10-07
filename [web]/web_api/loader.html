@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Loading...</title>
+    <style>
+        html, body { margin: 0; height: 100%; background: #0f1216; color: #8a95a3; font: 14px "Segoe UI", Roboto, sans-serif; }
+        body { display: grid; place-items: center; }
+    </style>
+</head>
+<body>
+<span id="msg">Loading...</span>
+<script>
+// In-game entry of every web_api app (ui_browser opens
+//   http://mta/web_api/loader.html?app=<resource>&page=<web/index.html>&v=<version>).
+// CEF caches local pages and their css / js, so the app page is fetched with ?v=<version>
+// (changes whenever the resource or web_api restarts), every stylesheet / script gets the same
+// ?v=, and the document is rewritten in place. Relative urls of the page resolve against the
+// app's own folder through a <base>, exactly as over HTTP.
+(function () {
+    'use strict';
+    const msg = document.getElementById('msg');
+    const q = new URLSearchParams(location.search);
+    const app = q.get('app') || '';
+    const page = q.get('page') || 'web/index.html';
+    const v = q.get('v') || String(Date.now());
+    if (!/^[\w-]+$/.test(app) || /\.\.|["'<>]/.test(page)) { msg.textContent = 'Invalid page request.'; return; }
+
+    const tag = '?v=' + encodeURIComponent(v);
+    const base = location.origin + '/' + app + '/' + page.replace(/[^\/]*$/, '');
+    const versioned = u => {
+        try {
+            const url = new URL(u, base);
+            return url.origin === location.origin ? url.pathname + tag : u;
+        } catch (e) { return u; }
+    };
+
+    fetch(location.origin + '/' + app + '/' + page + tag).then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+    }).then(html => {
+        html = html.replace(/(<link\s[^>]*?href=")([^"]+)(")/gi, (m, a, u, c) => /stylesheet/i.test(m) ? a + versioned(u) + c : m)
+                   .replace(/(<script\s[^>]*?src=")([^"]+)(")/gi, (m, a, u, c) => a + versioned(u) + c);
+        const head = '<meta name="osa-app" content="' + app + '"><meta name="osa-mode" content="game">' +
+            '<base href="' + base + '">';
+        html = /<head[^>]*>/i.test(html) ? html.replace(/(<head[^>]*>)/i, '$1' + head) : head + html;
+        document.open();
+        document.write(html);
+        document.close();
+    }).catch(e => {
+        msg.textContent = 'Could not load the page (' + e.message + ').';
+    });
+})();
+</script>
+</body>
+</html>

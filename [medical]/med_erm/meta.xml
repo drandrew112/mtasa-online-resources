@@ -17,7 +17,7 @@
     <script src="server/tablet.lua"  type="server" />
     <script src="server/dispatchers.lua" type="server" />
     <script src="server/http.lua"    type="server" />
-    <script src="server/webbridge.lua" type="server" />
+    <script src="server/webapp.lua" type="server" />
     <script src="server/autodispatch.lua" type="server" />
     <script src="server/hospitalroute.lua" type="server" />
     <script src="server/admin.lua"   type="server" />
@@ -34,7 +34,6 @@
     <script src="client/pages/messages.lua" type="client" />
     <script src="client/tutorial.lua"       type="client" />
     <script src="client/unitlabel.lua"      type="client" />
-    <script src="client/webpage.lua"       type="client" />
     <script src="client/admin/panel.lua"   type="client" />
     <script src="client/admin/detail.lua"  type="client" />
     <file src="client/fonts/Roboto.ttf"  type="client" />
@@ -43,10 +42,9 @@
 
     <!-- ================= WEB (dispatcher console) =================
          http://<server>:<httpport>/erm/  - no MTA login (see README for ACL) -->
-    <!-- web/http.html sends web/index.html with the css / js inlined (those
+    <!-- built on web_api: web/http.html sends web/index.html with the css / js inlined (those
          files are client files too, served as octet-stream on their own path) -->
     <html src="web/http.html"     default="true" />
-    <html src="web/img/map.png"   raw="true" />
 
     <!-- the same page as a local CEF page inside ui_browser (ems-dispatch.eu);
          the map comes from v_radar's client files there -->
@@ -54,7 +52,6 @@
     <file src="web/css/style.css" type="client" />
     <file src="web/js/api.js"     type="client" />
     <file src="web/js/map.js"     type="client" />
-    <file src="web/js/ui.js"      type="client" />
     <file src="web/js/chat.js"    type="client" />
     <file src="web/js/app.js"     type="client" />
 
@@ -104,4 +101,5 @@
     <include resource="ui_core" />
     <include resource="v_radar" />
     <include resource="ui_browser" />
+    <include resource="web_api" />
 </meta>

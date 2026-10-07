@@ -40,10 +40,9 @@ local function loadCodes()
 end
 
 local function clientId()
-    -- in-game console (server/webbridge.lua) sets WebCaller to the player serial;
-    -- MTA exposes the caller's address to HTTP handlers as "hostname"
-    if WebCaller then return WebCaller end
-    return type(hostname) == "string" and hostname or "web"
+    -- web_api: "player:<serial>" for the in-game console, otherwise the fallback - MTA exposes
+    -- the caller's address to HTTP handlers as "hostname"
+    return exports.web_api:getCallerId(hostname)
 end
 
 local function tooManyFails(id)

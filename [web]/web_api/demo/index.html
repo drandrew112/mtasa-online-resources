@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OSA Web API</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <style>
+        body { display: flex; flex-direction: column; }
+        .layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 340px 1fr 380px; gap: 8px; padding: 8px; }
+        .side { overflow-y: auto; padding: 12px; }
+        .side h3 { margin: 14px 0 6px; font-size: 12px; color: var(--osa-dim); text-transform: uppercase; letter-spacing: .6px; }
+        .side h3:first-child { margin-top: 0; }
+        .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
+        pre { margin: 6px 0; padding: 8px 10px; overflow-x: auto; border-radius: 6px; background: var(--osa-panel-2); font-size: 12px; }
+        code { font-family: Consolas, monospace; }
+        .app { padding: 7px 9px; margin-bottom: 5px; border-radius: 6px; background: var(--osa-panel-2); }
+        .app small { display: block; color: var(--osa-faint); }
+        .dotm { width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 2px solid #fff; border-radius: 50%; background: var(--osa-accent); cursor: pointer; }
+        @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; overflow-y: auto; } .osa-map-wrap { min-height: 360px; } }
+    </style>
+</head>
+<body>
+    <header class="osa-topbar">
+        <div class="osa-brand">
+            <div><strong>OSA Web API</strong><small>Components &amp; documentation</small></div>
+        </div>
+        <div class="osa-stats">
+            <span class="osa-stat">Apps <b id="statApps">0</b></span>
+            <span class="osa-stat">Players <b id="statPlayers">0</b></span>
+            <span class="osa-stat">Mode <b id="statMode"></b></span>
+        </div>
+        <div class="osa-top-right"><span class="osa-conn" id="conn"></span><span class="osa-clock" id="clock">--:--</span></div>
+    </header>
+
+    <main class="layout">
+        <aside class="osa-panel side">
+            <h3>Registered apps</h3>
+            <div id="apps"><p class="osa-muted">Loading...</p></div>
+
+            <h3>Buttons &amp; labels</h3>
+            <div class="row">
+                <button class="osa-btn">Default</button>
+                <button class="osa-btn primary">Primary</button>
+                <button class="osa-btn danger">Danger</button>
+                <button class="osa-btn small">Small</button>
+            </div>
+            <div class="row">
+                <span class="osa-badge">badge</span>
+                <span class="osa-badge ok">ok</span>
+                <span class="osa-badge bad">bad</span>
+                <span class="osa-pill warn">pill warn</span>
+                <span class="osa-pill info">pill info</span>
+                <span class="osa-chip" style="background:#3884f4">chip</span>
+                <span class="osa-dot ok"></span><span class="osa-dot bad"></span>
+            </div>
+            <dl class="osa-kv"><dt>Key</dt><dd>Value</dd><dt>Another</dt><dd>Value two</dd></dl>
+
+            <h3>Overlays</h3>
+            <div class="row">
+                <button class="osa-btn" id="bToast">Toast</button>
+                <button class="osa-btn" id="bForm">Form</button>
+                <button class="osa-btn" id="bConfirm">Confirm</button>
+            </div>
+            <p class="osa-muted">Right-click the map for a context menu, hover a dot for a tooltip.</p>
+        </aside>
+
+        <section class="osa-map-wrap">
+            <div id="map"></div>
+        </section>
+
+        <aside class="osa-panel side">
+            <h3>Live call</h3>
+            <p class="osa-muted">An <code>http="true"</code> export, called the same way over HTTP and in game.</p>
+            <div class="row">
+                <input class="osa-input" id="echoText" value="hello" style="flex:1">
+                <button class="osa-btn primary" id="bEcho">osaDemoEcho</button>
+            </div>
+            <pre id="echoOut">-</pre>
+
+            <h3>Use it in a resource</h3>
+            <pre><code>&lt;!-- meta.xml --&gt;
+&lt;include resource="web_api" /&gt;
+&lt;html src="web/http.html" default="true" /&gt;
+&lt;file src="web/index.html" type="client" /&gt;
+&lt;export function="myCall" type="server" http="true" /&gt;</code></pre>
+            <pre><code>&lt;!-- web/http.html: read the page and the files
+     it links, web_api inlines them --&gt;
+&lt;* local PAGE = "web/index.html"
+   local function read(p) ... end
+   local html = read(PAGE)
+   local files = {}
+   for _, p in ipairs(exports.web_api:getAssetRefs(html, PAGE)) do
+     files[p] = read(p)
+   end
+   httpWrite(exports.web_api:renderPage(html, files, PAGE)) *&gt;</code></pre>
+            <pre><code>&lt;!-- web/index.html --&gt;
+&lt;link rel="stylesheet" href="/web_api/osa.css"&gt;
+&lt;script src="/web_api/osa.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const api = OSA.api();
+  const r = await api.call('myCall', 1, 2);
+&lt;/script&gt;</code></pre>
+            <pre><code>-- server, only for an in-game site
+exports.web_api:registerApp({
+  title = "My app", site = "my-app.eu",
+  category = "services", description = "..." })</code></pre>
+            <p class="osa-muted">See web_api/README.md.</p>
+        </aside>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script>
+    (function () {
+        'use strict';
+        const $ = id => document.getElementById(id);
+        const api = OSA.api();
+        $('statMode').textContent = OSA.inGame ? 'in game' : 'HTTP';
+
+        const map = new OSA.Map($('map'), {
+            onMarkerCreate(m, key) {
+                m.addEventListener('mouseenter', e => OSA.ui.showTip(m, '<h4>' + OSA.esc(m._label) + '</h4><p>x ' + m._x + ', y ' + m._y + '</p>', e));
+                m.addEventListener('mousemove', e => OSA.ui.moveTip(e));
+                m.addEventListener('mouseleave', () => OSA.ui.hideTip(m));
+            },
+        });
+        [['Los Santos', 1480, -1700], ['San Fierro', -2000, 500], ['Las Venturas', 2000, 1500]].forEach(([name, x, y], i) => {
+            const m = map.marker('city:' + i, x, y, 'dotm', undefined, () => OSA.toast(name, true));
+            m._label = name;
+        });
+        map.on('mapcontext', e => {
+            const d = e.detail;
+            OSA.ui.openMenu(d.event.clientX, d.event.clientY, [
+                { header: 'Map' },
+                { label: 'Show coordinates', action: () => OSA.toast('x ' + Math.round(d.wx) + ', y ' + Math.round(d.wy), true) },
+                'sep',
+                { label: 'Fit map', action: () => map.fit() },
+            ]);
+        });
+
+        $('bToast').onclick = () => OSA.toast('Hello from OSA', true);
+        $('bForm').onclick = async () => {
+            const r = await OSA.ui.form('Example form', [{ name: 'a', label: 'Text' }, { name: 'b', label: 'Long text', type: 'textarea' }], 'Save', 'Fields are trimmed.');
+            OSA.toast(r ? 'Saved: ' + JSON.stringify(r) : 'Cancelled', !!r);
+        };
+        $('bConfirm').onclick = async () => OSA.toast((await OSA.ui.confirm('Are you sure?', 'This is only a demo.', 'Yes')) ? 'Confirmed' : 'Cancelled', true);
+        $('bEcho').onclick = async () => {
+            try { $('echoOut').textContent = JSON.stringify(await api.call('osaDemoEcho', $('echoText').value), null, 2); }
+            catch (e) { $('echoOut').textContent = 'Failed: ' + e.message; }
+        };
+
+        OSA.poll(async () => {
+            const s = await api.call('osaDemoState');
+            if (!s || !s.ok) throw new Error('no answer');
+            OSA.time.sync(s.time);
+            $('statPlayers').textContent = s.players;
+            const apps = OSA.arr(s.apps);
+            $('statApps').textContent = apps.length;
+            $('apps').innerHTML = apps.length ? apps.map(a =>
+                '<div class="app"><b>' + OSA.esc(a.title) + '</b><small>' + OSA.esc(a.name) + (a.site ? ' &middot; ' + OSA.esc(a.site) : ' &middot; HTTP only') + '</small></div>').join('')
+                : '<p class="osa-muted">No app registered a ui_browser site.</p>';
+            $('conn').className = 'osa-conn ok';
+        }, 3000, { onFail: () => { $('conn').className = 'osa-conn bad'; } });
+
+        setInterval(() => { $('clock').textContent = OSA.clock(OSA.time.now()); }, 1000);
+    })();
+    </script>
+</body>
+</html>

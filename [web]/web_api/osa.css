@@ -1,0 +1,453 @@
+/* ==========================================================================
+   OSA web toolkit - shared styles (web_api/osa.css)
+   Provided by OpenSanAndreas
+
+   Theme it by overriding the --osa-* variables in the app's own css. Every class is
+   prefixed osa- so it never collides with the app's classes.
+   ========================================================================== */
+
+:root {
+    --osa-bg: #0f1216;
+    --osa-panel: #161b21;
+    --osa-panel-2: #1d232b;
+    --osa-panel-3: #252d37;
+    --osa-line: #2a323c;
+    --osa-text: #e8ecf1;
+    --osa-dim: #98a2ae;
+    --osa-faint: #626c78;
+    --osa-accent: #e03c31;
+    --osa-on-accent: #fff;
+    --osa-ok: #2ea043;
+    --osa-bad: #da3633;
+    --osa-warn: #e6be28;
+    --osa-info: #3884f4;
+    --osa-danger-text: #ff7b72;
+
+    --osa-topbar-bg: #0b0e11;
+    --osa-topbar-h: 56px;
+    --osa-footer-h: 22px;
+    --osa-map-bg: #0a2a3d;
+    --osa-radius: 8px;
+    --osa-font: "Segoe UI", Roboto, system-ui, sans-serif;
+
+    font-size: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--osa-bg);
+    color: var(--osa-text);
+    font-family: var(--osa-font);
+    overflow: hidden;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ---------------------------------------------------------------- credit */
+
+/* bottom-left corner of the map (osa.js puts it into the first .osa-map-wrap) */
+.osa-credit {
+    position: absolute;
+    left: 0; bottom: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    height: var(--osa-footer-h);
+    padding: 0 12px;
+    background: var(--osa-topbar-bg);
+    border-top: 1px solid var(--osa-line);
+    border-right: 1px solid var(--osa-line);
+    border-radius: 0 var(--osa-radius) 0 0;
+    color: var(--osa-dim);
+    font-size: 11px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+}
+.osa-credit b { color: var(--osa-text); font-weight: 700; }
+/* page without a map: a strip at the bottom-left of the page */
+.osa-credit.page { position: fixed; z-index: 1000; pointer-events: auto; }
+body.osa-credit-page { padding-bottom: var(--osa-footer-h); }
+
+/* ---------------------------------------------------------------- top bar */
+
+.osa-topbar {
+    flex: none;
+    height: var(--osa-topbar-h);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+    background: var(--osa-topbar-bg);
+    border-bottom: 1px solid var(--osa-line);
+}
+.osa-brand { display: flex; align-items: center; gap: 12px; }
+.osa-brand strong, .osa-brand .osa-title { display: block; font-size: 16px; letter-spacing: .3px; }
+.osa-brand small, .osa-brand .osa-sub { display: block; color: var(--osa-faint); font-size: 11px; }
+
+.osa-stats { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+.osa-stat {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--osa-panel-2);
+    color: var(--osa-dim);
+    font-size: 12px;
+}
+.osa-stat b { color: var(--osa-text); }
+
+/* value above a small caption, right aligned */
+.osa-kpis { display: flex; gap: 22px; margin-left: auto; }
+.osa-kpi { display: flex; flex-direction: column; align-items: flex-end; }
+.osa-kpi span { font-size: 18px; font-weight: 700; }
+.osa-kpi label { font-size: 11px; color: var(--osa-dim); text-transform: uppercase; letter-spacing: .6px; }
+
+.osa-top-right { display: flex; align-items: center; gap: 14px; }
+.osa-conn { width: 10px; height: 10px; border-radius: 50%; background: var(--osa-faint); }
+.osa-conn.ok { background: var(--osa-ok); box-shadow: 0 0 8px var(--osa-ok); }
+.osa-conn.bad { background: var(--osa-bad); }
+.osa-clock { font-variant-numeric: tabular-nums; color: var(--osa-dim); font-weight: 600; }
+
+/* ---------------------------------------------------------------- layout, panels */
+
+/* the area below the top bar */
+.osa-main { flex: 1; min-height: 0; display: flex; gap: 8px; padding: 8px; }
+body.osa-flex { display: flex; flex-direction: column; }
+
+.osa-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--osa-panel);
+    border: 1px solid var(--osa-line);
+    border-radius: var(--osa-radius);
+    overflow: hidden;
+}
+.osa-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--osa-line);
+}
+.osa-panel-head h2 { margin: 0; font-size: 14px; }
+.osa-count, .osa-panel-head h2 b, .osa-tab b {
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--osa-panel-3);
+    font-size: 11px;
+}
+
+.osa-list { list-style: none; margin: 0; padding: 6px; overflow-y: auto; flex: 1; }
+.osa-empty { padding: 30px 10px; color: var(--osa-faint); text-align: center; }
+.osa-muted { color: var(--osa-dim); }
+
+.osa-tabs { display: flex; gap: 4px; }
+.osa-tab {
+    padding: 5px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--osa-dim);
+    cursor: pointer;
+}
+.osa-tab.active { background: var(--osa-panel-3); color: var(--osa-text); }
+
+/* thin scrollbar lane, for tables inside a panel */
+.osa-scroll {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--osa-line) transparent;
+}
+.osa-scroll::-webkit-scrollbar { width: 6px; }
+.osa-scroll::-webkit-scrollbar-track { background: transparent; }
+.osa-scroll::-webkit-scrollbar-thumb { background: var(--osa-line); border-radius: 3px; }
+.osa-scroll::-webkit-scrollbar-thumb:hover { background: var(--osa-dim); }
+
+/* ---------------------------------------------------------------- controls */
+
+.osa-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--osa-line);
+    border-radius: 6px;
+    background: var(--osa-panel-2);
+    cursor: pointer;
+}
+.osa-btn:hover { background: var(--osa-panel-3); }
+.osa-btn:disabled { opacity: .45; cursor: default; }
+.osa-btn.small { padding: 4px 10px; font-size: 12px; }
+.osa-btn.primary { background: var(--osa-accent); border-color: var(--osa-accent); color: var(--osa-on-accent); }
+.osa-btn.primary:hover { filter: brightness(1.1); }
+.osa-btn.danger { background: #8e2520; border-color: #8e2520; }
+.osa-btn.icon { width: 34px; height: 34px; padding: 0; font-size: 18px; line-height: 1; }
+
+.osa-input, .osa-select, .osa-textarea {
+    padding: 6px 10px;
+    border: 1px solid var(--osa-line);
+    border-radius: 6px;
+    background: var(--osa-panel-2);
+}
+.osa-input:focus, .osa-select:focus, .osa-textarea:focus { outline: 2px solid var(--osa-accent); border-color: transparent; }
+.osa-textarea { min-height: 80px; resize: vertical; }
+
+/* small labels */
+.osa-badge {
+    display: inline-block;
+    min-width: 26px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--osa-panel-3);
+    color: var(--osa-dim);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+}
+.osa-pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--osa-panel-3);
+    color: var(--osa-dim);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.osa-chip {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+.osa-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--osa-faint); }
+.osa-tag { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex: none; background: var(--osa-faint); }
+
+/* state colours: ok / bad / warn / info (tinted badges and pills, solid dots and tags) */
+.osa-badge.ok,   .osa-pill.ok   { background: #2ea04326; color: #57d172; }
+.osa-badge.bad,  .osa-pill.bad  { background: #e5484d26; color: #ff8589; }
+.osa-badge.warn, .osa-pill.warn { background: #ffc53d26; color: #ffc53d; }
+.osa-badge.info, .osa-pill.info { background: #3e9bff26; color: #6db3ff; }
+.osa-dot.ok,   .osa-tag.ok   { background: var(--osa-ok); }
+.osa-dot.bad,  .osa-tag.bad  { background: var(--osa-bad); }
+.osa-dot.warn, .osa-tag.warn { background: var(--osa-warn); }
+.osa-dot.info, .osa-tag.info { background: var(--osa-info); }
+.osa-text-ok { color: var(--osa-ok); } .osa-text-bad { color: var(--osa-bad); }
+.osa-text-warn { color: var(--osa-warn); } .osa-text-info { color: var(--osa-info); }
+
+/* key / value list, table */
+.osa-kv { display: grid; grid-template-columns: 96px 1fr; gap: 3px 8px; margin: 0 0 8px; font-size: 13px; }
+.osa-kv dt { color: var(--osa-dim); }
+.osa-kv dd { margin: 0; }
+
+.osa-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.osa-table th { text-align: left; padding: 3px 4px; border-bottom: 1px solid var(--osa-line); color: var(--osa-dim); font-weight: 600; }
+.osa-table td { padding: 4px; border-bottom: 1px solid var(--osa-line); vertical-align: top; }
+.osa-table th.c, .osa-table td.c { text-align: center; }
+.osa-table th.r, .osa-table td.r { text-align: right; }
+.osa-table.sticky th { position: sticky; top: 0; background: var(--osa-panel); }
+
+/* ---------------------------------------------------------------- login screen */
+
+.osa-login {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 50% 30%, var(--osa-panel-2), var(--osa-bg) 70%);
+}
+.osa-login[hidden] { display: none; }
+.osa-login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: min(340px, calc(100vw - 32px));
+    padding: 30px 26px;
+    border: 1px solid var(--osa-line);
+    border-radius: 12px;
+    background: var(--osa-panel);
+    box-shadow: 0 20px 60px #0009;
+}
+.osa-login-box h1 { margin: 6px 0 0; font-size: 20px; }
+.osa-login-box p { margin: 0 0 8px; color: var(--osa-dim); font-size: 13px; }
+.osa-login-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--osa-line);
+    border-radius: 7px;
+    background: var(--osa-panel-2);
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+.osa-login-box input:focus { outline: 2px solid var(--osa-accent); border-color: transparent; }
+.osa-login-box .osa-btn { width: 100%; padding: 10px; font-weight: 600; }
+.osa-login-error { min-height: 18px; color: var(--osa-danger-text); font-size: 13px; }
+
+/* ---------------------------------------------------------------- map */
+
+.osa-map-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid var(--osa-line);
+    border-radius: var(--osa-radius);
+    background: var(--osa-map-bg);
+}
+.osa-map { position: absolute; inset: 0; overflow: hidden; cursor: grab; }
+.osa-map.panning { cursor: grabbing; }
+.osa-map-img {
+    position: absolute;
+    left: 0; top: 0;
+    max-width: none;
+    transform-origin: 0 0;
+    user-select: none;
+    pointer-events: none;
+}
+.osa-map-canvas { position: absolute; left: 0; top: 0; pointer-events: none; }
+.osa-map-markers { position: absolute; inset: 0; pointer-events: none; }
+.osa-marker { position: absolute; pointer-events: auto; }
+
+.osa-map-tools { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; }
+.osa-map-tools .osa-btn { background: var(--osa-panel); }
+
+.osa-legend {
+    position: absolute;
+    left: 10px; bottom: calc(var(--osa-footer-h) + 10px);
+    display: flex;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #0b0e11dd;
+    font-size: 12px;
+}
+.osa-legend span { display: flex; align-items: center; gap: 5px; color: var(--osa-dim); }
+.osa-legend i { width: 10px; height: 10px; border-radius: 50%; }
+
+.osa-offline {
+    position: absolute; left: 50%; top: 12px;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--osa-bad);
+    color: #fff;
+    font-weight: 600;
+}
+.osa-offline[hidden] { display: none; }
+
+/* ---------------------------------------------------------------- overlays */
+
+.osa-ctx {
+    position: fixed;
+    z-index: 50;
+    min-width: 200px;
+    max-height: 70vh;
+    padding: 4px;
+    overflow-y: auto;
+    border: 1px solid var(--osa-line);
+    border-radius: 8px;
+    background: var(--osa-panel-2);
+    box-shadow: 0 10px 30px #000a;
+}
+.osa-ctx[hidden] { display: none; }
+.osa-ctx-head {
+    padding: 6px 10px 3px;
+    color: var(--osa-faint);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.osa-ctx-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+.osa-ctx-item:hover:not(:disabled) { background: var(--osa-panel-3); }
+.osa-ctx-item:disabled { color: var(--osa-faint); cursor: default; }
+.osa-ctx-item.danger { color: var(--osa-danger-text); }
+.osa-ctx-item .osa-dot { width: 8px; height: 8px; }
+.osa-ctx-sep { height: 1px; margin: 4px 6px; background: var(--osa-line); }
+
+.osa-tip {
+    position: fixed;
+    z-index: 40;
+    max-width: 300px;
+    padding: 8px 10px;
+    border: 1px solid var(--osa-line);
+    border-radius: 7px;
+    background: #0b0e11f2;
+    font-size: 12px;
+    pointer-events: none;
+}
+.osa-tip[hidden] { display: none; }
+.osa-tip h4 { margin: 0 0 4px; font-size: 13px; }
+.osa-tip p { margin: 2px 0; color: var(--osa-dim); }
+.osa-tip p b { color: var(--osa-text); font-weight: 600; }
+
+.osa-modal-back {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    background: #000a;
+}
+.osa-modal-back[hidden] { display: none; }
+.osa-modal {
+    width: min(420px, calc(100vw - 32px));
+    padding: 18px;
+    border: 1px solid var(--osa-line);
+    border-radius: 10px;
+    background: var(--osa-panel);
+}
+.osa-modal h3 { margin: 0 0 12px; }
+.osa-modal label { display: block; margin-bottom: 10px; color: var(--osa-dim); font-size: 12px; }
+.osa-modal input, .osa-modal textarea {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 7px 10px;
+    border: 1px solid var(--osa-line);
+    border-radius: 6px;
+    background: var(--osa-panel-2);
+}
+.osa-modal textarea { min-height: 80px; resize: vertical; }
+.osa-modal .osa-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.osa-modal .osa-hint { margin: -4px 0 10px; color: var(--osa-faint); font-size: 12px; }
+.osa-modal p { margin: 0 0 4px; color: var(--osa-dim); }
+
+.osa-toasts {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.osa-toast {
+    padding: 9px 14px;
+    border-left: 4px solid var(--osa-accent);
+    border-radius: 6px;
+    background: var(--osa-panel-3);
+    box-shadow: 0 6px 20px #0008;
+    animation: osa-fade .2s ease-out;
+}
+.osa-toast.ok { border-color: var(--osa-ok); }
+@keyframes osa-fade { from { opacity: 0; transform: translateY(6px); } }

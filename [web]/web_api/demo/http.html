@@ -1,8 +1,8 @@
 <*
--- HTTP entry of the dispatcher console (http://<server>:<httpport>/erm/): web_api sends
--- web/index.html with the css / js it links inlined (in game the same files load as a local
--- CEF page, and MTA serves client files with a content type browsers refuse for css).
-local PAGE = "web/index.html"
+-- HTTP entry of the demo / documentation page (http://<server>:<httpport>/web_api/).
+-- The standard entry of a web_api app: read the page and the files it links, hand them to
+-- web_api, which sends one self-contained document (see README.md).
+local PAGE = "demo/index.html"
 
 local function read(path)
     local f = fileExists(path) and fileOpen(path, true)
