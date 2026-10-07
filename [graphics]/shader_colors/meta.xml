@@ -1,0 +1,24 @@
+<meta>
+    <info author="DrAndrew112" type="script" version="1.0.0" name="Color grading" description="Full-screen color grading (vibrance, filmic contrast, tints) with presets, dynamic day/night blending and an override stack for other resources. Preset and intensity are set by ui_pause Graphics settings." />
+
+    <min_mta_version client="1.5.8" server="1.5.8" />
+
+    <download_priority_group>10</download_priority_group>
+
+    <script src="c_presets.lua" type="client" />
+    <script src="c_main.lua" type="client" />
+    <script src="c_api.lua" type="client" />
+
+    <file src="fx/colorgrade.fx" />
+
+    <export function="isColorGradingSupported" type="client" />
+    <export function="getColorGradingStatus" type="client" />
+    <export function="getColorPresets" type="client" />
+    <export function="getColorPreset" type="client" />
+    <export function="setColorPreset" type="client" />
+    <export function="getColorIntensity" type="client" />
+    <export function="setColorIntensity" type="client" />
+    <export function="pushColorOverride" type="client" />
+    <export function="removeColorOverride" type="client" />
+    <export function="hasColorOverride" type="client" />
+</meta>
