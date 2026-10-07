@@ -1,0 +1,7 @@
+<map xmlns:edf="https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF" edf:definitions="editor_main">
+    <removeWorldObject id="removeWorldObject (newbuildsm01) (1)" radius="76.971939" interior="-1" model="4019" lodModel="4025" posX="1777.8359" posY="-1773.9062" posZ="12.52344" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (lanitewin4_LAN) (1)" radius="20" interior="-1" model="4215" lodModel="4215" posX="1777.5547" posY="-1775.0391" posZ="36.75" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <object id="object (BDups_interior) (1)" dimension="0" model="14802" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1791.4" posY="-1796.1" posZ="12.6" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (BDups_interior) (2)" dimension="0" model="14802" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1791.4004" posY="-1772" posZ="12.6" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (BDups_interior) (3)" dimension="0" model="14802" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1791.4004" posY="-1752" posZ="12.6" rotX="0" rotY="0" rotZ="0"></object>
+</map>
