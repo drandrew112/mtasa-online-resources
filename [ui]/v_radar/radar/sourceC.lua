@@ -437,6 +437,16 @@ local radarTextureFiles = {
 }
 local radarTextureRetry = nil
 
+-- Map coordinates (mapTextureSize space) are independent of the texture resolution;
+-- the bigmap PNG may be higher-res (4096) so its source rect is scaled to texture pixels.
+local function drawBigmapSection(x, y, w, h, su, sv, sw, sh, tex)
+	local scale = 1
+	if isElement(tex) then
+		scale = (dxGetMaterialSize(tex)) / mapTextureSize
+	end
+	return dxDrawImageSection(x, y, w, h, su * scale, sv * scale, sw * scale, sh * scale, tex)
+end
+
 local function applyRadarTextureEdge(name)
 	local tex = createdTextures[name]
 	if not isElement(tex) then return end
@@ -931,7 +941,7 @@ function renderTheBigmap()
 			mapPlayerPosX, mapPlayerPosY = blipMenuFocus[1], blipMenuFocus[2]
 		end
 
-		dxDrawImageSection(bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight, remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2, remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2, bigmapWidth / bigmapZoom, bigmapHeight / bigmapZoom, getTexture("bigmapMap"))
+		drawBigmapSection(bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight, remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2, remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2, bigmapWidth / bigmapZoom, bigmapHeight / bigmapZoom, getTexture("bigmapMap"))
 
 		if objectiveRouteImage then
 			local d = objectiveRouteImageData
@@ -1780,7 +1790,7 @@ function renderPausePreview(px, py, pw, ph)
 	local zoom = 0.5
 	local map = getTexture("bigmapMap")
 	if map then
-		dxDrawImageSection(px, py, pw, ph,
+		drawBigmapSection(px, py, pw, ph,
 			remapTheSecondWay(playerPosX) - (pw / zoom) / 2,
 			remapTheFirstWay(playerPosY) - (ph / zoom) / 2,
 			pw / zoom, ph / zoom, map)
