@@ -13,5 +13,6 @@ addEventHandler("sendMessageToAll", getRootElement(), function(sender, text)
         return
     end
     sendMessageToAll(sender, text)
+    triggerEvent("chat:discord:sendWebhook", client, "**"..getPlayerName(sender).."**: "..text)
 end)
 

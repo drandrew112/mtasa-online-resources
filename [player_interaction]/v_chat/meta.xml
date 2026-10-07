@@ -9,6 +9,7 @@
 
   <script src="mute.lua" type="server"/>
   <script src="s_chat.lua" type="server"/>
+  <script src="s_webhook.lua" type="server"/>
 
   <script src="shared.lua" type="shared"/>
 
