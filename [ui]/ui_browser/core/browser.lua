@@ -22,7 +22,7 @@ BR.state = {
     search     = { focused = false, buffer = "" },
 }
 
-local WIN_FRACTION = 0.8
+local WIN_FRACTION = 0.9
 
 local win = { x = 0, y = 0, w = 0, h = 0, chromeH = 0 }
 local ui = {}          -- clickable chrome rects: back, close, url
