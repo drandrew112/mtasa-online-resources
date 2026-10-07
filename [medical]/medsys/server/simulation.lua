@@ -208,6 +208,12 @@ local function updateGlucose(state, dt, now)
     if state.ivAccess and glucose > MEDIC.GLUCOSE_IV_ABOVE then
         glucose = glucose - MEDIC.GLUCOSE_IV_RATE * dt
     end
+    -- tiny natural fluctuation: a mean-reverting random wobble (a few tenths of mg/dL, max +-GLUCOSE_WOBBLE)
+    local wobble = state.glucoseWobble or 0
+    local newWobble = wobble * (1 - math.min(1, 0.2 * dt)) + (math.random() - 0.5) * MEDIC.GLUCOSE_WOBBLE * 0.3 * math.min(1, dt)
+    newWobble = math.max(-MEDIC.GLUCOSE_WOBBLE, math.min(MEDIC.GLUCOSE_WOBBLE, newWobble))
+    state.glucoseWobble = newWobble
+    glucose = glucose + (newWobble - wobble)
     state.glucose = math.max(MEDIC.GLUCOSE_MIN, math.min(MEDIC.GLUCOSE_MAX, glucose))
 
     if state.glucose < MEDIC.HYPO_ARREST_GLUCOSE then

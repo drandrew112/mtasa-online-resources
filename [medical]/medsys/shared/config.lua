@@ -149,6 +149,7 @@ MEDIC = {
     GLUCOSE = 95,               -- healthy resting value
     GLUCOSE_DRIFT = 0.08,       -- mg/dL per second towards the resting value
     GLUCOSE_MIN = 10, GLUCOSE_MAX = 900,
+    GLUCOSE_WOBBLE = 1.5,       -- mg/dL: max size of the natural random fluctuation around the current value
     GLUCOSE_IV_RATE = 0.12,     -- mg/dL/s an IV line (fluids) lowers a value above GLUCOSE_IV_ABOVE
     GLUCOSE_IV_ABOVE = 180,
     HYPO_GLUCOSE = 70,          -- below: sweating, the pulse rises (HYPO_HEART_RATE per mg/dL, max 25)
