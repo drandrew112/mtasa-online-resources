@@ -18,7 +18,14 @@ PAUSE_SETTINGS = {
     { id = "gfx_modellod",       type = "number" },
     { id = "gfx_pedlod",         type = "number" },
     { id = "gfx_vehiclelod",     type = "number" },
+    { id = "gfx_colorpreset",    type = "string" },
+    { id = "gfx_colorintensity", type = "number" },
 }
+
+-- Strings come from the client, so only short identifiers are accepted.
+local function validString(value)
+    return type(value) == "string" and #value <= 32 and value:match("^[%w_%-]+$") ~= nil
+end
 
 -- accountData key prefix; the final key is e.g. "uipause.setting.show3dblips".
 PAUSE_SETTING_KEY = "uipause.setting."
@@ -44,6 +51,8 @@ function pauseSettingEncode(id, value)
         return (value == true or value == 1 or value == "1") and 1 or 0
     elseif def.type == "number" then
         return tonumber(value)
+    elseif def.type == "string" then
+        return validString(value) and value or nil
     end
     return tostring(value)
 end
@@ -57,6 +66,9 @@ function pauseSettingDecode(id, raw)
         return raw == 1 or raw == "1" or raw == true
     elseif def.type == "number" then
         return tonumber(raw)
+    elseif def.type == "string" then
+        raw = tostring(raw)
+        return validString(raw) and raw or nil
     end
     return tostring(raw)
 end

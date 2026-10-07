@@ -85,6 +85,11 @@ local function drawdistanceAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function colorsAvailable()
+    local res = getResourceFromName("shader_colors")
+    return res and getResourceState(res) == "running"
+end
+
 local function jobsAvailable()
     local res = getResourceFromName("v_jobmanager")
     return res and getResourceState(res) == "running"
@@ -183,6 +188,27 @@ SETTINGS_TREE = {
                 available = drawdistanceAvailable,
                 get = function() return drawdistanceAvailable() and exports.drawdistance:getVehicleLOD() end,
                 set = function(v) if drawdistanceAvailable() then exports.drawdistance:setVehicleLOD(v) end end,
+            },
+            {
+                id = "gfx_colorpreset", label = "Color Grading", type = "choice",
+                desc = "Color correction filter for livelier colors and modern contrast. Off saves performance.",
+                available = colorsAvailable,
+                options = function() return colorsAvailable() and exports.shader_colors:getColorPresets() or {} end,
+                get = function() return colorsAvailable() and exports.shader_colors:getColorPreset() end,
+                set = function(v) if colorsAvailable() then exports.shader_colors:setColorPreset(v) end end,
+                valueText = function()
+                    if colorsAvailable() and not exports.shader_colors:isColorGradingSupported() then
+                        return "Not supported"
+                    end
+                end,
+            },
+            {
+                id = "gfx_colorintensity", label = "Color Intensity", type = "range",
+                min = 0, max = 100, step = 10, default = 70, suffix = "%",
+                desc = "Strength of the color grading filter.",
+                available = colorsAvailable,
+                get = function() return colorsAvailable() and exports.shader_colors:getColorIntensity() end,
+                set = function(v) if colorsAvailable() then exports.shader_colors:setColorIntensity(v) end end,
             },
         },
     },
@@ -408,6 +434,16 @@ local function handleSettingsKey(key)
             local cur = tonumber(item.get()) or item.default or item.min
             local delta = (key == "arrow_r") and item.step or -item.step
             newValue = math.max(item.min, math.min(item.max, cur + delta))
+            if newValue == cur then return end
+        elseif item.type == "choice" then
+            local opts = item.options() or {}
+            if #opts == 0 then return end
+            local cur, idx = item.get(), 1
+            for i, o in ipairs(opts) do
+                if o.id == cur then idx = i break end
+            end
+            idx = moveSel(idx, key == "arrow_l" and -1 or 1, #opts)
+            newValue = opts[idx].id
             if newValue == cur then return end
         end
 
@@ -721,9 +757,18 @@ local function drawSettingsTab(x, y, w, h)
         elseif item.type == "toggle" then
             value = (item.get() and true or false) and "ON" or "OFF"
         elseif item.type == "range" then
-            value = tostring(tonumber(item.get()) or item.default or item.min)
+            value = tostring(tonumber(item.get()) or item.default or item.min) .. (item.suffix or "")
+        elseif item.type == "choice" then
+            local cur = item.get()
+            value = tostring(cur or "")
+            for _, o in ipairs(item.options() or {}) do
+                if o.id == cur then value = o.label break end
+            end
         end
-        local selector = enabled and (item.type == "toggle" or item.type == "range")
+        if enabled and item.valueText then
+            value = item.valueText() or value
+        end
+        local selector = enabled and (item.type == "toggle" or item.type == "range" or item.type == "choice")
         itemRows[i] = { label = item.label, value = value, selector = selector, dim = not enabled }
     end
     drawRows(rightX, listY, rightW, itemRows, settingsSel, focus == "content" and settingsCat ~= nil)
