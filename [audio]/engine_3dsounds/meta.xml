@@ -1,0 +1,5 @@
+<meta>
+	<info author="DrAndrew112" type="script" name="Better 3D Sounds" />
+	<script src="registry.lua" type="client" />
+	<script src="effects.lua" type="client" />
+</meta>
