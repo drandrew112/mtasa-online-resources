@@ -25,24 +25,30 @@ bindKey("0", "down", function()
 end)
 
 -- 1: SZIRÉNA BE/KI (mindig az első hanggal indul; kikapcsolt fényt a szerver felkapcsolja)
-bindKey("1", "down", function()
+function turnSiren(state)
     local veh = getControlledSirenVehicle()
     if veh then
         requestData(veh, "sirenIndex", 1)
-        requestData(veh, "sirenState", not getElementData(veh, "sirenState"))
+        if state ~= nil then
+            requestData(veh, "sirenState", state)
+        else
+            requestData(veh, "sirenState", not getElementData(veh, "sirenState"))
+        end
     end
-end)
+end
+bindKey("1", "down", function() turnSiren() end)
 
 -- 2: KÖVETKEZŐ SZIRÉNA HANG
-bindKey("2", "down", function()
+function nextTone()
     local veh = getControlledSirenVehicle()
     if not veh then return end
-
+    
     local cfg = sirenTypes[getElementData(veh, "sirenType") or getDefaultSirenType(getElementModel(veh))]
     if cfg and #cfg.sirens > 0 then
         requestData(veh, "sirenIndex", nextIndex(getElementData(veh, "sirenIndex"), #cfg.sirens))
     end
-end)
+end
+bindKey("2", "down", nextTone)
 
 -- 3: KÜRT (lenyomva tartva)
 local function setHorn(state)
@@ -76,14 +82,78 @@ end)
 
 -- GTA-ban a kürt ki/be kapcsolja a gyári szirénát. Saját fényes modellen ezt
 -- visszakapcsoljuk, különben a GTA fényeffektjei villognának (a sofőr szinkronizálja).
+-- A horn viszont kezelheti a sziréna hangját is. Ki/be kapcsolhatja valamint hang válthat.
+local hornPressedAt = 0
+local hornHoldTime = 250
+local lastShortPress = 0
+local doubleTapTime = 300
+local hornHoldTimer = nil
+local hornPressed = false
+local hornHeld = false
+
 bindKey("horn", "down", function()
     local veh = getControlledSirenVehicle()
     if not veh or not Beacons.hasLayout(getElementModel(veh)) then return end
+
+    hornPressed = true
+    hornHeld = false
+    hornPressedAt = getTickCount()
+
+    -- GTA gyári sziréna letiltása
     setTimer(function()
         if isElement(veh) and getVehicleSirensOn(veh) then
             setVehicleSirensOn(veh, false)
         end
     end, 50, 1)
+
+    -- Csak akkor indul a kürt, ha ténylegesen nyomva tartjuk
+    hornHoldTimer = setTimer(function()
+        if hornPressed then
+            hornHeld = true
+            setHorn(true)
+        end
+    end, hornHoldTime, 1)
+end)
+
+bindKey("horn", "up", function()
+    local veh = getControlledSirenVehicle()
+    if not veh or not Beacons.hasLayout(getElementModel(veh)) then return end
+
+    hornPressed = false
+
+    if isTimer(hornHoldTimer) then
+        killTimer(hornHoldTimer)
+        hornHoldTimer = nil
+    end
+
+    -- Hosszú nyomás → csak kürt
+    if hornHeld then
+        setHorn(false)
+        hornHeld = false
+        return
+    end
+
+    -- Rövid nyomás
+    local now = getTickCount()
+
+    if now - lastShortPress <= doubleTapTime then
+        -- Dupla rövid nyomás → sziréna ki
+        turnSiren(false)
+        lastShortPress = 0
+        return
+    end
+
+    lastShortPress = now
+
+    local sirenState = getElementData(veh, "sirenState") == true
+
+    if not sirenState then
+        -- Első rövid nyomás → fő sziréna be
+        turnSiren(true)
+    else
+        -- Rövid nyomás → hangváltás
+        nextTone()
+    end
 end)
 
 ------------------------------------------------------------
