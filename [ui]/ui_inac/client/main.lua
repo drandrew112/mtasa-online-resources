@@ -149,6 +149,24 @@ registerMenu({
                     end
                 },
                 {
+                    label = "Premier Hazard 6009",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "premier_hazard_6009")
+                        end
+                    end
+                },
+                {
+                    label = "Premier Hazard 7109",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "premier_hazard_7109")
+                        end
+                    end
+                },
+                {
                     label = "Soundoff Signal",
                     action = function()
                         local veh = getPedOccupiedVehicle(localPlayer)
@@ -163,6 +181,15 @@ registerMenu({
                         local veh = getPedOccupiedVehicle(localPlayer)
                         if not veh then uicore:addNotification("Error", "You need a vehicle for this")
                         else setElementData(veh, "sirenType", "rumbler")
+                        end
+                    end
+                },
+                {
+                    label = "Standby RSG MCS32",
+                    action = function()
+                        local veh = getPedOccupiedVehicle(localPlayer)
+                        if not veh then uicore:addNotification("Error", "You need a vehicle for this")
+                        else setElementData(veh, "sirenType", "standby_rsg_mcs32")
                         end
                     end
                 },

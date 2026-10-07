@@ -48,6 +48,21 @@
     <file src="sounds_code3_Z3/SIREN_2.wav" />
     <file src="sounds_code3_Z3/POLICE_WARNING.wav" />
     <file src="sounds_code3_Z3/AIRHORN_EQD.wav" />
+    <file src="sounds_premierhazard7109/WAIL.wav" />
+    <file src="sounds_premierhazard7109/YELP.wav" />
+    <file src="sounds_premierhazard7109/HILO.wav" />
+    <file src="sounds_premierhazard7109/PULSAR.wav" />
+    <file src="sounds_premierhazard7109/BULLHORN.wav" />
+    <file src="sounds_premierhazard6009/WAIL.wav" />
+    <file src="sounds_premierhazard6009/YELP.wav" />
+    <file src="sounds_premierhazard6009/HILO.wav" />
+    <file src="sounds_premierhazard6009/PULSAR.wav" />
+    <file src="sounds_premierhazard6009/AIRHORN.wav" />
+    <file src="sounds_standby_rsg_mcs32/Wail.wav" />
+    <file src="sounds_standby_rsg_mcs32/Yelp.wav" />
+    <file src="sounds_standby_rsg_mcs32/Hilo.wav" />
+    <file src="sounds_standby_rsg_mcs32/Pulsar.wav" />
+    <file src="sounds_standby_rsg_mcs32/Bullhorn.wav" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="dynamic_lighting" />

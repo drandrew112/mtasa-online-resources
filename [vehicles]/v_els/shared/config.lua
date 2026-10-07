@@ -11,7 +11,8 @@ sirenVehicles = {
     [597] = "hella_rtk7", -- Police SF
     [598] = "hella_rtk7", -- Police LV
     [599] = "rumbler",    -- Police Ranger
-    [490] = "code3_z3",       -- FBI Rancher (Mercedes V-Class)
+    [490] = "code3_z3",   -- FBI Rancher (Mercedes B-Class)
+    [407] = "premier_hazard_6009",   -- Fire Truck
 }
 
 DEFAULT_SIREN_TYPE = "fsvas320"
@@ -123,6 +124,41 @@ sirenTypes = {
         secondary = false,
         volume = 0.6,
     },
+
+    premier_hazard_7109 = {
+        sirens = {
+            "sounds_premierhazard7109/WAIL.wav",
+            "sounds_premierhazard7109/YELP.wav",
+            "sounds_premierhazard7109/HILO.wav",
+            "sounds_premierhazard7109/PULSAR.wav",
+        },
+        horn = "sounds_premierhazard7109/BULLHORN.wav",
+        secondary = false,
+        volume = 0.6,
+    },
+
+    premier_hazard_6009 = {
+        sirens = {
+            "sounds_premierhazard6009/WAIL.wav",
+            "sounds_premierhazard6009/YELP.wav",
+            "sounds_premierhazard6009/HILO.wav",
+            "sounds_premierhazard6009/PULSAR.wav",
+        },
+        horn = "sounds_premierhazard6009/AIRHORN.wav",
+        secondary = false,
+        volume = 0.6,
+    },
+
+    standby_rsg_mcs32 = {
+        sirens = {
+            "sounds_standby_rsg_mcs32/Wail.wav",
+            "sounds_standby_rsg_mcs32/Yelp.wav",
+            "sounds_standby_rsg_mcs32/Hilo.wav",
+            "sounds_standby_rsg_mcs32/Pulsar.wav",
+        },
+        horn = "sounds_standby_rsg_mcs32/Bullhorn.wav",
+        secondary = false,
+    }
 
 }
 
