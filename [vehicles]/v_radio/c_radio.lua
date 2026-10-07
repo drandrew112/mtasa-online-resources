@@ -19,6 +19,8 @@ function updateRadio(veh)
 
     local s = playSound3D(station.url, 0, 0, 0, true)
     if not s then return end
+    -- dopler effect miatt isStream
+    setElementData(s, "isStream", true)
     -- a 3D hang a 0-s dimenzióban születik: a jármű dimenziójában kell szólnia (pl. v_introduce, műhely)
     setElementDimension(s, getElementDimension(veh))
     setElementInterior(s, getElementInterior(veh))

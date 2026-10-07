@@ -37,6 +37,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     sound = playSound3D(streamURL, soundX, soundY, soundZ, true, false)
 
     if sound then
+        setElementData(sound, "isStream", true)
         setSoundMaxDistance(sound, 100)
         setSoundVolume(sound, 1.0)
     else
