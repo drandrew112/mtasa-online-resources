@@ -27,7 +27,7 @@ dxSetShaderValue(roundedShader, "size", logosize, logosize)
 dxSetShaderValue(roundedShader, "sourceTexture", logoTex)
 
 local debug_ds = false
-local TEST_ADMIN_LEVEL = 7
+local TEST_ADMIN_LEVEL = 5
 
 -- A letolto kepernyo alatt elrejtjuk a HUD-ot (hideHUD = true). Amikor a
 -- transfer box eltunik, EL kell engedni a flag-et (false), nem pedig a letoltes
@@ -62,16 +62,15 @@ function render()
 
         dxDrawImage(0,0, sw,sh, bg_img)
 
-        --dxDrawText("Free V", sw/2, sh/2, _,_, tocolor(30,170,255), uicore:ui(3), "pricedown", "center", "bottom", false,false,false,true)
-        --dxDrawImage(sw/2-logosize/2, sh/2-logosize/2, logosize, logosize, "freev.png")
+        --dxDrawText("Free V", sw/2, sh*0.4, _,_, tocolor(30,170,255), uicore:ui(3), "pricedown", "center", "bottom", false,false,false,true)
         dxDrawImage(
-            sw/2-logosize/2,
+            sw/2-logosize-10,
             sh/2-logosize/2,
             logosize,
             logosize,
             roundedShader
         )
-        --dxDrawText("Welcome to FreeV!", sw/2, sh/2+10, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "center", "top", false,false,false,true)
+        dxDrawText("Welcome to FreeV!\nWhile you wait, check out our Discord for the latest updates!\n\nFreeV — experience San Andreas like never before.", sw/2+10, sh/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
         
         dxDrawText( "Join our Discord community!\n#7289DA"..discord.."\n#ffffff(Press C to copy link)", sw/2, sh-safe_y, _,_, tocolor(255,255,255), uicore:ui(1.1), "default", "center", "bottom", false,false,false,true)
         
