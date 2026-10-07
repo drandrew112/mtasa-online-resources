@@ -7,7 +7,6 @@ TrainsClient = {}
 local C = NET.CLIENT
 local trains = {}          -- [id] = { snap fields..., path, t (receive tick), corr, corrT, poses, us }
 local offset               -- server tick -> local tick
-local base = {}            -- [model] = height of the centre above the model base
 local input = { w = false, s = false }
 local hudEnabled = true      -- rw_loco switches it off: its cab panel shows the same
 local sx, sy = guiGetScreenSize()
@@ -58,11 +57,12 @@ addEventHandler("rw:net:trains", resourceRoot, function(list)
     for id in pairs(trains) do if not seen[id] then trains[id] = nil end end
 end)
 
+-- read every frame, not cached per model: a mod loader (v_modloader streak.dff) can replace the
+-- model after the train streamed in, and a stale value from the original model left the
+-- BR 232 floating above the rails until reconnect
 local function baseOf(el, def)
-    local m = getElementModel(el)
-    if base[m] then return base[m] end
     local b = getElementDistanceFromCentreOfMassToBaseOfModel(el)
-    if b and b > 0.05 then base[m] = b return b end
+    if b and b > 0.05 then return b end
     return def.base
 end
 
