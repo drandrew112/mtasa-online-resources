@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning20",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2035.47, -1143.25, 24.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unconscious after near drowning",
+        "description": "Park visitors dragged an unconscious woman out of the pond and brought her up to the street in Glen Park. She is breathing, gurgling, and does not respond. Her lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [2035.47, -1143.25, 24.5],
+            "rot": 145,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious", "spo2": 72 }
+        }
+    ]
+}

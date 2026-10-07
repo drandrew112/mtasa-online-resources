@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes23",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [2606.9, -2407.87, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic woman, vomiting for hours",
+        "description": "A diabetic woman at the side of the road in Ocean Docks has been vomiting for six hours and cannot keep anything down, so she stopped her insulin. She is shaky, weak and her lips are dry.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [2606.9, -2407.87, 13.63],
+            "rot": 120,
+            "anim": "vomit",
+            "injuries": [],
+            "state": { "bloodVolume": 4100, "glucose": 380, "heartRate": 116 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose12",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2444, -1925.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated, raging heart",
+        "description": "A man on the sidewalk in Willowfield is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He now sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 103,
+            "pos": [2444, -1925.25, 13.55],
+            "rot": 180,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "diastolic": 118, "heartRate": 166, "systolic": 204 }
+        }
+    ]
+}

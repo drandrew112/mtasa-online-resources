@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing20",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1660.56, -1970.63, 23.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An elderly man on the sidewalk in Verdant Bluffs stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [1660.56, -1970.63, 23.84],
+            "rot": 110,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 84 }
+        }
+    ]
+}

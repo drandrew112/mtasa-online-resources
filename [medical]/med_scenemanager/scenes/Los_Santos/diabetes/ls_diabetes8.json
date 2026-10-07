@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes8",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1150.4, -915.27, 42.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, thirsty, stomach pain",
+        "description": "A woman at a bus stop in Temple says she feels too weak to walk, has a terrible thirst and stomach pain. She admits skipping insulin because she could not afford it. She is pale and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [1150.4, -915.27, 42.83],
+            "rot": 24,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4200, "glucose": 430, "heartRate": 112 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing19",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2638.86, -2163.5, 11.09],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An older woman outside a shop in Ocean Docks is gasping, coughing up pink froth and cannot lie down. She has heart problems and her ankles have been swollen for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [2638.86, -2163.5, 11.09],
+            "rot": 95,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "heartRate": 122, "spo2": 82, "systolic": 184 }
+        }
+    ]
+}

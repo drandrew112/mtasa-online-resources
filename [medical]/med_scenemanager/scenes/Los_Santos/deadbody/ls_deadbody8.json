@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_deadbody8",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [2748.41, -2415.21, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found with a needle, cold",
+        "description": "A dog walker found a man on the sidewalk in Ocean Docks with a needle still in his arm. His skin is cold and grey and he is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [2748.41, -2415.21, 13.63],
+            "rot": 114,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

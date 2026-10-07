@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting23",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1227.38, -1845.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Accidental shot to the hand",
+        "description": "A man on the sidewalk in Verdant Bluffs accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [1227.38, -1845.25, 13.55],
+            "rot": 54,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 60 }
+        }
+    ]
+}

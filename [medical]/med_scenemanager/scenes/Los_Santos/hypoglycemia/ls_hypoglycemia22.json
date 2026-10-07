@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia22",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2785.05, -2144.47, 11.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker trembling, slurring",
+        "description": "A worker on the pavement in Ocean Docks worked a double shift without eating. Colleagues say he is diabetic, started shaking, slurring and stumbling. He refuses sweets because he \"is fine\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2785.05, -2144.47, 11.11],
+            "rot": 270,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 44, "heartRate": 114 }
+        }
+    ]
+}

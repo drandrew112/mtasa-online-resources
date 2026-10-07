@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia24",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1724.87, -878.8, 57.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk diabetic, unresponsive",
+        "description": "Friends say a diabetic man drank all night at the side of the road in Mulholland Intersection and did not eat. Now he is lying down, will not wake up properly and is cold and wet with sweat.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [1724.87, -878.8, 57.71],
+            "rot": 264,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "consciousness": "unconscious", "glucose": 26 }
+        }
+    ]
+}

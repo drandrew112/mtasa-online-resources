@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting15",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2206.75, -2336.99, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Robbery, victim shot",
+        "description": "A woman was shot during a robbery on the pavement in Ocean Docks. She is sitting against a wall holding her stomach, conscious but very pale. Police are on the way.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [2206.75, -2336.99, 13.55],
+            "rot": 222,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4100 }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia18",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1000.25, -1387.25, 13.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting drunk, sweaty",
+        "description": "A security guard outside a shop in Market reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and smells of nothing. She is getting more confused.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [1000.25, -1387.25, 13.34],
+            "rot": 15,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 42, "heartRate": 112 }
+        }
+    ]
+}

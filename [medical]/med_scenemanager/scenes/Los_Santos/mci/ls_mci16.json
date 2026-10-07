@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "ls_mci16",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1600.69, -1335.92, 16.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Three-car crash, four injured",
+        "description": "A car ran a red light in Downtown Los Santos and hit two others. A woman is unconscious in the road, a man is trapped in the second car and two more people have minor injuries.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 529,
+            "pos": [1600.5, -1340.92, 16.7],
+            "rot": [0, 0, 272.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS67 236",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 527,
+            "pos": [1604.13, -1344.06, 16.7],
+            "rot": [0, 0, 158.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS96 237",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 547,
+            "pos": [1600.19, -1348.91, 16.7],
+            "rot": [0, 0, 11.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS62 238",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [1600.69, -1335.92, 16.95],
+            "rot": 233,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 60,
+            "pos": [1604.13, -1344.06, 16.95],
+            "rot": 54,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        },
+        {
+            "id": "p3",
+            "skin": 97,
+            "pos": [1596.38, -1340.76, 17.11],
+            "rot": 261,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 57,
+            "pos": [1596.23, -1344.76, 17.11],
+            "rot": 271,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "systolic": 168 }
+        }
+    ]
+}

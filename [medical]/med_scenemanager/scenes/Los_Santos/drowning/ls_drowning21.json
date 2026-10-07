@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning21",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [1081.55, -2337.65, 12.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly swimmer collapsed",
+        "description": "An elderly woman went limp while swimming in the lake. She was under water for about a minute before being pulled out and brought up to the street in Verdant Bluffs. She has just started breathing again.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 218,
+            "pos": [1081.55, -2337.65, 12.6],
+            "rot": 358,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 80 }
+        }
+    ]
+}

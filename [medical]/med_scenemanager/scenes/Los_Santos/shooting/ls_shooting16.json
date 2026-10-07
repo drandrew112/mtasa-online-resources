@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting16",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2159.75, -1330.62, 24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Argument ended in gunfire",
+        "description": "Two men argued over a parking spot on the sidewalk in Jefferson when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [2159.75, -1330.62, 24],
+            "rot": 100,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3900, "spo2": 85 }
+        },
+        {
+            "id": "p2",
+            "skin": 206,
+            "pos": [2159.45, -1327.62, 24],
+            "rot": 214,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

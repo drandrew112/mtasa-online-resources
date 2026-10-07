@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_drowning5",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2874.32, -1579.78, 11.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell in the water",
+        "description": "A drunk man fell into the storm channel and was pulled out by his friends and brought up to the street in East Beach. He is coughing, shivering and confused.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [2874.32, -1579.78, 11.08],
+            "rot": 14,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused", "spo2": 88 }
+        }
+    ]
+}

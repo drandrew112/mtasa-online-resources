@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia15",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1154, -2362, 12.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fainted after workout",
+        "description": "A woman fainted in the park in Verdant Bluffs after an outdoor workout, came round, but is very pale and keeps repeating the same question. She uses insulin.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [1154, -2362, 12.18],
+            "rot": 128,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dazed", "glucose": 34, "heartRate": 106 }
+        }
+    ]
+}

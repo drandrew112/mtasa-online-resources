@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia20",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1053.59, -769.45, 106.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot be woken, snoring",
+        "description": "A woman is lying at the side of the road in Mulholland, breathing but impossible to wake. She has an insulin pump on her belt. Bystanders thought she was sleeping it off.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 231,
+            "pos": [1053.59, -769.45, 106.89],
+            "rot": 115,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "unconscious", "glucose": 19, "heartRate": 104 }
+        }
+    ]
+}

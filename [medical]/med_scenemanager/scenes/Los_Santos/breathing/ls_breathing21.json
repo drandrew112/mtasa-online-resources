@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_breathing21",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1580.32, -979.96, 38.22],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathing fast, tingling hands",
+        "description": "A woman at the side of the road in Mulholland Intersection is breathing very fast after hearing bad news on the phone. She says her fingers are tingling and she feels she cannot get enough air.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 194,
+            "pos": [1580.32, -979.96, 38.22],
+            "rot": 348,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "heartRate": 118, "spo2": 99 }
+        }
+    ]
+}

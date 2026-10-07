@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting24",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1654.2, -2061.26, 21.51],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, two down",
+        "description": "Several shots fired from a passing car on the pavement in Verdant Bluffs. Two young men are down on the sidewalk, one is not moving and bleeding a lot, the other holds his leg. The car fled.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [1654.2, -2061.26, 21.51],
+            "rot": 151,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3600, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 174,
+            "pos": [1652.9, -2063.98, 21.51],
+            "rot": 23,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

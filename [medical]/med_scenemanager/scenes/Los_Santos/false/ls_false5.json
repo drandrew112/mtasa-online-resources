@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false5",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [502.35, -1314.92, 15.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed man, may have left",
+        "description": "A shop owner says a man collapsed at a bus stop in Rodeo a few minutes ago, but he might have got up and walked away. Nobody is with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

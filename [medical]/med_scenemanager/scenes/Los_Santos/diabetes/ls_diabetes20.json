@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes20",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [814, -1882, 3.93],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Tourist lost insulin, unwell",
+        "description": "A tourist at the water's edge in Verona Beach lost his luggage with the insulin in it two days ago. Now he feels terrible, has abdominal pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [814, -1882, 3.93],
+            "rot": 132,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4200, "glucose": 450 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose14",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1052.1, -2004.66, 13.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped breathing after a pill",
+        "description": "A man at a bus stop in Verona Beach took what was sold as a painkiller and went limp within minutes. His lips are blue. A bystander gave one dose of nasal naloxone with no change yet.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 174,
+            "pos": [1052.1, -2004.66, 13.15],
+            "rot": 299,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious", "heartRate": 52, "spo2": 64 }
+        }
+    ]
+}

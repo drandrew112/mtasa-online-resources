@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke21",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2105.13, -1494.25, 23.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man dropped his coffee, cannot talk",
+        "description": "An office worker on the pavement in Idlewood dropped his coffee mid-sentence and now only makes sounds. Colleagues say his right hand is weak and he looks confused. He leans to one side when sitting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [2105.13, -1494.25, 23.99],
+            "rot": 303,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 182 }
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle24",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [2448.75, -1299.25, 23.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider and passenger thrown off",
+        "description": "A motorcycle hit a pothole in East Los Santos and both the rider and the pillion passenger were thrown off. The woman is not moving, the man is sitting up with a broken arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [2448.75, -1294.25, 23.38],
+            "rot": [0, 0, 270],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS57 311",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 191,
+            "pos": [2448.75, -1299.25, 23.83],
+            "rot": 177,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 247,
+            "pos": [2444, -1296.25, 24],
+            "rot": 262,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_stroke16",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [1754.4, -2666.19, 5.9],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, cannot stand, weak on one side",
+        "description": "An elderly woman fell on the pavement at Los Santos International and cannot get up. She hit her head lightly. Witnesses say her leg just gave way and now her speech is slurred.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [1754.4, -2666.19, 5.9],
+            "rot": 131,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_airport5",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1436.81, -2718.48, 13.54],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Ground worker hit by a tug",
+        "description": "A baggage tug reversed into a ground worker on the apron at Los Santos International. He is lying on the concrete with a crushed foot and a cut to his head. The tug driver is with him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 485,
+            "pos": [1439.81, -2716.48, 13.29],
+            "rot": [0, 0, 226],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS17 200",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [1436.81, -2718.48, 13.54],
+            "rot": 298,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar19",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [249.2, -1492.62, 23.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man walked into traffic",
+        "description": "A drunk man staggered into the road in Rodeo and was hit by a taxi. He is lying in the lane, groaning, with a bleeding head wound. Smells strongly of alcohol.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 438,
+            "pos": [244.9, -1496.82, 23.66],
+            "rot": [0, 0, 318.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS23 278",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 48,
+            "pos": [249.2, -1492.62, 23.91],
+            "rot": 220,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall22",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1479.5, -1865.12, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder hit head",
+        "description": "A skateboarder fell on the sidewalk in Verdant Bluffs without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a bleeding wrist.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [1479.5, -1865.12, 13.55],
+            "rot": 190,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

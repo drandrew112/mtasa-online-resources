@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting7",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1394, -2322, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking on a paved square at Los Santos International was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1394, -2322, 13.55],
+            "rot": 231,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4400 }
+        }
+    ]
+}

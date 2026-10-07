@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar8",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1170.38, -1074.75, 26.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pedestrian hit while crossing",
+        "description": "A man was hit by a car while crossing the road in Temple. He flew onto the bonnet and landed in the lane. He is moaning, bleeding from the head and his leg is deformed. The driver stayed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 507,
+            "pos": [1170.38, -1080.75, 26.67],
+            "rot": [0, 0, 352],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS58 265",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [1170.38, -1074.75, 26.92],
+            "rot": 214,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4300, "consciousness": "dazed" }
+        }
+    ]
+}

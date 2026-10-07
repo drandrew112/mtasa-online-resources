@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose24",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [445.67, -1763.97, 5.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man found slumped, pinpoint pupils",
+        "description": "A delivery driver found a man slumped behind the bins on the sidewalk in Santa Maria Beach. He is grey, barely breathing and snoring. There is foil and a lighter next to him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [445.67, -1763.97, 5.8],
+            "rot": 206,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious", "spo2": 80 }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes14",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1785.22, -2202.12, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thought to be drunk, smells sweet",
+        "description": "A bar owner on the pavement at Los Santos International called about a man staggering and slurring who \"is not drunk, he only had a soda\". His breath smells fruity and he keeps asking for water.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [1785.22, -2202.12, 13.55],
+            "rot": 161,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "bloodVolume": 4200, "consciousness": "confused", "glucose": 520 }
+        }
+    ]
+}

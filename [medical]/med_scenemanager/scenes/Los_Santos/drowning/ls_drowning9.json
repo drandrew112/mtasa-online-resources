@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning9",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [1194, -2382, 11.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unconscious after near drowning",
+        "description": "Fishermen dragged an unconscious woman out of the lake and brought her onto the bank in Verdant Bluffs. She is breathing, gurgling, and does not respond. Her lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [1194, -2382, 11.98],
+            "rot": 354,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious", "spo2": 72 }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle12",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [2066.08, -986.43, 47.94],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Delivery rider fell",
+        "description": "A pizza delivery rider slipped on oil in Las Colinas and fell. He is sitting on the sidewalk with a sore ankle and grazes, worried about the pizzas.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [2066.81, -981.74, 47.53],
+            "rot": [0, 0, 1.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS14 295",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 155,
+            "pos": [2066.08, -986.43, 47.94],
+            "rot": 354,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

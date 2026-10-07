@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "ls_fall25",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2278.25, -1326.12, 23.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards at a bus stop in Jefferson and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [2278.25, -1326.12, 23.99],
+            "rot": 221,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

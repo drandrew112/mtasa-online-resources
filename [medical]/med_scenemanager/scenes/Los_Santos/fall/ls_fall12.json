@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_fall12",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2182.49, -2457.87, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist went over the handlebars",
+        "description": "A cyclist went over the handlebars at a bus stop at Los Santos International after hitting a pothole. Her collarbone is deformed and her helmet is cracked. She is talking but cannot remember the fall.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 509,
+            "pos": [2182.61, -2455.37, 13.1],
+            "rot": [0, 0, 342],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS29 315",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 139,
+            "pos": [2182.49, -2457.87, 13.55],
+            "rot": 110,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

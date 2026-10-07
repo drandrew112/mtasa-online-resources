@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose20",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1462.25, -1190.87, 21.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much, vomiting",
+        "description": "A teenager at a bus stop in Downtown Los Santos has been vomiting after drinking with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [1462.25, -1190.87, 21.07],
+            "rot": 206,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

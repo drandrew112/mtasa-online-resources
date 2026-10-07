@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose7",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2465.48, -2424.42, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after a party drug",
+        "description": "A man collapsed on the sidewalk in Ocean Docks after taking an unknown pill at a party. He is burning hot, jaw clenched and twitching. Friends brought water but he is not drinking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [2465.48, -2424.42, 13.63],
+            "rot": 108,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "heartRate": 172, "systolic": 178 }
+        }
+    ]
+}

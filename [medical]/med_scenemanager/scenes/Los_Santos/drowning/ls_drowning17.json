@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning17",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [375.05, -1886.5, 7.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from the water",
+        "description": "A boy was found floating in the sea and brought up to the street in Santa Maria Beach. He is breathing weakly, coughing up water, and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 97,
+            "pos": [375.05, -1886.5, 7.84],
+            "rot": 270,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 78 }
+        }
+    ]
+}

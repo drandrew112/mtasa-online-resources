@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia16",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [298.76, -1207.3, 75.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aggressive, not making sense",
+        "description": "A store clerk outside a shop in Richman called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 223,
+            "pos": [298.76, -1207.3, 75.91],
+            "rot": 10,
+            "anim": "lean",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 38, "heartRate": 120 }
+        }
+    ]
+}

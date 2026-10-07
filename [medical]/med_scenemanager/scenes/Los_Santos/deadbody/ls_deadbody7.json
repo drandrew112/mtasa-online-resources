@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_deadbody7",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [2849.87, -905.11, 12.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body at the roadside",
+        "description": "A driver spotted a person lying at the side of the road near the docks, badly injured and not moving. It looks like a hit and run during the night.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 135,
+            "pos": [2849.87, -905.11, 12.55],
+            "rot": 49,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

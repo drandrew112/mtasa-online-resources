@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose18",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1911.63, -1605.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped breathing after a pill",
+        "description": "A woman on the sidewalk in Idlewood took what was sold as a painkiller and went limp within minutes. Her lips are blue. A bystander gave one dose of nasal naloxone with no change yet.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [1911.63, -1605.25, 13.55],
+            "rot": 289,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious", "heartRate": 52, "spo2": 64 }
+        }
+    ]
+}

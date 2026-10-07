@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "ls_fall19",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [798.59, -1491.6, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a balcony",
+        "description": "A man fell from a third floor balcony outside a shop in Marina. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [798.59, -1491.6, 13.55],
+            "rot": 124,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 4000, "consciousness": "unconscious" }
+        }
+    ]
+}

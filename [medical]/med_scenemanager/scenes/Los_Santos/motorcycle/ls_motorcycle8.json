@@ -1,0 +1,72 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle8",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [2896.31, -1200.14, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcycle went under a truck",
+        "description": "A truck changing lanes hit a motorcycle in East Beach. The rider is lying in the road with a crushed leg bleeding heavily. A bystander has put a belt around the thigh.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 414,
+            "pos": [2893.2, -1208.63, 11.18],
+            "rot": [0, 0, 9.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS85 289",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 521,
+            "pos": [2896.84, -1204.11, 10.43],
+            "rot": [0, 0, 99.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS82 290",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 247,
+            "pos": [2896.31, -1200.14, 10.88],
+            "rot": 21,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bleeding": 2, "bloodVolume": 3400, "consciousness": "dazed" }
+        }
+    ]
+}

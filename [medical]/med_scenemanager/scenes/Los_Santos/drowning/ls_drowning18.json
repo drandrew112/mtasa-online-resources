@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning18",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [780.19, -1848.32, 6.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out, not breathing",
+        "description": "Lifeguards pulled a man out of the sea and brought him up to the street in Verona Beach. He is not breathing and has no pulse. A bystander is doing chest compressions.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 154,
+            "pos": [780.19, -1848.32, 6.17],
+            "rot": 113,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "rhythm": "PEA", "spo2": 40 }
+        }
+    ]
+}

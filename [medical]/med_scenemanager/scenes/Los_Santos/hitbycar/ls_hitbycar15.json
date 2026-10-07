@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar15",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1624.83, -883.76, 54.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the curb",
+        "description": "A car drifted onto the curb in Mulholland Intersection and hit a jogger. He is lying on the sidewalk with a broken leg and grazes, alert and in pain.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 518,
+            "pos": [1628.82, -881.16, 53.02],
+            "rot": [0, 0, 194.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS29 273",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [1624.83, -883.76, 54.75],
+            "rot": 285,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

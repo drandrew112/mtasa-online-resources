@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "ls_mci10",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1625.25, -1869.46, 13.46],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Three-car crash, four injured",
+        "description": "A car ran a red light in Verdant Bluffs and hit two others. A woman is unconscious in the road, a man is trapped in the second car and two more people have minor injuries.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 410,
+            "pos": [1620.25, -1869.46, 13.21],
+            "rot": [0, 0, 190],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS61 219",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 421,
+            "pos": [1617.25, -1873.63, 13.21],
+            "rot": [0, 0, 76],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS83 220",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 467,
+            "pos": [1612.25, -1869.46, 13.21],
+            "rot": [0, 0, 284],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS85 221",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [1625.25, -1869.46, 13.46],
+            "rot": 182,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 170,
+            "pos": [1617.25, -1873.63, 13.46],
+            "rot": 200,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        },
+        {
+            "id": "p3",
+            "skin": 151,
+            "pos": [1620.25, -1865.12, 13.54],
+            "rot": 194,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 94,
+            "pos": [1616.25, -1865.12, 13.54],
+            "rot": 201,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "systolic": 168 }
+        }
+    ]
+}

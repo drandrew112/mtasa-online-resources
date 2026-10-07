@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_overdose5",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [361.86, -1134.08, 76.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and alcohol, very sleepy",
+        "description": "A woman at the side of the road in Richman mixed anxiety pills with whisky after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [361.86, -1134.08, 76.2],
+            "rot": 148,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 88 }
+        }
+    ]
+}

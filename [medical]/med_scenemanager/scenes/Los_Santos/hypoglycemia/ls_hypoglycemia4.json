@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia4",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2650.13, -1778.87, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker trembling, slurring",
+        "description": "A worker at a bus stop in East Beach worked a double shift without eating. Colleagues say he is diabetic, started shaking, slurring and stumbling. He refuses sweets because he \"is fine\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2650.13, -1778.87, 10.88],
+            "rot": 34,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 44, "heartRate": 114 }
+        }
+    ]
+}

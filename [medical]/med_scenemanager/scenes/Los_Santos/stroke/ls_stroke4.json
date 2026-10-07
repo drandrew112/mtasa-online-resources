@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_stroke4",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [1527.63, -1163.5, 23.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver stopped, cannot speak",
+        "description": "A driver stopped in the middle of the lane in Downtown Los Santos with hazard lights on. Other drivers say he is sitting behind the wheel, staring, and cannot answer. One side of his face droops.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 426,
+            "pos": [1527.63, -1163.5, 23.66],
+            "rot": [0, 0, 273],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": true,
+            "health": 1000,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS94 313",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [1527.63, -1163.5, 23.91],
+            "rot": 333,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "diastolic": 108, "systolic": 196 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "ls_drowning13",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [954, -1902, 1.05],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dived in, cannot move",
+        "description": "A young man dived head first into shallow water in the sea. Friends pulled him out and brought him onto the beach at Verona Beach. He is awake but cannot move his arms or legs and swallowed water.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [954, -1902, 1.05],
+            "rot": 271,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

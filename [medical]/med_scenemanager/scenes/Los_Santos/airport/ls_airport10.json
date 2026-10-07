@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_airport10",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1974, -2222, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pilot with chest pain",
+        "description": "A pilot finishing a post-flight check at Los Santos International complains of crushing chest pain going to his left arm. He is grey and sweating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 61,
+            "pos": [1974, -2222, 13.55],
+            "rot": 42,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "heartRate": 46, "rhythm": "SINUS_BRADY", "spo2": 93, "systolic": 98 }
+        }
+    ]
+}

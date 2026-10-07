@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing9",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1150.33, -996.02, 37.39],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An older man at the side of the road in Temple is gasping, coughing up pink froth and cannot lie down. He has heart problems and his ankles have been swollen for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 33,
+            "pos": [1150.33, -996.02, 37.39],
+            "rot": 283,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "heartRate": 122, "spo2": 82, "systolic": 184 }
+        }
+    ]
+}

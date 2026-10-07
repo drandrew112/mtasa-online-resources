@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_airport6",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [2194, -2662, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Ramp worker collapsed in the heat",
+        "description": "A ramp worker collapsed after a long shift loading planes in the sun at Los Santos International. He is confused, hot to the touch and has stopped sweating.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2194, -2662, 13.55],
+            "rot": 117,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 4200, "consciousness": "confused", "heartRate": 132, "systolic": 94 }
+        }
+    ]
+}

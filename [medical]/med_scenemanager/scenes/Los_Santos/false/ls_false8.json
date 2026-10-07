@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false8",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1707.63, -1193.62, 23.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body seen from a distance",
+        "description": "A jogger saw what looked like a body on the pavement in Downtown Los Santos. From the distance it could also be a pile of clothes or a mannequin.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

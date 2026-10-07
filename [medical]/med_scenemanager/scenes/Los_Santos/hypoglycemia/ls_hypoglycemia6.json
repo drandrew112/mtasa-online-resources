@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia6",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1411.55, -1026.76, 23.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus passenger confused, sweaty",
+        "description": "A bus driver put an older woman off the bus at a bus stop in Downtown Los Santos after she became confused and could not find her stop. She is sweating and tremors are visible. She takes diabetes tablets.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 232,
+            "pos": [1411.55, -1026.76, 23.87],
+            "rot": 179,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 46 }
+        }
+    ]
+}

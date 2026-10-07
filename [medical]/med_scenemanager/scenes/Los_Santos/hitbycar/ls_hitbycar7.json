@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar7",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2665.31, -1859.64, 10.93],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man walked into traffic",
+        "description": "A drunk man staggered into the road in Willowfield and was hit by a taxi. He is lying in the lane, groaning, with a bleeding head wound. Smells strongly of alcohol.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 438,
+            "pos": [2669.47, -1863.96, 10.68],
+            "rot": [0, 0, 41],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS52 264",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [2665.31, -1859.64, 10.93],
+            "rot": 324,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

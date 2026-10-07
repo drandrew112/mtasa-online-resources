@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing25",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [534, -1862, 4.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Lips blue, too breathless to talk",
+        "description": "A man with lung disease on the beach at Santa Maria Beach ran out of home oxygen on his way back from the pharmacy. He is blue around the lips, using all his neck muscles to breathe and cannot talk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [534, -1862, 4.32],
+            "rot": 132,
+            "anim": "tired",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "heartRate": 118, "spo2": 74 }
+        }
+    ]
+}

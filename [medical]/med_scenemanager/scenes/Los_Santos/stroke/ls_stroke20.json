@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke20",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [754, -1882, 2.51],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, one side limp",
+        "description": "A passer-by found an elderly woman on the ground at the water's edge in Verona Beach. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [754, -1882, 2.51],
+            "rot": 323,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious", "diastolic": 120, "systolic": 214 }
+        }
+    ]
+}

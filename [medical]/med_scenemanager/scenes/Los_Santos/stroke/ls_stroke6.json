@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke6",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [374.29, -1598.74, 31.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slumped over, drooling",
+        "description": "A tourist couple found an older man slumped on the pavement in Rodeo, drooling from one corner of the mouth. He squeezes with one hand only and cannot answer questions.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [374.29, -1598.74, 31.36],
+            "rot": 340,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed", "diastolic": 110, "systolic": 198 }
+        }
+    ]
+}

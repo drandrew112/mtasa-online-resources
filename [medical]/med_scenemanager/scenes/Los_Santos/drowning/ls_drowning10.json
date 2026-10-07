@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning10",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2794.38, -2181.35, 14.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out, not breathing",
+        "description": "Dock workers pulled a man out of the harbour and brought him onto the sand at Ocean Docks. He is not breathing and has no pulse. A bystander is doing chest compressions.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [2794.38, -2181.35, 14.92],
+            "rot": 349,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "rhythm": "PEA", "spo2": 40 }
+        }
+    ]
+}

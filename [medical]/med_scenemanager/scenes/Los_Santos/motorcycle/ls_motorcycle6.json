@@ -1,0 +1,63 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle6",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [2763.78, -2478.33, 13.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider and passenger thrown off",
+        "description": "A motorcycle hit a pothole in Ocean Docks and both the rider and the pillion passenger were thrown off. The woman is not moving, the man is sitting up with a broken arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [2763.62, -2483.33, 12.93],
+            "rot": [0, 0, 83.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS98 287",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [2763.78, -2478.33, 13.38],
+            "rot": 196,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 100,
+            "pos": [2768.56, -2481.49, 13.65],
+            "rot": 61,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

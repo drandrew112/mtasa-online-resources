@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose21",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [733.41, -982.46, 53.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk, vomiting, will not wake",
+        "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. They rolled her onto her side.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [733.41, -982.46, 53.03],
+            "rot": 44,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

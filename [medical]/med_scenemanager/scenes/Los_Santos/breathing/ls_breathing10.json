@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing10",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2674, -1062, 69.3],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Lips blue, too breathless to talk",
+        "description": "A man with lung disease in a parking lot in Las Colinas ran out of home oxygen on his way back from the pharmacy. He is blue around the lips, using all his neck muscles to breathe and cannot talk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [2674, -1062, 69.3],
+            "rot": 309,
+            "anim": "tired",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "heartRate": 118, "spo2": 74 }
+        }
+    ]
+}

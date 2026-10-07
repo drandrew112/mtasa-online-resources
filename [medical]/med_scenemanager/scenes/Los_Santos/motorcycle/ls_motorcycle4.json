@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle4",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [1770.58, -1603.96, 13.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Quad bike rolled over",
+        "description": "A quad bike rolled over in Little Mexico after taking a corner too fast. The rider was thrown clear and is lying in the lane, holding his ribs and breathing shallowly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 471,
+            "pos": [1774.46, -1604.94, 12.92],
+            "rot": [0, 0, 151.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS58 285",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [1770.58, -1603.96, 13.37],
+            "rot": 167,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

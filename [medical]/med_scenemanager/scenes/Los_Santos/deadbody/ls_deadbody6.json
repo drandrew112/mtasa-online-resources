@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_deadbody6",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [1574.38, -2678.4, 6.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body with gunshot wounds",
+        "description": "Early morning, a street cleaner found a man outside a shop at Los Santos International with several gunshot wounds. There is dried blood around him. Police have been informed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 173,
+            "pos": [1574.38, -2678.4, 6.16],
+            "rot": 74,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 2800, "consciousness": "dead" }
+        }
+    ]
+}

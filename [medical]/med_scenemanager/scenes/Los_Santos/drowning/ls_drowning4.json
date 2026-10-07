@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_drowning4",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [614, -1902, 3.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child and rescuer pulled out",
+        "description": "A girl got into trouble in the sea and an adult jumped in after her. Both were pulled out and brought onto the beach at Santa Maria Beach. The child is drowsy, the adult is coughing badly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 145,
+            "pos": [614, -1902, 3.23],
+            "rot": 5,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 80 }
+        },
+        {
+            "id": "p2",
+            "skin": 15,
+            "pos": [616.5, -1901.7, 3.23],
+            "rot": 152,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

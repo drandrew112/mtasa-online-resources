@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes12",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [534, -962, 88.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers on the grass in Richman report a homeless man who has not eaten properly but has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [534, -962, 88.58],
+            "rot": 129,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3900, "consciousness": "confused", "glucose": 690 }
+        }
+    ]
+}

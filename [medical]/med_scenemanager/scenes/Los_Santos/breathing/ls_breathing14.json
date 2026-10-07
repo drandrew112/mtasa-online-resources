@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing14",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [532.27, -1024.61, 82.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An elderly man at the side of the road in Richman stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [532.27, -1024.61, 82.95],
+            "rot": 357,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 84 }
+        }
+    ]
+}

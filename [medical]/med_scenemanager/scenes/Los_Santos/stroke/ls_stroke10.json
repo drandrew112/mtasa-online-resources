@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke10",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [1107.38, -1705.12, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman cannot lift her arm",
+        "description": "A woman in her fifties on the sidewalk in Verona Beach dropped her shopping bags and cannot lift her right arm. She is talking, but her words come out wrong and she seems frightened. A shop assistant is staying with her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 216,
+            "pos": [1107.38, -1705.12, 13.55],
+            "rot": 185,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "diastolic": 98, "systolic": 172 }
+        }
+    ]
+}

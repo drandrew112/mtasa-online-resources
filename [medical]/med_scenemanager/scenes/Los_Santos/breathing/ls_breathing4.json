@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing4",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1946, -1253.87, 20.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drowning in own lungs",
+        "description": "An elderly man at a bus stop in Glen Park is sitting bolt upright, bubbling breaths can be heard from a distance. He is sweaty, grey and confused. He skipped his water tablets.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [1946, -1253.87, 20.48],
+            "rot": 158,
+            "anim": "sit",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "heartRate": 134, "spo2": 76, "systolic": 206 }
+        }
+    ]
+}

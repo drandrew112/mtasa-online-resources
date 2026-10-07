@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle11",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [1005.22, -1858.75, 12.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter rider hit a car door",
+        "description": "A parked driver opened a door into a scooter rider in Verona Beach. The woman is sitting on the curb holding her wrist, with a grazed knee.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [1003.65, -1855.57, 12.3],
+            "rot": [0, 0, 26.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS28 294",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 140,
+            "pos": [1005.22, -1858.75, 12.82],
+            "rot": 13,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

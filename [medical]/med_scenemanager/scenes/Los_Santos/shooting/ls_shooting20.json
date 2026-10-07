@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting20",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2613.63, -1741.35, 12.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back, cannot feel legs",
+        "description": "A man running from a fight in a parking lot in Ganton was shot in the back. He is lying face down, conscious, saying he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [2613.63, -1741.35, 12.02],
+            "rot": 336,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4200, "pain": 30 }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle14",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [1555.82, -2085.64, 34.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Delivery rider fell",
+        "description": "A pizza delivery rider slipped on oil in Verdant Bluffs and fell. He is sitting on the sidewalk with a sore ankle and grazes, worried about the pizzas.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [1551.59, -2088.07, 33.75],
+            "rot": [0, 0, 121.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS19 298",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 155,
+            "pos": [1555.82, -2085.64, 34.24],
+            "rot": 133,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

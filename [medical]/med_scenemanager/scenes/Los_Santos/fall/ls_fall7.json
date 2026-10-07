@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_fall7",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1358.51, -2171.75, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman fell, hip pain",
+        "description": "An elderly woman tripped on a curb at a bus stop in Verdant Bluffs and cannot stand up. Her right leg looks shorter and turned outwards. She is in a lot of pain but did not hit her head.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 53,
+            "pos": [1358.51, -2171.75, 13.55],
+            "rot": 326,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

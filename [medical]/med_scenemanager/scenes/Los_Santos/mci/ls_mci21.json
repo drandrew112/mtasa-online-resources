@@ -1,0 +1,105 @@
+{
+    "format": 1,
+    "name": "ls_mci21",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1064.2, -968.62, 42.72],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "A city bus collided with a car in Temple. The car driver is badly hurt and several bus passengers fell inside and were helped out to the sidewalk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 431,
+            "pos": [1052.75, -966.15, 43.02],
+            "rot": [0, 0, 280.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": true,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS32 249",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 419,
+            "pos": [1060.23, -969.16, 42.47],
+            "rot": [0, 0, 333.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS30 250",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 48,
+            "pos": [1064.2, -968.62, 42.72],
+            "rot": 356,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3900, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 197,
+            "pos": [1055.8, -973.6, 42.8],
+            "rot": 351,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        },
+        {
+            "id": "p3",
+            "skin": 152,
+            "pos": [1058.77, -973.19, 42.8],
+            "rot": 341,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 258,
+            "pos": [1052.83, -974.01, 42.8],
+            "rot": 319,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

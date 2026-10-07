@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "ls_mci4",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [2079.25, -1363, 23.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car drove onto the sidewalk",
+        "description": "A driver lost control in Jefferson and drove onto a crowded sidewalk, hitting several pedestrians. Callers report people lying on the ground and screaming. The driver is still in the car.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 554,
+            "pos": [2078.75, -1368, 23.98],
+            "rot": [0, 0, 29],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS69 202",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 194,
+            "pos": [2079.25, -1363, 23.98],
+            "rot": 342,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4100, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 139,
+            "pos": [2079.25, -1372.5, 23.98],
+            "rot": 195,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 88,
+            "pos": [2079.25, -1359.5, 23.98],
+            "rot": 171,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 47,
+            "pos": [2078.75, -1368, 23.98],
+            "rot": 210,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "systolic": 176 }
+        }
+    ]
+}

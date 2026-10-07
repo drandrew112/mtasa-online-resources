@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing11",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2568.5, -1725.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stung, throat feels tight",
+        "description": "A woman was stung by a wasp at a bus stop in Ganton. Within minutes her face swelled, she is wheezing and says her throat feels tight. No adrenaline pen.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [2568.5, -1725.25, 13.55],
+            "rot": 289,
+            "anim": "cough",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "heartRate": 128, "spo2": 90, "systolic": 92 }
+        }
+    ]
+}

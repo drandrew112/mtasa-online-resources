@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "ls_fall21",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1702.65, -2159.38, 15.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell down the steps",
+        "description": "An elderly man fell down a flight of stone steps on the pavement in El Corona. He has a large cut on his scalp, a swollen wrist and is a bit slow to answer.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 132,
+            "pos": [1702.65, -2159.38, 15.66],
+            "rot": 155,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 },
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

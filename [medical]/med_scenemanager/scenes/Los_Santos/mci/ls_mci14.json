@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "ls_mci14",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [2221.23, -1847.91, 13.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pursuit ended in a crash",
+        "description": "A car fleeing the police crashed into traffic in Ganton. The fleeing driver is unconscious, a woman in another car has chest pain and a third driver has neck pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 559,
+            "pos": [2221.12, -1843.91, 12.99],
+            "rot": [0, 0, 298.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS60 232",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 420,
+            "pos": [2216.75, -1838.03, 12.99],
+            "rot": [0, 0, 173.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS85 233",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 405,
+            "pos": [2221.34, -1851.91, 12.99],
+            "rot": [0, 0, 177.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS47 234",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [2221.23, -1847.91, 13.24],
+            "rot": 53,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 12,
+            "pos": [2216.75, -1838.03, 13.24],
+            "rot": 21,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30, "spo2": 92 }
+        },
+        {
+            "id": "p3",
+            "skin": 186,
+            "pos": [2225.05, -1843.8, 13.56],
+            "rot": 108,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

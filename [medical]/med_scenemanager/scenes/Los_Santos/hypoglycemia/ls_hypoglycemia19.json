@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia19",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2578.38, -1385.5, 29.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Had a fit, now very confused",
+        "description": "Witnesses on the sidewalk in East Los Santos say a woman shook all over for about a minute. Now she is awake but confused and sweating heavily. A friend says she is on insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2578.38, -1385.5, 29.64],
+            "rot": 226,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "postictal", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused", "glucose": 30 }
+        }
+    ]
+}

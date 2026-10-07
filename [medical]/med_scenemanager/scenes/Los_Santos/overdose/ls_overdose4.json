@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose4",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2338.5, -1308.37, 24.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Not breathing properly, blue lips",
+        "description": "A man is lying on the sidewalk in East Los Santos with blue lips, taking a breath only every now and then. A syringe is next to him. A friend ran off when the caller arrived.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [2338.5, -1308.37, 24.25],
+            "rot": 180,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious", "spo2": 74 }
+        }
+    ]
+}

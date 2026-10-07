@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_shooting6",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1877.58, -1039.76, 23.85],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Shots fired outside a shop in Glen Park. One man is lying on his back with a head wound, breathing irregularly. Bystanders are too scared to approach.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 110,
+            "pos": [1877.58, -1039.76, 23.85],
+            "rot": 282,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

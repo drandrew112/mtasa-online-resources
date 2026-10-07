@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes7",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1214, -2302, 14.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic woman, vomiting for hours",
+        "description": "A diabetic woman on the grass in Verdant Bluffs has been vomiting for six hours and cannot keep anything down, so she stopped her insulin. She is shaky, weak and her lips are dry.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [1214, -2302, 14.03],
+            "rot": 129,
+            "anim": "vomit",
+            "injuries": [],
+            "state": { "bloodVolume": 4100, "glucose": 380, "heartRate": 116 }
+        }
+    ]
+}

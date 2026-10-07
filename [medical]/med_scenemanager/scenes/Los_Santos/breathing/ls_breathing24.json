@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing24",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [859.09, -898.24, 64.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choking on food",
+        "description": "A woman at the side of the road in Mulholland started choking on a hot dog from a street stall. She can barely cough and is going red. A passer-by is hitting her back.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [859.09, -898.24, 64.58],
+            "rot": 56,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 86 }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes9",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1814.5, -1662.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found barely responsive",
+        "description": "A passer-by found a man lying at a bus stop in Idlewood, groaning but not answering. There is an insulin pen and a diabetic ID card in his bag. He is breathing deep and fast.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [1814.5, -1662.25, 13.55],
+            "rot": 173,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3700, "consciousness": "unconscious", "glucose": 760, "heartRate": 130, "systolic": 92 }
+        }
+    ]
+}

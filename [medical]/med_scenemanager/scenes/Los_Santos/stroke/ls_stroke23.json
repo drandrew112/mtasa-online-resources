@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke23",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [1860.38, -2174, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger lost vision, one side numb",
+        "description": "A jogger on the pavement in El Corona stopped and sat down, saying she cannot see on the left side and her left hand is numb. She is speaking clearly but is scared. Symptoms began about fifteen minutes ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 90,
+            "pos": [1860.38, -2174, 13.55],
+            "rot": 2,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

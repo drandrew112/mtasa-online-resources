@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false4",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [2538.52, -2380.88, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child not breathing",
+        "description": "A young-sounding caller says a child is not breathing on the pavement in Ocean Docks, then laughs and hangs up. Callback goes to voicemail.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

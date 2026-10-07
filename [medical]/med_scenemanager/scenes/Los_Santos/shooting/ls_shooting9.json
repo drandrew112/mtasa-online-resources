@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting9",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1436.88, -1622.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back, cannot feel legs",
+        "description": "A man running from a fight at a bus stop in Commerce was shot in the back. He is lying face down, conscious, saying he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 104,
+            "pos": [1436.88, -1622.25, 13.55],
+            "rot": 206,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4200, "pain": 30 }
+        }
+    ]
+}

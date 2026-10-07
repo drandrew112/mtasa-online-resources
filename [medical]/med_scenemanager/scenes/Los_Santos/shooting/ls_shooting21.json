@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_shooting21",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1534, -1262, 17.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Shots fired in a parking lot in Downtown Los Santos. One man is lying on his back with a head wound, breathing irregularly. Bystanders are too scared to approach.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 116,
+            "pos": [1534, -1262, 17.41],
+            "rot": 127,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

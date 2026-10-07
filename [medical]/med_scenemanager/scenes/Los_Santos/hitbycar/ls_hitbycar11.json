@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar11",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1269.51, -2440.31, 8.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child ran out between cars",
+        "description": "A child chasing a ball ran out between parked cars near the docks and was hit at low speed. The girl is crying, her arm hurts and she has a bump on the head. The shaken driver is with her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 436,
+            "pos": [1270.89, -2445.27, 8.13],
+            "rot": [0, 0, 87.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS85 268",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 140,
+            "pos": [1269.51, -2440.31, 8.65],
+            "rot": 178,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

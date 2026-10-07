@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose10",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1094.93, -1110.45, 24.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Took a handful of pills",
+        "description": "A woman told her friend at the side of the road in Temple that she swallowed a whole bottle of sleeping pills an hour ago. She is getting harder and harder to wake. The empty bottle is with her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [1094.93, -1110.45, 24.66],
+            "rot": 8,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

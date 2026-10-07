@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_overdose22",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [590.3, -1390.56, 13.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and alcohol, very sleepy",
+        "description": "A man at a bus stop in Rodeo mixed anxiety pills with whisky after an argument. He is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [590.3, -1390.56, 13.59],
+            "rot": 190,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 88 }
+        }
+    ]
+}

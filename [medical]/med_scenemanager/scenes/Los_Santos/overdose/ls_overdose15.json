@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose15",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2798.89, -1255.99, 46.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated, raging heart",
+        "description": "A man on the sidewalk in East Beach is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He now sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [2798.89, -1255.99, 46.95],
+            "rot": 344,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "diastolic": 118, "heartRate": 166, "systolic": 204 }
+        }
+    ]
+}

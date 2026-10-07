@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia7",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1554, -2222, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic teen, pale and dizzy",
+        "description": "A diabetic teenager on a paved square at Los Santos International feels dizzy and has blurred vision after sports practice. He ate a sweet but is still pale, shaky and getting sleepy.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [1554, -2222, 13.55],
+            "rot": 116,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 51, "heartRate": 110 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar5",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [604.17, -1848.44, 5.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit and run",
+        "description": "A car hit a man in Santa Maria Beach and drove off. The victim is lying in the road, face down and not answering. Callers are stopping traffic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [604.17, -1848.44, 5.63],
+            "rot": 161,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

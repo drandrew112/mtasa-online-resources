@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning7",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [1894, -1202, 20.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cramp in the water, panicking",
+        "description": "A swimmer got a cramp in the pond and swallowed water before being helped out and brought onto the grass in Glen Park. She is anxious, coughing a little and breathing fast.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 138,
+            "pos": [1894, -1202, 20.13],
+            "rot": 229,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "heartRate": 112, "spo2": 94 }
+        }
+    ]
+}

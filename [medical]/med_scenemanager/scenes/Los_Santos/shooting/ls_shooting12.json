@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting12",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1270, -1078.25, 27.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Robbery, victim shot",
+        "description": "A man was shot during a robbery outside a shop in Temple. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [1270, -1078.25, 27.61],
+            "rot": 79,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4100 }
+        }
+    ]
+}

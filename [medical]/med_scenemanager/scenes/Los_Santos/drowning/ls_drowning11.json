@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_drowning11",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [174, -1802, 4.05],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure in the water",
+        "description": "A man had a seizure while in the sea and went under. He was pulled out and brought onto the sand at Santa Maria Beach. He is breathing but confused and keeps coughing up water.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [174, -1802, 4.05],
+            "rot": 200,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "postictal", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused", "spo2": 82 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning15",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [1009.76, -2198.61, 13.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cramp in the water, panicking",
+        "description": "A swimmer got a cramp in the lake and swallowed water before being helped out and brought up to the street in Verdant Bluffs. She is anxious, coughing a little and breathing fast.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 138,
+            "pos": [1009.76, -2198.61, 13.15],
+            "rot": 299,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "heartRate": 112, "spo2": 94 }
+        }
+    ]
+}

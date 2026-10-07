@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose9",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [747.75, -1728.05, 9.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Agitated, chest pain, sweating",
+        "description": "A man on the sidewalk in Marina is pacing, sweating heavily and clutching his chest. He admits using cocaine at a party. His heart is racing and he is very paranoid.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [747.75, -1728.05, 9.5],
+            "rot": 217,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "diastolic": 112, "heartRate": 158, "systolic": 192 }
+        }
+    ]
+}

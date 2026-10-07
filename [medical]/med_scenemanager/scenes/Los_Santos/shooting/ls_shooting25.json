@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_shooting25",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2245.77, -2032.54, 13.54],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shot several times",
+        "description": "A man was shot multiple times outside a shop in Willowfield. He is lying face down in a pool of blood and only gasping. Witnesses heard five or six shots.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [2245.77, -2032.54, 13.54],
+            "rot": 183,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3200, "consciousness": "unconscious" }
+        }
+    ]
+}

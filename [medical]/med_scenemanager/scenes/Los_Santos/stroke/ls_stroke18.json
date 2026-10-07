@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke18",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [935.38, -1290.74, 14.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young adult, sudden weakness",
+        "description": "A woman in her twenties on the sidewalk in Vinewood suddenly could not hold her phone and her words became mixed up. Her friend says she complained of neck pain after lifting weights earlier today.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 140,
+            "pos": [935.38, -1290.74, 14.5],
+            "rot": 256,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

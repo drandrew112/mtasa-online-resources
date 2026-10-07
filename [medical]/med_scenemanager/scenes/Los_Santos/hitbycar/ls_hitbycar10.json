@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar10",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1537.25, -1942.37, 18.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a reversing car",
+        "description": "A reversing car knocked down an elderly man in Verdant Bluffs. He fell and hit his head, has a cut above the eye and his wrist is swollen. He is talking.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 492,
+            "pos": [1532.38, -1940.37, 17.25],
+            "rot": [0, 0, 7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS20 267",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [1537.25, -1942.37, 18.38],
+            "rot": 111,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 },
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar14",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2098.16, -1726.26, 13.39],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pedestrian hit while crossing",
+        "description": "A man was hit by a car while crossing the road in Idlewood. He flew onto the bonnet and landed in the lane. He is moaning, bleeding from the head and his leg is deformed. The driver stayed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 546,
+            "pos": [2100.01, -1720.55, 13.14],
+            "rot": [0, 0, 162],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS23 272",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [2098.16, -1726.26, 13.39],
+            "rot": 138,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4300, "consciousness": "dazed" }
+        }
+    ]
+}

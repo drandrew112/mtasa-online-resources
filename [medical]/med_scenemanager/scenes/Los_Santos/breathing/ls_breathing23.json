@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing23",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2274, -2082, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Severe asthma, getting drowsy",
+        "description": "A known asthmatic man on a paved square in Willowfield has used his inhaler ten times. The wheeze has gone quiet, he is exhausted and getting sleepy. Friends are panicking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [2274, -2082, 13.55],
+            "rot": 19,
+            "anim": "sit",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed", "heartRate": 132, "spo2": 78 }
+        }
+    ]
+}

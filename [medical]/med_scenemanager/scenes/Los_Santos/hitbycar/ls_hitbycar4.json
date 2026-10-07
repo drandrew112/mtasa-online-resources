@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar4",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2136.09, -995.46, 60.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hit by a van",
+        "description": "A delivery van hit an elderly woman in Las Colinas as she stepped off the curb. She is lying in front of the van, conscious, with severe pain in her hip and pelvis.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 418,
+            "pos": [2141.31, -997.18, 60.73],
+            "rot": [0, 0, 75.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS39 262",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 53,
+            "pos": [2136.09, -995.46, 60.73],
+            "rot": 345,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 4300, "pain": 30 }
+        }
+    ]
+}

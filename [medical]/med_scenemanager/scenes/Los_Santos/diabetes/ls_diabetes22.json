@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes22",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1326.71, -1953.78, 29.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A man on the pavement in Verdant Bluffs called because his glucose meter only shows \"HIGH\". He feels dizzy, keeps urinating and his vision is blurry. He is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [1326.71, -1953.78, 29.71],
+            "rot": 161,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4400, "glucose": 610 }
+        }
+    ]
+}

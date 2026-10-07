@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke5",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2721.63, -2132.4, 11.09],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, one side limp",
+        "description": "A passer-by found an elderly woman on the ground at a bus stop in Ocean Docks. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [2721.63, -2132.4, 11.09],
+            "rot": 50,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious", "diastolic": 120, "systolic": 214 }
+        }
+    ]
+}

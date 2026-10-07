@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes10",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1825.48, -994.97, 37.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly diabetic, very drowsy",
+        "description": "A neighbour found an elderly man at the side of the road in Glen Park, very sleepy and hard to keep awake. He has been drinking huge amounts of water for days and has diabetes. His skin is dry and warm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [1825.48, -994.97, 37.23],
+            "rot": 186,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3800, "consciousness": "dazed", "glucose": 820, "heartRate": 118, "systolic": 96 }
+        }
+    ]
+}

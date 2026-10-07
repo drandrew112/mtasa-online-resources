@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting13",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [2243.63, -1725.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shop owner and customer shot",
+        "description": "An armed robber opened fire in a corner shop at a bus stop in Ganton. The owner is shot in the stomach and lying outside the door, a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [2243.63, -1725.25, 13.55],
+            "rot": 186,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3800 }
+        },
+        {
+            "id": "p2",
+            "skin": 206,
+            "pos": [2246.63, -1724.95, 13.55],
+            "rot": 205,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

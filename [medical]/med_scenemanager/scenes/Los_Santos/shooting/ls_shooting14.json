@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_shooting14",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [374, -1462, 33.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot with a shotgun",
+        "description": "A man in the park in Rodeo was hit by shotgun pellets in his side and arm during a fight. He is bleeding from many small wounds and is short of breath.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [374, -1462, 33.33],
+            "rot": 140,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4200, "spo2": 90 }
+        }
+    ]
+}

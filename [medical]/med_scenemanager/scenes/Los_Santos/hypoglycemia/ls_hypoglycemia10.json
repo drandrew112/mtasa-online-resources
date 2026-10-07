@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia10",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2598.24, -998.5, 77.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting drunk, sweaty",
+        "description": "A security guard at the side of the road in Las Colinas reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and smells of nothing. She is getting more confused.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [2598.24, -998.5, 77.27],
+            "rot": 41,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 42, "heartRate": 112 }
+        }
+    ]
+}

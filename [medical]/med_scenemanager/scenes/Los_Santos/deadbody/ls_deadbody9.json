@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_deadbody9",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [534, -1902, 1.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly person, no signs of life",
+        "description": "A passer-by found an elderly man at the water's edge in Santa Maria Beach who is not breathing and is cold to the touch. His shopping bag is beside him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [534, -1902, 1.73],
+            "rot": 113,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

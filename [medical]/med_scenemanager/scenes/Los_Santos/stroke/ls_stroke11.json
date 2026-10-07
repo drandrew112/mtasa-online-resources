@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_stroke11",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [927.77, -842.31, 93.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, cannot stand, weak on one side",
+        "description": "An elderly man fell at the side of the road in Mulholland and cannot get up. He hit his head lightly. Witnesses say his leg just gave way and now his speech is slurred.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [927.77, -842.31, 93.92],
+            "rot": 121,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

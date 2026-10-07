@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall17",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2793, -1898.12, 11.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a ladder",
+        "description": "A worker fell about four metres from a ladder outside a shop in Playa del Seville while fixing a sign. He landed on his arm, which is clearly deformed, and he has a cut on his forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [2793, -1898.12, 11.07],
+            "rot": 69,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

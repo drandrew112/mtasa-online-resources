@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "ls_mci15",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [747.91, -1047.66, 23.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car drove onto the sidewalk",
+        "description": "A driver lost control in Richman and drove onto a crowded sidewalk, hitting several pedestrians. Callers report people lying on the ground and screaming. The driver is still in the car.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 474,
+            "pos": [743.93, -1050.73, 23.31],
+            "rot": [0, 0, 339],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS18 235",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [747.91, -1047.66, 23.56],
+            "rot": 328,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4100, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 92,
+            "pos": [739.85, -1052.69, 23.56],
+            "rot": 41,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 236,
+            "pos": [750.88, -1045.81, 23.56],
+            "rot": 256,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 13,
+            "pos": [743.93, -1050.73, 23.56],
+            "rot": 117,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "systolic": 176 }
+        }
+    ]
+}

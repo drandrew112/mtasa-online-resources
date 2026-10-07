@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia21",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [2107.69, -2312.43, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "An elderly diabetic woman is lying on the sidewalk in Ocean Docks and does not wake up. Her family says she injected insulin but then did not want to eat. She is cold and clammy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2107.69, -2312.43, 13.55],
+            "rot": 356,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "unconscious", "glucose": 22, "heartRate": 108 }
+        }
+    ]
+}

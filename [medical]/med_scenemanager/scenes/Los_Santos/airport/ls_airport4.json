@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_airport4",
+    "category": "airport",
+    "enabled": true,
+    "weight": 1,
+    "center": [1834, -2282, 13.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Traveller with slurred speech",
+        "description": "A traveller at Los Santos International suddenly could not hold her passport and her speech became slurred. Her companion says she was fine at check-in.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 218,
+            "pos": [1834, -2282, 13.38],
+            "rot": 254,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 192 }
+        }
+    ]
+}

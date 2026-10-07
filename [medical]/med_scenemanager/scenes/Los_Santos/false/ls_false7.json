@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false7",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1294, -2242, 13.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A caller driving past saw someone lying on the ground on the grass at Los Santos International. The caller did not stop and does not know if the person is breathing.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

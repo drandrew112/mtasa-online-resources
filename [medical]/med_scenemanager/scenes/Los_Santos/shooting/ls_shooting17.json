@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting17",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1066.61, -1463.72, 13.54],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking on the pavement in Market was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 231,
+            "pos": [1066.61, -1463.72, 13.54],
+            "rot": 95,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4400 }
+        }
+    ]
+}

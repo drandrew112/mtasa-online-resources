@@ -1,0 +1,147 @@
+{
+    "format": 1,
+    "name": "ls_mci13",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [2648.87, -962.59, 78.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chain collision, four cars",
+        "description": "A chain collision involving four cars in Las Colinas. One elderly driver is unresponsive in his seat, a young passenger was thrown out and others have whiplash and cuts.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 545,
+            "pos": [2655.07, -959.35, 78.5],
+            "rot": [0, 0, 118.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS48 228",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 421,
+            "pos": [2654.6, -964.06, 78.5],
+            "rot": [0, 0, 114.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS24 229",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 551,
+            "pos": [2648.87, -962.59, 78.5],
+            "rot": [0, 0, 140.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS23 230",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v4",
+            "model": 546,
+            "pos": [2648.4, -967.3, 78.5],
+            "rot": [0, 0, 116.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS18 231",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 33,
+            "pos": [2648.87, -962.59, 78.75],
+            "rot": 296,
+            "anim": "none",
+            "vehicle": "v3",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious", "systolic": 92 }
+        },
+        {
+            "id": "p2",
+            "skin": 28,
+            "pos": [2643.55, -965.37, 78.75],
+            "rot": 288,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4000 }
+        },
+        {
+            "id": "p3",
+            "skin": 60,
+            "pos": [2653.69, -955.34, 78.88],
+            "rot": 183,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 141,
+            "pos": [2650.15, -957.19, 78.88],
+            "rot": 3,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

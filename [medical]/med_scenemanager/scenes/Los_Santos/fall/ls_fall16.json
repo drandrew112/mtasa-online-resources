@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_fall16",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2209.77, -1921.66, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped, wrist deformed",
+        "description": "A woman slipped on the pavement in Willowfield and put out her hand to stop the fall. Her wrist has a \"dinner fork\" shape and is very painful. No other injuries.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 224,
+            "pos": [2209.77, -1921.66, 13.55],
+            "rot": 237,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar16",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2108.83, -2199.55, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Clipped by a car mirror",
+        "description": "A man looking at his phone in Willowfield stepped into the road and was clipped by a car mirror. He is sitting on the curb with a swollen elbow and grazes.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 421,
+            "pos": [2110.54, -2194.68, 13.13],
+            "rot": [0, 0, 231.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS31 274",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [2108.83, -2199.55, 13.55],
+            "rot": 307,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

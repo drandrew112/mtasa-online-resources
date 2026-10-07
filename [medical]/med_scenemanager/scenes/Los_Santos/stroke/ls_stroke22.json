@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke22",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [592.34, -1330.06, 13.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slurred speech, face drooping",
+        "description": "An elderly man waiting on the pavement in Rodeo suddenly could not answer the driver of the bus. A woman next to him says the left side of his face is hanging and he keeps dropping his ticket. It started minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [592.34, -1330.06, 13.57],
+            "rot": 14,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "diastolic": 104, "systolic": 188 }
+        }
+    ]
+}

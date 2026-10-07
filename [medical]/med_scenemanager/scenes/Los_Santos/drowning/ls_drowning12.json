@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning12",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2349.88, -1453.87, 24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly swimmer collapsed",
+        "description": "An elderly man went limp while swimming in the storm channel. He was under water for about a minute before being pulled out and brought up to the street in East Los Santos. He has just started breathing again.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [2349.88, -1453.87, 24],
+            "rot": 22,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 80 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke9",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2104.5, -1899.67, 13.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man dropped his coffee, cannot talk",
+        "description": "An office worker at the side of the road in Willowfield dropped his coffee mid-sentence and now only makes sounds. Colleagues say his right hand is weak and he looks confused. He leans to one side when sitting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 57,
+            "pos": [2104.5, -1899.67, 13.33],
+            "rot": 208,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 182 }
+        }
+    ]
+}

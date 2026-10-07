@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_drowning14",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [506.57, -1164.56, 59.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell in the water",
+        "description": "A drunk man fell into a swimming pool and was pulled out by his friends and brought out to the driveway of a villa in Richman. He is coughing, shivering and confused.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [506.57, -1164.56, 59.23],
+            "rot": 27,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused", "spo2": 88 }
+        }
+    ]
+}

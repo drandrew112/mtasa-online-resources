@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia23",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [547.75, -1639.6, 17.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Runner shaking, pale",
+        "description": "A runner on the sidewalk in Rodeo sat down shaking and sweating, says he took insulin but skipped breakfast before a long run. He is getting vague and cannot open a juice bottle.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [547.75, -1639.6, 17.61],
+            "rot": 89,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 48, "heartRate": 118 }
+        }
+    ]
+}

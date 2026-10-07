@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_fall15",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1493.93, -1056.96, 25.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen fell from a wall",
+        "description": "A teenager climbing a wall at the side of the road in Mulholland Intersection fell about three metres onto his side. He is crying with pain in his leg and cannot put weight on it.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [1493.93, -1056.96, 25.06],
+            "rot": 34,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

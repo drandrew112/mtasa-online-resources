@@ -1,0 +1,118 @@
+{
+    "format": 1,
+    "name": "ls_mci22",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [946.2, -1774.22, 13.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Truck crushed two cars",
+        "description": "A truck lost its brakes in Verona Beach and ploughed into two cars. One car is crushed, its driver unconscious inside. The truck driver is walking around with a head wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 456,
+            "pos": [938.68, -1777.23, 14.01],
+            "rot": [0, 0, 260.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS80 251",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 600,
+            "pos": [946.2, -1774.22, 13.71],
+            "rot": [0, 0, 353.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS12 252",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 492,
+            "pos": [933.35, -1772.3, 13.46],
+            "rot": [0, 0, 243.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS34 253",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [946.2, -1774.22, 13.71],
+            "rot": 350,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 169,
+            "pos": [934.96, -1768.21, 13.86],
+            "rot": 101,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 16,
+            "pos": [941.89, -1769.25, 13.86],
+            "rot": 246,
+            "anim": "none",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

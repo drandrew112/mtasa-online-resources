@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall18",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1112.59, -1841.49, 13.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a roof, not moving",
+        "description": "A man fell from a two-storey roof in a parking lot in Conference Center. He is lying on his back, moaning, bleeding from the head and does not move his legs. Nobody has moved him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 221,
+            "pos": [1112.59, -1841.49, 13.59],
+            "rot": 268,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4400, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_false10",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1107.38, -1565.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man shouting",
+        "description": "A caller reports a drunk man shouting and falling over on the sidewalk in Market. He might be hurt.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 188,
+            "pos": [1107.38, -1565.25, 13.55],
+            "rot": 283,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

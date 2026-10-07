@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_fall14",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [2523.17, -1099.23, 56.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a ladder",
+        "description": "A worker fell about four metres from a ladder on the sidewalk in Las Colinas while fixing a sign. He landed on his arm, which is clearly deformed, and he has a cut on his forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 27,
+            "pos": [2523.17, -1099.23, 56.2],
+            "rot": 28,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

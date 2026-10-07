@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting4",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [504.01, -934.44, 76.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Accidental shot to the hand",
+        "description": "A man at the side of the road in Richman accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [504.01, -934.44, 76.91],
+            "rot": 297,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 60 }
+        }
+    ]
+}

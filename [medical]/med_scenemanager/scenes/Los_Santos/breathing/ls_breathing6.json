@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing6",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [2391.9, -2416.84, 13.54],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma attack, inhaler empty",
+        "description": "A girl on the pavement in Ocean Docks is wheezing badly and can only say two words at a time. Her inhaler is empty. She is sitting forward with her hands on her knees.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [2391.9, -2416.84, 13.54],
+            "rot": 183,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_false9",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [2036.38, -1805.75, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Someone fainted",
+        "description": "A passer-by reports a man who fainted outside a shop in Idlewood. The man has since stood up and says he is fine.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [2036.38, -1805.75, 13.55],
+            "rot": 189,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

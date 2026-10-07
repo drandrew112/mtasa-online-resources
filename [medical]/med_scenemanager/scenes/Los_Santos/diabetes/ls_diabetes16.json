@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes16",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [1428.29, -2660.76, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers outside a shop at Los Santos International report a homeless man who has not eaten properly but has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 137,
+            "pos": [1428.29, -2660.76, 13.55],
+            "rot": 190,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3900, "consciousness": "confused", "glucose": 690 }
+        }
+    ]
+}

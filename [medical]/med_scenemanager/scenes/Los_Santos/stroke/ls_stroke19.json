@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke19",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [1281.08, -915.93, 41.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker's arm went numb",
+        "description": "A construction worker on his lunch break outside a shop in Temple says his arm went dead and his face feels strange. His foreman noticed his speech is slurred. He insists it is just tiredness and wants to go back to work.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [1281.08, -915.93, 41.87],
+            "rot": 179,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "diastolic": 96, "systolic": 168 }
+        }
+    ]
+}

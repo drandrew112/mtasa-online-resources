@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose19",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1046.46, -1544.88, 13.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after a party drug",
+        "description": "A woman collapsed at a bus stop in Market after taking an unknown pill at a party. She is burning hot, jaw clenched and twitching. Friends brought water but she is not drinking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [1046.46, -1544.88, 13.56],
+            "rot": 290,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "heartRate": 172, "systolic": 178 }
+        }
+    ]
+}

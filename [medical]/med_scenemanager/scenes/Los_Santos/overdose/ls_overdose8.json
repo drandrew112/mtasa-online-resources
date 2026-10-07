@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose8",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [1494, -1602, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much, vomiting",
+        "description": "A teenager in a parking lot in Pershing Square has been vomiting after drinking with friends for the first time. He is pale, sleepy and cannot stand up on his own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 97,
+            "pos": [1494, -1602, 13.55],
+            "rot": 359,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

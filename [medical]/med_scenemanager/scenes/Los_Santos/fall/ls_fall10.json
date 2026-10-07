@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_fall10",
+    "category": "fall",
+    "enabled": true,
+    "weight": 1,
+    "center": [1829, -1782.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen fell from a wall",
+        "description": "A teenager climbing a wall on the pavement in Idlewood fell about three metres onto her side. She is crying with pain in her leg and cannot put weight on it.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 139,
+            "pos": [1829, -1782.25, 13.55],
+            "rot": 292,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

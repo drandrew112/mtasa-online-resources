@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle7",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [1334.29, -2568.05, 13.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "No helmet, head injury",
+        "description": "A young rider without a helmet crashed near the docks while doing a wheelie. He is lying in the road, unconscious, bleeding from the ear. Friends are filming.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 468,
+            "pos": [1334.43, -2573.05, 12.93],
+            "rot": [0, 0, 72.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS76 288",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 103,
+            "pos": [1334.29, -2568.05, 13.38],
+            "rot": 265,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

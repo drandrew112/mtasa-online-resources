@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting18",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [1800.68, -1450.52, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shop owner and customer shot",
+        "description": "An armed robber opened fire in a corner shop at a bus stop in Commerce. The owner is shot in the stomach and lying outside the door, a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [1800.68, -1450.52, 13.55],
+            "rot": 96,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3800 }
+        },
+        {
+            "id": "p2",
+            "skin": 24,
+            "pos": [1797.88, -1449.4, 13.55],
+            "rot": 139,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

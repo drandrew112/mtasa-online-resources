@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing8",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1227.38, -1565.25, 13.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Severe asthma, getting drowsy",
+        "description": "A known asthmatic woman on the pavement in Market has used her inhaler ten times. The wheeze has gone quiet, she is exhausted and getting sleepy. Friends are panicking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 195,
+            "pos": [1227.38, -1565.25, 13.58],
+            "rot": 174,
+            "anim": "sit",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed", "heartRate": 132, "spo2": 78 }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning8",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [189.17, -1157.29, 59.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swimmer swallowed water",
+        "description": "A swimmer got into trouble in a swimming pool and was helped out and brought out to the driveway of a villa in Richman. He is coughing hard, breathless and says his chest hurts.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 18,
+            "pos": [189.17, -1157.29, 59.24],
+            "rot": 102,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_hypoglycemia17",
+    "category": "hypoglycemia",
+    "enabled": true,
+    "weight": 1,
+    "center": [1754.8, -1288.34, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus passenger confused, sweaty",
+        "description": "A bus driver put an older man off the bus on the sidewalk in Downtown Los Santos after he became confused and could not find his stop. He is sweating and tremors are visible. He takes diabetes tablets.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 49,
+            "pos": [1754.8, -1288.34, 13.63],
+            "rot": 182,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "consciousness": "confused", "glucose": 46 }
+        }
+    ]
+}

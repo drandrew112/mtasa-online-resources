@@ -1,0 +1,118 @@
+{
+    "format": 1,
+    "name": "ls_mci11",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1482.01, -860.44, 58.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Work van and car, five hurt",
+        "description": "A crowded work van collided with a car in Mulholland Intersection. The van rolled onto its side. Five people are injured, two of them seriously; workers climbed out through the windows.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 440,
+            "pos": [1483.05, -865.2, 58.38],
+            "rot": [0, 0, 343.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS90 222",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 418,
+            "pos": [1489.79, -867.99, 58.38],
+            "rot": [0, 0, 269.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS23 223",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [1482.01, -860.44, 58.43],
+            "rot": 354,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3700 }
+        },
+        {
+            "id": "p2",
+            "skin": 27,
+            "pos": [1485.46, -859.88, 58.43],
+            "rot": 168,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p3",
+            "skin": 66,
+            "pos": [1478.56, -861, 58.43],
+            "rot": 178,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 91,
+            "pos": [1489.79, -867.99, 58.38],
+            "rot": 228,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 227,
+            "pos": [1488.92, -859.32, 58.43],
+            "rot": 139,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

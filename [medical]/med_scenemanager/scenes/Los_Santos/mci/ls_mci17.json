@@ -1,0 +1,105 @@
+{
+    "format": 1,
+    "name": "ls_mci17",
+    "category": "mci",
+    "enabled": true,
+    "weight": 1,
+    "center": [1793.73, -2278.68, -2.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "A city bus collided with a car at Los Santos International. The car driver is badly hurt and several bus passengers fell inside and were helped out to the sidewalk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 431,
+            "pos": [1799.03, -2288.93, -2.32],
+            "rot": [0, 0, 46],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": true,
+            "health": 750,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS80 239",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 426,
+            "pos": [1796.55, -2281.5, -2.87],
+            "rot": [0, 0, 94],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS82 240",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [1793.73, -2278.68, -2.62],
+            "rot": 222,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3900, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 54,
+            "pos": [1803.09, -2282.03, -2.52],
+            "rot": 157,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        },
+        {
+            "id": "p3",
+            "skin": 145,
+            "pos": [1800.97, -2279.91, -2.52],
+            "rot": 107,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 176,
+            "pos": [1805.21, -2284.15, -2.52],
+            "rot": 264,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

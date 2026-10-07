@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing16",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1682.5, -1622.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drowning in own lungs",
+        "description": "An elderly woman at a bus stop in Commerce is sitting bolt upright, bubbling breaths can be heard from a distance. She is sweaty, grey and confused. She skipped her water tablets.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1682.5, -1622.25, 13.55],
+            "rot": 300,
+            "anim": "sit",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 3 }
+            ],
+            "state": { "consciousness": "confused", "heartRate": 134, "spo2": 76, "systolic": 206 }
+        }
+    ]
+}

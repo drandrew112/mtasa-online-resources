@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_drowning6",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [2241.28, -2655.46, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from the water",
+        "description": "A boy was found floating in the harbour and brought up to the street in Ocean Docks. He is breathing weakly, coughing up water, and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [2241.28, -2655.46, 13.55],
+            "rot": 321,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed", "spo2": 78 }
+        }
+    ]
+}

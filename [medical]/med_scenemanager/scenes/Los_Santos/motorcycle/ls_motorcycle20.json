@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_motorcycle20",
+    "category": "motorcycle",
+    "enabled": true,
+    "weight": 1,
+    "center": [2752.94, -840.96, 38.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter rider hit a car door",
+        "description": "A parked driver opened a door into a scooter rider near the docks. The man is sitting on the curb holding his wrist, with a grazed knee.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [2755.34, -842.14, 38.43],
+            "rot": [0, 0, 254.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS14 306",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 154,
+            "pos": [2752.94, -840.96, 38.98],
+            "rot": 281,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

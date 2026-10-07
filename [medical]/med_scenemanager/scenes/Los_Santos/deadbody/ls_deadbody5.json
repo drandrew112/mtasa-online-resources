@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_deadbody5",
+    "category": "deadbody",
+    "enabled": true,
+    "weight": 1,
+    "center": [482.02, -1086.28, 82.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body washed up",
+        "description": "Party guests found a body in a swimming pool and brought it out to the driveway of a villa in Richman. The person has clearly been in the water for some time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [482.02, -1086.28, 82.57],
+            "rot": 277,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

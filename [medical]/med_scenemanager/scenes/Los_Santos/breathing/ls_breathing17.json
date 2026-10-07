@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_breathing17",
+    "category": "breathing",
+    "enabled": true,
+    "weight": 1,
+    "center": [1448.5, -1270.75, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Runner wheezing after race",
+        "description": "A runner outside a shop in Downtown Los Santos finished a charity run and now cannot stop wheezing. He had asthma as a child but no inhaler today.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [1448.5, -1270.75, 13.55],
+            "rot": 54,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 93 }
+        }
+    ]
+}

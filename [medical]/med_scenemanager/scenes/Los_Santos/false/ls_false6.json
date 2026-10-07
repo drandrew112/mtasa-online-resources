@@ -1,0 +1,18 @@
+{
+    "format": 1,
+    "name": "ls_false6",
+    "category": "false",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [2574, -942, 81.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "A neighbour heard someone screaming for help in the park near the docks. The screaming has stopped. The caller cannot see anyone from the window.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

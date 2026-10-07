@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_stroke24",
+    "category": "stroke",
+    "enabled": true,
+    "weight": 1,
+    "center": [2487.12, -2658.58, 13.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman cannot lift her arm",
+        "description": "A woman in her fifties on the sidewalk in Ocean Docks dropped her shopping bags and cannot lift her right arm. She is talking, but her words come out wrong and she seems frightened. A shop assistant is staying with her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [2487.12, -2658.58, 13.65],
+            "rot": 80,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "diastolic": 98, "systolic": 172 }
+        }
+    ]
+}

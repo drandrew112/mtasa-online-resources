@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar22",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [2909.58, -1281.59, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit and run",
+        "description": "A car hit a man in East Beach and drove off. The victim is lying in the road, face down and not answering. Callers are stopping traffic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [2909.58, -1281.59, 10.88],
+            "rot": 43,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

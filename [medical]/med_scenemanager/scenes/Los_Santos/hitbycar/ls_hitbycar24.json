@@ -1,0 +1,72 @@
+{
+    "format": 1,
+    "name": "ls_hitbycar24",
+    "category": "hitbycar",
+    "enabled": true,
+    "weight": 1,
+    "center": [1651.25, -2251.62, 13.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist hit by a car",
+        "description": "A car turned into a cyclist at Los Santos International. The rider flew over the car and is lying in the lane, conscious but confused, with an open wound on his shin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 545,
+            "pos": [1658.25, -2251.62, 12.88],
+            "rot": [0, 0, 103],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS60 282",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 510,
+            "pos": [1653.75, -2251.62, 12.68],
+            "rot": [0, 0, 170],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS73 283",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [1651.25, -2251.62, 13.13],
+            "rot": 52,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4400, "consciousness": "confused" }
+        }
+    ]
+}

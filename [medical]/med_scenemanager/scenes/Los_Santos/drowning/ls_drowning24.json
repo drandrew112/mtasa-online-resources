@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "ls_drowning24",
+    "category": "drowning",
+    "enabled": true,
+    "weight": 1,
+    "center": [696.03, -1860.92, 5.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure in the water",
+        "description": "A woman had a seizure while in the sea and went under. She was pulled out and brought up to the street in Verona Beach. She is breathing but confused and keeps coughing up water.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 139,
+            "pos": [696.03, -1860.92, 5.67],
+            "rot": 167,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "postictal", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused", "spo2": 82 }
+        }
+    ]
+}

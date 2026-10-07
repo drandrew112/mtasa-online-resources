@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_overdose23",
+    "category": "overdose",
+    "enabled": true,
+    "weight": 1,
+    "center": [2373.51, -983.98, 67.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, took double medication",
+        "description": "An elderly woman at the side of the road in Las Colinas accidentally took her sleeping tablets twice. Family says she is unusually drowsy, unsteady and confused.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 218,
+            "pos": [2373.51, -983.98, 67.23],
+            "rot": 43,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "format": 1,
+    "name": "ls_shooting8",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [702.07, -1681.25, 11.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Argument ended in gunfire",
+        "description": "Two men argued over a parking spot on the sidewalk in Marina when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [702.07, -1681.25, 11.32],
+            "rot": 4,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3900, "spo2": 85 }
+        },
+        {
+            "id": "p2",
+            "skin": 176,
+            "pos": [699.07, -1681.53, 11.32],
+            "rot": 336,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

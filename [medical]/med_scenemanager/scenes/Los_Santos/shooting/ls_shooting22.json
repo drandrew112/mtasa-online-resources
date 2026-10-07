@@ -1,0 +1,30 @@
+{
+    "format": 1,
+    "name": "ls_shooting22",
+    "category": "shooting",
+    "enabled": true,
+    "weight": 1,
+    "center": [589.81, -1237.95, 17.86],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the leg, heavy bleeding",
+        "description": "A young man was shot in the thigh at a bus stop in Rodeo. Blood is spurting and his friend is pressing on it with a T-shirt. He is getting pale and sleepy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 174,
+            "pos": [589.81, -1237.95, 17.86],
+            "rot": 250,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bleeding": 2, "bloodVolume": 3500, "consciousness": "dazed" }
+        }
+    ]
+}

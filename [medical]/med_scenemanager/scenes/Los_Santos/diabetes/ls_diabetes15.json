@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "name": "ls_diabetes15",
+    "category": "diabetes",
+    "enabled": true,
+    "weight": 1,
+    "center": [2335.38, -1591.05, 23.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Weak, thirsty, stomach pain",
+        "description": "A man on the sidewalk in East Los Santos says he feels too weak to walk, has a terrible thirst and stomach pain. He admits skipping insulin because he could not afford it. He is pale and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [2335.38, -1591.05, 23.82],
+            "rot": 41,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4200, "glucose": 430, "heartRate": 112 }
+        }
+    ]
+}
