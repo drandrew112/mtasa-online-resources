@@ -119,7 +119,7 @@ end
 -- Everything the R menu needs
 function Editor.sync(session)
     local player = session.player
-    local state = { active = true, scenes = {} }
+    local state = { active = true, scenes = {}, locations = Storage.locations() }
     for _, s in ipairs(Storage.list()) do
         local lockedBy = Editor.locks[s.name]
         state.scenes[#state.scenes + 1] = {
@@ -135,6 +135,7 @@ function Editor.sync(session)
             path = scene.file and Storage.file(scene.file) or false,
             target = MSM.SCENE_DIR .. Storage.pathFor(scene.file or "<name>", d) .. ".json",
             category = d.category,
+            location = d.location, suggestedLocation = msmSuggestedLocation(d.center, d.interior), locations = state.locations,
             erm = d.erm, enabled = d.enabled, weight = d.weight,
             center = d.center, interior = d.interior,
             vehicles = {}, peds = {},
@@ -493,6 +494,22 @@ SCENE_ACTIONS = {
     end,
     category = function(session, id)
         if type(id) == "string" then session.scene.data.category = msmCategory(id) end
+    end,
+    location = function(session, label)
+        if msmValidLocation(label) then session.scene.data.location = label end
+    end,
+    newlocation = function(session)
+        Editor.askText(session.player, "Location (e.g. \"San Fierro\")", MSM.NAME_MAX, session.scene.data.location, function(text)
+            if not session.scene then return end
+            local label = text:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
+            if not msmValidLocation(label) then
+                msmNotify(session.player, "Scene editor", "Invalid location.")
+                return
+            end
+            session.scene.data.location = label
+            Editor.markDirty(session)
+        end)
+        return true
     end,
     weight = function(session, w)
         w = tonumber(w)

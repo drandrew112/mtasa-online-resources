@@ -1,8 +1,9 @@
--- Scene files: scenes/<Settlement>/[<category>/]<name>.json, listed in scenes/index.json
+-- Scene files: scenes/<Location folder>/[<category>/]<name>.json, listed in scenes/index.json
 -- as paths relative to scenes/ without .json (e.g. "Los_Santos/heartattack/ls_heartattack1").
--- Scene names stay unique over all folders. The settlement comes from the scene centre
--- (msmSettlementFolder), the category from the scene's "category" key; both are applied
--- on save, so a scene moves to its new folder when its centre / category changes.
+-- Scene names stay unique over all folders. The location folder is a slug (msmLocationFolder)
+-- of the scene's human-readable "location" key (e.g. "San Fierro", chosen in the editor,
+-- suggested from the centre - msmSuggestedLocation), the category from its "category" key;
+-- both are applied on save, so a scene moves to its new folder when either changes.
 --
 -- On start every file is read once and only a short summary is kept in memory
 -- (Storage.summary). The full data is read from the file again whenever a module
@@ -10,7 +11,7 @@
 
 Storage = {
     names = {},     -- ordered scene names (the index)
-    summary = {},   -- [name] = { name, path, category, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }
+    summary = {},   -- [name] = { name, path, category, location, title, priority, center, interior, dimension, weight, enabled, peds, vehicles }
     paths = {},     -- [name] = path relative to scenes/, without .json
 }
 
@@ -33,9 +34,9 @@ local function parseEntry(entry)
     return path, name
 end
 
--- Where a scene belongs: <Settlement>/[<category>/]<name>
+-- Where a scene belongs: <Location folder>/[<category>/]<name>
 function Storage.pathFor(name, scene)
-    local folder = msmSettlementFolder(scene.center, scene.interior)
+    local folder = (tonumber(scene.interior) or 0) ~= 0 and MSM.INTERIOR_FOLDER or msmLocationFolder(scene.location)
     if scene.category ~= "" then folder = folder .. "/" .. scene.category end
     return folder .. "/" .. name
 end
@@ -55,14 +56,19 @@ end
 function Storage.normalize(data, name)
     data = type(data) == "table" and data or {}
     local erm = type(data.erm) == "table" and data.erm or {}
+    local center = vec3(data.center, { 0, 0, 3 })
+    local interior = math.floor(num(data.interior, 0))
+    -- older files (saved before "location" existed) fall back to the centre's zone
+    local location = msmValidLocation(data.location) and data.location or msmSuggestedLocation(center, interior)
     local scene = {
         format = FORMAT,
         name = name or data.name,
         category = msmCategory(data.category, name or data.name),
+        location = location,
         enabled = data.enabled ~= false,
         weight = math.max(0, num(data.weight, 1)),
-        center = vec3(data.center, { 0, 0, 3 }),
-        interior = math.floor(num(data.interior, 0)),
+        center = center,
+        interior = interior,
         dimension = math.floor(num(data.dimension, 0)),
         erm = {
             title = tostring(erm.title or MSM.DEFAULT_ERM.title),
@@ -126,6 +132,7 @@ local function makeSummary(name, scene)
         name = name,
         path = Storage.paths[name],
         category = scene.category,
+        location = scene.location,
         title = scene.erm.title,
         priority = scene.erm.priority,
         center = { scene.center[1], scene.center[2], scene.center[3] },
@@ -183,7 +190,7 @@ function Storage.reload()
                     formatted = formatted + 1
                 end
                 if path ~= Storage.pathFor(name, scene) then
-                    msmLog("scene '%s' is in %s, its centre / category says %s (moved on the next save)",
+                    msmLog("scene '%s' is in %s, its location / category says %s (moved on the next save)",
                         name, filePath(path), filePath(Storage.pathFor(name, scene)))
                 end
             else
@@ -211,6 +218,17 @@ function Storage.list()
     local out = {}
     for _, name in ipairs(Storage.names) do out[#out + 1] = Storage.summary[name] end
     return out
+end
+
+-- Every location folder currently in use, for the editor's picker (existing ones + the
+-- interior folder; a new one is free text, see msmValidLocation).
+function Storage.locations()
+    local set = {}
+    for _, s in pairs(Storage.summary) do set[s.location] = true end
+    local list = {}
+    for folder in pairs(set) do list[#list + 1] = folder end
+    table.sort(list, function(a, b) return a:lower() < b:lower() end)
+    return list
 end
 
 -- Full scene data straight from the file -> scene | nil, error

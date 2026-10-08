@@ -65,14 +65,31 @@ function msmCategory(value, name)
     return ""
 end
 
--- Settlement folder of a position: Los_Santos, San_Fierro, Las_Venturas or the zone (village) name
-function msmSettlementFolder(center, interior)
+-- Suggested location label for a position: "Los Santos", "San Fierro", "Las Venturas" or
+-- the zone (village / area) name - human-readable, not a folder id. Only a suggestion -
+-- the scene's stored "location" field decides its actual folder (msmLocationFolder,
+-- Storage.pathFor); this is offered by the editor and used as the fallback for scene
+-- files saved before that field existed.
+function msmSuggestedLocation(center, interior)
     if (tonumber(interior) or 0) ~= 0 then return MSM.INTERIOR_FOLDER end
     local x, y, z = center[1], center[2], center[3]
     local city = getZoneName(x, y, z, true)
-    local zone = MSM.CITY_FOLDERS[city] and city or getZoneName(x, y, z, false)
-    local folder = tostring(zone or ""):gsub("'", ""):gsub("[^%w%-]+", "_"):gsub("^_+", ""):gsub("_+$", "")
+    local zone = tostring((MSM.CITY_FOLDERS[city] and city or getZoneName(x, y, z, false)) or "")
+    return zone ~= "" and zone or "Unknown"
+end
+
+-- Folder-safe slug of a location label (scenes/<this>/[<category>/]<name>.json):
+-- spaces -> _, apostrophes dropped, anything else -> _
+function msmLocationFolder(label)
+    local folder = tostring(label or ""):gsub("'", ""):gsub("[^%w%-]+", "_"):gsub("^_+", ""):gsub("_+$", "")
     return folder ~= "" and folder or "Unknown"
+end
+
+-- Valid location label: short printable text (e.g. "San Fierro", "Lil' Probe Inn").
+-- It is only turned into a folder name through msmLocationFolder, so no character set
+-- restriction is needed here.
+function msmValidLocation(value)
+    return type(value) == "string" and value ~= "" and #value <= MSM.NAME_MAX and not value:find("%c")
 end
 
 ---------------------------------------------------------------- files
@@ -111,7 +128,7 @@ end
 -- Key order of the written files (scene, erm, vehicle, ped, injury, medical state, index).
 -- Keys missing from the list follow in alphabetical order.
 local KEY_ORDER = {
-    "format", "name", "category", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
+    "format", "name", "category", "location", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
     "title", "description", "caller", "priority",
     "id", "model", "skin", "pos", "rot", "anim", "frozen", "vehicle", "seat",
     "locked", "engine", "lightsOn", "sirens", "health", "colors", "paintjob", "plate", "variant",
