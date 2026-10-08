@@ -32,6 +32,13 @@ local function short(text, max)
     return text
 end
 
+local function folderLabel(folder)
+    for _, c in ipairs(MSM_CATEGORIES) do
+        if c.id == folder then return c.label end
+    end
+    return (folder:gsub("_", " "))
+end
+
 ---------------------------------------------------------------- menu
 
 local function sceneMenu(scene)
@@ -84,6 +91,18 @@ local function sceneMenu(scene)
         if c.id == scene.category then categoryLabel = c.label end
     end
 
+    local locations = {}
+    if scene.suggestedLocation and scene.suggestedLocation ~= "" then
+        locations[#locations + 1] = item("Suggested: " .. scene.suggestedLocation, "location", scene.suggestedLocation,
+            "Based on the ERM task centre position", { checked = scene.location == scene.suggestedLocation })
+    end
+    for _, loc in ipairs(scene.locations or {}) do
+        if loc ~= scene.suggestedLocation then
+            locations[#locations + 1] = item(loc, "location", loc, nil, { checked = scene.location == loc })
+        end
+    end
+    locations[#locations + 1] = item("New location ...", "newlocation", nil, "Type a location name, e.g. \"San Fierro\"")
+
     local function confirm(label, action, desc)
         if not scene.dirty then return item(label, action, nil, desc) end
         return { label = label, title = "Unsaved changes", desc = "There are unsaved changes", items = {
@@ -99,8 +118,10 @@ local function sceneMenu(scene)
             { label = ("Peds (%d)"):format(#scene.peds), title = "Peds", items = pedItems },
             { label = ("Vehicles (%d)"):format(#scene.vehicles), title = "Vehicles", items = vehItems },
             { label = "Random generator", title = "Random generator", items = genItems },
+            { label = "Location: " .. scene.location, title = "Location", items = locations,
+              desc = "Folder: scenes/<location>/<category>/. Pick the suggestion, an existing location or add a new one." },
             { label = "Category: " .. categoryLabel, title = "Category", items = categories,
-              desc = "Folder: scenes/<settlement>/<category>/. The settlement comes from the centre." },
+              desc = "Folder: scenes/<location>/<category>/." },
             item("Teleport to scene", "teleport", nil, "To the ERM task centre"),
             item("Save", "save", nil, scene.file and scene.target or "Never saved - use Save as"),
             item("Save as ...", "saveas", nil, "Saved as " .. scene.target),
@@ -113,13 +134,6 @@ end
 -- "ls_heartattack2" before "ls_heartattack10"
 local function naturalKey(text)
     return (tostring(text):lower():gsub("%d+", function(d) return ("%08d"):format(tonumber(d)) end))
-end
-
-local function folderLabel(folder)
-    for _, c in ipairs(MSM_CATEGORIES) do
-        if c.id == folder then return c.label end
-    end
-    return (folder:gsub("_", " "))
 end
 
 -- Load scene menu following the folders: settlement -> scenes + category subfolders
