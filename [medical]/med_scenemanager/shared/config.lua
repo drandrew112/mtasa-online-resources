@@ -23,6 +23,7 @@ MSM = {
     CMD_LIST = "medscenelist",       -- active scenes
     CMD_CLEAR = "medsceneclear",     -- /medsceneclear [instance id | all]
     CMD_RELOAD = "medscenereload",   -- re-read the scene files
+    CMD_VARIETY = "medscenevariety", -- /medscenevariety [sim [n] | clear]
 
     -- Defaults of a new scene's ERM task
     DEFAULT_ERM = {
@@ -56,6 +57,37 @@ MSM = {
         MIN_SCENE_DISTANCE = 60, -- no scene closer than this to another live scene
         MAX_UNIT_DISTANCE = 1500, -- no scene farther than this (2D, m) from the nearest free unit; 0 = off
         UNIT_TYPES = nil,        -- nil = every unit type counts as free, or e.g. { "ALS", "BLS" }
+    },
+
+    -- Scene variety (server/variety.lua): history of the spawned scenes, global and per
+    -- account, and the rules of the random pick. A "location" is a position: scenes whose
+    -- centres are within LOCATION_RADIUS are the same location, whatever their names.
+    -- The rules below exclude candidates; while nothing is left they are dropped in this
+    -- order: category repeat -> global history -> player history -> geographic spread.
+    -- The mandatory checks of AUTO (players, live scenes, unit distance) are never dropped.
+    VARIETY = {
+        ENABLED = true,          -- false = plain weighted random pick (old behaviour)
+        FILE = "data/variety.json", -- server side history file
+        RETENTION = 24 * 60 * 60, -- s, history entries older than this are deleted
+        SAVE_INTERVAL = 60,      -- s, the file is written this often when something changed
+        GLOBAL_MAX = 400,        -- entries kept in the global history
+        PLAYER_MAX = 60,         -- entries kept per account
+        LOCATION_RADIUS = 35,    -- m (2D), two centres closer than this are the same location
+
+        -- exclusion rules (windows = the last N entries of the history)
+        GLOBAL = { scenes = 25, locations = 12, categoryRepeat = 1, categoryWindow = 20, spread = 3 },
+        PLAYER = { scenes = 15, locations = 8, categoryRepeat = 2, categoryWindow = 10, spread = 2 },
+        MIN_SPREAD = 250,        -- m (2D), no scene this close to the last `spread` locations
+
+        -- weights of the remaining candidates (they never exclude anything)
+        BALANCE_CATEGORIES = true, -- every category gets the same chance, whatever its scene count
+        CATEGORY_WEIGHT = {},    -- extra multiplier per category, e.g. { ["false"] = 0.5 }
+        CATEGORY_K_GLOBAL = 0.5, -- weight / (1 + k * uses of the category in its window)
+        CATEGORY_K_PLAYER = 0.8,
+        LOCATION_K = 1.0,        -- weight / (1 + k * decayed uses of the location)
+        LOCATION_HALF_LIFE = 2 * 60 * 60, -- s, a location use counts half after this long
+        SPREAD_BONUS_RANGE = 800, -- m, farther than this from the last locations = full weight
+        SPREAD_BONUS_MIN = 0.25, -- weight multiplier right next to the last locations
     },
 
     -- Editor

@@ -12,6 +12,7 @@
     <script src="server/storage.lua"  type="server" />
     <script src="server/builder.lua"  type="server" />
     <script src="server/live.lua"     type="server" />
+    <script src="server/variety.lua"  type="server" />
     <script src="server/auto.lua"     type="server" />
     <script src="server/summon.lua"   type="server" />
     <script src="server/editor.lua"   type="server" />

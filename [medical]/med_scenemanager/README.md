@@ -14,6 +14,7 @@ server/util.lua       permission (v_mysql admin_level), JSON + file helpers
 server/storage.lua    scenes/index.json + scenes/<Settlement>/[<category>/]<name>.json, summaries
 server/builder.lua    scene entry <-> vehicle / ped element (capture, apply, medsys)
 server/live.lua       live scenes: spawn, ERM task, cleanup after the task closed
+server/variety.lua    scene variety: history (data/variety.json), rules, weights
 server/auto.lua       automatic generator + /medscenerandom, /medsceneauto, /medscenelist ...
 server/summon.lua     /medscenesummon: menu pick -> spawn
 server/editor.lua     editor sessions, R menu actions, load / save
@@ -136,11 +137,39 @@ A scene without patients (only bystanders, or no peds at all: a **false call**) 
 It only runs while med_erm has **free units** (no task, Available). It waits a random
 `INTERVAL_MIN..INTERVAL_MAX` seconds, **divided by the number of free units**, before the
 next scene. It allows at most `PENDING_PER_UNIT` waiting (unassigned) scene tasks per free
-unit and `MAX_ACTIVE` live scenes. The scene is a weighted random pick among enabled,
-inactive scenes. A scene is skipped when a player is closer than `MIN_PLAYER_DISTANCE` or
+unit and `MAX_ACTIVE` live scenes. Mandatory checks (never relaxed): the scene is enabled, has weight > 0 and is not
+active. It is skipped when a player is closer than `MIN_PLAYER_DISTANCE` or
 another live scene is closer than `MIN_SCENE_DISTANCE`, or when no free unit is within
 `MAX_UNIT_DISTANCE` (2D, interior scenes are always in range; 0 = no limit). On / off: `/medsceneauto on|off` or
 the `autoEnabled` setting.
+
+### Scene variety (`server/variety.lua`, `MSM.VARIETY`)
+
+The pick among the scenes that passed the mandatory checks is not a plain random one.
+A history is kept in `data/variety.json` (server only; entries older than `RETENTION`,
+24 h, are deleted):
+
+- **global**: every spawned scene, any source (generator, `/medscenerandom`, summon, export);
+- **per account**: the scenes whose ERM task was assigned to a unit the account was in
+  (`onErmTaskAssigned`), so it is who really got it. For a candidate, the accounts of its
+  nearest free unit (the one med_erm_auto will send) are checked.
+
+A **location** is a position: two scenes whose centres are within `LOCATION_RADIUS` (35 m)
+are the same location, even with different names.
+
+1. **Rules** exclude candidates: same category as the last global / the unit's last 2
+   scenes; a scene or location in the recent global / player history; closer than
+   `MIN_SPREAD` (250 m) to the last 3 global / 2 player locations.
+2. While nothing is left they are **relaxed** in this order: category repeat, global
+   history, player history, geographic spread (level 1..4). The mandatory checks stay.
+3. The pool is **weighted**: file `weight`, category balance (every category the same
+   chance, whatever its scene count; `CATEGORY_WEIGHT` per category), recent category
+   use, decayed use of the location (half-life `LOCATION_HALF_LIFE`), distance from the
+   last locations (`SPREAD_BONUS_*`).
+4. Only then a weighted random draw.
+
+`MSM.VARIETY.ENABLED = false` brings back the plain weighted random pick. The server log
+shows the relaxation level of each generator pick.
 
 ## Commands (admin_level >= `MIN_ADMIN_LEVEL`, from v_mysql)
 
@@ -153,6 +182,7 @@ the `autoEnabled` setting.
 | `/medscenelist` | live scenes |
 | `/medsceneclear [id\|all]` | removes live scenes (and closes their tasks) |
 | `/medscenereload` | re-reads the scene files |
+| `/medscenevariety [sim [n] \| clear]` | variety history + last pick; `sim` = n dry-run picks (no spawn); `clear` deletes the history |
 
 ## Editor
 
