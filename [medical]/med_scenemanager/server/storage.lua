@@ -189,10 +189,6 @@ function Storage.reload()
                     msmWriteFile(filePath(path), json)
                     formatted = formatted + 1
                 end
-                if path ~= Storage.pathFor(name, scene) then
-                    msmLog("scene '%s' is in %s, its location / category says %s (moved on the next save)",
-                        name, filePath(path), filePath(Storage.pathFor(name, scene)))
-                end
             else
                 missing = missing + 1
                 msmLog("scene '%s' is listed in the index but %s could not be read", name, filePath(path))
