@@ -362,11 +362,13 @@ addEventHandler("jobmanager:requestJobs", resourceRoot, function()
     if playerState[client] then return end
     local list = {}
     for _, job in ipairs(jobs) do
+        local mMoney, mXp, mLabel = jobmanagerGetMultiplier(job.id)
         table.insert(list, {
             id = job.id, name = job.name, type = job.type,
             min = job.minPlayers, max = job.maxPlayers,
             image = job.image, description = job.description, createdBy = job.createdBy,
             community = job.community or false,
+            moneyMult = mMoney, xpMult = mXp, multLabel = mLabel or nil,
         })
     end
     triggerClientEvent(client, "jobmanager:jobs", resourceRoot, list)
@@ -377,7 +379,9 @@ addEventHandler("jobmanager:requestLobbies", resourceRoot, function()
     local list = {}
     for _, lobby in pairs(lobbies) do
         if not lobby.locked and #lobby.players < lobby.job.maxPlayers then
+            local mMoney, mXp, mLabel = jobmanagerGetMultiplier(lobby.job.id)
             table.insert(list, {
+                moneyMult = mMoney, xpMult = mXp, multLabel = mLabel or nil,
                 id = lobby.id, jobId = lobby.job.id, jobName = lobby.job.name, type = lobby.job.type,
                 hostName = lobby.host and getPlayerName(lobby.host) or "?",
                 count = #lobby.players, max = lobby.job.maxPlayers,

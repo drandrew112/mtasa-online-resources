@@ -4,4 +4,8 @@
 	<script src="shared.lua"	   	type="shared"/>
 	<script src="c_timetrial.lua"	type="client"/>
 	<script src="s_timetrial.lua" 	type="server"/>
+
+	<export function="setActiveTimetrial" type="server"/>
+	<export function="getActiveTimetrial" type="server"/>
+	<export function="getTimetrials" type="server"/>
 </meta>

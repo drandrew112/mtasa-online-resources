@@ -149,3 +149,22 @@ CREATE TABLE IF NOT EXISTS `friendRequests` (
     UNIQUE KEY `unique_request` (`sender`, `recipient`),
     KEY `idx_friendrequests_recipient` (`recipient`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- weekly_schedule  (owner: [core]/v_weekly)
+-- ----------------------------------------------------------------------------
+-- One row per configured week.
+--   week_start  unix timestamp (UTC) of Tuesday 10:00 Europe/Budapest
+--   data        JSON: { jobs = { [jobId] = { money, xp, label } },
+--                       timetrial = <index>, custom = { ... },
+--                       news = { title, body } }
+-- A week without a row inherits the latest earlier row (news excluded).
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `weekly_schedule` (
+    `week_start` INT          NOT NULL PRIMARY KEY,
+    `data`       MEDIUMTEXT   NOT NULL,
+    `updated_by` VARCHAR(50)  DEFAULT NULL,
+    `updated_at` INT          NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

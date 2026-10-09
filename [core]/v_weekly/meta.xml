@@ -1,0 +1,45 @@
+<meta>
+    <info author="DrAndrew112" name="Weekly" version="1.0.0" type="script"
+          description="Weekly schedule (Tue 10:00 Europe/Budapest): Job multipliers, active time trial, news panel" />
+
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+
+    <script src="config.lua" type="shared" />
+
+    <script src="server/time.lua" type="server" />
+    <script src="server/storage.lua" type="server" />
+    <script src="server/schedule.lua" type="server" />
+    <script src="server/api.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+    <script src="server/login.lua" type="server" />
+    <script src="server/admin.lua" type="server" />
+
+    <script src="client/panel.lua" type="client" />
+    <script src="client/admin.lua" type="client" />
+
+    <!-- queries -->
+    <export function="getCurrentWeek" type="server" />
+    <export function="getWeek" type="server" />
+    <export function="getWeekStart" type="server" />
+    <export function="getNextWeekChange" type="server" />
+    <export function="getJobMultiplier" type="server" />
+    <export function="getActiveTimetrial" type="server" />
+    <export function="isTimetrialActive" type="server" />
+    <export function="getWeekValue" type="server" />
+
+    <!-- changes (offset: 0 = running week, 1 = next week ...) -->
+    <export function="setJobMultiplier" type="server" />
+    <export function="clearJobMultiplier" type="server" />
+    <export function="clearJobMultipliers" type="server" />
+    <export function="setLoginBonus" type="server" />
+    <export function="getLoginBonus" type="server" />
+    <export function="setActiveTimetrial" type="server" />
+    <export function="setWeekValue" type="server" />
+    <export function="setWeekNews" type="server" />
+    <export function="setWeek" type="server" />
+    <export function="clearWeek" type="server" />
+    <export function="reapplyWeek" type="server" />
+</meta>

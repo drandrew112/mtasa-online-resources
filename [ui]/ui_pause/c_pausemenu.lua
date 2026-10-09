@@ -772,6 +772,27 @@ local function drawJobDetails(x, y, w, h, job)
     dxDrawText(job.name or "", x + S(10), y + boxH - S(30), x + w - S(10), y + boxH - S(6),
         tocolor(255, 255, 255), S(1.15), FONT.name, "right", "bottom")
 
+    -- reward multiplier bubbles, top-right of the image (only when != 1)
+    local bx = x + w - S(8)
+    local function bubble(txt, col)
+        local tw = dxGetTextWidth(txt, S(0.95), FONT.rowB)
+        local bw, bh = tw + S(20), S(22)
+        bx = bx - bw
+        local by = y + S(8)
+        local r = bh / 2
+        dxDrawRectangle(bx + r, by, bw - bh, bh, col)
+        dxDrawCircle(bx + r, by + r, r, 0, 360, col, col, 24)
+        dxDrawCircle(bx + bw - r, by + r, r, 0, 360, col, col, 24)
+        dxDrawText(txt, bx, by, bx + bw, by + bh, tocolor(255, 255, 255), S(0.95), FONT.rowB, "center", "center")
+        bx = bx - S(6)
+    end
+    local function fmtMult(v)
+        local s = string.format("%.2f", v):gsub("0+$", ""):gsub("%.$", "")
+        return s .. "x"
+    end
+    if job.xpMult and job.xpMult ~= 1 then bubble("XP " .. fmtMult(job.xpMult), tocolor(0, 130, 205, 235)) end
+    if job.moneyMult and job.moneyMult ~= 1 then bubble("\226\130\172 " .. fmtMult(job.moneyMult), tocolor(46, 160, 80, 235)) end
+
     local info = {
         { "Type",    (job.type == "race" and "Race") or (job.type == "deathmatch" and "Deathmatch") or "Job" },
         { "Players", tostring(job.min or "?") .. "-" .. tostring(job.max or "?") },
@@ -859,6 +880,7 @@ local function drawJobsList(x, y, w, h, list)
         drawJobDetails(rightX, listY, rightW, detH, {
             name = selected.jobName, type = selected.type,
             min = nil, max = selected.max, image = selected.image, description = selected.description,
+            moneyMult = selected.moneyMult, xpMult = selected.xpMult,
         })
     else
         drawJobDetails(rightX, listY, rightW, detH, selected)

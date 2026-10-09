@@ -6,6 +6,26 @@ local timeLeft = 0
 local active = false
 local timer
 
+local function endMarkerElement()
+    local m = getElementByID("tt:end")
+    return isElement(m) and m or nil
+end
+
+-- the server switches the active trial (weekly schedule)
+addEvent("tt:setActive", true)
+addEventHandler("tt:setActive", resourceRoot, function(index)
+    if not Timetrials[index] then return end
+    if timer and isTimer(timer) then killTimer(timer) end
+    active = false
+    timeLeft = 0
+    setElementData(localPlayer, "tt:active", false)
+    trial = Timetrials[index]
+end)
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    triggerServerEvent("tt:requestActive", localPlayer)
+end)
+
 -- === 3D TEXT ===
 local function drawText3D(pos, text)
     local camX, camY, camZ = getCameraMatrix()
@@ -49,7 +69,8 @@ bindKey("e", "down", function()
     active = true
     timeLeft = trial.time
 
-    setElementAlpha(getElementByID("tt:end"), 160)
+    local endM = endMarkerElement()
+    if endM then setElementAlpha(endM, 160) end
     setElementData(localPlayer, "tt:active", true)
     uicore:setBanner("TIME TRIAL STARTED", "Good luck!")
 
@@ -67,7 +88,8 @@ addEventHandler("tt:finish", root, function(success)
     if timer and isTimer(timer) then killTimer(timer) end
 
     active = false
-    setElementAlpha(getElementByID("tt:end"), 0)
+    local endM = endMarkerElement()
+    if endM then setElementAlpha(endM, 0) end
     setElementData(localPlayer, "tt:active", false)
 
     if success then
