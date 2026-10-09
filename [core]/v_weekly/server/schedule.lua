@@ -74,7 +74,7 @@ function SCHED.check()
     currentWeek = ws
     SCHED.apply()
     if not first then
-        outputServerLog("[v_weekly] new week started: " .. formatBudapest(ws))
+        outputServerLog("[v_weekly] new week started: " .. formatUtc(ws))
         PANEL.weekChanged()
     end
     return true
@@ -129,7 +129,7 @@ local function boot()
     killTimer(bootTimer)
     SCHED.check()
     setTimer(SCHED.check, WEEKLY.CHECK_INTERVAL, 0)
-    outputServerLog("[v_weekly] ready, week of " .. formatBudapest(SCHED.currentWeek()))
+    outputServerLog("[v_weekly] ready, week of " .. formatUtc(SCHED.currentWeek()))
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()

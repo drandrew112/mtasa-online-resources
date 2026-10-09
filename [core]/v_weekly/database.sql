@@ -1,6 +1,6 @@
 -- v_weekly :: database schema (also included in ../../main.sql)
 --
---   week_start  unix timestamp (UTC) of Tuesday 10:00 Europe/Budapest
+--   week_start  unix timestamp (UTC) of Tuesday 10:00 UTC
 --   data        JSON: { jobs = { [jobId] = { money, xp, label } },
 --                       timetrial = <index>, custom = { ... },
 --                       news = { title, body } }

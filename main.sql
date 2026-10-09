@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `friendRequests` (
 -- weekly_schedule  (owner: [core]/v_weekly)
 -- ----------------------------------------------------------------------------
 -- One row per configured week.
---   week_start  unix timestamp (UTC) of Tuesday 10:00 Europe/Budapest
+--   week_start  unix timestamp (UTC) of Tuesday 10:00 UTC
 --   data        JSON: { jobs = { [jobId] = { money, xp, label } },
 --                       timetrial = <index>, custom = { ... },
 --                       news = { title, body } }

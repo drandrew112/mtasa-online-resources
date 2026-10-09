@@ -35,8 +35,8 @@ function PANEL.payload(ws)
     table.sort(jobs, function(a, b) return a.name < b.name end)
     return {
         weekStart = ws,
-        from = formatBudapest(ws),
-        to = formatBudapest(weekStartAt(1, ws + 3.5 * 86400)),
+        from = formatUtc(ws),
+        to = formatUtc(weekStartAt(1, ws + 3.5 * 86400)),
         news = data.news,
         loginBonus = data.loginBonus,
         jobs = jobs,

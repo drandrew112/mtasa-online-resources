@@ -264,7 +264,7 @@ function drawAdmin()
     dxDrawRectangle(X, Y, W, H, C.bg)
     dxDrawRectangle(X, Y, W, S(4), C.accent)
     text("WEEKLY", X + pad, Y + S(10), S(200), S(36), C.head, 1.9, "default-bold")
-    text("next change: " .. adm.data.nextChange .. "  (Europe/Budapest)", X + pad + S(150), Y + S(10), W * 0.6, S(36), C.dim, 1.1)
+    text("next change: " .. adm.data.nextChange .. "  (UTC)", X + pad + S(150), Y + S(10), W * 0.6, S(36), C.dim, 1.1)
     button(X + W - S(48), Y + S(12), S(32), S(30), "X", closePanel, "danger")
 
     -- week list

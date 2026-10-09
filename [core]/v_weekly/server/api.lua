@@ -27,7 +27,7 @@ end
 
 function getWeekStart(offset) return weekStartAt(tonumber(offset) or 0) end
 
--- unix timestamp of the next Tuesday 10:00 (Budapest)
+-- unix timestamp of the next Tuesday 10:00 UTC
 function getNextWeekChange() return weekStartAt(1) end
 
 -- -> money, xp, label|false  (running week)

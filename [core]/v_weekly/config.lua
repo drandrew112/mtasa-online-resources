@@ -4,7 +4,7 @@ WEEKLY = {
     -- /weekly admin menu: account admin_level (v_mysql accData) must be >= this
     ADMIN_LEVEL = 4,
 
-    -- a week runs from this weekday/hour (Europe/Budapest local time) to the next.
+    -- a week runs from this weekday/hour (UTC) to the next.
     -- weekday: 0 = Sunday ... 2 = Tuesday ... 6 = Saturday
     WEEK_DAY  = 2,
     WEEK_HOUR = 10,
@@ -24,7 +24,7 @@ WEEKLY = {
     -- allowed Job money / XP multipliers (1 = no bonus)
     MULTIPLIERS = { 1, 2, 3 },
 
-    -- login bonus is paid once per "day" (Budapest calendar day) or once per "week"
+    -- login bonus is paid once per "day" (UTC calendar day) or once per "week"
     LOGIN_BONUS_PERIOD = "day",
     LOGIN_MAX_MONEY    = 1000000,
     LOGIN_MAX_XP       = 100000,

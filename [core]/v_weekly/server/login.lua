@@ -7,7 +7,7 @@ LOGIN = {}
 local function periodId()
     if WEEKLY.LOGIN_BONUS_PERIOD == "week" then return SCHED.currentWeek() end
     local ts = getRealTime().timestamp
-    return math.floor((ts + tzOffset(ts)) / 86400) -- Budapest calendar day
+    return utcDay(ts) -- UTC calendar day
 end
 
 local function accName(player)
