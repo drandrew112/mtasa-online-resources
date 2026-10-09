@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="work_traindriver" version="1.0.0" type="script"
+          description="Train driver work on work_core: duty gives the railway role (vasutas jog) of rw_core" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="server/main.lua"   type="server" />
+    <script src="server/pay.lua"    type="server" />
+
+    <export function="isPlayerTrainDriver"  type="server" />
+    <export function="getTrainDriverPlayers" type="server" />
+    <export function="getTrainDriverWorkId" type="server" />
+
+    <!-- rw_core is used through exports when running (not included, so a rw_core restart does not stop this work) -->
+    <include resource="work_core" />
+</meta>

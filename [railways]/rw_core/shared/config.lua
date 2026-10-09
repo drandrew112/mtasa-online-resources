@@ -8,10 +8,14 @@ RW = {
 
     -- Railway role ("vasutas jog"): with REQUIRE_RAILWAY_ROLE, only role holders may assemble /
     -- spawn trains and throw switches. Driving is open to everyone either way. The role is
-    -- given by other resources (work_traindriver later) or admins (/rwrole).
-    REQUIRE_RAILWAY_ROLE = false,
+    -- given by other resources (work_traindriver) or admins (/rwrole).
+    REQUIRE_RAILWAY_ROLE = true,
+    -- work_core work whose players on duty are the only ones who see the depot markers and blips
+    -- (false = everyone sees them). work_core must be running.
+    DEPOT_WORK = "traindriver",
     DATA_ROLE   = "rw.role",                     -- player element data mirror (server-owned)
     ADMIN_LEVEL = 1,                             -- v_mysql admin_level for /rwrole, /rwdespawn
+    SPAWN_ADMIN_LEVEL = 3,                       -- admin_level to create a free train in a depot (others apply for services)
 
     -- "tracks" = the lines of rw_customtracks (0 = main line loop, 3 = second track loop); a
     -- track position (tp) is the distance along the line. Trains elsewhere (yards, crossovers,

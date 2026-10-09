@@ -17,14 +17,20 @@ local Transports = {}
 -- Tutorial patients (setTutorialPatient): transport is refused for them
 local TutorialPatients = {}
 
--- Marks a ped / player as a tutorial patient (e.g. the EMS tutorial): no transport can be requested
-function setTutorialPatient(element, enabled)
+-- Marks a ped / player as a tutorial patient (e.g. the EMS tutorial): no transport can be requested.
+-- useEquipment: true = the med_bag equipment rules apply to it as well (otherwise it is exempt)
+function setTutorialPatient(element, enabled, useEquipment)
     if not isValidPatient(element) then return false end
-    TutorialPatients[element] = enabled and true or nil
+    TutorialPatients[element] = enabled and (useEquipment and "equipment" or true) or nil
     return true
 end
 
 function isTutorialPatient(element)
+    return TutorialPatients[element] ~= nil
+end
+
+-- A tutorial patient that needs no equipment (server/equipment.lua)
+function isEquipmentExemptPatient(element)
     return TutorialPatients[element] == true
 end
 

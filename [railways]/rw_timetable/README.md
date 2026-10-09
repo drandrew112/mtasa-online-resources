@@ -13,6 +13,7 @@ Server exports:
 | `getServicesForConsist(consistId)` | trips this consist could take now, with `ok` / `reason` |
 | `assignService(consistId, tripId [, player])` | `player` = role check |
 | `cancelService(consistId, reason)` | |
+| `getDepotServices(spawnIds)` / `checkDepotService(tripId, spawnIds)` / `startAppliedService(consistId, tripId, player)` | depot applications (rw_core): trips a depot offers, the server check, start + `TT.APPLY_GRACE` deadline (not left the first station → trip cancelled, train removed) |
 | `getConsistService(consistId)` | running service view (times in seconds of the day) |
 | `getTripsOverview()` | trips -30 / +60 min for station boards |
 | `isConsistAtStation(consistId)`, `canOpenDoors(consistId)` | |

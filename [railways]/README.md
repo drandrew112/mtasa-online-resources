@@ -60,8 +60,15 @@ services. Exports: `setPlayerRailway`, `isPlayerRailway`, `hasRailwayAccess`,
 
 ## Depots
 
-Markers at Unity Station and Cranberry (E): spawn a preset train at one of the depot's spawn
-points, couple / uncouple coaches, send a train to the shed. Uses the `ui_inac` temp menu.
+Markers at Unity Station and Cranberry (E), `ui_inac` temp menu. Railway staff **apply for services**:
+the menu lists the trips of the next 15 minutes whose line spawns at the depot
+(`rw_timetable` `getDepotServices`); picking one makes the server re-check the trip (not
+taken / done / cancelled, still inside the take window), the spawn point (free, otherwise
+"occupied") and the role, then creates the line's train (`TT.LINES[].auto`) and starts the
+service at once. The trip must have left its first station `TT.APPLY_GRACE` (60 s) after its
+departure time, otherwise it is cancelled (boards show "Cancelled") and the train removed.
+Free train creation (any preset at any spawn point) needs `RW.SPAWN_ADMIN_LEVEL` (3). Coaches can
+be coupled / uncoupled and idle trains sent to the shed by all staff.
 
 ## Signals
 

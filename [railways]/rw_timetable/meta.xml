@@ -22,6 +22,9 @@
     <!-- services -->
     <export function="assignService"         type="server" />
     <export function="cancelService"         type="server" />
+    <export function="getDepotServices"      type="server" />
+    <export function="checkDepotService"     type="server" />
+    <export function="startAppliedService"   type="server" />
     <export function="getConsistService"     type="server" />
     <export function="canOpenDoors"          type="server" />
     <!-- rw_auto -->

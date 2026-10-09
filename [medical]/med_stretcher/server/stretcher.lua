@@ -9,6 +9,13 @@
 addEvent("stretcher:snapResult", true)
 addEvent("onMedicalStateChange") -- fired by medical_system (if running)
 
+-- Events for other resources (med_bag: the equipment follows the stretcher). source = the stretcher.
+addEvent("onStretcherPushStart")     -- (player)
+addEvent("onStretcherPushStop")      -- (player)
+addEvent("onStretcherTakeOut")       -- (player, vehicle, patient|false)  the slide out begins
+addEvent("onStretcherLoadStart")     -- (player, vehicle, patient|false)  the slide in begins
+addEvent("onStretcherLoaded")        -- (player, vehicle, patient|false)  stowed, the patient seated
+
 local D = STRETCHER_DATA
 
 Stretchers = {}            -- object -> { object, vehicle, state, pusher, patient, seated, menuId, anim }
@@ -148,6 +155,7 @@ local function clearPusher(s)
     if not pusher then return end
     s.pusher = nil
     pusherOf[pusher] = nil
+    triggerEvent("onStretcherPushStop", s.object, pusher)
     if isElement(pusher) then
         removeElementData(pusher, D.PUSHING)
         if not isPedDead(pusher) then setPedAnimation(pusher) end
@@ -313,6 +321,7 @@ function takeOutStretcher(s, player)
     if isElement(ped) and not isPedDead(ped) and getPedOccupiedVehicle(ped) == vehicle then
         putPatient(s, ped)
     end
+    triggerEvent("onStretcherTakeOut", obj, player, vehicle, s.patient or false)
 
     setRearDoors(vehicle, true)
     runPath(s, {
@@ -367,6 +376,7 @@ function loadStretcher(s, player)
     local _, _, vrz = getElementRotation(vehicle)
     local turn = angleDelta(rz, vrz + st[6])
 
+    triggerEvent("onStretcherLoadStart", obj, player, vehicle, s.patient or false)
     setRearDoors(vehicle, true)
     runPath(s, {
         { time = math.max(STRETCHER.ALIGN_TIME, STRETCHER.DOOR_TIME), x = ox, y = oy, z = oz, rz = turn },
@@ -395,6 +405,7 @@ function loadStretcher(s, player)
         stow(s)
         setRearDoors(vehicle, false)
         holdVehicle(s, false)
+        triggerEvent("onStretcherLoaded", obj, player, vehicle, s.seated or false)
     end)
     return true
 end
@@ -413,6 +424,7 @@ function startPushing(s, player)
     pusherOf[player] = obj
     setElementData(player, D.PUSHING, obj)
     setState(s, "pushing")
+    triggerEvent("onStretcherPushStart", obj, player)
     return true
 end
 

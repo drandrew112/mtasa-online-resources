@@ -1,8 +1,11 @@
 -- EMS tutorial: one session per player in its own dimension. The server owns the session and
--- the world (ambulance, patients, hospital markers); the client shows the tutorial card and
--- drives the tablet and examination panel explanations (client/*.lua).
+-- the world (ambulance, patient, hospital markers); the client shows the tutorial card and
+-- drives the tablet / equipment / panel explanations (client/*.lua).
 --
--- Steps: tablet -> examine -> minigames -> stretcher -> transfer -> handover -> done
+-- Steps: tablet -> equipment -> examine -> treat -> stretcher -> transfer -> handover -> restock -> done
+-- One patient goes through the whole tutorial: examined and treated at the scene, loaded with the
+-- equipment riding on the stretcher, handed over at the hospital. The equipment (med_bag) steps are
+-- skipped while med_bag is not running (medsys then asks for no equipment either).
 --
 -- The tutorial is never required. It is offered the first time a player goes on duty as EMS
 -- (or every time with TUTORIAL.DEBUG), and /tutorial_ems starts it any time.
@@ -10,7 +13,11 @@
 Tutorial = { sessions = {} }
 
 local sessions = Tutorial.sessions    -- player -> session
-local STEPS = { "tablet", "examine", "minigames", "stretcher", "transfer", "handover", "done" }
+local STEPS = { "tablet", "equipment", "examine", "treat", "stretcher", "transfer", "handover", "restock", "done" }
+local EQUIPMENT_STEPS = { equipment = true, restock = true }
+
+-- The treatments of the treat step: medsys action (+ medicine) -> key of s.done
+local TREATMENTS = { bandage = "bandage", splint = "splint", iv = "iv", oxygen = "oxygen" }
 
 local function isRunning(name)
     local res = getResourceFromName(name)
@@ -97,80 +104,142 @@ local function stretcherOf(s)
     return exports.med_stretcher:getVehicleStretcher(s.vehicle)
 end
 
+-- The equipment is taught while med_bag runs (medsys checks it only then)
+local function equipmentOn()
+    return isRunning("med_bag")
+end
+
 ---------------------------------------------------------------- steps
 
 local enterStep -- forward
 
-local function setStep(s, step, data)
+local function setStep(s, step)
     s.step = step
-    send(s.player, "ems:tut:step", step, data)
+    s.lastInfo = nil
+    send(s.player, "ems:tut:step", step)
     enterStep(s, step)
 end
 
 local function nextStep(s)
     for i, step in ipairs(STEPS) do
-        if step == s.step and STEPS[i + 1] then return setStep(s, STEPS[i + 1]) end
+        if step == s.step then
+            -- without med_bag the equipment steps are left out
+            local n = i + 1
+            while STEPS[n] and EQUIPMENT_STEPS[STEPS[n]] and not equipmentOn() do n = n + 1 end
+            if STEPS[n] then setStep(s, STEPS[n]) end
+            return
+        end
     end
 end
 
--- Stretcher progress, polled while the stretcher / handover steps run:
--- state = stowed | moving | ground | pushing, patient = on the stretcher, loaded = seated in the ambulance
-local function stretcherInfo(s)
+-- World progress, polled from the equipment step on:
+--   stretcher = { state = stowed | moving | ground | pushing | none, patient, loaded }
+--   items     = { bag = { state, mine }, monitor = ... }  (med_bag item states; nil without med_bag)
+--   restocked = the bag is full again (after something was used)
+local function worldInfo(s)
+    local info = { stretcher = { state = "none" } }
     local obj = stretcherOf(s)
-    if not obj then return { state = "none" } end
-    local ms = exports.med_stretcher
-    local patient = s.patient2
-    return {
-        state = ms:getStretcherState(obj) or "none",
-        patient = isElement(patient) and ms:getPatientStretcher(patient) == obj,
-        loaded = isElement(patient) and getPedOccupiedVehicle(patient) == s.vehicle,
-    }
+    if obj then
+        local ms = exports.med_stretcher
+        local patient = s.patient
+        info.stretcher = {
+            state = ms:getStretcherState(obj) or "none",
+            patient = isElement(patient) and ms:getPatientStretcher(patient) == obj,
+            loaded = isElement(patient) and getPedOccupiedVehicle(patient) == s.vehicle,
+        }
+    end
+    if equipmentOn() and isElement(s.vehicle) then
+        local mb = exports.med_bag
+        local kit = mb:getVehicleKit(s.vehicle)
+        if kit then
+            info.items = {}
+            for _, kind in ipairs({ "bag", "monitor" }) do
+                local item = mb:getItemInfo(kit[kind])
+                info.items[kind] = item and { state = item.state, mine = item.carrier == s.player } or { state = "none" }
+            end
+            local stock = mb:getItemStock(kit.bag)
+            if stock then
+                -- the first look at the bag (a new kit) is the full stock
+                if not s.fullStock or s.kitBag ~= kit.bag then s.fullStock, s.kitBag = stock, kit.bag end
+                local full = stock.ivKits >= s.fullStock.ivKits and stock.oxygen >= s.fullStock.oxygen - 0.5
+                for id, count in pairs(s.fullStock.drugs) do
+                    if (stock.drugs[id] or 0) < count then full = false end
+                end
+                info.restocked = full
+            end
+        end
+    end
+    return info
+end
+
+local function itemsStowed(info)
+    if not info.items then return true end
+    return info.items.bag.state == "stowed" and info.items.monitor.state == "stowed"
+end
+
+local function encode(info)
+    local st, items = info.stretcher, info.items
+    local key = st.state .. tostring(st.patient) .. tostring(st.loaded) .. tostring(info.restocked)
+    if items then
+        for _, kind in ipairs({ "bag", "monitor" }) do
+            key = key .. items[kind].state .. tostring(items[kind].mine)
+        end
+    end
+    return key
 end
 
 local function startPolling(s)
     if s.poll then return end
     s.poll = setTimer(function()
         if sessions[s.player] ~= s then return end
-        local info = stretcherInfo(s)
-        local key = info.state .. tostring(info.patient) .. tostring(info.loaded)
+        local info = worldInfo(s)
+        local key = encode(info)
         if key ~= s.lastInfo then
             s.lastInfo = key
-            send(s.player, "ems:tut:info", "stretcher", info)
+            send(s.player, "ems:tut:info", "world", info)
         end
-        if s.step == "stretcher" and info.loaded and info.state == "stowed" then
+        local st = info.stretcher
+        if s.step == "stretcher" and st.loaded and st.state == "stowed" and itemsStowed(info) then
+            nextStep(s)
+        elseif s.step == "restock" and st.state == "stowed" and itemsStowed(info) and info.restocked then
             nextStep(s)
         end
     end, TUTORIAL.POLL, 0)
 end
 
+local function spawnPatient(s)
+    local ped = spawnPed(s, TUTORIAL.SCENE.patientOffset)
+    s.patient = ped
+    s.done = {}
+    if not ped or not isRunning("medsys") then return nil end
+    for _, injury in ipairs(TUTORIAL.SCENE.injuries) do
+        exports.medsys:applyInjury(ped, injury[1], injury[2])
+    end
+    -- no transport for it; the equipment rules apply when med_bag runs
+    exports.medsys:setTutorialPatient(ped, true, true)
+    return ped
+end
+
 local STEP_ENTER = {}
+
+STEP_ENTER.equipment = function(s)
+    setElementFrozen(s.vehicle, false)
+    if not s.patient then spawnPatient(s) end
+    startPolling(s)
+end
 
 STEP_ENTER.examine = function(s)
     setElementFrozen(s.vehicle, false)
-    local ped = spawnPed(s, TUTORIAL.SCENE.patientOffset)
-    s.patient1 = ped
-    if not ped or not isRunning("medsys") then
-        chat(s.player, "The medical system is not running - this step is skipped.")
-        return later(s, 2000, function() nextStep(s) end)
-    end
-    exports.medsys:applyInjury(ped, "burn", 1)
-    exports.medsys:setTutorialPatient(ped, true)
-end
-
-STEP_ENTER.minigames = function(s)
-    if isElement(s.patient1) then
-        if isRunning("medsys") then exports.medsys:closeExamination(s.player) end
-        destroyElement(s.patient1)
-    end
-    s.patient1 = nil
-    s.games = {}
-    send(s.player, "ems:tut:games", s.games, false)
-end
-
-STEP_ENTER.stretcher = function(s)
-    s.patient2 = spawnPed(s, TUTORIAL.SCENE.stretcherPatientOffset)
-    s.lastInfo = nil
     startPolling(s)
+    if not s.patient and not spawnPatient(s) then
+        chat(s.player, "The medical system is not running - the patient steps are skipped.")
+        return later(s, 2000, function() setStep(s, "done") end)
+    end
+end
+
+STEP_ENTER.restock = function(s)
+    -- the restock needs the bay of the tutorial hospital copy
+    if not s.handoverId then return later(s, 500, function() nextStep(s) end) end
 end
 
 STEP_ENTER.transfer = function(s)
@@ -226,6 +295,7 @@ function Tutorial.start(player)
         elements = {},
         timers = {},
         games = {},
+        done = {},
     }
     sessions[player] = s
 
@@ -256,7 +326,7 @@ function Tutorial.start(player)
         warpPedIntoVehicle(player, vehicle, 0)
         setElementFrozen(vehicle, true)  -- unfrozen after the tablet step
         setCameraTarget(player, player)
-        send(player, "ems:tut:begin", vehicle)
+        send(player, "ems:tut:begin", vehicle, equipmentOn())
         setStep(s, "tablet")
         later(s, 300, function() fadeCamera(player, true, TUTORIAL.FADE_TIME) end)
     end)
@@ -318,7 +388,7 @@ function Tutorial.isActive(player)
     return sessions[player] ~= nil
 end
 
----------------------------------------------------------------- minigame practice
+---------------------------------------------------------------- minigame practice (optional, on the final card)
 
 local GAMES = {
     arrows = { start = function(p) return exports.mg_arrows:startArrowsGame(p, 12, { speed = 1 }) end,
@@ -344,12 +414,6 @@ local function gameDef(id)
     end
 end
 
-local function successCount(s)
-    local n = 0
-    for _, v in pairs(s.games) do n = n + (v.success or 0) end
-    return n
-end
-
 function Tutorial.stopGame(s)
     local running = s.gameRunning
     s.gameRunning = nil
@@ -358,7 +422,7 @@ end
 
 local function startGame(s, id)
     local game, def = GAMES[id], gameDef(id)
-    if not game or not def or s.step ~= "minigames" or s.gameRunning then return end
+    if not game or not def or s.step ~= "done" or s.gameRunning then return end
     if not isRunning(def.resource) then
         return send(s.player, "ems:tut:info", "gameError", "This minigame is not available right now.")
     end
@@ -408,15 +472,24 @@ handle("ems:tut:answer", function(player, accept)
     end
 end)
 
--- the client finished its part of a step (tablet explanation, examination, final card)
-local CLIENT_STEPS = { tablet = true, examine = true, minigames = true, done = true }
+local function treatmentsDone(s)
+    for _, key in ipairs(TUTORIAL.TREATMENTS) do
+        if not s.done[key] then return false end
+    end
+    return true
+end
+
+-- the client finished its part of a step (explanations, the final card)
+local CLIENT_STEPS = { tablet = true, equipment = true, examine = true, treat = true, done = true }
 
 handle("ems:tut:next", function(player, step)
     local s = sessions[player]
     if not s or s.step ~= step or not CLIENT_STEPS[step] then return end
-    if step == "examine" and not s.treated then return end
-    if step == "minigames" and successCount(s) < TUTORIAL.MIN_GAMES then return end
-    if step == "done" then return Tutorial.finish(player, "completed") end
+    if step == "treat" and not treatmentsDone(s) then return end
+    if step == "done" then
+        if s.gameRunning then return end
+        return Tutorial.finish(player, "completed")
+    end
     nextStep(s)
 end)
 
@@ -431,18 +504,24 @@ end)
 
 ---------------------------------------------------------------- world events
 
+-- Treatments on the tutorial patient. Done early (in the examine step) counts too.
 addEvent("onMedicalTreatment")
-addEventHandler("onMedicalTreatment", root, function(medic, action, success)
+addEventHandler("onMedicalTreatment", root, function(medic, action, success, option)
     local s = sessions[medic]
-    if not s or s.step ~= "examine" or source ~= s.patient1 or action ~= "bandage" then return end
-    if success then s.treated = true end
-    send(medic, "ems:tut:info", "bandage", success == true)
+    if not s or source ~= s.patient then return end
+    local key = TREATMENTS[action]
+    if action == "medication" and option == TUTORIAL.PAINKILLER then key = "painkiller" end
+    if action == "monitor" then key = "monitor" end
+    if not key then return end
+    if success then s.done[key] = true end
+    send(medic, "ems:tut:info", "treatment", { key = key, success = success == true, done = s.done })
 end)
 
 addEvent("onHospitalTutorialHandover")
 addEventHandler("onHospitalTutorialHandover", root, function(id)
     local s = sessions[source]
     if not s or s.step ~= "handover" or id ~= s.handoverId then return end
+    s.patient = nil -- med_hospitals destroys the ped
     nextStep(s)
 end)
 
@@ -457,19 +536,26 @@ addEventHandler("onPlayerQuit", root, function()
     Tutorial.finish(source, "quit")
 end)
 
--- A tutorial patient died anyway (damage is cancelled on the clients): the step starts again
+-- The patient died anyway (damage is cancelled on the clients): a new patient, from the examination
+local PATIENT_STEPS = { equipment = true, examine = true, treat = true, stretcher = true }
+
 addEventHandler("onPedWasted", root, function()
     for player, s in pairs(sessions) do
-        if (source == s.patient1 and s.step == "examine") or (source == s.patient2 and s.step == "stretcher") then
+        if source == s.patient and PATIENT_STEPS[s.step] then
             local ped = source
-            chat(player, "The patient died - the step starts again.")
+            chat(player, "The patient died - a new patient is waiting.")
             later(s, 2000, function()
-                if isElement(ped) then destroyElement(ped) end
-                if s.step == "examine" then
-                    s.treated = nil
-                    send(player, "ems:tut:step", "examine")
+                if isRunning("medsys") then exports.medsys:closeExamination(player) end
+                if isElement(ped) then
+                    local obj = stretcherOf(s)
+                    if obj and exports.med_stretcher:getPatientStretcher(ped) == obj then
+                        exports.med_stretcher:takePatientOff(obj)
+                    end
+                    destroyElement(ped)
                 end
-                enterStep(s, s.step)
+                s.patient = nil
+                spawnPatient(s)
+                if s.step ~= "equipment" then setStep(s, "examine") end
             end)
         end
     end

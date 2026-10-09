@@ -292,4 +292,34 @@ function Card.highlight(rect)
     Card.rect = rect
 end
 
-addEventHandler("onClientResourceStop", resourceRoot, function() setOwnCursor(false) end)
+-- No punching / aiming while the cursor is out over the card: a click on a button would also hit.
+-- Only the controls this file switched off are switched back on (med_bag keeps "fire" and
+-- "aim_weapon" off while the player carries equipment).
+local BLOCKED_CONTROLS = { "fire", "action", "aim_weapon" }
+local blocked = {}
+
+local function carryingEquipment()
+    return type(getElementData(localPlayer, "medbag.hands")) == "table"
+end
+
+local function setBlocked(state)
+    for _, control in ipairs(BLOCKED_CONTROLS) do
+        if state and not blocked[control] and isControlEnabled(control) then
+            toggleControl(control, false)
+            blocked[control] = true
+        elseif not state and blocked[control] then
+            blocked[control] = nil
+            -- the carry lock of med_bag owns these while equipment is in the hands
+            if control == "action" or not carryingEquipment() then toggleControl(control, true) end
+        end
+    end
+end
+
+addEventHandler("onClientRender", root, function()
+    setBlocked(Card.spec ~= nil and not Card.hidden and isCursorShowing())
+end)
+
+addEventHandler("onClientResourceStop", resourceRoot, function()
+    setOwnCursor(false)
+    setBlocked(false)
+end)

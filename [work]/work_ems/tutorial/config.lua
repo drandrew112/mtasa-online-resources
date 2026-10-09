@@ -10,15 +10,16 @@ TUTORIAL = {
     ACC_KEY = "ems.tutorial",          -- v_mysql account data: true once completed or skipped
     DIMENSION_BASE = 42000,            -- every session gets its own dimension from here
     FADE_TIME = 1.2,                   -- seconds of a camera fade
-    CURSOR_KEY = "m",                  -- shows / hides the cursor for the tutorial card buttons
+    CURSOR_KEY = "F2",                 -- shows / hides the cursor for the tutorial card buttons
     POLL = 300,                        -- ms, server check of the stretcher steps
 
-    -- The scene: the tutorial starts in this ambulance (driver seat). The patients stand at
-    -- vehicle-local offsets { x (right), y (forward) } from it, at the vehicle's height.
+    -- The scene: the tutorial starts in this ambulance (driver seat). The patient stands at a
+    -- vehicle-local offset { x (right), y (forward) } from it, at the vehicle's height: next to the
+    -- right side, a few metres from the side door (med_bag) - the equipment must reach them (4 m).
     SCENE = {
         vehicle = { 1703.37, -1052.38, 23.96, 110 },
-        patientOffset = { 3.2, 0.5 },          -- burn patient, next to the right side
-        stretcherPatientOffset = { 2.5, -6.5 }, -- healthy patient, behind the ambulance
+        patientOffset = { 3.2, 0.5 },
+        injuries = { { "burn", 1 }, { "fracture", 1 } },   -- medsys applyInjury(type, severity)
     },
     PATIENT_SKINS = { 7, 12, 15, 19, 24, 40, 41, 46, 56, 93 },
 
@@ -31,16 +32,19 @@ TUTORIAL = {
 
     -- Demo case on the tablet
     CASE = {
-        title = "Burned hand",
-        description = "A man scalded his hand with boiling water. He is conscious and in pain. "
-            .. "The caller is waiting next to him.",
+        title = "Fall from a ladder",
+        description = "A man fell off a ladder in his kitchen and knocked over a pot of boiling water. "
+            .. "His arm is burned and his leg hurts badly. He is conscious. The caller is waiting next to him.",
         caller = "Bystander",
         priority = 3,
     },
 
-    -- Minigames of the practice step (no patient). At least MIN_GAMES successful runs are
-    -- needed before Continue.
-    MIN_GAMES = 1,
+    -- The treat step: every one of these must be done on the patient (s.done keys:
+    -- medsys actions, "painkiller" = PAINKILLER given with Medication)
+    TREATMENTS = { "bandage", "splint", "iv", "painkiller", "oxygen" },
+    PAINKILLER = "fentanyl",
+
+    -- Optional practice on the final card (no patient), any number of times
     GAMES = {
         { id = "arrows", label = "Bandage", resource = "mg_arrows",
           desc = "Press the arrow keys when the arrows reach the target. Used for bandages and dressings." },

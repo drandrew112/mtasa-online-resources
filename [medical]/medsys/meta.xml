@@ -18,6 +18,7 @@
     <script src="server/simulation.lua" type="server" />
     <script src="server/treatment.lua" type="server" />
     <script src="server/transport.lua" type="server" />
+    <script src="server/equipment.lua" type="server" /> <!-- med_bag: bag / monitor near the patient -->
     <script src="server/exports.lua" type="server" />
     <script src="server/interaction.lua" type="server" />
     <script src="server/test.lua" type="server" /> <!-- only runs when MEDIC_TEST.ENABLED -->
@@ -66,4 +67,9 @@
     <!-- tutorials (work_ems): no transport for these patients -->
     <export function="setTutorialPatient" type="server" />
     <export function="isTutorialPatient" type="server" />
+
+    <!-- equipment (med_bag) -->
+    <export function="removePatientEquipment" type="server" />
+    <export function="restorePatientEquipment" type="server" />
+    <export function="getDrugNames" type="server" />
 </meta>

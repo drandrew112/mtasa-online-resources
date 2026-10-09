@@ -87,7 +87,7 @@ function getVehicleHospitalBay(vehicle)
     for bay, h in eachPoint("bay") do
         if bay.vehicle == vehicle then return h.id, bay.index end
     end
-    return false
+    return getTutorialVehicleBay(vehicle) -- the private bays of a work_ems tutorial (server/tutorial.lua)
 end
 
 -- getUnitHospitalHandover(unitId) -> hospitalId | false   (ERM unit in a hospital handover)

@@ -19,6 +19,8 @@
 --     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (fluid rate)
 --     intubated     = false,                -- airway secured
 --     oxygenMask    = false,                -- oxygen mask on
+--     noOxygen      = nil,                  -- intubated but the bag's oxygen ran out / is too far (med_bag):
+--                                           -- the tube has no effect until oxygen is back (isVentilated)
 --     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
 --     restShift     = { systolic, diastolic, heartRate }, -- lasting target shifts (setMedicalState resting*)
 --     spo2Limit     = nil,                  -- lasting SpO2 target cap (setMedicalState restingSpo2)
@@ -234,10 +236,16 @@ end
 local BREATH_RANK = { normal = 0, rapid = 1, kussmaul = 2, wheeze = 3, laboured = 3, crackles = 3,
     slow = 4, silent = 5, snoring = 5, agonal = 6 }
 
+-- Intubated AND getting oxygen: only then does the tube work (SpO2, breathing, ROSC bonus)
+function isVentilated(state)
+    -- noOxygen only counts while med_bag runs (it is the one that lifts it again)
+    return state.intubated == true and not (state.noOxygen and isEquipmentActive())
+end
+
 -- Key of MEDIC_BREATHING: what the medic sees and hears
 function getBreathing(state, now)
     if state.dead or state.arrestTick then return "none" end
-    if state.intubated then return "ventilated" end
+    if isVentilated(state) then return "ventilated" end
     if isParalyzed(state, now) then return "none" end
     local best = "normal"
     local function consider(key)
@@ -456,6 +464,7 @@ function buildSnapshot(state)
         neuro = state.neuroChecked and getNeuroFindings(state) or nil,
         ivAccess = state.ivAccess,
         intubated = state.intubated,
+        noOxygen = state.intubated and state.noOxygen or nil,
         oxygenMask = state.oxygenMask,
         sedated = isSedated(state),
         paralyzed = isParalyzed(state, now),

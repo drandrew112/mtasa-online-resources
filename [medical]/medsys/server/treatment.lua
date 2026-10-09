@@ -347,6 +347,7 @@ PROCEDURES.airway = {
             return reason == "desaturated" and "Intubation failed - patient desaturated" or "Intubation failed"
         end
         state.intubated = true
+        state.noOxygen = nil
         state.oxygenMask = false
         for _, injury in ipairs(state.injuries) do
             if injury.type == "suffocation" then injury.treated = true end
@@ -445,7 +446,8 @@ PROCEDURES.neuro = {
 }
 
 -- The actions the panel can offer right now: { [action] = true | reason }
-local function getAvailability(state, target)
+-- equipment: getPatientEquipment(target) (server/equipment.lua), nil = not checked
+local function getAvailability(state, target, equipment)
     local result = {}
     local dead = not state or state.dead
     for action, procedure in pairs(PROCEDURES) do
@@ -459,6 +461,7 @@ local function getAvailability(state, target)
     local ok, reason = canRequestTransport(target, state)
     result.transport = ok or reason
     result.glucometer = dead and "Patient is dead" or true -- a device, measured from its own window
+    if not dead then applyEquipmentAvailability(result, equipment, state) end
     return result
 end
 
@@ -466,7 +469,9 @@ end
 local function getPanelSnapshot(target)
     local state = getLivePatient(target)
     local snapshot = state and buildSnapshot(state) or buildDefaultSnapshot(target)
-    snapshot.actions = getAvailability(state, target)
+    local equipment = getPatientEquipment(target)
+    snapshot.actions = getAvailability(state, target, equipment)
+    snapshot.equipment = getEquipmentSnapshot(equipment)
     -- the panel shows what the medic sees: the glucose only comes from the glucometer, the hidden
     -- conditions only through their findings
     snapshot.glucose, snapshot.conditions = nil, nil
@@ -584,6 +589,8 @@ addEventHandler("medic:measureGlucose", resourceRoot, function(target)
     if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return fail("Too far from the patient") end
     local state = getLivePatient(target)
     if not state or state.dead then return fail("No blood flow - no reading") end
+    local hasBag, reason = checkGlucometerEquipment(medic, target)
+    if not hasBag then return fail(reason) end
 
     Glucometers[medic] = setTimer(function()
         Glucometers[medic] = nil
@@ -662,6 +669,7 @@ local function finishTreatment(medic, success, ...)
     else
         message = PROCEDURES[treatment.action].apply(state, success, ...)
         isError = not success
+        if success == true then onEquipmentTreatmentDone(medic, target, treatment.action, treatment.option, state) end
     end
     triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true, treatment.option)
     if isElement(medic) then
@@ -732,6 +740,8 @@ function startTreatment(medic, target, action, option)
         ok, reason = procedure.validate(state, option)
         if not ok then return false, reason end
     end
+    ok, reason = onEquipmentTreatmentCheck(medic, target, action, option, state)
+    if not ok then return false, reason end
 
     local locks = Locks[target]
     if locks and isElement(locks[action]) then
@@ -753,6 +763,7 @@ function startTreatment(medic, target, action, option)
             finishTreatment(medic, true, option)
         end, procedure.duration * 1000, 1)
         triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state), procedure.duration * 1000)
+        onEquipmentTreatmentStart(medic, target, action)
         return true
     end
 
@@ -763,6 +774,7 @@ function startTreatment(medic, target, action, option)
         return true
     end
     Treatments[medic].sessionId = sessionId
+    onEquipmentTreatmentStart(medic, target, action)
     return true
 end
 

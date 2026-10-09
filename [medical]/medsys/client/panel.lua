@@ -149,6 +149,10 @@ local function drawVitals(x, y, data, cx, cy)
         local bx, by, bw, bh = ex, y + s(14), ew, th - s(28)
         local enabled = canAttachMonitor()
         local hovered = enabled and isInside(bx, by, bw, bh, cx, cy)
+        local reason = data.actions and data.actions.monitor
+        if not enabled and type(reason) == "string" and isInside(bx, by, bw, bh, cx, cy) then
+            panel.monitorReason = reason
+        end
         dxDrawRectangle(bx, by, bw, bh, enabled and (hovered and C.buttonHover or C.button) or C.buttonOff)
         dxDrawText("Attach monitor /\ndefibrillator", bx, by, bx + bw, by + bh, enabled and C.text or C.muted, 1,
             fonts.bold, "center", "center", true, true)
@@ -278,8 +282,16 @@ local function getDrugCards()
 end
 
 -- Draws the grid and, under it (over the message line), the description of the hovered medicine
--- IV medicines need the IV line in place, oral ones can always be given
-local function isDrugUsable(drug)
+-- Doses left in the reachable bags (med_bag), nil = not counted / no equipment check
+local function drugStock(id)
+    local equipment = panel and panel.data and panel.data.equipment
+    return equipment and equipment.stock and equipment.stock.drugs[id]
+end
+
+-- IV medicines need the IV line in place, oral ones can always be given; none from an empty bag
+local function isDrugUsable(drug, id)
+    local left = id and drugStock(id)
+    if left ~= nil and left <= 0 then return false end
     return not medicDrugNeedsIV(drug) or (panel and panel.data and panel.data.ivAccess) == true
 end
 
@@ -294,14 +306,20 @@ local function drawDrugMenu(cx, cy, hoverReason)
     local hoveredDrug, hoveredOff, cardsBottom = nil, false, y
     for _, card in ipairs(getDrugCards()) do
         local drug = MEDIC_DRUGS[card.id]
-        local usable = isDrugUsable(drug)
+        local usable = isDrugUsable(drug, card.id)
+        local left = drugStock(card.id)
         local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
-        if hovered then hoveredDrug, hoveredOff = drug, not usable end
+        if hovered then hoveredDrug, hoveredOff = drug, not usable and (left ~= nil and left <= 0 and "stock" or "iv") end
         dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or hovered and C.button or C.tile)
         dxDrawRectangle(card.x, card.y, s(4), card.h, usable and C.accent or C.line)
         local tx = card.x + s(12)
-        local nameFont = dxGetTextWidth(drug.name, 1, fonts.bold) > card.w - s(18) and fonts.small or fonts.bold
-        dxDrawText(drug.name, tx, card.y + s(4), card.x + card.w - s(6), card.y + s(24), usable and C.text or C.muted,
+        local stockW = left ~= nil and s(26) or 0
+        if left ~= nil then
+            dxDrawText("x" .. left, card.x, card.y + s(4), card.x + card.w - s(6), card.y + s(24),
+                left <= 0 and C.bad or (left <= 1 and C.warn or C.muted), 1, fonts.small, "right", "top")
+        end
+        local nameFont = dxGetTextWidth(drug.name, 1, fonts.bold) > card.w - s(18) - stockW and fonts.small or fonts.bold
+        dxDrawText(drug.name, tx, card.y + s(4), card.x + card.w - s(6) - stockW, card.y + s(24), usable and C.text or C.muted,
             1, nameFont, "left", "top", true)
         local class = drug.class
         if not medicDrugNeedsIV(drug) and not class:find(" - ", 1, true) then class = class .. " - " .. drug.route end
@@ -311,7 +329,11 @@ local function drawDrugMenu(cx, cy, hoverReason)
     end
     if not hoveredDrug and hoverReason then return end
     local text = hoveredDrug and hoveredDrug.desc or "Point at a medicine to see what it does."
-    if hoveredOff then text = "Needs IV access.  " .. text end
+    if hoveredOff == "stock" then
+        text = "Out of stock - restock the bag at a hospital.  " .. text
+    elseif hoveredOff then
+        text = "Needs IV access.  " .. text
+    end
     dxDrawText(text, x, cardsBottom + s(8), X + W - PAD, bottom,
         hoveredOff and C.warn or hoveredDrug and C.text or C.muted, 1, fonts.small, "left", "top", true, true)
 end
@@ -384,6 +406,10 @@ local function drawButtons(cx, cy)
             local label = (#row.buttons == 1 and info.wideLabel)
                 or (info.activeLabel and active and info.activeLabel)
                 or info.label
+            local stock = panel.data.equipment and panel.data.equipment.stock
+            if stock and button.action == "iv" and not panel.data.ivAccess then
+                label = ("%s (%d)"):format(label, stock.ivKits or 0)
+            end
             local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
             dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
                 enabled and C.text or C.muted, 1, font, "center", "center")
@@ -432,13 +458,35 @@ local function render()
     -- header
     local x = X + PAD
     dxDrawText("PATIENT EXAMINATION", x, Y + s(16), X + W, Y + s(32), C.muted, 1, fonts.small, "left", "top")
-    dxDrawText(panel.name, x, Y + s(30), X + W - s(60), Y + s(58), C.text, 1, fonts.title, "left", "top", true)
+    local nameRight = X + W - s(60) - (data.equipment and s(250) or 0) -- room for the equipment chips
+    dxDrawText(panel.name, x, Y + s(30), nameRight, Y + s(58), C.text, 1, fonts.title, "left", "top", true)
     local bx, by, bs = getCloseButton()
+    local equipmentRect
+    if data.equipment then
+        -- what is within reach of the patient (med_bag)
+        local ex = bx - s(12)
+        local stock = data.equipment.stock
+        local oxygen = stock and stock.oxygen
+        local chips = {
+            { "MONITOR", data.equipment.monitor },
+            { "BAG", data.equipment.bag },
+            { oxygen and ("O2 %d%%"):format(oxygen) or "O2 --", oxygen ~= nil and oxygen > 0 },
+        }
+        for _, item in ipairs(chips) do
+            local w = dxGetTextWidth(item[1], 1, fonts.small) + s(16)
+            dxDrawRectangle(ex - w, by + s(4), w, bs - s(8), item[2] and C.button or C.buttonOff)
+            dxDrawRectangle(ex - w, by + bs - s(6), w, s(2), item[2] and C.good or C.line)
+            dxDrawText(item[1], ex - w, by + s(4), ex, by + bs - s(4), item[2] and C.text or C.muted, 1, fonts.small,
+                "center", "center")
+            ex = ex - w - s(6)
+        end
+        equipmentRect = { ex + s(6), by + s(4), bx - s(12) - ex - s(6), bs - s(8) }
+    end
     dxDrawRectangle(bx, by, bs, bs, isInside(bx, by, bs, bs, cx, cy) and C.buttonHover or C.button)
     dxDrawText("X", bx, by, bx + bs, by + bs, C.text, 1, fonts.bold, "center", "center")
 
     -- section rectangles, read by getExaminationPanelLayout (e.g. tutorial highlights)
-    local layout = { panel = { X, Y, W, H } }
+    local layout = { panel = { X, Y, W, H }, equipment = equipmentRect }
     panel.layout = layout
 
     -- consciousness banner
@@ -458,6 +506,7 @@ local function render()
     end
 
     -- vitals
+    panel.monitorReason = nil
     local vitalsY = y + s(52)
     y = drawVitals(x, vitalsY, data, cx, cy) + s(12)
     layout.vitals = { x, vitalsY, W - PAD * 2, y - s(12) - vitalsY }
@@ -484,11 +533,11 @@ local function render()
             transportText and C.warn or C.muted, 1, fonts.body, "left", "center")
     else
         local iv = data.ivAccess and "IV access: in place" or "IV access: none"
-        local airway = data.intubated and "Airway: secured" or (data.oxygenMask and "Airway: O2 mask")
-            or "Airway: not secured"
+        local airway = data.intubated and (data.noOxygen and "Airway: tube, NO OXYGEN" or "Airway: secured")
+            or (data.oxygenMask and "Airway: O2 mask") or "Airway: not secured"
+        local airwayColor = data.noOxygen and C.bad or ((data.intubated or data.oxygenMask) and C.good or C.muted)
         dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
-        dxDrawText(airway, x + s(190), y, x + W, y + s(22), (data.intubated or data.oxygenMask) and C.good or C.muted,
-            1, fonts.body, "left", "center")
+        dxDrawText(airway, x + s(190), y, x + W, y + s(22), airwayColor, 1, fonts.body, "left", "center")
         dxDrawText(("Pain: %d/10"):format(math.floor(data.pain / 10 + 0.5)), x, y, X + W - PAD, y + s(22),
             data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
     end
@@ -522,12 +571,13 @@ local function render()
     layout.glucometer = panel.glucometer and getGlucometerRect(X, Y, W) or nil
 
     -- buttons, the medicine grid, then the message / hint line above the buttons
-    local hoverReason = drawButtons(cx, cy)
+    local hoverReason = drawButtons(cx, cy) or panel.monitorReason
     if panel.drugMenu then
         if data.dead or not (data.actions and data.actions.medication == true) then
             panel.drugMenu = false
         else
             drawDrugMenu(cx, cy, hoverReason)
+            layout.drugCards = getDrugCards()
         end
     end
     local _, buttonsTop = getButtonRows()
@@ -584,7 +634,7 @@ local function onClick(button, state)
     if panel.drugMenu then
         for _, card in ipairs(getDrugCards()) do
             if isInside(card.x, card.y, card.w, card.h, cx, cy) then
-                if not isDrugUsable(MEDIC_DRUGS[card.id]) then return end
+                if not isDrugUsable(MEDIC_DRUGS[card.id], card.id) then return end
                 panel.pending = true
                 panel.drugMenu = false
                 triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "medication", card.id)
@@ -647,6 +697,8 @@ function isExaminationOpen()
 end
 
 -- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
+-- equipment (the BAG / MONITOR / O2 chips, while med_bag checks the equipment),
+-- drugCards = { { id, x, y, w, h } } (while the medication grid is open),
 -- injuries, neuro (after the neuro exam), glucometer (while held out), buttons, monitorButton
 -- (until the monitor is attached), lifepak / lifepakScreen /
 -- lifepakKeypad (the monitor window and its parts, while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.

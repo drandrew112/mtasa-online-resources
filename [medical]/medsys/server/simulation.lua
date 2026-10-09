@@ -77,8 +77,9 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
         state.spo2 = math.max(0, state.spo2 - ARREST_SPO2_RATE * dt)
         return
     end
-    -- paralysed without a tube: no breathing at all, the mask only slows the fall
-    if not state.intubated and isParalyzed(state, now) then
+    -- paralysed without a working tube: no breathing at all, the mask only slows the fall
+    local ventilated = isVentilated(state)
+    if not ventilated and isParalyzed(state, now) then
         local rate = MEDIC.PARALYSIS_SPO2_RATE * (state.oxygenMask and MEDIC.OXYGEN_APNEA_FACTOR or 1)
         state.spo2 = math.max(0, state.spo2 - rate * dt)
         return
@@ -87,7 +88,7 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
     local mask = state.oxygenMask and not state.intubated
     local bonus = mask and MEDIC.OXYGEN_SPO2_BONUS or 0
     local target, rate = mask and MEDIC.OXYGEN_SPO2 or MEDIC.SPO2, MEDIC.SPO2_RECOVERY
-    if not state.intubated then
+    if not ventilated then
         for _, injury in ipairs(state.injuries) do
             local value = getInjuryValue(injury, "spo2")
             if value and value + bonus < target then
@@ -96,7 +97,7 @@ local function updateSpO2(state, dt, arrested, bloodFraction, now)
         end
     end
     -- lasting low SpO2 of the patient (setMedicalState "restingSpo2"), the mask lifts it too
-    if state.spo2Limit and not state.intubated and state.spo2Limit + bonus < target then
+    if state.spo2Limit and not ventilated and state.spo2Limit + bonus < target then
         target, rate = state.spo2Limit + bonus, MEDIC.SPO2_RECOVERY
     end
     if bloodFraction < SHOCK_SPO2[1] and SHOCK_SPO2[2] + bonus < target then
@@ -323,7 +324,7 @@ local function stepPatient(state, dt, now)
     -- recovered (and no medicine keeps it asleep), then the tube comes out
     if state.intubated and status ~= "unconscious" then
         if status == "stable" then
-            state.intubated = false
+            state.intubated, state.noOxygen = false, nil
         else
             status = "unconscious"
         end

@@ -86,6 +86,9 @@ TT = {
     TAKE_BEFORE = 15 * 60,   -- a trip can be taken this long before its departure (s)
     TAKE_LEAD   = 60,        -- ...and at the latest this long before it (s). Later the trip
                              -- belongs to rw_auto, which creates its train 55 s before departure.
+    APPLY_GRACE = 60,        -- s: a service applied for at a depot must have left its first station
+                             -- this long after the departure time, else it is cancelled and the
+                             -- train removed
     DOOR_MIN    = 15,        -- doors must stay open this long for a stop to count (s)
     STOP_SPEED  = 2,         -- km/h: below this the train counts as standing
     LOG_DELAY_WARN = 3,      -- rw_core railway log: a delay growing to this many minutes is a warning
@@ -95,7 +98,7 @@ TT = {
     REMOVE_AFTER = 10,       -- s after a service ends (completed / ended by the driver) the train is
                              -- removed, once it stands; people on board are put on the platform
     TICK        = 500,       -- server interval (ms)
-    SYNC_EVERY  = 15,        -- element data refresh of a running service (s)
+    SYNC_EVERY  = 1,       -- element data refresh of a running service (s)
 
     -- Station displays (passenger departure / arrival boards, dx drawn on walls).
     -- x, y, z = centre of the board ON the wall, nx, ny = the wall's normal (the side the

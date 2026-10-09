@@ -81,6 +81,19 @@ function createTutorialHandover(player, hospitalId, dimension, vehicle)
     return t.id
 end
 
+-- The tutorial bay the vehicle stands in -> hospitalId, bayIndex | false (getVehicleHospitalBay, so
+-- med_bag's "Restock bag" works in the tutorial too)
+function getTutorialVehicleBay(vehicle)
+    for _, t in pairs(sessions) do
+        if t.vehicle == vehicle then
+            for i, bay in ipairs(t.bays) do
+                if bay.occupied then return t.hospital.id, i end
+            end
+        end
+    end
+    return false
+end
+
 -- -> true, obj, patient | false, reason
 local function checkTutorialHandover(t)
     local player = t.player

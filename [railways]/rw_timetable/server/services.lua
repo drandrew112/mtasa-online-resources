@@ -308,6 +308,35 @@ local function removeTrain(id, c, reason)
     end
 end
 
+-- A service applied for at a depot (startAppliedService) must have left its first station
+-- APPLY_GRACE s after the departure time: nobody boarded / started it (a departure without a driver does not count) -> the trip is cancelled
+-- (boards show "Cancelled") and the train is removed.
+local function applyTick()
+    local t = now()
+    for id, s in pairs(Services) do
+        local a = s.apply
+        if a then
+            local c = core:getConsist(id)
+            if c and not c.building and driverOf(c) then a.driven = true end
+            if s.next > 1 and a.driven then
+                -- a driver took it and it left the first station (a driverless departure
+                -- does not count: the deadline below still cancels it)
+                s.apply = nil
+            elseif t >= a.deadline then
+                s.apply = nil
+                local trip = s.trip
+                local reason = "service not started in time"
+                rlog("service", "warn", ("%s: %s - trip cancelled, train removed"):format(trip.number, reason), id)
+                outputServerLog(("[rw_timetable] %s: %s - trip cancelled, train removed"):format(trip.number, reason))
+                finish(s, c, "cancelled", reason)
+                cancelTrip(trip.id, reason)
+                tell(a.player, ("Service %s was not started in time - cancelled, the train is removed."):format(trip.number))
+                if c then removeTrain(id, c, reason) end
+            end
+        end
+    end
+end
+
 local function retireTick()
     local t = now()
     for id, r in pairs(retiring) do
@@ -345,6 +374,7 @@ local function tick()
     local dt = (getTickCount() - lastTick) / 1000
     lastTick = getTickCount()
     retireTick()
+    applyTick()
     local t = now()
     for id, s in pairs(Services) do
         local c = core:getConsist(id)
@@ -438,7 +468,10 @@ local function tick()
                         s.trip.number, m > was and "grew to" or "fell to", m > 0 and ("+" .. m .. " min") or "on time"), id)
                 end
                 s.delay = d
-                if changed or getTickCount() - (s.lastSync or 0) > TT.SYNC_EVERY * 1000 then sync(s, c) end
+                -- the door timer on the cab panel runs live while the doors are released
+                local dtChanged = rec.state == "stopped" and math.floor(rec.doorTime or 0) ~= s.syncedDoor
+                if dtChanged then s.syncedDoor = math.floor(rec.doorTime or 0) end
+                if changed or dtChanged or getTickCount() - (s.lastSync or 0) >= TT.SYNC_EVERY * 1000 - TT.TICK / 2 then sync(s, c) end
             end
         end
     end
@@ -515,6 +548,53 @@ function getTripPlan(tripId)
         track = line.track,
         stops = stops, chain = line.chain or false, chainWindow = line.chainWindow or 0,
         auto = line.auto and { preset = line.auto.preset, spawn = line.auto.spawn } or false }
+end
+
+------------------------------------------------------------------ depot applications
+
+-- Trips a depot offers (its spawn points = spawnIds): every trip in the take window whose
+-- line spawns at one of them, with ok / reason. For the rw_core depot menu.
+function getDepotServices(spawnIds)
+    local set = {}
+    for _, id in ipairs(spawnIds or {}) do set[id] = true end
+    local t = now()
+    local out = {}
+    for _, trip in ipairs(tripsBetween(t + TT.TAKE_LEAD, t + TT.TAKE_BEFORE)) do
+        local a = trip.line.auto
+        if a and set[a.spawn] then
+            local ok, reason = true, nil
+            if taken[trip.id] then ok, reason = false, "already running"
+            elseif finished[trip.id] then ok, reason = false, "already done"
+            elseif cancelled[trip.id] then ok, reason = false, "cancelled" end
+            out[#out + 1] = { tripId = trip.id, number = trip.number, name = trip.name, line = trip.line.id,
+                from = trip.from, to = trip.to, toName = Stations[trip.to].name, fromName = Stations[trip.from].name,
+                dep = secOfDay(trip.dep), depTimestamp = trip.dep, spawn = a.spawn, preset = a.preset,
+                ok = ok, reason = reason }
+        end
+    end
+    return out
+end
+
+-- Server-side check of an application, before the depot creates the train:
+-- -> true, { preset, spawn, number, toName } | false, reason
+function checkDepotService(tripId, spawnIds)
+    for _, e in ipairs(getDepotServices(spawnIds)) do
+        if e.tripId == tripId then
+            if not e.ok then return false, e.reason end
+            return true, e
+        end
+    end
+    return false, "not available now"
+end
+
+-- The depot has created the train (consistId) for the applied trip: starts the service
+-- (the same checks as taking it in the cab) and arms the start deadline.
+function startAppliedService(consistId, tripId, player)
+    local ok, err = assignService(consistId, tripId, player)
+    if not ok then return false, err end
+    local s = Services[consistId]
+    s.apply = { player = player, deadline = s.trip.dep + TT.APPLY_GRACE }
+    return true
 end
 
 -- trips around now for the web map (station boards)

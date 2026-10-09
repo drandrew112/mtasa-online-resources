@@ -62,6 +62,11 @@ MEDIC = {
                                 -- see the stretcher menus (med_stretcher) and the EMS tablet hint (med_erm)
                                 -- (and use the stretcher; the EMS tablet hint shows to them only)
 
+    -- Equipment (med_bag): interventions need the medical bag / the monitor near the patient
+    -- (MEDIC_EQUIPMENT). While med_bag is not running no equipment is asked for at all.
+    REQUIRE_EQUIPMENT = true,
+    EQUIPMENT_RESOURCE = "med_bag",
+
     -- Treatments
     IV_FLUID_RATE = 4,          -- ml/s restored with IV access (scaled by the cannulation quality)
     CPR_DURATION = 30,          -- seconds of compressions per CPR round
@@ -499,6 +504,19 @@ MEDIC_ACTION_GROUPS = {
     { tag = "C", label = "Circulation", actions = { "bandage", "splint", "cpr", "iv", "medication" } },
     { tag = "D", label = "Disability", actions = { "neuro", "glucometer" } },
     { label = "Transport", actions = { "transport" } },
+}
+-- Equipment each action needs (server/equipment.lua): item = "bag" | "monitor", stock = the bag
+-- consumable it uses ("ivKits" per attempt, "oxygen" while the mask is on; medication: per drug).
+-- Actions not listed (neuro exam, CPR, transport) need nothing.
+MEDIC_EQUIPMENT = {
+    bandage = { item = "bag" },
+    splint = { item = "bag" },
+    iv = { item = "bag", stock = "ivKits" },
+    airway = { item = "bag" },
+    oxygen = { item = "bag", stock = "oxygen" },
+    medication = { item = "bag" },
+    glucometer = { item = "bag" },
+    monitor = { item = "monitor" },
 }
 MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
     { label = "Transport", actions = { "transport" } },

@@ -101,7 +101,7 @@ local function roscChance(state, base)
     if not canRestartHeart(state) then return 0 end
     local chance = base
     if state.ivAccess then chance = chance + MEDIC.ROSC_IV_BONUS end
-    if state.intubated then chance = chance + MEDIC.ROSC_AIRWAY_BONUS end
+    if isVentilated(state) then chance = chance + MEDIC.ROSC_AIRWAY_BONUS end
     return chance + getDrugMax(state, "roscBonus")
 end
 

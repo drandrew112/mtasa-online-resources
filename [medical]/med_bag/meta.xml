@@ -1,0 +1,42 @@
+<meta>
+    <info author="DrAndrew112" name="med_bag" version="1.0" type="script" description="EMS medical bag + monitor/defibrillator per ambulance: carried to the patient, consumables, restock at hospitals, left-behind warning" />
+    <!-- getElementBoneMatrix / onClientPedsProcessed -->
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- side-door + ground menus -->
+    <include resource="ui_interactobject" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/util.lua" type="shared" />
+
+    <script src="server/kits.lua" type="server" />
+    <script src="server/stock.lua" type="server" />
+    <script src="server/interaction.lua" type="server" />
+    <script src="server/watch.lua" type="server" />
+    <script src="server/stretcher.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+
+    <script src="client/carry.lua" type="client" />
+    <script src="client/hud.lua" type="client" />
+    <!-- static monitor screen: remove these two lines when the custom monitor model arrives -->
+    <script src="client/screen.lua" type="client" />
+    <file src="fx/screen.fx" type="client" />
+
+    <!-- medsys (server/equipment.lua there) -->
+    <export function="getEquipmentNear" type="server" />
+    <export function="findStockItem" type="server" />
+    <export function="consumeStock" type="server" />
+    <export function="startPatientOxygen" type="server" />
+    <export function="stopPatientOxygen" type="server" />
+    <export function="linkPatientMonitor" type="server" />
+    <export function="unlinkPatientMonitor" type="server" />
+    <export function="onTreatmentStart" type="server" />
+
+    <!-- other scripts / admins -->
+    <export function="getVehicleKit" type="server" />
+    <export function="getItemInfo" type="server" />
+    <export function="getPlayerItems" type="server" />
+    <export function="getItemStock" type="server" />
+    <export function="restockItem" type="server" />
+    <export function="returnItem" type="server" />
+</meta>

@@ -115,6 +115,7 @@ local SETTERS = {
 
     intubated = function(state, value)
         state.intubated = toBoolean(value)
+        state.noOxygen = nil
         if state.intubated then state.oxygenMask = false end
         for _, injury in ipairs(state.injuries) do
             if injury.type == "suffocation" then injury.treated = state.intubated end
