@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_deadbody2",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [590, 340, 18.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found below a grain silo",
+        "description": "Farm workers found a man lying on farmland near Hampton Barns below a grain silo he had been climbing. His injuries are severe and he has not moved since they found him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [590, 340, 18.01],
+            "rot": 97,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

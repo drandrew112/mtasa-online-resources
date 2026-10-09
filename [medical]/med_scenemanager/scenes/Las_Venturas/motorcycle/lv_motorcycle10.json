@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle10",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1408.82, 660.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on spilled oil",
+        "description": "A woman on a scooter slipped on a patch of spilled oil outside the Blackfield Chapel and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [1406.04, 655.09, 10.32],
+            "rot": [0, 0, 187.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV18 381",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [1408.82, 660.25, 10.82],
+            "rot": 238,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

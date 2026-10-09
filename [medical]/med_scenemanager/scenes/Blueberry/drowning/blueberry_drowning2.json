@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_drowning2",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [370, -270, 1.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out, not breathing",
+        "description": "A fisherman pulled a man out of the water and he is lying on the riverbank near Blueberry. He is not breathing and has no pulse. The fisherman has started CPR.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 223,
+            "pos": [370, -270, 1.8],
+            "rot": 97,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 40, "rhythm": "PEA" }
+        }
+    ]
+}

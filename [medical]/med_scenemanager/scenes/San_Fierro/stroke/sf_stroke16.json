@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke16",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1817.27, 135.26, 15.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother suddenly confused",
+        "description": "A grandmother out with her grandson at the side of the road in Doherty suddenly stopped making sense and her mouth looks crooked. The boy called from her phone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-1817.27, 135.26, 15.11],
+            "rot": 96,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 173, "consciousness": "confused" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing10",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2674, -1062, 69.3],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "copd", "severity": 3 }
             ],
-            "state": { "heartRate": 118, "spo2": 74 }
+            "state": { "spo2": 74, "heartRate": 118 }
         }
     ]
 }

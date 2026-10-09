@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning23",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1959, 1706, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unconscious after near drowning",
+        "description": "A young man was underwater for about two minutes before he was pulled out. He is lying at the water's edge near the Visage, breathing but not waking up.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [1959, 1706, 10.82],
+            "rot": 276,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 79, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_shooting1",
+    "category": "shooting",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-901.57, 1527.18, 25.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back",
+        "description": "A man was shot in the back while running away by the dusty roadside in Las Barrancas. He is lying on his stomach and says he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [-901.57, 1527.18, 25.87],
+            "rot": 283,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4323, "pain": 28 }
+        }
+    ]
+}

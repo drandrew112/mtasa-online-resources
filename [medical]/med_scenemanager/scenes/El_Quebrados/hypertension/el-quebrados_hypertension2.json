@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hypertension2",
+    "category": "hypertension",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1650.24, 2498.52, 86.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nosebleed, high BP",
+        "description": "A woman on the road shoulder near El Quebrados has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-1650.24, 2498.52, 86.16],
+            "rot": 251,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 208,
+                "diastolic": 122,
+                "heartRate": 104,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

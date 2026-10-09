@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke17",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2265.33, -372.48, 51.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of her life",
+        "description": "A woman at a bus stop in Avispa Country Club grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 214,
+            "pos": [-2265.33, -372.48, 51.01],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 206, "diastolic": 112, "consciousness": "dazed" }
+        }
+    ]
+}

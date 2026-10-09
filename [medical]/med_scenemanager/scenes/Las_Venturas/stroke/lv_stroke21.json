@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke21",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1751.38, 1280.63, 11.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, one leg will not move",
+        "description": "An old man fell on the sidewalk at Las Venturas Airport and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [1751.38, 1280.63, 11.82],
+            "rot": 151,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 195 }
+        }
+    ]
+}

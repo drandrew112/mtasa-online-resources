@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-payasadas_shooting3",
+    "category": "shooting",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-275.6, 2786.3, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot on the dusty ground in Las Payasadas. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-275.6, 2786.3, 62.69],
+            "rot": 137,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

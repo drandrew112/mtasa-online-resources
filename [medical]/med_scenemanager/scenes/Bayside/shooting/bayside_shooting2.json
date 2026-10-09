@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "bayside_shooting2",
+    "category": "shooting",
+    "location": "Bayside Marina",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2240, 2300, 5.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Several shots were fired in a yard just outside Bayside. Two men are down: one is not moving, the other is rolling on the ground holding his leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [-2240, 2300, 5.29],
+            "rot": 281,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3763 }
+        },
+        {
+            "id": "p2",
+            "skin": 106,
+            "pos": [-2241.21, 2301.84, 5.39],
+            "rot": 107,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

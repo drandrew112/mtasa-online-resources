@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_stroke1",
+    "category": "stroke",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [713.49, 325.22, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer slumped on his tailgate",
+        "description": "A farmer is slumped on the tailgate of his pickup at the side of the road in Hampton Barns. His wife says he suddenly could not hold his coffee cup and his words are slurred.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [713.49, 325.22, 20.23],
+            "rot": 166,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 191 }
+        }
+    ]
+}

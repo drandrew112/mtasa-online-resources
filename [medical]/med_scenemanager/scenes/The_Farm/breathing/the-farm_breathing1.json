@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_breathing1",
+    "category": "breathing",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1196.2, -1105.63, 128.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing in the heat",
+        "description": "A cyclist stopped next to the country road in The Farm after riding through the dusty country roads and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [-1196.2, -1105.63, 128.66],
+            "rot": 227,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

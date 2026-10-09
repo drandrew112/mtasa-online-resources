@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_false9",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1998.5, -151.15, 35.86],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man asleep on the ground",
+        "description": "A shop owner reports a man who collapsed on the sidewalk in Doherty. He is sitting up now, says he was only sleeping and refuses help.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [-1998.5, -151.15, 35.86],
+            "rot": 106,
+            "anim": "sit",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

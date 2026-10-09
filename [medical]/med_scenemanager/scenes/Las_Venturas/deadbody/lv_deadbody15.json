@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody15",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1392.55, 1903.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body in the bushes",
+        "description": "A dog walker found a person lying in the bushes next to the road in Redsands West. The body is cold and there are flies around it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [1392.55, 1903.13, 10.82],
+            "rot": 64,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

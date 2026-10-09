@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_fall22",
     "category": "fall",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1479.5, -1865.12, 13.55],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Skateboarder hit head",
-        "description": "A skateboarder fell on the sidewalk in Verdant Bluffs without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a bleeding wrist.",
+        "description": "A skateboarder fell on the sidewalk in Verdant Bluffs without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a painful wrist.",
         "caller": "SceneManager",
         "priority": 2
     },

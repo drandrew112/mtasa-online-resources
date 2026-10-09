@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_mva13",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2128.8, -97.59, 34.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ran off the road",
+        "description": "A single car left the road and crashed at the curb in Doherty. The driver got out and is sitting on the ground with a head injury and a painful wrist.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 405,
+            "pos": [-2126.55, -95.72, 35.35],
+            "rot": [0, 0, 188.79],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF31 471",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [-2128.8, -97.59, 35.32],
+            "rot": 305.7,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

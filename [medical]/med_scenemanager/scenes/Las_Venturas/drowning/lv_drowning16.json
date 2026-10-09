@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "lv_drowning16",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2179, 1166, 11.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rescuer and victim exhausted",
+        "description": "A man jumped in to save a drowning stranger. Both are at the edge of a pond in Come-A-Lot now: the stranger is unconscious, the rescuer is exhausted and coughing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [2179, 1166, 11.41],
+            "rot": 251,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 75, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 66,
+            "pos": [2178.62, 1168.17, 11.59],
+            "rot": 81,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 95 }
+        }
+    ]
+}

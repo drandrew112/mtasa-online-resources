@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "montgomery_fall3",
+    "category": "fall",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1450, 450, 19.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a ladder picking fruit",
+        "description": "A woman picking fruit fell from her ladder on a grassy patch in Montgomery. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [1450, 450, 19.83],
+            "rot": 190,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 46 }
+        }
+    ]
+}

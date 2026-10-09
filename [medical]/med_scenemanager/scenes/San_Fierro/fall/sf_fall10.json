@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_fall10",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2131.75, 781.25, 69.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder crashed",
+        "description": "A skateboarder lost control at a bus stop in Calton Heights and slid along the pavement. His wrist is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [-2131.75, 781.25, 69.56],
+            "rot": 122,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

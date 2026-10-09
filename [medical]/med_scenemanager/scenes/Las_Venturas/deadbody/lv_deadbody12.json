@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody12",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2638, 685.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless person not waking",
+        "description": "A shop worker opening up outside a souvenir shop in Las Venturas found a homeless man lying under a blanket, cold and stiff. He does not respond at all.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 134,
+            "pos": [2638, 685.75, 10.82],
+            "rot": 325,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

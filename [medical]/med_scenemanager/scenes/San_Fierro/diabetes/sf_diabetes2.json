@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes2",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1844.37, -209.62, 17.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman confused, drinking constantly",
+        "description": "An older woman at a bus stop in Doherty is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 197,
+            "pos": [-1844.37, -209.62, 17.33],
+            "rot": 282,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 604, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false11",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [919, 2326, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A driver saw a person lying in a small park near the Whitewood Estates and did not stop. The caller could not say if the person was moving.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

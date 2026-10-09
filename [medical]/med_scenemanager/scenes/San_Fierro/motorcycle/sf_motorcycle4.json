@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle4",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2820.2, 949.54, 44.21],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers at a junction in Palisades saw a motorcycle hit the curb at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 463,
+            "pos": [-2822.8, 953.8, 43.66],
+            "rot": [0, 0, 144.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF32 375",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [-2820.2, 949.54, 44.21],
+            "rot": 4,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3792, "consciousness": "unconscious" }
+        }
+    ]
+}

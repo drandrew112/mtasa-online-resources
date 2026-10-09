@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "las-barrancas_stroke3",
+    "category": "stroke",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-892.3, 1572.23, 25.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver seeing double",
+        "description": "A delivery driver stopped his van on the road shoulder in Las Barrancas because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 418,
+            "pos": [-889.46, 1574.81, 25.85],
+            "rot": [0, 0, 147.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR68 303",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 153,
+            "pos": [-892.3, 1572.23, 25.73],
+            "rot": 295,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 182 }
+        }
+    ]
+}

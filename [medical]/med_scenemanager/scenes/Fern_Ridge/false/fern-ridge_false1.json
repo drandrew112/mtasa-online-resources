@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "fern-ridge_false1",
+    "category": "false",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [810.08, 27.83, 75.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crash with people trapped",
+        "description": "An anonymous caller reports a bad crash with people trapped on the road shoulder in Fern Ridge. No other calls came in about it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

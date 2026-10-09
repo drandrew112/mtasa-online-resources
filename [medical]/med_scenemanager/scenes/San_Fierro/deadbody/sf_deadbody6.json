@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody6",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1724, 1077.88, 45.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying at a bus stop in Financial. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [-1724, 1077.88, 45.36],
+            "rot": 280,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

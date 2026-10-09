@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_drowning3",
+    "category": "drowning",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [650, 360, 19.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aspirated vomit, gurgling",
+        "description": "A very drunk man vomited on farmland in Hampton Barns and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [650, 360, 19.59],
+            "rot": 283,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "unconscious" }
+        }
+    ]
+}

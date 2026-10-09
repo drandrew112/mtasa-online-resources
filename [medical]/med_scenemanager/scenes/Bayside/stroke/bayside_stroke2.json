@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_stroke2",
+    "category": "stroke",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2700.75, 2300, 63.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by on open ground in Bayside called because a man outside the general store is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-2700.75, 2300, 63.88],
+            "rot": 279,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 177 }
+        }
+    ]
+}

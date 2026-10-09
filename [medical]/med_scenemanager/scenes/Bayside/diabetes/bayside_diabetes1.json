@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "bayside_diabetes1",
+    "category": "diabetes",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2420, 2480, 13.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends in a yard in Bayside cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-2420, 2480, 13.13],
+            "rot": 172,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 652, "heartRate": 130, "consciousness": "unconscious" }
+        }
+    ]
+}

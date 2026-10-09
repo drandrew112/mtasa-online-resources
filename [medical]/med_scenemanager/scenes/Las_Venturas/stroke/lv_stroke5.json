@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke5",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2557.38, 700.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, snoring breathing",
+        "description": "A man collapsed on the sidewalk in Rockshore East and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [2557.38, 700.63, 10.82],
+            "rot": 168,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 211, "diastolic": 117, "consciousness": "unconscious" }
+        }
+    ]
+}

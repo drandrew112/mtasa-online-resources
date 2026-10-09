@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_drowning2",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2138.75, 35.08, 26.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen pulled from the creek",
+        "description": "Friends pulled a teenager out of the creek after he jumped in from a rope swing. They carried him up on the road shoulder near Palomino Creek. He is gasping and drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [2138.75, 35.08, 26.38],
+            "rot": 321,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 81, "consciousness": "dazed" }
+        }
+    ]
+}

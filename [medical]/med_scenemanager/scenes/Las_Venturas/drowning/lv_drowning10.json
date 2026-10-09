@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_drowning10",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2161.25, 1686, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jumped from the railing",
+        "description": "A young man jumped into the water from the railing and hit it badly. Friends dragged him out and he is now lying by the water near Caligula's Palace, dazed and gasping.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [2161.25, 1686, 10.82],
+            "rot": 328,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "spo2": 87, "consciousness": "dazed" }
+        }
+    ]
+}

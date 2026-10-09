@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle22",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1727.97, -1074.66, 74.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider hit an opening car door",
+        "description": "A driver opened his door without looking on the road in San Fierro and a motorcyclist slammed into it. The rider is sitting on the road holding his shoulder.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [-1722.58, -1076.06, 74.84],
+            "rot": [0, 0, 316.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF70 398",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 567,
+            "pos": [-1725.35, -1072.48, 74.27],
+            "rot": [0, 0, 199.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF29 399",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 120,
+            "pos": [-1727.97, -1074.66, 74.48],
+            "rot": 248,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 41 }
+        }
+    ]
+}

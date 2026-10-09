@@ -1,0 +1,74 @@
+{
+    "format": 1,
+    "name": "lv_mva5",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1977.31, 826.38, 5.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Julius Thruway South. The driver of the first car is still in the seat with a deep cut that is bleeding.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 551,
+            "pos": [1978.05, 830.76, 6.644],
+            "rot": [0, 0, 268.51],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV28 786",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 551,
+            "pos": [1971.088, 831.426, 6.644],
+            "rot": [0, 0, 270.98],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV84 724",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [1978.05, 830.76, 6.89],
+            "rot": 268.51,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

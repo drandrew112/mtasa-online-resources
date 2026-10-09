@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_fall8",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1995.67, -969.75, 32.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother tripped on the curb",
+        "description": "An elderly woman tripped on the curb at the side of the road in Foster Valley and cannot get up. Her right leg looks shorter and turned outwards.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [-1995.67, -969.75, 32.16],
+            "rot": 279,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 35 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_shooting21",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2267, -145, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shot several times",
+        "description": "A man was shot several times in a parking lot in Garcia and is lying face down in a pool of blood. The shooter ran away on foot.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 258,
+            "pos": [-2267, -145, 35.32],
+            "rot": 28,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3256 }
+        }
+    ]
+}

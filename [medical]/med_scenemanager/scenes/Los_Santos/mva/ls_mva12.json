@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "ls_mva12",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1467.19, -754.99, 93.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision",
+        "description": "Two cars collided head-on in Mulholland. The driver of the first car is still in the seat, unconscious, with a serious head injury.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 560,
+            "pos": [1464.737, -758.592, 93.983],
+            "rot": [8.66, 359.08, 45.32],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS35 639",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 526,
+            "pos": [1460.115, -754.644, 94.758],
+            "rot": [359.46, 358.15, 228.68],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS17 479",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [1461.876, -759.608, 94.569],
+            "rot": 271.1,
+            "anim": "injured",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        }
+    ]
+}

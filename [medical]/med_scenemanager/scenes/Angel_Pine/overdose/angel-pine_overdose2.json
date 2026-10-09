@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_overdose2",
+    "category": "overdose",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2064.17, -2641.83, 55.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man next to the country road near Angel Pine took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-2064.17, -2641.83, 55.99],
+            "rot": 40,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 165, "heartRate": 148 }
+        }
+    ]
+}

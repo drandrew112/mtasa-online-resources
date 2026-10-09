@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-818.5, 1590, 27.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting strange, sweaty",
+        "description": "A woman on open scrubland in Las Barrancas is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-818.5, 1590, 27.12],
+            "rot": 245,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 41, "heartRate": 113, "consciousness": "confused" }
+        }
+    ]
+}

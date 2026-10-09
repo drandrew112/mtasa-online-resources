@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_stroke2",
+    "category": "stroke",
+    "location": "Richman",
+    "enabled": true,
+    "weight": 1,
+    "center": [650, -680, 14.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Face drooping, slurred speech",
+        "description": "A man in a yard just outside Dillimore suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [650, -680, 14.99],
+            "rot": 20,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 181 }
+        }
+    ]
+}

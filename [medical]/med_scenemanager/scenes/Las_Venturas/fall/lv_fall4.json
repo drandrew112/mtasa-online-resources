@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall4",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1070.48, 1803.3, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder crashed at speed",
+        "description": "A skateboarder lost control at speed and slid along the asphalt next to the road near the Whitewood Estates. His wrist is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [1070.48, 1803.3, 10.82],
+            "rot": 38,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

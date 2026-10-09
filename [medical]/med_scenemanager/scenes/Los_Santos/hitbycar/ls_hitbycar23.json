@@ -2,16 +2,17 @@
     "format": 1,
     "name": "ls_hitbycar23",
     "category": "hitbycar",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [790.38, -1290.12, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child ran out between cars",
-        "description": "A child chasing a ball ran out between parked cars in Vinewood and was hit at low speed. The boy is crying, his arm hurts and he has a bump on the head. The shaken driver is with him.",
+        "title": "Teenager ran out between cars",
+        "description": "A teenager chasing a ball ran out between parked cars in Vinewood and was hit at low speed. The teenager is crying, his arm hurts and he has a bump on the head. The shaken driver is with him.",
         "caller": "SceneManager",
-        "priority": 1
+        "priority": 2
     },
     "vehicles": [
         {

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing14",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2327.37, 1154.35, 51.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma attack, inhaler empty",
+        "description": "A woman on the grass in Juniper Hollow is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [-2327.37, 1154.35, 51.83],
+            "rot": 326,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "lv_shooting24",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2420, 689.88, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire outside a souvenir shop in Rockshore West. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [2420, 689.88, 10.82],
+            "rot": 258,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4073 }
+        },
+        {
+            "id": "p2",
+            "skin": 105,
+            "pos": [2420, 692.08, 10.92],
+            "rot": 185,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

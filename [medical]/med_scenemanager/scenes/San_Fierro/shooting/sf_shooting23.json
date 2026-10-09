@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "sf_shooting23",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1221.87, 60.54, 14.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire at the side of the road in Easter Bay Airport. One young man is lying on the ground, another is crouching against a wall with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [-1221.87, 60.54, 14.13],
+            "rot": 100,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4076 }
+        },
+        {
+            "id": "p2",
+            "skin": 104,
+            "pos": [-1220.56, 58.77, 14.28],
+            "rot": 171,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_drowning2",
+    "category": "drowning",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-483.55, 2309.73, 62.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Toddler fell in an irrigation ditch",
+        "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on the road shoulder near El Castillo del Diablo. The child is coughing and crying weakly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [-483.55, 2309.73, 62.64],
+            "rot": 110,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

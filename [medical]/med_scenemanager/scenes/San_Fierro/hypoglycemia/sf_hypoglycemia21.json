@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia21",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2847, 15, 10.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Coworkers on the grass in Ocean Flats say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 27,
+            "pos": [-2847, 15, 10.65],
+            "rot": 136,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 42, "consciousness": "confused" }
+        }
+    ]
+}

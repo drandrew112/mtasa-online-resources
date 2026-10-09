@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_deadbody12",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2327, -245, 42.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot, no signs of life",
+        "description": "Police at the scene in a small park in Avispa Country Club report a man with several gunshot wounds. He has no pulse and is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [-2327, -245, 42.52],
+            "rot": 103,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

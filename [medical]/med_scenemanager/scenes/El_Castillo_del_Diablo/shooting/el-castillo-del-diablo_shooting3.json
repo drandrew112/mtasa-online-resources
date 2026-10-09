@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_shooting3",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-407.78, 2655.36, 50.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest on the road shoulder near El Castillo del Diablo. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [-407.78, 2655.36, 50.01],
+            "rot": 257,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3802, "spo2": 85 }
+        }
+    ]
+}

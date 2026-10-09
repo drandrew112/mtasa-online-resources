@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing20",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1315.75, 844.91, 7.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot breathe lying down",
+        "description": "A woman by the roadside at Blackfield Intersection says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [1315.75, 844.91, 7.59],
+            "rot": 219,
+            "anim": "sit",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 87, "systolic": 203 }
+        }
+    ]
+}

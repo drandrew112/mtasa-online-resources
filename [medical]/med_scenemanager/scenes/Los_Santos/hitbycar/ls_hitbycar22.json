@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hitbycar22",
     "category": "hitbycar",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2909.58, -1281.59, 10.88],

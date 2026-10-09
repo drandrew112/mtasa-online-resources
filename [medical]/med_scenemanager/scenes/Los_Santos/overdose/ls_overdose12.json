@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose12",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2444, -1925.25, 13.55],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Screaming, overheated, raging heart",
-        "description": "A man on the sidewalk in Willowfield is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He now sat down and is panting.",
+        "description": "A man on the sidewalk in Willowfield is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He is now bent over, panting.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "stimulant", "severity": 3 }
             ],
-            "state": { "consciousness": "confused", "diastolic": 118, "heartRate": 166, "systolic": 204 }
+            "state": { "systolic": 204, "diastolic": 118, "heartRate": 166, "consciousness": "confused" }
         }
     ]
 }

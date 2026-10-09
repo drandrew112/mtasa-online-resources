@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "sf_mva10",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1538.5, -423.37, 4.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collision while turning",
+        "description": "Two cars collided while one was turning at an intersection in Easter Bay Airport. The driver of the first car is still in the seat with a broken collarbone and a bleeding wound. The driver of the second car is still in the seat with a head injury and disorientation.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 602,
+            "pos": [-1537.48, -421.24, 5.788],
+            "rot": [-0.1, 0, 81.36],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF21 609",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 459,
+            "pos": [-1543.646, -420.468, 6.028],
+            "rot": [0, 0, 264.94],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF39 447",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [-1537.48, -421.24, 6.04],
+            "rot": 81.36,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 24,
+            "pos": [-1543.646, -420.468, 6.28],
+            "rot": 264.94,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        }
+    ]
+}

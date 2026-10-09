@@ -2,31 +2,31 @@
     "format": 1,
     "name": "ls_fall4",
     "category": "fall",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1976.75, -1181.71, 26.04],
+    "center": [644.75, -1535.62, 15.27],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a balcony",
-        "description": "A man fell from a third floor balcony on the sidewalk in Glen Park. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "title": "Skateboarder hit head",
+        "description": "A skateboarder fell on the pavement in Rodeo without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a painful wrist.",
         "caller": "SceneManager",
-        "priority": 1
+        "priority": 2
     },
     "vehicles": [],
     "peds": [
         {
             "id": "p1",
-            "skin": 30,
-            "pos": [1976.75, -1181.71, 26.04],
-            "rot": 156,
-            "anim": "ko_back",
+            "skin": 154,
+            "pos": [644.75, -1535.62, 15.27],
+            "rot": 82,
+            "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 3 }
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": { "bloodVolume": 4000, "consciousness": "unconscious" }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

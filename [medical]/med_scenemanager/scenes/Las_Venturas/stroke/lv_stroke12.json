@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke12",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [896.08, 2343.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, one leg will not move",
+        "description": "An old man fell by the roadside in Las Venturas and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [896.08, 2343.13, 10.82],
+            "rot": 278,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 199 }
+        }
+    ]
+}

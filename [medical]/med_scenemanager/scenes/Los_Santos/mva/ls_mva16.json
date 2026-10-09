@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "ls_mva16",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1150.33, -996.02, 36.39],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Temple. The driver of the first car is still in the seat, unconscious, with a serious head injury. The driver of the second car is still in the seat with a head injury and disorientation.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 401,
+            "pos": [1154.71, -998.05, 36.919],
+            "rot": [0, 0.1, 181.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [200, 120, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS57 815",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 419,
+            "pos": [1154.61, -991.579, 38.089],
+            "rot": [0, -0.36, 178.38],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS32 668",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 67,
+            "pos": [1154.71, -998.05, 37.17],
+            "rot": 181.7,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 25,
+            "pos": [1154.61, -991.579, 38.34],
+            "rot": 178.38,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        }
+    ]
+}

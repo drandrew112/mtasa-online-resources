@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_motorcycle2",
+    "category": "motorcycle",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-747.41, -1866.19, 11.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Lost control in the bend",
+        "description": "A motorcyclist came over the hill far too fast, lost control at the side of the road near Leafy Hollow and slid into the ditch. He is lying still, dazed, and does not know where he is.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 463,
+            "pos": [-746.09, -1860.65, 12.28],
+            "rot": [0, 0, 55.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC46 350",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [-747.41, -1866.19, 11.52],
+            "rot": 339,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

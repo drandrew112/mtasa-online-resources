@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "lv_fall9",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1573.61, 656.64, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a balcony",
+        "description": "A man fell from a third floor balcony outside a wedding chapel near the Randolph Industrial Estate. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [1573.61, 656.64, 10.82],
+            "rot": 41,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 4043, "consciousness": "unconscious" }
+        }
+    ]
+}

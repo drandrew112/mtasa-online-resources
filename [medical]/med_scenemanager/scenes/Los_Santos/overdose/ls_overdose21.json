@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose21",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [733.41, -982.46, 53.03],
@@ -9,9 +10,9 @@
     "dimension": 0,
     "erm": {
         "title": "Drunk, vomiting, will not wake",
-        "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. They rolled her onto her side.",
+        "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. She is lying face down.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [],
     "peds": [

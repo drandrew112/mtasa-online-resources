@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia6",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1698.4, 2819.95, 10.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Coworkers at the side of the road in Prickle Pine say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 153,
+            "pos": [1698.4, 2819.95, 10.84],
+            "rot": 125,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 38 }
+        }
+    ]
+}

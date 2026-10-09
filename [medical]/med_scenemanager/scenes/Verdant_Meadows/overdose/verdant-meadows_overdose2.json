@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_overdose2",
+    "category": "overdose",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [471.27, 2725.33, 66.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man by the dusty roadside near Verdant Meadows took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [471.27, 2725.33, 66.07],
+            "rot": 225,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 174, "heartRate": 157 }
+        }
+    ]
+}

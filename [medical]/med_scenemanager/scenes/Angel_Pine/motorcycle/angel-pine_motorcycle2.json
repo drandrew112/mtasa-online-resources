@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "angel-pine_motorcycle2",
+    "category": "motorcycle",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2108.75, -2622.91, 53.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Lost control in the bend",
+        "description": "A motorcyclist came over the hill far too fast, lost control by the road at the edge of the woods near Angel Pine and slid into the ditch. He is lying still, dazed, and does not know where he is.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 471,
+            "pos": [-2109.12, -2627.9, 52.66],
+            "rot": [0, 0, 226.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS57 124",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [-2108.75, -2622.91, 53.27],
+            "rot": 256,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

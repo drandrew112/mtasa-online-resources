@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes16",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2360.25, 1501.41, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman lying under the neon signs near the Royal Casino, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 197,
+            "pos": [2360.25, 1501.41, 10.82],
+            "rot": 258,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3861, "glucose": 762 }
+        }
+    ]
+}

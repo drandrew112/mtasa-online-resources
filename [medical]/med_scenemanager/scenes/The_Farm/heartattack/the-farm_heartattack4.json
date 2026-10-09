@@ -2,6 +2,7 @@
     "format": 1,
     "name": "the-farm_heartattack4",
     "category": "heartattack",
+    "location": "The Farm",
     "enabled": true,
     "weight": 1,
     "center": [-1152.165, -1037.571, 129.219],

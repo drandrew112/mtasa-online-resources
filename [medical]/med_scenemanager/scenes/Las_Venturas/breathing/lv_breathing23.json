@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing23",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2399, 906, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma attack, inhaler empty",
+        "description": "A woman on the sand in Las Venturas is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [2399, 906, 10.82],
+            "rot": 14,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 88 }
+        }
+    ]
+}

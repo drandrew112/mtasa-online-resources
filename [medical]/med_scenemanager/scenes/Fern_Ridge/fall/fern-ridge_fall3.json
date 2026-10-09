@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "fern-ridge_fall3",
+    "category": "fall",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1179.63, 35.67, 42.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards at the side of the road in Fern Ridge and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [1179.63, 35.67, 42.17],
+            "rot": 54,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

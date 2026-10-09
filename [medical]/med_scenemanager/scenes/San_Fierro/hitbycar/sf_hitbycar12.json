@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar12",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1356.5, 29.33, 6.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road worker struck",
+        "description": "A road worker was hit by a car that ignored the cones on the road in Easter Bay Airport. He is lying on the asphalt, dazed, with a deformed arm and a head wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 560,
+            "pos": [-1351.09, 32.75, 6],
+            "rot": [0, 0, 262.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF60 414",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 153,
+            "pos": [-1356.5, 29.33, 6.34],
+            "rot": 334,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

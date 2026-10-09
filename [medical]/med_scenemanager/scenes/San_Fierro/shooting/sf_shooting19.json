@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting19",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1408.76, -401.09, 6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing car at the side of the road in Easter Bay Airport. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 116,
+            "pos": [-1408.76, -401.09, 6],
+            "rot": 341,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4108, "pain": 35 }
+        }
+    ]
+}

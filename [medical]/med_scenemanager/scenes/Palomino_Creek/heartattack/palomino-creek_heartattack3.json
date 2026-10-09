@@ -2,6 +2,7 @@
     "format": 1,
     "name": "palomino-creek_heartattack3",
     "category": "heartattack",
+    "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
     "center": [2526.75, 94.101, 26.484],

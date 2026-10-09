@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia20",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2035.25, 1331.38, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Coworkers outside a wedding chapel near the High Roller say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [2035.25, 1331.38, 10.82],
+            "rot": 270,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 40 }
+        }
+    ]
+}

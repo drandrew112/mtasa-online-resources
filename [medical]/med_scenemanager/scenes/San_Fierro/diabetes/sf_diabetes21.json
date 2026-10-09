@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes21",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2597, -31.15, 4.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man on the sidewalk in Hashbury has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [-2597, -31.15, 4.33],
+            "rot": 125,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4045, "glucose": 543 }
+        }
+    ]
+}

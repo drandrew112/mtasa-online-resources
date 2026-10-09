@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "montgomery_hitbycar2",
+    "category": "hitbycar",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1210.71, 335.68, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pedestrian hit while crossing",
+        "description": "A pedestrian was hit by a car while crossing outside a house in Montgomery. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 605,
+            "pos": [1212.97, 329.53, 19.26],
+            "rot": [0, 0, 159.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC42 379",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [1210.71, 335.68, 19.56],
+            "rot": 278,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4233, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_shooting1",
+    "category": "shooting",
+    "location": "Flint County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1195.85, -1854.15, 67.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing pickup next to the country road near Leafy Hollow. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [-1195.85, -1854.15, 67.83],
+            "rot": 289,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4119, "pain": 44 }
+        }
+    ]
+}

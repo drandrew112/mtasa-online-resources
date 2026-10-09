@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_diabetes1",
+    "category": "diabetes",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-130, 1550, 18.45],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Very thirsty and confused",
+        "description": "A farmhand on the dusty ground near the Lil' Probe Inn keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [-130, 1550, 18.45],
+            "rot": 57,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 506, "consciousness": "confused" }
+        }
+    ]
+}

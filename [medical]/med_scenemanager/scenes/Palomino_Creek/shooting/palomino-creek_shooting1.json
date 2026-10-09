@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "palomino-creek_shooting1",
+    "category": "shooting",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2282.7, 134.7, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Store owner and customer shot",
+        "description": "An armed robbery at the general store went wrong on the sidewalk in Palomino Creek. The store owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [2282.7, 134.7, 26.48],
+            "rot": 2,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3843 }
+        },
+        {
+            "id": "p2",
+            "skin": 198,
+            "pos": [2280.52, 135.03, 26.58],
+            "rot": 141,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

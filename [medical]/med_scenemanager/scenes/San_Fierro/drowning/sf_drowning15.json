@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "sf_drowning15",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2694.75, -537.25, 14.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rescuer and victim exhausted",
+        "description": "A man jumped in to save a drowning stranger. Both are on the waterfront promenade in Missionary Hill now: the stranger is unconscious, the rescuer is exhausted and coughing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-2694.75, -537.25, 14.06],
+            "rot": 352,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 71, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 107,
+            "pos": [-2696.91, -537.65, 14.54],
+            "rot": 121,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 95 }
+        }
+    ]
+}

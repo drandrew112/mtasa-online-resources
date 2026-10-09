@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes8",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2720.25, 2532.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman outside a souvenir shop near the Julius Thruway East says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [2720.25, 2532.25, 10.82],
+            "rot": 306,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 407 }
+        }
+    ]
+}

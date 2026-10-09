@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting7",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1279.44, -810.14, 70.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back",
+        "description": "A man was shot in the back while running away at the side of the road in San Fierro. He is lying on his stomach and says he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-1279.44, -810.14, 70.1],
+            "rot": 30,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4156, "pain": 32 }
+        }
+    ]
+}

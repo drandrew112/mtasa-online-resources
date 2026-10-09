@@ -1,0 +1,72 @@
+{
+    "format": 1,
+    "name": "sf_mva4",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1804.25, 364.38, 16.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "T-bone collision at intersection",
+        "description": "Two cars collided at an intersection in Downtown, one hit the other in the side. The driver of the first car got out and is sitting on the ground with a head injury and disorientation.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 546,
+            "pos": [-1811.38, 356.4, 16.888],
+            "rot": [0, 0, 237.02],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF16 836",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 436,
+            "pos": [-1813.324, 352.047, 17.039],
+            "rot": [-2.3, 0.67, 331.29],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF36 170",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [-1813.721, 361.94, 17.016],
+            "rot": 22.9,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        }
+    ]
+}

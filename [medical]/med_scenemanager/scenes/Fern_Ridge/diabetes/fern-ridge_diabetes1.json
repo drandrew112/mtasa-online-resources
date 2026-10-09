@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_diabetes1",
+    "category": "diabetes",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [616.51, -67.65, 17.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man by the road at the edge of the woods in Fern Ridge very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [616.51, -67.65, 17.06],
+            "rot": 203,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3889, "glucose": 767, "consciousness": "dazed" }
+        }
+    ]
+}

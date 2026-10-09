@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_deadbody1",
+    "category": "deadbody",
+    "location": "Restricted Area",
+    "enabled": true,
+    "weight": 1,
+    "center": [-7.19, 2103.33, 17.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drifter not waking",
+        "description": "A store clerk opening up by the dusty roadside near El Castillo del Diablo found a drifter lying under a blanket, cold and stiff. He does not respond at all.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 137,
+            "pos": [-7.19, 2103.33, 17.57],
+            "rot": 82,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

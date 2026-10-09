@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes3",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2488.57, -472.6, 96.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman on a steep street in Missionary Hill says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 211,
+            "pos": [-2488.57, -472.6, 96.81],
+            "rot": 150,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 397 }
+        }
+    ]
+}

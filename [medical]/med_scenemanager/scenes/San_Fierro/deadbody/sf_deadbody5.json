@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_deadbody5",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2787, 455, 4.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body found by night guard",
+        "description": "A night guard found a man lying in the park in Palisades. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [-2787, 455, 4.36],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_stroke19",
     "category": "stroke",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1281.08, -915.93, 41.87],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "stroke", "severity": 1 }
             ],
-            "state": { "diastolic": 96, "systolic": 168 }
+            "state": { "systolic": 168, "diastolic": 96 }
         }
     ]
 }

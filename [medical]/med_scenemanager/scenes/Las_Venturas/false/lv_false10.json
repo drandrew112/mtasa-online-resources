@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_false10",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1979, 886, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man swaying",
+        "description": "A caller says a man in the desert dust near the Four Dragons Casino is swaying and might fall over. He is drunk but talking, walking and says he is fine.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [1979, 886, 10.82],
+            "rot": 332,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

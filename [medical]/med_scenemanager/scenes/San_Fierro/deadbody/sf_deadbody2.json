@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody2",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2847, -105, 8.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying in a small park in Ocean Flats. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [-2847, -105, 8.97],
+            "rot": 73,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

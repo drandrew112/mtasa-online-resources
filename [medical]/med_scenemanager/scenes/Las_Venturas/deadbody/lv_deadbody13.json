@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody13",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1479.17, 2763.33, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying by the roadside near the Yellow Bell Golf Course. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [1479.17, 2763.33, 10.82],
+            "rot": 101,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

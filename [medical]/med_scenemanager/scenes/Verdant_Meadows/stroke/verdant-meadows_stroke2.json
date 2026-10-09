@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_stroke2",
+    "category": "stroke",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [511.25, 2363.1, 30.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by by the dusty roadside near Verdant Meadows called because a man outside the general store is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [511.25, 2363.1, 30.24],
+            "rot": 154,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

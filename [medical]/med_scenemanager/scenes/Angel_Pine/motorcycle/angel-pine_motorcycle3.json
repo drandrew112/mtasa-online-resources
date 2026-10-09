@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "angel-pine_motorcycle3",
+    "category": "motorcycle",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1929.09, -2441.48, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on spilled oil",
+        "description": "A woman on a scooter slipped on a patch of spilled oil next to the country road near Angel Pine and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [-1928.95, -2447.24, 30.15],
+            "rot": [0, 0, 231.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS49 125",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-1929.09, -2441.48, 30.63],
+            "rot": 176,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

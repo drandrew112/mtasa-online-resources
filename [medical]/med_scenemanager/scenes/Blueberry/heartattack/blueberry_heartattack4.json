@@ -2,6 +2,7 @@
     "format": 1,
     "name": "blueberry_heartattack4",
     "category": "heartattack",
+    "location": "Blueberry",
     "enabled": true,
     "weight": 1,
     "center": [296, -64.75, 1.578],

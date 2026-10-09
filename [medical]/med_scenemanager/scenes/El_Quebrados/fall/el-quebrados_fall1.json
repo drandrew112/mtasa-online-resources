@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "el-quebrados_fall1",
+    "category": "fall",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1655.05, 2584.79, 82.76],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a hay loft",
+        "description": "A man fell from a hay loft by the dusty roadside near El Quebrados. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-1655.05, 2584.79, 82.76],
+            "rot": 269,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 4001, "consciousness": "unconscious" }
+        }
+    ]
+}

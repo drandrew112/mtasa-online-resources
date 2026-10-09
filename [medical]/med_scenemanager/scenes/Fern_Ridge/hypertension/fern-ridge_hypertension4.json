@@ -1,0 +1,36 @@
+{
+    "format": 1,
+    "name": "fern-ridge_hypertension4",
+    "category": "hypertension",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [837.46, -98.72, 26.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, headache",
+        "description": "A trucker next to the country road in Fern Ridge pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [837.46, -98.72, 26.33],
+            "rot": 218,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 32,
+                "spo2": 92,
+                "systolic": 197,
+                "diastolic": 121,
+                "heartRate": 108,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

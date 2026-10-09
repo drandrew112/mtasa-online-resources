@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing1",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1806.83, -867.64, 39.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teenager cannot breathe",
+        "description": "A teenager at the side of the road in Foster Valley is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [-1806.83, -867.64, 39.98],
+            "rot": 49,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody11",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1443.98, -1026.89, 166.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying by the roadside in San Fierro. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [-1443.98, -1026.89, 166.14],
+            "rot": 216,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

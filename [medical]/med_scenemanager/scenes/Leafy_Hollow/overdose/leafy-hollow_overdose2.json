@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_overdose2",
+    "category": "overdose",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1018.72, -1669.99, 78.09],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and wine, very sleepy",
+        "description": "A woman by the road at the edge of the woods in Leafy Hollow mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-1018.72, -1669.99, 78.09],
+            "rot": 136,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 89, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_shooting22",
     "category": "shooting",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [589.81, -1237.95, 17.86],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "gunshot", "severity": 3 }
             ],
-            "state": { "bleeding": 2, "bloodVolume": 3500, "consciousness": "dazed" }
+            "state": { "bloodVolume": 3500, "bleeding": 2, "consciousness": "dazed" }
         }
     ]
 }

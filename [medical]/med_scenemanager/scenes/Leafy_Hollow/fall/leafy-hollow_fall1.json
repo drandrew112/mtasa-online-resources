@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_fall1",
+    "category": "fall",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-881.5, -1761, 80.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder crashed at speed",
+        "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt by the road at the edge of the woods in Leafy Hollow. His wrist is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 142,
+            "pos": [-881.5, -1761, 80.75],
+            "rot": 62,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

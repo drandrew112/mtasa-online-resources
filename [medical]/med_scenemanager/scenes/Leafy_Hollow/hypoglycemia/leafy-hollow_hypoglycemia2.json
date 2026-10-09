@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-920, -1860, 88.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot be woken, snoring",
+        "description": "A woman is lying face down on the grass just outside Leafy Hollow and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-920, -1860, 88.23],
+            "rot": 267,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 101, "consciousness": "unconscious" }
+        }
+    ]
+}

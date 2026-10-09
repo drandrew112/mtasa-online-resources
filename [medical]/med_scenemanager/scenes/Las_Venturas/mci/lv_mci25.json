@@ -1,0 +1,109 @@
+{
+    "format": 1,
+    "name": "lv_mci25",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1544.43, 2777, 11.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision, drivers hurt",
+        "description": "Two cars hit head-on at a busy crossroads near the Yellow Bell Golf Course. One driver is stuck in his seat with a crushed leg, the other driver and two passengers got out and are hurt.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 445,
+            "pos": [1544.43, 2777, 10.82],
+            "rot": [0, 0, 203.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV40 367",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 466,
+            "pos": [1539.98, 2773.03, 10.82],
+            "rot": [0, 0, 257.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV39 368",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [1544.43, 2777, 11.07],
+            "rot": 353,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3845, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 193,
+            "pos": [1547.18, 2769.81, 11.07],
+            "rot": 302,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 222,
+            "pos": [1541.68, 2770.07, 11.07],
+            "rot": 50,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 40,
+            "pos": [1543, 2769.28, 11.07],
+            "rot": 280,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

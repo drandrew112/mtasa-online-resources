@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke15",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1294.21, 2224.79, 11.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot lift her arm",
+        "description": "An elderly woman next to the road near the Julius Thruway West dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [1294.21, 2224.79, 11.02],
+            "rot": 15,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 175, "consciousness": "confused" }
+        }
+    ]
+}

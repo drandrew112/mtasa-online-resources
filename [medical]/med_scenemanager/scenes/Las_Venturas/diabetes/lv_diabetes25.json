@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes25",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2035.38, 1411.72, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man at a bus stop near the High Roller has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [2035.38, 1411.72, 10.82],
+            "rot": 278,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4122, "glucose": 505 }
+        }
+    ]
+}

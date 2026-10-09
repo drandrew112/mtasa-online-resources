@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_shooting8",
     "category": "shooting",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [702.07, -1681.25, 11.32],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Argument ended in gunfire",
-        "description": "Two men argued over a parking spot on the sidewalk in Marina when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm.",
+        "description": "Two men argued over a parking spot in Marina when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm.",
         "caller": "SceneManager",
         "priority": 1
     },

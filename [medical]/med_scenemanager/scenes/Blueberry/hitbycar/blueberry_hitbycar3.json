@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "blueberry_hitbycar3",
+    "category": "hitbycar",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [361.97, 118.76, 5.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Clipped by a car mirror",
+        "description": "A man next to the country road near Blueberry was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 489,
+            "pos": [361.4, 112.35, 5.21],
+            "rot": [0, 0, 121.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC64 181",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [361.97, 118.76, 5.71],
+            "rot": 243,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

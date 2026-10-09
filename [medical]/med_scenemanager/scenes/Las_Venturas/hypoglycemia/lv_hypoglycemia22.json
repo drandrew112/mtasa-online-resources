@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia22",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1793.55, 1162.5, 6.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and pale",
+        "description": "A jogger by the roadside at Las Venturas Airport sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [1793.55, 1162.5, 6.73],
+            "rot": 81,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 46, "heartRate": 115 }
+        }
+    ]
+}

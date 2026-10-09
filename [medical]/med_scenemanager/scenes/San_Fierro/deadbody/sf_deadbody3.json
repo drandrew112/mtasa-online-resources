@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody3",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1807, -545, 15.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying on the grass in Foster Valley. She is cold and does not breathe. She lived nearby and was a regular here.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-1807, -545, 15.6],
+            "rot": 92,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

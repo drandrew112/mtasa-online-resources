@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "lv_mci7",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1707.25, 2010.63, 11.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV spun out, passengers thrown",
+        "description": "An SUV clipped another car and spun out of control at a junction in Redsands West. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 489,
+            "pos": [1707.25, 2017.13, 10.77],
+            "rot": [0, 0, 214.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV26 320",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 542,
+            "pos": [1702.75, 2013.13, 10.77],
+            "rot": [0, 0, 251.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV42 321",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 549,
+            "pos": [1707.25, 2024.13, 10.87],
+            "rot": [0, 0, 189.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV23 322",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [1707.25, 2010.63, 11.02],
+            "rot": 94,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3930, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 233,
+            "pos": [1709.4, 2010.57, 11.02],
+            "rot": 298,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 132,
+            "pos": [1705.21, 2010.69, 11.02],
+            "rot": 98,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 52 }
+        }
+    ]
+}

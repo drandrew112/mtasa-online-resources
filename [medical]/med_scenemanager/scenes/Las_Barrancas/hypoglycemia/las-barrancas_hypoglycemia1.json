@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-859, 1514.39, 22.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aggressive, sweaty man",
+        "description": "The owner of the diner on open scrubland in Las Barrancas reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-859, 1514.39, 22.59],
+            "rot": 242,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 36, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose15",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2415.88, 2520.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, face down",
+        "description": "A homeless man is lying face down outside a souvenir shop in Roca Escalante and is not responding. Someone found a burnt spoon and a needle in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [2415.88, 2520.5, 10.82],
+            "rot": 170,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 69, "consciousness": "unconscious" }
+        }
+    ]
+}

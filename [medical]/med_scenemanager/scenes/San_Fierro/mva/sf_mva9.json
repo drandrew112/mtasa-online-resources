@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "sf_mva9",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2296.5, 556.25, 34.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car hit a parked car",
+        "description": "A car swerved into a parked car at the curb in King's. The driver of the first car got out and is standing next to the car holding their side with a broken wrist and a cut on the head.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 547,
+            "pos": [-2296.5, 559.64, 34.886],
+            "rot": [2.26, 0, 267.27],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF17 466",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 565,
+            "pos": [-2302.539, 559.803, 33.961],
+            "rot": [0, -1.97, 280.94],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF28 394",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [-2296.5, 556.25, 35.172],
+            "rot": 0,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        }
+    ]
+}

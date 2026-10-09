@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1996.62, 1166.25, 45.45],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and pale",
+        "description": "A jogger on the sidewalk in Downtown sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [-1996.62, 1166.25, 45.45],
+            "rot": 14,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 42, "heartRate": 111 }
+        }
+    ]
+}

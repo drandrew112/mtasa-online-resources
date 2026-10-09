@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "angel-pine_mci1",
+    "category": "mci",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2186.18, -2357.06, 30.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV rolled over, passengers out",
+        "description": "An SUV clipped another car and rolled over at a junction in Angel Pine. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 518,
+            "pos": [-2190.99, -2356.65, 30.52],
+            "rot": [0, 0, 260.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS79 100",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 400,
+            "pos": [-2190.27, -2362.73, 30.52],
+            "rot": [0, 0, 312.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS38 101",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 475,
+            "pos": [-2196.65, -2352.53, 30.62],
+            "rot": [0, 0, 226.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS50 102",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 115,
+            "pos": [-2186.18, -2357.06, 30.77],
+            "rot": 256,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3924, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 41,
+            "pos": [-2187.82, -2354.73, 30.77],
+            "rot": 225,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 158,
+            "pos": [-2183.6, -2358.19, 30.77],
+            "rot": 7,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 46 }
+        }
+    ]
+}

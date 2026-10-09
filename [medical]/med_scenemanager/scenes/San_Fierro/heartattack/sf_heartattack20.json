@@ -2,6 +2,7 @@
     "format": 1,
     "name": "sf_heartattack20",
     "category": "heartattack",
+    "location": "San Fierro",
     "enabled": true,
     "weight": 1,
     "center": [-1578.003, 491.868, 7.18],

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes17",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [919, 2226, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Very thirsty and confused",
+        "description": "A bike messenger on the grass near the Whitewood Estates keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [919, 2226, 10.82],
+            "rot": 211,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 554, "consciousness": "confused" }
+        }
+    ]
+}

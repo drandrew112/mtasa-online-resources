@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_false1",
+    "category": "false",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-73, 1058.29, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman fainted",
+        "description": "A woman fainted on the sidewalk in Fort Carson. She is standing up again, embarrassed, and says she just got up too quickly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-73, 1058.29, 19.74],
+            "rot": 278,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

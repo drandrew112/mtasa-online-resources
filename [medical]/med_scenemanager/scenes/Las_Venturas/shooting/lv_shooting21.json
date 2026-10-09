@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_shooting21",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2659, 1286, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shot several times",
+        "description": "A man was shot several times in the desert dust in Las Venturas and is lying face down in a pool of blood. The shooter ran away on foot.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 124,
+            "pos": [2659, 1286, 10.82],
+            "rot": 202,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3116 }
+        }
+    ]
+}

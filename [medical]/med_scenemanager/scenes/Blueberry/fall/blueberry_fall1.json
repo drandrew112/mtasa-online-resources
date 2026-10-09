@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "blueberry_fall1",
+    "category": "fall",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [325.57, -202.74, 1.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker fell from scaffolding",
+        "description": "A construction worker fell from the scaffolding of a barn he was repairing outside a house in Blueberry. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [325.57, -202.74, 1.41],
+            "rot": 279,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4459 }
+        }
+    ]
+}

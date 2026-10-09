@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_shooting3",
+    "category": "shooting",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-860.75, 2691.3, 43.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman shot in the stomach",
+        "description": "A woman was shot in the stomach on open scrubland in Valle Ocultado during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [-860.75, 2691.3, 43.11],
+            "rot": 168,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3863 }
+        }
+    ]
+}

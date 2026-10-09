@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_diabetes1",
+    "category": "diabetes",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [257.79, -204.62, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Student, fruity breath",
+        "description": "A student outside a small store in Blueberry has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [257.79, -204.62, 1.58],
+            "rot": 187,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "glucose": 460, "heartRate": 120 }
+        }
+    ]
+}

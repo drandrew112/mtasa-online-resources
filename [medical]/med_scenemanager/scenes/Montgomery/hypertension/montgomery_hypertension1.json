@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_hypertension1",
+    "category": "hypertension",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1608.16, 335.03, 20.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Light-headed after hard work",
+        "description": "A farmhand at the side of the road near Montgomery felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [1608.16, 335.03, 20.89],
+            "rot": 157,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 166, "diastolic": 104, "heartRate": 89, "consciousness": "stable" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_fall1",
+    "category": "fall",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1167.77, -1114.34, 128.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man on blood thinners fell",
+        "description": "An old man slipped on farmland in The Farm and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-1167.77, -1114.34, 128.27],
+            "rot": 20,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

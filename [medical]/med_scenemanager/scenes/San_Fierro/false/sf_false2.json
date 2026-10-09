@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false2",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2501.12, -130.25, 24.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crash with people trapped",
+        "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Hashbury. No other calls came in about it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

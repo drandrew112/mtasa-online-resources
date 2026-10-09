@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [322.38, -394.92, 10.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aggressive, sweaty man",
+        "description": "The owner of the diner next to the country road in Blueberry reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [322.38, -394.92, 10.66],
+            "rot": 20,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 37, "consciousness": "confused" }
+        }
+    ]
+}

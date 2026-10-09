@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning5",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2531.14, 2374.23, 4.21],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, turning blue",
+        "description": "A man choking on a steak sandwich at the side of the road in Roca Escalante cannot breathe or speak and is grabbing his throat. His lips are turning blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [2531.14, 2374.23, 4.21],
+            "rot": 70,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 70, "consciousness": "dazed" }
+        }
+    ]
+}

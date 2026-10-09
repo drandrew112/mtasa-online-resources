@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_stroke3",
+    "category": "stroke",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-13.42, 1021.18, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found on the ground, cannot speak",
+        "description": "A dog walker found an elderly woman lying on the main street in Fort Carson. She is awake and looks at people but cannot speak, and her right side is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 131,
+            "pos": [-13.42, 1021.18, 19.74],
+            "rot": 20,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 203, "consciousness": "dazed" }
+        }
+    ]
+}

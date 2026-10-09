@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_deadbody2",
+    "category": "deadbody",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1680, 2490, 87.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a rancher",
+        "description": "A rancher checking his fences found a man lying in the park just outside El Quebrados. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-1680, 2490, 87.91],
+            "rot": 100,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

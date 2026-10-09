@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_drowning18",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [780.19, -1848.32, 6.17],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "suffocation", "severity": 3 }
             ],
-            "state": { "rhythm": "PEA", "spo2": 40 }
+            "state": { "spo2": 40, "rhythm": "PEA" }
         }
     ]
 }

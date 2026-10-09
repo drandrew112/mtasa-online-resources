@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "the-farm_diabetes2",
+    "category": "diabetes",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1059.55, -1260.87, 129.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man next to the country road in The Farm very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-1059.55, -1260.87, 129.18],
+            "rot": 294,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3769, "glucose": 764, "consciousness": "dazed" }
+        }
+    ]
+}

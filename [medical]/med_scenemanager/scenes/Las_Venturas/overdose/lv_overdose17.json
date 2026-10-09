@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose17",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1560.38, 1005.21, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Took too many sleeping pills",
+        "description": "An old man on the sidewalk near the LVA Freight Depot took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [1560.38, 1005.21, 10.81],
+            "rot": 291,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

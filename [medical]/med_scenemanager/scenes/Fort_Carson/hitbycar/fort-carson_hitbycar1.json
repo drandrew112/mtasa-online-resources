@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "fort-carson_hitbycar1",
+    "category": "hitbycar",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-324.61, 1072.83, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder hit by a car",
+        "description": "A teenager on a skateboard shot off the curb and into the side of a car on the sidewalk in Fort Carson. His leg is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 534,
+            "pos": [-319.66, 1066.78, 19.44],
+            "rot": [0, 0, 190.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC83 257",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [-324.61, 1072.83, 19.74],
+            "rot": 221,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

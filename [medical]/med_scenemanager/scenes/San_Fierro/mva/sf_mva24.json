@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "sf_mva24",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2555.02, 1091.14, 54.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ran off the road",
+        "description": "A single car left the road and crashed at the curb in Paradiso. The driver is still in the seat with a head injury and disorientation.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 410,
+            "pos": [-2553.49, 1094.01, 55.358],
+            "rot": [0, 0, 228.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF40 109",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-2553.49, 1094.01, 55.61],
+            "rot": 228.2,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia10",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1704.5, 1430.11, 10.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying on the sidewalk at Las Venturas Airport and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [1704.5, 1430.11, 10.65],
+            "rot": 263,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 24, "consciousness": "unconscious" }
+        }
+    ]
+}

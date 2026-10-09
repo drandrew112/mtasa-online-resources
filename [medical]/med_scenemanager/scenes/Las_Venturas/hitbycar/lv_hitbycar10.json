@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar10",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2035.38, 1491.53, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit on the crosswalk",
+        "description": "A young woman was hit on the crosswalk outside a casino near Pirates in Men's Pants by a driver looking at his phone. She is rolling in pain and holding her leg.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 466,
+            "pos": [2039.81, 1487.31, 10.52],
+            "rot": [0, 0, 177.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV34 411",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 91,
+            "pos": [2035.38, 1491.53, 10.82],
+            "rot": 267,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

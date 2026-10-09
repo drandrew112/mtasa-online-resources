@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia19",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1889.62, 893.25, 35.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man at a bus stop in Downtown had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-1889.62, 893.25, 35.17],
+            "rot": 56,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 18, "consciousness": "unconscious" }
+        }
+    ]
+}

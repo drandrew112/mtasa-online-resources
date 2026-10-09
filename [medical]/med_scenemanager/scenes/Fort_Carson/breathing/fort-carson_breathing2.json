@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_breathing2",
+    "category": "breathing",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-23, 1068.5, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man outside a small store in Fort Carson pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-23, 1068.5, 19.74],
+            "rot": 266,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

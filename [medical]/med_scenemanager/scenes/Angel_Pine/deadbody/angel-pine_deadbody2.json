@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_deadbody2",
+    "category": "deadbody",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2022.65, -2629.85, 59.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body found by a hunter",
+        "description": "A hunter found a man lying face down at the side of the road near Angel Pine. He has clearly been dead for some time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 100,
+            "pos": [-2022.65, -2629.85, 59.1],
+            "rot": 45,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

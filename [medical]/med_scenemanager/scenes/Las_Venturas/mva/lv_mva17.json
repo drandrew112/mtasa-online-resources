@@ -1,0 +1,97 @@
+{
+    "format": 1,
+    "name": "lv_mva17",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2507.25, 1973.13, 9.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "T-bone collision at intersection",
+        "description": "Two cars collided at an intersection in Starfish Casino, one hit the other in the side. The driver of the first car is lying on their back next to the car with a head injury and disorientation. The driver of the second car got out and is sitting on the ground with a broken leg and a bleeding wound. The passenger is still in the seat with a head injury and disorientation.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 477,
+            "pos": [2515.05, 1974.15, 10.7],
+            "rot": [0, -0.22, 354.39],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV30 295",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 566,
+            "pos": [2509.863, 1974.098, 10.713],
+            "rot": [-2.37, -0.16, 266.39],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV97 990",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2510.908, 1969.253, 10.737],
+            "rot": 139.8,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 14,
+            "pos": [2510.081, 1977.553, 10.773],
+            "rot": 356.4,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 29,
+            "pos": [2515.05, 1974.15, 10.95],
+            "rot": 354.39,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        }
+    ]
+}

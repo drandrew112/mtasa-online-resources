@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle15",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2261, 805.75, 50.04],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pizza scooter crash",
+        "description": "A pizza delivery rider skidded on a wet manhole cover at a busy crossroads in Juniper Hill. His knee is swollen and bleeding, and the pizzas are all over the road.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [-2261, 810.75, 49.49],
+            "rot": [0, 0, 99.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF60 389",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [-2261, 805.75, 50.04],
+            "rot": 127,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

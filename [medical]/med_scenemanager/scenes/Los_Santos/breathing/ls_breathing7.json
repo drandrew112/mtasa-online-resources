@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing7",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1267.49, -2341.83, 17.05],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Choking on food",
-        "description": "A woman at a bus stop at Los Santos International started choking on a hot dog from a street stall. She can barely cough and is going red. A passer-by is hitting her back.",
+        "description": "A woman at Los Santos International started choking on a hot dog from a street stall. She can barely cough and is going red. A passer-by is hitting her back.",
         "caller": "SceneManager",
         "priority": 1
     },

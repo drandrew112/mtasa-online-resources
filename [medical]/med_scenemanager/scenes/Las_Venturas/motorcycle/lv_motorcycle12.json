@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle12",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [996.08, 1770.07, 10.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider hit an opening car door",
+        "description": "A driver parked at the side of the road near the Whitewood Estates opened his door without looking and a motorcyclist slammed into it. The rider is sitting on the road holding his shoulder.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 522,
+            "pos": [1000.44, 1766.11, 11.01],
+            "rot": [0, 0, 297.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV90 383",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 466,
+            "pos": [999.9, 1771.09, 10.75],
+            "rot": [0, 0, 180.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV86 384",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 221,
+            "pos": [996.08, 1770.07, 10.7],
+            "rot": 308,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 35 }
+        }
+    ]
+}

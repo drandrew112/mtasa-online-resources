@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning17",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1971.63, 1280.38, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choking child, back blows failed",
+        "description": "A girl on the sidewalk near the Pink Swan swallowed a sweet the wrong way and cannot cough. Her mother tried back blows without success and she is going limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [1971.63, 1280.38, 10.82],
+            "rot": 160,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 72 }
+        }
+    ]
+}

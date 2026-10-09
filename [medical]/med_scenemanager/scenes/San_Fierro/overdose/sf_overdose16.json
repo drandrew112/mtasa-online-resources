@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose16",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2176.5, 925.88, 80.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man at a bus stop in Calton Heights took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 106,
+            "pos": [-2176.5, 925.88, 80.01],
+            "rot": 162,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 171, "heartRate": 149 }
+        }
+    ]
+}

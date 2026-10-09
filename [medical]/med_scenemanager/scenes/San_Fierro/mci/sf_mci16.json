@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "sf_mci16",
+    "category": "mci",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1522.67, 954.56, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ploughed into pedestrians",
+        "description": "A car lost control and mounted the sidewalk outside a corner shop in Downtown, hitting several people. One is not moving, the others are injured and screaming.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [-1526.21, 955.17, 6.96],
+            "rot": [0, 0, 54.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF30 345",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [-1522.67, 954.56, 7.19],
+            "rot": 70,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3695, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 224,
+            "pos": [-1523.9, 957.3, 7.29],
+            "rot": 260,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 102,
+            "pos": [-1521.44, 951.82, 7.29],
+            "rot": 336,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 130,
+            "pos": [-1525.13, 960.03, 7.29],
+            "rot": 163,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1087.42, 212.73, 33.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying on the road shoulder near Montgomery and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [1087.42, 212.73, 33.02],
+            "rot": 209,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 25, "consciousness": "unconscious" }
+        }
+    ]
+}

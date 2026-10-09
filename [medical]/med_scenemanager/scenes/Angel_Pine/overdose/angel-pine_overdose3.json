@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_overdose3",
+    "category": "overdose",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1953, -2478.08, 30.68],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drink may have been spiked",
+        "description": "A young woman on the road shoulder near Angel Pine says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-1953, -2478.08, 30.68],
+            "rot": 31,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

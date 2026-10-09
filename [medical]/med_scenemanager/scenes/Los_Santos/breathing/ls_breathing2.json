@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing2",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2790.963, -1382.982, 21.428],

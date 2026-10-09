@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_airport13",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1699, 1886, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Traveller with slurred speech",
+        "description": "A traveller outside the terminal at Las Venturas Airport suddenly could not hold her passport and her speech became slurred. Her companion says she was fine at check-in.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [1699, 1886, 10.82],
+            "rot": 303,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 197 }
+        }
+    ]
+}

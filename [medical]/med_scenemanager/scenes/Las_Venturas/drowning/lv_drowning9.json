@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning9",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1999.26, 1467.48, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man choked at lunch",
+        "description": "An elderly man choked on a piece of meat on a bench near Pirates in Men's Pants. A bystander lowered him to the ground when he lost consciousness.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [1999.26, 1467.48, 10.82],
+            "rot": 267,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 60, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_deadbody2",
+    "category": "deadbody",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1057.44, -1657.26, 77.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying in a clearing in Leafy Hollow. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 48,
+            "pos": [-1057.44, -1657.26, 77.61],
+            "rot": 296,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

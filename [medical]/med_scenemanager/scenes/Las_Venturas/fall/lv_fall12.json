@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_fall12",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1901.21, 2751.71, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother tripped on the curb",
+        "description": "An elderly woman tripped on the curb outside a wedding chapel in Prickle Pine and cannot get up. Her right leg looks shorter and turned outwards.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [1901.21, 2751.71, 10.82],
+            "rot": 194,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 40 }
+        }
+    ]
+}

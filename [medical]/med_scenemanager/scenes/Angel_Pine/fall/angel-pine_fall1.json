@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_fall1",
+    "category": "fall",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2088.48, -2447.33, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother tripped on the curb",
+        "description": "An elderly woman tripped on the curb on the sidewalk in Angel Pine and cannot get up. Her right leg looks shorter and turned outwards.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-2088.48, -2447.33, 30.63],
+            "rot": 181,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 39 }
+        }
+    ]
+}

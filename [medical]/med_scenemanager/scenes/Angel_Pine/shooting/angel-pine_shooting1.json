@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_shooting1",
+    "category": "shooting",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2102.66, -2367.61, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing pickup on the main street in Angel Pine. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [-2102.66, -2367.61, 30.63],
+            "rot": 35,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4162, "pain": 35 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-860, -1720, 76.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "A man at the edge of the woods in Leafy Hollow cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-860, -1720, 76.48],
+            "rot": 99,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 110, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_drowning3",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1301.77, -190.45, 22.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed a fish bone",
+        "description": "An old fisherman by the road at the edge of the woods near Fern Ridge has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [1301.77, -190.45, 22.5],
+            "rot": 358,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

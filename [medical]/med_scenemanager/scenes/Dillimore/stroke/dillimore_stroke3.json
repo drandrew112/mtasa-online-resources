@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_stroke3",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [870.75, -580, 18.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, snoring breathing",
+        "description": "A man collapsed in a yard just outside Dillimore and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [870.75, -580, 18.23],
+            "rot": 359,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 215, "diastolic": 119, "consciousness": "unconscious" }
+        }
+    ]
+}

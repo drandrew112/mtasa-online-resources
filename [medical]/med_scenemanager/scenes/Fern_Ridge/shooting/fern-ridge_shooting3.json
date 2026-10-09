@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "fern-ridge_shooting3",
+    "category": "shooting",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [539.55, -64.22, 34.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire by the road at the edge of the woods in Fern Ridge. One young man is lying on the ground, another is crouching behind a truck with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 106,
+            "pos": [539.55, -64.22, 34.03],
+            "rot": 55,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 3962 }
+        },
+        {
+            "id": "p2",
+            "skin": 174,
+            "pos": [539.52, -66.42, 34.13],
+            "rot": 322,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

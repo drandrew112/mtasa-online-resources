@@ -1,0 +1,63 @@
+{
+    "format": 1,
+    "name": "lv_mva7",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2187.25, 1533.13, 9.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Royal Casino. The driver got out and is standing next to the car holding their side with a bump on the head and a headache. The passenger got out and is leaning on the car with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 426,
+            "pos": [2187.25, 1532.63, 10.742],
+            "rot": [0.03, 0.44, 83.47],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [200, 120, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV11 232",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [2182.334, 1530.141, 10.785],
+            "rot": 116.9,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 76,
+            "pos": [2187.581, 1535.52, 10.787],
+            "rot": 353.5,
+            "anim": "lean",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

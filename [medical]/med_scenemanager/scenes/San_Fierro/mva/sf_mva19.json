@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "sf_mva19",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2116.23, 497.13, 34.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sideswipe collision",
+        "description": "Two cars sideswiped each other and one lost control in King's. The driver of the first car is lying face down next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the second car is still in the seat with a painful rib and some cuts.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 600,
+            "pos": [-2115.31, 501.88, 34.888],
+            "rot": [0, 0, 244.19],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF56 863",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 602,
+            "pos": [-2113.347, 504.109, 34.946],
+            "rot": [0, 0, 254.81],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF25 312",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 250,
+            "pos": [-2116.23, 497.13, 35.172],
+            "rot": 0.2,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 46,
+            "pos": [-2113.347, 504.109, 35.2],
+            "rot": 254.81,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

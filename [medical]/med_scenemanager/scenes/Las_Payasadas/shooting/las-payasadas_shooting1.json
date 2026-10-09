@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-payasadas_shooting1",
+    "category": "shooting",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-197, 2670, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast on open scrubland in Las Payasadas. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-197, 2670, 62.69],
+            "rot": 298,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4241, "spo2": 89 }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "fort-carson_heartattack5",
     "category": "heartattack",
+    "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
     "center": [-108.504, 1158.143, 19.741],

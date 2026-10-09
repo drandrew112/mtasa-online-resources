@@ -1,0 +1,109 @@
+{
+    "format": 1,
+    "name": "regular-tom_mci1",
+    "category": "mci",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-404.61, 1727.25, 41.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision, drivers hurt",
+        "description": "Two cars hit head-on at a junction in Regular Tom. One driver is stuck in his seat with a crushed leg, the other driver and a passenger got out and are hurt.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 479,
+            "pos": [-404.61, 1727.25, 41.37],
+            "rot": [0, 0, 24.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC82 387",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 600,
+            "pos": [-400.67, 1733.15, 41.37],
+            "rot": [0, 0, 94],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC68 388",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-404.61, 1727.25, 41.62],
+            "rot": 29,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3799, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 56,
+            "pos": [-405.81, 1734.7, 41.62],
+            "rot": 164,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 128,
+            "pos": [-401.78, 1730.92, 41.62],
+            "rot": 255,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 201,
+            "pos": [-404.41, 1735.18, 41.62],
+            "rot": 137,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

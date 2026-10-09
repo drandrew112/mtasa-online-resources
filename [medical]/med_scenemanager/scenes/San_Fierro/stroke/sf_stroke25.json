@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke25",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2245, -128.25, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother suddenly confused",
+        "description": "A grandmother out with her grandson in front of an apartment block in Garcia suddenly stopped making sense and her mouth looks crooked. The boy called from her phone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-2245, -128.25, 35.32],
+            "rot": 89,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 185, "consciousness": "confused" }
+        }
+    ]
+}

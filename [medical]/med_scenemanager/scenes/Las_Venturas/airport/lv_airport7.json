@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "lv_airport7",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1519, 1466, 10.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Ground worker hit by a tug",
+        "description": "A pushback tug reversed into a ground worker on the apron at Las Venturas Airport. He is lying on the concrete with a crushed foot and a cut to his head. The tug driver is with him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 485,
+            "pos": [1521.09, 1469.41, 10.72],
+            "rot": [0, 0, 76.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV29 431",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 71,
+            "pos": [1519, 1466, 10.87],
+            "rot": 229,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 28 }
+        }
+    ]
+}

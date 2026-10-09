@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke13",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2759, 2166, 9.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend on the grass in Creek stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 63,
+            "pos": [2759, 2166, 9.71],
+            "rot": 11,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 187 }
+        }
+    ]
+}

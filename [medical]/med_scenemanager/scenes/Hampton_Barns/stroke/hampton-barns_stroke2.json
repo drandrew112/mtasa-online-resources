@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_stroke2",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [795.75, 240, 34.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend on farmland near Hampton Barns stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [795.75, 240, 34.82],
+            "rot": 207,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 177 }
+        }
+    ]
+}

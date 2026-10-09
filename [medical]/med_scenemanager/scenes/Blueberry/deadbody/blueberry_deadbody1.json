@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_deadbody1",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-30, -430, 2.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying in the park just outside Blueberry. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 223,
+            "pos": [-30, -430, 2.48],
+            "rot": 297,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

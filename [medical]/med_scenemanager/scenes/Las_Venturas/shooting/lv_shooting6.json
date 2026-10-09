@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "lv_shooting6",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [883.04, 1028.33, 16.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire by the roadside in Las Venturas. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [883.04, 1028.33, 16.8],
+            "rot": 275,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 3990 }
+        },
+        {
+            "id": "p2",
+            "skin": 115,
+            "pos": [882.03, 1030.29, 17.33],
+            "rot": 318,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

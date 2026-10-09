@@ -1,0 +1,87 @@
+{
+    "format": 1,
+    "name": "ls_mva20",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1412.83, -2045.27, 52.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Verdant Bluffs. The driver of the first car is lying on their back next to the car with a broken rib and a cut on the head. The driver of the second car is still in the seat with a head injury and a painful collarbone.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 418,
+            "pos": [1411.85, -2040.36, 53.778],
+            "rot": [-4.19, -0.32, 294.86],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS60 635",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 400,
+            "pos": [1406.307, -2042.475, 54.108],
+            "rot": [-3.38, -0.27, 298.53],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS45 882",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [1412.83, -2045.27, 53.874],
+            "rot": 29.6,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 7,
+            "pos": [1406.307, -2042.475, 54.36],
+            "rot": 298.53,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "fern-ridge_heartattack1",
     "category": "heartattack",
+    "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
     "center": [1256.412, 7.682, 26.944],

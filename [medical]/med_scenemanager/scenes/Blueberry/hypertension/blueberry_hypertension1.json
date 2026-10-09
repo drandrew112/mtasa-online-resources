@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_hypertension1",
+    "category": "hypertension",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [284.93, 68.59, 2.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache, vomiting",
+        "description": "A woman next to the country road in Blueberry has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 214,
+            "pos": [284.93, 68.59, 2.67],
+            "rot": 208,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 58,
+                "systolic": 224,
+                "diastolic": 126,
+                "heartRate": 103,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

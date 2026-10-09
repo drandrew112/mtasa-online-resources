@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hitbycar3",
+    "category": "hitbycar",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-825.86, 1366.48, 13.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a reversing car",
+        "description": "A woman was hit by a car reversing out of a parking spot next to the country road near Las Barrancas. She fell on her side and her elbow is swollen and scraped.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 554,
+            "pos": [-820.93, 1364.18, 13.46],
+            "rot": [0, 0, 210.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR29 302",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [-825.86, 1366.48, 13.5],
+            "rot": 356,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 26 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_overdose1",
+    "category": "overdose",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2380, 40, 27.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man on the grass in Palomino Creek took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [2380, 40, 27.13],
+            "rot": 293,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 164, "heartRate": 155 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_hypertension1",
+    "category": "hypertension",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [18.89, 1105.72, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, very high pressure",
+        "description": "An old woman outside a small store in Fort Carson is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [18.89, 1105.72, 19.74],
+            "rot": 217,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 233, "diastolic": 136, "heartRate": 88, "consciousness": "dazed" }
+        }
+    ]
+}

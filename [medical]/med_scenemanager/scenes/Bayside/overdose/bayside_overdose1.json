@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_overdose1",
+    "category": "overdose",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2370.81, 2433.44, 8.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Took too many sleeping pills",
+        "description": "An old man next to the country road in Bayside took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-2370.81, 2433.44, 8.8],
+            "rot": 164,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

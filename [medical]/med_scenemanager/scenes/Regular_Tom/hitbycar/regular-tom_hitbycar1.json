@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "regular-tom_hitbycar1",
+    "category": "hitbycar",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-430.61, 1778.05, 71.79],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder hit by a car",
+        "description": "A teenager on a skateboard shot off the curb and into the side of a car outside a house just outside Regular Tom. His leg is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 475,
+            "pos": [-431.21, 1771.23, 71.68],
+            "rot": [0, 0, 148.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC80 401",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [-430.61, 1778.05, 71.79],
+            "rot": 256,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

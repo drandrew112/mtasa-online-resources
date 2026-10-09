@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke23",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2801.87, -37.23, 7.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend on the sidewalk in Ocean Flats stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [-2801.87, -37.23, 7.17],
+            "rot": 84,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

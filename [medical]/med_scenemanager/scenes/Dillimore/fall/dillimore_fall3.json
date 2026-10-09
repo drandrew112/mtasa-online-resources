@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_fall3",
+    "category": "fall",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [674.63, -628.75, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man on blood thinners fell",
+        "description": "An old man slipped on the main street in Dillimore and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [674.63, -628.75, 16.34],
+            "rot": 249,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

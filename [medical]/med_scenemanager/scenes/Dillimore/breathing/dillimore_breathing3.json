@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_breathing3",
+    "category": "breathing",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [654.94, -653.81, 16.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma attack, inhaler empty",
+        "description": "A woman on the sidewalk in Dillimore is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [654.94, -653.81, 16.59],
+            "rot": 208,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 88 }
+        }
+    ]
+}

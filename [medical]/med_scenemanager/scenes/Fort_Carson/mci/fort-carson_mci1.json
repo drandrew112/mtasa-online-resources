@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "fort-carson_mci1",
+    "category": "mci",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-291.5, 812.48, 14.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV rolled over, passengers out",
+        "description": "An SUV clipped another car and rolled over at the crossroads near Fort Carson. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 527,
+            "pos": [-294.72, 815.26, 14.64],
+            "rot": [0, 0, 213.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC56 244",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 479,
+            "pos": [-290.74, 808.04, 14.64],
+            "rot": [0, 0, 17.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC94 245",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 536,
+            "pos": [-296.41, 822.05, 14.74],
+            "rot": [0, 0, 198],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC76 246",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [-291.5, 812.48, 14.89],
+            "rot": 293,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4024, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 226,
+            "pos": [-291.35, 815.18, 14.89],
+            "rot": 134,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 234,
+            "pos": [-290.36, 811.46, 14.89],
+            "rot": 304,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 51 }
+        }
+    ]
+}

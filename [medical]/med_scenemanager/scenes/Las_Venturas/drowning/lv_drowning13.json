@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning13",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2139, 1226, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Peanut allergy, cannot breathe",
+        "description": "A young woman on a bench near the Camel's Toe ate a snack with peanuts. Her face is swollen, she has hives and is struggling to breathe. Her adrenaline pen is empty.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [2139, 1226, 10.82],
+            "rot": 336,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 80, "systolic": 88, "heartRate": 134 }
+        }
+    ]
+}

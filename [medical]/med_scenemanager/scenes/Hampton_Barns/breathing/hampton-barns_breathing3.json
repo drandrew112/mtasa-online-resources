@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_breathing3",
+    "category": "breathing",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [750, 280, 27.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "COPD flare, lips blue",
+        "description": "An old man with emphysema on farmland in Hampton Barns ran out of oxygen in his portable tank. He is very drowsy and his lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [750, 280, 27.38],
+            "rot": 38,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "spo2": 77, "consciousness": "dazed" }
+        }
+    ]
+}

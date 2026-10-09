@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_drowning21",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2194.37, 1322, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man slipped off the rocks",
+        "description": "An old man slipped off the wet rocks into the water. He climbed out by himself and is now on the waterfront promenade in Calton Heights, coughing, with a painful wrist.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 132,
+            "pos": [-2194.37, 1322, 7.19],
+            "rot": 28,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "spo2": 88 }
+        }
+    ]
+}

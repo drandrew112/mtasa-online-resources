@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting22",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1996.82, 2749.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing car towards the sidewalk in Prickle Pine. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [1996.82, 2749.5, 10.82],
+            "rot": 151,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4081, "pain": 41 }
+        }
+    ]
+}

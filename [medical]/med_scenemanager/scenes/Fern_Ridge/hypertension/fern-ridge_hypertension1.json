@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "fern-ridge_hypertension1",
+    "category": "hypertension",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [516.07, -160.48, 37.78],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache, vomiting",
+        "description": "A woman by the road at the edge of the woods near Fern Ridge has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [516.07, -160.48, 37.78],
+            "rot": 242,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 56,
+                "systolic": 209,
+                "diastolic": 133,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

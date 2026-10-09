@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing15",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [834.13, -1791.37, 13.9],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Worker breathed in fumes",
-        "description": "A worker cleaning a tank on the sidewalk in Marina breathed in chemical fumes. He is coughing non-stop, his eyes are streaming and he feels tight in the chest. Coworkers moved him to fresh air.",
+        "description": "A worker cleaning a tank in Marina breathed in chemical fumes. He is coughing non-stop, his eyes are streaming and he feels tight in the chest. Coworkers moved him to fresh air.",
         "caller": "SceneManager",
         "priority": 2
     },

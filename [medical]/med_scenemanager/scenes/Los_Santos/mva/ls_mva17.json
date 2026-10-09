@@ -1,0 +1,55 @@
+{
+    "format": 1,
+    "name": "ls_mva17",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1338.27, -2401.22, 12.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ran off the road",
+        "description": "A single car left the road and crashed at the curb. The driver is still in the seat with a head injury and a painful leg.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 529,
+            "pos": [1335.04, -2398.75, 13.186],
+            "rot": [2.35, 0, 308.85],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS10 992",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [1335.04, -2398.75, 13.44],
+            "rot": 308.85,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,109 @@
+{
+    "format": 1,
+    "name": "fern-ridge_mci2",
+    "category": "mci",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [520.08, 154.48, 23.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision, drivers hurt",
+        "description": "Two cars hit head-on at the crossroads near Fern Ridge. One driver is stuck in his seat with a crushed leg, the other driver and a passenger got out and are hurt.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 579,
+            "pos": [520.08, 154.48, 23.52],
+            "rot": [0, 0, 209.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC14 232",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 529,
+            "pos": [520.97, 146.02, 23.52],
+            "rot": [0, 0, 353.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC92 233",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [520.08, 154.48, 23.77],
+            "rot": 235,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3880, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 91,
+            "pos": [523, 154.17, 23.77],
+            "rot": 232,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 240,
+            "pos": [523.52, 149.34, 23.77],
+            "rot": 66,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 172,
+            "pos": [524.04, 148.15, 23.77],
+            "rot": 132,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

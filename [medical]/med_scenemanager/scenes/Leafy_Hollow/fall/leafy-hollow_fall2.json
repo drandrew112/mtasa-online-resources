@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_fall2",
+    "category": "fall",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1066.21, -1651.76, 76.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards at the edge of the woods in Leafy Hollow and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-1066.21, -1651.76, 76.56],
+            "rot": 269,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

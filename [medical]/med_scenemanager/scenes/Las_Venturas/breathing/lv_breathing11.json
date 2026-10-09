@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing11",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1556.58, 2241.31, 11.05],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot finish a sentence",
+        "description": "A man at the side of the road in Redsands West cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [1556.58, 2241.31, 11.05],
+            "rot": 249,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 86, "heartRate": 135 }
+        }
+    ]
+}

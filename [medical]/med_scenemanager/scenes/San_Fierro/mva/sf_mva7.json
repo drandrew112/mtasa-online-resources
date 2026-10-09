@@ -1,0 +1,89 @@
+{
+    "format": 1,
+    "name": "sf_mva7",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2743.37, 681.65, 39.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision",
+        "description": "Two cars collided head-on in Palisades. The driver of the first car is still in the seat, unconscious, with multiple injuries and heavy bleeding. The driver of the second car is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 527,
+            "pos": [-2748.5, 681.97, 40.542],
+            "rot": [0, -0.08, 0.34],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF31 806",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 492,
+            "pos": [-2749.157, 688.418, 41.055],
+            "rot": [0, 0, 177.92],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [200, 120, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF67 652",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [-2748.5, 681.97, 40.79],
+            "rot": 0.34,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 20,
+            "pos": [-2749.157, 688.418, 41.31],
+            "rot": 177.92,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

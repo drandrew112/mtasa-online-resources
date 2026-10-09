@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "dillimore_motorcycle3",
+    "category": "motorcycle",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [881.36, -551.08, 20.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider hit an opening car door",
+        "description": "A driver opened his door without looking on the road shoulder near Dillimore and a motorcyclist slammed into it. The rider is sitting on the road holding his shoulder.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 463,
+            "pos": [879.93, -556.17, 20.14],
+            "rot": [0, 0, 206.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC52 170",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 410,
+            "pos": [883.59, -553.83, 20.34],
+            "rot": [0, 0, 112.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC33 171",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [881.36, -551.08, 20.55],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 34 }
+        }
+    ]
+}

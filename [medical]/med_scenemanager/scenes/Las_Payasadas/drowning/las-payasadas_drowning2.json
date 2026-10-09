@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_drowning2",
+    "category": "drowning",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-180, 2770, 61.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen pulled from the creek",
+        "description": "Friends pulled a teenager out of the creek after he jumped in from a rope swing. They carried him up on open scrubland in Las Payasadas. He is gasping and drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-180, 2770, 61.33],
+            "rot": 67,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+{
+    "format": 1,
+    "name": "lv_mva14",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2481.14, 1663.24, 9.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car hit a parked car",
+        "description": "A car swerved into a parked car at the curb in Pilgrim. The driver of the first car is lying on the ground in pain with a broken leg and a bleeding wound. The driver of the second car got out and is sitting on the ground with a possible broken collarbone.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 603,
+            "pos": [2480.08, 1660.19, 10.853],
+            "rot": [0, 0, 68.53],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV25 486",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 489,
+            "pos": [2486.302, 1658.059, 11.21],
+            "rot": [0, 0, 80.32],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV38 978",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [2481.14, 1663.24, 10.977],
+            "rot": 160.8,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 30,
+            "pos": [2490.204, 1654.471, 10.82],
+            "rot": 227.4,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

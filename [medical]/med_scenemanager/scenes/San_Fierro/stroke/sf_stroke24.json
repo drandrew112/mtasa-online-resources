@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke24",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2355.91, 54.81, 35.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found on the ground, cannot speak",
+        "description": "A dog walker found an elderly woman lying at a bus stop in Garcia. She is awake and looks at people but cannot speak, and her right side is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-2355.91, 54.81, 35.31],
+            "rot": 188,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 197, "consciousness": "dazed" }
+        }
+    ]
+}

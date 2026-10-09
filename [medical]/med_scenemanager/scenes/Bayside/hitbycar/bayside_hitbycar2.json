@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "bayside_hitbycar2",
+    "category": "hitbycar",
+    "location": "Bayside Marina",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2309.9, 2364.5, 5.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man knocked down by a pickup",
+        "description": "A pickup knocked down an old man on the road shoulder near Bayside. He hit the windscreen, is dazed and has a large bleeding wound on his forehead.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 536,
+            "pos": [-2303.47, 2364.01, 5.42],
+            "rot": [0, 0, 238.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR45 134",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [-2309.9, 2364.5, 5.55],
+            "rot": 280,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke8",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2159.75, -29.12, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Face drooping, slurred speech",
+        "description": "A man at a bus stop in Garcia suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-2159.75, -29.12, 35.32],
+            "rot": 56,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 182 }
+        }
+    ]
+}

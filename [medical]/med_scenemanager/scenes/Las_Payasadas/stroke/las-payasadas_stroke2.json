@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_stroke2",
+    "category": "stroke",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-320, 2730, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young woman, sudden weakness",
+        "description": "A young woman on the dusty ground in Las Payasadas says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [-320, 2730, 62.69],
+            "rot": 223,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

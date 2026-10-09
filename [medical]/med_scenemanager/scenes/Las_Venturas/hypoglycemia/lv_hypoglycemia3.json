@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [977.25, 2381.57, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aggressive, sweaty man",
+        "description": "A passer-by next to the road near the Whitewood Estates reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [977.25, 2381.57, 10.82],
+            "rot": 355,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 38, "consciousness": "confused" }
+        }
+    ]
+}

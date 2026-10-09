@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "angel-pine_stroke3",
+    "category": "stroke",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1909.82, -2580.61, 61.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver seeing double",
+        "description": "A delivery driver stopped his van by the road at the edge of the woods near Angel Pine because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 482,
+            "pos": [-1906.9, -2582.98, 61.21],
+            "rot": [0, 0, 103.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS13 136",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [-1909.82, -2580.61, 61.13],
+            "rot": 139,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 190 }
+        }
+    ]
+}

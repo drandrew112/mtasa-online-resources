@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2247.75, 2357.38, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting strange, sweaty",
+        "description": "A woman at a bus stop near the Emerald Isle is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [2247.75, 2357.38, 10.82],
+            "rot": 25,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 45, "heartRate": 112, "consciousness": "confused" }
+        }
+    ]
+}

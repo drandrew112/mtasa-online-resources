@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing12",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2000.13, -1925.25, 13.55],
@@ -22,7 +23,7 @@
             "rot": 198,
             "anim": "sit",
             "injuries": [],
-            "state": { "heartRate": 118, "spo2": 99 }
+            "state": { "spo2": 99, "heartRate": 118 }
         }
     ]
 }

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes16",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2674, 789.68, 49.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man by the roadside in Santa Flora very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [-2674, 789.68, 49.98],
+            "rot": 153,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3731, "glucose": 728, "consciousness": "dazed" }
+        }
+    ]
+}

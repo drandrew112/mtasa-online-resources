@@ -1,0 +1,95 @@
+{
+    "format": 1,
+    "name": "sf_mci5",
+    "category": "mci",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1714.63, 1299.08, 7.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Taxi and car collision",
+        "description": "A taxi ran a red light at a junction in Esplanade North and was hit by another car. The taxi driver and two passengers are injured, one of them is unconscious.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 565,
+            "pos": [-1719.2, 1303.71, 7.06],
+            "rot": [0, 0, 255.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF94 315",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 420,
+            "pos": [-1719.61, 1297.75, 7.06],
+            "rot": [0, 0, 301.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF39 316",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 223,
+            "pos": [-1714.63, 1299.08, 7.31],
+            "rot": 308,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 140,
+            "pos": [-1712.64, 1300.49, 7.31],
+            "rot": 21,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 36 }
+        },
+        {
+            "id": "p3",
+            "skin": 154,
+            "pos": [-1716.08, 1296.7, 7.31],
+            "rot": 17,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

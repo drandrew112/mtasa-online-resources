@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_breathing3",
+    "category": "breathing",
+    "location": "Bayside Marina",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2240, 2340, 4.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An elderly woman on open ground near Bayside is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-2240, 2340, 4.98],
+            "rot": 292,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 82, "systolic": 185, "heartRate": 122 }
+        }
+    ]
+}

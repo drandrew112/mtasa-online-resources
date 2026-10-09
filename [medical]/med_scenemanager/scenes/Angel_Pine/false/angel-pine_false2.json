@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "angel-pine_false2",
+    "category": "false",
+    "location": "Mount Chiliad",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2326, -2174.87, 36.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child not breathing",
+        "description": "A young-sounding caller says a child is not breathing at the crossroads near Angel Pine, then laughs and hangs up. The callback goes to voicemail.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

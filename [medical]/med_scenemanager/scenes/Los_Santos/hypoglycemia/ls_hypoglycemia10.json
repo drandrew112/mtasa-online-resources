@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia10",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2598.24, -998.5, 77.27],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Acting drunk, sweaty",
-        "description": "A security guard at the side of the road in Las Colinas reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and smells of nothing. She is getting more confused.",
+        "description": "A security guard in Las Colinas reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and does not smell of alcohol. She is getting more confused.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -22,7 +23,7 @@
             "rot": 41,
             "anim": "drunk",
             "injuries": [],
-            "state": { "consciousness": "confused", "glucose": 42, "heartRate": 112 }
+            "state": { "glucose": 42, "heartRate": 112, "consciousness": "confused" }
         }
     ]
 }

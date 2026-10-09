@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_drowning25",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2116.97, 1946.98, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jumped from the railing",
+        "description": "A young man jumped into the water from the railing and hit it badly. Friends dragged him out and he is now lying at the water's edge on The Strip, dazed and gasping.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [2116.97, 1946.98, 10.82],
+            "rot": 195,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "spo2": 85, "consciousness": "dazed" }
+        }
+    ]
+}

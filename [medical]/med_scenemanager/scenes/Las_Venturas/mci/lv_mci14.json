@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "lv_mci14",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1867.42, 659.25, 10.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "A city bus and a car collided at a junction near the Last Dime Motel. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 431,
+            "pos": [1861.37, 657.31, 11.37],
+            "rot": [0, 0, 292.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV11 337",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 507,
+            "pos": [1868.48, 650.97, 10.72],
+            "rot": [0, 0, 345.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV12 338",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [1868.93, 659.68, 10.97],
+            "rot": 240,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4099, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 31,
+            "pos": [1868.71, 661.92, 10.97],
+            "rot": 227,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 37 }
+        },
+        {
+            "id": "p3",
+            "skin": 234,
+            "pos": [1870.39, 660.16, 10.97],
+            "rot": 70,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 41,
+            "pos": [1870.28, 655.01, 10.97],
+            "rot": 5,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 202,
+            "pos": [1867.73, 660.77, 10.97],
+            "rot": 228,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

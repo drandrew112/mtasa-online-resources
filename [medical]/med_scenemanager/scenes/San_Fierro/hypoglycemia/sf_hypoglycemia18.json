@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia18",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2407, 1215, 34.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother slurring her words",
+        "description": "A grandmother on the grass in Juniper Hollow is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-2407, 1215, 34.32],
+            "rot": 150,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 34, "consciousness": "confused" }
+        }
+    ]
+}

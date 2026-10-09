@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_drowning5",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2874.32, -1579.78, 11.08],
@@ -25,7 +26,7 @@
                 { "type": "suffocation", "severity": 1 },
                 { "type": "alcohol", "severity": 2 }
             ],
-            "state": { "consciousness": "confused", "spo2": 88 }
+            "state": { "spo2": 88, "consciousness": "confused" }
         }
     ]
 }

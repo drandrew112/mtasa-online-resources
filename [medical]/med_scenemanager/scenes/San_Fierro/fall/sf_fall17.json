@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_fall17",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1407, 35, 14.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from stacked luggage carts",
+        "description": "A young man climbed onto a stack of luggage carts outside the terminal at Easter Bay Airport and fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [-1407, 35, 14.55],
+            "rot": 79,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "lv_mci2",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1447.29, 655.5, 11.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Street race crashed into traffic",
+        "description": "Two racing cars crashed into normal traffic in the middle of an intersection near the Blackfield Chapel. Four people are injured, one racer was thrown out of his car and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 477,
+            "pos": [1443.25, 653, 10.77],
+            "rot": [0, 0, 300],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV34 306",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 410,
+            "pos": [1451.75, 653, 10.77],
+            "rot": [0, 0, 71.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV17 307",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 541,
+            "pos": [1436.25, 653, 10.87],
+            "rot": [0, 0, 264.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV69 308",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [1447.15, 655.48, 11.02],
+            "rot": 7,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3638, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 115,
+            "pos": [1444.45, 656.45, 11.02],
+            "rot": 102,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 12,
+            "pos": [1450.14, 656.04, 11.02],
+            "rot": 142,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 234,
+            "pos": [1448.67, 655.7, 11.02],
+            "rot": 302,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

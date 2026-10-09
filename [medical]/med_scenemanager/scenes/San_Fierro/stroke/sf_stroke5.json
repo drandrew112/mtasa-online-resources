@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke5",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2698.5, -288.32, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found on the ground, cannot speak",
+        "description": "A dog walker found an elderly woman lying on the sidewalk in Avispa Country Club. She is awake and looks at people but cannot speak, and her right side is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-2698.5, -288.32, 7.19],
+            "rot": 30,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 203, "consciousness": "dazed" }
+        }
+    ]
+}

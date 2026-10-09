@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_breathing1",
+    "category": "breathing",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-900, 2690, 45.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, still wheezing",
+        "description": "A man on open scrubland in Valle Ocultado choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-900, 2690, 45.15],
+            "rot": 295,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 85 }
+        }
+    ]
+}

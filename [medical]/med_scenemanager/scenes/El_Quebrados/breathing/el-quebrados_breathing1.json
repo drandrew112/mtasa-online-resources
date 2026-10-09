@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_breathing1",
+    "category": "breathing",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1571.12, 2678.05, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man at the side of the road in El Quebrados pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [-1571.12, 2678.05, 55.84],
+            "rot": 169,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 93 }
+        }
+    ]
+}

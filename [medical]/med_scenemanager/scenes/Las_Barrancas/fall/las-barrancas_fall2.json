@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-barrancas_fall2",
+    "category": "fall",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-768.59, 1584.69, 27.04],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a tractor",
+        "description": "A farmer fell off his tractor by the dusty roadside in Las Barrancas and the rear wheel rolled over his leg. His leg is crushed and bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-768.59, 1584.69, 27.04],
+            "rot": 202,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4079, "pain": 53 }
+        }
+    ]
+}

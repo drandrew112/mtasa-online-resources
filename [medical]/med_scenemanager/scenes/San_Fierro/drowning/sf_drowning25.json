@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_drowning25",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2755.63, 1302.37, 6.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dived into shallow water",
+        "description": "A young man dived off the sea wall into shallow water and hit it badly. Friends dragged him out and he is now lying on the waterfront promenade in Palisades, dazed and gasping.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 142,
+            "pos": [-2755.63, 1302.37, 6.52],
+            "rot": 176,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "spo2": 81, "consciousness": "dazed" }
+        }
+    ]
+}

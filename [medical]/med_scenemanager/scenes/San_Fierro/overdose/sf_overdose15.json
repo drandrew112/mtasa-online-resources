@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose15",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2614.06, -496.25, 72.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated",
+        "description": "A man at a bus stop in Missionary Hill is shouting at cars, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [-2614.06, -496.25, 72.17],
+            "rot": 160,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 196, "diastolic": 116, "heartRate": 167, "consciousness": "confused" }
+        }
+    ]
+}

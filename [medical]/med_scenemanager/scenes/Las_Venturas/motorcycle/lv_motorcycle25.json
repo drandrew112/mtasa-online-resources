@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle25",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2029.75, 2453.13, 10.93],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on spilled oil",
+        "description": "A woman on a scooter slipped on a patch of spilled oil at a busy crossroads near the Emerald Isle and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [2027.25, 2455.63, 10.38],
+            "rot": [0, 0, 76.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV24 401",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [2029.75, 2453.13, 10.93],
+            "rot": 194,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

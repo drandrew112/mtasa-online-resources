@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "bayside_fall2",
+    "category": "fall",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2760, 2400, 86.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown from a horse",
+        "description": "A woman was thrown from her horse in a yard just outside Bayside and landed on her back. She is in severe pain and says her legs feel tingly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-2760, 2400, 86.62],
+            "rot": 6,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 46 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "angel-pine_fall3",
+    "category": "fall",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1927.24, -2549.94, 39.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder crashed at speed",
+        "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt by the road at the edge of the woods near Angel Pine. His wrist is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [-1927.24, -2549.94, 39.48],
+            "rot": 58,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

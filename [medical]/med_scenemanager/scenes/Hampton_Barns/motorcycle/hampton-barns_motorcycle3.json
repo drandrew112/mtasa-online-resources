@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "hampton-barns_motorcycle3",
+    "category": "motorcycle",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [686.09, 307.35, 19.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "No helmet, head injury",
+        "description": "A young rider without a helmet crashed at the side of the road in Hampton Barns while doing a wheelie. He is lying on the road, unconscious, bleeding from the ear.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 521,
+            "pos": [688.26, 310.99, 19.53],
+            "rot": [0, 0, 24.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC91 287",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [686.09, 307.35, 19.95],
+            "rot": 52,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

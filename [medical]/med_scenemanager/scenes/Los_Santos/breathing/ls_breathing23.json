@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing23",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2274, -2082, 13.55],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "asthma", "severity": 3 }
             ],
-            "state": { "consciousness": "dazed", "heartRate": 132, "spo2": 78 }
+            "state": { "spo2": 78, "heartRate": 132, "consciousness": "dazed" }
         }
     ]
 }

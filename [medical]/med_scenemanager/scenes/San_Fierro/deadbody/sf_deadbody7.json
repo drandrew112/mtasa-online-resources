@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_deadbody7",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2408.65, 316.1, 35.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found after a fall from height",
+        "description": "Residents found a man lying in front of an apartment block in Queens below a tall building. His injuries are severe and he has not moved since they found him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [-2408.65, 316.1, 35.17],
+            "rot": 218,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

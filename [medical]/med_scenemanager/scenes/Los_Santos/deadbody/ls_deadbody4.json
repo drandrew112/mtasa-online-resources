@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_deadbody4",
     "category": "deadbody",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2120.13, -1578.12, 26.22],

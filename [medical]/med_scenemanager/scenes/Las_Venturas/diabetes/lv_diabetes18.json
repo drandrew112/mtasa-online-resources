@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes18",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2280.38, 685, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Tourist lost his insulin",
+        "description": "A tourist outside a wedding chapel in Rockshore West lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 97,
+            "pos": [2280.38, 685, 10.82],
+            "rot": 287,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4116, "glucose": 456 }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "hampton-barns_heartattack2",
     "category": "heartattack",
+    "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
     "center": [600.197, 310.909, 19.683],

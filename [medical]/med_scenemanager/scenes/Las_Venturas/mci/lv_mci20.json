@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "lv_mci20",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2389.75, 2513.13, 11.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "A city bus and a car collided at a junction in Roca Escalante. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 431,
+            "pos": [2388.13, 2519.01, 11.46],
+            "rot": [0, 0, 204],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV67 353",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 517,
+            "pos": [2381.55, 2512.06, 10.81],
+            "rot": [0, 0, 244.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV57 354",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [2389.46, 2511.31, 11.06],
+            "rot": 146,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3988, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 130,
+            "pos": [2390.86, 2511.88, 11.06],
+            "rot": 319,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 38 }
+        },
+        {
+            "id": "p3",
+            "skin": 168,
+            "pos": [2390.64, 2510.18, 11.06],
+            "rot": 270,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 92,
+            "pos": [2385.66, 2510.37, 11.06],
+            "rot": 12,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 206,
+            "pos": [2392, 2512.92, 11.06],
+            "rot": 256,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

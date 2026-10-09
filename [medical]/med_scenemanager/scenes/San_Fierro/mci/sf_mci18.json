@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "sf_mci18",
+    "category": "mci",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1640.85, -786.29, 44.85],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Street race crashed into traffic",
+        "description": "Two racing cars crashed into normal traffic on the road in Easter Tunnel. Four people are injured, one racer was thrown out of his car and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 411,
+            "pos": [-1639.51, -783.24, 45.62],
+            "rot": [0, 0, 249.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF60 349",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 565,
+            "pos": [-1634.1, -785.34, 46.1],
+            "rot": [0, 0, 213.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF57 350",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 426,
+            "pos": [-1645.04, -780.91, 46.11],
+            "rot": [0, 0, 255.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF79 351",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 115,
+            "pos": [-1640.85, -786.29, 44.85],
+            "rot": 5,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3756, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 23,
+            "pos": [-1638.1, -787.5, 45.2],
+            "rot": 309,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 225,
+            "pos": [-1643.6, -785.08, 45.2],
+            "rot": 332,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 44,
+            "pos": [-1635.36, -788.7, 45.44],
+            "rot": 205,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

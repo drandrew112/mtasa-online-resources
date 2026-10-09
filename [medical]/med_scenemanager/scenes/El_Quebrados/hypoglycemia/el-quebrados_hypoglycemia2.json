@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1381.41, 2630.51, 59.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting strange, sweaty",
+        "description": "A woman on open scrubland in El Quebrados is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-1381.41, 2630.51, 59.66],
+            "rot": 247,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 45, "heartRate": 107, "consciousness": "confused" }
+        }
+    ]
+}

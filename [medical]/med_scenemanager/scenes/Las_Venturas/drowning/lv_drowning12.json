@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning12",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1939, 1566, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out, not breathing",
+        "description": "A man was pulled out of the water and is lying by the water near Pirates in Men's Pants. He is not breathing and has no pulse. A casino security guard has started CPR.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [1939, 1566, 10.82],
+            "rot": 3,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 40, "rhythm": "PEA" }
+        }
+    ]
+}

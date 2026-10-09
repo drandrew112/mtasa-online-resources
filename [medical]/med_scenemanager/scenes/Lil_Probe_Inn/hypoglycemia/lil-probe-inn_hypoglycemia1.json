@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Lil' Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-90, 1410, 9.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sweaty and confused",
+        "description": "A woman on the dusty ground at the Lil' Probe Inn is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-90, 1410, 9.47],
+            "rot": 51,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 49, "consciousness": "confused" }
+        }
+    ]
+}

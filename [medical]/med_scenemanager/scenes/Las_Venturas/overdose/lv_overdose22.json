@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose22",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1666.25, 1280.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain after cocaine",
+        "description": "A man on the sidewalk at Las Venturas Airport says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [1666.25, 1280.63, 10.82],
+            "rot": 157,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 184, "heartRate": 139 }
+        }
+    ]
+}

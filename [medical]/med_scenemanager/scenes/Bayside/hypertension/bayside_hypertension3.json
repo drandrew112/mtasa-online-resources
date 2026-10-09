@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "bayside_hypertension3",
+    "category": "hypertension",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2680, 2640, 87.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy spell, missed meds",
+        "description": "A woman in a yard in Bayside had a dizzy spell and sat down on the ground. She says she forgot her blood pressure medication for three days.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-2680, 2640, 87.7],
+            "rot": 336,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 166, "diastolic": 97, "heartRate": 87, "consciousness": "stable" }
+        }
+    ]
+}

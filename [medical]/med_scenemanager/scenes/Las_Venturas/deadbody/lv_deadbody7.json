@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_deadbody7",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1684.61, 717.08, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot, no signs of life",
+        "description": "Police at the scene by the roadside near the Randolph Industrial Estate report a man with several gunshot wounds. He has no pulse and is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [1684.61, 717.08, 10.82],
+            "rot": 33,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

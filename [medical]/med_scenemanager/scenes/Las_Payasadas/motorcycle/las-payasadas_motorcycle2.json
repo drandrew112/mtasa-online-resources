@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "las-payasadas_motorcycle2",
+    "category": "motorcycle",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-292, 2703.63, 62.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Lost control in the bend",
+        "description": "A motorcyclist came over the hill far too fast, lost control at the crossroads in Las Payasadas and slid into the ditch. He is lying still, dazed, and does not know where he is.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [-294.5, 2701.13, 62.29],
+            "rot": [0, 0, 189.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC44 330",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-292, 2703.63, 62.84],
+            "rot": 212,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

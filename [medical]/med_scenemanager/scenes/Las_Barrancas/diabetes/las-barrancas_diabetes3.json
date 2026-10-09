@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_diabetes3",
+    "category": "diabetes",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-740, 1450, 16.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman sitting on open scrubland in Las Barrancas, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-740, 1450, 16.97],
+            "rot": 176,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3921, "glucose": 747 }
+        }
+    ]
+}

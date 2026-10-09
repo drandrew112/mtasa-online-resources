@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "bayside_diabetes3",
+    "category": "diabetes",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2675.61, 2241, 58.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man in a yard in Bayside very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-2675.61, 2241, 58.56],
+            "rot": 176,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3754, "glucose": 672, "consciousness": "dazed" }
+        }
+    ]
+}

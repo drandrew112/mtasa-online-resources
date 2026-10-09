@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypertension2",
+    "category": "hypertension",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2576.02, 34.63, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slurred speech, numb arm",
+        "description": "A man outside a house just outside Palomino Creek suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [2576.02, 34.63, 26.48],
+            "rot": 326,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 209,
+                "diastolic": 127,
+                "heartRate": 96,
+                "consciousness": "dazed"
+            }
+        }
+    ]
+}

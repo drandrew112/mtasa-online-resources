@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing4",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1946, -1253.87, 20.48],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "pulmonary_edema", "severity": 3 }
             ],
-            "state": { "consciousness": "confused", "heartRate": 134, "spo2": 76, "systolic": 206 }
+            "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
         }
     ]
 }

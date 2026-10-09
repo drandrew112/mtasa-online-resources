@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "sf_fall16",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1796.26, 53.09, 15.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a balcony",
+        "description": "A man fell from a third floor balcony outside a workshop in Easter Basin. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-1796.26, 53.09, 15.11],
+            "rot": 106,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3928, "consciousness": "unconscious" }
+        }
+    ]
+}

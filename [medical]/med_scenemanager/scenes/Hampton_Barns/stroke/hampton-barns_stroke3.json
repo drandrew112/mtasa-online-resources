@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_stroke3",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [648.6, 238.24, 26.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of her life",
+        "description": "A woman on farmland near Hampton Barns grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 85,
+            "pos": [648.6, 238.24, 26.34],
+            "rot": 214,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 207, "diastolic": 114, "consciousness": "dazed" }
+        }
+    ]
+}

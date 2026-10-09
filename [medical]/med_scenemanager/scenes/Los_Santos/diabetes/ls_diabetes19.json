@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_diabetes19",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2840.71, -1481.25, 11.24],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child sleepy and breathing fast",
-        "description": "A mother at a bus stop in East Beach says her son has had stomach ache and vomiting since the morning, drinks constantly and now is very sleepy. The child has never been tested for diabetes.",
+        "title": "Teen sleepy and breathing fast",
+        "description": "A mother at a bus stop in East Beach says her teenage son has had stomach ache and vomiting since the morning, drinks constantly and now is very sleepy. The teenager has never been tested for diabetes.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -22,7 +23,7 @@
             "rot": 164,
             "anim": "sit",
             "injuries": [],
-            "state": { "bloodVolume": 4000, "consciousness": "confused", "glucose": 490, "heartRate": 128 }
+            "state": { "bloodVolume": 4000, "glucose": 490, "heartRate": 128, "consciousness": "confused" }
         }
     ]
 }

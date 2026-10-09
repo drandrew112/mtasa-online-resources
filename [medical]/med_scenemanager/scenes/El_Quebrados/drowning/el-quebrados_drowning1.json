@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_drowning1",
+    "category": "drowning",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1403.29, 2696.3, 58.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed a fish bone",
+        "description": "An old fisherman on the road shoulder in El Quebrados has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-1403.29, 2696.3, 58.14],
+            "rot": 283,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

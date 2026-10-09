@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_false1",
+    "category": "false",
+    "location": "Verdant Meadows",
+    "enabled": true,
+    "weight": 1,
+    "center": [388.79, 2367.74, 25.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crash with people trapped",
+        "description": "An anonymous caller reports a bad crash with people trapped by the dusty roadside in Verdant Meadows. No other calls came in about it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

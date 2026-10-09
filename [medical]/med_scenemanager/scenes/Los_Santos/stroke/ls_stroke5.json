@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_stroke5",
     "category": "stroke",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2721.63, -2132.4, 11.09],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "stroke", "severity": 3 }
             ],
-            "state": { "consciousness": "unconscious", "diastolic": 120, "systolic": 214 }
+            "state": { "systolic": 214, "diastolic": 120, "consciousness": "unconscious" }
         }
     ]
 }

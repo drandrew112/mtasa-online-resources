@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "fort-carson_shooting2",
+    "category": "shooting",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [64.38, 1205.38, 18.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Store owner and customer shot",
+        "description": "An armed robbery at the general store went wrong outside a small store in Fort Carson. The store owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [64.38, 1205.38, 18.8],
+            "rot": 141,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3856 }
+        },
+        {
+            "id": "p2",
+            "skin": 201,
+            "pos": [66.58, 1205.38, 18.9],
+            "rot": 12,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

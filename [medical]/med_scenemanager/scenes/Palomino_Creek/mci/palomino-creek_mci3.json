@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "palomino-creek_mci3",
+    "category": "mci",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2223.75, 89.13, 26.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV rolled over, passengers out",
+        "description": "An SUV clipped another car and rolled over at a junction in Palomino Creek. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 489,
+            "pos": [2223.75, 95.63, 26.39],
+            "rot": [0, 0, 202.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC37 403",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 536,
+            "pos": [2219.55, 90.02, 26.39],
+            "rot": [0, 0, 280],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC72 404",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 600,
+            "pos": [2223.75, 102.63, 26.49],
+            "rot": [0, 0, 183.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC87 405",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [2223.75, 89.13, 26.64],
+            "rot": 246,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4102, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 41,
+            "pos": [2226.03, 88.91, 26.64],
+            "rot": 160,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 43,
+            "pos": [2222.24, 88.51, 26.64],
+            "rot": 330,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 54 }
+        }
+    ]
+}

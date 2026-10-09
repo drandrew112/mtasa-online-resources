@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_fall3",
+    "category": "fall",
+    "location": "Flint County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-750.44, -1607.62, 96.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder crashed at speed",
+        "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt on the road shoulder near Leafy Hollow. His wrist is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [-750.44, -1607.62, 96.14],
+            "rot": 83,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

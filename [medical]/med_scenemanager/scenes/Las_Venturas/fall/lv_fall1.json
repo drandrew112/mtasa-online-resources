@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall1",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2154.5, 810.63, 12.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Window cleaner fell from a ladder",
+        "description": "A window cleaner fell from her ladder at a bus stop near the Julius Thruway South. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [2154.5, 810.63, 12.74],
+            "rot": 52,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 45 }
+        }
+    ]
+}

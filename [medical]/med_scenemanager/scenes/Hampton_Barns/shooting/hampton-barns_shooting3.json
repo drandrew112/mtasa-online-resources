@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_shooting3",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [803.62, 206.78, 38.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot on the road shoulder near Hampton Barns. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [803.62, 206.78, 38.4],
+            "rot": 335,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

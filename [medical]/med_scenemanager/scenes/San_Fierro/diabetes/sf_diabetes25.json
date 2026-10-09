@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes25",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2014, 658.25, 42.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Student, fruity breath",
+        "description": "A student on the sidewalk in Downtown has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-2014, 658.25, 42.08],
+            "rot": 264,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "glucose": 488, "heartRate": 121 }
+        }
+    ]
+}

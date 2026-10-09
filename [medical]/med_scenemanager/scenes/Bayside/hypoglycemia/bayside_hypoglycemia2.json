@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "bayside_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2500, 2640, 61.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother slurring her words",
+        "description": "A grandmother on open ground in Bayside is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-2500, 2640, 61.77],
+            "rot": 228,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "confused" }
+        }
+    ]
+}

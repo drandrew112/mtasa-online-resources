@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_overdose12",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2032.55, 2423.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and wine, very sleepy",
+        "description": "A woman at the side of the road near the Emerald Isle mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 214,
+            "pos": [2032.55, 2423.13, 10.82],
+            "rot": 124,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 90, "consciousness": "dazed" }
+        }
+    ]
+}

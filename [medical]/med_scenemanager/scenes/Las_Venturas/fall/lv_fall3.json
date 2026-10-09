@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_fall3",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1159, 2506, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man on blood thinners fell",
+        "description": "An old man slipped in a small park in Prickle Pine and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [1159, 2506, 10.82],
+            "rot": 74,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

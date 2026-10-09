@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_deadbody1",
+    "category": "deadbody",
+    "location": "Richman",
+    "enabled": true,
+    "weight": 1,
+    "center": [611.73, -683.33, 11.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying in a yard just outside Dillimore where she usually walks her dog. She is cold and does not breathe.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 129,
+            "pos": [611.73, -683.33, 11.75],
+            "rot": 92,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

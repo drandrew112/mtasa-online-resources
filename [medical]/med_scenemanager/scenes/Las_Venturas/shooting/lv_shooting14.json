@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "lv_shooting14",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2579.67, 2005.18, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shop owner and customer shot",
+        "description": "An armed robbery went wrong outside a souvenir shop on Old Venturas Strip. The shop owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [2579.67, 2005.18, 10.82],
+            "rot": 278,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3867 }
+        },
+        {
+            "id": "p2",
+            "skin": 172,
+            "pos": [2578.12, 2006.74, 10.92],
+            "rot": 104,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

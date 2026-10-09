@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_breathing2",
+    "category": "breathing",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [353.32, -387.06, 18.35],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "COPD flare, lips blue",
+        "description": "An old man with emphysema by the road next to a farm near Blueberry ran out of oxygen in his portable tank. He is very drowsy and his lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [353.32, -387.06, 18.35],
+            "rot": 142,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "spo2": 77, "consciousness": "dazed" }
+        }
+    ]
+}

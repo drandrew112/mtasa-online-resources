@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_overdose1",
+    "category": "overdose",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-780, 2770, 50.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Took too many sleeping pills",
+        "description": "An old man on the dusty ground in Valle Ocultado took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [-780, 2770, 50.74],
+            "rot": 340,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

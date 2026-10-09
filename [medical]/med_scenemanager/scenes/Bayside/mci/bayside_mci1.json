@@ -1,0 +1,149 @@
+{
+    "format": 1,
+    "name": "bayside_mci1",
+    "category": "mci",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2615, 2335, 8.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Four-car pileup, several injured",
+        "description": "Four cars crashed into each other at a junction in Bayside after one braked suddenly for a deer. One driver is trapped behind the wheel, others are walking around dazed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 536,
+            "pos": [-2615, 2335, 8],
+            "rot": [0, 0, 206.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR86 103",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 527,
+            "pos": [-2615, 2326.5, 8],
+            "rot": [0, 0, 346.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR78 104",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 529,
+            "pos": [-2615, 2342, 8.1],
+            "rot": [0, 0, 174.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR67 105",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v4",
+            "model": 543,
+            "pos": [-2609, 2331, 8.35],
+            "rot": [0, 0, 70],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR83 106",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [-2615, 2335, 8.25],
+            "rot": 11,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4156, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 41,
+            "pos": [-2611.73, 2334.06, 8.25],
+            "rot": 64,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p3",
+            "skin": 136,
+            "pos": [-2612.18, 2328.64, 8.25],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 198,
+            "pos": [-2611.16, 2329.44, 8.25],
+            "rot": 24,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 34 }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle3",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2352.63, 2233.13, 11.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Wheelie gone wrong",
+        "description": "A teenager tried a wheelie at a busy crossroads in Roca Escalante to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [2347.63, 2233.13, 10.51],
+            "rot": [0, 0, 155.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV70 372",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 142,
+            "pos": [2352.63, 2233.13, 11.06],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

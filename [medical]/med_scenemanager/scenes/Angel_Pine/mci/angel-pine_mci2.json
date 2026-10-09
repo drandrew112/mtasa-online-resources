@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "angel-pine_mci2",
+    "category": "mci",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1977.23, -2541.51, 37.28],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Street race crashed into traffic",
+        "description": "Two street racers on the country road crashed into normal traffic at the crossroads in Angel Pine. Four people are injured, one racer was thrown out of his car and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 415,
+            "pos": [-1982.27, -2537.41, 37.03],
+            "rot": [0, 0, 256.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS69 107",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 527,
+            "pos": [-1982.01, -2543.32, 37.03],
+            "rot": [0, 0, 290.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS35 108",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 565,
+            "pos": [-1987.79, -2533.1, 37.13],
+            "rot": [0, 0, 228.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS76 109",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [-1977.23, -2541.51, 37.28],
+            "rot": 294,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3773, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 106,
+            "pos": [-1975.64, -2539.93, 37.28],
+            "rot": 232,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 9,
+            "pos": [-1978.14, -2544.15, 37.28],
+            "rot": 78,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 161,
+            "pos": [-1977.62, -2543.03, 37.28],
+            "rot": 45,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

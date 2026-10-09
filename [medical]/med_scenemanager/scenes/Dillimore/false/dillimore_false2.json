@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "dillimore_false2",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [810, -360, 23.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots heard",
+        "description": "Neighbours heard what sounded like gunshots on open ground near Dillimore. Nobody saw anyone injured. It may have been fireworks.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

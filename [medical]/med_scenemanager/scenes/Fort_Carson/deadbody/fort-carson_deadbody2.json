@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_deadbody2",
+    "category": "deadbody",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-10.5, 1205.38, 19.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying on the main street in Fort Carson. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-10.5, 1205.38, 19.36],
+            "rot": 212,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

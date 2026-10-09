@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes9",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1801.08, 1527.63, 6.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man at the side of the road near Pirates in Men's Pants has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [1801.08, 1527.63, 6.74],
+            "rot": 254,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4090, "glucose": 496 }
+        }
+    ]
+}

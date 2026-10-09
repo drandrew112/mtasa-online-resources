@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "the-farm_mci2",
+    "category": "mci",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1169.78, -968.92, 129.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Truck jackknifed, cars crashed",
+        "description": "A box truck lost its brakes coming down the hill and jackknifed at the crossroads in The Farm. Two cars crashed into it. Three people are injured, one is bleeding heavily.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 400,
+            "pos": [-1176.02, -968.9, 129.18],
+            "rot": [0, 0, 302.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC55 426",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 499,
+            "pos": [-1172.04, -972.5, 129.43],
+            "rot": [0, 0, 348.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC15 427",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 491,
+            "pos": [-1182.84, -970.47, 129.28],
+            "rot": [0, 0, 278.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC86 428",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-1169.78, -968.92, 129.43],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3575 }
+        },
+        {
+            "id": "p2",
+            "skin": 151,
+            "pos": [-1168.85, -967.06, 129.43],
+            "rot": 306,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 158,
+            "pos": [-1169.6, -971.79, 129.43],
+            "rot": 225,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 47 }
+        }
+    ]
+}

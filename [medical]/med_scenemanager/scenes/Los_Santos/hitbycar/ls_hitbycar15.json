@@ -2,51 +2,52 @@
     "format": 1,
     "name": "ls_hitbycar15",
     "category": "hitbycar",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1624.83, -883.76, 54.75],
+    "center": [2658.38, -2042.37, 19.45],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger hit at the curb",
-        "description": "A car drifted onto the curb in Mulholland Intersection and hit a jogger. He is lying on the sidewalk with a broken leg and grazes, alert and in pain.",
+        "title": "Clipped by a car mirror",
+        "description": "A woman looking at her phone in Willowfield stepped into the road and was clipped by a car mirror. She is sitting on the curb with a swollen elbow and grazes.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 3
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 518,
-            "pos": [1628.82, -881.16, 53.02],
-            "rot": [0, 0, 194.4],
+            "model": 400,
+            "pos": [2660.38, -2046.87, 19.28],
+            "rot": [0, 0, 87],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 750,
-            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "health": 1000,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS29 273",
+            "plate": "LS35 227",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
             "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 96,
-            "pos": [1624.83, -883.76, 54.75],
-            "rot": 285,
-            "anim": "ko_back",
+            "skin": 92,
+            "pos": [2658.38, -2042.37, 19.45],
+            "rot": 173,
+            "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 1 },
                 { "type": "gunshot", "severity": 1 }
             ],
-            "state": { "pain": 30 }
+            "state": {}
         }
     ]
 }

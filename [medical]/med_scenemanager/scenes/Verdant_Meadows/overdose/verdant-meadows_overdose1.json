@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_overdose1",
+    "category": "overdose",
+    "location": "Verdant Meadows",
+    "enabled": true,
+    "weight": 1,
+    "center": [193.89, 2550.09, 16.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drink may have been spiked",
+        "description": "A young woman at the side of the road in Verdant Meadows says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [193.89, 2550.09, 16.52],
+            "rot": 35,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

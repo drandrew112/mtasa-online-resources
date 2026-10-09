@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_overdose2",
+    "category": "overdose",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [387.83, -406.47, 25.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Barely breathing, blue lips",
+        "description": "A man is lying next to the country road near Blueberry with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [387.83, -406.47, 25.61],
+            "rot": 18,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 73, "consciousness": "unconscious" }
+        }
+    ]
+}

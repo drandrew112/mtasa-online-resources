@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_stroke1",
+    "category": "stroke",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2619.5, 2582.19, 72.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot lift her arm",
+        "description": "An elderly woman on open ground in Bayside dropped her groceries and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [-2619.5, 2582.19, 72.31],
+            "rot": 181,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 180, "consciousness": "confused" }
+        }
+    ]
+}

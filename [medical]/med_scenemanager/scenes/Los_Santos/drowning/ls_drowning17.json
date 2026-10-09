@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_drowning17",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [375.05, -1886.5, 7.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child pulled from the water",
-        "description": "A boy was found floating in the sea and brought up to the street in Santa Maria Beach. He is breathing weakly, coughing up water, and very pale.",
+        "title": "Teenager pulled from the water",
+        "description": "A teenage boy was found floating in the sea and brought up to the street in Santa Maria Beach. He is breathing weakly, coughing up water, and very pale.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "suffocation", "severity": 2 }
             ],
-            "state": { "consciousness": "dazed", "spo2": 78 }
+            "state": { "spo2": 78, "consciousness": "dazed" }
         }
     ]
 }

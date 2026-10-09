@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_overdose3",
+    "category": "overdose",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1269.1, 508.27, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Moonshine, cannot stand",
+        "description": "A man on the road shoulder near Montgomery drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [1269.1, 508.27, 20.23],
+            "rot": 113,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

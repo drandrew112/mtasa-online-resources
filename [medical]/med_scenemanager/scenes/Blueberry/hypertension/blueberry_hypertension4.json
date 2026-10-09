@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_hypertension4",
+    "category": "hypertension",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [408.79, -135.95, 8.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pregnant, headache, swelling",
+        "description": "A heavily pregnant woman on the road shoulder near Blueberry has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [408.79, -135.95, 8.66],
+            "rot": 164,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 29,
+                "systolic": 191,
+                "diastolic": 114,
+                "heartRate": 100,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

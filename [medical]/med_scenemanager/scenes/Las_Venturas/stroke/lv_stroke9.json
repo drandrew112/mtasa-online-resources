@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke9",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1942.51, 2517.42, 6.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother suddenly confused",
+        "description": "A grandmother out with her grandson next to the road near the Julius Thruway North suddenly stopped making sense and her mouth looks crooked. The boy called from her phone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [1942.51, 2517.42, 6.8],
+            "rot": 347,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 185, "consciousness": "confused" }
+        }
+    ]
+}

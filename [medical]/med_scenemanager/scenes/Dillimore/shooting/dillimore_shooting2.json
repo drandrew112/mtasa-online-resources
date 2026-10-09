@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "dillimore_shooting2",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [568.03, -405.4, 27.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast in a yard just outside Dillimore. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [568.03, -405.4, 27.75],
+            "rot": 142,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4076, "spo2": 91 }
+        }
+    ]
+}

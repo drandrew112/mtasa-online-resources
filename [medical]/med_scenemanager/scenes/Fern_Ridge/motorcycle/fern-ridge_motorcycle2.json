@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "fern-ridge_motorcycle2",
+    "category": "motorcycle",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1303.14, -77.11, 36.78],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pizza scooter crash",
+        "description": "A pizza delivery rider skidded on sand blown across the road at a junction in Fern Ridge. His knee is swollen and bleeding, and the pizzas are all over the road.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [1299.61, -76.86, 36.23],
+            "rot": [0, 0, 114.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC88 238",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [1303.14, -77.11, 36.78],
+            "rot": 257,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "montgomery_mci3",
+    "category": "mci",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1154.43, 565.91, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "An intercity coach and a car collided on the road shoulder near Montgomery. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 437,
+            "pos": [1152.33, 561.45, 20.38],
+            "rot": [0, 0, 44.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC33 369",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 478,
+            "pos": [1143.85, 565.74, 19.73],
+            "rot": [0, 0, 64.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC53 370",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [1154.43, 565.91, 20.23],
+            "rot": 101,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4005, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 197,
+            "pos": [1151.72, 567.19, 20.33],
+            "rot": 193,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 40 }
+        },
+        {
+            "id": "p3",
+            "skin": 236,
+            "pos": [1157.14, 564.63, 20.33],
+            "rot": 201,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 92,
+            "pos": [1149, 568.46, 20.33],
+            "rot": 184,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 159,
+            "pos": [1159.86, 563.36, 20.33],
+            "rot": 308,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

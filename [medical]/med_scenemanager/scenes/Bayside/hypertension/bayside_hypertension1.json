@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "bayside_hypertension1",
+    "category": "hypertension",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2300, 2660, 57.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pregnant, headache, swelling",
+        "description": "A heavily pregnant woman on open ground near Bayside has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [-2300, 2660, 57.59],
+            "rot": 92,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 27,
+                "systolic": 197,
+                "diastolic": 120,
+                "heartRate": 94,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

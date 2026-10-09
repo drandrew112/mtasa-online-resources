@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_breathing9",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1150.33, -996.02, 37.39],
+    "center": [2535.04, -2220.37, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Gasping, pink frothy cough",
-        "description": "An older man at the side of the road in Temple is gasping, coughing up pink froth and cannot lie down. He has heart problems and his ankles have been swollen for days.",
+        "title": "Drowning in own lungs",
+        "description": "An elderly woman outside a shop in Ocean Docks is sitting bolt upright, bubbling breaths can be heard from a distance. She is sweaty, grey and confused. She skipped her water tablets.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,14 +18,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 33,
-            "pos": [1150.33, -996.02, 37.39],
-            "rot": 283,
-            "anim": "cough",
+            "skin": 196,
+            "pos": [2535.04, -2220.37, 13.55],
+            "rot": 205,
+            "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                { "type": "pulmonary_edema", "severity": 3 }
             ],
-            "state": { "heartRate": 122, "spo2": 82, "systolic": 184 }
+            "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
         }
     ]
 }

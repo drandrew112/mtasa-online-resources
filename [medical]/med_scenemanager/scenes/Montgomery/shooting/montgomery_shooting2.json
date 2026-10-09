@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_shooting2",
+    "category": "shooting",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1409.73, 210.76, 18.9],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking at the side of the road in Montgomery was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [1409.73, 210.76, 18.9],
+            "rot": 11,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4448 }
+        }
+    ]
+}

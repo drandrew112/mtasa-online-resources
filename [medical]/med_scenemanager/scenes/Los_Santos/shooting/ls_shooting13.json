@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_shooting13",
     "category": "shooting",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2243.63, -1725.25, 13.55],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Shop owner and customer shot",
-        "description": "An armed robber opened fire in a corner shop at a bus stop in Ganton. The owner is shot in the stomach and lying outside the door, a customer was hit in the arm.",
+        "description": "An armed robber opened fire in a corner shop in Ganton. The owner is shot in the stomach and lying outside the door, a customer was hit in the arm.",
         "caller": "SceneManager",
         "priority": 1
     },

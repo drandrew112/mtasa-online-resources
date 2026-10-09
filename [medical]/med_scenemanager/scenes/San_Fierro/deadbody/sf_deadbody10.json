@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_deadbody10",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2139.5, 350.33, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body found by night guard",
+        "description": "A night guard found a man lying on the sidewalk in King's. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 221,
+            "pos": [-2139.5, 350.33, 35.32],
+            "rot": 64,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_shooting1",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-130, 1590, 18.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman shot in the stomach",
+        "description": "A woman was shot in the stomach behind the Lil' Probe Inn during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [-130, 1590, 18.95],
+            "rot": 210,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3742 }
+        }
+    ]
+}

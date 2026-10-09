@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "fort-carson_drowning2",
+    "category": "drowning",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-306.92, 1258.46, 23.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer pulled from a stock tank",
+        "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him next to the country road near Fort Carson. He is coughing up water and confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-306.92, 1258.46, 23.92],
+            "rot": 198,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "spo2": 85, "consciousness": "confused" }
+        }
+    ]
+}

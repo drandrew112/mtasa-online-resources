@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_overdose3",
+    "category": "overdose",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-277.8, 1200.8, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, face down",
+        "description": "A homeless man is lying face down on the main street in Fort Carson and is not responding. Someone found a burnt spoon and a needle in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [-277.8, 1200.8, 19.74],
+            "rot": 201,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 70, "consciousness": "unconscious" }
+        }
+    ]
+}

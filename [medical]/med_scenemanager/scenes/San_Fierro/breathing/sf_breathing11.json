@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing11",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2321.62, -197.75, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot breathe lying down",
+        "description": "A woman on the sidewalk in Garcia says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-2321.62, -197.75, 35.32],
+            "rot": 351,
+            "anim": "sit",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 84, "systolic": 197 }
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "ls_mva25",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [917.5, -1489.12, 12.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Marina. The driver got out and is standing next to the car holding their side with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 492,
+            "pos": [917.5, -1488.09, 13.306],
+            "rot": [-0.04, 0.01, 258.33],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS44 480",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [918.422, -1483.831, 13.376],
+            "rot": 95.2,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

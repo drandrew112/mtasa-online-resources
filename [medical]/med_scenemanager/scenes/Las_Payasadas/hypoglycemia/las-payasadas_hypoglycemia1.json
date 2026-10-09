@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-221, 2724.34, 67.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after baling hay",
+        "description": "A young farmhand collapsed after baling hay all morning on open scrubland in Las Payasadas. His friends say he is diabetic and took extra insulin before the game.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 116,
+            "pos": [-221, 2724.34, 67.08],
+            "rot": 93,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 39, "consciousness": "dazed" }
+        }
+    ]
+}

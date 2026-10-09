@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing3",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1652.78, 917.21, 10.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An elderly woman by the roadside near the LVA Freight Depot is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1652.78, 917.21, 10.66],
+            "rot": 101,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 80, "systolic": 186, "heartRate": 125 }
+        }
+    ]
+}

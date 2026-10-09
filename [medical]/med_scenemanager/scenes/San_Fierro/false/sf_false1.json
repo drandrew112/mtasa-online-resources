@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false1",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1695.62, 525.88, 37.22],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A driver saw a person lying at a junction in Easter Basin and did not stop. The caller could not say if the person was moving.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

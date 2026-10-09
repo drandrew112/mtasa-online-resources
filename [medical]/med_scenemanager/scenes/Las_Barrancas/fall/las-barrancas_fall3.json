@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "las-barrancas_fall3",
+    "category": "fall",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-818.37, 1485, 19.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist over the handlebars",
+        "description": "A cyclist went over the handlebars outside a small store in Las Barrancas after hitting a pothole. Her collarbone is deformed and her helmet is cracked. She cannot remember the fall.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 509,
+            "pos": [-816.57, 1485, 19.37],
+            "rot": [0, 0, 16.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR56 305",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [-818.37, 1485, 19.77],
+            "rot": 337,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

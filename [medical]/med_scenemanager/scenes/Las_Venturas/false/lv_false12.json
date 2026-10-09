@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false12",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2323.54, 1985.26, 5.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child not breathing",
+        "description": "A young-sounding caller says a child is not breathing next to the road near the Starfish Casino, then laughs and hangs up. The callback goes to voicemail.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

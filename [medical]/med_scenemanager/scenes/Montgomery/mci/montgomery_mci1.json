@@ -1,0 +1,109 @@
+{
+    "format": 1,
+    "name": "montgomery_mci1",
+    "category": "mci",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1372.57, 447.2, 20.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision, drivers hurt",
+        "description": "Two cars hit head-on at a junction in Montgomery. One driver is stuck in his seat with a crushed leg, the other driver and a passenger got out and are hurt.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [1372.57, 447.2, 19.83],
+            "rot": [0, 0, 264.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC93 352",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 412,
+            "pos": [1374.37, 441.24, 19.83],
+            "rot": [0, 0, 317.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC54 353",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [1372.57, 447.2, 20.08],
+            "rot": 261,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3853, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 263,
+            "pos": [1379.6, 446.38, 20.08],
+            "rot": 99,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 221,
+            "pos": [1377.93, 441.7, 20.08],
+            "rot": 189,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 219,
+            "pos": [1379.08, 442.31, 20.08],
+            "rot": 352,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

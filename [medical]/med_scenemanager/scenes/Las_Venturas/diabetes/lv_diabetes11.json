@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes11",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2759, 1486, 10.86],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Tourist lost his insulin",
+        "description": "A tourist on the sand at Linden Station lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [2759, 1486, 10.86],
+            "rot": 277,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4167, "glucose": 437 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_fall15",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2331.97, 387.14, 35.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped on wet pavement",
+        "description": "A woman slipped on the wet pavement at a bus stop in Queens in the fog and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2331.97, 387.14, 35.17],
+            "rot": 60,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 27 }
+        }
+    ]
+}

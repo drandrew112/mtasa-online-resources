@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_shooting1",
+    "category": "shooting",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-290, 1140, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mugging victim shot in the arm",
+        "description": "A man refused to hand over his wallet on a paved lot in Fort Carson and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 261,
+            "pos": [-290, 1140, 19.74],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

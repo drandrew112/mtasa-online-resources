@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose14",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2537.06, 274.18, 16.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain after cocaine",
+        "description": "A man on the sidewalk in Queens says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [-2537.06, 274.18, 16.61],
+            "rot": 70,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 185, "heartRate": 137 }
+        }
+    ]
+}

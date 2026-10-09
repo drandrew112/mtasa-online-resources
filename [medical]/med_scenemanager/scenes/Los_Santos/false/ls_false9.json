@@ -2,27 +2,18 @@
     "format": 1,
     "name": "ls_false9",
     "category": "false",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [2036.38, -1805.75, 13.55],
+    "center": [2497.87, -2286.38, 24.94],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Someone fainted",
-        "description": "A passer-by reports a man who fainted outside a shop in Idlewood. The man has since stood up and says he is fine.",
+        "title": "Person lying on the ground",
+        "description": "A caller driving past saw someone lying on the ground outside a shop in Ocean Docks. The caller did not stop and does not know if the person is breathing.",
         "caller": "SceneManager",
         "priority": 2
     },
     "vehicles": [],
-    "peds": [
-        {
-            "id": "p1",
-            "skin": 29,
-            "pos": [2036.38, -1805.75, 13.55],
-            "rot": 189,
-            "anim": "none",
-            "injuries": [],
-            "state": {}
-        }
-    ]
+    "peds": []
 }

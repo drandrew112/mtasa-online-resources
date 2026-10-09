@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_deadbody2",
+    "category": "deadbody",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [310, 30, 3.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a rancher",
+        "description": "A rancher checking his fences found a man lying on the grass in Blueberry. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [310, 30, 3.41],
+            "rot": 51,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

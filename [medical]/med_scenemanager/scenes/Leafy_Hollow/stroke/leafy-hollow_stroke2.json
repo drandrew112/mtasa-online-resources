@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_stroke2",
+    "category": "stroke",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1040, -1880, 78.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young woman, sudden weakness",
+        "description": "A young woman at the edge of the woods near Leafy Hollow says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [-1040, -1880, 78.6],
+            "rot": 93,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

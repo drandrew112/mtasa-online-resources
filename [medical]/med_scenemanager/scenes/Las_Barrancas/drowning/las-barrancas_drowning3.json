@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_drowning3",
+    "category": "drowning",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-691.74, 1458.65, 17.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from a backyard pool",
+        "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him at the side of the road near Las Barrancas to meet the ambulance. He is breathing weakly and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [-691.74, 1458.65, 17.63],
+            "rot": 195,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 76, "consciousness": "unconscious" }
+        }
+    ]
+}

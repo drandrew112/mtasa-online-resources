@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning11",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1899, 1706, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fish bone stuck, gasping",
+        "description": "An elderly woman on a bench near the Visage has a fish bone stuck in her throat. She is gagging, drooling and breathing with difficulty.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [1899, 1706, 10.82],
+            "rot": 289,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

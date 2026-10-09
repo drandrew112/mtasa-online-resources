@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_breathing1",
+    "category": "breathing",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [879.86, -95.32, 25.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An elderly woman next to the country road in Fern Ridge is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [879.86, -95.32, 25.58],
+            "rot": 47,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 82, "systolic": 191, "heartRate": 119 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting20",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1026.93, 1312.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking next to the road in Blackfield was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 76,
+            "pos": [1026.93, 1312.75, 10.82],
+            "rot": 73,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4354 }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "hampton-barns_false1",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [790, 400, 19.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots heard",
+        "description": "Neighbours heard what sounded like gunshots on a grassy patch just outside Hampton Barns. Nobody saw anyone injured. It may have been fireworks.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

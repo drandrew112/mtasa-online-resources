@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_overdose3",
+    "category": "overdose",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1436.3, 2525.59, 61.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much",
+        "description": "A teenager on open scrubland in El Quebrados keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-1436.3, 2525.59, 61.01],
+            "rot": 20,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

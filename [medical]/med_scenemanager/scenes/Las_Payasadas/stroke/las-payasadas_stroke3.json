@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_stroke3",
+    "category": "stroke",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-160, 2750, 62.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Face drooping, slurred speech",
+        "description": "A man on open scrubland in Las Payasadas suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-160, 2750, 62.37],
+            "rot": 348,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 193 }
+        }
+    ]
+}

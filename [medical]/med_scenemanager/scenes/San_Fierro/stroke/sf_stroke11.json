@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke11",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1576.37, 1173.49, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, snoring breathing",
+        "description": "A man collapsed in front of an apartment block in Esplanade East and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-1576.37, 1173.49, 7.19],
+            "rot": 131,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 211, "diastolic": 121, "consciousness": "unconscious" }
+        }
+    ]
+}

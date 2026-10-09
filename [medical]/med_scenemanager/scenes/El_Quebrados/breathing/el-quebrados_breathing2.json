@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_breathing2",
+    "category": "breathing",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1541.41, 2509.49, 56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, still wheezing",
+        "description": "A man on open scrubland in El Quebrados choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [-1541.41, 2509.49, 56],
+            "rot": 181,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 85 }
+        }
+    ]
+}

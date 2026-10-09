@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_breathing1",
+    "category": "breathing",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [690, 280, 20.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An elderly woman on farmland in Hampton Barns is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 131,
+            "pos": [690, 280, 20.08],
+            "rot": 165,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 81, "systolic": 185, "heartRate": 127 }
+        }
+    ]
+}

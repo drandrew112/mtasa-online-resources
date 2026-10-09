@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "the-farm_diabetes1",
+    "category": "diabetes",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1193, -1140, 130.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Trucker ran out of insulin",
+        "description": "A long-haul trucker on farmland in The Farm ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 153,
+            "pos": [-1193, -1140, 130.98],
+            "rot": 131,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4148, "glucose": 416 }
+        }
+    ]
+}

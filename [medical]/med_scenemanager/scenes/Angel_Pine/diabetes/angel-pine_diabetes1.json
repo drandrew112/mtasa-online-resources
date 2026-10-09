@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_diabetes1",
+    "category": "diabetes",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2181.12, -2443.33, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Trucker ran out of insulin",
+        "description": "A long-haul trucker outside a small store in Angel Pine ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-2181.12, -2443.33, 30.63],
+            "rot": 232,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4113, "glucose": 438 }
+        }
+    ]
+}

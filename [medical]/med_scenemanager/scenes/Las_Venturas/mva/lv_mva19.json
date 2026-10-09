@@ -1,0 +1,55 @@
+{
+    "format": 1,
+    "name": "lv_mva19",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2662.83, 2161.35, 9.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ran off the road",
+        "description": "A single car left the road and crashed at the curb in Old Venturas Strip. The driver is still in the seat with a crushed leg and heavy bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 477,
+            "pos": [2660.97, 2163.86, 9.819],
+            "rot": [-0.88, -2.55, 296.07],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV53 812",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [2660.97, 2163.86, 10.07],
+            "rot": 296.07,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "dazed" }
+        }
+    ]
+}

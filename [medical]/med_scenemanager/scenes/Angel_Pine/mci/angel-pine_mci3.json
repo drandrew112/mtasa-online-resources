@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "angel-pine_mci3",
+    "category": "mci",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2342.24, -2626.84, 59.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "An intercity coach and a car collided at the side of the road near Angel Pine. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 437,
+            "pos": [-2341.27, -2623.06, 59.59],
+            "rot": [0, 0, 240.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS27 120",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 492,
+            "pos": [-2332.81, -2627.68, 58.94],
+            "rot": [0, 0, 224.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS78 121",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-2342.24, -2626.84, 59.24],
+            "rot": 308,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3999, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 197,
+            "pos": [-2339.52, -2628.1, 59.34],
+            "rot": 273,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 38 }
+        },
+        {
+            "id": "p3",
+            "skin": 168,
+            "pos": [-2344.96, -2625.58, 59.34],
+            "rot": 159,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 233,
+            "pos": [-2336.8, -2629.37, 59.34],
+            "rot": 285,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 202,
+            "pos": [-2347.68, -2624.31, 59.34],
+            "rot": 188,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

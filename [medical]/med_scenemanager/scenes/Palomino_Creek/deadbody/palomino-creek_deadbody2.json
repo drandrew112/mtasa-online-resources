@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_deadbody2",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2140, 60, 26.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose, found too late",
+        "description": "Friends found a young woman on the grass just outside Palomino Creek after she did not come home. She is cold and stiff, a syringe is beside her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 91,
+            "pos": [2140, 60, 26.58],
+            "rot": 158,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

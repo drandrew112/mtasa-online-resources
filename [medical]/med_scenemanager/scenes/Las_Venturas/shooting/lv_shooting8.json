@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting8",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [953.12, 2558.56, 10.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing car at the side of the road in Las Venturas. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [953.12, 2558.56, 10.8],
+            "rot": 354,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4156, "pain": 41 }
+        }
+    ]
+}

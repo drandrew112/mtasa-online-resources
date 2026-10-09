@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false9",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2779.27, 2327.65, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots heard",
+        "description": "Neighbours heard what sounded like gunshots in front of a house in Creek. Nobody saw anyone injured. It may have been fireworks.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

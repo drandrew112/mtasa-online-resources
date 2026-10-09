@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "bayside_deadbody1",
+    "category": "deadbody",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2680, 2640, 87.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found below a grain silo",
+        "description": "Farm workers found a man lying in a yard in Bayside below a grain silo he had been climbing. His injuries are severe and he has not moved since they found him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [-2680, 2640, 87.7],
+            "rot": 49,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

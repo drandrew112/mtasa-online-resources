@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing22",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2434.75, 1589.97, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man outside Caligula's Palace pulled his friend out of a smoke-filled apartment and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [2434.75, 1589.97, 10.82],
+            "rot": 68,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

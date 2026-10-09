@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting22",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2295.13, -779.73, 88.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mugging victim shot in the arm",
+        "description": "A man refused to hand over his wallet at a bus stop in Missionary Hill and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-2295.13, -779.73, 88.16],
+            "rot": 10,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

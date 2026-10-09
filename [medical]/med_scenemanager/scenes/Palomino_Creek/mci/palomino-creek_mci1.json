@@ -1,0 +1,146 @@
+{
+    "format": 1,
+    "name": "palomino-creek_mci1",
+    "category": "mci",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2393.82, -26.19, 26.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chain collision in thick smoke",
+        "description": "Thick smoke from a field fire blew across the road and several cars ran into each other at a junction in Palomino Creek. Four people are hurt, one woman is unconscious on the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [2389.75, -28.25, 26.39],
+            "rot": [0, 0, 287.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC21 383",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 579,
+            "pos": [2398.25, -28.25, 26.39],
+            "rot": [0, 0, 66.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC65 384",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 478,
+            "pos": [2382.75, -28.25, 26.49],
+            "rot": [0, 0, 274.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC52 385",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v4",
+            "model": 498,
+            "pos": [2393.75, -22.25, 26.74],
+            "rot": [0, 0, 189.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC33 386",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [2393.82, -26.19, 26.64],
+            "rot": 99,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 159,
+            "pos": [2391.43, -25.48, 26.64],
+            "rot": 83,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 236,
+            "pos": [2395.94, -25.64, 26.64],
+            "rot": 219,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 44 }
+        },
+        {
+            "id": "p4",
+            "skin": 69,
+            "pos": [2394.75, -27.29, 26.64],
+            "rot": 145,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

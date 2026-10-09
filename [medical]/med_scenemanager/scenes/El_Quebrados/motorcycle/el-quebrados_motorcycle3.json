@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "el-quebrados_motorcycle3",
+    "category": "motorcycle",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1373.82, 2664.23, 52.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on spilled oil",
+        "description": "A woman on a scooter slipped on a patch of spilled oil next to the country road in El Quebrados and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [-1368.9, 2664.51, 50.99],
+            "rot": [0, 0, 306.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR95 223",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-1373.82, 2664.23, 52.4],
+            "rot": 285,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

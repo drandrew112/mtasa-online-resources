@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia4",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2650.13, -1778.87, 10.88],
@@ -22,7 +23,7 @@
             "rot": 34,
             "anim": "drunk",
             "injuries": [],
-            "state": { "consciousness": "confused", "glucose": 44, "heartRate": 114 }
+            "state": { "glucose": 44, "heartRate": 114, "consciousness": "confused" }
         }
     ]
 }

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_motorcycle14",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1555.82, -2085.64, 34.24],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Delivery rider fell",
-        "description": "A pizza delivery rider slipped on oil in Verdant Bluffs and fell. He is sitting on the sidewalk with a sore ankle and grazes, worried about the pizzas.",
+        "description": "A pizza delivery rider slipped on oil in Verdant Bluffs and fell. He is sitting on the sidewalk with a sore ankle, worried about the pizzas.",
         "caller": "SceneManager",
         "priority": 3
     },

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "regular-tom_overdose2",
+    "category": "overdose",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-399.52, 1707.37, 40.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Needle still in his arm",
+        "description": "A man is lying outside a house just outside Regular Tom with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-399.52, 1707.37, 40.02],
+            "rot": 57,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "spo2": 87, "consciousness": "dazed" }
+        }
+    ]
+}

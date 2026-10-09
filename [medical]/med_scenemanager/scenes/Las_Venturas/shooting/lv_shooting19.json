@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_shooting19",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2211.04, 1525.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot on the sidewalk near the Royal Casino. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 250,
+            "pos": [2211.04, 1525.75, 10.82],
+            "rot": 334,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

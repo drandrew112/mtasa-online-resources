@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_diabetes8",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1150.4, -915.27, 42.83],

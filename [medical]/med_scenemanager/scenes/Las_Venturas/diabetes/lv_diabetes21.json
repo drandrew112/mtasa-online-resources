@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes21",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1697.56, 1867.83, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker with blurry vision",
+        "description": "A construction worker next to the road at Las Venturas Airport feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [1697.56, 1867.83, 10.82],
+            "rot": 25,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 426 }
+        }
+    ]
+}

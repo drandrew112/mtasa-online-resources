@@ -1,0 +1,127 @@
+{
+    "format": 1,
+    "name": "las-payasadas_mci2",
+    "category": "mci",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-95.61, 2567.64, 18.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Street race crashed into traffic",
+        "description": "Two street racers on the country road crashed into normal traffic by the dusty roadside near Las Payasadas. Four people are injured, one racer was thrown out of his car and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 559,
+            "pos": [-95.35, 2565.1, 17.85],
+            "rot": [0, 0, 85.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC77 320",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 559,
+            "pos": [-101.17, 2566.66, 17.85],
+            "rot": [0, 0, 96.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC25 321",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 529,
+            "pos": [-89.38, 2564.55, 17.85],
+            "rot": [0, 0, 81.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC11 322",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-95.61, 2567.64, 18.27],
+            "rot": 118,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3810, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 96,
+            "pos": [-98.21, 2568.4, 18.37],
+            "rot": 118,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 13,
+            "pos": [-92.46, 2567.44, 18.37],
+            "rot": 160,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p4",
+            "skin": 235,
+            "pos": [-101.6, 2568.77, 18.37],
+            "rot": 6,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose3",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [899, 1826, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man in a small park in Las Venturas took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [899, 1826, 10.82],
+            "rot": 187,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 166, "heartRate": 151 }
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "lv_fall23",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2497.25, 1246.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a balcony",
+        "description": "A man fell from a third floor balcony on the sidewalk near the Camel's Toe. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [2497.25, 1246.13, 10.82],
+            "rot": 341,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3902, "consciousness": "unconscious" }
+        }
+    ]
+}

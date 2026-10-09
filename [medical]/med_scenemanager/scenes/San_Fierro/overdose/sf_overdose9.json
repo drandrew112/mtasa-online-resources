@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose9",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1618.36, -859.66, 96.79],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Empty pill packets",
+        "description": "Passers-by found a woman next to the road in San Fierro with empty pill packets around her and a goodbye note in her hand. She does not respond and is breathing shallowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 172,
+            "pos": [-1618.36, -859.66, 96.79],
+            "rot": 86,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "sedative", "severity": 3 }
+            ],
+            "state": { "spo2": 84, "consciousness": "unconscious" }
+        }
+    ]
+}

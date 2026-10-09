@@ -1,0 +1,98 @@
+{
+    "format": 1,
+    "name": "sf_mva8",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1863.62, 721.63, 44.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Downtown. The driver of the first car is still in the seat, unconscious, with a serious head injury. The driver of the second car got out and is leaning on the car with a deep cut that is bleeding. The passenger is lying on their back next to the car with a head injury and a painful collarbone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 545,
+            "pos": [-1862.69, 725.75, 44.903],
+            "rot": [-4.56, -0.22, 268.81],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF59 193",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 475,
+            "pos": [-1868.418, 725.579, 45.227],
+            "rot": [-0.25, 0, 270.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF64 599",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [-1862.69, 725.75, 45.15],
+            "rot": 268.81,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 48,
+            "pos": [-1863.62, 721.63, 45.186],
+            "rot": 0,
+            "anim": "lean",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 67,
+            "pos": [-1862.76, 722.377, 45.03],
+            "rot": 178.8,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

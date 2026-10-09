@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody4",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2754.44, 336.51, 4.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying on the sidewalk in City Hall. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [-2754.44, 336.51, 4.38],
+            "rot": 333,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

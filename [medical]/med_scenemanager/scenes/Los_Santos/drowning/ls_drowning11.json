@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_drowning11",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [174, -1802, 4.05],
+    "center": [774, -1862, 5.04],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Seizure in the water",
-        "description": "A man had a seizure while in the sea and went under. He was pulled out and brought onto the sand at Santa Maria Beach. He is breathing but confused and keeps coughing up water.",
+        "title": "Teenager pulled from the water",
+        "description": "A teenage girl was found floating in the sea and brought onto the sand at Verona Beach. She is breathing weakly, coughing up water, and very pale.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,15 +18,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 220,
-            "pos": [174, -1802, 4.05],
-            "rot": 200,
+            "skin": 138,
+            "pos": [774, -1862, 5.04],
+            "rot": 68,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "postictal", "severity": 1 }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": { "consciousness": "confused", "spo2": 82 }
+            "state": { "spo2": 78, "consciousness": "dazed" }
         }
     ]
 }

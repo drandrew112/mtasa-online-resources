@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke22",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1244.32, 1899.71, 7.49],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend by the roadside near the Julius Thruway West stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 224,
+            "pos": [1244.32, 1899.71, 7.49],
+            "rot": 303,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 183 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall19",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1456.79, 2685.24, 10.86],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell down concrete stairs",
+        "description": "A man fell down a long flight of concrete stairs by the roadside at Yellow Bell Station. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [1456.79, 2685.24, 10.86],
+            "rot": 171,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

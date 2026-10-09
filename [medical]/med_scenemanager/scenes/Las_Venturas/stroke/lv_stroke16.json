@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "lv_stroke16",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1433.6, 719.49, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver seeing double",
+        "description": "A delivery driver stopped his van by the roadside near the Blackfield Chapel because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 459,
+            "pos": [1433.96, 723.48, 10.85],
+            "rot": [0, 0, 216.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV21 426",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 153,
+            "pos": [1433.6, 719.49, 10.82],
+            "rot": 306,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_airport6",
     "category": "airport",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2194, -2662, 13.55],
@@ -22,7 +23,7 @@
             "rot": 117,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "consciousness": "confused", "heartRate": 132, "systolic": 94 }
+            "state": { "bloodVolume": 4200, "systolic": 94, "heartRate": 132, "consciousness": "confused" }
         }
     ]
 }

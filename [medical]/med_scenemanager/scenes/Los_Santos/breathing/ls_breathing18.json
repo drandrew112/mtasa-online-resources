@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing18",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2312, -1086.61, 48.73],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Asthma attack, inhaler empty",
-        "description": "A girl on the pavement in Las Colinas is wheezing badly and can only say two words at a time. Her inhaler is empty. She is sitting forward with her hands on her knees.",
+        "description": "A teenage girl on the pavement in Las Colinas is wheezing badly and can only say two words at a time. Her inhaler is empty. She is sitting forward with her hands on her knees.",
         "caller": "SceneManager",
         "priority": 1
     },

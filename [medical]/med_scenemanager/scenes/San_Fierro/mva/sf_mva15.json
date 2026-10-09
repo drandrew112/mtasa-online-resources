@@ -1,0 +1,72 @@
+{
+    "format": 1,
+    "name": "sf_mva15",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2665.2, 1167.41, 54.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sideswipe collision",
+        "description": "Two cars sideswiped each other and one lost control in Paradiso. The driver of the first car got out and is leaning on the car with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 474,
+            "pos": [-2661.95, 1170.34, 55.36],
+            "rot": [0, 0, 54.54],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF65 914",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 547,
+            "pos": [-2660.256, 1172.756, 55.3],
+            "rot": [0, 0, 46.18],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF46 908",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 67,
+            "pos": [-2665.2, 1167.41, 55.578],
+            "rot": 304.2,
+            "anim": "lean",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

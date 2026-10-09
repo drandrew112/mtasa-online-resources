@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_false1",
+    "category": "false",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1230, 370, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman fell",
+        "description": "An elderly woman fell on a grassy patch in Montgomery. She is unhurt and only needs a hand getting up; she does not want to go to hospital.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 129,
+            "pos": [1230, 370, 19.56],
+            "rot": 287,
+            "anim": "sit",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

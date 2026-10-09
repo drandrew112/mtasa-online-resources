@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_diabetes24",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2311.64, -2047.73, 13.55],
@@ -22,7 +23,7 @@
             "rot": 193,
             "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4100, "consciousness": "confused", "glucose": 470 }
+            "state": { "bloodVolume": 4100, "glucose": 470, "consciousness": "confused" }
         }
     ]
 }

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody1",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1747, 355, 9.46],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body in the bushes",
+        "description": "A dog walker found a person lying in the undergrowth at the edge of the park in Easter Basin. The body is cold and there are flies around it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 228,
+            "pos": [-1747, 355, 9.46],
+            "rot": 138,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

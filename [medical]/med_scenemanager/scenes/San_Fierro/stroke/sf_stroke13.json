@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke13",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2336.5, 815.75, 42.53],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend at a bus stop in Juniper Hill stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [-2336.5, 815.75, 42.53],
+            "rot": 205,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 176 }
+        }
+    ]
+}

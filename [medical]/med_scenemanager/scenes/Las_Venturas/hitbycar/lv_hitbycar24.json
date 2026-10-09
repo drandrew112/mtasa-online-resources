@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar24",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2397.5, 1720.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man knocked down by a taxi",
+        "description": "A taxi knocked down an old man at a bus stop near Caligula's Palace. He hit the windscreen, is dazed and has a large bleeding wound on his forehead.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 420,
+            "pos": [2391.72, 1715.61, 10.52],
+            "rot": [0, 0, 97],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV27 423",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [2397.5, 1720.63, 10.82],
+            "rot": 161,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

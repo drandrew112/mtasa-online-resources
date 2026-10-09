@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false8",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2853, 465.75, 4.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help at a busy crossroads in Palisades. The caller hung up before giving any more details.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

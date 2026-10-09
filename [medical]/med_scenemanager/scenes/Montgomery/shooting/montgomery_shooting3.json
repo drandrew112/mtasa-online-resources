@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_shooting3",
+    "category": "shooting",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1121.04, 236.11, 28.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman shot in the stomach",
+        "description": "A woman was shot in the stomach next to the country road in Montgomery during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [1121.04, 236.11, 28.34],
+            "rot": 40,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3905 }
+        }
+    ]
+}

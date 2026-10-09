@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "las-barrancas_mci3",
+    "category": "mci",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-761.98, 1493.9, 25.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "An intercity coach and a car collided at a junction in Las Barrancas. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 437,
+            "pos": [-768.52, 1491.98, 25.47],
+            "rot": [0, 0, 304],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR78 292",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 466,
+            "pos": [-761.67, 1489.48, 24.82],
+            "rot": [0, 0, 20.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR71 293",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-761.98, 1493.9, 25.07],
+            "rot": 312,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4073, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 10,
+            "pos": [-763.37, 1496.81, 25.07],
+            "rot": 191,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 35 }
+        },
+        {
+            "id": "p3",
+            "skin": 236,
+            "pos": [-760.46, 1492.44, 25.07],
+            "rot": 200,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 69,
+            "pos": [-760.17, 1494.36, 25.07],
+            "rot": 205,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 133,
+            "pos": [-767.18, 1495.78, 25.07],
+            "rot": 190,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

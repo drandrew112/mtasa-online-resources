@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_overdose3",
+    "category": "overdose",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2600, 2280, 8.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man vomiting",
+        "description": "A very drunk man on the grass in Bayside has been vomiting and can no longer keep his eyes open. His friends say he drank a whole bottle of whisky on a bet.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [-2600, 2280, 8.36],
+            "rot": 39,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

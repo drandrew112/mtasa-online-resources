@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning4",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2519, 1546, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Went in after her dog",
+        "description": "A dog walker went into the water after her dog and got into trouble. She is now at the water's edge in Pilgrim, coughing and shivering. The dog is fine.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 216,
+            "pos": [2519, 1546, 10.82],
+            "rot": 4,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

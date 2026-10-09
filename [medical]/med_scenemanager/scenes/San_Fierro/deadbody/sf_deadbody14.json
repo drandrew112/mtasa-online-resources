@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody14",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2712.12, 507.15, 7.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying at a bus stop in Santa Flora. She is cold and does not breathe. She lived nearby and was a regular here.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-2712.12, 507.15, 7.84],
+            "rot": 136,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

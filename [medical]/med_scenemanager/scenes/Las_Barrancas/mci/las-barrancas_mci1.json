@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "las-barrancas_mci1",
+    "category": "mci",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-851.77, 1600.57, 26.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV rolled over, passengers out",
+        "description": "An SUV clipped another car and rolled over at a junction in Las Barrancas. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 475,
+            "pos": [-854.19, 1606.56, 26.74],
+            "rot": [0, 0, 226.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR90 267",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 543,
+            "pos": [-855.96, 1600.29, 26.74],
+            "rot": [0, 0, 283],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR38 268",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 422,
+            "pos": [-857.36, 1612.8, 26.84],
+            "rot": [0, 0, 210.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR16 269",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 104,
+            "pos": [-851.77, 1600.57, 26.99],
+            "rot": 144,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4036, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 69,
+            "pos": [-849.42, 1601.12, 26.99],
+            "rot": 103,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 236,
+            "pos": [-853.57, 1598.55, 26.99],
+            "rot": 280,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 57 }
+        }
+    ]
+}

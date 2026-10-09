@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke17",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1738.68, 1510.47, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by on the sidewalk at Las Venturas Airport called because a man in a suit is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 261,
+            "pos": [1738.68, 1510.47, 10.82],
+            "rot": 102,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 187 }
+        }
+    ]
+}

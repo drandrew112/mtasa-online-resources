@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_breathing2",
+    "category": "breathing",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [35.48, 2308.79, 22.94],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma from hay dust",
+        "description": "A girl helping to stack hay by the dusty roadside in El Castillo del Diablo is wheezing badly from the dust. Her inhaler is at home.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [35.48, 2308.79, 22.94],
+            "rot": 208,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

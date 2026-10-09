@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "fern-ridge_stroke1",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [917.74, -169.84, 10.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver seeing double",
+        "description": "A delivery driver stopped his van on the road shoulder near Fern Ridge because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 440,
+            "pos": [920.48, -173.46, 10.42],
+            "rot": [0, 0, 85.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC19 243",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [917.74, -169.84, 10.38],
+            "rot": 216,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 185 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_stroke1",
+    "category": "stroke",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2360, 200, 27.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, one leg will not move",
+        "description": "An old man fell on a grassy patch in Palomino Creek and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [2360, 200, 27.15],
+            "rot": 69,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 197 }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_hypertension4",
+    "category": "hypertension",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [903.97, -369.51, 47.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nosebleed, high BP",
+        "description": "A woman at the side of the road near Dillimore has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [903.97, -369.51, 47.71],
+            "rot": 153,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 26,
+                "systolic": 214,
+                "diastolic": 125,
+                "heartRate": 95,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

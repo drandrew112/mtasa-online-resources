@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_airport11",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1799, 1406, 6.72],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly traveller fell at the curb",
+        "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Las Venturas Airport. He cannot stand and his hip hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [1799, 1406, 6.72],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 39 }
+        }
+    ]
+}

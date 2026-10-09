@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_overdose2",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1218.65, -988.95, 128.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain after cocaine",
+        "description": "A man by the road next to a farm near The Farm says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-1218.65, -988.95, 128.98],
+            "rot": 244,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 197, "heartRate": 146 }
+        }
+    ]
+}

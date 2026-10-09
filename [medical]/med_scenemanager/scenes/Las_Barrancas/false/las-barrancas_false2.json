@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "las-barrancas_false2",
+    "category": "false",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-740, 1610, 27.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help on open scrubland in Las Barrancas. The caller hung up before giving any more details.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

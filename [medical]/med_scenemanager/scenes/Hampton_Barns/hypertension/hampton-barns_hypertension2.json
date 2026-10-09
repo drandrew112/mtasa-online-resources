@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "hampton-barns_hypertension2",
+    "category": "hypertension",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [561.04, 284.62, 17.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, ringing ears",
+        "description": "An elderly man by the road next to a farm near Hampton Barns says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [561.04, 284.62, 17.58],
+            "rot": 184,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 31,
+                "systolic": 184,
+                "diastolic": 103,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

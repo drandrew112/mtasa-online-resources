@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_airport11",
+    "category": "airport",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1247, -125, 14.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose in the parking area",
+        "description": "Security found a man lying outside the terminal at Easter Bay Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 258,
+            "pos": [-1247, -125, 14.14],
+            "rot": 234,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 73, "consciousness": "unconscious" }
+        }
+    ]
+}

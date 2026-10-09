@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "fern-ridge_drowning1",
+    "category": "drowning",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1052.81, 7.67, 81.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer pulled from a stock tank",
+        "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him at the side of the road in Fern Ridge. He is coughing up water and confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [1052.81, 7.67, 81.31],
+            "rot": 161,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "spo2": 85, "consciousness": "confused" }
+        }
+    ]
+}

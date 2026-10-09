@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_fall1",
+    "category": "fall",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [730, 340, 20.28],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a ladder picking fruit",
+        "description": "A woman picking fruit fell from her ladder on farmland in Hampton Barns. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [730, 340, 20.28],
+            "rot": 75,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 53 }
+        }
+    ]
+}

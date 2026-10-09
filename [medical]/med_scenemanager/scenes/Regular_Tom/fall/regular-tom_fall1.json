@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "regular-tom_fall1",
+    "category": "fall",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-433.78, 1756.33, 72.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man on blood thinners fell",
+        "description": "An old man slipped on the dusty ground near Regular Tom and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [-433.78, 1756.33, 72.08],
+            "rot": 217,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

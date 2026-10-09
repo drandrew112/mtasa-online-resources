@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes1",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2234.76, 456.55, 35.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker with blurry vision",
+        "description": "A construction worker at a bus stop in King's feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 16,
+            "pos": [-2234.76, 456.55, 35.16],
+            "rot": 211,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 419 }
+        }
+    ]
+}

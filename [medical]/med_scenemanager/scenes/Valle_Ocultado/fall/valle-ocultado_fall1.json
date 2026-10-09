@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_fall1",
+    "category": "fall",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-860.75, 2691.3, 43.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a ladder picking fruit",
+        "description": "A woman picking fruit fell from her ladder on the dusty ground in Valle Ocultado. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-860.75, 2691.3, 43.11],
+            "rot": 353,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 52 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose14",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1456.88, 2064.52, 11.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Empty pill packets",
+        "description": "A woman's flatmate found her at the side of the road in Redsands West with empty pill packets around her and a goodbye note. She does not respond and is breathing shallowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [1456.88, 2064.52, 11.15],
+            "rot": 156,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "sedative", "severity": 3 }
+            ],
+            "state": { "spo2": 85, "consciousness": "unconscious" }
+        }
+    ]
+}

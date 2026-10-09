@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_fall22",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2364.87, -37.5, 35.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Window cleaner fell from a ladder",
+        "description": "A window cleaner fell from her ladder in front of an apartment block in Garcia. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [-2364.87, -37.5, 35.31],
+            "rot": 60,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 56 }
+        }
+    ]
+}

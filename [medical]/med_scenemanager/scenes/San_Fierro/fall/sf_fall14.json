@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_fall14",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2687, 1095, 47.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell out of a tree",
+        "description": "A man trimming a tree on the grass in Paradiso fell from about three metres. He is screaming in pain and both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2687, 1095, 47.52],
+            "rot": 192,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

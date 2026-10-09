@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2400, 100, 26.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Coworkers on a paved lot in Palomino Creek say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [2400, 100, 26.47],
+            "rot": 264,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 38 }
+        }
+    ]
+}

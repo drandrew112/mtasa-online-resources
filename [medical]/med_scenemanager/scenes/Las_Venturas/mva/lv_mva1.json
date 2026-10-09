@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "lv_mva1",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2246.46, 778.9, 9.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car hit a parked car",
+        "description": "A car swerved into a parked car at the curb in Rockshore West. The driver of the first car is still in the seat, unconscious, with a serious head injury. The driver of the second car is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 585,
+            "pos": [2244.44, 775.02, 9.941],
+            "rot": [-1.72, -0.43, 60.86],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV94 500",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 529,
+            "pos": [2250.083, 771.161, 10.143],
+            "rot": [-1.4, 0.12, 71.45],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV95 537",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 76,
+            "pos": [2244.44, 775.02, 10.19],
+            "rot": 60.86,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 41,
+            "pos": [2250.083, 771.161, 10.39],
+            "rot": 71.45,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

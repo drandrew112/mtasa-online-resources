@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_drowning3",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1491.53, 75.18, 30.21],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Toddler fell in an irrigation ditch",
+        "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her next to the country road near Montgomery. The child is coughing and crying weakly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [1491.53, 75.18, 30.21],
+            "rot": 49,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

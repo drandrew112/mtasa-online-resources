@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia22",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2575.65, 380.13, 14.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying on the sidewalk in Queens and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [-2575.65, 380.13, 14.29],
+            "rot": 324,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 26, "consciousness": "unconscious" }
+        }
+    ]
+}

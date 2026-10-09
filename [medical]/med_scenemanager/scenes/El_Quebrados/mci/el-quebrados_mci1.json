@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "el-quebrados_mci1",
+    "category": "mci",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1632.52, 2724.43, 57.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV rolled over, passengers out",
+        "description": "An SUV clipped another car and rolled over at the crossroads in El Quebrados. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 505,
+            "pos": [-1639, 2723.99, 57.48],
+            "rot": [0, 0, 294.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR66 190",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 492,
+            "pos": [-1635, 2719.63, 57.48],
+            "rot": [0, 0, 331.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR31 191",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 517,
+            "pos": [-1645.99, 2723.75, 57.58],
+            "rot": [0, 0, 267.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR67 192",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 174,
+            "pos": [-1632.52, 2724.43, 57.73],
+            "rot": 74,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3962, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 192,
+            "pos": [-1632.09, 2727.25, 57.73],
+            "rot": 2,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 161,
+            "pos": [-1631.59, 2721.92, 57.73],
+            "rot": 5,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 44 }
+        }
+    ]
+}

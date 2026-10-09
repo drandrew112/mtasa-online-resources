@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_drowning1",
+    "category": "drowning",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2511.47, 49.12, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman choked at lunch",
+        "description": "An elderly woman choked on a piece of chicken on the sidewalk in Palomino Creek. Her husband lowered her to the ground when she went limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [2511.47, 49.12, 26.48],
+            "rot": 181,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 61, "consciousness": "unconscious" }
+        }
+    ]
+}

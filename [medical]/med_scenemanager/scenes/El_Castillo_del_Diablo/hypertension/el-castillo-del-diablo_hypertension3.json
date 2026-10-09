@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypertension3",
+    "category": "hypertension",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-7.19, 2103.33, 17.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slurred speech, numb arm",
+        "description": "A man at the side of the road near El Castillo del Diablo suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-7.19, 2103.33, 17.57],
+            "rot": 42,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 33,
+                "systolic": 209,
+                "diastolic": 129,
+                "heartRate": 99,
+                "consciousness": "dazed"
+            }
+        }
+    ]
+}

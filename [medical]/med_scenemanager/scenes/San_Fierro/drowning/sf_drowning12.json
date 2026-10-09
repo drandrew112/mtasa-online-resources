@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning12",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2348.5, 1392.4, 7.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fisherman fell off the quay",
+        "description": "A fisherman slipped and fell into the cold water. Dock workers pulled him out with a rope and laid him on the quay in Esplanade North. He is coughing and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [-2348.5, 1392.4, 7.37],
+            "rot": 210,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "heartRate": 115 }
+        }
+    ]
+}

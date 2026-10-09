@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_fall3",
+    "category": "fall",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-183.5, 1068.84, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother tripped on the curb",
+        "description": "An elderly woman tripped on the curb outside a small store in Fort Carson and cannot get up. Her right leg looks shorter and turned outwards.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-183.5, 1068.84, 19.74],
+            "rot": 101,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 46 }
+        }
+    ]
+}

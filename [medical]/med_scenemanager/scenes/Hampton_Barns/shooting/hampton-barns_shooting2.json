@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_shooting2",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [570, 240, 16.54],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shot several times",
+        "description": "A man was shot several times on a grassy patch just outside Hampton Barns and is lying face down in a pool of blood. The shooter ran away on foot.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [570, 240, 16.54],
+            "rot": 80,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3270 }
+        }
+    ]
+}

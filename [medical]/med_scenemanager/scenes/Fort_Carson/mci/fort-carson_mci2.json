@@ -1,0 +1,117 @@
+{
+    "format": 1,
+    "name": "fort-carson_mci2",
+    "category": "mci",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-185.37, 1098.29, 19.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bus and car collision",
+        "description": "An intercity coach and a car collided at a junction in Fort Carson. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 437,
+            "pos": [-191.87, 1098.39, 20.29],
+            "rot": [0, 0, 298.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC30 247",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 549,
+            "pos": [-187.79, 1093.75, 19.64],
+            "rot": [0, 0, 344.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC71 248",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 185,
+            "pos": [-185.37, 1098.29, 19.89],
+            "rot": 4,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4114, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 130,
+            "pos": [-185.04, 1100.71, 19.89],
+            "rot": 56,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 42 }
+        },
+        {
+            "id": "p3",
+            "skin": 132,
+            "pos": [-185.34, 1095.6, 19.89],
+            "rot": 6,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p4",
+            "skin": 193,
+            "pos": [-184.17, 1096.46, 19.89],
+            "rot": 12,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p5",
+            "skin": 72,
+            "pos": [-189.97, 1102.2, 19.89],
+            "rot": 121,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing4",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1806.5, -146.25, 6.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot finish a sentence",
+        "description": "A man on the sidewalk in Doherty cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 59,
+            "pos": [-1806.5, -146.25, 6.69],
+            "rot": 308,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 83, "heartRate": 128 }
+        }
+    ]
+}

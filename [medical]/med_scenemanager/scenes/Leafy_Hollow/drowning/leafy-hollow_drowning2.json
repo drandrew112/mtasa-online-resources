@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_drowning2",
+    "category": "drowning",
+    "location": "Flint County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1171.42, -1891.84, 78.09],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aspirated vomit, gurgling",
+        "description": "A very drunk man vomited at the side of the road near Leafy Hollow and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-1171.42, -1891.84, 78.09],
+            "rot": 302,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "spo2": 77, "consciousness": "unconscious" }
+        }
+    ]
+}

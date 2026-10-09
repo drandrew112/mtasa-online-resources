@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke7",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1460.37, 39.55, 6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of her life",
+        "description": "A woman at the side of the road in Easter Bay Airport grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 214,
+            "pos": [-1460.37, 39.55, 6],
+            "rot": 167,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 211, "diastolic": 120, "consciousness": "dazed" }
+        }
+    ]
+}

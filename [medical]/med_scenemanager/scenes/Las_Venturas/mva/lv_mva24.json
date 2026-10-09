@@ -1,0 +1,76 @@
+{
+    "format": 1,
+    "name": "lv_mva24",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1195.58, 2254.25, 6.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Pilson Intersection. The driver of the first car is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 477,
+            "pos": [1199.32, 2255.63, 6.708],
+            "rot": [-0.17, 1.63, 354.18],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV16 284",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 540,
+            "pos": [1198.408, 2249.067, 6.864],
+            "rot": [-0.3, 1.61, 349.42],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV97 176",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [1199.32, 2255.63, 6.96],
+            "rot": 354.18,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        }
+    ]
+}

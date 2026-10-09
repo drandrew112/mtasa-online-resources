@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hitbycar2",
+    "category": "hitbycar",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1626.22, 2695.37, 55.85],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the roadside",
+        "description": "A jogger was clipped by a car at the edge of the road by the dusty roadside in El Quebrados. He is lying on his back with a painful, swollen knee and road rash.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 422,
+            "pos": [-1632.36, 2701.12, 55.41],
+            "rot": [0, 0, 7.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR76 226",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [-1626.22, 2695.37, 55.85],
+            "rot": 137,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 34 }
+        }
+    ]
+}

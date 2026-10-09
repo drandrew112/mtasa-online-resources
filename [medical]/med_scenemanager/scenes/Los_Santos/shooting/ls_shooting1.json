@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_shooting1",
     "category": "shooting",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2486, -1666, 13.5],

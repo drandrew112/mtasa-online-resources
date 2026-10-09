@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_overdose25",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1818.1, -962.69, 48.83],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and wine, very sleepy",
+        "description": "A woman at the side of the road in Foster Valley mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [-1818.1, -962.69, 48.83],
+            "rot": 241,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 90, "consciousness": "dazed" }
+        }
+    ]
+}

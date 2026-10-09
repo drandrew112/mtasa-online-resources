@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_breathing3",
+    "category": "breathing",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1418.87, 2623.46, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An old smoker outside a house in El Quebrados had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-1418.87, 2623.46, 55.84],
+            "rot": 116,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 83 }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia13",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1441.49, -1547.44, 13.55],

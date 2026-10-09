@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes5",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1042.27, 1137.11, 11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Very thirsty and confused",
+        "description": "A bike messenger at the side of the road near the Greenglass College keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [1042.27, 1137.11, 11],
+            "rot": 74,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 546, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,87 @@
+{
+    "format": 1,
+    "name": "ls_mva4",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2069.38, -1300.75, 22.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collision while turning",
+        "description": "Two cars collided while one was turning at an intersection in Jefferson. The driver of the first car is still in the seat with a head injury and disorientation. The driver of the second car is still in the seat with a deep cut that is bleeding.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 445,
+            "pos": [2068.73, -1297.34, 23.84],
+            "rot": [0, 0, 142.71],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS66 572",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 565,
+            "pos": [2064.631, -1301.51, 23.542],
+            "rot": [0, 0, 313.11],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS85 772",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [2068.73, -1297.34, 24.09],
+            "rot": 142.71,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "pain": 60, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 9,
+            "pos": [2064.631, -1301.51, 23.79],
+            "rot": 313.11,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

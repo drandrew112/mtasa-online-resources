@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_false2",
+    "category": "false",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [99.63, 2138.07, 17.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man asleep on the ground",
+        "description": "A farmer reports a man who collapsed on the road shoulder in El Castillo del Diablo. He is sitting up now, says he was only sleeping and refuses help.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 135,
+            "pos": [99.63, 2138.07, 17.62],
+            "rot": 169,
+            "anim": "sit",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

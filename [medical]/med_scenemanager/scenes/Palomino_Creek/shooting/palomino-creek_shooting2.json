@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "palomino-creek_shooting2",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2576.02, 34.63, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire on the sidewalk just outside Palomino Creek. One young man is lying on the ground, another is crouching behind a truck with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 116,
+            "pos": [2576.02, 34.63, 26.48],
+            "rot": 327,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4098 }
+        },
+        {
+            "id": "p2",
+            "skin": 116,
+            "pos": [2573.82, 34.62, 26.58],
+            "rot": 352,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

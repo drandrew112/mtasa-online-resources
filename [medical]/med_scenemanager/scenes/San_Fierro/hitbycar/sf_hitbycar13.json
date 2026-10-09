@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar13",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2173.98, 60.54, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the curb",
+        "description": "A jogger was clipped by a car at the curb on the street in Garcia. He is lying on his back with a painful, swollen knee and road rash.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 426,
+            "pos": [-2169.43, 55.43, 35.02],
+            "rot": [0, 0, 175.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF33 415",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [-2173.98, 60.54, 35.32],
+            "rot": 312,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 27 }
+        }
+    ]
+}

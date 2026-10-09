@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_drowning3",
+    "category": "drowning",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-160, 2650, 64.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Toddler fell in an irrigation ditch",
+        "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on the dusty ground in Las Payasadas. The child is coughing and crying weakly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [-160, 2650, 64.27],
+            "rot": 49,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

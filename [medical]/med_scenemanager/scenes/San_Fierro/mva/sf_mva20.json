@@ -1,0 +1,67 @@
+{
+    "format": 1,
+    "name": "sf_mva20",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2757.25, 157.63, 6.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Ocean Flats. The driver got out and is leaning on the car with a bump on the head and a headache. The passenger is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [-2758.13, 157.63, 7.128],
+            "rot": [0, 0, 155.21],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF62 517",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [-2752.998, 161.034, 7.129],
+            "rot": 303.6,
+            "anim": "lean",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 188,
+            "pos": [-2758.13, 157.63, 7.38],
+            "rot": 155.21,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        }
+    ]
+}

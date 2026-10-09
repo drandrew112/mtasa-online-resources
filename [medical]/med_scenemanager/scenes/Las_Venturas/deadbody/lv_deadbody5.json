@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody5",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [939, 1646, 9.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger found lifeless",
+        "description": "Cyclists found a jogger lying in a small park in Las Venturas. He is not breathing, his lips are blue and his body is already cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [939, 1646, 9.01],
+            "rot": 322,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

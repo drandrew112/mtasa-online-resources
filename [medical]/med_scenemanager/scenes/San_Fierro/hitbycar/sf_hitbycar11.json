@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar11",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1951.62, 722.63, 45.45],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Clipped by a car mirror",
+        "description": "A man walking on the street in Downtown was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 527,
+            "pos": [-1946.68, 725.68, 45.15],
+            "rot": [0, 0, 265.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF23 413",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-1951.62, 722.63, 45.45],
+            "rot": 310,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

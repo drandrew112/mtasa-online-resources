@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning19",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2179, 1306, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed a toy part on a dare",
+        "description": "A teenager on a bench near the Camel's Toe swallowed a plastic piece from a toy for a dare. He is coughing weakly, silent between coughs, with a high-pitched wheeze.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [2179, 1306, 10.82],
+            "rot": 61,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 80 }
+        }
+    ]
+}

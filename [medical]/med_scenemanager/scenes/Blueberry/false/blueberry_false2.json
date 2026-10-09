@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "blueberry_false2",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [408.79, -135.95, 8.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crash with people trapped",
+        "description": "An anonymous caller reports a bad crash with people trapped next to the country road near Blueberry. No other calls came in about it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

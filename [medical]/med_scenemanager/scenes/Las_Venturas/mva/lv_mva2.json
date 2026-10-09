@@ -1,0 +1,65 @@
+{
+    "format": 1,
+    "name": "lv_mva2",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2527.25, 2143, 9.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Old Venturas Strip. The driver is lying on their back next to the car with a broken rib and a bleeding wound. The passenger is lying on their back next to the car, unconscious, with a serious head injury.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 479,
+            "pos": [2527.25, 2142.36, 10.607],
+            "rot": [0, 0, 116.41],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV51 550",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [2524.452, 2137.861, 10.672],
+            "rot": 148.1,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 72,
+            "pos": [2521.567, 2142.987, 10.672],
+            "rot": 83.7,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        }
+    ]
+}

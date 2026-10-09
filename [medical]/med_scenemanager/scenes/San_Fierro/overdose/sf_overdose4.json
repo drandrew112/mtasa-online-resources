@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose4",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2578.12, -137.62, 6.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated",
+        "description": "A man at a bus stop in Hashbury is shouting at cars, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [-2578.12, -137.62, 6.12],
+            "rot": 25,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 204, "diastolic": 118, "heartRate": 171, "consciousness": "confused" }
+        }
+    ]
+}

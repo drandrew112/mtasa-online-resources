@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia7",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1558.06, 1961.6, 10.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man next to the road in Redsands West had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [1558.06, 1961.6, 10.99],
+            "rot": 354,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 18, "consciousness": "unconscious" }
+        }
+    ]
+}

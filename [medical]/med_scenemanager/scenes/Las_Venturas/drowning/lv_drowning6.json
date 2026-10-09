@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning6",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1836.97, 1526.98, 10.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from the water",
+        "description": "A father pulled his young daughter out of the water after she wandered off. She is lying by the water near Pirates in Men's Pants, confused and with blue lips.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [1836.97, 1526.98, 10.73],
+            "rot": 18,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_drowning1",
+    "category": "drowning",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1170, -1120, 128.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Toddler fell in an irrigation ditch",
+        "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on farmland in The Farm. The child is coughing and crying weakly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 91,
+            "pos": [-1170, -1120, 128.96],
+            "rot": 220,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

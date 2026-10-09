@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_diabetes3",
+    "category": "diabetes",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1901.4, -2542.36, 40.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers next to the country road near Angel Pine report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [-1901.4, -2542.36, 40.36],
+            "rot": 20,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3891, "glucose": 656, "consciousness": "confused" }
+        }
+    ]
+}

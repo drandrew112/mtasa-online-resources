@@ -1,0 +1,95 @@
+{
+    "format": 1,
+    "name": "palomino-creek_mci2",
+    "category": "mci",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2343.75, 280.38, 26.66],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car and van collision",
+        "description": "A car ran a stop sign at a junction near Palomino Creek and was hit by a van. The car driver and two passengers are injured, one of them is unconscious.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 492,
+            "pos": [2343.75, 286.88, 26.41],
+            "rot": [0, 0, 211.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC49 389",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 605,
+            "pos": [2339.25, 282.8, 26.41],
+            "rot": [0, 0, 259.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC72 390",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [2343.75, 280.38, 26.66],
+            "rot": 283,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 198,
+            "pos": [2346.37, 279.76, 26.66],
+            "rot": 323,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 46 }
+        },
+        {
+            "id": "p3",
+            "skin": 133,
+            "pos": [2340.86, 279.43, 26.66],
+            "rot": 203,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

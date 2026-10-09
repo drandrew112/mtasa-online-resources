@@ -1,0 +1,95 @@
+{
+    "format": 1,
+    "name": "lv_mci12",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2429.75, 1013.21, 11.05],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Taxi and van collision",
+        "description": "A taxi ran a red light at a junction in Come-A-Lot and was hit by a van. The taxi driver and two passengers are injured, one of them is unconscious.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 482,
+            "pos": [2427.2, 1017.27, 10.8],
+            "rot": [0, 0, 206.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV29 436",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 420,
+            "pos": [2427.25, 1008.75, 10.8],
+            "rot": [0, 0, 348.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV72 437",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [2429.75, 1013.21, 11.05],
+            "rot": 209,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 138,
+            "pos": [2430.9, 1015.64, 11.05],
+            "rot": 300,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 35 }
+        },
+        {
+            "id": "p3",
+            "skin": 18,
+            "pos": [2430.38, 1010.53, 11.05],
+            "rot": 245,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

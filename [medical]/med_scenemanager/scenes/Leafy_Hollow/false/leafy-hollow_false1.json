@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_false1",
+    "category": "false",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1140, -1860, 85.68],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots heard",
+        "description": "Neighbours heard what sounded like gunshots at the edge of the woods near Leafy Hollow. Nobody saw anyone injured. It may have been fireworks.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

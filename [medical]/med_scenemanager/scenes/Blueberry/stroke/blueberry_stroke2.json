@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_stroke2",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [390, -10, 4.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slumped over, drooling",
+        "description": "A man is slumped over on a grassy patch just outside Blueberry, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [390, -10, 4.74],
+            "rot": 184,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 198, "diastolic": 114, "consciousness": "dazed" }
+        }
+    ]
+}

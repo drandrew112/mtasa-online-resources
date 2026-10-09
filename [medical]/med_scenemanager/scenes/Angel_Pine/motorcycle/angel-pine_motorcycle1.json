@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "angel-pine_motorcycle1",
+    "category": "motorcycle",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2186.68, -2285.43, 30.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider slid under a car",
+        "description": "A motorcyclist braked too late at a junction in Angel Pine and slid under the back of a car. His leg is badly broken and bleeding, and he is very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [-2190.22, -2285.83, 30.22],
+            "rot": [0, 0, 124.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS75 122",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 410,
+            "pos": [-2184.75, -2290.2, 30.52],
+            "rot": [0, 0, 62],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS81 123",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-2186.68, -2285.43, 30.77],
+            "rot": 57,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3790, "consciousness": "dazed" }
+        }
+    ]
+}

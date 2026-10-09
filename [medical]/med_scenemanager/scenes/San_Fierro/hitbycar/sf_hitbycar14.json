@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar14",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1985.69, 1318.47, 7.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder hit by a car",
+        "description": "A teenager on a skateboard rolled out of a driveway on a main road in Esplanade North and into the side of a car. His leg is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 401,
+            "pos": [-1991.17, 1314.71, 7.07],
+            "rot": [0, 0, 81.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF37 416",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 142,
+            "pos": [-1985.69, 1318.47, 7.23],
+            "rot": 190,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

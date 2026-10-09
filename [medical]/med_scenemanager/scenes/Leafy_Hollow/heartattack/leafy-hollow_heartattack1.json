@@ -2,6 +2,7 @@
     "format": 1,
     "name": "leafy-hollow_heartattack1",
     "category": "heartattack",
+    "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
     "center": [-892.869, -1762.223, 80.119],

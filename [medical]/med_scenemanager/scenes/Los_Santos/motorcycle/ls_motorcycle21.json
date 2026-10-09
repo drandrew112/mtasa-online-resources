@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_motorcycle21",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [827.55, -1392.32, 13.38],
@@ -66,7 +67,7 @@
                 { "type": "fracture", "severity": 3 },
                 { "type": "gunshot", "severity": 3 }
             ],
-            "state": { "bleeding": 2, "bloodVolume": 3400, "consciousness": "dazed" }
+            "state": { "bloodVolume": 3400, "bleeding": 2, "consciousness": "dazed" }
         }
     ]
 }

@@ -1,0 +1,67 @@
+{
+    "format": 1,
+    "name": "lv_mva15",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1489, 2301.57, 10.22],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Redsands West. The driver is still in the seat with a broken arm and a bleeding wound. The passenger got out and is standing next to the car holding their side with a painful leg and some cuts.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 496,
+            "pos": [1489.44, 2305.52, 10.638],
+            "rot": [0, 0, 57.14],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV68 913",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [1489.44, 2305.52, 10.89],
+            "rot": 57.14,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 76,
+            "pos": [1489, 2301.57, 11.221],
+            "rot": 0,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

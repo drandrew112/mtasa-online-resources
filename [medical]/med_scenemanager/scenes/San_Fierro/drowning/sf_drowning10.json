@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning10",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2768.26, 1311.47, 7.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unconscious after near drowning",
+        "description": "A young man was underwater for about two minutes before he was pulled out. He is lying on the quay in Palisades, breathing but not waking up.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [-2768.26, 1311.47, 7.25],
+            "rot": 263,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 71, "consciousness": "unconscious" }
+        }
+    ]
+}

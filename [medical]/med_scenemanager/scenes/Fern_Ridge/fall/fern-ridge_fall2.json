@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "fern-ridge_fall2",
+    "category": "fall",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [680.74, -26.77, 23.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a porch",
+        "description": "A man missed a step and fell off a high porch on the road shoulder in Fern Ridge. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [680.74, -26.77, 23.37],
+            "rot": 224,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false7",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1407.25, 2713.13, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help at a busy crossroads near the Yellow Bell Golf Course. The caller hung up before giving any more details.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

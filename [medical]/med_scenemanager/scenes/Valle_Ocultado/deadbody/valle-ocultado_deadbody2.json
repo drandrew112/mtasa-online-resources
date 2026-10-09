@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_deadbody2",
+    "category": "deadbody",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-780, 2770, 50.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose, found too late",
+        "description": "Friends found a young woman on open scrubland in Valle Ocultado after she did not come home. She is cold and stiff, a syringe is beside her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-780, 2770, 50.74],
+            "rot": 24,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "regular-tom_diabetes1",
+    "category": "diabetes",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-390, 1750, 43.28],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman on the dusty ground in Regular Tom says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-390, 1750, 43.28],
+            "rot": 145,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 420 }
+        }
+    ]
+}

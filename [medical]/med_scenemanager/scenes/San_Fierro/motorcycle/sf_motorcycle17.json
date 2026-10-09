@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle17",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1586.35, -347.31, 12.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Wheelie gone wrong",
+        "description": "A teenager tried a wheelie at the side of the road in Easter Bay Airport to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [-1584.08, -351.7, 11.65],
+            "rot": [0, 0, 267.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF26 391",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 115,
+            "pos": [-1586.35, -347.31, 12.15],
+            "rot": 303,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

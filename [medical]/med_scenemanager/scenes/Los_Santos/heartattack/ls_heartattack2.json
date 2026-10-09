@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_heartattack2",
     "category": "heartattack",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2320.199, -1715.58, 13.547],

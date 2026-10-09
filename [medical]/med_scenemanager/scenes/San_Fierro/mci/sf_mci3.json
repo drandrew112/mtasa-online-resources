@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "sf_mci3",
+    "category": "mci",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1530.02, 799.4, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "SUV crash, passengers thrown out",
+        "description": "An SUV swerved and crashed into another car on a main road in Downtown. Two passengers were thrown out onto the road, the other driver is sitting in shock with chest pain.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 400,
+            "pos": [-1534.65, 799.9, 6.94],
+            "rot": [0, 0, 356.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF47 306",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 549,
+            "pos": [-1534.06, 805.67, 6.94],
+            "rot": [0, 0, 10.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF20 307",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 580,
+            "pos": [-1535.21, 793.92, 6.94],
+            "rot": [0, 0, 339.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF29 308",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [-1530.02, 799.4, 7.19],
+            "rot": 74,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4067, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 41,
+            "pos": [-1529.7, 802.38, 7.29],
+            "rot": 51,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p3",
+            "skin": 14,
+            "pos": [-1530.34, 796.42, 7.29],
+            "rot": 205,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 44 }
+        }
+    ]
+}

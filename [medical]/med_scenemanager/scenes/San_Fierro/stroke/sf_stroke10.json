@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke10",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2743.76, 1028.09, 52.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, one leg will not move",
+        "description": "An old man fell in front of an apartment block in Paradiso and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [-2743.76, 1028.09, 52.74],
+            "rot": 69,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 191 }
+        }
+    ]
+}

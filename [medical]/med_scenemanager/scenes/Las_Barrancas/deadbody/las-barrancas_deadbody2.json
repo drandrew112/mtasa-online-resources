@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_deadbody2",
+    "category": "deadbody",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-960, 1390, 33.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying on open scrubland near Las Barrancas. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [-960, 1390, 33.92],
+            "rot": 91,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody4",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2279, 1006, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying on the grass in Come-A-Lot where she usually feeds the pigeons. She is cold and does not breathe.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [2279, 1006, 10.82],
+            "rot": 289,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "montgomery_mci2",
+    "category": "mci",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1262.02, 187.28, 19.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Truck jackknifed, cars crashed",
+        "description": "A box truck lost its brakes coming down the hill and jackknifed at the crossroads in Montgomery. Two cars crashed into it. Three people are injured, one is bleeding heavily.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 505,
+            "pos": [1257.35, 186.63, 19.46],
+            "rot": [0, 0, 263.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC29 354",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 499,
+            "pos": [1259.24, 180.86, 19.71],
+            "rot": [0, 0, 323.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC43 355",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 404,
+            "pos": [1250.95, 189.47, 19.56],
+            "rot": [0, 0, 250.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC94 356",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [1262.02, 187.28, 19.71],
+            "rot": 71,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3593 }
+        },
+        {
+            "id": "p2",
+            "skin": 11,
+            "pos": [1260.05, 188.3, 19.71],
+            "rot": 37,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 186,
+            "pos": [1264.21, 186.57, 19.71],
+            "rot": 67,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 44 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_false1",
+    "category": "false",
+    "location": "Lil' Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-27.12, 1365.02, 12.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man swaying",
+        "description": "A caller says a man on open scrubland at the Lil' Probe Inn is swaying and might fall over. He is drunk but talking, walking and says he is fine.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [-27.12, 1365.02, 12.23],
+            "rot": 242,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

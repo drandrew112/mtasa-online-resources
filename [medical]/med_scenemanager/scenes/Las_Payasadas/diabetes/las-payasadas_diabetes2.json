@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_diabetes2",
+    "category": "diabetes",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-297.97, 2670.98, 64.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man on the dusty ground in Las Payasadas very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [-297.97, 2670.98, 64.5],
+            "rot": 195,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3837, "glucose": 695, "consciousness": "dazed" }
+        }
+    ]
+}

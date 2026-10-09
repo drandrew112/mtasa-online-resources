@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypertension2",
+    "category": "hypertension",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-448, 2241.52, 42.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, ringing ears",
+        "description": "An elderly man at the side of the road in El Castillo del Diablo says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [-448, 2241.52, 42.43],
+            "rot": 301,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 31,
+                "systolic": 189,
+                "diastolic": 106,
+                "heartRate": 100,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

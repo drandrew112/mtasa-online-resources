@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia15",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2041.5, 2009.8, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother slurring her words",
+        "description": "A grandmother by the roadside in Redsands East is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [2041.5, 2009.8, 10.82],
+            "rot": 26,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "confused" }
+        }
+    ]
+}

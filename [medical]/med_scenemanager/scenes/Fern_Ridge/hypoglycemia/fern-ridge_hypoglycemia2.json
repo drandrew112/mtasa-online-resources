@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1175.99, -84.05, 34.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying next to the country road in Fern Ridge and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [1175.99, -84.05, 34.14],
+            "rot": 14,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 22, "consciousness": "unconscious" }
+        }
+    ]
+}

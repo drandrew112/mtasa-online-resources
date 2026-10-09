@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "bayside_fall3",
+    "category": "fall",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2420, 2220, 5.49],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a roof",
+        "description": "A man fixing his roof fell off and landed on his feet in a yard in Bayside. He is screaming in pain and both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [-2420, 2220, 5.49],
+            "rot": 279,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

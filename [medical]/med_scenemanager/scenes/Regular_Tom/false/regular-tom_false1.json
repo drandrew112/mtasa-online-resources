@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "regular-tom_false1",
+    "category": "false",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-347.7, 1911.93, 51.53],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A driver saw a person lying on open scrubland near Regular Tom and did not stop. The caller could not say if the person was moving.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

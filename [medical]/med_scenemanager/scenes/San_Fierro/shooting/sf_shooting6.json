@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "sf_shooting6",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1616.25, 940.75, 7.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shop owner and customer shot",
+        "description": "An armed robbery went wrong outside a corner shop in Downtown. The shop owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [-1616.25, 940.75, 7.7],
+            "rot": 203,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3745 }
+        },
+        {
+            "id": "p2",
+            "skin": 219,
+            "pos": [-1614.05, 940.75, 7.8],
+            "rot": 2,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

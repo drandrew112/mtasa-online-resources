@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke14",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2697.25, 1306.13, 13.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Face drooping, slurred speech",
+        "description": "A man outside a souvenir shop in Las Venturas suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [2697.25, 1306.13, 13.57],
+            "rot": 347,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 192 }
+        }
+    ]
+}

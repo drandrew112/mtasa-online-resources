@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke19",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2128.38, 1780.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother suddenly confused",
+        "description": "A grandmother out with her grandson on the sidewalk on The Strip suddenly stopped making sense and her mouth looks crooked. The boy called from her phone.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2128.38, 1780.5, 10.82],
+            "rot": 142,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 182, "consciousness": "confused" }
+        }
+    ]
+}

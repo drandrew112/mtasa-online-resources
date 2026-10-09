@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1680, 2690, 57.79],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "A man on open scrubland near El Quebrados cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-1680, 2690, 57.79],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 107, "consciousness": "unconscious" }
+        }
+    ]
+}

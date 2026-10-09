@@ -1,0 +1,43 @@
+{
+    "format": 1,
+    "name": "bayside_shooting1",
+    "category": "shooting",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2511.13, 2451.62, 17.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gang fight, two wounded",
+        "description": "A fight between two groups ended in gunfire on the road shoulder in Bayside. One young man is lying on the ground, another is crouching behind a truck with a bleeding hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [-2511.13, 2451.62, 17.82],
+            "rot": 132,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 3924 }
+        },
+        {
+            "id": "p2",
+            "skin": 142,
+            "pos": [-2509.57, 2450.06, 17.92],
+            "rot": 355,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_fall1",
+    "category": "fall",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1223.95, 286.22, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother tripped on the curb",
+        "description": "An elderly woman tripped on the curb on the main street in Montgomery and cannot get up. Her right leg looks shorter and turned outwards.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1223.95, 286.22, 19.56],
+            "rot": 127,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 43 }
+        }
+    ]
+}

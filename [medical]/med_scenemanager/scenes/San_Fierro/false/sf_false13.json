@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_false13",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1974.54, -1092.45, 32.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man swaying",
+        "description": "A caller says a man at the side of the road in Foster Valley is swaying and might fall over. He is drunk but talking, walking and says he is fine.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [-1974.54, -1092.45, 32.02],
+            "rot": 94,
+            "anim": "drunk",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

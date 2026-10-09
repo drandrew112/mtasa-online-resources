@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting24",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1828.97, 189.6, 19.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest in a small park in Doherty. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-1828.97, 189.6, 19.4],
+            "rot": 153,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3940, "spo2": 84 }
+        }
+    ]
+}

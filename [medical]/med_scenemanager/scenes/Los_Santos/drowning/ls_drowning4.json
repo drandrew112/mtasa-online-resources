@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_drowning4",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [614, -1902, 3.23],
+    "center": [1173.96, -2404.02, 10.64],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child and rescuer pulled out",
-        "description": "A girl got into trouble in the sea and an adult jumped in after her. Both were pulled out and brought onto the beach at Santa Maria Beach. The child is drowsy, the adult is coughing badly.",
+        "title": "Elderly swimmer collapsed",
+        "description": "An elderly woman went limp while swimming in the lake. She was under water for about a minute before being pulled out and brought up to the street in Verdant Bluffs. She has just started breathing again.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,25 +18,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 145,
-            "pos": [614, -1902, 3.23],
-            "rot": 5,
+            "skin": 129,
+            "pos": [1173.96, -2404.02, 10.64],
+            "rot": 264,
             "anim": "ko_back",
             "injuries": [
                 { "type": "suffocation", "severity": 2 }
             ],
-            "state": { "consciousness": "dazed", "spo2": 80 }
-        },
-        {
-            "id": "p2",
-            "skin": 15,
-            "pos": [616.5, -1901.7, 3.23],
-            "rot": 152,
-            "anim": "cough",
-            "injuries": [
-                { "type": "suffocation", "severity": 1 }
-            ],
-            "state": { "spo2": 91 }
+            "state": { "spo2": 80, "consciousness": "dazed" }
         }
     ]
 }

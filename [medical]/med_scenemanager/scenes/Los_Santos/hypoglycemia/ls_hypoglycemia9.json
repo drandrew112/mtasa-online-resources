@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia9",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [684.69, -1070.3, 49.64],
@@ -22,7 +23,7 @@
             "rot": 1,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "unconscious", "glucose": 22, "heartRate": 108 }
+            "state": { "glucose": 22, "heartRate": 108, "consciousness": "unconscious" }
         }
     ]
 }

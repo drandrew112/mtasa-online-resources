@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_diabetes3",
+    "category": "diabetes",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1000, -1660, 76.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A woman in a clearing in Leafy Hollow called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [-1000, -1660, 76.37],
+            "rot": 196,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4347, "glucose": 644 }
+        }
+    ]
+}

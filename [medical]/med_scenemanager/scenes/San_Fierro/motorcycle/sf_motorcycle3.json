@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle3",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2003, -234.08, 35.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road rash and broken leg",
+        "description": "A rider lost the back wheel while braking at a junction in Doherty and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [-2005.5, -231.62, 34.97],
+            "rot": [0, 0, 82.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF53 374",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-2003, -234.08, 35.52],
+            "rot": 359,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

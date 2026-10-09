@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_hitbycar1",
+    "category": "hitbycar",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [225.88, 2743.94, 60.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a delivery truck",
+        "description": "A truck driver did not see a woman crossing by the dusty roadside near Verdant Meadows. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 482,
+            "pos": [232.09, 2746.56, 59.93],
+            "rot": [0, 0, 258.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC36 450",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [225.88, 2743.94, 60.84],
+            "rot": 301,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3612, "consciousness": "dazed" }
+        }
+    ]
+}

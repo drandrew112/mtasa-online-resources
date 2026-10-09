@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia12",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1757.5, 159.38, 5.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man on the sidewalk in Easter Basin had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-1757.5, 159.38, 5.47],
+            "rot": 55,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 20, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_mci3",
+    "category": "mci",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-842.56, -1836.98, 91.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car and van collision",
+        "description": "A car ran a stop sign at a junction in Leafy Hollow and was hit by a van. The car driver and two passengers are injured, one of them is unconscious.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 404,
+            "pos": [-847.12, -1837.31, 91.4],
+            "rot": [0, 0, 268.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC20 345",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 543,
+            "pos": [-845.45, -1843.36, 91.4],
+            "rot": [0, 0, 317.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC42 346",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-842.56, -1836.98, 91.65],
+            "rot": 277,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 93,
+            "pos": [-844.41, -1835.57, 91.65],
+            "rot": 232,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 37 }
+        },
+        {
+            "id": "p3",
+            "skin": 127,
+            "pos": [-840.59, -1837.84, 91.65],
+            "rot": 6,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

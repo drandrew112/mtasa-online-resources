@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle7",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2711.06, 766, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown off after a side impact",
+        "description": "A woman riding a motorcycle was hit from the side at a bus stop in Rockshore East. She was thrown off, is drowsy and her thigh is swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [2714.99, 770.93, 10.47],
+            "rot": [0, 0, 357.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV79 376",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 404,
+            "pos": [2706.02, 770.5, 10.69],
+            "rot": [0, 0, 267.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV81 377",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [2711.06, 766, 10.88],
+            "rot": 331,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

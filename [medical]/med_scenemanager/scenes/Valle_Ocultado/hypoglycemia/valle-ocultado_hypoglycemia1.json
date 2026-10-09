@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-736.99, 2738.05, 47.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying by the dusty roadside in Valle Ocultado and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 132,
+            "pos": [-736.99, 2738.05, 47.01],
+            "rot": 212,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 24, "consciousness": "unconscious" }
+        }
+    ]
+}

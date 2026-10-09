@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_drowning20",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2035.47, -1143.25, 24.5],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "suffocation", "severity": 2 }
             ],
-            "state": { "consciousness": "unconscious", "spo2": 72 }
+            "state": { "spo2": 72, "consciousness": "unconscious" }
         }
     ]
 }

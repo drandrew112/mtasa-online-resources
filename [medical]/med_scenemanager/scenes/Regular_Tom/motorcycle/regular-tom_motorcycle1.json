@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "regular-tom_motorcycle1",
+    "category": "motorcycle",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-423.79, 1846.24, 65.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers outside a small store just outside Regular Tom saw a motorcycle hit the barrier at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [-428.21, 1848.37, 64.82],
+            "rot": [0, 0, 100.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC18 398",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [-423.79, 1846.24, 65.25],
+            "rot": 134,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3796, "consciousness": "unconscious" }
+        }
+    ]
+}

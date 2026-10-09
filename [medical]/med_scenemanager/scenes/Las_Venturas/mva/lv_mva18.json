@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_mva18",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1639.06, 2261.2, 9.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ran off the road",
+        "description": "A single car left the road and crashed at the curb in Redsands West. The driver is lying face down next to the car, unconscious, with a serious head injury.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 477,
+            "pos": [1637.83, 2264.38, 10.7],
+            "rot": [0, 0, 122.67],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV81 618",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [1639.06, 2261.2, 10.82],
+            "rot": 0.3,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "montgomery_hypertension5",
+    "category": "hypertension",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1060.84, 198.96, 33.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache, vomiting",
+        "description": "A woman next to the country road near Montgomery has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [1060.84, 198.96, 33.88],
+            "rot": 184,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 56,
+                "systolic": 223,
+                "diastolic": 127,
+                "heartRate": 107,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_breathing2",
+    "category": "breathing",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2340, 2660, 58.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, still wheezing",
+        "description": "A man in a yard just outside Bayside choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [-2340, 2660, 58.32],
+            "rot": 80,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

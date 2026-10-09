@@ -1,0 +1,65 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle13",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [899.38, 704.55, 10.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider and passenger down",
+        "description": "A motorcycle carrying two people crashed by the roadside in Las Venturas. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [900.67, 709.27, 10.45],
+            "rot": [0, 0, 48.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV84 385",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [899.38, 704.55, 10.74],
+            "rot": 70,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4090, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 92,
+            "pos": [901.72, 705.44, 10.95],
+            "rot": 288,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_diabetes2",
+    "category": "diabetes",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-780, 1610, 27.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man on the dusty ground in Las Barrancas has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-780, 1610, 27.12],
+            "rot": 233,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4073, "glucose": 539 }
+        }
+    ]
+}

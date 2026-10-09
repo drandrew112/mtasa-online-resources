@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing10",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2036.5, 327.75, 35.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Gasping, pink frothy cough",
+        "description": "An elderly woman at a bus stop in King's is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [-2036.5, 327.75, 35.16],
+            "rot": 192,
+            "anim": "cough",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 82, "systolic": 189, "heartRate": 121 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning3",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2116.97, 1886.98, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed the wrong way",
+        "description": "A woman on a bench on The Strip swallowed a drink the wrong way and has been coughing hard for several minutes. She is red in the face and wheezing.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [2116.97, 1886.98, 10.82],
+            "rot": 286,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

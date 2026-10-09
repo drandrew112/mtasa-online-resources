@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_breathing3",
+    "category": "breathing",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-880.75, 1411.3, 13.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma from hay dust",
+        "description": "A girl helping to stack hay on the dusty ground in Las Barrancas is wheezing badly from the dust. Her inhaler is at home.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [-880.75, 1411.3, 13.6],
+            "rot": 352,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

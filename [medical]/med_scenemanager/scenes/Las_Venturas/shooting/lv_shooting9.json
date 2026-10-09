@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "lv_shooting9",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1822.1, 1446.13, 13.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shop owner and customer shot",
+        "description": "An armed robbery went wrong outside a wedding chapel near the High Roller. The shop owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [1822.1, 1446.13, 13.27],
+            "rot": 345,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3749 }
+        },
+        {
+            "id": "p2",
+            "skin": 190,
+            "pos": [1819.9, 1446.14, 13.52],
+            "rot": 181,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

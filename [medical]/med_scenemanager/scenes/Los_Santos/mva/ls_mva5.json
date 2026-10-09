@@ -1,0 +1,101 @@
+{
+    "format": 1,
+    "name": "ls_mva5",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [743.67, -1050.31, 22.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rear-end collision",
+        "description": "One car rear-ended another on the road in Richman. The driver of the first car is still in the seat with chest and leg injuries and severe pain. The driver of the second car got out and is standing next to the car holding their side with a possible broken arm. The passenger is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 585,
+            "pos": [748.11, -1052.59, 23.135],
+            "rot": [0.84, -1.55, 302.73],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS76 647",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 479,
+            "pos": [742.476, -1056.327, 23.254],
+            "rot": [0.61, 0.07, 310.35],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS83 589",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [748.11, -1052.59, 23.39],
+            "rot": 302.73,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4250, "pain": 90, "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 185,
+            "pos": [743.67, -1050.31, 23.563],
+            "rot": 212,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 170,
+            "pos": [748.11, -1052.59, 23.39],
+            "rot": 302.73,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false6",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1696.82, 1265.39, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure reported",
+        "description": "A passer-by reports someone having a seizure at a bus stop in Esplanade North. The caller left before the call was finished.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

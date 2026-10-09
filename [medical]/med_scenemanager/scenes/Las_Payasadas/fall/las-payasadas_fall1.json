@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-payasadas_fall1",
+    "category": "fall",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-210.95, 2646.02, 63.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a tractor",
+        "description": "A farmer fell off his tractor on the dusty ground in Las Payasadas and the rear wheel rolled over his leg. His leg is crushed and bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 27,
+            "pos": [-210.95, 2646.02, 63.25],
+            "rot": 221,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4002, "pain": 55 }
+        }
+    ]
+}

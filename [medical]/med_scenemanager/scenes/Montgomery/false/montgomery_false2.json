@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "montgomery_false2",
+    "category": "false",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1510, 410, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed man, may have left",
+        "description": "A woman says a man collapsed on the grass in Montgomery a few minutes ago, but he might have got up and walked away. Nobody stayed with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

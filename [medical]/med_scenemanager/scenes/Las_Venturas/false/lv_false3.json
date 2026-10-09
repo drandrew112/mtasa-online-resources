@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_false3",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2526.22, 839.52, 6.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shouting, chest pain?",
+        "description": "A caller heard a man outside a souvenir shop near the Julius Thruway South shouting that he has chest pain. When asked, he says he was only joking with his friends.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 174,
+            "pos": [2526.22, 839.52, 6.81],
+            "rot": 24,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

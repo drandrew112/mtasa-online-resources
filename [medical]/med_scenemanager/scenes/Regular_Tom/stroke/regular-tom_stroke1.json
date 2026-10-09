@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "regular-tom_stroke1",
+    "category": "stroke",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-390, 1790, 47.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Face drooping, slurred speech",
+        "description": "A man on open scrubland in Regular Tom suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [-390, 1790, 47.61],
+            "rot": 9,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 185 }
+        }
+    ]
+}

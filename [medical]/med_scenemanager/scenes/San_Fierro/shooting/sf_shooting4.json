@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_shooting4",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2285.62, 1166.25, 54.85],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot on the sidewalk in Juniper Hollow. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 258,
+            "pos": [-2285.62, 1166.25, 54.85],
+            "rot": 332,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

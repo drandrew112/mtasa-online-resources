@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia4",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2192.25, 965.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and pale",
+        "description": "A jogger on the sidewalk in Come-A-Lot sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2192.25, 965.75, 10.82],
+            "rot": 6,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 43, "heartRate": 117 }
+        }
+    ]
+}

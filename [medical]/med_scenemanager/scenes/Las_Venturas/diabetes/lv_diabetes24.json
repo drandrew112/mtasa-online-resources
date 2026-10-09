@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes24",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2559.5, 1306.13, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman confused, drinking constantly",
+        "description": "An older woman on the sidewalk near the Camel's Toe is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [2559.5, 1306.13, 10.81],
+            "rot": 328,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 619, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_deadbody1",
+    "category": "deadbody",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-240.75, 2668.7, 63.86],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a rancher",
+        "description": "A rancher checking his fences found a man lying on open scrubland in Las Payasadas. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-240.75, 2668.7, 63.86],
+            "rot": 335,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

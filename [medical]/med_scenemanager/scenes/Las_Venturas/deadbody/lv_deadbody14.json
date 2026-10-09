@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody14",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2852, 1290, 11.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying on the platform at Linden Station where she usually feeds the pigeons. She is cold and does not breathe.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [2852, 1290, 11.2],
+            "rot": 23,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

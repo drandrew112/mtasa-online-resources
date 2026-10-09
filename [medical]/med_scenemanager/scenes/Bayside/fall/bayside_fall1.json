@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "bayside_fall1",
+    "category": "fall",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2440, 2520, 14.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a ladder picking fruit",
+        "description": "A woman picking fruit fell from her ladder in a yard in Bayside. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-2440, 2520, 14.23],
+            "rot": 357,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 48 }
+        }
+    ]
+}

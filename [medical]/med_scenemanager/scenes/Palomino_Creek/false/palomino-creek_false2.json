@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "palomino-creek_false2",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2467.38, 303.25, 31.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car in the ditch",
+        "description": "A passing trucker reports a car in the ditch at the crossroads near Palomino Creek, maybe with someone inside. Nothing is there when units arrive.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

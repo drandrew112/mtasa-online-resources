@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_shooting1",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [348.02, 2304.88, 25.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing pickup at the side of the road near Verdant Meadows. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [348.02, 2304.88, 25.4],
+            "rot": 53,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4106, "pain": 45 }
+        }
+    ]
+}

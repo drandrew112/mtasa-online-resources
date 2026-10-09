@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_motorcycle24",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2448.75, -1299.25, 23.83],

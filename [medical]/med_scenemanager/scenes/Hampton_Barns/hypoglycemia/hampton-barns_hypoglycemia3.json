@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "hampton-barns_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [743.18, 318.21, 19.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver staring at nothing",
+        "description": "A driver stopped his car by the road next to a farm in Hampton Barns and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [743.18, 318.21, 19.73],
+            "rot": [0, 0, 280.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC19 304",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [743.18, 318.21, 19.98],
+            "rot": 280,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [],
+            "state": { "glucose": 31, "consciousness": "confused" }
+        }
+    ]
+}

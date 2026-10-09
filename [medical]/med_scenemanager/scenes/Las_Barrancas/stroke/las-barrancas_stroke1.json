@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_stroke1",
+    "category": "stroke",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-745.12, 1477.34, 23.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slumped over, drooling",
+        "description": "A man is slumped over on the road shoulder in Las Barrancas, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-745.12, 1477.34, 23.03],
+            "rot": 1,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 204, "diastolic": 112, "consciousness": "dazed" }
+        }
+    ]
+}

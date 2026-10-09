@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_diabetes2",
+    "category": "diabetes",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [854.55, -558.27, 17.28],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker with blurry vision",
+        "description": "A construction worker next to the country road in Dillimore feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 27,
+            "pos": [854.55, -558.27, 17.28],
+            "rot": 170,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 421 }
+        }
+    ]
+}

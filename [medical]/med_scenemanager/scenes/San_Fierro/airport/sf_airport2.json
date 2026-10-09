@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_airport2",
+    "category": "airport",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1487, -565, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fainted in the queue",
+        "description": "A woman fainted in the queue outside the terminal at Easter Bay Airport. She came around quickly but is pale, sweaty and her pulse feels very slow.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 191,
+            "pos": [-1487, -565, 14.15],
+            "rot": 307,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 86, "heartRate": 50 }
+        }
+    ]
+}

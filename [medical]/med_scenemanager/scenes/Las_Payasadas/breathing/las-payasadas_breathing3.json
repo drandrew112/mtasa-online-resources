@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_breathing3",
+    "category": "breathing",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-174.06, 2695.8, 62.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man on the dusty ground in Las Payasadas pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-174.06, 2695.8, 62.56],
+            "rot": 169,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 93 }
+        }
+    ]
+}

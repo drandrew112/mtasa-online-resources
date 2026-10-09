@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_deadbody10",
     "category": "deadbody",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1350.1, -983.56, 29.89],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Fell from a building, no signs of life",
-        "description": "People heard a thud at a bus stop in Temple and found a woman who fell from a high building. She has massive injuries and is not breathing.",
+        "description": "People heard a thud in Temple and found a woman who fell from a high building. She has massive injuries and is not breathing.",
         "caller": "SceneManager",
         "priority": 1
     },

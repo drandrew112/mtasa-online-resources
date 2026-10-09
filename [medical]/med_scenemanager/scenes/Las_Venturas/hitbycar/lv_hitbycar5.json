@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar5",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1997.38, 2651.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a delivery truck",
+        "description": "A truck driver did not see a woman crossing the road at a bus stop in Prickle Pine. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 413,
+            "pos": [1992.51, 2647.11, 10.77],
+            "rot": [0, 0, 83.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV82 406",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 148,
+            "pos": [1997.38, 2651.75, 10.82],
+            "rot": 225,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3589, "consciousness": "dazed" }
+        }
+    ]
+}

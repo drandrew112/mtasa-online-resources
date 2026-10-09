@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose10",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2094.22, -300.5, 35.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much",
+        "description": "A teenager outside a corner shop in Foster Valley keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2094.22, -300.5, 35.55],
+            "rot": 347,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

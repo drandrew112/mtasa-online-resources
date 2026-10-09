@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_fall1",
+    "category": "fall",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-940, 1450, 33.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped on loose gravel",
+        "description": "A woman slipped on loose gravel in the park just outside Las Barrancas and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-940, 1450, 33.64],
+            "rot": 291,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 28 }
+        }
+    ]
+}

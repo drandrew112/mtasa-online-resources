@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_shooting2",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [144.87, 2138.29, 17.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hunting accident",
+        "description": "A hunter was shot by his friend by the dusty roadside near El Castillo del Diablo, who mistook him for a deer. He has a wound in his thigh that is bleeding heavily.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [144.87, 2138.29, 17.61],
+            "rot": 195,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3703 }
+        }
+    ]
+}

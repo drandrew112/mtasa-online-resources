@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "angel-pine_hitbycar1",
+    "category": "hitbycar",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2217.65, -2627.68, 48.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the roadside",
+        "description": "A jogger was clipped by a car at the edge of the road on the road shoulder near Angel Pine. He is lying on his back with a painful, swollen knee and road rash.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 419,
+            "pos": [-2223.07, -2631.26, 47.79],
+            "rot": [0, 0, 75.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "WS58 126",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [-2217.65, -2627.68, 48.1],
+            "rot": 117,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 33 }
+        }
+    ]
+}

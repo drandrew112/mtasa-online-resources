@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_stroke1",
+    "category": "stroke",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-220, 2650, 62.93],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed, snoring breathing",
+        "description": "A man collapsed on open scrubland in Las Payasadas and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-220, 2650, 62.93],
+            "rot": 335,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 218, "diastolic": 117, "consciousness": "unconscious" }
+        }
+    ]
+}

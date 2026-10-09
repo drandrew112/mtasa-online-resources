@@ -2,51 +2,51 @@
     "format": 1,
     "name": "ls_motorcycle10",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2238.64, -2115.33, 13.54],
+    "center": [487.21, -1416.37, 16.66],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dirt bike crash",
-        "description": "A dirt bike rider crashed on the sidewalk in Ocean Docks after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well.",
+        "title": "Delivery rider fell",
+        "description": "A pizza delivery rider slipped on oil in Rodeo and fell. He is sitting on the sidewalk with a sore ankle, worried about the pizzas.",
         "caller": "SceneManager",
-        "priority": 1
+        "priority": 3
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 468,
-            "pos": [2236.52, -2116.05, 13.09],
-            "rot": [0, 0, 145],
+            "model": 448,
+            "pos": [488.79, -1420.32, 16.03],
+            "rot": [0, 0, 198.9],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS18 293",
+            "plate": "LS23 230",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
             "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 19,
-            "pos": [2238.64, -2115.33, 13.54],
-            "rot": 94,
-            "anim": "ko_back",
+            "skin": 155,
+            "pos": [487.21, -1416.37, 16.66],
+            "rot": 187,
+            "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": { "pain": 30 }
+            "state": {}
         }
     ]
 }

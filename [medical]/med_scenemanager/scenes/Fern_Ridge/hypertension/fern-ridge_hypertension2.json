@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "fern-ridge_hypertension2",
+    "category": "hypertension",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1061.19, 142.66, 31.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, ringing ears",
+        "description": "An elderly man at the side of the road near Fern Ridge says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [1061.19, 142.66, 31.73],
+            "rot": 325,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 33,
+                "systolic": 185,
+                "diastolic": 105,
+                "heartRate": 93,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_hypertension2",
+    "category": "hypertension",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2311.74, -2626.25, 59.67],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, very high pressure",
+        "description": "An old woman on the road shoulder near Angel Pine is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-2311.74, -2626.25, 59.67],
+            "rot": 146,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 224, "diastolic": 134, "heartRate": 88, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing15",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2816.12, 607.34, 6.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man coughing, fever",
+        "description": "An old man at a bus stop in Palisades has been coughing up green phlegm for a week, has a fever and is now very short of breath.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-2816.12, 607.34, 6.23],
+            "rot": 102,
+            "anim": "cough",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning6",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2533.15, 166.45, 4.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out of the water",
+        "description": "Passers-by pulled a young woman out of the water and laid her on the waterfront promenade in Queens. She is confused and has blue lips.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-2533.15, 166.45, 4.33],
+            "rot": 155,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 79, "consciousness": "dazed" }
+        }
+    ]
+}

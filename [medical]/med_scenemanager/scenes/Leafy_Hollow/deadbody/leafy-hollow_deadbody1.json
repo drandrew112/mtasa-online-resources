@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_deadbody1",
+    "category": "deadbody",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-919.25, -1880, 84.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose, found too late",
+        "description": "Friends found a young woman in a clearing near Leafy Hollow after she did not come home. She is cold and stiff, a syringe is beside her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [-919.25, -1880, 84.95],
+            "rot": 117,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia4",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1436.37, -178.55, 6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aggressive, sweaty man",
+        "description": "A security guard at the side of the road in Easter Bay Airport reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-1436.37, -178.55, 6],
+            "rot": 15,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 37, "consciousness": "confused" }
+        }
+    ]
+}

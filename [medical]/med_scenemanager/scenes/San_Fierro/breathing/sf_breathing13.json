@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing13",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1227, -5, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "COPD flare, lips blue",
+        "description": "An old man with emphysema outside the terminal at Easter Bay Airport ran out of oxygen in his portable tank. He is very drowsy and his lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [-1227, -5, 14.15],
+            "rot": 84,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "spo2": 78, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes23",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2319, 661.25, 42.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman lying on the sidewalk in Juniper Hill, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-2319, 661.25, 42.52],
+            "rot": 340,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3864, "glucose": 792, "consciousness": "dazed" }
+        }
+    ]
+}

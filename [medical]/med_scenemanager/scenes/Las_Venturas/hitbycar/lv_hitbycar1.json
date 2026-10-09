@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar1",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2381.04, 2046, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road worker struck",
+        "description": "A road worker was hit by a car that ignored the cones at a bus stop on Old Venturas Strip. He is lying on the asphalt, dazed, with a deformed arm and a head wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 547,
+            "pos": [2385.88, 2050.29, 10.52],
+            "rot": [0, 0, 276.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV10 402",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 16,
+            "pos": [2381.04, 2046, 10.82],
+            "rot": 313,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

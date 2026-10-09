@@ -1,0 +1,86 @@
+{
+    "format": 1,
+    "name": "ls_mva24",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2216.38, -2225.66, 12.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car hit a parked car",
+        "description": "A car swerved into a parked car at the curb in Ocean Docks. The driver of the first car is lying on their back next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the second car is lying on the ground in pain with a head injury and a painful arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 517,
+            "pos": [2218.52, -2227.4, 13.513],
+            "rot": [0, 0, 143.58],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS80 160",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 405,
+            "pos": [2223.156, -2222.435, 13.577],
+            "rot": [0, 0, 168.56],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS92 804",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [2216.38, -2225.66, 13.547],
+            "rot": 231,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 25,
+            "pos": [2226.571, -2223.126, 13.547],
+            "rot": 258.6,
+            "anim": "injured",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

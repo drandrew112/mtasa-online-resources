@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes1",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1739.3, 2243.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A woman by the roadside in Redsands West called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 191,
+            "pos": [1739.3, 2243.13, 10.82],
+            "rot": 90,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4282, "glucose": 578 }
+        }
+    ]
+}

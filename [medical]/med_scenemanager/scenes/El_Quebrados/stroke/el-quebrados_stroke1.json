@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_stroke1",
+    "category": "stroke",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1597.18, 2651.03, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young woman, sudden weakness",
+        "description": "A young woman on open scrubland in El Quebrados says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [-1597.18, 2651.03, 55.84],
+            "rot": 198,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

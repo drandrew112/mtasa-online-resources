@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "las-barrancas_motorcycle2",
+    "category": "motorcycle",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-977.15, 1421.54, 32.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers at the side of the road near Las Barrancas saw a motorcycle hit the barrier at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [-974.87, 1418.92, 31.65],
+            "rot": [0, 0, 297.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR11 296",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-977.15, 1421.54, 32.06],
+            "rot": 325,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3691, "consciousness": "unconscious" }
+        }
+    ]
+}

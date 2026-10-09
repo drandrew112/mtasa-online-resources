@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "fort-carson_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-200.45, 1044.95, 19.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver staring at nothing",
+        "description": "A driver stopped his car outside a small store in Fort Carson and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 505,
+            "pos": [-200.45, 1044.95, 19.44],
+            "rot": [0, 0, 181],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC40 262",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [-200.45, 1044.95, 19.69],
+            "rot": 181,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [],
+            "state": { "glucose": 28, "consciousness": "confused" }
+        }
+    ]
+}

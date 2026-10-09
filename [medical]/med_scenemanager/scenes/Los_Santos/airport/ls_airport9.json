@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_airport9",
     "category": "airport",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1534, -2342, 13.55],

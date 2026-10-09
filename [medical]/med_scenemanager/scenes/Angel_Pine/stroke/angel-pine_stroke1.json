@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_stroke1",
+    "category": "stroke",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2130, -2450, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Numb side after jogging",
+        "description": "A jogger in a parking lot in Angel Pine stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [-2130, -2450, 30.63],
+            "rot": 258,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 165 }
+        }
+    ]
+}

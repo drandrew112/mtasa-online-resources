@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "bayside_drowning1",
+    "category": "drowning",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2721.41, 2380.51, 74.51],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aspirated vomit, gurgling",
+        "description": "A very drunk man vomited on open ground in Bayside and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [-2721.41, 2380.51, 74.51],
+            "rot": 225,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "unconscious" }
+        }
+    ]
+}

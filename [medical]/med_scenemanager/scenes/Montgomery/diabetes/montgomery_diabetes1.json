@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_diabetes1",
+    "category": "diabetes",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1352.99, 250.61, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends outside a house in Montgomery cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [1352.99, 250.61, 19.56],
+            "rot": 72,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 615, "heartRate": 130, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_diabetes3",
+    "category": "diabetes",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-93.47, 2395.56, 16.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends on the road shoulder in El Castillo del Diablo cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-93.47, 2395.56, 16.75],
+            "rot": 321,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 662, "heartRate": 127, "consciousness": "unconscious" }
+        }
+    ]
+}

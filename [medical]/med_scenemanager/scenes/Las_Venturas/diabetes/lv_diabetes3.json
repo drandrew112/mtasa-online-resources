@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes3",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1137.65, 1861.81, 10.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man next to the road near the Whitewood Estates very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 132,
+            "pos": [1137.65, 1861.81, 10.37],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3855, "glucose": 704, "consciousness": "dazed" }
+        }
+    ]
+}

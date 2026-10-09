@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar2",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2674.25, 165.13, 4.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the curb",
+        "description": "A jogger was clipped by a car at the curb on the street in Ocean Flats. He is lying on his back with a painful, swollen knee and road rash.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 547,
+            "pos": [-2680.74, 160.61, 4.03],
+            "rot": [0, 0, 97],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF79 404",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [-2674.25, 165.13, 4.33],
+            "rot": 209,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 26 }
+        }
+    ]
+}

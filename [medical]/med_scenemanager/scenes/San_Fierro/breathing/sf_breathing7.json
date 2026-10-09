@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing7",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1717.12, 1343.81, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl at a bus stop in Esplanade North has a tight chest and is wheezing after running to catch a bus. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-1717.12, 1343.81, 7.18],
+            "rot": 168,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

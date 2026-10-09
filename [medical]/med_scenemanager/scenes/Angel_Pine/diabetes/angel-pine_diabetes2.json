@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_diabetes2",
+    "category": "diabetes",
+    "location": "Mount Chiliad",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2177.3, -2164.23, 48.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman confused, drinking constantly",
+        "description": "An older woman at the side of the road near Angel Pine is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-2177.3, -2164.23, 48.43],
+            "rot": 74,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 612, "consciousness": "confused" }
+        }
+    ]
+}

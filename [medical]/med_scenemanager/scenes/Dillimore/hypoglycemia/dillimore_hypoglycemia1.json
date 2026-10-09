@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "dillimore_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [795.53, -587.66, 16.29],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver staring at nothing",
+        "description": "A driver stopped his car outside a house in Dillimore and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 489,
+            "pos": [795.53, -587.66, 16.04],
+            "rot": [0, 0, 5.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC84 175",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [795.53, -587.66, 16.29],
+            "rot": 5,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [],
+            "state": { "glucose": 31, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false14",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2004.12, 731.13, 45.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Crash with people trapped",
+        "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Downtown. No other calls came in about it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

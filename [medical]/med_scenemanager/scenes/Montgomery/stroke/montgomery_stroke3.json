@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_stroke3",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1450, 70, 30.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Numb side after jogging",
+        "description": "A jogger on the grass just outside Montgomery stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 185,
+            "pos": [1450, 70, 30.4],
+            "rot": 272,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 175 }
+        }
+    ]
+}

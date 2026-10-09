@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning11",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2188.97, 1349.6, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swimmer pulled out, not breathing",
+        "description": "A swimmer was pulled out of the bay and is lying on the quay in Calton Heights. He is not breathing and has no pulse. A bystander has started CPR.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [-2188.97, 1349.6, 7.19],
+            "rot": 249,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 41, "rhythm": "PEA" }
+        }
+    ]
+}

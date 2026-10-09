@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "hampton-barns_motorcycle2",
+    "category": "motorcycle",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [767.95, 238.05, 28.26],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Wheelie gone wrong",
+        "description": "A teenager tried a wheelie on the road shoulder near Hampton Barns to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 521,
+            "pos": [771.05, 235.39, 27.65],
+            "rot": [0, 0, 288.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC50 286",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [767.95, 238.05, 28.26],
+            "rot": 286,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

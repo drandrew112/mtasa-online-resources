@@ -2,6 +2,7 @@
     "format": 1,
     "name": "lv_hypertension14",
     "category": "hypertension",
+    "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
     "center": [2195.25, 1283.125, 10.82],

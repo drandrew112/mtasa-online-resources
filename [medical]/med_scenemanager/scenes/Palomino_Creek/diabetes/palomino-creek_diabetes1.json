@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "palomino-creek_diabetes1",
+    "category": "diabetes",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2231.21, 228.56, 14.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers on the road shoulder near Palomino Creek report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 213,
+            "pos": [2231.21, 228.56, 14.96],
+            "rot": 165,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3904, "glucose": 651, "consciousness": "confused" }
+        }
+    ]
+}

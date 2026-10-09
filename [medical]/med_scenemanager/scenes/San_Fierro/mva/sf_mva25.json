@@ -1,0 +1,102 @@
+{
+    "format": 1,
+    "name": "sf_mva25",
+    "category": "mva",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2003.62, 320.25, 33.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collision while turning",
+        "description": "Two cars collided while one was turning at an intersection in King's. The driver of the first car is still in the seat with a broken leg and a bleeding wound. The driver of the second car is still in the seat with a broken rib and a cut on the head. The passenger is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 545,
+            "pos": [-2003.33, 308.35, 34.926],
+            "rot": [1.43, 1.14, 321.46],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF51 783",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 426,
+            "pos": [-1999.212, 312.405, 34.866],
+            "rot": [0, 0, 139.87],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF48 572",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [-2003.33, 308.35, 35.18],
+            "rot": 321.46,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        },
+        {
+            "id": "p2",
+            "skin": 250,
+            "pos": [-1999.212, 312.405, 35.12],
+            "rot": 139.87,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p3",
+            "skin": 10,
+            "pos": [-2003.33, 308.35, 35.18],
+            "rot": 321.46,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

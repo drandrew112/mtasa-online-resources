@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia5",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2320.13, 1648.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother slurring her words",
+        "description": "A grandmother under the neon signs near Caligula's Palace is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2320.13, 1648.25, 10.82],
+            "rot": 269,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "confused" }
+        }
+    ]
+}

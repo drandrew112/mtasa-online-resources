@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "fern-ridge_motorcycle1",
+    "category": "motorcycle",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [529.12, -140.22, 37.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road rash and broken leg",
+        "description": "A rider lost the back wheel in a bend at the crossroads near Fern Ridge and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [524.15, -139.7, 37.34],
+            "rot": [0, 0, 160.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC28 237",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [529.12, -140.22, 37.89],
+            "rot": 52,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

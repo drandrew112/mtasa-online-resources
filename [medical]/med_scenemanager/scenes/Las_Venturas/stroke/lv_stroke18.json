@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke18",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2239, 886, 9.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Numb side after jogging",
+        "description": "A jogger on the sand in Las Venturas stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [2239, 886, 9.88],
+            "rot": 158,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 168 }
+        }
+    ]
+}

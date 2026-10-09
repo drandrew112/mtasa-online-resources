@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_motorcycle2",
+    "category": "motorcycle",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-448, 2241.52, 42.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider slid under a car",
+        "description": "A motorcyclist braked too late by the dusty roadside in El Castillo del Diablo and slid under the back of a car. His leg is badly broken and bleeding, and he is very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [-445.33, 2240.48, 41.9],
+            "rot": [0, 0, 280.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC52 207",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 529,
+            "pos": [-448.28, 2247.63, 42.1],
+            "rot": [0, 0, 202.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC51 208",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-448, 2241.52, 42.43],
+            "rot": 330,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3824, "consciousness": "dazed" }
+        }
+    ]
+}

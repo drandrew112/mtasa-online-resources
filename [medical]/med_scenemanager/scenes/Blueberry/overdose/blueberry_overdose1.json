@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_overdose1",
+    "category": "overdose",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [322.4, -79.24, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, face down",
+        "description": "A homeless man is lying face down outside a house in Blueberry and is not responding. Someone found a burnt spoon and a needle in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [322.4, -79.24, 1.58],
+            "rot": 12,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 70, "consciousness": "unconscious" }
+        }
+    ]
+}

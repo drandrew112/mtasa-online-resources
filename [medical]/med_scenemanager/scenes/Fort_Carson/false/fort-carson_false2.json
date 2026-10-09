@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "fort-carson_false2",
+    "category": "false",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-317.12, 1098.25, 19.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child not breathing",
+        "description": "A young-sounding caller says a child is not breathing at the crossroads in Fort Carson, then laughs and hangs up. The callback goes to voicemail.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

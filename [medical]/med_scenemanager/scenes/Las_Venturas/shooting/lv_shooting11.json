@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting11",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1538.87, 2161.17, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest next to the road in Redsands West. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [1538.87, 2161.17, 10.82],
+            "rot": 38,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3851, "spo2": 84 }
+        }
+    ]
+}

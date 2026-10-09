@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "dillimore_motorcycle1",
+    "category": "motorcycle",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [721.67, -579.37, 16.49],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers at the crossroads in Dillimore saw a motorcycle hit the barrier at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 471,
+            "pos": [721.63, -584.37, 15.94],
+            "rot": [0, 0, 278.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC53 164",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [721.67, -579.37, 16.49],
+            "rot": 293,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3684, "consciousness": "unconscious" }
+        }
+    ]
+}

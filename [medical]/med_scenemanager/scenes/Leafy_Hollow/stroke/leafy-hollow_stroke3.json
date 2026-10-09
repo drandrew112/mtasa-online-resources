@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_stroke3",
+    "category": "stroke",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1100, -1680, 76.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer slumped on his tailgate",
+        "description": "A farmer is slumped on the tailgate of his pickup at the edge of the woods in Leafy Hollow. His wife says he suddenly could not hold his coffee cup and his words are slurred.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-1100, -1680, 76.37],
+            "rot": 247,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 192 }
+        }
+    ]
+}

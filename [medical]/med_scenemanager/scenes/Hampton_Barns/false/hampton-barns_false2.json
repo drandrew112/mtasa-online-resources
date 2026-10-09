@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "hampton-barns_false2",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [670, 260, 22.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed man, may have left",
+        "description": "A woman says a man collapsed in a field near Hampton Barns a few minutes ago, but he might have got up and walked away. Nobody stayed with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

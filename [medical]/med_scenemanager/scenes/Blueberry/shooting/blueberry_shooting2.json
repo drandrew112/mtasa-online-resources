@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_shooting2",
+    "category": "shooting",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [190.44, -30.85, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mugging victim shot in the arm",
+        "description": "A man refused to hand over his wallet outside a house in Blueberry and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [190.44, -30.85, 1.58],
+            "rot": 67,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

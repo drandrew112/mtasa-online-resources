@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "sf_fall6",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1547, -365, 6.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards on the grass in Easter Bay Airport and hit his head on the hard ground. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-1547, -365, 6.88],
+            "rot": 34,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

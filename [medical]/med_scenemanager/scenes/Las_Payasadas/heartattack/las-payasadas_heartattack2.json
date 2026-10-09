@@ -2,6 +2,7 @@
     "format": 1,
     "name": "las-payasadas_heartattack2",
     "category": "heartattack",
+    "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
     "center": [-247.7, 2758.391, 62.688],

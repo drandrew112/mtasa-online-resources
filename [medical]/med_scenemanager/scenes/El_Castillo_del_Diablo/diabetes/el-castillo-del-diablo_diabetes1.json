@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_diabetes1",
+    "category": "diabetes",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-428.04, 2588.23, 44.77],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man by the dusty roadside near El Castillo del Diablo has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [-428.04, 2588.23, 44.77],
+            "rot": 20,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4122, "glucose": 539 }
+        }
+    ]
+}

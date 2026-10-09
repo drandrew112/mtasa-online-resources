@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_mci19",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1281.63, -2030.56, 59.04],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Work van and car, five hurt",
-        "description": "A crowded work van collided with a car in Verdant Bluffs. The van rolled onto its side. Five people are injured, two of them seriously; workers climbed out through the windows.",
+        "description": "A crowded work van collided with a car in Verdant Bluffs. The van is badly damaged. Five people are injured, two of them seriously; workers climbed out through the windows.",
         "caller": "SceneManager",
         "priority": 1
     },

@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false5",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2159.37, -748.87, 32.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots heard",
+        "description": "People nearby heard what sounded like gunshots at a busy crossroads in Foster Valley. Nobody saw anyone injured. It may have been fireworks.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

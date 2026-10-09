@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hitbycar3",
+    "category": "hitbycar",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-85.5, 2362.2, 18.5],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Struck by a speeding car",
+        "description": "A speeding car hit a pedestrian next to the country road in El Castillo del Diablo and crashed into a pole. The pedestrian is unconscious and bleeding heavily from his head and legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 554,
+            "pos": [-79.78, 2358.84, 18.12],
+            "rot": [0, 0, 203.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC24 216",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [-85.5, 2362.2, 18.5],
+            "rot": 265,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3693, "consciousness": "unconscious" }
+        }
+    ]
+}

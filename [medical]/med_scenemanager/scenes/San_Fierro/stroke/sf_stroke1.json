@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke1",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2613.87, 538.25, 14.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by outside a corner shop in Santa Flora called because a man is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2613.87, 538.25, 14.61],
+            "rot": 279,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 183 }
+        }
+    ]
+}

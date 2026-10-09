@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "regular-tom_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-350, 1790, 42.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man on the dusty ground in Regular Tom had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [-350, 1790, 42.71],
+            "rot": 60,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 18, "consciousness": "unconscious" }
+        }
+    ]
+}

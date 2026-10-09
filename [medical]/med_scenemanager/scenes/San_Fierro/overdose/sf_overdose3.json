@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose3",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2585.08, 1211.81, 50.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man vomiting",
+        "description": "A very drunk man on the sidewalk in Paradiso has been vomiting and can no longer keep his eyes open. His friends say he drank a whole bottle of whisky on a bet.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [-2585.08, 1211.81, 50.08],
+            "rot": 181,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

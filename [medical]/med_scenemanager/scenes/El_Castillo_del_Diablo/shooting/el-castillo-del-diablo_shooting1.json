@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_shooting1",
+    "category": "shooting",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-371.17, 2341.14, 30.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot during a bar fight",
+        "description": "A fight at the local bar spilled outside on the road shoulder in El Castillo del Diablo and ended with a gunshot. A man is sitting on the ground, shot in the shoulder.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-371.17, 2341.14, 30.41],
+            "rot": 247,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4181 }
+        }
+    ]
+}

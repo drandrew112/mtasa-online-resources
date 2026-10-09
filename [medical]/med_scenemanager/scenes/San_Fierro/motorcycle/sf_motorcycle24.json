@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle24",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2062.37, -593.82, 30.42],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road rash and broken leg",
+        "description": "A rider lost the back wheel while braking at the side of the road in Foster Valley and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 521,
+            "pos": [-2056.79, -595.17, 29.88],
+            "rot": [0, 0, 311.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF18 402",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 250,
+            "pos": [-2062.37, -593.82, 30.42],
+            "rot": 325,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

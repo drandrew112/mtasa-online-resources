@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes23",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2401.63, 2420.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers outside a wedding chapel in Roca Escalante report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [2401.63, 2420.5, 10.82],
+            "rot": 205,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3831, "glucose": 653, "consciousness": "confused" }
+        }
+    ]
+}

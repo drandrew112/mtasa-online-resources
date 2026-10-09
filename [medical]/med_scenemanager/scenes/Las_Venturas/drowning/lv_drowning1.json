@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_drowning1",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2119, 1106, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aspirated vomit, snoring",
+        "description": "A very drunk man vomited on a bench in Come-A-Lot and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [2119, 1106, 10.82],
+            "rot": 350,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "unconscious" }
+        }
+    ]
+}

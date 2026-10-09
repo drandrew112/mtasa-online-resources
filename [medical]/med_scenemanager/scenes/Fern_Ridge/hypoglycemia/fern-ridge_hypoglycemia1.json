@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [707.4, -2.09, 32.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man at the side of the road in Fern Ridge had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [707.4, -2.09, 32.82],
+            "rot": 199,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 17, "consciousness": "unconscious" }
+        }
+    ]
+}

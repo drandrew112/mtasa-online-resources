@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [18.89, 1105.72, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sweaty and confused",
+        "description": "A woman outside a small store in Fort Carson is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [18.89, 1105.72, 19.74],
+            "rot": 189,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 45, "consciousness": "confused" }
+        }
+    ]
+}

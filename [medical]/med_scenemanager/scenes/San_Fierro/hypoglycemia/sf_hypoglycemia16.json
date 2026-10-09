@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia16",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2534.12, 618.13, 27.22],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting strange, sweaty",
+        "description": "A woman in front of an apartment block in Juniper Hill is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 169,
+            "pos": [-2534.12, 618.13, 27.22],
+            "rot": 287,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 43, "heartRate": 108, "consciousness": "confused" }
+        }
+    ]
+}

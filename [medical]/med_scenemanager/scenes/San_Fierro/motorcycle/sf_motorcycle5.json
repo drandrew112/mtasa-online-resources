@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle5",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2226.78, -960.19, 39.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on wet road",
+        "description": "A woman on a scooter slipped on a wet road marking on the street in Mount Chiliad and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [-2222.46, -962.15, 39.19],
+            "rot": [0, 0, 263.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF83 376",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2226.78, -960.19, 39.47],
+            "rot": 308,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

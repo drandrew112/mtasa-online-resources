@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_drowning2",
+    "category": "drowning",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-883.7, 1641.48, 25.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed a fish bone",
+        "description": "An old fisherman on the road shoulder near Las Barrancas has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [-883.7, 1641.48, 25.47],
+            "rot": 283,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

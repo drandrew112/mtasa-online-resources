@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing16",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2713.25, -35.95, 4.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing, no inhaler",
+        "description": "A cyclist stopped at a bus stop in Ocean Flats after a fast ride and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [-2713.25, -35.95, 4.33],
+            "rot": 248,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

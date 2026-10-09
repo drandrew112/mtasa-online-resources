@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_overdose2",
+    "category": "overdose",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-243, 2758.63, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest pain after cocaine",
+        "description": "A man on the sidewalk in Las Payasadas says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-243, 2758.63, 62.69],
+            "rot": 172,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 195, "heartRate": 147 }
+        }
+    ]
+}

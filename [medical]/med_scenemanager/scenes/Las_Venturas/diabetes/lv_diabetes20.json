@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes20",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1279, 2486, 8.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man drowsy and dry",
+        "description": "A neighbour found an old man on the grass at Pilson Intersection very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [1279, 2486, 8.4],
+            "rot": 223,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3707, "glucose": 778, "consciousness": "dazed" }
+        }
+    ]
+}

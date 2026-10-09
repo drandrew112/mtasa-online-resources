@@ -2,6 +2,7 @@
     "format": 1,
     "name": "el-quebrados_heartattack1",
     "category": "heartattack",
+    "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
     "center": [-1462.595, 2721.174, 65.796],

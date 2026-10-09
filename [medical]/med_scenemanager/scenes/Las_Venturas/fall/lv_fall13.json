@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall13",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2472.01, 1933.81, 9.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a roof",
+        "description": "A man fixing his roof fell off and landed on his feet next to the road near the Starfish Casino. He is screaming in pain and both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [2472.01, 1933.81, 9.92],
+            "rot": 23,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

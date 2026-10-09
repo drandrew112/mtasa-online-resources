@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "sf_shooting16",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1621.53, -1084.15, 103.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Several shots were fired by the roadside in San Fierro. Two men are down: one is not moving, the other is rolling on the ground holding his leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 127,
+            "pos": [-1621.53, -1084.15, 103.1],
+            "rot": 139,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3757 }
+        },
+        {
+            "id": "p2",
+            "skin": 180,
+            "pos": [-1620.77, -1086.22, 103.76],
+            "rot": 198,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

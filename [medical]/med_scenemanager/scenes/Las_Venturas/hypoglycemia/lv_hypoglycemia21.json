@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia21",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2420.25, 763.35, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot be woken, snoring",
+        "description": "A woman is lying face down at a bus stop in Rockshore West and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [2420.25, 763.35, 10.82],
+            "rot": 250,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "glucose": 20, "heartRate": 107, "consciousness": "unconscious" }
+        }
+    ]
+}

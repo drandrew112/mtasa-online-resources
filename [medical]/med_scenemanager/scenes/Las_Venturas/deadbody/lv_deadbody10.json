@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_deadbody10",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2449.29, 2750.94, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found after a fall from height",
+        "description": "Residents found a man lying on the sidewalk in Spinybed below a tall building. His injuries are severe and he has not moved since they found him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [2449.29, 2750.94, 10.82],
+            "rot": 8,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

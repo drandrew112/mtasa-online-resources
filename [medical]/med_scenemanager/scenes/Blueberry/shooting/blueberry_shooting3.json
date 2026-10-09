@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_shooting3",
+    "category": "shooting",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [-12.49, -212.4, 1.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest at the side of the road near Blueberry. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [-12.49, -212.4, 1.64],
+            "rot": 6,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3786, "spo2": 83 }
+        }
+    ]
+}

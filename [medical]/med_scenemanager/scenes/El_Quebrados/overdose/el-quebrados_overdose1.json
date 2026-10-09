@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "el-quebrados_overdose1",
+    "category": "overdose",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1600, 2590, 66.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pills and wine, very sleepy",
+        "description": "A woman on the dusty ground in El Quebrados mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 219,
+            "pos": [-1600, 2590, 66.52],
+            "rot": 168,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 89, "consciousness": "dazed" }
+        }
+    ]
+}

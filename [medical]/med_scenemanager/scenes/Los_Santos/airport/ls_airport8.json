@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_airport8",
     "category": "airport",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2094, -2282, 13.55],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Asthma attack, inhaler in checked bag",
-        "description": "A young passenger in Ocean Docks is having a bad asthma attack. Her inhaler is in the checked luggage. She is wheezing and frightened.",
+        "description": "A young passenger at Los Santos International is having a bad asthma attack. Her inhaler is in the checked luggage. She is wheezing and frightened.",
         "caller": "SceneManager",
         "priority": 1
     },

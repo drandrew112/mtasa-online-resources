@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "hampton-barns_fall2",
+    "category": "fall",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [630, 280, 19.94],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown from a horse",
+        "description": "A woman was thrown from her horse in a field in Hampton Barns and landed on her back. She is in severe pain and says her legs feel tingly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [630, 280, 19.94],
+            "rot": 319,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 45 }
+        }
+    ]
+}

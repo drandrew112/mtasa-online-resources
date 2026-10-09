@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "bayside_false2",
+    "category": "false",
+    "location": "Bayside Marina",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2272.65, 2398.23, 4.94],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car in the ditch",
+        "description": "A passing trucker reports a car in the ditch at the side of the road near Bayside, maybe with someone inside. Nothing is there when units arrive.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

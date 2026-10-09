@@ -2,6 +2,7 @@
     "format": 1,
     "name": "sf_hypertension20",
     "category": "hypertension",
+    "location": "San Fierro",
     "enabled": true,
     "weight": 1,
     "center": [-1787, -1105, 55.258],

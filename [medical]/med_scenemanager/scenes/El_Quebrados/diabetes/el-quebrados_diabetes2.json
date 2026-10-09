@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-quebrados_diabetes2",
+    "category": "diabetes",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1459, 2745.61, 66.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman confused, drinking constantly",
+        "description": "An older woman on the dusty ground in El Quebrados is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 129,
+            "pos": [-1459, 2745.61, 66.33],
+            "rot": 358,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 599, "consciousness": "confused" }
+        }
+    ]
+}

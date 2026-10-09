@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_breathing2",
+    "category": "breathing",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1236.65, 137.28, 20.05],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot breathe lying down",
+        "description": "A woman at the side of the road near Fern Ridge says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [1236.65, 137.28, 20.05],
+            "rot": 283,
+            "anim": "sit",
+            "injuries": [
+                { "type": "pulmonary_edema", "severity": 2 }
+            ],
+            "state": { "spo2": 85, "systolic": 202 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose17",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1832.21, -519.47, 15.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Took too many sleeping pills",
+        "description": "An old man outside a corner shop in Foster Valley took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-1832.21, -519.47, 15.12],
+            "rot": 258,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

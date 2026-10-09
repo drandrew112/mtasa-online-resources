@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "lv_fall2",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2677.25, 1480.63, 12.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker fell from scaffolding",
+        "description": "A construction worker fell about two floors from scaffolding on the sidewalk in Pilgrim. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [2677.25, 1480.63, 12.23],
+            "rot": 173,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4528 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_drowning1",
+    "category": "drowning",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [110, 130, 2.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swimmer cramped, swallowed water",
+        "description": "A swimmer got a cramp and swallowed a lot of water before friends helped him out. He is sitting on the riverbank in Blueberry, coughing and breathing fast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [110, 130, 2.43],
+            "rot": 74,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91, "heartRate": 115 }
+        }
+    ]
+}

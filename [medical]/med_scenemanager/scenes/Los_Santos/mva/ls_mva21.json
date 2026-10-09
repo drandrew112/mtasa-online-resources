@@ -1,0 +1,96 @@
+{
+    "format": 1,
+    "name": "ls_mva21",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1177.63, -1852.25, 12.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "T-bone collision at intersection",
+        "description": "Two cars collided at an intersection in Verdant Bluffs, one hit the other in the side. The driver of the first car got out and is crouching by the car with a deep cut that is bleeding. The driver of the second car got out and is sitting on the ground with a bump on the head and a headache. The passenger is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 541,
+            "pos": [1178.2, -1854.45, 13.128],
+            "rot": [0, 0, 252.81],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS75 371",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 466,
+            "pos": [1179.799, -1849.726, 13.35],
+            "rot": [-0.1, 0, 175.34],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS50 290",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [1182.926, -1852.972, 13.398],
+            "rot": 287.4,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p2",
+            "skin": 250,
+            "pos": [1183.409, -1845.08, 13.409],
+            "rot": 322.1,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        },
+        {
+            "id": "p3",
+            "skin": 142,
+            "pos": [1178.2, -1854.45, 13.38],
+            "rot": 252.81,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_drowning1",
+    "category": "drowning",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-839.62, 2710.65, 45.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman choked at lunch",
+        "description": "An elderly woman choked on a piece of chicken on the dusty ground in Valle Ocultado. Her husband lowered her to the ground when she went limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-839.62, 2710.65, 45.95],
+            "rot": 191,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 61, "consciousness": "unconscious" }
+        }
+    ]
+}

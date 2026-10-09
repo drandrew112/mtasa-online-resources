@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing5",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2705.44, 1116.17, 42.79],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing, no inhaler",
+        "description": "A cyclist stopped at a bus stop in Paradiso after a fast ride and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 98,
+            "pos": [-2705.44, 1116.17, 42.79],
+            "rot": 252,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

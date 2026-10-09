@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_breathing2",
+    "category": "breathing",
+    "location": "Flint County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1175.48, -1887.22, 77.26],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot finish a sentence",
+        "description": "A man on the road shoulder near Leafy Hollow cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [-1175.48, -1887.22, 77.26],
+            "rot": 273,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 85, "heartRate": 131 }
+        }
+    ]
+}

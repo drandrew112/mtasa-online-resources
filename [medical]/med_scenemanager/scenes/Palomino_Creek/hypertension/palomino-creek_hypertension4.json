@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypertension4",
+    "category": "hypertension",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2350, -94.7, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy spell, missed meds",
+        "description": "A woman outside a small store in Palomino Creek had a dizzy spell and sat down on the ground. She says she forgot her blood pressure medication for three days.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [2350, -94.7, 26.48],
+            "rot": 96,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 166, "diastolic": 100, "heartRate": 87, "consciousness": "stable" }
+        }
+    ]
+}

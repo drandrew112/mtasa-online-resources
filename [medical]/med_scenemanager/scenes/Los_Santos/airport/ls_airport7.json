@@ -2,48 +2,30 @@
     "format": 1,
     "name": "ls_airport7",
     "category": "airport",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1334, -2242, 13.38],
+    "center": [2174, -2442, 13.38],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Passenger collapsed, no pulse",
-        "description": "A passenger collapsed while walking to a shuttle at Los Santos International. Airport staff say he is not breathing and have started CPR. An AED is on the way.",
+        "title": "Traveller with slurred speech",
+        "description": "A traveller at Los Santos International suddenly could not hold her passport and her speech became slurred. Her companion says she was fine at check-in.",
         "caller": "SceneManager",
         "priority": 1
     },
-    "vehicles": [
-        {
-            "id": "v1",
-            "model": 583,
-            "pos": [1338, -2240, 13.13],
-            "rot": [0, 0, 255],
-            "frozen": false,
-            "locked": false,
-            "engine": false,
-            "lightsOn": false,
-            "health": 1000,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
-            "paintjob": 3,
-            "plate": "LS81 201",
-            "variant": [255, 255],
-            "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
-        }
-    ],
+    "vehicles": [],
     "peds": [
         {
             "id": "p1",
-            "skin": 57,
-            "pos": [1334, -2242, 13.38],
-            "rot": 185,
-            "anim": "ko_back",
-            "injuries": [],
-            "state": { "rhythm": "VF" }
+            "skin": 88,
+            "pos": [2174, -2442, 13.38],
+            "rot": 274,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 192 }
         }
     ]
 }

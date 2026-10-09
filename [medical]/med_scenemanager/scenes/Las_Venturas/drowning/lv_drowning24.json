@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning24",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2119, 1706, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found floating in the water",
+        "description": "A street cleaner saw a man floating face down and pulled him out. He is lying at the water's edge on The Strip, not breathing. His skin is grey and cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [2119, 1706, 10.82],
+            "rot": 202,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 34, "rhythm": "asystole" }
+        }
+    ]
+}

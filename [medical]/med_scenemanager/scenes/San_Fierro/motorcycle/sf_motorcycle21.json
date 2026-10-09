@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle21",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2000.5, 158.13, 27.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers on the street in Doherty saw a motorcycle hit the curb at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 522,
+            "pos": [-2004.03, 160.92, 27.19],
+            "rot": [0, 0, 83],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF37 397",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [-2000.5, 158.13, 27.69],
+            "rot": 61,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3777, "consciousness": "unconscious" }
+        }
+    ]
+}

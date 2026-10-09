@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_motorcycle1",
+    "category": "motorcycle",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [30.11, 2635.72, 58.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Scooter slipped on spilled oil",
+        "description": "A woman on a scooter slipped on a patch of spilled oil next to the country road near Verdant Meadows and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 462,
+            "pos": [32.39, 2639.87, 57.78],
+            "rot": [0, 0, 351.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC61 448",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [30.11, 2635.72, 58.2],
+            "rot": 323,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

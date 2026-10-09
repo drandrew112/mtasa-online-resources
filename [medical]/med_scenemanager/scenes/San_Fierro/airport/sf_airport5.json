@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_airport5",
+    "category": "airport",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1225.5, -745, 61.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly traveller fell at the curb",
+        "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Easter Bay Airport. He cannot stand and his hip hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-1225.5, -745, 61.55],
+            "rot": 130,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 43 }
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "lv_shooting17",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2102.47, 1055.32, 10.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Several shots were fired outside a casino in Come-A-Lot. Two men are down: one is not moving, the other is rolling on the ground holding his leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [2102.47, 1055.32, 10.96],
+            "rot": 220,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3684 }
+        },
+        {
+            "id": "p2",
+            "skin": 96,
+            "pos": [2104.25, 1056.61, 11.13],
+            "rot": 70,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing2",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2610.43, 292.05, 4.33],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Asthma attack, inhaler empty",
+        "description": "A woman at a bus stop in Ocean Flats is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [-2610.43, 292.05, 4.33],
+            "rot": 61,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

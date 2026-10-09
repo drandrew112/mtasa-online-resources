@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false2",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1286.08, 2023.73, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed man, may have left",
+        "description": "A woman says a man collapsed by the roadside in Redsands West a few minutes ago, but he might have got up and walked away. Nobody stayed with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

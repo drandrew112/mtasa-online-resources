@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia11",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1998.5, -262.12, 35.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sweaty and confused",
+        "description": "A woman outside a workshop in Doherty is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [-1998.5, -262.12, 35.59],
+            "rot": 101,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 46, "consciousness": "confused" }
+        }
+    ]
+}

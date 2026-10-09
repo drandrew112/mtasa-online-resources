@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "regular-tom_shooting2",
+    "category": "shooting",
+    "location": "'The Big Ear'",
+    "enabled": true,
+    "weight": 1,
+    "center": [-390, 1670, 35.85],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast on open scrubland near Regular Tom. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-390, 1670, 35.85],
+            "rot": 257,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4187, "spo2": 91 }
+        }
+    ]
+}

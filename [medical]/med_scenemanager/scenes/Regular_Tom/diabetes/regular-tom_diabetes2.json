@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "regular-tom_diabetes2",
+    "category": "diabetes",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-372.25, 1770, 45.94],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman sitting on the dusty ground in Regular Tom, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-372.25, 1770, 45.94],
+            "rot": 274,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3903, "glucose": 726 }
+        }
+    ]
+}

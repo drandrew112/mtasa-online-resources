@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_diabetes2",
+    "category": "diabetes",
+    "location": "Montgomery Intersection",
+    "enabled": true,
+    "weight": 1,
+    "center": [1650, 350, 19.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers on a grassy patch just outside Montgomery report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 213,
+            "pos": [1650, 350, 19.4],
+            "rot": 96,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3984, "glucose": 640, "consciousness": "confused" }
+        }
+    ]
+}

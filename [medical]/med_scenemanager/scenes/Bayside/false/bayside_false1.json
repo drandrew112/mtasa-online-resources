@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "bayside_false1",
+    "category": "false",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2702.87, 2504.98, 79.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed man, may have left",
+        "description": "A woman says a man collapsed in a yard in Bayside a few minutes ago, but he might have got up and walked away. Nobody stayed with him.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

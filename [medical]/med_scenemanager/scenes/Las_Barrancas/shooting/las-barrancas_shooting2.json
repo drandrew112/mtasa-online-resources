@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_shooting2",
+    "category": "shooting",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-720.75, 1428.7, 18.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest on open scrubland in Las Barrancas. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-720.75, 1428.7, 18.48],
+            "rot": 342,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3985, "spo2": 84 }
+        }
+    ]
+}

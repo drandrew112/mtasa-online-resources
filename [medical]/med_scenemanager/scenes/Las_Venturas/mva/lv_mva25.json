@@ -1,0 +1,102 @@
+{
+    "format": 1,
+    "name": "lv_mva25",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2154.5, 883.13, 11.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head-on collision",
+        "description": "Two cars collided head-on. The driver of the first car is still in the seat with a broken arm and a cut on the head. The driver of the second car is still in the seat with a broken arm and a cut on the head. The passenger is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 551,
+            "pos": [2150, 882.44, 12.055],
+            "rot": [-3.82, -0.8, 348.02],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV35 196",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 567,
+            "pos": [2151.881, 889.167, 11.749],
+            "rot": [2.05, 5.34, 160.29],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV48 385",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [2150, 882.44, 12.31],
+            "rot": 348.02,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 98,
+            "pos": [2151.881, 889.167, 12],
+            "rot": 160.29,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p3",
+            "skin": 142,
+            "pos": [2150, 882.44, 12.31],
+            "rot": 348.02,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

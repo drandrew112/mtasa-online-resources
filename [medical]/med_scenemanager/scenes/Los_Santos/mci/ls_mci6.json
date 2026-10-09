@@ -2,51 +2,52 @@
     "format": 1,
     "name": "ls_mci6",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2652.16, -2496.9, 13.63],
+    "center": [1576.9, -2251.09, -2.75],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chain collision, four cars",
-        "description": "A chain collision involving four cars in Ocean Docks. One elderly driver is unresponsive in his seat, a young passenger was thrown out and others have whiplash and cuts.",
+        "title": "Pursuit ended in a crash",
+        "description": "A car fleeing the police crashed into traffic at Los Santos International. The fleeing driver is unconscious, a woman in another car has chest pain and a third driver has neck pain.",
         "caller": "SceneManager",
         "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 517,
-            "pos": [2659.16, -2496.94, 13.38],
-            "rot": [0, 0, 84.7],
+            "model": 559,
+            "pos": [1580.9, -2250.94, -3],
+            "rot": [0, 0, 208.1],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
-            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "health": 300,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS43 206",
+            "plate": "LS51 203",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         },
         {
             "id": "v2",
-            "model": 404,
-            "pos": [2656.72, -2501.11, 13.38],
-            "rot": [0, 0, 60.7],
+            "model": 527,
+            "pos": [1587.02, -2254.09, -3],
+            "rot": [0, 0, 118.1],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS69 207",
+            "plate": "LS20 204",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [2, 0, 2, 3, 0, 0],
@@ -56,29 +57,9 @@
         },
         {
             "id": "v3",
-            "model": 419,
-            "pos": [2652.16, -2496.9, 13.38],
-            "rot": [0, 0, 100.7],
-            "frozen": false,
-            "locked": false,
-            "engine": false,
-            "lightsOn": false,
-            "health": 300,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
-            "paintjob": 3,
-            "plate": "LS13 208",
-            "variant": [255, 255],
-            "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
-        },
-        {
-            "id": "v4",
-            "model": 545,
-            "pos": [2649.72, -2501.07, 13.38],
-            "rot": [0, 0, 88.7],
+            "model": 426,
+            "pos": [1572.91, -2251.23, -3],
+            "rot": [0, 0, 84.1],
             "frozen": false,
             "locked": false,
             "engine": false,
@@ -86,7 +67,7 @@
             "health": 750,
             "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS14 209",
+            "plate": "LS88 205",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [0, 0, 0, 0, 0, 0],
@@ -98,50 +79,39 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 57,
-            "pos": [2652.16, -2496.9, 13.63],
-            "rot": 143,
-            "anim": "none",
-            "vehicle": "v3",
-            "seat": 0,
+            "skin": 109,
+            "pos": [1576.9, -2251.09, -2.75],
+            "rot": 92,
+            "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
             ],
-            "state": { "consciousness": "unconscious", "systolic": 92 }
+            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
         },
         {
             "id": "p2",
-            "skin": 152,
-            "pos": [2646.16, -2496.87, 13.63],
-            "rot": 32,
-            "anim": "ko_front",
+            "skin": 85,
+            "pos": [1587.02, -2254.09, -2.75],
+            "rot": 162,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 }
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": { "bloodVolume": 4000 }
+            "state": { "pain": 30, "spo2": 92 }
         },
         {
             "id": "p3",
-            "skin": 259,
-            "pos": [2659.45, -2494.18, 13.66],
-            "rot": 208,
+            "skin": 24,
+            "pos": [1580.74, -2246.75, -2.72],
+            "rot": 172,
             "anim": "sit",
             "injuries": [
                 { "type": "fracture", "severity": 1 }
             ],
             "state": {}
-        },
-        {
-            "id": "p4",
-            "skin": 194,
-            "pos": [2655.45, -2494.16, 13.66],
-            "rot": 183,
-            "anim": "crouch",
-            "injuries": [
-                { "type": "gunshot", "severity": 1 }
-            ],
-            "state": { "pain": 30 }
         }
     ]
 }

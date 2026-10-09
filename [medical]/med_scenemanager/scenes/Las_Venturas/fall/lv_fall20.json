@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_fall20",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2260.25, 2240.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist over the handlebars",
+        "description": "A cyclist went over the handlebars on the sidewalk in Roca Escalante after hitting a pothole. Her collarbone is deformed and her helmet is cracked. She cannot remember the fall.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 509,
+            "pos": [2258.45, 2240.63, 10.42],
+            "rot": [0, 0, 197.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV26 430",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [2260.25, 2240.63, 10.82],
+            "rot": 181,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

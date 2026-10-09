@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar17",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2450.6, -217.23, 33.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit and run, man not moving",
+        "description": "A car hit a man on the street in Avispa Country Club and drove off without stopping. He is lying face down, not responding, with blood around his head.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [-2450.6, -217.23, 33.92],
+            "rot": 5,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3783, "consciousness": "unconscious" }
+        }
+    ]
+}

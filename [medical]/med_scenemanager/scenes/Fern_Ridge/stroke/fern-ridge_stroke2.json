@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_stroke2",
+    "category": "stroke",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1162.58, 128.6, 27.21],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend by the road at the edge of the woods near Fern Ridge stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 88,
+            "pos": [1162.58, 128.6, 27.21],
+            "rot": 3,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 179 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "hampton-barns_diabetes2",
+    "category": "diabetes",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [570, 320, 18.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Trucker ran out of insulin",
+        "description": "A long-haul trucker in a field near Hampton Barns ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 16,
+            "pos": [570, 320, 18.17],
+            "rot": 211,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4190, "glucose": 469 }
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "format": 1,
+    "name": "ls_mva15",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2642.63, -1404.25, 29.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collision while turning",
+        "description": "Two cars collided while one was turning at an intersection in East Beach. The driver of the first car is lying on the ground in pain with a broken rib and a cut on the head. The driver of the second car is lying on their back next to the car with a broken leg and a cut on the head. The passenger is still in the seat with a broken rib and a cut on the head.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 600,
+            "pos": [2644.83, -1404.07, 30.159],
+            "rot": [-0.07, 0, 37.83],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS47 868",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 410,
+            "pos": [2640.722, -1399.483, 30.079],
+            "rot": [-0.59, -0.74, 208.89],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS64 365",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [2645.393, -1409.62, 30.281],
+            "rot": 185.8,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 78,
+            "pos": [2643.57, -1397.911, 30.281],
+            "rot": 298.9,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p3",
+            "skin": 93,
+            "pos": [2644.83, -1404.07, 30.41],
+            "rot": 37.83,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        }
+    ]
+}

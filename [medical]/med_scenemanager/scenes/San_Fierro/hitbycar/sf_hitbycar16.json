@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar16",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2421.59, 498.75, 30.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a reversing car",
+        "description": "A woman was hit by a car reversing out of a parking spot on the street in Queens. She fell on her side and her elbow is swollen and scraped.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 549,
+            "pos": [-2425.13, 492.24, 29.73],
+            "rot": [0, 0, 110.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF44 418",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2421.59, 498.75, 30.07],
+            "rot": 201,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 28 }
+        }
+    ]
+}

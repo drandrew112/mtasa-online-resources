@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "lv_fall16",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2180.25, 1243.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker fell from scaffolding",
+        "description": "A construction worker fell about two floors from scaffolding on the sidewalk near the Camel's Toe. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2180.25, 1243.13, 10.82],
+            "rot": 286,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4311 }
+        }
+    ]
+}

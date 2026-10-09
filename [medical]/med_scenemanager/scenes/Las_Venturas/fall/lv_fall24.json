@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_fall24",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2184.69, 2015.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped in high heels",
+        "description": "A woman in high heels slipped on a spilled drink at a bus stop on Old Venturas Strip after a night at the casino and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 211,
+            "pos": [2184.69, 2015.13, 10.82],
+            "rot": 326,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 28 }
+        }
+    ]
+}

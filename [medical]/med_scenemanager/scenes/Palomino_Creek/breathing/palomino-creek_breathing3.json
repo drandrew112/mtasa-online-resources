@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_breathing3",
+    "category": "breathing",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2336.75, 251.63, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl on the sidewalk just outside Palomino Creek has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [2336.75, 251.63, 26.48],
+            "rot": 245,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_false2",
+    "category": "false",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1115.05, 143.65, 31.51],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man shouting, chest pain?",
+        "description": "A caller heard a man next to the country road near Fern Ridge shouting that he has chest pain. When asked, he says he was only joking with his friends.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [1115.05, 143.65, 31.51],
+            "rot": 143,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

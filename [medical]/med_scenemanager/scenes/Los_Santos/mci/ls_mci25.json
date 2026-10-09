@@ -2,87 +2,105 @@
     "format": 1,
     "name": "ls_mci25",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1319.57, -1677.16, 13.55],
+    "center": [1367.43, -1107.85, 23.99],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car drove onto the sidewalk",
-        "description": "A driver lost control in Verona Beach and drove onto a crowded sidewalk, hitting several pedestrians. Callers report people lying on the ground and screaming. The driver is still in the car.",
+        "title": "Bus and car collision",
+        "description": "A city bus collided with a car in Temple. The car driver is badly hurt and several bus passengers fell inside and were helped out to the sidewalk.",
         "caller": "SceneManager",
         "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 551,
-            "pos": [1319.13, -1682.17, 13.3],
-            "rot": [0, 0, 29.7],
+            "model": 431,
+            "pos": [1365.09, -1096.98, 24.29],
+            "rot": [0, 0, 160.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": true,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS79 224",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 549,
+            "pos": [1368.11, -1103.91, 23.74],
+            "rot": [0, 0, 211.3],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
+            "health": 300,
             "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS92 261",
+            "plate": "LS68 225",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 25,
-            "pos": [1319.57, -1677.16, 13.55],
-            "rot": 105,
+            "skin": 177,
+            "pos": [1367.43, -1107.85, 23.99],
+            "rot": 123,
             "anim": "ko_back",
             "injuries": [
                 { "type": "fracture", "severity": 3 },
                 { "type": "head_injury", "severity": 2 }
             ],
-            "state": { "bloodVolume": 4100, "consciousness": "unconscious" }
+            "state": { "bloodVolume": 3900, "consciousness": "dazed" }
         },
         {
             "id": "p2",
-            "skin": 97,
-            "pos": [1319.68, -1686.66, 13.55],
-            "rot": 219,
-            "anim": "injured",
+            "skin": 88,
+            "pos": [1373.25, -1099.01, 25.1],
+            "rot": 59,
+            "anim": "sit",
             "injuries": [
                 { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 30 }
+        },
+        {
+            "id": "p3",
+            "skin": 145,
+            "pos": [1372.74, -1101.97, 25.1],
+            "rot": 108,
+            "anim": "sit",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
             ],
             "state": {}
         },
         {
-            "id": "p3",
-            "skin": 94,
-            "pos": [1319.53, -1673.66, 13.55],
-            "rot": 355,
-            "anim": "ko_front",
-            "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
-            ],
-            "state": { "consciousness": "dazed" }
-        },
-        {
             "id": "p4",
-            "skin": 55,
-            "pos": [1319.13, -1682.17, 13.55],
-            "rot": 332,
-            "anim": "none",
-            "vehicle": "v1",
-            "seat": 0,
+            "skin": 25,
+            "pos": [1373.76, -1096.05, 25.1],
+            "rot": 207,
+            "anim": "hold_side",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": { "systolic": 176 }
+            "state": {}
         }
     ]
 }

@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_drowning19",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2829.98, -1734.39, 11.05],
+    "center": [474, -1882, 2.66],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Seizure in the water",
-        "description": "A woman had a seizure while in the storm channel and went under. She was pulled out and brought up to the street in East Beach. She is breathing but confused and keeps coughing up water.",
+        "title": "Pulled out, not breathing",
+        "description": "Lifeguards pulled a man out of the sea and brought him onto the beach at Santa Maria Beach. He is not breathing and has no pulse. A bystander is doing chest compressions.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,15 +18,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 152,
-            "pos": [2829.98, -1734.39, 11.05],
-            "rot": 224,
+            "skin": 29,
+            "pos": [474, -1882, 2.66],
+            "rot": 330,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "postictal", "severity": 1 }
+                { "type": "suffocation", "severity": 3 }
             ],
-            "state": { "consciousness": "confused", "spo2": 82 }
+            "state": { "spo2": 40, "rhythm": "PEA" }
         }
     ]
 }

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_overdose1",
+    "category": "overdose",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-73, 1171.63, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man outside a small store in Fort Carson took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-73, 1171.63, 19.74],
+            "rot": 242,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 162, "heartRate": 154 }
+        }
+    ]
+}

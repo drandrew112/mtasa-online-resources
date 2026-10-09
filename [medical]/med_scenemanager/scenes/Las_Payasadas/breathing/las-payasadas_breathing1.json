@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_breathing1",
+    "category": "breathing",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-299.11, 2749.99, 61.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing in the heat",
+        "description": "A cyclist stopped by the dusty roadside in Las Payasadas after riding through the dusty country roads and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-299.11, 2749.99, 61.8],
+            "rot": 347,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

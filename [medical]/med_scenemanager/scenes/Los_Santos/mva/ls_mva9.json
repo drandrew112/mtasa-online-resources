@@ -1,0 +1,83 @@
+{
+    "format": 1,
+    "name": "ls_mva9",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1842.75, -2059.75, 12.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car hit a parked car",
+        "description": "A car swerved into a parked car at the curb in El Corona. The driver of the first car got out and is crouching by the car with a bump on the head and a headache. The driver of the second car got out and is leaning on the car with a possible broken wrist.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 496,
+            "pos": [1842.75, -2055.33, 13.201],
+            "rot": [0, 0, 270.54],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS91 982",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 418,
+            "pos": [1836.828, -2054.992, 13.596],
+            "rot": [0, 0, 284.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS14 536",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [1842.75, -2059.75, 13.547],
+            "rot": 0,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 45,
+            "pos": [1836.063, -2052.035, 13.383],
+            "rot": 14.5,
+            "anim": "lean",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

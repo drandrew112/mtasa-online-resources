@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_shooting12",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2079.09, 665.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast outside a wedding chapel in Rockshore West. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2079.09, 665.75, 10.82],
+            "rot": 11,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4083, "spo2": 88 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_breathing2",
+    "category": "breathing",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1570, 370, 20.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, still wheezing",
+        "description": "A man on a grassy patch in Montgomery choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [1570, 370, 20.1],
+            "rot": 155,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 86 }
+        }
+    ]
+}

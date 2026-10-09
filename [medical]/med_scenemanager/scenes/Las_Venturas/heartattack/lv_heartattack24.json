@@ -2,6 +2,7 @@
     "format": 1,
     "name": "lv_heartattack24",
     "category": "heartattack",
+    "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
     "center": [2434.75, 1443.125, 10.82],

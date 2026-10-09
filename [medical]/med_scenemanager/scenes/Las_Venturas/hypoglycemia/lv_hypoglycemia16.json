@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia16",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1397.68, 2565.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "A man at the side of the road in Prickle Pine cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [1397.68, 2565.63, 10.82],
+            "rot": 80,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 21, "heartRate": 113, "consciousness": "unconscious" }
+        }
+    ]
+}

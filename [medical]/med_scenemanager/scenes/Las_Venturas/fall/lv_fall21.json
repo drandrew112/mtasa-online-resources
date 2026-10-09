@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "lv_fall21",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1499, 1866, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards outside the terminal at Las Venturas Airport and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 217,
+            "pos": [1499, 1866, 10.82],
+            "rot": 23,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

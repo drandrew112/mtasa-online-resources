@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "las-payasadas_motorcycle1",
+    "category": "motorcycle",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-292.42, 2764.75, 62.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown over a car",
+        "description": "A car turned in front of a motorcycle by the dusty roadside in Las Payasadas. The rider flew over the bonnet and is lying face down, not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [-289.66, 2761.42, 61.4],
+            "rot": [0, 0, 273.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC23 327",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 600,
+            "pos": [-289.35, 2769.75, 61.6],
+            "rot": [0, 0, 170.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC99 328",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-292.42, 2764.75, 62.07],
+            "rot": 288,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

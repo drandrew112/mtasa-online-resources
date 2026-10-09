@@ -2,29 +2,30 @@
     "format": 1,
     "name": "ls_overdose13",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1839.75, -1221.12, 18.65],
+    "center": [1187, -1760.62, 13.57],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused, took double medication",
-        "description": "An elderly man at a bus stop in Glen Park accidentally took his sleeping tablets twice. Family says he is unusually drowsy, unsteady and confused.",
+        "title": "Took a handful of pills",
+        "description": "A woman told her friend at a bus stop in Conference Center that she swallowed a whole bottle of sleeping pills an hour ago. She is getting harder and harder to wake. The empty bottle is with her.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [],
     "peds": [
         {
             "id": "p1",
-            "skin": 49,
-            "pos": [1839.75, -1221.12, 18.65],
-            "rot": 291,
-            "anim": "sit",
+            "skin": 13,
+            "pos": [1187, -1760.62, 13.57],
+            "rot": 118,
+            "anim": "ko_back",
             "injuries": [
-                { "type": "sedative", "severity": 1 }
+                { "type": "sedative", "severity": 2 }
             ],
-            "state": { "consciousness": "confused" }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

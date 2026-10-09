@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hitbycar1",
+    "category": "hitbycar",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-913.06, 1442.88, 29.09],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit walking along the road",
+        "description": "A young woman was hit while walking along the road at the side of the road in Las Barrancas by a driver looking at his phone. She is rolling in pain and holding her leg.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 467,
+            "pos": [-911.73, 1447.23, 28.85],
+            "rot": [0, 0, 334.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR79 299",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [-913.06, 1442.88, 29.09],
+            "rot": 100,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

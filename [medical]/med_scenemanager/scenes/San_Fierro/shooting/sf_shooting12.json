@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_shooting12",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2316, -431.37, 79.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast on the sidewalk in San Fierro. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-2316, -431.37, 79.61],
+            "rot": 130,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4302, "spo2": 89 }
+        }
+    ]
+}

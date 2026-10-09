@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_breathing2",
+    "category": "breathing",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2520, 0, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "COPD flare, lips blue",
+        "description": "An old man with emphysema on a paved lot in Palomino Creek ran out of oxygen in his portable tank. He is very drowsy and his lips are blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [2520, 0, 26.48],
+            "rot": 302,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 3 }
+            ],
+            "state": { "spo2": 77, "consciousness": "dazed" }
+        }
+    ]
+}

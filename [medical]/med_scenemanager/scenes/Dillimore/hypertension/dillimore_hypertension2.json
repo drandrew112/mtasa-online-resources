@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_hypertension2",
+    "category": "hypertension",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [568.03, -405.4, 27.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache, vomiting",
+        "description": "A woman on open ground near Dillimore has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 85,
+            "pos": [568.03, -405.4, 27.75],
+            "rot": 308,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 53,
+                "systolic": 224,
+                "diastolic": 131,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

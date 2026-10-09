@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_false1",
+    "category": "false",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [714.63, -552.5, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman fainted",
+        "description": "A woman fainted outside a house in Dillimore. She is standing up again, embarrassed, and says she just got up too quickly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [714.63, -552.5, 16.34],
+            "rot": 298,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

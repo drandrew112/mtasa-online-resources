@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall11",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2719, 966, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell out of a tree",
+        "description": "A young man climbing a tree in the desert dust near the Julius Thruway East fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [2719, 966, 10.82],
+            "rot": 45,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

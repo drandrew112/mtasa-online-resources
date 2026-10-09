@@ -2,6 +2,7 @@
     "format": 1,
     "name": "las-barrancas_heartattack2",
     "category": "heartattack",
+    "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
     "center": [-857.263, 1437.728, 14.387],

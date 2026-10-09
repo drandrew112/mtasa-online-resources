@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing12",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2435.32, 715.75, 35.17],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An old smoker on the sidewalk in Juniper Hill had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [-2435.32, 715.75, 35.17],
+            "rot": 162,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 82 }
+        }
+    ]
+}

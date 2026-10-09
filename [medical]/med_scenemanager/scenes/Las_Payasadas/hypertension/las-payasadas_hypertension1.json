@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_hypertension1",
+    "category": "hypertension",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-197, 2670, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Confused, very high pressure",
+        "description": "An old woman on the dusty ground in Las Payasadas is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [-197, 2670, 62.69],
+            "rot": 304,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 237, "diastolic": 138, "heartRate": 89, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_fall10",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2380.25, 2583.13, 12.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped in high heels",
+        "description": "A woman in high heels slipped on a spilled drink outside a souvenir shop near the Julius Thruway North after a night at the casino and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 191,
+            "pos": [2380.25, 2583.13, 12.24],
+            "rot": 285,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 27 }
+        }
+    ]
+}

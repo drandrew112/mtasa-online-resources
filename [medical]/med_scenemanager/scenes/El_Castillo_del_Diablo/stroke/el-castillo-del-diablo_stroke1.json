@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_stroke1",
+    "category": "stroke",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-420.84, 2286.57, 42.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer slumped on his tailgate",
+        "description": "A farmer is slumped on the tailgate of his pickup on the road shoulder in El Castillo del Diablo. His wife says he suddenly could not hold his coffee cup and his words are slurred.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-420.84, 2286.57, 42.8],
+            "rot": 1,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 190 }
+        }
+    ]
+}

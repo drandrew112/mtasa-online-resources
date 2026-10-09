@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody3",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2559.75, 2246, 11.06],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying in a parking lot in Roca Escalante. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [2559.75, 2246, 11.06],
+            "rot": 349,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

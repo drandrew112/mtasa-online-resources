@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting1",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2387, 135, 35.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman shot in the stomach",
+        "description": "A woman was shot in the stomach in a small park in Garcia during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [-2387, 135, 35.31],
+            "rot": 83,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3789 }
+        }
+    ]
+}

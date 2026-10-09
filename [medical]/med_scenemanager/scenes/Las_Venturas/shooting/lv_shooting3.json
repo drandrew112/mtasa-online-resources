@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_shooting3",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1560, 750.88, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot outside a souvenir shop near the Randolph Industrial Estate. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 127,
+            "pos": [1560, 750.88, 10.82],
+            "rot": 240,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

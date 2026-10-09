@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [610, -640, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and pale",
+        "description": "A jogger on a grassy patch in Dillimore sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [610, -640, 19.74],
+            "rot": 261,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 44, "heartRate": 113 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia12",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2740.78, 1373.66, 6.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sweaty and confused",
+        "description": "A woman on the sidewalk near the Julius Thruway East is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 12,
+            "pos": [2740.78, 1373.66, 6.84],
+            "rot": 258,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 46, "consciousness": "confused" }
+        }
+    ]
+}

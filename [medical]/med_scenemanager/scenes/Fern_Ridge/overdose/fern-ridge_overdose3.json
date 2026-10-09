@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_overdose3",
+    "category": "overdose",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1098.82, -65.51, 18.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Needle still in his arm",
+        "description": "A man is lying at the side of the road in Fern Ridge with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [1098.82, -65.51, 18.34],
+            "rot": 28,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "spo2": 86, "consciousness": "dazed" }
+        }
+    ]
+}

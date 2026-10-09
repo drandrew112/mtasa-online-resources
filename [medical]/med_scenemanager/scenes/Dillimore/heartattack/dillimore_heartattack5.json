@@ -2,6 +2,7 @@
     "format": 1,
     "name": "dillimore_heartattack5",
     "category": "heartattack",
+    "location": "Dillimore",
     "enabled": true,
     "weight": 1,
     "center": [703.577, -492.025, 16.336],

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_deadbody2",
+    "category": "deadbody",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1230, 0, 29.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body in the bushes",
+        "description": "A dog walker found a person lying in the brush on a grassy patch in Fern Ridge. The body is cold and there are flies around it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [1230, 0, 29.98],
+            "rot": 183,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

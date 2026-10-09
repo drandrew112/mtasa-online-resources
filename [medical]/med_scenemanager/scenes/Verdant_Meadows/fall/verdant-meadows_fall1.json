@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_fall1",
+    "category": "fall",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [474.92, 2497.98, 22.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a porch",
+        "description": "A man missed a step and fell off a high porch at the side of the road near Verdant Meadows. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [474.92, 2497.98, 22.95],
+            "rot": 69,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "sf_hitbycar18",
+    "category": "hitbycar",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2736.83, 1175.19, 52.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hit by a van",
+        "description": "A delivery van turning on the street in Paradiso knocked down an elderly woman. She is sitting on the ground holding her hip, with a cut on her arm.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 482,
+            "pos": [-2737.9, 1182.04, 53.37],
+            "rot": [0, 0, 329],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF16 419",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-2736.83, 1175.19, 52.15],
+            "rot": 36,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

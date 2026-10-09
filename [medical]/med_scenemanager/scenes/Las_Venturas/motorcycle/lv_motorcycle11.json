@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle11",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2854.75, 2028.88, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road rash and broken leg",
+        "description": "A rider lost the back wheel in a bend outside a wedding chapel in Creek and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [2850.03, 2032.16, 10.32],
+            "rot": [0, 0, 61.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV98 382",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [2854.75, 2028.88, 10.82],
+            "rot": 72,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

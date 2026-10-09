@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "montgomery_hypertension4",
+    "category": "hypertension",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1154.43, 565.91, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pounding headache, dizzy",
+        "description": "A farmer next to the country road near Montgomery sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [1154.43, 565.91, 20.23],
+            "rot": 167,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 191,
+                "diastolic": 114,
+                "heartRate": 96,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

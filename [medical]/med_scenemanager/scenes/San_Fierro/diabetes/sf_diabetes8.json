@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes8",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1388.44, -552.48, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman lying by the roadside in Easter Bay Airport, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-1388.44, -552.48, 14.15],
+            "rot": 183,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3909, "glucose": 765, "consciousness": "dazed" }
+        }
+    ]
+}

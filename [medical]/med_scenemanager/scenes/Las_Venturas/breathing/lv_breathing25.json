@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing25",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2592.21, 2106.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl on the sidewalk on Old Venturas Strip has a tight chest and is wheezing after running to catch the bus. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [2592.21, 2106.13, 10.82],
+            "rot": 11,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 94 }
+        }
+    ]
+}

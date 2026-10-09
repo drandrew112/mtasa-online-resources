@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_deadbody1",
+    "category": "deadbody",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [930, 0, 91.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying on a grassy patch in Fern Ridge where she usually walks her dog. She is cold and does not breathe.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [930, 0, 91.96],
+            "rot": 206,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

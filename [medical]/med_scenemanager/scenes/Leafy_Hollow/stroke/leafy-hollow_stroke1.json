@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_stroke1",
+    "category": "stroke",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-885.6, -1726.61, 77.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell, one leg will not move",
+        "description": "An old man fell at the side of the road in Leafy Hollow and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-885.6, -1726.61, 77.74],
+            "rot": 105,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 195 }
+        }
+    ]
+}

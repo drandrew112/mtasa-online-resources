@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia12",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2125.38, -1408.68, 23.99],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Aggressive, not making sense",
-        "description": "A store clerk on the sidewalk in Jefferson called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card.",
+        "description": "A store clerk in Jefferson called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -22,7 +23,7 @@
             "rot": 340,
             "anim": "lean",
             "injuries": [],
-            "state": { "consciousness": "confused", "glucose": 38, "heartRate": 120 }
+            "state": { "glucose": 38, "heartRate": 120, "consciousness": "confused" }
         }
     ]
 }

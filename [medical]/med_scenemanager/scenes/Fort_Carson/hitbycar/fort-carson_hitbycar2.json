@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "fort-carson_hitbycar2",
+    "category": "hitbycar",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [18.95, 1141.26, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man knocked down by a pickup",
+        "description": "A pickup knocked down an old man outside a house in Fort Carson. He hit the windscreen, is dazed and has a large bleeding wound on his forehead.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 600,
+            "pos": [24.08, 1145.88, 19.44],
+            "rot": [0, 0, 273.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC52 258",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [18.95, 1141.26, 19.74],
+            "rot": 12,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

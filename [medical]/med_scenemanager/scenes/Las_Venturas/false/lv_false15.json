@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false15",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [919.43, 1928.25, 11.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help next to the road near the Whitewood Estates. The caller hung up before giving any more details.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

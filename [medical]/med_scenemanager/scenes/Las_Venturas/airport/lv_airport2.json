@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_airport2",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1799, 1266, 14.07],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Passenger short of breath",
+        "description": "A woman who just got off a long flight outside the terminal at Las Venturas Airport is short of breath and wheezing. She is asthmatic and her inhaler is in her checked luggage.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 140,
+            "pos": [1799, 1266, 14.07],
+            "rot": 187,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

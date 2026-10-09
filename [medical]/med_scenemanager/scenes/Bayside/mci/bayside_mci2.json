@@ -1,0 +1,95 @@
+{
+    "format": 1,
+    "name": "bayside_mci2",
+    "category": "mci",
+    "location": "Bayside Marina",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2264.58, 2349.39, 5.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car and van collision",
+        "description": "A car ran a stop sign at a junction near Bayside and was hit by a van. The car driver and two passengers are injured, one of them is unconscious.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 466,
+            "pos": [-2269.19, 2349.49, 4.89],
+            "rot": [0, 0, 266.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR41 115",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 500,
+            "pos": [-2264.33, 2343.02, 4.89],
+            "rot": [0, 0, 1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR60 116",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 210,
+            "pos": [-2264.58, 2349.39, 5.14],
+            "rot": 165,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 216,
+            "pos": [-2266.53, 2351.43, 5.14],
+            "rot": 217,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 40 }
+        },
+        {
+            "id": "p3",
+            "skin": 100,
+            "pos": [-2262.35, 2348.46, 5.14],
+            "rot": 296,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

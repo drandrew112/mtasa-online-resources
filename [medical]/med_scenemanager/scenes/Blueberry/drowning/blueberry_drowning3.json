@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_drowning3",
+    "category": "drowning",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [70, -230, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from a backyard pool",
+        "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him in a parking lot in Blueberry to meet the ambulance. He is breathing weakly and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [70, -230, 1.58],
+            "rot": 353,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 75, "consciousness": "unconscious" }
+        }
+    ]
+}

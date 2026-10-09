@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting5",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1151.67, 1742.77, 9.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back",
+        "description": "A man was shot in the back while running away near the warehouses in Blackfield. He is lying on his stomach and says he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 96,
+            "pos": [1151.67, 1742.77, 9.59],
+            "rot": 282,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4101, "pain": 32 }
+        }
+    ]
+}

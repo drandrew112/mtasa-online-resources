@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypertension1",
+    "category": "hypertension",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2231.25, 116.63, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache, vomiting",
+        "description": "A woman outside a small store in Palomino Creek has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [2231.25, 116.63, 26.48],
+            "rot": 109,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 62,
+                "systolic": 220,
+                "diastolic": 127,
+                "heartRate": 99,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

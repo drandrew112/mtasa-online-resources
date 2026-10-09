@@ -1,0 +1,37 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypertension1",
+    "category": "hypertension",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-199.3, 2495.17, 25.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest tightness, blurred vision",
+        "description": "A heavy-set man on the road shoulder near El Castillo del Diablo complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-199.3, 2495.17, 25.41],
+            "rot": 350,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 62,
+                "spo2": 94,
+                "systolic": 221,
+                "diastolic": 138,
+                "heartRate": 112,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "el-castillo-del-diablo_heartattack1",
     "category": "heartattack",
+    "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
     "center": [-213.035, 2519.077, 27.87],

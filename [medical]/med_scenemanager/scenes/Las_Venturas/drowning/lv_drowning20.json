@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_drowning20",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1859.26, 1467.48, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bachelor party dare gone wrong",
+        "description": "A groom-to-be jumped into the water on a dare and did not come up. His friends dragged him out and laid him by the water near Pirates in Men's Pants. He is coughing and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 106,
+            "pos": [1859.26, 1467.48, 10.82],
+            "rot": 157,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 82 }
+        }
+    ]
+}

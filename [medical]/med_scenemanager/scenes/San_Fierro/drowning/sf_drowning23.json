@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning23",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2583.59, 1360.57, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found floating in the water",
+        "description": "Joggers saw a man floating face down and pulled him out. He is lying on the sidewalk by the waterfront in Battery Point, not breathing. His skin is grey and cold.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2583.59, 1360.57, 7.19],
+            "rot": 211,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 35, "rhythm": "VF" }
+        }
+    ]
+}

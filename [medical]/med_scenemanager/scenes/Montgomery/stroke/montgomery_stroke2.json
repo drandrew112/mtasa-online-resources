@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_stroke2",
+    "category": "stroke",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1139.33, 393.04, 26.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend on the road shoulder in Montgomery stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [1139.33, 393.04, 26.14],
+            "rot": 327,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 187 }
+        }
+    ]
+}

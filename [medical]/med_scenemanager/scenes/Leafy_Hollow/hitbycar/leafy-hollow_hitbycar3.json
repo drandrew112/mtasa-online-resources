@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_hitbycar3",
+    "category": "hitbycar",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-782.9, -1877.02, 11.64],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a delivery truck",
+        "description": "A truck driver did not see a woman crossing next to the country road near Leafy Hollow. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 440,
+            "pos": [-784.18, -1882.27, 10.6],
+            "rot": [0, 0, 132.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC34 371",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-782.9, -1877.02, 11.64],
+            "rot": 161,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3748, "consciousness": "dazed" }
+        }
+    ]
+}

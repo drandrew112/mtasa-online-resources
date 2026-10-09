@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose17",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1610.28, -2139.75, 27.81],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "stimulant", "severity": 2 }
             ],
-            "state": { "diastolic": 112, "heartRate": 158, "systolic": 192 }
+            "state": { "systolic": 192, "diastolic": 112, "heartRate": 158 }
         }
     ]
 }

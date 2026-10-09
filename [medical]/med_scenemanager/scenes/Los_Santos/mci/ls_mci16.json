@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_mci16",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1600.69, -1335.92, 16.95],

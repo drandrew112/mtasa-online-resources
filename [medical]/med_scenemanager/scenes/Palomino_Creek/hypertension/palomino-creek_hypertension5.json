@@ -1,0 +1,36 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypertension5",
+    "category": "hypertension",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2307.17, 293.44, 28.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Short of breath, headache",
+        "description": "A trucker at the side of the road near Palomino Creek pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 260,
+            "pos": [2307.17, 293.44, 28.1],
+            "rot": 127,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 33,
+                "spo2": 91,
+                "systolic": 207,
+                "diastolic": 122,
+                "heartRate": 111,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

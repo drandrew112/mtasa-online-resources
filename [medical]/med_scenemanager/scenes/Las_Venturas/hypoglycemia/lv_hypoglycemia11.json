@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia11",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2720, 867.25, 10.9],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "A man outside a souvenir shop in Rockshore East cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [2720, 867.25, 10.9],
+            "rot": 265,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 23, "heartRate": 104, "consciousness": "unconscious" }
+        }
+    ]
+}

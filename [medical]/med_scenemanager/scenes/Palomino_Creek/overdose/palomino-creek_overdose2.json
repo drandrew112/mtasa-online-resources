@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_overdose2",
+    "category": "overdose",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2152.26, 246.58, 14.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Meth, not sleeping for days",
+        "description": "A man from a nearby trailer at the side of the road near Palomino Creek has not slept for three days, is paranoid and soaked in sweat. He says his heart is going to explode.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [2152.26, 246.58, 14.75],
+            "rot": 200,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 198, "heartRate": 172, "consciousness": "confused" }
+        }
+    ]
+}

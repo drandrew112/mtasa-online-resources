@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_hypertension3",
+    "category": "hypertension",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [18.34, -201.47, 1.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Dizzy, ringing ears",
+        "description": "An elderly man at the side of the road near Blueberry says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [18.34, -201.47, 1.55],
+            "rot": 143,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 34,
+                "systolic": 179,
+                "diastolic": 108,
+                "heartRate": 100,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

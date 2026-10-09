@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_fall18",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2416.96, 801.25, 35.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell down concrete stairs",
+        "description": "A man fell down a long flight of concrete steps in front of an apartment block in Juniper Hill. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [-2416.96, 801.25, 35.18],
+            "rot": 338,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

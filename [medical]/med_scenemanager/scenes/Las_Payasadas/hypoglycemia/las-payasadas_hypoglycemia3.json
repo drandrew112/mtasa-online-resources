@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-200, 2710, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man on a paved lot in Las Payasadas had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-200, 2710, 62.69],
+            "rot": 117,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 18, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose5",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [361.86, -1134.08, 76.2],
@@ -25,7 +26,7 @@
                 { "type": "sedative", "severity": 2 },
                 { "type": "alcohol", "severity": 2 }
             ],
-            "state": { "consciousness": "dazed", "spo2": 88 }
+            "state": { "spo2": 88, "consciousness": "dazed" }
         }
     ]
 }

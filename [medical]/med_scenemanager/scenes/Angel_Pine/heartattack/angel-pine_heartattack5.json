@@ -2,6 +2,7 @@
     "format": 1,
     "name": "angel-pine_heartattack5",
     "category": "heartattack",
+    "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
     "center": [-2185.902, -2485.014, 30.625],

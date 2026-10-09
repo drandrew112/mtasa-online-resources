@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fern-ridge_diabetes2",
+    "category": "diabetes",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1036.31, -72.85, 22.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends next to the country road in Fern Ridge cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [1036.31, -72.85, 22.88],
+            "rot": 25,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 610, "heartRate": 128, "consciousness": "unconscious" }
+        }
+    ]
+}

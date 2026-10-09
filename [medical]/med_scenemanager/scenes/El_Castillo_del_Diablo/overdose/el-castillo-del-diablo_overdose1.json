@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_overdose1",
+    "category": "overdose",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-259.27, 2524.65, 32.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drink may have been spiked",
+        "description": "A young woman next to the country road in El Castillo del Diablo says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [-259.27, 2524.65, 32.87],
+            "rot": 137,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

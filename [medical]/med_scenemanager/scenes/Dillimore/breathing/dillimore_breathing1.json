@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_breathing1",
+    "category": "breathing",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [670, -440, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An old smoker on open ground in Dillimore had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 132,
+            "pos": [670, -440, 16.34],
+            "rot": 86,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 83 }
+        }
+    ]
+}

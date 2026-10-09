@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "palomino-creek_hypertension3",
+    "category": "hypertension",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2566.63, 302.69, 31.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Anxious, racing heart",
+        "description": "A woman next to the country road near Palomino Creek is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [2566.63, 302.69, 31.75],
+            "rot": 222,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "systolic": 183,
+                "diastolic": 113,
+                "heartRate": 112,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

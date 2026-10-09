@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "sf_stroke6",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2254.94, 1246.89, 44.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver seeing double",
+        "description": "A delivery driver stopped his van on a steep street in Juniper Hollow because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 413,
+            "pos": [-2259.38, 1244.62, 44.74],
+            "rot": [0, 0, 350.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF89 426",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 16,
+            "pos": [-2254.94, 1246.89, 44.14],
+            "rot": 96,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting16",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1379, 2506, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back",
+        "description": "A man was shot in the back while running away in a small park in Prickle Pine. He is lying on his stomach and says he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [1379, 2506, 10.82],
+            "rot": 9,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4298, "pain": 34 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-quebrados_diabetes1",
+    "category": "diabetes",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1594.25, 2530, 69.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A woman on open scrubland in El Quebrados called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 85,
+            "pos": [-1594.25, 2530, 69.81],
+            "rot": 175,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4370, "glucose": 564 }
+        }
+    ]
+}

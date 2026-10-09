@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes13",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1500.25, 1093, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman at a bus stop near the LVA Freight Depot says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 219,
+            "pos": [1500.25, 1093, 10.82],
+            "rot": 299,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 412 }
+        }
+    ]
+}

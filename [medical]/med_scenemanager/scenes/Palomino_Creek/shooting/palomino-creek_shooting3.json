@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_shooting3",
+    "category": "shooting",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2234.19, -91.26, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mugging victim shot in the arm",
+        "description": "A man refused to hand over his wallet outside a small store in Palomino Creek and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [2234.19, -91.26, 26.48],
+            "rot": 185,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

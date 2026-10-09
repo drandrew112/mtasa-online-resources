@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_fall6",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1915.7, 2223.13, 11.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a roof",
+        "description": "A man fixing his roof fell off and landed on his feet next to the road in Redsands East. He is screaming in pain and both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [1915.7, 2223.13, 11.12],
+            "rot": 265,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

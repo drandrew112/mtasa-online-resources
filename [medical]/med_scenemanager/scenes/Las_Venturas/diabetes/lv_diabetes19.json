@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes19",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2139, 2306, 11.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Student, fruity breath",
+        "description": "A student in a small park near the Emerald Isle has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [2139, 2306, 11.74],
+            "rot": 210,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "glucose": 464, "heartRate": 121 }
+        }
+    ]
+}

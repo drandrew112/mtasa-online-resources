@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_diabetes17",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [719.13, -1388, 13.68],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Thought to be drunk, smells sweet",
-        "description": "A bar owner at a bus stop in Vinewood called about a man staggering and slurring who \"is not drunk, he only had a soda\". His breath smells fruity and he keeps asking for water.",
+        "description": "A bar owner in Vinewood called about a man staggering and slurring who \"is not drunk, he only had a soda\". His breath smells fruity and he keeps asking for water.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -22,7 +23,7 @@
             "rot": 73,
             "anim": "drunk",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "consciousness": "confused", "glucose": 520 }
+            "state": { "bloodVolume": 4200, "glucose": 520, "consciousness": "confused" }
         }
     ]
 }

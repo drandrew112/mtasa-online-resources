@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "angel-pine_hypertension3",
+    "category": "hypertension",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2288.5, -2311.81, 25.13],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Light-headed after hard work",
+        "description": "A farmhand next to the country road in Angel Pine felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 124,
+            "pos": [-2288.5, -2311.81, 25.13],
+            "rot": 330,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 171, "diastolic": 102, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

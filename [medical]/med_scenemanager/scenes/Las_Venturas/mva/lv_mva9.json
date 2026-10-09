@@ -1,0 +1,66 @@
+{
+    "format": 1,
+    "name": "lv_mva9",
+    "category": "mva",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1470.38, 2503.13, 11.25],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car spun out",
+        "description": "A single car lost control and spun out in Julius Thruway North. The driver got out and is standing next to the car holding their side with a broken collarbone and a cut on the head. The passenger is still in the seat with a bump on the head and a headache.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 517,
+            "pos": [1475.13, 2503.34, 12.044],
+            "rot": [-3.83, -1.54, 340.89],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV80 685",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [1470.38, 2503.13, 12.248],
+            "rot": 270,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4250, "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 25,
+            "pos": [1475.13, 2503.34, 12.29],
+            "rot": 340.89,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 1,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

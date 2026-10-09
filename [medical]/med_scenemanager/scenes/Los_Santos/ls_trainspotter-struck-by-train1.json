@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_trainspotter-struck-by-train1",
     "category": "",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2279.105, -1179.009, 25.842],

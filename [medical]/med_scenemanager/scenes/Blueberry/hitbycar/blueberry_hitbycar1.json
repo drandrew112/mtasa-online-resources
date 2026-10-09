@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "blueberry_hitbycar1",
+    "category": "hitbycar",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [130.62, -69.74, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Clipped by a car mirror",
+        "description": "A man outside a house in Blueberry was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 466,
+            "pos": [130.82, -76.32, 1.28],
+            "rot": [0, 0, 138.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC17 179",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [130.62, -69.74, 1.58],
+            "rot": 255,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

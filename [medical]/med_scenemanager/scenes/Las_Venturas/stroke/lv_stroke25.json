@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke25",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1897.33, 780.63, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of her life",
+        "description": "A woman at a bus stop near the Last Dime Motel grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 88,
+            "pos": [1897.33, 780.63, 10.82],
+            "rot": 204,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 200, "diastolic": 116, "consciousness": "dazed" }
+        }
+    ]
+}

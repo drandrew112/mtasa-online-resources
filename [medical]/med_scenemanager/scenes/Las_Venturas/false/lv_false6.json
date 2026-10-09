@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "lv_false6",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1959.26, 1467.48, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure reported",
+        "description": "A passer-by reports someone having a seizure by the water near Pirates in Men's Pants. The caller left before the call was finished.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

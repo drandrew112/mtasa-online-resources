@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_diabetes1",
+    "category": "diabetes",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-158.29, 1141.25, 19.75],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Very thirsty and confused",
+        "description": "A farmhand on the main street in Fort Carson keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 59,
+            "pos": [-158.29, 1141.25, 19.75],
+            "rot": 346,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 528, "consciousness": "confused" }
+        }
+    ]
+}

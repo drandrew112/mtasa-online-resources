@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_stroke3",
+    "category": "stroke",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [523.08, 9.75, 24.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by on the road shoulder in Fern Ridge called because a man outside the general store is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [523.08, 9.75, 24.31],
+            "rot": 300,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing24",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [859.09, -898.24, 64.58],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Choking on food",
-        "description": "A woman at the side of the road in Mulholland started choking on a hot dog from a street stall. She can barely cough and is going red. A passer-by is hitting her back.",
+        "description": "A woman in Mulholland started choking on a hot dog from a street stall. She can barely cough and is going red. A passer-by is hitting her back.",
         "caller": "SceneManager",
         "priority": 1
     },

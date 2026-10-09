@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_drowning2",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1060.84, 198.96, 33.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from a backyard pool",
+        "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him on the road shoulder near Montgomery to meet the ambulance. He is breathing weakly and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [1060.84, 198.96, 33.88],
+            "rot": 242,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 75, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_motorcycle2",
+    "category": "motorcycle",
+    "location": "Verdant Meadows",
+    "enabled": true,
+    "weight": 1,
+    "center": [392.48, 2566.49, 16.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Wheelie gone wrong",
+        "description": "A teenager tried a wheelie at the crossroads in Verdant Meadows to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [391.1, 2571.29, 16],
+            "rot": [0, 0, 132.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC40 449",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 115,
+            "pos": [392.48, 2566.49, 16.55],
+            "rot": 329,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

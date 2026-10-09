@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "hampton-barns_diabetes3",
+    "category": "diabetes",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [670, 300, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends on a grassy patch in Hampton Barns cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [670, 300, 20.23],
+            "rot": 101,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 629, "heartRate": 124, "consciousness": "unconscious" }
+        }
+    ]
+}

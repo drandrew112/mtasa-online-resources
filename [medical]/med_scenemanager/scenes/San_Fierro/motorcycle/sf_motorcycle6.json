@@ -1,0 +1,65 @@
+{
+    "format": 1,
+    "name": "sf_motorcycle6",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1913.94, 1065.88, 48.38],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider and passenger down",
+        "description": "A motorcycle carrying two people crashed on a main road in Downtown. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 463,
+            "pos": [-1916.58, 1062.09, 48.53],
+            "rot": [0, 0, 151.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF32 377",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [-1913.94, 1065.88, 48.38],
+            "rot": 182,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3905, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 226,
+            "pos": [-1916.44, 1065.89, 48.95],
+            "rot": 16,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

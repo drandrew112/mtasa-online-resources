@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "dillimore_shooting3",
+    "category": "shooting",
+    "location": "Richman",
+    "enabled": true,
+    "weight": 1,
+    "center": [570, -680, 12.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Head wound after shooting",
+        "description": "Witnesses heard one shot on open ground near Dillimore. A man is lying on his back with a head wound and is not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [570, -680, 12.14],
+            "rot": 83,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

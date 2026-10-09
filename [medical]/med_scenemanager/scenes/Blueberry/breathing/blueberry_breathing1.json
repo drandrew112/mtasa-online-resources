@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_breathing1",
+    "category": "breathing",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [70, -110, 0.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer wheezing after spraying",
+        "description": "A farmer on a grassy patch just outside Blueberry was spraying crops without a mask. Now he is wheezing, drooling and sweating, and his breathing is getting worse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [70, -110, 0.65],
+            "rot": 277,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 85, "heartRate": 54 }
+        }
+    ]
+}

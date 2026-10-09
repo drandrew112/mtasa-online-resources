@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "regular-tom_drowning2",
+    "category": "drowning",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-416.6, 1664.03, 36.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throat swelling after a bee sting",
+        "description": "A beekeeper on the sidewalk just outside Regular Tom was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-416.6, 1664.03, 36.52],
+            "rot": 88,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "systolic": 90, "heartRate": 127 }
+        }
+    ]
+}

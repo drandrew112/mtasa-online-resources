@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke3",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2560.02, 2596.38, 5.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young woman, sudden weakness",
+        "description": "A young woman by the roadside near the Julius Thruway North says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [2560.02, 2596.38, 5.63],
+            "rot": 118,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

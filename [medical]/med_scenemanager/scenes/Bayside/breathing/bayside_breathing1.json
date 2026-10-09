@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_breathing1",
+    "category": "breathing",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2540, 2380, 14.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teenager cannot breathe",
+        "description": "A teenager in a yard in Bayside is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [-2540, 2380, 14.27],
+            "rot": 15,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

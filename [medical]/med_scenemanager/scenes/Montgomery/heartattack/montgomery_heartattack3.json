@@ -2,6 +2,7 @@
     "format": 1,
     "name": "montgomery_heartattack3",
     "category": "heartattack",
+    "location": "Montgomery",
     "enabled": true,
     "weight": 1,
     "center": [1377.394, 429.295, 19.855],

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning4",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2749.91, -462.63, 5.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Kayaker capsized, freezing",
+        "description": "A kayaker capsized in the cold bay and was in the water for twenty minutes. He is sitting at the water's edge in Missionary Hill, shaking hard and coughing.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 20,
+            "pos": [-2749.91, -462.63, 5.55],
+            "rot": 347,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 93, "heartRate": 60 }
+        }
+    ]
+}

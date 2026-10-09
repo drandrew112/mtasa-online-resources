@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_drowning1",
+    "category": "drowning",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-97.5, 1091.25, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman choked at lunch",
+        "description": "An elderly woman choked on a piece of chicken outside a small store in Fort Carson. Her husband lowered her to the ground when she went limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [-97.5, 1091.25, 19.74],
+            "rot": 26,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 59, "consciousness": "unconscious" }
+        }
+    ]
+}

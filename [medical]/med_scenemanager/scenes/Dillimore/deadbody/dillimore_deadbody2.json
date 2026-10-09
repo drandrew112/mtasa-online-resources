@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_deadbody2",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [850, -380, 33.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man not breathing, very cold",
+        "description": "A woman found a man lying on open ground near Dillimore. He is cold, not breathing and his skin is grey and blotchy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [850, -380, 33.23],
+            "rot": 130,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

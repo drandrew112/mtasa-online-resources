@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_breathing1",
+    "category": "breathing",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2098.38, -2330.21, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl outside a small store in Angel Pine has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-2098.38, -2330.21, 30.63],
+            "rot": 72,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 94 }
+        }
+    ]
+}

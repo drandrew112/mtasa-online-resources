@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "el-quebrados_false1",
+    "category": "false",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1640, 2670, 55.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure reported",
+        "description": "A passer-by reports someone having a seizure on open scrubland in El Quebrados. The caller left before the call was finished.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

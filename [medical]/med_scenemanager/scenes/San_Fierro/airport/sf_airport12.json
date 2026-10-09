@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_airport12",
+    "category": "airport",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1347, -165, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Passenger short of breath",
+        "description": "A woman who just got off a long flight outside the terminal at Easter Bay Airport is short of breath and wheezing. She is asthmatic and her inhaler is in her checked luggage.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 145,
+            "pos": [-1347, -165, 14.15],
+            "rot": 139,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

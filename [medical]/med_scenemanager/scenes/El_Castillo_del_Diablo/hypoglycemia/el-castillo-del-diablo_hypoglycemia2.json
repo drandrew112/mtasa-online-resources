@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-230.19, 2626.45, 62.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger shaking and pale",
+        "description": "A jogger at the side of the road near El Castillo del Diablo sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [-230.19, 2626.45, 62.82],
+            "rot": 39,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 45, "heartRate": 110 }
+        }
+    ]
+}

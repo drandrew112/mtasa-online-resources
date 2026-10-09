@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [111.69, 2283.9, 20.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot be woken, snoring",
+        "description": "A woman is lying face down next to the country road in El Castillo del Diablo and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [111.69, 2283.9, 20.36],
+            "rot": 332,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 104, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_shooting1",
+    "category": "shooting",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [750, -520, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking on open ground in Dillimore was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [750, -520, 16.34],
+            "rot": 175,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4526 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "angel-pine_breathing2",
+    "category": "breathing",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1980.82, -2616.45, 61.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot finish a sentence",
+        "description": "A man at the side of the road near Angel Pine cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [-1980.82, -2616.45, 61.65],
+            "rot": 13,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 85, "heartRate": 125 }
+        }
+    ]
+}

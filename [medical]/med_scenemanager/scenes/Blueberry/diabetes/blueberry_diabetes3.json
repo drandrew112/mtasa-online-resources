@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_diabetes3",
+    "category": "diabetes",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [390, 90, 5.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman in the park just outside Blueberry says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 63,
+            "pos": [390, 90, 5.18],
+            "rot": 24,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 445 }
+        }
+    ]
+}

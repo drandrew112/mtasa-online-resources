@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "the-farm_motorcycle1",
+    "category": "motorcycle",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1064.71, -1126.02, 129.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "No helmet, head injury",
+        "description": "A young rider without a helmet crashed at the side of the road in The Farm while doing a wheelie. He is lying on the road, unconscious, bleeding from the ear.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 468,
+            "pos": [-1061.58, -1124.79, 127.78],
+            "rot": [0, 0, 15.6],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC19 429",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [-1064.71, -1126.02, 129.16],
+            "rot": 348,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

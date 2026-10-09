@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia7",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2244.89, -680.22, 68.44],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after basketball",
+        "description": "A student collapsed on his way home from basketball practice by the roadside in Missionary Hill. His friends say he is diabetic and took extra insulin before the game.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [-2244.89, -680.22, 68.44],
+            "rot": 119,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 38, "consciousness": "dazed" }
+        }
+    ]
+}

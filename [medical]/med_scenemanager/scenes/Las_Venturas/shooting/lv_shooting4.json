@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_shooting4",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1701.5, 2725.18, 10.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Bystander hit by stray bullet",
+        "description": "A woman walking at the side of the road in Prickle Pine was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [1701.5, 2725.18, 10.84],
+            "rot": 154,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4523 }
+        }
+    ]
+}

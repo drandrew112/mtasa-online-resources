@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_stroke1",
+    "category": "stroke",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1099.22, -1106.18, 129.21],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Stopped talking mid-sentence",
+        "description": "A woman chatting with a friend by the road at the edge of the woods in The Farm stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [-1099.22, -1106.18, 129.21],
+            "rot": 163,
+            "anim": "lean",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 175 }
+        }
+    ]
+}

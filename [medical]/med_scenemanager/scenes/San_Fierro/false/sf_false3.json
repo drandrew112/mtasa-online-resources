@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "sf_false3",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2606.62, 908.25, 64.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child not breathing",
+        "description": "A young-sounding caller says a child is not breathing at a busy crossroads in Paradiso, then laughs and hangs up. The callback goes to voicemail.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

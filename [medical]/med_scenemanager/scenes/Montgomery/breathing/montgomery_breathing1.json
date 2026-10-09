@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_breathing1",
+    "category": "breathing",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1304.89, 266.64, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl outside a small store in Montgomery has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [1304.89, 266.64, 19.56],
+            "rot": 94,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 95 }
+        }
+    ]
+}

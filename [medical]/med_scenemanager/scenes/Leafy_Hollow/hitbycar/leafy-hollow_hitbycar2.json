@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_hitbycar2",
+    "category": "hitbycar",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1014.28, -1709.94, 78.27],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Jogger hit at the roadside",
+        "description": "A jogger was clipped by a car at the edge of the road by the road at the edge of the woods in Leafy Hollow. He is lying on his back with a painful, swollen knee and road rash.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 410,
+            "pos": [-1009.46, -1714.51, 77.35],
+            "rot": [0, 0, 214.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC90 368",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-1014.28, -1709.94, 78.27],
+            "rot": 309,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "pain": 32 }
+        }
+    ]
+}

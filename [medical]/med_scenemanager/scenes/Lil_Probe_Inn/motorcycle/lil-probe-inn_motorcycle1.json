@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_motorcycle1",
+    "category": "motorcycle",
+    "location": "Lil' Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-74.91, 1347.79, 10.87],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Motorcyclist not moving",
+        "description": "Drivers next to the country road at the Lil' Probe Inn saw a motorcycle hit the barrier at high speed. The rider is lying face down several metres away and is not moving.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [-68.26, 1354.13, 9.91],
+            "rot": [0, 0, 290.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC26 104",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-74.91, 1347.79, 10.87],
+            "rot": 178,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3773, "consciousness": "unconscious" }
+        }
+    ]
+}

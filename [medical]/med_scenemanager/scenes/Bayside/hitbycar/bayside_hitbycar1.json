@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "bayside_hitbycar1",
+    "category": "hitbycar",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2598.95, 2420.05, 14.31],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a delivery truck",
+        "description": "A truck driver did not see a woman crossing at the side of the road in Bayside. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 459,
+            "pos": [-2595.25, 2425.31, 14.89],
+            "rot": [0, 0, 297],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR79 133",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 169,
+            "pos": [-2598.95, 2420.05, 14.31],
+            "rot": 22,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3779, "consciousness": "dazed" }
+        }
+    ]
+}

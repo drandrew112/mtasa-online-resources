@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_breathing2",
+    "category": "breathing",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1137.83, -1122.01, 129.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An old smoker on the road shoulder in The Farm had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-1137.83, -1122.01, 129.18],
+            "rot": 236,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 85 }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "montgomery_hypertension3",
+    "category": "hypertension",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1450, 70, 30.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pregnant, headache, swelling",
+        "description": "A heavily pregnant woman on the grass just outside Montgomery has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [1450, 70, 30.4],
+            "rot": 160,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 198,
+                "diastolic": 117,
+                "heartRate": 98,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

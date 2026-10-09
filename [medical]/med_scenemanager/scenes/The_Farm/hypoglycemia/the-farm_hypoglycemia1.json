@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "the-farm_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1208.6, -1118.24, 129.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Seizure, then unresponsive",
+        "description": "An old man in a field in The Farm had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [-1208.6, -1118.24, 129.18],
+            "rot": 273,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 20, "consciousness": "unconscious" }
+        }
+    ]
+}

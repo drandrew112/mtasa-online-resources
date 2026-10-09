@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "bayside_hypertension5",
+    "category": "hypertension",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2721.4, 2441.76, 78.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Light-headed after hard work",
+        "description": "A farmhand in a yard in Bayside felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-2721.4, 2441.76, 78.2],
+            "rot": 169,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 174, "diastolic": 98, "heartRate": 88, "consciousness": "stable" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_overdose3",
+    "category": "overdose",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2600, 20, 28.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Barely breathing, blue lips",
+        "description": "A man is lying on the grass just outside Palomino Creek with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2600, 20, 28.48],
+            "rot": 277,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 74, "consciousness": "unconscious" }
+        }
+    ]
+}

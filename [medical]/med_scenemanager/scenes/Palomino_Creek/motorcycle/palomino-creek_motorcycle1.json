@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "palomino-creek_motorcycle1",
+    "category": "motorcycle",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2346.13, 91.63, 26.65],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Road rash and broken leg",
+        "description": "A rider lost the back wheel in a bend at the crossroads in Palomino Creek and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 581,
+            "pos": [2341.13, 91.63, 26.1],
+            "rot": [0, 0, 156.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC93 406",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [2346.13, 91.63, 26.65],
+            "rot": 149,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

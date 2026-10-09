@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_hypertension2",
+    "category": "hypertension",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-271.93, 1012.17, 19.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Light-headed after hard work",
+        "description": "A farmhand on the sidewalk in Fort Carson felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [-271.93, 1012.17, 19.73],
+            "rot": 310,
+            "anim": "crouch",
+            "injuries": [],
+            "state": { "systolic": 168, "diastolic": 99, "heartRate": 88, "consciousness": "stable" }
+        }
+    ]
+}

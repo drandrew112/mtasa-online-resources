@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing4",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1837.38, 2701.58, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, still wheezing",
+        "description": "A man by the roadside in Prickle Pine choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 120,
+            "pos": [1837.38, 2701.58, 10.82],
+            "rot": 342,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

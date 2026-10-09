@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-payasadas_fall3",
+    "category": "fall",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-165.85, 2753.64, 62.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a water tower ladder",
+        "description": "A young man climbing an old water tower ladder on open scrubland in Las Payasadas fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [-165.85, 2753.64, 62.57],
+            "rot": 227,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_breathing2",
+    "category": "breathing",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [818.63, -588.12, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing in the heat",
+        "description": "A cyclist stopped outside a small store in Dillimore after riding through the dusty country roads and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [818.63, -588.12, 16.34],
+            "rot": 156,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

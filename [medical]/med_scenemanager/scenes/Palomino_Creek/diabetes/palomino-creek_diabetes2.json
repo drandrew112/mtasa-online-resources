@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "palomino-creek_diabetes2",
+    "category": "diabetes",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2520, 120, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Vomiting, breathing fast",
+        "description": "A young man in a parking lot in Palomino Creek has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 116,
+            "pos": [2520, 120, 26.48],
+            "rot": 1,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4074, "glucose": 535 }
+        }
+    ]
+}

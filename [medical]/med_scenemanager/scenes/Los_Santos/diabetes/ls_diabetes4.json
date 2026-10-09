@@ -2,27 +2,28 @@
     "format": 1,
     "name": "ls_diabetes4",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2250.43, -2421.8, 13.55],
+    "center": [651.15, -1758.02, 13.46],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Glucose meter just says HIGH",
-        "description": "A woman at a bus stop in Ocean Docks called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "title": "Teen vomiting, breathing deeply",
+        "description": "A teenager on the sidewalk in Marina has been vomiting and breathing fast and deep. A friend says she is a type 1 diabetic and ran out of insulin two days ago. Her breath smells sweet, like nail polish remover.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [],
     "peds": [
         {
             "id": "p1",
-            "skin": 85,
-            "pos": [2250.43, -2421.8, 13.55],
-            "rot": 74,
-            "anim": "sit",
+            "skin": 138,
+            "pos": [651.15, -1758.02, 13.46],
+            "rot": 334,
+            "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4400, "glucose": 610 }
+            "state": { "bloodVolume": 4000, "glucose": 540, "heartRate": 124, "consciousness": "confused" }
         }
     ]
 }

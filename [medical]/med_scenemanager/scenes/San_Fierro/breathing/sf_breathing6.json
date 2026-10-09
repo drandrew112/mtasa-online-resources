@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing6",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2814.38, -397.93, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Coughing after chemical fumes",
+        "description": "A man near the golf club entrance in Avispa Country Club breathed in strong fumes from a cleaning chemical that spilled in a shop nearby. He is coughing, his eyes are watering and his chest feels tight.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-2814.38, -397.93, 7.19],
+            "rot": 78,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 94 }
+        }
+    ]
+}

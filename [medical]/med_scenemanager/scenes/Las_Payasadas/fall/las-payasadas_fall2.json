@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-payasadas_fall2",
+    "category": "fall",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-267.13, 2785.11, 62.69],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a porch",
+        "description": "A man missed a step and fell off a high porch on open scrubland in Las Payasadas. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-267.13, 2785.11, 62.69],
+            "rot": 263,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

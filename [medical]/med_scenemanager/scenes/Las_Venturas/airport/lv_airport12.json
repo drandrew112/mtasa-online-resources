@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_airport12",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1579, 1546, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk passenger fell on the stairs",
+        "description": "A drunk passenger fell down the aircraft stairs on the apron at Las Venturas Airport and hit his head. He is confused, bleeding and aggressive with the crew.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [1579, 1546, 10.82],
+            "rot": 251,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

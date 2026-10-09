@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_breathing1",
+    "category": "breathing",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2300, 60, 26.48],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man in a parking lot in Palomino Creek pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [2300, 60, 26.48],
+            "rot": 159,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

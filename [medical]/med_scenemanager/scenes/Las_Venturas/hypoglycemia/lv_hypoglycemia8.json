@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia8",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1000.38, 1483.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot be woken, snoring",
+        "description": "A woman is lying face down outside a wedding chapel in Blackfield and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 63,
+            "pos": [1000.38, 1483.13, 10.82],
+            "rot": 297,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 106, "consciousness": "unconscious" }
+        }
+    ]
+}

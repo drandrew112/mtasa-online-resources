@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_drowning1",
+    "category": "drowning",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-199.3, 2495.17, 25.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen pulled from the creek",
+        "description": "Friends pulled a teenager out of the creek after he jumped in from a rope swing. They carried him up on the road shoulder near El Castillo del Diablo. He is gasping and drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [-199.3, 2495.17, 25.41],
+            "rot": 344,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "consciousness": "dazed" }
+        }
+    ]
+}

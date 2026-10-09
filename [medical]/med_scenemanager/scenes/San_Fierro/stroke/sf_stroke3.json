@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke3",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1783.62, 721.63, 34.89],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Young woman, sudden weakness",
+        "description": "A young woman in front of an apartment block in Downtown says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 93,
+            "pos": [-1783.62, 721.63, 34.89],
+            "rot": 351,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

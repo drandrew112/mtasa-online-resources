@@ -1,0 +1,52 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia8",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1707.72, 672.88, 24.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Driver staring at nothing",
+        "description": "A driver stopped his car at a bus stop in Downtown and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 410,
+            "pos": [-1707.72, 672.88, 24.59],
+            "rot": [0, 0, 0],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF29 428",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [-1707.72, 672.88, 24.84],
+            "rot": 0,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [],
+            "state": { "glucose": 32, "consciousness": "confused" }
+        }
+    ]
+}

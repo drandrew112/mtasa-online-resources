@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "las-barrancas_drowning1",
+    "category": "drowning",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-838.03, 1455.4, 15.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer pulled from a stock tank",
+        "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him on open scrubland in Las Barrancas. He is coughing up water and confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-838.03, 1455.4, 15.02],
+            "rot": 150,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "spo2": 86, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose20",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1259, 1826, 10.78],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Needle still in his arm",
+        "description": "A man is lying in a small park at Las Venturas Airport with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [1259, 1826, 10.78],
+            "rot": 70,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "spo2": 85, "consciousness": "dazed" }
+        }
+    ]
+}

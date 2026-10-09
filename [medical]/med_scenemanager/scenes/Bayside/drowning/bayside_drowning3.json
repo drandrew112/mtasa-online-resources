@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_drowning3",
+    "category": "drowning",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2360, 2340, 4.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throat swelling after a bee sting",
+        "description": "A beekeeper on open ground in Bayside was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-2360, 2340, 4.98],
+            "rot": 271,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 81, "systolic": 87, "heartRate": 127 }
+        }
+    ]
+}

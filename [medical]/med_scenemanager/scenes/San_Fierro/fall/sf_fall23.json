@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "sf_fall23",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2827, -185, 8.57],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell, head bleeding",
+        "description": "A drunk man fell backwards in a small park in Ocean Flats and hit his head on the hard ground. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [-2827, -185, 8.57],
+            "rot": 257,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

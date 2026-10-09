@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_diabetes3",
+    "category": "diabetes",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-220, 2590, 62.6],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman on the dusty ground in Las Payasadas says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [-220, 2590, 62.6],
+            "rot": 88,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 464 }
+        }
+    ]
+}

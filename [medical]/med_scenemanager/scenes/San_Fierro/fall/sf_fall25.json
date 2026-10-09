@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_fall25",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2154, 260.25, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man on blood thinners fell",
+        "description": "An old man slipped on the sidewalk in King's and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-2154, 260.25, 35.32],
+            "rot": 261,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "lil-probe-inn_heartattack3",
     "category": "heartattack",
+    "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
     "center": [-57.655, 1358.634, 10.415],

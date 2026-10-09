@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_drowning1",
+    "category": "drowning",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [630, -540, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, turning blue",
+        "description": "A man choking on a piece of steak on a paved lot in Dillimore cannot breathe or speak and is grabbing his throat. His lips are turning blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [630, -540, 16.34],
+            "rot": 347,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 71, "consciousness": "dazed" }
+        }
+    ]
+}

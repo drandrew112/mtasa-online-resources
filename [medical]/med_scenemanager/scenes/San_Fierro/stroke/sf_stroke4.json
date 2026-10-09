@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke4",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2152.45, -864.27, 32.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slumped over, drooling",
+        "description": "A man is slumped over by the roadside in Foster Valley, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 94,
+            "pos": [-2152.45, -864.27, 32.02],
+            "rot": 68,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 205, "diastolic": 111, "consciousness": "dazed" }
+        }
+    ]
+}

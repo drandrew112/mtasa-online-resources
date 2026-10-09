@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_breathing2",
+    "category": "breathing",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-800, 1550, 27.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old smoker cannot catch breath",
+        "description": "An old smoker on a paved lot in Las Barrancas had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-800, 1550, 27.12],
+            "rot": 194,
+            "anim": "sit",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 83 }
+        }
+    ]
+}

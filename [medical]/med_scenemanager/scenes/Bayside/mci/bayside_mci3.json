@@ -1,0 +1,116 @@
+{
+    "format": 1,
+    "name": "bayside_mci3",
+    "category": "mci",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2466.08, 2328.5, 5.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Truck jackknifed, cars crashed",
+        "description": "A box truck lost its brakes coming down the hill and jackknifed at a junction in Bayside. Two cars crashed into it. Three people are injured, one is bleeding heavily.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 527,
+            "pos": [-2466.19, 2335, 4.89],
+            "rot": [0, 0, 210.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR49 117",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 499,
+            "pos": [-2470.62, 2331, 5.14],
+            "rot": [0, 0, 252.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR48 118",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 492,
+            "pos": [-2466.31, 2342, 4.99],
+            "rot": [0, 0, 173.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "TR26 119",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-2466.08, 2328.5, 5.14],
+            "rot": 141,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3587 }
+        },
+        {
+            "id": "p2",
+            "skin": 198,
+            "pos": [-2463.61, 2328.12, 5.14],
+            "rot": 194,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 180,
+            "pos": [-2468.93, 2327.53, 5.14],
+            "rot": 112,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 53 }
+        }
+    ]
+}

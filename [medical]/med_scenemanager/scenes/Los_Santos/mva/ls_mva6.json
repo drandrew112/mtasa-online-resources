@@ -1,0 +1,87 @@
+{
+    "format": 1,
+    "name": "ls_mva6",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [252.38, -1021.5, 55.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collision while turning",
+        "description": "Two cars collided while one was turning at an intersection in Richman. The driver of the first car got out and is leaning on the car with a deep cut that is bleeding. The driver of the second car is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 475,
+            "pos": [243.88, -1016.62, 57.464],
+            "rot": [-4.56, -7.78, 195.47],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS65 632",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 482,
+            "pos": [245.826, -1022.586, 57.324],
+            "rot": [3.86, 4.53, 25.45],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS95 336",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [248.356, -1020.402, 56.814],
+            "rot": 229.8,
+            "anim": "lean",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p2",
+            "skin": 250,
+            "pos": [245.826, -1022.586, 57.57],
+            "rot": 25.45,
+            "anim": "none",
+            "vehicle": "v2",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
+        }
+    ]
+}

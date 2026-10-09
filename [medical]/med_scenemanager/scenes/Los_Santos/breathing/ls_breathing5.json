@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing5",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [522.38, -1552.33, 15.74],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Worker breathed in fumes",
-        "description": "A worker cleaning a tank at a bus stop in Rodeo breathed in chemical fumes. He is coughing non-stop, his eyes are streaming and he feels tight in the chest. Coworkers moved him to fresh air.",
+        "description": "A worker cleaning a tank in Rodeo breathed in chemical fumes. He is coughing non-stop, his eyes are streaming and he feels tight in the chest. Coworkers moved him to fresh air.",
         "caller": "SceneManager",
         "priority": 2
     },

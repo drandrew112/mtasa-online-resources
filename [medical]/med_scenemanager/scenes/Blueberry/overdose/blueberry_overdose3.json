@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_overdose3",
+    "category": "overdose",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [30, -170, 0.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Moonshine, cannot stand",
+        "description": "A man on the grass just outside Blueberry drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [30, -170, 0.61],
+            "rot": 71,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

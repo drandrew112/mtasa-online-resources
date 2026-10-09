@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "hampton-barns_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [750, 240, 29.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after baling hay",
+        "description": "A young farmhand collapsed after baling hay all morning on a grassy patch just outside Hampton Barns. His friends say he is diabetic and took extra insulin before the game.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [750, 240, 29.19],
+            "rot": 34,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "dazed" }
+        }
+    ]
+}

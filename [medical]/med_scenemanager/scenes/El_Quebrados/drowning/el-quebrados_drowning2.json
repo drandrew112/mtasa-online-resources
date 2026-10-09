@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_drowning2",
+    "category": "drowning",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1650.24, 2498.52, 86.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Choked on food, turning blue",
+        "description": "A man choking on a piece of steak at the side of the road near El Quebrados cannot breathe or speak and is grabbing his throat. His lips are turning blue.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 24,
+            "pos": [-1650.24, 2498.52, 86.16],
+            "rot": 275,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 71, "consciousness": "dazed" }
+        }
+    ]
+}

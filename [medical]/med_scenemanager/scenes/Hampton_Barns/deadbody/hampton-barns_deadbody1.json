@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "hampton-barns_deadbody1",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [710, 240, 27.39],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body found by a hunter",
+        "description": "A hunter found a man lying face down in a field near Hampton Barns. He has clearly been dead for some time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [710, 240, 27.39],
+            "rot": 307,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

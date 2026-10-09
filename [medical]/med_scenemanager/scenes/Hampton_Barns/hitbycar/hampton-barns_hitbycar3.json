@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "hampton-barns_hitbycar3",
+    "category": "hitbycar",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [711.68, 212.19, 26.95],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pedestrian hit while crossing",
+        "description": "A pedestrian was hit by a car while crossing by the road next to a farm near Hampton Barns. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 600,
+            "pos": [716.61, 215.28, 26.23],
+            "rot": [0, 0, 262.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC89 291",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [711.68, 212.19, 26.95],
+            "rot": 21,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4226, "consciousness": "dazed" }
+        }
+    ]
+}

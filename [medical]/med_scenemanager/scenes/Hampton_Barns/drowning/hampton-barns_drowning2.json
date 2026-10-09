@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_drowning2",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [790, 320, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throat swelling after a bee sting",
+        "description": "A beekeeper on farmland near Hampton Barns was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [790, 320, 20.23],
+            "rot": 252,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "systolic": 90, "heartRate": 136 }
+        }
+    ]
+}

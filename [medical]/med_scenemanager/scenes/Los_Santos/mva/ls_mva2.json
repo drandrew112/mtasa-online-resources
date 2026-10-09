@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_mva2",
     "category": "mva",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1821.966, -1751.603, 13.383],

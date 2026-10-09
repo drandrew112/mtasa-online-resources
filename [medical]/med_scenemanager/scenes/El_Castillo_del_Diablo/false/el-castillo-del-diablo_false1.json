@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_false1",
+    "category": "false",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-160.96, 2518.3, 24.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old farmer only dizzy",
+        "description": "A neighbour reports an old farmer who fell over on the road shoulder near El Castillo del Diablo. He is up again, says he was only dizzy from the heat and refuses to go to hospital.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-160.96, 2518.3, 24.92],
+            "rot": 92,
+            "anim": "sit",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_drowning10",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2794.38, -2181.35, 14.92],
+    "center": [934, -1842, 11.54],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pulled out, not breathing",
-        "description": "Dock workers pulled a man out of the harbour and brought him onto the sand at Ocean Docks. He is not breathing and has no pulse. A bystander is doing chest compressions.",
+        "title": "Seizure in the water",
+        "description": "A man had a seizure while in the sea and went under. He was pulled out and brought onto the sand at Verona Beach. He is breathing but confused and keeps coughing up water.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,14 +18,15 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 25,
-            "pos": [2794.38, -2181.35, 14.92],
-            "rot": 349,
+            "skin": 142,
+            "pos": [934, -1842, 11.54],
+            "rot": 347,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                { "type": "suffocation", "severity": 2 },
+                { "type": "postictal", "severity": 1 }
             ],
-            "state": { "rhythm": "PEA", "spo2": 40 }
+            "state": { "spo2": 82, "consciousness": "confused" }
         }
     ]
 }

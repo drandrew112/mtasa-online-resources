@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_deadbody11",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1659.38, 1266.65, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found after a fall from height",
+        "description": "Residents found a man lying on a paved square at Las Venturas Airport below a tall building. His injuries are severe and he has not moved since they found him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [1659.38, 1266.65, 10.81],
+            "rot": 36,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

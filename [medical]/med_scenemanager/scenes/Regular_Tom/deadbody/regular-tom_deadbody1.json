@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "regular-tom_deadbody1",
+    "category": "deadbody",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-408.5, 1870, 56.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot, no signs of life",
+        "description": "Police at the scene on the dusty ground near Regular Tom report a man with several gunshot wounds. He has no pulse and is not breathing.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [-408.5, 1870, 56.98],
+            "rot": 224,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

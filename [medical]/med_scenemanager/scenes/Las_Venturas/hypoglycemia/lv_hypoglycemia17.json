@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia17",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2477.25, 2046.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Sweaty and confused",
+        "description": "A woman outside a casino entrance on Old Venturas Strip is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2477.25, 2046.13, 10.82],
+            "rot": 359,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 45, "consciousness": "confused" }
+        }
+    ]
+}

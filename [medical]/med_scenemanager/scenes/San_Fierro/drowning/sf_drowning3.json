@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "sf_drowning3",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1587, 1275, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man slipped off the rocks",
+        "description": "An old man slipped off the wet rocks into the water. He climbed out by himself and is now on the quay in Esplanade North, coughing, with a painful wrist.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 14,
+            "pos": [-1587, 1275, 7.18],
+            "rot": 184,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

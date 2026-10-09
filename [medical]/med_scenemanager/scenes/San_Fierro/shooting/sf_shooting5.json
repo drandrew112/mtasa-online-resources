@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_shooting5",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2839.82, 691.55, 22.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing car on the sidewalk in Palisades. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [-2839.82, 691.55, 22.91],
+            "rot": 337,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4143, "pain": 39 }
+        }
+    ]
+}

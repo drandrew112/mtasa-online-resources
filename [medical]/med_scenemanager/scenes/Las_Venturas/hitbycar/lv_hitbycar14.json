@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar14",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2854.75, 2143.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Skateboarder hit by a car",
+        "description": "A teenager on a skateboard shot off the curb and into the side of a car next to the sidewalk in Creek. His leg is deformed and he has deep grazes.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 585,
+            "pos": [2850.19, 2147.53, 10.52],
+            "rot": [0, 0, 2.5],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV82 414",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 114,
+            "pos": [2854.75, 2143.13, 10.82],
+            "rot": 100,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

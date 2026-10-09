@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [240.25, -99.62, 1.58],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after baling hay",
+        "description": "A young farmhand collapsed after baling hay all morning on the sidewalk in Blueberry. His friends say he is diabetic and took extra insulin before the game.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 115,
+            "pos": [240.25, -99.62, 1.58],
+            "rot": 50,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 35, "consciousness": "dazed" }
+        }
+    ]
+}

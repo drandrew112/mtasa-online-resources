@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_fall19",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2671.49, 408.99, 4.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slipped on wet pavement",
+        "description": "A woman slipped on the wet pavement on the sidewalk in City Hall in the fog and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [-2671.49, 408.99, 4.37],
+            "rot": 338,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 33 }
+        }
+    ]
+}

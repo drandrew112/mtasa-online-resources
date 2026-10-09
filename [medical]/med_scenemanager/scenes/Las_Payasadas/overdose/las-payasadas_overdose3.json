@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-payasadas_overdose3",
+    "category": "overdose",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-352.79, 2702.35, 63.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Empty pill packets",
+        "description": "A woman's flatmate found her on open scrubland near Las Payasadas with empty pill packets around her and a goodbye note. She does not respond and is breathing shallowly.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [-352.79, 2702.35, 63.52],
+            "rot": 172,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "sedative", "severity": 3 }
+            ],
+            "state": { "spo2": 82, "consciousness": "unconscious" }
+        }
+    ]
+}

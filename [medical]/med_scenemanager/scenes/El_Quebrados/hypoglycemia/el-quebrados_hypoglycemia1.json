@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1520.87, 2594, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worker acting drunk",
+        "description": "Coworkers outside a house in El Quebrados say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-1520.87, 2594, 55.84],
+            "rot": 322,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 39 }
+        }
+    ]
+}

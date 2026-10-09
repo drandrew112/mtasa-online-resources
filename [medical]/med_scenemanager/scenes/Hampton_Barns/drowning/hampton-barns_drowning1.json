@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_drowning1",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [658.15, 216.75, 25.24],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen pulled from the creek",
+        "description": "Friends pulled a teenager out of the creek after he jumped in from a rope swing. They carried him up next to the country road near Hampton Barns. He is gasping and drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [658.15, 216.75, 25.24],
+            "rot": 336,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 82, "consciousness": "dazed" }
+        }
+    ]
+}

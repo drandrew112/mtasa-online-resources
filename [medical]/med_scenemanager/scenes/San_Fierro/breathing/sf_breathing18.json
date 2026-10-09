@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_breathing18",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2105.71, -527.61, 34.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Coughing after chemical fumes",
+        "description": "A man on the sidewalk in Foster Valley breathed in strong fumes from a cleaning chemical that spilled in a shop nearby. He is coughing, his eyes are watering and his chest feels tight.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 124,
+            "pos": [-2105.71, -527.61, 34.52],
+            "rot": 150,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "fern-ridge_motorcycle3",
+    "category": "motorcycle",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [956.51, -101.36, 19.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown over a car",
+        "description": "A car turned in front of a motorcycle on the road shoulder in Fern Ridge. The rider flew over the bonnet and is lying face down, not responding.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 586,
+            "pos": [958.27, -96.55, 18.53],
+            "rot": [0, 0, 347.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC57 239",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 412,
+            "pos": [950.91, -98, 18.73],
+            "rot": [0, 0, 264.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC32 240",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 258,
+            "pos": [956.51, -101.36, 19.23],
+            "rot": 63,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_stroke3",
+    "category": "stroke",
+    "location": "Hankypanky Point",
+    "enabled": true,
+    "weight": 1,
+    "center": [2640, 80, 27.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Worst headache of her life",
+        "description": "A woman on the grass just outside Palomino Creek grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 172,
+            "pos": [2640, 80, 27.34],
+            "rot": 325,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 208, "diastolic": 114, "consciousness": "dazed" }
+        }
+    ]
+}

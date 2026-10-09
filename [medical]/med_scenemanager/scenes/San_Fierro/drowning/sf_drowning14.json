@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning14",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2887, -505, 4.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pulled out by a surfer",
+        "description": "A surfer pulled a young woman out of a rip current. She is lying on the beach in Missionary Hill, confused and with blue lips.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-2887, -505, 4.7],
+            "rot": 205,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 79, "consciousness": "dazed" }
+        }
+    ]
+}

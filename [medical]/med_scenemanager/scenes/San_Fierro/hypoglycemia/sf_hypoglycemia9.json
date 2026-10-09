@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_hypoglycemia9",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2827, 275, 8.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Acting strange, sweaty",
+        "description": "A woman in a small park in Ocean Flats is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [-2827, 275, 8.74],
+            "rot": 87,
+            "anim": "drunk",
+            "injuries": [],
+            "state": { "glucose": 42, "heartRate": 113, "consciousness": "confused" }
+        }
+    ]
+}

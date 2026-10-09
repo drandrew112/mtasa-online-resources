@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "dillimore_hypertension3",
+    "category": "hypertension",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [570, -680, 12.14],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pounding headache, dizzy",
+        "description": "A farmer on open ground near Dillimore sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 234,
+            "pos": [570, -680, 12.14],
+            "rot": 149,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 28,
+                "systolic": 188,
+                "diastolic": 116,
+                "heartRate": 93,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

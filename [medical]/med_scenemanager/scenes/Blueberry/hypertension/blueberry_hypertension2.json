@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "blueberry_hypertension2",
+    "category": "hypertension",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [353.32, -387.06, 18.35],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pounding headache, dizzy",
+        "description": "A farmer next to the country road near Blueberry sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [353.32, -387.06, 18.35],
+            "rot": 178,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 29,
+                "systolic": 188,
+                "diastolic": 114,
+                "heartRate": 97,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

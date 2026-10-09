@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_deadbody2",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1159, 2366, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a night guard",
+        "description": "A night guard found a man lying on the grass at Pilson Intersection. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [1159, 2366, 10.81],
+            "rot": 123,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

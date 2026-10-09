@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose6",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1741.62, 1198.13, 25.12],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Party pill, overheating",
+        "description": "A young man in front of an apartment block in Financial took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [-1741.62, 1198.13, 25.12],
+            "rot": 176,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 162, "heartRate": 155 }
+        }
+    ]
+}

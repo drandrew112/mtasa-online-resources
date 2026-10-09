@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_breathing2",
+    "category": "breathing",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [290.01, 2738.43, 60.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer wheezing after spraying",
+        "description": "A farmer by the dusty roadside near Verdant Meadows was spraying crops without a mask. Now he is wheezing, drooling and sweating, and his breathing is getting worse.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [290.01, 2738.43, 60.84],
+            "rot": 171,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 87, "heartRate": 52 }
+        }
+    ]
+}

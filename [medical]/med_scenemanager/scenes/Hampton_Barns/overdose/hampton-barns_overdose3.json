@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_overdose3",
+    "category": "overdose",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [690, 340, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Meth, not sleeping for days",
+        "description": "A man from a nearby trailer in a field in Hampton Barns has not slept for three days, is paranoid and soaked in sweat. He says his heart is going to explode.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [690, 340, 20.23],
+            "rot": 286,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 208, "heartRate": 178, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes6",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1748.01, -1000.12, 75.49],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends by the roadside in San Fierro cannot wake a man after a night out. He is diabetic, drank a lot of sugary cocktails and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 60,
+            "pos": [-1748.01, -1000.12, 75.49],
+            "rot": 304,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 619, "heartRate": 119, "consciousness": "unconscious" }
+        }
+    ]
+}

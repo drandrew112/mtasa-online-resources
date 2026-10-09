@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose16",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2340.25, 1103.21, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated",
+        "description": "A man outside a casino in Come-A-Lot is shouting at passers-by, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [2340.25, 1103.21, 10.82],
+            "rot": 283,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 196, "diastolic": 113, "heartRate": 159, "consciousness": "confused" }
+        }
+    ]
+}

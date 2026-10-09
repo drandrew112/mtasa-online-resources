@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_shooting2",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1061.19, 142.66, 31.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman shot in the stomach",
+        "description": "A woman was shot in the stomach on the road shoulder near Fern Ridge during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [1061.19, 142.66, 31.73],
+            "rot": 341,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3768 }
+        }
+    ]
+}

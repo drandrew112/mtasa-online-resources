@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_shooting3",
+    "category": "shooting",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-980, -1880, 80.79],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest in a clearing near Leafy Hollow. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [-980, -1880, 80.79],
+            "rot": 230,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3904, "spo2": 83 }
+        }
+    ]
+}

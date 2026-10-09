@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "the-farm_motorcycle2",
+    "category": "motorcycle",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1025.46, -969.5, 129.43],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pizza scooter crash",
+        "description": "A pizza delivery rider skidded on sand blown across the road at a junction in The Farm. His knee is swollen and bleeding, and the pizzas are all over the road.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [-1027.99, -972.22, 128.88],
+            "rot": [0, 0, 178.4],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "FC65 431",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [-1025.46, -969.5, 129.43],
+            "rot": 102,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

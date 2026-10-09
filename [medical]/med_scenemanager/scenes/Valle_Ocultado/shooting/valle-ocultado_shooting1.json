@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "valle-ocultado_shooting1",
+    "category": "shooting",
+    "location": "Valle Ocultado",
+    "enabled": true,
+    "weight": 1,
+    "center": [-797.75, 2710, 45.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the chest",
+        "description": "A man was shot in the chest on the dusty ground in Valle Ocultado. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 159,
+            "pos": [-797.75, 2710, 45.97],
+            "rot": 251,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3895, "spo2": 84 }
+        }
+    ]
+}

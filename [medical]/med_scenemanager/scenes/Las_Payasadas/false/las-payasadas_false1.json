@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "las-payasadas_false1",
+    "category": "false",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-320, 2650, 71.44],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A driver saw a person lying on open scrubland in Las Payasadas and did not stop. The caller could not say if the person was moving.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

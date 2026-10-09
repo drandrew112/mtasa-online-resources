@@ -1,0 +1,65 @@
+{
+    "format": 1,
+    "name": "las-payasadas_motorcycle3",
+    "category": "motorcycle",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-228.67, 2781.75, 62.37],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Rider and passenger down",
+        "description": "A motorcycle carrying two people crashed next to the country road in Las Payasadas. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 463,
+            "pos": [-223.84, 2778.39, 61.65],
+            "rot": [0, 0, 255.8],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC10 334",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-228.67, 2781.75, 62.37],
+            "rot": 278,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4079, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 233,
+            "pos": [-228.67, 2779.25, 62.47],
+            "rot": 157,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

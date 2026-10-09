@@ -1,0 +1,86 @@
+{
+    "format": 1,
+    "name": "ls_mva10",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1297.38, -1712.12, 12.39],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "T-bone collision at intersection",
+        "description": "Two cars collided at an intersection in Verona Beach, one hit the other in the side. The driver of the first car is still in the seat with a bump on the head and a headache. The driver of the second car got out and is crouching by the car with a painful collarbone and some cuts.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 418,
+            "pos": [1299.82, -1723.05, 13.596],
+            "rot": [0, 0, 257.57],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS39 302",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 549,
+            "pos": [1301.551, -1718.408, 13.274],
+            "rot": [0, 0, 179],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS89 188",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 46,
+            "pos": [1299.82, -1723.05, 13.85],
+            "rot": 257.57,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
+            "injuries": [
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        },
+        {
+            "id": "p2",
+            "skin": 10,
+            "pos": [1304.541, -1723.075, 13.547],
+            "rot": 212.6,
+            "anim": "crouch",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

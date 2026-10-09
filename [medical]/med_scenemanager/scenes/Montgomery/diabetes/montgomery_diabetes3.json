@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "montgomery_diabetes3",
+    "category": "diabetes",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1189.03, 533.16, 20.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Student, fruity breath",
+        "description": "A student next to the country road near Montgomery has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [1189.03, 533.16, 20.23],
+            "rot": 320,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "glucose": 494, "heartRate": 124 }
+        }
+    ]
+}

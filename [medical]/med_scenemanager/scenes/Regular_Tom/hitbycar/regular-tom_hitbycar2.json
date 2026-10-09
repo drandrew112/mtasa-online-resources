@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "regular-tom_hitbycar2",
+    "category": "hitbycar",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-440.49, 1895.79, 59.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Old man knocked down by a pickup",
+        "description": "A pickup knocked down an old man outside a house just outside Regular Tom. He hit the windscreen, is dazed and has a large bleeding wound on his forehead.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 475,
+            "pos": [-437.14, 1889.36, 59.2],
+            "rot": [0, 0, 176.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC99 402",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [-440.49, 1895.79, 59.34],
+            "rot": 316,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

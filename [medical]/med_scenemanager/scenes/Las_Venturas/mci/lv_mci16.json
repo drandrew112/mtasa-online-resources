@@ -1,0 +1,88 @@
+{
+    "format": 1,
+    "name": "lv_mci16",
+    "category": "mci",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2695.95, 1895.54, 7.22],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Car ploughed into pedestrians",
+        "description": "A car lost control and mounted the sidewalk by the roadside near the Starfish Casino, hitting several people. One is not moving, the others are injured and screaming.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 479,
+            "pos": [2698.56, 1893.54, 6.6],
+            "rot": [0, 0, 202.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV43 441",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [2695.8, 1895.66, 7.22],
+            "rot": 286,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3738, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 13,
+            "pos": [2695.35, 1892.31, 7.9],
+            "rot": 157,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p3",
+            "skin": 175,
+            "pos": [2695.96, 1898.54, 7.9],
+            "rot": 81,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 10,
+            "pos": [2695.93, 1889.54, 8.49],
+            "rot": 7,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

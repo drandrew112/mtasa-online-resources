@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_false10",
     "category": "false",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
     "center": [1107.38, -1565.25, 13.55],

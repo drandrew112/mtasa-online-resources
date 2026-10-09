@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose11",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2320.25, 1576.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drink may have been spiked",
+        "description": "A young woman outside a wedding chapel near Caligula's Palace says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [2320.25, 1576.25, 10.82],
+            "rot": 268,
+            "anim": "sit",
+            "injuries": [
+                { "type": "sedative", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning16",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2271.63, 1344.4, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Went in after her dog",
+        "description": "A dog walker went into the water after her dog and was pulled under by a wave. She is now on the waterfront promenade in Juniper Hollow, coughing and cold. The dog is fine.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 141,
+            "pos": [-2271.63, 1344.4, 7.18],
+            "rot": 140,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

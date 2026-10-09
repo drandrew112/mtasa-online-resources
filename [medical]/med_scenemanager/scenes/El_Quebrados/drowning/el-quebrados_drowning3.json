@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "el-quebrados_drowning3",
+    "category": "drowning",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1294.25, 2470, 87.3],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Aspirated vomit, gurgling",
+        "description": "A very drunk man vomited on the dusty ground near El Quebrados and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-1294.25, 2470, 87.3],
+            "rot": 29,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "spo2": 76, "consciousness": "unconscious" }
+        }
+    ]
+}

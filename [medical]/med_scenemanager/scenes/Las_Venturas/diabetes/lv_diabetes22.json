@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_diabetes22",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2051.74, 1809.84, 10.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Could not wake him after a party",
+        "description": "Friends at the side of the road on The Strip cannot wake a man after a night out. He is diabetic, drank a lot of sugary cocktails and did not take his insulin.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 100,
+            "pos": [2051.74, 1809.84, 10.98],
+            "rot": 258,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 671, "heartRate": 128, "consciousness": "unconscious" }
+        }
+    ]
+}

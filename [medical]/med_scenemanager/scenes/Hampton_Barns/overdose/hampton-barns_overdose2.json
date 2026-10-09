@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_overdose2",
+    "category": "overdose",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [590, 260, 18.08],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming, overheated",
+        "description": "A man in a field near Hampton Barns is shouting at passers-by, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 177,
+            "pos": [590, 260, 18.08],
+            "rot": 150,
+            "anim": "tired",
+            "injuries": [
+                { "type": "stimulant", "severity": 3 }
+            ],
+            "state": { "systolic": 207, "diastolic": 116, "heartRate": 164, "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke19",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1947, 1135, 49.4],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Numb side after jogging",
+        "description": "A jogger in a small park in Downtown stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 120,
+            "pos": [-1947, 1135, 49.4],
+            "rot": 62,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 1 }
+            ],
+            "state": { "systolic": 166 }
+        }
+    ]
+}

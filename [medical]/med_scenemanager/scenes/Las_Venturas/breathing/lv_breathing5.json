@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing5",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1012.68, 1683.13, 10.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Breathed in smoke",
+        "description": "A man by the roadside in Blackfield pulled his friend out of a smoke-filled apartment and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 66,
+            "pos": [1012.68, 1683.13, 10.91],
+            "rot": 110,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

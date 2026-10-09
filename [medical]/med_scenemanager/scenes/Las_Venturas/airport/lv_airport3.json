@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_airport3",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1799.75, 1786, 6.73],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fainted in the queue",
+        "description": "A woman fainted in the queue outside the terminal at Las Venturas Airport. She came around quickly but is pale, sweaty and her pulse feels very slow.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 216,
+            "pos": [1799.75, 1786, 6.73],
+            "rot": 188,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "systolic": 90, "heartRate": 48 }
+        }
+    ]
+}

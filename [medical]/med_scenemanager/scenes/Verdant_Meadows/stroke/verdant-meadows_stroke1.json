@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_stroke1",
+    "category": "stroke",
+    "location": "Verdant Meadows",
+    "enabled": true,
+    "weight": 1,
+    "center": [155.98, 2550.18, 16.47],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found on the ground, cannot speak",
+        "description": "A dog walker found an elderly woman lying by the dusty roadside in Verdant Meadows. She is awake and looks at people but cannot speak, and her right side is limp.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 129,
+            "pos": [155.98, 2550.18, 16.47],
+            "rot": 327,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 200, "consciousness": "dazed" }
+        }
+    ]
+}

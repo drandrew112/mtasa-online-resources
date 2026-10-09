@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_breathing16",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2782.42, 1946.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing in the heat",
+        "description": "A cyclist stopped outside a souvenir shop near the Sobell Rail Yards after riding through the midday heat and dust and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 221,
+            "pos": [2782.42, 1946.5, 10.82],
+            "rot": 353,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 92 }
+        }
+    ]
+}

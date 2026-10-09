@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "blueberry_shooting1",
+    "category": "shooting",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [210, -370, 6.16],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shot in the back",
+        "description": "A man was shot in the back while running away on a grassy patch in Blueberry. He is lying on his stomach and says he cannot feel his legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [210, -370, 6.16],
+            "rot": 343,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4304, "pain": 33 }
+        }
+    ]
+}

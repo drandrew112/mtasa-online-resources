@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lil-probe-inn_deadbody1",
+    "category": "deadbody",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-114.98, 1512.88, 15.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a rancher",
+        "description": "A rancher checking his fences found a man lying on the dusty ground near the Lil' Probe Inn. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-114.98, 1512.88, 15.15],
+            "rot": 202,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

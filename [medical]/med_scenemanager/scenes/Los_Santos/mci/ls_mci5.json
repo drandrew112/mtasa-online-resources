@@ -2,43 +2,24 @@
     "format": 1,
     "name": "ls_mci5",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [256.03, -1128.25, 77.13],
+    "center": [459, -1626.68, 26.12],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Truck crushed two cars",
-        "description": "A truck lost its brakes in Richman and ploughed into two cars. One car is crushed, its driver unconscious inside. The truck driver is walking around with a head wound.",
+        "title": "Work van and car, five hurt",
+        "description": "A crowded work van collided with a car in Rodeo. The van is badly damaged. Five people are injured, two of them seriously; workers climbed out through the windows.",
         "caller": "SceneManager",
         "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 403,
-            "pos": [264.24, -1126.48, 77.43],
-            "rot": [0, 0, 130.1],
-            "frozen": false,
-            "locked": false,
-            "engine": false,
-            "lightsOn": false,
-            "health": 420,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
-            "paintjob": 3,
-            "plate": "LS66 203",
-            "variant": [255, 255],
-            "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
-        },
-        {
-            "id": "v2",
-            "model": 419,
-            "pos": [256.03, -1128.25, 76.88],
-            "rot": [0, 0, 200.1],
+            "model": 440,
+            "pos": [454.56, -1626.61, 25.94],
+            "rot": [0, 0, 92.1],
             "frozen": false,
             "locked": false,
             "engine": false,
@@ -46,7 +27,7 @@
             "health": 300,
             "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS46 204",
+            "plate": "LS62 201",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [3, 2, 4, 4, 2, 3],
@@ -55,18 +36,18 @@
             "wheels": [1, 0, 0, 0]
         },
         {
-            "id": "v3",
-            "model": 421,
-            "pos": [265.67, -1119.54, 76.88],
-            "rot": [0, 0, 132.1],
+            "id": "v2",
+            "model": 420,
+            "pos": [450.45, -1620.54, 25.69],
+            "rot": [0, 0, 28.1],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS46 205",
+            "plate": "LS33 202",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [2, 0, 2, 3, 0, 0],
@@ -78,41 +59,61 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 22,
-            "pos": [256.03, -1128.25, 77.13],
-            "rot": 45,
+            "skin": 50,
+            "pos": [459, -1626.68, 26.12],
+            "rot": 346,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3700 }
+        },
+        {
+            "id": "p2",
+            "skin": 16,
+            "pos": [459.05, -1623.18, 26.12],
+            "rot": 327,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        },
+        {
+            "id": "p3",
+            "skin": 142,
+            "pos": [458.95, -1630.18, 26.12],
+            "rot": 107,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        },
+        {
+            "id": "p4",
+            "skin": 40,
+            "pos": [450.45, -1620.54, 25.94],
+            "rot": 145,
             "anim": "none",
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 }
-            ],
-            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
-        },
-        {
-            "id": "p2",
-            "skin": 9,
-            "pos": [263.45, -1118.78, 77.45],
-            "rot": 223,
-            "anim": "ko_back",
-            "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2 }
             ],
             "state": {}
         },
         {
-            "id": "p3",
-            "skin": 260,
-            "pos": [258.26, -1123.47, 77.45],
-            "rot": 277,
-            "anim": "none",
+            "id": "p5",
+            "skin": 223,
+            "pos": [459.11, -1619.68, 26.12],
+            "rot": 328,
+            "anim": "crouch",
             "injuries": [
-                { "type": "head_injury", "severity": 1 },
                 { "type": "gunshot", "severity": 1 }
             ],
-            "state": {}
+            "state": { "pain": 30 }
         }
     ]
 }

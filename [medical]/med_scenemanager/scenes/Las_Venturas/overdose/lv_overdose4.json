@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose4",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2475.88, 2143.25, 10.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Barely breathing, blue lips",
+        "description": "A man is lying outside a souvenir shop on Old Venturas Strip with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [2475.88, 2143.25, 10.96],
+            "rot": 146,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 73, "consciousness": "unconscious" }
+        }
+    ]
+}

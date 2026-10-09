@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_deadbody8",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1227.44, -30.45, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman found cold",
+        "description": "A neighbour found an elderly woman lying at the side of the road in Easter Bay Airport. She is cold and does not breathe. She lived nearby and was a regular here.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [-1227.44, -30.45, 14.15],
+            "rot": 75,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

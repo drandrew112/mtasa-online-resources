@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_stroke2",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1440.95, -826.01, 77.03],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot lift her arm",
+        "description": "An elderly woman at the side of the road in San Fierro dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 39,
+            "pos": [-1440.95, -826.01, 77.03],
+            "rot": 8,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 182, "consciousness": "confused" }
+        }
+    ]
+}

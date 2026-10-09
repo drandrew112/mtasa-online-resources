@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "the-farm_overdose1",
+    "category": "overdose",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1041.48, -1165.55, 129.11],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Moonshine, cannot stand",
+        "description": "A man on the road shoulder in The Farm drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-1041.48, -1165.55, 129.11],
+            "rot": 57,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

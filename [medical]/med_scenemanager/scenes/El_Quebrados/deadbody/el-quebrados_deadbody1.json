@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-quebrados_deadbody1",
+    "category": "deadbody",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1480, 2690, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose, found too late",
+        "description": "Friends found a young woman on the dusty ground in El Quebrados after she did not come home. She is cold and stiff, a syringe is beside her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [-1480, 2690, 55.84],
+            "rot": 41,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

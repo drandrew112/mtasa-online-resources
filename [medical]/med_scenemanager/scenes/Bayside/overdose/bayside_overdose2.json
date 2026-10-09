@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "bayside_overdose2",
+    "category": "overdose",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2680.37, 2540.65, 79.44],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much",
+        "description": "A teenager on open ground in Bayside keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [-2680.37, 2540.65, 79.44],
+            "rot": 307,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

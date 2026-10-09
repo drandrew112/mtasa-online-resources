@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_fall6",
     "category": "fall",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2524.38, -2162.75, 13.55],

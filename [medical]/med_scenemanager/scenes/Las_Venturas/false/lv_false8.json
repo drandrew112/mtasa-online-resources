@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_false8",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1122.5, 1385.3, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Woman fainted",
+        "description": "A woman fainted next to the road in Blackfield. She is standing up again, embarrassed, and says she just got up too quickly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [1122.5, 1385.3, 10.82],
+            "rot": 164,
+            "anim": "none",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

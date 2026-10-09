@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "hampton-barns_hitbycar2",
+    "category": "hitbycar",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [620.54, 207.1, 22.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Clipped by a car mirror",
+        "description": "A man by the road next to a farm near Hampton Barns was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 534,
+            "pos": [624.42, 213.64, 22.35],
+            "rot": [0, 0, 303.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC54 290",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [620.54, 207.1, 22.7],
+            "rot": 344,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

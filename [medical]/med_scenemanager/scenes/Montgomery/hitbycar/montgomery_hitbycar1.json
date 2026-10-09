@@ -1,0 +1,54 @@
+{
+    "format": 1,
+    "name": "montgomery_hitbycar1",
+    "category": "hitbycar",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1471.38, 164.42, 28.49],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Struck by a speeding car",
+        "description": "A speeding car hit a pedestrian at the side of the road near Montgomery and crashed into a pole. The pedestrian is unconscious and bleeding heavily from his head and legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 404,
+            "pos": [1478.44, 166.58, 27.47],
+            "rot": [0, 0, 255.3],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "RC36 378",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [1471.38, 164.42, 28.49],
+            "rot": 309,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3511, "consciousness": "unconscious" }
+        }
+    ]
+}

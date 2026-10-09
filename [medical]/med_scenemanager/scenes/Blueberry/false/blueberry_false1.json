@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "blueberry_false1",
+    "category": "false",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [70, -50, 0.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Person lying on the ground",
+        "description": "A driver saw a person lying in the park just outside Blueberry and did not stop. The caller could not say if the person was moving.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": []
+}

@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose20",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1462.25, -1190.87, 21.07],

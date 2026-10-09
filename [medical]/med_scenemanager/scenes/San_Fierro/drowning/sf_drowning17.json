@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning17",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2874.25, 1149.38, 16.41],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Kayaker capsized, freezing",
+        "description": "A kayaker capsized in the cold bay and was in the water for twenty minutes. He is sitting on the waterfront promenade in Palisades, shaking hard and coughing.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 184,
+            "pos": [-2874.25, 1149.38, 16.41],
+            "rot": 126,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91, "heartRate": 59 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_drowning2",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [903.97, -369.51, 47.71],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swallowed a fish bone",
+        "description": "An old fisherman next to the country road near Dillimore has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [903.97, -369.51, 47.71],
+            "rot": 150,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 91 }
+        }
+    ]
+}

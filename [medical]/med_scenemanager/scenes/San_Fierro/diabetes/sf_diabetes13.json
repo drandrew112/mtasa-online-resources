@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes13",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2207, -945, 39.52],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Tourist lost his insulin",
+        "description": "A tourist in a small park in San Fierro lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 18,
+            "pos": [-2207, -945, 39.52],
+            "rot": 248,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "bloodVolume": 4289, "glucose": 464 }
+        }
+    ]
+}

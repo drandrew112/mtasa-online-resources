@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "blueberry_diabetes2",
+    "category": "diabetes",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [70, 90, 2.01],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers on a grassy patch just outside Blueberry report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [70, 90, 2.01],
+            "rot": 8,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3820, "glucose": 674, "consciousness": "confused" }
+        }
+    ]
+}

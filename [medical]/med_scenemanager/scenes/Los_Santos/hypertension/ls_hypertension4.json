@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypertension4",
     "category": "hypertension",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [847.125, -1762.125, 13.55],

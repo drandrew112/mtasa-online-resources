@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_diabetes25",
     "category": "diabetes",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1980, -1381.5, 23.84],
@@ -22,7 +23,13 @@
             "rot": 1,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3800, "consciousness": "dazed", "glucose": 820, "heartRate": 118, "systolic": 96 }
+            "state": {
+                "bloodVolume": 3800,
+                "glucose": 820,
+                "systolic": 96,
+                "heartRate": 118,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

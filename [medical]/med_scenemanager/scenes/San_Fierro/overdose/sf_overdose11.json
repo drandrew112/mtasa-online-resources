@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_overdose11",
+    "category": "overdose",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2154.44, 157.43, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, face down",
+        "description": "A homeless man is lying face down on the sidewalk in Garcia and is not responding. Someone found a burnt spoon and a needle in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 78,
+            "pos": [-2154.44, 157.43, 35.32],
+            "rot": 277,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 70, "consciousness": "unconscious" }
+        }
+    ]
+}

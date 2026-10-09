@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_alcoholtox-headinjury1",
     "category": "",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [2016.563, -1654.142, 13.555],

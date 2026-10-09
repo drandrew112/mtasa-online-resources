@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_stunt-accident1",
     "category": "",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1953.462, -1810.008, 13.547],

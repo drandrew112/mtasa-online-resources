@@ -2,14 +2,15 @@
     "format": 1,
     "name": "ls_shooting19",
     "category": "shooting",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [912.47, -1128.82, 23.87],
+    "center": [2424.2, -2248.03, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shot with a shotgun",
-        "description": "A man at the side of the road in Vinewood was hit by shotgun pellets in his side and arm during a fight. He is bleeding from many small wounds and is short of breath.",
+        "title": "Robbery, victim shot",
+        "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -17,15 +18,14 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 240,
-            "pos": [912.47, -1128.82, 23.87],
-            "rot": 358,
-            "anim": "hold_side",
+            "skin": 188,
+            "pos": [2424.2, -2248.03, 13.55],
+            "rot": 22,
+            "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": { "bloodVolume": 4200, "spo2": 90 }
+            "state": { "bloodVolume": 4100 }
         }
     ]
 }

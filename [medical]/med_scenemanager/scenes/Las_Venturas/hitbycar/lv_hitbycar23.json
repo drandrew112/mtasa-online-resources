@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_hitbycar23",
+    "category": "hitbycar",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2049.04, 1909.46, 13.76],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Hit by a delivery truck",
+        "description": "A truck driver did not see a woman crossing the road near the Visage. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 418,
+            "pos": [2045.02, 1914.07, 12.33],
+            "rot": [0, 0, 355.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV38 422",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [2049.04, 1909.46, 13.76],
+            "rot": 141,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3757, "consciousness": "dazed" }
+        }
+    ]
+}

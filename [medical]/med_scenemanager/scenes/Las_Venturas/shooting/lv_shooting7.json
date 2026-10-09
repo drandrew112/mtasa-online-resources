@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "lv_shooting7",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2739.84, 2454.19, 10.88],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Several shots were fired outside a wedding chapel near the Julius Thruway East. Two men are down: one is not moving, the other is rolling on the ground holding his leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 17,
+            "pos": [2739.84, 2454.19, 10.88],
+            "rot": 329,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3790 }
+        },
+        {
+            "id": "p2",
+            "skin": 176,
+            "pos": [2738.96, 2456.2, 10.98],
+            "rot": 85,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

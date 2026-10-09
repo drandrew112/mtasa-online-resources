@@ -1,0 +1,37 @@
+{
+    "format": 1,
+    "name": "fort-carson_hypertension3",
+    "category": "hypertension",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-306.92, 1258.46, 23.92],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest tightness, blurred vision",
+        "description": "A heavy-set man next to the country road near Fort Carson complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [-306.92, 1258.46, 23.92],
+            "rot": 182,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 69,
+                "spo2": 93,
+                "systolic": 223,
+                "diastolic": 140,
+                "heartRate": 110,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

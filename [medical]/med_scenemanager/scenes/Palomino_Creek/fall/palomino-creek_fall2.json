@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "palomino-creek_fall2",
+    "category": "fall",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2180, 100, 25.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a porch",
+        "description": "A man missed a step and fell off a high porch on a grassy patch in Palomino Creek. He is dazed, has a bump on his head and his arm hurts badly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 59,
+            "pos": [2180, 100, 25.91],
+            "rot": 45,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

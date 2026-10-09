@@ -2,31 +2,32 @@
     "format": 1,
     "name": "ls_motorcycle4",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1770.58, -1603.96, 13.37],
+    "center": [2524, -1899.37, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Quad bike rolled over",
-        "description": "A quad bike rolled over in Little Mexico after taking a corner too fast. The rider was thrown clear and is lying in the lane, holding his ribs and breathing shallowly.",
+        "title": "Dirt bike crash",
+        "description": "A dirt bike rider crashed outside a shop in Willowfield after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 471,
-            "pos": [1774.46, -1604.94, 12.92],
-            "rot": [0, 0, 151.8],
+            "model": 468,
+            "pos": [2525, -1897.37, 13.1],
+            "rot": [0, 0, 305],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS58 285",
+            "plate": "LS51 229",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [2, 0, 2, 3, 0, 0],
@@ -38,14 +39,15 @@
     "peds": [
         {
             "id": "p1",
-            "skin": 186,
-            "pos": [1770.58, -1603.96, 13.37],
-            "rot": 167,
-            "anim": "hold_side",
+            "skin": 28,
+            "pos": [2524, -1899.37, 13.55],
+            "rot": 97,
+            "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": { "spo2": 92 }
+            "state": { "pain": 30 }
         }
     ]
 }

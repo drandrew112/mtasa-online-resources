@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle24",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1239.43, 1525.96, 7.28],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Wheelie gone wrong",
+        "description": "A teenager tried a wheelie at the side of the road near the Julius Thruway West to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 522,
+            "pos": [1235.69, 1529.89, 7.22],
+            "rot": [0, 0, 88.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV41 400",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [1239.43, 1525.96, 7.28],
+            "rot": 72,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

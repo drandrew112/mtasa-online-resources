@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "dillimore_drowning3",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [890, -680, 120.98],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throat swelling after a bee sting",
+        "description": "A beekeeper on open ground near Dillimore was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [890, -680, 120.98],
+            "rot": 313,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 83, "systolic": 87, "heartRate": 129 }
+        }
+    ]
+}

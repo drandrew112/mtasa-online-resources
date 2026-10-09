@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_hypoglycemia9",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2836.2, 2223.13, 11.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Collapsed after basketball",
+        "description": "A student collapsed after playing basketball next to the road in Creek. His friends say he is diabetic and took extra insulin before the game.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [2836.2, 2223.13, 11.02],
+            "rot": 233,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "dazed" }
+        }
+    ]
+}

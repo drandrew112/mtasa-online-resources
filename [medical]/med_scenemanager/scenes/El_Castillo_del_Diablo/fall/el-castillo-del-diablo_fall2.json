@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_fall2",
+    "category": "fall",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-379.65, 2426.41, 41.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a water tower ladder",
+        "description": "A young man climbing an old water tower ladder by the dusty roadside in El Castillo del Diablo fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-379.65, 2426.41, 41.99],
+            "rot": 85,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

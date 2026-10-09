@@ -2,31 +2,32 @@
     "format": 1,
     "name": "ls_mci11",
     "category": "mci",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1482.01, -860.44, 58.43],
+    "center": [628.46, -1012.9, 60.91],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Work van and car, five hurt",
-        "description": "A crowded work van collided with a car in Mulholland Intersection. The van rolled onto its side. Five people are injured, two of them seriously; workers climbed out through the windows.",
+        "title": "Four-car pileup, several injured",
+        "description": "Four cars crashed into each other in Richman after one braked suddenly. One driver is trapped behind the wheel, a woman is lying in the lane and two more people are sitting by the road, dazed.",
         "caller": "SceneManager",
         "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 440,
-            "pos": [1483.05, -865.2, 58.38],
-            "rot": [0, 0, 343.2],
+            "model": 526,
+            "pos": [628.46, -1012.9, 60.66],
+            "rot": [0, 0, 318.1],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS90 222",
+            "plate": "LS51 209",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [3, 2, 4, 4, 2, 3],
@@ -37,8 +38,28 @@
         {
             "id": "v2",
             "model": 418,
-            "pos": [1489.79, -867.99, 58.38],
-            "rot": [0, 0, 269.2],
+            "pos": [631.3, -1007.33, 60.91],
+            "rot": [0, 0, 279.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS24 210",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v3",
+            "model": 526,
+            "pos": [623.07, -1015.54, 60.66],
+            "rot": [0, 0, 304.1],
             "frozen": false,
             "locked": false,
             "engine": false,
@@ -46,44 +67,67 @@
             "health": 420,
             "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS23 223",
+            "plate": "LS37 211",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [2, 0, 2, 3, 0, 0],
             "panels": [3, 2, 2, 1, 2, 3, 1],
             "lights": [1, 1, 0, 0],
             "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v4",
+            "model": 499,
+            "pos": [620.52, -1012.61, 61.21],
+            "rot": [0, 0, 300.1],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS73 212",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 50,
-            "pos": [1482.01, -860.44, 58.43],
-            "rot": 354,
-            "anim": "ko_back",
+            "skin": 47,
+            "pos": [628.46, -1012.9, 60.91],
+            "rot": 197,
+            "anim": "none",
+            "vehicle": "v1",
+            "seat": 0,
             "injuries": [
                 { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": { "bloodVolume": 3700 }
+            "state": { "bloodVolume": 4200, "consciousness": "dazed" }
         },
         {
             "id": "p2",
-            "skin": 27,
-            "pos": [1485.46, -859.88, 58.43],
-            "rot": 168,
+            "skin": 93,
+            "pos": [633.4, -1010.48, 60.91],
+            "rot": 73,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
             ],
             "state": { "consciousness": "unconscious" }
         },
         {
             "id": "p3",
-            "skin": 66,
-            "pos": [1478.56, -861, 58.43],
-            "rot": 178,
+            "skin": 97,
+            "pos": [630.08, -1016.2, 61.09],
+            "rot": 36,
             "anim": "sit",
             "injuries": [
                 { "type": "fracture", "severity": 1 }
@@ -92,22 +136,9 @@
         },
         {
             "id": "p4",
-            "skin": 91,
-            "pos": [1489.79, -867.99, 58.38],
-            "rot": 228,
-            "anim": "none",
-            "vehicle": "v2",
-            "seat": 0,
-            "injuries": [
-                { "type": "fracture", "severity": 2 }
-            ],
-            "state": {}
-        },
-        {
-            "id": "p5",
-            "skin": 227,
-            "pos": [1488.92, -859.32, 58.43],
-            "rot": 139,
+            "skin": 226,
+            "pos": [626.49, -1017.96, 61.09],
+            "rot": 95,
             "anim": "crouch",
             "injuries": [
                 { "type": "gunshot", "severity": 1 }

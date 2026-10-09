@@ -2,31 +2,52 @@
     "format": 1,
     "name": "ls_fall13",
     "category": "fall",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [694, -1902, 3.09],
+    "center": [1309.31, -2271.64, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell down the steps",
-        "description": "An elderly woman fell down a flight of stone steps at the water's edge in Verona Beach. She has a large cut on her scalp, a swollen wrist and is a bit slow to answer.",
+        "title": "Cyclist went over the handlebars",
+        "description": "A cyclist went over the handlebars at a bus stop at Los Santos International after hitting a pothole. His collarbone is deformed and his helmet is cracked. He is talking but cannot remember the fall.",
         "caller": "SceneManager",
         "priority": 2
     },
-    "vehicles": [],
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 481,
+            "pos": [1311.69, -2270.87, 13.1],
+            "rot": [0, 0, 189],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS14 233",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
     "peds": [
         {
             "id": "p1",
-            "skin": 31,
-            "pos": [694, -1902, 3.09],
-            "rot": 251,
-            "anim": "ko_back",
+            "skin": 15,
+            "pos": [1309.31, -2271.64, 13.55],
+            "rot": 3,
+            "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 1 },
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {}
+            "state": { "consciousness": "confused" }
         }
     ]
 }

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-454.59, 2271.56, 49.55],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly man unresponsive",
+        "description": "An elderly man is lying at the side of the road in El Castillo del Diablo and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\".",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-454.59, 2271.56, 49.55],
+            "rot": 284,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 25, "consciousness": "unconscious" }
+        }
+    ]
+}

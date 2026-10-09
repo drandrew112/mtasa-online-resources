@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes5",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2888.75, 1069.4, 31.36],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Homeless man, very weak",
+        "description": "Outreach workers at a bus stop in Palisades report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 213,
+            "pos": [-2888.75, 1069.4, 31.36],
+            "rot": 297,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 4012, "glucose": 638, "consciousness": "confused" }
+        }
+    ]
+}

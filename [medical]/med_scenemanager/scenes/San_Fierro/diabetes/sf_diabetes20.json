@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes20",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2095.86, 215.55, 35.23],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Insulin pump failed",
+        "description": "A woman by the roadside in Doherty says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2095.86, 215.55, 35.23],
+            "rot": 151,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 404 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "el-quebrados_shooting1",
+    "category": "shooting",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1440, 2610, 55.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shotgun wound to the side",
+        "description": "A man was hit by a shotgun blast on a paved lot in El Quebrados. He is holding his side, breathing fast and his shirt is soaked with blood.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 160,
+            "pos": [-1440, 2610, 55.84],
+            "rot": 128,
+            "anim": "hold_side",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4201, "spo2": 90 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "palomino-creek_deadbody1",
+    "category": "deadbody",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2439.25, 58.7, 27.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Found by a rancher",
+        "description": "A rancher checking his fences found a man lying on a grassy patch in Palomino Creek. He has a head wound and has been there for hours. The guard did not touch him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [2439.25, 58.7, 27.56],
+            "rot": 8,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

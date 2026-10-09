@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "las-barrancas_stroke2",
+    "category": "stroke",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-960, 1450, 33.99],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Talking nonsense",
+        "description": "Passers-by on open scrubland near Las Barrancas called because a man outside the general store is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [-960, 1450, 33.99],
+            "rot": 165,
+            "anim": "none",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "fort-carson_fall2",
+    "category": "fall",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-334.86, 1141.27, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell off a roof",
+        "description": "A man fixing his roof fell off and landed on his feet on the main street in Fort Carson. He is screaming in pain and both ankles are swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [-334.86, 1141.27, 19.74],
+            "rot": 332,
+            "anim": "injured",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

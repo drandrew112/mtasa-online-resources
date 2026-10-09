@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_hypoglycemia8",
     "category": "hypoglycemia",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [928, -1860.92, 9.97],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "postictal", "severity": 1 }
             ],
-            "state": { "consciousness": "confused", "glucose": 30 }
+            "state": { "glucose": 30, "consciousness": "confused" }
         }
     ]
 }

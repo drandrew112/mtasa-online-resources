@@ -2,6 +2,7 @@
     "format": 1,
     "name": "bayside_heartattack2",
     "category": "heartattack",
+    "location": "Bayside",
     "enabled": true,
     "weight": 1,
     "center": [-2604.467, 2380.143, 9.714],

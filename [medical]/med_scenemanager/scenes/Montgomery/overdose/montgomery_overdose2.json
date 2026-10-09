@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "montgomery_overdose2",
+    "category": "overdose",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1145.07, 286.07, 20.3],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Teen drank too much",
+        "description": "A teenager on the road shoulder in Montgomery keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [1145.07, 286.07, 20.3],
+            "rot": 227,
+            "anim": "vomit",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

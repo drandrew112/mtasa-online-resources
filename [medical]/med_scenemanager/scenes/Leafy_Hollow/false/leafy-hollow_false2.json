@@ -1,0 +1,19 @@
+{
+    "format": 1,
+    "name": "leafy-hollow_false2",
+    "category": "false",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-840, -1760, 84.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Screaming for help",
+        "description": "Someone is screaming for help at the edge of the woods in Leafy Hollow. The caller hung up before giving any more details.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": []
+}

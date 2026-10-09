@@ -2,6 +2,7 @@
     "format": 1,
     "name": "regular-tom_heartattack3",
     "category": "heartattack",
+    "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
     "center": [-381.812, 1865.423, 53.853],

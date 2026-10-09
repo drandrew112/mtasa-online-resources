@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_breathing13",
     "category": "breathing",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [1687.63, -2326.75, -2.68],
@@ -9,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Runner wheezing after race",
-        "description": "A runner on the sidewalk at Los Santos International finished a charity run and now cannot stop wheezing. She had asthma as a child but no inhaler today.",
+        "description": "A runner at Los Santos International finished a charity run and now cannot stop wheezing. She had asthma as a child but no inhaler today.",
         "caller": "SceneManager",
         "priority": 2
     },

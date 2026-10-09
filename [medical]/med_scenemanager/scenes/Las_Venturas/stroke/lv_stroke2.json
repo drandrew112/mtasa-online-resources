@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke2",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1433, 2624, 11.2],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot lift her arm",
+        "description": "An elderly woman on the platform at Yellow Bell Station dropped her handbag and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 197,
+            "pos": [1433, 2624, 11.2],
+            "rot": 109,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 175, "consciousness": "confused" }
+        }
+    ]
+}

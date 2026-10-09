@@ -2,52 +2,53 @@
     "format": 1,
     "name": "ls_hitbycar21",
     "category": "hitbycar",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1918.11, -1366.75, 13.67],
+    "center": [1992.16, -1029.59, 34.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit by a reversing car",
-        "description": "A reversing car knocked down an elderly woman in Glen Park. She fell and hit her head, has a cut above the eye and her wrist is swollen. She is talking.",
+        "title": "Drunk man walked into traffic",
+        "description": "A drunk man staggered into the road in Glen Park and was hit by a taxi. He is lying in the lane, groaning, with a bleeding head wound. Smells strongly of alcohol.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 404,
-            "pos": [1914.46, -1368.55, 13.25],
-            "rot": [0, 0, 63.7],
+            "model": 420,
+            "pos": [1986.16, -1029.41, 34.57],
+            "rot": [0, 0, 262.2],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 1000,
+            "health": 750,
             "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS80 280",
+            "plate": "LS42 228",
             "variant": [255, 255],
             "upgrades": [],
             "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
             "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 53,
-            "pos": [1918.11, -1366.75, 13.67],
-            "rot": 176,
-            "anim": "sit",
+            "skin": 67,
+            "pos": [1992.16, -1029.59, 34.82],
+            "rot": 160,
+            "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 1 },
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
             ],
-            "state": {}
+            "state": { "consciousness": "confused" }
         }
     ]
 }

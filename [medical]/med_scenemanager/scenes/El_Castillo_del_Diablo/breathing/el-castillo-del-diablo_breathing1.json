@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_breathing1",
+    "category": "breathing",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-389.29, 2618.79, 43.61],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cannot finish a sentence",
+        "description": "A man next to the country road near El Castillo del Diablo cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-389.29, 2618.79, 43.61],
+            "rot": 275,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 85, "heartRate": 135 }
+        }
+    ]
+}

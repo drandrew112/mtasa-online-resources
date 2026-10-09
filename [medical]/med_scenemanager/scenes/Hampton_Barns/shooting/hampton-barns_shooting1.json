@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "hampton-barns_shooting1",
+    "category": "shooting",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [764.7, 297.92, 21.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drive-by, leg wound",
+        "description": "Someone fired from a passing pickup at the side of the road near Hampton Barns. A young man was hit in the thigh and is bleeding heavily into his jeans.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 105,
+            "pos": [764.7, 297.92, 21.18],
+            "rot": 260,
+            "anim": "sit",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4120, "pain": 45 }
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_drowning3",
+    "category": "drowning",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-54.49, 866.19, 17.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Child pulled from a backyard pool",
+        "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him by the dusty roadside in Fort Carson to meet the ambulance. He is breathing weakly and very pale.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [-54.49, 866.19, 17.97],
+            "rot": 238,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 76, "consciousness": "unconscious" }
+        }
+    ]
+}

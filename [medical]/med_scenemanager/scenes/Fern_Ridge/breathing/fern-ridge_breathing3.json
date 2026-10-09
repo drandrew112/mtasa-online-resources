@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fern-ridge_breathing3",
+    "category": "breathing",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [483.75, -133.07, 31.59],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cyclist wheezing in the heat",
+        "description": "A cyclist stopped on the road shoulder near Fern Ridge after riding through the dusty country roads and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [483.75, -133.07, 31.59],
+            "rot": 210,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 93 }
+        }
+    ]
+}

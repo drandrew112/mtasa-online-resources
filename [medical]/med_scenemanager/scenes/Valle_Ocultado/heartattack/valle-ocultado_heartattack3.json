@@ -2,6 +2,7 @@
     "format": 1,
     "name": "valle-ocultado_heartattack3",
     "category": "heartattack",
+    "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
     "center": [-725.664, 2689.964, 52.774],

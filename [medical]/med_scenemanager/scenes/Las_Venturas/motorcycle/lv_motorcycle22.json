@@ -1,0 +1,53 @@
+{
+    "format": 1,
+    "name": "lv_motorcycle22",
+    "category": "motorcycle",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1929.75, 2113.13, 11.02],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Pizza scooter crash",
+        "description": "A pizza delivery rider skidded on sand blown across the road at a junction in Redsands East. His knee is swollen and bleeding, and the pizzas are all over the road.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 448,
+            "pos": [1927.25, 2115.63, 10.47],
+            "rot": [0, 0, 113.9],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LV16 397",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [1929.75, 2113.13, 11.02],
+            "rot": 86,
+            "anim": "sit",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

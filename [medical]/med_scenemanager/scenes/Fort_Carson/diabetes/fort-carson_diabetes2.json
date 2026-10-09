@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "fort-carson_diabetes2",
+    "category": "diabetes",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-337.79, 1106.44, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Student, fruity breath",
+        "description": "A student on the sidewalk in Fort Carson has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [-337.79, 1106.44, 19.74],
+            "rot": 137,
+            "anim": "tired",
+            "injuries": [],
+            "state": { "glucose": 511, "heartRate": 113 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes4",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1874.5, 1143.3, 45.45],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A woman at a bus stop in Downtown called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [-1874.5, 1143.3, 45.45],
+            "rot": 98,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4295, "glucose": 634 }
+        }
+    ]
+}

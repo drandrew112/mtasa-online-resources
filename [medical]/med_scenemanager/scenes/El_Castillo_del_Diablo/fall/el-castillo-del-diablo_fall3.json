@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "el-castillo-del-diablo_fall3",
+    "category": "fall",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [-74.26, 2330.4, 21.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a ladder picking fruit",
+        "description": "A woman picking fruit fell from her ladder at the side of the road in El Castillo del Diablo. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 215,
+            "pos": [-74.26, 2330.4, 21.62],
+            "rot": 332,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 45 }
+        }
+    ]
+}

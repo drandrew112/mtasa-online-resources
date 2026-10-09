@@ -1,0 +1,37 @@
+{
+    "format": 1,
+    "name": "montgomery_hypertension2",
+    "category": "hypertension",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1297.83, 329.53, 19.56],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Chest tightness, blurred vision",
+        "description": "A heavy-set man on the main street in Montgomery complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 217,
+            "pos": [1297.83, 329.53, 19.56],
+            "rot": 118,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "pain": 66,
+                "spo2": 95,
+                "systolic": 227,
+                "diastolic": 139,
+                "heartRate": 116,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

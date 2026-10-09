@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning22",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2505.12, 1387.25, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Cramp in the water",
+        "description": "A swimmer got a cramp and swallowed water before she was helped out. She is sitting on the sidewalk by the waterfront in Esplanade North, anxious, coughing a little and breathing fast.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [-2505.12, 1387.25, 7.19],
+            "rot": 198,
+            "anim": "sit",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 94, "heartRate": 108 }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [255.64, 2735.1, 60.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Diabetic not waking up",
+        "description": "A man next to the country road near Verdant Meadows cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 223,
+            "pos": [255.64, 2735.1, 60.84],
+            "rot": 307,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "glucose": 21, "heartRate": 110, "consciousness": "unconscious" }
+        }
+    ]
+}

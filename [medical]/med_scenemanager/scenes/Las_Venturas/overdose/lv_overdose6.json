@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose6",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1215.54, 1193.8, 6.8],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Unresponsive, face down",
+        "description": "A homeless man is lying face down by the roadside near the Julius Thruway West and is not responding. Someone found a burnt spoon and a needle in his hand.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 134,
+            "pos": [1215.54, 1193.8, 6.8],
+            "rot": 267,
+            "anim": "ko_front",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 69, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "dillimore_diabetes3",
+    "category": "diabetes",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [704.75, -607.5, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Elderly woman hard to wake",
+        "description": "Her daughter found an elderly woman sitting outside a small store in Dillimore, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [704.75, -607.5, 16.34],
+            "rot": 23,
+            "anim": "ko_back",
+            "injuries": [],
+            "state": { "bloodVolume": 3866, "glucose": 728 }
+        }
+    ]
+}

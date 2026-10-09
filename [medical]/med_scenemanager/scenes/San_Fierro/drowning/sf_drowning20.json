@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_drowning20",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2359.75, 1354.08, 8.91],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Swimmer pulled out, not breathing",
+        "description": "A swimmer was pulled out of the bay and is lying on the waterfront promenade in Esplanade North. He is not breathing and has no pulse. A bystander has started CPR.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [-2359.75, 1354.08, 8.91],
+            "rot": 78,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 40, "rhythm": "PEA" }
+        }
+    ]
+}

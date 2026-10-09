@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "fort-carson_breathing1",
+    "category": "breathing",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-183.5, 1175.65, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Mild asthma after running",
+        "description": "A girl on the sidewalk in Fort Carson has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little.",
+        "caller": "SceneManager",
+        "priority": 3
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 193,
+            "pos": [-183.5, 1175.65, 19.74],
+            "rot": 56,
+            "anim": "tired",
+            "injuries": [
+                { "type": "asthma", "severity": 1 }
+            ],
+            "state": { "spo2": 93 }
+        }
+    ]
+}

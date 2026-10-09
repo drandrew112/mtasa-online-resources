@@ -2,29 +2,30 @@
     "format": 1,
     "name": "ls_drowning9",
     "category": "drowning",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1194, -2382, 11.98],
+    "center": [134, -1762, 5.19],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unconscious after near drowning",
-        "description": "Fishermen dragged an unconscious woman out of the lake and brought her onto the bank in Verdant Bluffs. She is breathing, gurgling, and does not respond. Her lips are blue.",
+        "title": "Swimmer swallowed water",
+        "description": "A swimmer got into trouble in the sea and was helped out and brought onto the beach at Santa Maria Beach. He is coughing hard, breathless and says his chest hurts.",
         "caller": "SceneManager",
-        "priority": 1
+        "priority": 2
     },
     "vehicles": [],
     "peds": [
         {
             "id": "p1",
-            "skin": 40,
-            "pos": [1194, -2382, 11.98],
-            "rot": 354,
-            "anim": "ko_back",
+            "skin": 45,
+            "pos": [134, -1762, 5.19],
+            "rot": 72,
+            "anim": "sit",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": { "consciousness": "unconscious", "spo2": 72 }
+            "state": { "spo2": 90 }
         }
     ]
 }

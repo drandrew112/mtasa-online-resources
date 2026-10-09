@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "lv_drowning2",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1779, 2806, 10.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Drunk man fell into the water",
+        "description": "A drunk man climbed the railing for a photo and fell into the water. Friends pulled him out and he is now by the water in Prickle Pine, coughing up water.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [1779, 2806, 10.84],
+            "rot": 160,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

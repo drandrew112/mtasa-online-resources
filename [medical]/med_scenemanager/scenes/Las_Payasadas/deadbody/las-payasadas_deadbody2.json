@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-payasadas_deadbody2",
+    "category": "deadbody",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-224.98, 2812.88, 62.34],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body found by a hunter",
+        "description": "A hunter found a man lying face down on the dusty ground in Las Payasadas. He has clearly been dead for some time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-224.98, 2812.88, 62.34],
+            "rot": 314,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

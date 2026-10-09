@@ -1,0 +1,73 @@
+{
+    "format": 1,
+    "name": "regular-tom_motorcycle2",
+    "category": "motorcycle",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-354.78, 1742.3, 42.97],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Thrown off at a junction",
+        "description": "A woman riding a motorcycle was hit from the side next to the country road in Regular Tom. She was thrown off, is drowsy and her thigh is swollen and deformed.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 471,
+            "pos": [-358.29, 1738.45, 42.34],
+            "rot": [0, 0, 188.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC37 399",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 422,
+            "pos": [-349.84, 1738.34, 42.54],
+            "rot": [0, 0, 87],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 750,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "BC72 400",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [-354.78, 1742.3, 42.97],
+            "rot": 194,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

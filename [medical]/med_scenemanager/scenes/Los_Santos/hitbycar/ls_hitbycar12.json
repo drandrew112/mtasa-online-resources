@@ -2,52 +2,52 @@
     "format": 1,
     "name": "ls_hitbycar12",
     "category": "hitbycar",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2578.63, -2496.81, 13.38],
+    "center": [970.81, -1482.5, 13.54],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Struck by a speeding car",
-        "description": "A speeding car hit a man crossing the main road in Ocean Docks. He was thrown about ten metres and is lying in the lane, barely responsive. The car stopped further on, windscreen smashed.",
+        "title": "Teenager ran out between cars",
+        "description": "A teenager chasing a ball ran out between parked cars in Market and was hit at low speed. The teenager is crying, his arm hurts and he has a bump on the head. The shaken driver is with him.",
         "caller": "SceneManager",
-        "priority": 1
+        "priority": 2
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 561,
-            "pos": [2590.24, -2500.99, 13.13],
-            "rot": [0, 0, 95],
+            "model": 467,
+            "pos": [972.77, -1487.02, 13.13],
+            "rot": [0, 0, 84.5],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "health": 1000,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS34 269",
+            "plate": "LS29 226",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
             "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 259,
-            "pos": [2578.63, -2496.81, 13.38],
-            "rot": 113,
-            "anim": "ko_back",
+            "skin": 154,
+            "pos": [970.81, -1482.5, 13.54],
+            "rot": 158,
+            "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                { "type": "fracture", "severity": 1 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": { "bloodVolume": 3600, "consciousness": "unconscious" }
+            "state": {}
         }
     ]
 }

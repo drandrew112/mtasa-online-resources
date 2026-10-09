@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_drowning7",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2079, 1686, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Throat swelling after a sting",
+        "description": "A man on a bench on The Strip was stung by a wasp and his tongue and throat are swelling fast. He is wheezing and says he is allergic.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [2079, 1686, 10.82],
+            "rot": 91,
+            "anim": "tired",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 82, "systolic": 90, "heartRate": 130 }
+        }
+    ]
+}

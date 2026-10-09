@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_false4",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1499, 886, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Man asleep on the ground",
+        "description": "A passer-by reports a man who collapsed on the sand near the LVA Freight Depot. He is sitting up now, says he was only sleeping and refuses help.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [1499, 886, 10.82],
+            "rot": 228,
+            "anim": "sit",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

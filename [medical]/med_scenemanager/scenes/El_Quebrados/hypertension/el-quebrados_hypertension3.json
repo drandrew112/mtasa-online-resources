@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "el-quebrados_hypertension3",
+    "category": "hypertension",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1294.25, 2470, 87.3],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Anxious, racing heart",
+        "description": "A woman on open scrubland near El Quebrados is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-1294.25, 2470, 87.3],
+            "rot": 197,
+            "anim": "crouch",
+            "injuries": [],
+            "state": {
+                "systolic": 181,
+                "diastolic": 111,
+                "heartRate": 116,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

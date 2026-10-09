@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_stroke4",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1793.3, 1893.03, 6.62],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Slumped over, drooling",
+        "description": "A man is slumped over next to the road at Las Venturas Airport, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [1793.3, 1893.03, 6.62],
+            "rot": 98,
+            "anim": "sit",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 201, "diastolic": 111, "consciousness": "dazed" }
+        }
+    ]
+}

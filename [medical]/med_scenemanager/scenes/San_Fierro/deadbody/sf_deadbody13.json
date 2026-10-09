@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "sf_deadbody13",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1319.06, -524.56, 14.15],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Overdose, found too late",
+        "description": "Friends found a young woman by the roadside in Easter Bay Airport after she did not come home. She is cold and stiff, a syringe is beside her.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [-1319.06, -524.56, 14.15],
+            "rot": 32,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

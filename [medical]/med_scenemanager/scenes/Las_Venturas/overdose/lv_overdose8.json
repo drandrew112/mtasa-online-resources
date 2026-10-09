@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose8",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2577.25, 766.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Needle still in his arm",
+        "description": "A man is lying on the sidewalk in Rockshore East with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 171,
+            "pos": [2577.25, 766.13, 10.82],
+            "rot": 9,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "spo2": 86, "consciousness": "dazed" }
+        }
+    ]
+}

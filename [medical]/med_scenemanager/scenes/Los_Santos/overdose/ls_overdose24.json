@@ -2,6 +2,7 @@
     "format": 1,
     "name": "ls_overdose24",
     "category": "overdose",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
     "center": [445.67, -1763.97, 5.8],
@@ -24,7 +25,7 @@
             "injuries": [
                 { "type": "opioid", "severity": 2 }
             ],
-            "state": { "consciousness": "unconscious", "spo2": 80 }
+            "state": { "spo2": 80, "consciousness": "unconscious" }
         }
     ]
 }

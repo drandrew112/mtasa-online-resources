@@ -1,0 +1,33 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_fall2",
+    "category": "fall",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [370.96, 2326.71, 25.46],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Fell from a hay loft",
+        "description": "A man fell from a hay loft on the road shoulder near Verdant Meadows. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [370.96, 2326.71, 25.46],
+            "rot": 62,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3912, "consciousness": "unconscious" }
+        }
+    ]
+}

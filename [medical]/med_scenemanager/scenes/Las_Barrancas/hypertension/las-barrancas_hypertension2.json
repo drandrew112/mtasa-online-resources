@@ -1,0 +1,35 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hypertension2",
+    "category": "hypertension",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-740, 1570, 26.96],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Nosebleed, high BP",
+        "description": "A woman on the dusty ground in Las Barrancas has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 85,
+            "pos": [-740, 1570, 26.96],
+            "rot": 36,
+            "anim": "sit",
+            "injuries": [],
+            "state": {
+                "pain": 31,
+                "systolic": 202,
+                "diastolic": 121,
+                "heartRate": 104,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

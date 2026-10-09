@@ -1,0 +1,42 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_shooting2",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [320.19, 2716.21, 60.84],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Shots fired, two down",
+        "description": "Several shots were fired by the dusty roadside near Verdant Meadows. Two men are down: one is not moving, the other is rolling on the ground holding his leg.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [320.19, 2716.21, 60.84],
+            "rot": 353,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3734 }
+        },
+        {
+            "id": "p2",
+            "skin": 105,
+            "pos": [318.08, 2716.82, 60.94],
+            "rot": 248,
+            "anim": "injured",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

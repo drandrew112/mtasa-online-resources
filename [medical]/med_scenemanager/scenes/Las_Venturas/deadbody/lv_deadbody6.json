@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "lv_deadbody6",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1839, 1766, 9.7],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body in the bushes",
+        "description": "A dog walker found a person lying in the bushes on the grass near the Visage. The body is cold and there are flies around it.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [1839, 1766, 9.7],
+            "rot": 211,
+            "anim": "ko_front",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

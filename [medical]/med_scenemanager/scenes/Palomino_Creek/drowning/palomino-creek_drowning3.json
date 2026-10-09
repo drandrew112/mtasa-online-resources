@@ -1,0 +1,32 @@
+{
+    "format": 1,
+    "name": "palomino-creek_drowning3",
+    "category": "drowning",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [2307.17, 293.44, 28.1],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Farmer pulled from a stock tank",
+        "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him next to the country road near Palomino Creek. He is coughing up water and confused.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [2307.17, 293.44, 28.1],
+            "rot": 140,
+            "anim": "cough",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "spo2": 84, "consciousness": "confused" }
+        }
+    ]
+}

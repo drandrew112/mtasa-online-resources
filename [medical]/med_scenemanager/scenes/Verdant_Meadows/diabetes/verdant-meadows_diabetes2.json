@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "verdant-meadows_diabetes2",
+    "category": "diabetes",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [487.53, 2421.5, 29.18],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Glucose meter just says HIGH",
+        "description": "A woman by the dusty roadside near Verdant Meadows called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [487.53, 2421.5, 29.18],
+            "rot": 252,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "bloodVolume": 4398, "glucose": 642 }
+        }
+    ]
+}

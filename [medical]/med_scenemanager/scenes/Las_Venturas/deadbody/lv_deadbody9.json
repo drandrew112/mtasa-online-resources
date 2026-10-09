@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_deadbody9",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2539, 1586, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Body floating in the water",
+        "description": "Early morning cleaners found a body floating at the water's edge in Pilgrim. The person has clearly been in the water for some time.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 250,
+            "pos": [2539, 1586, 10.82],
+            "rot": 85,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

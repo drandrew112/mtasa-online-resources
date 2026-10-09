@@ -2,50 +2,72 @@
     "format": 1,
     "name": "ls_motorcycle23",
     "category": "motorcycle",
+    "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [368.03, -1802.13, 8],
+    "center": [1365.37, -1184.6, 22.78],
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Quad bike rolled over",
-        "description": "A quad bike rolled over in Santa Maria Beach after taking a corner too fast. The rider was thrown clear and is lying in the lane, holding his ribs and breathing shallowly.",
+        "title": "Motorcycle went under a truck",
+        "description": "A truck changing lanes hit a motorcycle in Market. The rider is lying in the road with a crushed leg bleeding heavily. A bystander has put a belt around the thigh.",
         "caller": "SceneManager",
-        "priority": 2
+        "priority": 1
     },
     "vehicles": [
         {
             "id": "v1",
-            "model": 471,
-            "pos": [368.01, -1798.13, 7.55],
-            "rot": [0, 0, 240.3],
+            "model": 414,
+            "pos": [1361.14, -1176.63, 23.08],
+            "rot": [0, 0, 183.2],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
-            "health": 420,
+            "health": 1000,
             "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
-            "plate": "LS27 310",
+            "plate": "LS98 231",
             "variant": [255, 255],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
             "wheels": [0, 0, 0, 0]
+        },
+        {
+            "id": "v2",
+            "model": 522,
+            "pos": [1365.36, -1180.6, 22.33],
+            "rot": [0, 0, 261.2],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 300,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS80 232",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
-            "skin": 28,
-            "pos": [368.03, -1802.13, 8],
-            "rot": 255,
-            "anim": "hold_side",
+            "skin": 248,
+            "pos": [1365.37, -1184.6, 22.78],
+            "rot": 58,
+            "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": { "spo2": 92 }
+            "state": { "bloodVolume": 3400, "bleeding": 2, "consciousness": "dazed" }
         }
     ]
 }

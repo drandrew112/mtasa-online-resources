@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "sf_diabetes11",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2267.5, -19.98, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Very thirsty and confused",
+        "description": "A bike messenger on the sidewalk in Garcia keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-2267.5, -19.98, 35.32],
+            "rot": 296,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 530, "consciousness": "confused" }
+        }
+    ]
+}

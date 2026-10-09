@@ -1,0 +1,31 @@
+{
+    "format": 1,
+    "name": "lv_overdose23",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2179, 1326, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Barely breathing, blue lips",
+        "description": "A man is lying in a parking lot near the Camel's Toe with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived.",
+        "caller": "SceneManager",
+        "priority": 1
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 228,
+            "pos": [2179, 1326, 10.82],
+            "rot": 159,
+            "anim": "ko_back",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 74, "consciousness": "unconscious" }
+        }
+    ]
+}

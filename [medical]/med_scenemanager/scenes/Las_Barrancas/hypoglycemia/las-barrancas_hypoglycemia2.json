@@ -1,0 +1,29 @@
+{
+    "format": 1,
+    "name": "las-barrancas_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-793.07, 1415.92, 13.74],
+    "interior": 0,
+    "dimension": 0,
+    "erm": {
+        "title": "Grandmother slurring her words",
+        "description": "A grandmother on the road shoulder in Las Barrancas is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "caller": "SceneManager",
+        "priority": 2
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [-793.07, 1415.92, 13.74],
+            "rot": 156,
+            "anim": "sit",
+            "injuries": [],
+            "state": { "glucose": 33, "consciousness": "confused" }
+        }
+    ]
+}
