@@ -7,6 +7,7 @@
     <script src="mode_dm/server.lua" type="server" />
     <script src="core/games.lua" type="server" />
     <script src="core/community.lua" type="server" />
+    <script src="core/official.lua" type="server" />
     <script src="core/server.lua" type="server" />
 
     <script src="core/client/ui.lua" type="client" />
@@ -26,6 +27,12 @@
     <export function="jobmanagerCommunityDelete" type="server" />
     <export function="jobmanagerCommunityImage" type="server" />
     <export function="jobmanagerValidateGame" type="server" />
+    <!-- official games (admin editing in v_jobcreator); see core/official.lua -->
+    <export function="jobmanagerOfficialList" type="server" />
+    <export function="jobmanagerOfficialLoad" type="server" />
+    <export function="jobmanagerOfficialSave" type="server" />
+    <export function="jobmanagerOfficialPublish" type="server" />
+    <export function="jobmanagerOfficialImage" type="server" />
     <export function="jobmanagerRequestJobs" type="client" />
     <export function="jobmanagerGetJobs" type="client" />
     <export function="jobmanagerRequestLobbies" type="client" />

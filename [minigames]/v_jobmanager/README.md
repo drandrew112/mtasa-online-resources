@@ -55,3 +55,25 @@ deathmatch: { weapon, ammo, armour?, spawnpoints:[[x,y,z,rot]] }
 `createdBy` is required (existing games: `DrAndrew112`) and is shown in the lobby.
 Spawnpoints need at least `maxPlayers` entries. Loading lives in `core/games.lua`;
 each mode validates its own block via `JobModes[type].validate`.
+
+## Community games (`games/community/`, made in v_jobcreator)
+
+`core/community.lua` stores them and exposes server exports for the creator:
+- `jobmanagerCommunityList`, `jobmanagerCommunityLoad`, `jobmanagerCommunitySave`
+- `jobmanagerCommunityPublish`, `jobmanagerCommunityUnpublish`, `jobmanagerCommunityDelete`
+- `jobmanagerCommunityImage`, `jobmanagerValidateGame`
+
+Layout:
+- `index.json` lists every community game (owner, published, pending, imageVersion).
+- `private/<id>.json` is the saved working copy. It is never loaded.
+- `<id>.json` is the live copy. It is loaded at start and written on publish.
+- `img/<id>.jpg` is the thumbnail.
+
+Publishing registers the game live through `registerJob` and creates its world
+marker. Running lobbies keep the old version. Community games may have at most
+300 objects. See `v_jobcreator/README.md`.
+
+Official games can be edited by admins in the creator through `core/official.lua`:
+- exports: `jobmanagerOfficialList`, `jobmanagerOfficialLoad`, `jobmanagerOfficialSave`, `jobmanagerOfficialPublish`, `jobmanagerOfficialImage`;
+- Save writes a draft to `games/drafts/<id>.json`, and Publish overwrites `games/<id>.json` and re-registers the game.
+

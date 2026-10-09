@@ -23,12 +23,19 @@ function isCreatorAdmin(player)
     return (tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0) >= CREATOR.ADMIN_LEVEL
 end
 
+-- official games (games/<id>.json) are admin-only
 local function canEdit(player, entry)
-    return entry and (entry.owner == accountName(player) or isCreatorAdmin(player))
+    if not entry then return false end
+    if entry.official then return isCreatorAdmin(player) end
+    return entry.owner == accountName(player) or isCreatorAdmin(player)
 end
 
+-- community index entry, or an official game's entry (official = true)
 local function findEntry(id)
     for _, entry in ipairs(jm:jobmanagerCommunityList() or {}) do
+        if entry.id == id then return entry end
+    end
+    for _, entry in ipairs(jm:jobmanagerOfficialList() or {}) do
         if entry.id == id then return entry end
     end
 end
@@ -110,7 +117,8 @@ local function unlock(player, session)
     if session.gameId and locks[session.gameId] == player then locks[session.gameId] = nil end
 end
 
-local function closeCreator(player, quiet)
+-- quiet: the player quit (nothing to restore); immediate: restore now (resource stop kills timers)
+local function closeCreator(player, quiet, immediate)
     local session = sessions[player]
     if not session then return false end
     stopTest(player, session, true)
@@ -119,8 +127,12 @@ local function closeCreator(player, quiet)
     sessions[player] = nil
     setElementData(player, "jobCreator", false)
     if not quiet then
-        restore(player, session.back)
+        -- the client stops its freecam first, otherwise it would move the player back
         triggerClientEvent(player, "jobcreator:closed", resourceRoot)
+        if immediate then restore(player, session.back) return true end
+        setTimer(function()
+            if isElement(player) and not sessions[player] then restore(player, session.back) end
+        end, 300, 1)
     end
     return true
 end
@@ -131,6 +143,11 @@ local function openCreator(player, gameId)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
     if sessions[player] then return false end
     if getElementData(player, "isLogged") ~= true or not accountName(player) then return false end
+    local jmRes = getResourceFromName("v_jobmanager")
+    if not jmRes or getResourceState(jmRes) ~= "running" then
+        notify(player, "Job Creator", "The job manager is not running.")
+        return false
+    end
     if jm:jobmanagerGetState(player) then
         notify(player, "Job Creator", "Leave your lobby or match first.")
         return false
@@ -154,6 +171,7 @@ local function openCreator(player, gameId)
 
     triggerClientEvent(player, "jobcreator:opened", resourceRoot, {
         admin = isCreatorAdmin(player), account = accountName(player), vehicleNames = vehicleNames(),
+        dimension = session.dimension,
     })
     if gameId then loadGame(player, session, gameId) end
     return true
@@ -175,11 +193,12 @@ end
 local function sendGame(player, session, game, entry)
     triggerClientEvent(player, "jobcreator:loaded", resourceRoot, game, {
         id = session.gameId, published = entry and entry.published or false, pending = entry and entry.pending or false,
-        owner = entry and entry.owner or accountName(player),
+        owner = entry and entry.owner or accountName(player), official = entry and entry.official or false,
     })
     -- the saved thumbnail, for the editor's preview
     if session.gameId and entry and (entry.imageVersion or 0) > 0 then
-        local bytes = jm:jobmanagerCommunityImage(session.gameId)
+        local bytes
+        if entry.official then bytes = jm:jobmanagerOfficialImage(session.gameId) else bytes = jm:jobmanagerCommunityImage(session.gameId) end
         if bytes then triggerLatentClientEvent(player, "jobcreator:thumbnailData", 200000, false, resourceRoot, bytes) end
     end
 end
@@ -192,11 +211,12 @@ function loadGame(player, session, id)
         notify(player, "Job Creator", getPlayerName(locks[id]) .. " is editing this game right now.")
         return false
     end
-    local game = jm:jobmanagerCommunityLoad(id)
+    local game
+    if entry.official then game = jm:jobmanagerOfficialLoad(id) else game = jm:jobmanagerCommunityLoad(id) end
     if type(game) ~= "table" then notify(player, "Job Creator", "This game could not be loaded.") return false end
     unlock(player, session)
     locks[id] = player
-    session.gameId, session.type, session.image = id, game.type, nil
+    session.gameId, session.type, session.image, session.official = id, game.type, nil, entry.official == true
     session.storedMarker = game.marker
     sendGame(player, session, game, entry)
     return true
@@ -207,8 +227,18 @@ addEventHandler("jobcreator:new", resourceRoot, function(gameType)
     local session = sessions[client]
     if not session or (gameType ~= "race" and gameType ~= "deathmatch") then return end
     unlock(client, session)
-    session.gameId, session.type, session.image, session.storedMarker = nil, gameType, nil, nil
+    session.gameId, session.type, session.image, session.storedMarker, session.official = nil, gameType, nil, nil, nil
     sendGame(client, session, defaultGame(gameType), nil)
+end)
+
+-- back to the start menu: the game is free for others again
+addEvent("jobcreator:closeGame", true)
+addEventHandler("jobcreator:closeGame", resourceRoot, function()
+    local session = sessions[client]
+    if not session then return end
+    stopTest(client, session, true)
+    unlock(client, session)
+    session.gameId, session.type, session.image, session.storedMarker, session.official = nil, nil, nil, nil, nil
 end)
 
 addEvent("jobcreator:load", true)
@@ -217,10 +247,15 @@ addEventHandler("jobcreator:load", resourceRoot, function(id)
     if session and type(id) == "string" then loadGame(client, session, id) end
 end)
 
--- "mine" = own games, "all" = every community game (admin)
+-- "mine" = own games, "all" = every community game (admin), "official" = games/*.json (admin)
 addEvent("jobcreator:requestList", true)
 addEventHandler("jobcreator:requestList", resourceRoot, function(scope)
     if not sessions[client] then return end
+    if scope == "official" then
+        if not isCreatorAdmin(client) then return end
+        triggerClientEvent(client, "jobcreator:list", resourceRoot, scope, jm:jobmanagerOfficialList() or {})
+        return
+    end
     local all = scope == "all" and isCreatorAdmin(client)
     local list = jm:jobmanagerCommunityList(not all and accountName(client) or nil) or {}
     table.sort(list, function(a, b) return (a.updated or 0) > (b.updated or 0) end)
@@ -245,6 +280,27 @@ addEventHandler("jobcreator:save", resourceRoot, function(doc, publish)
     if session.gameId and (not entry or not canEdit(player, entry)) then
         notify(player, "Job Creator", "You cannot save this game.")
         return
+    end
+
+    if session.official then
+        if not admin then return notify(player, "Job Creator", "Only admins can edit official games.") end
+        local game = sanitizeGame(doc, session.type, "keep", true)
+        if not game then return notify(player, "Job Creator", "The game data is invalid.") end
+        game.id = session.gameId
+        local id, err = jm:jobmanagerOfficialSave(game, session.image)
+        if not id then return notify(player, "Job Creator", "Saving failed: " .. tostring(err)) end
+        session.image = nil
+        local message, published = "Draft saved. The live version changes on Publish.", false
+        if publish then
+            local ok
+            ok, err = jm:jobmanagerOfficialPublish(id)
+            published = ok
+            message = ok and "Saved and published." or ("Saved, but not published: " .. tostring(err))
+        end
+        triggerClientEvent(player, "jobcreator:saved", resourceRoot, {
+            id = id, published = true, pending = not published, owner = entry.owner, official = true,
+        })
+        return notify(player, "Job Creator", message)
     end
 
     local game = sanitizeGame(doc, session.type, admin and "keep" or session.storedMarker)
@@ -272,7 +328,7 @@ addEvent("jobcreator:validate", true)
 addEventHandler("jobcreator:validate", resourceRoot, function(doc)
     local session = sessions[client]
     if not session or not session.type then return end
-    local game = sanitizeGame(doc, session.type, "keep")
+    local game = sanitizeGame(doc, session.type, "keep", session.official)
     local ok, err = false, "invalid game data"
     if game then ok, err = jm:jobmanagerValidateGame(game) end
     triggerClientEvent(client, "jobcreator:validated", resourceRoot, ok, err)
@@ -282,6 +338,13 @@ local function manage(player, id, action)
     local entry = findEntry(id)
     if not entry then return notify(player, "Job Creator", "That game does not exist.") end
     local admin = isCreatorAdmin(player)
+    if entry.official then
+        if not admin or action ~= "publish" then
+            return notify(player, "Job Creator", "Official games can only be edited and published by admins.")
+        end
+        local ok, err = jm:jobmanagerOfficialPublish(id)
+        return notify(player, "Job Creator", ok and (entry.name .. " is published.") or ("Failed: " .. tostring(err)))
+    end
     if action == "publish" or action == "unpublish" then
         if not admin then return notify(player, "Job Creator", "Only admins can publish games.") end
         local ok, err
@@ -355,7 +418,12 @@ end)
 addEvent("jobcreator:testStop", true)
 addEventHandler("jobcreator:testStop", resourceRoot, function()
     local session = sessions[client]
-    if session then stopTest(client, session) end
+    if not session then return end
+    if session.test then
+        stopTest(client, session)
+    else
+        triggerClientEvent(client, "jobcreator:testStopped", resourceRoot)
+    end
 end)
 
 addEventHandler("onPlayerWasted", root, function()
@@ -403,7 +471,7 @@ addEventHandler("onPlayerQuit", root, function()
 end)
 
 addEventHandler("onResourceStop", resourceRoot, function()
-    for player in pairs(sessions) do closeCreator(player) end
+    for player in pairs(sessions) do closeCreator(player, false, true) end
 end)
 
 -- exports

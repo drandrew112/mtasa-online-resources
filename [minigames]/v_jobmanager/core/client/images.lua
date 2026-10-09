@@ -27,10 +27,10 @@ end
 
 addEvent("jobmanager:image", true)
 addEventHandler("jobmanager:image", resourceRoot, function(path, data)
-    if type(path) ~= "string" or not path:find("^community_img/[%w]+_%d+%.jpg$") or type(data) ~= "string" then return end
+    if type(path) ~= "string" or not path:find("^community_img/[%w_]+_%d+%.jpg$") or type(data) ~= "string" then return end
     pending[path] = nil
     -- older versions of the same game are dropped
-    local prefix = path:match("^(community_img/[%w]+_)")
+    local prefix = path:match("^(community_img/[%w_]+_)%d+%.jpg$")
     for version = 1, tonumber(path:match("_(%d+)%.jpg$")) - 1 do
         local old = prefix .. version .. ".jpg"
         if fileExists(old) then fileDelete(old) end

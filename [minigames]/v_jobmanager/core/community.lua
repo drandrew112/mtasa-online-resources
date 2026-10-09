@@ -213,10 +213,18 @@ end
 addEvent("jobmanager:requestImage", true)
 addEventHandler("jobmanager:requestImage", resourceRoot, function(path)
     if type(path) ~= "string" then return end
-    local id, version = path:match("^community_img/([%w]+)_(%d+)%.jpg$")
-    local entry = id and entryOf(id)
-    if not entry or tostring(entry.imageVersion) ~= version then return end
-    local data = readFile(DIR .. "img/" .. id .. ".jpg")
+    -- an older version (live copy not re-published since a new photo) gets the current file
+    local id = path:match("^community_img/([%w_]+)_%d+%.jpg$")
+    if not id then return end
+    local entry = entryOf(id)
+    local file
+    if entry then
+        if (entry.imageVersion or 0) == 0 then return end
+        file = DIR .. "img/" .. id .. ".jpg"
+    elseif officialImagePath then
+        file = officialImagePath(id)   -- core/official.lua
+    end
+    local data = file and readFile(file)
     if data then triggerLatentClientEvent(client, "jobmanager:image", 200000, false, resourceRoot, path, data) end
 end)
 

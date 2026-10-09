@@ -89,8 +89,9 @@ end
 -- Registers a game. A community game that is already registered is swapped in
 -- place: running lobbies / matches keep their own reference to the old table,
 -- only new lobbies get the new version.
-function registerJob(game)
-    local ok, err = validateCommon(game, game.community)
+-- replace: an already registered official game may be swapped (creator publish)
+function registerJob(game, replace)
+    local ok, err = validateCommon(game, game.community or replace)
     if not ok then return false, err end
     local old = jobsById[game.id]
     jobsById[game.id] = game

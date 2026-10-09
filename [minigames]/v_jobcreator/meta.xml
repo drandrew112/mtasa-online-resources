@@ -1,0 +1,38 @@
+<meta>
+    <info author="DrAndrew112" name="v_jobcreator" type="script" version="1.0.0"
+          description="In-game creator for v_jobmanager race / deathmatch games (community games)" />
+
+    <!-- v_jobmanager is a soft dependency (exports only): an include would restart
+         the creator, and kick every editor out, whenever v_jobmanager restarts -->
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+    <include resource="ui_interactobject" />
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/catalog.lua" type="shared" />
+
+    <script src="server/sanitize.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <script src="client/core.lua" type="client" />
+    <script src="client/view.lua" type="client" />
+    <script src="client/freecam.lua" type="client" />
+    <script src="client/tools.lua" type="client" />
+    <script src="client/menus.lua" type="client" />
+    <script src="client/interact.lua" type="client" />
+    <script src="client/keys.lua" type="client" />
+    <script src="client/test.lua" type="client" />
+    <script src="client/photo.lua" type="client" />
+    <script src="client/hud.lua" type="client" />
+
+    <!-- jobcreatorOpen(player [, gameId]) / jobcreatorClose(player) / jobcreatorIsActive(player) -->
+    <export function="jobcreatorOpen" type="server" />
+    <export function="jobcreatorClose" type="server" />
+    <export function="jobcreatorIsActive" type="server" />
+    <!-- jobcreatorOpen([gameId]) / jobcreatorClose() / jobcreatorIsActive() -->
+    <export function="jobcreatorOpen" type="client" />
+    <export function="jobcreatorClose" type="client" />
+    <export function="jobcreatorIsActive" type="client" />
+</meta>

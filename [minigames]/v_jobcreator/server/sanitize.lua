@@ -21,7 +21,11 @@ local function point(p, withExtra, extraMin, extraMax, extraDefault)
     local x, y, z = num(p[1], -3000, 3000), num(p[2], -3000, 3000), num(p[3], -100, 2000)
     if not (x and y and z) then return nil end
     local out = { round(x), round(y), round(z) }
-    if withExtra then out[4] = round(num(p[4], extraMin, extraMax) or extraDefault, 2) end
+    if withExtra then
+        local extra = num(p[4], extraMin, extraMax) or extraDefault
+        if extraMin < 0 then extra = extra % 360 end   -- rotations
+        out[4] = round(extra, 2)
+    end
     return out
 end
 
@@ -43,13 +47,23 @@ local function text(v, max, default)
     return utf8.sub(v, 1, max)
 end
 
-local function objects(list)
+-- Official games (admin-only) may use any model and have bigger limits,
+-- like the hand-written games/*.json files.
+local OFFICIAL = { objects = 1000, checkpoints = 300 }
+
+local function objectAllowed(model, official)
+    if official then return model >= 321 and model <= 20000 and math.floor(model) == model end
+    return CATALOG.objectName[model] ~= nil
+end
+
+local function objects(list, official)
     local out = {}
     if type(list) ~= "table" then return out end
+    local max = official and OFFICIAL.objects or L.objects
     for _, o in ipairs(list) do
-        if #out >= L.objects then break end
+        if #out >= max then break end
         local model = type(o) == "table" and tonumber(o.model)
-        local pos = model and CATALOG.objectName[model] and point({ o.x, o.y, o.z })
+        local pos = model and objectAllowed(model, official) and point({ o.x, o.y, o.z })
         if pos then
             local clean = { model = model, x = pos[1], y = pos[2], z = pos[3] }
             for _, key in ipairs({ "rx", "ry", "rz" }) do
@@ -70,7 +84,8 @@ end
 
 -- marker: "keep" = take the client's value (admins), otherwise the given stored
 -- marker (or nil) replaces whatever the client sent.
-function sanitizeGame(doc, gameType, marker)
+-- official: an official game edited by an admin (any model, bigger limits)
+function sanitizeGame(doc, gameType, marker, official)
     if type(doc) ~= "table" then return nil end
     local maxPlayers = math.floor(num(doc.maxPlayers, 1, L.maxPlayers) or 8)
     local game = {
@@ -79,7 +94,7 @@ function sanitizeGame(doc, gameType, marker)
         description = text(doc.description, L.description, ""),
         minPlayers = math.min(math.floor(num(doc.minPlayers, 1, L.maxPlayers) or 1), maxPlayers),
         maxPlayers = maxPlayers,
-        objects = objects(doc.objects),
+        objects = objects(doc.objects, official),
     }
     if marker == "keep" then
         game.marker = point(doc.marker)
@@ -91,9 +106,9 @@ function sanitizeGame(doc, gameType, marker)
         local race = type(doc.race) == "table" and doc.race or {}
         local vehicle = type(race.vehicles) == "table" and tonumber(race.vehicles[1])
         game.race = {
-            vehicles = { CATALOG.vehicleAllowed[vehicle] and vehicle or 411 },
+            vehicles = { (CATALOG.vehicleAllowed[vehicle] or (official and vehicle and vehicle >= 400 and vehicle <= 611)) and vehicle or 411 },
             spawnpoints = points(race.spawnpoints, L.spawnpoints, true, -360, 360, 0),
-            checkpoints = points(race.checkpoints, L.checkpoints, true, 2, 15, 5),
+            checkpoints = points(race.checkpoints, official and OFFICIAL.checkpoints or L.checkpoints, true, 2, 15, 5),
             finish = point(race.finish, true, 2, 15, 5),
         }
         local cam = race.finishCamera
@@ -104,7 +119,7 @@ function sanitizeGame(doc, gameType, marker)
         local dm = type(doc.deathmatch) == "table" and doc.deathmatch or {}
         local weapon = tonumber(dm.weapon)
         game.deathmatch = {
-            weapon = CATALOG.weaponAllowed[weapon] and weapon or 24,
+            weapon = (CATALOG.weaponAllowed[weapon] or (official and weapon and weapon >= 1 and weapon <= 46)) and weapon or 24,
             ammo = math.floor(num(dm.ammo, 1, 9999) or 120),
             armour = math.floor(num(dm.armour, 0, 100) or 0),
             spawnpoints = points(dm.spawnpoints, L.spawnpoints, true, -360, 360, 0),

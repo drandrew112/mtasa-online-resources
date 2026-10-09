@@ -19,7 +19,7 @@ CREATOR = {
     },
 
     KEYS = {
-        menu = "m",             -- editor hub (ui_inac temp menu)
+        menu = "r",             -- editor hub (ui_inac temp menu)
         camera = "f5",          -- freecam <-> on foot
         look = "mouse2",        -- freecam: hold to look around (cursor otherwise)
         place = "mouse1",       -- place / select

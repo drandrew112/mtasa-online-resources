@@ -5,7 +5,7 @@
 -- The menu is a centred box occupying at most 80% of the screen.
 --
 --  * MAP      - live world-map preview, ENTER opens the full-screen bigmap
---  * JOBS     - Quick Job / Join Lobby / Games: Race / Games: Deathmatch
+--  * ONLINE   - Quick Job / Join Lobby / Official + Community (Race, Deathmatch) / Arena War / Leave Server
 --  * STATS    - level / XP / played time + v_stats statistics by category
 --  * SETTINGS - category column + settings column (Display > Show 3D Blips)
 
@@ -48,7 +48,7 @@ local C = {
     bank       = tocolor(120, 180, 255, 255),
 }
 
-local TABS = { "MAP", "JOBS", "STATS", "SETTINGS" }
+local TABS = { "MAP", "ONLINE", "STATS", "SETTINGS" }
 
 local pauseMenuOpen = false
 local pauseMapOpen  = false
@@ -58,13 +58,25 @@ local selectedTab   = 1
 -- JOBS tab: a small 2-level drill-down.
 --   view = "root" | "joinlobby" | "race" | "deathmatch"
 local JOBS_ROOT = {
+    { id = "jobs",    label = "Jobs",              desc = "Quick Job, lobbies, official and community jobs." },
+    { id = "arenawar",label = "Join Arena War",    desc = "Join an Arena War minigame." },
+    { id = "leave",   label = "Leave Server",      desc = "Disconnect from the server." }
+}
+-- Jobs sub-menu.
+local JOBS_SUB = {
     { id = "quick",   label = "Quick Job",         desc = "Join a random open lobby, or start a new one with a random game." },
     { id = "lobbies", label = "Join Lobby",        desc = "Browse every open lobby: game, mode and host." },
-    { id = "race",    label = "Games: Race",       desc = "Browse every Race job." },
-    { id = "dm",      label = "Games: Deathmatch", desc = "Browse every Deathmatch job." },
-    { id = "arenawar",label = "Join Arena War",    desc = "Join an Arena War minigame." }
+    { id = "official",  label = "Official",          desc = "Jobs made by the server team." },
+    { id = "community", label = "Community created", desc = "Jobs created by other players." },
+    { id = "creator",   label = "Creator",           desc = "Open the job creator to build your own job." },
 }
-local jobsMenu     = { view = "root", rootSel = 1, listSel = 1 }
+-- Official / Community sub-menu: pick a game type, then list the jobs.
+local JOBS_CATS = {
+    { id = "race",       label = "Race",       desc = "Browse the available Race jobs." },
+    { id = "deathmatch", label = "Deathmatch", desc = "Browse the available Deathmatch jobs." },
+}
+--   view = "root" | "joinlobby" | "cat" | "race" | "deathmatch"; src = "official" | "community"
+local jobsMenu     = { view = "root", rootSel = 1, listSel = 1, catSel = 1, subSel = 1, src = "official" }
 local jobRefreshAt = 0
 
 -- STATS tab: category column + read-only value column.
@@ -114,8 +126,9 @@ end
 
 local function filteredJobs(jobType)
     local list = {}
+    local community = jobsMenu.src == "community"
     for _, job in ipairs(getJobList()) do
-        if job.type == jobType then table.insert(list, job) end
+        if job.type == jobType and (job.community and true or false) == community then table.insert(list, job) end
     end
     return list
 end
@@ -310,7 +323,7 @@ local function setPauseMenuOpen(open)
         -- Always start on the first tab (MAP), on the tab bar.
         focus = "tabs"
         selectedTab = 1
-        jobsMenu = { view = "root", rootSel = 1, listSel = 1 }
+        jobsMenu = { view = "root", rootSel = 1, listSel = 1, catSel = 1, subSel = 1, src = "official" }
         settingsCat = nil
         settingsSel = 1
         statsCat, statsSel = nil, 1
@@ -329,7 +342,7 @@ local function enterContent()
     local tab = TABS[selectedTab]
     if tab == "MAP" then
         openBigmap()
-    elseif tab == "JOBS" then
+    elseif tab == "ONLINE" then
         focus = "content"
         jobsMenu.view, jobsMenu.rootSel = "root", 1
         if jobsAvailable() then
@@ -356,36 +369,72 @@ local function contentBack()
         settingsSel = 1
         return
     end
-    if TABS[selectedTab] == "JOBS" and jobsMenu.view ~= "root" then
-        jobsMenu.view = "root"
+    if TABS[selectedTab] == "ONLINE" and jobsMenu.view ~= "root" then
+        if jobsMenu.view == "race" or jobsMenu.view == "deathmatch" then
+            jobsMenu.view = "cat"
+        elseif jobsMenu.view == "cat" or jobsMenu.view == "joinlobby" then
+            jobsMenu.view = "jobs"
+        else
+            jobsMenu.view = "root"
+        end
         return
     end
     focus = "tabs"
 end
 
 local function handleJobsKey(key)
-    if jobsMenu.view == "root" then
+    if jobsMenu.view == "root" or jobsMenu.view == "jobs" then
+        local isRoot = jobsMenu.view == "root"
+        local items = isRoot and JOBS_ROOT or JOBS_SUB
+        local selKey = isRoot and "rootSel" or "subSel"
         if key == "arrow_u" then
-            jobsMenu.rootSel = moveSel(jobsMenu.rootSel, -1, #JOBS_ROOT)
+            jobsMenu[selKey] = moveSel(jobsMenu[selKey], -1, #items)
         elseif key == "arrow_d" then
-            jobsMenu.rootSel = moveSel(jobsMenu.rootSel, 1, #JOBS_ROOT)
+            jobsMenu[selKey] = moveSel(jobsMenu[selKey], 1, #items)
         elseif key == "enter" then
-            local item = JOBS_ROOT[jobsMenu.rootSel]
-            if not item or not jobsAvailable() then return end
+            local item = items[jobsMenu[selKey]]
+            if not item then return end
+            if item.id == "jobs" then
+                jobsMenu.view, jobsMenu.subSel = "jobs", 1
+                return
+            end
+            if item.id == "leave" then
+                setPauseMenuOpen(false)
+                executeCommandHandler("disconnect")
+                return
+            end
+            if item.id == "creator" then
+                local res = getResourceFromName("v_jobcreator")
+                if res and getResourceState(res) == "running" then
+                    setPauseMenuOpen(false)
+                    exports.v_jobcreator:jobcreatorOpen()
+                end
+                return
+            end
+            if not jobsAvailable() then return end
             if item.id == "quick" then
                 exports.v_jobmanager:jobmanagerQuickJob()
                 setPauseMenuOpen(false)
             elseif item.id == "lobbies" then
                 jobsMenu.view, jobsMenu.listSel = "joinlobby", 1
                 exports.v_jobmanager:jobmanagerRequestLobbies()
-            elseif item.id == "race" then
-                jobsMenu.view, jobsMenu.listSel = "race", 1
-            elseif item.id == "dm" then
-                jobsMenu.view, jobsMenu.listSel = "deathmatch", 1
+            elseif item.id == "official" or item.id == "community" then
+                jobsMenu.view, jobsMenu.src, jobsMenu.catSel = "cat", item.id, 1
             elseif item.id == "arenawar" then
                 triggerServerEvent("pausemenu_joinArenawar", localPlayer)
                 setPauseMenuOpen(false)
             end
+        end
+        return
+    end
+
+    if jobsMenu.view == "cat" then
+        if key == "arrow_u" then
+            jobsMenu.catSel = moveSel(jobsMenu.catSel, -1, #JOBS_CATS)
+        elseif key == "arrow_d" then
+            jobsMenu.catSel = moveSel(jobsMenu.catSel, 1, #JOBS_CATS)
+        elseif key == "enter" then
+            jobsMenu.view, jobsMenu.listSel = JOBS_CATS[jobsMenu.catSel].id, 1
         end
         return
     end
@@ -638,10 +687,10 @@ addEventHandler("onClientKey", root, function(key, press)
     end
 
     local tab = TABS[selectedTab]
-    if tab == "JOBS" or tab == "SETTINGS" or tab == "STATS" then
+    if tab == "ONLINE" or tab == "SETTINGS" or tab == "STATS" then
         playUI(key == "enter" and "select" or "click")
     end
-    if tab == "JOBS" then
+    if tab == "ONLINE" then
         handleJobsKey(key)
     elseif tab == "STATS" then
         handleStatsKey(key)
@@ -741,23 +790,23 @@ local function drawJobDetails(x, y, w, h, job)
     end
 end
 
-local function drawJobsRoot(x, y, w, h)
+local function drawJobsRoot(x, y, w, h, items, sel, title)
     local gap = S(6)
     local leftW = math.floor(w * 0.30)
     local rightX = x + leftW + gap
     local rightW = w - leftW - gap
 
-    drawColumnHeader(x, y, leftW, "JOBS")
+    drawColumnHeader(x, y, leftW, title)
     drawColumnHeader(rightX, y, rightW, "ABOUT")
 
     local listY = y + HEAD_H
     local rows = {}
-    for i, item in ipairs(JOBS_ROOT) do
-        rows[i] = { label = item.label }
+    for i, item in ipairs(items) do
+        rows[i] = { label = item.label, value = (item.id == "jobs" or item.id == "lobbies" or item.id == "official" or item.id == "community" or item.id == "race" or item.id == "deathmatch") and ">" or nil }
     end
-    drawRows(x, listY, leftW, rows, jobsMenu.rootSel, focus == "content")
+    drawRows(x, listY, leftW, rows, sel, focus == "content")
 
-    local item = JOBS_ROOT[jobsMenu.rootSel]
+    local item = items[sel]
     dxDrawRectangle(rightX, listY, rightW, y + h - listY, C.row)
     if item then
         dxDrawText(item.desc, rightX + S(12), listY + S(10), rightX + rightW - S(12), y + h - S(8),
@@ -771,7 +820,8 @@ local function drawJobsList(x, y, w, h, list)
     local rightX = x + leftW + gap
     local rightW = w - leftW - gap
 
-    drawColumnHeader(x, y, leftW, jobsMenu.view == "joinlobby" and "OPEN LOBBIES" or "JOBS")
+    drawColumnHeader(x, y, leftW, jobsMenu.view == "joinlobby" and "OPEN LOBBIES"
+        or ((jobsMenu.src == "community" and "COMMUNITY " or "OFFICIAL ") .. string.upper(jobsMenu.view)))
     drawColumnHeader(rightX, y, rightW, "DETAILS")
 
     local listY = y + HEAD_H
@@ -817,7 +867,7 @@ end
 
 local function drawJobsTab(x, y, w, h)
     if not jobsAvailable() then
-        drawColumnHeader(x, y, w, "JOBS")
+        drawColumnHeader(x, y, w, "ONLINE")
         dxDrawRectangle(x, y + HEAD_H, w, h - HEAD_H, C.row)
         dxDrawText("Jobs unavailable", x + S(12), y + HEAD_H, x + w - S(12), y + h,
             C.txtDim, S(1.0), FONT.row, "left", "top")
@@ -825,7 +875,11 @@ local function drawJobsTab(x, y, w, h)
     end
 
     if jobsMenu.view == "root" then
-        drawJobsRoot(x, y, w, h)
+        drawJobsRoot(x, y, w, h, JOBS_ROOT, jobsMenu.rootSel, "ONLINE")
+    elseif jobsMenu.view == "jobs" then
+        drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, "JOBS")
+    elseif jobsMenu.view == "cat" then
+        drawJobsRoot(x, y, w, h, JOBS_CATS, jobsMenu.catSel, string.upper(jobsMenu.src))
     elseif jobsMenu.view == "joinlobby" then
         drawJobsList(x, y, w, h, getLobbyList())
     else
@@ -917,14 +971,20 @@ local function contextHelp()
     if focus == "tabs" then
         local t = TABS[selectedTab]
         if t == "MAP" then return "Open the full-screen map." end
-        if t == "JOBS" then return "Browse and join jobs." end
+        if t == "ONLINE" then return "Join jobs, lobbies and minigames." end
         if t == "STATS" then return "Your level, XP, played time and statistics." end
         return "Change your settings."
     end
     local tab = TABS[selectedTab]
-    if tab == "JOBS" then
+    if tab == "ONLINE" then
         if jobsMenu.view == "root" then
             local item = JOBS_ROOT[jobsMenu.rootSel]
+            return item and item.desc or ""
+        elseif jobsMenu.view == "jobs" then
+            local item = JOBS_SUB[jobsMenu.subSel]
+            return item and item.desc or ""
+        elseif jobsMenu.view == "cat" then
+            local item = JOBS_CATS[jobsMenu.catSel]
             return item and item.desc or ""
         elseif jobsMenu.view == "joinlobby" then
             local entry = getLobbyList()[jobsMenu.listSel]
@@ -1003,7 +1063,7 @@ local function drawPanel()
     local tab = TABS[selectedTab]
     if tab == "MAP" then
         drawMapTab(contentX, contentY, contentW, contentH)
-    elseif tab == "JOBS" then
+    elseif tab == "ONLINE" then
         drawJobsTab(contentX, contentY, contentW, contentH)
     elseif tab == "STATS" then
         drawStatsTab(contentX, contentY, contentW, contentH)
@@ -1026,7 +1086,7 @@ end
 addEventHandler("onClientRender", root, function()
     if not pauseMenuOpen or pauseMapOpen then return end
 
-    if TABS[selectedTab] == "JOBS" and jobsAvailable() then
+    if TABS[selectedTab] == "ONLINE" and jobsAvailable() then
         local now = getTickCount()
         if now - jobRefreshAt > 2000 then
             jobRefreshAt = now
