@@ -18,3 +18,12 @@ addEventHandler("uipause:requestStats", root, function()
     end)
     triggerClientEvent(player, "uipause:statsData", player, ok and defs or false, ok and values or false)
 end)
+
+-- Leave Server: the client cannot run the built-in "disconnect" command from
+-- Lua, so the server disconnects the player.
+addEvent("uipause:leaveServer", true)
+addEventHandler("uipause:leaveServer", root, function()
+    if isElement(client) then
+        kickPlayer(client, "You left the server.")
+    end
+end)

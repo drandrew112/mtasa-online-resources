@@ -400,7 +400,7 @@ local function handleJobsKey(key)
             end
             if item.id == "leave" then
                 setPauseMenuOpen(false)
-                executeCommandHandler("disconnect")
+                triggerServerEvent("uipause:leaveServer", localPlayer)
                 return
             end
             if item.id == "creator" then
