@@ -142,7 +142,7 @@ function joinHandler(player)
 		clientCall(player, 'setTimeFrozen', true, g_FrozenTime[1], g_FrozenTime[2], g_FrozenWeather)
 	end
 	if getOption('welcometextonstart') then
-		outputChatBox('#FFFFFFCsatlakozz Discord szerverünkre: #607ff0https://discord.gg/MsrESsH', player, 255,255,255, true)
+		outputChatBox('#FFFFFFWelcome to #607ff0FreeV!', player, 255,255,255, true)
 	end
 end
 addEventHandler('onPlayerJoin', g_Root, joinHandler)
