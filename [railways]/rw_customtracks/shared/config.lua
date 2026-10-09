@@ -1,5 +1,8 @@
 -- rw_customtracks settings (server + client)
 
+-- console debug output (outputDebugString) of this resource; the rail log file is not affected
+DEBUG_ENABLED = false
+
 NET = {
     -- network data: the manifest lists the data files (server reads them, clients get the data
     -- from the server). Saving through the exports keeps every item in the file it came from and

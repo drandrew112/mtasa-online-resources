@@ -32,7 +32,7 @@ local function start()
     shader = dxCreateShader("shaders/windows.fx", 0, 0, false, "world")
     if not shader then
         failed = true
-        outputDebugString("[rw_passengers] windows shader could not be created (needs shader model 3)", 2)
+        if DEBUG_ENABLED then outputDebugString("[rw_passengers] windows shader could not be created (needs shader model 3)", 2) end
         return
     end
     dxSetShaderValue(shader, "gCentreX", I.centreX)

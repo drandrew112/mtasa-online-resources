@@ -118,7 +118,9 @@ end
 local function forget(id, reason)
     local c = Consists[id]
     if not c then return end
-    outputDebugString(("[rw_core] train %d (%s) removed: %s"):format(id, labelOf(c), reason or "removed"))
+    if RW.LOG.DEBUG_ENABLED then
+        outputDebugString(("[rw_core] train %d (%s) removed: %s"):format(id, labelOf(c), reason or "removed"))
+    end
     -- always announced (source = root when the vehicles are already gone) so listeners forget it
     triggerEvent("onRailConsistDestroy", isElement(c.lead) and c.lead or root, id, reason)
     for v in pairs(byVehicle) do if byVehicle[v] == c then byVehicle[v] = nil end end

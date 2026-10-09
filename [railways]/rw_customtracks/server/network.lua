@@ -8,7 +8,7 @@ local ready = {}          -- [player] = true once the client asked for the data
 local rebuildTimer
 
 local function log(fmt, ...)
-    outputDebugString("[rw_customtracks] " .. string.format(fmt, ...))
+    if DEBUG_ENABLED then outputDebugString("[rw_customtracks] " .. string.format(fmt, ...)) end
 end
 
 local function isAdmin(p)

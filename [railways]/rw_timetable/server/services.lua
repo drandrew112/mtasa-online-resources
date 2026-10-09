@@ -120,6 +120,65 @@ local function clearData(c)
     if c and isElement(c.lead) then removeElementData(c.lead, "rw.service") end
 end
 
+------------------------------------------------------------------ routing (player services)
+
+-- A network train only gets a route (switches thrown + reserved ahead) when it has a
+-- destination. rw_auto sets one for its own trains; a player's service gets the platform of
+-- its next stop here, the same stop point rw_auto uses. Before, player trains just ran on
+-- whatever the switches were set to (SL2 out of Cranberry stayed on the wrong track).
+local ROUTE_STOP_AHEAD = 45     -- m: the lead stops this far past the platform centre (rw_auto STOP_AHEAD)
+local ROUTE_END_GAP = 4         -- m: before the buffer on a dead-end track
+
+local function netRunning()
+    local r = getResourceFromName("rw_customtracks")
+    return r and getResourceState(r) == "running"
+end
+
+local function lineInfo(track)
+    for _, l in ipairs(exports.rw_customtracks:getNetLines() or {}) do
+        if l.id == track then return l end
+    end
+end
+
+-- the stop the train heads for: the current one until it stood there, then the next one
+local function routeTarget(s, c)
+    local k = s.next
+    if s.stops[k] and s.stops[k].state ~= "pending" then k = k + 1 end
+    local stop = s.trip.stops[k]
+    if not stop then return nil end
+    local st = Stations[stop.station]
+    local line = s.trip.line
+    for _, track in ipairs({ line.stops and line.stops[k] and line.stops[k].track, line.track, c.track }) do
+        local z = track and st.zones[track]
+        if z then
+            local tp = z.center + c.dir * ROUTE_STOP_AHEAD
+            local info = lineInfo(track)
+            if info and not info.closed then tp = math.max(ROUTE_END_GAP, math.min(info.length - ROUTE_END_GAP, tp)) end
+            return k, track, tp
+        end
+    end
+    for track, z in pairs(st.zones) do return k, track, z.center end
+end
+
+local function routeService(s, c)
+    if s.auto or not netRunning() then return end
+    local k, track, tp = routeTarget(s, c)
+    local key = k and (k .. ":" .. track .. ":" .. c.dir) or "none"
+    if key == s.routeKey then return end
+    s.routeKey = key
+    if not k then return end
+    local ok, err = exports.rw_customtracks:setNetTrainLineDestination(s.consist, track, tp, c.dir)
+    if not ok then
+        rlog("service", "warn", ("%s: no route to %s (%s)"):format(s.trip.number, Stations[s.trip.stops[k].station].name, tostring(err)), s.consist)
+    end
+end
+
+-- the service ended early: the driver gets the free line back (no destination)
+local function unrouteService(s)
+    if s.auto or not s.routeKey or not netRunning() then return end
+    pcall(function() exports.rw_customtracks:setNetTrainDestination(s.consist) end)
+end
+
 ------------------------------------------------------------------ take / end
 
 -- -> true | false, reason. player: role + driver are checked when given.
@@ -158,6 +217,7 @@ function assignService(consistId, tripId, player, force)
     first.side = platformSide(Stations[trip.from], c.track, c.tp, c.dir)
     Services[consistId] = s
     taken[trip.id] = consistId
+    routeService(s, c)
     sync(s, c)
     triggerEvent("onRailServiceStart", c.lead, consistId, trip.id, player or false)
     return true
@@ -167,6 +227,7 @@ local function finish(s, c, status, reason)
     Services[s.consist] = nil
     taken[s.trip.id] = nil
     s.status = status
+    if status ~= "completed" then unrouteService(s) end
     if c then
         if status == "completed" then
             setElementData(c.lead, "rw.service", serviceView(s))
@@ -368,6 +429,7 @@ local function tick()
             end
 
             if Services[id] then
+                routeService(s, c)
                 local d = delayOf(s)
                 if math.floor(d / 60) ~= math.floor(s.delay / 60) then
                     changed = true

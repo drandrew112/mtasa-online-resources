@@ -10,7 +10,7 @@ addEventHandler("rw:net:data", resourceRoot, function(files, states)
     NetClient.ready = true
     NetClient.version = NetClient.version + 1
     triggerEvent("rw:net:onClientNetworkReady", resourceRoot, NetClient.version)
-    outputDebugString(string.format("[rw_customtracks] client network built in %d ms", ms))
+    if DEBUG_ENABLED then outputDebugString(string.format("[rw_customtracks] client network built in %d ms", ms)) end
 end)
 
 addEvent("rw:net:onClientNetworkReady", false)

@@ -1,5 +1,8 @@
 -- rw_crossings settings (server + client)
 
+-- console debug output (outputDebugString) of this resource; the rail log file is not affected
+DEBUG_ENABLED = false
+
 CROSS = {
     TRACKS        = { 0, 3 },   -- tracks a crossing can belong to (within TRACK_RANGE of its centre)
     TRACK_RANGE   = 15,

@@ -1,5 +1,8 @@
 -- rw_signals settings (server + client)
 
+-- console debug output (outputDebugString) of this resource; the rail log file is not affected
+DEBUG_ENABLED = false
+
 SIG = {
     -- Signalled stretches (block sections). from/to are world points projected onto the
     -- track; the stretch runs in increasing track position from `from` to `to`.

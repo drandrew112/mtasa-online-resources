@@ -121,7 +121,7 @@ local function build()
     end
     local active = 0
     for _, cr in ipairs(Crossings) do if #cr.zones > 0 then active = active + 1 end end
-    outputDebugString(("[rw_crossings] %d crossings replaced, %d on a used track"):format(#Crossings, active))
+    if DEBUG_ENABLED then outputDebugString(("[rw_crossings] %d crossings replaced, %d on a used track"):format(#Crossings, active)) end
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()

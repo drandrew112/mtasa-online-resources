@@ -250,7 +250,7 @@ function syncTrain(trainId)
             local coach = byVehicle[v]
             if not coach then
                 local dim = allocDim()
-                if not dim then outputDebugString("[rw_passengers] no free coach dimension", 2) break end
+                if not dim then if DEBUG_ENABLED then outputDebugString("[rw_passengers] no free coach dimension", 2) end break end
                 coach = { dim = dim, vehicle = v, train = trainId, anchors = {}, count = 0, passengers = {} }
                 Coaches[dim] = coach
                 byVehicle[v] = coach

@@ -91,7 +91,7 @@ local function headFor(train, k)
     local track = stopTrack(train, stop)
     local z = track and zones[stop.station][track]
     if not z then
-        outputDebugString(("[rw_auto] train %d: no platform for %s"):format(train.id, tostring(stop.station)), 2)
+        if DEBUG_ENABLED then outputDebugString(("[rw_auto] train %d: no platform for %s"):format(train.id, tostring(stop.station)), 2) end
         rlog("error", ("no platform for %s"):format(tostring(stop.station)), train.id)
         return false
     end
@@ -102,7 +102,7 @@ local function headFor(train, k)
     train.target = { track = track, tp = tp }
     local ok, err = net:setNetTrainLineDestination(train.id, track, train.target.tp, train.dir)
     if not ok then
-        outputDebugString(("[rw_auto] train %d: no route to %s (%s)"):format(train.id, stop.station, tostring(err)), 2)
+        if DEBUG_ENABLED then outputDebugString(("[rw_auto] train %d: no route to %s (%s)"):format(train.id, stop.station, tostring(err)), 2) end
         rlog("warn", ("no route to %s (%s)"):format(stop.station, tostring(err)), train.id)
     end
     return ok
@@ -145,7 +145,7 @@ local function spawnFor(plan)
     net:setNetTrainControl(id, -1, 1, false)
     local ok, why = tt:assignService(id, plan.id, false, true)
     if not ok then
-        outputDebugString(("[rw_auto] %s: service not assigned (%s)"):format(plan.number, tostring(why)), 2)
+        if DEBUG_ENABLED then outputDebugString(("[rw_auto] %s: service not assigned (%s)"):format(plan.number, tostring(why)), 2) end
         rlog("warn", ("%s: service not assigned (%s)"):format(plan.number, tostring(why)), id)
     end
     startTrip(train, plan)
@@ -167,7 +167,7 @@ local function schedule()
                 if trip.depTimestamp - t < -AUTO.LATE_START then
                     handled[id] = { kind = "skip", dep = trip.depTimestamp }
                     tt:cancelTrip(id, "no train available")
-                    outputDebugString(("[rw_auto] %s cancelled: no train could start it in time"):format(trip.id))
+                    if DEBUG_ENABLED then outputDebugString(("[rw_auto] %s cancelled: no train could start it in time"):format(trip.id)) end
                     rlog("warn", ("%s cancelled: no train could start it in time"):format(trip.id))
                 else
                     local plan = tt:getTripPlan(id)
@@ -175,7 +175,7 @@ local function schedule()
                         local ok, err = spawnFor(plan)
                         if not ok and not waitWarned[id] then
                             waitWarned[id] = true
-                            outputDebugString(("[rw_auto] %s waits: %s"):format(plan.number, tostring(err)))
+                            if DEBUG_ENABLED then outputDebugString(("[rw_auto] %s waits: %s"):format(plan.number, tostring(err))) end
                             rlog("warn", ("%s: automatic train cannot be created yet (%s)"):format(plan.number, tostring(err)))
                         end
                     end
@@ -261,7 +261,7 @@ local function tick()
     for _, train in pairs(Trains) do
         local ok, err = pcall(stepTrain, train)
         if not ok then
-            outputDebugString("[rw_auto] train " .. train.id .. ": " .. tostring(err), 1)
+            if DEBUG_ENABLED then outputDebugString("[rw_auto] train " .. train.id .. ": " .. tostring(err), 1) end
             if train.lastErr ~= err then rlog("error", "script error: " .. tostring(err), train.id) end
             train.lastErr = err
         end

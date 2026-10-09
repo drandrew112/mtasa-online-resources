@@ -1,5 +1,8 @@
 -- rw_passengers settings (server + client). See DESIGN.md.
 
+-- console debug output (outputDebugString) of this resource; the rail log file is not affected
+DEBUG_ENABLED = false
+
 RWP = RWP or {}
 
 -- coach id = dimension of its interior: DIM_BASE + 1 .. DIM_BASE + DIM_COUNT (never 0)

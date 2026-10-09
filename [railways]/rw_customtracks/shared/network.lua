@@ -138,7 +138,7 @@ function Net.build(files)
             segList[#segList + 1] = id
             addToGrid(id, g)
         else
-            outputDebugString("[rw_customtracks] segment " .. tostring(id) .. " has fewer than 2 points", 2)
+            if DEBUG_ENABLED then outputDebugString("[rw_customtracks] segment " .. tostring(id) .. " has fewer than 2 points", 2) end
         end
     end
     table.sort(segList)

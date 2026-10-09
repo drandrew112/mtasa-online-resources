@@ -1,5 +1,8 @@
 -- rw_auto settings (server + client)
 
+-- console debug output (outputDebugString) of this resource; the rail log file is not affected
+DEBUG_ENABLED = false
+
 AUTO = {
     SPAWN_LEAD    = 55,     -- s before departure the train is created (players can board)
     DECIDE_LEAD   = 58,     -- s before departure: taken by a player? (rw_timetable TAKE_LEAD = 60)

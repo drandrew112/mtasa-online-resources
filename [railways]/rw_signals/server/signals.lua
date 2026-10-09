@@ -89,7 +89,7 @@ local function buildRoute(def)
     else
         from, to = proj(def.track, def.from.x, def.from.y), proj(def.track, def.to.x, def.to.y)
         if not from or not to then
-            outputDebugString("[rw_signals] route on track " .. def.track .. ": endpoints off the track", 2)
+            if DEBUG_ENABLED then outputDebugString("[rw_signals] route on track " .. def.track .. ": endpoints off the track", 2) end
             return
         end
         if from > to then from, to = to, from end
@@ -246,7 +246,7 @@ function buildSingles()
                 local lo = sign > 0 and ta or tb
                 sg.ranges[track] = { lo = lo, hi = lo + math.abs(d), sign = sign, L = core:getTrackLength(track) }
             else
-                outputDebugString(("[rw_signals] single track %s: not on track %d"):format(def.name, track), 2)
+                if DEBUG_ENABLED then outputDebugString(("[rw_signals] single track %s: not on track %d"):format(def.name, track), 2) end
             end
         end
         Singles[#Singles + 1] = sg
@@ -315,7 +315,7 @@ local function buildAll()
     for _, list in pairs(byTrack) do table.sort(list, function(a, b) return a.tp < b.tp end) end
     local n = 0
     for _ in pairs(Signals) do n = n + 1 end
-    outputDebugString(("[rw_signals] %d signals on %d stretch(es)"):format(n, #Routes))
+    if DEBUG_ENABLED then outputDebugString(("[rw_signals] %d signals on %d stretch(es)"):format(n, #Routes)) end
 end
 
 ------------------------------------------------------------------------- logic
