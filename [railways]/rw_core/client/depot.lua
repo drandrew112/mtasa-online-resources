@@ -9,7 +9,7 @@ local fonts = {}
 local function font(size, bold)
     local key = size .. (bold and "b" or "")
     if fonts[key] == nil then
-        fonts[key] = dxCreateFont(bold and "fonts/RobotoB.ttf" or "fonts/Roboto.ttf", math.floor(size * sh / 1080 + 0.5), false, "antialiased")
+        fonts[key] = dxCreateFont(bold and "fonts/RobotoB.ttf" or "fonts/Roboto.ttf", size * sh / 1080, false, "antialiased")
             or (bold and "default-bold" or "default")
     end
     return fonts[key]
@@ -34,7 +34,7 @@ end
 -- the marker is near, so it also says what the depot is for while the player stands outside.
 local function drawLabel(sx, sy, k, alpha, title, hint)
     local function s(v) return v * sh / 1080 end
-    local fName, fTitle, fHint = font(12, true), font(17, true), font(12)
+    local fName, fTitle, fHint = font(9, true), font(13, true), font(9)
     local a = alpha / 255
     local nameStr = RW.COMPANY:upper()
     local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
@@ -49,7 +49,7 @@ local function drawLabel(sx, sy, k, alpha, title, hint)
 
     local ix, iy = x + pad, y + (headH - iconSize) / 2 + s(2) * k
     round(ix, iy, iconSize, iconSize, s(5) * k, rgb(COLOR, 240 * a))
-    dxDrawText("D", ix, iy, ix + iconSize, iy + iconSize, tocolor(255, 255, 255, 255 * a), k, font(21, true), "center", "center")
+    dxDrawText("D", ix, iy, ix + iconSize, iy + iconSize, tocolor(255, 255, 255, 255 * a), k, font(16, true), "center", "center")
 
     local tx = ix + iconSize + gap
     dxDrawText(nameStr, tx, y + s(6) * k, tx + textW, y + headH * 0.45, rgb(COLOR, 255 * a), k, fName, "left", "center")
@@ -58,7 +58,7 @@ local function drawLabel(sx, sy, k, alpha, title, hint)
     dxDrawRectangle(sx - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
 end
 
-local MAX_DIST, FULL_DIST = 30, 12
+local MAX_DIST, FULL_DIST, MIN_SCALE, HEIGHT = 25, 8, 0.55, 1.25
 
 addEventHandler("onClientRender", root, function()
     if menuId or isPlayerMapVisible() then return end
@@ -71,16 +71,14 @@ addEventHandler("onClientRender", root, function()
         if def and getElementDimension(m) == dim and getElementInterior(m) == int then
             local x, y, z = getElementPosition(m)
             local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
-            local lz = z + 2.2
+            local lz = z + HEIGHT
             if dist <= MAX_DIST and isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
                 local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
                 if sx then
                     local k = 1
-                    if dist > FULL_DIST then k = 1 - (dist - FULL_DIST) / (MAX_DIST - FULL_DIST) * 0.45 end
+                    if dist > FULL_DIST then k = 1 - (dist - FULL_DIST) / (MAX_DIST - FULL_DIST) * (1 - MIN_SCALE) end
                     local alpha = dist > MAX_DIST * 0.8 and 255 * (MAX_DIST - dist) / (MAX_DIST * 0.2) or 255
-                    local hint = (inMarker == m)
-                        and ("Press %s · services, train assembly"):format(RW.DEPOT_KEY:upper())
-                        or "Train services and assembly"
+                    local hint = ("Press %s · services, train assembly"):format(RW.DEPOT_KEY:upper())
                     drawLabel(sx, sy, k, alpha, def.name, hint)
                 end
             end
