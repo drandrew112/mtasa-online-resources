@@ -12,7 +12,7 @@ local function money(n)
     n = math.floor(tonumber(n) or 0)
     local s = tostring(math.abs(n))
     s = s:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
-    return (n < 0 and "-$" or "$") .. s
+    return (n < 0 and "-€" or "€") .. s
 end
 BR.formatMoney = money
 

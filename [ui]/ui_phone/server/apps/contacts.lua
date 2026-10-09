@@ -72,7 +72,7 @@ local function pushInsurance(player)
         local plate = (v.plate and v.plate ~= "") and ("  -  " .. v.plate) or ""
         rows[#rows + 1] = {
             key   = tostring(v.id),
-            label = ("%s  (ID %d)%s   -   $%d"):format(v.modelName, v.id, plate, cost),
+            label = ("%s  (ID %d)%s   -   €%d"):format(v.modelName, v.id, plate, cost),
         }
     end
     PhoneServer.push(player, "contacts:dyn", "insurance", rows)
@@ -100,7 +100,7 @@ local function insuranceClaim(player, idStr)
     local cost = insuranceCost()
     local pot = fundingSource(player, cost)
     if not pot then
-        PhoneServer.toast(player, "Not enough money (need $" .. cost .. " in the bank or as cash).")
+        PhoneServer.toast(player, "Not enough money (need €" .. cost .. " in the bank or as cash).")
         return
     end
 
@@ -118,7 +118,7 @@ local function insuranceClaim(player, idStr)
         return
     end
 
-    PhoneServer.toast(player, ("Insurance restored your %s for $%d (from %s)."):format(
+    PhoneServer.toast(player, ("Insurance restored your %s for €%d (from %s)."):format(
         target.modelName, cost, pot == "bank" and "your bank" or "cash"))
     pushInsurance(player)   -- row disappears; the list may now be empty
 end
@@ -147,7 +147,7 @@ PhoneServer.on("contacts:action", function(player, contactKey, actionKey)
     if not action then return end
 
     if action.cost and getPlayerMoney(player) < action.cost then
-        PhoneServer.toast(player, "Not enough money (need $" .. action.cost .. ").")
+        PhoneServer.toast(player, "Not enough money (need €" .. action.cost .. ").")
         return
     end
 

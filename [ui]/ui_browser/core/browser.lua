@@ -518,7 +518,7 @@ end
 -- is open. Cash comes from getPlayerMoney (shared); bank from element data.
 local function drawHUD()
     local sw, sh = guiGetScreenSize()
-    local fmt = BR.formatMoney or function(n) return "$" .. tostring(n) end
+    local fmt = BR.formatMoney or function(n) return "€" .. tostring(n) end
     local cash = fmt(getPlayerMoney(localPlayer) or 0)
     local bank = fmt(tonumber(getElementData(localPlayer, "bank_money")) or 0)
 

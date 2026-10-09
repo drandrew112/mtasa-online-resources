@@ -52,7 +52,7 @@ local function parseAttrs(s)
     return a
 end
 
--- "$48,000" -> 48000
+-- "€48,000" -> 48000 (every non-digit byte is stripped, so the multi-byte € is too)
 local function priceToNumber(s)
     return tonumber((tostring(s or ""):gsub("[^%d]", ""))) or 0
 end
@@ -60,7 +60,7 @@ end
 local function money(n)
     n = math.floor(tonumber(n) or 0)
     local s = tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
-    return "$" .. s
+    return "€" .. s
 end
 
 -- ui_browser:notify is a client export; server.lua has its own local copy of

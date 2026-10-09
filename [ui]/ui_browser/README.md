@@ -155,7 +155,7 @@ on the right.
 
 ```
 <catalog cols="3" sort="price">
-    <product id="sultan_rs" name="Sultan RS" price="$48,000"
+    <product id="sultan_rs" name="Sultan RS" price="€48,000"
              img="sultan.png" colors="black,silver,blue,red">
         All-wheel drive, sport suspension, turbo engine.
     </product>

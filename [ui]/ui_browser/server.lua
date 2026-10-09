@@ -66,7 +66,7 @@ local function bankTransaction(player, kind, arg)
     -- Only report + refresh when the transaction actually went through.
     if result == true then
         notify(player, "Liberty Bank",
-            (kind == "bank_deposit" and "Deposited $" or "Withdrew $") .. amount .. ".")
+            (kind == "bank_deposit" and "Deposited €" or "Withdrew €") .. amount .. ".")
         triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
     else
         outputServerLog(("[ui_browser] Liberty Bank %s %s failed: %s")

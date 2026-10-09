@@ -61,8 +61,8 @@ function showLevelOverlay()
 end
 
 -- Rovid ideig megmutatja a cash-t es alatta a valtozast:
--- kind = "add"  -> + $ <change>  (zold)
--- kind = "take" -> - $ <change>  (piros)
+-- kind = "add"  -> + € <change>  (zold)
+-- kind = "take" -> - € <change>  (piros)
 function showMoney(kind, change)
     uiLog("showMoney: %s | %s", tostring(kind), tostring(change))
     UI.yOverlay:showMoney(kind, change)

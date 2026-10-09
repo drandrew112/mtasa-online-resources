@@ -15,7 +15,7 @@ HOSP = {
     -- red, and its driver is fined (v_bank forceTakeMoney, bank may go negative) every interval until it leaves.
     -- Not enforced while med_erm is stopped (on-duty units cannot be told apart).
     BAY_RESTRICTED_COLOR = { 218, 54, 51, 150 },
-    BAY_FINE = 500,                -- $ per interval
+    BAY_FINE = 500,                -- € per interval
     BAY_FINE_INTERVAL = 10000,     -- ms; the first fine comes one interval after the warning
 
     -- Stretcher handover marker: the medic pushes the patient in, 5 s
@@ -61,6 +61,6 @@ HOSP_TEXT = {
     bay      = { title = "Ambulance Bay",    hint = "Park here to start the handover" },
     handover = { title = "Patient Handover", hint = "Push the patient in on the stretcher" },
     bayRestricted = { title = "Ambulances Only",
-                      hint = ("Leave the bay · $%d fine every %d s"):format(HOSP.BAY_FINE, HOSP.BAY_FINE_INTERVAL / 1000) },
+                      hint = ("Leave the bay · €%d fine every %d s"):format(HOSP.BAY_FINE, HOSP.BAY_FINE_INTERVAL / 1000) },
     heal     = { title = "Treatment",       hint = ("Stand here · %d s · free of charge"):format(HOSP.HEAL_TIME / 1000) },
 }

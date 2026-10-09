@@ -40,7 +40,7 @@ taken over again.
 
 A vehicle in a bay that is **not an on-duty ERM unit's vehicle** (an off-duty ambulance or any
 other vehicle) turns the bay marker **red** with an "Ambulances Only" label, and its driver gets a
-chat warning. While the vehicle stays in the bay, the driver is fined `HOSP.BAY_FINE` ($500) every
+chat warning. While the vehicle stays in the bay, the driver is fined `HOSP.BAY_FINE` (€500) every
 `HOSP.BAY_FINE_INTERVAL` (10 s), the first one 10 s after the warning, through
 `exports.v_bank:forceTakeMoney` (from the bank account, which may go negative). Getting out of the
 vehicle does not stop the fines; a new driver is warned and gets a fresh 10 s. Nothing is enforced

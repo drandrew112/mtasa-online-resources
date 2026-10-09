@@ -18,7 +18,7 @@ local function isAuthorized(vehicle)
 end
 
 local function warn(player, h)
-    notify(player, ("#da3633Only ambulances on duty may stop in the bays of %s.#ffffff Leave now, or you are fined #da3633$%d#ffffff every %d seconds.")
+    notify(player, ("#da3633Only ambulances on duty may stop in the bays of %s.#ffffff Leave now, or you are fined #da3633€%d#ffffff every %d seconds.")
         :format(h.name, HOSP.BAY_FINE, HOSP.BAY_FINE_INTERVAL / 1000))
 end
 
@@ -27,7 +27,7 @@ local function fine(v, vehicle)
     if not isResourceRunning("v_bank") then return end
     local ok = exports.v_bank:forceTakeMoney(player, HOSP.BAY_FINE)
     if ok ~= true then return end
-    notify(player, ("You were fined #da3633$%d#ffffff for blocking an ambulance bay of %s.")
+    notify(player, ("You were fined #da3633€%d#ffffff for blocking an ambulance bay of %s.")
         :format(HOSP.BAY_FINE, v.hospital.name))
     triggerEvent("onHospitalBayFine", resourceRoot, player, vehicle, v.hospital.id, HOSP.BAY_FINE)
 end

@@ -77,7 +77,7 @@ addCommandHandler("testemsreceipt", function(player)
     local success, result = testEMSPayment(player)
 
     if success then
-        outputChatBox("EMS receipt test completed. Total: $" .. result, player, 0, 255, 0)
+        outputChatBox("EMS receipt test completed. Total: €" .. result, player, 0, 255, 0)
     else
         outputChatBox("EMS receipt test failed: " .. tostring(result), player, 255, 0, 0)
     end

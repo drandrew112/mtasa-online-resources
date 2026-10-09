@@ -34,7 +34,7 @@ end
 local function money(n)
     local digits = tostring(math.abs(math.floor(n)))
     digits = digits:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
-    return (n < 0 and "-$" or "$") .. digits
+    return (n < 0 and "-€" or "€") .. digits
 end
 
 ---------------------------------------------------------------- queue

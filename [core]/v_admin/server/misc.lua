@@ -49,7 +49,7 @@ addCommandHandler("money", function(player)
         return denyAccess(player, ADMIN.perms.money)
     end
     givePlayerMoney(player, 2000)
-    adminAlert(player, "#55FF55+2000 $")
+    adminAlert(player, "#55FF55+€2000")
 end)
 
 -- ------------------------------------------------------------

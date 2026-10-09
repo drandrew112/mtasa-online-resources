@@ -195,7 +195,7 @@ function Customs.resolve(path)
     return node
 end
 
--- Applies Customs.PRICE_MULT (rounded to whole dollars).
+-- Applies Customs.PRICE_MULT (rounded to whole euros).
 function Customs.price(base)
     return math.floor((tonumber(base) or 0) * (Customs.PRICE_MULT or 1) + 0.5)
 end

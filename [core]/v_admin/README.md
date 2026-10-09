@@ -109,7 +109,7 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 | `/ban <account> <reason>` | 2 | Account ban (never expires). Also stores the serial for an online player. |
 | `/unban <account>` | 2 | Lift an account ban. |
 | `/mute <ID> <minutes> <reason>` | 2 | Chat mute. No `/unmute` – it expires on its own. |
-| `/money` | 4 | Test money (+$2000). |
+| `/money` | 4 | Test money (+€2000). |
 | `/getid <name>` | – | A player's ID from a name (fragment). |
 | `/myid` | – | Your own ID. |
 | `/listacc` | 5 | Every account, to the server log. |

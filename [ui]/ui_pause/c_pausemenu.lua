@@ -130,7 +130,7 @@ local function formatMoney(value)
     local negative = value < 0
     local digits = tostring(math.floor(math.abs(value) + 0.5))
     local grouped = digits:reverse():gsub("(%d%d%d)", "%1."):reverse():gsub("^%.", "")
-    return (negative and "-$" or "$") .. grouped
+    return (negative and "-€" or "€") .. grouped
 end
 
 local function playerMoney()

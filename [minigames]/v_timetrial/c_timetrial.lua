@@ -33,7 +33,7 @@ addEventHandler("onClientRender", root, function()
         "\n#dd00ffTIME TRIAL" ..
         "\n#ffffff" .. trial.name ..
         "\nTIME: " .. trial.time .. " sec" ..
-        "\nREWARD: $" .. trial.reward
+        "\nREWARD: €" .. trial.reward
     )
 
     if active then
@@ -71,7 +71,7 @@ addEventHandler("tt:finish", root, function(success)
     setElementData(localPlayer, "tt:active", false)
 
     if success then
-        uicore:setBanner("TIME TRIAL COMPLATED", "Reward: $" .. trial.reward)
+        uicore:setBanner("TIME TRIAL COMPLATED", "Reward: €" .. trial.reward)
     else
         uicore:setBanner("TIME TRIAL FAILED", "Out of time")
     end

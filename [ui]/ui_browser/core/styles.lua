@@ -79,7 +79,7 @@ BR.classes = {
     ["btn-danger"]  = { bg = BR.theme.danger,  fg = tocolor(255, 255, 255, 255) },
     ["btn-dark"]    = { bg = tocolor(64, 68, 76, 255), fg = tocolor(255, 255, 255, 255) },
     ["btn-ghost"]   = { bg = tocolor(0, 0, 0, 0), fg = BR.theme.primary, border = BR.theme.primary },
-    -- The product "BUY for $..." call to action: always brownish-grey, darkens on hover.
+    -- The product "BUY for €..." call to action: always brownish-grey, darkens on hover.
     ["btn-cta"]     = { bg = tocolor(124, 114, 101, 255), fg = tocolor(255, 255, 255, 255) },
 
     ["muted"]       = { fg = BR.theme.muted },

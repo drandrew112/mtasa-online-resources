@@ -1,10 +1,10 @@
 uicore = exports.ui_core
 ui = function(v) return uicore:ui(v) end
 
--- "$1,234"
+-- "€1,234"
 local function money(n)
     local s = tostring(math.floor(n))
-    return "$" .. (s:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", ""))
+    return "€" .. (s:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", ""))
 end
 
 -- small vector tick, centred on (cx, cy)

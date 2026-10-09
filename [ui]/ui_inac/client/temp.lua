@@ -92,7 +92,7 @@ local function registerNode(node, id, backId, pathPrefix)
                 -- right-hand indicators (rendered like a select value):
                 --   checked -> a tick (wins over everything)
                 --   owned   -> a small ring
-                --   price   -> "$1,234" / "Free"  (number)
+                --   price   -> "€1,234" / "Free"  (number)
                 price         = src.price,
                 checked       = src.checked,
                 owned         = src.owned,

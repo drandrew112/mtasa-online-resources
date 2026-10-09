@@ -108,16 +108,37 @@ local function moneyMetrics()
     return tr, lx, rx, ui(28)
 end
 
--- Egy jobbra igazitott, arnyekolt penz-sor. Visszaadja a sormagassagot.
+-- A pricedown fontban nincs € jel, ezert az elotag ("€", "+ €", "- €")
+-- default-bold fonttal megy, a szam pricedown-nal; a ketto egy dobozba
+-- kozepre igazitva, egymas mellett.
+local MONEY_PREFIX_FONT = "default-bold"
+
+local function drawShadowed(text, x1, y1, x2, y2, color, shadow, soff, scale, font, alignX)
+    dxDrawText(text, x1 + soff, y1 + soff, x2 + soff, y2 + soff, shadow, scale, font, alignX, "center")
+    dxDrawText(text, x1, y1, x2, y2, color, scale, font, alignX, "center")
+end
+
+-- Egy jobbra igazitott, arnyekolt penz-sor ("€ 1,234" / "+ € 100").
+-- Visszaadja a sormagassagot.
 local function drawMoneyRow(text, ty, color, alpha, scale)
     local _, lx, rx, lh = moneyMetrics()
     scale = scale or MONEY_SCALE
     local soff = ui(2)
     local shadow = tocolor(0, 0, 0, alpha / 255 * 160)
-    dxDrawText(text, lx + soff, ty + soff, rx + soff, ty + lh + soff,
-        shadow, scale, "pricedown", "right", "top")
-    dxDrawText(text, lx, ty, rx, ty + lh,
-        color, scale, "pricedown", "right", "top")
+
+    local prefix, amount = text:match("^(.-)%s*([%d,%.]+)$")
+    if not prefix then prefix, amount = "", text end
+
+    local boxH = dxGetFontHeight(scale, "pricedown")
+    local y2 = ty + boxH
+    drawShadowed(amount, lx, ty, rx, y2, color, shadow, soff, scale, "pricedown", "right")
+
+    if prefix ~= "" then
+        -- a default-bold kisebb, felskalazzuk hogy nagyjabol a szamjegyek magassagat hozza
+        local pScale = scale * 0.62 * boxH / dxGetFontHeight(scale, MONEY_PREFIX_FONT)
+        local pRx = rx - dxGetTextWidth(amount, scale, "pricedown") - ui(6)
+        drawShadowed(prefix, lx, ty, pRx, y2, color, shadow, soff, pScale, MONEY_PREFIX_FONT, "right")
+    end
     return lh
 end
 
@@ -128,7 +149,7 @@ bindKey("y", "down", function()
 end)
 
 -- ui_core export: rovid ideig megmutatja a cash-t es alatta a valtozast
--- (+ $ 100 zolddel, - $ 100 pirossal). kind = "add" vagy "take".
+-- (+ € 100 zolddel, - € 100 pirossal). kind = "add" vagy "take".
 function UI.yOverlay:showMoney(kind, change)
     local mo = self.moneyOnly
     mo.active = true
@@ -155,13 +176,13 @@ function UI.yOverlay:drawMoneyOnly()
     local tr = moneyMetrics()
 
     local cash = getPlayerMoney(localPlayer)
-    local lh = drawMoneyRow("$ "..formatMoney(cash), tr.y, tocolor(50, 200, 50, alpha), alpha)
+    local lh = drawMoneyRow("€ "..formatMoney(cash), tr.y, tocolor(50, 200, 50, alpha), alpha)
 
     local sign, col
     if mo.kind == "take" then
-        sign, col = "- $ ", tocolor(230, 60, 60, alpha)
+        sign, col = "- € ", tocolor(230, 60, 60, alpha)
     else
-        sign, col = "+ $ ", tocolor(60, 210, 60, alpha)
+        sign, col = "+ € ", tocolor(60, 210, 60, alpha)
     end
     drawMoneyRow(sign..formatMoney(mo.change), tr.y + lh, col, alpha, MONEY_SCALE * 0.85)
 end
@@ -210,8 +231,8 @@ function UI.yOverlay:draw()
     local cash = getPlayerMoney(localPlayer)
     local bank = tonumber(getElementData(localPlayer, "bank_money")) or 0
 
-    local lh = drawMoneyRow("$ "..formatMoney(cash), tr.y,       tocolor(50, 200, 50, alpha),  alpha)
-    drawMoneyRow("$ "..formatMoney(bank), tr.y + lh, tocolor(120, 180, 255, alpha), alpha)
+    local lh = drawMoneyRow("€ "..formatMoney(cash), tr.y,       tocolor(50, 200, 50, alpha),  alpha)
+    drawMoneyRow("€ "..formatMoney(bank), tr.y + lh, tocolor(120, 180, 255, alpha), alpha)
 
     -- =========================
     -- TOP CENTER – LEVEL / XP

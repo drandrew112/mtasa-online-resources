@@ -51,8 +51,8 @@ PHONE_CONFIG.contacts = {
     {
         key = "julia", name = "Julia", photo = "img/contacts/julia.png",
         actions = {
-            { key = "heal",  label = "Heal  -  $200",          cost = 200 },
-            { key = "armor", label = "Refill armour  -  $500", cost = 500 },
+            { key = "heal",  label = "Heal  -  €200",          cost = 200 },
+            { key = "armor", label = "Refill armour  -  €500", cost = 500 },
         },
     },
     {
