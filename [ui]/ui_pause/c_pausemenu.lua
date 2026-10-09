@@ -6,6 +6,7 @@
 --
 --  * MAP      - live world-map preview, ENTER opens the full-screen bigmap
 --  * JOBS     - Quick Job / Join Lobby / Games: Race / Games: Deathmatch
+--  * STATS    - level / XP / played time + v_stats statistics by category
 --  * SETTINGS - category column + settings column (Display > Show 3D Blips)
 
 local uicore = exports.ui_core
@@ -47,7 +48,7 @@ local C = {
     bank       = tocolor(120, 180, 255, 255),
 }
 
-local TABS = { "MAP", "JOBS", "SETTINGS" }
+local TABS = { "MAP", "JOBS", "STATS", "SETTINGS" }
 
 local pauseMenuOpen = false
 local pauseMapOpen  = false
@@ -65,6 +66,12 @@ local JOBS_ROOT = {
 }
 local jobsMenu     = { view = "root", rootSel = 1, listSel = 1 }
 local jobRefreshAt = 0
+
+-- STATS tab: category column + read-only value column.
+local statsCat       = nil -- nil = category column, otherwise index into the built category list
+local statsSel       = 1
+local statsData      = { defs = nil, values = nil, loaded = false }
+local statsRefreshAt = 0
 
 local settingsCat   = nil -- nil = category column, otherwise index into SETTINGS_TREE
 local settingsSel   = 1
@@ -306,6 +313,8 @@ local function setPauseMenuOpen(open)
         jobsMenu = { view = "root", rootSel = 1, listSel = 1 }
         settingsCat = nil
         settingsSel = 1
+        statsCat, statsSel = nil, 1
+        statsRefreshAt = 0
         if jobsAvailable() then
             exports.v_jobmanager:jobmanagerRequestJobs()
         end
@@ -326,6 +335,10 @@ local function enterContent()
         if jobsAvailable() then
             exports.v_jobmanager:jobmanagerRequestJobs()
         end
+    elseif tab == "STATS" then
+        focus = "content"
+        statsCat, statsSel = nil, 1
+        statsRefreshAt = 0
     elseif tab == "SETTINGS" then
         focus = "content"
         settingsCat = nil
@@ -334,6 +347,10 @@ local function enterContent()
 end
 
 local function contentBack()
+    if TABS[selectedTab] == "STATS" and statsCat then
+        statsCat = nil
+        return
+    end
     if TABS[selectedTab] == "SETTINGS" and settingsCat then
         settingsCat = nil
         settingsSel = 1
@@ -402,6 +419,94 @@ local function handleJobsKey(key)
         end
     end
 end
+
+-- STATS ------------------------------------------------------------------------
+
+local STAT_CATS_ORDER = { "General", "Distance", "Vehicle time", "Combat", "Other" }
+
+local function formatDuration(sec)
+    sec = math.floor(tonumber(sec) or 0)
+    local h, m, s = math.floor(sec / 3600), math.floor(sec % 3600 / 60), sec % 60
+    if h > 0 then return ("%dh %02dm %02ds"):format(h, m, s) end
+    if m > 0 then return ("%dm %02ds"):format(m, s) end
+    return s .. "s"
+end
+
+local function formatInt(n)
+    local s = tostring(math.floor(tonumber(n) or 0))
+    local out = s:reverse():gsub("(%d%d%d)", "%1,"):reverse()
+    return (out:gsub("^,", ""))
+end
+
+local function formatStatValue(def, v)
+    v = tonumber(v) or 0
+    if def.unit == "km" then return ("%.2f km"):format(v) end
+    if def.unit == "s" then return formatDuration(v) end
+    return formatInt(v)
+end
+
+local function statCategoryOf(def)
+    if def.unit == "km" then return "Distance" end
+    if def.unit == "s" then return "Vehicle time" end
+    if def.id:find("^kills") or def.id:find("^deaths") then return "Combat" end
+    return "Other"
+end
+
+-- Builds { {label=, rows={ {label=, value=} }}, ... }; empty categories dropped.
+local function buildStatCategories()
+    local level  = tonumber(getElementData(localPlayer, "level"))
+    local xp     = tonumber(getElementData(localPlayer, "xp"))
+    local nextXp = tonumber(getElementData(localPlayer, "next_xp"))
+    local played = getElementData(localPlayer, "Játékidő")
+
+    local byName = {
+        General = {
+            { label = "Level", value = level and tostring(level) or "-" },
+            { label = "Total XP", value = xp and formatInt(xp) or "-" },
+            { label = "XP to next level", value = (xp and nextXp) and formatInt(math.max(0, nextXp - xp)) or "-" },
+            { label = "Played time", value = (type(played) == "string" and played ~= "N/A") and played or "-" },
+        },
+    }
+    for _, def in ipairs(statsData.defs or {}) do
+        local cat = statCategoryOf(def)
+        byName[cat] = byName[cat] or {}
+        local v = statsData.values and statsData.values[def.id]
+        table.insert(byName[cat], { label = def.name, value = formatStatValue(def, v) })
+    end
+
+    local out = {}
+    for _, name in ipairs(STAT_CATS_ORDER) do
+        if byName[name] then out[#out + 1] = { label = name, rows = byName[name] } end
+    end
+    return out
+end
+
+local function handleStatsKey(key)
+    local cats = buildStatCategories()
+    if statsCat == nil then
+        if key == "arrow_u" then
+            statsSel = moveSel(statsSel, -1, #cats)
+        elseif key == "arrow_d" then
+            statsSel = moveSel(statsSel, 1, #cats)
+        elseif key == "enter" or key == "arrow_r" then
+            statsCat = statsSel
+            statsSel = 1
+        end
+        return
+    end
+    local cat = cats[statsCat]
+    if not cat then statsCat = nil return end
+    if key == "arrow_u" then
+        statsSel = moveSel(statsSel, -1, #cat.rows)
+    elseif key == "arrow_d" then
+        statsSel = moveSel(statsSel, 1, #cat.rows)
+    end
+end
+
+addEvent("uipause:statsData", true)
+addEventHandler("uipause:statsData", root, function(defs, values)
+    statsData.defs, statsData.values, statsData.loaded = defs or nil, values or nil, true
+end)
 
 local function handleSettingsKey(key)
     if settingsCat == nil then
@@ -533,11 +638,13 @@ addEventHandler("onClientKey", root, function(key, press)
     end
 
     local tab = TABS[selectedTab]
-    if tab == "JOBS" or tab == "SETTINGS" then
+    if tab == "JOBS" or tab == "SETTINGS" or tab == "STATS" then
         playUI(key == "enter" and "select" or "click")
     end
     if tab == "JOBS" then
         handleJobsKey(key)
+    elseif tab == "STATS" then
+        handleStatsKey(key)
     elseif tab == "SETTINGS" then
         handleSettingsKey(key)
     end
@@ -726,6 +833,34 @@ local function drawJobsTab(x, y, w, h)
     end
 end
 
+local function drawStatsTab(x, y, w, h)
+    local gap = S(6)
+    local leftW = math.floor(w * 0.30)
+    local rightX = x + leftW + gap
+    local rightW = w - leftW - gap
+
+    local cats = buildStatCategories()
+    local catIndex = math.max(1, math.min(statsCat or statsSel, #cats))
+    local cat = cats[catIndex]
+
+    drawColumnHeader(x, y, leftW, "STATS")
+    drawColumnHeader(rightX, y, rightW, cat and string.upper(cat.label) or "")
+
+    local listY = y + HEAD_H
+    local catRows = {}
+    for i, c in ipairs(cats) do catRows[i] = { label = c.label, value = ">" } end
+    drawRows(x, listY, leftW, catRows, catIndex, focus == "content")
+
+    if not cat then return end
+    drawRows(rightX, listY, rightW, cat.rows, statsSel, focus == "content" and statsCat ~= nil)
+
+    if statsData.loaded and not statsData.defs then
+        local ty = listY + #cat.rows * ROW_H + S(8)
+        dxDrawText("Statistics unavailable", rightX + S(12), ty, rightX + rightW, ty + S(22),
+            C.txtDim, S(1.0), FONT.row, "left", "top")
+    end
+end
+
 local function drawSettingsTab(x, y, w, h)
     local gap = S(6)
     local leftW = math.floor(w * 0.30)
@@ -783,6 +918,7 @@ local function contextHelp()
         local t = TABS[selectedTab]
         if t == "MAP" then return "Open the full-screen map." end
         if t == "JOBS" then return "Browse and join jobs." end
+        if t == "STATS" then return "Your level, XP, played time and statistics." end
         return "Change your settings."
     end
     local tab = TABS[selectedTab]
@@ -798,6 +934,9 @@ local function contextHelp()
             local job = list[jobsMenu.listSel]
             return job and (job.description or "Join this job.") or ""
         end
+    end
+    if tab == "STATS" then
+        return "Your level, XP, played time and statistics."
     end
     if tab == "SETTINGS" then
         if settingsCat == nil then
@@ -866,6 +1005,8 @@ local function drawPanel()
         drawMapTab(contentX, contentY, contentW, contentH)
     elseif tab == "JOBS" then
         drawJobsTab(contentX, contentY, contentW, contentH)
+    elseif tab == "STATS" then
+        drawStatsTab(contentX, contentY, contentW, contentH)
     elseif tab == "SETTINGS" then
         drawSettingsTab(contentX, contentY, contentW, contentH)
     end
@@ -893,6 +1034,14 @@ addEventHandler("onClientRender", root, function()
             if jobsMenu.view == "joinlobby" then
                 exports.v_jobmanager:jobmanagerRequestLobbies()
             end
+        end
+    end
+
+    if TABS[selectedTab] == "STATS" then
+        local now = getTickCount()
+        if now - statsRefreshAt > 3000 then
+            statsRefreshAt = now
+            triggerServerEvent("uipause:requestStats", localPlayer)
         end
     end
 

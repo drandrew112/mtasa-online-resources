@@ -119,6 +119,20 @@ local function onKey()
     jobmanagerJoinJob(nearbyJobId)
 end
 
+-- Marker games come from the server (game files are server-side only).
+addEvent("jobmanager:markers", true)
+addEventHandler("jobmanager:markers", resourceRoot, function(list)
+    jobs, jobsById = {}, {}
+    for _, job in ipairs(type(list) == "table" and list or {}) do
+        table.insert(jobs, job)
+        jobsById[job.id] = job
+    end
+end)
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    triggerServerEvent("jobmanager:requestMarkers", resourceRoot)
+end)
+
 addEvent("jobmanager:showJoinHint", true)
 addEventHandler("jobmanager:showJoinHint", resourceRoot, function(jobId)
     if type(jobId) ~= "string" or not jobsById[jobId] then return end

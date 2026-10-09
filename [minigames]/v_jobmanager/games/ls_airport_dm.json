@@ -1,0 +1,26 @@
+{
+ "id": "ls_airport_dm",
+ "name": "Los Santos Airport Deathmatch",
+ "type": "deathmatch",
+ "createdBy": "DrAndrew112",
+ "description": "Last player standing wins. Fight it out across the Los Santos airport apron with deagles and full armour.",
+ "image": "assets/jobs/ls_airport_dm.jpg",
+ "minPlayers": 2,
+ "maxPlayers": 8,
+ "marker": [1941.3, -1778.4, 13.39],
+ "deathmatch": {
+  "weapon": 24,
+  "ammo": 120,
+  "armour": 100,
+  "spawnpoints": [
+   [1955.3, -1776, 13.39, 90],
+   [1938.3, -1758, 13.39, 180],
+   [1917, -1774, 13.39, 270],
+   [1940, -1800, 13.39, 0],
+   [1973, -1786, 13.39, 90],
+   [1925, -1811, 13.39, 0],
+   [1904, -1793, 13.39, 270],
+   [1961, -1743, 13.39, 180]
+  ]
+ }
+}

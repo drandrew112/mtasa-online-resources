@@ -83,7 +83,7 @@ local function syncLobby(lobby)
             id = lobby.id, name = lobby.job.name, type = lobby.job.type,
             players = names, min = lobby.job.minPlayers, max = lobby.job.maxPlayers,
             isHost = player == lobby.host,
-            image = lobby.job.image, description = lobby.job.description,
+            image = lobby.job.image, description = lobby.job.description, createdBy = lobby.job.createdBy,
         })
     end
 end
@@ -116,7 +116,14 @@ local function leaveLobby(player, quiet)
     return true
 end
 
+-- Players inside v_jobcreator cannot join lobbies (and vice versa: the creator
+-- refuses players that have a playerState here).
+local function inCreator(player)
+    return getElementData(player, "jobCreator") == true
+end
+
 local function joinJob(player, job)
+    if inCreator(player) then return false end
     if playerState[player] then
         message(player, "Leave your current lobby or match first.", 255, 120, 120)
         return false
@@ -131,6 +138,7 @@ local function joinJob(player, job)
 end
 
 local function joinLobbyById(player, lobbyId)
+    if inCreator(player) then return false end
     if playerState[player] then
         message(player, "Leave your current lobby or match first.", 255, 120, 120)
         return false
@@ -151,6 +159,7 @@ end
 -- Random open lobby across ALL jobs, or a brand new lobby for a random job
 -- if none are joinable right now.
 local function quickJob(player)
+    if inCreator(player) then return false end
     if playerState[player] then
         message(player, "Leave your current lobby or match first.", 255, 120, 120)
         return false
@@ -225,14 +234,14 @@ end
 -- Same mechanism for every match; never a specific player's own viewpoint.
 local function computeCamera(match)
     if match.job.type == JOB_TYPE_RACE then
-        local route = races and races[match.job.raceId]
+        local route = match.job.race
         if route and route.finishCamera then return route.finishCamera end
         if route and route.spawnpoints and #route.spawnpoints > 0 then
             local cx, cy, cz = averagePoint(route.spawnpoints)
             return { pos = { cx, cy, cz + 60 }, lookAt = { cx, cy, cz }, roll = 0, fov = 90 }
         end
-    elseif match.job.spawns and #match.job.spawns > 0 then
-        local cx, cy, cz = averagePoint(match.job.spawns)
+    elseif match.job.deathmatch and #match.job.deathmatch.spawnpoints > 0 then
+        local cx, cy, cz = averagePoint(match.job.deathmatch.spawnpoints)
         return { pos = { cx, cy, cz + 60 }, lookAt = { cx, cy, cz }, roll = 0, fov = 90 }
     end
     return { pos = { 0, 0, 100 }, lookAt = { 0, 0, 0 }, roll = 0, fov = 90 }
@@ -258,6 +267,7 @@ local function endMatch(match, reason)
     end
     destroyElements(match.vehicles)
     destroyElements(match.markers)
+    destroyElements(match.objects)
     matches[match.id] = nil
 end
 
@@ -266,7 +276,7 @@ local function startMatch(lobby)
     lobby.locked = true
     local match = {
         id = nextMatchId, job = lobby.job, players = lobby.players, dimension = 50000 + nextMatchId,
-        vehicles = {}, markers = {}, progress = {}, finished = {}, eliminated = {},
+        vehicles = {}, markers = {}, objects = {}, progress = {}, finished = {}, eliminated = {},
         playerNames = {}, kills = {}, deaths = {}, finishOrder = {}, finishTime = {},
         crewTags = {}, crewColors = {},
         ended = false,
@@ -285,6 +295,19 @@ local function startMatch(lobby)
     end
     local mode = JobModes[match.job.type]
     if not mode then endMatch(match, "Unsupported job type.") return false, "Unsupported job type." end
+    for index, def in ipairs(match.job.objects or {}) do
+        local object = createObject(def.model, def.x, def.y, def.z, def.rx or 0, def.ry or 0, def.rz or 0)
+        if object then
+            setElementDimension(object, match.dimension)
+            if def.scale then setObjectScale(object, def.scale) end
+            if def.alpha then setElementAlpha(object, def.alpha) end
+            if def.collisions == false then setElementCollisionsEnabled(object, false) end
+            if def.doublesided then setElementDoubleSided(object, true) end
+            table.insert(match.objects, object)
+        else
+            outputDebugString("[v_jobmanager] " .. match.job.id .. ": objects[" .. index .. "] model " .. tostring(def.model) .. " could not be created", 2)
+        end
+    end
     mode.start(match, endMatch)
     return true
 end
@@ -337,7 +360,8 @@ addEventHandler("jobmanager:requestJobs", resourceRoot, function()
         table.insert(list, {
             id = job.id, name = job.name, type = job.type,
             min = job.minPlayers, max = job.maxPlayers,
-            image = job.image, description = job.description,
+            image = job.image, description = job.description, createdBy = job.createdBy,
+            community = job.community or false,
         })
     end
     triggerClientEvent(client, "jobmanager:jobs", resourceRoot, list)
@@ -352,7 +376,7 @@ addEventHandler("jobmanager:requestLobbies", resourceRoot, function()
                 id = lobby.id, jobId = lobby.job.id, jobName = lobby.job.name, type = lobby.job.type,
                 hostName = lobby.host and getPlayerName(lobby.host) or "?",
                 count = #lobby.players, max = lobby.job.maxPlayers,
-                image = lobby.job.image, description = lobby.job.description,
+                image = lobby.job.image, description = lobby.job.description, createdBy = lobby.job.createdBy,
             })
         end
     end
@@ -487,15 +511,62 @@ addEventHandler("onPlayerQuit", root, function()
     end
 end)
 
+-- jobId -> { marker, blip }
+local markerElements = {}
+
+local function removeJobMarker(jobId)
+    local entry = markerElements[jobId]
+    if not entry then return end
+    jobMarkers[entry.marker] = nil
+    if isElement(entry.blip) then destroyElement(entry.blip) end
+    if isElement(entry.marker) then destroyElement(entry.marker) end
+    markerElements[jobId] = nil
+end
+
+local function createJobMarker(job)
+    removeJobMarker(job.id)
+    if not job.marker then return end
+    local marker = createMarker(job.marker[1], job.marker[2], job.marker[3] - 1, "cylinder", 2, 50, 160, 255, 120)
+    jobMarkers[marker] = job
+    local blip = createBlipAttachedTo(marker, 9, 2, 50, 160, 255, 255)
+    -- v_radar shows this as the blip's name (bigmap hover, bigmap blip menu, 3D blips)
+    setElementData(blip, "tooltipText", job.name)
+    markerElements[job.id] = { marker = marker, blip = blip }
+end
+
+local resourceStarted = false
 addEventHandler("onResourceStart", resourceRoot, function()
-    for _, job in ipairs(jobs) do
-        local marker = createMarker(job.marker[1], job.marker[2], job.marker[3] - 1, "cylinder", 2, 50, 160, 255, 120)
-        jobMarkers[marker] = job
-        local blip = createBlipAttachedTo(marker, 9, 2, 50, 160, 255, 255)
-        -- v_radar shows this as the blip's name (bigmap hover, bigmap blip menu, 3D blips)
-        setElementData(blip, "tooltipText", job.name)
-    end
+    resourceStarted = true
+    for _, job in ipairs(jobs) do createJobMarker(job) end
 end)
+
+-- Only games that have a world marker need to be known by the client (3D labels, E to join).
+local function sendMarkers(player)
+    local list = {}
+    for _, job in ipairs(jobs) do
+        if job.marker then
+            table.insert(list, { id = job.id, name = job.name, type = job.type,
+                minPlayers = job.minPlayers, maxPlayers = job.maxPlayers, marker = job.marker })
+        end
+    end
+    triggerClientEvent(player, "jobmanager:markers", resourceRoot, list)
+end
+
+-- Live (re)registration from core/games.lua (community publish / unpublish).
+function onJobRegistered(job)
+    if not resourceStarted then return end
+    createJobMarker(job)
+    sendMarkers(root)
+end
+
+function onJobUnregistered(job)
+    if not resourceStarted then return end
+    removeJobMarker(job.id)
+    sendMarkers(root)
+end
+
+addEvent("jobmanager:requestMarkers", true)
+addEventHandler("jobmanager:requestMarkers", resourceRoot, function() sendMarkers(client) end)
 
 addEventHandler("onMarkerHit", root, function(player, matchingDimension)
     local job = jobMarkers[source]

@@ -34,9 +34,24 @@ match cleanup are all controlled on the server. `jobmanager:joinJob`,
 `jobmanager:startJob`, and `jobmanager:leaveJob` are safe integration points
 for the planned panel; they derive the player from the MTA `client` value.
 
-## Configuration
+## Game files (`games/<id>.json`)
 
-Add jobs only in the owning `mode_*` directory. Every race job needs a valid `raceId` in the
-route data. Deathmatch jobs need at least `minPlayers` spawn entries,
-a weapon, and ammunition. The currently enabled routes deliberately omit the
-incomplete legacy jobs and the malformed legacy race #3 spawn data.
+Every game is a self-contained JSON file; the structure is the contract the
+future creator mode will write. Add the id to `games/index.json` and to the
+`<file>` list in `meta.xml`. Invalid games are skipped with a debug warning.
+
+```
+common:     id, name, type ("race"|"deathmatch"), createdBy, description, image,
+            minPlayers, maxPlayers
+marker:     [x, y, z]  optional - without it (community games) the game has no world
+            marker/blip and is reached via the job browser, phone invite or /quickjob
+objects:    optional [{model,x,y,z,rx?,ry?,rz?,scale?,alpha?,collisions?,doublesided?}] -
+            created in the match dimension at match start, destroyed at the end (max 1000)
+race:       { vehicles:[model], spawnpoints:[[x,y,z,rot]], checkpoints:[[x,y,z,size]],
+              finish:[x,y,z,size], finishCamera?:{pos,lookAt,roll,fov} }
+deathmatch: { weapon, ammo, armour?, spawnpoints:[[x,y,z,rot]] }
+```
+
+`createdBy` is required (existing games: `DrAndrew112`) and is shown in the lobby.
+Spawnpoints need at least `maxPlayers` entries. Loading lives in `core/games.lua`;
+each mode validates its own block via `JobModes[type].validate`.

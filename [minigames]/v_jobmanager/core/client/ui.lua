@@ -345,6 +345,7 @@ addEventHandler("onClientRender", root, function()
         { "Type", (lobby.type == "race" and "Race") or (lobby.type == "deathmatch" and "Deathmatch") or "Job" },
         { "Players", tostring(lobby.min) .. "-" .. tostring(lobby.max) },
         { "In lobby", tostring(#lobby.players) },
+        { "Created by", lobby.createdBy or "-" },
     }
     for i, d in ipairs(details) do
         local ry = dY + imgH + (i - 1) * rowH

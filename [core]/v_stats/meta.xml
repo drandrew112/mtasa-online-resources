@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="Stats" version="1.0.0" type="script"
+          description="Per-player statistics (distance, drive time, kills, deaths) stored as JSON in account data" />
+
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
+
+    <script src="config.lua" type="shared" />
+
+    <script src="server/registry.lua" type="server" />
+    <script src="server/storage.lua" type="server" />
+    <script src="server/api.lua" type="server" />
+    <script src="server/tracker.lua" type="server" />
+    <script src="server/events.lua" type="server" />
+
+    <!-- definitions -->
+    <export function="getStatDefinitions" type="server" />
+    <export function="getStatDefinition" type="server" />
+
+    <!-- player state (who = player element or account name) -->
+    <export function="getStat" type="server" />
+    <export function="getStats" type="server" />
+
+    <!-- changes (for other resources / future stats) -->
+    <export function="addStat" type="server" />
+</meta>

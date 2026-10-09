@@ -48,7 +48,7 @@ local function respawnAtCheckpoint(player)
 end
 
 local function createCheckpoint(match, player, endMatch)
-    local route = races[match.job.raceId]
+    local route = match.job.race
     local index = match.progress[player] or 1
     local point, isFinish = route.checkpoints[index], false
     if not point then point, isFinish = route.finish, true end
@@ -101,13 +101,22 @@ local function startCountdown(match, endMatch, count)
 end
 
 JobModes[JOB_TYPE_RACE] = {
+    validate = function(game)
+        local race = game.race
+        if type(race) ~= "table" then return false, "missing race block" end
+        if type(race.vehicles) ~= "table" or type(race.vehicles[1]) ~= "number" then return false, "race.vehicles needs a vehicle model" end
+        if not validatePoints(race.spawnpoints, 3, game.maxPlayers) then return false, "race.spawnpoints needs at least maxPlayers {x,y,z,rot}" end
+        if not validatePoints(race.checkpoints, 3, 0) then return false, "invalid race.checkpoints" end
+        if not validatePoints({ race.finish }, 3, 1) then return false, "invalid race.finish" end
+        return true
+    end,
     start = function(match, endMatch)
-        local route = races[match.job.raceId]
-        if not route or not route.settings or not route.spawnpoints or #route.spawnpoints < #match.players then
+        local route = match.job.race
+        if not route or #route.spawnpoints < #match.players then
             endMatch(match, "Race configuration is incomplete.")
             return
         end
-        local vehicleModel = route.settings.vehicles[1] or 411
+        local vehicleModel = route.vehicles[1] or 411
         for index, player in ipairs(match.players) do
             local spawn = route.spawnpoints[index]
             local vehicle = createVehicle(vehicleModel, spawn[1], spawn[2], spawn[3], 0, 0, spawn[4] or 0)
