@@ -8,9 +8,11 @@
     <script src="core/games.lua" type="server" />
     <script src="core/community.lua" type="server" />
     <script src="core/official.lua" type="server" />
+    <script src="core/rewards.lua" type="server" />
     <script src="core/server.lua" type="server" />
 
     <script src="core/client/ui.lua" type="client" />
+    <script src="core/client/results.lua" type="client" />
     <script src="core/client/scoreboard.lua" type="client" />
     <script src="core/client/markers.lua" type="client" />
     <script src="core/client/images.lua" type="client" />
@@ -33,6 +35,12 @@
     <export function="jobmanagerOfficialSave" type="server" />
     <export function="jobmanagerOfficialPublish" type="server" />
     <export function="jobmanagerOfficialImage" type="server" />
+    <!-- runtime per-game reward multipliers (v_weekly); see core/rewards.lua -->
+    <export function="jobmanagerSetMultiplier" type="server" />
+    <export function="jobmanagerGetMultiplier" type="server" />
+    <export function="jobmanagerGetMultipliers" type="server" />
+    <export function="jobmanagerClearMultiplier" type="server" />
+    <export function="jobmanagerClearMultipliers" type="server" />
     <export function="jobmanagerRequestJobs" type="client" />
     <export function="jobmanagerGetJobs" type="client" />
     <export function="jobmanagerRequestLobbies" type="client" />

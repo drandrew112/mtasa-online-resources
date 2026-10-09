@@ -77,3 +77,27 @@ Official games can be edited by admins in the creator through `core/official.lua
 - exports: `jobmanagerOfficialList`, `jobmanagerOfficialLoad`, `jobmanagerOfficialSave`, `jobmanagerOfficialPublish`, `jobmanagerOfficialImage`;
 - Save writes a draft to `games/drafts/<id>.json`, and Publish overwrites `games/<id>.json` and re-registers the game.
 
+
+## Rewards (core/rewards.lua)
+
+At match end every player still in the match is paid **cash** (`givePlayerMoney`) and
+**XP** (`v_levelsys:giveXp`), then sees the results screen (`core/client/results.lua`)
+before the scoreboard: placement band -> payout (right) -> XP (left) -> level bar.
+Aborted matches (resource stop) pay nothing; players who quit get nothing.
+
+- Race: route km (spawn -> checkpoints -> finish) x `perKm`, clamped; DNF x0.25.
+- Deathmatch: match minutes x `perMinute` (clamped) + kills x `perKill`.
+- Both: x(1 + 0.05 x (players-1)) max x1.5, then place multiplier (1st x1.5, 2nd x1.25, 3rd x1.1).
+- Solo (match started with 1 player): fixed €500, no placement XP.
+- Tuning lives in the `REWARDS` table.
+
+Runtime per-game multipliers (not persisted, applied to the final money / XP total;
+meant for v_weekly):
+
+```lua
+exports.v_jobmanager:jobmanagerSetMultiplier(jobId, money, xp, label)  -- 1,1 removes it
+exports.v_jobmanager:jobmanagerGetMultiplier(jobId)   -- money, xp, label|false
+exports.v_jobmanager:jobmanagerGetMultipliers()       -- { [jobId] = {money, xp, label} }
+exports.v_jobmanager:jobmanagerClearMultiplier(jobId)
+exports.v_jobmanager:jobmanagerClearMultipliers()
+```

@@ -8,6 +8,8 @@ local bound = false
 local function onKey(key, press)
     if not press or not Editor.active then return end
     if inputBlocked() then return end
+    -- onClientKey reports function keys upper-case ("F5"); the config is lower-case
+    key = key:lower()
 
     if Editor.photo then
         if Photo.key(key) then cancelEvent() end

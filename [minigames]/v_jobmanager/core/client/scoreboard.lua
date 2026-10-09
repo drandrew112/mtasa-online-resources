@@ -1,6 +1,7 @@
 -- End-of-match scoreboard: cinematic camera + stats, then a "pick next game"
 -- tile grid (6 wide x 2 tall) plus a shorter Replay / Free Mode row below it.
--- Opens on jobmanager:matchEnded, entirely separate from the pause menu.
+-- Opens on jobmanager:matchEnded, entirely separate from the pause menu. When
+-- the payload carries a reward, the results screen (results.lua) plays first.
 
 local screenW, screenH = guiGetScreenSize()
 local uicore = exports.ui_core
@@ -28,7 +29,7 @@ local C = {
 
 local COLS, MAIN_ROWS = 6, 2
 
-local view = nil       -- nil | "stats" | "picker"
+local view = nil       -- nil | "results" | "stats" | "picker"
 local payload = nil     -- last jobmanager:matchEnded payload
 local mainIndex, bottomIndex, activeRow = 1, 1, 1
 
@@ -47,6 +48,10 @@ end
 local function openScoreboard(data)
     payload = data
     view = "stats"
+    if data.reward then
+        view = "results"
+        Results.start(data)
+    end
     mainIndex, bottomIndex, activeRow = 1, 1, 1
 
     showCursor(false)
@@ -64,6 +69,7 @@ end
 
 local function closeScoreboard()
     view, payload = nil, nil
+    Results.stop()
     setCameraTarget(localPlayer)
     if isElement(localPlayer) then setElementFrozen(localPlayer, false) end
     setElementData(localPlayer, "hideHUD", false)
@@ -87,6 +93,20 @@ end)
 
 addEventHandler("onClientKey", root, function(key, down)
     if not down or not view then return end
+
+    if view == "results" then
+        if key == "backspace" then
+            cancelEvent()
+            closeScoreboard()
+        elseif key == "enter" then
+            cancelEvent()
+            if not Results.advance() then
+                Results.stop()
+                view = "stats"
+            end
+        end
+        return
+    end
 
     if view == "stats" then
         if key == "backspace" then
@@ -264,7 +284,15 @@ local function drawPicker()
 end
 
 addEventHandler("onClientRender", root, function()
-    if view == "stats" then
+    if view == "results" then
+        if Results.isOver() then
+            Results.stop()
+            view = "stats"
+            drawStats()
+        else
+            Results.draw()
+        end
+    elseif view == "stats" then
         drawStats()
     elseif view == "picker" then
         drawPicker()

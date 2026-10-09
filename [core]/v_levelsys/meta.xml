@@ -8,4 +8,5 @@
 	<script src="server.lua" type="server" />
 
 	<export function="giveXp" type="server" />
+	<export function="getNextXp" type="server" />
 </meta>

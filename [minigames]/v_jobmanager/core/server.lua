@@ -247,21 +247,25 @@ local function computeCamera(match)
     return { pos = { 0, 0, 100 }, lookAt = { 0, 0, 0 }, roll = 0, fov = 90 }
 end
 
-local function endMatch(match, reason)
+-- `aborted` (resource stop, broken job) skips the payouts (core/rewards.lua).
+local function endMatch(match, reason, aborted)
     if not match or match.ended then return end
     match.ended = true
     local mode = JobModes[match.job.type]
     if mode and mode.onEnd then mode.onEnd(match) end
     local stats = buildStats(match)
     local camera = computeCamera(match)
+    local rewards = not aborted and buildRewards(match) or {}
     for _, player in ipairs(match.players) do
         local state = playerState[player]
         if state and state.matchId == match.id then
             restorePlayer(player, state.returnState)
             playerState[player] = nil
+            local reward = rewards[player]
+            if reward then payReward(player, reward) end
             triggerClientEvent(player, "jobmanager:matchEnded", resourceRoot, {
                 reason = reason, jobId = match.job.id, jobName = match.job.name,
-                type = match.job.type, stats = stats, camera = camera,
+                type = match.job.type, stats = stats, camera = camera, reward = reward,
             })
         end
     end
@@ -279,6 +283,7 @@ local function startMatch(lobby)
         vehicles = {}, markers = {}, objects = {}, progress = {}, finished = {}, eliminated = {},
         playerNames = {}, kills = {}, deaths = {}, finishOrder = {}, finishTime = {},
         crewTags = {}, crewColors = {},
+        startPlayers = #lobby.players, startTick = getTickCount(),
         ended = false,
     }
     nextMatchId = nextMatchId + 1
@@ -294,7 +299,7 @@ local function startMatch(lobby)
         triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, match.job.name)
     end
     local mode = JobModes[match.job.type]
-    if not mode then endMatch(match, "Unsupported job type.") return false, "Unsupported job type." end
+    if not mode then endMatch(match, "Unsupported job type.", true) return false, "Unsupported job type." end
     for index, def in ipairs(match.job.objects or {}) do
         local object = createObject(def.model, def.x, def.y, def.z, def.rx or 0, def.ry or 0, def.rz or 0)
         if object then
@@ -584,7 +589,7 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     local activeMatches = {}
     for _, match in pairs(matches) do table.insert(activeMatches, match) end
-    for _, match in ipairs(activeMatches) do endMatch(match, "Resource stopped.") end
+    for _, match in ipairs(activeMatches) do endMatch(match, "Resource stopped.", true) end
 end)
 
 -- Public server API for other resources. These functions keep the validation and
