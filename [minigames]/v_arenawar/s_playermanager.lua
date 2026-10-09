@@ -55,6 +55,12 @@ function enterArena(player)
         arenaPlayers[player] = true
         updateArenaPlayerCount()
 
+        -- Achievement (a v_achievements opcionális: csak akkor hívjuk, ha fut)
+        local ach = getResourceFromName("v_achievements")
+        if ach and getResourceState(ach) == "running" then
+            exports.v_achievements:unlockAchievement(player, "arena_war")
+        end
+
         -- Fekete képernyő ("töltőképernyő" hatás), hogy ne tűnjön random teleportnak.
         -- 1) elsötétítés  2) fekete alatt teleport  3) várunk, míg az aréna betöltődik  4) visszafade
         fadeCamera(player, false, 1.0, 0, 0, 0)

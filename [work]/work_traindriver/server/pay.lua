@@ -65,6 +65,11 @@ addEventHandler("onRailServiceComplete", root, function(consistId, tripId, start
     if not isPlayerTrainDriver(driver) then return end
     Paid[tripId] = getTickCount()
     pay(driver, summary)
+
+    local ach = getResourceFromName("v_achievements")
+    if ach and getResourceState(ach) == "running" then
+        exports.v_achievements:addStat(driver, "train_services", 1)
+    end
 end)
 
 setTimer(function()

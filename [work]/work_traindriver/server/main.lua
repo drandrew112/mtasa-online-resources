@@ -57,7 +57,11 @@ end)
 for _, name in ipairs({ "onPlayerWorkDutyStart", "onPlayerWorkDutyEnd" }) do addEvent(name) end
 
 addEventHandler("onPlayerWorkDutyStart", root, function(workId)
-    if workId == TRAINDRIVER.WORK_ID then setRailway(source, true) end
+    if workId ~= TRAINDRIVER.WORK_ID then return end
+    setRailway(source, true)
+    if isRunning("v_achievements") then
+        exports.v_achievements:unlockAchievement(source, "train_duty")
+    end
 end)
 
 addEventHandler("onPlayerWorkDutyEnd", root, function(workId)

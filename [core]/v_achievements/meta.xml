@@ -1,0 +1,38 @@
+<meta>
+    <info author="DrAndrew112" name="Achievements" version="1.0.0" type="script"
+          description="Config-registered one-time and progress achievements with XP rewards" />
+
+    <include resource="v_mysql" />
+    <include resource="v_accounts" />
+    <include resource="v_levelsys" />
+    <include resource="ui_core" />
+
+    <script src="config.lua" type="shared" />
+
+    <script src="server/registry.lua" type="server" />
+    <script src="server/storage.lua" type="server" />
+    <script src="server/api.lua" type="server" />
+    <script src="server/admin.lua" type="server" />
+
+    <script src="client/notify.lua" type="client" />
+
+    <!-- definitions -->
+    <export function="getAchievements" type="server" />
+    <export function="getAchievement" type="server" />
+    <export function="getAchievementCategories" type="server" />
+
+    <!-- player state (who = player element or account name) -->
+    <export function="getPlayerAchievements" type="server" />
+    <export function="getPlayerAchievement" type="server" />
+    <export function="isAchievementUnlocked" type="server" />
+    <export function="getPlayerAchievementSummary" type="server" />
+    <export function="getStat" type="server" />
+
+    <!-- changes -->
+    <export function="unlockAchievement" type="server" />
+    <export function="addAchievementProgress" type="server" />
+    <export function="setAchievementProgress" type="server" />
+    <export function="addStat" type="server" />
+    <export function="setStat" type="server" />
+    <export function="resetPlayerAchievement" type="server" />
+</meta>

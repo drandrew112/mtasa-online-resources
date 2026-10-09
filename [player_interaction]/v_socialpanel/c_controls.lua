@@ -9,6 +9,8 @@
 
 UI = {}
 
+local beginClip, endClip   -- lent, a "Vagas" reszben
+
 local sw, sh = guiGetScreenSize()
 
 -- Egy frame-re "elkapott" bal-kattintas.
@@ -24,6 +26,7 @@ UI.activeField = nil
 --------------------------------------------------------------------------------
 
 function UI.beginFrame()
+    endClip() -- ha egy hiba miatt elmaradt az endScroll
     UI._click = pendingClick
     pendingClick = false
     UI._wheel = wheelDelta
@@ -35,6 +38,10 @@ function UI.beginFrame()
 end
 
 local function inside(x, y, w, h)
+    local c = UI.clip
+    if c and (UI.mx < c.x or UI.mx > c.x + c.w or UI.my < c.y or UI.my > c.y + c.h) then
+        return false
+    end
     return UI.mx >= x and UI.mx <= x + w and UI.my >= y and UI.my <= y + h
 end
 UI.inside = inside
@@ -155,13 +162,78 @@ function UI.beginScroll(id, x, y, w, h, contentHeight)
     end
     s = math.max(0, math.min(maxScroll, s))
     UI.scroll[id] = s
+    UI._bar = nil
     if maxScroll > 0 then
         local barH = math.max(24, h * (h / contentHeight))
-        local barY = y + (h - barH) * (s / maxScroll)
-        dxDrawRectangle(x + w - 4, y, 4, h, tocolor(0, 0, 0, 30))
-        dxDrawRectangle(x + w - 4, barY, 4, barH, tocolor(0, 0, 0, 120))
+        UI._bar = { x = x + w - 4, y = y, h = h, barY = y + (h - barH) * (s / maxScroll), barH = barH }
     end
+    beginClip(id, x, y, w, h)
     return s
+end
+
+-- A beginScroll utani rajzolast a listaterulet szelere vagja (render target),
+-- majd a sorok fole rajzolja a gorgetosavot. Minden beginScroll utan, a lista
+-- kirajzolasa vegen kotelezo meghivni.
+function UI.endScroll()
+    endClip()
+    local b = UI._bar
+    UI._bar = nil
+    if b then
+        dxDrawRectangle(b.x, b.y, 4, b.h, tocolor(0, 0, 0, 30))
+        dxDrawRectangle(b.x, b.barY, 4, b.barH, tocolor(0, 0, 0, 120))
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Vagas (clipping)
+--------------------------------------------------------------------------------
+-- A gorgetett lista egy render targetbe rajzol: a dxDraw* fuggvenyeket erre az
+-- idore eltoljuk a terulet bal felso sarkahoz, a kattintast pedig (inside) a
+-- teruletre korlatozzuk. Ha a render target nem hozhato letre, nincs vagas.
+
+local clipTargets = {}   -- id -> { rt, w, h }
+local rawRect, rawText, rawImage = dxDrawRectangle, dxDrawText, dxDrawImage
+local activeRT = nil
+
+local function shifted(ox, oy)
+    dxDrawRectangle = function(x, y, ...)
+        return rawRect(x - ox, y - oy, ...)
+    end
+    dxDrawText = function(str, l, t, r, b, ...)
+        return rawText(str, l - ox, t - oy, r and (r - ox), b and (b - oy), ...)
+    end
+    dxDrawImage = function(x, y, ...)
+        return rawImage(x - ox, y - oy, ...)
+    end
+end
+
+function beginClip(id, x, y, w, h)
+    w, h = math.max(1, math.floor(w)), math.max(1, math.floor(h))
+    local ct = clipTargets[id]
+    if not ct or ct.w ~= w or ct.h ~= h or not isElement(ct.rt) then
+        if ct and isElement(ct.rt) then destroyElement(ct.rt) end
+        local rt = dxCreateRenderTarget(w, h, true)
+        ct = { rt = rt, w = w, h = h }
+        clipTargets[id] = ct
+    end
+    UI.clip = { x = x, y = y, w = w, h = h }
+    if not ct.rt then return end
+
+    dxSetRenderTarget(ct.rt, true)
+    dxSetBlendMode("modulate_add")
+    shifted(x, y)
+    activeRT = { rt = ct.rt, x = x, y = y, w = w, h = h }
+end
+
+function endClip()
+    UI.clip = nil
+    if not activeRT then return end
+    dxDrawRectangle, dxDrawText, dxDrawImage = rawRect, rawText, rawImage
+    dxSetRenderTarget()
+    dxSetBlendMode("add")
+    rawImage(activeRT.x, activeRT.y, activeRT.w, activeRT.h, activeRT.rt)
+    dxSetBlendMode("blend")
+    activeRT = nil
 end
 
 --------------------------------------------------------------------------------

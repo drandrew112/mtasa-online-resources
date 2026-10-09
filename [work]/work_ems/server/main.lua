@@ -85,6 +85,9 @@ end)
 addEventHandler("onPlayerWorkDutyStart", root, function(workId, skin)
     if workId ~= EMS.WORK_ID then return end
     setMedic(source, true)
+    if isRunning("v_achievements") then
+        exports.v_achievements:unlockAchievement(source, "ems_duty")
+    end
     --notify(source, "You are on duty. Take an ambulance at the vehicle point.")
     EmsModules.fire("onDutyStart", source, skin)
 end)
@@ -106,6 +109,20 @@ addEventHandler("onWorkVehicleSpawn", root, function(player, workId)
 end)
 
 addEventHandler("onPlayerQuit", root, function() Granted[source] = nil end)
+
+-- A completed hospital handover of a real ERM task = one treated patient for every
+-- crew member of the unit (v_achievements "ems_patients" stat).
+addEvent("onErmUnitHandoverComplete")
+addEventHandler("onErmUnitHandoverComplete", root, function(unitId, taskId)
+    if not taskId or not isRunning("v_achievements") or not isRunning("med_erm") then return end
+    local unit = exports.med_erm:getUnitData(unitId)
+    if not unit then return end
+    for _, m in ipairs(unit.members or {}) do
+        if isElement(m.player) then
+            exports.v_achievements:addStat(m.player, "ems_patients", 1)
+        end
+    end
+end)
 
 ---------------------------------------------------------------- exports
 

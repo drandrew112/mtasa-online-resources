@@ -299,7 +299,12 @@ local function requestStart(player)
     if not lobby then message(player, "You are not in a lobby.", 255, 120, 120) return end
     if lobby.host ~= player then message(player, "Only the lobby host can start the job.", 255, 120, 120) return end
     local ok, err = startMatch(lobby)
-    if not ok then message(player, err, 255, 120, 120) end
+    if not ok then message(player, err, 255, 120, 120) return end
+    -- v_achievements is optional: only called while it runs
+    local ach = getResourceFromName("v_achievements")
+    if ach and getResourceState(ach) == "running" and isElement(player) then
+        exports.v_achievements:unlockAchievement(player, "host_game")
+    end
 end
 
 addCommandHandler("startjob", function(player)

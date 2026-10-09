@@ -275,9 +275,67 @@ end
 -- Pull
 --------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+-- Achievements (read-only view of v_achievements)
+--------------------------------------------------------------------------------
+
+-- Sends { available, categories, list, summary } to the client. Each list
+-- entry is the definition merged with the player's state; hidden ones that
+-- are still locked have their name / desc masked.
+local function pushAchievements(player)
+    local ach = getResourceFromName("v_achievements")
+    if not ach or getResourceState(ach) ~= "running" then
+        triggerClientEvent(player, "sp:ach:data", player, { available = false })
+        return
+    end
+
+    local ok, defs, state, cats, summary = pcall(function()
+        local ex = exports.v_achievements
+        return ex:getAchievements(), ex:getPlayerAchievements(player),
+            ex:getAchievementCategories(), ex:getPlayerAchievementSummary(player)
+    end)
+    if not ok or type(defs) ~= "table" or type(state) ~= "table" then
+        triggerClientEvent(player, "sp:ach:data", player, { available = false })
+        return
+    end
+
+    local list = {}
+    for _, d in ipairs(defs) do
+        local s = state[d.id] or {}
+        local masked = d.hidden and not s.done
+        list[#list + 1] = {
+            id = d.id,
+            category = d.category,
+            name = masked and "???" or d.name,
+            desc = masked and "Hidden achievement." or d.desc,
+            xp = d.xp,
+            unit = d.unit,
+            hidden = masked,
+            done = s.done == true,
+            unlockedAt = s.unlockedAt or false,
+            progress = s.progress or 0,
+            goal = s.goal or 1,
+            isProgress = d.type == "progress",
+        }
+    end
+    triggerClientEvent(player, "sp:ach:data", player, {
+        available = true,
+        categories = type(cats) == "table" and cats or {},
+        list = list,
+        summary = type(summary) == "table" and summary or nil,
+    })
+end
+
+addEvent("sp:ach:pull", true)
+addEventHandler("sp:ach:pull", root, function()
+    if isElement(client) then pushAchievements(client) end
+end)
+
 addEvent("sp:pull", true)
 addEventHandler("sp:pull", root, function()
-    if isElement(client) then pushSnapshot(client) end
+    if not isElement(client) then return end
+    pushSnapshot(client)
+    pushAchievements(client)
 end)
 
 --------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
     Social panel rendering. Pure DX, immediate-mode (see c_controls.lua / UI).
 
     Views (content_id):
-      1 = HOME     2 = HELP     3 = SOCIAL     4 = PROFILE
+      1 = HOME     2 = HELP     3 = ACHIEVEMENTS     4 = SOCIAL     5 = PROFILE
 ]]
 
 show_socialpanel = false
@@ -31,7 +31,7 @@ local C = {
     sub    = tocolor(110, 110, 110, 255),
 }
 
-local TABS = { "HOME", "HELP", "SOCIAL", "PROFILE" }
+local TABS = { "HOME", "HELP", "ACHIEVEMENTS", "SOCIAL", "PROFILE" }
 
 --------------------------------------------------------------------------------
 -- HELP content
@@ -128,6 +128,13 @@ local SOCIAL_TABS = { "FRIENDS", "REQUESTS", "FIND PLAYER", "MESSAGES", "MY CREW
 local social_tab = 1
 
 --------------------------------------------------------------------------------
+-- ACHIEVEMENTS (data from v_achievements via the server, see sp:ach:data)
+--------------------------------------------------------------------------------
+
+local achData = nil   -- nil = not loaded yet; { available, categories, list, summary }
+local ach_tab = 1     -- 1 = ALL, 2.. = achData.categories[ach_tab - 1]
+
+--------------------------------------------------------------------------------
 -- Client-side state (from the server)
 --------------------------------------------------------------------------------
 
@@ -159,7 +166,7 @@ addEvent("sp:profile:show", true)
 addEventHandler("sp:profile:show", root, function(data, wantedName)
     if data then
         viewedProfile = data
-        content_id = 4
+        content_id = 5
     else
         outputChatBox("#f0c800[Social] #ffffffNo such player: " .. tostring(wantedName), 255, 255, 255, true)
     end
@@ -184,6 +191,21 @@ addEventHandler("sp:notify", root, function(kind, from, text, crewTag)
         preview = utf8.sub(preview, 1, 57) .. "..."
     end
     pcall(function() exports.ui_core:addNotification(title, preview) end)
+end)
+
+addEvent("sp:ach:data", true)
+addEventHandler("sp:ach:data", root, function(data)
+    if type(data) ~= "table" then return end
+    achData = data
+    if ach_tab > #(data.categories or {}) + 1 then ach_tab = 1 end
+end)
+
+-- Fresh unlock while the tab is open -> reload it (v_achievements fires this).
+addEvent("ach:unlocked", true)
+addEventHandler("ach:unlocked", localPlayer, function()
+    if show_socialpanel and content_id == 3 then
+        triggerServerEvent("sp:ach:pull", localPlayer)
+    end
 end)
 
 addEvent("sp:msg:data", true)
@@ -249,7 +271,7 @@ end
 local function openConversation(kind, with)
     openConv = { kind = kind, with = with }
     thread = {}
-    content_id = 3
+    content_id = 4
     social_tab = 4
     triggerServerEvent("sp:msg:open", localPlayer, kind, with)
 end
@@ -284,7 +306,8 @@ addEventHandler("onClientRender", root, function()
             selected = (i == content_id), selTxt = C.accent,
         }) then
             content_id = i
-            if i == 4 then viewedProfile = nil end
+            if i == 3 then triggerServerEvent("sp:ach:pull", localPlayer) end
+            if i == 5 then viewedProfile = nil end
         end
         tabX = tabX + tw
     end
@@ -293,8 +316,9 @@ addEventHandler("onClientRender", root, function()
 
     if content_id == 1 then renderHome()
     elseif content_id == 2 then renderHelp()
-    elseif content_id == 3 then renderSocial()
-    elseif content_id == 4 then renderProfile() end
+    elseif content_id == 3 then renderAchievements()
+    elseif content_id == 4 then renderSocial()
+    elseif content_id == 5 then renderProfile() end
 
     dxDrawText("[ESC] close", X, Y + H + 6, X + W, Y + H + 26, C.white, 1.3, "default-bold", "right", "top")
 end, false, "low")
@@ -343,6 +367,7 @@ function renderHome()
             end
         end
     end
+    UI.endScroll()
 end
 
 --------------------------------------------------------------------------------
@@ -369,6 +394,125 @@ function renderHelp()
     dxDrawText(name, cx, Y + 18, cx + cw, Y + 50, C.dark, 2.1, "default-bold", "left", "top")
     dxDrawRectangle(cx, Y + 54, cw, 2, C.line)
     para(HELP_TEXT[name] or { "..." }, cx, Y + 70, cw)
+end
+
+--------------------------------------------------------------------------------
+-- ACHIEVEMENTS
+--------------------------------------------------------------------------------
+
+local function achCount(list, catId)
+    local done, total = 0, 0
+    for _, a in ipairs(list) do
+        if not catId or a.category == catId then
+            total = total + 1
+            if a.done then done = done + 1 end
+        end
+    end
+    return done, total
+end
+
+local function fmtNum(n)
+    n = tonumber(n) or 0
+    if n == math.floor(n) then return tostring(n) end
+    return ("%.1f"):format(n)
+end
+
+local function achDate(ts)
+    local t = getRealTime(tonumber(ts) or 0)
+    return ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday)
+end
+
+function renderAchievements()
+    if not achData or not achData.available then
+        dxDrawText(achData and "Achievements are not available right now." or "Loading...",
+            X, Y, X + W, Y + H, C.sub, 1.5, "default-bold", "center", "center")
+        return
+    end
+
+    local list, cats = achData.list or {}, achData.categories or {}
+
+    -- Sidebar: ALL + categories, with done/total counters
+    local sideW = W * 0.26
+    local tabs = { { name = "ALL" } }
+    for _, c in ipairs(cats) do tabs[#tabs + 1] = { id = c.id, name = c.name:upper() } end
+    local rowH = math.min(H / #tabs, 90)
+    for i, t in ipairs(tabs) do
+        local d, n = achCount(list, t.id)
+        if UI.button(X, Y + (i - 1) * rowH, sideW, rowH, ("%s  (%d/%d)"):format(t.name, d, n), {
+            bg = C.grey, txt = C.dark, hoverBg = C.white,
+            selected = (i == ach_tab), selBg = C.white, selTxt = C.dark, size = 1.3,
+        }) then
+            ach_tab = i
+        end
+        if i == ach_tab then
+            dxDrawRectangle(X + sideW - 4, Y + (i - 1) * rowH, 4, rowH, C.accent)
+        end
+    end
+    if Y + #tabs * rowH < Y + H then
+        dxDrawRectangle(X, Y + #tabs * rowH, sideW, H - #tabs * rowH, C.grey)
+    end
+
+    local cx, cw, cy = X + sideW + 20, W - sideW - 40, Y + 16
+
+    -- Header + overall progress
+    local s = achData.summary
+    dxDrawText(tabs[ach_tab].name, cx, cy, cx + cw, cy + 28, C.dark, 1.8, "default-bold", "left", "top")
+    if s then
+        dxDrawText(("%d / %d unlocked   |   %d / %d XP"):format(s.done, s.total, s.xp, s.maxXp),
+            cx, cy + 4, cx + cw, cy + 28, C.sub, 1.2, "default", "right", "top")
+        local frac = s.total > 0 and s.done / s.total or 0
+        dxDrawRectangle(cx, cy + 34, cw, 6, C.grey)
+        dxDrawRectangle(cx, cy + 34, cw * frac, 6, C.accent)
+    end
+
+    local shown = {}
+    local catId = tabs[ach_tab].id
+    for _, a in ipairs(list) do
+        if not catId or a.category == catId then shown[#shown + 1] = a end
+    end
+
+    local listY = cy + 52
+    if #shown == 0 then
+        dxDrawText("No achievements here yet.", cx, listY, cx + cw, listY + 24, C.sub, 1.25, "default", "left", "top")
+        return
+    end
+
+    local rH, gap, areaH = 66, 6, Y + H - 10 - listY
+    local off = UI.beginScroll("ach_list", cx, listY, cw, areaH, #shown * (rH + gap))
+    for i, a in ipairs(shown) do
+        local ry = listY + (i - 1) * (rH + gap) - off
+        if ry + rH > listY and ry < listY + areaH then
+            dxDrawRectangle(cx, ry, cw, rH, C.panel)
+            dxDrawRectangle(cx, ry, 4, rH, a.done and C.green or C.grey)
+
+            local rightW = 150
+            dxDrawText(a.name, cx + 14, ry + 7, cx + cw - rightW, ry + 27,
+                a.done and C.dark or C.sub, 1.35, "default-bold", "left", "top")
+            dxDrawText(ellipsis(a.desc or "", 1.1, "default", cw - rightW - 20), cx + 14, ry + 29, cx + cw - rightW, ry + 45,
+                C.sub, 1.1, "default", "left", "top")
+
+            if (a.xp or 0) > 0 then
+                dxDrawText("+" .. a.xp .. " XP", cx, ry + 7, cx + cw - 12, ry + 27,
+                    a.done and C.green or C.dark, 1.3, "default-bold", "right", "top")
+            end
+
+            if a.done then
+                dxDrawText(a.unlockedAt and ("Unlocked " .. achDate(a.unlockedAt)) or "Unlocked",
+                    cx, ry + 30, cx + cw - 12, ry + 46, C.green, 1.1, "default-bold", "right", "top")
+            elseif a.isProgress and not a.hidden then
+                local goal = math.max(tonumber(a.goal) or 1, 1)
+                local frac = math.min((tonumber(a.progress) or 0) / goal, 1)
+                local bx, bw, by = cx + 14, cw - rightW - 20, ry + rH - 14
+                dxDrawRectangle(bx, by, bw, 6, C.bg)
+                dxDrawRectangle(bx, by, bw * frac, 6, C.accent)
+                local label = fmtNum(a.progress) .. " / " .. fmtNum(goal) .. (a.unit and (" " .. a.unit) or "")
+                dxDrawText(label, cx, ry + 30, cx + cw - 12, ry + 46, C.dark, 1.1, "default-bold", "right", "top")
+            else
+                dxDrawText("Locked", cx, ry + 30, cx + cw - 12, ry + 46, C.sub, 1.1, "default", "right", "top")
+            end
+        end
+    end
+    UI.endScroll()
 end
 
 --------------------------------------------------------------------------------
@@ -436,6 +580,7 @@ function socialFriends(cx, cy, cw)
             end
         end
     end
+    UI.endScroll()
 end
 
 function socialRequests(cx, cy, cw)
@@ -499,6 +644,7 @@ function socialFindPlayer(cx, cy, cw)
             end
         end
     end
+    UI.endScroll()
 end
 
 --------------------------------------------------------------------------------
@@ -540,6 +686,7 @@ function socialMessages(cx, cy, cw)
             end
         end
     end
+    UI.endScroll()
 
     -- Thread
     local tx = cx + convW + 12
@@ -596,6 +743,7 @@ function socialMessages(cx, cy, cw)
         end
         yy = yy + hgt + 4
     end
+    UI.endScroll()
     if #thread == 0 then
         dxDrawText("No messages yet. Say hi!", tx + 12, areaTop + 10, tx + tw - 12, areaTop + 30, C.sub, 1.15, "default", "left", "top")
     end
@@ -696,6 +844,7 @@ function socialMyCrew(cx, cy, cw)
             end
         end
     end
+    UI.endScroll()
 
     if isFounder then
         local fy = listY + half + 12
@@ -744,6 +893,7 @@ function socialFindCrew(cx, cy, cw)
             end
         end
     end
+    UI.endScroll()
 end
 
 --------------------------------------------------------------------------------
@@ -781,7 +931,7 @@ function renderProfile()
     if not isOwn then
         if UI.button(X + W - 130, Y + 20, 110, 30, "Back", { size = 1.3, bg = C.panel }) then
             viewedProfile = nil
-            content_id = 3
+            content_id = 4
         end
         if not isSelf then
             local function refetch()
