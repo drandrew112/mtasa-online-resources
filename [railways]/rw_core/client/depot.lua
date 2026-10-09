@@ -33,7 +33,7 @@ end
 -- 3D label above the depot marker (same look as the work_core markers). It is drawn whenever
 -- the marker is near, so it also says what the depot is for while the player stands outside.
 local function drawLabel(sx, sy, k, alpha, title, hint)
-    local s = sh / 1080
+    local function s(v) return v * sh / 1080 end
     local fName, fTitle, fHint = font(12, true), font(17, true), font(12)
     local a = alpha / 255
     local nameStr = RW.COMPANY:upper()
