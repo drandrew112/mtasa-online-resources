@@ -16,7 +16,7 @@ CTL = {
     -- Pay after logging out of a position (bank, itemised receipt):
     --   actions pay = actions * PAY_PER_ACTION
     --   multiplied by (1 + minutes * PAY_MINUTE_BONUS), capped at PAY_MAX_MULT
-    PAY_PER_ACTION = 500,
+    PAY_PER_ACTION = 700,
     PAY_MINUTE_BONUS = 0.25,
     PAY_MAX_MULT = 5.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
