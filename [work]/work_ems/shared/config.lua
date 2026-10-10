@@ -23,7 +23,15 @@ EMS = {
         [1] = "Trainee", [2] = "EMT", [4] = "Paramedic", [6] = "Senior Paramedic",
         [8] = "Critical Care Paramedic", [10] = "Chief Paramedic",
     },
-    XP_PER_PATIENT = 100,
+    XP_PER_PATIENT = 100,              -- every crew member, completed ERM task handover
+    XP_HANDOVER = 60,                  -- the medic who hands a patient over at a hospital
+    XP_TRANSPORT = { alive = 40, dead = 15 }, -- requested transport that actually left (by patient state)
+    -- medsys interventions: XP for a successful one, once per patient (and per drug for medication)
+    -- so repeating a button on the same patient cannot be farmed
+    XP_TREATMENT = {
+        bandage = 8, splint = 12, cpr = 20, iv = 12, airway = 25,
+        oxygen = 6, medication = 10, neuro = 6, glucometer = 4, monitor = 4,
+    },
 
     -- Vehicles offered at the duty vehicle markers. Plates: PLATE_PREFIX + PLATE_DIGITS random digits.
     -- Ambulances only for now (no emergency doctor car / helicopter yet).

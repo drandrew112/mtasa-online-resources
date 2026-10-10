@@ -131,6 +131,41 @@ addEventHandler("onErmUnitHandoverComplete", root, function(unitId, taskId)
     end
 end)
 
+---------------------------------------------------------------- work XP for medical actions
+
+local function giveEmsXp(player, amount)
+    if amount and amount > 0 and isElement(player) and isRunning("work_core") and isPlayerEms(player) then
+        exports.work_core:giveWorkXp(player, EMS.WORK_ID, amount)
+    end
+end
+
+-- patient -> { ["medic action option"] = true }: what already paid XP
+local Rewarded = setmetatable({}, { __mode = "k" })
+addEventHandler("onElementDestroy", root, function() Rewarded[source] = nil end)
+
+addEvent("onMedicalTreatment")
+addEventHandler("onMedicalTreatment", root, function(medic, action, success, option)
+    if success ~= true or not isElement(medic) or getElementType(medic) ~= "player" then return end
+    local xp = EMS.XP_TREATMENT[action]
+    if not xp then return end
+    local key = tostring(medic) .. " " .. action .. (action == "medication" and (" " .. tostring(option)) or "")
+    local done = Rewarded[source]
+    if not done then done = {} Rewarded[source] = done end
+    if done[key] then return end
+    done[key] = true
+    giveEmsXp(medic, xp)
+end)
+
+addEvent("onMedicalPatientTransported")
+addEventHandler("onMedicalPatientTransported", root, function(medic, kind)
+    giveEmsXp(medic, EMS.XP_TRANSPORT[kind])
+end)
+
+addEvent("onHospitalPatientHandover")
+addEventHandler("onHospitalPatientHandover", root, function(hospitalId, unitId, patient, medic)
+    giveEmsXp(medic, EMS.XP_HANDOVER)
+end)
+
 ---------------------------------------------------------------- exports
 
 function isPlayerEms(player)
