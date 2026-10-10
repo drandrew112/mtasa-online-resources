@@ -15,8 +15,7 @@
     <script src="client/login.lua"   type="client" />
     <script src="client/scope.lua"   type="client" />
 
-    <file src="fonts/Roboto.ttf"  type="client" />
-    <file src="fonts/RobotoB.ttf" type="client" />
+    <file src="fonts/EuroScope.ttf" type="client" />
 
     <!-- positions (work_atc: rights in avi_core, then openATCLogin) -->
     <export function="getPositions"         type="server" />

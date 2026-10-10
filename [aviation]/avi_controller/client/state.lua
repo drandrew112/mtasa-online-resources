@@ -31,16 +31,22 @@ LIST_W = 520 * U      -- flight lists on the right
 
 F = {}
 local function font(file, pt)
-    return dxCreateFont(file, math.max(6, math.floor(pt * U + 0.5)), false, "cleartype") or "default"
+    local f = dxCreateFont(file, math.max(6, math.floor(pt * U + 0.5)), false, "cleartype")
+    if not f then
+        outputDebugString("avi_controller: dxCreateFont failed for " .. file .. " (fallback: default)", 1)
+        return "default"
+    end
+    outputDebugString(("avi_controller: font %s loaded, line height %d px"):format(file, dxGetFontHeight(1, f)), 3)
+    return f
 end
 addEventHandler("onClientResourceStart", resourceRoot, function()
-    F.map    = font("fonts/Roboto.ttf", 7.5)
-    F.label  = font("fonts/RobotoB.ttf", 8.5)
-    F.gndCs  = font("fonts/RobotoB.ttf", 10)
-    F.gndSm  = font("fonts/Roboto.ttf", 7.5)
-    F.ui     = font("fonts/Roboto.ttf", 9)
-    F.uiB    = font("fonts/RobotoB.ttf", 9)
-    F.title  = font("fonts/RobotoB.ttf", 12)
+    F.map    = font("fonts/EuroScope.ttf", 7.5)
+    F.label  = font("fonts/EuroScope.ttf", 8.5)
+    F.gndCs  = font("fonts/EuroScope.ttf", 10)
+    F.gndSm  = font("fonts/EuroScope.ttf", 7.5)
+    F.ui     = font("fonts/EuroScope.ttf", 9)
+    F.uiB    = font("fonts/EuroScope.ttf", 9)
+    F.title  = font("fonts/EuroScope.ttf", 12)
 end)
 
 -- ---------------------------------------------------------------- helpers
