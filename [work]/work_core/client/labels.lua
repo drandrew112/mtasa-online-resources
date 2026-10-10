@@ -138,4 +138,4 @@ addEventHandler("onClientRender", root, function()
             end
         end
     end
-end)
+end, true, "high+5") -- drawn before (under) the pause menu, ATC scope and other UI
