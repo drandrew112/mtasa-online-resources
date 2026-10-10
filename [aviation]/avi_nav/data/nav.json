@@ -678,6 +678,14 @@
    "role": "turn"
   },
   {
+   "id": "LV188",
+   "x": 850.0,
+   "y": 1600.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "transition"
+  },
+  {
    "id": "LV368",
    "x": 1050.0,
    "y": 1000.0,
@@ -1631,6 +1639,7 @@
    "runways": {
     "18": [
      "GARCI",
+     "LV188",
      "LV182",
      "LV18"
     ],

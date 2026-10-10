@@ -47,7 +47,7 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - Turn limit: no turn is over 100°, neither inside a procedure (the 90° base / final turns are the biggest) nor along
   any `flights.json` route including its SID / STAR for every runway combination. A flight plan joins the SID / STAR
   fixes that suit both runway directions (e.g. LS<->LV = VINEW / SHADY, SF->LS = DOHER SANTA). Check with a script
-  before you change fixes or routes. `LV368` = transition of `GARCI2D 36` (reaches GARCI from the north-east).
+  before you change fixes or routes. `LV368` = transition of `GARCI2D 36` (reaches GARCI from the north-east). `LV188` = transition of `GARCI2A 18` (keeps the leg off the SF/LV TMA border).
 - The flight plan (`flights.json` route) starts with the TMA exit fix of the departure airport and ends with the TMA
   entry fix of the arrival airport, so the suggested SID / STAR is the one of those fixes.
 - IFR clearance (tower): first the SID list (suggested one yellow, runway in use first, "No SID"), then the initial

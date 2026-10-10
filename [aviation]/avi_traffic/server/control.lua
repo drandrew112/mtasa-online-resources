@@ -245,8 +245,9 @@ function giveClearance(id, kind, value)
     return true
 end
 
--- arrival procedure (APP / centre): spec = "VINEW1A 27R" (STAR + runway). The aircraft flies it
--- from where it is (fixes already behind it are skipped) and lands on that runway.
+-- arrival procedure (APP / centre): spec = "VINEW1A 27R" (STAR + runway). Like a direct, it replaces
+-- the flight plan, heading and any SID: the aircraft joins the STAR at the first fix still ahead of
+-- it (fixes already behind it are skipped) and lands on that runway.
 function setArrivalProcedure(id, spec)
     local ac = AIRCRAFT[tonumber(id)]
     if not ac then return false, "unknown aircraft" end
@@ -255,8 +256,7 @@ function setArrivalProcedure(id, spec)
     local star, ident = tostring(spec or ""):upper():match("^(%S+)%s+(%S+)$")
     local pr = procedure(star)
     if not pr or pr.type ~= "STAR" or pr.airport ~= ac.arr then return false, "unknown STAR " .. tostring(spec) end
-    if not applySTAR(ac, star, ident) then return false, "no " .. tostring(star) .. " for runway " .. tostring(ident) end
-    ac.climbOut = nil
+    if not applySTAR(ac, star, ident, true) then return false, "no " .. tostring(star) .. " for runway " .. tostring(ident) end
     return true
 end
 

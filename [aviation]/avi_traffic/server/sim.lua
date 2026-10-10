@@ -214,14 +214,18 @@ end
 
 -- STAR: the remaining route up to the entry fix + the STAR to the final fix of `ident`. Fixes the
 -- aircraft is already past are left out (the base + final fix always stay).
-function applySTAR(ac, starId, ident)
+-- override (given by a controller): like a direct, the STAR replaces the whole flight plan, the
+-- aircraft joins it at the first fix still ahead of it (no filed fixes before the entry fix).
+function applySTAR(ac, starId, ident, override)
     local r = procedureRoute(starId, ident)
     local p = procedure(starId)
     if not r or not p or p.type ~= "STAR" then return false end
     local before, found = {}, false
-    for i = ac.ri, #ac.route do
-        if ac.route[i] == p.fix then found = true break end
-        before[#before + 1] = ac.route[i]
+    if not override then
+        for i = ac.ri, #ac.route do
+            if ac.route[i] == p.fix then found = true break end
+            before[#before + 1] = ac.route[i]
+        end
     end
     if not found then before = {} end
     if #before == 0 then
@@ -237,6 +241,10 @@ function applySTAR(ac, starId, ident)
     ac.star, ac.arrRwy = p.id, tostring(ident):upper()
     ac.proc = p.id .. " " .. ac.arrRwy
     ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
+    if override then
+        ac.sid, ac.sidRwy, ac.starTried = nil, nil, nil
+        if ac.climbOut then ac.climbOut, ac.gndApt = nil, nil end
+    end
     if ac.phase == "air" then ac.rwy = nil end
     return true
 end

@@ -9,6 +9,9 @@ local C = {
     dim     = tocolor(120, 132, 150, 255),
     btn     = tocolor(30, 52, 84, 255),
     btnHov  = tocolor(50, 85, 135, 255),
+    btnOn   = tocolor(55, 105, 165, 255),
+    btnOnHov= tocolor(75, 130, 195, 255),
+    tip     = tocolor(20, 30, 46, 250),
     red     = tocolor(130, 45, 45, 255),
     redHov  = tocolor(175, 65, 65, 255),
     list    = tocolor(10, 16, 26, 235),
@@ -73,6 +76,56 @@ local function button(r, label, mx, my, act, red)
     buttons[#buttons + 1] = { rect = r, act = act }
 end
 
+-- short toggle / step buttons in the middle of the top bar; hovering shows what they do
+local function toolButton(r, label, tip, mx, my, act, on, off)
+    local hov = inside(r, mx, my)
+    local bg = on and (hov and C.btnOnHov or C.btnOn) or (hov and C.btnHov or C.btn)
+    dxDrawRectangle(r[1], r[2], r[3], r[4], bg)
+    dxDrawText(label, r[1], r[2], r[1] + r[3], r[2] + r[4], off and C.dim or C.text, 1, F.uiB, "center", "center", true)
+    buttons[#buttons + 1] = { rect = r, act = act }
+    return hov and tip
+end
+
+local function drawTooltip(tip, r)
+    local pad = 6 * U
+    local w = dxGetTextWidth(tip, 1, F.ui) + pad * 2
+    local h = dxGetFontHeight(1, F.ui) + pad
+    local x = math.max(4 * U, math.min(SC.sx - w - 4 * U, r[1] + r[3] / 2 - w / 2))
+    local y = 34 * U + 6 * U
+    dxDrawRectangle(x, y, w, h, C.tip)
+    line(x, y, x + w, y, C.barLine)
+    dxDrawText(tip, x, y, x + w, y + h, C.text, 1, F.ui, "center", "center")
+end
+
+local function vectorText()
+    return SC.vectorStep == 0 and "off" or ("%.1f nm"):format(SC.vectorStep * CTL.VECTOR_STEP_NM)
+end
+
+-- returns the left edge of the group (the runway / wind text stops there)
+local function drawToolButtons(mx, my)
+    local bh, by, gap = 24 * U, 5 * U, 4 * U
+    local defs = {
+        { "AT", "Toggle airspace text visible", 34 * U, function() SC.showAirspaceText = not SC.showAirspaceText end,
+            SC.showAirspaceText },
+        { "V-", "Decrease vector length (now " .. vectorText() .. ")", 30 * U,
+            function() SC.vectorStep = math.max(0, SC.vectorStep - 1) end, false, SC.vectorStep <= 0 },
+        { "V+", "Increase vector length (now " .. vectorText() .. ")", 30 * U,
+            function() SC.vectorStep = math.min(CTL.VECTOR_MAX_STEPS, SC.vectorStep + 1) end, false,
+            SC.vectorStep >= CTL.VECTOR_MAX_STEPS },
+    }
+    local total = -gap
+    for _, d in ipairs(defs) do total = total + d[3] + gap end
+    local left = SC.sx / 2 - total / 2
+    local x, tip, tipRect = left, nil, nil
+    for _, d in ipairs(defs) do
+        local r = { x, by, d[3], bh }
+        local t = toolButton(r, d[1], d[2], mx, my, d[4], d[5], d[6])
+        if t then tip, tipRect = t, r end
+        x = x + d[3] + gap
+    end
+    return left, tip, tipRect
+end
+
 local function drawTopBar(mx, my)
     local h = 34 * U
     dxDrawRectangle(0, 0, SC.sx, h, C.bar)
@@ -82,6 +135,8 @@ local function drawTopBar(mx, my)
     local x = 12 * U + dxGetTextWidth(p.id, 1, F.title) + 12 * U
     dxDrawText(p.name, x, 0, x + 300 * U, h, C.dim, 1, F.ui, "left", "center")
     x = x + dxGetTextWidth(p.name, 1, F.ui) + 24 * U
+
+    local toolsLeft, tip, tipRect = drawToolButtons(mx, my)
 
     -- runways in use + wind (airport positions show their own, the centre all of them)
     local parts = {}
@@ -96,19 +151,13 @@ local function drawTopBar(mx, my)
     end
     local w = SC.data.wind or { dir = 0, speed = 0 }
     parts[#parts + 1] = ("WIND %03d/%02d"):format(w.dir, w.speed)
-    dxDrawText(table.concat(parts, "     "), x, 0, SC.sx - 520 * U, h, C.text, 1, F.ui, "left", "center", true)
+    dxDrawText(table.concat(parts, "     "), x, 0, toolsLeft - 12 * U, h, C.text, 1, F.ui, "left", "center", true)
 
     local t = getRealTime(getRealTime().timestamp, false)   -- UTC
     dxDrawText(("%02d:%02d:%02dZ"):format(t.hour, t.minute, t.second), SC.sx - 520 * U, 0, SC.sx - 430 * U, h,
         C.text, 1, F.uiB, "right", "center")
 
     local bw, bh, by = 74 * U, 24 * U, 5 * U
-    -- leader line length (nm)
-    local vx = SC.sx - 4 * (bw + 6 * U) - 4 * U - 6 * U - 104 * U
-    button({ vx, by, 24 * U, bh }, "-", mx, my, function() SC.vectorStep = math.max(0, SC.vectorStep - 1) end)
-    dxDrawText(SC.vectorStep == 0 and "Vector off" or ("Vector %.1f nm"):format(SC.vectorStep * CTL.VECTOR_STEP_NM), vx + 24 * U, 0, vx + 80 * U, h,
-        C.text, 1, F.map, "center", "center", true)
-    button({ vx + 80 * U, by, 24 * U, bh }, "+", mx, my, function() SC.vectorStep = math.min(CTL.VECTOR_MAX_STEPS, SC.vectorStep + 1) end)
     local bx = SC.sx - 4 * (bw + 6 * U) - 4 * U
     button({ bx, by, bw, bh }, SC.showList and "List: on" or "List: off", mx, my, function() SC.showList = not SC.showList end)
     bx = bx + bw + 6 * U
@@ -117,6 +166,8 @@ local function drawTopBar(mx, my)
     button({ bx, by, bw, bh }, "Hide", mx, my, scopeHide)
     bx = bx + bw + 6 * U
     button({ bx, by, bw, bh }, "Logout", mx, my, function() triggerServerEvent("avi:ctlLogout", resourceRoot) end, true)
+
+    if tip then drawTooltip(tip, tipRect) end
 end
 
 -- ---------------------------------------------------------------- flight lists (right side)

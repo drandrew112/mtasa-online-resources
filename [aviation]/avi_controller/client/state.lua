@@ -9,6 +9,7 @@ SC = {
     traffic = {},        -- [id] = { s = snapshot, t = tick of the snapshot, hist = { {x, y} } }
     labelOffset = {},    -- [id] = { dx, dy } screen px from the target (dragged by the controller)
     showList = true,
+    showAirspaceText = true,   -- airspace names + vertical limits (top bar AT)
     staffed = {},        -- [posId] = controller name
     routeShown = {},     -- [id] = true: the flight plan route is drawn
     vectorStep = CTL.VECTOR_DEFAULT_STEPS,   -- leader line ahead of the aircraft in VECTOR_STEP_NM steps, 0 = off

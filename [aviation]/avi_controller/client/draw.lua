@@ -102,12 +102,14 @@ function drawAirspaces()
                 dashed(p[1], p[2], q[1], q[2], col, 1, 10, 6)
             end
         end
-        -- name + vertical limits at the top-most vertex
-        local top = pts[1]
-        for _, p in ipairs(pts) do if p[2] < top[2] then top = p end end
-        local lim = ("%s  %s-%s"):format(a.name or a.id, a.floor == 0 and "SFC" or tostring(a.floor),
-            a.ceiling >= 18000 and ("FL" .. math.floor(a.ceiling / 100)) or tostring(a.ceiling))
-        text(lim, top[1] + 6, top[2] + 4, COL.asText, F.map)
+        -- name + vertical limits at the top-most vertex (top bar AT toggles them)
+        if SC.showAirspaceText then
+            local top = pts[1]
+            for _, p in ipairs(pts) do if p[2] < top[2] then top = p end end
+            local lim = ("%s  %s-%s"):format(a.name or a.id, a.floor == 0 and "SFC" or tostring(a.floor),
+                a.ceiling >= 18000 and ("FL" .. math.floor(a.ceiling / 100)) or tostring(a.ceiling))
+            text(lim, top[1] + 6, top[2] + 4, COL.asText, F.map)
+        end
     end
 end
 
