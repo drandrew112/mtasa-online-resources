@@ -26,6 +26,7 @@ Lock.PANEL_FLAGS = {
     { data = "browserOpen", name = "browser" },
     { data = "showChatInput", name = "chat" },
     { data = "reportPanelOpen", name = "report panel" },
+    { data = "adminPanelOpen", name = "admin panel" },
     { data = "textInputOpen", name = "text input" },
 }
 

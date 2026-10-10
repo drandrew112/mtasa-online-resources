@@ -18,13 +18,11 @@ end)
 -- ------------------------------------------------------------
 --  /heal <ID>  – restore a player's health and armour
 -- ------------------------------------------------------------
-addCommandHandler("heal", function(player, cmd, idArg)
+function adminHeal(player, target)
     if not hasAdminLevel(player, ADMIN.perms.heal) then
         return denyAccess(player, ADMIN.perms.heal)
     end
-
-    local target = resolveTarget(player, idArg)
-    if not target then return end
+    if not isElement(target) then return end
 
     if isPedDead(target) then
         return adminAlert(player, "#FFFF00" .. getPlayerName(target) .. " #FFFFFFis dead.", 255, 90, 90)
@@ -39,6 +37,14 @@ addCommandHandler("heal", function(player, cmd, idArg)
     else
         adminAlert(player, "#FFFFFFYou healed yourself.")
     end
+end
+
+addCommandHandler("heal", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.heal) then
+        return denyAccess(player, ADMIN.perms.heal)
+    end
+    local target = resolveTarget(player, idArg)
+    if target then adminHeal(player, target) end
 end)
 
 -- ------------------------------------------------------------

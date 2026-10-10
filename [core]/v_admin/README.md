@@ -1,6 +1,7 @@
 # v_admin
 
-MTA:SA resource for admin commands, an admin jail and a server-side ID manager.
+MTA:SA resource for the admin panel (**O** key), admin commands, an admin jail
+and a server-side ID manager.
 
 Messages are shown through the **`ui_core` Alert element**
 (`exports.ui_core:setAlert`) because chat is disabled on the server
@@ -13,7 +14,7 @@ Messages are shown through the **`ui_core` Alert element**
 * The admin and the target get **separate** messages with different wording:
   * target: `Muted by <admin> (<minutes> min) for <reason>`
   * admin: `You muted <player> (<minutes> min) for <reason>`
-* Admin actions (`/ajail`, `/ajailout`, `/ban`, `/unban`, `/mute`, teleport,
+* Admin actions (`/ajail`, `/ajailout`, `/ban`, `/unban`, `/kick`, `/mute`, `/unmute`, teleport,
   vehicle, `/heal`) are **not** broadcast to the whole server — only the admin and
   the target see them. The exception is `/af`, the admin announcement, which is
   intentionally sent to everyone.
@@ -31,19 +32,25 @@ v_admin/
 ├── server/
 │   ├── core.lua            – admin data load/sync + shared helper functions
 │   ├── id_manager.lua      – unique, reused player IDs ("ID" element data) + /myid
-│   ├── announce.lua        – /af, /adminannounce
+│   ├── announce.lua        – /af, /adminannounce (adminAnnounce)
 │   ├── admin_manage.lua    – /setadminlevel, hidden command
 │   ├── report.lua          – /report, /reports (report system)
 │   ├── teleport.lua        – /goto, /gethere
 │   ├── vehicle.lua         – /fixveh, /flipveh, /getout
 │   ├── jail.lua            – /ajail, /ajailout + jail timers, escape checks
-│   ├── ban.lua             – /ban, /unban (account ban → v_accounts)
-│   ├── mute.lua            – /mute (chat mute → v_chat)
-│   └── misc.lua            – /fly (gate), /heal, /money, /getid, /listacc
+│   ├── ban.lua             – /ban, /unban (account ban → v_accounts), /kick
+│   ├── mute.lua            – /mute, /unmute (chat mute → v_chat)
+│   ├── misc.lua            – /fly (gate), /heal, /money, /getid, /listacc
+│   └── panel.lua           – admin panel data + actions (O key)
 │
 └── client/
     ├── hud.lua             – Alert receiver, admin jail HUD
-    ├── report.lua          – report UI (DGS): player panel + admin report manager
+    ├── report.lua          – player report UI (DGS, /report)
+    ├── panel/core.lua      – admin panel window, tabs, DX widgets (button, text field, dropdown)
+    ├── panel/players.lua   – Players tab (list, data, actions, inline forms)
+    ├── panel/reports.lua   – Reports tab (admin report manager, /reports)
+    ├── panel/server.lua    – Server tab (announcement, unban, overview)
+    ├── panel/commands.lua  – Commands tab (ADMIN.commands)
     └── noclip.lua          – noclip movement, /flyspd, N key
 ```
 
@@ -67,6 +74,14 @@ jail data in the shared `accounts` table).
 | `getPlayerFromId(id)` → player/false | Find a player by `"ID"` element data. |
 | `resolveTarget(player, idArg)` → player/false | As above, but also sends an error message. |
 | `syncAdminData(player)` | Write the account's admin data onto the player element. |
+| `canPunish(player, target)` → bool | Mute / jail / kick / ban / set level only work on a **lower** admin level (owner exempt). Sends the error. |
+| `adminLog(player, text)` | One server-log line per admin action. |
+
+Every command's logic lives in a shared function that the command handler **and**
+the admin panel both call (each one checks its own `ADMIN.perms` level):
+`adminGoto`, `adminGethere`, `adminHeal`, `adminMute`, `adminUnmute`,
+`adminFixVeh`, `adminFlipVeh`, `adminGetOut`, `adminJail`, `adminUnjail`,
+`adminKick`, `adminBan`, `adminUnban`, `adminSetLevel`.
 
 `server/jail.lua`: `setPlayerInAJ(player, state, minutes)` – toggle jail on/off.
 
@@ -92,10 +107,11 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 
 | Command | Min. level | Description |
 |---|:---:|---|
+| **O key** | 1 | Admin panel (see below). |
 | `/af <message>` · `/adminannounce` | 2 | Admin announcement to the whole server. |
 | `/setadminlevel <ID> <0-6>` | 4 | Set a target's admin level (only below your own; owner is the exception). |
 | `/report` | – | Player report panel (DGS). One open report per player at a time. Calls an admin, chat, close, shows who claimed it. |
-| `/reports` | 1 | Admin report manager (DGS). List of active reports, claim, chat, teleport to the player, close. |
+| `/reports` | 1 | Opens the admin panel on the **Reports** tab: active reports, claim, chat, teleport, close, logs. |
 | `/goto <ID>` | 1 | Teleport to that player (interior/dimension too). |
 | `/gethere <ID>` | 1 | Bring that player to you (with their vehicle). |
 | `/fixveh [ID]` | 2 | Repair a vehicle (yours without an ID). |
@@ -106,9 +122,11 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 | `/flyspd <0.1-20>` | – | NoClip speed (client). |
 | `/ajail <ID> <minutes> <reason>` | 2 | Admin jail. |
 | `/ajailout <ID>` | 2 | Release from the admin jail. |
-| `/ban <account> <reason>` | 2 | Account ban (never expires). Also stores the serial for an online player. |
-| `/unban <account>` | 2 | Lift an account ban. |
-| `/mute <ID> <minutes> <reason>` | 2 | Chat mute. No `/unmute` – it expires on its own. |
+| `/kick <ID> <reason>` | 3 | Kick a player (needs `resource.v_admin` in the Admin ACL group for `kickPlayer`). |
+| `/ban <account> <reason>` | 3 | Account ban (never expires). Also stores the serial for an online player. |
+| `/unban <account>` | 3 | Lift an account ban. |
+| `/mute <ID> <minutes> <reason>` | 1 | Chat mute. Expires on its own. |
+| `/unmute <ID>` | 1 | Lift a chat mute early. |
 | `/money` | 4 | Test money (+€2000). |
 | `/getid <name>` | – | A player's ID from a name (fragment). |
 | `/myid` | – | Your own ID. |
@@ -116,21 +134,55 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 | `/ichbintulajandris [level]` | – | **Hidden** – set your own admin level (defaults to 6). |
 
 The minimum levels are set in one place: `config.lua` → `ADMIN.perms`.
+Mute / jail / kick / ban / set level only work on players with a **lower** admin
+level than yours (owner exempt).
 
-### Resource control (in the `v_main` resource)
+---
 
-Resource start/stop/restart commands are **not here** but in `v_main`, because in
-the ACL only `v_main` has `startResource` / `stopResource` / `restartResource`
-rights (`acl.xml` → `<group name="Admin">`). Same access as
-`/restartallresource`: server console **or** a logged-in player with
-`admin_level >= 5` (see `v_main/commandAuth.lua`); no user ACL group needed.
+## Admin panel (`server/panel.lua` + `client/panel/*.lua`)
 
-| Command | Min. level | Description |
-|---|:---:|---|
-| `/startresource <name>` · `/startres` | 5 | Start a resource. |
-| `/stopresource <name>` · `/stopres` | 5 | Stop a resource (protected: `v_main`, `v_mysql`, `v_accounts`, `v_admin`). |
-| `/restartresource <name>` · `/restartres` | 5 | Restart a resource (same protected list). |
-| `/restartallresource` | 5 | Restart every resource in dependency order. |
+**O** (`ADMIN.panel.key`) opens / closes it from admin level 1
+(`ADMIN.perms.panel`); ESC closes it too. Mouse-driven DX window; its size is
+`ADMIN.panel.size` × the ui_core screen scale and the text is
+`ADMIN.panel.fontScale` relative to the layout (≈1.25× normal text by default).
+Every key bind is off while the panel is open (`guiSetInputMode("no_binds")`),
+so O / ESC are handled through `onClientKey`. Player data refreshes every 3 s
+(`ADMIN.panel.refresh`) while open. While open, `adminPanelOpen` (local element
+data) is set and the pause menu, INAC menu, phone, social panel, chat,
+interaction menus and v_introduce respect it.
+
+**Text input happens inside the panel** (own DX text fields, no `ui_core` input
+box): click a field to type; Enter submits, ESC / Tab leaves the field,
+Ctrl+V pastes. While a field is focused every key press is cancelled and
+`textInputOpen` is set (ui_pause, ui_inac, ui_interactobject, v_introduce check
+it), so O / P / T / M etc. type normally.
+
+* **Players** tab – online players on the left (ID, name, tags: `A<n>` admin,
+  `GUEST`, `M` muted, `J` jailed, `B` banned; live filter field by ID / name /
+  account). In the middle the selected player's data: account (account name,
+  account #, e-mail, registration date, admin level), connection (serial, IP,
+  ping, client version), character (health/armour, cash, bank, level/XP, played
+  time, work, skin), location (zone, position, interior/dimension, vehicle) and
+  sanctions (mute / admin jail / ban with reason + admin). **Data is never
+  hidden** – any panel admin sees everything; clicking a row copies its value.
+  On the right the actions, each showing the level it needs and greyed out when
+  yours is lower: Go to / Bring here / Heal, Fix / Flip vehicle / Pull out,
+  Mute / Unmute, Admin jail / Release, Kick, Ban / Unban account, Admin level.
+  Mute / jail / kick / ban open an **inline form** in the action column
+  (minute presets + minutes field, reason field, Confirm / Cancel). The admin
+  level is picked from a **dropdown** (levels above what you may grant are
+  locked).
+* **Reports** tab – the admin report manager (see *Report system*); `/reports`
+  opens the panel here. The tab label shows how many reports wait for an admin.
+* **Server** tab – admin announcement (same as `/af`, with a preview), unban an
+  account by name (also offline accounts), and an overview (players online,
+  muted / jailed, admins online with their level).
+* **Commands** tab – the v_admin command list (`ADMIN.commands` in
+  `config.lua`) with the level each one needs; the ones above your level are
+  dimmed.
+
+Actions go through the same shared functions as the commands, so the server
+re-checks every level.
 
 ---
 
@@ -145,9 +197,10 @@ The old `/pm` and `/pmv` are **gone**. Instead:
   * Open report → chat, a status line ("Waiting for an admin to respond..." /
     "Claimed by: `<name>`"), a "Close report" button. The player only sees
     **their own** report.
-* **`/reports`** – admin-side DGS manager (min. `ADMIN.perms.reports`).
-  * List on the left, two tab buttons side by side at the top: **`Active cases`**
-    and **`Logs`** (the active tab highlighted).
+* **`/reports`** – the admin panel's **Reports** tab (min. `ADMIN.perms.reports`,
+  DX, `client/panel/reports.lua`).
+  * List on the left, two buttons side by side at the top: **`Active cases`**
+    and **`Logs`** (the active one highlighted).
     * *Active cases* – every active report (ID, player, status/claimer).
     * *Logs* – the saved logs of closed reports (date, player, admin); select a
       row to read the chat back (read-only, with timestamps).
@@ -219,13 +272,16 @@ recorded with `sender = "SYSTEM"`.
   release attribute is `Never` for an active ban, `1` after it is lifted. A
   banned player stays connected but frozen behind the ban panel (login is
   rejected too).
-* **`/mute`** → the `v_chat` export: `mutePlayer(player, minutes, reason, admin_name)`.
+* **`/kick`** → MTA `kickPlayer` (needs `function.kickPlayer`: `resource.v_admin`
+  is in the `Admin` ACL group).
+* **`/mute`** → the `v_chat` export: `mutePlayer(player, minutes, reason, admin_name)`;
+  **`/unmute`** → `unmutePlayer(player, admin_name)`.
   While muted, chat messages are dropped and a `ui_core` Alert shows instead:
   "You are muted! Time left: …". On mute the target gets "Muted by `<admin>`
   (`<minutes>` min) for `<reason>`", the admin gets "You muted `<player>`
   (`<minutes>` min) for `<reason>`". On expiry: "Your mute has expired…". The
-  mute **survives a relog** (account data), there is **no `/unmute`** — it
-  expires on its own.
+  mute **survives a relog** (account data); it expires on its own or is lifted
+  with `/unmute` ("Unmuted by `<admin>`…").
 
 ---
 

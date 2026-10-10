@@ -1,0 +1,20 @@
+[
+	{
+		"info": {
+			"adminClaimed": "drandrew112",
+			"player": "drandrew112"
+		},
+		"messages": [
+			{
+				"sender": "drandrew112",
+				"time": "23:44",
+				"text": "teszt"
+			},
+			{
+				"sender": "SYSTEM",
+				"time": "23:44",
+				"text": "drandrew112 claimed this report."
+			}
+		]
+	}
+]

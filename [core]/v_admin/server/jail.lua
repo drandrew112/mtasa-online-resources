@@ -107,26 +107,22 @@ setTimer(function()
 end, 60000, 0)
 
 -- ------------------------------------------------------------
---  /ajail <ID> <minutes> <reason...>
+--  adminJail / adminUnjail  (shared with the admin panel)
 -- ------------------------------------------------------------
-addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
+function adminJail(player, target, minutes, reason)
     if not hasAdminLevel(player, ADMIN.perms.jail) then
         return denyAccess(player, ADMIN.perms.jail)
     end
-
-    local minutes = tonumber(minutesArg)
-    local reason  = table.concat({ ... }, " ")
-    if not idArg or not minutes or reason == "" then
+    minutes = tonumber(minutes)
+    if not isElement(target) or not minutes or type(reason) ~= "string" or reason == "" then
         return adminAlert(player, "Usage: /ajail <ID> <minutes> <reason>", 255, 90, 90)
     end
     minutes = math.max(1, math.floor(minutes))
 
-    local target = resolveTarget(player, idArg)
-    if not target then return end
-
     if not isLogged(target) then
         return adminAlert(player, "That player is not logged in.", 255, 90, 90)
     end
+    if not canPunish(player, target) then return end
 
     local adminName = getPlayerName(player)
     setPlayerInAJ(target, true, minutes)
@@ -140,6 +136,41 @@ addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
         :format(adminName, minutes, reason), 255, 90, 90, 8000)
     adminAlert(player, ("#FFFFFFYou jailed #FFFF00%s #FFFFFF(%d min) for #FFFFFF%s")
         :format(getPlayerName(target), minutes, reason))
+    adminLog(player, ("jailed %s for %d min (%s)"):format(getPlayerName(target), minutes, reason))
+end
+
+function adminUnjail(player, target)
+    if not hasAdminLevel(player, ADMIN.perms.jail) then
+        return denyAccess(player, ADMIN.perms.jail)
+    end
+    if not isElement(target) then return end
+
+    if not getElementData(target, "adminjail") then
+        return adminAlert(player, "That player is not in admin jail.", 255, 90, 90)
+    end
+
+    setPlayerInAJ(target, false)
+    adminAlert(target, "#FFFFFFReleased from admin jail by #FFFF00" .. getPlayerName(player) .. "#FFFFFF.", 85, 255, 85)
+    adminAlert(player, "#FFFFFFYou released #FFFF00" .. getPlayerName(target) .. " #FFFFFFfrom admin jail.")
+    adminLog(player, "released " .. getPlayerName(target) .. " from admin jail")
+end
+
+-- ------------------------------------------------------------
+--  /ajail <ID> <minutes> <reason...>
+-- ------------------------------------------------------------
+addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
+    if not hasAdminLevel(player, ADMIN.perms.jail) then
+        return denyAccess(player, ADMIN.perms.jail)
+    end
+
+    local reason = table.concat({ ... }, " ")
+    if not idArg or not tonumber(minutesArg) or reason == "" then
+        return adminAlert(player, "Usage: /ajail <ID> <minutes> <reason>", 255, 90, 90)
+    end
+
+    local target = resolveTarget(player, idArg)
+    if not target then return end
+    adminJail(player, target, minutesArg, reason)
 end)
 
 -- ------------------------------------------------------------
@@ -152,12 +183,5 @@ addCommandHandler("ajailout", function(player, cmd, idArg)
 
     local target = resolveTarget(player, idArg)
     if not target then return end
-
-    if not getElementData(target, "adminjail") then
-        return adminAlert(player, "That player is not in admin jail.", 255, 90, 90)
-    end
-
-    setPlayerInAJ(target, false)
-    adminAlert(target, "#FFFFFFReleased from admin jail by #FFFF00" .. getPlayerName(player) .. "#FFFFFF.", 85, 255, 85)
-    adminAlert(player, "#FFFFFFYou released #FFFF00" .. getPlayerName(target) .. " #FFFFFFfrom admin jail.")
+    adminUnjail(player, target)
 end)

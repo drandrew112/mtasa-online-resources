@@ -25,8 +25,20 @@ ADMIN.titles = {
 
 ADMIN.maxLevel = 6
 
--- Minimum admin levels required by each command, in ONE place.
+-- Plain rank names (admin panel, no colours / brackets).
+ADMIN.rankNames = {
+    [0] = "Player",
+    [1] = "Trial Mod",
+    [2] = "Mod",
+    [3] = "Admin",
+    [4] = "SuperAdmin",
+    [5] = "Dev",
+    [6] = "Owner",
+}
+
+-- Minimum admin levels required by each command / panel action, in ONE place.
 ADMIN.perms = {
+    panel        = 1,   -- O key admin panel           (Trial Mod)
     adminCall    = 2,   -- /af, /adminannounce        (Mod)
     reports      = 1,   -- /reports                   (Trial Mod)
     teleport     = 1,   -- /goto, /gethere            (Trial Mod)
@@ -34,11 +46,48 @@ ADMIN.perms = {
     heal         = 1,   -- /heal                      (Trial Mod)
     noclip       = 2,   -- /fly + N key               (Mod)
     jail         = 2,   -- /ajail, /ajailout          (Mod)
-    ban          = 2,   -- /ban, /unban               (Mod)
-    mute         = 2,   -- /mute                      (Mod)
+    mute         = 1,   -- /mute, /unmute             (Trial Mod)
+    kick         = 3,   -- /kick                      (Admin)
+    ban          = 3,   -- /ban, /unban (account)     (Admin)
     setLevel     = 4,   -- /setadminlevel             (SuperAdmin)
     money        = 4,   -- /money                     (SuperAdmin)
     listAccounts = 5,   -- /listacc                   (Dev)
+}
+
+-- Admin panel (O key). Data is never hidden: every admin who can open the
+-- panel sees every field; only the ACTIONS are gated by ADMIN.perms.
+ADMIN.panel = {
+    key     = "o",
+    refresh = 3000,     -- ms between player-list refreshes while the panel is open
+    size      = 0.83,   -- whole panel size multiplier (on top of the ui_core screen scale)
+    fontScale = 1.5,    -- text size relative to the layout (effective text: size * fontScale ~ 1.25x)
+}
+
+-- Command reference shown on the panel's "Commands" tab.
+-- perm = key in ADMIN.perms (the level shown is read from there); false = everyone.
+ADMIN.commands = {
+    { cmd = "O key",                              perm = "panel",        desc = "Open / close the admin panel." },
+    { cmd = "/reports",                           perm = "reports",      desc = "Opens the admin panel on the Reports tab: active cases, claim, chat, logs." },
+    { cmd = "/goto <ID>",                         perm = "teleport",     desc = "Teleport to a player (interior / dimension too)." },
+    { cmd = "/gethere <ID>",                      perm = "teleport",     desc = "Bring a player to you (with their vehicle)." },
+    { cmd = "/heal <ID>",                         perm = "heal",         desc = "Restore a player's health and armour." },
+    { cmd = "/mute <ID> <minutes> <reason>",      perm = "mute",         desc = "Chat mute. Survives a relog, expires on its own." },
+    { cmd = "/unmute <ID>",                       perm = "mute",         desc = "Lift a chat mute early." },
+    { cmd = "/af <message>",                      perm = "adminCall",    desc = "Admin announcement to the whole server (/adminannounce). Also on the Server tab." },
+    { cmd = "/fixveh [ID]",                       perm = "vehicle",      desc = "Repair a vehicle (yours without an ID)." },
+    { cmd = "/flipveh [ID]",                      perm = "vehicle",      desc = "Flip a vehicle back on its wheels." },
+    { cmd = "/getout <ID>",                       perm = "vehicle",      desc = "Pull a player out of their vehicle." },
+    { cmd = "/fly  or  N key",                     perm = "noclip",       desc = "NoClip on / off. /flyspd <0.1-20> sets the speed." },
+    { cmd = "/ajail <ID> <minutes> <reason>",     perm = "jail",         desc = "Put a player in admin jail." },
+    { cmd = "/ajailout <ID>",                     perm = "jail",         desc = "Release a player from admin jail." },
+    { cmd = "/kick <ID> <reason>",                perm = "kick",         desc = "Kick a player from the server." },
+    { cmd = "/ban <account> <reason>",            perm = "ban",          desc = "Account ban (v_accounts, never expires). Online player: serial too." },
+    { cmd = "/unban <account>",                   perm = "ban",          desc = "Lift an account ban." },
+    { cmd = "/setadminlevel <ID> <0-6>",          perm = "setLevel",     desc = "Set an admin level (only below your own)." },
+    { cmd = "/money",                             perm = "money",        desc = "Test money (+€2000) for yourself." },
+    { cmd = "/listacc",                           perm = "listAccounts", desc = "Write every account name to the server log." },
+    { cmd = "/getid <name>",                      perm = false,          desc = "A player's ID from a name (fragment)." },
+    { cmd = "/myid",                              perm = false,          desc = "Your own ID." },
 }
 
 -- Admin jail location (interior 6).
@@ -60,7 +109,6 @@ ADMIN.events = {
 
     reportOpen    = "v_admin:reportOpen",      -- server -> client: open the player panel (+ state / false)
     reportSync    = "v_admin:reportSync",      -- server -> client: state of the player's own report (table / false)
-    reportAdminOpen = "v_admin:reportAdminOpen", -- server -> client: open the admin panel (+ list)
     reportAdminList = "v_admin:reportAdminList", -- server -> client: refresh the admin list
 
     reportCreate  = "v_admin:reportCreate",    -- client -> server: new report (text)
@@ -73,6 +121,11 @@ ADMIN.events = {
     reportLogList = "v_admin:reportLogList",   -- request (C->S) / result (S->C): saved log list
     reportLogOpen = "v_admin:reportLogOpen",   -- client -> server: request one log file (file name)
     reportLogData = "v_admin:reportLogData",   -- server -> client: contents of one log
+
+    -- Admin panel (O key)
+    panelRequest  = "v_admin:panelRequest",    -- client -> server: open / refresh the panel
+    panelData     = "v_admin:panelData",       -- server -> client: (players, myLevel, isRefresh, tab) / false = denied
+    panelAction   = "v_admin:panelAction",     -- client -> server: (action, targetId, args...)
 }
 
 -- Report limits.

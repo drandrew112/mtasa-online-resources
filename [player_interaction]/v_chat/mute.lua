@@ -2,9 +2,9 @@
 --  v_chat / mute.lua  (server)
 --  Chat mute. Blocks outgoing chat messages while active; the
 --  player is told through an ui_core Alert (chat is disabled for
---  them). Duration is in minutes, there is no /unmute – a mute
---  ends on its own. Mutes survive relog / a resource restart
---  (stored in account data).
+--  them). Duration is in minutes; a mute ends on its own or is
+--  lifted early with unmutePlayer (v_admin /unmute). Mutes survive
+--  relog / a resource restart (stored in account data).
 --
 --  Element data:  mute_until (epoch), mute_reason, mute_admin
 --  Account data:  same keys, in the shared `accounts` table
@@ -106,6 +106,27 @@ function mutePlayer(player, minutes, reason, adminName)
     alert(player, ("Muted by %s (%d min) for %s"):format(adminName, minutes, reason), 255, 170, 60, 7000)
 
     outputServerLog(("[v_chat] %s muted %s for %d min (%s)"):format(adminName, getPlayerName(player), minutes, reason))
+    return true
+end
+
+-- ------------------------------------------------------------
+--  unmutePlayer(player, admin_name)  – exported
+--  Returns true, or false + an error string.
+-- ------------------------------------------------------------
+function unmutePlayer(player, adminName)
+    if not isElement(player) or getElementType(player) ~= "player" then
+        return false, "Invalid player"
+    end
+    if not isChatMuted(player) then
+        return false, getPlayerName(player) .. " is not muted"
+    end
+    adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
+
+    clearMuteData(player)
+    seenMuted[player] = nil
+    alert(player, "Unmuted by " .. adminName .. ", you can use the chat again.", 85, 255, 85, 5000)
+
+    outputServerLog(("[v_chat] %s unmuted %s"):format(adminName, getPlayerName(player)))
     return true
 end
 

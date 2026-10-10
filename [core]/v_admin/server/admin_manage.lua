@@ -6,13 +6,13 @@
 -- ------------------------------------------------------------
 --  /setadminlevel <ID> <level 0-6>
 -- ------------------------------------------------------------
-addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)
+function adminSetLevel(player, target, newLevel)
     if not hasAdminLevel(player, ADMIN.perms.setLevel) then
         return denyAccess(player, ADMIN.perms.setLevel)
     end
 
-    local newLevel = tonumber(levelArg)
-    if not idArg or not newLevel then
+    newLevel = tonumber(newLevel)
+    if not isElement(target) or not newLevel then
         return adminAlert(player, "Usage: /setadminlevel <ID> <level 0-" .. ADMIN.maxLevel .. ">", 255, 90, 90)
     end
 
@@ -21,14 +21,13 @@ addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)
         return adminAlert(player, "Level must be between 0 and " .. ADMIN.maxLevel .. ".", 255, 90, 90)
     end
 
-    -- You cannot grant a level equal to or higher than your own (owner is exempt).
+    -- You cannot grant a level equal to or higher than your own (owner is exempt),
+    -- nor change the level of someone at or above you.
     local myLevel = getAdminLevel(player)
     if myLevel < ADMIN.maxLevel and newLevel >= myLevel then
         return adminAlert(player, "You can only grant a level lower than your own.", 255, 90, 90)
     end
-
-    local target = resolveTarget(player, idArg)
-    if not target then return end
+    if not canPunish(player, target) then return end
 
     if not exports.v_accounts:isLoggedIn(target) then
         return adminAlert(player, "That player is not logged in.", 255, 90, 90)
@@ -38,6 +37,19 @@ addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)
     setElementData(target, "admin_level", newLevel)
     adminAlert(player, "#CCFFCC" .. getPlayerName(target) .. " #FFFFFFadmin level set to #FFFF00" .. newLevel)
     adminAlert(target, "#FFFF00An admin set your level to #FFFFFF" .. newLevel .. "#FFFF00.")
+    adminLog(player, ("set %s admin level to %d"):format(getPlayerName(target), newLevel))
+end
+
+addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)
+    if not hasAdminLevel(player, ADMIN.perms.setLevel) then
+        return denyAccess(player, ADMIN.perms.setLevel)
+    end
+    if not idArg or not tonumber(levelArg) then
+        return adminAlert(player, "Usage: /setadminlevel <ID> <level 0-" .. ADMIN.maxLevel .. ">", 255, 90, 90)
+    end
+
+    local target = resolveTarget(player, idArg)
+    if target then adminSetLevel(player, target, levelArg) end
 end)
 
 -- ------------------------------------------------------------

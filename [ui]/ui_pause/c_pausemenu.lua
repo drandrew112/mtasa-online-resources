@@ -614,6 +614,7 @@ end
 addEventHandler("onClientKey", root, function(key, press)
     if not press then return end
     if getElementData(localPlayer, "showChatInput") then return end
+    if getElementData(localPlayer, "textInputOpen") then return end
 
     -- While the social panel is open it owns the foreground: the pause menu can
     -- neither be opened nor operated until the social panel is closed. Keys are
@@ -622,6 +623,7 @@ addEventHandler("onClientKey", root, function(key, press)
 
     -- Same for the v_admin report / reports panel.
     if getElementData(localPlayer, "reportPanelOpen") then return end
+    if getElementData(localPlayer, "adminPanelOpen") then return end
 
     -- Same while the virtual browser (ui_browser) is open.
     if getElementData(localPlayer, "browserOpen") then return end

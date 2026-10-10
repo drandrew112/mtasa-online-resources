@@ -284,6 +284,7 @@ local function otherPanelOpen()
         or getElementData(localPlayer, "showChatInput")
         or getElementData(localPlayer, "paused")
         or getElementData(localPlayer, "reportPanelOpen")
+        or getElementData(localPlayer, "adminPanelOpen")
 end
 
 addEventHandler("onClientKey", root, function(key, press)

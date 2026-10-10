@@ -79,6 +79,24 @@ function resolveTarget(player, idArg)
     return target
 end
 
+--- Punitive actions (mute, jail, kick, ban) only work on players with a
+--- LOWER admin level than yours; the owner is exempt. Also sends the error.
+function canPunish(player, target)
+    local myLevel = getAdminLevel(player)
+    if myLevel >= ADMIN.maxLevel then return true end
+    if getAdminLevel(target) >= myLevel then
+        adminAlert(player, "You can't do that to an admin of your level or higher.", 255, 90, 90)
+        return false
+    end
+    return true
+end
+
+--- One line per admin action in the server log.
+function adminLog(player, text)
+    outputServerLog(("[v_admin] %s (lvl %d): %s"):format(
+        isElement(player) and getPlayerName(player) or "Console", getAdminLevel(player), text))
+end
+
 -- ------------------------------------------------------------
 --  Load / sync admin data onto the player element
 --  (the client HUD and other resources read from here)

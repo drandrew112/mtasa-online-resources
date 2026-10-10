@@ -2,6 +2,8 @@
 --  v_admin / server/vehicle.lua
 --  Vehicle commands: fix, flip, getout.
 --  Without an ID it affects your own vehicle, with an ID the target's.
+--  adminFixVeh / adminFlipVeh / adminGetOut are shared with the
+--  admin panel (target = the player whose vehicle it is).
 -- ============================================================
 
 --- Returns: vehicle, target(player)  or  false + error alert.
@@ -20,13 +22,13 @@ end
 -- ------------------------------------------------------------
 --  /fixveh [ID]
 -- ------------------------------------------------------------
-addCommandHandler("fixveh", function(player, cmd, idArg)
+function adminFixVeh(player, target)
     if not hasAdminLevel(player, ADMIN.perms.vehicle) then
         return denyAccess(player, ADMIN.perms.vehicle)
     end
+    if not isElement(target) then return end
 
-    local veh, target = getTargetVehicle(player, idArg)
-    if veh == false then return end
+    local veh = getPedOccupiedVehicle(target)
     if not veh then
         return adminAlert(player, "No vehicle.", 255, 90, 90)
     end
@@ -39,18 +41,27 @@ addCommandHandler("fixveh", function(player, cmd, idArg)
     else
         adminAlert(player, "#FFFFFFVehicle repaired.")
     end
+end
+
+addCommandHandler("fixveh", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.vehicle) then
+        return denyAccess(player, ADMIN.perms.vehicle)
+    end
+    local veh, target = getTargetVehicle(player, idArg)
+    if veh == false then return end
+    adminFixVeh(player, target)
 end)
 
 -- ------------------------------------------------------------
 --  /flipveh [ID]
 -- ------------------------------------------------------------
-addCommandHandler("flipveh", function(player, cmd, idArg)
+function adminFlipVeh(player, target)
     if not hasAdminLevel(player, ADMIN.perms.vehicle) then
         return denyAccess(player, ADMIN.perms.vehicle)
     end
+    if not isElement(target) then return end
 
-    local veh, target = getTargetVehicle(player, idArg)
-    if veh == false then return end
+    local veh = getPedOccupiedVehicle(target)
     if not veh then
         return adminAlert(player, "No vehicle.", 255, 90, 90)
     end
@@ -65,18 +76,25 @@ addCommandHandler("flipveh", function(player, cmd, idArg)
     else
         adminAlert(player, "#FFFFFFVehicle flipped back.")
     end
+end
+
+addCommandHandler("flipveh", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.vehicle) then
+        return denyAccess(player, ADMIN.perms.vehicle)
+    end
+    local veh, target = getTargetVehicle(player, idArg)
+    if veh == false then return end
+    adminFlipVeh(player, target)
 end)
 
 -- ------------------------------------------------------------
 --  /getout <ID>  – pull the given player out of their vehicle
 -- ------------------------------------------------------------
-addCommandHandler("getout", function(player, cmd, idArg)
+function adminGetOut(player, target)
     if not hasAdminLevel(player, ADMIN.perms.vehicle) then
         return denyAccess(player, ADMIN.perms.vehicle)
     end
-
-    local target = resolveTarget(player, idArg)
-    if not target then return end
+    if not isElement(target) then return end
 
     local veh = getPedOccupiedVehicle(target)
     if not veh then
@@ -91,4 +109,12 @@ addCommandHandler("getout", function(player, cmd, idArg)
     else
         adminAlert(player, "#FFFFFFYou left your vehicle.")
     end
+end
+
+addCommandHandler("getout", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.vehicle) then
+        return denyAccess(player, ADMIN.perms.vehicle)
+    end
+    local target = resolveTarget(player, idArg)
+    if target then adminGetOut(player, target) end
 end)

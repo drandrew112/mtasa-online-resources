@@ -55,6 +55,7 @@ local function blocked()
         or getElementData(localPlayer, "paused")
         or getElementData(localPlayer, "showChatInput")
         or getElementData(localPlayer, "reportPanelOpen")
+        or getElementData(localPlayer, "adminPanelOpen")
         or isPedDead(localPlayer)
         or inJobLobby()
 end

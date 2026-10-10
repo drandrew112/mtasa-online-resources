@@ -1,19 +1,17 @@
 -- ============================================================
 --  v_admin / server/teleport.lua
---  Admin teleport commands.
+--  Admin teleport commands. adminGoto / adminGethere are shared
+--  with the admin panel.
 -- ============================================================
 
 -- ------------------------------------------------------------
 --  /goto <ID>  – teleport to the given player
 -- ------------------------------------------------------------
-addCommandHandler("goto", function(player, cmd, idArg)
+function adminGoto(player, target)
     if not hasAdminLevel(player, ADMIN.perms.teleport) then
         return denyAccess(player, ADMIN.perms.teleport)
     end
-
-    local target = resolveTarget(player, idArg)
-    if not target then return end
-    if target == player then return end
+    if not isElement(target) or target == player then return end
 
     local x, y, z = getElementPosition(target)
     local int, dim = getElementInterior(target), getElementDimension(target)
@@ -24,19 +22,24 @@ addCommandHandler("goto", function(player, cmd, idArg)
 
     adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFteleported to you.")
     adminAlert(player, "#FFFFFFYou teleported to #FFFF00" .. getPlayerName(target))
+end
+
+addCommandHandler("goto", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.teleport) then
+        return denyAccess(player, ADMIN.perms.teleport)
+    end
+    local target = resolveTarget(player, idArg)
+    if target then adminGoto(player, target) end
 end)
 
 -- ------------------------------------------------------------
 --  /gethere <ID>  – bring the given player to you
 -- ------------------------------------------------------------
-addCommandHandler("gethere", function(player, cmd, idArg)
+function adminGethere(player, target)
     if not hasAdminLevel(player, ADMIN.perms.teleport) then
         return denyAccess(player, ADMIN.perms.teleport)
     end
-
-    local target = resolveTarget(player, idArg)
-    if not target then return end
-    if target == player then return end
+    if not isElement(target) or target == player then return end
 
     local x, y, z = getElementPosition(player)
     local int, dim = getElementInterior(player), getElementDimension(player)
@@ -55,4 +58,12 @@ addCommandHandler("gethere", function(player, cmd, idArg)
 
     adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFteleported you to them.")
     adminAlert(player, "#FFFFFFYou brought #FFFF00" .. getPlayerName(target) .. " #FFFFFFto you.")
+end
+
+addCommandHandler("gethere", function(player, cmd, idArg)
+    if not hasAdminLevel(player, ADMIN.perms.teleport) then
+        return denyAccess(player, ADMIN.perms.teleport)
+    end
+    local target = resolveTarget(player, idArg)
+    if target then adminGethere(player, target) end
 end)

@@ -15,4 +15,6 @@
 
   <!-- server mutePlayer(player, minutes, reason, admin_name) -->
   <export function="mutePlayer" type="server"/>
+  <!-- server unmutePlayer(player, admin_name) -->
+  <export function="unmutePlayer" type="server"/>
 </meta>

@@ -124,7 +124,8 @@ bindKey("t", "down", function()
     if getElementData(localPlayer, "interactionMenuOpen")
     or getElementData(localPlayer, "socialPanelOpen")
     or getElementData(localPlayer, "phoneOpen")
-    or getElementData(localPlayer, "reportPanelOpen") then
+    or getElementData(localPlayer, "reportPanelOpen")
+    or getElementData(localPlayer, "adminPanelOpen") then
         return
     end
     uicore:toggleMoveControls(false)

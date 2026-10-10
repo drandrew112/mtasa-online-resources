@@ -1,12 +1,12 @@
 <meta>
     <info author="andrasxa" name="v_admin" type="script" version="2.0"
-          description="Admin commands, admin jail and server-side ID manager" />
+          description="Admin panel (O), admin commands, admin jail and server-side ID manager" />
 
     <!-- Messages are shown via the ui_core Alert element (chat is disabled) -->
     <include resource="ui_core" />
-    <!-- Report system UI -->
+    <!-- Player report panel UI (/report) -->
     <include resource="dgs" />
-    <!-- /ban -> v_accounts, /mute -> v_chat -->
+    <!-- /ban -> v_accounts, /mute + /unmute -> v_chat -->
     <include resource="v_accounts" />
     <include resource="v_chat" />
     <!-- admin_level + admin jail data live in the shared accounts table -->
@@ -27,11 +27,18 @@
     <script src="server/ban.lua"          type="server" />
     <script src="server/mute.lua"         type="server" />
     <script src="server/misc.lua"         type="server" />
+    <script src="server/panel.lua"        type="server" />
 
     <!-- Client side -->
     <script src="client/hud.lua"    type="client" />
     <script src="client/noclip.lua" type="client" />
     <script src="client/report.lua" type="client" />
+    <!-- Admin panel (O key): core first, then the tabs -->
+    <script src="client/panel/core.lua"     type="client" />
+    <script src="client/panel/players.lua"  type="client" />
+    <script src="client/panel/reports.lua"  type="client" />
+    <script src="client/panel/server.lua"   type="client" />
+    <script src="client/panel/commands.lua" type="client" />
 
     <file src="pmalert.mp3" type="client" />
 </meta>

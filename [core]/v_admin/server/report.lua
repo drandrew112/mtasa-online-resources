@@ -5,8 +5,9 @@
 --    /report   – player: opens a panel, can call an admin,
 --                chat inside the report, close it, and see
 --                which admin claimed it. One open report / player.
---    /reports  – admin (ADMIN.perms.reports): live list of the
---                active reports, claim, chat, teleport, close.
+--    /reports  – admin (ADMIN.perms.reports): opens the admin
+--                panel's Reports tab (client/panel/reports.lua):
+--                active reports, claim, chat, teleport, close, logs.
 -- ============================================================
 
 local CFG = ADMIN.report
@@ -202,7 +203,8 @@ addCommandHandler("reports", function(player)
     if not isReportAdmin(player) then
         return denyAccess(player, ADMIN.perms.reports)
     end
-    triggerClientEvent(player, ADMIN.events.reportAdminOpen, resourceRoot, reportList())
+    -- The admin report manager is the admin panel's Reports tab.
+    openAdminPanel(player, "reports")
 end)
 
 -- ------------------------------------------------------------
@@ -394,8 +396,8 @@ addEventHandler("onPlayerQuit", root, function()
     closeReport(r)
 end)
 
--- An admin finishes loading -> give them the current list if their panel is open
--- (the panel asks again on /reports, this just keeps an already-open one fresh).
+-- An admin finishes loading -> give them the current list (the panel's Reports
+-- tab caches it and asks again whenever it is shown).
 -- onPlayerLoaded, so their synced admin_level is already in place.
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
