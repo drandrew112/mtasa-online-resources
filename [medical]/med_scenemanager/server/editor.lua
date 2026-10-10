@@ -202,6 +202,12 @@ function Editor.unloadScene(session)
     session.scene = nil
 end
 
+local function teleport(player, x, y, z, interior)
+    if getPedOccupiedVehicle(player) then removePedFromVehicle(player) end
+    if interior then setElementInterior(player, interior) end
+    setElementPosition(player, x, y, z + 0.5)
+end
+
 local function openScene(session, data, file)
     Editor.unloadScene(session)
     session.scene = { file = file, data = data, dirty = false, vehicles = {}, peds = {} }
@@ -236,7 +242,9 @@ local function loadScene(session, name)
         return
     end
     openScene(session, data, name)
-    msmNotify(session.player, "Scene editor", "Loaded " .. name .. ". Use Teleport to scene to go there.")
+    local c = data.center
+    if c then teleport(session.player, c[1], c[2], c[3], data.interior) end
+    msmNotify(session.player, "Scene editor", "Loaded " .. name .. ". Teleported to the scene ERM centre.")
 end
 
 -- Drops seat references to vehicles that no longer exist.
@@ -336,12 +344,6 @@ addEventHandler("onResourceStop", resourceRoot, function()
 end)
 
 ---------------------------------------------------------------- actions
-
-local function teleport(player, x, y, z, interior)
-    if getPedOccupiedVehicle(player) then removePedFromVehicle(player) end
-    if interior then setElementInterior(player, interior) end
-    setElementPosition(player, x, y, z + 0.5)
-end
 
 local function addPed(session)
     local player = session.player
