@@ -1,0 +1,13 @@
+<meta>
+    <info author="DrAndrew112" name="Wall monitors" version="1.0.0" type="script"
+          description="ATC wall screens (plain 3D dxDraw): the first shows a fixed radar picture, the others mirror the screens of the staffed controller positions, refreshed every 5 s" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"  type="shared" />
+    <script src="server/main.lua"    type="server" />
+    <script src="client/render.lua"  type="client" />
+    <script src="client/main.lua"    type="client" />
+
+    <file src="fonts/Roboto.ttf"  type="client" />
+    <file src="fonts/RobotoB.ttf" type="client" />
+</meta>

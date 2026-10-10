@@ -11,9 +11,19 @@ EMS = {
     -- Outfits (276 = OMSZ shirt, replaced by v_modloader)
     SKINS = {
         { model = 276, name = "Paramedic (OMSZ)" },
-        { model = 274, name = "Paramedic 1" },
-        { model = 275, name = "Paramedic 2" },
+        { model = 274, name = "Paramedic 1", level = 2 },
+        { model = 275, name = "Paramedic 2", level = 4 },
     },
+
+    -- Work levels (work_core). XP is earned per treated patient (completed hospital handover).
+    MAX_LEVEL = 10,
+    LEVEL_XP = 500,                    -- XP for level 2
+    LEVEL_STEP = 250,                  -- added for every further level
+    LEVEL_NAMES = {
+        [1] = "Trainee", [2] = "EMT", [4] = "Paramedic", [6] = "Senior Paramedic",
+        [8] = "Critical Care Paramedic", [10] = "Chief Paramedic",
+    },
+    XP_PER_PATIENT = 100,
 
     -- Vehicles offered at the duty vehicle markers. Plates: PLATE_PREFIX + PLATE_DIGITS random digits.
     -- Ambulances only for now (no emergency doctor car / helicopter yet).

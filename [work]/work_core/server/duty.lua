@@ -93,6 +93,10 @@ function startDuty(player, workId, skin)
 
     skin = tonumber(skin) or work.skins[1].model
     if not isWorkSkin(work, skin) then return false, "This outfit does not belong to this work." end
+    local need = skinLevel(work, skin)
+    if need > 1 and getPlayerWorkLevel(player, workId) < need then
+        return false, ("This outfit needs %s level %d."):format(work.name, need)
+    end
 
     if not triggerEvent("onPlayerWorkDutyRequest", player, workId) then
         local reason = getCancelReason()
@@ -134,6 +138,10 @@ function changeDutySkin(player, skin)
     skin = tonumber(skin)
     if not skin or not isWorkSkin(Works[d.work], skin) then
         return false, "This outfit does not belong to this work."
+    end
+    local need = skinLevel(Works[d.work], skin)
+    if need > 1 and getPlayerWorkLevel(player, d.work) < need then
+        return false, ("This outfit needs %s level %d."):format(Works[d.work].name, need)
     end
     d.skin = skin
     setElementModel(player, skin)

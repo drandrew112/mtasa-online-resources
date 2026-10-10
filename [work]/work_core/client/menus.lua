@@ -47,8 +47,14 @@ end
 
 local function skinItems(work, action, desc)
     local items = {}
+    local lv = getPlayerWorkLevel(localPlayer, work.id)
     for i, s in ipairs(work.skins) do
-        items[i] = { label = s.name, desc = desc, value = { a = action, skin = s.model } }
+        if (s.level or 1) > lv then
+            items[i] = { label = s.name .. " (level " .. s.level .. ")", desc = "Unlocks at " .. work.name .. " level " .. s.level,
+                         value = { a = "locked" } }
+        else
+            items[i] = { label = s.name, desc = desc, value = { a = action, skin = s.model } }
+        end
     end
     return items
 end
@@ -76,6 +82,8 @@ local function openDutyMenu(marker)
         open({ title = work.name:upper(), items = items }, marker, "duty", #work.skins > 1)
     else
         local desc = "Go on duty in this outfit"
+        local lvName = getPlayerWorkLevelName(localPlayer, workId)
+        desc = ("Level %d%s · %s"):format(getPlayerWorkLevel(localPlayer, workId), lvName and (" " .. lvName) or "", desc)
         if work.description ~= "" then desc = work.description .. " · " .. desc end
         open({ title = work.name:upper() .. " · ON DUTY", items = skinItems(work, "on", desc) },
             marker, "duty", true)
@@ -132,6 +140,7 @@ end)
 addEventHandler("ui_inac:tempMenuSelect", root, function(id, value)
     if not menu or id ~= menu.id or type(value) ~= "table" then return end
     local marker = menu.marker
+    if value.a == "locked" then return end
     if value.a == "on" or value.a == "outfit" then
         triggerServerEvent(value.a == "on" and "work:dutyOn" or "work:outfit", resourceRoot, marker, value.skin)
     elseif value.a == "off" then

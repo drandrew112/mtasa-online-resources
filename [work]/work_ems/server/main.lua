@@ -31,6 +31,10 @@ local function setup()
         description = EMS.DESCRIPTION,
         color = EMS.COLOR,
         skins = EMS.SKINS,
+        maxLevel = EMS.MAX_LEVEL,
+        levelXp = EMS.LEVEL_XP,
+        levelStep = EMS.LEVEL_STEP,
+        levelNames = EMS.LEVEL_NAMES,
     })
 
     local vehicles = {}
@@ -118,6 +122,9 @@ addEventHandler("onErmUnitHandoverComplete", root, function(unitId, taskId)
     local unit = exports.med_erm:getUnitData(unitId)
     if not unit then return end
     for _, m in ipairs(unit.members or {}) do
+        if isElement(m.player) and isRunning("work_core") then
+            exports.work_core:giveWorkXp(m.player, EMS.WORK_ID, EMS.XP_PER_PATIENT)
+        end
         if isElement(m.player) then
             exports.v_achievements:addStat(m.player, "ems_patients", 1)
         end

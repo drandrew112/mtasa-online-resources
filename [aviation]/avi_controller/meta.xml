@@ -1,0 +1,28 @@
+<meta>
+    <info author="DrAndrew112" name="ATC controller" version="1.0.0" type="script"
+          description="Air traffic controller software: positions SACC_CTR / ICAO_APP / ICAO_TWR, radar scope with airspaces, nav points, airports and avi_traffic targets (ATC marker)" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"  type="shared" />
+    <script src="server/main.lua"    type="server" />
+
+    <script src="client/state.lua"   type="client" />
+    <script src="client/view.lua"    type="client" />
+    <script src="client/draw.lua"    type="client" />
+    <script src="client/labels.lua"  type="client" />
+    <script src="client/menu.lua"    type="client" />
+    <script src="client/login.lua"   type="client" />
+    <script src="client/scope.lua"   type="client" />
+
+    <file src="fonts/Roboto.ttf"  type="client" />
+    <file src="fonts/RobotoB.ttf" type="client" />
+
+    <!-- positions (work_atc: rights in avi_core, then openATCLogin) -->
+    <export function="getPositions"         type="server" />
+    <export function="getStaffedPositions"  type="server" />
+    <export function="getPlayerATCPosition" type="server" />
+    <export function="openATCLogin"         type="server" />
+    <export function="useATCConsole"        type="server" />
+    <export function="logoutATC"            type="server" />
+    <export function="getPositionViews"     type="server" />
+</meta>

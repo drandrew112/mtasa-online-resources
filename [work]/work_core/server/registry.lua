@@ -37,11 +37,35 @@ local function normaliseSkins(list)
             model = math.floor(model)
             if not seen[model] then
                 seen[model] = true
-                out[#out + 1] = { model = model, name = name and tostring(name) or ("Outfit " .. model) }
+                local level = type(s) == "table" and tonumber(s.level) or nil
+                out[#out + 1] = { model = model, name = name and tostring(name) or ("Outfit " .. model),
+                                  level = level and math.max(1, math.floor(level)) or 1 }
             end
         end
     end
     return out
+end
+
+-- level settings: maxLevel, levelXp (XP for level 2), levelStep (added per further level),
+-- levelNames = { [level] = "Name" }
+local function normaliseLevels(def)
+    local names = {}
+    if type(def.levelNames) == "table" then
+        for k, v in pairs(def.levelNames) do
+            k = tonumber(k)
+            if k and k >= 1 then names[math.floor(k)] = tostring(v) end
+        end
+    end
+    local function num(v, default, min)
+        v = tonumber(v)
+        return v and math.max(min, math.floor(v)) or default
+    end
+    return {
+        maxLevel = num(def.maxLevel, WORK.MAX_LEVEL, 1),
+        baseXp = num(def.levelXp, WORK.LEVEL_BASE_XP, 1),
+        stepXp = num(def.levelStep, WORK.LEVEL_STEP_XP, 0),
+        names = names,
+    }
 end
 
 function isWorkSkin(work, model)
@@ -56,7 +80,8 @@ end
 local function publicWorks()
     local t = {}
     for id, w in pairs(Works) do
-        t[id] = { id = id, name = w.name, description = w.description, color = w.color, skins = w.skins }
+        t[id] = { id = id, name = w.name, description = w.description, color = w.color, skins = w.skins,
+                  levels = w.levels }
     end
     return t
 end
@@ -73,6 +98,7 @@ function syncWorks(player)
     if #targets > 0 then
         triggerClientEvent(targets, "work:sync", resourceRoot, publicWorks())
     end
+    if not player then resyncAllLevels() end
 end
 
 function isPlayerReady(player)
@@ -94,7 +120,9 @@ end)
 -- registerWork("ems", {
 --     name = "EMS", description = "Emergency Medical Services",
 --     color = { 220, 50, 50 },
---     skins = { 274, 275, { model = 276, name = "Doctor" } },   -- required, at least one
+--     skins = { 274, 275, { model = 276, name = "Doctor", level = 5 } },  -- required; level = work level needed
+--     maxLevel = 10, levelXp = 500, levelStep = 250,            -- optional, defaults in WORK.*
+--     levelNames = { [1] = "Trainee", [5] = "Paramedic" },      -- optional
 -- }) -> true | false
 -- Registering an id again from the same resource updates it.
 function registerWork(id, def)
@@ -121,6 +149,7 @@ function registerWork(id, def)
         description = def.description and tostring(def.description) or "",
         color = normaliseColor(def.color),
         skins = skins,
+        levels = normaliseLevels(def),
         owner = owner or (existing and existing.owner) or nil,
     }
     syncWorks()
@@ -147,9 +176,13 @@ end
 
 local function copyWork(w)
     local skins = {}
-    for i, s in ipairs(w.skins) do skins[i] = { model = s.model, name = s.name } end
+    for i, s in ipairs(w.skins) do skins[i] = { model = s.model, name = s.name, level = s.level } end
+    local names = {}
+    for k, v in pairs(w.levels.names) do names[k] = v end
     return { id = w.id, name = w.name, description = w.description,
-             color = { unpack(w.color) }, skins = skins, resource = w.owner }
+             color = { unpack(w.color) }, skins = skins, resource = w.owner,
+             levels = { maxLevel = w.levels.maxLevel, baseXp = w.levels.baseXp,
+                        stepXp = w.levels.stepXp, names = names } }
 end
 
 function getWork(id)

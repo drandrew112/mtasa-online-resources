@@ -1,0 +1,30 @@
+<meta>
+    <info author="DrAndrew112" name="Aviation traffic" version="1.0.0" type="script"
+          description="Simulated air traffic for the ATC scope (no vehicles): fixed flights from data/flights.json, gate-to-gate with taxi, approach, go-around, controller clearances" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"   type="server" />
+    <script src="server/data.lua"     type="server" />
+    <script src="server/control.lua"  type="server" />
+    <script src="server/sim.lua"      type="server" />
+    <script src="server/schedule.lua" type="server" />
+
+    <file src="data/flights.json" type="server" />
+
+    <!-- reads (called by avi_controller once per update) -->
+    <export function="getTrafficSnapshot"    type="server" />
+    <export function="getAircraft"           type="server" />
+    <export function="getAircraftByCallsign" type="server" />
+    <export function="getAircraftController" type="server" />
+    <!-- controller clearances (avi_controller checks the player / position first) -->
+    <export function="setClearedAltitude"    type="server" />
+    <export function="setDirectTo"           type="server" />
+    <export function="clearDirectTo"         type="server" />
+    <export function="setHeading"            type="server" />
+    <export function="clearHeading"          type="server" />
+    <export function="transferAircraft"      type="server" />
+    <export function="giveClearance"         type="server" />
+    <!-- tests / other resources -->
+    <export function="spawnFlightByCallsign" type="server" />
+    <export function="removeFlight"          type="server" />
+</meta>

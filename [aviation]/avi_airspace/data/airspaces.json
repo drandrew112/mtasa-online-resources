@@ -1,0 +1,271 @@
+{
+ "_about": "Airspaces: CTR = tower, TMA = approach, CTA = radar / centre. Lookup priority CTR > TMA > CTA. Coordinates: GTA world metres. Altitudes: feet.",
+ "airspaces": [
+  {
+   "id": "SACC_CTA",
+   "type": "CTA",
+   "name": "San Andreas CTA",
+   "airport": null,
+   "floor": 0,
+   "ceiling": 24500,
+   "polygon": [
+    [
+     -3500,
+     -3500
+    ],
+    [
+     3500,
+     -3500
+    ],
+    [
+     3500,
+     3500
+    ],
+    [
+     -3500,
+     3500
+    ]
+   ]
+  },
+  {
+   "id": "SALS_TMA",
+   "type": "TMA",
+   "name": "Los Santos TMA",
+   "airport": "SALS",
+   "floor": 0,
+   "ceiling": 9500,
+   "polygon": [
+    [
+     300,
+     -1700
+    ],
+    [
+     3000,
+     -1700
+    ],
+    [
+     3400,
+     -2100
+    ],
+    [
+     3400,
+     -3400
+    ],
+    [
+     300,
+     -3400
+    ],
+    [
+     -100,
+     -3000
+    ],
+    [
+     -100,
+     -2100
+    ]
+   ]
+  },
+  {
+   "id": "SALS_CTR",
+   "type": "CTR",
+   "name": "Los Santos CTR",
+   "airport": "SALS",
+   "floor": 0,
+   "ceiling": 2500,
+   "polygon": [
+    [
+     190,
+     -2844
+    ],
+    [
+     190,
+     -2244
+    ],
+    [
+     490,
+     -1944
+    ],
+    [
+     3015,
+     -1944
+    ],
+    [
+     3315,
+     -2244
+    ],
+    [
+     3315,
+     -2844
+    ],
+    [
+     3015,
+     -3144
+    ],
+    [
+     490,
+     -3144
+    ]
+   ]
+  },
+  {
+   "id": "SASF_TMA",
+   "type": "TMA",
+   "name": "San Fierro TMA",
+   "airport": "SASF",
+   "floor": 0,
+   "ceiling": 9500,
+   "polygon": [
+    [
+     -2900,
+     -1400
+    ],
+    [
+     -400,
+     -1400
+    ],
+    [
+     -100,
+     -900
+    ],
+    [
+     0,
+     1200
+    ],
+    [
+     -500,
+     1700
+    ],
+    [
+     -2900,
+     1700
+    ]
+   ]
+  },
+  {
+   "id": "SASF_CTR",
+   "type": "CTR",
+   "name": "San Fierro CTR",
+   "airport": "SASF",
+   "floor": 0,
+   "ceiling": 2500,
+   "polygon": [
+    [
+     -2312,
+     -1244
+    ],
+    [
+     -2736,
+     -820
+    ],
+    [
+     -2736,
+     -395
+    ],
+    [
+     -898,
+     1443
+    ],
+    [
+     -473,
+     1443
+    ],
+    [
+     -49,
+     1019
+    ],
+    [
+     -49,
+     594
+    ],
+    [
+     -1887,
+     -1244
+    ]
+   ]
+  },
+  {
+   "id": "SALV_TMA",
+   "type": "TMA",
+   "name": "Las Venturas TMA",
+   "airport": "SALV",
+   "floor": 0,
+   "ceiling": 9500,
+   "polygon": [
+    [
+     300,
+     600
+    ],
+    [
+     900,
+     -300
+    ],
+    [
+     2050,
+     -300
+    ],
+    [
+     2900,
+     600
+    ],
+    [
+     2900,
+     2800
+    ],
+    [
+     2400,
+     3300
+    ],
+    [
+     700,
+     3300
+    ],
+    [
+     300,
+     2800
+    ]
+   ]
+  },
+  {
+   "id": "SALV_CTR",
+   "type": "CTR",
+   "name": "Las Venturas CTR",
+   "airport": "SALV",
+   "floor": 0,
+   "ceiling": 2500,
+   "polygon": [
+    [
+     1777,
+     -80
+    ],
+    [
+     1177,
+     -80
+    ],
+    [
+     877,
+     220
+    ],
+    [
+     877,
+     2775
+    ],
+    [
+     1177,
+     3075
+    ],
+    [
+     1777,
+     3075
+    ],
+    [
+     2077,
+     2775
+    ],
+    [
+     2077,
+     220
+    ]
+   ]
+  }
+ ]
+}

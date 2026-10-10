@@ -35,6 +35,22 @@ function computePay(summary)
     return items
 end
 
+-- XP for a completed service (TRAINDRIVER.XP)
+function computeXp(summary)
+    local X = TRAINDRIVER.XP
+    local number = tostring(summary.number or "?")
+    local xp = X.BASE[number:match("^(%a+)")] or X.BASE_DEFAULT
+    xp = xp + (summary.served or 0) * X.PER_STOP
+    local delay = summary.arrivalDelay
+    if delay then
+        for _, tier in ipairs(TRAINDRIVER.PAY.PUNCTUAL) do
+            if delay <= tier.max then xp = xp + X.PUNCTUAL_BONUS break end
+        end
+    end
+    xp = xp - (summary.skipped or 0) * X.SKIP_PENALTY
+    return math.max(10, xp)
+end
+
 local function total(items)
     local t = 0
     for _, i in ipairs(items) do t = t + i.amount end
@@ -46,6 +62,7 @@ local function pay(player, summary)
     if total(items) < 0 then items[#items + 1] = { label = "Adjustment", amount = -total(items) } end
     local ok, result = exports.work_core:payWork(player, TRAINDRIVER.WORK_ID, items, "Service " .. tostring(summary.number) .. " completed")
     if ok then
+        exports.work_core:giveWorkXp(player, TRAINDRIVER.WORK_ID, computeXp(summary))
         outputServerLog(("[work_traindriver] %s paid %d for %s"):format(getPlayerName(player), result, tostring(summary.number)))
     else
         outputServerLog(("[work_traindriver] payment for %s failed: %s"):format(getPlayerName(player), tostring(result)))

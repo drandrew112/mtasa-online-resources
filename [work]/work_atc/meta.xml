@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="work_atc" version="1.0.0" type="script"
+          description="Air traffic controller work on work_core: duty gives ATC rights (tower / approach / radar) of avi_core by work level" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="server/main.lua"   type="server" />
+
+    <export function="isPlayerATC"        type="server" />
+    <export function="getATCPlayers"      type="server" />
+    <export function="getATCWorkId"       type="server" />
+    <export function="getATCLevelRights"  type="server" />
+
+    <!-- avi_core is used through exports when running (not included, so an avi_core restart does not stop this work) -->
+    <include resource="work_core" />
+</meta>

@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="Aviation airports" version="1.0.0" type="script"
+          description="Airports (ICAO SALS / SASF / SALV) from data/airports.json: runways, taxiways, gates, runway in use, taxi routing" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua"  type="server" />
+    <script src="server/airports.lua" type="server" />
+    <script src="server/taxi.lua"     type="server" />
+
+    <file src="data/airports.json" type="server" />
+
+    <export function="getAirports"        type="server" />
+    <export function="getAirport"         type="server" />
+    <export function="getNearestAirport"  type="server" />
+    <export function="getRunwayEnd"       type="server" />
+    <export function="getActiveRunway"    type="server" />
+    <export function="getActiveRunways"   type="server" />
+    <export function="setActiveRunway"    type="server" />
+    <export function="getWind"            type="server" />
+    <export function="setWind"            type="server" />
+    <export function="findTaxiRoute"      type="server" />
+</meta>

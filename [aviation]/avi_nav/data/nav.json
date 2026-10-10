@@ -1,0 +1,237 @@
+{
+ "_about": "Navigation points: FIX, NDB, VOR. VORs are placed in game with /avinav. Coordinates: GTA world metres. Altitudes: feet.",
+ "fixes": [
+  {
+   "id": "BYRON",
+   "x": 1500,
+   "y": 3500,
+   "kind": "cta"
+  },
+  {
+   "id": "NOVAX",
+   "x": -1500,
+   "y": 3500,
+   "kind": "cta"
+  },
+  {
+   "id": "LIBTY",
+   "x": 3500,
+   "y": 1000,
+   "kind": "cta"
+  },
+  {
+   "id": "VICEC",
+   "x": 3500,
+   "y": -2000,
+   "kind": "cta"
+  },
+  {
+   "id": "SANTO",
+   "x": 1200,
+   "y": -3500,
+   "kind": "cta"
+  },
+  {
+   "id": "PACIF",
+   "x": -3500,
+   "y": -1500,
+   "kind": "cta"
+  },
+  {
+   "id": "REDWO",
+   "x": -3500,
+   "y": 1500,
+   "kind": "cta"
+  },
+  {
+   "id": "VINEW",
+   "x": 900,
+   "y": -1700,
+   "kind": "tma"
+  },
+  {
+   "id": "GROVE",
+   "x": 2300,
+   "y": -1700,
+   "kind": "tma"
+  },
+  {
+   "id": "OCEAN",
+   "x": 3400,
+   "y": -2900,
+   "kind": "tma"
+  },
+  {
+   "id": "SANTA",
+   "x": -100,
+   "y": -2550,
+   "kind": "tma"
+  },
+  {
+   "id": "FLINT",
+   "x": -60,
+   "y": -60,
+   "kind": "tma"
+  },
+  {
+   "id": "ANGPI",
+   "x": -1900,
+   "y": -1400,
+   "kind": "tma"
+  },
+  {
+   "id": "PALIS",
+   "x": -2900,
+   "y": 100,
+   "kind": "tma"
+  },
+  {
+   "id": "GANTN",
+   "x": -1500,
+   "y": 1700,
+   "kind": "tma"
+  },
+  {
+   "id": "BAYSD",
+   "x": -250,
+   "y": 1450,
+   "kind": "tma"
+  },
+  {
+   "id": "MONTG",
+   "x": 1500,
+   "y": -300,
+   "kind": "tma"
+  },
+  {
+   "id": "BONEC",
+   "x": 300,
+   "y": 1700,
+   "kind": "tma"
+  },
+  {
+   "id": "KACCY",
+   "x": 2900,
+   "y": 1700,
+   "kind": "tma"
+  },
+  {
+   "id": "PRCKL",
+   "x": 1500,
+   "y": 3300,
+   "kind": "tma"
+  },
+  {
+   "id": "SHADY",
+   "x": 600,
+   "y": 150,
+   "kind": "tma"
+  },
+  {
+   "id": "DILMR",
+   "x": 700,
+   "y": -700,
+   "kind": "enroute"
+  },
+  {
+   "id": "PALOM",
+   "x": 2300,
+   "y": -200,
+   "kind": "enroute"
+  },
+  {
+   "id": "TIERR",
+   "x": -1200,
+   "y": 2500,
+   "kind": "enroute"
+  },
+  {
+   "id": "LS09L",
+   "x": 240.0,
+   "y": -2494.0,
+   "kind": "final",
+   "airport": "SALS",
+   "runway": "09L"
+  },
+  {
+   "id": "LS27R",
+   "x": 3265.0,
+   "y": -2494.0,
+   "kind": "final",
+   "airport": "SALS",
+   "runway": "27R"
+  },
+  {
+   "id": "LS09R",
+   "x": 240.0,
+   "y": -2593.0,
+   "kind": "final",
+   "airport": "SALS",
+   "runway": "09R"
+  },
+  {
+   "id": "LS27L",
+   "x": 3265.0,
+   "y": -2593.0,
+   "kind": "final",
+   "airport": "SALS",
+   "runway": "27L"
+  },
+  {
+   "id": "SF04",
+   "x": -2488.5,
+   "y": -996.5,
+   "kind": "final",
+   "airport": "SASF",
+   "runway": "04"
+  },
+  {
+   "id": "SF22",
+   "x": -296.5,
+   "y": 1195.5,
+   "kind": "final",
+   "airport": "SASF",
+   "runway": "22"
+  },
+  {
+   "id": "LV18",
+   "x": 1477.0,
+   "y": 3025.0,
+   "kind": "final",
+   "airport": "SALV",
+   "runway": "18"
+  },
+  {
+   "id": "LV36",
+   "x": 1477.0,
+   "y": -30.0,
+   "kind": "final",
+   "airport": "SALV",
+   "runway": "36"
+  }
+ ],
+ "ndbs": [
+  {
+   "id": "LSI",
+   "name": "Los Santos NDB",
+   "freq": "350",
+   "x": 1750,
+   "y": -2700
+  },
+  {
+   "id": "EBA",
+   "name": "Easter Bay NDB",
+   "freq": "372",
+   "x": -1700,
+   "y": -420
+  },
+  {
+   "id": "LVA",
+   "name": "Las Venturas NDB",
+   "freq": "395",
+   "x": 1320,
+   "y": 1180
+  }
+ ],
+ "vors": []
+}

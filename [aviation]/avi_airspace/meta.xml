@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="Aviation airspace" version="1.0.0" type="script"
+          description="Airspaces from data/airspaces.json: CTR (tower), TMA (approach), CTA (radar / centre); drawn on the avi_controller scope" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/geo.lua"     type="server" />
+    <script src="server/airspace.lua" type="server" />
+
+    <file src="data/airspaces.json" type="server" />
+
+    <!-- read the data once and keep it; it only changes on a restart -->
+    <export function="getAirspaces"     type="server" />
+    <export function="getAirspace"      type="server" />
+    <export function="getAirspacesAt"   type="server" />
+    <export function="getAirspaceAt"    type="server" />
+</meta>

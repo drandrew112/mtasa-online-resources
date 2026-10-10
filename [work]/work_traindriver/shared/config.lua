@@ -11,8 +11,24 @@ TRAINDRIVER = {
     -- Outfits
     SKINS = {
         { model = 255, name = "Driver" },
-        { model = 50,  name = "Technician" },
-        { model = 71,  name = "Station staff" },
+        { model = 50,  name = "Technician", level = 2 },
+        { model = 71,  name = "Station staff", level = 3 },
+    },
+
+    -- Work levels (work_core). XP is earned per completed service.
+    MAX_LEVEL = 10,
+    LEVEL_XP = 400,                    -- XP for level 2
+    LEVEL_STEP = 200,                  -- added for every further level
+    LEVEL_NAMES = {
+        [1] = "Trainee", [2] = "Driver", [4] = "Senior Driver", [6] = "Express Driver",
+        [8] = "Chief Driver", [10] = "Master Driver",
+    },
+    XP = {
+        BASE = { RB = 50, IC = 90 },    -- by line prefix, like PAY.BASE
+        BASE_DEFAULT = 40,
+        PER_STOP = 10,                  -- per served stop
+        PUNCTUAL_BONUS = 25,            -- when a PAY.PUNCTUAL tier matched
+        SKIP_PENALTY = 10,              -- per skipped stop (XP never goes below 10)
     },
 
     -- Pay for a completed service (rw_timetable onRailServiceComplete), paid via work_core:payWork

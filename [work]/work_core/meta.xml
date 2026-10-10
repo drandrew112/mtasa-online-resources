@@ -8,6 +8,7 @@
 
     <!-- ================= SERVER ================= -->
     <script src="server/registry.lua" type="server" />
+    <script src="server/levels.lua"   type="server" />
     <script src="server/duty.lua"     type="server" />
     <script src="server/markers.lua"  type="server" />
     <script src="server/vehicles.lua" type="server" />
@@ -50,6 +51,16 @@
     <export function="getWorkVehicleOwner"     type="server" />
     <!-- payment -->
     <export function="payWork"                 type="server" />
+    <!-- levels -->
+    <export function="giveWorkXp"              type="server" />
+    <export function="getPlayerWorkLevel"      type="server" />
+    <export function="getPlayerWorkXp"         type="server" />
+    <export function="getPlayerWorkLevelName"  type="server" />
+    <export function="hasWorkLevel"            type="server" />
+    <export function="setPlayerWorkLevel"      type="server" />
+    <export function="setPlayerWorkXp"         type="server" />
+    <export function="getWorkLevelInfo"        type="server" />
+    <export function="getWorkLevelXp"          type="server" />
 
     <!-- ================= CLIENT EXPORTS ================= -->
     <export function="getPlayerWork"          type="client" />
@@ -58,8 +69,13 @@
     <export function="getWork"                type="client" />
     <export function="getWorks"               type="client" />
     <export function="getVehicleWork"         type="client" />
+    <export function="getPlayerWorkLevel"     type="client" />
+    <export function="getPlayerWorkXp"        type="client" />
+    <export function="getPlayerWorkLevelName" type="client" />
+    <export function="hasWorkLevel"           type="client" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />
     <include resource="ui_inac" />
+    <include resource="v_mysql" />
 </meta>

@@ -25,6 +25,10 @@ local function setup()
         description = TRAINDRIVER.DESCRIPTION,
         color = TRAINDRIVER.COLOR,
         skins = TRAINDRIVER.SKINS,
+        maxLevel = TRAINDRIVER.MAX_LEVEL,
+        levelXp = TRAINDRIVER.LEVEL_XP,
+        levelStep = TRAINDRIVER.LEVEL_STEP,
+        levelNames = TRAINDRIVER.LEVEL_NAMES,
     })
 
     for _, st in ipairs(TRAINDRIVER.STATIONS) do

@@ -1,0 +1,15 @@
+<meta>
+    <info author="DrAndrew112" name="Aviation navigation" version="1.0.0" type="script"
+          description="Navigation points from data/nav.json: FIXes (airspace boundaries, runway finals), NDBs, VORs (+ their ground objects); /avinav editor" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="server/nav.lua"    type="server" />
+    <script src="server/editor.lua" type="server" />
+
+    <file src="data/nav.json" type="server" />
+
+    <export function="getNavData"      type="server" />
+    <export function="getNavPoint"     type="server" />
+    <export function="getNavPoints"    type="server" />
+    <export function="getNearestNavPoint" type="server" />
+</meta>

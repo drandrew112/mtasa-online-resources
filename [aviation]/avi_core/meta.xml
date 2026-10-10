@@ -1,0 +1,34 @@
+<meta>
+    <info author="DrAndrew112" name="Aviation core" version="1.0.0" type="script"
+          description="Aviation core: ATC rights (tower / approach / radar), ATC markers, shared units and admin helpers for the avi_* resources" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/units.lua"  type="shared" />
+
+    <script src="server/role.lua"   type="server" />
+    <script src="server/admin.lua"  type="server" />
+    <script src="server/marker.lua" type="server" />
+
+    <script src="client/role.lua"   type="client" />
+    <script src="client/marker.lua" type="client" />
+
+    <!-- ATC rights: TWR / APP / RADAR (everybody has TWR by default, work_atc hands out the rest) -->
+    <export function="setPlayerATCRight"   type="server" />
+    <export function="setPlayerATCRights"  type="server" />
+    <export function="getPlayerATCRights"  type="server" />
+    <export function="hasATCRight"         type="server" />
+    <export function="canStaffPosition"    type="server" />
+    <export function="hasATCAccess"        type="server" />
+    <export function="getAdminLevel"       type="server" />
+    <export function="isAviationAdmin"     type="server" />
+
+    <export function="hasATCRight"         type="client" />
+    <export function="hasATCAccess"        type="client" />
+
+    <!-- units (shared) -->
+    <export function="metresToFeet"        type="shared" />
+    <export function="feetToMetres"        type="shared" />
+    <export function="msToKnots"           type="shared" />
+    <export function="knotsToMs"           type="shared" />
+</meta>

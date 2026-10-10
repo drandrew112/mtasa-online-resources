@@ -126,7 +126,13 @@ addEventHandler("onClientRender", root, function()
                         end
                         local alpha = 255
                         if dist > maxDist * 0.8 then alpha = 255 * (maxDist - dist) / (maxDist * 0.2) end
-                        drawLabel(sx, sy, k, alpha, color, icon, work.name, title, hint)
+                        local name = work.name
+                        if icon ~= "!" and getElementData(m, WORK_DATA.MARKER_KIND) == "duty" then
+                            local lvName = getPlayerWorkLevelName(localPlayer, work.id)
+                            name = ("%s · LVL %d%s"):format(name, getPlayerWorkLevel(localPlayer, work.id),
+                                lvName and (" " .. lvName) or "")
+                        end
+                        drawLabel(sx, sy, k, alpha, color, icon, name, title, hint)
                     end
                 end
             end

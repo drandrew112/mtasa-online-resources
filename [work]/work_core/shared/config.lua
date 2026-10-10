@@ -29,6 +29,13 @@ WORK = {
     PAYMENT_DURATION = 7000,          -- ms on screen before it fades out on its own
     PAYMENT_FADE = 350,               -- ms fade in / fade out
 
+    -- Work levels (every work has its own level + XP per account). XP needed for level n+1 is
+    -- LEVEL_BASE_XP + (n - 1) * LEVEL_STEP_XP. A work can override these in registerWork().
+    LEVEL_BASE_XP = 500,
+    LEVEL_STEP_XP = 250,
+    MAX_LEVEL = 20,
+    MAX_XP_PER_GRANT = 100000,        -- sanity cap for a single giveWorkXp call
+
     -- /workpos (prints marker / spawn positions)
     ADMIN_LEVEL = 3,
 
@@ -51,4 +58,6 @@ WORK_DATA = {
     MARKER_VEHICLES = "work.vehicles",-- vehicle marker: { { model, name }, ... }
     VEHICLE_WORK  = "work.vehicle",   -- vehicle: work id
     VEHICLE_OWNER = "work.owner",     -- vehicle: player who requested it
+    PLAYER_LEVELS = "work.levels",    -- player: { [workId] = { level, xp, from, to } } (synced; to = false at max level)
+    LEVEL_STORAGE = "work.levels",    -- accData key (JSON { [workId] = xp })
 }

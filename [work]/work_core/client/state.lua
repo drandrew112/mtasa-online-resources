@@ -47,6 +47,35 @@ function getWorks()
     return Works
 end
 
+-- Work levels (synced by the server in work.levels; see server/levels.lua)
+local function levelData(player, workId)
+    local t = isElement(player) and getElementData(player, WORK_DATA.PLAYER_LEVELS)
+    return type(t) == "table" and t[workId] or nil
+end
+
+function getPlayerWorkLevel(player, workId)
+    local d = levelData(player, workId)
+    return d and d.level or 1
+end
+
+function getPlayerWorkXp(player, workId)
+    local d = levelData(player, workId)
+    return d and d.xp or 0
+end
+
+function getPlayerWorkLevelName(player, workId)
+    local w, lv, best = Works[workId], getPlayerWorkLevel(player, workId), nil
+    if not (w and w.levels) then return false end
+    for k in pairs(w.levels.names) do
+        if k <= lv and (not best or k > best) then best = k end
+    end
+    return best and w.levels.names[best] or false
+end
+
+function hasWorkLevel(player, workId, level)
+    return getPlayerWorkLevel(player, workId) >= (tonumber(level) or 1)
+end
+
 function getVehicleWork(vehicle)
     return isElement(vehicle) and getElementData(vehicle, WORK_DATA.VEHICLE_WORK) or false
 end

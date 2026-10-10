@@ -10,6 +10,8 @@ that all works share:
 - **one work at a time**: a player on duty in a work cannot go on duty in another
 - **queries**: which players are doing a given work, so a work script can create elements that
   only those players see
+- **work levels**: every work has its own level and XP per account (levels gate outfits and
+  rights such as future `work_atc` positions)
 - **payments**: `payWork()` pays an itemised amount into the player's bank account and shows a
   timed receipt; every work computes its own amounts, work_core only pays and displays
 
@@ -78,6 +80,40 @@ spawn point `{ x, y, z, rot }`.
 | `getPlayerWorkVehicle(player)`, `destroyPlayerWorkVehicle(player)` | |
 | `getVehicleWork(vehicle)`, `getWorkVehicleOwner(vehicle)` | |
 | `payWork(player, workId, items [, reason])` → `true, total` \| `false, err` | `items`: `{ { label, amount }, ... }`, shown on the receipt in this order. The positive total is deposited via `exports.v_bank:giveBankMoney` (fails if `v_bank` is not running); a total `<= 0` is not paid but the receipt is still shown. `reason`: optional text shown under the total. `workId` only needs to resolve a name/colour for the receipt — it does not have to be the player's current work. |
+
+## Work levels
+
+Each account has separate XP and a level for every work (levels start at 1). XP for level n+1 is
+`levelXp + (n - 1) * levelStep` (defaults `WORK.LEVEL_BASE_XP` 500, `WORK.LEVEL_STEP_XP` 250, max
+`WORK.MAX_LEVEL` 20). A work can override these in `registerWork`:
+
+```lua
+exports.work_core:registerWork("atc", {
+    name = "ATC", skins = { 17, { model = 20, name = "Supervisor", level = 5 } },  -- outfit unlocks at level 5
+    maxLevel = 10, levelXp = 400, levelStep = 200,
+    levelNames = { [1] = "Trainee", [3] = "Ground", [6] = "Tower", [9] = "Approach" },
+})
+exports.work_core:giveWorkXp(player, "atc", 40)             -- after a job
+if exports.work_core:hasWorkLevel(player, "atc", 6) then end  -- gate rights, e.g. in onPlayerWorkDutyRequest
+```
+
+Progress is saved as JSON in the account data key `work.levels` (v_mysql), loaded on
+`onPlayerLoaded`. Only logged in players have progress. Admin commands (level `WORK.ADMIN_LEVEL`):
+`/giveworkxp <player> <workId> <xp>`, `/setworklevel <player> <workId> <level>`.
+
+| server export | description |
+|---|---|
+| `giveWorkXp(player, workId, amount)` → `true, level` \| `false, err` | positive amounts only; shows "+XP" and "Level up!" notifications |
+| `getPlayerWorkLevel(player, workId)`, `getPlayerWorkXp(player, workId)` | level is 1 without progress |
+| `hasWorkLevel(player, workId, level)` → bool | use this for rights |
+| `getPlayerWorkLevelName(player, workId)` | name of the highest named level reached, or `false` |
+| `getWorkLevelInfo(player, workId)` | `{ level, xp, from, to, maxLevel, name }` (`to` = false at max level) |
+| `getWorkLevelXp(workId, level)` | total XP needed to reach a level |
+| `setPlayerWorkXp(player, workId, xp)`, `setPlayerWorkLevel(player, workId, level)` | can lower; no notification |
+
+Events: `onPlayerWorkXpGain (workId, amount, totalXp)`, `onPlayerWorkLevelChange (workId, newLevel, oldLevel)`.
+Client: `getPlayerWorkLevel`, `getPlayerWorkXp`, `getPlayerWorkLevelName`, `hasWorkLevel` (read the
+synced `work.levels` element data).
 
 ## Server events (source = player, unless noted otherwise)
 
