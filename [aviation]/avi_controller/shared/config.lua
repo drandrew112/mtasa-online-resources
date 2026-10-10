@@ -10,15 +10,15 @@ CTL = {
     -- Work progress (work_core, work id = ATC work). Every accepted traffic action (clearance,
     -- level, heading, direct, transfer...) gives work XP; XP_ACTIONS overrides XP_DEFAULT per action.
     WORK_ID = "atc",
-    XP_DEFAULT = 5,
-    XP_ACTIONS = { cfl = 3, hdg = 3, nohdg = 2, dct = 3, nodct = 2, xfer = 6 },
+    XP_DEFAULT = 25,
+    XP_ACTIONS = { cfl = 15, hdg = 15, nohdg = 10, dct = 20, nodct = 10, xfer = 30 },
 
     -- Pay after logging out of a position (bank, itemised receipt):
     --   actions pay = actions * PAY_PER_ACTION
     --   multiplied by (1 + minutes * PAY_MINUTE_BONUS), capped at PAY_MAX_MULT
     PAY_PER_ACTION = 700,
-    PAY_MINUTE_BONUS = 0.25,
-    PAY_MAX_MULT = 5.0,
+    PAY_MINUTE_BONUS = 0.20,
+    PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
 
     -- scope
