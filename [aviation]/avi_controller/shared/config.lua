@@ -9,6 +9,8 @@ CTL = {
     -- type); targets do not move in between. UPDATE_TICK_MS = how often the server checks who is due.
     UPDATE_MS = { TWR = 1000, APP = 2000, CTR = 3000 },
     UPDATE_TICK_MS = 250,
+    APP_HEADING_LOOKAHEAD = 4000,  -- m: an aircraft on a radar heading is checked this far ahead
+                                   -- for crossing an approach sector (TMA / CTR)
 
     -- Work progress (work_core, work id = ATC work). Every accepted traffic action (clearance,
     -- level, heading, direct, transfer...) gives work XP; XP_ACTIONS overrides XP_DEFAULT per action.

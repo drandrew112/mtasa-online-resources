@@ -306,12 +306,95 @@ end
 
 -- ---------------------------------------------------------------- updates
 -- Every position gets its traffic at its own radar refresh (CTL.UPDATE_MS: TWR 1 s, APP 2 s,
--- radar 3 s). Tower and approach see only the traffic of their airport (departing / arriving /
--- on its ground) and what they control; the radar (centre) sees every aircraft.
-local function visibleTo(pos, s)
+-- radar 3 s). Tower sees only the traffic of its airport (departing / arriving / on its ground)
+-- and what it controls. Approach sees the same, plus the aircraft that are in its TMA / CTR or
+-- will cross it: their remaining route (heading or direct included) passes through it while they
+-- are below its ceiling (e.g. a low LS departure toward the north-west through the SF TMA).
+-- The radar (centre) sees every aircraft.
+local function pointIn(x, y, poly)
+    local inside, j = false, #poly
+    for i = 1, #poly do
+        local xi, yi, xj, yj = poly[i][1], poly[i][2], poly[j][1], poly[j][2]
+        if (yi > y) ~= (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi then inside = not inside end
+        j = i
+    end
+    return inside
+end
+
+local function segCross(ax, ay, bx, by, cx, cy, dx, dy)
+    local function side(px, py, qx, qy, rx, ry) return (qx - px) * (ry - py) - (qy - py) * (rx - px) end
+    local d1, d2 = side(cx, cy, dx, dy, ax, ay), side(cx, cy, dx, dy, bx, by)
+    local d3, d4 = side(ax, ay, bx, by, cx, cy), side(ax, ay, bx, by, dx, dy)
+    return ((d1 > 0) ~= (d2 > 0)) and ((d3 > 0) ~= (d4 > 0))
+end
+
+local function segmentInPoly(ax, ay, bx, by, poly)
+    if pointIn(ax, ay, poly) or pointIn(bx, by, poly) then return true end
+    local j = #poly
+    for i = 1, #poly do
+        if segCross(ax, ay, bx, by, poly[j][1], poly[j][2], poly[i][1], poly[i][2]) then return true end
+        j = i
+    end
+    return false
+end
+
+-- the path still ahead of the aircraft: position -> heading leg | direct -> remaining route
+local function pathOf(s, nav)
+    local pts = { { s.x, s.y } }
+    if s.ahdg then
+        local h = math.rad(s.ahdg)
+        pts[2] = { s.x + math.sin(h) * CTL.APP_HEADING_LOOKAHEAD, s.y + math.cos(h) * CTL.APP_HEADING_LOOKAHEAD }
+        return pts
+    end
+    local p = s.dct and nav[s.dct]
+    if p then pts[#pts + 1] = { p.x, p.y } end
+    for _, id in ipairs(s.route or {}) do
+        p = nav[id]
+        if p then pts[#pts + 1] = { p.x, p.y } end
+    end
+    return pts
+end
+
+-- airspaces of the approach sectors (TMA + CTR of the airport), nav points by id
+local function sectorData()
+    local sectors = {}
+    for _, a in ipairs(call("avi_airspace", "getAirspaces") or {}) do
+        if a.airport and (a.type == "TMA" or a.type == "CTR") and type(a.polygon) == "table" and #a.polygon >= 3 then
+            local t = sectors[a.airport] or {}
+            sectors[a.airport] = t
+            t[#t + 1] = a
+        end
+    end
+    local nav = {}
+    for _, p in ipairs(call("avi_nav", "getNavPoints") or {}) do nav[p.id] = p end
+    return sectors, nav
+end
+
+local function crossesSector(s, areas, nav)
+    if s.gnd or not areas then return false end
+    local path
+    for _, a in ipairs(areas) do
+        -- low enough to be in it: the current or the cleared level below the ceiling
+        local low = math.min(s.alt or 0, s.cfl or s.alt or 0)
+        if low <= (a.ceiling or 99999) then
+            path = path or pathOf(s, nav)
+            if #path == 1 then
+                if pointIn(path[1][1], path[1][2], a.polygon) then return true end
+            else
+                for i = 1, #path - 1 do
+                    if segmentInPoly(path[i][1], path[i][2], path[i + 1][1], path[i + 1][2], a.polygon) then return true end
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function visibleTo(pos, s, sectors, nav)
     if pos.type == "CTR" or not pos.airport then return true end
     local icao = pos.airport
-    return s.ctl == pos.id or s.dep == icao or s.arr == icao or s.apt == icao
+    if s.ctl == pos.id or s.dep == icao or s.arr == icao or s.apt == icao then return true end
+    return pos.type == "APP" and crossesSector(s, sectors[icao], nav)
 end
 
 local function sendTraffic()
@@ -327,10 +410,14 @@ local function sendTraffic()
     if #due == 0 then return end
     local all = call("avi_traffic", "getTrafficSnapshot") or {}
     local staffed = getStaffedPositions()
+    local sectors, nav = {}, {}
+    for _, d in ipairs(due) do
+        if d.pos.type == "APP" then sectors, nav = sectorData(); break end
+    end
     for _, d in ipairs(due) do
         local list = {}
         for _, s in ipairs(all) do
-            if visibleTo(d.pos, s) then list[#list + 1] = s end
+            if visibleTo(d.pos, s, sectors, nav) then list[#list + 1] = s end
         end
         lastSent[d.p] = now
         triggerClientEvent(d.p, "avi:ctlTraffic", resourceRoot, list, staffed)
