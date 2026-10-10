@@ -72,7 +72,7 @@ local function round(x, y, w, h, r, color)
     dxDrawCircle(x + w - r, y + h - r, r, 0, 90, color, color, 12)
 end
 
-local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint)
+local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint, lvl)
     local fTitle, fName, fHint = font(13, true), font(9, true), font(9)
     local a = alpha / 255
 
@@ -81,6 +81,14 @@ local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint)
     local textW = math.max(dxGetTextWidth(title, k, fTitle), dxGetTextWidth(nameStr, k, fName),
         dxGetTextWidth(hint, k, fHint))
     local w = pad + iconSize + gap + textW + pad * 1.4
+    local fLv, fXp
+    local lvLeft, lvRight
+    if lvl then
+        fLv, fXp = font(10, true), font(9)
+        lvLeft = ("LEVEL %d%s"):format(lvl.level, lvl.name and (" · " .. lvl.name:upper()) or "")
+        lvRight = lvl.to and ("%d / %d XP"):format(lvl.xp, lvl.to) or ("MAX · %d XP"):format(lvl.xp)
+        w = math.max(w, pad * 2 + dxGetTextWidth(lvLeft, k, fLv) + s(16) * k + dxGetTextWidth(lvRight, k, fXp))
+    end
     local headH, hintH = s(46) * k, s(22) * k
     local h = headH + hintH
     local x, y = sx - w / 2, sy - h
@@ -100,6 +108,21 @@ local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint)
     dxDrawText(hint, x + pad, hy, x + w - pad, hy + hintH, tocolor(200, 205, 212, 220 * a), k, fHint, "left", "center")
 
     dxDrawRectangle(sx - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
+
+    if lvl then
+        -- level box above the title box
+        local bh, bgap = s(44) * k, s(5) * k
+        local by = y - bgap - bh
+        round(x, by, w, bh, s(7) * k, tocolor(14, 17, 21, 220 * a))
+        local rowH = s(26) * k
+        dxDrawText(lvLeft, x + pad, by, x + w - pad, by + rowH, rgb(color, 255 * a), k, fLv, "left", "center")
+        dxDrawText(lvRight, x + pad, by, x + w - pad, by + rowH, tocolor(200, 205, 212, 230 * a), k, fXp, "right", "center")
+        local barX, barY, barW, barH = x + pad, by + rowH + s(1) * k, w - pad * 2, s(6) * k
+        round(barX, barY, barW, barH, barH / 2, tocolor(255, 255, 255, 38 * a))
+        local frac = 1
+        if lvl.to then frac = math.min(1, math.max(0, (lvl.xp - lvl.from) / math.max(1, lvl.to - lvl.from))) end
+        if frac > 0 then round(barX, barY, math.max(barH, barW * frac), barH, barH / 2, rgb(color, 240 * a)) end
+    end
 end
 
 addEventHandler("onClientRender", root, function()
@@ -126,13 +149,13 @@ addEventHandler("onClientRender", root, function()
                         end
                         local alpha = 255
                         if dist > maxDist * 0.8 then alpha = 255 * (maxDist - dist) / (maxDist * 0.2) end
-                        local name = work.name
-                        if icon ~= "!" and getElementData(m, WORK_DATA.MARKER_KIND) == "duty" then
-                            local lvName = getPlayerWorkLevelName(localPlayer, work.id)
-                            name = ("%s · LVL %d%s"):format(name, getPlayerWorkLevel(localPlayer, work.id),
-                                lvName and (" " .. lvName) or "")
+                        local lvl
+                        if getElementData(m, WORK_DATA.MARKER_KIND) == "duty" then
+                            local level, xp, from, to = getPlayerWorkLevelProgress(localPlayer, work.id)
+                            lvl = { level = level, xp = xp, from = from, to = to,
+                                    name = getPlayerWorkLevelName(localPlayer, work.id) }
                         end
-                        drawLabel(sx, sy, k, alpha, color, icon, name, title, hint)
+                        drawLabel(sx, sy, k, alpha, color, icon, work.name, title, hint, lvl)
                     end
                 end
             end

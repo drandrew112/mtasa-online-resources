@@ -72,6 +72,13 @@ function getPlayerWorkLevelName(player, workId)
     return best and w.levels.names[best] or false
 end
 
+-- -> level, xp, from (XP where this level starts), to (XP of the next level, false at max)
+function getPlayerWorkLevelProgress(player, workId)
+    local d = levelData(player, workId)
+    if not d then return 1, 0, 0, false end
+    return d.level or 1, d.xp or 0, d.from or 0, d.to or false
+end
+
 function hasWorkLevel(player, workId, level)
     return getPlayerWorkLevel(player, workId) >= (tonumber(level) or 1)
 end
