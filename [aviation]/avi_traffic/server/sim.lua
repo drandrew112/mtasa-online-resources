@@ -336,11 +336,68 @@ local function startTaxi(ac, toX, toY, phase)
     ac.phase = phase
 end
 
+-- ---------------------------------------------------------------- taxi spacing
+-- Taxiing aircraft keep TAXI_SEP behind anything on their path (queue at the holding point).
+-- Only aircraft off the runways count and wait: the runway clearances separate the rest.
+local TAXI_OBSTACLE = { pushback = true, pushed = true, taxi_out = true, taxi_in = true, vacate = true, vacated = true, hold = true }
+local TAXI_MOVING = { taxi_out = true, taxi_in = true, vacate = true }
+
+-- is (x, y) on ac's path within `len` m ahead (and not beside / behind the aircraft)?
+local function onPathAhead(ac, x, y, len)
+    if not ac.path then return false end
+    local px, py, cum = ac.x, ac.y, 0
+    for i = ac.pi, #ac.path do
+        local q = ac.path[i]
+        local d = dist(px, py, q[1], q[2])
+        if d > 0.01 then
+            local s = math.min(d, len - cum)
+            local ex, ey = px + (q[1] - px) / d * s, py + (q[2] - py) / d * s
+            local t = clamp(((x - px) * (ex - px) + (y - py) * (ey - py)) / (s * s), 0, 1)
+            local cx, cy = px + (ex - px) * t, py + (ey - py) * t
+            if cum + t * s > 2 and dist(x, y, cx, cy) < TR.TAXI_SEP_LAT then return true end
+            cum = cum + s
+            if cum >= len then return false end
+            px, py = ex, ey
+        end
+    end
+    return false
+end
+
+-- does the chain of waiting aircraft starting at o lead back to ac? (deadlock: ac goes on)
+local function waitsFor(o, ac)
+    for _ = 1, 10 do
+        if not o.taxiWaitFor then return false end
+        if o.taxiWaitFor == ac.id then return true end
+        o = AIRCRAFT[o.taxiWaitFor]
+        if not o then return false end
+    end
+    return false
+end
+
+-- the aircraft ac has to wait for, if any. Two aircraft that see each other (head-on, or meeting
+-- at an intersection): the older one (lower id) goes first.
+local function taxiBlocker(ac)
+    if ac.onRwy then return nil end
+    for _, o in pairs(AIRCRAFT) do
+        if o ~= ac and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
+                and dist(ac.x, ac.y, o.x, o.y) < TR.TAXI_SEP + 10 and onPathAhead(ac, o.x, o.y, TR.TAXI_SEP) then
+            local mutual = TAXI_MOVING[o.phase] and onPathAhead(o, ac.x, ac.y, TR.TAXI_SEP)
+            if not (mutual and ac.id < o.id) and not (TAXI_MOVING[o.phase] and waitsFor(o, ac)) then return o end
+        end
+    end
+end
+
 -- follows ac.path in small steps. Returns true at the end, "hold", runwayId before an
 -- uncleared runway zone, false otherwise. 50 kts on a runway, 25 kts elsewhere.
 local function followPath(ac, dt)
     local a = airport(ac.gndApt)
     ac.rwyClr = ac.rwyClr or {}
+    local blocker = taxiBlocker(ac)
+    ac.taxiWaitFor = blocker and blocker.id or nil
+    if blocker then
+        ac.spd = 0
+        return false
+    end
     speedTowards(ac, ac.onRwy and TR.RWY_TAXI_KTS or TR.TAXI_KTS, 10, dt)
     local remaining = worldSpeed(ac) * dt
     while ac.path and ac.pi <= #ac.path do
@@ -443,6 +500,19 @@ local function startPushback(ac)
     ac.phase = "pushback"
 end
 
+-- an uncontrolled aircraft does not push back while someone taxies / waits near its push-back end point
+local function pushbackBlocked(ac)
+    local saved = { ac.phase, ac.push }
+    startPushback(ac)
+    local p2 = ac.push.p2
+    ac.phase, ac.push = saved[1], saved[2]
+    for _, o in pairs(AIRCRAFT) do
+        if o ~= ac and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
+                and dist(o.x, o.y, p2[1], p2[2]) < TR.TAXI_SEP then return true end
+    end
+    return false
+end
+
 local function bezier(p, t)
     local u = 1 - t
     return u * u * p.p0[1] + 2 * u * t * p.p1[1] + t * t * p.p2[1], u * u * p.p0[2] + 2 * u * t * p.p1[2] + t * t * p.p2[2]
@@ -456,7 +526,7 @@ local function tickGate(ac, dt)
         if ac.pushClr then startPushback(ac) end
         return
     end
-    if ac.timer > 0 then return end
+    if ac.timer > 0 or pushbackBlocked(ac) then return end
     startPushback(ac)
 end
 

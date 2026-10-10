@@ -17,6 +17,11 @@ Units everywhere: altitude **feet**, speed **knots**, vertical speed **ft/min**.
   so departures taxi to the runway end on the taxiways (LS: `K` / `L` run behind both runway ends outside the runway
   zones) and backtrack only where no taxiway reaches the threshold (SF 22).
 - After landing the aircraft vacates towards the nearest stands.
+- Taxi spacing (`TR.TAXI_SEP` 60 m, `TR.TAXI_SEP_LAT` 18 m): a taxiing aircraft stops behind anything on its path
+  ahead (taxiing, holding short, pushed back), so departures queue up at the holding point. Head-on / at an
+  intersection the older flight (lower id) goes first; a waiting cycle is broken by the aircraft that closes it.
+  Aircraft on a runway never wait (the runway clearances separate them). Uncontrolled aircraft do not push back
+  while someone taxies near their push-back end point.
 
 ## Runway data
 

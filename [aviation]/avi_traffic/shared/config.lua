@@ -17,6 +17,8 @@ TR = {
     RWY_ZONE_MARGIN = 5,      -- m beyond the runway edge: entering this needs a runway clearance
     RWY_ZONE_EXT = 30,        -- m beyond the runway ends that still count as the runway
     BACKTRACK_DIST = 80,      -- m from the threshold: entering further down needs a backtrack
+    TAXI_SEP    = 60,         -- m: taxiing aircraft stop this far behind the one ahead on their path (queue)
+    TAXI_SEP_LAT = 18,        -- m: sideways from the path that still counts as "on the path"
     PUSH_KTS    = 8,
     PUSH_DIST   = 35,         -- m pushed back from the stand
     LAND_DECISION_DIST = 400, -- m before the threshold: no landing clearance (controlled) = go-around
