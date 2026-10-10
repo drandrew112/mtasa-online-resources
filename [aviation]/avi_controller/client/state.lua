@@ -10,6 +10,7 @@ SC = {
     labelOffset = {},    -- [id] = { dx, dy } screen px from the target (dragged by the controller)
     showList = true,
     showAirspaceText = true,   -- airspace names + vertical limits (top bar AT)
+    showFixLabels = true,      -- fix names (top bar FIXL); fixes of a shown route are always named
     staffed = {},        -- [posId] = controller name
     routeShown = {},     -- [id] = true: the flight plan route is drawn
     vectorStep = CTL.VECTOR_DEFAULT_STEPS,   -- leader line ahead of the aircraft in VECTOR_STEP_NM steps, 0 = off

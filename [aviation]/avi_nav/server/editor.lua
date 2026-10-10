@@ -92,12 +92,41 @@ addCommandHandler("avinav", function(player, _, action, a1, a2, a3, ...)
         if not p then say(player, "Unknown nav point " .. tostring(id)) return end
         if saveNav() then say(player, p.id .. " deleted") end
 
+    elseif action == "flyover" then
+        -- toggle: /avinav flyover <FIX> = everywhere (fix flag), /avinav flyover <FIX> <PROC> = in that SID / STAR
+        local p = getNavPoint(id)
+        if not p or p.type ~= "FIX" then
+            say(player, "Usage: /avinav flyover <FIX> [SID/STAR id]  (toggles; default is fly-by)")
+            return
+        end
+        local proc = a2 and getProcedure(a2)
+        if a2 and not proc then say(player, "Unknown procedure " .. a2:upper()) return end
+        local on
+        if proc then
+            local used = false
+            for _, r in pairs(proc.runways or {}) do
+                for _, f in ipairs(r) do if tostring(f):upper() == p.id then used = true end end
+            end
+            if not used then say(player, p.id .. " is not part of " .. proc.id) return end
+            local list, idx = proc.flyover or {}, nil
+            for i, f in ipairs(list) do if f == p.id then idx = i end end
+            if idx then table.remove(list, idx) else list[#list + 1] = p.id end
+            proc.flyover = #list > 0 and list or nil
+            on = not idx
+        else
+            p.flyover = not p.flyover or nil
+            on = p.flyover
+        end
+        if saveNav() then
+            say(player, ("%s is now %s%s"):format(p.id, on and "FLY-OVER" or "fly-by", proc and (" in " .. proc.id) or ""))
+        end
+
     elseif action == "info" then
         local p = getNavPoint(id)
         if not p then say(player, "Unknown nav point " .. tostring(id)) return end
         say(player, ("%s %s  %.1f, %.1f%s%s"):format(p.type, p.id, p.x, p.y, p.freq and ("  " .. p.freq) or "",
-            p.object and ("  obj " .. p.object.model) or ""))
+            p.object and ("  obj " .. p.object.model) or "") .. (p.flyover and "  FLY-OVER" or ""))
     else
-        say(player, "/avinav add|move|object|del|info  (see avi_nav/server/editor.lua)")
+        say(player, "/avinav add|move|object|flyover|del|info  (see avi_nav/server/editor.lua)")
     end
 end)

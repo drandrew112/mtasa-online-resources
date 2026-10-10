@@ -206,7 +206,7 @@ function applySID(ac, sidId, ident)
     if not found then rest = remainingRoute(ac) end
     ac.route, ac.ri = r, 1
     for _, f in ipairs(rest) do ac.route[#ac.route + 1] = f end
-    ac.procEnd = #r
+    ac.procStart, ac.procEnd = 1, #r
     ac.sid, ac.sidRwy = p.id, tostring(ident):upper()
     ac.proc = p.id .. " " .. ac.sidRwy
     return true
@@ -237,7 +237,7 @@ function applySTAR(ac, starId, ident, override)
     end
     ac.route, ac.ri = before, 1
     for _, f in ipairs(r) do ac.route[#ac.route + 1] = f end
-    ac.procEnd = #ac.route
+    ac.procStart, ac.procEnd = #before + 1, #ac.route
     ac.star, ac.arrRwy = p.id, tostring(ident):upper()
     ac.proc = p.id .. " " .. ac.arrRwy
     ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
@@ -830,6 +830,38 @@ local function navTarget(ac)
     return nil, "exit"
 end
 
+-- the point flown to after the current target (nil when not known yet, e.g. before the approach set-up)
+local function nextTarget(ac, kind)
+    if kind == "final" then return ac.rwy end
+    if kind == "via" then return ac.via[2] or ac.approach end
+    local i = ac.ri
+    if kind == "dct" then
+        for j = ac.ri, #ac.route do
+            if ac.route[j] == ac.dct then i = j + 1 break end
+        end
+    elseif kind == "route" then
+        i = ac.ri + 1
+    end
+    for j = i, #ac.route do
+        local p = navPoint(ac.route[j])
+        if p then return p end
+    end
+end
+
+-- Fly-over fixes (fix flag `flyover`, or listed in the procedure's `flyover`) are passed only over the
+-- fix. Every other point is fly-by: the turn to the next leg starts this far before it, so the turn
+-- circle (radius = world speed / turn rate) touches both legs instead of overshooting the next one.
+local function turnLead(ac, kind, target)
+    if kind == "route" or kind == "dct" then
+        if target.flyover or isFlyover(ac.sid, target.id) or isFlyover(ac.star, target.id) then return 0 end
+    end
+    local nxt = nextTarget(ac, kind)
+    if not nxt then return 0 end
+    local turn = math.abs(angleTo(ac.hdg, bearing(target.x, target.y, nxt.x, nxt.y)))
+    local radius = worldSpeed(ac) / math.rad(TR.TURN_RATE)
+    return radius * math.tan(math.rad(math.min(turn, TR.FLYBY_MAX_TURN) / 2))
+end
+
 local function passed(ac, kind)
     if kind == "via" then
         table.remove(ac.via, 1)
@@ -927,7 +959,7 @@ local function tickAir(ac, dt)
 
     -- fix passage: close enough, or close and already behind (would orbit it inside the turn radius)
     local td = target and not ac.climbOut and dist(ac.x, ac.y, target.x, target.y)
-    if td and (td <= TR.FIX_PASS_DIST
+    if td and (td <= math.max(TR.FIX_PASS_DIST, turnLead(ac, kind, target))
             or (td < 400 and math.abs(angleTo(ac.hdg, bearing(ac.x, ac.y, target.x, target.y))) > 100)) then
         if kind == "final" then
             local glideAt = elev + TR.FINAL_AGL

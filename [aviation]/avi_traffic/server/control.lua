@@ -89,12 +89,28 @@ function setClearedAltitude(id, ft)
 end
 
 -- direct to a nav point (FIX / VOR / NDB id). The flight plan resumes after it.
+-- A fix of the route ahead: the fixes before it are skipped. Off the SID / STAR (or past its end):
+-- the procedure is cancelled, its fixes leave the route.
+local function directToRoute(ac, navId)
+    local at
+    for i = ac.ri, #ac.route do
+        if ac.route[i] == navId then at = i break end
+    end
+    if at then ac.ri = at end
+    local ps, pe = ac.procStart, ac.procEnd
+    if not (ac.proc and ps and pe) or (at and at >= ps and at <= pe) then return end
+    for i = math.min(pe, #ac.route), math.max(ac.ri, ps), -1 do table.remove(ac.route, i) end
+    if ac.star then ac.starTried = true end      -- the pilots don't pick a STAR again
+    ac.proc, ac.sid, ac.star, ac.procStart, ac.procEnd = nil, nil, nil, nil, nil
+end
+
 function setDirectTo(id, navId)
     local ac = AIRCRAFT[tonumber(id)]
     if not ac then return false, "unknown aircraft" end
     if ac.phase ~= "air" then return false, "not airborne" end
     navId = tostring(navId or ""):upper()
     if not navPoint(navId) then return false, "unknown waypoint " .. navId end
+    directToRoute(ac, navId)
     ac.dct = navId
     ac.ahdg = nil          -- a waypoint replaces the heading
     ac.via = nil

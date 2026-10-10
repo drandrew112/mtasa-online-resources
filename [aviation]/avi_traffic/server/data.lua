@@ -141,6 +141,16 @@ function procedure(id)
     return id and WORLD.procs[tostring(id):upper()]
 end
 
+-- the procedure lists the fix as fly-over (`flyover` = { fixId, ... }; every other fix is fly-by)
+function isFlyover(procId, fixId)
+    local p = procedure(procId)
+    if not (p and p.flyover and fixId) then return false end
+    for _, f in ipairs(p.flyover) do
+        if tostring(f):upper() == fixId then return true end
+    end
+    return false
+end
+
 -- fix list of a procedure for a runway end (a copy), nil when it has no such runway
 function procedureRoute(id, ident)
     local p = procedure(id)

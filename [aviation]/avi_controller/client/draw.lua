@@ -217,17 +217,52 @@ local function dotCircle(x, y, r, col)
     dxDrawRectangle(x - 1.5, y - 1.5, 3, 3, col)
 end
 
+local function circle(x, y, r, col)
+    local n, px, py = 16
+    for i = 0, n do
+        local a = math.rad(i * 360 / n)
+        local cx, cy = x + math.cos(a) * r, y + math.sin(a) * r
+        if px then line(px, py, cx, cy, col) end
+        px, py = cx, cy
+    end
+end
+
+-- fly-over fixes (fix flag or listed in any SID / STAR); every other fix is fly-by
+local function flyoverFixes(nav)
+    local set = {}
+    for _, f in ipairs(nav.fixes or {}) do if f.flyover then set[f.id] = true end end
+    for _, p in ipairs(nav.procedures or {}) do
+        for _, id in ipairs(p.flyover or {}) do set[id] = true end
+    end
+    return set
+end
+
+-- fix ids on the routes the controller has shown (named even when the fix labels are off)
+local function shownRouteFixes()
+    local set = {}
+    for id in pairs(SC.routeShown) do
+        local e = SC.traffic[id]
+        if e then
+            for _, p in ipairs(routePoints(e.s)) do set[p[3]] = true end
+        end
+    end
+    return set
+end
+
 function drawNav()
     local nav = SC.data.nav or {}
     local r = 5 * U
+    local onRoute = shownRouteFixes()
+    local flyover = flyoverFixes(nav)
     for _, f in ipairs(nav.fixes or {}) do
         -- final + procedure fixes only when zoomed in a bit (they clutter the CTA view)
         local small = f.kind == "final" or f.kind == "proc"
-        if not small or VIEW.scale >= 0.12 then
+        if not small or VIEW.scale >= 0.12 or onRoute[f.id] then
             local x, y = w2s(f.x, f.y)
             local col = small and COL.fixFinal or COL.fix
             triangle(x, y, f.kind == "proc" and r * 0.75 or r, col)
-            text(f.id, x + r + 3, y - r - 2, COL.navText, F.map)
+            if flyover[f.id] then circle(x, y, (f.kind == "proc" and r * 0.75 or r) * 1.6, col) end
+            if SC.showFixLabels or onRoute[f.id] then text(f.id, x + r + 3, y - r - 2, COL.navText, F.map) end
         end
     end
     for _, v in ipairs(nav.vors or {}) do

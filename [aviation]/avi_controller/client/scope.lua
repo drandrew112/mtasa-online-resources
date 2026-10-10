@@ -107,6 +107,8 @@ local function drawToolButtons(mx, my)
     local defs = {
         { "AT", "Toggle airspace text visible", 34 * U, function() SC.showAirspaceText = not SC.showAirspaceText end,
             SC.showAirspaceText },
+        { "FIXL", "Toggle fix labels visible (fixes of a shown route stay named)", 44 * U,
+            function() SC.showFixLabels = not SC.showFixLabels end, SC.showFixLabels },
         { "V-", "Decrease vector length (now " .. vectorText() .. ")", 30 * U,
             function() SC.vectorStep = math.max(0, SC.vectorStep - 1) end, false, SC.vectorStep <= 0 },
         { "V+", "Increase vector length (now " .. vectorText() .. ")", 30 * U,
