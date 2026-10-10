@@ -1,8 +1,10 @@
 -- Navigation points (data/nav.json):
---   fixes: { id, x, y, kind = "cta" | "tma" | "enroute" | "final", airport?, runway? }
+--   fixes: { id, x, y, kind = "cta" | "tma" | "enroute" | "final", airport?, runway?, flyover? }
 --   ndbs:  { id, name, freq, x, y, z?, object? }
 --   vors:  { id, name, freq, x, y, z, object? = { model, rz } }
---   procedures: { id, type = "SID" | "STAR", airport, fix, runways = { [ident] = { fixId, ... } } }
+--   procedures: { id, type = "SID" | "STAR", airport, fix, runways = { [ident] = { fixId, ... } }, flyover? = { fixId, ... } }
+--     Fixes are fly-by (the turn starts before the fix); fly-over = fix flag `flyover` (everywhere) or listed in
+--     the procedure's `flyover` (only in that SID / STAR). /avinav flyover <FIX> [PROC] toggles them.
 --     STAR <FIX>1A: entry fix -> (downwind) -> base fix abeam the final fix -> final fix of the runway
 --     SID  <FIX>1D: climb-out fix on the centre line -> (turn fix) -> exit fix
 -- FIXes sit on the airspace boundaries, on the en-route network and on every runway final.

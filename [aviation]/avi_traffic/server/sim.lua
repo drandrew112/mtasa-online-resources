@@ -848,18 +848,21 @@ local function nextTarget(ac, kind)
     end
 end
 
--- Fly-over fixes (fix flag `flyover`, or listed in the procedure's `flyover`) are passed only over the
--- fix. Every other point is fly-by: the turn to the next leg starts this far before it, so the turn
--- circle (radius = world speed / turn rate) touches both legs instead of overshooting the next one.
-local function turnLead(ac, kind, target)
+-- distance at which the target counts as passed. Fly-over fixes (fix flag `flyover`, or listed in the
+-- procedure's `flyover`): right over the fix, the turn starts after it. Every other point is fly-by:
+-- the turn to the next leg starts this far before it, so the turn circle (radius = world speed / turn
+-- rate) touches both legs instead of overshooting the next one.
+local function passDistance(ac, kind, target)
     if kind == "route" or kind == "dct" then
-        if target.flyover or isFlyover(ac.sid, target.id) or isFlyover(ac.star, target.id) then return 0 end
+        if target.flyover or isFlyover(ac.sid, target.id) or isFlyover(ac.star, target.id) then
+            return TR.FLYOVER_PASS_DIST
+        end
     end
     local nxt = nextTarget(ac, kind)
-    if not nxt then return 0 end
+    if not nxt then return TR.FIX_PASS_DIST end
     local turn = math.abs(angleTo(ac.hdg, bearing(target.x, target.y, nxt.x, nxt.y)))
     local radius = worldSpeed(ac) / math.rad(TR.TURN_RATE)
-    return radius * math.tan(math.rad(math.min(turn, TR.FLYBY_MAX_TURN) / 2))
+    return math.max(TR.FIX_PASS_DIST, radius * math.tan(math.rad(math.min(turn, TR.FLYBY_MAX_TURN) / 2)))
 end
 
 local function passed(ac, kind)
@@ -959,7 +962,7 @@ local function tickAir(ac, dt)
 
     -- fix passage: close enough, or close and already behind (would orbit it inside the turn radius)
     local td = target and not ac.climbOut and dist(ac.x, ac.y, target.x, target.y)
-    if td and (td <= math.max(TR.FIX_PASS_DIST, turnLead(ac, kind, target))
+    if td and (td <= passDistance(ac, kind, target)
             or (td < 400 and math.abs(angleTo(ac.hdg, bearing(ac.x, ac.y, target.x, target.y))) > 100)) then
         if kind == "final" then
             local glideAt = elev + TR.FINAL_AGL

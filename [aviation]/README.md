@@ -44,6 +44,14 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - STAR: entry fix -> (downwind, when the entry is beyond the runway) -> base fix -> final fix, or straight to the
   final fix when the entry is in front of it. SID: (climb-out fix) -> (turn fix) -> exit fix; with no fixes the
   aircraft turns to the exit fix right after the climb-out (800 ft AGL).
+- Fly-by / fly-over: every fix is **fly-by** by default: the aircraft starts the turn to the next leg before the
+  fix (lead = turn radius × tan(turn / 2), turn radius = world speed / `TURN_RATE`), so it rolls out on the next
+  leg instead of overshooting it (90° turn at 250 kts: ~10 m instead of ~110 m). **Fly-over** fixes must be
+  overflown (`FLYOVER_PASS_DIST` 30 m or abeam), the turn starts only after them. Mark one with
+  `/avinav flyover <FIX> <PROC>` (only in that SID / STAR -> procedure `flyover = [ ... ]`) or
+  `/avinav flyover <FIX>` (everywhere -> fix flag `"flyover": true`); the same command toggles it back. The scope
+  draws fly-over fixes with a circle around the triangle. Final fixes, approach base points and go-around points
+  are always fly-by.
 - Turn limit: no turn is over 100°, neither inside a procedure (the 90° base / final turns are the biggest) nor along
   any `flights.json` route including its SID / STAR for every runway combination. A flight plan joins the SID / STAR
   fixes that suit both runway directions (e.g. LS<->LV = VINEW / SHADY, SF->LS = DOHER SANTA). Check with a script
