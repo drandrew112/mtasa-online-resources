@@ -80,7 +80,7 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
   A yellow frame = your aircraft waits for a clearance (ground and air: IFR when ready, push, taxi, runway, landing
   within 1500 m of the final fix, STAR near the entry fix); the list shows `REQ ...` for the same ones.
 - Alerts (any aircraft): red text above the label frame and a red frame. `EMRG` = squawk 7700,
-  `COMS` = squawk 7600, `STCA` = separation lost, `RAM` = off the cleared route (more than 90° off the
+  `COMS` = squawk 7600, `DUPE` = another aircraft has the same squawk, `STCA` = separation lost, `RAM` = off the cleared route (more than 90° off the
   next point for 40 s while on own navigation; should never happen). `/avitraffic sqk <cs> <code>` sets a squawk.
 - Separation (avi_traffic `alerts.lua`, fined once per pair, on every staffed controller of the two aircraft;
   the sum is the `Mistakes` item of the pay, a negative total is taken from the bank):

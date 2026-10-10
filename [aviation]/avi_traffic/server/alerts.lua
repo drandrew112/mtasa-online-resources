@@ -1,6 +1,7 @@
 -- Scope alerts (ac.alert, shown in red above the label) and separation losses.
 --   EMRG  squawk 7700
 --   COMS  squawk 7600
+--   DUPE  another active aircraft squawks the same code
 --   STCA  separation lost (rules below)
 --   RAM   route deviation: off the cleared route (heading to the next point more than
 --         TR.RAM_ANGLE off for TR.RAM_TIME s) while flying its own navigation. Should never happen.
@@ -101,10 +102,16 @@ function updateAlerts(dt)
         end
     end
 
+    local sqkCount = {}
+    for _, ac in ipairs(list) do
+        if ac.sqk then sqkCount[ac.sqk] = (sqkCount[ac.sqk] or 0) + 1 end
+    end
+
     for _, ac in ipairs(list) do
         local al = {}
         if ac.sqk == "7700" then al[#al + 1] = "EMRG" end
         if ac.sqk == "7600" then al[#al + 1] = "COMS" end
+        if ac.sqk and sqkCount[ac.sqk] > 1 then al[#al + 1] = "DUPE" end
         if stca[ac.id] then al[#al + 1] = "STCA" end
         if routeDeviation(ac, dt) then al[#al + 1] = "RAM" end
         ac.alert = #al > 0 and table.concat(al, " ") or nil

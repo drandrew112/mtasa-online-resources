@@ -10,7 +10,7 @@
 --     CALLSIGN (large) / SPD SQK / ACTYPE/WAKE.
 --   A yellow frame = one of your aircraft is waiting for a clearance.
 --   Alert (any aircraft, avi_traffic alerts.lua): red text above the label frame + red frame.
---     EMRG = squawk 7700, COMS = squawk 7600, STCA = separation lost, RAM = off the cleared route.
+--     EMRG = squawk 7700, COMS = squawk 7600, DUPE = same squawk as another aircraft, STCA = separation lost, RAM = off the cleared route.
 
 local C = {
     air      = tocolor(95, 170, 255, 255),
