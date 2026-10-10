@@ -102,6 +102,12 @@ local function drawTopBar(mx, my)
         C.text, 1, F.uiB, "right", "center")
 
     local bw, bh, by = 74 * U, 24 * U, 5 * U
+    -- leader line length (nm)
+    local vx = SC.sx - 4 * (bw + 6 * U) - 4 * U - 6 * U - 104 * U
+    button({ vx, by, 24 * U, bh }, "-", mx, my, function() SC.vectorStep = math.max(0, SC.vectorStep - 1) end)
+    dxDrawText(SC.vectorStep == 0 and "Vector off" or ("Vector %.1f nm"):format(SC.vectorStep * CTL.VECTOR_STEP_NM), vx + 24 * U, 0, vx + 80 * U, h,
+        C.text, 1, F.map, "center", "center", true)
+    button({ vx + 80 * U, by, 24 * U, bh }, "+", mx, my, function() SC.vectorStep = math.min(CTL.VECTOR_MAX_STEPS, SC.vectorStep + 1) end)
     local bx = SC.sx - 4 * (bw + 6 * U) - 4 * U
     button({ bx, by, bw, bh }, SC.showList and "List: on" or "List: off", mx, my, function() SC.showList = not SC.showList end)
     bx = bx + bw + 6 * U
@@ -150,7 +156,7 @@ local function lvl(ft) return ft and ("%03d"):format(math.floor(ft / 100 + 0.5))
 
 local function altCell(s)
     if s.gnd then
-        if isMine(s) and s.req then return "REQ " .. s.req, true end
+        if isMine(s) and s.req and s.ready then return "REQ " .. s.req, true end
         return s.phase:upper():sub(1, 7)
     end
     return lvl(s.alt)
@@ -286,7 +292,9 @@ addEventHandler("onClientClick", root, function(btn, state, ax, ay)
     if not SC.visible then return end
 
     if btn == "right" then
-        if state == "down" then drag = { kind = "pan", sx = ax, sy = ay }
+        if state == "down" and HOVER_ID and SC.traffic[HOVER_ID] then
+            SC.routeShown[HOVER_ID] = not SC.routeShown[HOVER_ID] or nil
+        elseif state == "down" then drag = { kind = "pan", sx = ax, sy = ay }
         elseif drag and drag.kind == "pan" then drag = nil end
         return
     end
@@ -334,6 +342,16 @@ end)
 
 addEventHandler("onClientKey", root, function(key, press)
     if not SC.visible or not press or LOGIN.open then return end
+    -- 0..5 (also on the numpad): leader line length in 0.1 nm steps, 0 = off
+    local digit = tonumber(key:match("^num_(%d)$") or key:match("^(%d)$"))
+    if digit then
+        if digit <= CTL.VECTOR_MAX_STEPS and not isChatBoxInputActive() and not isConsoleActive()
+                and not guiGetInputEnabled() and not waypointInputOpen() then
+            SC.vectorStep = digit
+            cancelEvent()
+        end
+        return
+    end
     if key == "mouse_wheel_up" or key == "mouse_wheel_down" then
         local dir = key == "mouse_wheel_up" and -1 or 1
         local mx, my = cursor()

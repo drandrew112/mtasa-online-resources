@@ -24,6 +24,7 @@
     <export function="clearHeading"          type="server" />
     <export function="transferAircraft"      type="server" />
     <export function="giveClearance"         type="server" />
+    <export function="setArrivalProcedure"   type="server" />
     <!-- tests / other resources -->
     <export function="spawnFlightByCallsign" type="server" />
     <export function="removeFlight"          type="server" />

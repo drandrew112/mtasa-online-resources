@@ -124,12 +124,20 @@ function drawAirports()
         -- taxiways
         if s >= CTL.TAXI_MIN_SCALE then
             local tw = math.max(1, 16 * s)
+            -- rounded pieces from avi_airports (taxiDraw); the plain polylines when missing
+            for _, l in ipairs(a.taxiDraw or {}) do
+                local x1, y1 = w2s(l[1], l[2])
+                local x2, y2 = w2s(l[3], l[4])
+                line(x1, y1, x2, y2, COL.taxi, tw)
+            end
             for _, t in ipairs(a.taxiways or {}) do
-                local prev
-                for _, p in ipairs(t.points or {}) do
-                    local x, y = w2s(p[1], p[2])
-                    if prev then line(prev[1], prev[2], x, y, COL.taxi, tw) end
-                    prev = { x, y }
+                if not a.taxiDraw then
+                    local prev
+                    for _, p in ipairs(t.points or {}) do
+                        local x, y = w2s(p[1], p[2])
+                        if prev then line(prev[1], prev[2], x, y, COL.taxi, tw) end
+                        prev = { x, y }
+                    end
                 end
                 if s >= 0.5 and t.points and t.points[1] then
                     local mid = t.points[math.ceil(#t.points / 2)]
@@ -211,11 +219,12 @@ function drawNav()
     local nav = SC.data.nav or {}
     local r = 5 * U
     for _, f in ipairs(nav.fixes or {}) do
-        -- final fixes only when zoomed in a bit (they clutter the CTA view)
-        if f.kind ~= "final" or VIEW.scale >= 0.12 then
+        -- final + procedure fixes only when zoomed in a bit (they clutter the CTA view)
+        local small = f.kind == "final" or f.kind == "proc"
+        if not small or VIEW.scale >= 0.12 then
             local x, y = w2s(f.x, f.y)
-            local col = f.kind == "final" and COL.fixFinal or COL.fix
-            triangle(x, y, r, col)
+            local col = small and COL.fixFinal or COL.fix
+            triangle(x, y, f.kind == "proc" and r * 0.75 or r, col)
             text(f.id, x + r + 3, y - r - 2, COL.navText, F.map)
         end
     end

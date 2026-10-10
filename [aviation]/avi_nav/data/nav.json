@@ -1,148 +1,304 @@
 {
- "_about": "Navigation points: FIX, NDB, VOR. VORs are placed in game with /avinav. Coordinates: GTA world metres. Altitudes: feet.",
+ "_about": "Navigation points: FIX, NDB, VOR + SID / STAR procedures. VORs are placed in game with /avinav. Fix kinds: cta / tma (procedure entry + exit) / enroute / final / proc (procedure points: <AP><rwy>1-2 base abeam the final fix, 3-4 downwind, 5 climb-out, 6-7 turn, 8 SID transition). procedures: STAR <FIX>1A, SID <FIX>1D; runways = { ident: [fix, ...] }. Coordinates: GTA world metres.",
  "fixes": [
   {
-   "id": "BYRON",
-   "x": 1500,
-   "y": 3500,
+   "id": "GOLDN",
+   "x": -4250,
+   "y": 6000,
    "kind": "cta"
   },
   {
    "id": "NOVAX",
-   "x": -1500,
-   "y": 3500,
+   "x": -1600,
+   "y": 6000,
+   "kind": "cta"
+  },
+  {
+   "id": "BYRON",
+   "x": 2000,
+   "y": 6000,
+   "kind": "cta"
+  },
+  {
+   "id": "YUCCA",
+   "x": 4550,
+   "y": 6000,
+   "kind": "cta"
+  },
+  {
+   "id": "STARF",
+   "x": 6000,
+   "y": 4250,
    "kind": "cta"
   },
   {
    "id": "LIBTY",
-   "x": 3500,
-   "y": 1000,
+   "x": 6000,
+   "y": 1350,
    "kind": "cta"
   },
   {
    "id": "VICEC",
-   "x": 3500,
-   "y": -2000,
+   "x": 6000,
+   "y": -2400,
+   "kind": "cta"
+  },
+  {
+   "id": "KEYSS",
+   "x": 6000,
+   "y": -4950,
+   "kind": "cta"
+  },
+  {
+   "id": "CORAL",
+   "x": 4250,
+   "y": -6000,
    "kind": "cta"
   },
   {
    "id": "SANTO",
-   "x": 1200,
-   "y": -3500,
+   "x": 1600,
+   "y": -6000,
+   "kind": "cta"
+  },
+  {
+   "id": "MARIN",
+   "x": -2000,
+   "y": -6000,
+   "kind": "cta"
+  },
+  {
+   "id": "FOGGY",
+   "x": -6000,
+   "y": -4400,
    "kind": "cta"
   },
   {
    "id": "PACIF",
-   "x": -3500,
-   "y": -1500,
+   "x": -6000,
+   "y": -2000,
    "kind": "cta"
   },
   {
    "id": "REDWO",
-   "x": -3500,
-   "y": 1500,
+   "x": -6000,
+   "y": 2000,
+   "kind": "cta"
+  },
+  {
+   "id": "BOREA",
+   "x": 200,
+   "y": 6000,
+   "kind": "cta"
+  },
+  {
+   "id": "SEQUA",
+   "x": -6000,
+   "y": 4300,
+   "kind": "cta"
+  },
+  {
+   "id": "ZEPHR",
+   "x": -6000,
+   "y": 0,
+   "kind": "cta"
+  },
+  {
+   "id": "SHARK",
+   "x": -4200,
+   "y": -6000,
+   "kind": "cta"
+  },
+  {
+   "id": "TROPI",
+   "x": -200,
+   "y": -6000,
+   "kind": "cta"
+  },
+  {
+   "id": "SUNRS",
+   "x": 6000,
+   "y": -550,
    "kind": "cta"
   },
   {
    "id": "VINEW",
-   "x": 900,
-   "y": -1700,
+   "x": 600,
+   "y": -1150,
    "kind": "tma"
   },
   {
    "id": "GROVE",
    "x": 2300,
-   "y": -1700,
+   "y": -1150,
+   "kind": "tma"
+  },
+  {
+   "id": "PLAYA",
+   "x": 4100,
+   "y": -1450,
    "kind": "tma"
   },
   {
    "id": "OCEAN",
-   "x": 3400,
+   "x": 4400,
    "y": -2900,
    "kind": "tma"
   },
   {
-   "id": "SANTA",
-   "x": -100,
-   "y": -2550,
+   "id": "MARLN",
+   "x": 2700,
+   "y": -4100,
    "kind": "tma"
   },
   {
-   "id": "FLINT",
-   "x": -60,
-   "y": -60,
+   "id": "REEFS",
+   "x": 700,
+   "y": -4100,
+   "kind": "tma"
+  },
+  {
+   "id": "SANTA",
+   "x": -700,
+   "y": -2500,
+   "kind": "tma"
+  },
+  {
+   "id": "MISTY",
+   "x": -3400,
+   "y": -1750,
    "kind": "tma"
   },
   {
    "id": "ANGPI",
-   "x": -1900,
-   "y": -1400,
+   "x": -2200,
+   "y": -2200,
    "kind": "tma"
   },
   {
-   "id": "PALIS",
-   "x": -2900,
-   "y": 100,
+   "id": "DOHER",
+   "x": -1125,
+   "y": -1825,
    "kind": "tma"
   },
   {
-   "id": "GANTN",
-   "x": -1500,
-   "y": 1700,
+   "id": "FLINT",
+   "x": -300,
+   "y": -700,
+   "kind": "tma"
+  },
+  {
+   "id": "GARCI",
+   "x": 375,
+   "y": 550,
    "kind": "tma"
   },
   {
    "id": "BAYSD",
-   "x": -250,
-   "y": 1450,
+   "x": 150,
+   "y": 2300,
+   "kind": "tma"
+  },
+  {
+   "id": "GANTN",
+   "x": -1100,
+   "y": 2600,
+   "kind": "tma"
+  },
+  {
+   "id": "JUNIP",
+   "x": -2900,
+   "y": 1800,
+   "kind": "tma"
+  },
+  {
+   "id": "PALIS",
+   "x": -3900,
+   "y": 0,
+   "kind": "tma"
+  },
+  {
+   "id": "SHADY",
+   "x": 350,
+   "y": -650,
    "kind": "tma"
   },
   {
    "id": "MONTG",
    "x": 1500,
-   "y": -300,
+   "y": -1000,
    "kind": "tma"
   },
   {
-   "id": "BONEC",
-   "x": 300,
-   "y": 1700,
+   "id": "SPRNG",
+   "x": 3000,
+   "y": -700,
    "kind": "tma"
   },
   {
    "id": "KACCY",
-   "x": 2900,
+   "x": 3300,
    "y": 1700,
+   "kind": "tma"
+  },
+  {
+   "id": "DESRT",
+   "x": 3000,
+   "y": 3700,
    "kind": "tma"
   },
   {
    "id": "PRCKL",
    "x": 1500,
-   "y": 3300,
+   "y": 4000,
    "kind": "tma"
   },
   {
-   "id": "SHADY",
-   "x": 600,
-   "y": 150,
+   "id": "BONEC",
+   "x": 450,
+   "y": 2950,
    "kind": "tma"
   },
   {
    "id": "DILMR",
-   "x": 700,
-   "y": -700,
+   "x": -150,
+   "y": -850,
    "kind": "enroute"
   },
   {
    "id": "PALOM",
-   "x": 2300,
-   "y": -200,
+   "x": 3900,
+   "y": -700,
    "kind": "enroute"
   },
   {
    "id": "TIERR",
-   "x": -1200,
-   "y": 2500,
+   "x": -700,
+   "y": 3300,
+   "kind": "enroute"
+  },
+  {
+   "id": "BLUFF",
+   "x": -1800,
+   "y": -3300,
+   "kind": "enroute"
+  },
+  {
+   "id": "MESAS",
+   "x": 3900,
+   "y": 2600,
+   "kind": "enroute"
+  },
+  {
+   "id": "KINCA",
+   "x": -3300,
+   "y": 3400,
+   "kind": "enroute"
+  },
+  {
+   "id": "MOJAV",
+   "x": 2400,
+   "y": 5000,
    "kind": "enroute"
   },
   {
@@ -208,6 +364,326 @@
    "kind": "final",
    "airport": "SALV",
    "runway": "36"
+  },
+  {
+   "id": "LS091",
+   "x": 240.0,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "base"
+  },
+  {
+   "id": "LS092",
+   "x": 240.0,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "base"
+  },
+  {
+   "id": "LS093",
+   "x": 2665.0,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "downwind"
+  },
+  {
+   "id": "LS094",
+   "x": 2665.0,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "downwind"
+  },
+  {
+   "id": "LS095",
+   "x": 3665.0,
+   "y": -2543.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "climb"
+  },
+  {
+   "id": "LS096",
+   "x": 3665.0,
+   "y": -1553.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "turn"
+  },
+  {
+   "id": "LS097",
+   "x": 3665.0,
+   "y": -3533.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "turn"
+  },
+  {
+   "id": "LS098",
+   "x": 700.0,
+   "y": -3300.0,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "transition"
+  },
+  {
+   "id": "LS271",
+   "x": 3265.0,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "base"
+  },
+  {
+   "id": "LS272",
+   "x": 3265.0,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "base"
+  },
+  {
+   "id": "LS273",
+   "x": 840.0,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "downwind"
+  },
+  {
+   "id": "LS274",
+   "x": 840.0,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "downwind"
+  },
+  {
+   "id": "LS275",
+   "x": -160.0,
+   "y": -2543.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "climb"
+  },
+  {
+   "id": "LS276",
+   "x": -160.0,
+   "y": -3533.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "turn"
+  },
+  {
+   "id": "LS277",
+   "x": -160.0,
+   "y": -1553.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "turn"
+  },
+  {
+   "id": "SF041",
+   "x": -2983.5,
+   "y": -501.5,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "base"
+  },
+  {
+   "id": "SF042",
+   "x": -1993.5,
+   "y": -1491.5,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "base"
+  },
+  {
+   "id": "SF043",
+   "x": -1215.7,
+   "y": 1266.2,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "downwind"
+  },
+  {
+   "id": "SF045",
+   "x": -13.6,
+   "y": 1478.4,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "climb"
+  },
+  {
+   "id": "SF046",
+   "x": -459.1,
+   "y": 1923.8,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "turn"
+  },
+  {
+   "id": "SF047",
+   "x": 431.8,
+   "y": 1032.9,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "turn"
+  },
+  {
+   "id": "SF221",
+   "x": 198.5,
+   "y": 700.5,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "base"
+  },
+  {
+   "id": "SF222",
+   "x": -791.5,
+   "y": 1690.5,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "base"
+  },
+  {
+   "id": "SF224",
+   "x": -2559.2,
+   "y": -77.3,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "downwind"
+  },
+  {
+   "id": "SF225",
+   "x": -2771.4,
+   "y": -1279.4,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "climb"
+  },
+  {
+   "id": "SF226",
+   "x": -2325.9,
+   "y": -1724.8,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "turn"
+  },
+  {
+   "id": "SF227",
+   "x": -3216.8,
+   "y": -833.9,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "turn"
+  },
+  {
+   "id": "LV181",
+   "x": 2227.0,
+   "y": 3025.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "base"
+  },
+  {
+   "id": "LV182",
+   "x": 727.0,
+   "y": 3025.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "base"
+  },
+  {
+   "id": "LV183",
+   "x": 2227.0,
+   "y": 570.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "downwind"
+  },
+  {
+   "id": "LV185",
+   "x": 1477.0,
+   "y": -430.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "climb"
+  },
+  {
+   "id": "LV186",
+   "x": 2152.0,
+   "y": -430.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "turn"
+  },
+  {
+   "id": "LV187",
+   "x": 802.0,
+   "y": -430.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "turn"
+  },
+  {
+   "id": "LV361",
+   "x": 727.0,
+   "y": -30.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "base"
+  },
+  {
+   "id": "LV362",
+   "x": 2227.0,
+   "y": -30.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "base"
+  },
+  {
+   "id": "LV364",
+   "x": 2227.0,
+   "y": 2425.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "downwind"
+  },
+  {
+   "id": "LV365",
+   "x": 1477.0,
+   "y": 3425.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "climb"
+  },
+  {
+   "id": "LV366",
+   "x": 802.0,
+   "y": 3425.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "turn"
+  },
+  {
+   "id": "LV367",
+   "x": 2152.0,
+   "y": 3425.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "turn"
+  },
+  {
+   "id": "LV368",
+   "x": 1050.0,
+   "y": 1000.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "transition"
   }
  ],
  "ndbs": [
@@ -233,5 +709,952 @@
    "y": 1180
   }
  ],
- "vors": []
+ "vors": [],
+ "procedures": [
+  {
+   "id": "VINEW1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "VINEW",
+   "runways": {
+    "09L": [
+     "VINEW",
+     "LS091",
+     "LS09L"
+    ],
+    "09R": [
+     "VINEW",
+     "LS091",
+     "LS09R"
+    ],
+    "27R": [
+     "VINEW",
+     "LS272",
+     "LS27R"
+    ],
+    "27L": [
+     "VINEW",
+     "LS272",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "VINEW1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "VINEW",
+   "runways": {
+    "09L": [
+     "LS095",
+     "LS096",
+     "VINEW"
+    ],
+    "09R": [
+     "LS095",
+     "LS096",
+     "VINEW"
+    ],
+    "27R": [
+     "VINEW"
+    ],
+    "27L": [
+     "VINEW"
+    ]
+   }
+  },
+  {
+   "id": "GROVE1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "GROVE",
+   "runways": {
+    "09L": [
+     "GROVE",
+     "LS091",
+     "LS09L"
+    ],
+    "09R": [
+     "GROVE",
+     "LS091",
+     "LS09R"
+    ],
+    "27R": [
+     "GROVE",
+     "LS272",
+     "LS27R"
+    ],
+    "27L": [
+     "GROVE",
+     "LS272",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "GROVE1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "GROVE",
+   "runways": {
+    "09L": [
+     "GROVE"
+    ],
+    "09R": [
+     "GROVE"
+    ],
+    "27R": [
+     "LS275",
+     "LS277",
+     "GROVE"
+    ],
+    "27L": [
+     "LS275",
+     "LS277",
+     "GROVE"
+    ]
+   }
+  },
+  {
+   "id": "PLAYA1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "PLAYA",
+   "runways": {
+    "09L": [
+     "PLAYA",
+     "LS093",
+     "LS091",
+     "LS09L"
+    ],
+    "09R": [
+     "PLAYA",
+     "LS093",
+     "LS091",
+     "LS09R"
+    ],
+    "27R": [
+     "PLAYA",
+     "LS27R"
+    ],
+    "27L": [
+     "PLAYA",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "PLAYA1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "PLAYA",
+   "runways": {
+    "09L": [
+     "PLAYA"
+    ],
+    "09R": [
+     "PLAYA"
+    ],
+    "27R": [
+     "LS275",
+     "LS277",
+     "PLAYA"
+    ],
+    "27L": [
+     "LS275",
+     "LS277",
+     "PLAYA"
+    ]
+   }
+  },
+  {
+   "id": "OCEAN1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "OCEAN",
+   "runways": {
+    "09L": [
+     "OCEAN",
+     "LS094",
+     "LS092",
+     "LS09L"
+    ],
+    "09R": [
+     "OCEAN",
+     "LS094",
+     "LS092",
+     "LS09R"
+    ],
+    "27R": [
+     "OCEAN",
+     "LS27R"
+    ],
+    "27L": [
+     "OCEAN",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "OCEAN1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "OCEAN",
+   "runways": {
+    "09L": [
+     "OCEAN"
+    ],
+    "09R": [
+     "OCEAN"
+    ],
+    "27R": [
+     "LS275",
+     "LS276",
+     "OCEAN"
+    ],
+    "27L": [
+     "LS275",
+     "LS276",
+     "OCEAN"
+    ]
+   }
+  },
+  {
+   "id": "MARLN1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "MARLN",
+   "runways": {
+    "09L": [
+     "MARLN",
+     "LS092",
+     "LS09L"
+    ],
+    "09R": [
+     "MARLN",
+     "LS092",
+     "LS09R"
+    ],
+    "27R": [
+     "MARLN",
+     "LS271",
+     "LS27R"
+    ],
+    "27L": [
+     "MARLN",
+     "LS271",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "MARLN1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "MARLN",
+   "runways": {
+    "09L": [
+     "MARLN"
+    ],
+    "09R": [
+     "MARLN"
+    ],
+    "27R": [
+     "LS275",
+     "LS276",
+     "MARLN"
+    ],
+    "27L": [
+     "LS275",
+     "LS276",
+     "MARLN"
+    ]
+   }
+  },
+  {
+   "id": "REEFS1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "REEFS",
+   "runways": {
+    "09L": [
+     "REEFS",
+     "LS092",
+     "LS09L"
+    ],
+    "09R": [
+     "REEFS",
+     "LS092",
+     "LS09R"
+    ],
+    "27R": [
+     "REEFS",
+     "LS271",
+     "LS27R"
+    ],
+    "27L": [
+     "REEFS",
+     "LS271",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "REEFS1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "REEFS",
+   "runways": {
+    "09L": [
+     "LS095",
+     "LS097",
+     "LS098",
+     "REEFS"
+    ],
+    "09R": [
+     "LS095",
+     "LS097",
+     "LS098",
+     "REEFS"
+    ],
+    "27R": [
+     "REEFS"
+    ],
+    "27L": [
+     "REEFS"
+    ]
+   }
+  },
+  {
+   "id": "SANTA1A",
+   "type": "STAR",
+   "airport": "SALS",
+   "fix": "SANTA",
+   "runways": {
+    "09L": [
+     "SANTA",
+     "LS09L"
+    ],
+    "09R": [
+     "SANTA",
+     "LS09R"
+    ],
+    "27R": [
+     "SANTA",
+     "LS274",
+     "LS272",
+     "LS27R"
+    ],
+    "27L": [
+     "SANTA",
+     "LS273",
+     "LS271",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "SANTA1D",
+   "type": "SID",
+   "airport": "SALS",
+   "fix": "SANTA",
+   "runways": {
+    "09L": [
+     "LS095",
+     "LS097",
+     "LS098",
+     "SANTA"
+    ],
+    "09R": [
+     "LS095",
+     "LS097",
+     "LS098",
+     "SANTA"
+    ],
+    "27R": [
+     "SANTA"
+    ],
+    "27L": [
+     "SANTA"
+    ]
+   }
+  },
+  {
+   "id": "MISTY1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "MISTY",
+   "runways": {
+    "04": [
+     "MISTY",
+     "SF04"
+    ],
+    "22": [
+     "MISTY",
+     "SF224",
+     "SF222",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "MISTY1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "MISTY",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF046",
+     "MISTY"
+    ],
+    "22": [
+     "MISTY"
+    ]
+   }
+  },
+  {
+   "id": "ANGPI1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "ANGPI",
+   "runways": {
+    "04": [
+     "ANGPI",
+     "SF04"
+    ],
+    "22": [
+     "ANGPI",
+     "SF221",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "ANGPI1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "ANGPI",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF047",
+     "ANGPI"
+    ],
+    "22": [
+     "ANGPI"
+    ]
+   }
+  },
+  {
+   "id": "DOHER1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "DOHER",
+   "runways": {
+    "04": [
+     "DOHER",
+     "SF042",
+     "SF04"
+    ],
+    "22": [
+     "DOHER",
+     "SF221",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "DOHER1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "DOHER",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF047",
+     "DOHER"
+    ],
+    "22": [
+     "DOHER"
+    ]
+   }
+  },
+  {
+   "id": "FLINT1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "FLINT",
+   "runways": {
+    "04": [
+     "FLINT",
+     "SF042",
+     "SF04"
+    ],
+    "22": [
+     "FLINT",
+     "SF221",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "FLINT1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "FLINT",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF047",
+     "FLINT"
+    ],
+    "22": [
+     "SF225",
+     "SF226",
+     "FLINT"
+    ]
+   }
+  },
+  {
+   "id": "GARCI1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "GARCI",
+   "runways": {
+    "04": [
+     "GARCI",
+     "SF042",
+     "SF04"
+    ],
+    "22": [
+     "GARCI",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "GARCI1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "GARCI",
+   "runways": {
+    "04": [
+     "GARCI"
+    ],
+    "22": [
+     "SF225",
+     "SF226",
+     "GARCI"
+    ]
+   }
+  },
+  {
+   "id": "BAYSD1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "BAYSD",
+   "runways": {
+    "04": [
+     "BAYSD",
+     "SF043",
+     "SF041",
+     "SF04"
+    ],
+    "22": [
+     "BAYSD",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "BAYSD1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "BAYSD",
+   "runways": {
+    "04": [
+     "BAYSD"
+    ],
+    "22": [
+     "SF225",
+     "SF227",
+     "BAYSD"
+    ]
+   }
+  },
+  {
+   "id": "GANTN1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "GANTN",
+   "runways": {
+    "04": [
+     "GANTN",
+     "SF041",
+     "SF04"
+    ],
+    "22": [
+     "GANTN",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "GANTN1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "GANTN",
+   "runways": {
+    "04": [
+     "GANTN"
+    ],
+    "22": [
+     "SF225",
+     "SF227",
+     "GANTN"
+    ]
+   }
+  },
+  {
+   "id": "JUNIP1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "JUNIP",
+   "runways": {
+    "04": [
+     "JUNIP",
+     "SF041",
+     "SF04"
+    ],
+    "22": [
+     "JUNIP",
+     "SF222",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "JUNIP1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "JUNIP",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF046",
+     "JUNIP"
+    ],
+    "22": [
+     "SF225",
+     "SF227",
+     "JUNIP"
+    ]
+   }
+  },
+  {
+   "id": "PALIS1A",
+   "type": "STAR",
+   "airport": "SASF",
+   "fix": "PALIS",
+   "runways": {
+    "04": [
+     "PALIS",
+     "SF04"
+    ],
+    "22": [
+     "PALIS",
+     "SF222",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "PALIS1D",
+   "type": "SID",
+   "airport": "SASF",
+   "fix": "PALIS",
+   "runways": {
+    "04": [
+     "SF045",
+     "SF046",
+     "PALIS"
+    ],
+    "22": [
+     "PALIS"
+    ]
+   }
+  },
+  {
+   "id": "SHADY1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "SHADY",
+   "runways": {
+    "18": [
+     "SHADY",
+     "LV182",
+     "LV18"
+    ],
+    "36": [
+     "SHADY",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "SHADY1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "SHADY",
+   "runways": {
+    "18": [
+     "SHADY"
+    ],
+    "36": [
+     "LV365",
+     "LV366",
+     "SHADY"
+    ]
+   }
+  },
+  {
+   "id": "MONTG1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "MONTG",
+   "runways": {
+    "18": [
+     "MONTG",
+     "LV183",
+     "LV181",
+     "LV18"
+    ],
+    "36": [
+     "MONTG",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "MONTG1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "MONTG",
+   "runways": {
+    "18": [
+     "MONTG"
+    ],
+    "36": [
+     "LV365",
+     "LV367",
+     "MONTG"
+    ]
+   }
+  },
+  {
+   "id": "SPRNG1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "SPRNG",
+   "runways": {
+    "18": [
+     "SPRNG",
+     "LV181",
+     "LV18"
+    ],
+    "36": [
+     "SPRNG",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "SPRNG1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "SPRNG",
+   "runways": {
+    "18": [
+     "SPRNG"
+    ],
+    "36": [
+     "LV365",
+     "LV367",
+     "SPRNG"
+    ]
+   }
+  },
+  {
+   "id": "KACCY1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "KACCY",
+   "runways": {
+    "18": [
+     "KACCY",
+     "LV181",
+     "LV18"
+    ],
+    "36": [
+     "KACCY",
+     "LV362",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "KACCY1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "KACCY",
+   "runways": {
+    "18": [
+     "LV185",
+     "LV186",
+     "KACCY"
+    ],
+    "36": [
+     "LV365",
+     "LV367",
+     "KACCY"
+    ]
+   }
+  },
+  {
+   "id": "DESRT1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "DESRT",
+   "runways": {
+    "18": [
+     "DESRT",
+     "LV18"
+    ],
+    "36": [
+     "DESRT",
+     "LV362",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "DESRT1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "DESRT",
+   "runways": {
+    "18": [
+     "LV185",
+     "LV186",
+     "DESRT"
+    ],
+    "36": [
+     "DESRT"
+    ]
+   }
+  },
+  {
+   "id": "PRCKL1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "PRCKL",
+   "runways": {
+    "18": [
+     "PRCKL",
+     "LV18"
+    ],
+    "36": [
+     "PRCKL",
+     "LV364",
+     "LV362",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "PRCKL1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "PRCKL",
+   "runways": {
+    "18": [
+     "LV185",
+     "LV186",
+     "PRCKL"
+    ],
+    "36": [
+     "PRCKL"
+    ]
+   }
+  },
+  {
+   "id": "BONEC1A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "BONEC",
+   "runways": {
+    "18": [
+     "BONEC",
+     "LV18"
+    ],
+    "36": [
+     "BONEC",
+     "LV361",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "BONEC1D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "BONEC",
+   "runways": {
+    "18": [
+     "LV185",
+     "LV187",
+     "BONEC"
+    ],
+    "36": [
+     "BONEC"
+    ]
+   }
+  },
+  {
+   "id": "GARCI2A",
+   "type": "STAR",
+   "airport": "SALV",
+   "fix": "GARCI",
+   "runways": {
+    "18": [
+     "GARCI",
+     "LV182",
+     "LV18"
+    ],
+    "36": [
+     "GARCI",
+     "LV361",
+     "LV36"
+    ]
+   }
+  },
+  {
+   "id": "GARCI2D",
+   "type": "SID",
+   "airport": "SALV",
+   "fix": "GARCI",
+   "runways": {
+    "18": [
+     "GARCI"
+    ],
+    "36": [
+     "LV365",
+     "LV366",
+     "LV368",
+     "GARCI"
+    ]
+   }
+  }
+ ]
 }

@@ -1,7 +1,8 @@
 -- Aircraft command menu (click a label or a target).
 --   Airborne: cleared altitude, heading, direct to, resume own navigation, cancel direct,
 --             cleared to land, transfer.
---   Ground (tower / delivery): IFR clearance (initial level, accepts the route), pushback,
+--   Airborne arrivals (approach / radar): arrival procedure (STAR + runway, the suggested one yellow).
+--   Ground (tower / delivery): IFR clearance (SID, the suggested one yellow + initial level), pushback,
 --             taxi (to a runway / to a stand), cross / backtrack / line up / take-off, transfer.
 --   Arrivals: cleared to land, vacate via <taxiway>, go around.
 --   Everyone: show / hide the route, reset the label.
@@ -57,7 +58,9 @@ local function levelItems(s, action, maxFt)
     for ft = maxFt, CTL.LEVEL_MIN, -CTL.LEVEL_STEP do
         local isRfl = ft == s.rfl
         items[#items + 1] = { label = ("%03d   %d ft%s"):format(ft / 100, ft, isRfl and "   RFL" or ""), current = ft == cur,
-            rfl = isRfl, key = ft, act = function() send(action, ft) end }
+            rfl = isRfl, key = ft, act = function()
+                if action == "ifr" then send("ifr", { alt = ft, sid = MENU.sid or "" }) else send(action, ft) end
+            end }
     end
     return items, cur
 end
@@ -112,6 +115,48 @@ local function directItems(s)
         askWaypoint(id)
     end }
     return items
+end
+
+-- SIDs / STARs of an airport as "<ID> <RWY>": the runway in use first, the suggested procedure on top
+-- (yellow). pick(spec) is called with the chosen "<ID> <RWY>".
+local function procedureItems(icao, ptype, rwyInUse, suggested, current, pick, noneLabel)
+    local items = { back() }
+    local list = {}
+    for _, p in ipairs(SC.data.nav.procedures or {}) do
+        if p.airport == icao and p.type == ptype then
+            for ident in pairs(p.runways or {}) do
+                ident = tostring(ident)
+                local spec = p.id .. " " .. ident
+                local sug = p.id == suggested and ident == rwyInUse
+                list[#list + 1] = { spec = spec, sug = sug, inUse = ident == rwyInUse,
+                    order = (sug and "0" or "1") .. (ident == rwyInUse and "0" or "1") .. ident .. p.id }
+            end
+        end
+    end
+    table.sort(list, function(a, b) return a.order < b.order end)
+    for _, it in ipairs(list) do
+        local spec = it.spec
+        items[#items + 1] = { label = spec .. (it.sug and "   (suggested)" or (it.inUse and "" or "   (runway not in use)")),
+            request = it.sug, current = spec == current, act = function() pick(spec) end }
+    end
+    if noneLabel then items[#items + 1] = { label = noneLabel, act = function() pick("") end } end
+    return items
+end
+
+local function sidItems(s)
+    local rw = SC.data.runways and SC.data.runways[s.dep]
+    return procedureItems(s.dep, "SID", rw and rw.dep, s.sugSid, s.proc, function(spec)
+        MENU.sid = spec
+        MENU.mode = "ifr"
+        MENU.scroll = nil
+    end, "No SID (own navigation)")
+end
+
+local function starItems(s)
+    local rw = SC.data.runways and SC.data.runways[s.arr]
+    return procedureItems(s.arr, "STAR", rw and rw.arr, s.sugStar, s.proc, function(spec)
+        send("star", spec)
+    end)
 end
 
 local function transferItems(s)
@@ -208,41 +253,47 @@ local function mainItems(s, mine)
     local p = s.phase
     local air = p == "air" or p == "final"
     local hasApt = airportOf(s.arr) ~= nil
+    local twr = mine and SC.pos and SC.pos.type == "TWR"
     local vacateLabel = "Vacate via  >" .. (s.vacateVia and ("   (" .. s.vacateVia .. ")") or "")
 
     if air then
         local vec = mine and p == "air"
+        local posType = SC.pos and SC.pos.type
         add("LEVEL & ROUTE", "Cleared altitude  >", sub("cfl"), vec)
         add("LEVEL & ROUTE", "Heading  >", sub("hdg"), vec)
         add("LEVEL & ROUTE", "Direct to  >", sub("dct"), vec)
+        if hasApt and (posType == "APP" or posType == "CTR") then
+            add("LEVEL & ROUTE", "Arrival procedure  >" .. (s.proc and ("   (" .. s.proc .. ")") or ""), sub("star"), vec,
+                s.req == "STAR")
+        end
         if s.ahdg then add("LEVEL & ROUTE", "Resume own navigation", function() send("nohdg") end, mine) end
         if s.dct then add("LEVEL & ROUTE", "Cancel direct " .. s.dct, function() send("nodct") end, mine) end
         if hasApt then
             add("APPROACH & LANDING", s.landClr and "Cleared to land (given)" or "Cleared to land",
-                function() send("land") end, mine and not s.landClr, s.req == "LAND")
-            add("APPROACH & LANDING", vacateLabel, sub("vacate"), mine)
+                function() send("land") end, twr and not s.landClr, s.req == "LAND")
+            add("APPROACH & LANDING", vacateLabel, sub("vacate"), twr)
             add("APPROACH & LANDING", "Go around", function() send("goaround") end, mine and (p == "final" or s.req == "LAND"))
         end
     elseif s.dir == "arr" then
-        add("RUNWAY", vacateLabel, sub("vacate"), mine and p == "landing")
+        add("RUNWAY", vacateLabel, sub("vacate"), twr and p == "landing")
         add("RUNWAY", "Cross runway " .. tostring(s.holdRwy or ""), function() send("cross") end,
-            mine and p == "hold" and s.req == "CROSS", p == "hold" and s.req == "CROSS")
-        add("GROUND", "Taxi to stand  >", sub("stand"), mine and (p == "landing" or p == "vacate" or p == "vacated"),
+            twr and p == "hold" and s.req == "CROSS", p == "hold" and s.req == "CROSS")
+        add("GROUND", "Taxi to stand  >", sub("stand"), twr and (p == "landing" or p == "vacate" or p == "vacated"),
             s.req == "TAXI")
     else
         local holdTO = p == "hold" and s.req == "T/O"
-        add("DELIVERY", s.ifr and ("IFR clearance (given, %03d)"):format((s.initAlt or 0) / 100) or "IFR clearance  >",
-            sub("ifr"), mine and p == "gate" and not s.ifr, s.req == "IFR")
-        add("GROUND", "Pushback approved", function() send("push") end, mine and p == "gate" and s.ifr and s.req == "PUSH",
+        add("DELIVERY", s.ifr and ("IFR clearance (given, %s %03d)"):format(s.proc or "no SID", (s.initAlt or 0) / 100)
+            or "IFR clearance  >", sub("sid"), twr and p == "gate" and not s.ifr, s.req == "IFR")
+        add("GROUND", "Pushback approved", function() send("push") end, twr and p == "gate" and s.ifr and s.req == "PUSH",
             s.req == "PUSH")
-        add("GROUND", "Taxi  >", sub("rwy"), mine and s.req == "TAXI", s.req == "TAXI")
+        add("GROUND", "Taxi  >", sub("rwy"), twr and s.req == "TAXI", s.req == "TAXI")
         add("RUNWAY", "Cross runway " .. (p == "hold" and s.req == "CROSS" and tostring(s.holdRwy) or ""),
-            function() send("cross") end, mine and p == "hold" and s.req == "CROSS", p == "hold" and s.req == "CROSS")
+            function() send("cross") end, twr and p == "hold" and s.req == "CROSS", p == "hold" and s.req == "CROSS")
         add("RUNWAY", "Backtrack runway " .. (p == "hold" and s.req == "BKTRK" and tostring(s.holdRwy) or ""),
-            function() send("backtrack") end, mine and p == "hold" and s.req == "BKTRK", p == "hold" and s.req == "BKTRK")
-        add("RUNWAY", "Line up and wait " .. tostring(s.rwy or ""), function() send("lineup") end, mine and holdTO)
+            function() send("backtrack") end, twr and p == "hold" and s.req == "BKTRK", p == "hold" and s.req == "BKTRK")
+        add("RUNWAY", "Line up and wait " .. tostring(s.rwy or ""), function() send("lineup") end, twr and holdTO)
         add("RUNWAY", "Cleared for take-off " .. tostring(s.rwy or ""), function() send("takeoff") end,
-            mine and (holdTO or (p == "lined" and s.req == "T/O")), holdTO or (p == "lined" and s.req == "T/O"))
+            twr and (holdTO or (p == "lined" and s.req == "T/O")), holdTO or (p == "lined" and s.req == "T/O"))
     end
 
     add("COORDINATION", "Transfer to  >", sub("xfer"), mine)
@@ -274,6 +325,7 @@ local function infoLines(s)
         ("%s  %s/%s  SQK %s"):format(s.cs, s.type, s.wake, s.sqk or "----"),
         ("%s > %s   %s"):format(s.dep, dest, status),
         "Route: " .. ((s.route and #s.route > 0) and table.concat(s.route, " ") or "-"),
+        "Procedure: " .. (s.proc or "-") .. ((s.sugSid or s.sugStar) and ("   suggested: " .. (s.sugSid or s.sugStar)) or ""),
         "Controlled by: " .. (s.ctl or "nobody") .. (isMine(s) and "  (you)" or ""),
     }
 end
@@ -291,6 +343,8 @@ local function currentItems(s, mine)
     local m = MENU.mode
     if m == "cfl" then return centred(levelItems(s, "cfl")) end
     if m == "ifr" then return centred(levelItems(s, "ifr", 10000)) end
+    if m == "sid" then MENU.scroll = MENU.scroll or 0 return sidItems(s) end
+    if m == "star" then MENU.scroll = MENU.scroll or 0 return starItems(s) end
     if m == "hdg" then return centred(headingItems(s)) end
     if m == "dct" then MENU.scroll = MENU.scroll or 0 return directItems(s) end
     if m == "xfer" then MENU.scroll = MENU.scroll or 0 return transferItems(s) end
@@ -378,6 +432,10 @@ end
 
 -- typed waypoint (ui_core text input)
 local pending
+function waypointInputOpen()
+    return pending ~= nil
+end
+
 function askWaypoint(id)
     local res = getResourceFromName("ui_core")
     if not (res and getResourceState(res) == "running") then return end

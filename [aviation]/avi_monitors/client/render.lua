@@ -150,7 +150,7 @@ local function ctaOf(static)
             end
         end
     end
-    if b[1] == math.huge then b = { -3500, -3500, 3500, 3500 } end
+    if b[1] == math.huge then b = { -6000, -6000, 6000, 6000 } end
     static.ctaBox = b
     return b
 end
@@ -205,7 +205,12 @@ local function drawAirports(static, runways)
         local arrId, depId = rw and rw.arr, rw and rw.dep
         if s >= 0.15 then
             local tw = math.max(1, 16 * s * V.k)
-            for _, t in ipairs(a.taxiways or {}) do
+            for _, l in ipairs(a.taxiDraw or {}) do
+                local x1, y1 = w2p(l[1], l[2])
+                local x2, y2 = w2p(l[3], l[4])
+                line(x1, y1, x2, y2, C.taxi, tw)
+            end
+            for _, t in ipairs(a.taxiDraw and {} or a.taxiways or {}) do
                 local prev
                 for _, p in ipairs(t.points or {}) do
                     local x, y = w2p(p[1], p[2])
@@ -260,9 +265,9 @@ local function drawNav(static)
     local nav = static.nav or {}
     local r = 5
     for _, f in ipairs(nav.fixes or {}) do
-        if f.kind ~= "final" or V.vs >= 0.12 then
+        if (f.kind ~= "final" and f.kind ~= "proc") or V.vs >= 0.12 then
             local x, y = w2p(f.x, f.y)
-            local col = f.kind == "final" and C.fixFinal or C.fix
+            local col = (f.kind == "final" or f.kind == "proc") and C.fixFinal or C.fix
             triangle(x, y, r, col)
             txt(f.id, x + r + 3, y - r - 2, C.navText, F.map)
         end
@@ -316,9 +321,9 @@ local function drawAir(s, mine, h, off, compact)
         lines = { { s.cs .. " ", (s.ctl or "----") .. " ", s.type .. "/" .. s.wake },
             ("%s %03d %s"):format(hundreds(s.alt), math.floor(s.spd + 0.5), s.arr) }
         if s.cfl then lines[#lines + 1] = hundreds(s.cfl) end
-        if s.dct or s.ahdg then
+        if s.dct or s.proc or s.ahdg then
             local parts = {}
-            if s.dct then parts[#parts + 1] = s.dct end
+            if s.dct or s.proc then parts[#parts + 1] = s.dct or s.proc end
             if s.ahdg then parts[#parts + 1] = hdg3(s.ahdg) end
             lines[#lines + 1] = table.concat(parts, " ")
         end

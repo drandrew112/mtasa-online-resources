@@ -10,8 +10,8 @@ addEventHandler("work:sync", resourceRoot, function(t)
 end)
 
 addEvent("work:notify", true)
-addEventHandler("work:notify", resourceRoot, function(title, text)
-    exports.ui_core:addNotification(tostring(title or "Work"), tostring(text or ""))
+addEventHandler("work:notify", resourceRoot, function(title, text, silent)
+    exports.ui_core:addNotification(tostring(title or "Work"), tostring(text or ""), silent == true)
 end)
 
 addEvent("work:clipboard", true)

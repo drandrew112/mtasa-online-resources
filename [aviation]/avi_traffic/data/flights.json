@@ -1,5 +1,5 @@
 {
- "_about": "Fixed traffic database for avi_traffic. route = FIX/VOR/NDB ids in order. cruise = feet. period/offset in minutes of the real (server) clock: the flight starts when minute % period == offset. dep/arr: an ICAO of avi_airports (ground start / landing) or an external code (enters / leaves at its fix).",
+ "_about": "Fixed traffic database for avi_traffic. route = filed route (TMA exit fix of the departure airport [SID], en-route fixes, TMA entry fix of the arrival airport [STAR]; externals: their CTA fix). cruise = feet. period/offset in minutes of the real (server) clock: the flight starts when minute % period == offset. dep/arr: an ICAO of avi_airports (ground start / landing) or an external code (enters / leaves at its fix).",
  "airlines": {
   "FUS": {
    "name": "Fly US",
@@ -32,6 +32,26 @@
   "VCA": {
    "name": "Vice City Air",
    "callsign": "VICE"
+  },
+  "PCA": {
+   "name": "Pacific Coast Air",
+   "callsign": "PACOAST"
+  },
+  "DSA": {
+   "name": "Desert Air",
+   "callsign": "DESERT"
+  },
+  "SNA": {
+   "name": "Sunset Airlines",
+   "callsign": "SUNSET"
+  },
+  "NRA": {
+   "name": "Northern Air",
+   "callsign": "NORTHERN"
+  },
+  "CGO": {
+   "name": "San Andreas Cargo",
+   "callsign": "SACARGO"
   }
  },
  "types": {
@@ -176,527 +196,582 @@
   "PCFC": {
    "name": "Pacific (oceanic)",
    "fix": "PACIF"
+  },
+  "NWPT": {
+   "name": "North Point",
+   "fix": "GOLDN"
+  },
+  "DSRT": {
+   "name": "Desert Springs",
+   "fix": "YUCCA"
+  },
+  "STFL": {
+   "name": "Star Falls",
+   "fix": "STARF"
+  },
+  "KEYW": {
+   "name": "Keys West",
+   "fix": "KEYSS"
+  },
+  "CRLB": {
+   "name": "Coral Bay",
+   "fix": "CORAL"
+  },
+  "BJAC": {
+   "name": "Baja Cabo",
+   "fix": "SANTO"
+  },
+  "MRNA": {
+   "name": "Marina Islands (oceanic)",
+   "fix": "MARIN"
+  },
+  "FGHB": {
+   "name": "Fog Harbor",
+   "fix": "FOGGY"
+  },
+  "RDWD": {
+   "name": "Redwood Falls",
+   "fix": "REDWO"
+  },
+  "NYKT": {
+   "name": "North Yankton",
+   "fix": "BOREA"
+  },
+  "CSCD": {
+   "name": "Cascade City",
+   "fix": "SEQUA"
+  },
+  "HNLU": {
+   "name": "Honolua (oceanic)",
+   "fix": "ZEPHR"
+  },
+  "SHRK": {
+   "name": "Shark Reef (oceanic)",
+   "fix": "SHARK"
+  },
+  "CAYO": {
+   "name": "Cayo Perico",
+   "fix": "TROPI"
+  },
+  "SNRS": {
+   "name": "Sunrise Beach",
+   "fix": "SUNRS"
   }
  },
  "flights": [
   {
-   "callsign": "CPN34",
-   "type": "A332",
-   "dep": "SALS",
-   "arr": "LCIA",
-   "route": [
-    "GROVE",
-    "PALOM",
-    "LIBTY"
-   ],
-   "cruise": 10000,
-   "offset": 0,
-   "period": 60
-  },
-  {
-   "callsign": "VCA8086",
-   "type": "B738",
-   "dep": "SALS",
-   "arr": "VCIA",
-   "route": [
-    "OCEAN",
-    "VICEC"
-   ],
-   "cruise": 9000,
-   "offset": 1,
-   "period": 60
-  },
-  {
-   "callsign": "FUS8121",
-   "type": "A320",
-   "dep": "SALV",
-   "arr": "SASF",
-   "route": [
-    "BONEC",
-    "TIERR",
-    "GANTN"
-   ],
-   "cruise": 6000,
-   "offset": 2,
-   "period": 60
-  },
-  {
-   "callsign": "CPN20",
-   "type": "A332",
-   "dep": "CRCR",
-   "arr": "PCFC",
-   "route": [
-    "BYRON",
-    "TIERR",
-    "REDWO"
-   ],
-   "cruise": 14000,
-   "offset": 4,
-   "period": 60
-  },
-  {
-   "callsign": "VCA678",
-   "type": "B738",
-   "dep": "SALS",
-   "arr": "VCIA",
-   "route": [
-    "OCEAN",
-    "VICEC"
-   ],
-   "cruise": 9000,
-   "offset": 5,
-   "period": 60
-  },
-  {
-   "callsign": "SAX422",
-   "type": "CRJ9",
+   "callsign": "NRA9984",
+   "type": "A321",
    "dep": "SASF",
    "arr": "SALV",
    "route": [
-    "BAYSD",
-    "BONEC"
-   ],
-   "cruise": 5000,
-   "offset": 6,
-   "period": 60
-  },
-  {
-   "callsign": "N420KA",
-   "type": "BE20",
-   "dep": "SALS",
-   "arr": "SALV",
-   "route": [
-    "GROVE",
-    "PALOM",
-    "MONTG"
-   ],
-   "cruise": 4500,
-   "offset": 7,
-   "period": 60
-  },
-  {
-   "callsign": "SAX72",
-   "type": "DH8D",
-   "dep": "SALV",
-   "arr": "SASF",
-   "route": [
-    "BONEC",
-    "TIERR",
-    "GANTN"
-   ],
-   "cruise": 6000,
-   "offset": 8,
-   "period": 60
-  },
-  {
-   "callsign": "LCX783",
-   "type": "B752",
-   "dep": "SALS",
-   "arr": "LCIA",
-   "route": [
-    "GROVE",
-    "PALOM",
-    "LIBTY"
-   ],
-   "cruise": 10000,
-   "offset": 10,
-   "period": 60
-  },
-  {
-   "callsign": "ADS347",
-   "type": "A320",
-   "dep": "ANYW",
-   "arr": "SASF",
-   "route": [
-    "NOVAX",
-    "GANTN"
-   ],
-   "cruise": 8000,
-   "offset": 11,
-   "period": 60
-  },
-  {
-   "callsign": "FUS47",
-   "type": "B738",
-   "dep": "SALV",
-   "arr": "SASF",
-   "route": [
-    "BONEC",
-    "TIERR",
-    "GANTN"
-   ],
-   "cruise": 6000,
-   "offset": 12,
-   "period": 60
-  },
-  {
-   "callsign": "FUS869",
-   "type": "A320",
-   "dep": "SALS",
-   "arr": "SASF",
-   "route": [
-    "VINEW",
-    "FLINT"
-   ],
-   "cruise": 6000,
-   "offset": 13,
-   "period": 60
-  },
-  {
-   "callsign": "N9LS",
-   "type": "BE20",
-   "dep": "SALV",
-   "arr": "SASF",
-   "route": [
-    "BONEC",
-    "TIERR",
-    "GANTN"
-   ],
-   "cruise": 3500,
-   "offset": 14,
-   "period": 60
-  },
-  {
-   "callsign": "LCX95",
-   "type": "A321",
-   "dep": "SALV",
-   "arr": "LCIA",
-   "route": [
-    "KACCY",
-    "LIBTY"
-   ],
-   "cruise": 9000,
-   "offset": 16,
-   "period": 60
-  },
-  {
-   "callsign": "FUS846",
-   "type": "A321",
-   "dep": "SASF",
-   "arr": "SALS",
-   "route": [
-    "FLINT",
-    "DILMR",
-    "VINEW"
+    "GARCI"
    ],
    "cruise": 7000,
-   "offset": 17,
-   "period": 60
+   "period": 120,
+   "offset": 0
   },
   {
-   "callsign": "HRL5040",
-   "type": "B77W",
-   "dep": "ANYW",
-   "arr": "VCIA",
+   "callsign": "CPN1831",
+   "type": "DH8D",
+   "dep": "BJAC",
+   "arr": "PCFC",
    "route": [
-    "NOVAX",
-    "TIERR",
-    "DILMR",
-    "PALOM",
-    "VICEC"
+    "SANTO",
+    "BLUFF",
+    "PACIF"
    ],
    "cruise": 16000,
-   "offset": 18,
-   "period": 60
+   "period": 120,
+   "offset": 1
   },
   {
-   "callsign": "FUS5896",
-   "type": "A321",
-   "dep": "SALS",
-   "arr": "SASF",
-   "route": [
-    "VINEW",
-    "FLINT"
-   ],
-   "cruise": 6000,
-   "offset": 19,
-   "period": 60
-  },
-  {
-   "callsign": "LCX7630",
-   "type": "A321",
-   "dep": "SASF",
-   "arr": "LCIA",
-   "route": [
-    "FLINT",
-    "DILMR",
-    "PALOM",
-    "LIBTY"
-   ],
-   "cruise": 11000,
-   "offset": 20,
-   "period": 60
-  },
-  {
-   "callsign": "SAX2509",
-   "type": "CRJ9",
-   "dep": "SALV",
-   "arr": "SALS",
-   "route": [
-    "SHADY",
-    "DILMR",
-    "VINEW"
-   ],
-   "cruise": 8000,
-   "offset": 22,
-   "period": 60
-  },
-  {
-   "callsign": "FUS84",
-   "type": "A320",
-   "dep": "SASF",
-   "arr": "SALV",
-   "route": [
-    "BAYSD",
-    "BONEC"
-   ],
-   "cruise": 5000,
-   "offset": 23,
-   "period": 60
-  },
-  {
-   "callsign": "LCX9453",
-   "type": "A321",
-   "dep": "LCIA",
-   "arr": "SALS",
-   "route": [
-    "LIBTY",
-    "PALOM",
-    "GROVE"
-   ],
-   "cruise": 9000,
-   "offset": 24,
-   "period": 60
-  },
-  {
-   "callsign": "VCA141",
-   "type": "B738",
-   "dep": "VCIA",
-   "arr": "SALS",
-   "route": [
-    "VICEC",
-    "OCEAN"
-   ],
-   "cruise": 8000,
-   "offset": 25,
-   "period": 60
-  },
-  {
-   "callsign": "EMU524",
-   "type": "B763",
-   "dep": "PCFC",
-   "arr": "SALS",
-   "route": [
-    "PACIF",
-    "SANTA"
-   ],
-   "cruise": 9000,
-   "offset": 26,
-   "period": 60
-  },
-  {
-   "callsign": "ADS46",
-   "type": "A320",
-   "dep": "SALV",
-   "arr": "CRCR",
-   "route": [
-    "PRCKL",
-    "BYRON"
-   ],
-   "cruise": 9000,
-   "offset": 28,
-   "period": 60
-  },
-  {
-   "callsign": "EMU95",
-   "type": "B77W",
-   "dep": "PCFC",
-   "arr": "SASF",
-   "route": [
-    "PACIF",
-    "PALIS"
-   ],
-   "cruise": 9000,
-   "offset": 29,
-   "period": 60
-  },
-  {
-   "callsign": "N88SF",
+   "callsign": "N475SA",
    "type": "PC12",
-   "dep": "SASF",
-   "arr": "SALS",
-   "route": [
-    "FLINT",
-    "DILMR",
-    "VINEW"
-   ],
-   "cruise": 4500,
-   "offset": 30,
-   "period": 60
-  },
-  {
-   "callsign": "N55LV",
-   "type": "C172",
    "dep": "SALV",
-   "arr": "SALS",
+   "arr": "SASF",
    "route": [
-    "SHADY",
-    "DILMR",
-    "VINEW"
+    "GARCI"
    ],
    "cruise": 3500,
-   "offset": 31,
-   "period": 60
+   "period": 120,
+   "offset": 2
   },
   {
-   "callsign": "HRL80",
-   "type": "A388",
-   "dep": "VCIA",
-   "arr": "ANYW",
+   "callsign": "NRA312",
+   "type": "B738",
+   "dep": "DSRT",
+   "arr": "NWPT",
    "route": [
-    "VICEC",
-    "PALOM",
-    "DILMR",
+    "YUCCA",
     "TIERR",
-    "NOVAX"
+    "GOLDN"
    ],
-   "cruise": 15000,
-   "offset": 32,
-   "period": 60
+   "cruise": 12000,
+   "period": 120,
+   "offset": 3
   },
   {
-   "callsign": "FUS3741",
-   "type": "A321",
-   "dep": "SALS",
-   "arr": "SALV",
-   "route": [
-    "GROVE",
-    "PALOM",
-    "MONTG"
-   ],
-   "cruise": 7000,
-   "offset": 34,
-   "period": 60
-  },
-  {
-   "callsign": "LCX885",
-   "type": "B738",
-   "dep": "LCIA",
-   "arr": "SASF",
-   "route": [
-    "LIBTY",
-    "PALOM",
-    "DILMR",
-    "FLINT"
-   ],
-   "cruise": 10000,
-   "offset": 35,
-   "period": 60
-  },
-  {
-   "callsign": "EMU4749",
-   "type": "B77W",
-   "dep": "SALS",
-   "arr": "PCFC",
-   "route": [
-    "SANTA",
-    "PACIF"
-   ],
-   "cruise": 10000,
-   "offset": 36,
-   "period": 60
-  },
-  {
-   "callsign": "FUS565",
-   "type": "B738",
-   "dep": "SASF",
-   "arr": "SALS",
-   "route": [
-    "FLINT",
-    "DILMR",
-    "VINEW"
-   ],
-   "cruise": 7000,
-   "offset": 37,
-   "period": 60
-  },
-  {
-   "callsign": "HRL255",
-   "type": "B763",
-   "dep": "LCIA",
-   "arr": "PCFC",
-   "route": [
-    "LIBTY",
-    "PALOM",
-    "DILMR",
-    "ANGPI",
-    "PACIF"
-   ],
-   "cruise": 17000,
-   "offset": 38,
-   "period": 60
-  },
-  {
-   "callsign": "VCA521",
-   "type": "B738",
-   "dep": "VCIA",
-   "arr": "SALS",
-   "route": [
-    "VICEC",
-    "OCEAN"
-   ],
-   "cruise": 8000,
-   "offset": 40,
-   "period": 60
-  },
-  {
-   "callsign": "HRL7892",
-   "type": "B77W",
-   "dep": "PCFC",
-   "arr": "LCIA",
-   "route": [
-    "PACIF",
-    "ANGPI",
-    "DILMR",
-    "PALOM",
-    "LIBTY"
-   ],
-   "cruise": 18000,
-   "offset": 41,
-   "period": 60
-  },
-  {
-   "callsign": "ADS553",
-   "type": "B738",
+   "callsign": "ADS47",
+   "type": "A320",
    "dep": "SASF",
    "arr": "ANYW",
    "route": [
     "GANTN",
     "NOVAX"
    ],
-   "cruise": 9000,
-   "offset": 42,
-   "period": 60
+   "cruise": 10000,
+   "period": 120,
+   "offset": 4
   },
   {
-   "callsign": "CPN232",
-   "type": "B752",
-   "dep": "VCIA",
+   "callsign": "HRL749",
+   "type": "B77W",
+   "dep": "PCFC",
    "arr": "ANYW",
    "route": [
-    "VICEC",
-    "PALOM",
+    "PACIF",
+    "KINCA",
+    "NOVAX"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 5
+  },
+  {
+   "callsign": "EMU6671",
+   "type": "A388",
+   "dep": "CAYO",
+   "arr": "NYKT",
+   "route": [
+    "TROPI",
     "DILMR",
+    "TIERR",
+    "BOREA"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 6
+  },
+  {
+   "callsign": "VCA395",
+   "type": "E190",
+   "dep": "LCIA",
+   "arr": "SALV",
+   "route": [
+    "LIBTY",
+    "KACCY"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 8
+  },
+  {
+   "callsign": "NRA5377",
+   "type": "A321",
+   "dep": "SASF",
+   "arr": "SALS",
+   "route": [
+    "DOHER",
+    "SANTA"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 9
+  },
+  {
+   "callsign": "DSA220",
+   "type": "E190",
+   "dep": "MRNA",
+   "arr": "SALV",
+   "route": [
+    "MARIN",
+    "BLUFF",
+    "SHADY"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 10
+  },
+  {
+   "callsign": "ADS8403",
+   "type": "CRJ9",
+   "dep": "VCIA",
+   "arr": "SALS",
+   "route": [
+    "VICEC",
+    "PLAYA"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 11
+  },
+  {
+   "callsign": "VCA5416",
+   "type": "B738",
+   "dep": "KEYW",
+   "arr": "SASF",
+   "route": [
+    "KEYSS",
+    "FLINT"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 12
+  },
+  {
+   "callsign": "NRA820",
+   "type": "E190",
+   "dep": "SALV",
+   "arr": "SALS",
+   "route": [
+    "SHADY",
+    "VINEW"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 13
+  },
+  {
+   "callsign": "SNA332",
+   "type": "CRJ9",
+   "dep": "SALV",
+   "arr": "SALS",
+   "route": [
+    "SHADY",
+    "VINEW"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 14
+  },
+  {
+   "callsign": "DSA177",
+   "type": "E190",
+   "dep": "SALV",
+   "arr": "DSRT",
+   "route": [
+    "DESRT",
+    "YUCCA"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 15
+  },
+  {
+   "callsign": "LCX6979",
+   "type": "A321",
+   "dep": "SALS",
+   "arr": "DSRT",
+   "route": [
+    "GROVE",
+    "MESAS",
+    "YUCCA"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 16
+  },
+  {
+   "callsign": "EMU80",
+   "type": "B752",
+   "dep": "SALV",
+   "arr": "ANYW",
+   "route": [
+    "BONEC",
     "TIERR",
     "NOVAX"
    ],
-   "cruise": 15000,
-   "offset": 43,
-   "period": 60
+   "cruise": 14000,
+   "period": 120,
+   "offset": 17
   },
   {
-   "callsign": "SAX94",
-   "type": "DH8D",
+   "callsign": "VCA9216",
+   "type": "A321",
+   "dep": "SALV",
+   "arr": "STFL",
+   "route": [
+    "DESRT",
+    "STARF"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 18
+  },
+  {
+   "callsign": "CGO9551",
+   "type": "B752",
+   "dep": "SALV",
+   "arr": "MRNA",
+   "route": [
+    "SHADY",
+    "BLUFF",
+    "MARIN"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 19
+  },
+  {
+   "callsign": "NRA8187",
+   "type": "A320",
+   "dep": "NWPT",
+   "arr": "SALS",
+   "route": [
+    "GOLDN",
+    "KINCA",
+    "VINEW"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 20
+  },
+  {
+   "callsign": "HRL1340",
+   "type": "A332",
+   "dep": "SASF",
+   "arr": "NWPT",
+   "route": [
+    "JUNIP",
+    "KINCA",
+    "GOLDN"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 21
+  },
+  {
+   "callsign": "DSA3969",
+   "type": "E190",
+   "dep": "SASF",
+   "arr": "SHRK",
+   "route": [
+    "MISTY",
+    "SHARK"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 22
+  },
+  {
+   "callsign": "VCA502",
+   "type": "CRJ9",
+   "dep": "SALS",
+   "arr": "NWPT",
+   "route": [
+    "VINEW",
+    "KINCA",
+    "GOLDN"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 24
+  },
+  {
+   "callsign": "LCX61",
+   "type": "E190",
+   "dep": "DSRT",
+   "arr": "VCIA",
+   "route": [
+    "YUCCA",
+    "MESAS",
+    "VICEC"
+   ],
+   "cruise": 18000,
+   "period": 120,
+   "offset": 25
+  },
+  {
+   "callsign": "LCX345",
+   "type": "A388",
+   "dep": "CRCR",
+   "arr": "SALV",
+   "route": [
+    "BYRON",
+    "PRCKL"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 26
+  },
+  {
+   "callsign": "LCX81",
+   "type": "A320",
+   "dep": "DSRT",
+   "arr": "MRNA",
+   "route": [
+    "YUCCA",
+    "DILMR",
+    "MARIN"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 27
+  },
+  {
+   "callsign": "FUS6358",
+   "type": "A321",
+   "dep": "CRCR",
+   "arr": "CRLB",
+   "route": [
+    "BYRON",
+    "PALOM",
+    "CORAL"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 28
+  },
+  {
+   "callsign": "FUS33",
+   "type": "B738",
+   "dep": "SALV",
+   "arr": "SASF",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 29
+  },
+  {
+   "callsign": "CGO7909",
+   "type": "B763",
+   "dep": "LCIA",
+   "arr": "CRLB",
+   "route": [
+    "LIBTY",
+    "PALOM",
+    "CORAL"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 30
+  },
+  {
+   "callsign": "ADS95",
+   "type": "CRJ9",
+   "dep": "SASF",
+   "arr": "SALV",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 31
+  },
+  {
+   "callsign": "CPN83",
+   "type": "A321",
+   "dep": "NWPT",
+   "arr": "SASF",
+   "route": [
+    "GOLDN",
+    "KINCA",
+    "JUNIP"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 32
+  },
+  {
+   "callsign": "DSA1073",
+   "type": "CRJ9",
+   "dep": "RDWD",
+   "arr": "BJAC",
+   "route": [
+    "REDWO",
+    "BLUFF",
+    "SANTO"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 33
+  },
+  {
+   "callsign": "N564PC",
+   "type": "PC12",
+   "dep": "SASF",
+   "arr": "SALS",
+   "route": [
+    "DOHER",
+    "SANTA"
+   ],
+   "cruise": 4500,
+   "period": 120,
+   "offset": 34
+  },
+  {
+   "callsign": "LCX5392",
+   "type": "CRJ9",
+   "dep": "FGHB",
+   "arr": "BJAC",
+   "route": [
+    "FOGGY",
+    "BLUFF",
+    "SANTO"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 35
+  },
+  {
+   "callsign": "SNA5851",
+   "type": "A321",
+   "dep": "DSRT",
+   "arr": "SALS",
+   "route": [
+    "YUCCA",
+    "MESAS",
+    "GROVE"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 36
+  },
+  {
+   "callsign": "LCX472",
+   "type": "A388",
+   "dep": "SASF",
+   "arr": "CSCD",
+   "route": [
+    "JUNIP",
+    "SEQUA"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 38
+  },
+  {
+   "callsign": "LCX192",
+   "type": "A320",
+   "dep": "SASF",
+   "arr": "CRLB",
+   "route": [
+    "FLINT",
+    "CORAL"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 39
+  },
+  {
+   "callsign": "CPN62",
+   "type": "B752",
+   "dep": "SALS",
+   "arr": "SNRS",
+   "route": [
+    "PLAYA",
+    "SUNRS"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 40
+  },
+  {
+   "callsign": "CPN2515",
+   "type": "B738",
    "dep": "SALS",
    "arr": "SASF",
    "route": [
@@ -704,54 +779,907 @@
     "FLINT"
    ],
    "cruise": 6000,
-   "offset": 44,
-   "period": 60
+   "period": 120,
+   "offset": 41
   },
   {
-   "callsign": "SAX3695",
+   "callsign": "LCX60",
+   "type": "A321",
+   "dep": "SALS",
+   "arr": "SASF",
+   "route": [
+    "VINEW",
+    "FLINT"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 42
+  },
+  {
+   "callsign": "SNA87",
+   "type": "B738",
+   "dep": "SALS",
+   "arr": "SASF",
+   "route": [
+    "VINEW",
+    "FLINT"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 43
+  },
+  {
+   "callsign": "EMU370",
+   "type": "B763",
+   "dep": "VCIA",
+   "arr": "PCFC",
+   "route": [
+    "VICEC",
+    "DILMR",
+    "PACIF"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 44
+  },
+  {
+   "callsign": "VCA45",
+   "type": "E190",
+   "dep": "PCFC",
+   "arr": "CRLB",
+   "route": [
+    "PACIF",
+    "BLUFF",
+    "CORAL"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 45
+  },
+  {
+   "callsign": "LCX760",
    "type": "CRJ9",
-   "dep": "SALS",
-   "arr": "SALV",
+   "dep": "SASF",
+   "arr": "SALS",
    "route": [
-    "GROVE",
-    "PALOM",
-    "MONTG"
+    "DOHER",
+    "SANTA"
    ],
    "cruise": 7000,
-   "offset": 46,
-   "period": 60
+   "period": 120,
+   "offset": 46
   },
   {
-   "callsign": "FUS4725",
-   "type": "B738",
-   "dep": "SALS",
-   "arr": "SALV",
+   "callsign": "SNA188",
+   "type": "CRJ9",
+   "dep": "SALV",
+   "arr": "SASF",
    "route": [
-    "GROVE",
-    "PALOM",
-    "MONTG"
+    "GARCI"
    ],
    "cruise": 7000,
-   "offset": 47,
-   "period": 60
+   "period": 120,
+   "offset": 47
   },
   {
-   "callsign": "FUS42",
+   "callsign": "NRA554",
    "type": "B738",
+   "dep": "SALS",
+   "arr": "CRCR",
+   "route": [
+    "GROVE",
+    "BYRON"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 48
+  },
+  {
+   "callsign": "N688LS",
+   "type": "BE20",
+   "dep": "SASF",
+   "arr": "SALV",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 3500,
+   "period": 120,
+   "offset": 49
+  },
+  {
+   "callsign": "SNA67",
+   "type": "E190",
+   "dep": "SALS",
+   "arr": "MRNA",
+   "route": [
+    "REEFS",
+    "MARIN"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 50
+  },
+  {
+   "callsign": "LCX1435",
+   "type": "A332",
+   "dep": "RDWD",
+   "arr": "DSRT",
+   "route": [
+    "REDWO",
+    "TIERR",
+    "YUCCA"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 51
+  },
+  {
+   "callsign": "N120SA",
+   "type": "BE20",
    "dep": "SALV",
    "arr": "SALS",
    "route": [
     "SHADY",
-    "DILMR",
     "VINEW"
    ],
-   "cruise": 8000,
-   "offset": 48,
-   "period": 60
+   "cruise": 3500,
+   "period": 120,
+   "offset": 52
   },
   {
-   "callsign": "N172SA",
+   "callsign": "CPN72",
+   "type": "DH8D",
+   "dep": "ANYW",
+   "arr": "STFL",
+   "route": [
+    "NOVAX",
+    "MOJAV",
+    "STARF"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 54
+  },
+  {
+   "callsign": "LCX931",
+   "type": "A320",
+   "dep": "DSRT",
+   "arr": "FGHB",
+   "route": [
+    "YUCCA",
+    "DILMR",
+    "FOGGY"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 55
+  },
+  {
+   "callsign": "CGO789",
+   "type": "A388",
+   "dep": "NWPT",
+   "arr": "CRLB",
+   "route": [
+    "GOLDN",
+    "DILMR",
+    "CORAL"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 56
+  },
+  {
+   "callsign": "HRL29",
+   "type": "B77W",
+   "dep": "KEYW",
+   "arr": "ANYW",
+   "route": [
+    "KEYSS",
+    "TIERR",
+    "NOVAX"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 57
+  },
+  {
+   "callsign": "DSA6159",
+   "type": "B738",
+   "dep": "FGHB",
+   "arr": "KEYW",
+   "route": [
+    "FOGGY",
+    "BLUFF",
+    "KEYSS"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 58
+  },
+  {
+   "callsign": "FUS5268",
+   "type": "DH8D",
+   "dep": "FGHB",
+   "arr": "CRCR",
+   "route": [
+    "FOGGY",
+    "TIERR",
+    "BYRON"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 59
+  },
+  {
+   "callsign": "VCA6537",
+   "type": "CRJ9",
+   "dep": "KEYW",
+   "arr": "NWPT",
+   "route": [
+    "KEYSS",
+    "TIERR",
+    "GOLDN"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 60
+  },
+  {
+   "callsign": "CPN6514",
+   "type": "E190",
+   "dep": "LCIA",
+   "arr": "RDWD",
+   "route": [
+    "LIBTY",
+    "TIERR",
+    "REDWO"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 61
+  },
+  {
+   "callsign": "FUS5936",
+   "type": "B738",
+   "dep": "BJAC",
+   "arr": "STFL",
+   "route": [
+    "SANTO",
+    "PALOM",
+    "STARF"
+   ],
+   "cruise": 16000,
+   "period": 120,
+   "offset": 62
+  },
+  {
+   "callsign": "CPN63",
+   "type": "CRJ9",
+   "dep": "CRLB",
+   "arr": "SASF",
+   "route": [
+    "CORAL",
+    "FLINT"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 63
+  },
+  {
+   "callsign": "NRA126",
+   "type": "CRJ9",
+   "dep": "DSRT",
+   "arr": "RDWD",
+   "route": [
+    "YUCCA",
+    "TIERR",
+    "REDWO"
+   ],
+   "cruise": 18000,
+   "period": 120,
+   "offset": 64
+  },
+  {
+   "callsign": "VCA137",
+   "type": "CRJ9",
+   "dep": "SASF",
+   "arr": "SALV",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 65
+  },
+  {
+   "callsign": "CGO41",
+   "type": "B77W",
+   "dep": "STFL",
+   "arr": "FGHB",
+   "route": [
+    "STARF",
+    "DILMR",
+    "FOGGY"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 66
+  },
+  {
+   "callsign": "FUS939",
+   "type": "E190",
+   "dep": "SALV",
+   "arr": "FGHB",
+   "route": [
+    "GARCI",
+    "DILMR",
+    "FOGGY"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 68
+  },
+  {
+   "callsign": "N282SF",
    "type": "C172",
+   "dep": "SALS",
+   "arr": "SALV",
+   "route": [
+    "VINEW",
+    "SHADY"
+   ],
+   "cruise": 4500,
+   "period": 120,
+   "offset": 69
+  },
+  {
+   "callsign": "SAX3226",
+   "type": "AT76",
+   "dep": "SALS",
+   "arr": "SALV",
+   "route": [
+    "VINEW",
+    "SHADY"
+   ],
+   "cruise": 6000,
+   "period": 120,
+   "offset": 70
+  },
+  {
+   "callsign": "DSA7847",
+   "type": "A320",
+   "dep": "SALS",
+   "arr": "SALV",
+   "route": [
+    "VINEW",
+    "SHADY"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 71
+  },
+  {
+   "callsign": "DSA601",
+   "type": "A321",
+   "dep": "VCIA",
+   "arr": "RDWD",
+   "route": [
+    "VICEC",
+    "DILMR",
+    "REDWO"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 72
+  },
+  {
+   "callsign": "NRA20",
+   "type": "AT76",
+   "dep": "CRLB",
+   "arr": "CRCR",
+   "route": [
+    "CORAL",
+    "PALOM",
+    "BYRON"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 73
+  },
+  {
+   "callsign": "LCX6283",
+   "type": "A320",
+   "dep": "SASF",
+   "arr": "LCIA",
+   "route": [
+    "GARCI",
+    "LIBTY"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 74
+  },
+  {
+   "callsign": "LCX563",
+   "type": "CRJ9",
+   "dep": "LCIA",
+   "arr": "FGHB",
+   "route": [
+    "LIBTY",
+    "DILMR",
+    "FOGGY"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 75
+  },
+  {
+   "callsign": "ADS300",
+   "type": "AT76",
+   "dep": "STFL",
+   "arr": "RDWD",
+   "route": [
+    "STARF",
+    "TIERR",
+    "REDWO"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 76
+  },
+  {
+   "callsign": "HRL21",
+   "type": "B77W",
+   "dep": "ANYW",
+   "arr": "VCIA",
+   "route": [
+    "NOVAX",
+    "PALOM",
+    "VICEC"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 77
+  },
+  {
+   "callsign": "SNA50",
+   "type": "A321",
+   "dep": "CRCR",
+   "arr": "SALS",
+   "route": [
+    "BYRON",
+    "GROVE"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 78
+  },
+  {
+   "callsign": "SAX3379",
+   "type": "AT76",
+   "dep": "SASF",
+   "arr": "SALV",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 79
+  },
+  {
+   "callsign": "CPN867",
+   "type": "E190",
+   "dep": "KEYW",
+   "arr": "FGHB",
+   "route": [
+    "KEYSS",
+    "BLUFF",
+    "FOGGY"
+   ],
+   "cruise": 16000,
+   "period": 120,
+   "offset": 80
+  },
+  {
+   "callsign": "PCA434",
+   "type": "AT76",
+   "dep": "SALS",
+   "arr": "SASF",
+   "route": [
+    "VINEW",
+    "FLINT"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 81
+  },
+  {
+   "callsign": "LCX98",
+   "type": "A388",
+   "dep": "FGHB",
+   "arr": "VCIA",
+   "route": [
+    "FOGGY",
+    "BLUFF",
+    "VICEC"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 82
+  },
+  {
+   "callsign": "CGO926",
+   "type": "B752",
+   "dep": "BJAC",
+   "arr": "SASF",
+   "route": [
+    "SANTO",
+    "DOHER"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 84
+  },
+  {
+   "callsign": "VCA44",
+   "type": "B738",
+   "dep": "SALV",
+   "arr": "CRCR",
+   "route": [
+    "PRCKL",
+    "BYRON"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 85
+  },
+  {
+   "callsign": "LCX422",
+   "type": "A320",
+   "dep": "SALV",
+   "arr": "KEYW",
+   "route": [
+    "SPRNG",
+    "KEYSS"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 86
+  },
+  {
+   "callsign": "NRA5155",
+   "type": "A321",
+   "dep": "BJAC",
+   "arr": "SALV",
+   "route": [
+    "SANTO",
+    "MONTG"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 87
+  },
+  {
+   "callsign": "NRA65",
+   "type": "CRJ9",
+   "dep": "SALS",
+   "arr": "SALV",
+   "route": [
+    "VINEW",
+    "SHADY"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 88
+  },
+  {
+   "callsign": "FUS9830",
+   "type": "A320",
+   "dep": "STFL",
+   "arr": "SASF",
+   "route": [
+    "STARF",
+    "GARCI"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 89
+  },
+  {
+   "callsign": "NRA4621",
+   "type": "E190",
+   "dep": "RDWD",
+   "arr": "VCIA",
+   "route": [
+    "REDWO",
+    "DILMR",
+    "VICEC"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 90
+  },
+  {
+   "callsign": "SNA59",
+   "type": "A321",
+   "dep": "ANYW",
+   "arr": "SALS",
+   "route": [
+    "NOVAX",
+    "TIERR",
+    "VINEW"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 91
+  },
+  {
+   "callsign": "LCX8665",
+   "type": "CRJ9",
+   "dep": "SHRK",
+   "arr": "SASF",
+   "route": [
+    "SHARK",
+    "MISTY"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 92
+  },
+  {
+   "callsign": "SAX92",
+   "type": "DH8D",
+   "dep": "SASF",
+   "arr": "SALS",
+   "route": [
+    "DOHER",
+    "SANTA"
+   ],
+   "cruise": 6000,
+   "period": 120,
+   "offset": 93
+  },
+  {
+   "callsign": "CGO1491",
+   "type": "B752",
+   "dep": "LCIA",
+   "arr": "SALS",
+   "route": [
+    "LIBTY",
+    "PLAYA"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 94
+  },
+  {
+   "callsign": "ADS9146",
+   "type": "AT76",
+   "dep": "KEYW",
+   "arr": "DSRT",
+   "route": [
+    "KEYSS",
+    "PALOM",
+    "YUCCA"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 95
+  },
+  {
+   "callsign": "VCA1256",
+   "type": "A321",
+   "dep": "RDWD",
+   "arr": "SALV",
+   "route": [
+    "REDWO",
+    "GARCI"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 96
+  },
+  {
+   "callsign": "CPN18",
+   "type": "CRJ9",
+   "dep": "PCFC",
+   "arr": "BJAC",
+   "route": [
+    "PACIF",
+    "BLUFF",
+    "SANTO"
+   ],
+   "cruise": 8000,
+   "period": 120,
+   "offset": 98
+  },
+  {
+   "callsign": "CPN674",
+   "type": "B738",
+   "dep": "SALV",
+   "arr": "SASF",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 99
+  },
+  {
+   "callsign": "CPN44",
+   "type": "A320",
+   "dep": "SASF",
+   "arr": "SALS",
+   "route": [
+    "DOHER",
+    "SANTA"
+   ],
+   "cruise": 6000,
+   "period": 120,
+   "offset": 100
+  },
+  {
+   "callsign": "FUS3947",
+   "type": "CRJ9",
+   "dep": "SALS",
+   "arr": "SALV",
+   "route": [
+    "VINEW",
+    "SHADY"
+   ],
+   "cruise": 7000,
+   "period": 120,
+   "offset": 101
+  },
+  {
+   "callsign": "CGO173",
+   "type": "B763",
+   "dep": "STFL",
+   "arr": "BJAC",
+   "route": [
+    "STARF",
+    "PALOM",
+    "SANTO"
+   ],
+   "cruise": 20000,
+   "period": 120,
+   "offset": 102
+  },
+  {
+   "callsign": "DSA3710",
+   "type": "E190",
+   "dep": "SASF",
+   "arr": "KEYW",
+   "route": [
+    "FLINT",
+    "KEYSS"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 103
+  },
+  {
+   "callsign": "PCA7764",
+   "type": "DH8D",
+   "dep": "SALV",
+   "arr": "SALS",
+   "route": [
+    "SHADY",
+    "VINEW"
+   ],
+   "cruise": 5000,
+   "period": 120,
+   "offset": 104
+  },
+  {
+   "callsign": "CGO9196",
+   "type": "A332",
+   "dep": "PCFC",
+   "arr": "SALS",
+   "route": [
+    "PACIF",
+    "SANTA"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 105
+  },
+  {
+   "callsign": "HRL86",
+   "type": "B763",
+   "dep": "RDWD",
+   "arr": "STFL",
+   "route": [
+    "REDWO",
+    "TIERR",
+    "STARF"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 106
+  },
+  {
+   "callsign": "CGO21",
+   "type": "A332",
+   "dep": "DSRT",
+   "arr": "SASF",
+   "route": [
+    "YUCCA",
+    "BAYSD"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 107
+  },
+  {
+   "callsign": "HRL51",
+   "type": "A332",
+   "dep": "DSRT",
+   "arr": "KEYW",
+   "route": [
+    "YUCCA",
+    "PALOM",
+    "KEYSS"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 108
+  },
+  {
+   "callsign": "ADS4566",
+   "type": "CRJ9",
+   "dep": "SALS",
+   "arr": "BJAC",
+   "route": [
+    "REEFS",
+    "SANTO"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 109
+  },
+  {
+   "callsign": "EMU5812",
+   "type": "B763",
+   "dep": "FGHB",
+   "arr": "SALV",
+   "route": [
+    "FOGGY",
+    "DILMR",
+    "SHADY"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 110
+  },
+  {
+   "callsign": "VCA3461",
+   "type": "E190",
+   "dep": "VCIA",
+   "arr": "SALV",
+   "route": [
+    "VICEC",
+    "SPRNG"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 111
+  },
+  {
+   "callsign": "SNA857",
+   "type": "DH8D",
+   "dep": "SALV",
+   "arr": "SASF",
+   "route": [
+    "GARCI"
+   ],
+   "cruise": 6000,
+   "period": 120,
+   "offset": 112
+  },
+  {
+   "callsign": "N248PC",
+   "type": "PC12",
    "dep": "SALS",
    "arr": "SASF",
    "route": [
@@ -759,115 +1687,180 @@
     "FLINT"
    ],
    "cruise": 3500,
-   "offset": 49,
-   "period": 60
+   "period": 120,
+   "offset": 114
   },
   {
-   "callsign": "SAX689",
-   "type": "AT76",
-   "dep": "SASF",
-   "arr": "SALS",
+   "callsign": "SNA24",
+   "type": "A320",
+   "dep": "SALS",
+   "arr": "LCIA",
    "route": [
-    "FLINT",
+    "GROVE",
+    "LIBTY"
+   ],
+   "cruise": 12000,
+   "period": 120,
+   "offset": 115
+  },
+  {
+   "callsign": "VCA59",
+   "type": "E190",
+   "dep": "CRLB",
+   "arr": "RDWD",
+   "route": [
+    "CORAL",
     "DILMR",
-    "VINEW"
+    "REDWO"
    ],
-   "cruise": 7000,
-   "offset": 50,
-   "period": 60
+   "cruise": 16000,
+   "period": 120,
+   "offset": 116
   },
   {
-   "callsign": "EMU277",
-   "type": "A332",
-   "dep": "SASF",
-   "arr": "PCFC",
-   "route": [
-    "ANGPI",
-    "PACIF"
-   ],
-   "cruise": 10000,
-   "offset": 52,
-   "period": 60
-  },
-  {
-   "callsign": "N12PC",
-   "type": "PC12",
-   "dep": "SASF",
-   "arr": "SALV",
-   "route": [
-    "BAYSD",
-    "BONEC"
-   ],
-   "cruise": 4500,
-   "offset": 53,
-   "period": 60
-  },
-  {
-   "callsign": "FUS7677",
-   "type": "A321",
+   "callsign": "DSA3363",
+   "type": "CRJ9",
    "dep": "SALV",
    "arr": "SALS",
    "route": [
     "SHADY",
-    "DILMR",
     "VINEW"
    ],
-   "cruise": 8000,
-   "offset": 54,
-   "period": 60
+   "cruise": 7000,
+   "period": 120,
+   "offset": 117
   },
   {
-   "callsign": "LCX6414",
-   "type": "B738",
-   "dep": "LCIA",
-   "arr": "SALV",
+   "callsign": "LCX27",
+   "type": "A321",
+   "dep": "STFL",
+   "arr": "MRNA",
    "route": [
-    "LIBTY",
-    "KACCY"
+    "STARF",
+    "DILMR",
+    "MARIN"
    ],
-   "cruise": 8000,
-   "offset": 55,
-   "period": 60
+   "cruise": 16000,
+   "period": 120,
+   "offset": 118
   },
   {
-   "callsign": "ADS255",
-   "type": "B738",
-   "dep": "CRCR",
-   "arr": "SALV",
-   "route": [
-    "BYRON",
-    "KACCY"
-   ],
-   "cruise": 8000,
-   "offset": 56,
-   "period": 60
-  },
-  {
-   "callsign": "CPN2659",
+   "callsign": "HRL826",
    "type": "B752",
-   "dep": "LCIA",
+   "dep": "FGHB",
+   "arr": "NWPT",
+   "route": [
+    "FOGGY",
+    "KINCA",
+    "GOLDN"
+   ],
+   "cruise": 16000,
+   "period": 120,
+   "offset": 119
+  },
+  {
+   "callsign": "NRA417",
+   "type": "E190",
+   "dep": "SALV",
+   "arr": "NYKT",
+   "route": [
+    "PRCKL",
+    "BOREA"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 7
+  },
+  {
+   "callsign": "NRA418",
+   "type": "E190",
+   "dep": "NYKT",
+   "arr": "SALV",
+   "route": [
+    "BOREA",
+    "PRCKL"
+   ],
+   "cruise": 11000,
+   "period": 120,
+   "offset": 23
+  },
+  {
+   "callsign": "PCA902",
+   "type": "B738",
+   "dep": "SASF",
+   "arr": "HNLU",
+   "route": [
+    "PALIS",
+    "ZEPHR"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 37
+  },
+  {
+   "callsign": "PCA903",
+   "type": "B738",
+   "dep": "HNLU",
+   "arr": "SASF",
+   "route": [
+    "ZEPHR",
+    "PALIS"
+   ],
+   "cruise": 14000,
+   "period": 120,
+   "offset": 53
+  },
+  {
+   "callsign": "CPN240",
+   "type": "A320",
+   "dep": "SALS",
+   "arr": "CAYO",
+   "route": [
+    "REEFS",
+    "TROPI"
+   ],
+   "cruise": 10000,
+   "period": 120,
+   "offset": 67
+  },
+  {
+   "callsign": "CPN241",
+   "type": "A320",
+   "dep": "CAYO",
    "arr": "SALS",
    "route": [
-    "LIBTY",
-    "PALOM",
-    "GROVE"
+    "TROPI",
+    "REEFS"
    ],
-   "cruise": 9000,
-   "offset": 58,
-   "period": 60
+   "cruise": 10000,
+   "period": 120,
+   "offset": 83
   },
   {
-   "callsign": "FUS7521",
-   "type": "A320",
-   "dep": "SASF",
-   "arr": "SALV",
+   "callsign": "VCA718",
+   "type": "CRJ9",
+   "dep": "SNRS",
+   "arr": "SALS",
    "route": [
-    "BAYSD",
-    "BONEC"
+    "SUNRS",
+    "PLAYA"
    ],
-   "cruise": 5000,
-   "offset": 59,
-   "period": 60
+   "cruise": 9000,
+   "period": 120,
+   "offset": 97
+  },
+  {
+   "callsign": "SAX512",
+   "type": "DH8D",
+   "dep": "CSCD",
+   "arr": "SASF",
+   "route": [
+    "SEQUA",
+    "JUNIP"
+   ],
+   "cruise": 9000,
+   "period": 120,
+   "offset": 113
   }
  ]
 }

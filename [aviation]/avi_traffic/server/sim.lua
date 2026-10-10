@@ -6,6 +6,8 @@
 --   ground departure: gate -> taxi_out -> hold -> takeoff -> air (climb-out on runway heading)
 --   external entry  : air (spawned at the first route fix, at cruise level)
 --   air             : DCT (controller) > flight plan fixes > approach (final fix) | exit (external)
+--                     SID (avi_nav procedure) after take-off, STAR towards the arrival runway: from the
+--                     controller (IFR clearance / arrival procedure) or, without one, picked by the pilots
 --   final           : on the glide path to the threshold -> landing -> taxi_in -> parked -> removed
 --   go-around       : final fix too high -> runway heading past the field, then a new approach
 
@@ -109,8 +111,12 @@ local function newAircraft(fl)
         id = nextId, cs = fl.callsign, type = fl.type, wake = ti.wake or "M",
         dep = fl.dep, arr = fl.arr, route = {}, ri = 1, cruise = fl.cruise,
         perf = ti, sqk = newSquawk(), age = 0, spd = 0, vs = 0, alt = 0, hdg = 0,
+        plan = {},           -- the filed route (the route itself changes with SID / STAR)
     }
-    for _, id in ipairs(fl.route) do ac.route[#ac.route + 1] = tostring(id):upper() end
+    for _, id in ipairs(fl.route) do
+        ac.route[#ac.route + 1] = tostring(id):upper()
+        ac.plan[#ac.plan + 1] = tostring(id):upper()
+    end
     nextId = nextId + 1
     return ac
 end
@@ -163,6 +169,75 @@ function spawnFlight(fl)
     return ac
 end
 
+-- ---------------------------------------------------------------- procedures
+-- The procedure in use is shown in the waypoint field of the label (ac.proc = "VINEW1D 27L").
+
+local function remainingRoute(ac)
+    local out = {}
+    for i = ac.ri, #ac.route do out[#out + 1] = ac.route[i] end
+    return out
+end
+
+-- SID: climb-out / turn fixes + exit fix, then the flight plan after the exit fix (at take-off)
+function applySID(ac, sidId, ident)
+    local r = procedureRoute(sidId, ident)
+    local p = procedure(sidId)
+    if not r or not p then return false end
+    local rest, found = {}, false
+    for i = ac.ri, #ac.route do
+        if found then rest[#rest + 1] = ac.route[i] end
+        if ac.route[i] == p.fix then found = true end
+    end
+    if not found then rest = remainingRoute(ac) end
+    ac.route, ac.ri = r, 1
+    for _, f in ipairs(rest) do ac.route[#ac.route + 1] = f end
+    ac.procEnd = #r
+    ac.sid, ac.sidRwy = p.id, tostring(ident):upper()
+    ac.proc = p.id .. " " .. ac.sidRwy
+    return true
+end
+
+-- STAR: the remaining route up to the entry fix + the STAR to the final fix of `ident`. Fixes the
+-- aircraft is already past are left out (the base + final fix always stay).
+function applySTAR(ac, starId, ident)
+    local r = procedureRoute(starId, ident)
+    local p = procedure(starId)
+    if not r or not p or p.type ~= "STAR" then return false end
+    local before, found = {}, false
+    for i = ac.ri, #ac.route do
+        if ac.route[i] == p.fix then found = true break end
+        before[#before + 1] = ac.route[i]
+    end
+    if not found then before = {} end
+    if #before == 0 then
+        while #r > 2 do
+            local a, b = navPoint(r[1]), navPoint(r[2])
+            if not (a and b) or dist(ac.x, ac.y, b.x, b.y) >= dist(a.x, a.y, b.x, b.y) then break end
+            table.remove(r, 1)
+        end
+    end
+    ac.route, ac.ri = before, 1
+    for _, f in ipairs(r) do ac.route[#ac.route + 1] = f end
+    ac.procEnd = #ac.route
+    ac.star, ac.arrRwy = p.id, tostring(ident):upper()
+    ac.proc = p.id .. " " .. ac.arrRwy
+    ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
+    if ac.phase == "air" then ac.rwy = nil end
+    return true
+end
+
+-- suggested procedures: the SID whose exit fix is the first one of the filed route, the STAR whose
+-- entry fix is the last one still ahead (else the last one of the filed route)
+function suggestedSID(ac)
+    if not airport(ac.dep) then return nil end
+    return procedureFor(ac.dep, "SID", ac.plan)
+end
+
+function suggestedSTAR(ac)
+    if not airport(ac.arr) then return nil end
+    return procedureFor(ac.arr, "STAR", remainingRoute(ac)) or procedureFor(ac.arr, "STAR", ac.plan)
+end
+
 -- ---------------------------------------------------------------- ground
 -- Runway zones: within half the runway width + RWY_ZONE_MARGIN of a centre line (and up to
 -- RWY_ZONE_EXT beyond its ends). Nobody taxies into a zone without a clearance for that runway
@@ -205,9 +280,12 @@ end
 function runwayExits(a, runwayId)
     local r = runwayById(a, runwayId)
     if not r then return {} end
-    local gx, gy, n = 0, 0, 0
-    for _, g in ipairs(a.gates) do gx, gy, n = gx + g.x, gy + g.y, n + 1 end
-    if n > 0 then gx, gy = gx / n, gy / n else gx, gy = a.arp[1], a.arp[2] end
+    -- distance to the nearest stand (between parallel runways is not "towards the terminal")
+    local function toStands(x, y)
+        local best
+        for _, g in ipairs(a.gates) do best = math.min(best or math.huge, dist(x, y, g.x, g.y)) end
+        return best or dist(x, y, a.arp[1], a.arp[2])
+    end
     local out = {}
     for _, tw in ipairs(a.taxiways) do
         local pts = tw.points or {}
@@ -221,14 +299,14 @@ function runwayExits(a, runwayId)
                         local k = math.min(d, r.half + 12)
                         local cx, cy = p[1] + (q[1] - p[1]) / d * k, p[2] + (q[2] - p[2]) / d * k
                         if not runwayZoneAt(a, cx, cy) then
-                            local score = dist(cx, cy, gx, gy)
+                            local score = toStands(cx, cy)
                             if not bestScore or score < bestScore then best, bestScore = { cx, cy }, score end
                         end
                     end
                 end
                 if best then
                     out[#out + 1] = { tw = tw.id, x = p[1], y = p[2], cx = best[1], cy = best[2],
-                        toTerminal = dist(best[1], best[2], gx, gy) < dist(p[1], p[2], gx, gy),
+                        toTerminal = toStands(best[1], best[2]) < toStands(p[1], p[2]),
                         t = (p[1] - r.e1.x) * r.ux + (p[2] - r.e1.y) * r.uy }
                 end
             end
@@ -446,6 +524,11 @@ local function tickTakeoff(ac, dt)
     speedTowards(ac, vr + 20, TR.ACCEL_ROLL, dt)
     moveForward(ac, dt)
     if ac.spd >= vr then
+        -- the SID of the IFR clearance (for the runway actually used), or the pilots' own choice
+        if ac.sid ~= false and ac.rwy then
+            local sid = ac.sid or (suggestedSID(ac) or {}).id
+            if sid then applySID(ac, sid, ac.rwy.ident) end
+        end
         ac.phase = "air"
         ac.climbOut = true
         ac.rwy, ac.onRwy, ac.rwyClr = nil, nil, {}
@@ -557,7 +640,8 @@ local function distanceToFinal(ac, finalFix)
 end
 
 local function arrivalFinal(ac)
-    local rwy = callExport("avi_airports", "getActiveRunway", ac.arr, "arr")
+    local rwy = ac.arrRwy and callExport("avi_airports", "getRunwayEnd", ac.arr, ac.arrRwy)
+        or callExport("avi_airports", "getActiveRunway", ac.arr, "arr")
     return rwy, rwy and navPoint(rwy.final)
 end
 
@@ -591,6 +675,10 @@ local function goAround(ac)
     ac.cfl = math.max(ac.cfl or 0, (apt and apt.elevation or 0) + TR.MISSED_ALT_AGL)
     ac.approach = nil
     ac.rwy = nil
+    -- the rest of the STAR is gone: a new approach from the missed approach point
+    ac.ri = #ac.route + 1
+    ac.proc, ac.star, ac.procEnd = nil, nil, nil
+    ac.starTried = true
 end
 
 function trafficGoAround(ac) goAround(ac) end
@@ -610,7 +698,8 @@ local function startApproach(ac)
         local nx, ny = uy * side, -ux * side
         local bx, by = ff.x - ux * 400 + nx * 800, ff.y - uy * 400 + ny * 800
         -- finals near the map edge: keep the base point inside the CTA
-        ac.via[#ac.via + 1] = { x = clamp(bx, -3400, 3400), y = clamp(by, -3400, 3400) }
+        local minx, miny, maxx, maxy = ctaBox()
+        ac.via[#ac.via + 1] = { x = clamp(bx, minx + 100, maxx - 100), y = clamp(by, miny + 100, maxy - 100) }
     end
     return true
 end
@@ -625,7 +714,19 @@ local function navTarget(ac)
     end
     while ac.ri <= #ac.route do
         local p = navPoint(ac.route[ac.ri])
-        if p then return p, "route" end
+        if p then
+            -- a final fix of the destination in the route (end of a STAR): the approach to that runway
+            if p.kind == "final" and p.airport == ac.arr and airport(ac.arr) then
+                if not (ac.rwy and ac.rwy.final == p.id) then
+                    ac.rwy = callExport("avi_airports", "getRunwayEnd", ac.arr, p.runway)
+                end
+                if ac.rwy then
+                    ac.approach = p
+                    return p, "final"
+                end
+            end
+            return p, "route"
+        end
         ac.ri = ac.ri + 1      -- unknown fix (e.g. a deleted VOR): skip it
     end
     if airport(ac.arr) then
@@ -646,6 +747,10 @@ local function passed(ac, kind)
         ac.dct = nil
     elseif kind == "route" then
         ac.ri = ac.ri + 1
+    end
+    -- SID flown to its exit fix: back to the flight plan
+    if ac.sid and ac.procEnd and ac.ri > ac.procEnd and not ac.star then
+        ac.proc, ac.procEnd = nil, nil
     end
 end
 
@@ -701,6 +806,13 @@ local function tickAir(ac, dt)
         local margin = airport(ac.arr) and TR.EXIT_MARGIN * 5 or TR.EXIT_MARGIN
         if not insideCTA(ac.x, ac.y, margin) then removeAircraft(ac, "left the CTA") end
         return
+    end
+
+    -- nobody controls it: the pilots fly the STAR of their entry fix to the runway in use
+    if not ac.star and not ac.starTried and not ac.missed and not ac.climbOut and airport(ac.arr) and not controllerOf(ac) then
+        local p = procedureFor(ac.arr, "STAR", remainingRoute(ac))
+        local rwy = p and arrivalFinal(ac)
+        if not (p and rwy and applySTAR(ac, p.id, rwy.ident)) then ac.starTried = true end
     end
 
     local target, kind = navTarget(ac)
@@ -781,6 +893,7 @@ local function tickFinal(ac, dt)
         ac.alt, ac.vs = elev, 0
         ac.hdg = e.hdg
         ac.approach = nil
+        ac.proc, ac.procEnd = nil, nil
     end
 end
 
@@ -824,7 +937,7 @@ local function pendingClearance(ac)
     local p = ac.phase
     if p == "gate" then
         if not ac.ifr then return "IFR", ac.timer <= 0 end
-        if not ac.pushClr then return "PUSH", ac.timer <= 0 end
+        if not ac.pushClr then return "PUSH", true end
     elseif p == "pushback" or p == "pushed" then
         if not ac.taxiClr then return "TAXI", p == "pushed" end
     elseif p == "hold" then
@@ -834,9 +947,18 @@ local function pendingClearance(ac)
     elseif p == "lined" then
         if not ac.toClr then return "T/O", true end
     elseif p == "landing" or p == "vacate" or p == "vacated" then
-        if not ac.taxiInClr then return "TAXI", p == "vacated" end
+        if not ac.taxiInClr then return "TAXI", p ~= "landing" end
     elseif (p == "final" or (p == "air" and (ac.approach or ac.ahdg))) and airport(ac.arr) and not ac.landClr then
-        return "LAND", p == "final"
+        -- calls for the landing clearance on final / close to the final fix
+        local ready = p == "final"
+        if not ready and ac.approach then ready = dist(ac.x, ac.y, ac.approach.x, ac.approach.y) < TR.LAND_CALL_DIST end
+        return "LAND", ready
+    elseif p == "air" and airport(ac.arr) and not ac.star and not ac.missed and not ac.climbOut
+            and ac.ctl and (ac.ctl == TR.CENTER_POSITION or ac.ctl:sub(-4) == "_APP") then
+        -- close to its TMA entry fix without an arrival procedure (only approach / radar can give one)
+        local sp = suggestedSTAR(ac)
+        local f = sp and navPoint(sp.fix)
+        if f and not ac.ahdg and dist(ac.x, ac.y, f.x, f.y) < TR.STAR_CALL_DIST then return "STAR", true end
     end
 end
 
@@ -856,7 +978,9 @@ function snapshot(ac)
         gnd = isGround(ac), dir = dir, phase = ac.phase, ctl = ac.ctl,
         apt = isGround(ac) and ac.gndApt or nil, gate = ac.gate, route = remaining,
         rwy = ac.rwy and ac.rwy.ident or nil, ahdg = ac.ahdg,
-        rfl = ac.cruise, rfirst = ac.route[1], rlast = ac.route[#ac.route],
+        rfl = ac.cruise, rfirst = ac.plan[1], rlast = ac.plan[#ac.plan], proc = ac.proc,
+        sugSid = not ac.ifr and isGround(ac) and ac.gndApt == ac.dep and (suggestedSID(ac) or {}).id or nil,
+        sugStar = not isGround(ac) and not ac.star and (suggestedSTAR(ac) or {}).id or nil,
         holdRwy = ac.phase == "hold" and ac.holdRwy or nil, onRwy = ac.onRwy, vacateVia = ac.vacateVia,
         req = req, ready = ready or false,
         ifr = ac.ifr and true or false, initAlt = ac.initAlt, landClr = ac.landClr and true or false,

@@ -2,12 +2,16 @@
 --   fixes: { id, x, y, kind = "cta" | "tma" | "enroute" | "final", airport?, runway? }
 --   ndbs:  { id, name, freq, x, y, z?, object? }
 --   vors:  { id, name, freq, x, y, z, object? = { model, rz } }
+--   procedures: { id, type = "SID" | "STAR", airport, fix, runways = { [ident] = { fixId, ... } } }
+--     STAR <FIX>1A: entry fix -> (downwind) -> base fix abeam the final fix -> final fix of the runway
+--     SID  <FIX>1D: climb-out fix on the centre line -> (turn fix) -> exit fix
 -- FIXes sit on the airspace boundaries, on the en-route network and on every runway final.
 -- VORs are placed in game (/avinav, editor.lua); their ground object is created here.
 -- Ids are unique across all three kinds (flight plans reference them by id).
 
-NAV = { fixes = {}, ndbs = {}, vors = {} }
+NAV = { fixes = {}, ndbs = {}, vors = {}, procedures = {} }
 local byId = {}
+local procById = {}
 local objects = {}
 
 addEvent("onAviNavChange")   -- source: resourceRoot (the data changed, consumers re-read it)
@@ -59,7 +63,7 @@ function loadNav()
     end
     local data = fromJSON(fileRead(f, fileGetSize(f)))
     fileClose(f)
-    NAV = { fixes = {}, ndbs = {}, vors = {}, _about = data and data._about }
+    NAV = { fixes = {}, ndbs = {}, vors = {}, procedures = {}, _about = data and data._about }
     for key in pairs(KINDS) do
         for _, p in ipairs(data and data[key] or {}) do
             if p.id and tonumber(p.x) and tonumber(p.y) then
@@ -68,15 +72,23 @@ function loadNav()
             end
         end
     end
+    procById = {}
+    for _, p in ipairs(data and data.procedures or {}) do
+        if p.id and (p.type == "SID" or p.type == "STAR") and p.airport and type(p.runways) == "table" then
+            p.id = tostring(p.id):upper()
+            NAV.procedures[#NAV.procedures + 1] = p
+            procById[p.id] = p
+        end
+    end
     index()
     refreshNavObjects()
-    outputDebugString(("[avi_nav] %d fixes, %d NDBs, %d VORs"):format(#NAV.fixes, #NAV.ndbs, #NAV.vors))
+    outputDebugString(("[avi_nav] %d fixes, %d NDBs, %d VORs, %d procedures"):format(#NAV.fixes, #NAV.ndbs, #NAV.vors, #NAV.procedures))
     return true
 end
 
 -- write NAV back to data/nav.json (editor). toJSON wraps the value in [ ], strip that.
 function saveNav()
-    local out = { _about = NAV._about, fixes = {}, ndbs = {}, vors = {} }
+    local out = { _about = NAV._about, fixes = {}, ndbs = {}, vors = {}, procedures = NAV.procedures }
     for key in pairs(KINDS) do
         for _, p in ipairs(NAV[key]) do
             local c = {}
@@ -131,4 +143,33 @@ end
 -- used by editor.lua
 function navKeyOf(kind)
     for key, k in pairs(KINDS) do if k == kind then return key end end
+end
+
+-- ---------------------------------------------------------------- procedures (SID / STAR)
+-- airport + type filter optional
+function getProcedures(icao, ptype)
+    local out = {}
+    for _, p in ipairs(NAV.procedures) do
+        if (not icao or p.airport == icao) and (not ptype or p.type == ptype) then out[#out + 1] = p end
+    end
+    return out
+end
+
+function getProcedure(id)
+    return id and procById[tostring(id):upper()]
+end
+
+-- fix list of a procedure for a runway end (nil when the procedure has no such runway)
+function getProcedureRoute(id, ident)
+    local p = getProcedure(id)
+    if not p then return nil end
+    ident = tostring(ident or ""):upper()
+    local r
+    for k, v in pairs(p.runways) do
+        if tostring(k):upper() == ident or (tonumber(k) and tonumber(k) == tonumber(ident)) then r = v end
+    end
+    if not r then return nil end
+    local out = {}
+    for i, f in ipairs(r) do out[i] = f end
+    return out
 end

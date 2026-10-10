@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="Aviation navigation" version="1.0.0" type="script"
-          description="Navigation points from data/nav.json: FIXes (airspace boundaries, runway finals), NDBs, VORs (+ their ground objects); /avinav editor" />
+          description="Navigation points from data/nav.json: FIXes (airspace boundaries, runway finals), NDBs, VORs (+ their ground objects), SID / STAR procedures; /avinav editor" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
     <script src="server/nav.lua"    type="server" />
@@ -12,4 +12,7 @@
     <export function="getNavPoint"     type="server" />
     <export function="getNavPoints"    type="server" />
     <export function="getNearestNavPoint" type="server" />
+    <export function="getProcedures"      type="server" />
+    <export function="getProcedure"       type="server" />
+    <export function="getProcedureRoute"  type="server" />
 </meta>

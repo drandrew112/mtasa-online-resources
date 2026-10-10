@@ -49,7 +49,7 @@ function resetView()
             if (want and a.id == want) or (not want and a.type == "CTA") then polyBox(a.polygon, box) end
         end
     end
-    if box[1] == math.huge then box = { -3500, -3500, 3500, 3500 } end
+    if box[1] == math.huge then box = { -6000, -6000, 6000, 6000 } end
     fitBox(box[1], box[2], box[3], box[4], 1.08)
 end
 

@@ -6,6 +6,7 @@
 local staff = {}        -- [posId] = player
 local playerPos = {}    -- [player] = posId
 local sessions = {}     -- [player] = { start = tick, actions = n } (one per logged-in position)
+local lastSent = {}     -- [player] = tick of the last traffic update (radar refresh)
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -114,7 +115,7 @@ local function staticData()
     local nav = call("avi_nav", "getNavData") or {}
     return {
         airspaces = call("avi_airspace", "getAirspaces") or {},
-        nav = { fixes = nav.fixes or {}, ndbs = nav.ndbs or {}, vors = nav.vors or {} },
+        nav = { fixes = nav.fixes or {}, ndbs = nav.ndbs or {}, vors = nav.vors or {}, procedures = nav.procedures or {} },
         airports = call("avi_airports", "getAirports") or {},
         runways = call("avi_airports", "getActiveRunways") or {},
         wind = call("avi_airports", "getWind") or { dir = 0, speed = 0 },
@@ -185,6 +186,7 @@ local function login(player, posId)
     staff[pos.id] = player
     playerPos[player] = pos.id
     sessions[player] = { start = getTickCount(), actions = 0 }
+    lastSent[player] = nil     -- the first traffic update goes out at the next check
     sendStatic(player)
     notify(player, "Logged in as " .. pos.id .. " (" .. pos.name .. ")")
     triggerEvent("onATCPositionChange", resourceRoot, pos.id, player)
@@ -245,10 +247,22 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
         ok, err = call("avi_traffic", "setHeading", id, value)
     elseif action == "nohdg" then
         ok, err = call("avi_traffic", "clearHeading", id)
+    elseif action == "star" then
+        -- arrival procedures: approach and the centre (radar)
+        if cur.type ~= "APP" and cur.type ~= "CTR" then
+            notify(player, "Arrival procedures are given by approach / radar")
+            return
+        end
+        ok, err = call("avi_traffic", "setArrivalProcedure", id, value)
     elseif action == "xfer" then
         ok, err = call("avi_traffic", "transferAircraft", id, value)
     elseif action == "ifr" or action == "push" or action == "taxi" or action == "takeoff" or action == "land"
             or action == "cross" or action == "lineup" or action == "backtrack" or action == "vacate" or action == "goaround" then
+        -- delivery / ground / runway clearances belong to the tower (no top-down cover)
+        if action ~= "goaround" and cur.type ~= "TWR" then
+            notify(player, "That clearance is given by the tower")
+            return
+        end
         ok, err = call("avi_traffic", "giveClearance", id, action, value)
     end
     if not ok then
@@ -262,6 +276,7 @@ end)
 
 addEventHandler("onPlayerQuit", root, function()
     logoutATC(source, true)
+    lastSent[source] = nil
 end)
 
 -- a right was taken away: log out when it was the one of the current position
@@ -284,18 +299,40 @@ function useATCConsole(player)
 end
 
 -- ---------------------------------------------------------------- updates
+-- Every position gets its traffic at its own radar refresh (CTL.UPDATE_MS: TWR 1 s, APP 2 s,
+-- radar 3 s). Tower and approach see only the traffic of their airport (departing / arriving /
+-- on its ground) and what they control; the radar (centre) sees every aircraft.
+local function visibleTo(pos, s)
+    if pos.type == "CTR" or not pos.airport then return true end
+    local icao = pos.airport
+    return s.ctl == pos.id or s.dep == icao or s.arr == icao or s.apt == icao
+end
+
 local function sendTraffic()
-    local players = {}
-    for p in pairs(playerPos) do
-        if isElement(p) then players[#players + 1] = p end
+    local now = getTickCount()
+    local due = {}
+    for p, posId in pairs(playerPos) do
+        local pos = isElement(p) and positionById(posId)
+        local every = pos and (CTL.UPDATE_MS[pos.type] or 1000)
+        if every and now - (lastSent[p] or 0) >= every - CTL.UPDATE_TICK_MS / 2 then
+            due[#due + 1] = { p = p, pos = pos }
+        end
     end
-    if #players == 0 then return end
-    local list = call("avi_traffic", "getTrafficSnapshot") or {}
-    triggerClientEvent(players, "avi:ctlTraffic", resourceRoot, list, getStaffedPositions())
+    if #due == 0 then return end
+    local all = call("avi_traffic", "getTrafficSnapshot") or {}
+    local staffed = getStaffedPositions()
+    for _, d in ipairs(due) do
+        local list = {}
+        for _, s in ipairs(all) do
+            if visibleTo(d.pos, s) then list[#list + 1] = s end
+        end
+        lastSent[d.p] = now
+        triggerClientEvent(d.p, "avi:ctlTraffic", resourceRoot, list, staffed)
+    end
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()
-    setTimer(sendTraffic, CTL.UPDATE_MS, 0)
+    setTimer(sendTraffic, CTL.UPDATE_TICK_MS, 0)
 end)
 
 addEventHandler("onResourceStop", resourceRoot, function()

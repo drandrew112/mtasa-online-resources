@@ -1,5 +1,5 @@
--- Controller client state: logged-in position, static data, traffic (with extrapolation between
--- the 1 s server updates), label offsets, fonts.
+-- Controller client state: logged-in position, static data, traffic (radar refresh per position:
+-- TWR 1 s / APP 2 s / radar 3 s, no extrapolation), label offsets, fonts.
 
 SC = {
     open = false,        -- logged in (scope exists)
@@ -11,6 +11,7 @@ SC = {
     showList = true,
     staffed = {},        -- [posId] = controller name
     routeShown = {},     -- [id] = true: the flight plan route is drawn
+    vectorStep = CTL.VECTOR_DEFAULT_STEPS,   -- leader line ahead of the aircraft in VECTOR_STEP_NM steps, 0 = off
 }
 
 -- distances are shown in nautical miles (and fractions of one)
@@ -54,14 +55,10 @@ function navById(id)
     end
 end
 
--- current (extrapolated) position of a traffic entry
+-- position of a traffic entry: the last radar update. Targets jump at every refresh of the position
+-- (CTL.UPDATE_MS), there is no extrapolation in between.
 function trafficPos(e)
-    local s = e.s
-    local age = math.min(2, (getTickCount() - e.t) / 1000)
-    if s.phase == "parked" or s.phase == "gate" or s.phase == "hold" then age = 0 end
-    local h = math.rad(s.hdg)
-    local d = (s.ws or 0) * age
-    return s.x + math.sin(h) * d, s.y + math.cos(h) * d
+    return e.s.x, e.s.y
 end
 
 function isMine(s)

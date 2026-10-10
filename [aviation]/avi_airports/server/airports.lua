@@ -4,6 +4,7 @@
 --     an end is the threshold you land / take off FROM, hdg = the direction you roll; final = FIX id
 --   taxiways[] { id, points[] {x, y} }   shared points are junctions
 --   gates[] { id, x, y, hdg }
+--   taxiDraw[] { x1, y1, x2, y2 }  generated: the taxiways as line pieces with rounded corners (scopes)
 
 AIRPORTS = {}
 local order = {}
@@ -36,6 +37,7 @@ local function load()
     end
     table.sort(order)
     buildTaxiGraphs()
+    buildTaxiDraw()
     outputDebugString(("[avi_airports] %d airports: %s"):format(#order, table.concat(order, ", ")))
 end
 

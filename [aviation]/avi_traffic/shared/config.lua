@@ -20,6 +20,8 @@ TR = {
     PUSH_KTS    = 8,
     PUSH_DIST   = 35,         -- m pushed back from the stand
     LAND_DECISION_DIST = 400, -- m before the threshold: no landing clearance (controlled) = go-around
+    LAND_CALL_DIST = 1500,    -- m from the final fix: the pilots call for the landing clearance (yellow frame)
+    STAR_CALL_DIST = 2500,    -- m from the TMA entry fix without an arrival procedure: they ask for one
 
     FIX_PASS_DIST  = 120,     -- m: a fix counts as passed this close
     CLIMB_OUT_AGL  = 800,     -- ft: fly runway heading until this high after take-off
@@ -37,7 +39,7 @@ TR = {
     MAX_AGE   = 40 * 60,      -- s: anything older is removed (stuck)
     EXIT_MARGIN = 300,        -- m outside the CTA = gone
 
-    MAX_ACTIVE    = 14,       -- simultaneous flights
+    MAX_ACTIVE    = 16,       -- simultaneous flights
     INITIAL_SPAWN = 4,        -- flights started right after the resource starts
     SCHEDULE = true,          -- start flights by the real clock (flights.json period / offset)
 

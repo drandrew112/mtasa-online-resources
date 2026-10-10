@@ -5,7 +5,10 @@ CTL = {
     APP_SUFFIX = "Approach",
     TWR_SUFFIX = "Tower",
 
-    UPDATE_MS = 1000,          -- traffic updates to the logged-in controllers
+    -- Radar refresh: the scope gets new target positions only at these intervals (ms, per position
+    -- type); targets do not move in between. UPDATE_TICK_MS = how often the server checks who is due.
+    UPDATE_MS = { TWR = 1000, APP = 2000, CTR = 3000 },
+    UPDATE_TICK_MS = 250,
 
     -- Work progress (work_core, work id = ATC work). Every accepted traffic action (clearance,
     -- level, heading, direct, transfer...) gives work XP; XP_ACTIONS overrides XP_DEFAULT per action.
@@ -17,7 +20,7 @@ CTL = {
     --   actions pay = actions * PAY_PER_ACTION
     --   multiplied by (1 + minutes * PAY_MINUTE_BONUS), capped at PAY_MAX_MULT
     PAY_PER_ACTION = 700,
-    PAY_MINUTE_BONUS = 0.20,
+    PAY_MINUTE_BONUS = 0.10,
     PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
 
@@ -27,7 +30,9 @@ CTL = {
     LEVEL_MAX   = 25000,
     HISTORY_DOTS = 6,          -- past positions behind airborne targets
     HISTORY_EVERY = 3000,      -- ms between them
-    VECTOR_SECONDS = 60,       -- speed vector length (where the aircraft will be)
+    VECTOR_STEP_NM = 0.1,      -- leader line length per step (nm); the controller sets 0..VECTOR_MAX_STEPS steps
+    VECTOR_DEFAULT_STEPS = 2,
+    VECTOR_MAX_STEPS = 5,
     GROUND_MIN_SCALE = 0.2,    -- px / m: ground traffic is hidden when zoomed out further
     TAXI_MIN_SCALE = 0.15,     -- px / m: taxiways / gates drawn from this zoom
 }

@@ -4,7 +4,7 @@
 -- resource gets a new one.
 
 DB = { flights = {}, types = {}, airlines = {}, externals = {}, byCallsign = {} }
-WORLD = { airports = {}, nav = {}, airspaces = {} }
+WORLD = { airports = {}, nav = {}, airspaces = {}, procs = {} }
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -51,8 +51,9 @@ function refreshAirports()
 end
 
 function refreshNav()
-    WORLD.nav = {}
+    WORLD.nav, WORLD.procs = {}, {}
     for _, p in ipairs(callExport("avi_nav", "getNavPoints") or {}) do WORLD.nav[p.id] = p end
+    for _, p in ipairs(callExport("avi_nav", "getProcedures") or {}) do WORLD.procs[p.id] = p end
 end
 
 function refreshAirspaces()
@@ -117,5 +118,54 @@ function insideCTA(x, y, margin)
             return x >= minx - margin and x <= maxx + margin and y >= miny - margin and y <= maxy + margin
         end
     end
-    return math.abs(x) < 3500 + margin and math.abs(y) < 3500 + margin
+    return math.abs(x) < 6000 + margin and math.abs(y) < 6000 + margin
+end
+
+-- bounding box of the CTA (minx, miny, maxx, maxy)
+function ctaBox()
+    for _, a in ipairs(WORLD.airspaces) do
+        if a.type == "CTA" then
+            local minx, maxx, miny, maxy = math.huge, -math.huge, math.huge, -math.huge
+            for _, p in ipairs(a.polygon) do
+                minx, maxx = math.min(minx, p[1]), math.max(maxx, p[1])
+                miny, maxy = math.min(miny, p[2]), math.max(maxy, p[2])
+            end
+            return minx, miny, maxx, maxy
+        end
+    end
+    return -6000, -6000, 6000, 6000
+end
+
+-- ---------------------------------------------------------------- procedures (SID / STAR of avi_nav)
+function procedure(id)
+    return id and WORLD.procs[tostring(id):upper()]
+end
+
+-- fix list of a procedure for a runway end (a copy), nil when it has no such runway
+function procedureRoute(id, ident)
+    local p = procedure(id)
+    if not p or not ident then return nil end
+    ident = tostring(ident):upper()
+    for k, r in pairs(p.runways or {}) do
+        if tostring(k):upper() == ident or (tonumber(k) and tonumber(k) == tonumber(ident)) then
+            local out = {}
+            for i, f in ipairs(r) do out[i] = tostring(f):upper() end
+            return out
+        end
+    end
+end
+
+-- the procedure of `ptype` ("SID" / "STAR") at icao whose entry / exit fix is in the list:
+-- SID = the first such fix, STAR = the last one
+function procedureFor(icao, ptype, fixes)
+    local best
+    for i, f in ipairs(fixes or {}) do
+        for _, p in pairs(WORLD.procs) do
+            if p.airport == icao and p.type == ptype and p.fix == f then
+                if ptype == "SID" then return p, i end
+                best = { p, i }
+            end
+        end
+    end
+    if best then return best[1], best[2] end
 end

@@ -2,6 +2,7 @@
 --   Airborne: no background. Text blue when the aircraft is yours, grey otherwise; the controlling
 --   position in white. 5 lines:
 --     CALLSIGN CTL ACTYPE/WAKE | ALT SPD DEST | CLEARED ALT | WAYPOINT HEADING | SQK HDG VERTICAL
+--     WAYPOINT = the direct-to fix, else the procedure flown ("VINEW1A 27R", "VINEW1D 27L")
 --     Hover only: the SQK line, an empty CFL ("CFL"), an empty waypoint / heading ("DCT" / "AHDG").
 --     altitudes in hundreds of feet (045 = 4 500 ft), speed in knots, vertical speed in ft/min
 --     hover = grey background; left-drag moves the label relative to the aircraft.
@@ -27,8 +28,8 @@ local C = {
     gDot     = tocolor(220, 225, 235, 255),
     select   = tocolor(255, 210, 90, 255),
     request  = tocolor(255, 215, 60, 255),
-    route    = tocolor(95, 170, 255, 190),
-    routeO   = tocolor(150, 155, 165, 190),
+    route    = tocolor(70, 205, 110, 200),     -- green; yellow once a direct-to is issued
+    routeDct = tocolor(255, 210, 60, 210),
 }
 
 LABEL_RECTS = {}    -- [id] = { x, y, w, h } of this frame (hit tests)
@@ -59,11 +60,13 @@ local function airLines(s, hovered)
     }
     if s.cfl then lines[#lines + 1] = { { hundreds(s.cfl) } }
     elseif hovered then lines[#lines + 1] = { { "CFL" } } end
+    -- waypoint field: direct-to fix, else the procedure flown (SID / STAR + runway)
+    local wp = s.dct or s.proc
     if hovered then
-        lines[#lines + 1] = { { (s.dct or "DCT") .. " " .. (s.ahdg and hdg3(s.ahdg) or "AHDG") } }
-    elseif s.dct or s.ahdg then
+        lines[#lines + 1] = { { (wp or "DCT") .. " " .. (s.ahdg and hdg3(s.ahdg) or "AHDG") } }
+    elseif wp or s.ahdg then
         local parts = {}
-        if s.dct then parts[#parts + 1] = s.dct end
+        if wp then parts[#parts + 1] = wp end
         if s.ahdg then parts[#parts + 1] = hdg3(s.ahdg) end
         lines[#lines + 1] = { { table.concat(parts, " ") } }
     end
@@ -120,8 +123,10 @@ local function drawAir(id, e, x, y, hovered, selected)
         dxDrawRectangle(hx - 1.5, hy - 1.5, 3, 3, mine and C.hist or C.histO)
     end
     local hr = math.rad(s.hdg)
-    local len = (s.ws or 0) * CTL.VECTOR_SECONDS * VIEW.scale
-    line(x, y, x + math.sin(hr) * len, y - math.cos(hr) * len, mine and C.vector or C.vectorO, 1)
+    if SC.vectorStep > 0 then
+        local len = SC.vectorStep * CTL.VECTOR_STEP_NM * M_PER_NM * VIEW.scale
+        line(x, y, x + math.sin(hr) * len, y - math.cos(hr) * len, mine and C.vector or C.vectorO, 1)
+    end
     local r = 4 * U
     local scol = selected and C.select or col
     line(x - r, y - r, x + r, y - r, scol, 1.5)
@@ -209,7 +214,7 @@ function drawRoutes()
     for id in pairs(SC.routeShown) do
         local e = SC.traffic[id]
         if e then
-            local col = isMine(e.s) and C.route or C.routeO
+            local col = e.s.dct and C.routeDct or C.route
             local px, py = w2s(trafficPos(e))
             for _, p in ipairs(routePoints(e.s)) do
                 local x, y = w2s(p[1], p[2])

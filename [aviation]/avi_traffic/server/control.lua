@@ -1,8 +1,11 @@
--- Who controls an aircraft: the most specific staffed position of the airspace it is in.
---   CTR of ICAO -> ICAO_TWR, ICAO_APP, centre      (aircraft on the ground: the same chain)
---   TMA of ICAO -> ICAO_APP, centre
---   CTA         -> centre
--- Nobody staffed = the pilots fly their flight plan on their own (automatic levels).
+-- Who controls an aircraft: the one position whose sector it is in (no top-down cover).
+--   ground at ICAO / final to ICAO / CTR of ICAO -> ICAO_TWR
+--   TMA of ICAO (outside its CTR)                -> ICAO_APP
+--   CTA (outside every TMA / CTR)                -> centre (radar)
+-- When that position is not staffed, nobody controls the aircraft: the pilots fly their flight
+-- plan on their own (automatic levels, no clearances needed), even if another position is open.
+-- An early transfer ("Transfer to") gives the aircraft to the receiver while it is still in the
+-- sender's sector; it stays with the receiver after that by the normal sector rule.
 -- Controller commands come from avi_controller, which checks the player and the position.
 
 local staffed = {}     -- [positionId] = true
@@ -11,59 +14,27 @@ function refreshStaffing()
     staffed = callExport("avi_controller", "getStaffedPositions") or {}
 end
 
-local function chainFor(ac)
+-- the position responsible for the aircraft where it is now (nil = outside every sector)
+function sectorPosition(ac)
     if ac.phase ~= "air" and ac.phase ~= "final" then
         local icao = ac.gndApt or ac.arr
-        if airport(icao) then return { icao .. "_TWR", icao .. "_APP", TR.CENTER_POSITION } end
+        return airport(icao) and icao .. "_TWR" or nil
     end
     -- established on final: the tower of the destination (even above the CTR ceiling)
-    if ac.phase == "final" and airport(ac.arr) then
-        return { ac.arr .. "_TWR", ac.arr .. "_APP", TR.CENTER_POSITION }
-    end
+    if ac.phase == "final" and airport(ac.arr) then return ac.arr .. "_TWR" end
     local a = airspaceAt(ac.x, ac.y, ac.alt)
-    if not a then return {} end
-    if a.type == "CTR" and a.airport then return { a.airport .. "_TWR", a.airport .. "_APP", TR.CENTER_POSITION } end
-    if a.type == "TMA" and a.airport then return { a.airport .. "_APP", TR.CENTER_POSITION } end
-    return { TR.CENTER_POSITION }
-end
-
--- An aircraft stays with its controller until transferred (or the position is closed). Aircraft
--- without a staffed controller are picked up by the most specific staffed position of their airspace.
-local function inAirspace(ac, id, checkAlt)
-    for _, a in ipairs(WORLD.airspaces) do
-        if a.id == id then
-            if checkAlt and (ac.alt < (a.floor or 0) or ac.alt > (a.ceiling or 99999)) then return false end
-            return pointInPolygon(ac.x, ac.y, a.polygon)
-        end
-    end
-    return false
-end
-
--- is the aircraft still in the sector of the position: TWR = its CTR (+ ground, + final to it),
--- APP = its TMA / CTR, centre = the CTA. Leaving it releases the aircraft to the next staffed
--- position, or to the automatic (pilot own) mode when nobody is there.
-local function inSector(ac, pos)
-    local icao, kind = pos:match("^(%w+)_(%u+)$")
-    if pos == TR.CENTER_POSITION then
-        for _, a in ipairs(WORLD.airspaces) do
-            if a.type == "CTA" then return pointInPolygon(ac.x, ac.y, a.polygon) end
-        end
-        return true
-    end
-    if not icao then return false end
-    local onGround = ac.phase ~= "air" and ac.phase ~= "final"
-    if onGround then return (ac.gndApt or ac.arr) == icao end
-    if ac.phase == "final" and ac.arr == icao then return true end
-    if kind == "TWR" then return inAirspace(ac, icao .. "_CTR", true) end
-    if kind == "APP" then return inAirspace(ac, icao .. "_TMA", true) or inAirspace(ac, icao .. "_CTR", true) end
-    return false
+    if not a then return nil end
+    if a.type == "CTR" and a.airport then return a.airport .. "_TWR" end
+    if a.type == "TMA" and a.airport then return a.airport .. "_APP" end
+    if a.type == "CTA" then return TR.CENTER_POSITION end
+    return nil
 end
 
 function controllerOf(ac)
-    if ac.ctl and staffed[ac.ctl] and inSector(ac, ac.ctl) then return ac.ctl end
-    for _, pos in ipairs(chainFor(ac)) do
-        if staffed[pos] then return pos end
-    end
+    local own = sectorPosition(ac)
+    -- early transfer: valid while the aircraft is still in the sector it was handed over from
+    if ac.ctl and ac.xferFrom and ac.ctl ~= own and ac.xferFrom == own and staffed[ac.ctl] then return ac.ctl end
+    if own and staffed[own] then return own end
     return nil
 end
 
@@ -71,6 +42,7 @@ addEvent("onAviAircraftHandover")   -- source: resourceRoot, args: id, callsign,
 
 function updateController(ac)
     local ctl = controllerOf(ac)
+    if ac.xferFrom and (ctl ~= ac.ctl or ctl == sectorPosition(ac)) then ac.xferFrom = nil end
     if ctl ~= ac.ctl then
         local old = ac.ctl
         ac.ctl = ctl
@@ -150,20 +122,26 @@ function clearHeading(id)
     return true
 end
 
--- hand the aircraft to another staffed position
+-- hand the aircraft to another staffed position (early transfer: the receiver has it while it is
+-- still in the current sector, then the sector rule takes over)
 function transferAircraft(id, pos)
     local ac = AIRCRAFT[tonumber(id)]
     if not ac then return false, "unknown aircraft" end
     if not pos or not staffed[pos] then return false, tostring(pos) .. " is not staffed" end
     if ac.ctl == pos then return false, "already there" end
+    local own = sectorPosition(ac)
+    if not own then return false, "outside every sector" end
     local old = ac.ctl
     ac.ctl = pos
+    ac.xferFrom = pos ~= own and own or nil
     triggerEvent("onAviAircraftHandover", resourceRoot, ac.id, ac.cs, old, pos)
     return true
 end
 
 -- tower / delivery clearances:
---   ifr (value = initial level, ft)  at the stand: accepts the flight plan route
+--   ifr (value = { alt = ft, sid = "VINEW1D 27L" | "" } or ft)
+--                                     at the stand: initial level + SID ("" = no SID, own navigation;
+--                                     nil = the pilots pick the SID of their route at take-off)
 --   push                              at the stand, after the IFR clearance
 --   taxi (value = runway end | stand) departures after pushback, arrivals after landing
 --   cross                             holding short of a runway it only crosses
@@ -180,8 +158,21 @@ function giveClearance(id, kind, value)
     ac.rwyClr = ac.rwyClr or {}
     if kind == "ifr" then
         if p ~= "gate" then return false, "IFR clearance only at the stand" end
-        local ft = tonumber(value)
+        local ft, sidSpec = tonumber(value), nil
+        if type(value) == "table" then ft, sidSpec = tonumber(value.alt), value.sid end
         if not ft then return false, "no initial level" end
+        if type(sidSpec) == "string" and sidSpec ~= "" then
+            local sid, ident = sidSpec:upper():match("^(%S+)%s+(%S+)$")
+            local pr = procedure(sid)
+            if not pr or pr.type ~= "SID" or pr.airport ~= ac.gndApt or not procedureRoute(sid, ident) then
+                return false, "unknown SID " .. sidSpec
+            end
+            ac.sid, ac.sidRwy = pr.id, ident
+            ac.proc = pr.id .. " " .. ident
+            ac.taxiRwy = ac.taxiRwy or ident      -- taxi without a runway = to the runway of the SID
+        elseif sidSpec == "" then
+            ac.sid, ac.proc = false, nil
+        end
         ac.ifr = true
         ac.initAlt = math.floor(math.max(1000, math.min(ac.cruise, ft)) / 100 + 0.5) * 100
     elseif kind == "push" then
@@ -241,12 +232,29 @@ function giveClearance(id, kind, value)
             trafficGoAround(ac)
         else
             ac.approach, ac.via = nil, nil
+            ac.ri = #ac.route + 1         -- the rest of the STAR is gone
+            ac.proc, ac.star, ac.procEnd, ac.starTried = nil, nil, nil, true
             local apt = airport(ac.arr)
             ac.cfl = math.max(ac.cfl or 0, (apt and apt.elevation or 0) + TR.MISSED_ALT_AGL)
         end
     else
         return false, "unknown clearance"
     end
+    return true
+end
+
+-- arrival procedure (APP / centre): spec = "VINEW1A 27R" (STAR + runway). The aircraft flies it
+-- from where it is (fixes already behind it are skipped) and lands on that runway.
+function setArrivalProcedure(id, spec)
+    local ac = AIRCRAFT[tonumber(id)]
+    if not ac then return false, "unknown aircraft" end
+    if ac.phase ~= "air" then return false, "not airborne / already on final" end
+    if not airport(ac.arr) then return false, "not an arrival" end
+    local star, ident = tostring(spec or ""):upper():match("^(%S+)%s+(%S+)$")
+    local pr = procedure(star)
+    if not pr or pr.type ~= "STAR" or pr.airport ~= ac.arr then return false, "unknown STAR " .. tostring(spec) end
+    if not applySTAR(ac, star, ident) then return false, "no " .. tostring(star) .. " for runway " .. tostring(ident) end
+    ac.climbOut = nil
     return true
 end
 
