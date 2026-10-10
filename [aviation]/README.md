@@ -89,9 +89,16 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - Flight lists on the right: TWR / APP = Departures + Arrivals of the airport; centre = Departures (ground /
   departure TMA), Arrivals (arrival TMA / landed), Sector (the rest). RFL = requested cruise level of the
   flight plan, also marked green in the level menus.
-- Airborne commands: cleared altitude, heading (replaces the waypoint; the aircraft intercepts the final of
-  its arrival runway by itself), direct to (replaces the heading), resume own navigation, cleared to land,
+- Airborne commands: cleared altitude, heading (replaces the waypoint), direct to (replaces the heading),
+  resume own navigation, cleared approach, cleared to land,
   vacate via <taxiway>, go around, transfer, show route.
+- Cleared approach (APP / centre / tower, whoever controls the aircraft): a controlled arrival does not start
+  its final without it. On a STAR (or heading to the final fix) it is always accepted; on radar vectors the
+  heading must intercept the extended centre line ahead of the threshold at max 30 deg
+  (`APP_CLR_ANGLE`, within `APP_CLR_FAR` final lengths), otherwise the reason is shown. Without it the
+  aircraft flies through the final fix / centre line on its heading (vectors needed). The pilots ask for it
+  (`APP`, yellow frame) within `APP_CALL_DIST` of the final fix or when their vectors would intercept.
+  A new direct / STAR or a go-around cancels it; uncontrolled aircraft need none.
 - Tower / ground: IFR clearance at the stand (initial level, accepts the route), pushback (tail first onto
   the nearest taxiway, nose towards the departure runway), taxi (to a runway / to a stand).
   Nobody enters a runway without a clearance; aircraft hold short at the runway edge and ask for:

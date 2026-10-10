@@ -16,7 +16,7 @@ CTL = {
     -- level, heading, direct, transfer...) gives work XP; XP_ACTIONS overrides XP_DEFAULT per action.
     WORK_ID = "atc",
     XP_DEFAULT = 25,
-    XP_ACTIONS = { cfl = 20, hdg = 20, nohdg = 10, dct = 20, nodct = 10, xfer = 30 },
+    XP_ACTIONS = { cfl = 25, hdg = 25, nohdg = 10, dct = 20, nodct = 10, xfer = 30 },
 
     -- Pay after logging out of a position (bank, itemised receipt):
     --   actions pay = actions * PAY_PER_ACTION
@@ -29,7 +29,7 @@ CTL = {
     -- Mistakes: every separation loss (avi_traffic alerts.lua) on an aircraft of the position costs
     -- this much; the sum is the "Mistakes" item of the pay. A negative total is taken from the bank.
     --   GND = two ground aircraft head-on, TMA / CTA = closer than 0.1 nm (and 1000 ft) there
-    PENALTY = { GND = 300, TMA = 500, CTA = 500 },
+    PENALTY = { GND = 500, TMA = 700, CTA = 1000 },
 
     -- scope
     LEVEL_STEP  = 500,         -- ft between the cleared levels offered in the menu

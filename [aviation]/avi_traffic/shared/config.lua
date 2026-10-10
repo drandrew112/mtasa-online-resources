@@ -22,6 +22,9 @@ TR = {
     PUSH_KTS    = 8,
     PUSH_DIST   = 35,         -- m pushed back from the stand
     LAND_DECISION_DIST = 400, -- m before the threshold: no landing clearance (controlled) = go-around
+    APP_CLR_ANGLE = 30,       -- deg: max intercept angle of the extended centre line for a vectored "cleared approach"
+    APP_CLR_FAR   = 2.5,      -- x final length: the vectors must intercept the centre line within this distance of the threshold
+    APP_CALL_DIST = 3500,     -- m from the final fix: the pilots call for the approach clearance (yellow frame)
     LAND_CALL_DIST = 1500,    -- m from the final fix: the pilots call for the landing clearance (yellow frame)
     STAR_CALL_DIST = 2500,    -- m from the TMA entry fix without an arrival procedure: they ask for one
 

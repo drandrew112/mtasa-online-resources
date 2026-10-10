@@ -112,6 +112,7 @@ function setDirectTo(id, navId)
     if not navPoint(navId) then return false, "unknown waypoint " .. navId end
     directToRoute(ac, navId)
     ac.dct = navId
+    ac.appClr = nil        -- a new route cancels the approach clearance
     ac.ahdg = nil          -- a waypoint replaces the heading
     ac.via = nil
     ac.climbOut = nil
@@ -166,6 +167,8 @@ end
 --   lineup / backtrack                holding short of its departure runway (enter, roll to the
 --                                     threshold, turn round = lined up)
 --   takeoff                           holding short (no backtrack needed) / lined up
+--   approach                          airborne arrival: cleared approach (needed to start the final; on a
+--                                     procedure, or vectors intercepting the centre line within APP_CLR_ANGLE)
 --   land                              airborne arrival
 --   vacate (value = taxiway id)       arrival: leave the runway there
 --   goaround                          arrival on approach / final
@@ -231,6 +234,10 @@ function giveClearance(id, kind, value)
             return false, "take-off clearance at the runway only (holding short / lined up)"
         end
         ac.toClr = true
+    elseif kind == "approach" then
+        local ok, err = approachCheck(ac)
+        if not ok then return false, err end
+        ac.appClr = true
     elseif kind == "land" then
         if (p ~= "air" and p ~= "final") or not airport(ac.arr) then return false, "not an arrival" end
         ac.landClr = true
@@ -249,7 +256,7 @@ function giveClearance(id, kind, value)
         if p == "final" then
             trafficGoAround(ac)
         else
-            ac.approach, ac.via = nil, nil
+            ac.approach, ac.via, ac.appClr = nil, nil, nil
             ac.ri = #ac.route + 1         -- the rest of the STAR is gone
             ac.proc, ac.star, ac.procEnd, ac.starTried = nil, nil, nil, true
             local apt = airport(ac.arr)
@@ -273,6 +280,7 @@ function setArrivalProcedure(id, spec)
     local pr = procedure(star)
     if not pr or pr.type ~= "STAR" or pr.airport ~= ac.arr then return false, "unknown STAR " .. tostring(spec) end
     if not applySTAR(ac, star, ident, true) then return false, "no " .. tostring(star) .. " for runway " .. tostring(ident) end
+    ac.appClr = nil
     return true
 end
 

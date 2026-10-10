@@ -763,7 +763,7 @@ local function goAround(ac)
     local apt = airport(ac.arr)
     ac.phase = "air"
     ac.missed = true
-    ac.landClr, ac.vacateVia = nil, nil
+    ac.landClr, ac.vacateVia, ac.appClr = nil, nil, nil
     ac.via = { { x = e.x + math.sin(h) * 1500, y = e.y + math.cos(h) * 1500 } }
     ac.cfl = math.max(ac.cfl or 0, (apt and apt.elevation or 0) + TR.MISSED_ALT_AGL)
     ac.approach = nil
@@ -895,9 +895,53 @@ local function targetSpeed(ac, kind, target)
     return s
 end
 
+-- approach clearance: an uncontrolled aircraft (pilots on their own) always has it
+function approachCleared(ac)
+    return ac.appClr or ac.landClr or not controlled(ac) or false
+end
+
+-- may "cleared approach" be given now? On a procedure (STAR / final fix target) always; on radar
+-- vectors only when the heading intercepts the extended centre line of the arrival runway ahead of the
+-- threshold, at most TR.APP_CLR_ANGLE deg, within TR.APP_CLR_FAR final lengths.
+function approachCheck(ac)
+    if ac.phase ~= "air" then return false, "not airborne / already on final" end
+    if not airport(ac.arr) then return false, "not an arrival" end
+    if not ac.ahdg then
+        if ac.star or ac.approach then return true end
+        return false, "no arrival procedure or radar heading to the final"
+    end
+    local rwy, ff = arrivalFinal(ac)
+    if not rwy then return false, "no arrival runway" end
+    local hdg = ac.ahdg
+    local h = math.rad(rwy.hdg)
+    local ux, uy = math.sin(h), math.cos(h)
+    local rx, ry = ac.x - rwy.x, ac.y - rwy.y
+    local along = rx * ux + ry * uy
+    local lateral = rx * uy - ry * ux
+    local finalLen = ff and dist(ff.x, ff.y, rwy.x, rwy.y) or 1200
+    local ang = math.abs(angleTo(hdg, rwy.hdg))
+    if ang > TR.APP_CLR_ANGLE then
+        return false, ("intercept angle %d deg, max %d"):format(math.floor(ang + 0.5), TR.APP_CLR_ANGLE)
+    end
+    if along > -250 then return false, "already past the final" end
+    if math.abs(lateral) >= 250 then
+        local v = math.rad(hdg)
+        local vx, vy = math.sin(v), math.cos(v)
+        local latv, alv = vx * uy - vy * ux, vx * ux + vy * uy
+        if latv * lateral >= 0 then return false, "heading does not intercept the centre line" end
+        local at = along + (-lateral / latv) * alv      -- along-track position where the heading meets the centre line
+        if at > -250 then return false, "intercepts too late (past the threshold)" end
+        if at < -finalLen * TR.APP_CLR_FAR then return false, "intercept too far from the runway" end
+    elseif along < -finalLen * TR.APP_CLR_FAR then
+        return false, "too far from the runway"
+    end
+    return true
+end
+
 -- on a heading close to the extended centre line, flying roughly the runway direction: established
 function interceptFinal(ac)
     if not airport(ac.arr) then return false end
+    if not approachCleared(ac) then return false end      -- no approach clearance: flies through the centre line
     local rwy, ff = arrivalFinal(ac)
     if not rwy then return false end
     local h = math.rad(rwy.hdg)
@@ -906,7 +950,7 @@ function interceptFinal(ac)
     local along = rx * ux + ry * uy
     local lateral = rx * uy - ry * ux
     local finalLen = ff and dist(ff.x, ff.y, rwy.x, rwy.y) or 1200
-    if along < -250 and along > -finalLen * 1.8 and math.abs(lateral) < 250
+    if along < -250 and along > -finalLen * (ac.appClr and TR.APP_CLR_FAR or 1.8) and math.abs(lateral) < 250
             and math.abs(angleTo(ac.hdg, rwy.hdg)) < 60 then
         ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
         ac.rwy = rwy
@@ -967,7 +1011,13 @@ local function tickAir(ac, dt)
     local td = target and not ac.climbOut and dist(ac.x, ac.y, target.x, target.y)
     if td and (td <= passDistance(ac, kind, target)
             or (td < 400 and math.abs(angleTo(ac.hdg, bearing(ac.x, ac.y, target.x, target.y))) > 100)) then
-        if kind == "final" then
+        if kind == "final" and not approachCleared(ac) then
+            -- no approach clearance at the final fix: it flies on, the controller has to vector it
+            ac.ahdg, ac.ahdgDir = math.floor(ac.hdg + 0.5) % 360, nil
+            if ac.ahdg == 0 then ac.ahdg = 360 end
+            ac.approach, ac.via, ac.ri = nil, nil, #ac.route + 1
+            ac.proc, ac.star, ac.procEnd, ac.starTried = nil, nil, nil, true
+        elseif kind == "final" then
             local glideAt = elev + TR.FINAL_AGL
             if ac.alt > glideAt + TR.GO_AROUND_MARGIN then
                 goAround(ac)
@@ -1023,7 +1073,7 @@ local function tickFinal(ac, dt)
         ac.rwyClr = { [e.runway] = true }
         ac.alt, ac.vs = elev, 0
         ac.hdg = e.hdg
-        ac.approach = nil
+        ac.approach, ac.appClr = nil, nil
         ac.proc, ac.procEnd = nil, nil
     end
 end
@@ -1080,6 +1130,12 @@ local function pendingClearance(ac)
         if not ac.toClr then return "T/O", true end
     elseif p == "landing" or p == "vacate" or p == "vacated" then
         if not ac.taxiInClr then return "TAXI", p ~= "landing" end
+    elseif p == "air" and airport(ac.arr) and (ac.approach or ac.ahdg) and not ac.appClr and not ac.landClr then
+        -- calls for the approach clearance close to the final fix / when the vectors intercept the final
+        local ready = false
+        if ac.approach then ready = dist(ac.x, ac.y, ac.approach.x, ac.approach.y) < TR.APP_CALL_DIST
+        elseif ac.ahdg then ready = approachCheck(ac) end
+        return "APP", ready
     elseif (p == "final" or (p == "air" and (ac.approach or ac.ahdg))) and airport(ac.arr) and not ac.landClr then
         -- calls for the landing clearance on final / close to the final fix
         local ready = p == "final"
@@ -1120,7 +1176,7 @@ function snapshot(ac)
         sugStar = not isGround(ac) and not ac.star and (suggestedSTAR(ac) or {}).id or nil,
         holdRwy = ac.phase == "hold" and ac.holdRwy or nil, onRwy = ac.onRwy, vacateVia = ac.vacateVia,
         req = req, ready = ready or false, alert = ac.alert,
-        ifr = ac.ifr and true or false, initAlt = ac.initAlt, landClr = ac.landClr and true or false,
+        ifr = ac.ifr and true or false, initAlt = ac.initAlt, landClr = ac.landClr and true or false, appClr = ac.appClr and true or false,
         -- world m/s along hdg (the scope extrapolates between updates)
         ws = math.floor(worldSpeed(ac) * 10 + 0.5) / 10,
     }

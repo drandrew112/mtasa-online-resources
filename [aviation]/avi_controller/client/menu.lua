@@ -270,6 +270,8 @@ local function mainItems(s, mine)
         if s.ahdg then add("LEVEL & ROUTE", "Resume own navigation", function() send("nohdg") end, mine) end
         if s.dct then add("LEVEL & ROUTE", "Cancel direct " .. s.dct, function() send("nodct") end, mine) end
         if hasApt then
+            add("APPROACH & LANDING", (s.appClr or s.landClr) and "Cleared approach (given)" or "Cleared approach",
+                function() send("approach") end, mine and p == "air" and not s.appClr and not s.landClr, s.req == "APP")
             add("APPROACH & LANDING", s.landClr and "Cleared to land (given)" or "Cleared to land",
                 function() send("land") end, twr and not s.landClr, s.req == "LAND")
             add("APPROACH & LANDING", vacateLabel, sub("vacate"), twr)

@@ -272,6 +272,9 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
         ok, err = call("avi_traffic", "setArrivalProcedure", id, value)
     elseif action == "xfer" then
         ok, err = call("avi_traffic", "transferAircraft", id, value)
+    elseif action == "approach" then
+        -- cleared approach: whoever controls the arrival (APP / centre / tower)
+        ok, err = call("avi_traffic", "giveClearance", id, "approach")
     elseif action == "ifr" or action == "push" or action == "taxi" or action == "takeoff" or action == "land"
             or action == "cross" or action == "lineup" or action == "backtrack" or action == "vacate" or action == "goaround" then
         -- delivery / ground / runway clearances belong to the tower (no top-down cover)
