@@ -173,7 +173,7 @@ function giveWorkXp(player, workId, amount)
     if not isLogged(player) or not progress[player] then return false, "player not logged in" end
     amount = math.min(math.floor(amount), WORK.MAX_XP_PER_GRANT)
     local total = (progress[player][workId] or 0) + amount
-    notifyPlayer(player, Works[workId].name, ("+%d XP"):format(amount))
+    notifyPlayer(player, Works[workId].name, ("+%d XP"):format(amount), true)
     applyXp(player, workId, total)
     triggerEvent("onPlayerWorkXpGain", player, workId, amount, total)
     return true, getPlayerWorkLevel(player, workId)

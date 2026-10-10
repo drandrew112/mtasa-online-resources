@@ -3,9 +3,10 @@
 
 local lastRequest = {}             -- player -> tick
 
-function notifyPlayer(player, title, text)
+function notifyPlayer(player, title, text, silent)
     if isElement(player) and isPlayerReady(player) then
-        triggerClientEvent(player, "work:notify", resourceRoot, title, text)
+        if silent == nil then silent = false end
+        triggerClientEvent(player, "work:notify", resourceRoot, title, text, silent)
     end
 end
 
