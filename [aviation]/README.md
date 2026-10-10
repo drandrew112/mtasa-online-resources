@@ -79,6 +79,13 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - Ground label: green = arrival, blue = departure, grey = unknown; `CALLSIGN`, `SPD SQK`, `TYPE/WAKE`.
   A yellow frame = your aircraft waits for a clearance (ground and air: IFR when ready, push, taxi, runway, landing
   within 1500 m of the final fix, STAR near the entry fix); the list shows `REQ ...` for the same ones.
+- Alerts (any aircraft): red text above the label frame and a red frame. `EMRG` = squawk 7700,
+  `COMS` = squawk 7600, `STCA` = separation lost, `RAM` = off the cleared route (more than 90° off the
+  next point for 40 s while on own navigation; should never happen). `/avitraffic sqk <cs> <code>` sets a squawk.
+- Separation (avi_traffic `alerts.lua`, fined once per pair, on every staffed controller of the two aircraft;
+  the sum is the `Mistakes` item of the pay, a negative total is taken from the bank):
+  ground head-on (60 m, facing each other) -€300; TMA / CTA closer than 0.1 nm and 1000 ft -€500.
+  Amounts: `CTL.PENALTY`, distances: `TR.SEP_*`.
 - Flight lists on the right: TWR / APP = Departures + Arrivals of the airport; centre = Departures (ground /
   departure TMA), Arrivals (arrival TMA / landed), Sector (the rest). RFL = requested cruise level of the
   flight plan, also marked green in the level menus.

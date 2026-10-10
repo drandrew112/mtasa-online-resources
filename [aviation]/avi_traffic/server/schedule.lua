@@ -72,7 +72,7 @@ local function say(player, text)
     outputConsole("[avi_traffic] " .. text, player)
 end
 
-addCommandHandler("avitraffic", function(player, _, action, arg)
+addCommandHandler("avitraffic", function(player, _, action, arg, arg2)
     if not isAdmin(player) then return end
     action = action and action:lower() or "list"
     if action == "list" then
@@ -94,10 +94,13 @@ addCommandHandler("avitraffic", function(player, _, action, arg)
     elseif action == "clear" then
         for _, ac in pairs(AIRCRAFT) do removeAircraft(ac, "cleared") end
         say(player, "All traffic removed")
+    elseif action == "sqk" then
+        local ok, err = setSquawk(arg, arg2)
+        say(player, ok and (tostring(arg):upper() .. " squawks " .. arg2) or ("Cannot set: " .. tostring(err)))
     elseif action == "schedule" then
         TR.SCHEDULE = arg ~= "off"
         say(player, "Schedule " .. (TR.SCHEDULE and "on" or "off"))
     else
-        say(player, "/avitraffic list | spawn <cs> | random [n] | remove <cs> | clear | schedule on|off")
+        say(player, "/avitraffic list | spawn <cs> | random [n] | remove <cs> | clear | sqk <cs> <code> | schedule on|off")
     end
 end)

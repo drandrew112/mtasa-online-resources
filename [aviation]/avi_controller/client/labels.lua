@@ -9,6 +9,8 @@
 --   Ground: always a background: green = arrival, blue = departure, grey = unknown.
 --     CALLSIGN (large) / SPD SQK / ACTYPE/WAKE.
 --   A yellow frame = one of your aircraft is waiting for a clearance.
+--   Alert (any aircraft, avi_traffic alerts.lua): red text above the label frame + red frame.
+--     EMRG = squawk 7700, COMS = squawk 7600, STCA = separation lost, RAM = off the cleared route.
 
 local C = {
     air      = tocolor(95, 170, 255, 255),
@@ -30,6 +32,7 @@ local C = {
     request  = tocolor(255, 215, 60, 255),
     route    = tocolor(70, 205, 110, 200),     -- green; yellow once a direct-to is issued
     routeDct = tocolor(255, 210, 60, 210),
+    alert    = tocolor(255, 50, 50, 255),
 }
 
 LABEL_RECTS = {}    -- [id] = { x, y, w, h } of this frame (hit tests)
@@ -113,6 +116,13 @@ local function waiting(s)
     return isMine(s) and s.req and s.ready
 end
 
+-- alert field: red, on top of the label frame (outside it)
+local function drawAlert(s, rect, font)
+    if not s.alert then return end
+    frame(rect, C.alert)
+    text(s.alert, rect[1], rect[2] - dxGetFontHeight(1, font), C.alert, font)
+end
+
 local function drawAir(id, e, x, y, hovered, selected)
     local s = e.s
     local mine = isMine(s)
@@ -147,7 +157,8 @@ local function drawAir(id, e, x, y, hovered, selected)
     local rect = { x + dx - pad, y + dy - pad, w + pad * 2, fh * #lines + pad * 2 }
     LABEL_RECTS[id] = rect
     if hovered then dxDrawRectangle(rect[1], rect[2], rect[3], rect[4], C.hover) end
-    if waiting(s) then frame(rect, C.request) end
+    if s.alert then drawAlert(s, rect, F.label)
+    elseif waiting(s) then frame(rect, C.request) end
     local ax, ay = rectAnchor(rect, x, y)
     if (ax - x) ^ 2 + (ay - y) ^ 2 > (r + 2) ^ 2 then line(x, y, ax, ay, mine and C.leader or C.leaderO, 1) end
     for i, l in ipairs(lines) do
@@ -174,7 +185,9 @@ local function drawGround(id, e, x, y, hovered, selected)
     local ax, ay = rectAnchor(rect, x, y)
     line(x, y, ax, ay, bg, 1)
     dxDrawRectangle(rect[1], rect[2], rect[3], rect[4], bg)
-    if waiting(s) then
+    if s.alert then
+        drawAlert(s, rect, F.gndSm)
+    elseif waiting(s) then
         frame(rect, C.request)
     elseif hovered or selected then
         frame(rect, selected and C.select or C.gText)

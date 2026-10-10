@@ -134,18 +134,28 @@ local function broadcastStatic()
     for player in pairs(playerPos) do sendStatic(player) end
 end
 
--- pay for the finished position session: actions * rate, multiplied by the time spent
+-- pay for the finished position session: actions * rate, multiplied by the time spent, minus the
+-- mistakes (separation losses). Mistakes are always paid for: a negative total comes from the bank.
 local function paySession(player, sess)
-    if not sess or sess.actions < CTL.PAY_MIN_ACTIONS then return end
-    local minutes = (getTickCount() - sess.start) / 60000
-    local mult = math.min(1 + minutes * CTL.PAY_MINUTE_BONUS, CTL.PAY_MAX_MULT)
-    local base = sess.actions * CTL.PAY_PER_ACTION
-    local bonus = math.floor(base * mult + 0.5) - base
-    local items = { { label = ("Traffic actions (%d)"):format(sess.actions), amount = base } }
-    if bonus > 0 then
-        items[#items + 1] = { label = ("Time on position (%d min)"):format(math.floor(minutes)), amount = bonus }
+    if not sess then return end
+    local items = {}
+    if sess.actions >= CTL.PAY_MIN_ACTIONS then
+        local minutes = (getTickCount() - sess.start) / 60000
+        local mult = math.min(1 + minutes * CTL.PAY_MINUTE_BONUS, CTL.PAY_MAX_MULT)
+        local base = sess.actions * CTL.PAY_PER_ACTION
+        local bonus = math.floor(base * mult + 0.5) - base
+        items[#items + 1] = { label = ("Traffic actions (%d)"):format(sess.actions), amount = base }
+        if bonus > 0 then
+            items[#items + 1] = { label = ("Time on position (%d min)"):format(math.floor(minutes)), amount = bonus }
+        end
     end
-    call("work_core", "payWork", player, CTL.WORK_ID, items, "Position closed")
+    if sess.mistakes > 0 then
+        items[#items + 1] = { label = ("Mistakes (%d)"):format(sess.mistakeCount), amount = -sess.mistakes }
+    end
+    if #items == 0 then return end
+    local ok, total = call("work_core", "payWork", player, CTL.WORK_ID, items, "Position closed")
+    -- payWork pays only a positive total; the rest of the fines is taken here (may go into debt)
+    if ok and total and total < 0 then call("v_bank", "forceTakeMoney", player, -total) end
 end
 
 function logoutATC(player, silent)
@@ -186,7 +196,7 @@ local function login(player, posId)
     if playerPos[player] and playerPos[player] ~= pos.id then logoutATC(player, true) end
     staff[pos.id] = player
     playerPos[player] = pos.id
-    sessions[player] = { start = getTickCount(), actions = 0 }
+    sessions[player] = { start = getTickCount(), actions = 0, mistakes = 0, mistakeCount = 0 }
     lastSent[player] = nil     -- the first traffic update goes out at the next check
     sendStatic(player)
     notify(player, "Logged in as " .. pos.id .. " (" .. pos.name .. ")")
@@ -278,6 +288,24 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
     local sess = sessions[player]
     if sess then sess.actions = sess.actions + 1 end
     call("work_core", "giveWorkXp", player, CTL.WORK_ID, CTL.XP_ACTIONS[action] or CTL.XP_DEFAULT)
+end)
+
+-- separation loss on aircraft of these positions (avi_traffic): a mistake for each staffing controller
+local SEP_TEXT = { GND = "head-on on the ground", TMA = "separation lost in the TMA", CTA = "separation lost in the CTA" }
+
+addEvent("onAviSeparationLoss")
+addEventHandler("onAviSeparationLoss", root, function(kind, positions, cs1, cs2)
+    local amount = CTL.PENALTY[kind]
+    if not amount or type(positions) ~= "table" then return end
+    for _, posId in ipairs(positions) do
+        local player = staff[posId]
+        local sess = player and isElement(player) and sessions[player]
+        if sess then
+            sess.mistakes = sess.mistakes + amount
+            sess.mistakeCount = sess.mistakeCount + 1
+            notify(player, ("STCA %s / %s: %s (-€%d)"):format(tostring(cs1), tostring(cs2), SEP_TEXT[kind] or kind, amount))
+        end
+    end
 end)
 
 addEventHandler("onPlayerQuit", root, function()

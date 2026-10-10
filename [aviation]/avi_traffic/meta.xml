@@ -7,6 +7,7 @@
     <script src="server/data.lua"     type="server" />
     <script src="server/control.lua"  type="server" />
     <script src="server/sim.lua"      type="server" />
+    <script src="server/alerts.lua"   type="server" />
     <script src="server/schedule.lua" type="server" />
 
     <file src="data/flights.json" type="server" />
@@ -29,4 +30,5 @@
     <!-- tests / other resources -->
     <export function="spawnFlightByCallsign" type="server" />
     <export function="removeFlight"          type="server" />
+    <export function="setSquawk"             type="server" />
 </meta>

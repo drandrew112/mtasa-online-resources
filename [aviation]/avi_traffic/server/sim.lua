@@ -925,6 +925,7 @@ local function tickAir(ac, dt)
 
     -- radar vectors: fly the assigned heading, intercept the final of the arrival runway
     if ac.ahdg then
+        ac.navTgt = nil
         turnAssigned(ac, dt)
         speedTowards(ac, targetSpeed(ac, "route"), TR.ACCEL_AIR, dt)
         moveForward(ac, dt)
@@ -948,6 +949,8 @@ local function tickAir(ac, dt)
         removeAircraft(ac, "left the airspace")
         return
     end
+
+    ac.navTgt = not ac.climbOut and target or nil     -- route deviation check (alerts.lua)
 
     -- lateral
     if target and not ac.climbOut then
@@ -1050,6 +1053,7 @@ local function tick()
             if ac.age > TR.MAX_AGE then removeAircraft(ac, "timeout") end
         end
     end
+    updateAlerts(dt)
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()
@@ -1115,7 +1119,7 @@ function snapshot(ac)
         sugSid = not ac.ifr and isGround(ac) and ac.gndApt == ac.dep and (suggestedSID(ac) or {}).id or nil,
         sugStar = not isGround(ac) and not ac.star and (suggestedSTAR(ac) or {}).id or nil,
         holdRwy = ac.phase == "hold" and ac.holdRwy or nil, onRwy = ac.onRwy, vacateVia = ac.vacateVia,
-        req = req, ready = ready or false,
+        req = req, ready = ready or false, alert = ac.alert,
         ifr = ac.ifr and true or false, initAlt = ac.initAlt, landClr = ac.landClr and true or false,
         -- world m/s along hdg (the scope extrapolates between updates)
         ws = math.floor(worldSpeed(ac) * 10 + 0.5) / 10,

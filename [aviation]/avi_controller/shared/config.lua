@@ -26,6 +26,11 @@ CTL = {
     PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
 
+    -- Mistakes: every separation loss (avi_traffic alerts.lua) on an aircraft of the position costs
+    -- this much; the sum is the "Mistakes" item of the pay. A negative total is taken from the bank.
+    --   GND = two ground aircraft head-on, TMA / CTA = closer than 0.1 nm (and 1000 ft) there
+    PENALTY = { GND = 300, TMA = 500, CTA = 500 },
+
     -- scope
     LEVEL_STEP  = 500,         -- ft between the cleared levels offered in the menu
     LEVEL_MIN   = 1000,

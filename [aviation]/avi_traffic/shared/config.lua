@@ -47,5 +47,14 @@ TR = {
     INITIAL_SPAWN = 4,        -- flights started right after the resource starts
     SCHEDULE = true,          -- start flights by the real clock (flights.json period / offset)
 
+    -- scope alerts / separation (server/alerts.lua); each loss is a fine in avi_controller
+    SEP_AIR_DIST = 185.2,     -- m (0.1 nm): two airborne aircraft in a TMA / the CTA closer than this ...
+    SEP_AIR_VERT = 1000,      -- ft: ... and closer than this vertically = separation loss (STCA)
+    SEP_GND_DIST = 60,        -- m: two ground aircraft head-on within this = separation loss
+    SEP_GND_ANGLE = 45,       -- deg: "head-on" = headings opposite and each ahead of the other within this
+    SEP_RESET = 10,           -- s after a conflict ended before the same pair can be fined again
+    RAM_ANGLE = 90,           -- deg off the bearing to the next route point ...
+    RAM_TIME  = 40,           -- s ... for this long = route deviation alert (RAM)
+
     CENTER_POSITION = "SACC_CTR",   -- position id of the centre (CTA) in avi_controller
 }
