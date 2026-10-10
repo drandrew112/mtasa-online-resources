@@ -62,12 +62,13 @@ local function airLines(s, hovered)
     elseif hovered then lines[#lines + 1] = { { "CFL" } } end
     -- waypoint field: direct-to fix, else the procedure flown (SID / STAR + runway)
     local wp = s.dct or s.proc
+    local ahdg = s.ahdg and ((s.ahdgDir or "") .. hdg3(s.ahdg))      -- L / R while a forced turn lasts
     if hovered then
-        lines[#lines + 1] = { { (wp or "DCT") .. " " .. (s.ahdg and hdg3(s.ahdg) or "AHDG") } }
+        lines[#lines + 1] = { { (wp or "DCT") .. " " .. (ahdg or "AHDG") } }
     elseif wp or s.ahdg then
         local parts = {}
         if wp then parts[#parts + 1] = wp end
-        if s.ahdg then parts[#parts + 1] = hdg3(s.ahdg) end
+        if ahdg then parts[#parts + 1] = ahdg end
         lines[#lines + 1] = { { table.concat(parts, " ") } }
     end
     if hovered then

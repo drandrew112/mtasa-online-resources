@@ -104,13 +104,15 @@ end
 
 -- radar heading (1..360). Replaces the waypoint; the aircraft flies it until a waypoint, "resume own
 -- navigation" or it intercepts the final of its arrival runway.
-function setHeading(id, hdg)
+-- dir: "L" / "R" = turn left / right (even the long way round), nil = the shorter way.
+function setHeading(id, hdg, dir)
     local ac = AIRCRAFT[tonumber(id)]
     hdg = tonumber(hdg)
     if not ac or not hdg then return false, "unknown aircraft" end
     if ac.phase ~= "air" then return false, "not airborne" end
     hdg = math.floor(hdg + 0.5) % 360
     ac.ahdg = hdg == 0 and 360 or hdg
+    ac.ahdgDir = (dir == "L" or dir == "R") and dir or nil
     ac.dct, ac.via, ac.approach, ac.climbOut, ac.missed = nil, nil, nil, nil, nil
     return true
 end

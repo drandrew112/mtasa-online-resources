@@ -11,6 +11,7 @@
     <script src="client/draw.lua"    type="client" />
     <script src="client/labels.lua"  type="client" />
     <script src="client/menu.lua"    type="client" />
+    <script src="client/hdgpicker.lua" type="client" />
     <script src="client/login.lua"   type="client" />
     <script src="client/scope.lua"   type="client" />
 

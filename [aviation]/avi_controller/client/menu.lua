@@ -1,5 +1,5 @@
 -- Aircraft command menu (click a label or a target).
---   Airborne: cleared altitude, heading, direct to, resume own navigation, cancel direct,
+--   Airborne: cleared altitude, fly / turn left / turn right heading (hdgpicker.lua), direct to, resume own navigation, cancel direct,
 --             cleared to land, transfer.
 --   Airborne arrivals (approach / radar): arrival procedure (STAR + runway, the suggested one yellow).
 --   Ground (tower / delivery): IFR clearance (SID, the suggested one yellow + initial level), pushback,
@@ -65,14 +65,13 @@ local function levelItems(s, action, maxFt)
     return items, cur
 end
 
-local function headingItems(s)
-    local items = { back() }
-    local cur = s.ahdg or (math.floor(s.hdg / 5 + 0.5) * 5)
-    if cur == 0 then cur = 360 end
-    for h = 360, 5, -5 do
-        items[#items + 1] = { label = ("Heading %03d"):format(h), current = h == cur, key = h, act = function() send("hdg", h) end }
+-- opens the heading picker in place of the menu (right click there comes back here)
+local function picker(dir)
+    return function()
+        local id, x, y = MENU.ac, MENU.x, MENU.y
+        menuClose()
+        hdgPickerOpen(id, dir, x, y)
     end
-    return items, cur
 end
 
 local function directItems(s)
@@ -260,7 +259,9 @@ local function mainItems(s, mine)
         local vec = mine and p == "air"
         local posType = SC.pos and SC.pos.type
         add("LEVEL & ROUTE", "Cleared altitude  >", sub("cfl"), vec)
-        add("LEVEL & ROUTE", "Heading  >", sub("hdg"), vec)
+        add("LEVEL & ROUTE", "Fly heading  >", picker(nil), vec)
+        add("LEVEL & ROUTE", "Turn left heading  >", picker("L"), vec)
+        add("LEVEL & ROUTE", "Turn right heading  >", picker("R"), vec)
         add("LEVEL & ROUTE", "Direct to  >", sub("dct"), vec)
         if hasApt and (posType == "APP" or posType == "CTR") then
             add("LEVEL & ROUTE", "Arrival procedure  >" .. (s.proc and ("   (" .. s.proc .. ")") or ""), sub("star"), vec,
@@ -345,7 +346,6 @@ local function currentItems(s, mine)
     if m == "ifr" then return centred(levelItems(s, "ifr", 10000)) end
     if m == "sid" then MENU.scroll = MENU.scroll or 0 return sidItems(s) end
     if m == "star" then MENU.scroll = MENU.scroll or 0 return starItems(s) end
-    if m == "hdg" then return centred(headingItems(s)) end
     if m == "dct" then MENU.scroll = MENU.scroll or 0 return directItems(s) end
     if m == "xfer" then MENU.scroll = MENU.scroll or 0 return transferItems(s) end
     if m == "rwy" then MENU.scroll = MENU.scroll or 0 return runwayItems(s) end

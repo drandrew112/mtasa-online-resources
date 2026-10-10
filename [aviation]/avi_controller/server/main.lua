@@ -120,6 +120,7 @@ local function staticData()
         runways = call("avi_airports", "getActiveRunways") or {},
         wind = call("avi_airports", "getWind") or { dir = 0, speed = 0 },
         positions = getPositions(),
+        turnRate = call("avi_traffic", "getTurnRate") or 6,
     }
 end
 
@@ -244,7 +245,12 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
     elseif action == "nodct" then
         ok, err = call("avi_traffic", "clearDirectTo", id)
     elseif action == "hdg" then
-        ok, err = call("avi_traffic", "setHeading", id, value)
+        -- value = heading, or { hdg = heading, dir = "L" / "R" / nil }
+        if type(value) == "table" then
+            ok, err = call("avi_traffic", "setHeading", id, value.hdg, value.dir)
+        else
+            ok, err = call("avi_traffic", "setHeading", id, value)
+        end
     elseif action == "nohdg" then
         ok, err = call("avi_traffic", "clearHeading", id)
     elseif action == "star" then

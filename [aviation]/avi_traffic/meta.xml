@@ -16,6 +16,7 @@
     <export function="getAircraft"           type="server" />
     <export function="getAircraftByCallsign" type="server" />
     <export function="getAircraftController" type="server" />
+    <export function="getTurnRate"           type="server" />
     <!-- controller clearances (avi_controller checks the player / position first) -->
     <export function="setClearedAltitude"    type="server" />
     <export function="setDirectTo"           type="server" />

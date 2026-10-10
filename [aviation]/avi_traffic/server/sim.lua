@@ -99,6 +99,21 @@ local function turnTowards(ac, targetHdg, dt, rate)
     ac.hdg = (ac.hdg + clamp(diff, -step, step)) % 360
 end
 
+-- assigned heading with a forced turn direction ("L" / "R"); the direction is dropped once the
+-- heading is reached, so later corrections take the short way again
+local function turnAssigned(ac, dt)
+    local dir = ac.ahdgDir
+    if not dir then return turnTowards(ac, ac.ahdg, dt) end
+    local step = TR.TURN_RATE * dt
+    local left = dir == "L" and (ac.hdg - ac.ahdg) % 360 or (ac.ahdg - ac.hdg) % 360
+    if left <= step then
+        ac.hdg = ac.ahdg % 360
+        ac.ahdgDir = nil
+    else
+        ac.hdg = (ac.hdg + (dir == "L" and -step or step)) % 360
+    end
+end
+
 local function speedTowards(ac, target, rate, dt)
     local diff = target - ac.spd
     ac.spd = ac.spd + clamp(diff, -rate * dt, rate * dt)
@@ -797,7 +812,7 @@ local function tickAir(ac, dt)
 
     -- radar vectors: fly the assigned heading, intercept the final of the arrival runway
     if ac.ahdg then
-        turnTowards(ac, ac.ahdg, dt)
+        turnAssigned(ac, dt)
         speedTowards(ac, targetSpeed(ac, "route"), TR.ACCEL_AIR, dt)
         moveForward(ac, dt)
         if not controllerOf(ac) then ac.ahdg = nil end      -- nobody gives vectors any more
@@ -964,6 +979,11 @@ end
 
 local function round(v, step) return math.floor(v / step + 0.5) * step end
 
+-- deg / s in the air (the controller scope draws the turn preview with it)
+function getTurnRate()
+    return TR.TURN_RATE
+end
+
 function snapshot(ac)
     local remaining = {}
     for i = ac.ri, #ac.route do remaining[#remaining + 1] = ac.route[i] end
@@ -977,7 +997,7 @@ function snapshot(ac)
         vs = round(ac.vs, 50), cfl = ac.cfl and round(ac.cfl, 100) or nil, dct = ac.dct, sqk = ac.sqk,
         gnd = isGround(ac), dir = dir, phase = ac.phase, ctl = ac.ctl,
         apt = isGround(ac) and ac.gndApt or nil, gate = ac.gate, route = remaining,
-        rwy = ac.rwy and ac.rwy.ident or nil, ahdg = ac.ahdg,
+        rwy = ac.rwy and ac.rwy.ident or nil, ahdg = ac.ahdg, ahdgDir = ac.ahdg and ac.ahdgDir or nil,
         rfl = ac.cruise, rfirst = ac.plan[1], rlast = ac.plan[#ac.plan], proc = ac.proc,
         sugSid = not ac.ifr and isGround(ac) and ac.gndApt == ac.dep and (suggestedSID(ac) or {}).id or nil,
         sugStar = not isGround(ac) and not ac.star and (suggestedSTAR(ac) or {}).id or nil,

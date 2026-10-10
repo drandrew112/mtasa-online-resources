@@ -39,6 +39,7 @@ function scopeHide()
     SC.visible = false
     drag = nil
     menuClose()
+    hdgPickerClose()
     if not LOGIN.open then showCursor(false) end
     toggleAllControls(true, true, false)
     setElementData(localPlayer, "hideHUD", prevHide or false, false)
@@ -273,7 +274,8 @@ addEventHandler("onClientRender", root, function()
     drawAirports()
     drawNav()
     drawRoutes()
-    local over = mx and (my < 34 * U or (SC.showList and mx > SC.sx - LIST_W) or (MENU.open and MENU.rect and inside(MENU.rect, mx, my)))
+    local over = mx and (PICK.open or my < 34 * U or (SC.showList and mx > SC.sx - LIST_W)
+        or (MENU.open and MENU.rect and inside(MENU.rect, mx, my)))
     drawTraffic((not over) and mx or nil, my)
     if drag and drag.kind == "label" then HOVER_ID = drag.id end
     drawScaleBar()
@@ -281,6 +283,7 @@ addEventHandler("onClientRender", root, function()
     drawList(mx, my)
     drawTopBar(mx, my)
     drawMenu(mx, my)
+    drawHdgPicker(mx, my)
 end)
 
 -- ---------------------------------------------------------------- input
@@ -290,6 +293,10 @@ addEventHandler("onClientClick", root, function(btn, state, ax, ay)
         return
     end
     if not SC.visible then return end
+    if hdgPickerClick(btn, state) then
+        drag = nil
+        return
+    end
 
     if btn == "right" then
         if state == "down" and HOVER_ID and SC.traffic[HOVER_ID] then
@@ -342,6 +349,10 @@ end)
 
 addEventHandler("onClientKey", root, function(key, press)
     if not SC.visible or not press or LOGIN.open then return end
+    if hdgPickerKey(key) then
+        cancelEvent()
+        return
+    end
     -- 0..5 (also on the numpad): leader line length in 0.1 nm steps, 0 = off
     local digit = tonumber(key:match("^num_(%d)$") or key:match("^(%d)$"))
     if digit then
@@ -355,7 +366,9 @@ addEventHandler("onClientKey", root, function(key, press)
     if key == "mouse_wheel_up" or key == "mouse_wheel_down" then
         local dir = key == "mouse_wheel_up" and -1 or 1
         local mx, my = cursor()
-        if MENU.open and MENU.rect and mx and inside(MENU.rect, mx, my) then
+        if PICK.open then
+            hdgPickerScroll(-dir)
+        elseif MENU.open and MENU.rect and mx and inside(MENU.rect, mx, my) then
             menuScroll(dir)
         elseif mx then
             zoomAt(mx, my, dir < 0 and 1.15 or 1 / 1.15)
