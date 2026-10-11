@@ -1,0 +1,4 @@
+*.vhtml linguist-language=HTML
+*.vhtml linguist-detectable=true
+*.html linguist-detectable=true
+*.json linguist-detectable=true
