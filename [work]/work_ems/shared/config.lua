@@ -48,7 +48,7 @@ EMS = {
         {
             name = "LS All Saints General Hospital",
             duty = { 1182.82, -1330.80, 12.58 },
-            blip = 22,
+            blip = false,
             vehicle = {
                 marker = { 1184.0, -1323.6, 12.6 },
                 spawns = {
