@@ -1,5 +1,7 @@
 -- Starts the flights of the database by the real (server) clock: a flight starts when
 -- minute-of-day % period == offset. At most TR.MAX_ACTIVE flights fly at once.
+-- Workload keeper: every staffed position gets extra flights (up to TR.LOAD_MAX_ACTIVE) when its
+-- load falls below TR.MIN_LOAD, so a controller is never left with an empty scope.
 -- Admin command: /avitraffic list | spawn <callsign> | random [n] | remove <callsign> | clear | schedule on|off
 
 local lastMinute
@@ -37,12 +39,105 @@ local function spawnRandom(n)
     return started
 end
 
+-- ---------------------------------------------------------------- workload keeper
+local DEP_PHASES = { gate = true, pushback = true, pushed = true, taxi_out = true, hold = true, lined = true, takeoff = true }
+local lastExtra = {}     -- [positionId] = tick of the last extra flight
+
+local function isDeparting(ac)
+    return DEP_PHASES[ac.phase] and ac.gndApt == ac.dep
+end
+
+-- in-sector aircraft count 1, the ones heading for the sector TR.PIPELINE_WEIGHT
+local function positionLoad(pos)
+    local icao = pos:match("^(.+)_TWR$") or pos:match("^(.+)_APP$")
+    local isCenter = pos == TR.CENTER_POSITION
+    if not isCenter and not icao then return math.huge end
+    local load = 0
+    for _, ac in pairs(AIRCRAFT) do
+        local sec = sectorPosition(ac)
+        if sec == pos then
+            load = load + 1
+        else
+            local coming
+            local airborne = ac.phase == "air" or ac.phase == "final"
+            if isCenter then
+                -- departures that have not reached the CTA yet
+                coming = isDeparting(ac) or (ac.phase == "air" and airport(ac.dep) and
+                    (sec == ac.dep .. "_TWR" or sec == ac.dep .. "_APP"))
+            elseif pos == icao .. "_TWR" then
+                coming = airborne and ac.arr == icao
+            else
+                coming = (isDeparting(ac) and ac.dep == icao) or
+                    (airborne and ac.arr == icao and sec ~= icao .. "_TWR")
+            end
+            if coming then load = load + TR.PIPELINE_WEIGHT end
+        end
+    end
+    return load
+end
+
+-- weighted candidates: flights that show up at the position soonest are preferred
+local function candidates(pos)
+    local icao = pos:match("^(.+)_TWR$") or pos:match("^(.+)_APP$")
+    local twr = pos:match("_TWR$") ~= nil
+    local out, total = {}, 0
+    for _, fl in ipairs(DB.flights) do
+        if not isCallsignActive(fl.callsign) then
+            local fromApt, w = airport(fl.dep) ~= nil, 0
+            if pos == TR.CENTER_POSITION then
+                w = fromApt and 1 or 3                          -- externals enter straight into the CTA
+            elseif fl.dep == icao then
+                w = twr and 3 or 1
+            elseif fl.arr == icao then
+                w = fromApt and 1 or 2
+            end
+            if w > 0 then
+                out[#out + 1] = { fl = fl, w = w }
+                total = total + w
+            end
+        end
+    end
+    return out, total
+end
+
+local function spawnFor(pos)
+    local list, total = candidates(pos)
+    for _ = 1, 6 do
+        if #list == 0 then return nil end
+        local r, pick = math.random() * total, #list
+        for i, c in ipairs(list) do
+            r = r - c.w
+            if r <= 0 then pick = i break end
+        end
+        local c = table.remove(list, pick)
+        total = total - c.w
+        local ac = spawnFlight(c.fl)
+        if ac then return ac end
+    end
+end
+
+local function loadTick()
+    if not TR.SCHEDULE then return end
+    local now = getTickCount()
+    for pos in pairs(staffedPositions()) do
+        if countActive() >= TR.LOAD_MAX_ACTIVE then return end
+        if now - (lastExtra[pos] or -math.huge) >= TR.LOAD_COOLDOWN * 1000 and positionLoad(pos) < TR.MIN_LOAD then
+            local ac = spawnFor(pos)
+            if ac then
+                lastExtra[pos] = now
+                outputDebugString(("[avi_traffic] workload: %s started for %s"):format(ac.cs, pos))
+            end
+        end
+    end
+end
+
 addEventHandler("onResourceStart", resourceRoot, function()
     math.randomseed(getTickCount())
     lastMinute = minuteOfDay()           -- the current minute does not fire again
     -- give the other avi_* resources a moment to start, then put some traffic up
     setTimer(function() spawnRandom(TR.INITIAL_SPAWN) end, 3000, 1)
     setTimer(scheduleTick, 5000, 0)
+    setTimer(loadTick, TR.LOAD_CHECK * 1000, 0)
 end)
 
 -- ---------------------------------------------------------------- exports for other resources / tests

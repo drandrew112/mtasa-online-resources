@@ -14,6 +14,8 @@ function refreshStaffing()
     staffed = callExport("avi_controller", "getStaffedPositions") or {}
 end
 
+function staffedPositions() return staffed end
+
 -- the position responsible for the aircraft where it is now (nil = outside every sector)
 function sectorPosition(ac)
     if ac.phase ~= "air" and ac.phase ~= "final" then

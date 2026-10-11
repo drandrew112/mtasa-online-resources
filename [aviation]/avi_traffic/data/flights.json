@@ -293,7 +293,7 @@
    "route": [
     "GARCI"
    ],
-   "cruise": 3500,
+   "cruise": 4000,
    "period": 120,
    "offset": 2
   },
@@ -698,7 +698,7 @@
     "DOHER",
     "SANTA"
    ],
-   "cruise": 4500,
+   "cruise": 5000,
    "period": 120,
    "offset": 34
   },
@@ -882,7 +882,7 @@
    "route": [
     "GARCI"
    ],
-   "cruise": 3500,
+   "cruise": 4000,
    "period": 120,
    "offset": 49
   },
@@ -922,7 +922,7 @@
     "SHADY",
     "VINEW"
    ],
-   "cruise": 3500,
+   "cruise": 4000,
    "period": 120,
    "offset": 52
   },
@@ -1128,7 +1128,7 @@
     "VINEW",
     "SHADY"
    ],
-   "cruise": 4500,
+   "cruise": 5000,
    "period": 120,
    "offset": 69
   },
@@ -1686,7 +1686,7 @@
     "VINEW",
     "FLINT"
    ],
-   "cruise": 3500,
+   "cruise": 4000,
    "period": 120,
    "offset": 114
   },

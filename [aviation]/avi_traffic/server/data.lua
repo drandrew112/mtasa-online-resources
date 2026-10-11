@@ -36,7 +36,8 @@ local function loadFlights()
     for _, fl in ipairs(data and data.flights or {}) do
         if fl.callsign and fl.type and fl.dep and fl.arr and type(fl.route) == "table" then
             fl.callsign = tostring(fl.callsign):upper()
-            fl.cruise = tonumber(fl.cruise) or 6000
+            -- cruise levels are always whole thousands (8000, not 8500)
+            fl.cruise = math.max(1000, math.floor((tonumber(fl.cruise) or 6000) / 1000 + 0.5) * 1000)
             fl.period = tonumber(fl.period) or 60
             fl.offset = tonumber(fl.offset) or 0
             DB.flights[#DB.flights + 1] = fl

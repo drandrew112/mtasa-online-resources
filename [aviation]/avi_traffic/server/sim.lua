@@ -174,8 +174,9 @@ function spawnFlight(fl)
         ac.x, ac.y = first.x, first.y
         ac.hdg = nxt and bearing(ac.x, ac.y, nxt.x, nxt.y) or 0
         ac.ri = 2
-        -- inbound: enter no higher than the descent plan allows (short arrivals start lower)
-        ac.alt = math.min(fl.cruise, trafficAutoLevel(ac) + 500)
+        -- inbound: enter no higher than the descent plan allows (short arrivals start lower), always
+        -- on a whole thousand
+        ac.alt = math.min(fl.cruise, trafficAutoLevel(ac) + 1000)
         ac.cfl = ac.alt
         ac.spd = ac.alt < TR.SPEED_LIMIT_ALT and math.min(250, ac.perf.cruise) or ac.perf.cruise
     end
@@ -744,7 +745,7 @@ function trafficAutoLevel(ac)
     if not apt then return ac.cruise end
     local _, ff = arrivalFinal(ac)
     local need = apt.elevation + TR.FINAL_AGL + distanceToFinal(ac, ff) * TR.DESCENT_FT_PER_M
-    local lvl = math.floor(need / 500) * 500
+    local lvl = math.floor(need / 1000) * 1000
     return clamp(lvl, apt.elevation + TR.FINAL_AGL, ac.cruise)
 end
 

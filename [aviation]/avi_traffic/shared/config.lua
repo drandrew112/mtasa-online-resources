@@ -50,6 +50,15 @@ TR = {
     INITIAL_SPAWN = 4,        -- flights started right after the resource starts
     SCHEDULE = true,          -- start flights by the real clock (flights.json period / offset)
 
+    -- workload keeper (server/schedule.lua): every staffed position always has some traffic.
+    -- load = aircraft in its sector + PIPELINE_WEIGHT x aircraft heading for it (departures still
+    -- on the ground, arrivals not yet in the sector); below MIN_LOAD an extra flight is started.
+    MIN_LOAD = 2,
+    PIPELINE_WEIGHT = 0.5,
+    LOAD_CHECK = 15,          -- s between checks
+    LOAD_COOLDOWN = 75,       -- s: at most one extra flight per position this often
+    LOAD_MAX_ACTIVE = 24,     -- the keeper may go above MAX_ACTIVE up to this
+
     -- scope alerts / separation (server/alerts.lua); each loss is a fine in avi_controller
     SEP_AIR_DIST = 185.2,     -- m (0.1 nm): two airborne aircraft in a TMA / the CTA closer than this ...
     SEP_AIR_VERT = 1000,      -- ft: ... and closer than this vertically = separation loss (STCA)
