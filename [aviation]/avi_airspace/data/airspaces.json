@@ -67,7 +67,7 @@
    "name": "Los Santos CTR",
    "airport": "SALS",
    "floor": 0,
-   "ceiling": 2500,
+   "ceiling": 2000,
    "polygon": [
     [
      190,
@@ -163,7 +163,7 @@
    "name": "San Fierro CTR",
    "airport": "SASF",
    "floor": 0,
-   "ceiling": 2500,
+   "ceiling": 2000,
    "polygon": [
     [
      -2312,
@@ -255,7 +255,7 @@
    "name": "Las Venturas CTR",
    "airport": "SALV",
    "floor": 0,
-   "ceiling": 2500,
+   "ceiling": 2000,
    "polygon": [
     [
      1777,
