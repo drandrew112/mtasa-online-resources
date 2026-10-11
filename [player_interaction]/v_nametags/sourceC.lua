@@ -32,8 +32,25 @@ end
 
 setPedTargetingMarkerEnabled(false)
 
+-- fej pozíció (8-as csont); ha nincs streamelve, a test közepe + 0.6
+local function getHeadPosition(ped)
+	local x, y, z = getPedBonePosition(ped, 8)
+	if not x then
+		x, y, z = getElementPosition(ped)
+		z = z + 0.6
+	end
+	return x, y, z
+end
+
+-- fejtől fejig, peds/járművek nélkül: alacsony belső plafon ne takarja ki
+local function canSee(hX, hY, hZ, target)
+	local tX, tY, tZ = getHeadPosition(target)
+	return isLineOfSightClear(hX, hY, hZ, tX, tY, tZ, true, false, false, true, false, true), tX, tY, tZ
+end
+
 addEventHandler("onClientRender", getRootElement(), function()
 	local lX, lY, lZ = getElementPosition(localPlayer)
+	local hX, hY, hZ = getHeadPosition(localPlayer)
 	local lInt, lDim = getElementInterior(localPlayer), getElementDimension(localPlayer)
 
 	-- PLAYERS
@@ -48,9 +65,10 @@ addEventHandler("onClientRender", getRootElement(), function()
 				and getElementDimension(playerInfo) == lDim then
 				if getDistanceBetweenPoints3D(pX, pY, pZ, lX, lY, lZ) <= 50 then
 					local veh = getPedOccupiedVehicle(playerInfo)
-					if isLineOfSightClear(lX, lY, lZ+1.5, pX, pY, pZ+1.5) or veh then
+					local visible, tX, tY, tZ = canSee(hX, hY, hZ, playerInfo)
+					if visible or veh then
 						if lineTo then
-							dxDrawLine3D(lX, lY, lZ+1.5, pX, pY, pZ+1.5)
+							dxDrawLine3D(hX, hY, hZ, tX, tY, tZ)
 						end
 
 						local sX, sY = getScreenFromWorldPosition(pX, pY, pZ+1.2)
@@ -140,7 +158,7 @@ addEventHandler("onClientRender", getRootElement(), function()
 			local pX, pY, pZ = getElementPosition(ped)
 
 			if getDistanceBetweenPoints3D(pX, pY, pZ, lX, lY, lZ) <= 50 then
-				if isLineOfSightClear(lX, lY, lZ + 1.5, pX, pY, pZ + 1.5) then
+				if canSee(hX, hY, hZ, ped) then
 					local sX, sY = getScreenFromWorldPosition(pX, pY, pZ + 1.2)
 
 					if sX and sY then
