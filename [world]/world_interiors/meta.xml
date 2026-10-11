@@ -1,0 +1,31 @@
+<meta>
+    <info author="DrAndrew112" name="world_interiors" version="1.0.0" type="script"
+          description="Interior registry: enter/exit markers, fixed dimension per interior, admin browser (/interiors)" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/registry.lua" type="server" />
+    <script src="server/admin.lua"    type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/fade.lua"  type="client" />
+    <script src="client/admin.lua" type="client" />
+
+    <!-- ================= DATA ================= -->
+    <!-- data/stock_interiors.json: read server-side by server/admin.lua (/intwatch), not downloaded -->
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="registerInterior"     type="server" />
+    <export function="unregisterInterior"   type="server" />
+    <export function="getInterior"          type="server" />
+    <export function="getInteriors"         type="server" />
+    <export function="getInteriorDimension" type="server" />
+    <export function="getPlayerInterior"    type="server" />
+    <export function="enterInterior"        type="server" />
+    <export function="exitInterior"         type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="ui_inac" />
+</meta>

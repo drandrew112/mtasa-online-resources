@@ -1,0 +1,4375 @@
+{
+ "interiors": [
+  {
+   "name": "X711S2",
+   "aliases": [],
+   "label": "24/7 shop 1",
+   "inside": {
+    "x": -27.31,
+    "y": -31.38,
+    "z": 1002.55,
+    "rot": 97.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "X711S2",
+     "x": 1000.33,
+     "y": -919.924,
+     "z": 41.237,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "X7_11S",
+   "aliases": [],
+   "label": "24/7 shop 2",
+   "inside": {
+    "x": -26.69,
+    "y": -57.81,
+    "z": 1002.55,
+    "rot": 21.6,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "X7_11S",
+     "x": -181.004,
+     "y": 1034.83,
+     "z": 18.83,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (2)",
+     "x": -1562.63,
+     "y": -2732.98,
+     "z": 47.743,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (3)",
+     "x": 1352.31,
+     "y": -1758.3,
+     "z": 12.515,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (4)",
+     "x": 2247.66,
+     "y": 2396.26,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (5)",
+     "x": 2452.47,
+     "y": 2065.15,
+     "z": 9.847,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (6)",
+     "x": 2194.38,
+     "y": 1991.02,
+     "z": 11.301,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (7)",
+     "x": 2097.76,
+     "y": 2224.2,
+     "z": 10.058,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11S (8)",
+     "x": 1937.25,
+     "y": 2307.17,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "24/7 shop 3",
+   "aliases": [],
+   "label": "24/7 shop 3",
+   "inside": {
+    "x": 6.078,
+    "y": -28.633,
+    "z": 1003.549,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "24/7 shop 4",
+   "aliases": [],
+   "label": "24/7 shop 4",
+   "inside": {
+    "x": -25.373,
+    "y": -139.654,
+    "z": 1003.547,
+    "rot": 0.0,
+    "interior": 16,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "24/7 shop 5",
+   "aliases": [],
+   "label": "24/7 shop 5",
+   "inside": {
+    "x": -25.393,
+    "y": -185.911,
+    "z": 1003.547,
+    "rot": 0.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "X7_11B",
+   "aliases": [],
+   "label": "24/7 shop 6",
+   "inside": {
+    "x": -30.95,
+    "y": -91.71,
+    "z": 1002.55,
+    "rot": 90.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "X7_11B",
+     "x": 1833.54,
+     "y": -1843.38,
+     "z": 12.559,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11B (2)",
+     "x": 1315.49,
+     "y": -897.843,
+     "z": 38.571,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11B (3)",
+     "x": 2546.71,
+     "y": 1972.28,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "X7_11B (4)",
+     "x": 2884.83,
+     "y": 2453.28,
+     "z": 10.061,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "STAD8TRACK",
+   "aliases": [],
+   "label": "8-Track Stadium",
+   "inside": {
+    "x": -1407.8,
+    "y": -269.016,
+    "z": 1043.65,
+    "rot": 343.0,
+    "interior": 7,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "STAD8TRACK",
+     "x": 2779.8,
+     "y": -1812.735,
+     "z": 11.84,
+     "rot": 211.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "DESHOUS",
+   "aliases": [],
+   "label": "Abandoned AC Tower",
+   "inside": {
+    "x": 422.16,
+    "y": 2536.52,
+    "z": 9.01,
+    "rot": 270.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DESHOUS",
+     "x": 423.99,
+     "y": 2536.49,
+     "z": 15.19,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "ABATOIR",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 965.38,
+    "y": 2159.33,
+    "z": 1010.02,
+    "rot": 270.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "ABATOIR",
+     "x": 966.608,
+     "y": 2160.68,
+     "z": 9.822,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "AMMUN1",
+   "aliases": [],
+   "label": "Ammu-nation 1",
+   "inside": {
+    "x": 286.15,
+    "y": -41.54,
+    "z": 1000.57,
+    "rot": 90.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "AMMUN1",
+     "x": 1368.35,
+     "y": -1279.06,
+     "z": 12.55,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN1 (2)",
+     "x": -2625.85,
+     "y": 208.345,
+     "z": 3.989,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "AMMUN2",
+   "aliases": [],
+   "label": "Ammu-Nation 2",
+   "inside": {
+    "x": 285.8,
+    "y": -85.45,
+    "z": 1000.54,
+    "rot": 90.1,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "AMMUN2",
+     "x": 242.668,
+     "y": -178.478,
+     "z": 0.621,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN2 (2)",
+     "x": 2333.43,
+     "y": 61.517,
+     "z": 25.734,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN2 (3)",
+     "x": 2159.51,
+     "y": 943.329,
+     "z": 9.823,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN2 (4)",
+     "x": 2539.04,
+     "y": 2083.56,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "AMMUN3",
+   "aliases": [],
+   "label": "Ammu-Nation 3",
+   "inside": {
+    "x": 296.92,
+    "y": -111.97,
+    "z": 1000.57,
+    "rot": 301.0,
+    "interior": 6,
+    "dimension": 3
+   },
+   "entrances": [
+    {
+     "id": "AMMUN3",
+     "x": 777.231,
+     "y": 1871.47,
+     "z": 3.977,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN3 (2)",
+     "x": -315.676,
+     "y": 829.868,
+     "z": 13.427,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN3 (3)",
+     "x": -2093.51,
+     "y": -2464.79,
+     "z": 29.64,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "AMMUN3 (4)",
+     "x": 2400.5,
+     "y": -1981.48,
+     "z": 12.56,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "AMMUN5",
+   "aliases": [],
+   "label": "Ammu-Nation 4",
+   "inside": {
+    "x": 316.53,
+    "y": -169.61,
+    "z": 998.66,
+    "rot": 180.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "AMMUN5",
+     "x": -1508.89,
+     "y": 2610.8,
+     "z": 54.89,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Ammu-Nation 5 (2 Floors)",
+   "aliases": [],
+   "label": "Ammu-Nation 5 (2 Floors)",
+   "inside": {
+    "x": 315.385,
+    "y": -142.242,
+    "z": 999.601,
+    "rot": 0.0,
+    "interior": 7,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Andromada Cargo hold",
+   "aliases": [],
+   "label": "Andromada Cargo hold",
+   "inside": {
+    "x": 315.48,
+    "y": 984.13,
+    "z": 1959.11,
+    "rot": 0.0,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Angel Pine Trailer",
+   "aliases": [],
+   "label": "Angel Pine Trailer",
+   "inside": {
+    "x": 0.344,
+    "y": -0.514,
+    "z": 999.4284,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "ATRIUME",
+   "aliases": [],
+   "label": "Atrium",
+   "inside": {
+    "x": 1726.19,
+    "y": -1638.01,
+    "z": 19.27,
+    "rot": 180.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "ATRIUME",
+     "x": 1727.64,
+     "y": -1636.88,
+     "z": 19.22,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "ATRIUMX",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 1700.74,
+    "y": -1668.48,
+    "z": 19.22,
+    "rot": 270.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "ATRIUMX",
+     "x": 1699.36,
+     "y": -1667.16,
+     "z": 19.22,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF5",
+   "aliases": [],
+   "label": "Barbara's Place",
+   "inside": {
+    "x": 322.25,
+    "y": 302.42,
+    "z": 999.15,
+    "rot": 0.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF5",
+     "x": -1390.186,
+     "y": 2638.72,
+     "z": 55.98,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "BDups Apartment",
+   "aliases": [],
+   "label": "BDups Apartment",
+   "inside": {
+    "x": 1527.38,
+    "y": -11.02,
+    "z": 1002.1,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "BDups Crack Palace",
+   "aliases": [],
+   "label": "BDups Crack Palace",
+   "inside": {
+    "x": 1523.751,
+    "y": -46.0458,
+    "z": 1002.131,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "GYM3",
+   "aliases": [],
+   "label": "Below the Belt Gym",
+   "inside": {
+    "x": 773.58,
+    "y": -78.2,
+    "z": 999.69,
+    "rot": 180.0,
+    "interior": 7,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GYM3",
+     "x": 1968.7,
+     "y": 2295.3,
+     "z": 15.495,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CARTER",
+   "aliases": [],
+   "label": "Big Smoke's Crack Palace",
+   "inside": {
+    "x": 2541.7,
+    "y": -1304.01,
+    "z": 1024.07,
+    "rot": 90.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CARTER",
+     "x": 2540.08,
+     "y": -1304.0,
+     "z": 33.988,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "STRIP2",
+   "aliases": [],
+   "label": "Big Spread Ranch",
+   "inside": {
+    "x": 1212.02,
+    "y": -25.86,
+    "z": 1000.09,
+    "rot": 198.4,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "STRIP2",
+     "x": 693.632,
+     "y": 1966.4,
+     "z": 4.56,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "STRIP2 (2)",
+     "x": 2543.15,
+     "y": 1025.16,
+     "z": 9.821,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Bike School",
+   "aliases": [],
+   "label": "Bike School",
+   "inside": {
+    "x": 1494.335,
+    "y": 1305.651,
+    "z": 1093.289,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "CSCHP",
+   "aliases": [],
+   "label": "Binco",
+   "inside": {
+    "x": 207.74,
+    "y": -111.42,
+    "z": 1004.27,
+    "rot": 357.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CSCHP",
+     "x": 2244.47,
+     "y": -1665.36,
+     "z": 14.484,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSCHP (2)",
+     "x": -2375.32,
+     "y": 910.293,
+     "z": 44.458,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSCHP (3)",
+     "x": 1657.01,
+     "y": 1733.33,
+     "z": 10.021,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSCHP (4)",
+     "x": 2102.69,
+     "y": 2257.49,
+     "z": 10.058,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Blood Bowl Stadium",
+   "aliases": [],
+   "label": "Blood Bowl Stadium",
+   "inside": {
+    "x": -1394.2,
+    "y": 987.62,
+    "z": 1023.96,
+    "rot": 0.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Brothel",
+   "aliases": [],
+   "label": "Brothel",
+   "inside": {
+    "x": 940.652,
+    "y": -18.486,
+    "z": 1000.93,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Brothel 2",
+   "aliases": [],
+   "label": "Brothel 2",
+   "inside": {
+    "x": 967.5334,
+    "y": -53.0245,
+    "z": 1001.125,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Budget Inn Motel Room",
+   "aliases": [],
+   "label": "Budget Inn Motel Room",
+   "inside": {
+    "x": 444.6469,
+    "y": 508.239,
+    "z": 1001.4194,
+    "rot": 0.0,
+    "interior": 12,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "FDBURG",
+   "aliases": [],
+   "label": "Burger Shot",
+   "inside": {
+    "x": 363.11,
+    "y": -74.88,
+    "z": 1000.55,
+    "rot": 270.4,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "FDBURG",
+     "x": 811.982,
+     "y": -1616.02,
+     "z": 12.618,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (2)",
+     "x": 1199.13,
+     "y": -918.071,
+     "z": 42.324,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (3)",
+     "x": -1912.27,
+     "y": 828.025,
+     "z": 34.562,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (4)",
+     "x": -2336.95,
+     "y": -166.646,
+     "z": 34.357,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (5)",
+     "x": -2356.48,
+     "y": 1008.01,
+     "z": 49.904,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (6)",
+     "x": 2366.74,
+     "y": 2071.02,
+     "z": 9.822,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (7)",
+     "x": 2472.68,
+     "y": 2033.88,
+     "z": 9.822,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (8)",
+     "x": 2169.86,
+     "y": 2795.79,
+     "z": 9.895,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (9)",
+     "x": 1872.24,
+     "y": 2072.07,
+     "z": 9.822,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDBURG (10)",
+     "x": 1158.43,
+     "y": 2072.02,
+     "z": 9.822,
+     "rot": 314.7,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "LAHS1B",
+   "aliases": [],
+   "label": "Burglary House 1",
+   "inside": {
+    "x": 223.04,
+    "y": 1287.26,
+    "z": 1081.2,
+    "rot": 2.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "LAHS1B",
+     "x": -2058.97,
+     "y": 889.859,
+     "z": 60.914,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 10",
+   "aliases": [],
+   "label": "Burglary House 10",
+   "inside": {
+    "x": 228.9003,
+    "y": 1114.477,
+    "z": 1080.992,
+    "rot": 0.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SFHSB1",
+   "aliases": [],
+   "label": "Burglary House 11",
+   "inside": {
+    "x": 140.18,
+    "y": 1366.58,
+    "z": 1082.97,
+    "rot": 270.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSB1",
+     "x": -2627.09,
+     "y": 2309.93,
+     "z": 7.35,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSB1 (2)",
+     "x": -2684.77,
+     "y": 819.657,
+     "z": 49.033,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SFHSB3",
+   "aliases": [],
+   "label": "Burglary House 12",
+   "inside": {
+    "x": 82.95,
+    "y": 1322.44,
+    "z": 1082.89,
+    "rot": 2.0,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSB3",
+     "x": -2569.1,
+     "y": 795.796,
+     "z": 48.982,
+     "rot": 320.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSB3 (2)",
+     "x": -2539.92,
+     "y": 767.238,
+     "z": 39.042,
+     "rot": 320.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 13",
+   "aliases": [],
+   "label": "Burglary House 13",
+   "inside": {
+    "x": 260.3189,
+    "y": 1239.663,
+    "z": 1084.258,
+    "rot": 0.0,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 14",
+   "aliases": [],
+   "label": "Burglary House 14",
+   "inside": {
+    "x": 21.241,
+    "y": 1342.153,
+    "z": 1084.375,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 15",
+   "aliases": [],
+   "label": "Burglary House 15",
+   "inside": {
+    "x": 234.319,
+    "y": 1066.455,
+    "z": 1084.208,
+    "rot": 0.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SFHSS2",
+   "aliases": [],
+   "label": "Burglary House 16",
+   "inside": {
+    "x": -68.69,
+    "y": 1351.97,
+    "z": 1079.28,
+    "rot": 270.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSS2",
+     "x": -2626.29,
+     "y": 2359.75,
+     "z": 8.006,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS2 (2)",
+     "x": -2591.41,
+     "y": -95.538,
+     "z": 3.445,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS2 (3)",
+     "x": -2541.61,
+     "y": -145.321,
+     "z": 14.783,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS2 (4)",
+     "x": -2449.72,
+     "y": 921.163,
+     "z": 57.209,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS2 (5)",
+     "x": -2372.92,
+     "y": 692.687,
+     "z": 34.138,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SFHSM1",
+   "aliases": [],
+   "label": "Burglary House 17",
+   "inside": {
+    "x": -283.55,
+    "y": 1470.98,
+    "z": 1083.45,
+    "rot": 270.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSM1",
+     "x": -2401.5,
+     "y": 869.344,
+     "z": 43.389,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 18",
+   "aliases": [],
+   "label": "Burglary House 18",
+   "inside": {
+    "x": 327.808,
+    "y": 1479.74,
+    "z": 1084.438,
+    "rot": 0.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 19",
+   "aliases": [],
+   "label": "Burglary House 19",
+   "inside": {
+    "x": 375.572,
+    "y": 1417.439,
+    "z": 1081.328,
+    "rot": 0.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 2",
+   "aliases": [],
+   "label": "Burglary House 2",
+   "inside": {
+    "x": 225.756,
+    "y": 1240.0,
+    "z": 1082.149,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 20",
+   "aliases": [],
+   "label": "Burglary House 20",
+   "inside": {
+    "x": 384.644,
+    "y": 1471.479,
+    "z": 1080.195,
+    "rot": 0.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 21",
+   "aliases": [],
+   "label": "Burglary House 21",
+   "inside": {
+    "x": 295.467,
+    "y": 1474.697,
+    "z": 1080.258,
+    "rot": 0.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SFHSS1",
+   "aliases": [],
+   "label": "Burglary House 22",
+   "inside": {
+    "x": -42.58,
+    "y": 1405.61,
+    "z": 1083.45,
+    "rot": 2.0,
+    "interior": 8,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSS1",
+     "x": -2084.21,
+     "y": 1160.33,
+     "z": 49.242,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (2)",
+     "x": -1913.32,
+     "y": 1252.89,
+     "z": 18.537,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (3)",
+     "x": -1820.62,
+     "y": 1116.27,
+     "z": 45.543,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (4)",
+     "x": -1742.78,
+     "y": 1174.34,
+     "z": 24.158,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (5)",
+     "x": -2157.2,
+     "y": 889.192,
+     "z": 79.025,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (6)",
+     "x": -2234.16,
+     "y": 830.667,
+     "z": 53.514,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (7)",
+     "x": -2159.69,
+     "y": 1048.74,
+     "z": 79.03,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (8)",
+     "x": -2239.22,
+     "y": 962.248,
+     "z": 65.654,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (9)",
+     "x": -2112.58,
+     "y": 745.657,
+     "z": 68.582,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (10)",
+     "x": -2205.27,
+     "y": 743.061,
+     "z": 49.474,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (11)",
+     "x": -2636.13,
+     "y": 2351.92,
+     "z": 7.598,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (12)",
+     "x": -2591.41,
+     "y": -158.542,
+     "z": 3.36,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (13)",
+     "x": -2558.79,
+     "y": -79.623,
+     "z": 10.079,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (14)",
+     "x": -2514.04,
+     "y": -170.797,
+     "z": 24.271,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (15)",
+     "x": -2447.62,
+     "y": 820.771,
+     "z": 34.256,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (16)",
+     "x": -2338.61,
+     "y": 579.323,
+     "z": 27.012,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (17)",
+     "x": -2321.97,
+     "y": 819.509,
+     "z": 44.305,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (18)",
+     "x": -2401.48,
+     "y": 930.783,
+     "z": 44.497,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (19)",
+     "x": -2381.23,
+     "y": 1281.01,
+     "z": 22.185,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (20)",
+     "x": -2279.5,
+     "y": 1148.84,
+     "z": 61.075,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SFHSS1 (21)",
+     "x": -2280.55,
+     "y": 916.429,
+     "z": 65.685,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 3",
+   "aliases": [],
+   "label": "Burglary House 3",
+   "inside": {
+    "x": 447.47,
+    "y": 1398.348,
+    "z": 1084.305,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 4",
+   "aliases": [],
+   "label": "Burglary House 4",
+   "inside": {
+    "x": 491.74,
+    "y": 1400.541,
+    "z": 1080.265,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Burglary House 5",
+   "aliases": [],
+   "label": "Burglary House 5",
+   "inside": {
+    "x": 234.733,
+    "y": 1190.391,
+    "z": 1080.258,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SFHSM2",
+   "aliases": [],
+   "label": "Burglary House 6",
+   "inside": {
+    "x": -260.6,
+    "y": 1456.62,
+    "z": 1083.45,
+    "rot": 270.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SFHSM2",
+     "x": -2627.09,
+     "y": 2283.33,
+     "z": 7.318,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 7",
+   "aliases": [],
+   "label": "Burglary House 7",
+   "inside": {
+    "x": 221.4296,
+    "y": 1142.423,
+    "z": 1082.609,
+    "rot": 0.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "LAHS2A",
+   "aliases": [],
+   "label": "Burglary House 8",
+   "inside": {
+    "x": 260.98,
+    "y": 1284.55,
+    "z": 1079.3,
+    "rot": 179.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "LAHS2A",
+     "x": -2139.85,
+     "y": 1189.84,
+     "z": 54.763,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "LAHS2A (2)",
+     "x": -2152.4,
+     "y": 1250.16,
+     "z": 24.95,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "LAHS2A (3)",
+     "x": -1955.25,
+     "y": 1190.6,
+     "z": 44.453,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Burglary House 9",
+   "aliases": [],
+   "label": "Burglary House 9",
+   "inside": {
+    "x": 22.79996,
+    "y": 1404.642,
+    "z": 1084.43,
+    "rot": 0.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "GANG",
+   "aliases": [],
+   "label": "Burning Desire House",
+   "inside": {
+    "x": 2352.34,
+    "y": -1181.25,
+    "z": 1027.0,
+    "rot": 0.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GANG",
+     "x": 2351.97,
+     "y": -1169.86,
+     "z": 27.031,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "MAFCAS",
+   "aliases": [],
+   "label": "Caligulas Casino",
+   "inside": {
+    "x": 2233.91,
+    "y": 1714.73,
+    "z": 1011.38,
+    "rot": 90.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "MAFCAS",
+     "x": 2196.92,
+     "y": 1676.52,
+     "z": 11.368,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CJ's Garage",
+   "aliases": [],
+   "label": "CJ's Garage",
+   "inside": {
+    "x": -2043.966,
+    "y": 172.932,
+    "z": 28.835,
+    "rot": 0.0,
+    "interior": 13,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "BAR1",
+   "aliases": [],
+   "label": "Club",
+   "inside": {
+    "x": 493.39,
+    "y": -24.92,
+    "z": 999.69,
+    "rot": 90.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BAR1",
+     "x": 1836.9,
+     "y": -1681.75,
+     "z": 12.364,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BAR1 (2)",
+     "x": -2551.79,
+     "y": 193.778,
+     "z": 5.219,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BAR1 (3)",
+     "x": 2507.44,
+     "y": 1242.31,
+     "z": 9.833,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "FDCHICK",
+   "aliases": [],
+   "label": "Cluckin' Bell",
+   "inside": {
+    "x": 365.67,
+    "y": -11.61,
+    "z": 1000.87,
+    "rot": 190.2,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "FDCHICK",
+     "x": 172.727,
+     "y": 1176.68,
+     "z": 13.773,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (2)",
+     "x": -1213.71,
+     "y": 1830.46,
+     "z": 40.934,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (3)",
+     "x": -2155.03,
+     "y": -2460.28,
+     "z": 29.848,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (4)",
+     "x": 2419.95,
+     "y": -1509.8,
+     "z": 23.157,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (5)",
+     "x": 2397.83,
+     "y": -1898.65,
+     "z": 12.713,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (6)",
+     "x": 928.525,
+     "y": -1352.77,
+     "z": 12.434,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (7)",
+     "x": -1815.84,
+     "y": 618.678,
+     "z": 34.299,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (8)",
+     "x": -2671.53,
+     "y": 258.344,
+     "z": 3.649,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (9)",
+     "x": 2638.58,
+     "y": 1671.18,
+     "z": 10.023,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (10)",
+     "x": 2393.18,
+     "y": 2041.66,
+     "z": 9.847,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (11)",
+     "x": 2838.43,
+     "y": 2407.26,
+     "z": 10.061,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDCHICK (12)",
+     "x": 2102.69,
+     "y": 2228.76,
+     "z": 10.058,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GYM2",
+   "aliases": [],
+   "label": "Cobra Marital Arts Gym",
+   "inside": {
+    "x": 774.21,
+    "y": -50.02,
+    "z": 999.69,
+    "rot": 270.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GYM2",
+     "x": -2270.46,
+     "y": -155.957,
+     "z": 34.357,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "BURHOUS",
+   "aliases": [],
+   "label": "Colonel Fuhrberger's House",
+   "inside": {
+    "x": 2807.62,
+    "y": -1174.1,
+    "z": 1024.58,
+    "rot": 180.0,
+    "interior": 8,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BURHOUS",
+     "x": 2808.0,
+     "y": -1175.99,
+     "z": 24.774,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "DAMIN",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -959.671,
+    "y": 1955.55,
+    "z": 8.08,
+    "rot": 270.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DAMIN",
+     "x": -594.874,
+     "y": 2018.21,
+     "z": 59.679,
+     "rot": 330.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF1",
+   "aliases": [],
+   "label": "Denise's Place",
+   "inside": {
+    "x": 243.75,
+    "y": 304.82,
+    "z": 999.14,
+    "rot": 270.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF1",
+     "x": 2402.52,
+     "y": -1715.28,
+     "z": 14.13,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CSEXL",
+   "aliases": [],
+   "label": "Didier Sachs",
+   "inside": {
+    "x": 204.33,
+    "y": -168.7,
+    "z": 999.58,
+    "rot": 129.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CSEXL",
+     "x": 453.868,
+     "y": -1478.07,
+     "z": 29.961,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "DINER2",
+   "aliases": [],
+   "label": "Diner 1",
+   "inside": {
+    "x": 459.35,
+    "y": -111.01,
+    "z": 998.72,
+    "rot": 308.6,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DINER2",
+     "x": -206.0,
+     "y": 1062.21,
+     "z": 18.83,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (2)",
+     "x": -53.87,
+     "y": 1189.17,
+     "z": 18.411,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (3)",
+     "x": 291.974,
+     "y": -195.463,
+     "z": 0.852,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (4)",
+     "x": 2863.23,
+     "y": -1439.44,
+     "z": 10.008,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (5)",
+     "x": -1700.01,
+     "y": 1380.49,
+     "z": 6.204,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (6)",
+     "x": -2524.11,
+     "y": 1216.16,
+     "z": 36.45,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER2 (7)",
+     "x": 2368.06,
+     "y": 1983.19,
+     "z": 10.003,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "DINER1",
+   "aliases": [],
+   "label": "Diner 2",
+   "inside": {
+    "x": 460.1,
+    "y": -88.43,
+    "z": 998.62,
+    "rot": 292.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DINER1",
+     "x": -1941.72,
+     "y": 2379.54,
+     "z": 48.701,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER1 (2)",
+     "x": 386.918,
+     "y": -1817.79,
+     "z": 6.9,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "DINER1 (3)",
+     "x": 1376.89,
+     "y": 2327.79,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Dirtbike Stadium",
+   "aliases": [],
+   "label": "Dirtbike Stadium",
+   "inside": {
+    "x": -1435.869,
+    "y": -662.2505,
+    "z": 1052.465,
+    "rot": 0.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Doherty Garage",
+   "aliases": [],
+   "label": "Doherty Garage",
+   "inside": {
+    "x": -2042.42,
+    "y": 178.59,
+    "z": 28.84,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "DRIVES",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -2029.72,
+    "y": -119.55,
+    "z": 1034.17,
+    "rot": 180.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DRIVES",
+     "x": -2029.72,
+     "y": -120.926,
+     "z": 34.169,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "DRIVES2",
+   "aliases": [],
+   "label": "Driving School",
+   "inside": {
+    "x": -2026.92,
+    "y": -103.48,
+    "z": 1034.27,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "DRIVES2",
+     "x": -2026.92,
+     "y": -101.459,
+     "z": 34.259,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Fanny Batter's Brothel",
+   "aliases": [],
+   "label": "Fanny Batter's Brothel",
+   "inside": {
+    "x": 744.271,
+    "y": 1437.253,
+    "z": 1102.703,
+    "rot": 0.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "TRICAS",
+   "aliases": [],
+   "label": "Four Dragons Casino",
+   "inside": {
+    "x": 2018.95,
+    "y": 1017.09,
+    "z": 995.88,
+    "rot": 270.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "TRICAS",
+     "x": 2019.49,
+     "y": 1007.11,
+     "z": 9.821,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Francis Int. Airport (Baggage Claim/Ticket Sales)",
+   "aliases": [],
+   "label": "Francis Int. Airport (Baggage Claim/Ticket Sales)",
+   "inside": {
+    "x": -1855.5687,
+    "y": 41.2631,
+    "z": 1061.1435,
+    "rot": 0.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Francis Int. Airport (Front ext.)",
+   "aliases": [],
+   "label": "Francis Int. Airport (Front ext.)",
+   "inside": {
+    "x": -1827.1473,
+    "y": 7.2074,
+    "z": 1061.1435,
+    "rot": 0.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "GYM1",
+   "aliases": [],
+   "label": "Ganton Gym",
+   "inside": {
+    "x": 772.11,
+    "y": -5.0,
+    "z": 999.69,
+    "rot": 137.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GYM1",
+     "x": 2229.63,
+     "y": -1721.63,
+     "z": 12.653,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "BARBER2",
+   "aliases": [],
+   "label": "Gay Gordo's Barbershop",
+   "inside": {
+    "x": 418.65,
+    "y": -84.14,
+    "z": 1000.96,
+    "rot": 271.1,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BARBER2",
+     "x": 672.355,
+     "y": -496.834,
+     "z": 15.375,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BARBER2 (2)",
+     "x": -1449.87,
+     "y": 2591.85,
+     "z": 54.838,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BARBER2 (3)",
+     "x": 823.629,
+     "y": -1588.9,
+     "z": 12.576,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BARBER2 (4)",
+     "x": -2571.18,
+     "y": 246.698,
+     "z": 9.642,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BARBER2 (5)",
+     "x": 2080.36,
+     "y": 2122.13,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVSFMD",
+   "aliases": [],
+   "label": "Hashbury safe house",
+   "inside": {
+    "x": 2270.39,
+    "y": -1210.45,
+    "z": 1046.57,
+    "rot": 90.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVSFMD",
+     "x": -2454.44,
+     "y": -135.879,
+     "z": 25.222,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF3",
+   "aliases": [],
+   "label": "Helena's Place",
+   "inside": {
+    "x": 292.89,
+    "y": 309.9,
+    "z": 999.15,
+    "rot": 90.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF3",
+     "x": -382.67,
+     "y": -1438.83,
+     "z": 26.12,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GENOTB",
+   "aliases": [],
+   "label": "Inside Track Betting",
+   "inside": {
+    "x": 834.82,
+    "y": 7.42,
+    "z": 1003.18,
+    "rot": 234.8,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GENOTB",
+     "x": 1288.8,
+     "y": 271.002,
+     "z": 18.555,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "GENOTB (2)",
+     "x": 1631.86,
+     "y": -1172.57,
+     "z": 23.135,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Janitor room(Four Dragons Maintenance)",
+   "aliases": [],
+   "label": "Janitor room(Four Dragons Maintenance)",
+   "inside": {
+    "x": 1891.396,
+    "y": 1018.126,
+    "z": 31.882,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "MOTEL1",
+   "aliases": [],
+   "label": "Jefferson Motel",
+   "inside": {
+    "x": 2214.34,
+    "y": -1150.51,
+    "z": 1024.8,
+    "rot": 90.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "MOTEL1",
+     "x": 2232.87,
+     "y": -1159.71,
+     "z": 24.942,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "PDOMES2",
+   "aliases": [],
+   "label": "Jizzy's Pleasure Domes",
+   "inside": {
+    "x": -2637.45,
+    "y": 1402.24,
+    "z": 905.46,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "PDOMES2",
+     "x": -2625.33,
+     "y": 1412.62,
+     "z": 6.131,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CARLS",
+   "aliases": [],
+   "label": "Johnson House",
+   "inside": {
+    "x": 2496.05,
+    "y": -1692.73,
+    "z": 1013.75,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CARLS",
+     "x": 2495.33,
+     "y": -1690.75,
+     "z": 13.785,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "JUMP1",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 2264.49,
+    "y": 1619.58,
+    "z": 1089.5,
+    "rot": 270.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "JUMP1",
+     "x": 2268.07,
+     "y": 1619.59,
+     "z": 93.912,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "JUMP2",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 2264.48,
+    "y": 1675.93,
+    "z": 1089.5,
+    "rot": 270.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "JUMP2",
+     "x": 2268.14,
+     "y": 1675.89,
+     "z": 93.912,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF2",
+   "aliases": [],
+   "label": "Katie's Place",
+   "inside": {
+    "x": 266.56,
+    "y": 304.95,
+    "z": 999.14,
+    "rot": 270.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF2",
+     "x": -2574.04,
+     "y": 1152.31,
+     "z": 55.72,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "STADSTUNT",
+   "aliases": [],
+   "label": "Kickstart Stadium",
+   "inside": {
+    "x": -1464.942,
+    "y": 1556.091,
+    "z": 1052.53,
+    "rot": 0.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "STADSTUNT",
+     "x": 1093.99,
+     "y": 1597.04,
+     "z": 12.54,
+     "rot": 7.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "PAPER",
+   "aliases": [],
+   "label": "Las Venturas Planning Dep.",
+   "inside": {
+    "x": 390.87,
+    "y": 173.81,
+    "z": 1007.39,
+    "rot": 270.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "PAPER",
+     "x": 2412.6,
+     "y": 1123.81,
+     "z": 9.853,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Liberty City",
+   "aliases": [],
+   "label": "Liberty City",
+   "inside": {
+    "x": -750.8,
+    "y": 491.0,
+    "z": 1371.7,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "UFOBAR",
+   "aliases": [],
+   "label": "Lil Probe Inn",
+   "inside": {
+    "x": -229.03,
+    "y": 1401.23,
+    "z": 26.77,
+    "rot": 270.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "UFOBAR",
+     "x": -88.588,
+     "y": 1378.36,
+     "z": 9.57,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Loco Low Co.",
+   "aliases": [],
+   "label": "Loco Low Co.",
+   "inside": {
+    "x": 612.591,
+    "y": -75.637,
+    "z": 997.992,
+    "rot": 0.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SVLASM",
+   "aliases": [],
+   "label": "Los Santos safe house",
+   "inside": {
+    "x": 2282.91,
+    "y": -1140.29,
+    "z": 1049.91,
+    "rot": 180.0,
+    "interior": 11,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVLASM",
+     "x": 2111.23,
+     "y": -1279.71,
+     "z": 24.955,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLASM (2)",
+     "x": 2483.38,
+     "y": -1996.19,
+     "z": 12.851,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "LS Atrium",
+   "aliases": [],
+   "label": "LS Atrium",
+   "inside": {
+    "x": 1724.33,
+    "y": -1625.784,
+    "z": 20.211,
+    "rot": 0.0,
+    "interior": 13,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "TATinteriorO",
+   "aliases": [],
+   "label": "LS Tattoo Parlour",
+   "inside": {
+    "x": -204.44,
+    "y": -27.15,
+    "z": 1001.3,
+    "rot": 270.0,
+    "interior": 16,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "TATinteriorO",
+     "x": 2068.71,
+     "y": -1779.84,
+     "z": 12.51,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "TATinteriorO (2)",
+     "x": 1975.79,
+     "y": -2036.65,
+     "z": 12.575,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "POLICE1",
+   "aliases": [],
+   "label": "LSPD HQ",
+   "inside": {
+    "x": 246.78,
+    "y": 62.2,
+    "z": 1002.64,
+    "rot": 274.1,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "POLICE1",
+     "x": 627.642,
+     "y": -571.789,
+     "z": 16.907,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "POLICE1 (2)",
+     "x": 1554.95,
+     "y": -1674.99,
+     "z": 15.328,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "TATinterior3",
+   "aliases": [],
+   "label": "LV Tattoo Parlour",
+   "inside": {
+    "x": -204.44,
+    "y": -44.35,
+    "z": 1001.3,
+    "rot": 180.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "TATinterior3",
+     "x": 2094.7,
+     "y": 2122.13,
+     "z": 9.822,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "POLICE3",
+   "aliases": [],
+   "label": "LVPD HQ",
+   "inside": {
+    "x": 288.75,
+    "y": 167.65,
+    "z": 1006.18,
+    "rot": 180.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "POLICE3",
+     "x": 2337.1,
+     "y": 2459.05,
+     "z": 14.042,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "BARBER3",
+   "aliases": [],
+   "label": "Macisla's Barbershop",
+   "inside": {
+    "x": 412.02,
+    "y": -54.55,
+    "z": 1000.96,
+    "rot": 90.0,
+    "interior": 12,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BARBER3",
+     "x": 2723.76,
+     "y": -2026.72,
+     "z": 12.575,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "MADDOGS",
+   "aliases": [],
+   "label": "Madd Dogg's Mansion",
+   "inside": {
+    "x": 1260.58,
+    "y": -785.31,
+    "z": 1090.96,
+    "rot": 90.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "MADDOGS",
+     "x": 1259.39,
+     "y": -785.332,
+     "z": 91.042,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "MDDOGS",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 1299.08,
+    "y": -796.83,
+    "z": 1083.03,
+    "rot": 200.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "MDDOGS",
+     "x": 1298.34,
+     "y": -797.968,
+     "z": 83.157,
+     "rot": 352.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF4",
+   "aliases": [],
+   "label": "Michelle's Place",
+   "inside": {
+    "x": 300.239,
+    "y": 300.584,
+    "z": 999.15,
+    "rot": 0.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF4",
+     "x": -1800.21,
+     "y": 1200.576,
+     "z": 25.119,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "GF6",
+   "aliases": [],
+   "label": "Millie's Bedroom",
+   "inside": {
+    "x": 343.74,
+    "y": 305.035,
+    "z": 999.15,
+    "rot": 180.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "GF6",
+     "x": 2037.22,
+     "y": 2721.81,
+     "z": 11.29,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "OG Loc's House",
+   "aliases": [],
+   "label": "OG Loc's House",
+   "inside": {
+    "x": 516.889,
+    "y": -18.412,
+    "z": 1001.565,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "PDOMES",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -2661.01,
+    "y": 1417.74,
+    "z": 921.31,
+    "rot": 15.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "PDOMES",
+     "x": -2661.35,
+     "y": 1424.39,
+     "z": 23.004,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "POLICE4",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 238.66,
+    "y": 139.35,
+    "z": 1002.05,
+    "rot": 180.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "POLICE4",
+     "x": 2286.96,
+     "y": 2432.21,
+     "z": 9.937,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CSSPRT",
+   "aliases": [],
+   "label": "Pro-Laps",
+   "inside": {
+    "x": 207.06,
+    "y": -139.81,
+    "z": 1002.52,
+    "rot": 315.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CSSPRT",
+     "x": 499.637,
+     "y": -1360.4,
+     "z": 15.426,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSSPRT (2)",
+     "x": 2825.74,
+     "y": 2407.44,
+     "z": 10.061,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "RC Zero's Battlefield",
+   "aliases": [],
+   "label": "RC Zero's Battlefield",
+   "inside": {
+    "x": -975.5766,
+    "y": 1061.1312,
+    "z": 1345.6719,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "RCPLAY",
+   "aliases": [],
+   "label": "RC Zero's Shop",
+   "inside": {
+    "x": -2241.07,
+    "y": 128.52,
+    "z": 1034.42,
+    "rot": 270.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "RCPLAY",
+     "x": -2242.01,
+     "y": 128.521,
+     "z": 34.417,
+     "rot": 94.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Record Label Hallway",
+   "aliases": [],
+   "label": "Record Label Hallway",
+   "inside": {
+    "x": 1038.219,
+    "y": 6.9905,
+    "z": 1001.284,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "BARBERS",
+   "aliases": [],
+   "label": "Reece's Barbershop",
+   "inside": {
+    "x": 411.63,
+    "y": -23.33,
+    "z": 1000.8,
+    "rot": 270.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BARBERS",
+     "x": 2070.86,
+     "y": -1793.84,
+     "z": 12.661,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "REST2",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 441.98,
+    "y": -49.92,
+    "z": 998.69,
+    "rot": 323.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "REST2",
+     "x": -857.938,
+     "y": 1535.56,
+     "z": 21.635,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "REST2 (2)",
+     "x": -1887.43,
+     "y": 749.592,
+     "z": 44.466,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "FDREST1",
+   "aliases": [],
+   "label": "Restaurant 1",
+   "inside": {
+    "x": 452.89,
+    "y": -18.18,
+    "z": 1000.18,
+    "rot": 129.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "FDREST1",
+     "x": 419.191,
+     "y": -1428.71,
+     "z": 31.896,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDREST1 (2)",
+     "x": -2463.06,
+     "y": 132.287,
+     "z": 34.198,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDREST1 (3)",
+     "x": 2489.87,
+     "y": 2065.15,
+     "z": 9.847,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDREST1 (4)",
+     "x": 1693.19,
+     "y": 2209.13,
+     "z": 10.021,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Restaurant 2",
+   "aliases": [],
+   "label": "Restaurant 2",
+   "inside": {
+    "x": 443.981,
+    "y": -65.219,
+    "z": 1050.0,
+    "rot": 0.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Rusty Brown's - Ring Donuts",
+   "aliases": [],
+   "label": "Rusty Brown's - Ring Donuts",
+   "inside": {
+    "x": 377.003,
+    "y": -192.507,
+    "z": 1000.633,
+    "rot": 0.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "RYDER",
+   "aliases": [],
+   "label": "Ryder's House",
+   "inside": {
+    "x": 2468.18,
+    "y": -1698.29,
+    "z": 1013.5,
+    "rot": 90.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "RYDER",
+     "x": 2459.43,
+     "y": -1690.91,
+     "z": 13.54,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Safe House 1",
+   "aliases": [],
+   "label": "Safe House 1",
+   "inside": {
+    "x": 2262.83,
+    "y": -1137.71,
+    "z": 1050.63,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SVVGHO2",
+   "aliases": [],
+   "label": "Safe House 17",
+   "inside": {
+    "x": 2237.59,
+    "y": -1080.87,
+    "z": 1048.07,
+    "rot": 270.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVVGHO2",
+     "x": 1965.11,
+     "y": 1622.54,
+     "z": 11.879,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVVGHO2 (2)",
+     "x": 2374.55,
+     "y": 2167.88,
+     "z": 9.847,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVLAMD",
+   "aliases": [],
+   "label": "Safe house 2",
+   "inside": {
+    "x": 2365.3,
+    "y": -1134.92,
+    "z": 1049.91,
+    "rot": 180.0,
+    "interior": 8,
+    "dimension": 1
+   },
+   "entrances": [
+    {
+     "id": "SVLAMD",
+     "x": 1684.74,
+     "y": -2099.0,
+     "z": 12.851,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLAMD (2)",
+     "x": 315.684,
+     "y": -1769.81,
+     "z": 3.629,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLAMD (3)",
+     "x": 893.617,
+     "y": -1636.3,
+     "z": 13.987,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLAMD (4)",
+     "x": 2449.17,
+     "y": 689.839,
+     "z": 10.471,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLAMD (5)",
+     "x": 1408.05,
+     "y": 1897.08,
+     "z": 10.587,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVLAMD (6)",
+     "x": 929.122,
+     "y": 2006.43,
+     "z": 10.478,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVCUNT",
+   "aliases": [],
+   "label": "Safe House 3",
+   "inside": {
+    "x": 2333.11,
+    "y": -1077.1,
+    "z": 1048.04,
+    "rot": 230.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVCUNT",
+     "x": -369.456,
+     "y": 1169.14,
+     "z": 19.398,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (2)",
+     "x": 794.884,
+     "y": -506.702,
+     "z": 17.124,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (3)",
+     "x": 2236.53,
+     "y": 167.997,
+     "z": 27.196,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (4)",
+     "x": 206.802,
+     "y": -112.542,
+     "z": 3.982,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (5)",
+     "x": -1533.1,
+     "y": 2656.65,
+     "z": 55.275,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (6)",
+     "x": -1051.47,
+     "y": 1549.76,
+     "z": 32.496,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (7)",
+     "x": -2075.91,
+     "y": -2312.55,
+     "z": 30.131,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVCUNT (8)",
+     "x": -1438.72,
+     "y": -1544.58,
+     "z": 100.713,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVVGHO1",
+   "aliases": [],
+   "label": "Safe House 4",
+   "inside": {
+    "x": 2217.54,
+    "y": -1076.29,
+    "z": 1049.52,
+    "rot": 90.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVVGHO1",
+     "x": 2238.99,
+     "y": 1285.05,
+     "z": 9.825,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVVGHO1 (2)",
+     "x": 2226.03,
+     "y": 1837.92,
+     "z": 9.964,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVSFBG",
+   "aliases": [],
+   "label": "Safe House 5",
+   "inside": {
+    "x": 2196.79,
+    "y": -1204.35,
+    "z": 1048.05,
+    "rot": 358.1,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVSFBG",
+     "x": 1331.94,
+     "y": -633.096,
+     "z": 108.245,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVSFBG (2)",
+     "x": -2099.68,
+     "y": 897.485,
+     "z": 75.966,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVSFBG (3)",
+     "x": -2027.73,
+     "y": -40.549,
+     "z": 37.826,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SVSFSM",
+   "aliases": [],
+   "label": "Safe House 6",
+   "inside": {
+    "x": 2308.79,
+    "y": -1212.88,
+    "z": 1048.03,
+    "rot": 36.0,
+    "interior": 6,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVSFSM",
+     "x": -2213.54,
+     "y": 720.845,
+     "z": 48.426,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVSFSM (2)",
+     "x": -2700.32,
+     "y": 820.308,
+     "z": 48.999,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "SVSFSM (3)",
+     "x": 2818.75,
+     "y": 2140.56,
+     "z": 13.713,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Safe house 7",
+   "aliases": [],
+   "label": "Safe house 7",
+   "inside": {
+    "x": 2324.3848,
+    "y": -1148.4805,
+    "z": 1050.7101,
+    "rot": 0.0,
+    "interior": 12,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "San Fierro Chunk (cutscene place)",
+   "aliases": [],
+   "label": "San Fierro Chunk (cutscene place)",
+   "inside": {
+    "x": -2015.66,
+    "y": 148.2,
+    "z": 27.6875,
+    "rot": 0.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SEXSHOP",
+   "aliases": [],
+   "label": "Sex Shop",
+   "inside": {
+    "x": -100.33,
+    "y": -24.92,
+    "z": 999.74,
+    "rot": 270.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SEXSHOP",
+     "x": 2086.42,
+     "y": 2074.48,
+     "z": 10.204,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SFPD HQ",
+   "aliases": [],
+   "label": "SFPD HQ",
+   "inside": {
+    "x": 246.441,
+    "y": 112.164,
+    "z": 1003.219,
+    "rot": 0.0,
+    "interior": 10,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Shamal cabin",
+   "aliases": [],
+   "label": "Shamal cabin",
+   "inside": {
+    "x": 1.6127,
+    "y": 34.7411,
+    "z": 1199.0,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Sindacco Abatoir",
+   "aliases": [],
+   "label": "Sindacco Abatoir",
+   "inside": {
+    "x": 963.6078,
+    "y": 2108.397,
+    "z": 1011.03,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SPECIAL1",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -224.733,
+    "y": 1395.82,
+    "z": 172.05,
+    "rot": 0.0,
+    "interior": 0,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SPECIAL1",
+     "x": -225.433,
+     "y": 1397.02,
+     "z": 69.05,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SPECIAL2",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 2980.16,
+    "y": 76.158,
+    "z": 0.0,
+    "rot": 0.0,
+    "interior": 0,
+    "dimension": 1
+   },
+   "entrances": [
+    {
+     "id": "SPECIAL2",
+     "x": 2896.57,
+     "y": 57.217,
+     "z": 0.0,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SPECIAL3",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -1753.85,
+    "y": 885.679,
+    "z": 295.059,
+    "rot": 0.0,
+    "interior": 0,
+    "dimension": 2
+   },
+   "entrances": [
+    {
+     "id": "SPECIAL3",
+     "x": -1749.35,
+     "y": 869.279,
+     "z": 24.059,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "SPECIAL4",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -1749.38,
+    "y": 865.158,
+    "z": 24.145,
+    "rot": 0.0,
+    "interior": 0,
+    "dimension": 3
+   },
+   "entrances": [
+    {
+     "id": "SPECIAL4",
+     "x": -1753.75,
+     "y": 883.965,
+     "z": 294.645,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "STADBLOOD",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -1463.46,
+    "y": 941.49,
+    "z": 1036.64,
+    "rot": 306.0,
+    "interior": 15,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "STADBLOOD",
+     "x": 2727.618,
+     "y": -1826.647,
+     "z": 11.8,
+     "rot": 168.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "STADDIRT",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -1400.018,
+    "y": -663.382,
+    "z": 1051.232,
+    "rot": 85.0,
+    "interior": 4,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "STADDIRT",
+     "x": 1100.72,
+     "y": 1597.29,
+     "z": 12.54,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "LACS1",
+   "aliases": [],
+   "label": "Sub Urban",
+   "inside": {
+    "x": 203.78,
+    "y": -49.89,
+    "z": 1000.8,
+    "rot": 180.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "LACS1",
+     "x": 2112.73,
+     "y": -1211.7,
+     "z": 22.961,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "LACS1 (2)",
+     "x": -2491.98,
+     "y": -29.107,
+     "z": 24.817,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "LACS1 (3)",
+     "x": 2779.12,
+     "y": 2453.54,
+     "z": 10.061,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Sumoring? stadium",
+   "aliases": [],
+   "label": "Sumoring? stadium",
+   "inside": {
+    "x": -1400.0,
+    "y": 1250.0,
+    "z": 1040.0,
+    "rot": 0.0,
+    "interior": 16,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SVVGMD",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 2317.82,
+    "y": -1026.75,
+    "z": 1049.21,
+    "rot": 270.0,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVVGMD",
+     "x": 1274.28,
+     "y": 2522.47,
+     "z": 9.993,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Sweet's House",
+   "aliases": [],
+   "label": "Sweet's House",
+   "inside": {
+    "x": 2525.042,
+    "y": -1679.115,
+    "z": 1015.499,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "TATinterior2",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": -204.44,
+    "y": -9.17,
+    "z": 1001.3,
+    "rot": 90.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "TATinterior2",
+     "x": -2491.98,
+     "y": -38.959,
+     "z": 24.817,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "BAR2",
+   "aliases": [],
+   "label": "Ten Green Bottles Bar",
+   "inside": {
+    "x": 501.98,
+    "y": -67.75,
+    "z": 997.84,
+    "rot": 93.0,
+    "interior": 11,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "BAR2",
+     "x": 2309.62,
+     "y": -1643.63,
+     "z": 13.838,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BAR2 (2)",
+     "x": -2242.69,
+     "y": -88.256,
+     "z": 34.358,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "BAR2 (3)",
+     "x": 2441.15,
+     "y": 2065.15,
+     "z": 9.847,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CASINO2",
+   "aliases": [],
+   "label": "The Casino",
+   "inside": {
+    "x": 1133.07,
+    "y": -12.77,
+    "z": 999.75,
+    "rot": 0.0,
+    "interior": 12,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CASINO2",
+     "x": 1659.42,
+     "y": 2249.69,
+     "z": 10.066,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "LACRAK",
+   "aliases": [],
+   "label": "The Crack Den",
+   "inside": {
+    "x": 318.57,
+    "y": 1115.21,
+    "z": 1082.98,
+    "rot": 220.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "LACRAK",
+     "x": 2166.2,
+     "y": -1671.47,
+     "z": 14.198,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "The Four Dragons Office",
+   "aliases": [],
+   "label": "The Four Dragons Office",
+   "inside": {
+    "x": 2011.603,
+    "y": 1017.023,
+    "z": 39.091,
+    "rot": 0.0,
+    "interior": 11,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "LASTRIP",
+   "aliases": [],
+   "label": "The Pig Pen",
+   "inside": {
+    "x": 1204.81,
+    "y": -12.79,
+    "z": 1000.09,
+    "rot": 180.0,
+    "interior": 2,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "LASTRIP",
+     "x": 2421.52,
+     "y": -1220.65,
+     "z": 24.608,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "LASTRIP (2)",
+     "x": 2506.74,
+     "y": 2120.39,
+     "z": 9.847,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "The Sherman's Dam Generator Hall",
+   "aliases": [],
+   "label": "The Sherman's Dam Generator Hall",
+   "inside": {
+    "x": -942.132,
+    "y": 1849.142,
+    "z": 5.005,
+    "rot": 0.0,
+    "interior": 17,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "The Wellcome Pump (Catalina?)",
+   "aliases": [],
+   "label": "The Wellcome Pump (Catalina?)",
+   "inside": {
+    "x": 681.65,
+    "y": -452.86,
+    "z": -25.62,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Transfender",
+   "aliases": [],
+   "label": "Transfender",
+   "inside": {
+    "x": 621.785,
+    "y": -12.5417,
+    "z": 1000.922,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Trials(Hyman Memorial?) Stadium",
+   "aliases": [],
+   "label": "Trials(Hyman Memorial?) Stadium",
+   "inside": {
+    "x": -1401.13,
+    "y": 106.11,
+    "z": 1032.273,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "TSDINER",
+   "aliases": [],
+   "label": "",
+   "inside": {
+    "x": 681.58,
+    "y": -473.42,
+    "z": 15.59,
+    "rot": 180.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "TSDINER",
+     "x": 681.579,
+     "y": -473.419,
+     "z": 15.592,
+     "rot": 180.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Unknown safe house",
+   "aliases": [],
+   "label": "Unknown safe house",
+   "inside": {
+    "x": 2253.174,
+    "y": -1139.01,
+    "z": 1050.633,
+    "rot": 0.0,
+    "interior": 9,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "SVHOT1",
+   "aliases": [],
+   "label": "Vank Hoff Hotel",
+   "inside": {
+    "x": 2233.8,
+    "y": -1115.36,
+    "z": 1049.91,
+    "rot": 242.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "SVHOT1",
+     "x": -2425.94,
+     "y": 337.87,
+     "z": 35.997,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CSDESGN",
+   "aliases": [],
+   "label": "Victim",
+   "inside": {
+    "x": 227.29,
+    "y": -7.43,
+    "z": 1001.26,
+    "rot": 100.0,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CSDESGN",
+     "x": 461.158,
+     "y": -1499.98,
+     "z": 30.174,
+     "rot": 90.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSDESGN (2)",
+     "x": -1694.76,
+     "y": 951.599,
+     "z": 24.271,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CSDESGN (3)",
+     "x": 2802.34,
+     "y": 2430.6,
+     "z": 10.061,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Wardrobe",
+   "aliases": [],
+   "label": "Wardrobe",
+   "inside": {
+    "x": 255.719,
+    "y": -41.137,
+    "z": 1002.023,
+    "rot": 0.0,
+    "interior": 14,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Warehouse 1",
+   "aliases": [],
+   "label": "Warehouse 1",
+   "inside": {
+    "x": 1405.312,
+    "y": -8.2928,
+    "z": 1000.913,
+    "rot": 0.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "Warehouse 2",
+   "aliases": [],
+   "label": "Warehouse 2",
+   "inside": {
+    "x": 1296.631,
+    "y": 0.592,
+    "z": 1001.023,
+    "rot": 0.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "FDPIZA",
+   "aliases": [],
+   "label": "Well Stacked Pizza Co.",
+   "inside": {
+    "x": 372.35,
+    "y": -133.55,
+    "z": 1000.45,
+    "rot": 69.1,
+    "interior": 5,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "FDPIZA",
+     "x": 1367.27,
+     "y": 248.388,
+     "z": 18.623,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (2)",
+     "x": 2333.43,
+     "y": 75.049,
+     "z": 25.734,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (3)",
+     "x": 2333.43,
+     "y": 75.049,
+     "z": 25.734,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (4)",
+     "x": 1367.27,
+     "y": 248.388,
+     "z": 18.623,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (5)",
+     "x": 203.334,
+     "y": -202.532,
+     "z": 0.601,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (6)",
+     "x": 2105.32,
+     "y": -1806.49,
+     "z": 12.694,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (7)",
+     "x": -1808.69,
+     "y": 945.863,
+     "z": 23.865,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (8)",
+     "x": -1721.13,
+     "y": 1359.01,
+     "z": 6.196,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (9)",
+     "x": 2638.58,
+     "y": 1849.97,
+     "z": 10.023,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (10)",
+     "x": 2756.01,
+     "y": 2477.05,
+     "z": 10.061,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (11)",
+     "x": 2351.89,
+     "y": 2532.19,
+     "z": 9.822,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "FDPIZA (12)",
+     "x": 2083.49,
+     "y": 2224.2,
+     "z": 10.058,
+     "rot": 359.9,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "Wheel Arch Angels",
+   "aliases": [],
+   "label": "Wheel Arch Angels",
+   "inside": {
+    "x": 614.3889,
+    "y": -124.0991,
+    "z": 997.995,
+    "rot": 0.0,
+    "interior": 3,
+    "dimension": 0
+   },
+   "entrances": []
+  },
+  {
+   "name": "WUZIBET",
+   "aliases": [],
+   "label": "Wu Zi Mu's Betting place",
+   "inside": {
+    "x": -2158.675,
+    "y": 642.8,
+    "z": 1052.4,
+    "rot": 134.0,
+    "interior": 1,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "WUZIBET",
+     "x": -2155.92,
+     "y": 645.38,
+     "z": 52.37,
+     "rot": 270.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  },
+  {
+   "name": "CLOTHGP",
+   "aliases": [],
+   "label": "Zip",
+   "inside": {
+    "x": 161.39,
+    "y": -96.69,
+    "z": 1000.81,
+    "rot": 219.0,
+    "interior": 18,
+    "dimension": 0
+   },
+   "entrances": [
+    {
+     "id": "CLOTHGP",
+     "x": 1456.77,
+     "y": -1138.02,
+     "z": 23.287,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CLOTHGP (2)",
+     "x": -1883.2,
+     "y": 865.473,
+     "z": 34.26,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CLOTHGP (3)",
+     "x": 2572.07,
+     "y": 1904.83,
+     "z": 10.023,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    },
+    {
+     "id": "CLOTHGP (4)",
+     "x": 2090.58,
+     "y": 2224.2,
+     "z": 10.058,
+     "rot": 0.0,
+     "interior": 0,
+     "dimension": 0
+    }
+   ]
+  }
+ ]
+}
