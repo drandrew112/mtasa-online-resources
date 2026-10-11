@@ -36,7 +36,8 @@ Removes money from the bank account.
 Takes the amount from the bank account whatever the balance is: the balance may
 go **negative** (debt). Deposits / `giveBankMoney` add to it as usual, so the next
 money the player puts in pays the debt off first. Use it for fines. The player sees
-`- € <amount>` in the ui_core money overlay (`showMoney("take", amount)` via the
+`- € <amount>` under their bank balance in the ui_core money overlay
+(`showMoney("take", amount, "bank")` via the
 `v_bank:moneyTaken` client event).
 - `true, newBalance` — always succeeds for a valid player
 - `"player_not_found"` — invalid player element or `amount`
@@ -80,7 +81,7 @@ Plays the "pickup money" sound.
 
 ### `createMoneyPickup(x, y, z, money [, player])` — server
 Creates a money bag pickup (model `1550`). When a player walks into it: they get
-`money` cash, the pickup sound plays for them, `ui_core:showMoney("add", money)`
+`money` cash, the pickup sound plays for them, `ui_core:showMoney("add", money, "cash")`
 runs on their client, and the pickup is destroyed.
 
 - `money` — positive integer
@@ -91,4 +92,4 @@ runs on their client, and the pickup is destroyed.
 
 `v_bank:playPickupMoneySound` (triggered by the server) plays the sound on the
 client; when it carries a `money` argument it also calls
-`exports.ui_core:showMoney("add", money)`.
+`exports.ui_core:showMoney("add", money, "cash")`.

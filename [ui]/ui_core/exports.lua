@@ -60,20 +60,27 @@ function showLevelOverlay()
     UI.yOverlay:showLevelOnly()
 end
 
--- Rovid ideig megmutatja a cash-t es alatta a valtozast:
--- kind = "add"  -> + € <change>  (zold)
--- kind = "take" -> - € <change>  (piros)
-function showMoney(kind, change)
-    uiLog("showMoney: %s | %s", tostring(kind), tostring(change))
-    UI.yOverlay:showMoney(kind, change)
+-- Rovid ideig megmutatja az egyenleget es alatta a valtozast:
+--   kind      = "add"  -> + € <change>  (zold)
+--               "take" -> - € <change>  (piros)
+--   moneyType = "cash" -> keszpenz sor (zold egyenleg)
+--               "bank" -> bankszamla sor (kek egyenleg)
+-- A moneyType kotelezo; hianyzo/rossz ertekre warning + "cash".
+function showMoney(kind, change, moneyType)
+    uiLog("showMoney: %s | %s | %s", tostring(kind), tostring(change), tostring(moneyType))
+    if moneyType ~= "cash" and moneyType ~= "bank" then
+        outputDebugString(("[ui_core] showMoney: moneyType must be \"cash\" or \"bank\" (got %s), using \"cash\""):format(tostring(moneyType)), 2)
+        moneyType = "cash"
+    end
+    return UI.yOverlay:showMoney(kind, change, moneyType)
 end
 
 -- textInput.lua defines openTextInput / closeTextInput / isTextInputOpen; wrap
 -- the opener so the console keeps a trace of what asked for input.
 local _openTextInput = openTextInput
-function openTextInput(title, maxLength, defaultText)
+function openTextInput(title, maxLength, defaultText, placeholder)
     uiLog("openTextInput: %s (max=%s)", tostring(title), tostring(maxLength))
-    return _openTextInput(title, maxLength, defaultText)
+    return _openTextInput(title, maxLength, defaultText, placeholder)
 end
 
 function getScreenWH()
