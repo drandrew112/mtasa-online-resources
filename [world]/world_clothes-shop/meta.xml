@@ -1,0 +1,20 @@
+<meta>
+    <info author="DrAndrew112" name="world_clothes-shop" version="1.0.0" type="script"
+          description="Clothes shops: world_interiors interiors with entrance blips and skin changer markers (every outfit 500)" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/main.lua"  type="client" />
+    <script src="client/label.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf"  type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="world_interiors" />
+    <include resource="ui_inac" />
+</meta>
