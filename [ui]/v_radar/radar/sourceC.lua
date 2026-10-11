@@ -1838,6 +1838,6 @@ function renderPausePreview(px, py, pw, ph)
 end
 
 addCommandHandler("showhud", function()
-	isHudVisible = getElementData(localPlayer, "hideHUD")
+	local isHudVisible = getElementData(localPlayer, "hideHUD")
 	setElementData(localPlayer, "hideHUD", not isHudVisible)
 end)
