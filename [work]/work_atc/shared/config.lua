@@ -39,7 +39,7 @@ ATC = {
     -- Work stations: one duty marker for now (z = ground level). More can be added later.
     -- SF control tower base, in the room next to the wall screens (placeholder: tune with /workpos).
     STATIONS = {
-        { name = "San Fierro Tower", duty = { -1264.01, 37.58, 13.14 }, blip = false },
+        { name = "SA Control", duty = { -2169.13965, 247.03371, 34.32031 }, blip = 13 },
     },
 }
 

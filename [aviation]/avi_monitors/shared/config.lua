@@ -24,7 +24,26 @@ MON = {
     MAX_WIDTH = 3.2,            -- when there are only a few monitors
     PLATE_RATIO = 0.16,         -- name plate height / monitor width (picture is 16:9)
 
-    FLIP_UV = false,            -- set true if the picture comes out upside down
+    -- position screens taken off the wall and hung on their own spot (e.g. above a desk in the
+    -- SA Control interior): x, y = point of the wall face at the screen centre, nx/ny = wall normal
+    -- (into the room), zBottom = bottom edge of the name plate, width (m). Key RADAR = the fixed radar.
+    PLACED = {
+        -- San Fierro booth (desk walls raycast-measured): APP on the east wall, TWR on the north wall
+        SASF_APP = { int = 3, dim = 0, x = 212.30, y = 203.70, nx = -1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SASF_TWR = { int = 3, dim = 0, x = 210.50, y = 207.63, nx = 0, ny = -1, zBottom = 1058.4, width = 1.7 },
+        -- Las Venturas booth: both desks on the east wall, APP over the north desk, TWR over the south one
+        SALV_APP = { int = 3, dim = 0, x = 202.10, y = 205.50, nx = -1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SALV_TWR = { int = 3, dim = 0, x = 202.10, y = 202.00, nx = -1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        -- Los Santos booth: same layout, east wall
+        SALS_APP = { int = 3, dim = 0, x = 208.40, y = 205.50, nx = -1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SALS_TWR = { int = 3, dim = 0, x = 208.40, y = 202.05, nx = -1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        -- ACC room (3.7 m high, walls free y 179..195 above the furniture): SACC_CTR on the west
+        -- wall opposite the ACC login spot, the area radar facing it on the east wall
+        SACC_CTR = { int = 3, dim = 0, x = 197.61, y = 186.00, nx = 1, ny = 0, zBottom = 1057.95, width = 3.8 },
+        RADAR    = { int = 3, dim = 0, x = 211.61, y = 186.16, nx = -1, ny = 0, zBottom = 1057.95, width = 3.8 },
+    },
+
+    FLIP_UV = false,           -- set true if the picture comes out upside down
 
     RANGE = 40,                 -- screens exist (render targets, data) within this distance (m)
     RT_W = 1280,

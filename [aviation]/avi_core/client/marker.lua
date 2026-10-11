@@ -28,19 +28,36 @@ end)
 
 local U = select(2, guiGetScreenSize()) / 1080
 
+local fade = {}                  -- marker -> 0..1 visibility (eases in/out on line of sight)
+
+-- the label point (or the marker base) is visible from the camera, walls/objects block it
+local function inSight(cx, cy, cz, x, y, z)
+    local veh = getPedOccupiedVehicle(localPlayer)
+    return isLineOfSightClear(cx, cy, cz, x, y, z + 1.5, true, false, false, true, false, false, false, veh or localPlayer)
+        or isLineOfSightClear(cx, cy, cz, x, y, z + 0.3, true, false, false, true, false, false, false, veh or localPlayer)
+end
+
 addEventHandler("onClientRender", root, function()
     if #markers == 0 or isPlayerMapVisible() or getElementData(localPlayer, "avi.uiOpen") then return end
     local px, py, pz = getElementPosition(localPlayer)
+    local cx, cy, cz = getCameraMatrix()
     local maxD = AVI.MARKER_LABEL_DISTANCE
     for _, m in ipairs(markers) do
         if isElement(m) and getElementDimension(m) == getElementDimension(localPlayer)
             and getElementInterior(m) == getElementInterior(localPlayer) then
             local x, y, z = getElementPosition(m)
             local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
-            if dist <= maxD then
+            local f = fade[m] or 0
+            if dist <= maxD and inSight(cx, cy, cz, x, y, z) then
+                f = math.min(1, f + 0.12)
+            else
+                f = math.max(0, f - 0.12)
+            end
+            fade[m] = f
+            if f > 0 and dist <= maxD then
                 local sx, sy = getScreenFromWorldPosition(x, y, z + 1.5, 0.1)
                 if sx then
-                    local a = math.min(255, 255 * (maxD - dist) / 5)
+                    local a = math.min(255, 255 * (maxD - dist) / 5) * f
                     local k = math.max(0.6, 1 - dist / maxD * 0.4)
                     local w, h, bar = 230 * U * k, 50 * U * k, 3 * U * k
                     dxDrawRectangle(sx - w / 2, sy - h, w, h, tocolor(14, 17, 21, 220 * a / 255))

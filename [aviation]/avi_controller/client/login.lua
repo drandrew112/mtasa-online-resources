@@ -76,7 +76,7 @@ local function drawLogin()
             dxDrawRectangle(br[1], br[2], br[3], br[4], C.busy)
             dxDrawText("Staffed", br[1], br[2], br[1] + br[3], br[2] + br[4], C.text, 1, F.uiB, "center", "center")
         elseif p.allowed == false then
-            dxDrawText("No rights", br[1], br[2], br[1] + br[3], br[2] + br[4], C.dim2, 1, F.uiB, "center", "center")
+            dxDrawText("Locked", br[1], br[2], br[1] + br[3], br[2] + br[4], C.dim2, 1, F.uiB, "center", "center")
         else
             local id = p.id
             button(br, "Log in", C.btn, C.btnHov, mx, my, function()

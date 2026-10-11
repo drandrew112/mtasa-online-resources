@@ -74,7 +74,7 @@ addEventHandler("avi:markerUse", resourceRoot, function(marker)
         aviNotify(player, "The controller software is not running.")
         return
     end
-    local ok, err = pcall(function() return exports.avi_controller:useATCConsole(player) end)
+    local ok, err = pcall(function() return exports.avi_controller:useATCConsole(player, markers[marker].available_positions) end)
     if not ok then
         aviNotify(player, "The controller software needs a restart (restart avi_controller).")
         outputDebugString("[avi_core] useATCConsole failed: " .. tostring(err), 2)

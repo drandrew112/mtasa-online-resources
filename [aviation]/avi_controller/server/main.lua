@@ -7,6 +7,7 @@ local staff = {}        -- [posId] = player
 local playerPos = {}    -- [player] = posId
 local sessions = {}     -- [player] = { start = tick, actions = n } (one per logged-in position)
 local lastSent = {}     -- [player] = tick of the last traffic update (radar refresh)
+local loginFilter = {}  -- [player] = { [posId] = true } positions of the last opened login (ATC marker), nil = all
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -97,14 +98,24 @@ function getPlayerATCPosition(player)
     return playerPos[player]
 end
 
+-- the login of the ATC marker offers only the positions of that marker
+local function inFilter(player, posId)
+    local f = loginFilter[player]
+    return not f or f[posId] == true
+end
+
 local function positionList(player)
     local list = {}
+    -- marker login: every position of the marker, the ones without the right are locked;
+    -- otherwise only the positions the player has the right for
+    local filtered = loginFilter[player] ~= nil
     for _, p in ipairs(getPositions()) do
-      if canStaff(player, p) then   -- only the positions the player has the right for
+      local allowed = canStaff(player, p)
+      if inFilter(player, p.id) and (allowed or filtered) then
         local who = staff[p.id]
         list[#list + 1] = { id = p.id, type = p.type, name = p.name, airport = p.airport,
             occupant = who and isElement(who) and playerName(who) or nil, mine = who == player,
-            allowed = true }
+            allowed = allowed }
       end
     end
     return list
@@ -188,6 +199,10 @@ local function login(player, posId)
         notify(player, "You do not have the right for " .. pos.id .. ".")
         return false
     end
+    if not inFilter(player, pos.id) then
+        notify(player, pos.id .. " cannot be staffed from here.")
+        return false
+    end
     local who = staff[pos.id]
     if who and who ~= player and isElement(who) then
         notify(player, pos.id .. " is staffed by " .. playerName(who))
@@ -205,8 +220,17 @@ local function login(player, posId)
 end
 
 -- opens the login window on the player's screen (work_atc can call it)
-function openATCLogin(player)
+-- positions: optional array of position ids the window offers (nil = every position)
+local function makeFilter(positions)
+    if type(positions) ~= "table" or #positions == 0 then return nil end
+    local f = {}
+    for _, id in ipairs(positions) do f[tostring(id)] = true end
+    return f
+end
+
+function openATCLogin(player, positions)
     if not isElement(player) then return false end
+    loginFilter[player] = makeFilter(positions)
     if not hasAccess(player) then
         notify(player, "You do not have any ATC rights.")
         return false
@@ -219,7 +243,12 @@ addEvent("onATCPositionChange")     -- source: resourceRoot, args: posId, player
 
 addEvent("avi:ctlOpen", true)
 addEventHandler("avi:ctlOpen", resourceRoot, function()
-    openATCLogin(client)
+    local f, list = loginFilter[client], nil
+    if f then
+        list = {}
+        for id in pairs(f) do list[#list + 1] = id end
+    end
+    openATCLogin(client, list)
 end)
 
 addEvent("avi:ctlLogin", true)
@@ -314,6 +343,7 @@ end)
 addEventHandler("onPlayerQuit", root, function()
     logoutATC(source, true)
     lastSent[source] = nil
+    loginFilter[source] = nil
 end)
 
 -- a right was taken away: log out when it was the one of the current position
@@ -325,14 +355,17 @@ addEventHandler("onPlayerATCChange", root, function(right, enabled)
 end)
 
 -- The ATC marker of avi_core calls this: login window (or the scope toggle when logged in).
+-- positions: optional array of the position ids that marker offers; when the player is logged in
+-- on a position the marker does not offer, the (filtered) login opens instead of the scope.
 -- There is no /atc command any more.
-function useATCConsole(player)
+function useATCConsole(player, positions)
     if not isElement(player) then return false end
-    if playerPos[player] then
+    local f = makeFilter(positions)
+    if playerPos[player] and (not f or f[playerPos[player]]) then
         triggerClientEvent(player, "avi:ctlToggle", resourceRoot)
         return true
     end
-    return openATCLogin(player)
+    return openATCLogin(player, positions)
 end
 
 -- ---------------------------------------------------------------- updates

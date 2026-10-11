@@ -9,6 +9,7 @@
     <script src="server/role.lua"   type="server" />
     <script src="server/admin.lua"  type="server" />
     <script src="server/marker.lua" type="server" />
+    <script src="server/interior.lua" type="server" />
 
     <script src="client/role.lua"   type="client" />
     <script src="client/marker.lua" type="client" />

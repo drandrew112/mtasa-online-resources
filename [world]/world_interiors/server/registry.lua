@@ -8,11 +8,13 @@
 --        enter = { x=, y=, z=, interior=0, dimension=0, rot=0 },   -- outside marker
 --        exit  = { x=, y=, z=, interior=15,            rot=0 },    -- inside marker
 --        enterColor / exitColor = {r,g,b,a}  (optional)
+--        inside  = { x=, y=, z=, rot=0 }  (optional) arrival point when entering, default: the exit marker
+--        outside = { x=, y=, z=, rot=0 }  (optional) arrival point when leaving, default: the enter marker
 --    })
 --
 --  Walking into a marker shows a 3D label (client/markers.lua); the
 --  player has to press INT.key inside it to go through. The player is
---  teleported onto the opposite marker.
+--  teleported onto the opposite marker (or the inside / outside point).
 --  Interiors are removed when the registering resource stops. This
 --  resource fires "world_interiors:ready" (root) when it starts, so
 --  registering resources should register on their own onResourceStart
@@ -75,9 +77,15 @@ function registerInterior(id, data)
         end
     end
 
+    -- arrival points: interior of the marker on that side
+    local inside, outside = cleanPoint(data.inside, true), cleanPoint(data.outside, true)
+    if inside then inside.interior = exit.interior end
+    if outside then outside.interior = enter.interior end
+
     local rec = {
         id = id, name = tostring(data.name or id), dimension = dim,
         enter = enter, exit = exit,
+        inside = inside or exit, outside = outside or enter,
         resource = sourceResource and getResourceName(sourceResource) or "?",
         resElement = sourceResource,
     }
@@ -146,7 +154,7 @@ end
 
 local function doTransfer(player, rec, toInside)
     if not isElement(player) then return end
-    local p = toInside and rec.exit or rec.enter
+    local p = toInside and rec.inside or rec.outside
     teleport(player, p, toInside and rec.dimension or rec.enter.dimension)
     triggerClientEvent(player, "world_interiors:fadeIn", resourceRoot)
 end
