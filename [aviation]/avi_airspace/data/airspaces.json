@@ -7,7 +7,7 @@
    "name": "San Andreas CTA",
    "airport": null,
    "floor": 0,
-   "ceiling": 24500,
+   "ceiling": 66000,
    "polygon": [
     [
      -6000,
@@ -33,7 +33,7 @@
    "name": "Los Santos TMA",
    "airport": "SALS",
    "floor": 0,
-   "ceiling": 9500,
+   "ceiling": 6500,
    "polygon": [
     [
      -700,
@@ -109,7 +109,7 @@
    "name": "San Fierro TMA",
    "airport": "SASF",
    "floor": 0,
-   "ceiling": 9500,
+   "ceiling": 6500,
    "polygon": [
     [
      -3900,
@@ -205,7 +205,7 @@
    "name": "Las Venturas TMA",
    "airport": "SALV",
    "floor": 0,
-   "ceiling": 9500,
+   "ceiling": 6500,
    "polygon": [
     [
      250,
