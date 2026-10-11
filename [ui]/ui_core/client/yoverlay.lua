@@ -12,14 +12,12 @@ UI.yOverlay = {
         fadeTime = 400,
     },
 
-    -- Csak a penz (cash + valtozas) rovid megjelenitesehez.
+    -- Csak a penz (egyenleg + valtozas) rovid megjelenitesehez, tipusonkent
+    -- kulon: "cash" (zold) es "bank" (kek). change elojeles, a gyors egymas
+    -- utani mozgasok osszeadodnak amig a sor latszik.
     moneyOnly = {
-        active = false,
-        startTick = 0,
-        duration = 3000,
-        fadeTime = 400,
-        kind = "add",   -- "add" vagy "take"
-        change = 0,
+        cash = { active = false, startTick = 0, duration = 3000, fadeTime = 400, change = 0 },
+        bank = { active = false, startTick = 0, duration = 3000, fadeTime = 400, change = 0 },
     },
 }
 
@@ -148,43 +146,75 @@ bindKey("y", "down", function()
     UI.yOverlay.startTick = getTickCount()
 end)
 
--- ui_core export: rovid ideig megmutatja a cash-t es alatta a valtozast
--- (+ € 100 zolddel, - € 100 pirossal). kind = "add" vagy "take".
-function UI.yOverlay:showMoney(kind, change)
-    local mo = self.moneyOnly
+-- ui_core export: rovid ideig megmutatja a valtozott egyenleget es alatta a
+-- valtozast (+ € 100 zolddel, - € 100 pirossal).
+--   kind      = "add" vagy "take"
+--   moneyType = "cash" (keszpenz, getPlayerMoney) vagy "bank" (bank_money)
+local MONEY_COLORS = {
+    cash = { 50, 200, 50 },
+    bank = { 120, 180, 255 },
+}
+
+function UI.yOverlay:showMoney(kind, change, moneyType)
+    local mo = self.moneyOnly[moneyType]
+    if not mo then return false end
+
+    local amount = math.abs(tonumber(change) or 0)
+    local signed = (kind == "take") and -amount or amount
+    local now = getTickCount()
+
+    if mo.active and now < mo.startTick + mo.duration - mo.fadeTime then
+        -- meg teljesen latszik: osszeadjuk, es ujrainditjuk fade-in nelkul
+        mo.change = mo.change + signed
+        mo.startTick = now - mo.fadeTime
+    else
+        mo.change = signed
+        mo.startTick = now
+    end
     mo.active = true
-    mo.startTick = getTickCount()
-    mo.kind = (kind == "take") and "take" or "add"
-    mo.change = math.abs(tonumber(change) or 0)
+    return true
 end
 
-function UI.yOverlay:drawMoneyOnly()
-    local mo = self.moneyOnly
-    if not mo.active then return end
+local function moneyBalance(moneyType)
+    if moneyType == "bank" then
+        return tonumber(getElementData(localPlayer, "bank_money")) or 0
+    end
+    return getPlayerMoney(localPlayer)
+end
 
-    -- ha a teljes Y overlay is fut, az rajzolja a penzt, ne duplazzuk
-    if self.active then return end
-
+-- Egy egyenleg + valtozas blokk; visszaadja a kovetkezo blokk y-jat.
+local function drawMoneyBlock(moneyType, mo, ty)
+    if not mo.active then return ty end
     if getTickCount() > mo.startTick + mo.duration then
         mo.active = false
-        return
+        return ty
     end
 
-    if getElementData(localPlayer, "hideHUD") then return end
-
     local alpha = fadeAlpha(mo)
-    local tr = moneyMetrics()
-
-    local cash = getPlayerMoney(localPlayer)
-    local lh = drawMoneyRow("€ "..formatMoney(cash), tr.y, tocolor(50, 200, 50, alpha), alpha)
+    local c = MONEY_COLORS[moneyType]
+    local lh = drawMoneyRow("€ "..formatMoney(moneyBalance(moneyType)), ty, tocolor(c[1], c[2], c[3], alpha), alpha)
 
     local sign, col
-    if mo.kind == "take" then
+    if mo.change < 0 then
         sign, col = "- € ", tocolor(230, 60, 60, alpha)
     else
         sign, col = "+ € ", tocolor(60, 210, 60, alpha)
     end
-    drawMoneyRow(sign..formatMoney(mo.change), tr.y + lh, col, alpha, MONEY_SCALE * 0.85)
+    local lh2 = drawMoneyRow(sign..formatMoney(math.abs(mo.change)), ty + lh, col, alpha, MONEY_SCALE * 0.85)
+    return ty + lh + lh2
+end
+
+function UI.yOverlay:drawMoneyOnly()
+    local mo = self.moneyOnly
+    if not (mo.cash.active or mo.bank.active) then return end
+
+    -- ha a teljes Y overlay is fut, az rajzolja a penzt, ne duplazzuk
+    if self.active then return end
+    if getElementData(localPlayer, "hideHUD") then return end
+
+    local tr = moneyMetrics()
+    local y = drawMoneyBlock("cash", mo.cash, tr.y)
+    drawMoneyBlock("bank", mo.bank, y)
 end
 
 -- ui_core export: rovid ideig (3 mp) megmutatja csak a szint savot.
