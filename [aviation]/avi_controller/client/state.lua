@@ -69,6 +69,20 @@ function trafficPos(e)
     return e.s.x, e.s.y
 end
 
+-- short form of the controlling position in the label: centre positions CM / CN / CS / CU / CNU / CSU;
+-- tower / approach of the own airport T / A, of another airport <last two ICAO letters>_T / _A (SF_A, LS_T)
+local CENTER_SHORT = { SACC_CTR = "CM", SACC_N_CTR = "CN", SACC_S_CTR = "CS", SACC_U_CTR = "CU",
+    SACC_NU_CTR = "CNU", SACC_SU_CTR = "CSU" }
+function ctlShort(id)
+    if not id then return nil end
+    if CENTER_SHORT[id] then return CENTER_SHORT[id] end
+    local icao, kind = id:match("^(.+)_(%u%u%u)$")
+    local k = kind == "TWR" and "T" or (kind == "APP" and "A" or nil)
+    if not k then return id end
+    if SC.pos and SC.pos.airport == icao then return k end
+    return icao:sub(-2) .. "_" .. k
+end
+
 function isMine(s)
     return SC.pos and s.ctl == SC.pos.id
 end

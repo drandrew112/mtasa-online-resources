@@ -2,11 +2,13 @@
 --   fixes: { id, x, y, kind = "cta" | "tma" | "enroute" | "final", airport?, runway?, flyover? }
 --   ndbs:  { id, name, freq, x, y, z?, object? }
 --   vors:  { id, name, freq, x, y, z, object? = { model, rz } }
---   procedures: { id, type = "SID" | "STAR", airport, fix, runways = { [ident] = { fixId, ... } }, flyover? = { fixId, ... } }
+--   procedures: { id, type = "SID" | "STAR" | "GA", airport, fix, runways = { [ident] = { fixId, ... } }, flyover? = { fixId, ... } }
 --     Fixes are fly-by (the turn starts before the fix); fly-over = fix flag `flyover` (everywhere) or listed in
 --     the procedure's `flyover` (only in that SID / STAR). /avinav flyover <FIX> [PROC] toggles them.
 --     STAR <FIX>1A: entry fix -> (downwind) -> base fix abeam the final fix -> final fix of the runway
---     SID  <FIX>1D: climb-out fix on the centre line -> (turn fix) -> exit fix
+--     SID  <FIX>1D: (half final of the opposite end | climb-out fix on the centre line) -> (turn fix) -> exit fix
+--     GA   <ICAO>GA: go-around (missed approach) per runway end, flown automatically after every go-around:
+--          half final of the opposite end -> circuit corner -> parallel fix abeam the threshold -> base -> final fix
 -- FIXes sit on the airspace boundaries, on the en-route network and on every runway final.
 -- VORs are placed in game (/avinav, editor.lua); their ground object is created here.
 -- Ids are unique across all three kinds (flight plans reference them by id).
@@ -76,7 +78,7 @@ function loadNav()
     end
     procById = {}
     for _, p in ipairs(data and data.procedures or {}) do
-        if p.id and (p.type == "SID" or p.type == "STAR") and p.airport and type(p.runways) == "table" then
+        if p.id and (p.type == "SID" or p.type == "STAR" or p.type == "GA") and p.airport and type(p.runways) == "table" then
             p.id = tostring(p.id):upper()
             NAV.procedures[#NAV.procedures + 1] = p
             procById[p.id] = p

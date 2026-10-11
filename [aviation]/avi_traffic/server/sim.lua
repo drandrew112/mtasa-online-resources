@@ -4,12 +4,13 @@
 --
 -- Phases
 --   ground departure: gate -> taxi_out -> hold -> takeoff -> air (climb-out on runway heading)
---   external entry  : air (spawned at the first route fix, at cruise level)
+--   external entry  : air (spawned TR.ENTRY_LEAD_NM before the first route fix = the CTA border, at cruise level)
 --   air             : DCT (controller) > flight plan fixes > approach (final fix) | exit (external)
 --                     SID (avi_nav procedure) after take-off, STAR towards the arrival runway: from the
 --                     controller (IFR clearance / arrival procedure) or, without one, picked by the pilots
 --   final           : on the glide path to the threshold -> landing -> taxi_in -> parked -> removed
---   go-around       : final fix too high -> runway heading past the field, then a new approach
+--   go-around       : final fix too high / no landing clearance -> the go-around procedure of the runway
+--                     (avi_nav <ICAO>GA: opposite half final, circuit, final fix) at TR.GO_AROUND_ALT
 
 AIRCRAFT = {}          -- [id] = aircraft
 local nextId = 1
@@ -171,9 +172,12 @@ function spawnFlight(fl)
         if not first then return nil, "unknown entry fix " .. tostring(ac.route[1]) end
         local nxt = navPoint(ac.route[2]) or (airport(fl.arr) and { x = airport(fl.arr).arp[1], y = airport(fl.arr).arp[2] })
         ac.phase = "air"
-        ac.x, ac.y = first.x, first.y
-        ac.hdg = nxt and bearing(ac.x, ac.y, nxt.x, nxt.y) or 0
-        ac.ri = 2
+        -- on the radar well before the border: TR.ENTRY_LEAD_NM out on the extended first leg, flying to the entry fix
+        ac.hdg = nxt and bearing(first.x, first.y, nxt.x, nxt.y) or 0
+        local lead, h = TR.ENTRY_LEAD_NM * TR.M_PER_NM, math.rad(ac.hdg)
+        ac.x, ac.y = first.x - math.sin(h) * lead, first.y - math.cos(h) * lead
+        ac.ri = 1
+        ac.inbound = true      -- outside the CTA until it crosses the border (not removed meanwhile)
         -- inbound: enter no higher than the descent plan allows (short arrivals start lower), always
         -- on a whole thousand
         ac.alt = math.min(fl.cruise, trafficAutoLevel(ac) + 1000)
@@ -241,7 +245,7 @@ function applySTAR(ac, starId, ident, override)
     ac.procStart, ac.procEnd = #before + 1, #ac.route
     ac.star, ac.arrRwy = p.id, tostring(ident):upper()
     ac.proc = p.id .. " " .. ac.arrRwy
-    ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
+    ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed, ac.ga = nil, nil, nil, nil, nil, nil
     if override then
         ac.sid, ac.sidRwy, ac.starTried = nil, nil, nil
         if ac.climbOut then ac.climbOut, ac.gndApt = nil, nil end
@@ -757,22 +761,35 @@ local function verticalTowards(ac, target, dt)
     ac.alt = ac.alt + vs / 60 * dt
 end
 
--- go-around: runway heading past the field, then a new approach from the side
+-- go-around: the go-around procedure of the runway (avi_nav <ICAO>GA): straight ahead to the half
+-- final of the opposite end, round the circuit (parallel fixes) and back to the final fix, climbing to
+-- TR.GO_AROUND_ALT. Pilots on their own keep that level until only the base + final fix are left, then
+-- descend for the new approach; a controller has to clear them lower. Without a procedure: runway
+-- heading past the field, then a new approach from the side.
 local function goAround(ac)
     local e = ac.rwy
-    local h = math.rad(e.hdg)
-    local apt = airport(ac.arr)
     ac.phase = "air"
     ac.missed = true
     ac.landClr, ac.vacateVia, ac.appClr = nil, nil, nil
-    ac.via = { { x = e.x + math.sin(h) * 1500, y = e.y + math.cos(h) * 1500 } }
-    ac.cfl = math.max(ac.cfl or 0, (apt and apt.elevation or 0) + TR.MISSED_ALT_AGL)
+    ac.ahdg, ac.ahdgDir, ac.dct = nil, nil, nil
+    ac.cfl = TR.GO_AROUND_ALT
     ac.approach = nil
     ac.rwy = nil
+    ac.proc, ac.star, ac.sid, ac.procStart, ac.procEnd, ac.ga = nil, nil, nil, nil, nil, nil
+    ac.starTried = true
+    local route, gaId = goAroundRoute(ac.arr, e.ident)
+    if route then
+        ac.via = nil
+        ac.route, ac.ri = route, 1
+        ac.procStart, ac.procEnd = 1, #route
+        ac.ga, ac.arrRwy = gaId, e.ident
+        ac.proc = "GA " .. e.ident
+        return
+    end
+    local h = math.rad(e.hdg)
+    ac.via = { { x = e.x + math.sin(h) * 1500, y = e.y + math.cos(h) * 1500 } }
     -- the rest of the STAR is gone: a new approach from the missed approach point
     ac.ri = #ac.route + 1
-    ac.proc, ac.star, ac.procEnd = nil, nil, nil
-    ac.starTried = true
 end
 
 function trafficGoAround(ac) goAround(ac) end
@@ -892,7 +909,7 @@ local function targetSpeed(ac, kind, target)
     elseif (kind == "via" and ac.approach) then
         s = math.min(s, (p.approach or 140) + 30)
     end
-    if ac.climbOut then s = math.min(s, (p.approach or 140) + 40) end
+    if ac.climbOut or ac.ga then s = math.min(s, (p.approach or 140) + 40) end
     return s
 end
 
@@ -908,7 +925,7 @@ function approachCheck(ac)
     if ac.phase ~= "air" then return false, "not airborne / already on final" end
     if not airport(ac.arr) then return false, "not an arrival" end
     if not ac.ahdg then
-        if ac.star or ac.approach then return true end
+        if ac.star or ac.approach or ac.ga then return true end
         return false, "no arrival procedure or radar heading to the final"
     end
     local rwy, ff = arrivalFinal(ac)
@@ -954,11 +971,23 @@ function interceptFinal(ac)
     if along < -250 and along > -finalLen * (ac.appClr and TR.APP_CLR_FAR or 1.8) and math.abs(lateral) < 250
             and math.abs(angleTo(ac.hdg, rwy.hdg)) < 60 then
         ac.ahdg, ac.dct, ac.via, ac.approach, ac.missed = nil, nil, nil, nil, nil
+        ac.ga, ac.proc = nil, nil
         ac.rwy = rwy
         ac.phase = "final"
         return true
     end
     return false
+end
+
+-- outbound traffic is gone past the CTA edge; arrivals may swing wide on a turn. A new entry is
+-- outside until it crosses the border (spawned TR.ENTRY_LEAD_NM before it).
+function checkLeftCTA(ac)
+    if ac.inbound then
+        if insideCTA(ac.x, ac.y, 0) then ac.inbound = nil end
+        return
+    end
+    local margin = airport(ac.arr) and TR.EXIT_MARGIN * 5 or TR.EXIT_MARGIN
+    if not insideCTA(ac.x, ac.y, margin) then removeAircraft(ac, "left the CTA") end
 end
 
 local function tickAir(ac, dt)
@@ -977,8 +1006,7 @@ local function tickAir(ac, dt)
         if not controllerOf(ac) then ac.ahdg = nil end      -- nobody gives vectors any more
         verticalTowards(ac, ac.cfl or ac.alt, dt)
         interceptFinal(ac)
-        local margin = airport(ac.arr) and TR.EXIT_MARGIN * 5 or TR.EXIT_MARGIN
-        if not insideCTA(ac.x, ac.y, margin) then removeAircraft(ac, "left the CTA") end
+        checkLeftCTA(ac)
         return
     end
 
@@ -996,6 +1024,14 @@ local function tickAir(ac, dt)
     end
 
     ac.navTgt = not ac.climbOut and target or nil     -- route deviation check (alerts.lua)
+
+    -- climbing out on runway heading over a SID fix on the centre line (e.g. the half final of the
+    -- opposite end): it counts as passed once it is behind, the aircraft does not turn back for it
+    if ac.climbOut and kind == "route" and target
+            and math.abs(angleTo(ac.hdg, bearing(ac.x, ac.y, target.x, target.y))) > 90 then
+        passed(ac, kind)
+        target, kind = navTarget(ac)
+    end
 
     -- lateral
     if target and not ac.climbOut then
@@ -1017,26 +1053,27 @@ local function tickAir(ac, dt)
             ac.ahdg, ac.ahdgDir = math.floor(ac.hdg + 0.5) % 360, nil
             if ac.ahdg == 0 then ac.ahdg = 360 end
             ac.approach, ac.via, ac.ri = nil, nil, #ac.route + 1
-            ac.proc, ac.star, ac.procEnd, ac.starTried = nil, nil, nil, true
+            ac.proc, ac.star, ac.ga, ac.procEnd, ac.starTried = nil, nil, nil, nil, true
         elseif kind == "final" then
             local glideAt = elev + TR.FINAL_AGL
             if ac.alt > glideAt + TR.GO_AROUND_MARGIN then
                 goAround(ac)
             else
                 ac.phase = "final"
-                ac.missed = nil
+                ac.missed, ac.ga, ac.proc = nil, nil, nil
             end
         else
             passed(ac, kind)
             if kind == "via" and ac.missed and #ac.via == 0 then
                 ac.missed = nil      -- back on a normal approach (startApproach adds the base point)
             end
+            -- go-around circuit: past the parallel fix only the base + final fix are left, the own
+            -- descent for the new approach starts (without a controller)
+            if ac.ga and ac.missed and #ac.route - ac.ri < 2 then ac.missed = nil end
         end
     end
 
-    -- outbound traffic is gone past the CTA edge; inbound ones may swing wide on a turn
-    local margin = airport(ac.arr) and TR.EXIT_MARGIN * 5 or TR.EXIT_MARGIN
-    if not insideCTA(ac.x, ac.y, margin) then removeAircraft(ac, "left the CTA") end
+    checkLeftCTA(ac)
 end
 
 local function tickFinal(ac, dt)
@@ -1143,7 +1180,7 @@ local function pendingClearance(ac)
         if not ready and ac.approach then ready = dist(ac.x, ac.y, ac.approach.x, ac.approach.y) < TR.LAND_CALL_DIST end
         return "LAND", ready
     elseif p == "air" and airport(ac.arr) and not ac.star and not ac.missed and not ac.climbOut
-            and ac.ctl and (ac.ctl == TR.CENTER_POSITION or ac.ctl:sub(-4) == "_APP") then
+            and ac.ctl and (isCenterPosition(ac.ctl) or ac.ctl:sub(-4) == "_APP") then
         -- close to its TMA entry fix without an arrival procedure (only approach / radar can give one)
         local sp = suggestedSTAR(ac)
         local f = sp and navPoint(sp.fix)

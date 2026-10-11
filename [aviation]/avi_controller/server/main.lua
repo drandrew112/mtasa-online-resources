@@ -32,7 +32,10 @@ local function playerName(p) return (getPlayerName(p):gsub("#%x%x%x%x%x%x", ""))
 
 -- ---------------------------------------------------------------- positions
 function getPositions()
-    local list = { { id = CTL.CENTER.id, type = "CTR", name = CTL.CENTER.name } }
+    local list = {}
+    for _, c in ipairs(CTL.CENTERS or { CTL.CENTER }) do
+        list[#list + 1] = { id = c.id, type = "CTR", name = c.name }
+    end
     local airports = call("avi_airports", "getAirports") or {}
     local icaos = {}
     for icao in pairs(airports) do icaos[#icaos + 1] = icao end
@@ -126,6 +129,7 @@ local function staticData()
     local nav = call("avi_nav", "getNavData") or {}
     return {
         airspaces = call("avi_airspace", "getAirspaces") or {},
+        centre = call("avi_airspace", "getCentreSectors") or { sectors = {}, line = {} },
         nav = { fixes = nav.fixes or {}, ndbs = nav.ndbs or {}, vors = nav.vors or {}, procedures = nav.procedures or {} },
         airports = call("avi_airports", "getAirports") or {},
         runways = call("avi_airports", "getActiveRunways") or {},
@@ -374,7 +378,8 @@ end
 -- and what it controls. Approach sees the same, plus the aircraft that are in its TMA / CTR or
 -- will cross it: their remaining route (heading or direct included) passes through it while they
 -- are below its ceiling (e.g. a low LS departure toward the north-west through the SF TMA).
--- The radar (centre) sees every aircraft.
+-- The radar (centre) sees every aircraft; the upper-only centre positions (the ones in no lower sector
+-- chain: SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR) only down to CTL.UPPER_VIEW_BELOW under the split level.
 local function pointIn(x, y, poly)
     local inside, j = false, #poly
     for i = 1, #poly do
@@ -454,8 +459,25 @@ local function crossesSector(s, areas, nav)
     return false
 end
 
-local function visibleTo(pos, s, sectors, nav)
-    if pos.type == "CTR" or not pos.airport then return true end
+-- { floor = ft, [posId] = true } of the upper-only centre positions (avi_airspace `centre` chains)
+local function upperData()
+    local c = call("avi_airspace", "getCentreSectors") or { sectors = {} }
+    local up, low = {}, {}
+    for _, s in ipairs(c.sectors or {}) do
+        for _, id in ipairs(s.chain or {}) do
+            if s.upper then up[id] = true else low[id] = true end
+        end
+    end
+    for id in pairs(low) do up[id] = nil end
+    return { floor = (tonumber(c.split) or 20500) - CTL.UPPER_VIEW_BELOW, pos = up }
+end
+
+local function visibleTo(pos, s, sectors, nav, upper)
+    if pos.type == "CTR" then
+        if not (upper and upper.pos[pos.id]) then return true end
+        return s.ctl == pos.id or (not s.gnd and (s.alt or 0) >= upper.floor)
+    end
+    if not pos.airport then return true end
     local icao = pos.airport
     if s.ctl == pos.id or s.dep == icao or s.arr == icao or s.apt == icao then return true end
     return pos.type == "APP" and crossesSector(s, sectors[icao], nav)
@@ -478,10 +500,14 @@ local function sendTraffic()
     for _, d in ipairs(due) do
         if d.pos.type == "APP" then sectors, nav = sectorData(); break end
     end
+    local upper
+    for _, d in ipairs(due) do
+        if d.pos.type == "CTR" then upper = upperData(); break end
+    end
     for _, d in ipairs(due) do
         local list = {}
         for _, s in ipairs(all) do
-            if visibleTo(d.pos, s, sectors, nav) then list[#list + 1] = s end
+            if visibleTo(d.pos, s, sectors, nav, upper) then list[#list + 1] = s end
         end
         lastSent[d.p] = now
         triggerClientEvent(d.p, "avi:ctlTraffic", resourceRoot, list, staffed)

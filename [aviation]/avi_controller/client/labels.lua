@@ -58,7 +58,7 @@ end
 -- waypoint / heading line when both are empty, the SQK line never.
 local function airLines(s, hovered)
     local lines = {
-        { { s.cs .. " " }, { (s.ctl or "----") .. " ", C.ctl }, { s.type .. "/" .. s.wake } },
+        { { s.cs .. " " }, { (ctlShort(s.ctl) or "--") .. " ", C.ctl }, { s.type .. "/" .. s.wake } },
         { { ("%s %03d %s"):format(hundreds(s.alt), math.floor(s.spd + 0.5), s.arr) } },
     }
     if s.cfl then lines[#lines + 1] = { { hundreds(s.cfl) } }

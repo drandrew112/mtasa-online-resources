@@ -5,11 +5,11 @@ Units everywhere: altitude **feet**, speed **knots**, vertical speed **ft/min**.
 | resource | what it does |
 |---|---|
 | `avi_core` | ATC rights (separate `TWR` / `APP` / `RADAR`; everybody has TWR by default; `setPlayerATCRight`, `setPlayerATCRights`, `hasATCRight`, `canStaffPosition`), ATC markers (`AVI.MARKERS`), `/atcright [player] <twr\|app\|radar\|all\|reset> [on\|off]`, `/avipos` (admins). |
-| `avi_airspace` | `data/airspaces.json`: CTR (tower) and TMA (approach) per airport, one CTA (radar) = +-6000 m (San Andreas + 3000 m). The TMAs reach well out along the finals and do not overlap. Lookup priority CTR > TMA > CTA. |
+| `avi_airspace` | `data/airspaces.json`: CTR (tower) and TMA (approach) per airport, one CTA (radar) = +-6000 m (San Andreas + 3000 m), SFC-FL660. The TMAs reach well out along the finals and do not overlap. Lookup priority CTR > TMA > CTA. `centre` = the centre sectors of the CTA (see below). |
 | `avi_nav` | `data/nav.json`: FIXes (CTA/TMA boundaries, en route, one on every runway final = `LS27L`, `SF04`..., procedure points), NDBs, VORs + their ground objects, SID / STAR procedures. Editor: `/avinav add\|move\|object\|del\|info`. |
 | `avi_airports` | `data/airports.json`: SALS / SASF / SALV with runways, taxiways, gates. Runway in use comes from the wind (`/aviwind <dir> [kts]`). Taxi routing over the taxiways (rounded corners), `taxiDraw` = the rounded taxiways for the scopes. |
-| `avi_traffic` | Simulated traffic (no vehicles) from `data/flights.json` (120 fixed flights, 40 of them overflights, started by the real clock, period 120 min). Gate - taxi - take-off - SID - route - STAR - landing - gate, go-around when too high at the final fix. `/avitraffic list\|spawn\|random\|remove\|clear\|schedule`. |
-| `avi_controller` | Controller software, opened from the ATC marker (E; `/atc` is gone). Positions `SACC_CTR`, `<ICAO>_APP`, `<ICAO>_TWR`. |
+| `avi_traffic` | Simulated traffic (no vehicles) from `data/flights.json` (180 fixed flights, 100 of them overflights = ~140 per hour, started by the real clock). Gate - taxi - take-off - SID - route - STAR - landing - gate, go-around procedure when too high at the final fix / without landing clearance. `/avitraffic list\|spawn\|random\|remove\|clear\|schedule`. |
+| `avi_controller` | Controller software, opened from the ATC marker (E; `/atc` is gone). Positions `SACC_CTR` (+ `SACC_N_CTR`, `SACC_S_CTR`, `SACC_U_CTR`, `SACC_NU_CTR`, `SACC_SU_CTR`), `<ICAO>_APP`, `<ICAO>_TWR`. |
 
 ## Taxiing
 
@@ -41,6 +41,20 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
   of `LS27R`); `3` / `4` = downwind abeam the far runway end; `5` = climb-out fix on the centre line past the far end;
   `6` / `7` = turn-back fixes for SIDs to exits behind the departure; `8` = extra SID transition (`LS098`: 09
   departures to SANTA / REEFS turn back west south of the field, then reach REEFS heading south).
+- `<AP><rwy>H` (`LS27LH`, `SF04H`, `LV18H` ...) = half final: on the centre line halfway between the final fix and the
+  threshold (600 m out). `<AP><rwy>P1` / `P2` = parallel to the runway, abeam the threshold, left / right of the
+  landing direction (on the circuit lines: LS north y -1443.5 / south y -3643.5, SF 700 m, LV 750 m off the centre line).
+- The half final of the opposite end is on the climb-out path, so SIDs that turned straight after the climb-out
+  now fly out to it first (`VINEW1D 27R` = `LS09LH VINEW`, `GARCI2D 18` = `LV36H GARCI` ...). SIDs that already fly a
+  climb-out / turn-back pattern keep it (a turn back from the half final would be over 100°). A SID fix the aircraft
+  climbs past on runway heading counts as passed (it does not turn back for it).
+- Go-around procedures `<ICAO>GA` (`type = "GA"`, one fix list per runway end): flown automatically after every
+  go-around (too high at the final fix, no landing clearance, "Go around" command), always climbing to 3000 ft
+  (`TR.GO_AROUND_ALT`): half final of the opposite end (straight ahead) -> circuit corner abeam it -> parallel fix abeam
+  the threshold -> base fix abeam the final fix -> final fix. LS 09L / 27R circuit north, 09R / 27L south (outside the
+  parallel pair), SF north-west, LV east. Every turn is 90°. The label shows `GA 27L`. Pilots on their own stay at
+  3000 ft until the parallel fix, then descend for the approach; under control the aircraft needs a lower level and a
+  new "Cleared approach" (accepted on the GA procedure). A direct / STAR / heading takes it off the procedure.
 - STAR: entry fix -> (downwind, when the entry is beyond the runway) -> base fix -> final fix, or straight to the
   final fix when the entry is in front of it. SID: (climb-out fix) -> (turn fix) -> exit fix; with no fixes the
   aircraft turns to the exit fix right after the climb-out (800 ft AGL).
@@ -73,7 +87,8 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - wheel: zoom at the cursor; right drag: pan; left drag on a label: move it; click a label / target: menu.
   Distances (scale bar, menu) are in nautical miles.
 - Airborne label (no background, grey on hover; blue text = yours, grey = someone else's, the controlling
-  position in white): `CALLSIGN CTL TYPE/WAKE`, `ALT SPD DEST`, `CFL`, `WAYPOINT HEADING`, `SQK HDG VS`.
+  position in white, shortened: centre `CM` (SACC_CTR) / `CN` / `CS` / `CU` / `CNU` / `CSU`, tower / approach of the
+  own airport `T` / `A`, of another airport `SF_T` / `LS_A` (last two ICAO letters)): `CALLSIGN CTL TYPE/WAKE`, `ALT SPD DEST`, `CFL`, `WAYPOINT HEADING`, `SQK HDG VS`.
   Without hover: no CFL line without a cleared level, only the filled waypoint / heading, no SQK line.
   On hover the empty ones show as `CFL`, `DCT`, `AHDG`. Altitudes are in hundreds of feet (`045` = 4 500 ft).
 - Ground label: green = arrival, blue = departure, grey = unknown; `CALLSIGN`, `SPD SQK`, `TYPE/WAKE`.
@@ -113,6 +128,38 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
   "Transfer to" is an early handoff: the receiver has the aircraft while it is still in the sender's
   sector, then the sector rule takes over.
 
+## Centre sectors
+
+The CTA (SFC-FL660) is split into four sectors (`avi_airspace` `centre`): north / south of the line ZEPHR - PALIS -
+VINEW - straight east to the edge (it does not follow the SF TMA), lower (up to FL205) / upper (above FL205). Every
+sector belongs to the first staffed position of its chain, so any centre position can be opened on its own:
+
+| sector | chain |
+|---|---|
+| north lower | `SACC_N_CTR` > `SACC_CTR` |
+| south lower | `SACC_S_CTR` > `SACC_CTR` |
+| north upper | `SACC_NU_CTR` > `SACC_U_CTR` > `SACC_N_CTR` > `SACC_CTR` |
+| south upper | `SACC_SU_CTR` > `SACC_U_CTR` > `SACC_S_CTR` > `SACC_CTR` |
+
+`SACC_CTR` alone has the whole CTA; `SACC_U_CTR` takes everything above FL205; the lower sectors always stay with
+`SACC_CTR` / `SACC_N_CTR` / `SACC_S_CTR`. When the whole chain is closed the aircraft is uncontrolled. All centre
+positions are type CTR (RADAR right) and in the ACC marker. The upper-only positions (`SACC_U_CTR`, `SACC_NU_CTR`,
+`SACC_SU_CTR`) see traffic only from 2000 ft below the split (18 500 ft, `CTL.UPPER_VIEW_BELOW`) plus their own aircraft;
+the others see everything. The scope of a centre position draws the north / south line,
+fills its own sectors and shows them in the top bar (`SECT NL NU`). Cleared levels go up to FL390 (1000 ft steps above
+FL200).
+
+## Traffic volume
+
+- Overflights: ~140 per hour (the 60 new ones fly every 30 min), mostly in the upper airspace (75 % FL210-390), on
+  direct or one-en-route-fix routes between border fixes on different sides (max turn 43°). Flights across the
+  border follow the semicircular rule (track 000-179 odd, 180-359 even thousands), max FL390; departures to and arrivals
+  from beyond the border file FL150-390 (an arrival enters no higher than its descent plan allows).
+- External flights appear `TR.ENTRY_LEAD_NM` (5.5 nm) before the CTA border on the extended first leg, so they are on
+  the radar well before they enter (uncontrolled until the border).
+- `TR.MAX_ACTIVE` 44 (aircraft before the border included), the workload keeper up to 52. An upper centre position
+  (`SACC_U_CTR` / `NU` / `SU`) gets only high overflights from the keeper.
+
 ## Scale
 
 The map is small, so the traffic moves slower than its shown speed (`TR.AIR_SCALE` = 0.2 in
@@ -133,6 +180,6 @@ Wall geometry and sizes: `v_monitors/shared/config.lua` (`EYE_Z`, `MAX_WIDTH`, `
 - The markers are visible only to the players on duty in the work `AVI.MARKER_WORK` (`"atc"`, made by the future
   `work_atc`) through work_core `setElementVisibleToWork`; the server checks the duty too. `MARKER_WORK = false`
   shows them to everybody (testing).
-- Rights: `TWR` = `<ICAO>_TWR`, `APP` = `<ICAO>_APP`, `RADAR` = `SACC_CTR`. Default: tower only. work_atc sets them
+- Rights: `TWR` = `<ICAO>_TWR`, `APP` = `<ICAO>_APP`, `RADAR` = every centre position (`SACC_CTR`, `SACC_N_CTR` ...). Default: tower only. work_atc sets them
   from the work level with `setPlayerATCRight(player, "APP", true)`; taking the right of the current position logs
   the controller out. Rights are not persisted. Admins: `/atcright`.

@@ -8,6 +8,7 @@ COL = {
     ownFill  = tocolor(70, 120, 170, 16),
     ownLine  = tocolor(140, 190, 230, 255),
     asText   = tocolor(80, 110, 145, 255),
+    sectorLine = tocolor(90, 120, 160, 255),
     runway   = tocolor(185, 190, 200, 255),
     rwText   = tocolor(170, 175, 185, 255),
     arr      = tocolor(80, 200, 120, 255),
@@ -73,14 +74,52 @@ local function fill(pts, col)
 end
 
 -- ---------------------------------------------------------------- airspaces
--- own sector: TWR -> its CTR, APP -> its TMA, CTR -> the CTA
+-- centre sectors (avi_airspace `centre`) the logged-in centre position has now: of every sector's
+-- chain the first staffed position owns it (this position counts as staffed)
+function ownedCentreSectors()
+    local out = {}
+    local c = SC.data and SC.data.centre
+    if not (c and SC.pos and SC.pos.type == "CTR") then return out end
+    for _, s in ipairs(c.sectors or {}) do
+        for _, pos in ipairs(s.chain or {}) do
+            if pos == SC.pos.id then out[#out + 1] = s break end
+            if SC.staffed[pos] then break end
+        end
+    end
+    return out
+end
+
+-- own sector: TWR -> its CTR, APP -> its TMA, centre -> the CTA when it has every centre sector
+-- (otherwise its sectors are filled one by one, see drawAirspaces)
 local function ownAirspaceId()
     local p = SC.pos
     if not p then return end
     if p.type == "TWR" then return p.airport .. "_CTR" end
     if p.type == "APP" then return p.airport .. "_TMA" end
+    local c = SC.data.centre
+    if c and c.sectors and #c.sectors > 0 and #ownedCentreSectors() < #c.sectors then return end
     for _, a in ipairs(SC.data.airspaces) do
         if a.type == "CTA" then return a.id end
+    end
+end
+
+-- centre scopes: the north / south border line and the fill of the own sectors (lower / upper
+-- share the polygon of their side: filled once)
+local function drawCentreSectors(own)
+    local c = SC.data.centre
+    if not (c and SC.pos and SC.pos.type == "CTR") then return end
+    if not own then
+        local done = {}
+        for _, s in ipairs(ownedCentreSectors()) do
+            if not done[s.side or s.id] then
+                done[s.side or s.id] = true
+                fill(polyScreen(s.polygon), COL.ownFill)
+            end
+        end
+    end
+    local pts = polyScreen(c.line or {})
+    for i = 1, #pts - 1 do
+        dashed(pts[i][1], pts[i][2], pts[i + 1][1], pts[i + 1][2], COL.sectorLine, 1, 14, 6)
     end
 end
 
@@ -91,7 +130,8 @@ function drawAirspaces()
     local list = {}
     for _, a in ipairs(SC.data.airspaces or {}) do list[#list + 1] = a end
     table.sort(list, function(a, b) return (order[a.type] or 0) < (order[b.type] or 0) end)
-    for _, a in ipairs(list) do
+    for i, a in ipairs(list) do
+        if a.type ~= "CTA" and (i == 1 or list[i - 1].type == "CTA") then drawCentreSectors(own) end
         local pts = polyScreen(a.polygon)
         if a.id == own then fill(pts, COL.ownFill) end
         local col = a.id == own and COL.ownLine or (a.type == "CTR" and COL.ctr or (a.type == "TMA" and COL.tma or COL.cta))

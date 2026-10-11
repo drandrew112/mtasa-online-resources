@@ -40,6 +40,12 @@ MON = {
         -- ACC room (3.7 m high, walls free y 179..195 above the furniture): SACC_CTR on the west
         -- wall opposite the ACC login spot, the area radar facing it on the east wall
         SACC_CTR = { int = 3, dim = 0, x = 197.61, y = 186.00, nx = 1, ny = 0, zBottom = 1057.95, width = 3.8 },
+        -- the split centre positions beside it on the same wall (south: N / S, north: U / NU / SU); not measured in game
+        SACC_N_CTR  = { int = 3, dim = 0, x = 197.61, y = 182.25, nx = 1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SACC_S_CTR  = { int = 3, dim = 0, x = 197.61, y = 180.20, nx = 1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SACC_U_CTR  = { int = 3, dim = 0, x = 197.61, y = 189.75, nx = 1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SACC_NU_CTR = { int = 3, dim = 0, x = 197.61, y = 191.80, nx = 1, ny = 0, zBottom = 1058.4, width = 1.7 },
+        SACC_SU_CTR = { int = 3, dim = 0, x = 197.61, y = 193.85, nx = 1, ny = 0, zBottom = 1058.4, width = 1.7 },
         RADAR    = { int = 3, dim = 0, x = 211.61, y = 186.16, nx = -1, ny = 0, zBottom = 1057.95, width = 3.8 },
     },
 

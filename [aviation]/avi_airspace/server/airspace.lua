@@ -4,6 +4,9 @@
 
 local PRIORITY = { CTR = 1, TMA = 2, CTA = 3 }
 local list, byId = {}, {}
+-- centre sectors (data `centre`): the CTA split north / south and lower / upper, each owned by the
+-- first staffed position of its chain (see getCentreSectorAt)
+local centre = { split = 20500, line = {}, sectors = {} }
 
 local function load()
     local f = fileOpen("data/airspaces.json", true)
@@ -25,11 +28,23 @@ local function load()
             outputDebugString("[avi_airspace] skipped airspace without id / polygon", 2)
         end
     end
+    centre = { split = 20500, line = {}, sectors = {} }
+    local c = data and data.centre
+    if type(c) == "table" then
+        centre.split = tonumber(c.split) or centre.split
+        centre.line = type(c.line) == "table" and c.line or {}
+        for _, s in ipairs(c.sectors or {}) do
+            if s.id and type(s.polygon) == "table" and #s.polygon >= 3 and type(s.chain) == "table" then
+                s.upper = s.upper and true or false
+                centre.sectors[#centre.sectors + 1] = s
+            end
+        end
+    end
     table.sort(list, function(a, b)
         if a.priority ~= b.priority then return a.priority < b.priority end
         return a.id < b.id
     end)
-    outputDebugString(("[avi_airspace] %d airspaces loaded"):format(#list))
+    outputDebugString(("[avi_airspace] %d airspaces, %d centre sectors loaded"):format(#list, #centre.sectors))
 end
 addEventHandler("onResourceStart", resourceRoot, load)
 
@@ -54,4 +69,17 @@ end
 
 function getAirspaceAt(x, y, altFt)
     return getAirspacesAt(x, y, altFt)[1]
+end
+
+-- { split = ft, line = { {x, y}, ... } (north / south border), sectors = { { id, name, side, upper, polygon, chain }, ... } }
+function getCentreSectors()
+    return centre
+end
+
+-- the centre sector at the point (upper above `split` ft); nil outside every sector polygon
+function getCentreSectorAt(x, y, altFt)
+    local upper = (tonumber(altFt) or 0) > centre.split
+    for _, s in ipairs(centre.sectors) do
+        if s.upper == upper and pointInPolygon(x, y, s.polygon) then return s end
+    end
 end

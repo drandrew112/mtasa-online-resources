@@ -137,6 +137,14 @@ local function drawTopBar(mx, my)
     local x = 12 * U + dxGetTextWidth(p.id, 1, F.title) + 12 * U
     dxDrawText(p.name, x, 0, x + 300 * U, h, C.dim, 1, F.ui, "left", "center")
     x = x + dxGetTextWidth(p.name, 1, F.ui) + 24 * U
+    -- centre positions: the sectors they have now (N/S lower / upper, depends on who else is open)
+    if p.type == "CTR" then
+        local ids = {}
+        for _, s in ipairs(ownedCentreSectors()) do ids[#ids + 1] = s.id end
+        local str = "SECT " .. (#ids > 0 and table.concat(ids, " ") or "-")
+        dxDrawText(str, x, 0, x + 200 * U, h, C.text, 1, F.ui, "left", "center")
+        x = x + dxGetTextWidth(str, 1, F.ui) + 24 * U
+    end
 
     local toolsLeft, tip, tipRect = drawToolButtons(mx, my)
 

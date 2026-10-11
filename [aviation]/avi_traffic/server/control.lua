@@ -1,7 +1,10 @@
 -- Who controls an aircraft: the one position whose sector it is in (no top-down cover).
 --   ground at ICAO / final to ICAO / CTR of ICAO -> ICAO_TWR
 --   TMA of ICAO (outside its CTR)                -> ICAO_APP
---   CTA (outside every TMA / CTR)                -> centre (radar)
+--   CTA (outside every TMA / CTR)                -> centre (radar): the centre sector it is in
+--     (avi_airspace `centre`: north / south x lower / upper, split at FL205) belongs to the first
+--     staffed position of the sector's chain, e.g. north upper: SACC_NU_CTR > SACC_U_CTR >
+--     SACC_N_CTR > SACC_CTR. SACC_CTR alone has the whole CTA.
 -- When that position is not staffed, nobody controls the aircraft: the pilots fly their flight
 -- plan on their own (automatic levels, no clearances needed), even if another position is open.
 -- An early transfer ("Transfer to") gives the aircraft to the receiver while it is still in the
@@ -16,6 +19,17 @@ end
 
 function staffedPositions() return staffed end
 
+-- the centre position of the sector at the aircraft: the first staffed one of the chain, else the
+-- last one of the chain (SACC_CTR, not staffed = nobody controls it)
+local function centrePosition(ac)
+    local sec = centreSectorAt(ac.x, ac.y, ac.alt)
+    if not sec or not sec.chain or #sec.chain == 0 then return TR.CENTER_POSITION end
+    for _, pos in ipairs(sec.chain) do
+        if staffed[pos] then return pos end
+    end
+    return sec.chain[#sec.chain]
+end
+
 -- the position responsible for the aircraft where it is now (nil = outside every sector)
 function sectorPosition(ac)
     if ac.phase ~= "air" and ac.phase ~= "final" then
@@ -28,7 +42,7 @@ function sectorPosition(ac)
     if not a then return nil end
     if a.type == "CTR" and a.airport then return a.airport .. "_TWR" end
     if a.type == "TMA" and a.airport then return a.airport .. "_APP" end
-    if a.type == "CTA" then return TR.CENTER_POSITION end
+    if a.type == "CTA" then return centrePosition(ac) end
     return nil
 end
 
@@ -83,7 +97,7 @@ function setClearedAltitude(id, ft)
     ft = tonumber(ft)
     if not ac or not ft then return false, "unknown aircraft" end
     if ac.phase ~= "air" then return false, "not in cruise / climb / descent" end
-    ft = math.floor(math.max(0, math.min(30000, ft)) / 100 + 0.5) * 100
+    ft = math.floor(math.max(0, math.min(TR.MAX_LEVEL, ft)) / 100 + 0.5) * 100
     ac.cfl = ft
     ac.climbOut = nil      -- a clearance ends the runway-heading climb-out
     ac.missed = nil
@@ -102,8 +116,8 @@ local function directToRoute(ac, navId)
     local ps, pe = ac.procStart, ac.procEnd
     if not (ac.proc and ps and pe) or (at and at >= ps and at <= pe) then return end
     for i = math.min(pe, #ac.route), math.max(ac.ri, ps), -1 do table.remove(ac.route, i) end
-    if ac.star then ac.starTried = true end      -- the pilots don't pick a STAR again
-    ac.proc, ac.sid, ac.star, ac.procStart, ac.procEnd = nil, nil, nil, nil, nil
+    if ac.star or ac.ga then ac.starTried = true end      -- the pilots don't pick a STAR again
+    ac.proc, ac.sid, ac.star, ac.ga, ac.procStart, ac.procEnd = nil, nil, nil, nil, nil, nil
 end
 
 function setDirectTo(id, navId)
@@ -173,7 +187,8 @@ end
 --                                     procedure, or vectors intercepting the centre line within APP_CLR_ANGLE)
 --   land                              airborne arrival
 --   vacate (value = taxiway id)       arrival: leave the runway there
---   goaround                          arrival on approach / final
+--   goaround                          arrival on approach / final: flies the go-around procedure of the
+--                                     runway (avi_nav <ICAO>GA) up to TR.GO_AROUND_ALT
 function giveClearance(id, kind, value)
     local ac = AIRCRAFT[tonumber(id)]
     if not ac then return false, "unknown aircraft" end
@@ -255,14 +270,13 @@ function giveClearance(id, kind, value)
         ac.vacateVia = value
     elseif kind == "goaround" then
         if p ~= "final" and not (p == "air" and ac.approach) then return false, "not on approach" end
-        if p == "final" then
+        if p == "final" or ac.rwy then
             trafficGoAround(ac)
         else
             ac.approach, ac.via, ac.appClr = nil, nil, nil
             ac.ri = #ac.route + 1         -- the rest of the STAR is gone
             ac.proc, ac.star, ac.procEnd, ac.starTried = nil, nil, nil, true
-            local apt = airport(ac.arr)
-            ac.cfl = math.max(ac.cfl or 0, (apt and apt.elevation or 0) + TR.MISSED_ALT_AGL)
+            ac.cfl = TR.GO_AROUND_ALT
         end
     else
         return false, "unknown clearance"

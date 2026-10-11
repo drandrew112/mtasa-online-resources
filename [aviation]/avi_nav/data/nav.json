@@ -1,5 +1,5 @@
 {
- "_about": "Navigation points: FIX, NDB, VOR + SID / STAR procedures. VORs are placed in game with /avinav. Fix kinds: cta / tma (procedure entry + exit) / enroute / final / proc (procedure points: <AP><rwy>1-2 base abeam the final fix, 3-4 downwind, 5 climb-out, 6-7 turn, 8 SID transition). procedures: STAR <FIX>1A, SID <FIX>1D; runways = { ident: [fix, ...] }. Coordinates: GTA world metres.",
+ "_about": "Navigation points: FIX, NDB, VOR + SID / STAR / GA procedures. VORs are placed in game with /avinav. Fix kinds: cta / tma (procedure entry + exit) / enroute / final / proc (procedure points: <AP><rwy>1-2 base abeam the final fix, 3-4 downwind, 5 climb-out, 6-7 turn, 8 SID transition; <AP><rwy>H half final (halfway between the final fix and the threshold); <AP><rwy>P1 / P2 parallel to the runway, abeam the threshold, left / right of the landing direction). procedures: STAR <FIX>1A, SID <FIX>1D, go-around <ICAO>GA (one list per runway end: opposite half final -> circuit -> final fix, 3000 ft); runways = { ident: [fix, ...] }. Coordinates: GTA world metres.",
  "fixes": [
   {
    "id": "GOLDN",
@@ -692,6 +692,174 @@
    "kind": "proc",
    "airport": "SALV",
    "role": "transition"
+  },
+  {
+   "id": "LS09LH",
+   "x": 840.0,
+   "y": -2494.0,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "halffinal",
+   "runway": "09L"
+  },
+  {
+   "id": "LS27RH",
+   "x": 2665.0,
+   "y": -2494.0,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "halffinal",
+   "runway": "27R"
+  },
+  {
+   "id": "LS09RH",
+   "x": 840.0,
+   "y": -2593.0,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "halffinal",
+   "runway": "09R"
+  },
+  {
+   "id": "LS27LH",
+   "x": 2665.0,
+   "y": -2593.0,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "halffinal",
+   "runway": "27L"
+  },
+  {
+   "id": "SF04H",
+   "x": -2064.2,
+   "y": -572.2,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "halffinal",
+   "runway": "04"
+  },
+  {
+   "id": "SF22H",
+   "x": -720.8,
+   "y": 771.3,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "halffinal",
+   "runway": "22"
+  },
+  {
+   "id": "LV18H",
+   "x": 1477.0,
+   "y": 2425.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "halffinal",
+   "runway": "18"
+  },
+  {
+   "id": "LV36H",
+   "x": 1477.0,
+   "y": 570.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "halffinal",
+   "runway": "36"
+  },
+  {
+   "id": "LS09P1",
+   "x": 1440,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "parallel"
+  },
+  {
+   "id": "LS09P2",
+   "x": 1440,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "parallel"
+  },
+  {
+   "id": "LS27P1",
+   "x": 2065,
+   "y": -3643.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "parallel"
+  },
+  {
+   "id": "LS27P2",
+   "x": 2065,
+   "y": -1443.5,
+   "kind": "proc",
+   "airport": "SALS",
+   "role": "parallel"
+  },
+  {
+   "id": "SF04P1",
+   "x": -2135.0,
+   "y": 347.0,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "parallel"
+  },
+  {
+   "id": "SF04P2",
+   "x": -1145.0,
+   "y": -643.0,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "parallel"
+  },
+  {
+   "id": "SF22P1",
+   "x": -650.0,
+   "y": -148.0,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "parallel"
+  },
+  {
+   "id": "SF22P2",
+   "x": -1640.0,
+   "y": 842.0,
+   "kind": "proc",
+   "airport": "SASF",
+   "role": "parallel"
+  },
+  {
+   "id": "LV18P1",
+   "x": 2227.0,
+   "y": 1825.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "parallel"
+  },
+  {
+   "id": "LV18P2",
+   "x": 727.0,
+   "y": 1825.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "parallel"
+  },
+  {
+   "id": "LV36P1",
+   "x": 727.0,
+   "y": 1170.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "parallel"
+  },
+  {
+   "id": "LV36P2",
+   "x": 2227.0,
+   "y": 1170.0,
+   "kind": "proc",
+   "airport": "SALV",
+   "role": "parallel"
   }
  ],
  "ndbs": [
@@ -768,9 +936,11 @@
      "VINEW"
     ],
     "27R": [
+     "LS09LH",
      "VINEW"
     ],
     "27L": [
+     "LS09RH",
      "VINEW"
     ]
    }
@@ -862,9 +1032,11 @@
    "fix": "PLAYA",
    "runways": {
     "09L": [
+     "LS27RH",
      "PLAYA"
     ],
     "09R": [
+     "LS27LH",
      "PLAYA"
     ],
     "27R": [
@@ -914,9 +1086,11 @@
    "fix": "OCEAN",
    "runways": {
     "09L": [
+     "LS27RH",
      "OCEAN"
     ],
     "09R": [
+     "LS27LH",
      "OCEAN"
     ],
     "27R": [
@@ -966,9 +1140,11 @@
    "fix": "MARLN",
    "runways": {
     "09L": [
+     "LS27RH",
      "MARLN"
     ],
     "09R": [
+     "LS27LH",
      "MARLN"
     ],
     "27R": [
@@ -1034,10 +1210,12 @@
      "REEFS"
     ],
     "27R": [
+     "LS09LH",
      "LS273",
      "REEFS"
     ],
     "27L": [
+     "LS09RH",
      "LS273",
      "REEFS"
     ]
@@ -1092,9 +1270,11 @@
      "SANTA"
     ],
     "27R": [
+     "LS09LH",
      "SANTA"
     ],
     "27L": [
+     "LS09RH",
      "SANTA"
     ]
    }
@@ -1131,6 +1311,7 @@
      "MISTY"
     ],
     "22": [
+     "SF04H",
      "MISTY"
     ]
    }
@@ -1164,6 +1345,7 @@
      "ANGPI"
     ],
     "22": [
+     "SF04H",
      "ANGPI"
     ]
    }
@@ -1198,6 +1380,7 @@
      "DOHER"
     ],
     "22": [
+     "SF04H",
      "DOHER"
     ]
    }
@@ -1262,6 +1445,7 @@
    "fix": "GARCI",
    "runways": {
     "04": [
+     "SF22H",
      "GARCI"
     ],
     "22": [
@@ -1296,6 +1480,7 @@
    "fix": "BAYSD",
    "runways": {
     "04": [
+     "SF22H",
      "BAYSD"
     ],
     "22": [
@@ -1329,6 +1514,7 @@
    "fix": "GANTN",
    "runways": {
     "04": [
+     "SF22H",
      "GANTN"
     ],
     "22": [
@@ -1403,6 +1589,7 @@
      "PALIS"
     ],
     "22": [
+     "SF04H",
      "PALIS"
     ]
    }
@@ -1435,6 +1622,7 @@
    "fix": "SHADY",
    "runways": {
     "18": [
+     "LV36H",
      "SHADY"
     ],
     "36": [
@@ -1469,6 +1657,7 @@
    "fix": "MONTG",
    "runways": {
     "18": [
+     "LV36H",
      "MONTG"
     ],
     "36": [
@@ -1502,6 +1691,7 @@
    "fix": "SPRNG",
    "runways": {
     "18": [
+     "LV36H",
      "SPRNG"
     ],
     "36": [
@@ -1576,6 +1766,7 @@
      "DESRT"
     ],
     "36": [
+     "LV18H",
      "DESRT"
     ]
    }
@@ -1610,6 +1801,7 @@
      "PRCKL"
     ],
     "36": [
+     "LV18H",
      "PRCKL"
     ]
    }
@@ -1643,6 +1835,7 @@
      "BONEC"
     ],
     "36": [
+     "LV18H",
      "BONEC"
     ]
    }
@@ -1673,6 +1866,7 @@
    "fix": "GARCI",
    "runways": {
     "18": [
+     "LV36H",
      "GARCI"
     ],
     "36": [
@@ -1680,6 +1874,86 @@
      "LV366",
      "LV368",
      "GARCI"
+    ]
+   }
+  },
+  {
+   "id": "SALSGA",
+   "type": "GA",
+   "airport": "SALS",
+   "fix": null,
+   "runways": {
+    "09L": [
+     "LS27RH",
+     "LS093",
+     "LS09P1",
+     "LS091",
+     "LS09L"
+    ],
+    "27R": [
+     "LS09LH",
+     "LS274",
+     "LS27P2",
+     "LS272",
+     "LS27R"
+    ],
+    "09R": [
+     "LS27LH",
+     "LS094",
+     "LS09P2",
+     "LS092",
+     "LS09R"
+    ],
+    "27L": [
+     "LS09RH",
+     "LS273",
+     "LS27P1",
+     "LS271",
+     "LS27L"
+    ]
+   }
+  },
+  {
+   "id": "SASFGA",
+   "type": "GA",
+   "airport": "SASF",
+   "fix": null,
+   "runways": {
+    "04": [
+     "SF22H",
+     "SF043",
+     "SF04P1",
+     "SF041",
+     "SF04"
+    ],
+    "22": [
+     "SF04H",
+     "SF224",
+     "SF22P2",
+     "SF222",
+     "SF22"
+    ]
+   }
+  },
+  {
+   "id": "SALVGA",
+   "type": "GA",
+   "airport": "SALV",
+   "fix": null,
+   "runways": {
+    "18": [
+     "LV36H",
+     "LV183",
+     "LV18P1",
+     "LV181",
+     "LV18"
+    ],
+    "36": [
+     "LV18H",
+     "LV364",
+     "LV36P2",
+     "LV362",
+     "LV36"
     ]
    }
   }

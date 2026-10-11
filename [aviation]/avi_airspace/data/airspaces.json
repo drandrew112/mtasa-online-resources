@@ -1,5 +1,5 @@
 {
- "_about": "Airspaces: CTR = tower, TMA = approach, CTA = radar / centre. Lookup priority CTR > TMA > CTA. Coordinates: GTA world metres. Altitudes: feet.",
+ "_about": "Airspaces: CTR = tower, TMA = approach, CTA = radar / centre. Lookup priority CTR > TMA > CTA. centre = the CTA split into sectors (outside every TMA / CTR): north / south of the line ZEPHR - PALIS - VINEW - east edge, lower (up to `split` ft) / upper (above it). chain = the centre positions that can own the sector, most specific first: the first staffed one has it (SACC_CTR alone = the whole CTA). Coordinates: GTA world metres. Altitudes: feet.",
  "airspaces": [
   {
    "id": "SACC_CTA",
@@ -291,5 +291,176 @@
     ]
    ]
   }
- ]
+ ],
+ "centre": {
+  "split": 20500,
+  "line": [
+   [
+    -6000,
+    0
+   ],
+   [
+    -3900,
+    0
+   ],
+   [
+    600,
+    -1150
+   ],
+   [
+    6000,
+    -1150
+   ]
+  ],
+  "sectors": [
+   {
+    "id": "NL",
+    "name": "North lower",
+    "side": "N",
+    "upper": false,
+    "polygon": [
+     [
+      -6000,
+      6000
+     ],
+     [
+      6000,
+      6000
+     ],
+     [
+      6000,
+      -1150
+     ],
+     [
+      600,
+      -1150
+     ],
+     [
+      -3900,
+      0
+     ],
+     [
+      -6000,
+      0
+     ]
+    ],
+    "chain": [
+     "SACC_N_CTR",
+     "SACC_CTR"
+    ]
+   },
+   {
+    "id": "SL",
+    "name": "South lower",
+    "side": "S",
+    "upper": false,
+    "polygon": [
+     [
+      -6000,
+      0
+     ],
+     [
+      -3900,
+      0
+     ],
+     [
+      600,
+      -1150
+     ],
+     [
+      6000,
+      -1150
+     ],
+     [
+      6000,
+      -6000
+     ],
+     [
+      -6000,
+      -6000
+     ]
+    ],
+    "chain": [
+     "SACC_S_CTR",
+     "SACC_CTR"
+    ]
+   },
+   {
+    "id": "NU",
+    "name": "North upper",
+    "side": "N",
+    "upper": true,
+    "polygon": [
+     [
+      -6000,
+      6000
+     ],
+     [
+      6000,
+      6000
+     ],
+     [
+      6000,
+      -1150
+     ],
+     [
+      600,
+      -1150
+     ],
+     [
+      -3900,
+      0
+     ],
+     [
+      -6000,
+      0
+     ]
+    ],
+    "chain": [
+     "SACC_NU_CTR",
+     "SACC_U_CTR",
+     "SACC_N_CTR",
+     "SACC_CTR"
+    ]
+   },
+   {
+    "id": "SU",
+    "name": "South upper",
+    "side": "S",
+    "upper": true,
+    "polygon": [
+     [
+      -6000,
+      0
+     ],
+     [
+      -3900,
+      0
+     ],
+     [
+      600,
+      -1150
+     ],
+     [
+      6000,
+      -1150
+     ],
+     [
+      6000,
+      -6000
+     ],
+     [
+      -6000,
+      -6000
+     ]
+    ],
+    "chain": [
+     "SACC_SU_CTR",
+     "SACC_U_CTR",
+     "SACC_S_CTR",
+     "SACC_CTR"
+    ]
+   }
+  ]
+ }
 }

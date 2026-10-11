@@ -1,5 +1,5 @@
 {
- "_about": "Fixed traffic database for avi_traffic. route = filed route (TMA exit fix of the departure airport [SID], en-route fixes, TMA entry fix of the arrival airport [STAR]; externals: their CTA fix). cruise = feet. period/offset in minutes of the real (server) clock: the flight starts when minute % period == offset. dep/arr: an ICAO of avi_airports (ground start / landing) or an external code (enters / leaves at its fix).",
+ "_about": "Fixed traffic database for avi_traffic. route = filed route (TMA exit fix of the departure airport [SID], en-route fixes, TMA entry fix of the arrival airport [STAR]; externals: their CTA fix). cruise = feet (RFL, max 39000; flights across the border follow the semicircular rule: track 000-179 odd, 180-359 even thousands). period/offset in minutes of the real (server) clock: the flight starts when minute % period == offset. dep/arr: an ICAO of avi_airports (ground start / landing) or an external code (enters TR.ENTRY_LEAD_NM before its fix / leaves at its fix).",
  "airlines": {
   "FUS": {
    "name": "Fly US",
@@ -281,7 +281,7 @@
     "BLUFF",
     "PACIF"
    ],
-   "cruise": 16000,
+   "cruise": 24000,
    "period": 120,
    "offset": 1
   },
@@ -307,7 +307,7 @@
     "TIERR",
     "GOLDN"
    ],
-   "cruise": 12000,
+   "cruise": 18000,
    "period": 120,
    "offset": 3
   },
@@ -320,7 +320,7 @@
     "GANTN",
     "NOVAX"
    ],
-   "cruise": 10000,
+   "cruise": 34000,
    "period": 120,
    "offset": 4
   },
@@ -334,7 +334,7 @@
     "KINCA",
     "NOVAX"
    ],
-   "cruise": 20000,
+   "cruise": 21000,
    "period": 120,
    "offset": 5
   },
@@ -349,7 +349,7 @@
     "TIERR",
     "BOREA"
    ],
-   "cruise": 20000,
+   "cruise": 31000,
    "period": 120,
    "offset": 6
   },
@@ -362,7 +362,7 @@
     "LIBTY",
     "KACCY"
    ],
-   "cruise": 10000,
+   "cruise": 36000,
    "period": 120,
    "offset": 8
   },
@@ -389,7 +389,7 @@
     "BLUFF",
     "SHADY"
    ],
-   "cruise": 9000,
+   "cruise": 23000,
    "period": 120,
    "offset": 10
   },
@@ -402,7 +402,7 @@
     "VICEC",
     "PLAYA"
    ],
-   "cruise": 9000,
+   "cruise": 34000,
    "period": 120,
    "offset": 11
   },
@@ -415,7 +415,7 @@
     "KEYSS",
     "FLINT"
    ],
-   "cruise": 10000,
+   "cruise": 36000,
    "period": 120,
    "offset": 12
   },
@@ -454,7 +454,7 @@
     "DESRT",
     "YUCCA"
    ],
-   "cruise": 12000,
+   "cruise": 31000,
    "period": 120,
    "offset": 15
   },
@@ -468,7 +468,7 @@
     "MESAS",
     "YUCCA"
    ],
-   "cruise": 12000,
+   "cruise": 21000,
    "period": 120,
    "offset": 16
   },
@@ -482,7 +482,7 @@
     "TIERR",
     "NOVAX"
    ],
-   "cruise": 14000,
+   "cruise": 26000,
    "period": 120,
    "offset": 17
   },
@@ -495,7 +495,7 @@
     "DESRT",
     "STARF"
    ],
-   "cruise": 12000,
+   "cruise": 15000,
    "period": 120,
    "offset": 18
   },
@@ -509,7 +509,7 @@
     "BLUFF",
     "MARIN"
    ],
-   "cruise": 11000,
+   "cruise": 24000,
    "period": 120,
    "offset": 19
   },
@@ -523,7 +523,7 @@
     "KINCA",
     "VINEW"
    ],
-   "cruise": 12000,
+   "cruise": 17000,
    "period": 120,
    "offset": 20
   },
@@ -537,7 +537,7 @@
     "KINCA",
     "GOLDN"
    ],
-   "cruise": 12000,
+   "cruise": 38000,
    "period": 120,
    "offset": 21
   },
@@ -550,7 +550,7 @@
     "MISTY",
     "SHARK"
    ],
-   "cruise": 10000,
+   "cruise": 24000,
    "period": 120,
    "offset": 22
   },
@@ -564,7 +564,7 @@
     "KINCA",
     "GOLDN"
    ],
-   "cruise": 14000,
+   "cruise": 18000,
    "period": 120,
    "offset": 24
   },
@@ -578,7 +578,7 @@
     "MESAS",
     "VICEC"
    ],
-   "cruise": 18000,
+   "cruise": 35000,
    "period": 120,
    "offset": 25
   },
@@ -591,7 +591,7 @@
     "BYRON",
     "PRCKL"
    ],
-   "cruise": 9000,
+   "cruise": 24000,
    "period": 120,
    "offset": 26
   },
@@ -605,7 +605,7 @@
     "DILMR",
     "MARIN"
    ],
-   "cruise": 12000,
+   "cruise": 36000,
    "period": 120,
    "offset": 27
   },
@@ -619,7 +619,7 @@
     "PALOM",
     "CORAL"
    ],
-   "cruise": 12000,
+   "cruise": 23000,
    "period": 120,
    "offset": 28
   },
@@ -645,7 +645,7 @@
     "PALOM",
     "CORAL"
    ],
-   "cruise": 20000,
+   "cruise": 28000,
    "period": 120,
    "offset": 30
   },
@@ -671,7 +671,7 @@
     "KINCA",
     "JUNIP"
    ],
-   "cruise": 9000,
+   "cruise": 19000,
    "period": 120,
    "offset": 32
   },
@@ -685,7 +685,7 @@
     "BLUFF",
     "SANTO"
    ],
-   "cruise": 14000,
+   "cruise": 19000,
    "period": 120,
    "offset": 33
   },
@@ -712,7 +712,7 @@
     "BLUFF",
     "SANTO"
    ],
-   "cruise": 14000,
+   "cruise": 37000,
    "period": 120,
    "offset": 35
   },
@@ -726,7 +726,7 @@
     "MESAS",
     "GROVE"
    ],
-   "cruise": 9000,
+   "cruise": 28000,
    "period": 120,
    "offset": 36
   },
@@ -739,7 +739,7 @@
     "JUNIP",
     "SEQUA"
    ],
-   "cruise": 12000,
+   "cruise": 20000,
    "period": 120,
    "offset": 38
   },
@@ -752,7 +752,7 @@
     "FLINT",
     "CORAL"
    ],
-   "cruise": 14000,
+   "cruise": 21000,
    "period": 120,
    "offset": 39
   },
@@ -765,7 +765,7 @@
     "PLAYA",
     "SUNRS"
    ],
-   "cruise": 10000,
+   "cruise": 33000,
    "period": 120,
    "offset": 40
   },
@@ -818,7 +818,7 @@
     "DILMR",
     "PACIF"
    ],
-   "cruise": 8000,
+   "cruise": 30000,
    "period": 120,
    "offset": 44
   },
@@ -832,7 +832,7 @@
     "BLUFF",
     "CORAL"
    ],
-   "cruise": 14000,
+   "cruise": 25000,
    "period": 120,
    "offset": 45
   },
@@ -870,7 +870,7 @@
     "GROVE",
     "BYRON"
    ],
-   "cruise": 11000,
+   "cruise": 21000,
    "period": 120,
    "offset": 48
   },
@@ -895,7 +895,7 @@
     "REEFS",
     "MARIN"
    ],
-   "cruise": 11000,
+   "cruise": 30000,
    "period": 120,
    "offset": 50
   },
@@ -909,7 +909,7 @@
     "TIERR",
     "YUCCA"
    ],
-   "cruise": 14000,
+   "cruise": 37000,
    "period": 120,
    "offset": 51
   },
@@ -936,7 +936,7 @@
     "MOJAV",
     "STARF"
    ],
-   "cruise": 14000,
+   "cruise": 9000,
    "period": 120,
    "offset": 54
   },
@@ -950,7 +950,7 @@
     "DILMR",
     "FOGGY"
    ],
-   "cruise": 7000,
+   "cruise": 22000,
    "period": 120,
    "offset": 55
   },
@@ -964,7 +964,7 @@
     "DILMR",
     "CORAL"
    ],
-   "cruise": 8000,
+   "cruise": 33000,
    "period": 120,
    "offset": 56
   },
@@ -978,7 +978,7 @@
     "TIERR",
     "NOVAX"
    ],
-   "cruise": 12000,
+   "cruise": 16000,
    "period": 120,
    "offset": 57
   },
@@ -992,7 +992,7 @@
     "BLUFF",
     "KEYSS"
    ],
-   "cruise": 20000,
+   "cruise": 15000,
    "period": 120,
    "offset": 58
   },
@@ -1006,7 +1006,7 @@
     "TIERR",
     "BYRON"
    ],
-   "cruise": 12000,
+   "cruise": 17000,
    "period": 120,
    "offset": 59
   },
@@ -1020,7 +1020,7 @@
     "TIERR",
     "GOLDN"
    ],
-   "cruise": 12000,
+   "cruise": 38000,
    "period": 120,
    "offset": 60
   },
@@ -1034,7 +1034,7 @@
     "TIERR",
     "REDWO"
    ],
-   "cruise": 7000,
+   "cruise": 26000,
    "period": 120,
    "offset": 61
   },
@@ -1048,7 +1048,7 @@
     "PALOM",
     "STARF"
    ],
-   "cruise": 16000,
+   "cruise": 35000,
    "period": 120,
    "offset": 62
   },
@@ -1061,7 +1061,7 @@
     "CORAL",
     "FLINT"
    ],
-   "cruise": 10000,
+   "cruise": 30000,
    "period": 120,
    "offset": 63
   },
@@ -1075,7 +1075,7 @@
     "TIERR",
     "REDWO"
    ],
-   "cruise": 18000,
+   "cruise": 36000,
    "period": 120,
    "offset": 64
   },
@@ -1101,7 +1101,7 @@
     "DILMR",
     "FOGGY"
    ],
-   "cruise": 20000,
+   "cruise": 36000,
    "period": 120,
    "offset": 66
   },
@@ -1115,7 +1115,7 @@
     "DILMR",
     "FOGGY"
    ],
-   "cruise": 10000,
+   "cruise": 16000,
    "period": 120,
    "offset": 68
   },
@@ -1168,7 +1168,7 @@
     "DILMR",
     "REDWO"
    ],
-   "cruise": 20000,
+   "cruise": 34000,
    "period": 120,
    "offset": 72
   },
@@ -1182,7 +1182,7 @@
     "PALOM",
     "BYRON"
    ],
-   "cruise": 12000,
+   "cruise": 20000,
    "period": 120,
    "offset": 73
   },
@@ -1195,7 +1195,7 @@
     "GARCI",
     "LIBTY"
    ],
-   "cruise": 11000,
+   "cruise": 21000,
    "period": 120,
    "offset": 74
   },
@@ -1209,7 +1209,7 @@
     "DILMR",
     "FOGGY"
    ],
-   "cruise": 8000,
+   "cruise": 16000,
    "period": 120,
    "offset": 75
   },
@@ -1223,7 +1223,7 @@
     "TIERR",
     "REDWO"
    ],
-   "cruise": 8000,
+   "cruise": 34000,
    "period": 120,
    "offset": 76
   },
@@ -1237,7 +1237,7 @@
     "PALOM",
     "VICEC"
    ],
-   "cruise": 12000,
+   "cruise": 29000,
    "period": 120,
    "offset": 77
   },
@@ -1250,7 +1250,7 @@
     "BYRON",
     "GROVE"
    ],
-   "cruise": 10000,
+   "cruise": 38000,
    "period": 120,
    "offset": 78
   },
@@ -1276,7 +1276,7 @@
     "BLUFF",
     "FOGGY"
    ],
-   "cruise": 16000,
+   "cruise": 30000,
    "period": 120,
    "offset": 80
   },
@@ -1303,7 +1303,7 @@
     "BLUFF",
     "VICEC"
    ],
-   "cruise": 9000,
+   "cruise": 21000,
    "period": 120,
    "offset": 82
   },
@@ -1316,7 +1316,7 @@
     "SANTO",
     "DOHER"
    ],
-   "cruise": 11000,
+   "cruise": 24000,
    "period": 120,
    "offset": 84
   },
@@ -1329,7 +1329,7 @@
     "PRCKL",
     "BYRON"
    ],
-   "cruise": 11000,
+   "cruise": 21000,
    "period": 120,
    "offset": 85
   },
@@ -1342,7 +1342,7 @@
     "SPRNG",
     "KEYSS"
    ],
-   "cruise": 10000,
+   "cruise": 37000,
    "period": 120,
    "offset": 86
   },
@@ -1355,7 +1355,7 @@
     "SANTO",
     "MONTG"
    ],
-   "cruise": 12000,
+   "cruise": 26000,
    "period": 120,
    "offset": 87
   },
@@ -1381,7 +1381,7 @@
     "STARF",
     "GARCI"
    ],
-   "cruise": 9000,
+   "cruise": 20000,
    "period": 120,
    "offset": 89
   },
@@ -1395,7 +1395,7 @@
     "DILMR",
     "VICEC"
    ],
-   "cruise": 14000,
+   "cruise": 27000,
    "period": 120,
    "offset": 90
   },
@@ -1409,7 +1409,7 @@
     "TIERR",
     "VINEW"
    ],
-   "cruise": 11000,
+   "cruise": 33000,
    "period": 120,
    "offset": 91
   },
@@ -1422,7 +1422,7 @@
     "SHARK",
     "MISTY"
    ],
-   "cruise": 11000,
+   "cruise": 17000,
    "period": 120,
    "offset": 92
   },
@@ -1448,7 +1448,7 @@
     "LIBTY",
     "PLAYA"
    ],
-   "cruise": 11000,
+   "cruise": 32000,
    "period": 120,
    "offset": 94
   },
@@ -1462,7 +1462,7 @@
     "PALOM",
     "YUCCA"
    ],
-   "cruise": 7000,
+   "cruise": 32000,
    "period": 120,
    "offset": 95
   },
@@ -1475,7 +1475,7 @@
     "REDWO",
     "GARCI"
    ],
-   "cruise": 12000,
+   "cruise": 21000,
    "period": 120,
    "offset": 96
   },
@@ -1489,7 +1489,7 @@
     "BLUFF",
     "SANTO"
    ],
-   "cruise": 8000,
+   "cruise": 33000,
    "period": 120,
    "offset": 98
   },
@@ -1541,7 +1541,7 @@
     "PALOM",
     "SANTO"
    ],
-   "cruise": 20000,
+   "cruise": 32000,
    "period": 120,
    "offset": 102
   },
@@ -1554,7 +1554,7 @@
     "FLINT",
     "KEYSS"
    ],
-   "cruise": 14000,
+   "cruise": 29000,
    "period": 120,
    "offset": 103
   },
@@ -1580,7 +1580,7 @@
     "PACIF",
     "SANTA"
    ],
-   "cruise": 10000,
+   "cruise": 31000,
    "period": 120,
    "offset": 105
   },
@@ -1594,7 +1594,7 @@
     "TIERR",
     "STARF"
    ],
-   "cruise": 9000,
+   "cruise": 25000,
    "period": 120,
    "offset": 106
   },
@@ -1607,7 +1607,7 @@
     "YUCCA",
     "BAYSD"
    ],
-   "cruise": 12000,
+   "cruise": 16000,
    "period": 120,
    "offset": 107
   },
@@ -1621,7 +1621,7 @@
     "PALOM",
     "KEYSS"
    ],
-   "cruise": 12000,
+   "cruise": 23000,
    "period": 120,
    "offset": 108
   },
@@ -1634,7 +1634,7 @@
     "REEFS",
     "SANTO"
    ],
-   "cruise": 10000,
+   "cruise": 18000,
    "period": 120,
    "offset": 109
   },
@@ -1648,7 +1648,7 @@
     "DILMR",
     "SHADY"
    ],
-   "cruise": 10000,
+   "cruise": 19000,
    "period": 120,
    "offset": 110
   },
@@ -1661,7 +1661,7 @@
     "VICEC",
     "SPRNG"
    ],
-   "cruise": 11000,
+   "cruise": 22000,
    "period": 120,
    "offset": 111
   },
@@ -1699,7 +1699,7 @@
     "GROVE",
     "LIBTY"
    ],
-   "cruise": 12000,
+   "cruise": 25000,
    "period": 120,
    "offset": 115
   },
@@ -1713,7 +1713,7 @@
     "DILMR",
     "REDWO"
    ],
-   "cruise": 16000,
+   "cruise": 36000,
    "period": 120,
    "offset": 116
   },
@@ -1740,7 +1740,7 @@
     "DILMR",
     "MARIN"
    ],
-   "cruise": 16000,
+   "cruise": 34000,
    "period": 120,
    "offset": 118
   },
@@ -1754,7 +1754,7 @@
     "KINCA",
     "GOLDN"
    ],
-   "cruise": 16000,
+   "cruise": 37000,
    "period": 120,
    "offset": 119
   },
@@ -1767,7 +1767,7 @@
     "PRCKL",
     "BOREA"
    ],
-   "cruise": 11000,
+   "cruise": 36000,
    "period": 120,
    "offset": 7
   },
@@ -1780,7 +1780,7 @@
     "BOREA",
     "PRCKL"
    ],
-   "cruise": 11000,
+   "cruise": 31000,
    "period": 120,
    "offset": 23
   },
@@ -1793,7 +1793,7 @@
     "PALIS",
     "ZEPHR"
    ],
-   "cruise": 14000,
+   "cruise": 26000,
    "period": 120,
    "offset": 37
   },
@@ -1806,7 +1806,7 @@
     "ZEPHR",
     "PALIS"
    ],
-   "cruise": 14000,
+   "cruise": 39000,
    "period": 120,
    "offset": 53
   },
@@ -1819,7 +1819,7 @@
     "REEFS",
     "TROPI"
    ],
-   "cruise": 10000,
+   "cruise": 18000,
    "period": 120,
    "offset": 67
   },
@@ -1832,7 +1832,7 @@
     "TROPI",
     "REEFS"
    ],
-   "cruise": 10000,
+   "cruise": 33000,
    "period": 120,
    "offset": 83
   },
@@ -1845,7 +1845,7 @@
     "SUNRS",
     "PLAYA"
    ],
-   "cruise": 9000,
+   "cruise": 18000,
    "period": 120,
    "offset": 97
   },
@@ -1858,9 +1858,826 @@
     "SEQUA",
     "JUNIP"
    ],
-   "cruise": 9000,
+   "cruise": 15000,
    "period": 120,
    "offset": 113
+  },
+  {
+   "callsign": "CPN7632",
+   "type": "B752",
+   "dep": "CRLB",
+   "arr": "HNLU",
+   "route": [
+    "CORAL",
+    "BLUFF",
+    "ZEPHR"
+   ],
+   "cruise": 38000,
+   "period": 30,
+   "offset": 0
+  },
+  {
+   "callsign": "PCA209",
+   "type": "B738",
+   "dep": "CRCR",
+   "arr": "SNRS",
+   "route": [
+    "BYRON",
+    "SUNRS"
+   ],
+   "cruise": 13000,
+   "period": 30,
+   "offset": 7
+  },
+  {
+   "callsign": "SAX2921",
+   "type": "B752",
+   "dep": "PCFC",
+   "arr": "LCIA",
+   "route": [
+    "PACIF",
+    "DILMR",
+    "LIBTY"
+   ],
+   "cruise": 21000,
+   "period": 30,
+   "offset": 21
+  },
+  {
+   "callsign": "SNA1019",
+   "type": "A388",
+   "dep": "SHRK",
+   "arr": "NWPT",
+   "route": [
+    "SHARK",
+    "GOLDN"
+   ],
+   "cruise": 24000,
+   "period": 30,
+   "offset": 10
+  },
+  {
+   "callsign": "PCA7072",
+   "type": "B738",
+   "dep": "CRCR",
+   "arr": "CAYO",
+   "route": [
+    "BYRON",
+    "TROPI"
+   ],
+   "cruise": 20000,
+   "period": 30,
+   "offset": 23
+  },
+  {
+   "callsign": "DSA4826",
+   "type": "B763",
+   "dep": "NYKT",
+   "arr": "BJAC",
+   "route": [
+    "BOREA",
+    "DILMR",
+    "SANTO"
+   ],
+   "cruise": 37000,
+   "period": 30,
+   "offset": 27
+  },
+  {
+   "callsign": "CGO2640",
+   "type": "B77W",
+   "dep": "CRLB",
+   "arr": "STFL",
+   "route": [
+    "CORAL",
+    "PALOM",
+    "STARF"
+   ],
+   "cruise": 27000,
+   "period": 30,
+   "offset": 1
+  },
+  {
+   "callsign": "FUS9253",
+   "type": "B77W",
+   "dep": "CRCR",
+   "arr": "PCFC",
+   "route": [
+    "BYRON",
+    "PACIF"
+   ],
+   "cruise": 22000,
+   "period": 30,
+   "offset": 20
+  },
+  {
+   "callsign": "PCA6153",
+   "type": "A321",
+   "dep": "VCIA",
+   "arr": "ANYW",
+   "route": [
+    "VICEC",
+    "NOVAX"
+   ],
+   "cruise": 32000,
+   "period": 30,
+   "offset": 26
+  },
+  {
+   "callsign": "VCA4601",
+   "type": "E190",
+   "dep": "STFL",
+   "arr": "HNLU",
+   "route": [
+    "STARF",
+    "MESAS",
+    "ZEPHR"
+   ],
+   "cruise": 34000,
+   "period": 30,
+   "offset": 2
+  },
+  {
+   "callsign": "CPN6014",
+   "type": "CRJ9",
+   "dep": "PCFC",
+   "arr": "KEYW",
+   "route": [
+    "PACIF",
+    "BLUFF",
+    "KEYSS"
+   ],
+   "cruise": 31000,
+   "period": 30,
+   "offset": 18
+  },
+  {
+   "callsign": "FUS4065",
+   "type": "A320",
+   "dep": "CRCR",
+   "arr": "SHRK",
+   "route": [
+    "BYRON",
+    "SHARK"
+   ],
+   "cruise": 28000,
+   "period": 30,
+   "offset": 29
+  },
+  {
+   "callsign": "PCA6019",
+   "type": "B738",
+   "dep": "SHRK",
+   "arr": "KEYW",
+   "route": [
+    "SHARK",
+    "KEYSS"
+   ],
+   "cruise": 29000,
+   "period": 30,
+   "offset": 29
+  },
+  {
+   "callsign": "NRA6934",
+   "type": "B77W",
+   "dep": "FGHB",
+   "arr": "CRLB",
+   "route": [
+    "FOGGY",
+    "CORAL"
+   ],
+   "cruise": 29000,
+   "period": 30,
+   "offset": 12
+  },
+  {
+   "callsign": "EMU8319",
+   "type": "E190",
+   "dep": "ANYW",
+   "arr": "BJAC",
+   "route": [
+    "NOVAX",
+    "TIERR",
+    "SANTO"
+   ],
+   "cruise": 9000,
+   "period": 30,
+   "offset": 28
+  },
+  {
+   "callsign": "VCA9241",
+   "type": "A321",
+   "dep": "FGHB",
+   "arr": "LCIA",
+   "route": [
+    "FOGGY",
+    "DILMR",
+    "LIBTY"
+   ],
+   "cruise": 11000,
+   "period": 30,
+   "offset": 4
+  },
+  {
+   "callsign": "HRL4156",
+   "type": "A320",
+   "dep": "CSCD",
+   "arr": "STFL",
+   "route": [
+    "SEQUA",
+    "MOJAV",
+    "STARF"
+   ],
+   "cruise": 25000,
+   "period": 30,
+   "offset": 0
+  },
+  {
+   "callsign": "FUS1623",
+   "type": "A332",
+   "dep": "KEYW",
+   "arr": "RDWD",
+   "route": [
+    "KEYSS",
+    "DILMR",
+    "REDWO"
+   ],
+   "cruise": 26000,
+   "period": 30,
+   "offset": 8
+  },
+  {
+   "callsign": "EMU7259",
+   "type": "B738",
+   "dep": "CAYO",
+   "arr": "CRCR",
+   "route": [
+    "TROPI",
+    "DILMR",
+    "BYRON"
+   ],
+   "cruise": 33000,
+   "period": 30,
+   "offset": 11
+  },
+  {
+   "callsign": "ADS6357",
+   "type": "A321",
+   "dep": "NYKT",
+   "arr": "KEYW",
+   "route": [
+    "BOREA",
+    "KEYSS"
+   ],
+   "cruise": 31000,
+   "period": 30,
+   "offset": 17
+  },
+  {
+   "callsign": "HRL6500",
+   "type": "CRJ9",
+   "dep": "BJAC",
+   "arr": "RDWD",
+   "route": [
+    "SANTO",
+    "REDWO"
+   ],
+   "cruise": 18000,
+   "period": 30,
+   "offset": 15
+  },
+  {
+   "callsign": "NRA1080",
+   "type": "E190",
+   "dep": "STFL",
+   "arr": "CSCD",
+   "route": [
+    "STARF",
+    "MOJAV",
+    "SEQUA"
+   ],
+   "cruise": 30000,
+   "period": 30,
+   "offset": 13
+  },
+  {
+   "callsign": "CGO2052",
+   "type": "A332",
+   "dep": "CRLB",
+   "arr": "LCIA",
+   "route": [
+    "CORAL",
+    "LIBTY"
+   ],
+   "cruise": 23000,
+   "period": 30,
+   "offset": 1
+  },
+  {
+   "callsign": "CPN3537",
+   "type": "B77W",
+   "dep": "CAYO",
+   "arr": "CSCD",
+   "route": [
+    "TROPI",
+    "SEQUA"
+   ],
+   "cruise": 14000,
+   "period": 30,
+   "offset": 21
+  },
+  {
+   "callsign": "CPN9225",
+   "type": "DH8D",
+   "dep": "FGHB",
+   "arr": "DSRT",
+   "route": [
+    "FOGGY",
+    "MOJAV",
+    "YUCCA"
+   ],
+   "cruise": 9000,
+   "period": 30,
+   "offset": 7
+  },
+  {
+   "callsign": "CGO5397",
+   "type": "CRJ9",
+   "dep": "ANYW",
+   "arr": "LCIA",
+   "route": [
+    "NOVAX",
+    "LIBTY"
+   ],
+   "cruise": 25000,
+   "period": 30,
+   "offset": 22
+  },
+  {
+   "callsign": "DSA8262",
+   "type": "A320",
+   "dep": "KEYW",
+   "arr": "HNLU",
+   "route": [
+    "KEYSS",
+    "DILMR",
+    "ZEPHR"
+   ],
+   "cruise": 28000,
+   "period": 30,
+   "offset": 8
+  },
+  {
+   "callsign": "SNA6154",
+   "type": "A332",
+   "dep": "KEYW",
+   "arr": "NYKT",
+   "route": [
+    "KEYSS",
+    "PALOM",
+    "BOREA"
+   ],
+   "cruise": 24000,
+   "period": 30,
+   "offset": 3
+  },
+  {
+   "callsign": "PCA2776",
+   "type": "A388",
+   "dep": "SNRS",
+   "arr": "RDWD",
+   "route": [
+    "SUNRS",
+    "PALOM",
+    "REDWO"
+   ],
+   "cruise": 38000,
+   "period": 30,
+   "offset": 6
+  },
+  {
+   "callsign": "SAX905",
+   "type": "B738",
+   "dep": "MRNA",
+   "arr": "RDWD",
+   "route": [
+    "MARIN",
+    "BLUFF",
+    "REDWO"
+   ],
+   "cruise": 32000,
+   "period": 30,
+   "offset": 23
+  },
+  {
+   "callsign": "DSA6808",
+   "type": "B77W",
+   "dep": "STFL",
+   "arr": "CRLB",
+   "route": [
+    "STARF",
+    "CORAL"
+   ],
+   "cruise": 32000,
+   "period": 30,
+   "offset": 5
+  },
+  {
+   "callsign": "EMU4729",
+   "type": "A332",
+   "dep": "CRLB",
+   "arr": "CSCD",
+   "route": [
+    "CORAL",
+    "SEQUA"
+   ],
+   "cruise": 34000,
+   "period": 30,
+   "offset": 26
+  },
+  {
+   "callsign": "VCA7451",
+   "type": "B738",
+   "dep": "ANYW",
+   "arr": "FGHB",
+   "route": [
+    "NOVAX",
+    "KINCA",
+    "FOGGY"
+   ],
+   "cruise": 36000,
+   "period": 30,
+   "offset": 17
+  },
+  {
+   "callsign": "VCA7123",
+   "type": "B763",
+   "dep": "PCFC",
+   "arr": "SNRS",
+   "route": [
+    "PACIF",
+    "PALOM",
+    "SUNRS"
+   ],
+   "cruise": 23000,
+   "period": 30,
+   "offset": 19
+  },
+  {
+   "callsign": "SNA1777",
+   "type": "B77W",
+   "dep": "SNRS",
+   "arr": "FGHB",
+   "route": [
+    "SUNRS",
+    "FOGGY"
+   ],
+   "cruise": 30000,
+   "period": 30,
+   "offset": 27
+  },
+  {
+   "callsign": "DSA623",
+   "type": "A320",
+   "dep": "RDWD",
+   "arr": "CAYO",
+   "route": [
+    "REDWO",
+    "BLUFF",
+    "TROPI"
+   ],
+   "cruise": 27000,
+   "period": 30,
+   "offset": 6
+  },
+  {
+   "callsign": "FUS6390",
+   "type": "A332",
+   "dep": "BJAC",
+   "arr": "LCIA",
+   "route": [
+    "SANTO",
+    "PALOM",
+    "LIBTY"
+   ],
+   "cruise": 33000,
+   "period": 30,
+   "offset": 13
+  },
+  {
+   "callsign": "FUS7630",
+   "type": "A321",
+   "dep": "HNLU",
+   "arr": "STFL",
+   "route": [
+    "ZEPHR",
+    "MESAS",
+    "STARF"
+   ],
+   "cruise": 29000,
+   "period": 30,
+   "offset": 11
+  },
+  {
+   "callsign": "DSA4062",
+   "type": "A332",
+   "dep": "CAYO",
+   "arr": "NWPT",
+   "route": [
+    "TROPI",
+    "GOLDN"
+   ],
+   "cruise": 18000,
+   "period": 30,
+   "offset": 16
+  },
+  {
+   "callsign": "FUS551",
+   "type": "B752",
+   "dep": "BJAC",
+   "arr": "FGHB",
+   "route": [
+    "SANTO",
+    "FOGGY"
+   ],
+   "cruise": 22000,
+   "period": 30,
+   "offset": 24
+  },
+  {
+   "callsign": "NRA623",
+   "type": "A388",
+   "dep": "MRNA",
+   "arr": "CRCR",
+   "route": [
+    "MARIN",
+    "DILMR",
+    "BYRON"
+   ],
+   "cruise": 35000,
+   "period": 30,
+   "offset": 20
+  },
+  {
+   "callsign": "EMU6652",
+   "type": "B77W",
+   "dep": "NWPT",
+   "arr": "PCFC",
+   "route": [
+    "GOLDN",
+    "PACIF"
+   ],
+   "cruise": 34000,
+   "period": 30,
+   "offset": 9
+  },
+  {
+   "callsign": "HRL4001",
+   "type": "CRJ9",
+   "dep": "BJAC",
+   "arr": "DSRT",
+   "route": [
+    "SANTO",
+    "MESAS",
+    "YUCCA"
+   ],
+   "cruise": 39000,
+   "period": 30,
+   "offset": 19
+  },
+  {
+   "callsign": "SAX1164",
+   "type": "A320",
+   "dep": "SHRK",
+   "arr": "CRCR",
+   "route": [
+    "SHARK",
+    "BLUFF",
+    "BYRON"
+   ],
+   "cruise": 9000,
+   "period": 30,
+   "offset": 15
+  },
+  {
+   "callsign": "FUS6309",
+   "type": "B77W",
+   "dep": "NYKT",
+   "arr": "HNLU",
+   "route": [
+    "BOREA",
+    "KINCA",
+    "ZEPHR"
+   ],
+   "cruise": 32000,
+   "period": 30,
+   "offset": 24
+  },
+  {
+   "callsign": "SAX3283",
+   "type": "B763",
+   "dep": "CRCR",
+   "arr": "BJAC",
+   "route": [
+    "BYRON",
+    "MOJAV",
+    "SANTO"
+   ],
+   "cruise": 26000,
+   "period": 30,
+   "offset": 3
+  },
+  {
+   "callsign": "SAX8499",
+   "type": "A388",
+   "dep": "LCIA",
+   "arr": "CAYO",
+   "route": [
+    "LIBTY",
+    "PALOM",
+    "TROPI"
+   ],
+   "cruise": 18000,
+   "period": 30,
+   "offset": 5
+  },
+  {
+   "callsign": "FUS3663",
+   "type": "B752",
+   "dep": "HNLU",
+   "arr": "LCIA",
+   "route": [
+    "ZEPHR",
+    "DILMR",
+    "LIBTY"
+   ],
+   "cruise": 19000,
+   "period": 30,
+   "offset": 22
+  },
+  {
+   "callsign": "VCA9728",
+   "type": "A320",
+   "dep": "CRCR",
+   "arr": "FGHB",
+   "route": [
+    "BYRON",
+    "TIERR",
+    "FOGGY"
+   ],
+   "cruise": 10000,
+   "period": 30,
+   "offset": 14
+  },
+  {
+   "callsign": "NRA3086",
+   "type": "B738",
+   "dep": "KEYW",
+   "arr": "SHRK",
+   "route": [
+    "KEYSS",
+    "SHARK"
+   ],
+   "cruise": 36000,
+   "period": 30,
+   "offset": 18
+  },
+  {
+   "callsign": "CPN3097",
+   "type": "B77W",
+   "dep": "NWPT",
+   "arr": "KEYW",
+   "route": [
+    "GOLDN",
+    "KEYSS"
+   ],
+   "cruise": 15000,
+   "period": 30,
+   "offset": 12
+  },
+  {
+   "callsign": "PCA735",
+   "type": "A321",
+   "dep": "HNLU",
+   "arr": "CRCR",
+   "route": [
+    "ZEPHR",
+    "TIERR",
+    "BYRON"
+   ],
+   "cruise": 35000,
+   "period": 30,
+   "offset": 16
+  },
+  {
+   "callsign": "SAX4028",
+   "type": "DH8D",
+   "dep": "NYKT",
+   "arr": "FGHB",
+   "route": [
+    "BOREA",
+    "TIERR",
+    "FOGGY"
+   ],
+   "cruise": 30000,
+   "period": 30,
+   "offset": 2
+  },
+  {
+   "callsign": "SNA9351",
+   "type": "B738",
+   "dep": "STFL",
+   "arr": "NWPT",
+   "route": [
+    "STARF",
+    "MOJAV",
+    "GOLDN"
+   ],
+   "cruise": 32000,
+   "period": 30,
+   "offset": 25
+  },
+  {
+   "callsign": "NRA7797",
+   "type": "A332",
+   "dep": "SHRK",
+   "arr": "ANYW",
+   "route": [
+    "SHARK",
+    "KINCA",
+    "NOVAX"
+   ],
+   "cruise": 25000,
+   "period": 30,
+   "offset": 10
+  },
+  {
+   "callsign": "NRA2211",
+   "type": "A332",
+   "dep": "SHRK",
+   "arr": "CSCD",
+   "route": [
+    "SHARK",
+    "SEQUA"
+   ],
+   "cruise": 24000,
+   "period": 30,
+   "offset": 9
+  },
+  {
+   "callsign": "FUS2025",
+   "type": "B77W",
+   "dep": "MRNA",
+   "arr": "CSCD",
+   "route": [
+    "MARIN",
+    "BLUFF",
+    "SEQUA"
+   ],
+   "cruise": 36000,
+   "period": 30,
+   "offset": 14
+  },
+  {
+   "callsign": "NRA9521",
+   "type": "B763",
+   "dep": "NWPT",
+   "arr": "CAYO",
+   "route": [
+    "GOLDN",
+    "TROPI"
+   ],
+   "cruise": 33000,
+   "period": 30,
+   "offset": 4
+  },
+  {
+   "callsign": "PCA4859",
+   "type": "B77W",
+   "dep": "NYKT",
+   "arr": "MRNA",
+   "route": [
+    "BOREA",
+    "BLUFF",
+    "MARIN"
+   ],
+   "cruise": 20000,
+   "period": 30,
+   "offset": 25
+  },
+  {
+   "callsign": "NRA8751",
+   "type": "A321",
+   "dep": "VCIA",
+   "arr": "NWPT",
+   "route": [
+    "VICEC",
+    "PALOM",
+    "GOLDN"
+   ],
+   "cruise": 22000,
+   "period": 30,
+   "offset": 28
   }
  ]
 }

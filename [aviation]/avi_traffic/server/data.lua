@@ -4,7 +4,7 @@
 -- resource gets a new one.
 
 DB = { flights = {}, types = {}, airlines = {}, externals = {}, byCallsign = {} }
-WORLD = { airports = {}, nav = {}, airspaces = {}, procs = {} }
+WORLD = { airports = {}, nav = {}, airspaces = {}, procs = {}, centre = { split = 20500, sectors = {} } }
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -59,6 +59,35 @@ end
 
 function refreshAirspaces()
     WORLD.airspaces = callExport("avi_airspace", "getAirspaces") or {}
+    WORLD.centre = callExport("avi_airspace", "getCentreSectors") or { split = 20500, sectors = {} }
+    WORLD.centre.sectors = WORLD.centre.sectors or {}
+    -- every centre position (they appear in the sector chains) + the base one
+    CENTER_POSITIONS = { [TR.CENTER_POSITION] = true }
+    UPPER_POSITIONS = {}
+    local lower = {}
+    for _, s in ipairs(WORLD.centre.sectors) do
+        for _, pos in ipairs(s.chain or {}) do
+            CENTER_POSITIONS[pos] = true
+            if s.upper then UPPER_POSITIONS[pos] = true else lower[pos] = true end
+        end
+    end
+    for pos in pairs(lower) do UPPER_POSITIONS[pos] = nil end
+end
+
+CENTER_POSITIONS = { [TR.CENTER_POSITION] = true }
+UPPER_POSITIONS = {}     -- centre positions that own only upper sectors (SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR)
+
+-- SACC_CTR and its split positions (north / south / upper ...)
+function isCenterPosition(pos)
+    return pos ~= nil and CENTER_POSITIONS[pos] == true
+end
+
+-- centre sector (avi_airspace `centre`) at the point: upper above the split level
+function centreSectorAt(x, y, alt)
+    local upper = alt > (tonumber(WORLD.centre.split) or 20500)
+    for _, s in ipairs(WORLD.centre.sectors) do
+        if (s.upper and true or false) == upper and pointInPolygon(x, y, s.polygon) then return s end
+    end
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()
@@ -162,6 +191,16 @@ function procedureRoute(id, ident)
             local out = {}
             for i, f in ipairs(r) do out[i] = tostring(f):upper() end
             return out
+        end
+    end
+end
+
+-- go-around procedure of the runway end (fix list copy + procedure id), nil when there is none
+function goAroundRoute(icao, ident)
+    for _, p in pairs(WORLD.procs) do
+        if p.type == "GA" and p.airport == icao then
+            local r = procedureRoute(p.id, ident)
+            if r then return r, p.id end
         end
     end
 end

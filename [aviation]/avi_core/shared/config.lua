@@ -3,7 +3,7 @@ AVI = {
     -- default; work_atc will hand out the others (setPlayerATCRight) from the work level.
     --   TWR   = <ICAO>_TWR positions
     --   APP   = <ICAO>_APP positions
-    --   RADAR = SACC_CTR (centre / radar)
+    --   RADAR = SACC_CTR and its split positions (SACC_N_CTR, SACC_S_CTR, SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR)
     RIGHTS = { "TWR", "APP", "RADAR" },
     DEFAULT_RIGHTS = { TWR = true },
     POSITION_RIGHT = { TWR = "TWR", APP = "APP", CTR = "RADAR" },   -- avi_controller position type -> right
@@ -24,7 +24,7 @@ AVI = {
         -- SF control tower, in front of the wall screens (v_monitors, controller spot u = -4.9)
         {
             name = "ACC",
-            available_positions = { "SACC_CTR" },
+            available_positions = { "SACC_CTR", "SACC_N_CTR", "SACC_S_CTR", "SACC_U_CTR", "SACC_NU_CTR", "SACC_SU_CTR" },
             x = 204.25883, y = 185.98024, z = 1057.15161,
             interior = 3, dimension = 0
         },
@@ -47,7 +47,7 @@ AVI = {
             interior = 3, dimension = 0
         },
         -- more: add { name = "...", x, y, z [, interior, dimension] [, available_positions] } (/avipos prints the position, z - 1)
-        -- available_positions: the position ids (<ICAO>_TWR / <ICAO>_APP / SACC_CTR) the login of that
+        -- available_positions: the position ids (<ICAO>_TWR / <ICAO>_APP / SACC_*_CTR) the login of that
         -- marker offers; left out = every position the player has the right for
     },
 

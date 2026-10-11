@@ -35,7 +35,8 @@ TR = {
     INITIAL_CLIMB  = 3000,    -- ft: cleared level after take-off when a controller has the aircraft
     FINAL_AGL      = 1200,    -- ft above the field at the final fix (glide = FINAL_AGL / final distance)
     GO_AROUND_MARGIN = 500,   -- ft: higher than the glide path + this at the final fix = go-around
-    MISSED_ALT_AGL = 2500,    -- ft above the field after a go-around
+    GO_AROUND_ALT  = 3000,    -- ft: every go-around procedure (avi_nav <ICAO>GA) climbs to this
+    MAX_LEVEL      = 39000,   -- ft: highest cleared level / requested cruise level (FL390)
     DESCENT_FT_PER_M = 0.9,   -- automatic descent planning (only without a controller)
     SPEED_LIMIT_ALT = 10000,  -- ft: max 250 kts below this
     APPROACH_SLOW_DIST = 2500,-- m before the final fix: slow down to approach + 30 kts
@@ -45,8 +46,10 @@ TR = {
     PARK_TIME = 90,           -- s parked after arrival, then removed
     MAX_AGE   = 40 * 60,      -- s: anything older is removed (stuck)
     EXIT_MARGIN = 300,        -- m outside the CTA = gone
+    ENTRY_LEAD_NM = 5.5,      -- nm: external flights appear this far before the CTA border (on the extended first leg)
+    M_PER_NM = 1852,          -- world metres per nm (the scope's scale)
 
-    MAX_ACTIVE    = 16,       -- simultaneous flights
+    MAX_ACTIVE    = 44,       -- simultaneous flights (overflights before the border included)
     INITIAL_SPAWN = 4,        -- flights started right after the resource starts
     SCHEDULE = true,          -- start flights by the real clock (flights.json period / offset)
 
@@ -57,7 +60,7 @@ TR = {
     PIPELINE_WEIGHT = 0.5,
     LOAD_CHECK = 15,          -- s between checks
     LOAD_COOLDOWN = 75,       -- s: at most one extra flight per position this often
-    LOAD_MAX_ACTIVE = 24,     -- the keeper may go above MAX_ACTIVE up to this
+    LOAD_MAX_ACTIVE = 52,     -- the keeper may go above MAX_ACTIVE up to this
 
     -- scope alerts / separation (server/alerts.lua); each loss is a fine in avi_controller
     SEP_AIR_DIST = 185.2,     -- m (0.1 nm): two airborne aircraft in a TMA / the CTA closer than this ...
@@ -68,5 +71,7 @@ TR = {
     RAM_ANGLE = 90,           -- deg off the bearing to the next route point ...
     RAM_TIME  = 40,           -- s ... for this long = route deviation alert (RAM)
 
-    CENTER_POSITION = "SACC_CTR",   -- position id of the centre (CTA) in avi_controller
+    -- base centre position (CTA) in avi_controller; the split ones (SACC_N_CTR, SACC_U_CTR ...) come from the
+    -- sector chains of avi_airspace `centre`
+    CENTER_POSITION = "SACC_CTR",
 }

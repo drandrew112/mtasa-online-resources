@@ -50,7 +50,7 @@ end
 -- in-sector aircraft count 1, the ones heading for the sector TR.PIPELINE_WEIGHT
 local function positionLoad(pos)
     local icao = pos:match("^(.+)_TWR$") or pos:match("^(.+)_APP$")
-    local isCenter = pos == TR.CENTER_POSITION
+    local isCenter = isCenterPosition(pos)
     if not isCenter and not icao then return math.huge end
     local load = 0
     for _, ac in pairs(AIRCRAFT) do
@@ -84,7 +84,10 @@ local function candidates(pos)
     for _, fl in ipairs(DB.flights) do
         if not isCallsignActive(fl.callsign) then
             local fromApt, w = airport(fl.dep) ~= nil, 0
-            if pos == TR.CENTER_POSITION then
+            if UPPER_POSITIONS[pos] then
+                -- an upper sector (above FL205) only gets high overflights
+                w = (not fromApt and not airport(fl.arr) and fl.cruise > (tonumber(WORLD.centre.split) or 20500)) and 4 or 0
+            elseif isCenterPosition(pos) then
                 w = fromApt and 1 or 3                          -- externals enter straight into the CTA
             elseif fl.dep == icao then
                 w = twr and 3 or 1

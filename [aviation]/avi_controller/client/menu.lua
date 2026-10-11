@@ -51,11 +51,22 @@ local function sub(mode)
 end
 
 -- ---------------------------------------------------------------- sub lists
+-- offered levels, highest first: LEVEL_STEP_HIGH steps above LEVEL_FINE_MAX, LEVEL_STEP below
+local function levelSteps(maxFt)
+    local out, ft = {}, maxFt
+    while ft >= CTL.LEVEL_MIN do
+        out[#out + 1] = ft
+        ft = ft - (ft > CTL.LEVEL_FINE_MAX and CTL.LEVEL_STEP_HIGH or CTL.LEVEL_STEP)
+    end
+    return out
+end
+
 local function levelItems(s, action, maxFt)
     local items = { back() }
-    local cur = action == "cfl" and (s.cfl or math.floor(s.alt / CTL.LEVEL_STEP + 0.5) * CTL.LEVEL_STEP) or (s.initAlt or 4000)
+    local step = s.alt > CTL.LEVEL_FINE_MAX and CTL.LEVEL_STEP_HIGH or CTL.LEVEL_STEP
+    local cur = action == "cfl" and (s.cfl or math.floor(s.alt / step + 0.5) * step) or (s.initAlt or 4000)
     maxFt = math.max(maxFt or CTL.LEVEL_MAX, s.rfl or 0)
-    for ft = maxFt, CTL.LEVEL_MIN, -CTL.LEVEL_STEP do
+    for _, ft in ipairs(levelSteps(maxFt)) do
         local isRfl = ft == s.rfl
         items[#items + 1] = { label = ("%03d   %d ft%s"):format(ft / 100, ft, isRfl and "   RFL" or ""), current = ft == cur,
             rfl = isRfl, key = ft, act = function()
