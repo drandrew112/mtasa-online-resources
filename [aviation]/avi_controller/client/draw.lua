@@ -12,6 +12,7 @@ COL = {
     rwText   = tocolor(170, 175, 185, 255),
     arr      = tocolor(80, 200, 120, 255),
     dep      = tocolor(90, 150, 240, 255),
+    finalLine = tocolor(120, 126, 136, 255),
     taxi     = tocolor(52, 58, 68, 255),
     taxiText = tocolor(110, 115, 125, 255),
     gate     = tocolor(95, 100, 112, 255),
@@ -168,7 +169,7 @@ function drawAirports()
                     local f = navById(e.final)
                     if f then
                         local fx, fy = w2s(f.x, f.y)
-                        dashed(ex, ey, fx, fy, COL.arr, 1, 6, 6)
+                        dashed(ex, ey, fx, fy, COL.finalLine, 1, 6, 6)
                     end
                 end
                 if isDep and s >= 0.08 then
