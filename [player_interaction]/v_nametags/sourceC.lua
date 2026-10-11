@@ -30,68 +30,11 @@ function stripColorCodes(text)
 end
 
 
-local firstNames = {
-    "James", "John", "Robert", "Michael", "William",
-    "David", "Richard", "Joseph", "Thomas", "Charles",
-    "Christopher", "Daniel", "Matthew", "Anthony", "Mark",
-    "Donald", "Steven", "Paul", "Andrew", "Joshua",
-    "Kenneth", "Kevin", "Brian", "George", "Timothy",
-    "Ryan", "Jason", "Jacob", "Gary", "Nicholas",
-    "Eric", "Jonathan", "Stephen", "Justin", "Scott",
-    "Brandon", "Benjamin", "Samuel", "Gregory", "Frank",
-    "Mary", "Patricia", "Jennifer", "Linda", "Elizabeth",
-    "Barbara", "Susan", "Jessica", "Sarah", "Karen",
-    "Lisa", "Nancy", "Betty", "Sandra", "Margaret",
-    "Ashley", "Kimberly", "Emily", "Donna", "Michelle",
-    "Carol", "Amanda", "Melissa", "Deborah", "Stephanie",
-    "Rebecca", "Laura", "Sharon", "Cynthia", "Kathleen",
-    "Amy", "Angela", "Anna", "Brenda", "Pamela",
-    "Emma", "Nicole", "Helen", "Samantha", "Katherine"
-}
-
-local lastNames = {
-    "Smith", "Johnson", "Williams", "Brown", "Jones",
-    "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
-    "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson",
-    "Thomas", "Taylor", "Moore", "Jackson", "Martin",
-    "Lee", "Perez", "Thompson", "White", "Harris",
-    "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
-    "Walker", "Young", "Allen", "King", "Wright",
-    "Scott", "Torres", "Nguyen", "Hill", "Flores",
-    "Green", "Adams", "Nelson", "Baker", "Hall",
-    "Rivera", "Campbell", "Mitchell", "Carter", "Roberts",
-    "Phillips", "Evans", "Turner", "Parker", "Collins",
-    "Edwards", "Stewart", "Morris", "Murphy", "Cook",
-    "Rogers", "Morgan", "Peterson", "Cooper", "Reed",
-    "Bailey", "Bell", "Gomez", "Kelly", "Howard",
-    "Ward", "Cox", "Diaz", "Richardson", "Wood",
-    "Watson", "Brooks", "Bennett", "Gray", "James"
-}
-
-function getRandomName(ped)
-    if not isElement(ped) then
-        return "No Name"
-    end
-
-    local currentName = getElementData(ped, "name")
-    if currentName and currentName ~= "" then
-        return currentName
-    end
-
-    local name = string.format(
-        "%s %s",
-        firstNames[math.random(#firstNames)],
-        lastNames[math.random(#lastNames)]
-    )
-
-    setElementData(ped, "name", name)
-    return name
-end
-
 setPedTargetingMarkerEnabled(false)
 
 addEventHandler("onClientRender", getRootElement(), function()
 	local lX, lY, lZ = getElementPosition(localPlayer)
+	local lInt, lDim = getElementInterior(localPlayer), getElementDimension(localPlayer)
 
 	-- PLAYERS
 	for i, playerInfo in ipairs(getElementsByType("player")) do
@@ -100,7 +43,9 @@ addEventHandler("onClientRender", getRootElement(), function()
 		else
 			local pX, pY, pZ = getElementPosition(playerInfo)
 			setPlayerNametagShowing(playerInfo, false)
-			if getElementAlpha(playerInfo) ~= 0 then
+			if getElementAlpha(playerInfo) ~= 0
+				and getElementInterior(playerInfo) == lInt
+				and getElementDimension(playerInfo) == lDim then
 				if getDistanceBetweenPoints3D(pX, pY, pZ, lX, lY, lZ) <= 50 then
 					local veh = getPedOccupiedVehicle(playerInfo)
 					if isLineOfSightClear(lX, lY, lZ+1.5, pX, pY, pZ+1.5) or veh then
@@ -185,11 +130,13 @@ addEventHandler("onClientRender", getRootElement(), function()
 
 	-- PEDS
 	for i, ped in ipairs(getElementsByType("ped")) do
-		if isElement(ped) and getElementAlpha(ped) ~= 0 then
-			if getElementData(ped, "hide_nametag") then
-				return
-			end
-			
+		local pedName = isElement(ped) and getElementData(ped, "name")
+		if pedName and pedName ~= ""
+			and getElementAlpha(ped) ~= 0
+			and not getElementData(ped, "hide_nametag")
+			and getElementInterior(ped) == lInt
+			and getElementDimension(ped) == lDim then
+			pedName = tostring(pedName)
 			local pX, pY, pZ = getElementPosition(ped)
 
 			if getDistanceBetweenPoints3D(pX, pY, pZ, lX, lY, lZ) <= 50 then
@@ -197,8 +144,6 @@ addEventHandler("onClientRender", getRootElement(), function()
 					local sX, sY = getScreenFromWorldPosition(pX, pY, pZ + 1.2)
 
 					if sX and sY then
-						local pedName = getElementData(ped, "name") or getRandomName(ped)
-
 						local fontS = ui(2)
 						local textWidth = dxGetTextWidth(pedName, fontS, "default-bold")
 
