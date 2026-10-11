@@ -5,6 +5,8 @@ Net = {
     llink = {}, lflags = {}, lcount = {}, lindex = {}, lnext = {}, lspeed = {},
     -- connections
     cfrom = {}, cto = {}, cnode = {}, cturn = {}, cvmax = {}, cphase = {}, cgroup = {}, cconf = {}, cyield = {},
+    lprev = {},      -- [lane] = { conn, ... } entering it
+    spawnable = {},  -- [lane] = spawn weight (length * surface weight), nil = no spawns
     -- spawn grid: [cell] = { lanes = {id...}, length = total }
     grid = {}, CELL = 100,
     ready = false,
@@ -43,7 +45,9 @@ local function buildGrid()
             local c = N.grid[key]
             if not c then c = { lanes = {}, length = 0 }; N.grid[key] = c end
             c.lanes[#c.lanes + 1] = id
-            c.length = c.length + len * (bitAnd(fl, LF_UNPAVED) ~= 0 and TRAFFIC.WEIGHT_UNPAVED or 1)
+            local w = len * (bitAnd(fl, LF_UNPAVED) ~= 0 and TRAFFIC.WEIGHT_UNPAVED or 1)
+            c.length = c.length + w
+            N.spawnable[id] = w
         end
     end
 end
@@ -83,6 +87,11 @@ function Net.load()
         end
     end
     buildGrid()
+    for c, to in pairs(N.cto) do
+        local p = N.lprev[to]
+        if not p then p = {}; N.lprev[to] = p end
+        p[#p + 1] = c
+    end
     N.ready = true
     outputDebugString(string.format("[ai_land_traffic] network loaded: %d lanes, %d curves (%d ms)",
         Geo.lanes, Geo.curves, getTickCount() - t0))

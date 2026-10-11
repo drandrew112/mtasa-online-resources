@@ -8,9 +8,18 @@ Server-simulated AI road traffic on the lane network in `data/`.
   segment (lane, or curved junction connection), distance `s`, speed, lateral offset, planned route.
   Car following is the Intelligent Driver Model; the most restrictive constraint wins each tick
   (leaders, curve speeds, stop lines, obstacles, emergency vehicles).
-- **Only near players**: vehicles exist within `SIM_RADIUS` (400 m) of players in dimension 0 /
-  interior 0. They spawn out of sight (170 m, 60 m while the area is nearly empty), are removed
-  past 430 m. Density follows the lane length around each player (`LANE_PER_VEHICLE`, `MAX_PER_PLAYER`).
+- **Only on the players' routes** (`server/route.lua`): vehicles exist within `SIM_RADIUS` (300 m)
+  of players in dimension 0 / interior 0. New ones only spawn on the player's expected route: the
+  lanes reachable forward along the road graph within `ROUTE_LENGTH` (300 m, every branch) from the
+  carriageway under the player (heading from the velocity, else the vehicle facing / camera; off-road:
+  the nearest road both ways), plus their oncoming lanes and the lanes feeding into them at junctions.
+  Density follows that lane length (`LANE_PER_VEHICLE`, `MAX_PER_PLAYER`) and drops to `STILL_FACTOR`
+  while the player stands. Spawns stay 120 m from players (60 m while nearly empty) and 200 m from
+  any camera that looks at the spot.
+- **Camera culling** (`server/views.lua`, `client/views.lua`): clients report their camera every
+  300 ms. A vehicle that no player's camera sees (`VIEW_HALF_ANGLE` from the look direction) for
+  `CULL_AFTER` and is farther than `CULL_MIN_DIST` from every player is removed; a player without a
+  fresh report counts as seeing everything. Everything past `DESPAWN_RADIUS` (330 m) is removed.
 - **Clients are puppets** (`client/puppets.lua`): the server sends `(segment, s, v, a, lateral, next)`
   records only when the client prediction would drift (dead reckoning); every client places the
   vehicles each frame with the same geometry code (`shared/geometry.lua`). The vehicles and driver

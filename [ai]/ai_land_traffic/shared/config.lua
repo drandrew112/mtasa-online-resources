@@ -5,17 +5,40 @@ TRAFFIC = {
     SIM_FILE = "data/runtime/sim.dat",   -- topology, server only
 
     -- simulation area: traffic only exists within SIM_RADIUS of online players (dimension 0, interior 0)
-    SIM_RADIUS = 400,
-    DESPAWN_RADIUS = 430,
+    SIM_RADIUS = 300,
+    DESPAWN_RADIUS = 330,
     TICK = 100,                 -- server simulation step
-    MAX_AGENTS = 320,           -- whole server
-    MAX_PER_PLAYER = 55,        -- vehicles within SIM_RADIUS of one player
-    LANE_PER_VEHICLE = 70,      -- metres of lane per vehicle (density) before the MAX_PER_PLAYER cap
-    SPAWN_INTERVAL = 400,
-    SPAWN_PER_PLAYER = 3,       -- spawn attempts per player per SPAWN_INTERVAL
-    SPAWN_MIN_DIST = 170,       -- normally spawn out of sight...
+    MAX_AGENTS = 140,           -- whole server
+    MAX_PER_PLAYER = 26,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED)
+    LANE_PER_VEHICLE = 90,      -- metres of spawnable route lane per vehicle (density) before the cap
+    SPAWN_INTERVAL = 500,
+    SPAWN_PER_PLAYER = 2,       -- spawn attempts per player per SPAWN_INTERVAL
+    SPAWN_MIN_DIST = 120,       -- normally spawn this far from every player...
     SPAWN_MIN_DIST_EMPTY = 60,  -- ...but closer while the area is still almost empty (join, teleport)
+    SPAWN_VISIBLE_MIN = 200,    -- a spawn point a camera looks at must be at least this far from it
     SPAWN_GAP = 14,             -- free space needed around a new vehicle
+
+    -- spawn area = the player's expected route: the lanes reachable forward along the road graph
+    -- within ROUTE_LENGTH (heading from the velocity / vehicle / camera), their oncoming lanes and
+    -- the lanes feeding into them at junctions
+    ROUTE_LENGTH = 300,
+    ROUTE_START_RADIUS = 40,    -- route starts on lanes this close to the player...
+    ROUTE_FALLBACK_RADIUS = 120,-- ...or, when there is none (off-road), on any lane this close
+    ROUTE_REFRESH = 1000,       -- recompute at most this often...
+    ROUTE_REFRESH_MOVE = 25,    -- ...when the player moved this far or turned
+    ROUTE_MAX_LANES = 1500,     -- search guard
+    STILL_SPEED = 2,            -- m/s: below this the player counts as standing (heading from vehicle/camera)
+    FULL_SPEED = 14,            -- m/s: full density from this speed
+    STILL_FACTOR = 0.35,        -- density factor while standing (linear up to FULL_SPEED)
+
+    -- cameras: clients report their camera; a vehicle no camera can see (behind / far to the side)
+    -- disappears after CULL_AFTER if it is farther than CULL_MIN_DIST from every player
+    VIEW_SEND = 300,            -- client camera report interval
+    VIEW_STALE = 3000,          -- a player without a fresh report counts as seeing everything
+    VIEW_HALF_ANGLE = 75,       -- degrees from the look direction (screen + vehicle size margin)
+    VIEW_NEAR = 12,             -- always visible this close to a camera
+    CULL_MIN_DIST = 40,
+    CULL_AFTER = 3000,
 
     -- speeds per lane type (driver factor DRIVER_FACTOR on top)
     SPEED_ROAD = 15.5,          -- ~56 km/h
@@ -141,3 +164,4 @@ EV_READY = "ai_traffic:ready"         -- client -> server: geometry loaded
 EV_STATE = "ai_traffic:state"         -- server -> client: agent state batch
 EV_RELEASE = "ai_traffic:release"     -- server -> client: vehicle left the simulation
 EV_REPORT = "ai_traffic:report"       -- client -> server: crash / damage by the local player
+EV_VIEW = "ai_traffic:view"           -- client -> server: camera position + look direction

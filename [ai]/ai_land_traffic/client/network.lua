@@ -6,6 +6,7 @@ local co
 local function finish()
     outputDebugString(string.format("[ai_land_traffic] geometry loaded: %d lanes, %d curves", Geo.lanes, Geo.curves))
     triggerServerEvent(EV_READY, resourceRoot)
+    Puppets.viewReady()
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function()

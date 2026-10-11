@@ -1,33 +1,11 @@
--- Spawning and despawning (server). Traffic only exists within SIM_RADIUS of active players; each
--- player's surroundings are filled up to a density target from the lane length around them.
+-- Spawning and despawning (server). New traffic only appears on the player's expected route
+-- (server/route.lua), out of close view, up to a density target that drops while the player stands.
+-- Vehicles beyond DESPAWN_RADIUS of every player, or that no player's camera sees, disappear.
 
 Spawner = {}
 
 local T = TRAFFIC
-local random, floor, min, sqrt = math.random, math.floor, math.min, math.sqrt
-local targets = {}   -- [player] = { target, cells, total, at }
-
-local function areaOf(p, now)
-    local t = targets[p.el]
-    if t and now < t.at and (t.x - p.x) ^ 2 + (t.y - p.y) ^ 2 < 40 * 40 then return t end
-    local cells = Net.cellsAround(p.x, p.y, T.SIM_RADIUS)
-    local total = 0
-    for _, c in ipairs(cells) do total = total + c.length end
-    t = { cells = cells, total = total, x = p.x, y = p.y, at = now + 2000,
-          target = min(T.MAX_PER_PLAYER, floor(total / T.LANE_PER_VEHICLE)) }
-    targets[p.el] = t
-    return t
-end
-
-local function pickLane(area)
-    local r = random() * area.total
-    for _, c in ipairs(area.cells) do
-        r = r - c.length
-        if r <= 0 then return c.lanes[random(#c.lanes)] end
-    end
-    local c = area.cells[#area.cells]
-    return c and c.lanes[random(#c.lanes)]
-end
+local random = math.random
 
 local nearBuf = {}
 
@@ -42,8 +20,8 @@ local function isFree(x, y, z)
     return true
 end
 
-local function trySpawn(p, area, minDist, players)
-    local lane = pickLane(area)
+local function trySpawn(p, area, minDist, visibleMin, players, now)
+    local lane = Route.pick(area)
     if not lane then return false end
     local len = Geo.length(lane)
     local s = 1 + random() * (len - 2)
@@ -55,6 +33,8 @@ local function trySpawn(p, area, minDist, players)
     for _, q in ipairs(players) do
         if (x - q.x) ^ 2 + (y - q.y) ^ 2 + ((z - q.z) * 0.5) ^ 2 < min2 then return false end
     end
+    local seen = Views.nearestSeeing(players, x, y, z + 1, now)
+    if seen and seen < visibleMin then return false end
     if not isFree(x, y, z) then return false end
     local ag = Agents.spawn(lane, s, (Net.lspeed[lane] or T.SPEED_ROAD) * 0.6)
     return ag ~= nil
@@ -66,16 +46,18 @@ function Spawner.update(players, now)
     if not Traffic.enabled then return end
     for _, p in ipairs(players) do
         if Agents.count >= T.MAX_AGENTS then return end
-        local area = areaOf(p, now)
-        if area.target > 0 and #area.cells > 0 then
+        local area = Route.areaOf(p, now)
+        if area.target > 0 and #area.lanes > 0 then
             for i = #countBuf, 1, -1 do countBuf[i] = nil end
             local count = #Agents.near(p.x, p.y, T.SIM_RADIUS, countBuf)
             if count < area.target then
-                local minDist = count < area.target * 0.4 and T.SPAWN_MIN_DIST_EMPTY or T.SPAWN_MIN_DIST
+                local empty = count < area.target * 0.4
+                local minDist = empty and T.SPAWN_MIN_DIST_EMPTY or T.SPAWN_MIN_DIST
+                local visibleMin = empty and T.SPAWN_MIN_DIST or T.SPAWN_VISIBLE_MIN
                 local made = 0
                 for _ = 1, T.SPAWN_PER_PLAYER * 3 do
                     if made >= T.SPAWN_PER_PLAYER or count + made >= area.target then break end
-                    if trySpawn(p, area, minDist, players) then made = made + 1 end
+                    if trySpawn(p, area, minDist, visibleMin, players, now) then made = made + 1 end
                 end
             end
         end
@@ -84,6 +66,7 @@ end
 
 function Spawner.cleanup(players, now)
     local d2 = T.DESPAWN_RADIUS * T.DESPAWN_RADIUS
+    local cull2 = T.CULL_MIN_DIST * T.CULL_MIN_DIST
     for _, ag in pairs(Agents.list) do
         local best = math.huge
         for _, p in ipairs(players) do
@@ -96,9 +79,13 @@ function Spawner.cleanup(players, now)
             Agents.destroy(ag)
         elseif ag.stopSince and now - ag.stopSince > 120000 and best > 150 * 150 then
             Agents.destroy(ag)
+        elseif Views.anySees(players, ag.x, ag.y, ag.z + 1, now) then
+            ag.hiddenSince = nil
+        else
+            -- behind / beside every camera: gone once it stayed out of sight for a while
+            ag.hiddenSince = ag.hiddenSince or now
+            if best > cull2 and now - ag.hiddenSince >= T.CULL_AFTER then Agents.destroy(ag) end
         end
     end
-    for pl in pairs(targets) do
-        if not isElement(pl) then targets[pl] = nil end
-    end
+    Route.cleanup()
 end
