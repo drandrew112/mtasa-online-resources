@@ -9,9 +9,9 @@ ATC = {
 
     -- Outfits (the Supervisor outfit unlocks at the last level)
     SKINS = {
-        { model = 17,  name = "Controller" },
-        { model = 59,  name = "Controller (casual)" },
-        { model = 187, name = "Supervisor", level = 14 },
+        { model = 147,  name = "Controller" },
+        { model = 186,  name = "Controller (casual)" },
+        { model = 265, name = "Supervisor", level = 14 },
     },
 
     -- Level table: XP curve + name and ATC rights of each level. Rights are cumulative by design
