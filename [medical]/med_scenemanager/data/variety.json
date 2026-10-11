@@ -1,0 +1,28 @@
+{
+    "format": 1,
+    "global": [
+        {
+            "name": "ls_hypoglycemia9",
+            "category": "hypoglycemia",
+            "interior": 0,
+            "time": 1791751296,
+            "x": 684.7,
+            "y": -1070.3
+        }
+    ],
+    "players": [
+        {
+            "account": "drandrew112",
+            "entries": [
+                {
+                    "name": "ls_hypoglycemia9",
+                    "category": "hypoglycemia",
+                    "interior": 0,
+                    "time": 1791751297,
+                    "x": 684.7,
+                    "y": -1070.3
+                }
+            ]
+        }
+    ]
+}

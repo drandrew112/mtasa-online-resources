@@ -1,0 +1,39 @@
+<meta>
+    <info author="DrAndrew112" name="ai_land_traffic" version="1.0.0" type="script"
+          description="Server-simulated AI road traffic on the lane network (data/), within 400 m of players; reacts to v_els emergency lights" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- data/*.json is the readable network (tools/build_network.py), data/runtime/*.dat is what the
+         resource loads (tools/build_runtime.py). data/source/ holds the inputs and the old newtraffic
+         resource, kept only for reference (not loaded). sim.dat is server-only (not downloaded). -->
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua"   type="shared" />
+    <script src="shared/geometry.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/network.lua"   type="server" />
+    <script src="server/signals.lua"   type="server" />
+    <script src="server/agents.lua"    type="server" />
+    <script src="server/obstacles.lua" type="server" />
+    <script src="server/els.lua"       type="server" />
+    <script src="server/sim.lua"       type="server" />
+    <script src="server/sync.lua"      type="server" />
+    <script src="server/spawner.lua"   type="server" />
+    <script src="server/main.lua"      type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/network.lua" type="client" />
+    <script src="client/puppets.lua" type="client" />
+    <script src="client/reports.lua" type="client" />
+    <file src="data/runtime/geo.dat" />
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="isTrafficVehicle"      type="server" />
+    <export function="getTrafficVehicles"    type="server" />
+    <export function="releaseTrafficVehicle" type="server" />
+    <export function="setTrafficEnabled"     type="server" />
+    <export function="isTrafficEnabled"      type="server" />
+    <export function="getTrafficStats"       type="server" />
+    <export function="getTrafficLight"       type="server" />
+</meta>
