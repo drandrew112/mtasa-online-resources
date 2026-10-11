@@ -354,8 +354,13 @@ addEventHandler("onClientClick", root, function(btn, state, ax, ay)
     if btn == "right" then
         if state == "down" and HOVER_ID and SC.traffic[HOVER_ID] then
             SC.routeShown[HOVER_ID] = not SC.routeShown[HOVER_ID] or nil
-        elseif state == "down" then drag = { kind = "pan", sx = ax, sy = ay }
-        elseif drag and drag.kind == "pan" then drag = nil end
+        elseif state == "down" then drag = { kind = "pan", sx = ax, sy = ay, ox = ax, oy = ay }
+        elseif drag and drag.kind == "pan" then
+            -- plain right click (no pan) outside the labels hides every shown route
+            local dx, dy = ax - drag.ox, ay - drag.oy
+            if dx * dx + dy * dy < 16 and next(SC.routeShown) then SC.routeShown = {} end
+            drag = nil
+        end
         return
     end
     if btn ~= "left" then return end
