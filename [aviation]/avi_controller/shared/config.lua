@@ -8,9 +8,9 @@ CTL = {
     --   north lower: SACC_N_CTR > SACC_CTR          south lower: SACC_S_CTR > SACC_CTR
     --   north upper: SACC_NU_CTR > SACC_U_CTR > SACC_N_CTR > SACC_CTR
     --   south upper: SACC_SU_CTR > SACC_U_CTR > SACC_S_CTR > SACC_CTR
-    CENTER = { id = "SACC_CTR", name = "San Andreas Control" },
+    CENTER = { id = "SACC_CTR", name = "San Andreas Control (master sector)" },
     CENTERS = {
-        { id = "SACC_CTR",    name = "San Andreas Control" },
+        { id = "SACC_CTR",    name = "San Andreas Control (master sector)" },
         { id = "SACC_N_CTR",  name = "San Andreas Control North" },
         { id = "SACC_S_CTR",  name = "San Andreas Control South" },
         { id = "SACC_U_CTR",  name = "San Andreas Control Upper" },
@@ -33,13 +33,13 @@ CTL = {
     -- level, heading, direct, transfer...) gives work XP; XP_ACTIONS overrides XP_DEFAULT per action.
     WORK_ID = "atc",
     XP_DEFAULT = 30,
-    XP_ACTIONS = { cfl = 25, hdg = 25, nohdg = 15, dct = 20, nodct = 15, approach = 35, star = 35, xfer = 35 },
+    XP_ACTIONS = { cfl = 25, hdg = 40, nohdg = 15, dct = 35, nodct = 15, approach = 35, star = 35, xfer = 35 },
 
     -- Pay after logging out of a position (bank, itemised receipt):
     --   actions pay = actions * PAY_PER_ACTION
     --   multiplied by (1 + minutes * PAY_MINUTE_BONUS), capped at PAY_MAX_MULT
-    PAY_PER_ACTION = 800,
-    PAY_MINUTE_BONUS = 0.10,
+    PAY_PER_ACTION = 700,
+    PAY_MINUTE_BONUS = 0.05,
     PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
     -- "Controlled traffic": every distinct aircraft the controller gave an accepted action to during
