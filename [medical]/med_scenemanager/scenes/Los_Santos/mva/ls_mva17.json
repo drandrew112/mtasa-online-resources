@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car ran off the road",
-        "description": "A single car left the road and crashed at the curb. The driver is still in the seat with a head injury and a painful leg.",
+        "description": "A yellow car left the road and hit the curb near Los Santos International. The driver is still behind the wheel with a head injury and a painful leg.",
         "caller": "SceneManager",
         "priority": 2
     },

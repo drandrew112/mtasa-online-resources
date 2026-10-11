@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Whitewood Estates. The driver of the first car got out and is sitting on the ground with a broken rib and a bleeding wound. The driver of the second car is lying on their back next to the car with chest and arm injuries and severe pain.",
+        "description": "A dark grey car ran into the back of a black car in Whitewood Estates. The driver of the black car got out and is sitting on the ground with a broken rib and a bleeding wound. The driver of the dark grey car is lying on their back next to the car with a head injury and a broken arm, in severe pain.",
         "caller": "SceneManager",
         "priority": 1
     },

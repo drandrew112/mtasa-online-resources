@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car spun out",
-        "description": "A single car lost control and spun out in Marina. The driver got out and is standing next to the car holding their side with a bump on the head and a headache.",
+        "description": "A yellow car lost control and spun out in Marina. The driver got out and is sitting on the ground with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -42,7 +42,7 @@
             "skin": 170,
             "pos": [918.422, -1483.831, 13.376],
             "rot": 95.2,
-            "anim": "hold_side",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

@@ -9,8 +9,8 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car hit a parked car",
-        "description": "A car swerved into a parked car at the curb in El Corona. The driver of the first car got out and is crouching by the car with a bump on the head and a headache. The driver of the second car got out and is leaning on the car with a possible broken wrist.",
+        "title": "Van hit a parked car",
+        "description": "A black van swerved into a grey car parked at the curb in El Corona. The owner of the parked car, who was sitting in it, got out and is crouching next to the car with a bump on the head and a headache. The driver of the black van got out and is standing next to the van, bent over and holding their side, with a possible broken wrist.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -73,7 +73,7 @@
             "skin": 45,
             "pos": [1836.063, -2052.035, 13.383],
             "rot": 14.5,
-            "anim": "lean",
+            "anim": "hold_side",
             "injuries": [
                 { "type": "fracture", "severity": 1 }
             ],

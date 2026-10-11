@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Richman. The driver of the first car is still in the seat with chest and leg injuries and severe pain. The driver of the second car got out and is standing next to the car holding their side with a possible broken arm. The passenger is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "description": "A yellow car ran into the back of a blue car in Richman. The driver of the blue car is still behind the wheel with a head injury and a broken leg, in severe pain. The driver of the yellow car got out and is standing next to the car, bent over and holding their side, with a possible broken arm. The passenger of the blue car is still in the passenger seat, unconscious, with multiple injuries and heavy bleeding.",
         "caller": "SceneManager",
         "priority": 1
     },

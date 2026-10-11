@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Collision while turning",
-        "description": "Two cars collided while one was turning at an intersection in Easter Bay Airport. The driver of the first car is still in the seat with a broken collarbone and a bleeding wound. The driver of the second car is still in the seat with a head injury and disorientation.",
+        "description": "A blue van turning left was hit by an oncoming yellow car at an intersection near Easter Bay Airport. The driver of the yellow car is still behind the wheel with a broken collarbone and a bleeding wound. The driver of the blue van is still behind the wheel with a head injury and disorientation.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -39,7 +39,7 @@
             "id": "v2",
             "model": 459,
             "pos": [-1543.646, -420.468, 6.028],
-            "rot": [0, 0, 264.94],
+            "rot": [0, 0, 294.94],
             "frozen": false,
             "locked": false,
             "engine": false,

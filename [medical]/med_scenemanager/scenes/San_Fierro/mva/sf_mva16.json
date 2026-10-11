@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Juniper Hill. The driver of the first car is lying on their back next to the car with a broken leg and a cut on the head. The driver of the second car got out and is standing next to the car holding their side with a bump on the head and a headache. The passenger is still in the seat with a bump on the head and a headache.",
+        "description": "A brown car ran into the back of a dark grey car in Juniper Hill. The driver of the dark grey car is lying on their back next to the car with a broken leg and a cut on the head. The driver of the brown car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the dark grey car is still in the passenger seat with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -74,7 +74,7 @@
             "skin": 188,
             "pos": [-2385.068, 632.498, 34.243],
             "rot": 85.1,
-            "anim": "hold_side",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

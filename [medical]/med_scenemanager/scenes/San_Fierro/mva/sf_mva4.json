@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "T-bone collision at intersection",
-        "description": "Two cars collided at an intersection in Downtown, one hit the other in the side. The driver of the first car got out and is sitting on the ground with a head injury and disorientation.",
+        "description": "A grey car ran into the side of a blue car at an intersection in downtown San Fierro. The driver of the blue car got out and is sitting on the ground with a head injury and disorientation.",
         "caller": "SceneManager",
         "priority": 2
     },

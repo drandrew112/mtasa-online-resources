@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Sideswipe collision",
-        "description": "Two cars sideswiped each other and one lost control in Temple. The driver of the first car is still in the seat, unconscious, with a serious head injury.",
+        "description": "A yellow car and a black car sideswiped each other in Temple and one of them lost control. The driver of the yellow car is still behind the wheel, unconscious, with a serious head injury and a broken arm.",
         "caller": "SceneManager",
         "priority": 1
     },

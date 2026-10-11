@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Sideswipe collision",
-        "description": "Two cars sideswiped each other and one lost control in Paradiso. The driver of the first car got out and is leaning on the car with a bump on the head and a headache.",
+        "description": "A grey Hermes and a grey Primo sideswiped each other in Paradiso and one of them lost control. The driver of the grey Hermes got out and is sitting on the ground with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -62,7 +62,7 @@
             "skin": 67,
             "pos": [-2665.2, 1167.41, 55.578],
             "rot": 304.2,
-            "anim": "lean",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

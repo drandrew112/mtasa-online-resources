@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "T-bone collision at intersection",
-        "description": "Two cars collided at an intersection in Santa Flora, one hit the other in the side. The driver of the first car is still in the seat with a head injury and a painful leg.",
+        "description": "A grey car ran into the side of a green car at an intersection in Santa Flora. The driver of the green car is still behind the wheel with a head injury and a painful leg.",
         "caller": "SceneManager",
         "priority": 2
     },

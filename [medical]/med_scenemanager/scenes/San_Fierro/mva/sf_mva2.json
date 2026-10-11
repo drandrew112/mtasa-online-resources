@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car ran off the road",
-        "description": "A single car left the road and crashed at the curb in Queens. The driver is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "description": "A black car left the road and hit the curb in Queens. The driver is still behind the wheel, unconscious, with multiple injuries and heavy bleeding.",
         "caller": "SceneManager",
         "priority": 1
     },

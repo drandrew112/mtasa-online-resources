@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Collision while turning",
-        "description": "Two cars collided while one was turning at an intersection in Richman. The driver of the first car got out and is leaning on the car with a deep cut that is bleeding. The driver of the second car is still in the seat, unconscious, with multiple injuries and heavy bleeding.",
+        "description": "A white van turning left was hit by an oncoming black car at an intersection in Richman. The driver of the black car got out and is crouching next to the car with a deep cut that is bleeding. The driver of the white van is still behind the wheel, unconscious, with multiple injuries and heavy bleeding.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -39,7 +39,7 @@
             "id": "v2",
             "model": 482,
             "pos": [245.826, -1022.586, 57.324],
-            "rot": [3.86, 4.53, 25.45],
+            "rot": [3.86, 4.53, 55.45],
             "frozen": false,
             "locked": false,
             "engine": false,
@@ -62,7 +62,7 @@
             "skin": 72,
             "pos": [248.356, -1020.402, 56.814],
             "rot": 229.8,
-            "anim": "lean",
+            "anim": "crouch",
             "injuries": [
                 { "type": "gunshot", "severity": 1 }
             ],

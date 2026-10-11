@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Collision while turning",
-        "description": "Two cars collided while one was turning at an intersection in East Beach. The driver of the first car is lying on the ground in pain with a broken rib and a cut on the head. The driver of the second car is lying on their back next to the car with a broken leg and a cut on the head. The passenger is still in the seat with a broken rib and a cut on the head.",
+        "description": "A grey car turning left was hit by an oncoming yellow car at an intersection in East Beach. The driver of the yellow car is lying on the ground in pain with a broken rib and a cut on the head. The driver of the grey car is lying on their back next to the car with a broken leg and a cut on the head. The passenger of the yellow car is still in the passenger seat with a broken rib and a cut on the head.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -39,7 +39,7 @@
             "id": "v2",
             "model": 410,
             "pos": [2640.722, -1399.483, 30.079],
-            "rot": [-0.59, -0.74, 208.89],
+            "rot": [-0.59, -0.74, 238.89],
             "frozen": false,
             "locked": false,
             "engine": false,

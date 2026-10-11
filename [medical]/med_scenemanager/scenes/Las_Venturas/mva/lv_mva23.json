@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "T-bone collision at intersection",
-        "description": "Two cars collided at an intersection in Las Venturas Airport, one hit the other in the side. The driver of the first car is still in the seat, unconscious, with a serious head injury. The driver of the second car got out and is leaning on the car with a deep cut that is bleeding.",
+        "description": "A brown car ran into the side of an orange car at an intersection near Las Venturas Airport. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the brown car got out and is crouching next to the car with a deep cut that is bleeding.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -76,7 +76,7 @@
             "skin": 76,
             "pos": [1638.467, 1711.89, 10.697],
             "rot": 2.4,
-            "anim": "lean",
+            "anim": "crouch",
             "injuries": [
                 { "type": "gunshot", "severity": 1 }
             ],

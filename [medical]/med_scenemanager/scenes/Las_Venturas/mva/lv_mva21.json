@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Sideswipe collision",
-        "description": "Two cars sideswiped each other and one lost control in Royal Casino. The driver of the first car is lying face down next to the car, unconscious, with a serious head injury.",
+        "description": "A black car and a green car sideswiped each other near the Royal Casino and one of them lost control. The driver of the black car was pulled out by bystanders and is lying face down next to the car, unconscious, with a serious head injury and a broken arm.",
         "caller": "SceneManager",
         "priority": 1
     },

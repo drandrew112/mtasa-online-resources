@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car spun out",
-        "description": "A single car lost control and spun out in Commerce. The driver is still in the seat, unconscious, with a serious head injury. The passenger is lying on their back next to the car with a broken leg and a bleeding wound.",
+        "description": "A brown car lost control and spun out in Commerce. The driver is still behind the wheel, unconscious, with a serious head injury and a broken arm. The passenger is lying on their back next to the car with a broken leg and a bleeding wound.",
         "caller": "SceneManager",
         "priority": 1
     },

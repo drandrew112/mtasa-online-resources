@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car spun out",
-        "description": "A single car lost control and spun out in Market. The driver is still in the seat with a broken collarbone and a cut on the head.",
+        "description": "A blue car lost control and spun out in Market. The driver is still behind the wheel with a broken collarbone and a cut on the head.",
         "caller": "SceneManager",
         "priority": 2
     },

@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "T-bone collision at intersection",
-        "description": "Two cars collided at an intersection in Verdant Bluffs, one hit the other in the side. The driver of the first car got out and is crouching by the car with a deep cut that is bleeding. The driver of the second car got out and is sitting on the ground with a bump on the head and a headache. The passenger is still in the seat with a bump on the head and a headache.",
+        "description": "A brown car ran into the side of a white car at an intersection in Verdant Bluffs. The driver of the white car got out and is crouching next to the car with a deep cut that is bleeding. The driver of the brown car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the white car is still in the passenger seat with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 3
     },

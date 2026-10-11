@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car hit a parked car",
-        "description": "A car swerved into a parked car at the curb in Financial. The driver of the first car got out and is sitting on the ground with a broken wrist and a bleeding wound. The driver of the second car got out and is sitting on the ground with a bump on the head and a headache.",
+        "description": "A white car swerved into an orange car parked at the curb in Financial. The owner of the parked car, who was sitting in it, got out and is sitting on the ground with a broken wrist and a bleeding wound. The driver of the white car got out and is sitting on the ground with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 2
     },

@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Sideswipe collision",
-        "description": "Two cars sideswiped each other and one lost control in Doherty. The driver of the first car got out and is standing next to the car holding their side with a bump on the head and a headache. The driver of the second car got out and is sitting on the ground with a painful arm and some cuts.",
+        "description": "An orange car and a dark grey car sideswiped each other in Doherty and one of them lost control. The driver of the orange car got out and is sitting on the ground with a bump on the head and a headache. The driver of the dark grey car got out and is sitting on the ground with a painful arm and some cuts.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -62,7 +62,7 @@
             "skin": 26,
             "pos": [-2013.99, 238.55, 29.051],
             "rot": 267.7,
-            "anim": "hold_side",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

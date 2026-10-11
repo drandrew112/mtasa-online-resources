@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car spun out",
-        "description": "A single car lost control and spun out in Ocean Flats. The driver got out and is sitting on the ground with a broken arm and a bleeding wound. The passenger got out and is leaning on the car with a bump on the head and a headache.",
+        "description": "A yellow car lost control and spun out in Ocean Flats. The driver got out and is sitting on the ground with a broken arm and a bleeding wound. The passenger got out and is sitting on the ground with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -54,7 +54,7 @@
             "skin": 170,
             "pos": [-2651.927, -71.051, 4.18],
             "rot": 253.8,
-            "anim": "lean",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

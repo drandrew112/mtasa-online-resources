@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Head-on collision",
-        "description": "Two cars collided head-on in Ocean Docks. The driver of the first car is still in the seat with chest and arm injuries and severe pain.",
+        "description": "A white car and a blue car collided head-on in Ocean Docks. The driver of the white car is still behind the wheel with a head injury and a broken arm, in severe pain.",
         "caller": "SceneManager",
         "priority": 1
     },

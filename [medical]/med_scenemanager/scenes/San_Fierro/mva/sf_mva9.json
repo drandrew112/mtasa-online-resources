@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car hit a parked car",
-        "description": "A car swerved into a parked car at the curb in King's. The driver of the first car got out and is standing next to the car holding their side with a broken wrist and a cut on the head.",
+        "description": "A brown car swerved into a yellow car parked at the curb in King's. The owner of the parked car, who was sitting in it, got out and is standing next to the car, bent over and holding their side, with a broken wrist and a cut on the head.",
         "caller": "SceneManager",
         "priority": 2
     },

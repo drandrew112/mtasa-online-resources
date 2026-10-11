@@ -9,8 +9,8 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car hit a parked car",
-        "description": "A car swerved into a parked car at the curb in Pilgrim. The driver of the first car is lying on the ground in pain with a broken leg and a bleeding wound. The driver of the second car got out and is sitting on the ground with a possible broken collarbone.",
+        "title": "SUV hit a parked car",
+        "description": "A green SUV swerved into a yellow car parked at the curb in Pilgrim. The owner of the parked car, who was sitting in it, is lying on the ground in pain with a broken leg and a bleeding wound. The driver of the green SUV got out and is sitting on the ground with a possible broken collarbone.",
         "caller": "SceneManager",
         "priority": 2
     },

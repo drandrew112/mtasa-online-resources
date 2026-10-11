@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in East Beach. The driver of the first car is still in the seat with a painful wrist and some cuts. The driver of the second car got out and is leaning on the car with a bump on the head and a headache. The passenger got out and is standing next to the car holding their side with a broken wrist and a bleeding wound.",
+        "description": "A blue car ran into the back of a brown car in East Beach. The driver of the brown car is still behind the wheel with a painful wrist and some cuts. The driver of the blue car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the brown car got out and is standing next to the car, bent over and holding their side, with a broken wrist and a bleeding wound.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -76,7 +76,7 @@
             "skin": 59,
             "pos": [2829.98, -1734.39, 11.047],
             "rot": 260.5,
-            "anim": "lean",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

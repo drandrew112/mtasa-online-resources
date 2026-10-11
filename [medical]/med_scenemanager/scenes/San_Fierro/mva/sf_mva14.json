@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Collision while turning",
-        "description": "Two cars collided while one was turning at an intersection in Foster Valley. The driver of the first car got out and is sitting on the ground with a possible broken wrist.",
+        "description": "A yellow car turning left was hit by an oncoming black car at an intersection in Foster Valley. The driver of the black car got out and is sitting on the ground with a possible broken wrist.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -39,7 +39,7 @@
             "id": "v2",
             "model": 466,
             "pos": [-1920.814, -863.7, 31.973],
-            "rot": [0, -0.24, 45.22],
+            "rot": [0, -0.24, 75.22],
             "frozen": false,
             "locked": false,
             "engine": false,

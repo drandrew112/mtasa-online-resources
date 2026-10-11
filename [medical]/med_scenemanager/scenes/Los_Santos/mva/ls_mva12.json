@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Head-on collision",
-        "description": "Two cars collided head-on in Mulholland. The driver of the first car is still in the seat, unconscious, with a serious head injury.",
+        "description": "A dark grey car and a green car collided head-on in Mulholland. The driver of the dark grey car was pulled out by bystanders and is lying on their back next to the car, unconscious, with a serious head injury and a broken arm.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -62,7 +62,7 @@
             "skin": 93,
             "pos": [1461.876, -759.608, 94.569],
             "rot": 271.1,
-            "anim": "injured",
+            "anim": "ko_back",
             "injuries": [
                 { "type": "head_injury", "severity": 3 },
                 { "type": "fracture", "severity": 2 }

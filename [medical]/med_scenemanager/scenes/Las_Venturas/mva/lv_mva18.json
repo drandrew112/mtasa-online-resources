@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car ran off the road",
-        "description": "A single car left the road and crashed at the curb in Redsands West. The driver is lying face down next to the car, unconscious, with a serious head injury.",
+        "description": "A grey car left the road and hit the curb in Redsands West. The driver was pulled out by bystanders and is lying face down next to the car, unconscious, with a serious head injury and a broken arm.",
         "caller": "SceneManager",
         "priority": 1
     },

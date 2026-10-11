@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Julius Thruway South. The driver of the first car is still in the seat with a deep cut that is bleeding.",
+        "description": "A grey car ran into the back of a blue car near the Julius Thruway. The driver of the blue car is still behind the wheel with a deep cut that is bleeding.",
         "caller": "SceneManager",
         "priority": 3
     },

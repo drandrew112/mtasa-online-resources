@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car ran off the road",
-        "description": "A single car left the road and crashed at the curb in Doherty. The driver got out and is sitting on the ground with a head injury and a painful wrist.",
+        "description": "A grey car left the road and hit the curb in Doherty. The driver got out and is sitting on the ground with a head injury and a painful wrist.",
         "caller": "SceneManager",
         "priority": 2
     },

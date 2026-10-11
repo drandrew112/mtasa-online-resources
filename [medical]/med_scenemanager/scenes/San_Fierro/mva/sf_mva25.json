@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Collision while turning",
-        "description": "Two cars collided while one was turning at an intersection in King's. The driver of the first car is still in the seat with a broken leg and a bleeding wound. The driver of the second car is still in the seat with a broken rib and a cut on the head. The passenger is still in the seat with a bump on the head and a headache.",
+        "description": "A dark grey car turning left was hit by an oncoming red car at an intersection in King's. The driver of the red car is still behind the wheel with a broken leg and a bleeding wound. The driver of the dark grey car is still behind the wheel with a broken rib and a cut on the head. The passenger of the red car is still in the passenger seat with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 2
     },
@@ -39,7 +39,7 @@
             "id": "v2",
             "model": 426,
             "pos": [-1999.212, 312.405, 34.866],
-            "rot": [0, 0, 139.87],
+            "rot": [0, 0, 169.87],
             "frozen": false,
             "locked": false,
             "engine": false,

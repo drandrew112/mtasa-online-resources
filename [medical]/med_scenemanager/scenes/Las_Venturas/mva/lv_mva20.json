@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Old Venturas Strip. The driver of the first car is lying face down next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the second car got out and is standing next to the car holding their side with a bump on the head and a headache.",
+        "description": "A red car ran into the back of a grey car on the Old Venturas Strip. The driver of the grey car was pulled out by bystanders and is lying face down next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the red car got out and is sitting on the ground with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -75,7 +75,7 @@
             "skin": 23,
             "pos": [2665.583, 2047.542, 9.259],
             "rot": 125,
-            "anim": "hold_side",
+            "anim": "sit",
             "injuries": [
                 { "type": "head_injury", "severity": 1 }
             ],

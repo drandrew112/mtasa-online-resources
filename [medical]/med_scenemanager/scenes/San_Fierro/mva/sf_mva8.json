@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Rear-end collision",
-        "description": "One car rear-ended another on the road in Downtown. The driver of the first car is still in the seat, unconscious, with a serious head injury. The driver of the second car got out and is leaning on the car with a deep cut that is bleeding. The passenger is lying on their back next to the car with a head injury and a painful collarbone.",
+        "description": "A green car ran into the back of a blue car in downtown San Fierro. The driver of the blue car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the green car got out and is crouching next to the car with a deep cut that is bleeding. The passenger of the blue car is lying on their back next to the car with a head injury and a painful collarbone.",
         "caller": "SceneManager",
         "priority": 1
     },
@@ -76,7 +76,7 @@
             "skin": 48,
             "pos": [-1863.62, 721.63, 45.186],
             "rot": 0,
-            "anim": "lean",
+            "anim": "crouch",
             "injuries": [
                 { "type": "gunshot", "severity": 1 }
             ],

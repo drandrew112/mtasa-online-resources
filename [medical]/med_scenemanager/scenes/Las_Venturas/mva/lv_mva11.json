@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Head-on collision",
-        "description": "Two cars collided head-on in Redsands East. The driver of the first car got out and is standing next to the car holding their side with a painful ankle and some cuts.",
+        "description": "A red car and a black pickup collided head-on in Redsands East. The driver of the red car got out and is crouching next to the car with a painful ankle and some cuts.",
         "caller": "SceneManager",
         "priority": 3
     },
@@ -62,7 +62,7 @@
             "skin": 184,
             "pos": [1931.36, 2397.15, 10.82],
             "rot": 202.3,
-            "anim": "hold_side",
+            "anim": "crouch",
             "injuries": [
                 { "type": "fracture", "severity": 1 },
                 { "type": "gunshot", "severity": 1 }

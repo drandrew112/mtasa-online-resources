@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Car spun out",
-        "description": "A single car lost control and spun out in LVA Freight Depot. The driver got out and is sitting on the ground with a head injury and disorientation. The passenger is still in the seat with a painful collarbone and some cuts.",
+        "description": "A dark grey car lost control and spun out by the LVA Freight Depot. The driver got out and is sitting on the ground with a head injury and disorientation. The passenger is still in the passenger seat with a painful collarbone and some cuts.",
         "caller": "SceneManager",
         "priority": 2
     },

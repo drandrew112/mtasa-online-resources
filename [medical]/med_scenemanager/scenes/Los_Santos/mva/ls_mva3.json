@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "T-bone collision at intersection",
-        "description": "Two cars collided at an intersection in Glen Park, one hit the other in the side. The driver of the first car got out and is sitting on the ground with a head injury and disorientation.",
+        "description": "A yellow van ran into the side of a taxi at an intersection in Glen Park. The driver of the taxi got out and is sitting on the ground with a head injury and disorientation.",
         "caller": "SceneManager",
         "priority": 2
     },

@@ -10,7 +10,7 @@
     "dimension": 0,
     "erm": {
         "title": "Head-on collision",
-        "description": "Two cars collided head-on. The driver of the first car is still in the seat with a broken arm and a cut on the head. The driver of the second car is still in the seat with a broken arm and a cut on the head. The passenger is still in the seat with a bump on the head and a headache.",
+        "description": "A dark grey car and a black car collided head-on at the south end of the Strip. The driver of the dark grey car is still behind the wheel with a broken arm and a cut on the head. The driver of the black car is still behind the wheel with a broken arm and a cut on the head. The passenger of the dark grey car is still in the passenger seat with a bump on the head and a headache.",
         "caller": "SceneManager",
         "priority": 2
     },
