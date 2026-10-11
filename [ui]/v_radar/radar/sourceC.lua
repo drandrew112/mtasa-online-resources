@@ -1836,3 +1836,8 @@ function renderPausePreview(px, py, pw, ph)
 
 	dxDrawOuterBorder(px, py, pw, ph, 2, tocolor(0, 0, 0, 220))
 end
+
+addCommandHandler("showhud", function()
+	isHudVisible = getElementData(localPlayer, "hideHUD")
+	setElementData(localPlayer, "hideHUD", not isHudVisible)
+end)
