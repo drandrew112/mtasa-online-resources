@@ -10,8 +10,9 @@
 --        enterColor / exitColor = {r,g,b,a}  (optional)
 --    })
 --
---  The player is teleported onto the opposite marker; the marker must
---  be left before it triggers again.
+--  Walking into a marker shows a 3D label (client/markers.lua); the
+--  player has to press INT.key inside it to go through. The player is
+--  teleported onto the opposite marker.
 --  Interiors are removed when the registering resource stops. This
 --  resource fires "world_interiors:ready" (root) when it starts, so
 --  registering resources should register on their own onResourceStart
@@ -19,9 +20,10 @@
 -- ============================================================
 
 local interiors = {}   -- id -> record
-local locked    = {}   -- player -> marker they are standing on / just arrived on
+local busy      = {}   -- player -> getTickCount() of the last transfer (fade in progress / cooldown)
 
 addEvent("world_interiors:ready", false)
+addEvent("world_interiors:use", true)
 
 local function num(v, d) return tonumber(v) or d end
 
@@ -42,12 +44,15 @@ local function destroyRecord(rec)
     if isElement(rec.exitMarker) then destroyElement(rec.exitMarker) end
 end
 
-local function makeMarker(p, dim, color, id, kind)
+local function makeMarker(p, dim, color, id, kind, name)
     local m = createMarker(p.x, p.y, p.z - 1, INT.markerType, INT.markerSize, color[1], color[2], color[3], color[4])
     setElementInterior(m, p.interior)
     setElementDimension(m, dim)
-    setElementData(m, "interior:id", id, false)
-    setElementData(m, "interior:kind", kind, false)
+    -- synced: read by the client label + key handler
+    setElementData(m, "interior:id", id)
+    setElementData(m, "interior:kind", kind)
+    setElementData(m, "interior:name", name)
+    setElementData(m, "interior:color", { color[1], color[2], color[3] })   -- shader_markers hides the real marker colour
     return m
 end
 
@@ -76,8 +81,8 @@ function registerInterior(id, data)
         resource = sourceResource and getResourceName(sourceResource) or "?",
         resElement = sourceResource,
     }
-    rec.enterMarker = makeMarker(enter, enter.dimension, data.enterColor or INT.enterColor, id, "enter")
-    rec.exitMarker  = makeMarker(exit, dim, data.exitColor or INT.exitColor, id, "exit")
+    rec.enterMarker = makeMarker(enter, enter.dimension, data.enterColor or INT.enterColor, id, "enter", rec.name)
+    rec.exitMarker  = makeMarker(exit, dim, data.exitColor or INT.exitColor, id, "exit", rec.name)
     interiors[id] = rec
     return true
 end
@@ -142,43 +147,43 @@ end
 local function doTransfer(player, rec, toInside)
     if not isElement(player) then return end
     local p = toInside and rec.exit or rec.enter
-    locked[player] = toInside and rec.exitMarker or rec.enterMarker
     teleport(player, p, toInside and rec.dimension or rec.enter.dimension)
     triggerClientEvent(player, "world_interiors:fadeIn", resourceRoot)
 end
 
+local function startTransfer(player, rec, toInside)
+    if not rec or not isElement(player) or getElementType(player) ~= "player" then return false end
+    local now = getTickCount()
+    if busy[player] and now - busy[player] < INT.fadeMs + INT.cooldownMs then return false end
+    busy[player] = now
+    triggerClientEvent(player, "world_interiors:fadeOut", resourceRoot)
+    setTimer(doTransfer, INT.fadeMs, 1, player, rec, toInside)
+    return true
+end
+
 --- Teleport a player into / out of an interior with a fade. Returns true if started.
 function enterInterior(player, id)
-    local rec = interiors[id]
-    if not rec or not isElement(player) or getElementType(player) ~= "player" then return false end
-    triggerClientEvent(player, "world_interiors:fadeOut", resourceRoot)
-    setTimer(doTransfer, INT.fadeMs, 1, player, rec, true)
-    return true
+    return startTransfer(player, interiors[id], true)
 end
 
 function exitInterior(player, id)
-    local rec = interiors[id or getPlayerInterior(player)]
-    if not rec or not isElement(player) or getElementType(player) ~= "player" then return false end
-    triggerClientEvent(player, "world_interiors:fadeOut", resourceRoot)
-    setTimer(doTransfer, INT.fadeMs, 1, player, rec, false)
-    return true
+    return startTransfer(player, interiors[id or getPlayerInterior(player)], false)
 end
 
-addEventHandler("onMarkerHit", resourceRoot, function(hit, matchingDim)
-    if not matchingDim or getElementType(hit) ~= "player" then return end
-    if isPedInVehicle(hit) or isPedDead(hit) then return end
-    if locked[hit] == source then return end
-    local id, kind = getElementData(source, "interior:id"), getElementData(source, "interior:kind")
-    if not interiors[id] then return end
-    locked[hit] = source           -- blocks double triggers during the fade
-    if kind == "enter" then enterInterior(hit, id) else exitInterior(hit, id) end
+-- Key press in a marker (client/markers.lua). Re-checked here: the player must really stand in it.
+addEventHandler("world_interiors:use", resourceRoot, function(marker)
+    local p = client
+    if not isElement(marker) or getElementType(marker) ~= "marker" then return end
+    local id, kind = getElementData(marker, "interior:id"), getElementData(marker, "interior:kind")
+    local rec = interiors[id]
+    if not rec or (marker ~= rec.enterMarker and marker ~= rec.exitMarker) then return end
+    if isPedInVehicle(p) or isPedDead(p) then return end
+    if getElementDimension(p) ~= getElementDimension(marker) or getElementInterior(p) ~= getElementInterior(marker) then return end
+    if not isElementWithinMarker(p, marker) then return end
+    if kind == "enter" then enterInterior(p, id) else exitInterior(p, id) end
 end)
 
-addEventHandler("onMarkerLeave", resourceRoot, function(leaver)
-    if locked[leaver] == source then locked[leaver] = nil end
-end)
-
-addEventHandler("onPlayerQuit", root, function() locked[source] = nil end)
+addEventHandler("onPlayerQuit", root, function() busy[source] = nil end)
 
 addEventHandler("onResourceStop", root, function(res)
     if res == resource then return end
