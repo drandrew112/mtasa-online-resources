@@ -48,7 +48,7 @@ local function canSee(hX, hY, hZ, target)
 	return isLineOfSightClear(hX, hY, hZ, tX, tY, tZ, true, false, false, true, false, true), tX, tY, tZ
 end
 
-addEventHandler("onClientRender", getRootElement(), function()
+local function renderNametags()
 	local lX, lY, lZ = getElementPosition(localPlayer)
 	local hX, hY, hZ = getHeadPosition(localPlayer)
 	local lInt, lDim = getElementInterior(localPlayer), getElementDimension(localPlayer)
@@ -237,7 +237,9 @@ addEventHandler("onClientRender", getRootElement(), function()
 			end
 		end
 	end
-end)
+end
+-- minden más onClientRender előtt fut, így a nametag a többi panel ALATT lesz
+addEventHandler("onClientRender", root, renderNametags, true, "high+9999")
 
 addCommandHandler("toggleowntag", function()
 	if (getElementData(localPlayer, "toggleOwnNametag") == nil) then
