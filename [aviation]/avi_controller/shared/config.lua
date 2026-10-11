@@ -42,6 +42,9 @@ CTL = {
     PAY_MINUTE_BONUS = 0.10,
     PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
+    -- "Controlled traffic": every distinct aircraft the controller gave an accepted action to during
+    -- the session pays this much (flat, not multiplied by the time)
+    PAY_PER_AIRCRAFT = 500,
 
     -- Mistakes: every separation loss (avi_traffic alerts.lua) on an aircraft of the position costs
     -- this much; the sum is the "Mistakes" item of the pay. A negative total is taken from the bank.

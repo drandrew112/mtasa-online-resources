@@ -163,6 +163,10 @@ local function paySession(player, sess)
         if bonus > 0 then
             items[#items + 1] = { label = ("Time on position (%d min)"):format(math.floor(minutes)), amount = bonus }
         end
+        if sess.aircraftCount > 0 then
+            items[#items + 1] = { label = ("Controlled traffic (%d)"):format(sess.aircraftCount),
+                amount = sess.aircraftCount * CTL.PAY_PER_AIRCRAFT }
+        end
     end
     if sess.mistakes > 0 then
         items[#items + 1] = { label = ("Mistakes (%d)"):format(sess.mistakeCount), amount = -sess.mistakes }
@@ -215,7 +219,8 @@ local function login(player, posId)
     if playerPos[player] and playerPos[player] ~= pos.id then logoutATC(player, true) end
     staff[pos.id] = player
     playerPos[player] = pos.id
-    sessions[player] = { start = getTickCount(), actions = 0, mistakes = 0, mistakeCount = 0 }
+    sessions[player] = { start = getTickCount(), actions = 0, mistakes = 0, mistakeCount = 0,
+        aircraft = {}, aircraftCount = 0 }
     lastSent[player] = nil     -- the first traffic update goes out at the next check
     sendStatic(player)
     notify(player, "Logged in as " .. pos.id .. " (" .. pos.name .. ")")
@@ -322,7 +327,14 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
         return
     end
     local sess = sessions[player]
-    if sess then sess.actions = sess.actions + 1 end
+    if sess then
+        sess.actions = sess.actions + 1
+        -- every aircraft counts once per session ("Controlled traffic" pay item)
+        if id ~= nil and not sess.aircraft[id] then
+            sess.aircraft[id] = true
+            sess.aircraftCount = sess.aircraftCount + 1
+        end
+    end
     call("work_core", "giveWorkXp", player, CTL.WORK_ID, CTL.XP_ACTIONS[action] or CTL.XP_DEFAULT)
 end)
 
