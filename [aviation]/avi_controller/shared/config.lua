@@ -26,6 +26,8 @@ CTL = {
     UPDATE_TICK_MS = 250,
     UPPER_VIEW_BELOW = 2000,       -- ft: upper centre positions (SACC_U/NU/SU_CTR) see traffic down to this far
                                    -- below the upper split (FL205 - 2000 = 18 500 ft) + their own aircraft
+    APP_VIEW_ABOVE = 2000,         -- ft: tower / approach see airborne traffic up to their TMA ceiling + this
+                                   -- (their own aircraft at any level)
     APP_HEADING_LOOKAHEAD = 4000,  -- m: an aircraft on a radar heading is checked this far ahead
                                    -- for crossing an approach sector (TMA / CTR)
 

@@ -392,6 +392,8 @@ end
 -- are below its ceiling (e.g. a low LS departure toward the north-west through the SF TMA).
 -- The radar (centre) sees every aircraft; the upper-only centre positions (the ones in no lower sector
 -- chain: SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR) only down to CTL.UPPER_VIEW_BELOW under the split level.
+-- Tower and approach see airborne traffic only up to their TMA ceiling + CTL.APP_VIEW_ABOVE
+-- (their own aircraft always).
 local function pointIn(x, y, poly)
     local inside, j = false, #poly
     for i = 1, #poly do
@@ -484,6 +486,15 @@ local function upperData()
     return { floor = (tonumber(c.split) or 20500) - CTL.UPPER_VIEW_BELOW, pos = up }
 end
 
+-- highest level the tower / approach of the airport sees: its TMA ceiling + CTL.APP_VIEW_ABOVE
+local function viewCeiling(areas)
+    local top
+    for _, a in ipairs(areas or {}) do
+        if a.type == "TMA" and a.ceiling then top = math.max(top or 0, a.ceiling) end
+    end
+    return top and top + CTL.APP_VIEW_ABOVE
+end
+
 local function visibleTo(pos, s, sectors, nav, upper)
     if pos.type == "CTR" then
         if not (upper and upper.pos[pos.id]) then return true end
@@ -491,7 +502,10 @@ local function visibleTo(pos, s, sectors, nav, upper)
     end
     if not pos.airport then return true end
     local icao = pos.airport
-    if s.ctl == pos.id or s.dep == icao or s.arr == icao or s.apt == icao then return true end
+    if s.ctl == pos.id then return true end
+    local top = not s.gnd and viewCeiling(sectors[icao])
+    if top and (s.alt or 0) > top then return false end
+    if s.dep == icao or s.arr == icao or s.apt == icao then return true end
     return pos.type == "APP" and crossesSector(s, sectors[icao], nav)
 end
 
@@ -510,7 +524,7 @@ local function sendTraffic()
     local staffed = getStaffedPositions()
     local sectors, nav = {}, {}
     for _, d in ipairs(due) do
-        if d.pos.type == "APP" then sectors, nav = sectorData(); break end
+        if d.pos.type == "APP" or d.pos.type == "TWR" then sectors, nav = sectorData(); break end
     end
     local upper
     for _, d in ipairs(due) do
