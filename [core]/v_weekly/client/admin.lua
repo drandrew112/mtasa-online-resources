@@ -205,7 +205,7 @@ local function drawLogin(x, y, w, h)
         askText("xp", L("v_weekly.admin.login_bonus_xp_0_none"), 8, tostring(b.xp), { money = b.money })
     end)
 
-    text(L("v_weekly.admin.paid_once_per_to_every_player", { period = data.period, max_money = fmtInt(data.maxMoney), max_xp = fmtInt(data.maxXp) }),
+    text(L("v_weekly.admin.paid_once_per_to_every_player", { period = L("v_weekly.period." .. data.period), max_money = fmtInt(data.maxMoney), max_xp = fmtInt(data.maxXp) }),
         x + S(14), y + rowH * 2 + S(6), w - S(28), S(40), C.dim, 1.1, "default", "left", "top", true)
 end
 

@@ -271,10 +271,6 @@ function getSkinSign(state)
     return nil
 end
 
-local function capitalize(text)
-    return (text:gsub("^%l", string.upper))
-end
-
 -- Findings of the neuro exam { { text, level 0-3 } }: responsiveness (AVPU), pupils, FAST and
 -- the clues of the conditions
 function getNeuroFindings(state)
@@ -305,9 +301,9 @@ function getNeuroFindings(state)
         local findings = def.neuro and not (injury.treated and def.treatDrugs) and def.neuro[injury.severity]
         for _, finding in ipairs(findings or {}) do
             local text = finding[1]
-            if text:find("%s", 1, true) then text = text:format(injury.side or "left") end
-            add(capitalize(text), finding[2])
-            if text:find("Pupils", 1, true) then pupils = true end
+            if finding[3] then text = L.msg(text.t, { side = L.msg("medsys.config." .. finding[3] .. "_" .. (injury.side or "left")) }) end
+            add(text, finding[2])
+            if tostring(rawget(text, "t") or text):lower():find("pupils", 1, true) then pupils = true end
             if injury.type == "stroke" then fast = true end
         end
     end

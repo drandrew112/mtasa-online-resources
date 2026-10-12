@@ -101,7 +101,7 @@ function drawPanel()
         if (b.xp or 0) > 0 then
             dxDrawText(L("v_weekly.panel.xp_2", { xp = b.xp }), x + w * 0.3, cy, x + w * 0.6, cy + rowH, COL.xp, ui(1.2), "default-bold")
         end
-        dxDrawText(L("v_weekly.panel.once_per", { login_bonus_period = WEEKLY.LOGIN_BONUS_PERIOD }), x + w * 0.6, cy, x + w - pad, cy + rowH, COL.dim, ui(1.0), "default", "right")
+        dxDrawText(L("v_weekly.panel.once_per", { login_bonus_period = L("v_weekly.period." .. WEEKLY.LOGIN_BONUS_PERIOD) }), x + w * 0.6, cy, x + w - pad, cy + rowH, COL.dim, ui(1.0), "default", "right")
         cy = cy + rowH + ui(14)
     end
 

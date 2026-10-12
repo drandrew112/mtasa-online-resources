@@ -151,7 +151,7 @@ addEventHandler("onClientRender", root, function()
                         local active = m == current
                         local hint
                         if active then
-                            hint = L("world_interiors.markers.press", { key = key, entering = entering and "enter" or "leave" })
+                            hint = L("world_interiors.markers.press", { key = key, entering = L(entering and "world_interiors.markers.enter" or "world_interiors.markers.exit") })
                         else
                             hint = L("world_interiors.markers.step_into_marker")
                         end

@@ -808,7 +808,7 @@ local function drawOverlays(now, t)
         local title, color, sub
         if game.reason == "intubated" then
             title, color = L("mg_airway.client.airway_secured"), COLOR_GOOD
-            sub = L("mg_airway.client.score_s_mistake", { mistakes = airwayScore(game.finalTime, game.mistakes), final_time = game.finalTime, mistakes2 = game.mistakes, mistakes3 = game.mistakes == 1 and "" or "s" })
+            sub = L("mg_airway.client.score_s_mistake", { mistakes = airwayScore(game.finalTime, game.mistakes), final_time = game.finalTime, mistakes2 = L("mg_airway.client.mistake_count", { count = game.mistakes }) })
         elseif game.reason == "desaturated" then
             title, color, sub = L("mg_airway.client.patient_desaturated"), COLOR_BAD, L("mg_airway.client.too_slow_spo2_fell_below", { fail_spo2 = AIRWAY.FAIL_SPO2 })
         else

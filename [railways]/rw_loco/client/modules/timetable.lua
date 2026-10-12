@@ -132,12 +132,12 @@ local function drawMini(ctx)
         local now = serverNow()
         if st and now then
             local target = (st.state == "stopped" and st.dep) or st.arr or st.dep
-            local label = st.state == "stopped" and "Dep. " or L("rw_loco.timetable.next")
+            local label = st.state == "stopped" and L("rw_loco.timetable.dep") or L("rw_loco.timetable.next")
             local rest = target and ("  " .. hhmm(target) .. "  (" .. mmss(target - now) .. ")") or ""
             txt(label .. st.name .. rest, x + pad, cy, w - pad * 2, lineH, C.text, f)
         end
     elseif v and v.status == "completed" then
-        txt(v.trip .. " completed", x + pad, cy, w - pad * 2, lineH, C.green, fB)
+        txt(L("rw_loco.timetable.trip_completed", { trip = v.trip }), x + pad, cy, w - pad * 2, lineH, C.green, fB)
         cy = cy + lineH
     else
         txt(L("rw_loco.timetable.no_service"), x + pad, cy, w - pad * 2, lineH, C.muted, fB)
@@ -206,7 +206,7 @@ local function drawPanel(ctx)
                 dxDrawRectangle(bx, by, bw, 8 * s, tocolor(10, 14, 22))
                 dxDrawRectangle(bx, by, bw * frac, 8 * s, frac >= 1 and C.green or C.yellow)
                 local doorsTxt = Loco.doors() == "closed" and L("rw_loco.timetable.doors_closed") or L("rw_loco.timetable.doors_open")
-                local side = v.side and (L("rw_loco.timetable.platform_on", { side = v.side })) or ""
+                local side = v.side and (L("rw_loco.timetable.platform_on", { side = L("rw_loco.timetable.side." .. v.side) })) or ""
                 txt(doorsTxt .. side, bx, by - 14 * s, bw, 12 * s, C.muted, fS, "right", "top")
             end
             cy = cy + 74 * s

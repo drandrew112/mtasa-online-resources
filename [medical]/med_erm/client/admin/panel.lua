@@ -261,7 +261,7 @@ local function drawList(x, y, w, h)
         lst.page = page - 1
         Admin.loadList(tab)
     end)
-    Gfx.text(L("med_erm.panel.page_result", { page = page, pages = pages, total = total, total2 = total == 1 and "" or "s", loading = lst.loading and L("med_erm.panel.loading") or "" }), x, py, w, s(32), Theme.dim, Gfx.font(9), "center")
+    Gfx.text(L("med_erm.panel.page_result", { page = page, pages = pages, total2 = L("med_erm.panel.result_count", { count = total }), loading = lst.loading and L("med_erm.panel.loading") or "" }), x, py, w, s(32), Theme.dim, Gfx.font(9), "center")
     Gfx.button(x + w - s(96), py, s(96), s(32), L("med_erm.panel.next"), { disabled = page >= pages }, function()
         lst.page = page + 1
         Admin.loadList(tab)

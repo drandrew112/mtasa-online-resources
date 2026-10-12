@@ -129,7 +129,7 @@ local function watch()
             if terminus then
                 announce(stop.name or "", L("rw_passengers.display.this_train_terminates_here_please_leave"))
             else
-                local side = doors == "both" and L("rw_passengers.display.both_sides") or (doors .. " side")
+                local side = doors == "both" and L("rw_passengers.display.both_sides") or L("rw_passengers.display.side." .. doors)
                 announce(stop.name or "", L("rw_passengers.display.doors_open_on", { side = side }))
             end
         -- departed: the next stop changed while running

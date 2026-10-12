@@ -343,12 +343,12 @@ MEDIC_INJURIES = {
         consciousness = { nil, "confused", "unconscious" },
         spo2 = { nil, nil, 86 }, spo2Rate = 0.25,
         breathing = { nil, nil, "snoring" },
-        -- %s = the affected side ("left" / "right"), the gaze turns to the other one
+        -- third value = the finding names the affected side ("left" / "right"; side_cap = capitalised), the gaze turns to the other one
         neuro = {
-            { { L("medsys.config.fast_face_droops_on_s_side"), 3 }, { L.text("medsys.config.fast_speech_slurred"), 3 } },
-            { { L("medsys.config.fast_face_droops_on_s_side"), 3 }, { L("medsys.config.fast_s_arm_drifts_down_weak"), 3 },
+            { { L.text("medsys.config.fast_face_droops_on_s_side"), 3, "side" }, { L.text("medsys.config.fast_speech_slurred"), 3 } },
+            { { L.text("medsys.config.fast_face_droops_on_s_side"), 3, "side" }, { L.text("medsys.config.fast_s_arm_drifts_down_weak"), 3, "side" },
                 { L.text("medsys.config.fast_speech_slurred_words_mixed_up"), 3 } },
-            { { L("medsys.config.s_side_paralysed"), 3 }, { L.text("medsys.config.eyes_deviated_to_one_side"), 3 } },
+            { { L.text("medsys.config.s_side_paralysed"), 3, "side_cap" }, { L.text("medsys.config.eyes_deviated_to_one_side"), 3 } },
         },
     },
     opioid = {
