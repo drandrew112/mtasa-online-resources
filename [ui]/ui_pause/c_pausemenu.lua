@@ -49,7 +49,14 @@ local C = {
     bank       = tocolor(120, 180, 255, 255),
 }
 
-local TABS = { L("ui_pause.pausemenu.map"), L("ui_pause.pausemenu.online"), L("ui_pause.pausemenu.stats"), L("ui_pause.pausemenu.settings") }
+-- Tab ids are internal (compared in code); the label is looked up when drawn.
+local TABS = { "MAP", "ONLINE", "STATS", "SETTINGS" }
+local TAB_LABEL = {
+    MAP      = "ui_pause.pausemenu.map",
+    ONLINE   = "ui_pause.pausemenu.online",
+    STATS    = "ui_pause.pausemenu.stats",
+    SETTINGS = "ui_pause.pausemenu.settings",
+}
 
 local pauseMenuOpen = false
 local pauseMapOpen  = false
@@ -1115,7 +1122,7 @@ local function drawPanel()
         local tx = fx + (i - 1) * tabW
         local activeTab = i == selectedTab
         dxDrawRectangle(tx + (i > 1 and S(1) or 0), tabY, tabW - S(2), tabH, activeTab and C.tabSel or C.tab)
-        dxDrawText(name, tx, tabY, tx + tabW, tabY + tabH,
+        dxDrawText(L(TAB_LABEL[name]), tx, tabY, tx + tabW, tabY + tabH,
             activeTab and C.tabSelTxt or C.tabTxt, S(activeTab and 1.35 or 1.2),
             activeTab and FONT.head or FONT.rowB, "center", "center")
     end
