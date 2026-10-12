@@ -1,6 +1,6 @@
 # v_locals – nyelvi fordító (lokalizáció) – DESIGN
 
-Állapot: **2. fázis kész, a nyitott kérdések lezárva (D18–D21)** (2026-10-12; az 1. fázis a 10., a 2. fázis a 11. fejezetben). A 3. fázis csak külön engedéllyel indulhat.
+Állapot: **3. fázis kész** (2026-10-12; 1. fázis: 10., 2. fázis: 11., 3. fázis: 12. fejezet). Minden szöveget megjelenítő resource a v_locals-on keresztül ír ki; a magyar nyelv a következő, külön engedélyhez kötött lépés.
 Dátum: 2026-10-12. Szerző: DrAndrew112 (meta author).
 
 Ez a dokumentum rögzíti a teljes tervet: a 0. fázisban felmért kiinduló állapotot,
@@ -766,3 +766,88 @@ A legnagyobb katalógusok: medsys 319, v_jobcreator 317, v_admin 257, med_erm 22
 2. **Aviation (AVI-CONFIRM):** jóváhagyod a 11.4 szerinti felosztást?
 3. **GTA-fontok (D8):** fordítandó jelölt a v_spawnmanager **„WASTED”** és a v_jobmanager countdown **„GO”** (a szerver kódként küldi, a kliens képezi le kulcsra). A márkák („FreeV”, „FREE V”) és a számok maradnak.
 4. **Időfutam-nevek** (`v_timetrial` „Las Venturas Highway Run” stb.): a jobmanager játéknevek mintájára kivétel legyen? Jelenleg fordítandóként szerepelnek.
+
+
+---
+
+## 12. A 3. fázis eredménye (2026-10-12)
+
+### 12.1 Mi készült el
+
+- **Lefedettség:** minden szöveget megjelenítő resource átállt; a kivételek a 3.2 és D1–D21 szerint maradtak ki.
+  - `tools/locales.py scan`: **0** beégetett, fordítandó szöveg maradt.
+  - `lint`: 0 hiba, 0 figyelmeztetés.
+  - A katalógus **3104 angol kulcs, 68 namespace**, a megjelenő szöveg a régivel bájtra azonos. Kivétel a forrásban talált magyar szövegek angol változata, ezek a `locales/hu.seed/` alá kerültek.
+- **Commitok:** a `localization` branchen, blokkonként.
+  1. v_locals bővítés + codemod
+  2. UI-keretrendszerek
+  3. v_accounts / v_introduce
+  4. HUD / social / core
+  5. Work
+  6. Medical
+  7. Railways
+  8. Minigames / vehicles / world / grafika / egyéb
+  9. Maradék magyar szövegek
+- **Élő ellenőrzés:** minden blokk után `/restartallresource` és a szerver-, illetve kliensnapló átnézése. A végén csak a korábbról meglévő hibák maradtak: v_jobcreator→v_jobmanager indítási sorrend, `acc:requestPanel` / DGSI időzítés újraindításkor.
+
+### 12.2 Hogyan használják a resource-ok
+
+- **Betöltés:** minden migrált script első sora:
+  ```lua
+  if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+  ```
+  Emellett a meta.xml első scriptje `locals.lua` (ugyanez az import), és kap `<include resource="v_locals" />` sort. Az őrsor azért kell, mert ha egy include-olt resource meta.xml-je megváltozik, az MTA csak szerver-újraindítás után olvassa újra. Az őrsor nélkül a `locals.lua` ilyenkor nem futna le.
+- **Kliens:** `L("kulcs", { param = érték })` szöveget ad.
+- **Szerver:** `L.msg("kulcs", params)` üzenetobjektumot ad. A játékos nyelvére a küldéskor oldódik fel (D4).
+- **Shared (közös konfig) scriptek:** `L.text(...)`, ami kliensen szöveg, szerveren üzenet.
+- **Formátumsztringek:** a `%d`/`%s`-t tartalmazó, később `:format()`-tal kiegészített szövegek mindig sima `L()`-t kapnak.
+
+### 12.3 A v_locals szerver lib biztonsági hálója (importáló resource-okban)
+
+| Helyzet | Viselkedés |
+|---|---|
+| `triggerClientEvent` / `triggerLatentClientEvent` / `outputChatBox` / `kickPlayer` üzenettel | címzettenként, a játékos nyelvén feloldva (D4) |
+| `..`, `tostring`, string-metódus (`:upper()` …), `<` / `<=` | alapnyelvű szöveg, nincs hiba (UTF-8-biztos upper/lower) |
+| `string.format("%s")`, `table.concat` | alapnyelvű szöveg |
+| `dbExec`, `dbQuery`, `setElementData`, `toJSON`, nem-v_locals resource exportja (pl. v_mysql) | alapnyelvű szöveg (tárolt / közös adat) |
+| export argumentuma vagy visszatérési értéke egy másik v_locals-resource-ból | a metatábla visszaáll (`L.adopt`), az üzenet tovább működik |
+| export hívója nem használja a v_locals-t (med_scenemanager, claude-mcp …) | a visszatérési értékek alapnyelvű szövegek |
+| a v_locals-t használó resource-ok jelzése | resource-gyökér elementData `v_locals.consumer` (nem szinkronizált) |
+
+A kliens oldalon nincs ilyen csomagolás: a kliens kódja szöveget kap. A ui_core exportjai és a ui_inac temp menüje az üzenetobjektumot is elfogadja (4.5).
+
+### 12.4 Kézi átírások (D3, D6, D7) – a fontosabbak
+
+- **Azonosító-alapú logika, kulcsból jövő felirattal:**
+  - ui_pause: statisztika-kategóriák, jobs-nézetek, ON/OFF;
+  - v_socialpanel: súgófülek;
+  - v_jobmanager: lobby-akciók;
+  - med_erm: tablet-címkék és a kifizetés kimenetel-szavai;
+  - mg_airway: nehézségi szint;
+  - v_stats: a mértékegység kód marad (`km`/`s`, a ui_pause összehasonlítja);
+  - glucometer: a lokalizált „Measuring...” elutasítást hasonlítja össze.
+- **UTF-8:**
+  - v_chat és v_socialpanel: beviteli mező hossza és törlése (`L.len`/`L.sub`), a korábbi bájtalapú törlés elrontotta az ő/ű betűt;
+  - v_socialpanel `ellipsis` → `L.fit`;
+  - a megjelenített `:upper()` → `L.upper`.
+- **Mérés:** minden v_locals-klienstől a `dxGetTextWidth` → gyorsítótárazott `L.width`.
+  - v_socialpanel súgó és chatbuborék, ui_core loading/timer → `L.wrap`;
+  - med_erm `Gfx.fit`/`Gfx.wrap` → `L.fit`/`L.wrap`.
+- **Nyelvválasztó:** Settings → Display → Language (D12).
+- **v_introduce szabályzat:** `L.file("v_introduce/rules.txt")`, a resource saját `rules.txt`-je a tartalék.
+- **Helyi `L` változók átnevezve:** ui_core textInput (`lay`), med_erm admin panel (`lst`), rw_core trainlabel / log, rw_signals, rw_passengers scenery, v_jobcreator (`LIM`), world_clothes-shop label.
+
+### 12.5 Fejlesztői munkafolyamat új szövegekhez
+
+1. A kódba vagy rögtön `L("namespace.terület.kulcs")` kerül, a kulcs pedig a `tools/decisions.json` `add` részébe, **vagy** a resource-ba angol literál kerül, és utána `python tools/locales.py apply <resource>` (ez a kulcsot is legenerálja).
+2. `python tools/locales.py residue <resource>`: az esetleg kimaradt, UI-gyanús literálok.
+3. `python tools/locales.py all && python tools/locales.py lint`, a szintaxisra `python tools/locales.py check <resource>`.
+4. A `tools/keys.lock.json` tartja a kulcsokat stabilan; a build a kódban már használt kulcsokat megtartja.
+
+### 12.6 Ismert korlátok és teendők a magyar nyelv előtt
+
+- **Nyelvváltás futás közben:** a betöltéskor összerakott statikus táblák nem frissülnek azonnal, csak újracsatlakozás vagy resource-újraindítás után. Ilyenek a menü- és konfigfeliratok, a ui_inac főmenü és a SETTINGS_TREE. A dinamikus szövegek, a `L.bind`-del kötött táblák és az `L.onChange` callbackek azonnal frissülnek. Teendő a magyar előtt: az érintett resource-ok `L.onChange`-re építsék újra a tábláikat, vagy a választó jelezze, hogy újracsatlakozás kell.
+- **Alapnyelvű tartalék:** szerver oldali szövegösszefűzés (`"x" .. msg`) és tárolt adat az alapnyelven marad.
+- **Tárolt adat:** a némítás alapértelmezett oka (`mute_reason` elementData) angol.
+- **Kimaradt magyar seedek:** az `add`-ban felülírt, ékezet nélküli magyar szövegekhez nincs `hu.seed` bejegyzés: Uj uzenet, BE/KI, Vasutas jog, az rw_customtracks admin-parancsai.
+- **MTA meta-gyorsítótár:** a v_locals, ui_core, ui_inac, ui_interactobject, ui_browser, rw_customtracks meta.xml-je csak a **szerverfolyamat újraindítása** után töltődik be teljesen. Működés közben az őrsor pótolja.
