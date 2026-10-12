@@ -250,7 +250,7 @@ function registerMenus()
     exports.v_accounts:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
-addEventHandler("onPlayerLoadingStarted", root, function()
+addEventHandler("onClientLoadingStarted", root, function()
     registerMenus()
 end)
 addEventHandler("onClientResourceStart", resourceRoot, function()
