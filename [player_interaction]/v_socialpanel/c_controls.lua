@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     v_socialpanel / c_controls.lua
     Immediate-mode UI keszlet (gomb, szovegmezo, gorgetes) + a panel be/ki kapcsolasa.
@@ -321,7 +322,7 @@ addEventHandler("onClientKey", root, function(key, press)
         local field = UI.fields[UI.activeField]
         if field and press then
             if key == "backspace" then
-                field.text = field.text:sub(1, -2)
+                field.text = L.sub(field.text, 1, -2)
                 cancelEvent()
             elseif key == "enter" then
                 field._enter = true

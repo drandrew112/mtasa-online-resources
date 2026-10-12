@@ -1592,7 +1592,11 @@ def syntax_errors(paths):
     errs = []
     for p in paths:
         with open(p, encoding="utf-8", errors="replace") as f:
-            ok, err = load(f.read(), "@" + os.path.basename(p))
+            src = f.read().lstrip("﻿")          # MTA skips the BOM, plain loadstring does not
+        try:
+            ok, err = load(src, "@" + os.path.basename(p))
+        except UnicodeDecodeError as ex:
+            ok, err = False, "%s: undecodable error message (%s)" % (os.path.basename(p), ex)
         if not ok:
             errs.append(err)
     return errs
@@ -1675,6 +1679,8 @@ def cmd_apply(res, dry=False, force=False):
             if exprs:
                 params = ", { " + ", ".join("%s = %s" % (lua_key(n), e) for n, e in exprs) + " }"
             fn = {"server": "L.msg", "shared": "L.text"}.get(side, "L")
+            if not it["template"] and re.search(r"%[-0-9.]*[sdifx]", it["text"]):
+                fn = "L"        # used as a format string later: must be a plain string
             if side == "server":
                 server_msgs[it["sink"]] += 1
             repl = '%s("%s"%s)' % (fn, it["key"], params)
@@ -1690,8 +1696,9 @@ def cmd_apply(res, dry=False, force=False):
                 o["pos"], o["end"] = sh(o["pos"]), sh(o["end"])
                 for q in o["ps"]:
                     q[1], q[2] = sh(q[1]), sh(q[2])
-        if text != src and not text.startswith(IMPORT_GUARD):
-            text = IMPORT_GUARD + text
+        if text != src and not text.lstrip("﻿").startswith(IMPORT_GUARD):
+            bom = "﻿" if text.startswith("﻿") else ""
+            text = bom + IMPORT_GUARD + text[len(bom):]
         if text != src:
             sides.add(side)
             changed.append((path, inner, len(recs)))
@@ -1725,7 +1732,7 @@ def cmd_residue(res):
         if not inner.endswith(".lua") or inner == IMPORT_FILE:
             continue
         path = os.path.join(rdir, inner)
-        if not os.path.exists(path):
+        if not os.path.exists(path) or os.path.getsize(path) > CFG["max_file_bytes"]:
             continue
         with open(path, encoding="utf-8", errors="replace") as f:
             src = f.read()

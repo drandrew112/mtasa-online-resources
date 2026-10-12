@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /weekly admin menu backend. The client menu sends compact requests; every one
 -- re-checks the admin level here.
 
@@ -47,8 +48,8 @@ local function overview()
 end
 
 addCommandHandler("weekly", function(player)
-    if not isAdmin(player) then return reply(player, "You have no permission.") end
-    if not STORE.isLoaded() then return reply(player, "Weekly system is not ready yet.") end
+    if not isAdmin(player) then return reply(player, L.msg("v_weekly.admin.you_have_no_permission")) end
+    if not STORE.isLoaded() then return reply(player, L.msg("v_weekly.admin.weekly_system_is_not_ready_yet")) end
     triggerClientEvent(player, "weekly:openAdmin", player, overview())
 end)
 
@@ -78,6 +79,6 @@ addEventHandler("weekly:adminEdit", root, function(action, offset, a, b, c)
     end
     outputServerLog(("[v_weekly] %s: %s week+%s %s -> %s"):format(
         tostring(getElementData(player, "accName")), action, tostring(offset), tostring(a), tostring(ok)))
-    reply(player, ok and "Saved." or ("Failed: " .. tostring(err)))
+    reply(player, ok and "Saved." or (L.msg("v_weekly.admin.failed", { err = tostring(err) })))
     triggerClientEvent(player, "weekly:openAdmin", player, overview(), true)
 end)

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     v_socialpanel / c_ui.lua
     Social panel rendering. Pure DX, immediate-mode (see c_controls.lua / UI).
@@ -31,91 +32,99 @@ local C = {
     sub    = tocolor(110, 110, 110, 255),
 }
 
-local TABS = { "HOME", "HELP", "ACHIEVEMENTS", "SOCIAL", "PROFILE" }
+local TABS = { L("v_socialpanel.ui.home"), L("v_socialpanel.ui.help"), L("v_socialpanel.ui.achievements"), L("v_socialpanel.ui.social"), L("v_socialpanel.ui.profile") }
 
 --------------------------------------------------------------------------------
 -- HELP content
 --------------------------------------------------------------------------------
 
+-- tab ids are the keys of HELP_TEXT; the shown label comes from v_locals
 local HELP_TABS = { "BASICS", "INAC MENU", "MINIGAMES", "VEHICLES", "RULES" }
+local HELP_LABEL = {
+    ["BASICS"]    = "v_socialpanel.ui.basics",
+    ["INAC MENU"] = "v_socialpanel.ui.inac_menu",
+    ["MINIGAMES"] = "v_socialpanel.ui.minigames",
+    ["VEHICLES"]  = "v_socialpanel.ui.vehicles",
+    ["RULES"]     = "v_socialpanel.ui.rules",
+}
 local HELP_TEXT = {
     ["BASICS"] = {
-        "Three menus run everything on the server:",
+        L("v_socialpanel.ui.three_menus_run_everything_on_server"),
         "",
-        "INAC menu  -  press  M",
-        "Your personal hub: fast travel, spawn a vehicle, collectibles",
-        "and your stats (level, played time).",
+        L("v_socialpanel.ui.inac_menu_press_m"),
+        L("v_socialpanel.ui.your_personal_hub_fast_travel_spawn"),
+        L("v_socialpanel.ui.and_your_stats_level_played_time"),
         "",
-        "Social panel  -  press  HOME  or  NUM 7   (this panel)",
-        "Friends, player profiles, crews and private / crew messaging.",
+        L("v_socialpanel.ui.social_panel_press_home_or_num"),
+        L("v_socialpanel.ui.friends_player_profiles_crews_and_private"),
         "",
-        "Pause menu  -  press  P",
-        "The server pause menu: settings, player list, keybinds, quit.",
+        L("v_socialpanel.ui.pause_menu_press_p"),
+        L("v_socialpanel.ui.server_pause_menu_settings_player_list"),
         "",
-        "Close any panel with ESC.",
+        L("v_socialpanel.ui.close_any_panel_with_esc"),
     },
     ["INAC MENU"] = {
-        "Open it with  M .  Move with the arrow keys, confirm with Enter,",
-        "go back with Backspace.",
+        L("v_socialpanel.ui.open_it_with_m_move_with"),
+        L("v_socialpanel.ui.go_back_with_backspace"),
         "",
-        "What you can do here:",
-        "- Fast Travel: jump to LS / LV / SF airport (not while in a vehicle).",
-        "- Vehicle: spawn any game vehicle to mess around with. These are",
-        "  temporary and CANNOT be tuned or modified.",
-        "- Collectibles: track your stunt jumps and hidden UFO parts.",
-        "- Stats: your current level and total played time.",
+        L("v_socialpanel.ui.what_you_can_do_here"),
+        L("v_socialpanel.ui.fast_travel_jump_to_ls_lv"),
+        L("v_socialpanel.ui.vehicle_spawn_any_game_vehicle_to"),
+        L("v_socialpanel.ui.temporary_and_cannot_be_tuned_or"),
+        L("v_socialpanel.ui.collectibles_track_your_stunt_jumps_and"),
+        L("v_socialpanel.ui.stats_your_current_level_and_total"),
         "",
-        "The INAC menu is about your character; the Social panel (HOME)",
-        "is about other players.",
+        L("v_socialpanel.ui.inac_menu_is_about_your_character"),
+        L("v_socialpanel.ui.is_about_other_players"),
     },
     ["MINIGAMES"] = {
-        "Game modes on the server:",
+        L("v_socialpanel.ui.game_modes_on_server"),
         "",
-        "JOBS",
-        "A GTA Online style lobby system. Pick a job, wait in the lobby,",
-        "then everyone starts together. Two types:",
-        "  Race  -  checkpoint racing to the finish line.",
-        "  DM    -  deathmatch, last player / team standing wins.",
+        L("v_socialpanel.ui.jobs_heading"),
+        L("v_socialpanel.ui.gta_online_style_lobby_system_pick"),
+        L("v_socialpanel.ui.then_everyone_starts_together_two_types"),
+        L("v_socialpanel.ui.race_checkpoint_racing_to_finish_line"),
+        L("v_socialpanel.ui.dm_deathmatch_last_player_team_standing"),
         "",
-        "ARENA WAR",
-        "Vehicle combat in a closed arena. Take a weaponised car, wreck the",
-        "other players, respawn and keep fighting. Score counts your kills.",
+        L("v_socialpanel.ui.arena_war"),
+        L("v_socialpanel.ui.vehicle_combat_in_closed_arena_take"),
+        L("v_socialpanel.ui.other_players_respawn_and_keep_fighting"),
         "",
-        "TIME TRIAL",
-        "Solo race against the clock. Only ONE track is active at a time and",
-        "it rotates to a new one every so often. Beat the target time and",
-        "your best lap is saved.",
+        L("v_socialpanel.ui.time_trial"),
+        L("v_socialpanel.ui.solo_race_against_clock_only_one"),
+        L("v_socialpanel.ui.it_rotates_to_new_one_every"),
+        L("v_socialpanel.ui.your_best_lap_is_saved"),
     },
     ["VEHICLES"] = {
-        "Two kinds of vehicles:",
+        L("v_socialpanel.ui.two_kinds_of_vehicles"),
         "",
-        "Spawned vehicles (INAC menu)",
-        "Any vehicle in the game can be pulled from the INAC menu, but those",
-        "are throwaway - no tuning, no modifications, no saving.",
+        L("v_socialpanel.ui.spawned_vehicles_inac_menu"),
+        L("v_socialpanel.ui.any_vehicle_in_game_can_be"),
+        L("v_socialpanel.ui.are_throwaway_no_tuning_no_modifications"),
         "",
-        "Owned vehicles (Phone)",
-        "Buy your own vehicles with in-game money in the Phone. Once owned",
-        "you can spawn them from the Phone and they persist.",
+        L("v_socialpanel.ui.owned_vehicles_phone"),
+        L("v_socialpanel.ui.buy_your_own_vehicles_with_in"),
+        L("v_socialpanel.ui.you_can_spawn_them_from_phone"),
         "",
-        "Tuning",
-        "Only owned vehicles can be modified - drive into a tuning shop (mod",
-        "garage) to change parts, paint and performance.",
+        L("v_socialpanel.ui.tuning"),
+        L("v_socialpanel.ui.only_owned_vehicles_can_be_modified"),
+        L("v_socialpanel.ui.garage_to_change_parts_paint_and"),
         "",
-        "Every vehicle has a working radio and a GPS.",
+        L("v_socialpanel.ui.every_vehicle_has_working_radio_and"),
     },
     ["RULES"] = {
         "1. No cheating. Mods, trainers, scripts or any helper program that",
-        "   gives an advantage is forbidden.",
+        L("v_socialpanel.ui.gives_advantage_is_forbidden"),
         "",
         "2. Do not deliberately ruin other players' experience - for example",
-        "   killing the same person again and again for no reason.",
+        L("v_socialpanel.ui.killing_same_person_again_and_again"),
         "",
         "3. No discrimination of any kind (gender, skin colour, religion,",
-        "   nationality, orientation, ...).",
+        L("v_socialpanel.ui.nationality_orientation"),
         "",
         "4. No advertising - other servers, sites, services, etc.",
         "",
-        "Breaking the rules can get you banned. Appeal on Discord.",
+        L("v_socialpanel.ui.breaking_rules_can_get_you_banned"),
     },
 }
 local help_tab = 1
@@ -124,7 +133,7 @@ local help_tab = 1
 -- SOCIAL sub-tabs
 --------------------------------------------------------------------------------
 
-local SOCIAL_TABS = { "FRIENDS", "REQUESTS", "FIND PLAYER", "MESSAGES", "MY CREW", "FIND CREW" }
+local SOCIAL_TABS = { L("v_socialpanel.ui.friends"), L("v_socialpanel.ui.requests"), L("v_socialpanel.ui.find_player"), L("v_socialpanel.ui.messages"), L("v_socialpanel.ui.my_crew"), L("v_socialpanel.ui.find_crew") }
 local social_tab = 1
 
 --------------------------------------------------------------------------------
@@ -168,7 +177,7 @@ addEventHandler("sp:profile:show", root, function(data, wantedName)
         viewedProfile = data
         content_id = 5
     else
-        outputChatBox("#f0c800[Social] #ffffffNo such player: " .. tostring(wantedName), 255, 255, 255, true)
+        outputChatBox(L("v_socialpanel.ui.social_no_such_player", { wanted_name = tostring(wantedName) }), 255, 255, 255, true)
     end
 end)
 
@@ -185,7 +194,7 @@ addEventHandler("sp:notify", root, function(kind, from, text, crewTag)
     from = tostring(from or "?")
     local title = (kind == "crew")
         and ("[" .. tostring(crewTag or "CREW") .. "] " .. from)
-        or ("Uj uzenet - " .. from)
+        or (L("v_socialpanel.ui.uj_uzenet", { from = from }))
     local preview = tostring(text or "")
     if utf8.len(preview) and utf8.len(preview) > 60 then
         preview = utf8.sub(preview, 1, 57) .. "..."
@@ -231,19 +240,8 @@ local function para(lines, x, y, w)
         if ln == "" then
             yy = yy + lineH * 0.6
         else
-            local cur = ""
-            for word in ln:gmatch("%S+") do
-                local test = (cur == "") and word or (cur .. " " .. word)
-                if dxGetTextWidth(test, size, font) > w and cur ~= "" then
-                    dxDrawText(cur, x, yy, x + w, yy + lineH, tocolor(40, 40, 40, 255), size, font, "left", "top")
-                    yy = yy + lineH
-                    cur = word
-                else
-                    cur = test
-                end
-            end
-            if cur ~= "" then
-                dxDrawText(cur, x, yy, x + w, yy + lineH, tocolor(40, 40, 40, 255), size, font, "left", "top")
+            for _, row in ipairs(L.wrap(ln, w, size, font)) do
+                dxDrawText(row, x, yy, x + w, yy + lineH, tocolor(40, 40, 40, 255), size, font, "left", "top")
                 yy = yy + lineH
             end
         end
@@ -261,11 +259,7 @@ local function clock(ts)
 end
 
 local function ellipsis(str, size, font, maxW)
-    if dxGetTextWidth(str, size, font) <= maxW then return str end
-    while #str > 1 and dxGetTextWidth(str .. "...", size, font) > maxW do
-        str = str:sub(1, -2)
-    end
-    return str .. "..."
+    return L.fit(str, maxW, size, font)
 end
 
 local function openConversation(kind, with)
@@ -294,12 +288,12 @@ addEventHandler("onClientRender", root, function()
     dxDrawText("FreeV", 12, 0, 12, TOPBAR, tocolor(255, 200, 0, 120), 1.0, "pricedown", "left", "center")
 
     -- Panel title where the branding used to be.
-    dxDrawText("SOCIAL PANEL", X, 0, X, TOPBAR, C.white, 1.5, "default-bold", "left", "center")
+    dxDrawText(L("v_socialpanel.ui.social_panel"), X, 0, X, TOPBAR, C.white, 1.5, "default-bold", "left", "center")
 
-    local tabX = X + dxGetTextWidth("SOCIAL PANEL", 1.5, "default-bold") + 55
+    local tabX = X + L.width(L("v_socialpanel.ui.social_panel"), 1.5, "default-bold") + 55
     for i, name in ipairs(TABS) do
         local label = (name == "PROFILE") and (snapshot.account or getPlayerName(localPlayer)) or name
-        local tw = dxGetTextWidth(label, 1.4, "default-bold") + 30
+        local tw = L.width(label, 1.4, "default-bold") + 30
         if UI.button(tabX, 0, tw, TOPBAR, label, {
             font = "default-bold", bg = C.bar, txt = C.white,
             hoverBg = C.bar, hoverTxt = C.accent,
@@ -320,7 +314,7 @@ addEventHandler("onClientRender", root, function()
     elseif content_id == 4 then renderSocial()
     elseif content_id == 5 then renderProfile() end
 
-    dxDrawText("[ESC] close", X, Y + H + 6, X + W, Y + H + 26, C.white, 1.3, "default-bold", "right", "top")
+    dxDrawText(L("v_socialpanel.ui.esc_close"), X, Y + H + 6, X + W, Y + H + 26, C.white, 1.3, "default-bold", "right", "top")
 end, false, "low")
 
 --------------------------------------------------------------------------------
@@ -332,9 +326,9 @@ function renderHome()
 
     -- Left grey strip: KEPT EMPTY (weekly-update images will go here later).
     dxDrawRectangle(X, Y, leftW, H, C.grey)
-    dxDrawText("Weekly updates", X, Y + H / 2 - 30, X + leftW, Y + H / 2 - 30,
+    dxDrawText(L("v_socialpanel.ui.weekly_updates"), X, Y + H / 2 - 30, X + leftW, Y + H / 2 - 30,
         tocolor(255, 255, 255, 60), 2.2, "default-bold", "center", "top")
-    dxDrawText("images coming soon", X, Y + H / 2 + 6, X + leftW, Y + H / 2 + 6,
+    dxDrawText(L("v_socialpanel.ui.images_coming_soon"), X, Y + H / 2 + 6, X + leftW, Y + H / 2 + 6,
         tocolor(255, 255, 255, 45), 1.3, "default", "center", "top")
 
     local rx = X + leftW + 14
@@ -344,11 +338,11 @@ function renderHome()
         if f.online then online[#online + 1] = f end
     end
 
-    dxDrawText("Friends online (" .. #online .. ")", rx, Y + 14, rx + rw, Y + 40,
+    dxDrawText(L("v_socialpanel.ui.friends_online", { online = #online }), rx, Y + 14, rx + rw, Y + 40,
         C.dark, 1.7, "default-bold", "left", "top")
 
     if #online == 0 then
-        dxDrawText("No friends online.", rx, Y + 70, rx + rw, Y + 90, C.sub, 1.3, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.no_friends_online"), rx, Y + 70, rx + rw, Y + 90, C.sub, 1.3, "default", "left", "top")
         return
     end
 
@@ -360,9 +354,9 @@ function renderHome()
             dxDrawRectangle(rx, ry, rw, rowH, C.panel)
             dxDrawRectangle(rx, ry, 4, rowH, C.green)
             dxDrawText(f.name, rx + 14, ry + 8, rx + rw, ry + 28, C.dark, 1.4, "default-bold", "left", "top")
-            dxDrawText(("Level %s  |  %s"):format(f.level, f.playtime), rx + 14, ry + 30, rx + rw, ry + 48,
+            dxDrawText(L("v_socialpanel.ui.level", { level = f.level, playtime = f.playtime }), rx + 14, ry + 30, rx + rw, ry + 48,
                 C.sub, 1.15, "default", "left", "top")
-            if UI.button(rx + rw - 92, ry + 12, 84, rowH - 24, "Profile", { size = 1.2, bg = C.bg }) then
+            if UI.button(rx + rw - 92, ry + 12, 84, rowH - 24, L("v_socialpanel.ui.profile_2"), { size = 1.2, bg = C.bg }) then
                 triggerServerEvent("sp:profile:view", localPlayer, f.name)
             end
         end
@@ -378,7 +372,7 @@ function renderHelp()
     local sideW = W * 0.26
     local rowH = H / #HELP_TABS
     for i, name in ipairs(HELP_TABS) do
-        if UI.button(X, Y + (i - 1) * rowH, sideW, rowH, name, {
+        if UI.button(X, Y + (i - 1) * rowH, sideW, rowH, L(HELP_LABEL[name]), {
             bg = C.grey, txt = C.dark, hoverBg = C.white,
             selected = (i == help_tab), selBg = C.white, selTxt = C.dark,
         }) then
@@ -391,7 +385,7 @@ function renderHelp()
 
     local cx, cw = X + sideW + 24, W - sideW - 48
     local name = HELP_TABS[help_tab]
-    dxDrawText(name, cx, Y + 18, cx + cw, Y + 50, C.dark, 2.1, "default-bold", "left", "top")
+    dxDrawText(L(HELP_LABEL[name]), cx, Y + 18, cx + cw, Y + 50, C.dark, 2.1, "default-bold", "left", "top")
     dxDrawRectangle(cx, Y + 54, cw, 2, C.line)
     para(HELP_TEXT[name] or { "..." }, cx, Y + 70, cw)
 end
@@ -424,7 +418,7 @@ end
 
 function renderAchievements()
     if not achData or not achData.available then
-        dxDrawText(achData and "Achievements are not available right now." or "Loading...",
+        dxDrawText(achData and L("v_socialpanel.ui.achievements_are_not_available_right_now") or L("common.loading"),
             X, Y, X + W, Y + H, C.sub, 1.5, "default-bold", "center", "center")
         return
     end
@@ -433,8 +427,8 @@ function renderAchievements()
 
     -- Sidebar: ALL + categories, with done/total counters
     local sideW = W * 0.26
-    local tabs = { { name = "ALL" } }
-    for _, c in ipairs(cats) do tabs[#tabs + 1] = { id = c.id, name = c.name:upper() } end
+    local tabs = { { name = L("v_socialpanel.ui.all") } }
+    for _, c in ipairs(cats) do tabs[#tabs + 1] = { id = c.id, name = L.upper(c.name) } end
     local rowH = math.min(H / #tabs, 90)
     for i, t in ipairs(tabs) do
         local d, n = achCount(list, t.id)
@@ -458,7 +452,7 @@ function renderAchievements()
     local s = achData.summary
     dxDrawText(tabs[ach_tab].name, cx, cy, cx + cw, cy + 28, C.dark, 1.8, "default-bold", "left", "top")
     if s then
-        dxDrawText(("%d / %d unlocked   |   %d / %d XP"):format(s.done, s.total, s.xp, s.maxXp),
+        dxDrawText(L("v_socialpanel.ui.unlocked_xp", { done = s.done, total = s.total, xp = s.xp, max_xp = s.maxXp }),
             cx, cy + 4, cx + cw, cy + 28, C.sub, 1.2, "default", "right", "top")
         local frac = s.total > 0 and s.done / s.total or 0
         dxDrawRectangle(cx, cy + 34, cw, 6, C.grey)
@@ -473,7 +467,7 @@ function renderAchievements()
 
     local listY = cy + 52
     if #shown == 0 then
-        dxDrawText("No achievements here yet.", cx, listY, cx + cw, listY + 24, C.sub, 1.25, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.no_achievements_here_yet"), cx, listY, cx + cw, listY + 24, C.sub, 1.25, "default", "left", "top")
         return
     end
 
@@ -492,12 +486,12 @@ function renderAchievements()
                 C.sub, 1.1, "default", "left", "top")
 
             if (a.xp or 0) > 0 then
-                dxDrawText("+" .. a.xp .. " XP", cx, ry + 7, cx + cw - 12, ry + 27,
+                dxDrawText(L("v_socialpanel.ui.xp", { xp = a.xp }), cx, ry + 7, cx + cw - 12, ry + 27,
                     a.done and C.green or C.dark, 1.3, "default-bold", "right", "top")
             end
 
             if a.done then
-                dxDrawText(a.unlockedAt and ("Unlocked " .. achDate(a.unlockedAt)) or "Unlocked",
+                dxDrawText(a.unlockedAt and (L("v_socialpanel.ui.unlocked", { unlocked_at = achDate(a.unlockedAt) })) or L("v_socialpanel.ui.unlocked_2"),
                     cx, ry + 30, cx + cw - 12, ry + 46, C.green, 1.1, "default-bold", "right", "top")
             elseif a.isProgress and not a.hidden then
                 local goal = math.max(tonumber(a.goal) or 1, 1)
@@ -508,7 +502,7 @@ function renderAchievements()
                 local label = fmtNum(a.progress) .. " / " .. fmtNum(goal) .. (a.unit and (" " .. a.unit) or "")
                 dxDrawText(label, cx, ry + 30, cx + cw - 12, ry + 46, C.dark, 1.1, "default-bold", "right", "top")
             else
-                dxDrawText("Locked", cx, ry + 30, cx + cw - 12, ry + 46, C.sub, 1.1, "default", "right", "top")
+                dxDrawText(L("v_socialpanel.ui.locked"), cx, ry + 30, cx + cw - 12, ry + 46, C.sub, 1.1, "default", "right", "top")
             end
         end
     end
@@ -553,9 +547,9 @@ end
 
 function socialFriends(cx, cy, cw)
     local friends = snapshot.friends or {}
-    dxDrawText("Friends (" .. #friends .. ")", cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.friends_2", { friends = #friends }), cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
     if #friends == 0 then
-        dxDrawText("No friends yet. Add players on the FIND PLAYER tab.",
+        dxDrawText(L("v_socialpanel.ui.no_friends_yet_add_players_on"),
             cx, cy + 40, cx + cw, cy + 80, C.sub, 1.25, "default", "left", "top")
         return
     end
@@ -567,15 +561,15 @@ function socialFriends(cx, cy, cw)
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, f.online and C.green or C.grey)
             dxDrawText(f.name, cx + 14, ry + 7, cx + cw, ry + 27, C.dark, 1.4, "default-bold", "left", "top")
-            dxDrawText(("%s  |  Level %s  |  %s"):format(f.online and "Online" or "Offline", f.level, f.playtime),
+            dxDrawText(L("v_socialpanel.ui.level_2", { online = f.online and L("v_socialpanel.ui.online") or L("v_socialpanel.ui.offline"), level = f.level, playtime = f.playtime }),
                 cx + 14, ry + 29, cx + cw, ry + 47, C.sub, 1.1, "default", "left", "top")
-            if UI.button(cx + cw - 270, ry + 12, 82, rowH - 24, "Profile", { size = 1.15, bg = C.bg }) then
+            if UI.button(cx + cw - 270, ry + 12, 82, rowH - 24, L("v_socialpanel.ui.profile_2"), { size = 1.15, bg = C.bg }) then
                 triggerServerEvent("sp:profile:view", localPlayer, f.name)
             end
-            if UI.button(cx + cw - 182, ry + 12, 88, rowH - 24, "Message", { size = 1.15, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
+            if UI.button(cx + cw - 182, ry + 12, 88, rowH - 24, L("v_socialpanel.ui.message"), { size = 1.15, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
                 openConversation("dm", f.name)
             end
-            if UI.button(cx + cw - 88, ry + 12, 80, rowH - 24, "Remove", { size = 1.15, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
+            if UI.button(cx + cw - 88, ry + 12, 80, rowH - 24, L("v_socialpanel.ui.remove"), { size = 1.15, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
                 triggerServerEvent("sp:friend:remove", localPlayer, f.name)
             end
         end
@@ -585,9 +579,9 @@ end
 
 function socialRequests(cx, cy, cw)
     local reqs = snapshot.requests or {}
-    dxDrawText("Friend requests (" .. #reqs .. ")", cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.friend_requests", { reqs = #reqs }), cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
     if #reqs == 0 then
-        dxDrawText("No pending friend requests.", cx, cy + 40, cx + cw, cy + 70, C.sub, 1.25, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.no_pending_friend_requests"), cx, cy + 40, cx + cw, cy + 70, C.sub, 1.25, "default", "left", "top")
         return
     end
     local listY, rowH, gap = cy + 40, 52, 6
@@ -595,22 +589,22 @@ function socialRequests(cx, cy, cw)
         local ry = listY + (i - 1) * (rowH + gap)
         dxDrawRectangle(cx, ry, cw, rowH, C.panel)
         dxDrawText(name, cx + 14, ry, cx + cw, ry + rowH, C.dark, 1.4, "default-bold", "left", "center")
-        if UI.button(cx + cw - 200, ry + 10, 92, rowH - 20, "Accept", { size = 1.2, bg = C.bg, hoverBg = C.green, hoverTxt = C.white }) then
+        if UI.button(cx + cw - 200, ry + 10, 92, rowH - 20, L("v_socialpanel.ui.accept"), { size = 1.2, bg = C.bg, hoverBg = C.green, hoverTxt = C.white }) then
             triggerServerEvent("sp:friend:accept", localPlayer, name)
         end
-        if UI.button(cx + cw - 100, ry + 10, 92, rowH - 20, "Decline", { size = 1.2, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
+        if UI.button(cx + cw - 100, ry + 10, 92, rowH - 20, L("v_socialpanel.ui.decline"), { size = 1.2, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
             triggerServerEvent("sp:friend:decline", localPlayer, name)
         end
     end
 end
 
 function socialFindPlayer(cx, cy, cw)
-    dxDrawText("Find player", cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
-    dxDrawText("Searches online and offline (registered) players.", cx, cy + 26, cx + cw, cy + 46,
+    dxDrawText(L("v_socialpanel.ui.find_player_2"), cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.searches_online_and_offline_registered_players"), cx, cy + 26, cx + cw, cy + 46,
         C.sub, 1.1, "default", "left", "top")
-    local q, entered = UI.input("find_player", cx, cy + 50, cw - 110, 34, { placeholder = "Player name..." })
+    local q, entered = UI.input("find_player", cx, cy + 50, cw - 110, 34, { placeholder = L("v_socialpanel.ui.player_name") })
     local doSearch = entered
-    if UI.button(cx + cw - 100, cy + 50, 100, 34, "Search", { size = 1.25, bg = C.dark, txt = C.white }) then
+    if UI.button(cx + cw - 100, cy + 50, 100, 34, L("v_socialpanel.ui.search"), { size = 1.25, bg = C.dark, txt = C.white }) then
         doSearch = true
     end
     if doSearch and q ~= "" then
@@ -620,7 +614,7 @@ function socialFindPlayer(cx, cy, cw)
     if searchNote then
         dxDrawText(searchNote, cx, cy + 94, cx + cw, cy + 112, C.red, 1.15, "default", "left", "top")
     else
-        dxDrawText(#searchResults .. " result(s)", cx, cy + 94, cx + cw, cy + 112, C.sub, 1.15, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.result_s", { search_results = #searchResults }), cx, cy + 94, cx + cw, cy + 112, C.sub, 1.15, "default", "left", "top")
     end
 
     local listY, rowH, gap, areaH = cy + 116, 54, 6, H - 134
@@ -631,15 +625,15 @@ function socialFindPlayer(cx, cy, cw)
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, r.online and C.green or C.grey)
             dxDrawText(r.name, cx + 14, ry + 6, cx + cw, ry + 26, C.dark, 1.35, "default-bold", "left", "top")
-            dxDrawText(("%s  |  Level %s  |  %s"):format(r.online and "Online" or "Offline", r.level, r.playtime),
+            dxDrawText(L("v_socialpanel.ui.level_2", { online = r.online and L("v_socialpanel.ui.online") or L("v_socialpanel.ui.offline"), level = r.level, playtime = r.playtime }),
                 cx + 14, ry + 28, cx + cw, ry + 46, C.sub, 1.1, "default", "left", "top")
-            if UI.button(cx + cw - 270, ry + 11, 82, rowH - 22, "Profile", { size = 1.1, bg = C.bg }) then
+            if UI.button(cx + cw - 270, ry + 11, 82, rowH - 22, L("v_socialpanel.ui.profile_2"), { size = 1.1, bg = C.bg }) then
                 triggerServerEvent("sp:profile:view", localPlayer, r.name)
             end
-            if UI.button(cx + cw - 182, ry + 11, 88, rowH - 22, "Message", { size = 1.1, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
+            if UI.button(cx + cw - 182, ry + 11, 88, rowH - 22, L("v_socialpanel.ui.message"), { size = 1.1, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
                 openConversation("dm", r.name)
             end
-            if UI.button(cx + cw - 88, ry + 11, 80, rowH - 22, "Add", { size = 1.1, bg = C.bg, hoverBg = C.green, hoverTxt = C.white }) then
+            if UI.button(cx + cw - 88, ry + 11, 80, rowH - 22, L("v_socialpanel.ui.add"), { size = 1.1, bg = C.bg, hoverBg = C.green, hoverTxt = C.white }) then
                 triggerServerEvent("sp:friend:add", localPlayer, r.name)
             end
         end
@@ -656,10 +650,10 @@ function socialMessages(cx, cy, cw)
     local convos = snapshot.conversations or {}
 
     -- Conversation list
-    dxDrawText("Chats", cx, cy, cx + convW, cy + 24, C.dark, 1.6, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.chats"), cx, cy, cx + convW, cy + 24, C.dark, 1.6, "default-bold", "left", "top")
     local listY, rowH, gap, areaH = cy + 30, 54, 5, H - 50
     if #convos == 0 then
-        dxDrawText("No chats yet.\nOpen a profile or a friend and press Message.",
+        dxDrawText(L("v_socialpanel.ui.no_chats_yet_open_profile_or"),
             cx, listY + 6, cx + convW, listY + 80, C.sub, 1.1, "default", "left", "top", false, true)
     end
     local off = UI.beginScroll("msg_convos", cx, listY, convW, areaH, #convos * (rowH + gap))
@@ -669,7 +663,7 @@ function socialMessages(cx, cy, cw)
             local isOpen = openConv and openConv.kind == c.kind and openConv.with:lower() == c.with:lower()
             dxDrawRectangle(cx, ry, convW - 6, rowH, C.panel)
             if isOpen then dxDrawRectangle(cx, ry, 3, rowH, C.accent) end
-            local title = (c.kind == "crew") and ("[" .. (c.crewTag or "CREW") .. "] " .. c.with) or c.with
+            local title = (c.kind == "crew") and ("[" .. (c.crewTag or L("v_socialpanel.ui.crew")) .. "] " .. c.with) or c.with
             dxDrawText(ellipsis(title, 1.25, "default-bold", convW - 60), cx + 10, ry + 6, cx + convW, ry + 24,
                 isOpen and C.accent or C.dark, 1.25, "default-bold", "left", "top")
             dxDrawText(ellipsis(c.last or "", 1.0, "default", convW - 24), cx + 10, ry + 26, cx + convW, ry + 44,
@@ -694,11 +688,11 @@ function socialMessages(cx, cy, cw)
     dxDrawRectangle(tx, cy, tw, H - 20, C.panel)
 
     if not openConv then
-        dxDrawText("Select a chat on the left.", tx, cy, tx + tw, cy + H - 20, C.sub, 1.3, "default", "center", "center")
+        dxDrawText(L("v_socialpanel.ui.select_chat_on_left"), tx, cy, tx + tw, cy + H - 20, C.sub, 1.3, "default", "center", "center")
         return
     end
 
-    local header = (openConv.kind == "crew") and ("Crew chat: " .. openConv.with) or ("Chat with " .. openConv.with)
+    local header = (openConv.kind == "crew") and (L("v_socialpanel.ui.crew_chat", { with = openConv.with })) or (L("v_socialpanel.ui.chat_with", { with = openConv.with }))
     dxDrawText(header, tx + 12, cy + 10, tx + tw - 12, cy + 34, C.dark, 1.5, "default-bold", "left", "top")
     dxDrawRectangle(tx + 12, cy + 38, tw - 24, 2, C.line)
 
@@ -714,14 +708,7 @@ function socialMessages(cx, cy, cw)
     local heights = {}
     local total = 6
     for i, m in ipairs(thread) do
-        local lines = 1
-        local cur = ""
-        for word in (m.text or ""):gmatch("%S+") do
-            local test = cur == "" and word or cur .. " " .. word
-            if dxGetTextWidth(test, size, font) > bubbleW - 16 and cur ~= "" then
-                lines = lines + 1; cur = word
-            else cur = test end
-        end
+        local lines = #L.wrap(m.text or "", bubbleW - 16, size, font)
         local hgt = lineH * lines + 16 + 14 -- text + padding + meta line
         heights[i] = hgt
         total = total + hgt + 4
@@ -736,7 +723,7 @@ function socialMessages(cx, cy, cw)
             local bx = mine and (tx + tw - 20 - bubbleW * 0.82) or (tx + 20)
             local bw = bubbleW * 0.82
             dxDrawRectangle(bx, yy, bw, hgt, mine and tocolor(255, 235, 170, 255) or C.bg)
-            dxDrawText((mine and "You" or m.from) .. "  " .. clock(m.time), bx + 8, yy + 4, bx + bw - 8, yy + 18,
+            dxDrawText((mine and L("v_socialpanel.ui.you") or m.from) .. "  " .. clock(m.time), bx + 8, yy + 4, bx + bw - 8, yy + 18,
                 C.sub, 1.0, "default", mine and "right" or "left", "top")
             dxDrawText(m.text or "", bx + 8, yy + 18, bx + bw - 8, yy + hgt - 4, C.dark, size, font,
                 "left", "top", false, true)
@@ -745,14 +732,14 @@ function socialMessages(cx, cy, cw)
     end
     UI.endScroll()
     if #thread == 0 then
-        dxDrawText("No messages yet. Say hi!", tx + 12, areaTop + 10, tx + tw - 12, areaTop + 30, C.sub, 1.15, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.no_messages_yet_say_hi"), tx + 12, areaTop + 10, tx + tw - 12, areaTop + 30, C.sub, 1.15, "default", "left", "top")
     end
 
     -- Input
     local iy = cy + H - 20 - inputH - 4
-    local msg, sent = UI.input("msg_input", tx + 12, iy, tw - 120, inputH, { placeholder = "Type a message..." })
+    local msg, sent = UI.input("msg_input", tx + 12, iy, tw - 120, inputH, { placeholder = L("v_socialpanel.ui.type_message") })
     local send = sent
-    if UI.button(tx + tw - 100, iy, 88, inputH, "Send", { size = 1.3, bg = C.dark, txt = C.white, hoverBg = C.green }) then
+    if UI.button(tx + tw - 100, iy, 88, inputH, L("common.send"), { size = 1.3, bg = C.dark, txt = C.white, hoverBg = C.green }) then
         send = true
     end
     if send then
@@ -771,15 +758,15 @@ end
 function socialMyCrew(cx, cy, cw)
     local crew = snapshot.crew
     if not crew then
-        dxDrawText("You have no crew", cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
-        dxDrawText("Create one below, or join an existing crew on the FIND CREW tab.",
+        dxDrawText(L("v_socialpanel.ui.you_have_no_crew"), cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.create_one_below_or_join_existing"),
             cx, cy + 34, cx + cw, cy + 60, C.sub, 1.2, "default", "left", "top")
 
-        dxDrawText("Create a new crew", cx, cy + 74, cx + cw, cy + 98, C.dark, 1.5, "default-bold", "left", "top")
-        local name = UI.input("crew_name", cx, cy + 104, cw - 160, 34, { placeholder = "Crew name (3-24 chars)" })
-        local tag = UI.input("crew_tag", cx + cw - 150, cy + 104, 150, 34, { placeholder = "TAG" })
+        dxDrawText(L("v_socialpanel.ui.create_new_crew"), cx, cy + 74, cx + cw, cy + 98, C.dark, 1.5, "default-bold", "left", "top")
+        local name = UI.input("crew_name", cx, cy + 104, cw - 160, 34, { placeholder = L("v_socialpanel.ui.crew_name_3_24_chars") })
+        local tag = UI.input("crew_tag", cx + cw - 150, cy + 104, 150, 34, { placeholder = L("v_socialpanel.ui.tag") })
 
-        dxDrawText("Colour:", cx, cy + 150, cx + 70, cy + 174, C.sub, 1.2, "default", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.colour"), cx, cy + 150, cx + 70, cy + 174, C.sub, 1.2, "default", "left", "top")
         local presets = {
             { 255, 200, 0 }, { 220, 60, 60 }, { 60, 140, 220 },
             { 80, 200, 100 }, { 170, 90, 220 }, { 240, 240, 240 },
@@ -792,7 +779,7 @@ function socialMyCrew(cx, cy, cw)
         end
         crewCreateColor = crewCreateColor or presets[1]
 
-        if UI.button(cx, cy + 190, 200, 40, "Create crew", { size = 1.4, bg = C.dark, txt = C.white, hoverBg = C.green }) then
+        if UI.button(cx, cy + 190, 200, 40, L("v_socialpanel.ui.create_crew"), { size = 1.4, bg = C.dark, txt = C.white, hoverBg = C.green }) then
             if name ~= "" and tag ~= "" then
                 triggerServerEvent("sp:crew:create", localPlayer, name, tag,
                     crewCreateColor[1], crewCreateColor[2], crewCreateColor[3])
@@ -806,12 +793,12 @@ function socialMyCrew(cx, cy, cw)
     dxDrawRectangle(cx, cy, 6, 60, col)
     dxDrawText(crew.name, cx + 18, cy + 6, cx + cw, cy + 32, C.dark, 1.8, "default-bold", "left", "top")
     dxDrawText("[" .. crew.tag .. "]", cx + 18, cy + 34, cx + cw, cy + 54, col, 1.3, "default-bold", "left", "top")
-    dxDrawText(("Founder: %s  |  Members: %d/%d"):format(crew.founder, #crew.members, 30),
+    dxDrawText(L("v_socialpanel.ui.founder_members", { founder = crew.founder, members = #crew.members, value = 30 }),
         cx + cw - 340, cy + 8, cx + cw - 10, cy + 28, C.sub, 1.15, "default", "right", "top")
-    if UI.button(cx + cw - 210, cy + 28, 100, 26, "Crew chat", { size = 1.1, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
+    if UI.button(cx + cw - 210, cy + 28, 100, 26, L("v_socialpanel.ui.crew_chat_2"), { size = 1.1, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
         openConversation("crew", crew.name)
     end
-    if UI.button(cx + cw - 104, cy + 28, 96, 26, "Leave", { size = 1.1, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
+    if UI.button(cx + cw - 104, cy + 28, 96, 26, L("v_socialpanel.ui.leave"), { size = 1.1, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
         triggerServerEvent("sp:crew:leave", localPlayer)
     end
 
@@ -821,7 +808,7 @@ function socialMyCrew(cx, cy, cw)
 
     local listY = cy + 116
     local isFounder = crew.isFounder
-    dxDrawText("Members", cx, listY - 24, cx + cw, listY, C.dark, 1.4, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.members"), cx, listY - 24, cx + cw, listY, C.dark, 1.4, "default-bold", "left", "top")
     local rowH, gap = 44, 5
     local half = isFounder and (H * 0.46) or (H - 150)
     local off = UI.beginScroll("crew_members", cx, listY, cw, half, #crew.members * (rowH + gap))
@@ -832,13 +819,13 @@ function socialMyCrew(cx, cy, cw)
             dxDrawRectangle(cx, ry, 4, rowH, m.online and C.green or C.grey)
             dxDrawText((m.isFounder and "* " or "") .. m.name, cx + 14, ry, cx + 210, ry + rowH,
                 C.dark, 1.3, "default-bold", "left", "center")
-            dxDrawText(("Level %s  |  %s"):format(m.level, m.playtime), cx + 220, ry, cx + cw - 160, ry + rowH,
+            dxDrawText(L("v_socialpanel.ui.level", { level = m.level, playtime = m.playtime }), cx + 220, ry, cx + cw - 160, ry + rowH,
                 C.sub, 1.05, "default", "left", "center")
-            if UI.button(cx + cw - 150, ry + 8, 70, rowH - 16, "Profile", { size = 1.05, bg = C.bg }) then
+            if UI.button(cx + cw - 150, ry + 8, 70, rowH - 16, L("v_socialpanel.ui.profile_2"), { size = 1.05, bg = C.bg }) then
                 triggerServerEvent("sp:profile:view", localPlayer, m.name)
             end
             if isFounder and not m.isFounder then
-                if UI.button(cx + cw - 74, ry + 8, 66, rowH - 16, "Kick", { size = 1.05, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
+                if UI.button(cx + cw - 74, ry + 8, 66, rowH - 16, L("v_socialpanel.ui.kick"), { size = 1.05, bg = C.bg, hoverBg = C.red, hoverTxt = C.white }) then
                     triggerServerEvent("sp:crew:kick", localPlayer, m.name)
                 end
             end
@@ -848,18 +835,18 @@ function socialMyCrew(cx, cy, cw)
 
     if isFounder then
         local fy = listY + half + 12
-        dxDrawText("Customise (founder only)", cx, fy, cx + cw, fy + 22, C.dark, 1.35, "default-bold", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.customise_founder_only"), cx, fy, cx + cw, fy + 22, C.dark, 1.35, "default-bold", "left", "top")
         UI.fields["cz_tag"] = UI.fields["cz_tag"] or { text = crew.tag }
         UI.fields["cz_desc"] = UI.fields["cz_desc"] or { text = crew.desc or "" }
-        local tag = UI.input("cz_tag", cx, fy + 28, 120, 32, { placeholder = "TAG" })
-        local desc = UI.input("cz_desc", cx + 132, fy + 28, cw - 132, 32, { placeholder = "Description..." })
+        local tag = UI.input("cz_tag", cx, fy + 28, 120, 32, { placeholder = L("v_socialpanel.ui.tag") })
+        local desc = UI.input("cz_desc", cx + 132, fy + 28, cw - 132, 32, { placeholder = L("v_socialpanel.ui.description") })
         local presets = { { 255, 200, 0 }, { 220, 60, 60 }, { 60, 140, 220 }, { 80, 200, 100 }, { 170, 90, 220 }, { 240, 240, 240 } }
         for i, pc in ipairs(presets) do
             local bx = cx + (i - 1) * 44
             dxDrawRectangle(bx, fy + 68, 34, 26, tocolor(pc[1], pc[2], pc[3], 255))
             if UI.clickedIn(bx, fy + 68, 34, 26) then czColor = pc end
         end
-        if UI.button(cx + cw - 150, fy + 66, 150, 32, "Save", { size = 1.25, bg = C.dark, txt = C.white, hoverBg = C.green }) then
+        if UI.button(cx + cw - 150, fy + 66, 150, 32, L("common.save"), { size = 1.25, bg = C.dark, txt = C.white, hoverBg = C.green }) then
             local c = czColor
             triggerServerEvent("sp:crew:customize", localPlayer, tag, desc,
                 c and c[1] or nil, c and c[2] or nil, c and c[3] or nil)
@@ -869,10 +856,10 @@ end
 
 function socialFindCrew(cx, cy, cw)
     local list = snapshot.crews or {}
-    dxDrawText("Find crew (" .. #list .. ")", cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.find_crew_2", { list = #list }), cx, cy, cx + cw, cy + 26, C.dark, 1.7, "default-bold", "left", "top")
     local hasCrew = snapshot.crew ~= nil
     if #list == 0 then
-        dxDrawText("No crews exist yet. Be the first to make one!", cx, cy + 40, cx + cw, cy + 70,
+        dxDrawText(L("v_socialpanel.ui.no_crews_exist_yet_be_first"), cx, cy + 40, cx + cw, cy + 70,
             C.sub, 1.25, "default", "left", "top")
         return
     end
@@ -885,9 +872,9 @@ function socialFindCrew(cx, cy, cw)
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, col)
             dxDrawText(cr.name .. "  [" .. cr.tag .. "]", cx + 14, ry + 7, cx + cw, ry + 27, C.dark, 1.35, "default-bold", "left", "top")
-            dxDrawText(("Founder: %s  |  Members: %d/30"):format(cr.founder, cr.members),
+            dxDrawText(L("v_socialpanel.ui.founder_members_30", { founder = cr.founder, members = cr.members }),
                 cx + 14, ry + 29, cx + cw, ry + 47, C.sub, 1.1, "default", "left", "top")
-            if UI.button(cx + cw - 130, ry + 12, 120, rowH - 24, hasCrew and "In a crew" or "Join",
+            if UI.button(cx + cw - 130, ry + 12, 120, rowH - 24, hasCrew and L("v_socialpanel.ui.in_crew") or L("v_socialpanel.ui.join"),
                 { size = 1.2, bg = C.bg, hoverBg = C.green, hoverTxt = C.white, disabled = hasCrew }) then
                 triggerServerEvent("sp:crew:join", localPlayer, cr.name)
             end
@@ -923,13 +910,13 @@ function renderProfile()
     local headH = 150
     dxDrawRectangle(X, Y, W, headH, C.accent)
     dxDrawRectangle(X + 24, Y + 28, 94, 94, C.dark)
-    dxDrawText(name:sub(1, 1):upper(), X + 24, Y + 28, X + 118, Y + 122, C.accent, 3, "default-bold", "center", "center")
+    dxDrawText(L.upper(L.sub(name, 1, 1)), X + 24, Y + 28, X + 118, Y + 122, C.accent, 3, "default-bold", "center", "center")
     dxDrawText(name, X + 140, Y + 30, X + W - 20, Y + 66, C.dark, 2.4, "default-bold", "left", "top")
-    dxDrawText(online and "ONLINE" or "OFFLINE", X + 140, Y + 78, X + W - 20, Y + 100,
+    dxDrawText(online and L("v_socialpanel.ui.online_2") or L("v_socialpanel.ui.offline_2"), X + 140, Y + 78, X + W - 20, Y + 100,
         online and tocolor(0, 120, 0, 255) or tocolor(150, 40, 40, 255), 1.4, "default-bold", "left", "top")
 
     if not isOwn then
-        if UI.button(X + W - 130, Y + 20, 110, 30, "Back", { size = 1.3, bg = C.panel }) then
+        if UI.button(X + W - 130, Y + 20, 110, 30, L("common.back"), { size = 1.3, bg = C.panel }) then
             viewedProfile = nil
             content_id = 4
         end
@@ -939,17 +926,17 @@ function renderProfile()
                     if show_socialpanel then triggerServerEvent("sp:profile:view", localPlayer, name) end
                 end, 400, 1)
             end
-            if UI.button(X + W - 320, Y + 62, 150, 34, "Message", { size = 1.3, bg = C.panel, hoverBg = C.blue, hoverTxt = C.white }) then
+            if UI.button(X + W - 320, Y + 62, 150, 34, L("v_socialpanel.ui.message"), { size = 1.3, bg = C.panel, hoverBg = C.blue, hoverTxt = C.white }) then
                 openConversation("dm", name)
             end
             if isFriend then
-                if UI.button(X + W - 162, Y + 62, 150, 34, "Remove friend",
+                if UI.button(X + W - 162, Y + 62, 150, 34, L("v_socialpanel.ui.remove_friend"),
                     { size = 1.3, bg = C.panel, hoverBg = C.red, hoverTxt = C.white }) then
                     triggerServerEvent("sp:friend:remove", localPlayer, name)
                     refetch()
                 end
             else
-                if UI.button(X + W - 162, Y + 62, 150, 34, "Add friend",
+                if UI.button(X + W - 162, Y + 62, 150, 34, L("v_socialpanel.ui.add_friend"),
                     { size = 1.3, bg = C.panel, hoverBg = C.green, hoverTxt = C.white }) then
                     triggerServerEvent("sp:friend:add", localPlayer, name)
                     refetch()
@@ -963,19 +950,19 @@ function renderProfile()
         local bw = (W - 80) / 3
         local bx = X + 30 + (i - 1) * (bw + 10)
         dxDrawRectangle(bx, sy, bw, 90, C.panel)
-        dxDrawText(label:upper(), bx, sy + 12, bx + bw, sy + 32, C.sub, 1.2, "default-bold", "center", "top")
+        dxDrawText(L.upper(label), bx, sy + 12, bx + bw, sy + 32, C.sub, 1.2, "default-bold", "center", "top")
         dxDrawText(tostring(value), bx, sy + 34, bx + bw, sy + 80, valColor or C.dark, 2, "default-bold", "center", "top")
     end
-    stat(1, "Level", level)
-    stat(2, "Played time", playtime)
-    stat(3, "Crew", crewName and ("[" .. (crewTag or "?") .. "]") or "-", crewName and crewColor(crewCol) or C.sub)
+    stat(1, L("common.level"), level)
+    stat(2, L("common.played_time"), playtime)
+    stat(3, L("v_socialpanel.ui.crew_2"), crewName and ("[" .. (crewTag or "?") .. "]") or "-", crewName and crewColor(crewCol) or C.sub)
 
     if crewName then
-        dxDrawText("Crew: " .. crewName, X + 30, sy + 110, X + W - 30, sy + 134, C.dark, 1.4, "default-bold", "left", "top")
+        dxDrawText(L("v_socialpanel.ui.crew_3", { crew_name = crewName }), X + 30, sy + 110, X + W - 30, sy + 134, C.dark, 1.4, "default-bold", "left", "top")
     end
 
     if isOwn then
-        dxDrawText("This is your public profile - this is how others see you.",
+        dxDrawText(L("v_socialpanel.ui.this_is_your_public_profile_this"),
             X + 30, Y + H - 40, X + W - 30, Y + H - 16, C.sub, 1.15, "default", "left", "top")
     end
 end

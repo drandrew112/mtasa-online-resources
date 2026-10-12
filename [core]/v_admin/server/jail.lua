@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/jail.lua
 --  Admin jail: lock in, release, escape check, time countdown.
@@ -97,7 +98,7 @@ setTimer(function()
             local remaining = (tonumber(getData(player, "adminjail_remTime")) or 0) - 1
             if remaining <= 0 then
                 setPlayerInAJ(player, false)
-                adminAlert(player, "Your admin jail time is up, you have been released.", 85, 255, 85)
+                adminAlert(player, L.msg("v_admin.jail.your_admin_jail_time_is_up"), 85, 255, 85)
             else
                 setData(player, "adminjail_remTime", remaining)
                 setElementData(player, "adminjail_remTime", remaining)
@@ -115,12 +116,12 @@ function adminJail(player, target, minutes, reason)
     end
     minutes = tonumber(minutes)
     if not isElement(target) or not minutes or type(reason) ~= "string" or reason == "" then
-        return adminAlert(player, "Usage: /ajail <ID> <minutes> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.jail.usage_ajail_id_minutes_reason"), 255, 90, 90)
     end
     minutes = math.max(1, math.floor(minutes))
 
     if not isLogged(target) then
-        return adminAlert(player, "That player is not logged in.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.admin_manage.that_player_is_not_logged_in"), 255, 90, 90)
     end
     if not canPunish(player, target) then return end
 
@@ -132,10 +133,8 @@ function adminJail(player, target, minutes, reason)
     setElementData(target, "adminjail_admin", adminName)
     setElementData(target, "adminjail_indok", reason)
 
-    adminAlert(target, ("#FFFFFFJailed by #FFFF00%s #FFFFFF(%d min) for #FFFFFF%s")
-        :format(adminName, minutes, reason), 255, 90, 90, 8000)
-    adminAlert(player, ("#FFFFFFYou jailed #FFFF00%s #FFFFFF(%d min) for #FFFFFF%s")
-        :format(getPlayerName(target), minutes, reason))
+    adminAlert(target, L.msg("v_admin.jail.jailed_by_min_for", { admin_name = adminName, minutes = minutes, reason = reason }), 255, 90, 90, 8000)
+    adminAlert(player, L.msg("v_admin.jail.you_jailed_min_for", { player = getPlayerName(target), minutes = minutes, reason = reason }))
     adminLog(player, ("jailed %s for %d min (%s)"):format(getPlayerName(target), minutes, reason))
 end
 
@@ -146,12 +145,12 @@ function adminUnjail(player, target)
     if not isElement(target) then return end
 
     if not getElementData(target, "adminjail") then
-        return adminAlert(player, "That player is not in admin jail.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.jail.that_player_is_not_in_admin"), 255, 90, 90)
     end
 
     setPlayerInAJ(target, false)
-    adminAlert(target, "#FFFFFFReleased from admin jail by #FFFF00" .. getPlayerName(player) .. "#FFFFFF.", 85, 255, 85)
-    adminAlert(player, "#FFFFFFYou released #FFFF00" .. getPlayerName(target) .. " #FFFFFFfrom admin jail.")
+    adminAlert(target, L.msg("v_admin.jail.released_from_admin_jail_by", { player = getPlayerName(player) }), 85, 255, 85)
+    adminAlert(player, L.msg("v_admin.jail.you_released_from_admin_jail", { player = getPlayerName(target) }))
     adminLog(player, "released " .. getPlayerName(target) .. " from admin jail")
 end
 
@@ -165,7 +164,7 @@ addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
 
     local reason = table.concat({ ... }, " ")
     if not idArg or not tonumber(minutesArg) or reason == "" then
-        return adminAlert(player, "Usage: /ajail <ID> <minutes> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.jail.usage_ajail_id_minutes_reason"), 255, 90, 90)
     end
 
     local target = resolveTarget(player, idArg)

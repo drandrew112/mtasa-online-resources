@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/report.lua
 --  Player <-> admin report system (replaces /pm, /pmv).
@@ -161,7 +162,7 @@ local function saveReportLog(r)
     local msgs = {}
     for _, m in ipairs(r.messages) do
         msgs[#msgs + 1] = {
-            sender = (m.who == "system") and "SYSTEM" or m.name,
+            sender = (m.who == "system") and L.msg("v_admin.report.system") or m.name,
             text   = m.text,
             time   = tostring(m.time or ""),
         }
@@ -216,12 +217,12 @@ addEventHandler(ADMIN.events.reportCreate, root, function(text)
     if not isElement(player) then return end
 
     if playerReport(player) then
-        return adminAlert(player, "You already have an open report.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.report.you_already_have_open_report"), 255, 90, 90)
     end
 
     text = trim(text)
     if (utf8.len(text) or #text) < CFG.minLength then
-        return adminAlert(player, "Please describe your problem first.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.report.please_describe_your_problem_first"), 255, 90, 90)
     end
 
     nextReportId = nextReportId + 1
@@ -240,11 +241,10 @@ addEventHandler(ADMIN.events.reportCreate, root, function(text)
     reports[r.id]          = r
     reportByPlayer[player] = r.id
 
-    adminAlert(player, "#55FF55Report sent. An admin will be with you shortly.")
+    adminAlert(player, L.msg("v_admin.report.report_sent_admin_will_be_with"))
 
     for _, admin in ipairs(onlineReportAdmins()) do
-        adminAlert(admin, "#FFAA00[REPORT] #FFFFFF" .. r.playerName .. " #FFFF00(ID " .. r.playerId ..
-            ")#FFFFFF: " .. text .. "  #AAAAAA— /reports", nil, nil, nil, 9000)
+        adminAlert(admin, L.msg("v_admin.report.report_id_reports", { player_name = r.playerName, player_id = r.playerId, text = text }), nil, nil, nil, 9000)
         ping(admin)
     end
 
@@ -278,7 +278,7 @@ addEventHandler(ADMIN.events.reportMsg, root, function(id, text)
         r.claimedByName = getPlayerName(sender)
         r.status        = "claimed"
         if isElement(r.player) then
-            adminAlert(r.player, "#55FF55" .. r.claimedByName .. " #FFFFFFhas claimed your report.")
+            adminAlert(r.player, L.msg("v_admin.report.has_claimed_your_report", { claimed_by_name = r.claimedByName }))
         end
     end
 
@@ -305,16 +305,16 @@ addEventHandler(ADMIN.events.reportClaim, root, function(id)
     if not r then return end
 
     if r.claimedBy and isElement(r.claimedBy) and r.claimedBy ~= admin then
-        return adminAlert(admin, "This report is already claimed by " .. r.claimedByName .. ".", 255, 90, 90)
+        return adminAlert(admin, L.msg("v_admin.report.this_report_is_already_claimed_by", { claimed_by_name = r.claimedByName }), 255, 90, 90)
     end
 
     r.claimedBy     = admin
     r.claimedByName = getPlayerName(admin)
     r.status        = "claimed"
-    addMessage(r, "system", "", r.claimedByName .. " claimed this report.")
+    addMessage(r, "system", "", L.msg("v_admin.report.claimed_this_report", { claimed_by_name = r.claimedByName }))
 
     if isElement(r.player) then
-        adminAlert(r.player, "#55FF55" .. r.claimedByName .. " #FFFFFFhas claimed your report.")
+        adminAlert(r.player, L.msg("v_admin.report.has_claimed_your_report", { claimed_by_name = r.claimedByName }))
     end
 
     syncAll(r)
@@ -351,11 +351,11 @@ addEventHandler(ADMIN.events.reportClose, root, function(id)
 
     if sender == r.player then
         if r.claimedBy and isElement(r.claimedBy) then
-            adminAlert(r.claimedBy, "#FFAA00" .. r.playerName .. " closed their own report (#" .. r.id .. ").")
+            adminAlert(r.claimedBy, L.msg("v_admin.report.closed_their_own_report", { player_name = r.playerName, id = r.id }))
         end
         closeReport(r)  -- no alert: the player did it themselves
     elseif isReportAdmin(sender) then
-        closeReport(r, "#FFAA00Your report was closed by " .. getPlayerName(sender) .. ".")
+        closeReport(r, L.msg("v_admin.report.your_report_was_closed_by", { player = getPlayerName(sender) }))
     end
 end)
 
@@ -370,7 +370,7 @@ addEventHandler(ADMIN.events.reportTP, root, function(id)
     local r = reports[tonumber(id) or 0]
     if not r then return end
     if not isElement(r.player) then
-        return adminAlert(admin, "That player is offline.", 255, 90, 90)
+        return adminAlert(admin, L.msg("v_admin.report.that_player_is_offline"), 255, 90, 90)
     end
 
     local x, y, z = getElementPosition(r.player)
@@ -378,8 +378,8 @@ addEventHandler(ADMIN.events.reportTP, root, function(id)
     setElementInterior(admin, getElementInterior(r.player))
     setElementDimension(admin, getElementDimension(r.player))
 
-    adminAlert(r.player, "#FFFF00" .. getPlayerName(admin) .. " #FFFFFFteleported to you.")
-    adminAlert(admin, "#FFFFFFYou teleported to #FFFF00" .. r.playerName)
+    adminAlert(r.player, L.msg("v_admin.report.teleported_to_you", { player = getPlayerName(admin) }))
+    adminAlert(admin, L.msg("v_admin.report.you_teleported_to", { player_name = r.playerName }))
 end)
 
 -- ------------------------------------------------------------
@@ -391,7 +391,7 @@ addEventHandler("onPlayerQuit", root, function()
     local r = playerReport(source)
     if not r then return end
     if r.claimedBy and isElement(r.claimedBy) then
-        adminAlert(r.claimedBy, "#FFAA00Reporter " .. r.playerName .. " disconnected — report #" .. r.id .. " closed.")
+        adminAlert(r.claimedBy, L.msg("v_admin.report.reporter_disconnected_report_closed", { player_name = r.playerName, id = r.id }))
     end
     closeReport(r)
 end)
@@ -438,7 +438,7 @@ addEventHandler(ADMIN.events.reportLogOpen, root, function(fileName)
 
     local data = readJSONFile(LOG_DIR .. fileName)
     if type(data) ~= "table" then
-        return adminAlert(client, "Could not read that log file.", 255, 90, 90)
+        return adminAlert(client, L.msg("v_admin.report.could_not_read_that_log_file"), 255, 90, 90)
     end
     triggerClientEvent(client, ADMIN.events.reportLogData, resourceRoot, fileName, data)
 end)

@@ -3,10 +3,12 @@
 	<oop>true</oop>
 
 	<!-- ui_core provides the client export addNotification(title, text) -->
+	<include resource="v_locals" />
 	<include resource="ui_core" />
 	<include resource="v_mysql" />
 	<include resource="v_accounts" />
 
+	<script src="locals.lua" type="shared" />
 	<script src="shared.lua" type="shared" />
 
 	<script src="c_controls.lua" type="client" cache="false" />

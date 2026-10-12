@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 ui = function(v) return uicore:ui(v) end
 
@@ -175,7 +176,7 @@ local fixTable = {
 
 local boundingBoxes = {
 	{ -- Élet HUD
-		["name"] = "Életerő",
+		["name"] = L("v_radar.client.health"),
 		["showing"] = true,
 		["width"] = 226,
 		["height"] = 60,
@@ -183,7 +184,7 @@ local boundingBoxes = {
 		["y"] = 70,
 	},
 	{ -- Body
-		["name"] = "Body",
+		["name"] = L("v_radar.client.body"),
 		["showing"] = true,
 		["width"] = 18,
 		["height"] = 46,
@@ -191,7 +192,7 @@ local boundingBoxes = {
 		["y"] = 35,
 	},
 	{ -- Phone
-		["name"] = "TELEFON",
+		["name"] = L("v_radar.client.phone"),
 		["showing"] = true,
 		["width"] = 300,
 		["height"] = 512,
@@ -199,7 +200,7 @@ local boundingBoxes = {
 		["y"] = y/2-512/2,
 	},
 	{ -- SPRINT
-		["name"] = "Stamina",
+		["name"] = L("v_radar.client.stamina"),
 		["showing"] = true,
 		["width"] = 226,
 		["height"] = 8,
@@ -207,7 +208,7 @@ local boundingBoxes = {
 		["y"] = 81,
 	},
 	{ -- Pénz
-		["name"] = "Készpénz",
+		["name"] = L("v_radar.client.cash"),
 		["showing"] = true,
 		["width"] = 220,
 		["height"] = 30,
@@ -223,7 +224,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- Minimap
-		["name"] = "Radar",
+		["name"] = L("v_radar.client.radar"),
 		["showing"] = true,
 		["width"] = 320,
 		["height"] = 225,
@@ -231,7 +232,7 @@ local boundingBoxes = {
 		["y"] = y - 235,
 	},
 	{ -- Óra
-		["name"] = "Óra",
+		["name"] = L("v_radar.client.clock"),
 		["showing"] = false,
 		["width"] = 70,
 		["height"] = 30,
@@ -239,7 +240,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- ActionBar
-		["name"] = "Action Bar",
+		["name"] = L("v_radar.client.action_bar"),
 		["showing"] = true,
 		["width"] = 255+3,
 		["height"] = 55+2,
@@ -247,7 +248,7 @@ local boundingBoxes = {
 		["y"] = y - 54 - 10,
 	},
 	{ -- Videókártya
-		["name"] = "Videókártya",
+		["name"] = L("v_radar.client.graphics_card"),
 		["showing"] = false,
 		["width"] = 256,
 		["height"] = 80,
@@ -255,7 +256,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- OOC --11
-		["name"] = "OOC Chat",
+		["name"] = L("v_radar.client.ooc_chat"),
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 170,
@@ -263,7 +264,7 @@ local boundingBoxes = {
 		["y"] = 16+15+25+100,
 	},
 	{ -- speedometer --12
-		["name"] = "KILÓMÉTERÓRA",
+		["name"] = L("v_radar.client.speedometer"),
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 256,
@@ -271,7 +272,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- benzinmeter 13
-		["name"] = "ÜZEMANYAG",
+		["name"] = L("v_radar.client.fuel"),
 		["showing"] = true,
 		["width"] = 110,
 		["height"] = 110,
@@ -279,7 +280,7 @@ local boundingBoxes = {
 		["y"] = y-195,
 	},
 	{ -- speedometerkijelzo 14
-		["name"] = "JÁRMŰIKONOK",
+		["name"] = L("v_radar.client.vehicle_icons"),
 		["showing"] = true,
 		["width"] = 110,
 		["height"] = 70,
@@ -287,7 +288,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- kickban notification
-		["name"] = "Kick/Ban",
+		["name"] = L("v_radar.client.kick_ban"),
 		["showing"] = true,
 		["width"] = 324,
 		["height"] = 120,
@@ -295,7 +296,7 @@ local boundingBoxes = {
 		["y"] = y - 235-80-70,
 	},
 	{ -- Járműnév
-		["name"] = "JÁRMŰNÉV",
+		["name"] = L("v_radar.client.vehicle_name"),
 		["showing"] = true,
 		["width"] = 300,
 		["height"] = 45,
@@ -303,7 +304,7 @@ local boundingBoxes = {
 		["y"] = y - 315,
 	},
 	{ -- guns
-		["name"] = "Guns",
+		["name"] = L("v_radar.client.guns"),
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 128,
@@ -311,7 +312,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- name
-		["name"] = "Name",
+		["name"] = L("common.name"),
 		["showing"] = false,
 		["width"] = 300,
 		["height"] = 30,
@@ -319,7 +320,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- Ping
-		["name"] = "Ping",
+		["name"] = L("v_radar.client.ping"),
 		["showing"] = false,
 		["width"] = 80,
 		["height"] = 30,
@@ -335,7 +336,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- TraffiRadar
-		["name"] = "Traffipax radar",
+		["name"] = L("v_radar.client.traffipax_radar"),
 		["showing"] = false,
 		["width"] = 274,
 		["height"] = 45,
@@ -343,7 +344,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- customchat
-		["name"] = "CustomChat",
+		["name"] = L("v_radar.client.customchat"),
 		["showing"] = false,
 		["width"] = 600,
 		["height"] = 350,

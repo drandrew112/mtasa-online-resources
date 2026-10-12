@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/players.lua
 --  Players tab: online player list | data | actions.
@@ -15,32 +16,32 @@ local st = {
 
 -- Action buttons. perm = key in ADMIN.perms.
 local ACTIONS = {
-    { group = "General" },
-    { id = "goto",    label = "Go to",       perm = "teleport" },
-    { id = "gethere", label = "Bring here",  perm = "teleport" },
-    { id = "heal",    label = "Heal",        perm = "heal" },
-    { group = "Vehicle" },
-    { id = "fixveh",  label = "Fix vehicle",  perm = "vehicle" },
-    { id = "flipveh", label = "Flip vehicle", perm = "vehicle" },
-    { id = "getout",  label = "Pull out",     perm = "vehicle" },
-    { group = "Sanctions" },
-    { id = "mute",    label = "Mute",   perm = "mute", form = "mute", show = function(p) return not p.muted end },
-    { id = "unmute",  label = "Unmute", perm = "mute", show = function(p) return p.muted end },
-    { id = "jail",    label = "Admin jail", perm = "jail", form = "jail", show = function(p) return not p.jailed end },
-    { id = "unjail",  label = "Release jail", perm = "jail", show = function(p) return p.jailed end },
-    { id = "kick",    label = "Kick",   perm = "kick", form = "kick", danger = true },
-    { group = "Account" },
-    { id = "ban",     label = "Ban account",   perm = "ban", form = "ban", danger = true, show = function(p) return not p.banned end },
-    { id = "unban",   label = "Unban account", perm = "ban", show = function(p) return p.banned end },
-    { id = "setlevel", label = "Admin level", perm = "setLevel", dropdown = true },
+    { group = L("v_admin.players.general") },
+    { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
+    { id = "gethere", label = L("v_admin.players.bring_here"),  perm = "teleport" },
+    { id = "heal",    label = L("v_admin.players.heal"),        perm = "heal" },
+    { group = L("v_admin.players.vehicle") },
+    { id = "fixveh",  label = L("v_admin.players.fix_vehicle"),  perm = "vehicle" },
+    { id = "flipveh", label = L("v_admin.players.flip_vehicle"), perm = "vehicle" },
+    { id = "getout",  label = L("v_admin.players.pull_out"),     perm = "vehicle" },
+    { group = L("v_admin.players.sanctions") },
+    { id = "mute",    label = L("v_admin.players.mute"),   perm = "mute", form = "mute", show = function(p) return not p.muted end },
+    { id = "unmute",  label = L("v_admin.players.unmute"), perm = "mute", show = function(p) return p.muted end },
+    { id = "jail",    label = L("v_admin.players.admin_jail"), perm = "jail", form = "jail", show = function(p) return not p.jailed end },
+    { id = "unjail",  label = L("v_admin.players.release_jail"), perm = "jail", show = function(p) return p.jailed end },
+    { id = "kick",    label = L("v_admin.players.kick"),   perm = "kick", form = "kick", danger = true },
+    { group = L("v_admin.players.account") },
+    { id = "ban",     label = L("v_admin.players.ban_account"),   perm = "ban", form = "ban", danger = true, show = function(p) return not p.banned end },
+    { id = "unban",   label = L("v_admin.players.unban_account"), perm = "ban", show = function(p) return p.banned end },
+    { id = "setlevel", label = L("v_admin.players.admin_level"), perm = "setLevel", dropdown = true },
 }
 
 -- Inline forms.
 local FORMS = {
-    mute = { title = "Mute",       minutes = true, chips = { 5, 15, 30, 60, 120 } },
-    jail = { title = "Admin jail", minutes = true, chips = { 10, 30, 60, 120, 240 } },
-    kick = { title = "Kick",       danger = true },
-    ban  = { title = "Ban account", danger = true, note = "Permanent account ban (v_accounts). The serial is stored too." },
+    mute = { title = L("v_admin.players.mute"),       minutes = true, chips = { 5, 15, 30, 60, 120 } },
+    jail = { title = L("v_admin.players.admin_jail"), minutes = true, chips = { 10, 30, 60, 120, 240 } },
+    kick = { title = L("v_admin.players.kick"),       danger = true },
+    ban  = { title = L("v_admin.players.ban_account"), danger = true, note = L("v_admin.players.permanent_account_ban_v_accounts_serial") },
 }
 
 local function fmtDuration(seconds)
@@ -91,7 +92,7 @@ local function drawList(x, y, w, h)
     local pad = S(10)
     local iw = w - pad * 2
 
-    AP.field("pl_filter", x + pad, y + pad, iw, S(44), { placeholder = "Filter: ID / name / account", max = 32 })
+    AP.field("pl_filter", x + pad, y + pad, iw, S(44), { placeholder = L("v_admin.players.filter_id_name_account"), max = 32 })
 
     local list = filteredPlayers()
     local ly = y + pad + S(54)
@@ -112,13 +113,13 @@ local function drawList(x, y, w, h)
 
         local tags = {}
         if p.adminLevel > 0 then tags[#tags + 1] = { "A" .. p.adminLevel, C.head } end
-        if not p.logged then tags[#tags + 1] = { "GUEST", C.dim } end
+        if not p.logged then tags[#tags + 1] = { L("v_admin.players.guest"), C.dim } end
         if p.muted then tags[#tags + 1] = { "M", C.warn } end
         if p.jailed then tags[#tags + 1] = { "J", C.warn } end
         if p.banned then tags[#tags + 1] = { "B", C.bad } end
         local tx = x + pad + iw - S(10)
         for t = #tags, 1, -1 do
-            local tw = dxGetTextWidth(tags[t][1], F(0.85), "default-bold") + S(10)
+            local tw = L.width(tags[t][1], F(0.85), "default-bold") + S(10)
             tx = tx - tw
             AP.text(tags[t][1], tx, ry, tw, rh, sel and C.text or tags[t][2], 0.85, "default-bold", "center")
         end
@@ -126,7 +127,7 @@ local function drawList(x, y, w, h)
         AP.area(x + pad, ry, iw, rh, function() selectPlayer(p.id) end)
     end
 
-    local shown = AP.fieldText("pl_filter") ~= "" and (" / " .. #list .. " shown") or ""
+    local shown = AP.fieldText("pl_filter") ~= "" and (L("v_admin.players.shown", { list = #list })) or ""
     AP.text(#AP.players .. " online" .. shown, x + pad, y + h - S(34), iw, S(28), C.dim, 0.85, "default", "right")
 end
 
@@ -144,7 +145,7 @@ local function drawSection(title, rows, x, y, w)
     local sc = F(0.9)
     for _, r in ipairs(rows) do
         local label, value, color = r[1], tostring(r[2]), r[3] or C.text
-        local wide = dxGetTextWidth(value, sc, "default-bold") > w - labelW - S(8)
+        local wide = L.width(value, sc, "default-bold") > w - labelW - S(8)
         local h = wide and rowH * 2 or rowH
         if AP.hovered(x, y, w, h) then dxDrawRectangle(x, y, w, h, C.rowHot) end
         AP.text(label, x + S(6), y, labelW, rowH, C.dim, 0.9)
@@ -155,7 +156,7 @@ local function drawSection(title, rows, x, y, w)
         end
         AP.area(x, y, w, h, function()
             setClipboard(value)
-            AP.notify(label .. " copied to the clipboard.")
+            AP.notify(L("v_admin.players.copied_to_clipboard", { label = label }))
         end)
         y = y + h
     end
@@ -167,55 +168,55 @@ local function drawDetails(p, x, y, w)
     local colW = (w - gap) / 2
     local lx, rx = x, x + colW + gap
 
-    local ly = drawSection("ACCOUNT", {
-        { "Name", p.name },
-        { "ID", p.id },
-        { "Account", p.account or "not logged in", not p.account and C.dim },
-        { "Account #", p.accountId or "-" },
-        { "E-mail", p.email or "-" },
-        { "Registered", fmtDate(p.created) },
-        { "Admin level", p.adminLevel .. "  " .. AP.rankName(p.adminLevel), p.adminLevel > 0 and C.head },
+    local ly = drawSection(L("v_admin.players.account_2"), {
+        { L("common.name"), p.name },
+        { L("v_admin.players.id"), p.id },
+        { L("v_admin.players.account"), p.account or L("v_admin.players.not_logged_in"), not p.account and C.dim },
+        { L("v_admin.players.account_3"), p.accountId or "-" },
+        { L("v_admin.players.e_mail"), p.email or "-" },
+        { L("v_admin.players.registered"), fmtDate(p.created) },
+        { L("v_admin.players.admin_level"), p.adminLevel .. "  " .. AP.rankName(p.adminLevel), p.adminLevel > 0 and C.head },
     }, lx, y, colW)
 
-    drawSection("CHARACTER", {
-        { "Health / armour", (p.dead and "DEAD" or p.health) .. " / " .. p.armor, p.dead and C.bad },
-        { "Cash", "€" .. AP.fmtInt(p.cash), C.good },
-        { "Bank", p.bank and ("€" .. AP.fmtInt(p.bank)) or "-", p.bank and C.good },
-        { "Level / XP", (p.level or "-") .. " / " .. (p.xp and AP.fmtInt(p.xp) or "-") },
-        { "Played time", p.playtime or "-" },
-        { "Work", p.work and tostring(p.work) or "-" },
-        { "Skin", p.skin },
+    drawSection(L("v_admin.players.character"), {
+        { L("v_admin.players.health_armour"), (p.dead and L("v_admin.players.dead") or p.health) .. " / " .. p.armor, p.dead and C.bad },
+        { L("v_admin.players.cash"), "€" .. AP.fmtInt(p.cash), C.good },
+        { L("v_admin.players.bank"), p.bank and ("€" .. AP.fmtInt(p.bank)) or "-", p.bank and C.good },
+        { L("v_admin.players.level_xp"), (p.level or "-") .. " / " .. (p.xp and AP.fmtInt(p.xp) or "-") },
+        { L("common.played_time"), p.playtime or "-" },
+        { L("v_admin.players.work"), p.work and tostring(p.work) or "-" },
+        { L("v_admin.players.skin"), p.skin },
     }, lx, ly, colW)
 
-    local ry = drawSection("CONNECTION", {
-        { "Serial", p.serial },
-        { "IP", p.ip },
-        { "Ping", p.ping, p.ping > 200 and C.warn },
-        { "Client version", p.version },
+    local ry = drawSection(L("v_admin.players.connection"), {
+        { L("v_admin.players.serial"), p.serial },
+        { L("v_admin.players.ip"), p.ip },
+        { L("v_admin.players.ping"), p.ping, p.ping > 200 and C.warn },
+        { L("v_admin.players.client_version"), p.version },
     }, rx, y, colW)
 
-    ry = drawSection("LOCATION", {
-        { "Zone", p.zone },
-        { "Position", ("%.1f, %.1f, %.1f"):format(p.pos[1], p.pos[2], p.pos[3]) },
-        { "Interior / dim.", p.interior .. " / " .. p.dimension },
-        { "Vehicle", p.vehicle and (p.vehicle .. "  (" .. p.vehicleHp .. " HP)") or "-" },
+    ry = drawSection(L("v_admin.players.location"), {
+        { L("v_admin.players.zone"), p.zone },
+        { L("v_admin.players.position"), ("%.1f, %.1f, %.1f"):format(p.pos[1], p.pos[2], p.pos[3]) },
+        { L("v_admin.players.interior_dim"), p.interior .. " / " .. p.dimension },
+        { L("v_admin.players.vehicle"), p.vehicle and (L("v_admin.players.hp", { vehicle = p.vehicle, vehicle_hp = p.vehicleHp })) or "-" },
     }, rx, ry, colW)
 
     local rows = {
-        { "Muted", p.muted and ("yes, " .. fmtDuration(p.muteLeft) .. " left") or "no", p.muted and C.warn },
+        { L("v_admin.players.muted"), p.muted and (L("v_admin.players.yes_left", { mute_left = fmtDuration(p.muteLeft) })) or "no", p.muted and C.warn },
     }
     if p.muted then
-        rows[#rows + 1] = { "Mute reason", (p.muteReason or "?") .. "  (" .. (p.muteAdmin or "?") .. ")" }
+        rows[#rows + 1] = { L("v_admin.players.mute_reason"), (p.muteReason or "?") .. "  (" .. (p.muteAdmin or "?") .. ")" }
     end
-    rows[#rows + 1] = { "Admin jail", p.jailed and ("yes, " .. p.jailLeft .. " min left") or "no", p.jailed and C.warn }
+    rows[#rows + 1] = { L("v_admin.players.admin_jail"), p.jailed and (L("v_admin.players.yes_min_left", { jail_left = p.jailLeft })) or "no", p.jailed and C.warn }
     if p.jailed then
-        rows[#rows + 1] = { "Jail reason", (p.jailReason or "?") .. "  (" .. (p.jailAdmin or "?") .. ")" }
+        rows[#rows + 1] = { L("v_admin.players.jail_reason"), (p.jailReason or "?") .. "  (" .. (p.jailAdmin or "?") .. ")" }
     end
-    rows[#rows + 1] = { "Banned", p.banned and "yes" or "no", p.banned and C.bad }
+    rows[#rows + 1] = { L("v_admin.players.banned"), p.banned and "yes" or "no", p.banned and C.bad }
     if p.banned then
-        rows[#rows + 1] = { "Ban", (p.banReason or "?") .. "  (" .. (p.banAdmin or "?") .. ", " .. (p.banDate or "?") .. ")" }
+        rows[#rows + 1] = { L("v_admin.players.ban"), (p.banReason or "?") .. "  (" .. (p.banAdmin or "?") .. ", " .. (p.banDate or "?") .. ")" }
     end
-    drawSection("SANCTIONS", rows, rx, ry, colW)
+    drawSection(L("v_admin.players.sanctions_2"), rows, rx, ry, colW)
 end
 
 --------------------------------------------------------------------------------
@@ -229,7 +230,7 @@ local function openLevelDropdown(p, x, y, w)
     for lvl = 0, ADMIN.maxLevel do
         local allowed = lvl <= maxGrant
         items[#items + 1] = {
-            label = lvl .. "  " .. AP.rankName(lvl) .. (allowed and "" or "  - locked"),
+            label = lvl .. "  " .. AP.rankName(lvl) .. (allowed and "" or L("v_admin.players.locked")),
             disabled = not allowed,
             active = lvl == p.adminLevel,
             fn = function()
@@ -256,11 +257,11 @@ local function submitForm()
 
     if def.minutes and (not minutes or minutes < 1) then
         AP.setFocus("pl_minutes")
-        return AP.notify("Enter the duration in minutes.")
+        return AP.notify(L("v_admin.players.enter_duration_in_minutes"))
     end
     if reason == "" then
         AP.setFocus("pl_reason")
-        return AP.notify("Enter a reason.")
+        return AP.notify(L("v_admin.players.enter_reason"))
     end
 
     if def.minutes then
@@ -282,11 +283,11 @@ local function drawForm(p, x, y, w, h)
 
     AP.text(def.title:upper(), ix, cy, iw, S(36), def.danger and C.bad or C.head, 1.2, "default-bold")
     cy = cy + S(38)
-    AP.text(p.name .. "  (ID " .. p.id .. ")", ix, cy, iw, S(30), C.text, 1.0, "default-bold")
+    AP.text(L("v_admin.players.id_2", { name = p.name, id = p.id }), ix, cy, iw, S(30), C.text, 1.0, "default-bold")
     cy = cy + S(44)
 
     if def.minutes then
-        AP.text("Minutes", ix, cy, iw, S(28), C.dim, 0.9)
+        AP.text(L("v_admin.players.minutes"), ix, cy, iw, S(28), C.dim, 0.9)
         cy = cy + S(30)
         local n = #def.chips
         local cw = (iw - (n - 1) * S(6)) / n
@@ -298,14 +299,14 @@ local function drawForm(p, x, y, w, h)
             end, active and "active")
         end
         cy = cy + S(48)
-        AP.field("pl_minutes", ix, cy, iw, S(44), { placeholder = "or type minutes", max = 5, numeric = true,
+        AP.field("pl_minutes", ix, cy, iw, S(44), { placeholder = L("v_admin.players.or_type_minutes"), max = 5, numeric = true,
             onEnter = function() AP.setFocus("pl_reason") end })
         cy = cy + S(60)
     end
 
-    AP.text("Reason", ix, cy, iw, S(28), C.dim, 0.9)
+    AP.text(L("v_admin.players.reason"), ix, cy, iw, S(28), C.dim, 0.9)
     cy = cy + S(30)
-    AP.field("pl_reason", ix, cy, iw, S(44), { placeholder = "Reason (shown to the player)", max = 120, onEnter = submitForm })
+    AP.field("pl_reason", ix, cy, iw, S(44), { placeholder = L("v_admin.players.reason_shown_to_player"), max = 120, onEnter = submitForm })
     cy = cy + S(56)
 
     if def.note then
@@ -318,8 +319,8 @@ local function drawForm(p, x, y, w, h)
     end
 
     local bw = (iw - S(10)) / 2
-    AP.button(ix, cy, bw, S(50), "Confirm", submitForm, def.danger and "danger" or "active")
-    AP.button(ix + bw + S(10), cy, bw, S(50), "Cancel", function() st.form = nil; AP.setFocus(nil) end)
+    AP.button(ix, cy, bw, S(50), L("common.confirm"), submitForm, def.danger and "danger" or "active")
+    AP.button(ix + bw + S(10), cy, bw, S(50), L("common.cancel"), function() st.form = nil; AP.setFocus(nil) end)
 end
 
 local function drawActions(p, x, y, w, h)
@@ -354,7 +355,7 @@ local function drawActions(p, x, y, w, h)
                 else
                     AP.sendAction(a.id, p.id)
                 end
-            end, style, allowed and ("level " .. need .. "+") or ("needs level " .. need))
+            end, style, allowed and (L("v_admin.players.level", { need = need })) or (L("v_admin.players.needs_level", { need = need })))
             col = col + 1
         end
     end
@@ -365,7 +366,7 @@ end
 --------------------------------------------------------------------------------
 
 AP.addTab({
-    id = "players", label = "Players", perm = "panel", order = 1,
+    id = "players", label = L("common.players"), perm = "panel", order = 1,
     draw = function(x, y, w, h)
         local listW, actW, gap = S(380), S(420), S(18)
         drawList(x, y, listW, h)
@@ -374,13 +375,13 @@ AP.addTab({
         local dx = x + listW + gap
         local dw = w - listW - actW - gap * 2
         if not p then
-            AP.text(st.selected and "That player has left the server." or "Select a player on the left.",
+            AP.text(st.selected and L("v_admin.players.that_player_has_left_server") or L("v_admin.players.select_player_on_left"),
                 dx, y, dw + actW, S(48), C.dim, 1.1)
             return
         end
         drawDetails(p, dx, y, dw)
         drawActions(p, x + w - actW, y, actW, h)
-        AP.text("Click a data row to copy it.", dx, y + h - S(30), dw, S(30), C.off, 0.8)
+        AP.text(L("v_admin.players.click_data_row_to_copy_it"), dx, y + h - S(30), dw, S(30), C.off, 0.8)
     end,
     onClose = function() st.form = nil end,
 })

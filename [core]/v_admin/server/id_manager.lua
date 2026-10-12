@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/id_manager.lua
 --  Unique, recycled server-side player IDs.
@@ -42,5 +43,5 @@ addEventHandler("onResourceStart", resourceRoot, function()
 end)
 
 addCommandHandler("myid", function(player)
-    adminAlert(player, "#FFFFFFYour ID: #CCFFCC" .. tostring(getElementData(player, "ID") or "none"))
+    adminAlert(player, L.msg("v_admin.id_manager.your_id", { player = tostring(getElementData(player, "ID") or "none") }))
 end)

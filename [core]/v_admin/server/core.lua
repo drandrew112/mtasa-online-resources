@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/core.lua
 --  Loads/syncs admin data + shared helper functions.
@@ -12,12 +13,13 @@
 --- Send an alert to a player / table / the root element.
 --- Colour/duration are optional (a #RRGGBB code may be used in the text).
 function adminAlert(target, text, r, g, b, duration)
-    triggerClientEvent(target or root, ADMIN.events.alert, resourceRoot, tostring(text), r, g, b, duration)
+    -- message objects stay messages: resolved per receiving player (v_locals)
+    triggerClientEvent(target or root, ADMIN.events.alert, resourceRoot, L.isMsg(text) and text or tostring(text), r, g, b, duration)
 end
 
 --- Alert to every player.
 function adminBroadcast(text, r, g, b, duration)
-    triggerClientEvent(root, ADMIN.events.alert, resourceRoot, tostring(text), r, g, b, duration)
+    triggerClientEvent(root, ADMIN.events.alert, resourceRoot, L.isMsg(text) and text or tostring(text), r, g, b, duration)
 end
 
 --- Backwards-compatible alias.
@@ -26,9 +28,9 @@ adminInfo = adminAlert
 --- Uniform "no permission" alert.
 function denyAccess(player, minLevel)
     if minLevel then
-        adminAlert(player, "You need at least admin level " .. minLevel .. " for this.", 255, 90, 90)
+        adminAlert(player, L.msg("v_admin.core.you_need_at_least_admin_level", { min_level = minLevel }), 255, 90, 90)
     else
-        adminAlert(player, "You don't have permission for this.", 255, 90, 90)
+        adminAlert(player, L.msg("v_admin.core.you_don_t_have_permission_for"), 255, 90, 90)
     end
 end
 
@@ -73,7 +75,7 @@ end
 function resolveTarget(player, idArg)
     local target = getPlayerFromId(idArg)
     if not target then
-        adminAlert(player, "Player not found (valid ID required).", 255, 90, 90)
+        adminAlert(player, L.msg("v_admin.core.player_not_found_valid_id_required"), 255, 90, 90)
         return false
     end
     return target
@@ -85,7 +87,7 @@ function canPunish(player, target)
     local myLevel = getAdminLevel(player)
     if myLevel >= ADMIN.maxLevel then return true end
     if getAdminLevel(target) >= myLevel then
-        adminAlert(player, "You can't do that to an admin of your level or higher.", 255, 90, 90)
+        adminAlert(player, L.msg("v_admin.core.you_can_t_do_that_to"), 255, 90, 90)
         return false
     end
     return true

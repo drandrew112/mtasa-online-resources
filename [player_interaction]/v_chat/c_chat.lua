@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 ui = function(z) return uicore:ui(z) end
 local sw,sh = guiGetScreenSize()
@@ -33,7 +34,7 @@ function renderChat()
             if (i < max_messages) then
                 if message.show or getElementData(localPlayer, "showChatInput") then
                     dxDrawText(
-                        "#FFFFFF"..message.sender..": #dcdcdc"..message.text,
+                        L("v_chat.chat.text", { sender = message.sender, text = message.text }),
                         sw-safe_x, sh/2-((i-1)*25), _,_,
                         tocolor(255,255,255,255),
                         1.5, "default", "right", "bottom",
@@ -56,7 +57,7 @@ function renderChat()
                 2
             )
             -- text
-            local text_w = dxGetTextWidth(input_text, 1.5, "default", false)
+            local text_w = L.width(input_text, 1.5, "default", false)
             dxDrawText(
                 input_text,
                 sw-safe_x-(input_width)+5, sh*0.5+10+30/2, _,_,
@@ -78,7 +79,7 @@ addEventHandler("onClientRender", getRootElement(), renderChat)
 addEventHandler("onClientCharacter", getRootElement(), function (char)
     if getElementData(localPlayer, "showChat") and getElementData(localPlayer, "showChatInput") then
         cancelEvent()
-        if ( #input_text <= max_char ) then
+        if ( L.len(input_text) <= max_char ) then
             input_text = input_text..char
         end
     end
@@ -89,7 +90,7 @@ addEventHandler("onClientKey", getRootElement(), function (btn, isPress)
         cancelEvent()
         if btn=="backspace" then
             if (#input_text>0) then
-                input_text = input_text:sub(1, #input_text - 1)
+                input_text = L.sub(input_text, 1, -2)
             end
 
         -- Send message

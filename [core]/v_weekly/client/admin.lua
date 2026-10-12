@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /weekly admin panel (mouse-driven DX window). The server sends an overview;
 -- every change goes back as weekly:adminEdit and the server answers with a
 -- fresh overview that refreshes the open panel. Text values are typed through
@@ -29,10 +30,10 @@ local C = {
 }
 
 local TABS = {
-    { id = "jobs",  label = "Job multipliers" },
-    { id = "trial", label = "Time trial" },
-    { id = "login", label = "Login bonus" },
-    { id = "news",  label = "News" },
+    { id = "jobs",  label = L("v_weekly.admin.job_multipliers") },
+    { id = "trial", label = L("v_weekly.admin.time_trial") },
+    { id = "login", label = L("v_weekly.admin.login_bonus") },
+    { id = "news",  label = L("v_weekly.admin.news") },
 }
 
 local function fmtInt(n)
@@ -73,7 +74,7 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     if p.kind == "money" or p.kind == "xp" then
         local n = tonumber(text)
         if not n or n < 0 then
-            uicore:addNotification("Weekly", "Enter a whole number (0 removes it).", true)
+            uicore:addNotification(L("v_weekly.admin.weekly"), L("v_weekly.admin.enter_whole_number_0_removes_it"), true)
             return
         end
         n = math.floor(n)
@@ -125,14 +126,14 @@ end
 local function drawJobs(x, y, w, h)
     local data, week = adm.data, curWeek()
     local rowH = S(46)
-    text("JOB", x + S(14), y, w * 0.4, S(26), C.dim, 1.0, "default-bold")
-    text("MONEY", x + w * 0.45, y, w * 0.25, S(26), C.money, 1.0, "default-bold")
-    text("XP", x + w * 0.73, y, w * 0.25, S(26), C.xp, 1.0, "default-bold")
+    text(L("v_weekly.admin.job"), x + S(14), y, w * 0.4, S(26), C.dim, 1.0, "default-bold")
+    text(L("v_weekly.admin.money"), x + w * 0.45, y, w * 0.25, S(26), C.money, 1.0, "default-bold")
+    text(L("v_weekly.admin.xp"), x + w * 0.73, y, w * 0.25, S(26), C.xp, 1.0, "default-bold")
     y = y + S(28)
     h = h - S(28)
 
     if #data.jobs == 0 then
-        text("v_jobmanager has no official Jobs (or is not running).", x + S(14), y, w, S(40), C.dim)
+        text(L("v_weekly.admin.v_jobmanager_has_no_official_jobs"), x + S(14), y, w, S(40), C.dim)
         return
     end
 
@@ -159,7 +160,7 @@ local function drawJobs(x, y, w, h)
         end
     end
     if #data.jobs > visible then
-        text(("%d-%d of %d  (mouse wheel)"):format(adm.scroll + 1, math.min(#data.jobs, adm.scroll + visible), #data.jobs),
+        text(L("v_weekly.admin.of_mouse_wheel", { scroll = adm.scroll + 1, visible = math.min(#data.jobs, adm.scroll + visible), jobs = #data.jobs }),
             x, y + visible * rowH, w, S(22), C.dim, 1.0, "default", "right")
     end
 end
@@ -167,7 +168,7 @@ end
 local function drawTrial(x, y, w, h)
     local data, week = adm.data, curWeek()
     if #data.trials == 0 then
-        text("v_timetrial is not running.", x + S(14), y, w, S(40), C.dim)
+        text(L("v_weekly.admin.v_timetrial_is_not_running"), x + S(14), y, w, S(40), C.dim)
         return
     end
     local rowH = S(46)
@@ -176,10 +177,10 @@ local function drawTrial(x, y, w, h)
         if ry + rowH > y + h then break end
         dxDrawRectangle(x, ry, w, rowH - S(4), C.row)
         text(t.name, x + S(14), ry, w * 0.4, rowH - S(4), C.text, 1.2, "default-bold")
-        text(("limit %ds"):format(t.time or 0), x + w * 0.45, ry, w * 0.2, rowH - S(4), C.dim)
+        text(L("v_weekly.admin.limit_s", { time = t.time or 0 }), x + w * 0.45, ry, w * 0.2, rowH - S(4), C.dim)
         text("€" .. fmtInt(t.reward), x + w * 0.62, ry, w * 0.2, rowH - S(4), C.money, 1.2, "default-bold")
         local active = week.timetrial == i
-        button(x + w - S(130), ry + S(7), S(116), S(30), active and "ACTIVE" or "Select",
+        button(x + w - S(130), ry + S(7), S(116), S(30), active and L("v_weekly.admin.active") or L("v_weekly.admin.select"),
             function() if not active then edit("trial", i) end end, active and "active")
     end
 end
@@ -194,18 +195,17 @@ local function drawLogin(x, y, w, h)
         dxDrawRectangle(x, ry, w, rowH - S(6), C.row)
         text(label, x + S(14), ry, w * 0.3, rowH - S(6), C.dim, 1.2, "default-bold")
         text(valueText, x + w * 0.3, ry, w * 0.4, rowH - S(6), color, 1.5, "default-bold")
-        button(x + w - S(130), ry + S(10), S(116), S(32), "Edit", onEdit)
+        button(x + w - S(130), ry + S(10), S(116), S(32), L("common.edit"), onEdit)
     end
 
-    line(1, "Money", b.money > 0 and ("€" .. fmtInt(b.money)) or "none", b.money > 0 and C.money or C.dim, function()
-        askText("money", "Login bonus money (0 = none)", 8, tostring(b.money), { xp = b.xp })
+    line(1, L("v_weekly.admin.money_2"), b.money > 0 and ("€" .. fmtInt(b.money)) or "none", b.money > 0 and C.money or C.dim, function()
+        askText("money", L("v_weekly.admin.login_bonus_money_0_none"), 8, tostring(b.money), { xp = b.xp })
     end)
     line(2, "XP", b.xp > 0 and (fmtInt(b.xp) .. " XP") or "none", b.xp > 0 and C.xp or C.dim, function()
-        askText("xp", "Login bonus XP (0 = none)", 8, tostring(b.xp), { money = b.money })
+        askText("xp", L("v_weekly.admin.login_bonus_xp_0_none"), 8, tostring(b.xp), { money = b.money })
     end)
 
-    text(("Paid once per %s to every player who logs in. Max €%s / %s XP."):format(
-        data.period, fmtInt(data.maxMoney), fmtInt(data.maxXp)),
+    text(L("v_weekly.admin.paid_once_per_to_every_player", { period = data.period, max_money = fmtInt(data.maxMoney), max_xp = fmtInt(data.maxXp) }),
         x + S(14), y + rowH * 2 + S(6), w - S(28), S(40), C.dim, 1.1, "default", "left", "top", true)
 end
 
@@ -213,21 +213,21 @@ local function drawNews(x, y, w, h)
     local week = curWeek()
     local news = week.news or { title = "", body = "" }
     dxDrawRectangle(x, y, w, S(56), C.row)
-    text("Title", x + S(14), y, w * 0.2, S(56), C.dim, 1.2, "default-bold")
-    text(news.title ~= "" and news.title or "(none)", x + w * 0.2, y, w * 0.55, S(56),
+    text(L("v_weekly.admin.title"), x + S(14), y, w * 0.2, S(56), C.dim, 1.2, "default-bold")
+    text(news.title ~= "" and news.title or L("v_weekly.admin.none"), x + w * 0.2, y, w * 0.55, S(56),
         news.title ~= "" and C.text or C.dim, 1.3, "default-bold")
-    button(x + w - S(130), y + S(12), S(116), S(32), "Edit", function()
-        askText("newsTitle", "News title", 60, news.title, { body = news.body })
+    button(x + w - S(130), y + S(12), S(116), S(32), L("common.edit"), function()
+        askText("newsTitle", L("v_weekly.admin.news_title"), 60, news.title, { body = news.body })
     end)
 
     local by = y + S(66)
     local bh = math.min(h - S(66), S(220))
     dxDrawRectangle(x, by, w, bh, C.row)
-    text("Text", x + S(14), by + S(8), w * 0.2, S(26), C.dim, 1.2, "default-bold", "left", "top")
-    text(news.body ~= "" and news.body or "(none)", x + w * 0.2, by + S(8), w * 0.55 - S(8), bh - S(16),
+    text(L("v_weekly.admin.text"), x + S(14), by + S(8), w * 0.2, S(26), C.dim, 1.2, "default-bold", "left", "top")
+    text(news.body ~= "" and news.body or L("v_weekly.admin.none"), x + w * 0.2, by + S(8), w * 0.55 - S(8), bh - S(16),
         news.body ~= "" and C.text or C.dim, 1.2, "default", "left", "top", true)
-    button(x + w - S(130), by + S(12), S(116), S(32), "Edit", function()
-        askText("newsBody", "News text", 600, news.body, { title = news.title })
+    button(x + w - S(130), by + S(12), S(116), S(32), L("common.edit"), function()
+        askText("newsBody", L("v_weekly.admin.news_text"), 600, news.body, { title = news.title })
     end)
 end
 
@@ -238,9 +238,9 @@ local DRAW = { jobs = drawJobs, trial = drawTrial, login = drawLogin, news = dra
 --------------------------------------------------------------------------------
 
 local function weekLabel(w)
-    if w.offset == 0 then return "This week" end
-    if w.offset == 1 then return "Next week" end
-    return "In " .. w.offset .. " weeks"
+    if w.offset == 0 then return L("v_weekly.admin.this_week") end
+    if w.offset == 1 then return L("v_weekly.admin.next_week") end
+    return L("v_weekly.admin.in_weeks", { offset = w.offset })
 end
 
 local function closePanel()
@@ -263,8 +263,8 @@ function drawAdmin()
 
     dxDrawRectangle(X, Y, W, H, C.bg)
     dxDrawRectangle(X, Y, W, S(4), C.accent)
-    text("WEEKLY", X + pad, Y + S(10), S(200), S(36), C.head, 1.9, "default-bold")
-    text("next change: " .. adm.data.nextChange .. "  (UTC)", X + pad + S(150), Y + S(10), W * 0.6, S(36), C.dim, 1.1)
+    text(L("v_weekly.admin.weekly_2"), X + pad, Y + S(10), S(200), S(36), C.head, 1.9, "default-bold")
+    text(L("v_weekly.admin.next_change_utc", { next_change = adm.data.nextChange }), X + pad + S(150), Y + S(10), W * 0.6, S(36), C.dim, 1.1)
     button(X + W - S(48), Y + S(12), S(32), S(30), "X", closePanel, "danger")
 
     -- week list
@@ -276,7 +276,7 @@ function drawAdmin()
         local sel = adm.week == i
         button(sx, by, sw2, weekH, "", function() adm.week = i; adm.scroll = 0 end, sel and "active")
         text(weekLabel(w), sx + S(10), by + S(6), sw2 - S(20), S(24), C.text, 1.2, "default-bold")
-        text(w.from .. (w.inherited and "  (inherited)" or ""), sx + S(10), by + S(30), sw2 - S(20), S(20),
+        text(w.from .. (w.inherited and L("v_weekly.admin.inherited") or ""), sx + S(10), by + S(30), sw2 - S(20), S(20),
             sel and C.text or C.dim, 1.0)
     end
 
@@ -296,8 +296,8 @@ function drawAdmin()
 
     -- footer
     local fy = Y + H - S(52)
-    button(cx, fy, S(170), S(34), "Preview panel", function() triggerServerEvent("weekly:adminPreview", localPlayer) end)
-    button(cx + cw - S(230), fy, S(230), S(34), "Reset week (inherit previous)",
+    button(cx, fy, S(170), S(34), L("v_weekly.admin.preview_panel"), function() triggerServerEvent("weekly:adminPreview", localPlayer) end)
+    button(cx + cw - S(230), fy, S(230), S(34), L("v_weekly.admin.reset_week_inherit_previous"),
         function() edit("reset") end, "danger")
 end
 

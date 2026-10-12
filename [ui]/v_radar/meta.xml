@@ -90,6 +90,8 @@
     <file src="radar/files/blips/objective.png" type="client" />
 
     <file src="radar/files/cross.png" type="client" />
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
     <script src="radar/sourceC.lua" type="client" />
 
     <file src="radar/gps/images/dot.png" type="client" />

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/teleport.lua
 --  Admin teleport commands. adminGoto / adminGethere are shared
@@ -20,8 +21,8 @@ function adminGoto(player, target)
     setElementInterior(player, int)
     setElementDimension(player, dim)
 
-    adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFteleported to you.")
-    adminAlert(player, "#FFFFFFYou teleported to #FFFF00" .. getPlayerName(target))
+    adminAlert(target, L.msg("v_admin.report.teleported_to_you", { player = getPlayerName(player) }))
+    adminAlert(player, L.msg("v_admin.teleport.you_teleported_to", { player = getPlayerName(target) }))
 end
 
 addCommandHandler("goto", function(player, cmd, idArg)
@@ -56,8 +57,8 @@ function adminGethere(player, target)
     setElementInterior(target, int)
     setElementDimension(target, dim)
 
-    adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFteleported you to them.")
-    adminAlert(player, "#FFFFFFYou brought #FFFF00" .. getPlayerName(target) .. " #FFFFFFto you.")
+    adminAlert(target, L.msg("v_admin.teleport.teleported_you_to_them", { player = getPlayerName(player) }))
+    adminAlert(player, L.msg("v_admin.teleport.you_brought_to_you", { player = getPlayerName(target) }))
 end
 
 addCommandHandler("gethere", function(player, cmd, idArg)

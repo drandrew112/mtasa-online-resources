@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/commands.lua
 --  Commands tab: the v_admin command reference (ADMIN.commands in
@@ -9,13 +10,13 @@ local S, F, C = AP.S, AP.F, AP.C
 local scroll = 0
 
 AP.addTab({
-    id = "commands", label = "Commands", perm = "panel", order = 4,
+    id = "commands", label = L("v_admin.commands.commands"), perm = "panel", order = 4,
     draw = function(x, y, w, h)
         local cmdW, lvlW = w * 0.3, S(250)
         local descX = x + cmdW + lvlW + S(20)
-        AP.text("COMMAND", x + S(14), y, cmdW, S(32), C.dim, 0.9, "default-bold")
-        AP.text("LEVEL", x + cmdW + S(10), y, lvlW, S(32), C.dim, 0.9, "default-bold")
-        AP.text("DESCRIPTION", descX, y, w, S(32), C.dim, 0.9, "default-bold")
+        AP.text(L("v_admin.commands.command"), x + S(14), y, cmdW, S(32), C.dim, 0.9, "default-bold")
+        AP.text(L("v_admin.commands.level"), x + cmdW + S(10), y, lvlW, S(32), C.dim, 0.9, "default-bold")
+        AP.text(L("v_admin.commands.description"), descX, y, w, S(32), C.dim, 0.9, "default-bold")
         y = y + S(38)
         h = h - S(38)
 
@@ -40,7 +41,7 @@ AP.addTab({
         end
 
         if #list > visible then
-            AP.text(("%d-%d of %d  (mouse wheel)"):format(scroll + 1, math.min(#list, scroll + visible), #list),
+            AP.text(L("v_admin.commands.of_mouse_wheel", { scroll = scroll + 1, visible = math.min(#list, scroll + visible), list = #list }),
                 x, y + visible * rowH, w, S(28), C.dim, 0.85, "default", "right")
         end
     end,

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/announce.lua
 --  Admin call (server-wide announcement). adminAnnounce is shared
@@ -9,10 +10,10 @@ function adminAnnounce(player, message)
         return denyAccess(player, ADMIN.perms.adminCall)
     end
     if type(message) ~= "string" or message == "" then
-        return adminAlert(player, "Usage: /af <message>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.announce.usage_af_message"), 255, 90, 90)
     end
 
-    adminBroadcast("#FFFF00" .. getPlayerName(player) .. " #FFFF00announcement: #FFFFFF" .. message, nil, nil, nil, 8000)
+    adminBroadcast(L.msg("v_admin.announce.announcement", { player = getPlayerName(player), message = message }), nil, nil, nil, 8000)
     adminLog(player, "announcement: " .. message)
 end
 
@@ -25,7 +26,7 @@ local function adminCall(player, cmd, ...)
     end
     local message = table.concat({ ... }, " ")
     if message == "" then
-        return adminAlert(player, "Usage: /" .. cmd .. " <message>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.announce.usage_message", { cmd = cmd }), 255, 90, 90)
     end
     adminAnnounce(player, message)
 end

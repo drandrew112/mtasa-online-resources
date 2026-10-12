@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Objectives: mission targets other resources place on the radar through exports.
 --
 -- Every objective shows as a yellow circle on the minimap, the bigmap, the pause
@@ -174,7 +175,7 @@ function getSpecialBlips()
 			key = "objective:" .. tostring(obj.id),
 			icon = "blips/objective.png",
 			x = obj.x, y = obj.y, z = obj.z,
-			label = obj.label or "Objective",
+			label = obj.label or L("v_radar.objectives.objective"),
 		}
 	end
 
@@ -185,7 +186,7 @@ function getSpecialBlips()
 				key = "waypoint",
 				icon = "blips/waypoint.png",
 				x = destination[1], y = destination[2], z = getWaypointZ(destination[1], destination[2]),
-				label = "Waypoint",
+				label = L("v_radar.objectives.waypoint"),
 			}
 		end
 	end

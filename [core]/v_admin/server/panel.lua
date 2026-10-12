@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/panel.lua
 --  Admin panel (O key) – server side.
@@ -70,7 +71,7 @@ local function collectPlayer(player)
         logged    = accName and true or false,
         account   = accName or false,
         adminLevel = level,
-        rank      = ADMIN.rankNames[level] or "Player",
+        rank      = ADMIN.rankNames[level] or L.msg("v_admin.config.player"),
         -- connection
         serial    = getPlayerSerial(player),
         ip        = getPlayerIP(player),
@@ -185,14 +186,14 @@ local ACTIONS = {
     ["ban"]     = function(admin, t, a)
         local accName = exports.v_accounts:getName(t)
         if not accName then
-            return adminAlert(admin, "That player is not logged in, there is no account to ban.", 255, 90, 90)
+            return adminAlert(admin, L.msg("v_admin.panel.that_player_is_not_logged_in"), 255, 90, 90)
         end
         adminBan(admin, accName, text(a))
     end,
     ["unban"]   = function(admin, t)
         local accName = getElementData(t, "banned_account") or exports.v_accounts:getName(t)
         if not accName then
-            return adminAlert(admin, "No banned account on that player.", 255, 90, 90)
+            return adminAlert(admin, L.msg("v_admin.panel.no_banned_account_on_that_player"), 255, 90, 90)
         end
         adminUnban(admin, accName)
     end,
@@ -218,7 +219,7 @@ addEventHandler(E.panelAction, resourceRoot, function(action, targetId, a, b)
     elseif ACTIONS[action] then
         local target = getPlayerFromId(targetId)
         if not target then
-            adminAlert(admin, "That player is no longer online.", 255, 90, 90)
+            adminAlert(admin, L.msg("v_admin.panel.that_player_is_no_longer_online"), 255, 90, 90)
         else
             ACTIONS[action](admin, target, a, b)
         end

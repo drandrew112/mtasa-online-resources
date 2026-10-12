@@ -7,12 +7,7 @@
   "v_stats.config.distance_walked": "Distance walked",
   "v_stats.config.kills_peds": "Kills (peds)",
   "v_stats.config.kills_players": "Kills (players)",
-  "v_stats.config.km": "km",
-  "v_stats.config.s": "s",
   "v_stats.config.time_driving_land_vehicles": "Time driving (land vehicles)",
   "v_stats.config.time_flying_air_vehicles": "Time flying (air vehicles)",
-  "v_stats.config.time_sailing_water_vehicles": "Time sailing (water vehicles)",
-  "v_stats.registry.duplicate_id_s_skipped": "duplicate id '%s', skipped",
-  "v_stats.registry.entry_d_has_no_id_skipped": "entry #%d has no id, skipped",
-  "v_stats.registry.s_name_is_required_skipped": "'%s': name is required, skipped"
+  "v_stats.config.time_sailing_water_vehicles": "Time sailing (water vehicles)"
 }

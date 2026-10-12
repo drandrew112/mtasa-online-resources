@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/noclip.lua
 --  NoClip ("fly") mode.  Original base: noclip by chris1384.
@@ -20,7 +21,7 @@ end
 local function noclipRender()
     if isPedDead(localPlayer) or getCameraTarget() ~= localPlayer or getPedOccupiedVehicle(localPlayer) then
         setNoclip(false)
-        info("#FF6464NoClip force-disabled!")
+        info(L("v_admin.noclip.noclip_force_disabled"))
         return
     end
 
@@ -93,11 +94,11 @@ end
 local function toggleNoclip()
     if activated then
         setNoclip(false)
-        info("#FFFFFFNoClip: #FF6464OFF")
+        info(L("v_admin.noclip.noclip_off"))
     else
         setNoclip(true)
         if activated then
-            info("#FFFFFFNoClip: #55FF55ON")
+            info(L("v_admin.noclip.noclip_on"))
         end
     end
 end
@@ -125,11 +126,11 @@ end)
 addCommandHandler("flyspd", function(cmd, x)
     local n = tonumber(x)
     if not n then
-        return info("#FF6464NoClip speed must be a number!")
+        return info(L("v_admin.noclip.noclip_speed_must_be_number"))
     end
     if n < 0.1 or n > 20 then
-        return info("#FF6464NoClip speed must be between 0.1 and 20!")
+        return info(L("v_admin.noclip.noclip_speed_must_be_between_0"))
     end
     speed = { horizontal = n, vertical = n / 3 }
-    info("#FFFFFFNoClip speed: #55FF55" .. n)
+    info(L("v_admin.noclip.noclip_speed", { n = n }))
 end)

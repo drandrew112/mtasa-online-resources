@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 safe_x, safe_y = uicore:getSafeZone()
 
@@ -293,18 +294,18 @@ local mainBlips = {
 -- createCustomBlip(x, y, z, icon, farShow, visibleDistance, size, color)
 
 local blipTooltips = {
-	["blips/1.png"] = "Player",
+	["blips/1.png"] = L("v_radar.sourcec.player"),
 	["blips/2.png"] = "",
 	["blips/3.png"] = "",
 	["blips/4.png"] = "",
-	["blips/5.png"] = "Personal Vehicle",
-	["blips/6.png"] = "Weaponshop",
-	["blips/7.png"] = "Cablecar",
-	["blips/8.png"] = "Stunt park",
-	["blips/9.png"] = "Job",
-	["blips/10.png"] = "Airport",
-	["blips/11.png"] = "Railway depot",
-	["blips/12.png"] = "Clothes",
+	["blips/5.png"] = L("v_radar.sourcec.personal_vehicle"),
+	["blips/6.png"] = L("v_radar.sourcec.weaponshop"),
+	["blips/7.png"] = L("v_radar.sourcec.cablecar"),
+	["blips/8.png"] = L("v_radar.sourcec.stunt_park"),
+	["blips/9.png"] = L("common.job"),
+	["blips/10.png"] = L("v_radar.sourcec.airport"),
+	["blips/11.png"] = L("v_radar.sourcec.railway_depot"),
+	["blips/12.png"] = L("v_radar.sourcec.clothes"),
 	["blips/13.png"] = "SA Control",
 	["blips/14.png"] = "",
 	["blips/15.png"] = "",
@@ -314,7 +315,7 @@ local blipTooltips = {
 	["blips/19.png"] = "",
 	["blips/20.png"] = "",
 	["blips/21.png"] = "",
-	["blips/22.png"] = "Hospital",
+	["blips/22.png"] = L("v_radar.sourcec.hospital"),
 	["blips/23.png"] = "",
 	["blips/24.png"] = "",
 	["blips/25.png"] = "",
@@ -322,9 +323,9 @@ local blipTooltips = {
 	["blips/27.png"] = "",
 	["blips/28.png"] = "",
 	["blips/29.png"] = "",
-	["blips/30.png"] = "Police",
-	["blips/31.png"] = "Property for sale",
-	["blips/32.png"] = "Property",
+	["blips/30.png"] = L("v_radar.sourcec.police"),
+	["blips/31.png"] = L("v_radar.sourcec.property_for_sale"),
+	["blips/32.png"] = L("v_radar.sourcec.property"),
 	["blips/33.png"] = "",
 	["blips/34.png"] = "",
 	["blips/35.png"] = "",
@@ -338,29 +339,29 @@ local blipTooltips = {
 	["blips/43.png"] = "",
 	["blips/44.png"] = "",
 	["blips/45.png"] = "",
-	["blips/46.png"] = "Ferriswheel",
-	["blips/47.png"] = "Train station",
+	["blips/46.png"] = L("v_radar.sourcec.ferriswheel"),
+	["blips/47.png"] = L("v_radar.sourcec.train_station"),
 	["blips/48.png"] = "",
 	["blips/49.png"] = "",
 	["blips/50.png"] = "",
-	["blips/51.png"] = "Fuel station",
-	["blips/52.png"] = "Bank",
-	["blips/53.png"] = "Arena War",
-	["blips/54.png"] = "Shop",
+	["blips/51.png"] = L("v_radar.sourcec.fuel_station"),
+	["blips/52.png"] = L("v_radar.sourcec.bank"),
+	["blips/53.png"] = L("v_radar.sourcec.arena_war"),
+	["blips/54.png"] = L("v_radar.sourcec.shop"),
 	["blips/55.png"] = "",
 	["blips/56.png"] = "",
 	["blips/57.png"] = "",
 	["blips/58.png"] = "",
 	["blips/59.png"] = "",
 	["blips/60.png"] = "",
-	["blips/61.png"] = "Time Trial",
+	["blips/61.png"] = L("v_radar.sourcec.time_trial"),
 	["blips/62.png"] = "",
 	["blips/63.png"] = "",
 	["blips/64.png"] = "",
-	["blips/markblip.png"] = "Waypoint",
-	["blips/waypoint.png"] = "Waypoint",
-	["blips/objective.png"] = "Objective",
-	["blips/north.png"] = "North",
+	["blips/markblip.png"] = L("v_radar.objectives.waypoint"),
+	["blips/waypoint.png"] = L("v_radar.objectives.waypoint"),
+	["blips/objective.png"] = L("v_radar.objectives.objective"),
+	["blips/north.png"] = L("v_radar.sourcec.north"),
 }
 
 -- Per-element blip name: the "tooltipText" element data of a blip element (e.g. the job
@@ -406,7 +407,7 @@ local getZoneNameEx = getZoneName
 function getZoneName(x, y, z, citiesonly)
 	local zoneName = getZoneNameEx(x, y, z, citiesonly)
 	if zoneName == "Greenglass College" then
-		return "Las Venturas City Hall"
+		return L("v_radar.sourcec.las_venturas_city_hall")
 	else
 		return zoneName
 	end
@@ -1003,8 +1004,8 @@ function renderTheBigmap()
 			dxDrawText(getZoneName(zoneX, zoneY, 0), bigmapPosX + 10, bigmapPosY + bigmapHeight - zoneLineHeight, bigmapPosX + bigmapWidth, bigmapPosY + bigmapHeight, 0xFFFFFFFF, 0.5, getFont("BrushScriptStd"), "left", "center")
 
 			if visibleBlipTooltip then
-				dxDrawRectangle(cursorX + respc(12.5), cursorY, dxGetTextWidth(visibleBlipTooltip, blipTooltip_fontsize, getFont("Roboto")) + respc(10), respc(25), tocolor(0, 0, 0, 150))
-				dxDrawText(visibleBlipTooltip, cursorX + respc(12.5), cursorY, cursorX + (dxGetTextWidth(visibleBlipTooltip, blipTooltip_fontsize, getFont("Roboto")) + respc(10)) + respc(12.5), cursorY + respc(25), 0xFFFFFFFF, blipTooltip_fontsize, getFont("Roboto"), "center", "center")
+				dxDrawRectangle(cursorX + respc(12.5), cursorY, L.width(visibleBlipTooltip, blipTooltip_fontsize, getFont("Roboto")) + respc(10), respc(25), tocolor(0, 0, 0, 150))
+				dxDrawText(visibleBlipTooltip, cursorX + respc(12.5), cursorY, cursorX + (L.width(visibleBlipTooltip, blipTooltip_fontsize, getFont("Roboto")) + respc(10)) + respc(12.5), cursorY + respc(25), 0xFFFFFFFF, blipTooltip_fontsize, getFont("Roboto"), "center", "center")
 			end
 		else
 			dxDrawText(getZoneName(playerPosX, playerPosY, playerPosZ), bigmapPosX + 10, bigmapPosY + bigmapHeight - zoneLineHeight, bigmapPosX + bigmapWidth, bigmapPosY + bigmapHeight, 0xFFFFFFFF, 0.5, getFont("BrushScriptStd"), "left", "center")
@@ -1384,8 +1385,8 @@ function render3DBlips()
 							local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, blipPosX, blipPosY, blipPosZ)
 							local blipIcon = getBlipIcon(blipTable[i])
 
-							dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. (getBlipName(blipTable[i]) or ""), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
-							dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. (getBlipName(blipTable[i]) or ""), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
+							dxDrawText(L("v_radar.sourcec.m", { distance_between_blip = floor(distanceBetweenBlip), i = (getBlipName(blipTable[i]) or "") }), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
+							dxDrawText(L("v_radar.sourcec.m_2", { distance_between_blip = floor(distanceBetweenBlip), i = (getBlipName(blipTable[i]) or "") }), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
 							dxDrawImage(screenX - 9*1.5, screenY - 7.5*1.5, 18*1.5, 15*1.5, "radar/files/blips/" .. blipIcon .. ".png", 0, 0, 0, tocolor(255, 255, 255, 200))
 						end
 					end
@@ -1402,8 +1403,8 @@ function render3DBlips()
 					local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, blipPosX, blipPosY, blipPosZ)
 					local blipIcon = createdBlips[i].icon
 
-					dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. (blipTooltips[createdBlips[i]] or ""), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
-					dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. (blipTooltips[createdBlips[i]] or ""), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
+					dxDrawText(L("v_radar.sourcec.m", { distance_between_blip = floor(distanceBetweenBlip), i = (blipTooltips[createdBlips[i]] or "") }), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
+					dxDrawText(L("v_radar.sourcec.m_2", { distance_between_blip = floor(distanceBetweenBlip), i = (blipTooltips[createdBlips[i]] or "") }), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
 					dxDrawImage(screenX - 9*1.5, screenY - 7.5*1.5, 18*1.5, 15*1.5, "radar/files/" .. blipIcon, 0, 0, 0, tocolor(255, 255, 255, 200))
 				end
 			end
@@ -1415,8 +1416,8 @@ function render3DBlips()
 			if screenX and screenY then
 				local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, b.x, b.y, b.z)
 
-				dxDrawText(floor(distanceBetweenBlip) .. " m\n" .. b.label, screenX + 1, screenY + 1 + 9 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
-				dxDrawText(floor(distanceBetweenBlip) .. " m#e0e0e0\n" .. b.label, screenX, screenY + 9 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
+				dxDrawText(L("v_radar.sourcec.m_3", { distance_between_blip = floor(distanceBetweenBlip), label = b.label }), screenX + 1, screenY + 1 + 9 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
+				dxDrawText(L("v_radar.sourcec.m_4", { distance_between_blip = floor(distanceBetweenBlip), label = b.label }), screenX, screenY + 9 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
 				dxDrawImage(screenX - 12, screenY - 12, 24, 24, "radar/files/" .. b.icon, 0, 0, 0, tocolor(255, 255, 255, 230))
 			end
 		end
@@ -1765,7 +1766,7 @@ function drawBigmapBlipMenu()
 		hintY = hintY + rowH + respc(4)
 	end
 
-	dxDrawText("Up/Down: type     Left/Right: step", lx, hintY, lx + panelW, hintY + respc(16),
+	dxDrawText(L("v_radar.sourcec.up_down_type_left_right_step"), lx, hintY, lx + panelW, hintY + respc(16),
 		tocolor(210, 216, 224), 0.72, getFont("Roboto"), "center", "top")
 end
 
@@ -1782,7 +1783,7 @@ function renderPausePreview(px, py, pw, ph)
 
 	if not dimensionHasMap() or getElementInterior(localPlayer) ~= 0 then
 		dxDrawImage(px + pw / 2 - 32, py + ph / 2 - 40, 64, 64, "radar/files/gpslosticon.png")
-		dxDrawText("NO SIGNAL", px, py + ph / 2 + 28, px + pw, py + ph / 2 + 48, 0xFFFFFFFF, 1, "default-bold", "center", "center")
+		dxDrawText(L("v_radar.sourcec.no_signal"), px, py + ph / 2 + 28, px + pw, py + ph / 2 + 48, 0xFFFFFFFF, 1, "default-bold", "center", "center")
 		dxDrawOuterBorder(px, py, pw, ph, 2, tocolor(0, 0, 0, 220))
 		return
 	end

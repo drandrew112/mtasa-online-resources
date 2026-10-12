@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/misc.lua
 --  Smaller admin helper commands + noclip gate.
@@ -25,17 +26,17 @@ function adminHeal(player, target)
     if not isElement(target) then return end
 
     if isPedDead(target) then
-        return adminAlert(player, "#FFFF00" .. getPlayerName(target) .. " #FFFFFFis dead.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.misc.is_dead", { player = getPlayerName(target) }), 255, 90, 90)
     end
 
     setElementHealth(target, 100)
     setPedArmor(target, 100)
 
     if target ~= player then
-        adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFhealed you.")
-        adminAlert(player, "#FFFFFFYou healed #FFFF00" .. getPlayerName(target) .. "#FFFFFF.")
+        adminAlert(target, L.msg("v_admin.misc.healed_you", { player = getPlayerName(player) }))
+        adminAlert(player, L.msg("v_admin.misc.you_healed", { player = getPlayerName(target) }))
     else
-        adminAlert(player, "#FFFFFFYou healed yourself.")
+        adminAlert(player, L.msg("v_admin.misc.you_healed_yourself"))
     end
 end
 
@@ -55,7 +56,7 @@ addCommandHandler("money", function(player)
         return denyAccess(player, ADMIN.perms.money)
     end
     givePlayerMoney(player, 2000)
-    adminAlert(player, "#55FF55+€2000")
+    adminAlert(player, L.msg("v_admin.misc.2000"))
 end)
 
 -- ------------------------------------------------------------
@@ -63,7 +64,7 @@ end)
 -- ------------------------------------------------------------
 addCommandHandler("getid", function(player, cmd, name)
     if not name then
-        return adminAlert(player, "Usage: /getid <name>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.misc.usage_getid_name"), 255, 90, 90)
     end
 
     local target = getPlayerFromName(name)
@@ -78,9 +79,9 @@ addCommandHandler("getid", function(player, cmd, name)
     end
 
     if not target then
-        return adminAlert(player, "Player not found.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.misc.player_not_found"), 255, 90, 90)
     end
-    adminAlert(player, getPlayerName(target) .. " #FFFFFF| ID: #CCFFCC" .. tostring(getElementData(target, "ID")))
+    adminAlert(player, L.msg("v_admin.misc.id", { player = getPlayerName(target), target = tostring(getElementData(target, "ID")) }))
 end)
 
 -- ------------------------------------------------------------
@@ -96,5 +97,5 @@ addCommandHandler("listacc", function(player)
         outputServerLog("[v_admin] Account: " .. name)
         n = n + 1
     end
-    adminAlert(player, "#55FF55" .. n .. " accounts written to the server log.")
+    adminAlert(player, L.msg("v_admin.misc.accounts_written_to_server_log", { n = n }))
 end)

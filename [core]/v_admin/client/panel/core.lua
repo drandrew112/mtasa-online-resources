@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/core.lua
 --  Admin panel (O key) – window, tabs and the immediate-mode DX
@@ -74,7 +75,7 @@ function AP.can(perm)
 end
 
 function AP.rankName(level)
-    return ADMIN.rankNames[tonumber(level) or 0] or "Player"
+    return ADMIN.rankNames[tonumber(level) or 0] or L("v_admin.config.player")
 end
 
 function AP.fmtInt(n)
@@ -86,7 +87,7 @@ function AP.fmtInt(n)
 end
 
 function AP.notify(text)
-    uicore:addNotification("Admin panel", text, true)
+    uicore:addNotification(L("v_admin.panel_core.admin_panel"), text, true)
 end
 
 function AP.sendAction(action, targetId, a, b)
@@ -121,7 +122,7 @@ function AP.wrap(str, w, size, font)
         local line = ""
         for word in para:gmatch("%S+") do
             local try = line == "" and word or (line .. " " .. word)
-            if dxGetTextWidth(try, sc, font) <= w or line == "" then
+            if L.width(try, sc, font) <= w or line == "" then
                 line = try
             else
                 lines[#lines + 1] = line
@@ -206,7 +207,7 @@ function AP.field(id, x, y, w, h, opts)
     local pad = S(10)
     local sc = F(0.95)
     local shown = f.text
-    while shown ~= "" and dxGetTextWidth(shown, sc, "default") > w - pad * 2 - S(4) do
+    while shown ~= "" and L.width(shown, sc, "default") > w - pad * 2 - S(4) do
         shown = utf8.sub(shown, 2)
     end
     if f.text == "" and not focused then
@@ -215,7 +216,7 @@ function AP.field(id, x, y, w, h, opts)
         AP.text(shown, x + pad, y, w - pad * 2, h, C.text, 0.95)
     end
     if focused and getTickCount() % 1000 < 520 then
-        local cx = x + pad + dxGetTextWidth(shown, sc, "default") + S(1)
+        local cx = x + pad + L.width(shown, sc, "default") + S(1)
         dxDrawRectangle(cx, y + h * 0.22, S(2), h * 0.56, C.text)
     end
     AP.area(x, y, w, h, function() AP.setFocus(id) end)
@@ -317,8 +318,8 @@ local function drawPanel()
 
     dxDrawRectangle(X, Y, W, H, C.bg)
     dxDrawRectangle(X, Y, W, S(4), C.accent)
-    AP.text("ADMIN PANEL", X + pad, Y + S(12), S(320), S(48), C.head, 1.7, "default-bold")
-    AP.text(("Your level: %d  %s"):format(AP.myLevel, AP.rankName(AP.myLevel)),
+    AP.text(L("v_admin.panel_core.admin_panel_2"), X + pad, Y + S(12), S(320), S(48), C.head, 1.7, "default-bold")
+    AP.text(L("v_admin.panel_core.your_level", { my_level = AP.myLevel, my_level2 = AP.rankName(AP.myLevel) }),
         X + pad + S(320), Y + S(12), S(400), S(48), C.dim, 1.0)
 
     -- tabs (right aligned) + close

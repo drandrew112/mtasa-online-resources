@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Week arithmetic in plain UTC (no time zone, no DST). A week runs from
 -- WEEKLY.WEEK_DAY at WEEKLY.WEEK_HOUR o'clock UTC to the same moment 7 days later.
 

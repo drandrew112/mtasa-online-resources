@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / config.lua
 --  Shared configuration, available on both sides.
@@ -27,13 +28,13 @@ ADMIN.maxLevel = 6
 
 -- Plain rank names (admin panel, no colours / brackets).
 ADMIN.rankNames = {
-    [0] = "Player",
-    [1] = "Trial Mod",
-    [2] = "Mod",
-    [3] = "Admin",
-    [4] = "SuperAdmin",
-    [5] = "Dev",
-    [6] = "Owner",
+    [0] = L.text("v_admin.config.player"),
+    [1] = L.text("v_admin.config.trial_mod"),
+    [2] = L.text("v_admin.config.mod"),
+    [3] = L.text("v_admin.config.admin"),
+    [4] = L.text("v_admin.config.superadmin"),
+    [5] = L.text("v_admin.config.dev"),
+    [6] = L.text("v_admin.config.owner"),
 }
 
 -- Minimum admin levels required by each command / panel action, in ONE place.
@@ -66,28 +67,28 @@ ADMIN.panel = {
 -- Command reference shown on the panel's "Commands" tab.
 -- perm = key in ADMIN.perms (the level shown is read from there); false = everyone.
 ADMIN.commands = {
-    { cmd = "O key",                              perm = "panel",        desc = "Open / close the admin panel." },
-    { cmd = "/reports",                           perm = "reports",      desc = "Opens the admin panel on the Reports tab: active cases, claim, chat, logs." },
-    { cmd = "/goto <ID>",                         perm = "teleport",     desc = "Teleport to a player (interior / dimension too)." },
-    { cmd = "/gethere <ID>",                      perm = "teleport",     desc = "Bring a player to you (with their vehicle)." },
-    { cmd = "/heal <ID>",                         perm = "heal",         desc = "Restore a player's health and armour." },
-    { cmd = "/mute <ID> <minutes> <reason>",      perm = "mute",         desc = "Chat mute. Survives a relog, expires on its own." },
-    { cmd = "/unmute <ID>",                       perm = "mute",         desc = "Lift a chat mute early." },
-    { cmd = "/af <message>",                      perm = "adminCall",    desc = "Admin announcement to the whole server (/adminannounce). Also on the Server tab." },
-    { cmd = "/fixveh [ID]",                       perm = "vehicle",      desc = "Repair a vehicle (yours without an ID)." },
-    { cmd = "/flipveh [ID]",                      perm = "vehicle",      desc = "Flip a vehicle back on its wheels." },
-    { cmd = "/getout <ID>",                       perm = "vehicle",      desc = "Pull a player out of their vehicle." },
-    { cmd = "/fly  or  N key",                     perm = "noclip",       desc = "NoClip on / off. /flyspd <0.1-20> sets the speed." },
-    { cmd = "/ajail <ID> <minutes> <reason>",     perm = "jail",         desc = "Put a player in admin jail." },
-    { cmd = "/ajailout <ID>",                     perm = "jail",         desc = "Release a player from admin jail." },
-    { cmd = "/kick <ID> <reason>",                perm = "kick",         desc = "Kick a player from the server." },
-    { cmd = "/ban <account> <reason>",            perm = "ban",          desc = "Account ban (v_accounts, never expires). Online player: serial too." },
-    { cmd = "/unban <account>",                   perm = "ban",          desc = "Lift an account ban." },
-    { cmd = "/setadminlevel <ID> <0-6>",          perm = "setLevel",     desc = "Set an admin level (only below your own)." },
-    { cmd = "/money",                             perm = "money",        desc = "Test money (+€2000) for yourself." },
-    { cmd = "/listacc",                           perm = "listAccounts", desc = "Write every account name to the server log." },
-    { cmd = "/getid <name>",                      perm = false,          desc = "A player's ID from a name (fragment)." },
-    { cmd = "/myid",                              perm = false,          desc = "Your own ID." },
+    { cmd = "O key",                              perm = "panel",        desc = L.text("v_admin.config.open_close_admin_panel") },
+    { cmd = "/reports",                           perm = "reports",      desc = L.text("v_admin.config.opens_admin_panel_on_reports_tab") },
+    { cmd = "/goto <ID>",                         perm = "teleport",     desc = L.text("v_admin.config.teleport_to_player_interior_dimension_too") },
+    { cmd = "/gethere <ID>",                      perm = "teleport",     desc = L.text("v_admin.config.bring_player_to_you_with_their") },
+    { cmd = "/heal <ID>",                         perm = "heal",         desc = L.text("v_admin.config.restore_player_s_health_and_armour") },
+    { cmd = "/mute <ID> <minutes> <reason>",      perm = "mute",         desc = L.text("v_admin.config.chat_mute_survives_relog_expires_on") },
+    { cmd = "/unmute <ID>",                       perm = "mute",         desc = L.text("v_admin.config.lift_chat_mute_early") },
+    { cmd = "/af <message>",                      perm = "adminCall",    desc = L.text("v_admin.config.admin_announcement_to_whole_server_adminannounce") },
+    { cmd = "/fixveh [ID]",                       perm = "vehicle",      desc = L.text("v_admin.config.repair_vehicle_yours_without_id") },
+    { cmd = "/flipveh [ID]",                      perm = "vehicle",      desc = L.text("v_admin.config.flip_vehicle_back_on_its_wheels") },
+    { cmd = "/getout <ID>",                       perm = "vehicle",      desc = L.text("v_admin.config.pull_player_out_of_their_vehicle") },
+    { cmd = "/fly  or  N key",                     perm = "noclip",       desc = L.text("v_admin.config.noclip_on_off_flyspd_0_1") },
+    { cmd = "/ajail <ID> <minutes> <reason>",     perm = "jail",         desc = L.text("v_admin.config.put_player_in_admin_jail") },
+    { cmd = "/ajailout <ID>",                     perm = "jail",         desc = L.text("v_admin.config.release_player_from_admin_jail") },
+    { cmd = "/kick <ID> <reason>",                perm = "kick",         desc = L.text("v_admin.config.kick_player_from_server") },
+    { cmd = "/ban <account> <reason>",            perm = "ban",          desc = L.text("v_admin.config.account_ban_v_accounts_never_expires") },
+    { cmd = "/unban <account>",                   perm = "ban",          desc = L.text("v_admin.config.lift_account_ban") },
+    { cmd = "/setadminlevel <ID> <0-6>",          perm = "setLevel",     desc = L.text("v_admin.config.set_admin_level_only_below_your") },
+    { cmd = "/money",                             perm = "money",        desc = L.text("v_admin.config.test_money_2000_for_yourself") },
+    { cmd = "/listacc",                           perm = "listAccounts", desc = L.text("v_admin.config.write_every_account_name_to_server") },
+    { cmd = "/getid <name>",                      perm = false,          desc = L.text("v_admin.config.player_s_id_from_name_fragment") },
+    { cmd = "/myid",                              perm = false,          desc = L.text("v_admin.config.your_own_id") },
 }
 
 -- Admin jail location (interior 6).

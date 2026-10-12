@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/hud.lua
 --  Server -> player messages (ui_core Alert) + admin jail HUD.
@@ -26,15 +27,13 @@ addEventHandler("onClientRender", root, function()
     local admin  = getElementData(localPlayer, "adminjail_admin")  or "?"
     local reason = getElementData(localPlayer, "adminjail_indok")  or "?"
 
-    dxDrawText("#ff2525ADMINJAIL",
+    dxDrawText(L("v_admin.hud.adminjail"),
         0, sy / 2 - 60, sx, sy / 2 - 60,
         tocolor(255, 255, 255, 255), 1.8, "default-bold",
         "center", "top", false, false, false, true)
 
     dxDrawText(
-        "#ffaaaaRemaining time: #FFFFFF" .. remaining .. " min" ..
-        "\n#ffaaaaAdmin: #FFFFFF" .. tostring(admin) ..
-        "\n#ffaaaaReason: #FFFFFF" .. tostring(reason),
+        L("v_admin.hud.remaining_time_min_admin_reason", { remaining = remaining, admin = tostring(admin), reason = tostring(reason) }),
         0, sy / 2 - 10, sx, sy / 2 - 10,
         tocolor(255, 255, 255, 255), 1.3, "default",
         "center", "top", false, false, false, true)

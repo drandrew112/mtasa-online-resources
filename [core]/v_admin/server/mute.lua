@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/mute.lua
 --  /mute, /unmute  – chat mute handled by v_chat. A mute also
@@ -11,19 +12,18 @@ function adminMute(player, target, minutes, reason)
     end
     minutes = tonumber(minutes)
     if not isElement(target) or not minutes or type(reason) ~= "string" or reason == "" then
-        return adminAlert(player, "Usage: /mute <ID> <minutes> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.mute.usage_mute_id_minutes_reason"), 255, 90, 90)
     end
     if not canPunish(player, target) then return end
     minutes = math.max(1, math.floor(minutes))
 
     local ok, err = exports.v_chat:mutePlayer(target, minutes, reason, getPlayerName(player))
     if not ok then
-        return adminAlert(player, "#FF5A5A" .. tostring(err or "Mute failed"), 255, 90, 90)
+        return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.mute.mute_failed")), 255, 90, 90)
     end
 
     -- The muted player is told by v_chat ("Muted by <admin> (<n> min) for <reason>").
-    adminAlert(player, ("#FFFFFFYou muted #FFFF00%s #FFFFFF(%d min) for #FFFFFF%s")
-        :format(getPlayerName(target), minutes, reason))
+    adminAlert(player, L.msg("v_admin.mute.you_muted_min_for", { player = getPlayerName(target), minutes = minutes, reason = reason }))
     adminLog(player, ("muted %s for %d min (%s)"):format(getPlayerName(target), minutes, reason))
 end
 
@@ -35,11 +35,11 @@ function adminUnmute(player, target)
 
     local ok, err = exports.v_chat:unmutePlayer(target, getPlayerName(player))
     if not ok then
-        return adminAlert(player, "#FF5A5A" .. tostring(err or "Unmute failed"), 255, 90, 90)
+        return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.mute.unmute_failed")), 255, 90, 90)
     end
 
     -- The player is told by v_chat ("Unmuted by <admin>").
-    adminAlert(player, "#FFFFFFYou unmuted #FFFF00" .. getPlayerName(target) .. "#FFFFFF.")
+    adminAlert(player, L.msg("v_admin.mute.you_unmuted", { player = getPlayerName(target) }))
     adminLog(player, "unmuted " .. getPlayerName(target))
 end
 
@@ -53,7 +53,7 @@ addCommandHandler("mute", function(player, cmd, idArg, minutesArg, ...)
 
     local reason = table.concat({ ... }, " ")
     if not idArg or not tonumber(minutesArg) or reason == "" then
-        return adminAlert(player, "Usage: /mute <ID> <minutes> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.mute.usage_mute_id_minutes_reason"), 255, 90, 90)
     end
 
     local target = resolveTarget(player, idArg)
@@ -69,7 +69,7 @@ addCommandHandler("unmute", function(player, cmd, idArg)
         return denyAccess(player, ADMIN.perms.mute)
     end
     if not idArg then
-        return adminAlert(player, "Usage: /unmute <ID>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.mute.usage_unmute_id"), 255, 90, 90)
     end
 
     local target = resolveTarget(player, idArg)

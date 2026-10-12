@@ -2,9 +2,11 @@
     <info author="DrAndrew112" name="Stats" version="1.0.0" type="script"
           description="Per-player statistics (distance, drive time, kills, deaths) stored as JSON in account data" />
 
+    <include resource="v_locals" />
     <include resource="v_mysql" />
     <include resource="v_accounts" />
 
+    <script src="locals.lua" type="shared" />
     <script src="config.lua" type="shared" />
 
     <script src="server/registry.lua" type="server" />

@@ -33,6 +33,29 @@
   },
   "rules": [
     {
+      "_why": "stat unit is a code (ui_pause compares def.unit == \"km\")",
+      "res": "^v_stats$",
+      "ctx": "^unit$",
+      "status": "ignore"
+    },
+    {
+      "_why": "pure date / duration formats",
+      "text": "^(%[-0-9.]*[sdif]|[\\s:\\-./,()#hms]|UTC)+$",
+      "status": "ignore"
+    },
+    {
+      "_why": "registry validation = developer log",
+      "res": "^v_stats$",
+      "file": "registry\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "help tab ids (keys of HELP_TEXT), labels come from v_locals",
+      "res": "^v_socialpanel$",
+      "text": "^(BASICS|INAC MENU|MINIGAMES|VEHICLES|RULES)$",
+      "status": "ignore"
+    },
+    {
       "_why": "template for new intro modules, not loaded (copy it, then run apply)",
       "res": "^v_introduce$",
       "file": "updates/_TEMPLATE\\.lua$",
@@ -286,6 +309,13 @@
     "ui_phone.settings.wallpaper": "Wallpaper",
     "ui_inac.temp.menu": "MENU",
     "v_accounts.login.title": "LOGIN",
-    "v_accounts.register.title": "REGISTER"
+    "v_accounts.register.title": "REGISTER",
+    "v_socialpanel.ui.jobs_heading": "JOBS",
+    "v_socialpanel.ui.all": "ALL",
+    "v_socialpanel.ui.uj_uzenet": "New message - {from}",
+    "v_admin.players.guest": "GUEST",
+    "v_admin.report.title": "REPORT",
+    "v_admin.report.system": "SYSTEM",
+    "v_radar.client.phone": "PHONE"
   }
 }

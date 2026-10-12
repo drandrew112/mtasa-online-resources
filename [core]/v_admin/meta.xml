@@ -3,6 +3,7 @@
           description="Admin panel (O), admin commands, admin jail and server-side ID manager" />
 
     <!-- Messages are shown via the ui_core Alert element (chat is disabled) -->
+    <include resource="v_locals" />
     <include resource="ui_core" />
     <!-- Player report panel UI (/report) -->
     <include resource="dgs" />
@@ -13,6 +14,7 @@
     <include resource="v_mysql" />
 
     <!-- Shared configuration (both sides) -->
+    <script src="locals.lua" type="shared" />
     <script src="config.lua" type="shared" />
 
     <!-- Server side -->

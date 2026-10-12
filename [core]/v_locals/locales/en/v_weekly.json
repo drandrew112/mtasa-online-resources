@@ -48,6 +48,5 @@
   "v_weekly.panel.time_trial_of_week": "TIME TRIAL OF THE WEEK",
   "v_weekly.panel.weekly_update": "WEEKLY UPDATE",
   "v_weekly.panel.xp": "XP {xp}",
-  "v_weekly.panel.xp_2": "{xp|int} XP",
-  "v_weekly.time.04d_02d_02d_02d_02d_utc": "%04d-%02d-%02d %02d:%02d UTC"
+  "v_weekly.panel.xp_2": "{xp|int} XP"
 }

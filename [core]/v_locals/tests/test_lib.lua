@@ -326,6 +326,10 @@ eq("outputChatBox to everyone: per player", #CHAT - before, 2)
 kickPlayer(pHu, X.msg("t.hello"))
 eq("kickPlayer reason resolved", KICK[#KICK][2], "Szia")
 eq("resolveDeep", X.resolveDeep({ a = X.msg("t.hello") }, pEn).a, "Hello")
+eq("string.format %s with message", ("[%s] %d"):format(X.msg("t.hello"), 5), "[Hello] 5")
+eq("string.format plain", string.format("%d-%s", 1, "x"), "1-x")
+eq("table.concat with message", table.concat({ "a", X.msg("t.hello"), "b" }, " "), "a Hello b")
+eq("table.concat plain", table.concat({ 1, 2 }, ","), "1,2")
 
 print(("tests: %d passed, %d failed"):format(passed, failed))
 return failed > 0

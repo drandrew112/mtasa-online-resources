@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/report.lua
 --  Report system UI (DGS) – player side.
@@ -51,7 +52,7 @@ local function chatLine(who, name, text, playerName)
     if who == "player" or (playerName and name == playerName) then
         colour = "#66C8FF"                                     -- the reporter
     end
-    return colour .. tostring(name) .. "#FFFFFF: " .. tostring(text)
+    return L("v_admin.report.text", { colour = colour, name = tostring(name), text = tostring(text) })
 end
 
 --- Live report messages -> colour-coded text (newest 40 lines).
@@ -262,7 +263,7 @@ local function buildReportPanel()
     local btnH  = u(36)
     local rowH  = u(32)
 
-    local win = makeWindow(W, H, "REPORT")
+    local win = makeWindow(W, H, L("v_admin.report.title"))
     Report.win = win
 
     local bottomY = CH - pad - btnH
@@ -271,14 +272,13 @@ local function buildReportPanel()
     -- --- "no report yet" view ------------------------------------------
     Report.newHint = makeText(pad, top, iw, u(74), win, DIM, "top")
     DGS:dgsSetText(Report.newHint,
-        "#CFCFCFDescribe your problem below and press #FFFFFFCall an admin#CFCFCF.\n" ..
-        "An admin gets notified and can chat with you right here.")
+        L("v_admin.report.describe_your_problem_below_and_press"))
 
     Report.newInput = DGS:dgsCreateMemo(pad, top + u(82), iw, bottomY - u(12) - (top + u(82)), "", false, win)
     DGS:dgsMemoSetWordWrapState(Report.newInput, true)
     DGS:dgsMemoSetMaxLength(Report.newInput, 300)
 
-    Report.sendNew = DGS:dgsCreateButton(pad, bottomY, iw, btnH, "Call an admin", false, win, WHITE)
+    Report.sendNew = DGS:dgsCreateButton(pad, bottomY, iw, btnH, L("v_admin.report.call_admin"), false, win, WHITE)
 
     -- --- "active report" view ----------------------------------------
     Report.status = makeText(pad, top, iw, u(20), win, WHITE)
@@ -288,9 +288,9 @@ local function buildReportPanel()
     local sendW = u(84)
     Report.input = DGS:dgsCreateEdit(pad, inputY, iw - sendW - u(6), rowH, "", false, win, WHITE)
     DGS:dgsEditSetMaxLength(Report.input, 300)
-    Report.send  = DGS:dgsCreateButton(pad + iw - sendW, inputY, sendW, rowH, "Send", false, win, WHITE)
+    Report.send  = DGS:dgsCreateButton(pad + iw - sendW, inputY, sendW, rowH, L("common.send"), false, win, WHITE)
 
-    Report.close = DGS:dgsCreateButton(pad, bottomY, iw, btnH, "Close report", false, win, WHITE,
+    Report.close = DGS:dgsCreateButton(pad, bottomY, iw, btnH, L("v_admin.reports.close_report"), false, win, WHITE,
         1, 1, nil, nil, nil, RED[1], RED[2], RED[3])
 
     -- --- events -----------------------------------------------------
@@ -311,7 +311,7 @@ local function buildReportPanel()
     onClick(Report.send, submitMsg)
     addEventHandler("onDgsEditAccepted", Report.input, submitMsg)
 
-    resetPlayerClose = armButton(Report.close, "Close report", "Click again to confirm", function()
+    resetPlayerClose = armButton(Report.close, L("v_admin.reports.close_report"), L("v_admin.report.click_again_to_confirm"), function()
         if Report.report then
             triggerServerEvent(ADMIN.events.reportClose, localPlayer, Report.report.id)
         end
@@ -334,9 +334,9 @@ local function setReportState(report)
 
     if active then
         if report.status == "claimed" then
-            DGS:dgsSetText(Report.status, "#66FF66Claimed by: #FFFFFF" .. tostring(report.claimedByName))
+            DGS:dgsSetText(Report.status, L("v_admin.report.claimed_by", { claimed_by_name = tostring(report.claimedByName) }))
         else
-            DGS:dgsSetText(Report.status, "#FFB040Waiting for an admin to respond...")
+            DGS:dgsSetText(Report.status, L("v_admin.report.waiting_for_admin_to_respond"))
         end
         DGS:dgsSetText(Report.chat, renderChat(report.messages, report.playerName))
     else

@@ -33,11 +33,14 @@ end
 
 local SCENE_TYPES = { camera = true, card = true, task = true, highlight = true, world = true, accept = true }
 
+-- module texts are strings or v_locals message objects
+local function isText(x) return type(x) == "string" or L.isMsg(x) end
+
 -- -> true | false, reason
 local function validate(def)
     if type(def) ~= "table" then return false, "module is not a table" end
     if type(def.id) ~= "string" or def.id == "" then return false, "missing id" end
-    if type(def.title) ~= "string" then return false, L.msg("v_introduce.registry.missing_title", { id = def.id }) end
+    if not isText(def.title) then return false, L.msg("v_introduce.registry.missing_title", { id = def.id }) end
     if type(def.scenes) ~= "table" or #def.scenes == 0 then return false, L.msg("v_introduce.registry.no_scenes", { id = def.id }) end
     for i, scene in ipairs(def.scenes) do
         if type(scene) ~= "table" or not SCENE_TYPES[scene.type] then

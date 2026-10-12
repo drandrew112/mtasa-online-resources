@@ -194,6 +194,32 @@ do
             return ok
         end
 
+        -- string.format("%s") and table.concat do not call __tostring: give them
+        -- the text (default language) instead of failing on a message object
+        local origFormat, origConcat = string.format, table.concat
+        string.format = function(fmt, ...)
+            if isMsg(fmt) then fmt = tostring(fmt) end
+            local n = select("#", ...)
+            for i = 1, n do
+                if isMsg((select(i, ...))) then
+                    local args = { ... }
+                    for j = i, n do if isMsg(args[j]) then args[j] = tostring(args[j]) end end
+                    return origFormat(fmt, unpack(args, 1, n))
+                end
+            end
+            return origFormat(fmt, ...)
+        end
+        table.concat = function(t, sep, i, j)
+            for k = i or 1, j or #t do
+                if isMsg(t[k]) then
+                    local copy = {}
+                    for m = i or 1, j or #t do copy[m] = isMsg(t[m]) and tostring(t[m]) or t[m] end
+                    return origConcat(copy, sep, i, j)
+                end
+            end
+            return origConcat(t, sep, i, j)
+        end
+
         local origKick = kickPlayer
         kickPlayer = function(player, a, b)
             if isMsg(a) then a = C.resolve(langOf(player), a) end

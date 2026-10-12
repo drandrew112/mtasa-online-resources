@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Exported API. `offset` = weeks from now: 0 = the running week (applied
 -- immediately), 1 = next week ... Weeks that were never configured inherit the
 -- latest earlier configured week.
@@ -65,8 +66,8 @@ end
 
 local function defaultLabel(money, xp)
     local parts = {}
-    if money > 1 then parts[#parts + 1] = money .. "x money" end
-    if xp > 1 then parts[#parts + 1] = xp .. "x XP" end
+    if money > 1 then parts[#parts + 1] = L.msg("v_weekly.api.x_money", { money = money }) end
+    if xp > 1 then parts[#parts + 1] = L.msg("v_weekly.api.x_xp", { xp = xp }) end
     return table.concat(parts, " & ")
 end
 

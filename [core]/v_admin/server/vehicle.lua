@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/vehicle.lua
 --  Vehicle commands: fix, flip, getout.
@@ -11,7 +12,7 @@ local function getTargetVehicle(player, idArg)
     if idArg then
         local target = getPlayerFromId(idArg)
         if not target then
-            adminAlert(player, "Player not found (valid ID required).", 255, 90, 90)
+            adminAlert(player, L.msg("v_admin.core.player_not_found_valid_id_required"), 255, 90, 90)
             return false
         end
         return getPedOccupiedVehicle(target), target
@@ -30,16 +31,16 @@ function adminFixVeh(player, target)
 
     local veh = getPedOccupiedVehicle(target)
     if not veh then
-        return adminAlert(player, "No vehicle.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.vehicle.no_vehicle"), 255, 90, 90)
     end
 
     fixVehicle(veh)
 
     if target and target ~= player then
-        adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFrepaired your vehicle.")
-        adminAlert(player, "#FFFFFFYou repaired #FFFF00" .. getPlayerName(target) .. "#FFFFFF's vehicle.")
+        adminAlert(target, L.msg("v_admin.vehicle.repaired_your_vehicle", { player = getPlayerName(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_repaired_s_vehicle", { player = getPlayerName(target) }))
     else
-        adminAlert(player, "#FFFFFFVehicle repaired.")
+        adminAlert(player, L.msg("v_admin.vehicle.vehicle_repaired"))
     end
 end
 
@@ -63,7 +64,7 @@ function adminFlipVeh(player, target)
 
     local veh = getPedOccupiedVehicle(target)
     if not veh then
-        return adminAlert(player, "No vehicle.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.vehicle.no_vehicle"), 255, 90, 90)
     end
 
     local rx, _, rz = getElementRotation(veh)
@@ -71,10 +72,10 @@ function adminFlipVeh(player, target)
     setElementRotation(veh, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
 
     if target and target ~= player then
-        adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFflipped your vehicle back.")
-        adminAlert(player, "#FFFFFFYou flipped #FFFF00" .. getPlayerName(target) .. "#FFFFFF's vehicle back.")
+        adminAlert(target, L.msg("v_admin.vehicle.flipped_your_vehicle_back", { player = getPlayerName(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_flipped_s_vehicle_back", { player = getPlayerName(target) }))
     else
-        adminAlert(player, "#FFFFFFVehicle flipped back.")
+        adminAlert(player, L.msg("v_admin.vehicle.vehicle_flipped_back"))
     end
 end
 
@@ -98,16 +99,16 @@ function adminGetOut(player, target)
 
     local veh = getPedOccupiedVehicle(target)
     if not veh then
-        return adminAlert(player, "#FFFF00" .. getPlayerName(target) .. " #FFFFFFis not in a vehicle.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.vehicle.is_not_in_vehicle", { player = getPlayerName(target) }), 255, 90, 90)
     end
 
     removePedFromVehicle(target)
 
     if target ~= player then
-        adminAlert(target, "#FFFF00" .. getPlayerName(player) .. " #FFFFFFpulled you out of your vehicle.")
-        adminAlert(player, "#FFFFFFYou pulled #FFFF00" .. getPlayerName(target) .. " #FFFFFFout of their vehicle.")
+        adminAlert(target, L.msg("v_admin.vehicle.pulled_you_out_of_your_vehicle", { player = getPlayerName(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_pulled_out_of_their_vehicle", { player = getPlayerName(target) }))
     else
-        adminAlert(player, "#FFFFFFYou left your vehicle.")
+        adminAlert(player, L.msg("v_admin.vehicle.you_left_your_vehicle"))
     end
 end
 

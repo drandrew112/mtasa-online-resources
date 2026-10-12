@@ -1,4 +1,5 @@
-local prefix = "#00ffffSzint Rendszer #ff0000// #ffffff"
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+local prefix = L.msg("v_levelsys.server.level_system")
 
 local xpLvlDos = 1000
 local nextLvlXp = 600
@@ -113,7 +114,7 @@ function giveXp (player, add_xp)
         if ( (xp + add_xp) > (next_xp - 1) ) then -- level up
             level = level + 1
             next_xp = getNextXp(level)
-            outputChatBox(prefix.."Elérted a "..level..". szintet!", player, 255,255,255, true)
+            outputChatBox(L.msg("v_levelsys.server.you_reached_level", { prefix = prefix, level = level }), player, 255,255,255, true)
         else -- Level up vége, folytatás
             xp = (xp + add_xp)
             saveLvl(player, level, xp)
@@ -132,27 +133,27 @@ end
 addCommandHandler("givexp", function(playerSource, cmd, targetName, add_xp)
     local player = playerSource
     if not isAdmin(player) then
-        outputChatBox(prefix.."Ehhez nincs jogod!",player,255,50,50,true)
+        outputChatBox(L.msg("v_levelsys.server.you_are_not_allowed_to_do", { prefix = prefix }),player,255,50,50,true)
         return
     end
 
     add_xp = tonumber(add_xp)
     if not targetName or not add_xp then
-        outputChatBox(prefix.."Használat: /givexp <név> <xp>", player, 255,50,50, true)
+        outputChatBox(L.msg("v_levelsys.server.usage_givexp_name_xp", { prefix = prefix }), player, 255,50,50, true)
         return
     end
 
     local target = getPlayerFromName(targetName)
     if not target then
-        outputChatBox(prefix.."A játékos nem található", player, 255,50,50, true)
+        outputChatBox(L.msg("v_levelsys.server.player_not_found", { prefix = prefix }), player, 255,50,50, true)
         return
     end
 
     if giveXp(target, add_xp) then
-        outputChatBox(prefix.."#ffffffKaptal #00ffff"..add_xp.."#ffffff XP-t, #00ffff"..getPlayerName(player).."#ffffff-tol/tol", target, 255,255,255, true)
-        outputChatBox(prefix.."#ffffffAdtal #00ffff"..add_xp.."#ffffff XP-t "..targetName.."#ffffff jatekosnak", player, 255,255,255, true)
+        outputChatBox(L.msg("v_levelsys.server.you_received_xp_from", { prefix = prefix, add_xp = add_xp, player = getPlayerName(player) }), target, 255,255,255, true)
+        outputChatBox(L.msg("v_levelsys.server.you_gave_xp_to", { prefix = prefix, add_xp = add_xp, target_name = targetName }), player, 255,255,255, true)
     else
-        outputChatBox(prefix.."A játékosnak nem lehet most XP-t adni", player, 255,50,50, true)
+        outputChatBox(L.msg("v_levelsys.server.this_player_cannot_receive_xp_right", { prefix = prefix }), player, 255,50,50, true)
     end
 end)
 
@@ -166,13 +167,13 @@ addCommandHandler("resetlvl",
                     local level, xp = 1, 0
                     saveLvl(target, level, xp)
                 else
-                    outputChatBox(prefix.."A játékos nem található", player, 255,50,50, true)
+                    outputChatBox(L.msg("v_levelsys.server.player_not_found", { prefix = prefix }), player, 255,50,50, true)
                 end
             else
-                outputChatBox(prefix.."Add meg annak a játékosnak a nevét akinek", player, 255,50,50, true)
+                outputChatBox(L.msg("v_levelsys.server.enter_name_of_player_to_give", { prefix = prefix }), player, 255,50,50, true)
             end
         else
-            outputChatBox(prefix.."Ehhez nincs jogod!",player,255,50,50,true)
+            outputChatBox(L.msg("v_levelsys.server.you_are_not_allowed_to_do", { prefix = prefix }),player,255,50,50,true)
             return
         end
     end

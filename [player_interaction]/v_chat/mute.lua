@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_chat / mute.lua  (server)
 --  Chat mute. Blocks outgoing chat messages while active; the
@@ -31,7 +32,7 @@ local function formatDuration(seconds)
     seconds = math.max(0, math.floor(seconds))
     local m = math.floor(seconds / 60)
     local s = seconds % 60
-    if m > 0 then return m .. "m " .. s .. "s" end
+    if m > 0 then return L.msg("v_chat.mute.m_s", { m = m, s = s }) end
     return s .. "s"
 end
 
@@ -70,7 +71,7 @@ end
 
 -- Called by v_chat's send handler when a muted player tries to talk.
 function notifyMuteBlocked(player)
-    alert(player, "You are muted! Time left: " .. formatDuration(getMuteRemaining(player)), 255, 90, 90, 4000)
+    alert(player, L.msg("v_chat.mute.you_are_muted_time_left", { player = formatDuration(getMuteRemaining(player)) }), 255, 90, 90, 4000)
 end
 
 -- ------------------------------------------------------------
@@ -79,16 +80,16 @@ end
 -- ------------------------------------------------------------
 function mutePlayer(player, minutes, reason, adminName)
     if not isElement(player) or getElementType(player) ~= "player" then
-        return false, "Invalid player"
+        return false, L.msg("v_chat.mute.invalid_player")
     end
 
     minutes = tonumber(minutes)
     if not minutes or minutes <= 0 then
-        return false, "Invalid duration"
+        return false, L.msg("v_chat.mute.invalid_duration")
     end
     minutes = math.floor(minutes)
 
-    reason    = (type(reason) == "string"    and reason    ~= "") and reason    or "No reason given"
+    reason    = (type(reason) == "string"    and reason    ~= "") and reason    or L.msg("v_chat.mute.no_reason_given")
     adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
 
     local until_ = now() + minutes * 60
@@ -103,7 +104,7 @@ function mutePlayer(player, minutes, reason, adminName)
     end
 
     seenMuted[player] = true
-    alert(player, ("Muted by %s (%d min) for %s"):format(adminName, minutes, reason), 255, 170, 60, 7000)
+    alert(player, L.msg("v_chat.mute.muted_by_min_for", { admin_name = adminName, minutes = minutes, reason = reason }), 255, 170, 60, 7000)
 
     outputServerLog(("[v_chat] %s muted %s for %d min (%s)"):format(adminName, getPlayerName(player), minutes, reason))
     return true
@@ -115,16 +116,16 @@ end
 -- ------------------------------------------------------------
 function unmutePlayer(player, adminName)
     if not isElement(player) or getElementType(player) ~= "player" then
-        return false, "Invalid player"
+        return false, L.msg("v_chat.mute.invalid_player")
     end
     if not isChatMuted(player) then
-        return false, getPlayerName(player) .. " is not muted"
+        return false, L.msg("v_chat.mute.is_not_muted", { player = getPlayerName(player) })
     end
     adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
 
     clearMuteData(player)
     seenMuted[player] = nil
-    alert(player, "Unmuted by " .. adminName .. ", you can use the chat again.", 85, 255, 85, 5000)
+    alert(player, L.msg("v_chat.mute.unmuted_by_you_can_use_chat", { admin_name = adminName }), 85, 255, 85, 5000)
 
     outputServerLog(("[v_chat] %s unmuted %s"):format(adminName, getPlayerName(player)))
     return true
@@ -164,7 +165,7 @@ setTimer(function()
         elseif seenMuted[player] then
             seenMuted[player] = nil
             clearMuteData(player)
-            alert(player, "Your mute has expired, you can use the chat again.", 85, 255, 85, 5000)
+            alert(player, L.msg("v_chat.mute.your_mute_has_expired_you_can"), 85, 255, 85, 5000)
         end
     end
 end, CHECK_INTERVAL, 0)

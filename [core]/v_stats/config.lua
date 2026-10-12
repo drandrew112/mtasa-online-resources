@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_stats configuration (shared).
 --
 -- Every stat is registered here. `id` is the stable string key used by the
@@ -32,18 +33,18 @@ STATS.TICK = 1000
 STATS.MAX_SPEED = { foot = 15, land = 120, water = 80, air = 250 }
 
 STATS.LIST = {
-    { id = "drive_km",  name = "Distance driven (land vehicles)",  unit = "km", achStat = "drive_km" },
-    { id = "walk_km",   name = "Distance walked",                  unit = "km", achStat = "walk_km"  },
-    { id = "sail_km",   name = "Distance sailed (water vehicles)", unit = "km", achStat = "sail_km"  },
-    { id = "fly_km",    name = "Distance flown (air vehicles)",    unit = "km", achStat = "fly_km"   },
+    { id = "drive_km",  name = L.text("v_stats.config.distance_driven_land_vehicles"),  unit = "km", achStat = "drive_km" },
+    { id = "walk_km",   name = L.text("v_stats.config.distance_walked"),                  unit = "km", achStat = "walk_km"  },
+    { id = "sail_km",   name = L.text("v_stats.config.distance_sailed_water_vehicles"), unit = "km", achStat = "sail_km"  },
+    { id = "fly_km",    name = L.text("v_stats.config.distance_flown_air_vehicles"),    unit = "km", achStat = "fly_km"   },
 
-    { id = "drive_time", name = "Time driving (land vehicles)",  unit = "s", achStat = "drive_time" },
-    { id = "sail_time",  name = "Time sailing (water vehicles)", unit = "s", achStat = "sail_time"  },
-    { id = "fly_time",   name = "Time flying (air vehicles)",    unit = "s", achStat = "fly_time"   },
+    { id = "drive_time", name = L.text("v_stats.config.time_driving_land_vehicles"),  unit = "s", achStat = "drive_time" },
+    { id = "sail_time",  name = L.text("v_stats.config.time_sailing_water_vehicles"), unit = "s", achStat = "sail_time"  },
+    { id = "fly_time",   name = L.text("v_stats.config.time_flying_air_vehicles"),    unit = "s", achStat = "fly_time"   },
 
-    { id = "kills_peds",    name = "Kills (peds)",    unit = "", achStat = "kills_peds"    },
-    { id = "kills_players", name = "Kills (players)", unit = "", achStat = "kills_players" },
+    { id = "kills_peds",    name = L.text("v_stats.config.kills_peds"),    unit = "", achStat = "kills_peds"    },
+    { id = "kills_players", name = L.text("v_stats.config.kills_players"), unit = "", achStat = "kills_players" },
 
-    { id = "deaths",            name = "Deaths (all)",               unit = "", achStat = "deaths"            },
-    { id = "deaths_by_players", name = "Deaths (killed by players)", unit = "", achStat = "deaths_by_players" },
+    { id = "deaths",            name = L.text("v_stats.config.deaths_all"),               unit = "", achStat = "deaths"            },
+    { id = "deaths_by_players", name = L.text("v_stats.config.deaths_killed_by_players"), unit = "", achStat = "deaths_by_players" },
 }

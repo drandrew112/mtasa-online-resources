@@ -1,4 +1,6 @@
 <meta>
     <info author='jbeta' version='1.5' name='joinquit' type='script' />
+	<include resource="v_locals" />
+	<script src="locals.lua" type="client" />
 	<script src="joinquit.lua" type="client" />
 </meta>

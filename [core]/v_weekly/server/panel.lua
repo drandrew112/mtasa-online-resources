@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Weekly news panel: shown once per week to every player after onPlayerLoaded.
 
 PANEL = {}
@@ -72,7 +73,7 @@ addEventHandler("onPlayerLoaded", root, function()
             local parts = {}
             if money > 0 then parts[#parts + 1] = "€" .. money end
             if xp > 0 then parts[#parts + 1] = xp .. " XP" end
-            triggerClientEvent(player, "weekly:notify", player, "Login bonus: " .. table.concat(parts, " + "), "Login bonus")
+            triggerClientEvent(player, "weekly:notify", player, L.msg("v_weekly.panel.login_bonus_2", { parts = table.concat(parts, " + ") }), L.msg("v_weekly.admin.login_bonus"))
         end
         PANEL.show(player)
     end, WEEKLY.PANEL_DELAY, 1)

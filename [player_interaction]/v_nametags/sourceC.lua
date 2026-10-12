@@ -1,14 +1,15 @@
-﻿uicore = exports.ui_core
+﻿if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+uicore = exports.ui_core
 ui = function(z) return uicore:ui(z) end
 
 local lineTo = false
 local adminTitles_forNametag = {
-    [1] = "#000000[#00BAFFTRIAL MOD#000000] #FF0000",
-    [2] = "#000000[#00BAFFMOD#000000] #FF0000",
-    [3] = "#000000[#BAFFBAADMIN#000000] #FF0000",
-    [4] = "#000000[#fc1f17SUPERADMIN#000000] #FF0000",
-    [5] = "#000000[#FFBB00DEV#000000] #FFFFFF",
-    [6] = "#000000[#FF4400OWNER#000000] #FFFFFF",
+    [1] = L("v_nametags.sourcec.trial_mod"),
+    [2] = L("v_nametags.sourcec.mod"),
+    [3] = L("v_nametags.sourcec.admin"),
+    [4] = L("v_nametags.sourcec.superadmin"),
+    [5] = L("v_nametags.sourcec.dev"),
+    [6] = L("v_nametags.sourcec.owner"),
 }
 
 function RGBToHex(red, green, blue, alpha)
@@ -83,7 +84,7 @@ local function renderNametags()
 							end
 							player_text = tostring(player_text or "")
 
-							local level_text = "lvl "..tostring(getElementData(playerInfo, "level"))
+							local level_text = L("v_nametags.sourcec.lvl", { player_info = tostring(getElementData(playerInfo, "level")) })
 
 							-- admin cím: admin_level element data + adminTitles_forNametag alapján.
 							-- A prefix MEGTARTJA a saját színezését; a lezáró színkódot levágjuk,
@@ -111,8 +112,8 @@ local function renderNametags()
 
 							-- 1. sor: admin prefix + név egy vízszintes sorban, sX-re centrálva
 							local gap = 6
-							local adminW = (admin_plain ~= "") and dxGetTextWidth(admin_plain, fontS, "default-bold") or 0
-							local nameW  = dxGetTextWidth(player_text, fontS, "default-bold")
+							local adminW = (admin_plain ~= "") and L.width(admin_plain, fontS, "default-bold") or 0
+							local nameW  = L.width(player_text, fontS, "default-bold")
 
 							local totalW = nameW + ((adminW > 0) and (adminW + gap) or 0)
 							local curX = sX - totalW / 2
@@ -163,7 +164,7 @@ local function renderNametags()
 
 					if sX and sY then
 						local fontS = ui(2)
-						local textWidth = dxGetTextWidth(pedName, fontS, "default-bold")
+						local textWidth = L.width(pedName, fontS, "default-bold")
 
 						local bgWidth = textWidth + ui(10)
 						local bgHeight = ui(42)

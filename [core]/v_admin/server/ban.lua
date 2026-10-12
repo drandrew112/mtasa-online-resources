@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / server/ban.lua
 --  /ban, /unban, /kick
@@ -21,7 +22,7 @@ function adminBan(player, accName, reason)
         return denyAccess(player, ADMIN.perms.ban)
     end
     if type(accName) ~= "string" or accName == "" or type(reason) ~= "string" or reason == "" then
-        return adminAlert(player, "Usage: /ban <account> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.usage_ban_account_reason"), 255, 90, 90)
     end
 
     local online = playerOnAccount(accName)
@@ -29,10 +30,10 @@ function adminBan(player, accName, reason)
 
     local ok, err = exports.v_accounts:banAccount(accName, reason, getPlayerName(player))
     if not ok then
-        return adminAlert(player, "#FF5A5A" .. tostring(err or "Ban failed (v_accounts not reachable)"), 255, 90, 90)
+        return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.ban_failed_v_accounts_not_reachable")), 255, 90, 90)
     end
 
-    adminAlert(player, "#FFFFFFYou banned account #FFFF00" .. accName .. " #FFFFFFfor #FFFFFF" .. reason)
+    adminAlert(player, L.msg("v_admin.ban.you_banned_account_for", { acc_name = accName, reason = reason }))
     adminLog(player, ("banned account %s (%s)"):format(accName, reason))
 end
 
@@ -41,15 +42,15 @@ function adminUnban(player, accName)
         return denyAccess(player, ADMIN.perms.ban)
     end
     if type(accName) ~= "string" or accName == "" then
-        return adminAlert(player, "Usage: /unban <account>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.usage_unban_account"), 255, 90, 90)
     end
 
     local ok, err = exports.v_accounts:unbanAccount(accName)
     if not ok then
-        return adminAlert(player, "#FF5A5A" .. tostring(err or "Unban failed"), 255, 90, 90)
+        return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.unban_failed")), 255, 90, 90)
     end
 
-    adminAlert(player, "#FFFFFFYou unbanned account #FFFF00" .. accName .. "#FFFFFF.")
+    adminAlert(player, L.msg("v_admin.ban.you_unbanned_account", { acc_name = accName }))
     adminLog(player, "unbanned account " .. accName)
 end
 
@@ -58,20 +59,20 @@ function adminKick(player, target, reason)
         return denyAccess(player, ADMIN.perms.kick)
     end
     if not isElement(target) or type(reason) ~= "string" or reason == "" then
-        return adminAlert(player, "Usage: /kick <ID> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.usage_kick_id_reason"), 255, 90, 90)
     end
     if target == player then
-        return adminAlert(player, "You can't kick yourself.", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.you_can_t_kick_yourself"), 255, 90, 90)
     end
     if not canPunish(player, target) then return end
 
     local name = getPlayerName(target)
     -- Needs function.kickPlayer: resource.v_admin is in the Admin ACL group.
     if not kickPlayer(target, player, reason) then
-        return adminAlert(player, "#FF5A5AKick failed (v_admin needs the function.kickPlayer ACL right).", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.kick_failed_v_admin_needs_function"), 255, 90, 90)
     end
 
-    adminAlert(player, "#FFFFFFYou kicked #FFFF00" .. name .. " #FFFFFFfor #FFFFFF" .. reason)
+    adminAlert(player, L.msg("v_admin.ban.you_kicked_for", { name = name, reason = reason }))
     adminLog(player, ("kicked %s (%s)"):format(name, reason))
 end
 
@@ -99,7 +100,7 @@ addCommandHandler("kick", function(player, cmd, idArg, ...)
 
     local reason = table.concat({ ... }, " ")
     if not idArg or reason == "" then
-        return adminAlert(player, "Usage: /kick <ID> <reason>", 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.ban.usage_kick_id_reason"), 255, 90, 90)
     end
 
     local target = resolveTarget(player, idArg)

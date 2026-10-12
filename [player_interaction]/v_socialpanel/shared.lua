@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     v_socialpanel / shared.lua
     Constants and pure helpers used by both the client and the server.
@@ -82,25 +83,25 @@ end
 
 -- Crew name / tag validation. Returns true, cleanValue  OR  false, errorMessage.
 function SP.validateCrewName(name)
-    if type(name) ~= "string" then return false, "Invalid name." end
+    if type(name) ~= "string" then return false, L.text("v_socialpanel.shared.invalid_name") end
     name = name:gsub("^%s+", ""):gsub("%s+$", "")
     if #name < SP.CREW_NAME_MIN or #name > SP.CREW_NAME_MAX then
-        return false, ("Crew name must be %d-%d characters."):format(SP.CREW_NAME_MIN, SP.CREW_NAME_MAX)
+        return false, L.text("v_socialpanel.shared.crew_name_must_be_characters", { crew_name_min = SP.CREW_NAME_MIN, crew_name_max = SP.CREW_NAME_MAX })
     end
     if not name:find("^[%w _%-%.]+$") then
-        return false, "Crew name may only contain letters, digits, space, - _ ."
+        return false, L.text("v_socialpanel.shared.crew_name_may_only_contain_letters")
     end
     return true, name
 end
 
 function SP.validateCrewTag(tag)
-    if type(tag) ~= "string" then return false, "Invalid tag." end
+    if type(tag) ~= "string" then return false, L.text("v_socialpanel.shared.invalid_tag") end
     tag = tag:gsub("^%s+", ""):gsub("%s+$", "")
     if #tag < SP.CREW_TAG_MIN or #tag > SP.CREW_TAG_MAX then
-        return false, ("Tag must be %d-%d characters."):format(SP.CREW_TAG_MIN, SP.CREW_TAG_MAX)
+        return false, L.text("v_socialpanel.shared.tag_must_be_characters", { crew_tag_min = SP.CREW_TAG_MIN, crew_tag_max = SP.CREW_TAG_MAX })
     end
     if not tag:find("^[%w]+$") then
-        return false, "Tag may only contain letters and digits."
+        return false, L.text("v_socialpanel.shared.tag_may_only_contain_letters_and")
     end
     return true, tag:upper()
 end

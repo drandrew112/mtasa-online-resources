@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     v_socialpanel / server.lua
     Friends, friend requests, crews, profiles and private / crew messaging.
@@ -76,7 +77,7 @@ end
 
 local function notify(player, msg, r, g, b)
     if isElement(player) then
-        outputChatBox("#f0c800[Social] #ffffff" .. msg, player, r or 255, g or 255, b or 255, true)
+        outputChatBox("#f0c800[Social] #ffffff" .. L.resolveFor(player, msg), player, r or 255, g or 255, b or 255, true)
     end
 end
 
@@ -195,7 +196,7 @@ local function buildConversations(player, myName)
         end
         convos[#convos + 1] = {
             kind = "crew", with = myCrew.name, crewTag = myCrew.tag, crewColor = myCrew.color,
-            last = last and (last.from .. ": " .. last.text) or "No messages yet.",
+            last = last and (last.from .. ": " .. last.text) or L.msg("v_socialpanel.server.no_messages_yet"),
             time = last and last.time or 0, unread = unread,
         }
     end
@@ -307,7 +308,7 @@ local function pushAchievements(player)
             id = d.id,
             category = d.category,
             name = masked and "???" or d.name,
-            desc = masked and "Hidden achievement." or d.desc,
+            desc = masked and L.msg("v_socialpanel.server.hidden_achievement") or d.desc,
             xp = d.xp,
             unit = d.unit,
             hidden = masked,
@@ -349,22 +350,22 @@ addEventHandler("sp:friend:add", root, function(targetName)
     if not myName then return end
     if type(targetName) ~= "string" or targetName == "" then return end
     if targetName:lower() == myName:lower() then
-        return notify(player, "You can't add yourself.", 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.you_can_t_add_yourself"), 255, 120, 120)
     end
 
     local targetAcc = accountByName(targetName)
     if not targetAcc then
-        return notify(player, "No such player: " .. targetName, 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.no_such_player", { target_name = targetName }), 255, 120, 120)
     end
     targetName = targetAcc
 
     local myAcc = myName
     local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
     if SP.contains(myFriends, targetName) then
-        return notify(player, targetName .. " is already your friend.", 255, 200, 0)
+        return notify(player, L.msg("v_socialpanel.server.is_already_your_friend", { target_name = targetName }), 255, 200, 0)
     end
     if #myFriends >= SP.MAX_FRIENDS then
-        return notify(player, "Your friend list is full.", 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.your_friend_list_is_full"), 255, 120, 120)
     end
 
     -- If they already sent me a request, become friends immediately.
@@ -380,20 +381,20 @@ addEventHandler("sp:friend:add", root, function(targetName)
             tFriends[#tFriends + 1] = myName
             setListFor(targetAcc, SP.KEY_FRIENDS, tFriends)
         end
-        notify(player, "You are now friends with " .. targetName, 0, 220, 0)
+        notify(player, L.msg("v_socialpanel.server.you_are_now_friends_with", { target_name = targetName }), 0, 220, 0)
         local tp = onlinePlayerByAccount(targetName)
-        notify(tp, "You are now friends with " .. myName, 0, 220, 0)
+        notify(tp, L.msg("v_socialpanel.server.you_are_now_friends_with_2", { my_name = myName }), 0, 220, 0)
         return pushBoth(player, tp)
     end
 
     if SP.contains(SPDB.getRequestsFor(targetAcc), myName) then
-        return notify(player, "You already sent them a request.", 255, 200, 0)
+        return notify(player, L.msg("v_socialpanel.server.you_already_sent_them_request"), 255, 200, 0)
     end
     SPDB.addRequest(myName, targetAcc)
-    notify(player, "Friend request sent to " .. targetName, 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.friend_request_sent_to", { target_name = targetName }), 0, 220, 0)
     local tp = onlinePlayerByAccount(targetName)
     if tp then
-        notify(tp, myName .. " sent you a friend request.", 0, 220, 0)
+        notify(tp, L.msg("v_socialpanel.server.sent_you_friend_request", { my_name = myName }), 0, 220, 0)
         pushSnapshot(tp)
     end
 end)
@@ -407,13 +408,13 @@ addEventHandler("sp:friend:accept", root, function(senderName)
     local myAcc = myName
     local incoming = SPDB.getRequestsFor(myAcc)
     local ok, exact = SP.contains(incoming, senderName)
-    if not ok then return notify(player, "No such request.", 255, 120, 120) end
+    if not ok then return notify(player, L.msg("v_socialpanel.server.no_such_request"), 255, 120, 120) end
     senderName = exact
 
     SPDB.removeRequest(senderName, myAcc)
 
     local senderAcc = accountByName(senderName)
-    if not senderAcc then return notify(player, "That account no longer exists.", 255, 120, 120) end
+    if not senderAcc then return notify(player, L.msg("v_socialpanel.server.that_account_no_longer_exists"), 255, 120, 120) end
 
     local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
     if not SP.contains(myFriends, senderName) then
@@ -426,9 +427,9 @@ addEventHandler("sp:friend:accept", root, function(senderName)
         setListFor(senderAcc, SP.KEY_FRIENDS, sFriends)
     end
 
-    notify(player, "You accepted " .. senderName .. "'s request.", 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.you_accepted_s_request", { sender_name = senderName }), 0, 220, 0)
     local sp = onlinePlayerByAccount(senderName)
-    notify(sp, myName .. " accepted your friend request.", 0, 220, 0)
+    notify(sp, L.msg("v_socialpanel.server.accepted_your_friend_request", { my_name = myName }), 0, 220, 0)
     pushBoth(player, sp)
 end)
 
@@ -441,7 +442,7 @@ addEventHandler("sp:friend:decline", root, function(senderName)
     local ok, exact = SP.contains(SPDB.getRequestsFor(myAcc), senderName)
     if not ok then return end
     SPDB.removeRequest(exact, myAcc)
-    notify(player, "Request declined.", 255, 200, 0)
+    notify(player, L.msg("v_socialpanel.server.request_declined"), 255, 200, 0)
     pushSnapshot(player)
 end)
 
@@ -462,9 +463,9 @@ addEventHandler("sp:friend:remove", root, function(friendName)
     if fAcc then
         setListFor(fAcc, SP.KEY_FRIENDS, SP.removeValue(getListFor(fAcc, SP.KEY_FRIENDS), myName))
     end
-    notify(player, friendName .. " removed from your friend list.", 255, 200, 0)
+    notify(player, L.msg("v_socialpanel.server.removed_from_your_friend_list", { friend_name = friendName }), 255, 200, 0)
     local fp = onlinePlayerByAccount(friendName)
-    notify(fp, myName .. " removed you from their friend list.", 255, 200, 0)
+    notify(fp, L.msg("v_socialpanel.server.removed_you_from_their_friend_list", { my_name = myName }), 255, 200, 0)
     pushBoth(player, fp)
 end)
 
@@ -511,7 +512,7 @@ addEventHandler("sp:search", root, function(query)
     if not accName(player) or type(query) ~= "string" then return end
     query = query:gsub("^%s+", ""):gsub("%s+$", "")
     if #query < SP.SEARCH_MIN then
-        return triggerClientEvent(player, "sp:search:results", player, {}, "Type at least " .. SP.SEARCH_MIN .. " characters.")
+        return triggerClientEvent(player, "sp:search:results", player, {}, L.msg("v_socialpanel.server.type_at_least_characters", { search_min = SP.SEARCH_MIN }))
     end
 
     local needle = query:lower()
@@ -621,7 +622,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
     if kind == "dm" then
         if target:lower() == myName:lower() then return end
         local targetAcc = accountByName(target)
-        if not targetAcc then return notify(player, "No such player: " .. target, 255, 120, 120) end
+        if not targetAcc then return notify(player, L.msg("v_socialpanel.server.no_such_player_2", { target = target }), 255, 120, 120) end
         target = targetAcc
 
         local key = SP.pairKey(myName, target)
@@ -642,7 +643,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
 
     elseif kind == "crew" then
         local crew = crewOf(myName)
-        if not crew then return notify(player, "You are not in a crew.", 255, 120, 120) end
+        if not crew then return notify(player, L.msg("v_socialpanel.server.you_are_not_in_crew"), 255, 120, 120) end
         crewMsgs[crew.name:lower()] = crewMsgs[crew.name:lower()] or {}
         local id = SPDB.insertCrewMsg(myName, crew.name, text, now)
         table.insert(crewMsgs[crew.name:lower()], { id = id, from = myName, text = text, time = now, crew = crew.name })
@@ -670,13 +671,13 @@ addEventHandler("sp:crew:create", root, function(name, tag, r, g, b)
     local player = client
     local myName = accName(player)
     if not myName then return end
-    if crewOf(myName) then return notify(player, "You already have a crew. Leave it first.", 255, 120, 120) end
+    if crewOf(myName) then return notify(player, L.msg("v_socialpanel.server.you_already_have_crew_leave_it"), 255, 120, 120) end
 
     local okN, cleanName = SP.validateCrewName(name)
     if not okN then return notify(player, cleanName, 255, 120, 120) end
     local okT, cleanTag = SP.validateCrewTag(tag)
     if not okT then return notify(player, cleanTag, 255, 120, 120) end
-    if crews[cleanName:lower()] then return notify(player, "A crew with that name already exists.", 255, 120, 120) end
+    if crews[cleanName:lower()] then return notify(player, L.msg("v_socialpanel.server.crew_with_that_name_already_exists"), 255, 120, 120) end
 
     r = math.max(0, math.min(255, tonumber(r) or 255))
     g = math.max(0, math.min(255, tonumber(g) or 200))
@@ -689,7 +690,7 @@ addEventHandler("sp:crew:create", root, function(name, tag, r, g, b)
     crews[cleanName:lower()] = crew
     setData(player, SP.KEY_CREW, cleanName)
     saveCrew(crew)
-    notify(player, "Crew created: " .. cleanName .. " [" .. cleanTag .. "]", 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.crew_created", { clean_name = cleanName, clean_tag = cleanTag }), 0, 220, 0)
     pushSnapshot(player)
 end)
 
@@ -698,18 +699,18 @@ addEventHandler("sp:crew:join", root, function(crewName)
     local player = client
     local myName = accName(player)
     if not myName or type(crewName) ~= "string" then return end
-    if crewOf(myName) then return notify(player, "You already have a crew. Leave it first.", 255, 120, 120) end
+    if crewOf(myName) then return notify(player, L.msg("v_socialpanel.server.you_already_have_crew_leave_it"), 255, 120, 120) end
     local crew = crews[crewName:lower()]
-    if not crew then return notify(player, "No such crew.", 255, 120, 120) end
-    if #crew.members >= SP.MAX_CREW_MEMBERS then return notify(player, "That crew is full.", 255, 120, 120) end
+    if not crew then return notify(player, L.msg("v_socialpanel.server.no_such_crew"), 255, 120, 120) end
+    if #crew.members >= SP.MAX_CREW_MEMBERS then return notify(player, L.msg("v_socialpanel.server.that_crew_is_full"), 255, 120, 120) end
 
     crew.members[#crew.members + 1] = myName
     setData(player, SP.KEY_CREW, crew.name)
     saveCrew(crew)
-    notify(player, "You joined the crew " .. crew.name, 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.you_joined_crew", { name = crew.name }), 0, 220, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
-        if mp and mp ~= player then notify(mp, myName .. " joined the crew.", 0, 220, 0) end
+        if mp and mp ~= player then notify(mp, L.msg("v_socialpanel.server.joined_crew", { my_name = myName }), 0, 220, 0) end
         if mp then pushSnapshot(mp) end
     end
 end)
@@ -719,7 +720,7 @@ local function leaveCrew(player, silent)
     if not myName then return end
     local crew = crewOf(myName)
     if not crew then
-        if not silent then notify(player, "You are not in a crew.", 255, 120, 120) end
+        if not silent then notify(player, L.msg("v_socialpanel.server.you_are_not_in_crew"), 255, 120, 120) end
         return
     end
 
@@ -736,18 +737,18 @@ local function leaveCrew(player, silent)
     else
         if myName:lower() == crew.founder:lower() then
             crew.founder = crew.members[1] -- founder passes to the oldest member
-            notify(onlinePlayerByAccount(crew.founder), "You are now the founder of " .. crew.name .. ".", 255, 200, 0)
+            notify(onlinePlayerByAccount(crew.founder), L.msg("v_socialpanel.server.you_are_now_founder_of", { name = crew.name }), 255, 200, 0)
         end
         saveCrew(crew)
     end
 
     if not silent then
-        notify(player, disbanded and ("The crew " .. crew.name .. " was disbanded.") or ("You left " .. crew.name), 255, 200, 0)
+        notify(player, disbanded and (L.msg("v_socialpanel.server.crew_was_disbanded", { name = crew.name })) or (L.msg("v_socialpanel.server.you_left", { name = crew.name })), 255, 200, 0)
     end
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
         if mp then
-            notify(mp, myName .. " left the crew.", 255, 200, 0)
+            notify(mp, L.msg("v_socialpanel.server.left_crew", { my_name = myName }), 255, 200, 0)
             pushSnapshot(mp)
         end
     end
@@ -764,7 +765,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
     if not myName or type(memberName) ~= "string" then return end
     local crew = crewOf(myName)
     if not crew or myName:lower() ~= crew.founder:lower() then
-        return notify(player, "Only the founder can kick members.", 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.only_founder_can_kick_members"), 255, 120, 120)
     end
     if memberName:lower() == myName:lower() then return end
     local ok, exact = SP.contains(crew.members, memberName)
@@ -776,7 +777,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
     saveCrew(crew)
 
     local kp = onlinePlayerByAccount(exact)
-    notify(kp, "You were kicked from the crew " .. crew.name .. ".", 255, 120, 120)
+    notify(kp, L.msg("v_socialpanel.server.you_were_kicked_from_crew", { name = crew.name }), 255, 120, 120)
     if kp then pushSnapshot(kp) end
     notify(player, exact .. " kicked.", 255, 200, 0)
     for _, mn in ipairs(crew.members) do
@@ -792,7 +793,7 @@ addEventHandler("sp:crew:customize", root, function(tag, desc, r, g, b)
     if not myName then return end
     local crew = crewOf(myName)
     if not crew or myName:lower() ~= crew.founder:lower() then
-        return notify(player, "Only the founder can edit the crew.", 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.only_founder_can_edit_crew"), 255, 120, 120)
     end
 
     if tag and tag ~= "" then
@@ -811,7 +812,7 @@ addEventHandler("sp:crew:customize", root, function(tag, desc, r, g, b)
         }
     end
     saveCrew(crew)
-    notify(player, "Crew updated.", 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.crew_updated"), 0, 220, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
         if mp then pushSnapshot(mp) end
