@@ -5,7 +5,7 @@ rights of avi_core (`[aviation]`); which ones depends on the work level. Going o
 quitting) resets them to the avi_core defaults. Rights are re-applied after an avi_core restart
 and on every level change while on duty.
 
-- One duty marker for now: SF control tower base (`ATC.STATIONS`, placeholder position, tune with `/workpos`).
+- One duty marker for now: outside the SA Control building in San Fierro (`ATC.STATIONS`, placeholder position, tune with `/workpos`).
   More stations can be added to the list later.
 - The ATC markers of avi_core are visible only on duty in this work (`AVI.MARKER_WORK = "atc"`).
 - **Work XP and pay are not given here**: avi_controller calls `work_core:giveWorkXp(player, "atc", xp)` after every accepted traffic action, and `payWork` when the controller logs out of a position (tune in `avi_controller/shared/config.lua`: `XP_*`, `PAY_*`).

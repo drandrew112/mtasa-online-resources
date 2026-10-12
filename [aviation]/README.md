@@ -10,6 +10,7 @@ Units everywhere: altitude **feet**, speed **knots**, vertical speed **ft/min**.
 | `avi_airports` | `data/airports.json`: SALS / SASF / SALV with runways, taxiways, gates. Runway in use comes from the wind (`/aviwind <dir> [kts]`). Taxi routing over the taxiways (rounded corners), `taxiDraw` = the rounded taxiways for the scopes. |
 | `avi_traffic` | Simulated traffic (no vehicles) from `data/flights.json` (180 fixed flights, 100 of them overflights = ~140 per hour, started by the real clock). Gate - taxi - take-off - SID - route - STAR - landing - gate, go-around procedure when too high at the final fix / without landing clearance. `/avitraffic list\|spawn\|random\|remove\|clear\|schedule`. |
 | `avi_controller` | Controller software, opened from the ATC marker (E; `/atc` is gone). Positions `SACC_CTR` (+ `SACC_N_CTR`, `SACC_S_CTR`, `SACC_U_CTR`, `SACC_NU_CTR`, `SACC_SU_CTR`), `<ICAO>_APP`, `<ICAO>_TWR`. |
+| `avi_web` | The ATC website `sanandreascontrol.eu` (HTTP `/avi_web/` + in-game ui_browser): documents (LOA), live status, procedures, airspace map. See below. |
 
 ## Taxiing
 
@@ -172,7 +173,7 @@ The map is small, so the traffic moves slower than its shown speed (`TR.AIR_SCAL
 
 ## v_monitors
 
-Wall screens in the SF control tower base (plain 3D dxDraw, `dxDrawMaterialLine3D` of a render target). Monitor 1 =
+Wall screens in the SA Control building (San Fierro) (plain 3D dxDraw, `dxDrawMaterialLine3D` of a render target). Monitor 1 =
 fixed radar of the whole CTA; the others follow the avi_controller positions (`SACC_CTR`, `<ICAO>_APP`, `<ICAO>_TWR`),
 each mirrors the staffed controller's scope (zoom / pan / label offsets, reported by the client every 5 s through
 `avi:ctlView` / `getPositionViews`) or shows NOT IN USE. Name plate under every screen. Refresh: 5 s.
@@ -180,7 +181,7 @@ Wall geometry and sizes: `v_monitors/shared/config.lua` (`EYE_Z`, `MAX_WIDTH`, `
 
 ## ATC markers and rights
 
-- `avi_core` creates the ATC markers from `AVI.MARKERS` (first one: SF tower, in front of the wall screens). Press E in one:
+- `avi_core` creates the ATC markers from `AVI.MARKERS` (all in the SA Control building in San Fierro; no consoles in the airport towers). Press E in one:
   `avi_controller` opens the position login (or toggles the scope when already logged in).
 - The markers are visible only to the players on duty in the work `AVI.MARKER_WORK` (`"atc"`, made by the future
   `work_atc`) through work_core `setElementVisibleToWork`; the server checks the duty too. `MARKER_WORK = false`
@@ -188,3 +189,29 @@ Wall geometry and sizes: `v_monitors/shared/config.lua` (`EYE_Z`, `MAX_WIDTH`, `
 - Rights: `TWR` = `<ICAO>_TWR`, `APP` = `<ICAO>_APP`, `RADAR` = every centre position (`SACC_CTR`, `SACC_N_CTR` ...). Default: tower only. work_atc sets them
   from the work level with `setPlayerATCRight(player, "APP", true)`; taking the right of the current position logs
   the controller out. Rights are not persisted. Admins: `/atcright`.
+
+## avi_web - sanandreascontrol.eu
+
+The ATC website (every ATC document goes here), built on web_api: `http://<server>:<httpport>/avi_web/`
+and in game the ui_browser (CEF) site `sanandreascontrol.eu` (services). Pages: Home (open positions,
+runways in use, wind, traffic counts, refreshed every 10 s), Documents (reader), Procedures (runways +
+SID / STAR / GA per airport from avi_nav) and Airspace map ("Map" on a procedure row draws it).
+
+- **Navigation never uses href.** web_api puts `<base href="/avi_web/web/">` into the page (HTTP and
+  in game), so `href="#/docs"` would leave the page. Elements carry `data-go="docs/<id>"`; `go()` in
+  app.js switches the page and only rewrites the fragment with an absolute URL.
+- **Documents** = Markdown in `docs/`, listed in `docs/index.json` (reading order, category, code,
+  version). The server reads them on every request (an edit shows after a reload; a new file needs an
+  index entry + restart). Keep each under ~60 000 characters (MTA JSON string limit 65535).
+  Renderer `web/js/markdown.js`: headings, paragraphs, bold / italic / code, `---`, `>` notes, lists
+  (one nested level), pipe tables, links `[x](doc:<id>)`, `[x](doc:<id>#<heading>)`, `[x](#<heading>)`,
+  `[x](https://...)`, and figure lines `![caption](img/<file>)`.
+- **Figures** in `web/img/`: jpg / png are client files (list them in meta.xml), shown as `<img>`.
+  svg are read by the server (`sacGetImage`) and inlined, because MTA serves files as
+  application/octet-stream and browsers do not show such an SVG. The airspace / procedure SVGs are
+  drawn from the real data by `tools/figures.py` (run it again after nav / airspace changes). The
+  scope screenshots were taken on a probe client (1360x768).
+- Documents: SACC-LOA-01 Letter of Agreement (transfer rules only), SACC-OPS-1..4 Operations Manual
+  (general, aerodrome, approach with the STAR entry level annex, area), SACC-NAV-1 Airspace and
+  navigation, SACC-SW-1 ATC software manual. Wording: "San Andreas FIR" = the whole airspace, "CTA" =
+  the radar (centre) airspace only.

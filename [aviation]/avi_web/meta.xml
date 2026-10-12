@@ -1,0 +1,37 @@
+<meta>
+    <info author="DrAndrew112" name="San Andreas Control web" version="1.0.0" type="script"
+          description="sanandreascontrol.eu: ATC website (documents such as the LOA, live status, procedures, airspace map). HTTP /avi_web/ and in game through ui_browser (CEF)" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= WEB =================
+         Built on web_api. http://<server>:<httpport>/avi_web/ ; in game: ui_browser site
+         "sanandreascontrol.eu" (registered in server/main.lua). Documents are Markdown files in
+         docs/ listed in docs/index.json; the server reads them, they are not sent to the clients. -->
+    <html src="web/http.html"     default="true" />
+    <file src="web/index.html"    type="client" />
+    <file src="web/css/style.css" type="client" />
+    <file src="web/js/markdown.js" type="client" />
+    <file src="web/js/app.js"     type="client" />
+    <!-- document figures: jpg / png as files (relative img/... in the documents); svg are read by
+         the server (sacGetImage) and inlined by the page -->
+    <file src="web/img/hdgpicker.jpg" type="client" />
+    <file src="web/img/login.jpg" type="client" />
+    <file src="web/img/menu-ground.jpg" type="client" />
+    <file src="web/img/menu-sid.jpg" type="client" />
+    <file src="web/img/menu.jpg" type="client" />
+    <file src="web/img/scope-approach.jpg" type="client" />
+    <file src="web/img/scope-centre.jpg" type="client" />
+    <file src="web/img/scope-tower.jpg" type="client" />
+
+    <!-- web API (web_api bridge / HTTP) -->
+    <export function="sacGetStatus"    type="server" http="true" />
+    <export function="sacGetDocuments" type="server" http="true" />
+    <export function="sacGetDocument"  type="server" http="true" />
+    <export function="sacGetNav"       type="server" http="true" />
+    <export function="sacGetImage"     type="server" http="true" />
+
+    <include resource="web_api" />
+    <include resource="ui_browser" />
+</meta>

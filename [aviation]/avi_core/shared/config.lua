@@ -21,7 +21,7 @@ AVI = {
     MARKER_KEY = "e",
     MARKER_LABEL_DISTANCE = 20,
     MARKERS = {
-        -- SF control tower, in front of the wall screens (v_monitors, controller spot u = -4.9)
+        -- SA Control building (San Fierro, interior 3), in front of the wall screens; every position is opened here
         {
             name = "ACC",
             available_positions = { "SACC_CTR", "SACC_N_CTR", "SACC_S_CTR", "SACC_U_CTR", "SACC_NU_CTR", "SACC_SU_CTR" },

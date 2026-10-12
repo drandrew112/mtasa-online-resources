@@ -1,0 +1,26 @@
+{
+    "_about": "Documents of sanandreascontrol.eu, in reading order. file = Markdown in docs/ (max ~60 000 characters each). category groups them in the library. Images: ![caption](img/<file>) = avi_web/web/img/<file> (jpg / png as files, svg inlined by the server). Links to other documents: [text](doc:<id>) or [text](doc:<id>#<heading-id>).",
+    "documents": [
+        { "id": "loa", "file": "docs/loa.md", "title": "Letter of Agreement", "code": "SACC-LOA-01", "category": "Agreements",
+          "version": "1.1", "updated": "2026-10-12",
+          "summary": "Where, when and at what level the units hand aircraft over to each other." },
+        { "id": "ops-general", "file": "docs/ops-general.md", "title": "Operations Manual 1 - General", "code": "SACC-OPS-1", "category": "Operations Manual",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "Units, rights, airspace, who controls an aircraft, separation, levels, alerts and pay." },
+        { "id": "ops-aerodrome", "file": "docs/ops-aerodrome.md", "title": "Operations Manual 2 - Aerodrome control", "code": "SACC-OPS-2", "category": "Operations Manual",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "Tower: runways, IFR clearance, pushback, taxi, take-off, landing, vacating, go-around." },
+        { "id": "ops-approach", "file": "docs/ops-approach.md", "title": "Operations Manual 3 - Approach control", "code": "SACC-OPS-3", "category": "Operations Manual",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "Approach: STARs, descent, the final, cleared approach, vectoring, departures. STAR entry level table." },
+        { "id": "ops-area", "file": "docs/ops-area.md", "title": "Operations Manual 4 - Area control", "code": "SACC-OPS-4", "category": "Operations Manual",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "San Andreas Control: centre sectors and positions, overflights, arrivals, departures, levels." },
+        { "id": "nav", "file": "docs/nav.md", "title": "Airspace and navigation", "code": "SACC-NAV-1", "category": "Reference",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "Airspace structure, navigation points and their names, SID / STAR / go-around procedures." },
+        { "id": "software", "file": "docs/software.md", "title": "ATC software manual", "code": "SACC-SW-1", "category": "Reference",
+          "version": "1.0", "updated": "2026-10-12",
+          "summary": "The controller software: login, the scope, labels, the command menu, the heading picker, lists." }
+    ]
+}

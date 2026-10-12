@@ -4,7 +4,7 @@
 ATC = {
     WORK_ID = "atc",                 -- must match AVI.MARKER_WORK in avi_core
     NAME = "Air traffic control",
-    DESCRIPTION = "Air traffic controller (San Fierro tower)",
+    DESCRIPTION = "Air traffic controller (San Andreas Control, San Fierro)",
     COLOR = { 70, 130, 210 },
 
     -- Outfits (the Supervisor outfit unlocks at the last level)
@@ -37,7 +37,7 @@ ATC = {
     },
 
     -- Work stations: one duty marker for now (z = ground level). More can be added later.
-    -- SF control tower base, in the room next to the wall screens (placeholder: tune with /workpos).
+    -- outside the SA Control building in San Fierro (the consoles are inside) (placeholder: tune with /workpos).
     STATIONS = {
         { name = "SA Control", duty = { -2169.13965, 247.03371, 34.32031 }, blip = 13 },
     },

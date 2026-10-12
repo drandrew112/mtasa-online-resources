@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>San Andreas Control</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="osa-topbar sac-top">
+        <a class="osa-brand sac-brand" data-go="home">
+            <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+                <circle cx="20" cy="20" r="17" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="20" cy="20" r="10" fill="none" stroke="var(--accent)" stroke-width="1.2" opacity=".6"/>
+                <line x1="20" y1="20" x2="33" y2="11" stroke="var(--amber)" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="27" cy="27" r="2" fill="var(--amber)"/>
+                <circle cx="12" cy="13" r="1.6" fill="var(--text)"/>
+            </svg>
+            <div>
+                <div class="name">San Andreas Control</div>
+                <div class="osa-sub">Air traffic control services</div>
+            </div>
+        </a>
+        <nav class="sac-nav" id="nav">
+            <a data-go="home" data-page="home">Home</a>
+            <a data-go="docs" data-page="docs">Documents</a>
+            <a data-go="procedures" data-page="procedures">Procedures</a>
+            <a data-go="map" data-page="map">Airspace map</a>
+        </nav>
+        <div class="sac-clock" title="Server time"><span id="clock">--:--</span><small>LT</small></div>
+    </header>
+
+    <main class="sac-main">
+        <!-- ============================================================ home -->
+        <section class="page" id="page-home">
+            <div class="sac-wrap">
+                <div class="hero">
+                    <div>
+                        <h1>San Andreas Control</h1>
+                        <p>Area, approach and tower control in the San Andreas FIR. The documents, procedures
+                           and airspace on this site are binding for every controller on duty.</p>
+                    </div>
+                    <div class="osa-kpis hero-kpis">
+                        <div class="osa-kpi"><span id="kOnline">0</span><label>positions open</label></div>
+                        <div class="osa-kpi"><span id="kAir">0</span><label>airborne</label></div>
+                        <div class="osa-kpi"><span id="kGnd">0</span><label>on the ground</label></div>
+                        <div class="osa-kpi"><span id="kWind">---</span><label>wind</label></div>
+                    </div>
+                </div>
+
+                <div class="grid2">
+                    <section class="card">
+                        <h2>Controllers online</h2>
+                        <div id="positions"><p class="osa-muted">Loading...</p></div>
+                    </section>
+                    <section class="card">
+                        <h2>Airports</h2>
+                        <div id="airports"><p class="osa-muted">Loading...</p></div>
+                    </section>
+                </div>
+
+                <section class="card join" id="join">
+                    <h2>How do I become an air traffic controller?</h2>
+
+                    <div class="join-grid">
+                        <div class="join-col">
+                            <h3>1. Go on duty</h3>
+                            <ol class="join-steps">
+                                <li>Go to the <b>San Andreas Control</b> building in <b>San Fierro</b>. Every
+                                    position is worked from here; the airport control towers have no consoles.</li>
+                                <li>Step into the duty marker at the entrance and go on duty in the
+                                    <b>Air traffic control</b> work.</li>
+                                <li>Go inside, walk to the <b>ATC console</b> of your airport (or the ACC console)
+                                    and press <b>E</b>. Pick a position and log in.</li>
+                                <li><b>Logout</b> ends your shift and pays you for the traffic you worked.
+                                    Separation losses in your sector are taken off your pay.</li>
+                            </ol>
+                        </div>
+
+                        <div class="join-col">
+                            <h3>2. Your career</h3>
+                            <p class="osa-muted small">Everybody starts as a tower controller. Every accepted
+                                clearance gives work XP, and promotion opens the next kind of position.</p>
+                            <div class="ladder">
+                                <div class="rung"><span class="rung-pos">TWR</span>
+                                    <div><b>Tower controller</b><small>from the start (Trainee, level 1)</small></div></div>
+                                <div class="rung"><span class="rung-pos">APP</span>
+                                    <div><b>Approach controller</b><small>from level 5</small></div></div>
+                                <div class="rung"><span class="rung-pos">RADAR</span>
+                                    <div><b>Radar controller</b> (San Andreas Control)<small>from level 8</small></div></div>
+                            </div>
+                            <p class="osa-muted small">A higher rank keeps the lower positions.</p>
+                        </div>
+
+                        <div class="join-col">
+                            <h3>3. Read the documents in this order</h3>
+                            <ol class="join-read">
+                                <li><a data-go="docs/nav">Airspace and navigation</a><small>the airspace, the points and the procedures</small></li>
+                                <li><a data-go="docs/software">ATC software manual</a><small>logging in, the scope, the commands</small></li>
+                                <li><a data-go="docs/ops-general">Operations Manuals</a><small>Part 1 general, then the part of your position</small></li>
+                                <li><a data-go="docs/loa">Letter of Agreement</a><small>where and how you hand aircraft over</small></li>
+                            </ol>
+                            <p class="join-note">To start, you only need <a data-go="docs/ops-aerodrome">Part 2 -
+                                Aerodrome control</a> and a few sections of the Letter of Agreement (see Tower below).</p>
+                        </div>
+                    </div>
+
+                    <h3 class="join-sub">What you need for each position</h3>
+                    <table class="osa-table join-table">
+                        <thead><tr><th>Position</th><th>Must read</th><th>From the Letter of Agreement</th><th>Good to know</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Tower</b><small>SALS_TWR, SASF_TWR, SALV_TWR</small></td>
+                                <td><a data-go="docs/ops-aerodrome">OPS-2 Aerodrome control</a></td>
+                                <td><a data-go="docs/loa/1-general">§1 General</a>,
+                                    <a data-go="docs/loa/5-approach-tower-arrivals">§5 Approach → Tower</a>,
+                                    <a data-go="docs/loa/6-tower-approach-departures">§6 Tower → Approach</a>,
+                                    <a data-go="docs/loa/7-tower-approach-go-arounds">§7 go-arounds</a></td>
+                                <td><a data-go="docs/software">SW-1</a> (login, labels, menu),
+                                    <a data-go="docs/nav/7-runway-in-use">NAV-1 §7 runway in use</a>,
+                                    <a data-go="docs/ops-general">OPS-1</a></td>
+                            </tr>
+                            <tr>
+                                <td><b>Approach</b><small>SALS_APP, SASF_APP, SALV_APP</small></td>
+                                <td><a data-go="docs/ops-general">OPS-1 General</a>,
+                                    <a data-go="docs/ops-approach">OPS-3 Approach control</a>,
+                                    <a data-go="docs/nav">NAV-1</a> (STAR, SID, go-around)</td>
+                                <td>§1 - §8: everything except the centre split (§9)</td>
+                                <td>the heading picker in <a data-go="docs/software">SW-1</a>, the
+                                    <a data-go="procedures">Procedures</a> page</td>
+                            </tr>
+                            <tr>
+                                <td><b>Radar</b><small>SACC_CTR and its split positions</small></td>
+                                <td><a data-go="docs/ops-general">OPS-1 General</a>,
+                                    <a data-go="docs/ops-area">OPS-4 Area control</a>,
+                                    <a data-go="docs/nav">NAV-1</a></td>
+                                <td><a data-go="docs/loa/1-general">§1</a> -
+                                    <a data-go="docs/loa/4-san-andreas-control-approach-overflights">§4</a> and
+                                    <a data-go="docs/loa/9-inside-san-andreas-control">§9 inside San Andreas Control</a></td>
+                                <td>the <a data-go="map">Airspace map</a>, OPS-3 (what Approach expects from you)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="card">
+                    <h2>Documents</h2>
+                    <div class="doc-cards" id="homeDocs"></div>
+                </section>
+            </div>
+        </section>
+
+        <!-- ============================================================ documents -->
+        <section class="page" id="page-docs">
+            <div class="reader">
+                <aside class="reader-side">
+                    <h3>Library</h3>
+                    <input class="osa-input doc-search" id="docSearch" type="search" placeholder="Filter documents">
+                    <div id="docList"></div>
+                    <h3 class="toc-head">Contents</h3>
+                    <nav id="toc" class="toc"></nav>
+                </aside>
+                <article class="reader-body osa-scroll" id="docScroll">
+                    <div class="doc-meta" id="docMeta"></div>
+                    <div class="md" id="docBody"><p class="osa-muted">Choose a document.</p></div>
+                    <div id="docPager"></div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ============================================================ procedures -->
+        <section class="page" id="page-procedures">
+            <div class="sac-wrap">
+                <div class="proc-head">
+                    <h1>Procedures</h1>
+                    <div class="osa-tabs" id="aptTabs"></div>
+                </div>
+                <div id="procBody"><p class="osa-muted">Loading...</p></div>
+            </div>
+        </section>
+
+        <!-- ============================================================ map -->
+        <section class="page" id="page-map">
+            <div class="map-page">
+                <section class="osa-map-wrap"><div id="map"></div></section>
+                <aside class="map-side">
+                    <h3>Layers</h3>
+                    <label><input type="checkbox" data-layer="cta" checked> FIR boundary + sector line</label>
+                    <label><input type="checkbox" data-layer="tma" checked> TMA</label>
+                    <label><input type="checkbox" data-layer="ctr" checked> CTR</label>
+                    <label><input type="checkbox" data-layer="fix" checked> Fixes</label>
+                    <label><input type="checkbox" data-layer="navaid" checked> VOR / NDB</label>
+                    <label><input type="checkbox" data-layer="final"> Final fixes</label>
+                    <h3>Shown procedure</h3>
+                    <div id="mapProc" class="osa-muted">None. Pick one on the Procedures page.</div>
+                    <div class="legend">
+                        <div><i class="sw cta"></i> FIR boundary / sector line</div>
+                        <div><i class="sw tma"></i> TMA (SFC - 5500 ft)</div>
+                        <div><i class="sw ctr"></i> CTR (SFC - 2000 ft)</div>
+                        <div><i class="tri"></i> Fix</div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- enlarged figure of a document (click to close) -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-body" id="lightboxBody"></div>
+        <div class="lightbox-cap" id="lightboxCap"></div>
+    </div>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/markdown.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
