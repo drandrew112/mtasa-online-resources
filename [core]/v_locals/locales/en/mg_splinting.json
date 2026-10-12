@@ -1,0 +1,4 @@
+{
+  "mg_splinting.client.press_when_needle_is_in_green": "Press {key} when the needle is in the green zone",
+  "mg_splinting.client.wraps_secured": "Wraps secured: {judged|int} / {total|int}"
+}

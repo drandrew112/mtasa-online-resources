@@ -1,0 +1,18 @@
+{
+  "common.back": "Back",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+  "common.deathmatch": "Deathmatch",
+  "common.edit": "Edit",
+  "common.get_ready": "Get ready",
+  "common.job": "Job",
+  "common.level": "Level",
+  "common.loading": "Loading...",
+  "common.name": "Name",
+  "common.played_time": "Played time",
+  "common.players": "Players",
+  "common.race": "Race",
+  "common.save": "Save",
+  "common.send": "Send",
+  "common.time_left_s": "{time_left|1f} s"
+}

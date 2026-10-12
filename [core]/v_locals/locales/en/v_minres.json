@@ -1,0 +1,5 @@
+{
+  "v_minres.client.increase_your_resolution_settings_video_resoluti": "Increase your resolution (Settings > Video > Resolution / maximize the window).\nThis message disappears automatically once the requirement is met.",
+  "v_minres.client.low_resolution": "LOW RESOLUTION",
+  "v_minres.client.your_screen_is_x_this_server": "Your screen is {sw|int}x{sh|int}.\nThis server requires at least {width|int}x{height|int}."
+}

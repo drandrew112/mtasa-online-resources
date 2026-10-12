@@ -1,0 +1,7 @@
+{
+  "engine_3dsounds.effects.clear": "CLEAR",
+  "engine_3dsounds.effects.occluded": "OCCLUDED",
+  "engine_3dsounds.effects.off_stream": "OFF (STREAM)",
+  "engine_3dsounds.effects.out_of_range": "OUT OF RANGE",
+  "engine_3dsounds.effects.registered_3d_sounds": "Registered 3D sounds: {registered_count}"
+}

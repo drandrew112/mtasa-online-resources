@@ -1,0 +1,10 @@
+{
+  "v_radar.client.cash": "Készpénz",
+  "v_radar.client.clock": "Óra",
+  "v_radar.client.fuel": "ÜZEMANYAG",
+  "v_radar.client.graphics_card": "Videókártya",
+  "v_radar.client.health": "Életerő",
+  "v_radar.client.speedometer": "KILÓMÉTERÓRA",
+  "v_radar.client.vehicle_icons": "JÁRMŰIKONOK",
+  "v_radar.client.vehicle_name": "JÁRMŰNÉV"
+}

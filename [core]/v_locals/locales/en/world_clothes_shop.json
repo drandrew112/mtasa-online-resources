@@ -1,0 +1,19 @@
+{
+  "world_clothes_shop.label.changing_room": "Changing Room",
+  "world_clothes_shop.label.clothes": "Clothes",
+  "world_clothes_shop.label.every_outfit_enter_buy_backspace_back": "Every outfit €{price|int} · Enter buy · Backspace back",
+  "world_clothes_shop.label.outfits_each": "Outfits · €{price|int} each",
+  "world_clothes_shop.label.press_browse_outfits_each": "Press {key} · browse outfits · €{price|int} each",
+  "world_clothes_shop.main.buy_and_wear_this_outfit": "Buy and wear this outfit",
+  "world_clothes_shop.main.clothes": "CLOTHES",
+  "world_clothes_shop.main.go_off_duty_before_changing_your": "Go off duty before changing your clothes.",
+  "world_clothes_shop.main.men": "Men",
+  "world_clothes_shop.main.men_2": "MEN",
+  "world_clothes_shop.main.outfit": "Outfit {skin}",
+  "world_clothes_shop.main.outfit_bought": "Outfit bought · €{price|int}",
+  "world_clothes_shop.main.s_outfits": "{label}'s outfits",
+  "world_clothes_shop.main.women": "Women",
+  "world_clothes_shop.main.women_2": "WOMEN",
+  "world_clothes_shop.main.you_are_already_wearing_this_outfit": "You are already wearing this outfit.",
+  "world_clothes_shop.main.you_don_t_have_enough_money": "You don't have enough money."
+}

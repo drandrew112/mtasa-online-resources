@@ -1,0 +1,20 @@
+{
+  "world_interiors.admin.also": "{desc} | also: {aliases}",
+  "world_interiors.admin.back_to_previous_position": "<< Back to previous position",
+  "world_interiors.admin.dim_int_by": "{id} | dim {dimension|int} | int {interior|int} | by {resource}",
+  "world_interiors.admin.entrance": "Entrance: {id}",
+  "world_interiors.admin.go_inside": "Go inside",
+  "world_interiors.admin.go_to_entrance": "Go to entrance",
+  "world_interiors.admin.int_dim": "{x|1f}, {y|1f}, {z|1f} (int {interior|int}, dim {dimension|int})",
+  "world_interiors.admin.int_entrance_s": "int {interior|int} | {entrances|int} entrance(s)",
+  "world_interiors.admin.int_no_stock_entrance_wiki": "int {interior|int} | no stock entrance (wiki)",
+  "world_interiors.admin.interiors": "Interiors (",
+  "world_interiors.admin.no_interiors_registered": "No interiors registered",
+  "world_interiors.admin.resources_register_them_via_exports_world": "Resources register them via exports.world_interiors:registerInterior",
+  "world_interiors.admin.return_to_where_you_were_before": "Return to where you were before browsing",
+  "world_interiors.admin.stock_interiors": "Stock interiors (",
+  "world_interiors.markers.enter": "Enter",
+  "world_interiors.markers.exit": "Exit",
+  "world_interiors.markers.press": "Press {key} · {entering}",
+  "world_interiors.markers.step_into_marker": "Step into the marker"
+}

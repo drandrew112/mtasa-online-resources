@@ -1,0 +1,10 @@
+{
+  "rw_core.depot.slr_no_such_train": "[SLR] Nincs ilyen szerelvény.",
+  "rw_core.depot.slr_train_removed": "[SLR] Szerelvény törölve.",
+  "rw_core.depot.slr_trains_removed": "[SLR] {n} szerelvény törölve.",
+  "rw_core.log.railway_log_entries": "[{company_short}] Vasúti napló ({filter}) - {list|int} bejegyzés:",
+  "rw_core.log.you_are_not_allowed_to_do": "[{company_short}] Nincs jogod ehhez.",
+  "rw_core.role.no_such_player": "[{company_short}] Nincs ilyen játékos.",
+  "rw_core.role.revoked": "megszűnt",
+  "rw_core.role.your_railway_rights_were": "[{company_short}] Vasutas jogod {enable}."
+}

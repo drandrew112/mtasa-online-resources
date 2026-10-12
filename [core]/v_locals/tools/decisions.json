@@ -1,0 +1,263 @@
+{
+  "_doc": "Hand decisions for tools/locales.py. Order: items (by id) > texts (exact) > rules (first match). A rule matches regexes on res / file / sink / ctx / owner / text; 'from' limits it to items whose automatic status is in the list. Reviewed in phase 2 on 2026-10-12.",
+  "items": {
+    "07e47c20eb": "ignore",
+    "0ebf5e9476": "ignore",
+    "88ddb9ed95": "ignore",
+    "2797c7f95b": "ignore",
+    "cceaa10e42": "ignore",
+    "cee5b48e8d": "ignore",
+    "d32d6f06c8": "ignore",
+    "a6e171cd46": "ignore",
+    "fe6b5e406b": "ignore",
+    "95483ef015": "ignore",
+    "b3891e106b": "ignore",
+    "153e9002c8": "ignore"
+  },
+  "texts": {
+    "Játékidő": "ignore",
+    "admin /rwdespawn": "ignore",
+    "the network train is gone": "ignore",
+    "task closed": "ignore",
+    "shift ended": "ignore",
+    "DrAndrew112": "ignore",
+    "Open SE": "ignore",
+    "Binco": "ignore",
+    "application/json": "ignore",
+    "Julia": "ignore",
+    "Markus": "ignore",
+    "TELEFON": "translate",
+    "WASTED": "ignore"
+  },
+  "rules": [
+    {
+      "_why": "prefix wrappers: '[Tag] ' .. text - the texts are at the call sites",
+      "text": "^(#[0-9a-fA-F]{6})?\\[[^\\]]*\\]\\s*(#[0-9a-fA-F]{6})?\\s*\\{\\w+\\}$",
+      "status": "ignore"
+    },
+    {
+      "_why": "logs / generated files / updater console",
+      "ctx": "^(writeFileLine|adminLog|railLog|rlog|mysqlLog|pushEvent|emit|aviLog)$",
+      "status": "ignore"
+    },
+    {
+      "_why": "markup",
+      "text": "^<(svg|path|page)\\b",
+      "status": "ignore"
+    },
+    {
+      "_why": "easing / filter names",
+      "text": "^(InOutQuad|OutQuad|InQuad|Linear|OutBounce|InOutBack)$",
+      "status": "ignore"
+    },
+    {
+      "_why": "paths and ids built from strings",
+      "text": "^(textures/|:v_radar/|objective:|s:\\{|c:\\{|%0\\{)",
+      "status": "ignore"
+    },
+    {
+      "_why": "D2: Lifepak monitor messages",
+      "res": "^medsys$",
+      "ctx": "^setMonitorMessage$",
+      "status": "ignore"
+    },
+    {
+      "_why": "drug names are international names",
+      "res": "^medsys$",
+      "sink": "^field:name$",
+      "status": "ignore"
+    },
+    {
+      "_why": "device unit",
+      "res": "^medsys$",
+      "text": "^mg/dL$",
+      "status": "ignore"
+    },
+    {
+      "_why": "command syntax and rank tags",
+      "res": "^v_admin$",
+      "ctx": "^cmd$",
+      "status": "ignore"
+    },
+    {
+      "_why": "nametag rank tags",
+      "res": "^v_admin$",
+      "sink": "^list:titles$",
+      "status": "ignore"
+    },
+    {
+      "_why": "nametag rank tags",
+      "res": "^v_nametags$",
+      "file": "sourceC\\.lua$",
+      "sink": "^list:",
+      "status": "ignore"
+    },
+    {
+      "_why": "SQL",
+      "res": "^med_erm$",
+      "text": "(LIKE \\?|ORDER BY|IS (NOT )?NULL|^status !?= '|^PRAGMA)",
+      "status": "ignore"
+    },
+    {
+      "_why": "rail dev overlay / network files / validator",
+      "res": "^rw_customtracks$",
+      "file": "(client/debugdraw|server/network|server/validate)\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "internal remove reasons",
+      "res": "^rw_customtracks$",
+      "ctx": "^destroy$",
+      "status": "ignore"
+    },
+    {
+      "_why": "service log reasons",
+      "res": "^rw_timetable$",
+      "file": "server/services\\.lua$",
+      "from": [
+        "review"
+      ],
+      "status": "ignore"
+    },
+    {
+      "_why": "city names",
+      "res": "^rw_timetable$",
+      "ctx": "^city$",
+      "status": "ignore"
+    },
+    {
+      "_why": "automatic trains: log only",
+      "res": "^rw_auto$",
+      "from": [
+        "review"
+      ],
+      "status": "ignore"
+    },
+    {
+      "_why": "cab instrument units (realism)",
+      "res": "^rw_loco$",
+      "ctx": "^unit$",
+      "status": "ignore"
+    },
+    {
+      "_why": "web site registry = web content (3.2)",
+      "res": "^ui_browser$",
+      "file": "core/registry\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "error pages = web content (3.2)",
+      "res": "^ui_browser$",
+      "ctx": "^buildErrorPage$",
+      "status": "ignore"
+    },
+    {
+      "_why": "updater / console tooling",
+      "res": "^v_main$",
+      "from": [
+        "review"
+      ],
+      "status": "ignore"
+    },
+    {
+      "_why": "tutorial signal ids",
+      "res": "^work_ems$",
+      "ctx": "^signal$",
+      "status": "ignore"
+    },
+    {
+      "_why": "minigame test harness (D14)",
+      "res": "^mg_",
+      "file": "/server\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "binary shader blob",
+      "res": "^engine_3dsounds$",
+      "file": "shader\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "D5 achievements data",
+      "res": "^v_achievements$",
+      "file": "config\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "database layer: logs only",
+      "res": "^v_mysql$",
+      "status": "ignore"
+    },
+    {
+      "_why": "radio station names",
+      "res": "^v_radio$",
+      "sink": "^field:name$",
+      "status": "ignore"
+    },
+    {
+      "_why": "AVI-CONFIRM proposal: the ATC position marker prompt and the rights errors are seen by everyone",
+      "res": "^avi_core$",
+      "file": "(client/marker|server/marker|server/role)\\.lua$",
+      "status": "translate"
+    },
+    {
+      "_why": "AVI-CONFIRM proposal: everything else of aviation stays English (scope mirrors, ATC data, admin editors)",
+      "res": "^avi_",
+      "status": "ignore"
+    },
+    {
+      "_why": "brand / model / proper nouns (3.2)",
+      "text": "^(FreeV|FREE V|Free V|BR 232|SA Control|San Andreas Control|Sunline Rail|SLR|Los Santos|San Fierro|Las Venturas|San Andreas|X|x|Console)$",
+      "status": "ignore"
+    },
+    {
+      "_why": "station names are proper nouns (3.2)",
+      "res": "^(rw_|work_traindriver)",
+      "text": "^[A-Z][a-z]+( [A-Z][a-z]+)* Station\b",
+      "status": "ignore"
+    },
+    {
+      "_why": "server browser game type / map name stay global (like D9)",
+      "res": "^v_main$",
+      "ctx": "^(NAME|mod_name|map_name)$",
+      "status": "ignore"
+    },
+    {
+      "_why": "registry validation = developer log",
+      "res": "^v_achievements$",
+      "file": "registry\\.lua$",
+      "status": "ignore"
+    },
+    {
+      "_why": "D21: time trial names are exceptions (like jobmanager game names)",
+      "res": "^v_timetrial$",
+      "sink": "^field:name$",
+      "status": "ignore"
+    },
+    {
+      "_why": "reviewed 2026-10-12: the remaining review items are UI text",
+      "from": [
+        "review"
+      ],
+      "status": "translate"
+    }
+  ],
+  "common": {
+    "common.loading": "Loading...",
+    "common.back": "Back",
+    "common.cancel": "Cancel",
+    "common.save": "Save",
+    "common.send": "Send",
+    "common.confirm": "Confirm",
+    "common.edit": "Edit",
+    "common.name": "Name",
+    "common.level": "Level",
+    "common.players": "Players",
+    "common.played_time": "Played time",
+    "common.race": "Race",
+    "common.deathmatch": "Deathmatch",
+    "common.job": "Job",
+    "common.get_ready": "Get ready",
+    "common.time_left_s": "{time_left|1f} s"
+  }
+}

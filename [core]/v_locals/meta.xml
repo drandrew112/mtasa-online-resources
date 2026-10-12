@@ -1,0 +1,152 @@
+<meta>
+    <info author="DrAndrew112" name="Locals (translator)" type="script" version="1.0.0" />
+    <download_priority_group>1001</download_priority_group>
+
+    <!-- Account language is stored in accData "locale.language" (v_mysql).
+         v_accounts is NOT included on purpose: v_accounts itself will consume
+         v_locals (login screen), so the dependency must point this way only. -->
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="config.lua" type="shared" />
+    <script src="shared/catalog.lua" type="shared" />
+    <script src="shared/loader.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/players.lua" type="server" />
+    <script src="server/validate.lua" type="server" />
+    <script src="server/commands.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+
+    <!-- own server instance of the lib as plain scripts (v_locals needs no
+         loadstring); server/ready.lua must stay the last server script.
+         lib/server.lua is not a <file>: import() reads it on the server. -->
+    <script src="lib/utf8x.lua" type="server" />
+    <script src="lib/template.lua" type="server" />
+    <script src="lib/formats.lua" type="server" />
+    <script src="lib/core.lua" type="server" />
+    <script src="lib/server.lua" type="server" />
+    <script src="server/ready.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/state.lua" type="client" />
+    <script src="client/debug.lua" type="client" />
+    <script src="client/exports.lua" type="client" />
+
+    <!-- client lib sources: shared/loader.lua concatenates them for import() -->
+    <file src="lib/utf8x.lua" />
+    <file src="lib/template.lua" />
+    <file src="lib/formats.lua" />
+    <file src="lib/core.lua" />
+    <file src="lib/client.lua" />
+
+    <!-- Catalogs. Every locales/<lang>/<namespace>.json and every
+         locales/<lang>/files/... text file must be listed here (tools/locales.py
+         build keeps this list in sync from phase 2 on). -->
+    <file src="locales/languages.json" />
+    <file src="locales/en/ai_land_traffic.json" />
+    <file src="locales/en/avi_core.json" />
+    <file src="locales/en/common.json" />
+    <file src="locales/en/dynamic_lighting.json" />
+    <file src="locales/en/engine_3dsounds.json" />
+    <file src="locales/en/map_int_sacontrol.json" />
+    <file src="locales/en/med_bag.json" />
+    <file src="locales/en/med_erm.json" />
+    <file src="locales/en/med_erm_auto.json" />
+    <file src="locales/en/med_hospitals.json" />
+    <file src="locales/en/med_stretcher.json" />
+    <file src="locales/en/medsys.json" />
+    <file src="locales/en/medsys_effects.json" />
+    <file src="locales/en/medsys_events.json" />
+    <file src="locales/en/mg_airway.json" />
+    <file src="locales/en/mg_arrows.json" />
+    <file src="locales/en/mg_cpr.json" />
+    <file src="locales/en/mg_intravenous.json" />
+    <file src="locales/en/mg_splinting.json" />
+    <file src="locales/en/parachute.json" />
+    <file src="locales/en/realdriveby.json" />
+    <file src="locales/en/rw_core.json" />
+    <file src="locales/en/rw_customtracks.json" />
+    <file src="locales/en/rw_loco.json" />
+    <file src="locales/en/rw_passengers.json" />
+    <file src="locales/en/rw_signals.json" />
+    <file src="locales/en/rw_timetable.json" />
+    <file src="locales/en/shader_colors.json" />
+    <file src="locales/en/shader_detail.json" />
+    <file src="locales/en/shader_dynamic_sky.json" />
+    <file src="locales/en/shader_markers.json" />
+    <file src="locales/en/ui_browser.json" />
+    <file src="locales/en/ui_core.json" />
+    <file src="locales/en/ui_download.json" />
+    <file src="locales/en/ui_inac.json" />
+    <file src="locales/en/ui_interactobject.json" />
+    <file src="locales/en/ui_pause.json" />
+    <file src="locales/en/ui_phone.json" />
+    <file src="locales/en/v_accounts.json" />
+    <file src="locales/en/v_achievements.json" />
+    <file src="locales/en/v_admin.json" />
+    <file src="locales/en/v_arenawar.json" />
+    <file src="locales/en/v_chat.json" />
+    <file src="locales/en/v_customs.json" />
+    <file src="locales/en/v_els.json" />
+    <file src="locales/en/v_introduce.json" />
+    <file src="locales/en/v_jobcreator.json" />
+    <file src="locales/en/v_jobmanager.json" />
+    <file src="locales/en/v_joinquit.json" />
+    <file src="locales/en/v_levelsys.json" />
+    <file src="locales/en/v_main.json" />
+    <file src="locales/en/v_minres.json" />
+    <file src="locales/en/v_nametags.json" />
+    <file src="locales/en/v_ownveh.json" />
+    <file src="locales/en/v_radar.json" />
+    <file src="locales/en/v_radio.json" />
+    <file src="locales/en/v_shop_robbery.json" />
+    <file src="locales/en/v_socialpanel.json" />
+    <file src="locales/en/v_stats.json" />
+    <file src="locales/en/v_timetrial.json" />
+    <file src="locales/en/v_weekly.json" />
+    <file src="locales/en/work_atc.json" />
+    <file src="locales/en/work_core.json" />
+    <file src="locales/en/work_ems.json" />
+    <file src="locales/en/work_traindriver.json" />
+    <file src="locales/en/world_clothes_shop.json" />
+    <file src="locales/en/world_elevators.json" />
+    <file src="locales/en/world_ferriswheel.json" />
+    <file src="locales/en/world_interiors.json" />
+    <file src="locales/en/files/v_introduce/rules.txt" />
+
+    <!-- ================= EXPORTS: CLIENT ================= -->
+    <export function="import"            type="client" />
+    <export function="getLanguage"       type="client" />
+    <export function="setLanguage"       type="client" />
+    <export function="getLanguages"      type="client" />
+    <export function="getLanguageInfo"   type="client" />
+    <export function="translate"         type="client" />
+    <export function="resolve"           type="client" />
+    <export function="getCatalog"        type="client" />
+    <export function="getFile"           type="client" />
+    <export function="hasKey"            type="client" />
+    <export function="utf8Upper"         type="client" />
+    <export function="utf8Lower"         type="client" />
+    <export function="getDebugMode"      type="client" />
+    <export function="reportMissing"     type="client" />
+
+    <!-- ================= EXPORTS: SERVER ================= -->
+    <!-- import() needs "function.loadstring" in the importer's ACL;
+         translate(player | lang, key, params) works without it (D4) -->
+    <export function="import"            type="server" />
+    <export function="translate"         type="server" />
+    <export function="resolve"           type="server" />
+    <export function="getPlayerLanguage" type="server" />
+    <export function="setPlayerLanguage" type="server" />
+    <export function="getLanguages"      type="server" />
+    <export function="getLanguageInfo"   type="server" />
+    <export function="getCatalog"        type="server" />
+    <export function="getFile"           type="server" />
+    <export function="hasKey"            type="server" />
+    <export function="utf8Upper"         type="server" />
+    <export function="utf8Lower"         type="server" />
+    <export function="getMissingKeys"    type="server" />
+    <export function="reportMissing"     type="server" />
+    <export function="reloadCatalogs"    type="server" />
+</meta>

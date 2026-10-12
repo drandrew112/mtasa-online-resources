@@ -1,0 +1,20 @@
+{
+  "work_atc.config.air_traffic_control": "Air traffic control",
+  "work_atc.config.air_traffic_controller_san_andreas_control": "Air traffic controller (San Andreas Control, San Fierro)",
+  "work_atc.config.approach_controller_bronze": "Approach Controller Bronze",
+  "work_atc.config.approach_controller_gold": "Approach Controller Gold",
+  "work_atc.config.approach_controller_silver": "Approach Controller Silver",
+  "work_atc.config.controller": "Controller",
+  "work_atc.config.controller_casual": "Controller (casual)",
+  "work_atc.config.radar_controller_bronze": "Radar Controller Bronze",
+  "work_atc.config.radar_controller_gold": "Radar Controller Gold",
+  "work_atc.config.radar_controller_silver": "Radar Controller Silver",
+  "work_atc.config.senior_controller_bronze": "Senior Controller Bronze",
+  "work_atc.config.senior_controller_gold": "Senior Controller Gold",
+  "work_atc.config.senior_controller_silver": "Senior Controller Silver",
+  "work_atc.config.supervisor": "Supervisor",
+  "work_atc.config.tower_controller_bronze": "Tower Controller Bronze",
+  "work_atc.config.tower_controller_gold": "Tower Controller Gold",
+  "work_atc.config.tower_controller_silver": "Tower Controller Silver",
+  "work_atc.config.trainee": "Trainee"
+}

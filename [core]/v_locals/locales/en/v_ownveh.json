@@ -1,0 +1,10 @@
+{
+  "v_ownveh.commands.v_ownveh": "v_ownveh [{category}] {line}",
+  "v_ownveh.commands.v_ownveh_could_not_write": "v_ownveh: could not write {path}",
+  "v_ownveh.commands.v_ownveh_showing_d_spawn_point": "v_ownveh: showing %d spawn point marker(s). land=green boats=blue heli=yellow plane=red. /showvehspawns again to hide.",
+  "v_ownveh.commands.v_ownveh_sit_in_vehicle_first": "v_ownveh: sit in a vehicle first.",
+  "v_ownveh.commands.v_ownveh_spawn_point_markers_hidden": "v_ownveh: spawn point markers hidden.",
+  "v_ownveh.commands.v_ownveh_you_don_t_have": "v_ownveh: you don't have permission for /vehspawn.",
+  "v_ownveh.commands.v_ownveh_you_don_t_have_2": "v_ownveh: you don't have permission for /showvehspawns.",
+  "v_ownveh.config.personal_vehicle": "Personal vehicle"
+}

@@ -1,0 +1,23 @@
+{
+  "work_traindriver.config.chief_driver": "Chief Driver",
+  "work_traindriver.config.cranberry_station": "Cranberry Station",
+  "work_traindriver.config.driver": "Driver",
+  "work_traindriver.config.express_driver": "Express Driver",
+  "work_traindriver.config.master_driver": "Master Driver",
+  "work_traindriver.config.punctuality_bonus": "Punctuality bonus",
+  "work_traindriver.config.punctuality_bonus_minor_delay": "Punctuality bonus (minor delay)",
+  "work_traindriver.config.senior_driver": "Senior Driver",
+  "work_traindriver.config.station_staff": "Station staff",
+  "work_traindriver.config.sunline_rail_locomotive_driver": "Sunline Rail locomotive driver",
+  "work_traindriver.config.technician": "Technician",
+  "work_traindriver.config.train_driver": "Train driver",
+  "work_traindriver.config.trainee": "Trainee",
+  "work_traindriver.config.unity_station": "Unity Station",
+  "work_traindriver.pay.adjustment": "Adjustment",
+  "work_traindriver.pay.delay": "Delay",
+  "work_traindriver.pay.early_departures": "Early departures ({early_departures|int})",
+  "work_traindriver.pay.service": "Service {number}",
+  "work_traindriver.pay.service_completed": "Service {number} completed",
+  "work_traindriver.pay.skipped_stops": "Skipped stops ({skipped|int})",
+  "work_traindriver.pay.stops_served": "Stops served ({served|int})"
+}

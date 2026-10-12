@@ -1,0 +1,3 @@
+{
+  "mg_arrows.client.accuracy_need": "Accuracy: {accuracy|int}%   (need > {pass_percent|int}%)"
+}

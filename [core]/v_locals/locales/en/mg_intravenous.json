@@ -1,0 +1,22 @@
+{
+  "mg_intravenous.client.aim_over_vein_with_mouse_press": "Aim over the vein with the mouse, press LMB to puncture the skin",
+  "mg_intravenous.client.attempt": "Attempt {attempt|int} / {attempts|int}",
+  "mg_intravenous.client.cannula_in_vein": "Cannula in the vein",
+  "mg_intravenous.client.cannula_strain": "Cannula strain",
+  "mg_intravenous.client.cross_section": "CROSS-SECTION",
+  "mg_intravenous.client.depth_mm": "Depth {depth|1f} mm",
+  "mg_intravenous.client.failed": "FAILED",
+  "mg_intravenous.client.flashback_advance_little_more_so_cannula": "Flashback! Advance a little more so the cannula is in the vein too",
+  "mg_intravenous.client.flashback_needle_tip_is_in_vein": "Flashback! The needle tip is in the vein",
+  "mg_intravenous.client.hold_lmb_and_drag_left_to": "Hold LMB and drag LEFT to withdraw the needle - slowly!",
+  "mg_intravenous.client.hold_lmb_to_advance_needle_release": "Hold LMB to advance the needle - release when blood appears in the chamber",
+  "mg_intravenous.client.iv_access_secured": "IV access secured",
+  "mg_intravenous.client.missed_vein": "Missed the vein",
+  "mg_intravenous.client.needle_withdrawn": "Needle withdrawn",
+  "mg_intravenous.client.out_of_time": "Out of time",
+  "mg_intravenous.client.pulled_too_fast_cannula_came_out": "Pulled too fast - the cannula came out",
+  "mg_intravenous.client.success": "SUCCESS  {quality|int}%",
+  "mg_intravenous.client.top_view": "TOP VIEW",
+  "mg_intravenous.client.try_again": "{mistake} - try again",
+  "mg_intravenous.client.went_through_vein": "Went through the vein"
+}

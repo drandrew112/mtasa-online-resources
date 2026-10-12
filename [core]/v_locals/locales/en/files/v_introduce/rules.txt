@@ -1,0 +1,44 @@
+FreeV - Server rules
+
+By playing on this server you accept the rules below. Breaking them can get you a warning, a mute, an admin jail or a ban, depending on how serious it is. Admins decide case by case.
+
+1. Respect
+- Treat other players with respect. No insults, harassment, threats, racism, sexism or other hate speech - in chat, in private messages, in crew names or anywhere else.
+- Do not spam the chat and do not advertise other servers or services.
+- Do not impersonate admins or other players.
+
+2. Fair play
+- No cheats, hacks, trainers, macros or mods that give you an advantage over other players.
+- Do not abuse bugs or glitches. If you find one, report it to an admin.
+- Do not use more than one account to get an advantage (money, XP, items).
+
+3. Killing and violence
+- Do not kill other players without a reason in public places.
+- Do not attack players who are AFK, in the introduction or in a menu.
+- Do not kill players again and again right after they respawn.
+- Activities with their own rules (races, deathmatches, Arena War) follow those rules.
+
+4. Jobs and emergency services
+- Players on duty in an emergency job (for example EMS) are not targets. Let them do their work.
+- Do not use work vehicles or work equipment for anything else than the job.
+- Do not block hospitals, stations or workplaces on purpose.
+
+5. Vehicles
+- Do not ram, block or destroy other players' vehicles without a reason.
+- Do not park in a way that blocks roads, entrances or markers.
+
+6. Money and trading
+- Do not scam other players. Agreements between players must be kept.
+- Selling or buying in-game money, items or accounts for real money is forbidden.
+
+7. Names and crews
+- Player names, crew names and crew tags may not be offensive or misleading.
+
+8. Admins and reports
+- If someone breaks the rules, use /report. Describe what happened, who did it and when.
+- Follow the instructions of the admins. If you do not agree with a decision, talk to the admin calmly or contact the server team on Discord.
+- Do not abuse the report system.
+
+The rules can change. When they change, you will be asked to read and accept them again.
+
+Have fun!

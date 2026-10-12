@@ -1,0 +1,12 @@
+{
+  "v_chat.chat.text": "#FFFFFF{sender}: #dcdcdc{text}",
+  "v_chat.mute.invalid_duration": "Invalid duration",
+  "v_chat.mute.invalid_player": "Invalid player",
+  "v_chat.mute.is_not_muted": "{player} is not muted",
+  "v_chat.mute.m_s": "{m}m {s}s",
+  "v_chat.mute.muted_by_min_for": "Muted by {admin_name} ({minutes|int} min) for {reason}",
+  "v_chat.mute.no_reason_given": "No reason given",
+  "v_chat.mute.unmuted_by_you_can_use_chat": "Unmuted by {admin_name}, you can use the chat again.",
+  "v_chat.mute.you_are_muted_time_left": "You are muted! Time left: {player}",
+  "v_chat.mute.your_mute_has_expired_you_can": "Your mute has expired, you can use the chat again."
+}

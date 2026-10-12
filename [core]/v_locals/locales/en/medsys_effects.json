@@ -1,0 +1,6 @@
+{
+  "medsys_effects.config.clinical_death": "CLINICAL DEATH",
+  "medsys_effects.config.unconscious": "UNCONSCIOUS",
+  "medsys_effects.config.you_passed_out_wait_for_medical": "You passed out. Wait for medical help.",
+  "medsys_effects.config.your_heart_has_stopped_resuscitation_window": "Your heart has stopped. Resuscitation window: %02d:%02d"
+}

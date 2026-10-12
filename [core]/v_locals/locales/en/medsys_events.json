@@ -1,0 +1,21 @@
+{
+  "medsys_events.config.blunt_trauma": "Blunt trauma",
+  "medsys_events.config.cut_stab_wound": "Cut / stab wound",
+  "medsys_events.config.drowning": "Drowning",
+  "medsys_events.config.explosion": "Explosion",
+  "medsys_events.config.fall": "Fall",
+  "medsys_events.config.fire": "Fire",
+  "medsys_events.config.gunshot": "Gunshot",
+  "medsys_events.config.head": "Head",
+  "medsys_events.config.hit_by_vehicle": "Hit by a vehicle",
+  "medsys_events.config.left_arm": "Left arm",
+  "medsys_events.config.left_leg": "Left leg",
+  "medsys_events.config.pelvis": "Pelvis",
+  "medsys_events.config.punch": "Punch",
+  "medsys_events.config.punched_hard_surface": "Punched a hard surface",
+  "medsys_events.config.right_arm": "Right arm",
+  "medsys_events.config.right_leg": "Right leg",
+  "medsys_events.config.tear_gas": "Tear gas",
+  "medsys_events.config.torso": "Torso",
+  "medsys_events.config.vehicle_crash": "Vehicle crash"
+}

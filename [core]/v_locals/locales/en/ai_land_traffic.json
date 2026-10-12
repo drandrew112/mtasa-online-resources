@@ -1,0 +1,8 @@
+{
+  "ai_land_traffic.main.ai_traffic_cleared": "AI traffic cleared",
+  "ai_land_traffic.main.ai_traffic_disabled_and_cleared": "AI traffic disabled and cleared",
+  "ai_land_traffic.main.ai_traffic_enabled": "AI traffic enabled",
+  "ai_land_traffic.main.traffic_vehicles_released_players_emergency": "Traffic {enabled}: {agents|int} vehicles, {released|int} released, {players|int} players, {els|int} emergency | {h}",
+  "ai_land_traffic.network.traffic": "Traffic",
+  "ai_land_traffic.reports.km_h_lat": "{code}{code2|int}  {v|0f} km/h  a {a|1f}  lat {lat|1f}"
+}

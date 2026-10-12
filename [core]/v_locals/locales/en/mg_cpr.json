@@ -1,0 +1,8 @@
+{
+  "mg_cpr.client.accuracy_need": "Accuracy: {accuracy|int}%   (need {pass_percent|int}%)",
+  "mg_cpr.client.bpm": "{bpm|int} BPM",
+  "mg_cpr.client.bpm_2": "--- BPM",
+  "mg_cpr.client.press_in_rhythm": "Press {key} in rhythm",
+  "mg_cpr.client.too_fast": "TOO FAST",
+  "mg_cpr.client.too_slow": "TOO SLOW"
+}

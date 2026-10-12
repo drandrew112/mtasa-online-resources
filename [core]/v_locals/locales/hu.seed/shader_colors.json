@@ -1,0 +1,11 @@
+{
+  "shader_colors.api.color_grading": "#3fa9f5[Színkorrekció] #ffffff",
+  "shader_colors.api.intensity_not_saved": "{prefix}Erősség: {intensity}% (nincs mentve)",
+  "shader_colors.api.preset_not_saved": "{prefix}Preset: {arg} (nincs mentve)",
+  "shader_colors.api.split_view": "{prefix}Osztott nézet: {split}",
+  "shader_colors.api.status_preset_intensity_technique_night_override": "Állapot: {status} | Preset: {preset} | Erősség: {intensity|int}% | Technique: {technique} | Éjszaka: {night_weight|2f} | Override: {n|int}",
+  "shader_colors.api.unknown_parameter": "{prefix}Ismeretlen paraméter: {arg}",
+  "shader_colors.api.usage_colorgrade_split_info_off_natural": "{prefix}Használat: /colorgrade [split | info | off/natural/vivid/cinematic/warm/cold | 0-100]",
+  "shader_colors.main.not_enough_free_video_memory_so": "Kevés a szabad videómemória, ezért a színkorrekció ki lett kapcsolva. A grafikai beállítás módosításakor újra megpróbálja.",
+  "shader_colors.main.your_graphics_card_does_not_support": "A videokártyád nem támogatja a színkorrekciót, ezért ki lett kapcsolva."
+}

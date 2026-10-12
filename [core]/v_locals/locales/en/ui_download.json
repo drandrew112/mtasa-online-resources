@@ -1,0 +1,5 @@
+{
+  "ui_download.client.downloading_mb": "Downloading... ({downloaded}/{total} MB) {progresz}%",
+  "ui_download.client.join_our_discord_community_press_c": "Join our Discord community!\n#7289DA{discord}\n#ffffff(Press C to copy link)",
+  "ui_download.client.welcome_to_freev_while_you_wait": "Welcome to FreeV!\nWhile you wait, check out our Discord for the latest updates!\n\nFreeV — experience San Andreas like never before."
+}

@@ -1,0 +1,13 @@
+{
+  "v_arenawar.gamemanager.arena_war_script_is_stopping_or": "The Arena War script is stopping or restarting.",
+  "v_arenawar.hud.your_vehicle": "Your vehicle",
+  "v_arenawar.interface.arenawar_is_vehicle_deathmatch_fought_inside": "ArenaWar is a vehicle deathmatch fought inside a single arena. You're handed a random vehicle from a mix of muscle cars, buggies and off-roaders, and you can't leave your seat once the match starts - it's pure vehicle vs. vehicle combat. Use the terrain and ram your rivals (collisions deal extra damage here) to wreck their ride before they wreck yours. Once your vehicle is destroyed you're eliminated: after a short 5-second countdown you can jump back in with a fresh vehicle, or leave the arena.\nHave fun!",
+  "v_arenawar.interface.close": "CLOSE",
+  "v_arenawar.interface.do_you_want_to_continue": "Do you want to continue?",
+  "v_arenawar.interface.play": "PLAY",
+  "v_arenawar.interface.players_in_arena": "Players in arena: {arena_player_count}",
+  "v_arenawar.interface.press_e_to_open_arenawar_panel": "Press E to open ArenaWar panel",
+  "v_arenawar.interface.time_to_revive": "Time to Revive: {timeleft}",
+  "v_arenawar.interface.welcome_to_arenawar": "Welcome to ArenaWar!",
+  "v_arenawar.shared.m": "{min} m {max}"
+}

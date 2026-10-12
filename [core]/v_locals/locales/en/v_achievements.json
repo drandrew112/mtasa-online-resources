@@ -1,0 +1,19 @@
+{
+  "v_achievements.admin.achievements": "Achievements",
+  "v_achievements.admin.already_unlocked_no_account": "Already unlocked / no account.",
+  "v_achievements.admin.ignored_all_done_unknown_stat_bad": "Ignored (all done / unknown stat / bad amount).",
+  "v_achievements.admin.ignored_done_bad_id_bad_amount": "Ignored (done / bad id / bad amount).",
+  "v_achievements.admin.progress_added": "Progress added.",
+  "v_achievements.admin.reset_done": "Reset done.",
+  "v_achievements.admin.stat_added": "Stat added.",
+  "v_achievements.admin.unknown_account": "Unknown account.",
+  "v_achievements.admin.unknown_account_id": "Unknown account / id.",
+  "v_achievements.admin.unknown_achievement_id": "Unknown achievement id.",
+  "v_achievements.admin.unlocked": "Unlocked {a}.",
+  "v_achievements.admin.unlocked_list_printed_to_f8": "{done|int}/{total|int} unlocked - list printed to F8.",
+  "v_achievements.admin.usage_ach_list_give_prog_stat": "Usage: /ach list|give|prog|stat|reset <player> ...",
+  "v_achievements.admin.usage_ach_reset_player_id_all": "Usage: /ach reset <player> <id|all>",
+  "v_achievements.admin.you_have_no_permission": "You have no permission.",
+  "v_achievements.notify.achievement_unlocked": "Achievement unlocked",
+  "v_achievements.notify.xp": "{text}  (+{xp} XP)"
+}

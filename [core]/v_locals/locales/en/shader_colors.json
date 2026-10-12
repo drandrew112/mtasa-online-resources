@@ -1,0 +1,23 @@
+{
+  "shader_colors.api.be": "BE",
+  "shader_colors.api.color_grading": "#3fa9f5[Color grading] #ffffff",
+  "shader_colors.api.intensity_not_saved": "{prefix}Intensity: {intensity}% (not saved)",
+  "shader_colors.api.ki": "KI",
+  "shader_colors.api.preset_not_saved": "{prefix}Preset: {arg} (not saved)",
+  "shader_colors.api.split_view": "{prefix}Split view: {split}",
+  "shader_colors.api.status_preset_intensity_technique_night_override": "Status: {status} | Preset: {preset} | Intensity: {intensity|int}% | Technique: {technique} | Night: {night_weight|2f} | Override: {n|int}",
+  "shader_colors.api.unknown_parameter": "{prefix}Unknown parameter: {arg}",
+  "shader_colors.api.usage_colorgrade_split_info_off_natural": "{prefix}Usage: /colorgrade [split | info | off/natural/vivid/cinematic/warm/cold | 0-100]",
+  "shader_colors.main.active": "active",
+  "shader_colors.main.graded": "GRADED",
+  "shader_colors.main.idle": "idle",
+  "shader_colors.main.not_enough_free_video_memory_so": "Not enough free video memory, so color grading was turned off. It will try again when you change a graphics setting.",
+  "shader_colors.main.original": "ORIGINAL",
+  "shader_colors.main.your_graphics_card_does_not_support": "Your graphics card does not support color grading, so it was turned off.",
+  "shader_colors.presets.cinematic": "Cinematic",
+  "shader_colors.presets.cold": "Cold",
+  "shader_colors.presets.natural": "Natural",
+  "shader_colors.presets.off": "Off",
+  "shader_colors.presets.vivid": "Vivid",
+  "shader_colors.presets.warm": "Warm"
+}

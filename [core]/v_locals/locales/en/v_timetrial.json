@@ -1,0 +1,19 @@
+{
+  "v_timetrial.timetrial.good_luck": "Good luck!",
+  "v_timetrial.timetrial.land_vehicle_required": "Land vehicle required",
+  "v_timetrial.timetrial.no_reward": "no reward",
+  "v_timetrial.timetrial.out_of_time": "Out of time",
+  "v_timetrial.timetrial.press_e_to_start": "Press  E  to start",
+  "v_timetrial.timetrial.reward": "Reward: €{reward}",
+  "v_timetrial.timetrial.sec": "{time} sec   -   {reward}",
+  "v_timetrial.timetrial.step_into_marker_to_start": "Step into the marker to start",
+  "v_timetrial.timetrial.test_run_no_reward": "Test run - no reward",
+  "v_timetrial.timetrial.time_trial": "TIME TRIAL",
+  "v_timetrial.timetrial.time_trial_completed": "TIME TRIAL COMPLETED",
+  "v_timetrial.timetrial.time_trial_failed": "TIME TRIAL FAILED",
+  "v_timetrial.timetrial.time_trial_started": "TIME TRIAL STARTED",
+  "v_timetrial.timetrial.time_trial_test": "TIME TRIAL TEST",
+  "v_timetrial.timetrial.time_trial_test_2": "TIME TRIAL  -  TEST",
+  "v_timetrial.timetrial.time_trial_test_stopped": "Time trial test stopped",
+  "v_timetrial.timetrial.tt": "TT"
+}

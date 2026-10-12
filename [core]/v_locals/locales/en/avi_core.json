@@ -1,0 +1,14 @@
+{
+  "avi_core.marker.atc": "ATC",
+  "avi_core.marker.controller_software_is_not_running": "The controller software is not running.",
+  "avi_core.marker.controller_software_needs_restart_restart_avi": "The controller software needs a restart (restart avi_controller).",
+  "avi_core.marker.only_air_traffic_controllers_can_use": "Only air traffic controllers can use this.",
+  "avi_core.marker.press_atc_position": "Press {marker_key} · ATC position",
+  "avi_core.marker.you_do_not_have_any_atc": "You do not have any ATC rights.",
+  "avi_core.role.atc_right": "ATC right {right} {enable}: {who}",
+  "avi_core.role.atc_rights_reset": "ATC rights reset: {who}",
+  "avi_core.role.no_such_player": "No such player.",
+  "avi_core.role.usage_atcright_player_twr_app_radar": "Usage: /atcright [player] <twr|app|radar|all|reset> [on|off]",
+  "avi_core.role.you_are_not_allowed_to_do": "You are not allowed to do this.",
+  "avi_core.role.your_atc_rights_were_changed": "Your ATC rights were changed."
+}

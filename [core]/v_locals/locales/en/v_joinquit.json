@@ -1,0 +1,9 @@
+{
+  "v_joinquit.joinquit.player_got_banned": "Player got banned",
+  "v_joinquit.joinquit.player_got_kicked": "Player got kicked",
+  "v_joinquit.joinquit.player_joined": "Player joined",
+  "v_joinquit.joinquit.player_left": "Player left",
+  "v_joinquit.joinquit.player_needs_better_computer_or_internet": "Player needs a better computer or internet",
+  "v_joinquit.joinquit.player_should_pay_for_their_internet": "Player should pay for their internet",
+  "v_joinquit.joinquit.player_swallowed_by_black_hole": "Player swallowed by a black hole"
+}

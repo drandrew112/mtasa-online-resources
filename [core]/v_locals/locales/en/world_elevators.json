@@ -1,0 +1,8 @@
+{
+  "world_elevators.elevators.elevator": "ELEVATOR",
+  "world_elevators.elevators.press_e_to_use_elevator": "Press E to use the elevator",
+  "world_elevators.shared.garage": "Garage",
+  "world_elevators.shared.gnd": "Gnd",
+  "world_elevators.shared.ls_police_station": "LS Police Station",
+  "world_elevators.shared.roof": "Roof"
+}

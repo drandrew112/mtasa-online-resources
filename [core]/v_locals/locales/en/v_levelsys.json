@@ -1,0 +1,11 @@
+{
+  "v_levelsys.server.enter_name_of_player_to_give": "{prefix}Enter the name of the player to give XP to",
+  "v_levelsys.server.level_system": "#00ffffLevel System #ff0000// #ffffff",
+  "v_levelsys.server.player_not_found": "{prefix}Player not found",
+  "v_levelsys.server.this_player_cannot_receive_xp_right": "{prefix}This player cannot receive XP right now",
+  "v_levelsys.server.usage_givexp_name_xp": "{prefix}Usage: /givexp <name> <xp>",
+  "v_levelsys.server.you_are_not_allowed_to_do": "{prefix}You are not allowed to do this!",
+  "v_levelsys.server.you_gave_xp_to": "{prefix}#ffffffYou gave #00ffff{add_xp}#ffffff XP to {target_name}#ffffff",
+  "v_levelsys.server.you_reached_level": "{prefix}You reached level {level}!",
+  "v_levelsys.server.you_received_xp_from": "{prefix}#ffffffYou received #00ffff{add_xp}#ffffff XP from #00ffff{player}#ffffff"
+}
