@@ -258,6 +258,14 @@ exports = { v_locals = setmetatable({}, { __index = function(_, fn)
     return function(_, ...) EXPORT_CALLS = EXPORT_CALLS + 1; return internalBackend[fn](...) end
 end }) }
 function getResourceFromName(name) return name == "v_locals" and "vres" or nil end
+local SENT, CHAT, KICK = {}, {}, {}
+function triggerClientEvent(...) SENT[#SENT + 1] = { ... }; return true end
+function triggerLatentClientEvent(...) SENT[#SENT + 1] = { ... }; return true end
+function outputChatBox(...) CHAT[#CHAT + 1] = { ... }; return true end
+function kickPlayer(...) KICK[#KICK + 1] = { ... }; return true end
+function getElementType(e) return e.isPlayer and "player" or "root" end
+local PLAYERS = {}
+function getElementsByType() return PLAYERS end
 _G.L = nil
 handlers = {}
 assert(loadstring(LIB_SOURCE_SERVER, "@lib-server-consumer"))()
@@ -278,6 +286,46 @@ local beforeReload = EXPORT_CALLS
 fire("v_locals:onCatalogReload", root)
 eq("reload event resyncs", X.forPlayer(p, "t.hello"), "Szia")
 ok("reload event refetched", EXPORT_CALLS > beforeReload)
+
+-- message objects: safety net + send-time resolution per receiver (D4)
+local m = X.msg("t.paid", { name = "A", amount = 5 })
+ok("isMsg", X.isMsg(m) and not X.isMsg({ t = "x" }) and not X.isMsg("x"))
+eq("msg tostring", tostring(m), "A paid you €5.")
+eq("msg concat", "> " .. m, "> A paid you €5.")
+eq("msg string method", m:upper(), "A PAID YOU €5.")
+local plainCopy = { t = "t.hello", p = nil, __loc = true }     -- crossed a resource boundary (no metatable)
+local pHu, pEn = { isPlayer = true, lang = "hu" }, { isPlayer = true, lang = "en" }
+fire("onPlayerQuit", pHu); fire("onPlayerQuit", pEn)
+triggerClientEvent(pHu, "ev", pHu, X.msg("t.hello"), { title = plainCopy, n = 3 }, 7)
+local s1 = SENT[#SENT]
+eq("trigger: receiver kept", s1[1], pHu)
+eq("trigger: event name kept", s1[2], "ev")
+eq("trigger: msg resolved in receiver language", s1[4], "Szia")
+eq("trigger: nested plain-copy msg resolved", s1[5].title, "Szia")
+eq("trigger: other values kept", s1[5].n == 3 and s1[6], 7)
+PLAYERS = { pHu, pEn }
+function isElement(e) return type(e) == "table" and (e.isPlayer == true or e == root) end
+local before = #SENT
+triggerClientEvent(root, "ev2", root, X.msg("t.hello"))
+eq("trigger root: one send per player", #SENT - before, 2)
+eq("trigger root: hu", SENT[before + 1][4], "Szia")
+eq("trigger root: en", SENT[before + 2][4], "Hello")
+before = #SENT
+triggerClientEvent("ev3", root, X.msg("t.hello"))
+eq("trigger without receiver: per player", #SENT - before, 2)
+eq("trigger without receiver: receiver added", SENT[before + 1][1], pHu)
+local data = { list = { 1, 2, 3 } }
+triggerClientEvent(pEn, "ev4", pEn, data)
+eq("trigger without msg: untouched table", SENT[#SENT][4], data)
+outputChatBox(X.msg("t.hello"), pHu, 255, 0, 0)
+eq("outputChatBox resolved", CHAT[#CHAT][1], "Szia")
+eq("outputChatBox args kept", CHAT[#CHAT][3], 255)
+before = #CHAT
+outputChatBox(X.msg("t.hello"))
+eq("outputChatBox to everyone: per player", #CHAT - before, 2)
+kickPlayer(pHu, X.msg("t.hello"))
+eq("kickPlayer reason resolved", KICK[#KICK][2], "Szia")
+eq("resolveDeep", X.resolveDeep({ a = X.msg("t.hello") }, pEn).a, "Hello")
 
 print(("tests: %d passed, %d failed"):format(passed, failed))
 return failed > 0

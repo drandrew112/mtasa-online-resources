@@ -52,7 +52,6 @@
     <file src="locales/en/map_int_sacontrol.json" />
     <file src="locales/en/med_bag.json" />
     <file src="locales/en/med_erm.json" />
-    <file src="locales/en/med_erm_auto.json" />
     <file src="locales/en/med_hospitals.json" />
     <file src="locales/en/med_stretcher.json" />
     <file src="locales/en/medsys.json" />

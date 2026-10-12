@@ -54,10 +54,11 @@ ESC = {"n": "\n", "t": "\t", "r": "\r", "a": "\a", "b": "\b", "f": "\f", "v": "\
 
 
 class Tok:
-    __slots__ = ("kind", "value", "line", "raw")
+    __slots__ = ("kind", "value", "line", "raw", "pos", "end")
 
     def __init__(self, kind, value, line, raw=None):
         self.kind, self.value, self.line, self.raw = kind, value, line, raw
+        self.pos = self.end = None      # character offsets in the source: src[pos:end]
 
     def __repr__(self):
         return "%s:%r@%d" % (self.kind, self.value, self.line)
@@ -65,7 +66,11 @@ class Tok:
 
 def lex(src):
     toks, i, n, line = [], 0, len(src), 1
+    pending, pstart = 0, 0
     while i < n:
+        if len(toks) > pending:                 # the previous iteration produced a token
+            toks[-1].pos, toks[-1].end = pstart, i
+        pending, pstart = len(toks), i
         c = src[i]
         if c == "\n":
             line += 1
@@ -142,6 +147,8 @@ def lex(src):
                 break
         else:
             i += 1
+    if len(toks) > pending:
+        toks[-1].pos, toks[-1].end = pstart, i
     return toks
 
 
@@ -232,14 +239,51 @@ class LuaFile:
         s = e = i
         ops = [(i, i)]
         while is_op(self.tok(s - 1), ".."):
-            ps = self.operand_start(s - 2)
+            ps = self.term_start(s - 2)
             ops.insert(0, (ps, s - 2))
             s = ps
         while is_op(self.tok(e + 1), ".."):
-            pe = self.operand_end(e + 2)
+            pe = self.term_end(e + 2)
             ops.append((e + 2, pe))
             e = pe
         return s, e, ops
+
+    ARITH = {"+", "-", "*", "/", "%", "^"}
+
+    def _unary_before(self, j):
+        """True when the token at j is a unary operator (# / not / unary minus)"""
+        t = self.tok(j)
+        if t is None:
+            return False
+        if is_op(t, "#") or (t.kind == "kw" and t.value == "not"):
+            return True
+        if is_op(t, "-"):
+            p = self.tok(j - 1)
+            return p is None or p.kind == "kw" or (is_op(p) and p.value not in (")", "]", "}"))
+        return False
+
+    def term_start(self, i):
+        """start of the `..` operand ending at i: binds tighter than `..` (a + b, #t, -x)"""
+        s = self.operand_start(i)
+        while True:
+            if self._unary_before(s - 1):
+                s -= 1
+                continue
+            p = self.tok(s - 1)
+            if is_op(p) and p.value in self.ARITH and self.tok(s - 2) is not None and not self._unary_before(s - 1):
+                s = self.operand_start(s - 2)
+                continue
+            return s
+
+    def term_end(self, i):
+        """end of the `..` operand starting at i"""
+        e = self.operand_end(i)
+        while True:
+            n = self.tok(e + 1)
+            if is_op(n) and n.value in self.ARITH and self.tok(e + 2) is not None:
+                e = self.operand_end(e + 2)
+                continue
+            return e
 
     BINOPS = {"..", "==", "~=", "<", ">", "<=", ">=", "+", "-", "*", "/", "%", "^"}
 
@@ -785,12 +829,16 @@ class Scanner:
                     outer_s, outer_e = c["open"] - 3, lf.pair.get(c["open"], e)
 
         text, params, template_ok = None, [], True
+        pspans = []                         # [name, char_pos, char_end] of every parameter expression
         if fmt_args is not None:
             names = unique_names([placeholder_name(toks[a:b + 1]) for a, b in fmt_args])
             text = format_to_template(lits[0], names)
             params = [(n, lf.text_of(a, b)) for n, (a, b) in zip(names, fmt_args)]
+            pspans = [[n, toks[a].pos, toks[b].end] for n, (a, b) in zip(names, fmt_args)]
             if text is None:
-                text, template_ok = lits[0], False
+                # unsupported format (%02d ...): only the literal is replaced, :format stays
+                text, template_ok, params, pspans = lits[0], False, [], []
+                outer_s, outer_e = s, e
         elif dynamic:
             parts, raw_names, exprs = [], [], []
             for a, b in ops:
@@ -799,8 +847,11 @@ class Scanner:
                 else:
                     raw_names.append(placeholder_name(toks[a:b + 1]))
                     exprs.append(lf.text_of(a, b))
+                    pspans.append([None, toks[a].pos, toks[b].end])
                     parts.append(("par", None))
             names = unique_names(raw_names)
+            for ps_, n_ in zip(pspans, names):
+                ps_[0] = n_
             k, buf = 0, []
             for kind, v in parts:
                 if kind == "lit":
@@ -878,6 +929,19 @@ class Scanner:
 
         hu = is_hungarian(literal_text)
         avi = res in CFG["confirm_resources"]
+        # what the codemod needs: the exact source range to replace and, for server
+        # sinks with a known receiver, the player expression
+        target = None
+        if ctx["kind"] == "call" and ctx.get("open") is not None:
+            args = lf.call_args(ctx["open"])
+            idx = {"outputChatBox": 1, "kickPlayer": 0, "triggerClientEvent": 0}.get(ctx["name"])
+            if idx is not None and len(args) > idx:
+                a_, b_ = args[idx]
+                target = lf.src[toks[a_].pos:toks[b_].end]
+                if ctx["name"] == "triggerClientEvent" and toks[a_].kind == "str":
+                    target = None           # triggerClientEvent("event", ...) = everyone
+        prev = lf.tok(outer_s - 1)
+        callsyntax = prev is not None and prev.kind == "name" and toks[outer_s].kind == "str"
         self.items.append({
             "res": res, "ns": namespace_of(res), "file": rel, "inner": inner, "line": line,
             "text": text, "template": bool(params), "params": params, "template_ok": template_ok,
@@ -885,6 +949,8 @@ class Scanner:
             "field": ctx.get("field"), "owner": ctx.get("owner"),
             "status": status, "hu": hu, "confirm": avi,
             "render": self.in_render(lf, s), "side": side_of(inner, res),
+            "span": [toks[outer_s].pos, toks[outer_e].end], "pspans": pspans,
+            "target": target, "callsyntax": callsyntax,
         })
 
     def sink_of(self, lf, ctx, s):
@@ -1041,7 +1107,7 @@ def norm(text):
 # --------------------------------------------------------------------------
 # Commands
 # --------------------------------------------------------------------------
-def cmd_scan():
+def cmd_scan(quiet=False):
     global TECH
     TECH = compile_list("technical_patterns")
     sc = Scanner()
@@ -1089,7 +1155,7 @@ def cmd_scan():
             w.writerow([it["id"], it["status"], it["res"], it["file"], it["line"], it["sink"], int(it["hu"]), int(it["render"]), it["text"]])
     write_reports(sc)
     st = Counter(it["status"] for it in sc.items)
-    print("items: %d (translate %d, review %d, ignore %d), resources %d, HU %d" % (
+    if not quiet: print("items: %d (translate %d, review %d, ignore %d), resources %d, HU %d" % (
         len(sc.items), st["translate"], st["review"], st["ignore"],
         len({i["res"] for i in sc.items}), sum(1 for i in sc.items if i["hu"])))
     return sc
@@ -1269,7 +1335,23 @@ def cmd_build(sc_items=None):
                 f.write(text)
             files.append("locales/en/files/" + target)
 
+    # keys added by hand during phase 3 (decisions.json "add": { key: text })
+    for k, v in dec.get("add", {}).items():
+        catalogs[k.split(".")[0]][k] = v
+
+    # keys already used by migrated code have no literal left to scan: keep them
+    # (with their seeds) as long as some code still references them
     endir = os.path.join(LOCALS, "locales", "en")
+    seeddir = os.path.join(LOCALS, "locales", "hu.seed")
+    old_en, old_seed = read_catalogs(endir), read_catalogs(seeddir)
+    kept = 0
+    for k in referenced_keys(old_en):
+        ns = k.split(".")[0]
+        if k not in catalogs[ns]:
+            catalogs[ns][k] = old_en[k]
+            kept += 1
+        if k in old_seed and k not in seed[ns]:
+            seed[ns][k] = old_seed[k]
     for fn in os.listdir(endir):
         if fn.endswith(".json"):
             os.remove(os.path.join(endir, fn))
@@ -1277,7 +1359,6 @@ def cmd_build(sc_items=None):
         catalogs["common"] = {}
     for ns, cat in catalogs.items():
         save_json(os.path.join(endir, ns + ".json"), cat)
-    seeddir = os.path.join(LOCALS, "locales", "hu.seed")
     os.makedirs(seeddir, exist_ok=True)
     for fn in os.listdir(seeddir):
         os.remove(os.path.join(seeddir, fn))
@@ -1288,11 +1369,45 @@ def cmd_build(sc_items=None):
     save_json(os.path.join(OUT, "inventory.json"), items)
 
     n = sum(len(c) for c in catalogs.values())
-    print("built: %d keys in %d namespaces, %d text files, %d HU seeds%s" % (
-        n, len(catalogs), len(files), sum(len(c) for c in seed.values()),
+    print("built: %d keys in %d namespaces (%d kept from migrated code), %d text files, %d HU seeds%s" % (
+        n, len(catalogs), kept, len(files), sum(len(c) for c in seed.values()),
         (", %d Hungarian texts WITHOUT English (tools/hu_to_en.json)" % len(missing_en)) if missing_en else ""))
     if missing_en:
         save_json(os.path.join(OUT, "missing_hu_to_en.json"), {i["text"]: "" for i in missing_en})
+
+
+def read_catalogs(d):
+    out = {}
+    if os.path.isdir(d):
+        for fn in os.listdir(d):
+            if fn.endswith(".json"):
+                with open(os.path.join(d, fn), encoding="utf-8") as f:
+                    out.update(json.load(f))
+    return out
+
+
+KEY_LIT_RX = re.compile(r"""["']([a-z0-9_]+(?:\.[a-z0-9_]+)+)["']""")
+
+
+def referenced_keys(known):
+    """catalog keys (from `known`) that appear as a string literal in some scanned Lua file"""
+    found = set()
+    for dp, dns, fns in os.walk(RESOURCES):
+        dns[:] = [d for d in dns if d not in ("node_modules", ".git")]
+        for fn in fns:
+            if not fn.endswith(".lua"):
+                continue
+            p = os.path.join(dp, fn)
+            if os.path.getsize(p) > CFG["max_file_bytes"]:
+                continue
+            res_, inner_ = resource_of(os.path.relpath(p, RESOURCES).replace("\\", "/"))
+            if excluded_file(res_, inner_):
+                continue
+            with open(p, encoding="utf-8", errors="replace") as f:
+                for m in KEY_LIT_RX.finditer(f.read()):
+                    if m.group(1) in known:
+                        found.add(m.group(1))
+    return found
 
 
 def update_meta(namespaces, files):
@@ -1358,9 +1473,11 @@ def cmd_lint():
         if len(ks) > 1:
             warns.append("same text on %d keys in %s: %r" % (len(ks), ns, v[:60]))
 
-    # keys used in the code
-    used, unknown = set(), []
-    use_rx = re.compile(r"""(?:\bL|\bL\.forPlayer\s*\([^,]+,|\bL\.msg|translate\s*\([^,]*,?)\s*\(?\s*["']([a-z0-9_]+(?:\.[a-z0-9_]+)+)["']""")
+    # keys used in the code: L("k"), L.msg("k"), L.text("k") and keys kept in tables
+    used = referenced_keys(en)
+    unknown = []
+    call_rx = re.compile(r"""\bL(?:\.msg|\.text)?\s*\(\s*["']([a-z0-9_]+(?:\.[a-z0-9_]+)+)["']"""
+                         r"""|\bL\.for(?:Player|Lang)\s*\([^,()]+,\s*["']([a-z0-9_]+(?:\.[a-z0-9_]+)+)["']""")
     for dp, dns, fns in os.walk(RESOURCES):
         dns[:] = [d for d in dns if d not in ("node_modules", ".git")]
         for fn in fns:
@@ -1372,26 +1489,23 @@ def cmd_lint():
                 if excluded_file(res_, inner_):
                     continue
                 with open(p, encoding="utf-8", errors="replace") as f:
-                    src = f.read()
-                for m in use_rx.finditer(src):
-                    k = m.group(1)
-                    used.add(k)
-                    if k not in en and not k.startswith("__bench") and not k.startswith("t."):
-                        unknown.append("%s: %s" % (os.path.relpath(p, RESOURCES), k))
+                    for m in call_rx.finditer(f.read()):
+                        k = m.group(1) or m.group(2)
+                        used.add(k)
+                        if k not in en:
+                            unknown.append("%s: %s" % (os.path.relpath(p, RESOURCES), k))
     for u in unknown:
         errors.append("unknown key used: " + u)
     adopted = {k.split(".")[0] for k in used}
     for k in en:
-        if k.split(".")[0] in adopted and k not in used:
+        if k.split(".")[0] in adopted and k.split(".")[0] != "common" and k not in used:
             warns.append("unused key in a migrated namespace: " + k)
 
     # hard-coded texts left in migrated resources (phase 3)
     left = 0
     inv_path = os.path.join(OUT, "inventory.json")
     if adopted and os.path.exists(inv_path):
-        sc = Scanner()
-        sc.run()
-        for it in sc.items:
+        for it in cmd_scan(quiet=True).items:
             if it["ns"] in adopted and it["status"] == "translate":
                 left += 1
                 warns.append("hard-coded text in %s:%d: %r" % (it["file"], it["line"], it["text"][:60]))
@@ -1402,6 +1516,252 @@ def cmd_lint():
         print("WARN ", w)
     print("lint: %d errors, %d warnings, %d keys (en), %d languages" % (len(errors), len(warns), len(en), len(cats)))
     return 1 if errors else 0
+
+
+# --------------------------------------------------------------------------
+# apply (phase 3 codemod) / check
+# --------------------------------------------------------------------------
+IMPORT_FILE = "locals.lua"
+# first line of every migrated script: works even when MTA still runs an old
+# meta.xml without locals.lua (included resources are only re-read on a server
+# restart) and does nothing when the lib is already loaded
+IMPORT_GUARD = "if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)\n"
+IMPORT_SRC = """-- v_locals import (DESIGN.md 4.7): creates the global `L` of this resource.
+-- Must stay the first script in meta.xml. Generated by v_locals/tools/locales.py apply.
+loadstring(exports.v_locals:import())()
+"""
+SHADOW_RX = re.compile(r"(?<![\w.:])local\s+L\b|(?<![\w.:])local\s+function\s+L\b|\bfunction\s*\([^)]*\bL\b[^)]*\)"
+                       r"|\bfor\s+[^\n=]*\bL\b[^\n]*\bin\b|^\s*L\s*=", re.M)
+
+
+def shadows_L(src):
+    """line of the first local / parameter / loop variable / global assignment named L, or None"""
+    lf = LuaFile("", src)
+    toks = lf.toks
+    for i, t in enumerate(toks):
+        if t.kind != "name" or t.value != "L":
+            continue
+        p, n = lf.tok(i - 1), lf.tok(i + 1)
+        if is_op(p) and p.value in (".", ":"):
+            continue                                        # field access ti.L
+        j = i - 1                                           # walk a name list back: local a, L / for k, L
+        while j >= 1 and is_op(toks[j], ",") and toks[j - 1].kind == "name":
+            j -= 2
+        q = lf.tok(j)
+        if q is not None and q.kind == "kw" and q.value in ("local", "for"):
+            return t.line
+        o, _ = lf.enclosing_open(i)
+        if o is not None and toks[o].value == "(" and lf.tok(o - 1) is not None and                 (lf.tok(o - 1).value == "function" or (lf.tok(o - 2) is not None and lf.tok(o - 2).value == "function")):
+            return t.line                                   # function(a, L) / function f(L)
+        if is_op(n, "=") and not (o is not None and toks[o].value == "{"):
+            return t.line                                   # L = ... outside a table constructor
+    return None
+
+
+def resource_dir(res):
+    for dp, dns, fns in os.walk(RESOURCES):
+        dns[:] = [d for d in dns if d not in ("node_modules", ".git", "old")]
+        if os.path.basename(dp) == res and "meta.xml" in fns:
+            return dp
+    return None
+
+
+def meta_scripts(rdir):
+    """{ inner path: 'client' | 'server' | 'shared' } of the <script> entries"""
+    import xml.etree.ElementTree as ET
+    out = {}
+    root = ET.parse(os.path.join(rdir, "meta.xml")).getroot()
+    for node in root:
+        if node.tag == "script":
+            src = node.get("src", "").replace("\\", "/")
+            typ = (node.get("type") or "server").lower()
+            out[src] = typ if out.get(src, typ) == typ else "shared"      # listed for both sides
+    return out
+
+
+def lua_key(name):
+    if re.fullmatch(r"[A-Za-z_]\w*", name) and name not in KEYWORDS:
+        return name
+    return '["%s"]' % name
+
+
+def syntax_errors(paths):
+    from lupa import lua51
+    lua = lua51.LuaRuntime(unpack_returned_tuples=True)
+    load = lua.eval('function(src, name) local f, e = loadstring(src, name); return f ~= nil, e or "" end')
+    errs = []
+    for p in paths:
+        with open(p, encoding="utf-8", errors="replace") as f:
+            ok, err = load(f.read(), "@" + os.path.basename(p))
+        if not ok:
+            errs.append(err)
+    return errs
+
+
+def patch_meta(rdir, sides):
+    """<include resource="v_locals"/> + locals.lua as the first script"""
+    path = os.path.join(rdir, "meta.xml")
+    with open(path, encoding="utf-8") as f:
+        meta = f.read()
+    changed = False
+    if 'src="%s"' % IMPORT_FILE not in meta:
+        typ = "shared" if ("shared" in sides or len(sides - {"shared"}) > 1) else next(iter(sides))
+        m = re.search(r"^([ \t]*)<script\b", meta, re.M)
+        indent = m.group(1) if m else "    "
+        line = '%s<script src="%s" type="%s" />\n' % (indent, IMPORT_FILE, typ)
+        if m:
+            meta = meta[:m.start()] + line + meta[m.start():]
+        else:
+            meta = meta.replace("</meta>", line + "</meta>")
+        changed = True
+    if not re.search(r'<include\s+resource="v_locals"', meta):
+        m = re.search(r"^([ \t]*)<(include|script)\b", meta, re.M)
+        indent = m.group(1) if m else "    "
+        meta = meta[:m.start()] + '%s<include resource="v_locals" />\n' % indent + meta[m.start():]
+        changed = True
+    if changed:
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            f.write(meta)
+    imp = os.path.join(rdir, IMPORT_FILE)
+    if not os.path.exists(imp):
+        with open(imp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(IMPORT_SRC)
+
+
+def cmd_apply(res, dry=False, force=False):
+    sc = cmd_scan()
+    cmd_build(sc.items)
+    with open(os.path.join(OUT, "inventory.json"), encoding="utf-8") as f:
+        items = [i for i in json.load(f) if i["res"] == res and i["status"] == "translate" and i.get("key")]
+    rdir = resource_dir(res)
+    if not rdir:
+        print("no such resource:", res)
+        return 1
+    scripts = meta_scripts(rdir)
+    by_file = defaultdict(list)
+    for it in items:
+        by_file[it["inner"]].append(it)
+
+    changed, sides, notes = [], set(), []
+    server_msgs = Counter()
+    for inner, its in sorted(by_file.items()):
+        side = scripts.get(inner)
+        if side is None:
+            notes.append("SKIP %s: not a <script> of meta.xml (%d texts)" % (inner, len(its)))
+            continue
+        path = os.path.join(rdir, inner)
+        with open(path, "rb") as f:
+            raw = f.read()
+        try:
+            raw.decode("utf-8")
+        except UnicodeDecodeError:
+            notes.append("SKIP %s: not valid UTF-8" % inner)
+            continue
+        crlf = b"\r\n" in raw
+        # the scanner read the file with universal newlines: same offsets here
+        with open(path, encoding="utf-8") as f:
+            src = f.read()
+        if shadows_L(src) and not force:
+            notes.append("SKIP %s: a local / parameter named L shadows the lib - rename it first" % inner)
+            continue
+        recs = [{"it": it, "pos": it["span"][0], "end": it["span"][1],
+                 "ps": [[n, a, b] for n, a, b in it["pspans"]]} for it in its]
+        recs.sort(key=lambda r: (r["end"] - r["pos"], r["pos"]))
+        text = src
+        for k, r in enumerate(recs):
+            it = r["it"]
+            exprs = [(n, text[a:b]) for n, a, b in r["ps"]]
+            params = ""
+            if exprs:
+                params = ", { " + ", ".join("%s = %s" % (lua_key(n), e) for n, e in exprs) + " }"
+            fn = {"server": "L.msg", "shared": "L.text"}.get(side, "L")
+            if side == "server":
+                server_msgs[it["sink"]] += 1
+            repl = '%s("%s"%s)' % (fn, it["key"], params)
+            if it.get("callsyntax"):
+                repl = "(" + repl + ")"
+            p, e = r["pos"], r["end"]
+            text = text[:p] + repl + text[e:]
+            delta = len(repl) - (e - p)
+
+            def sh(x):
+                return x + delta if x >= e else x
+            for o in recs[k + 1:]:
+                o["pos"], o["end"] = sh(o["pos"]), sh(o["end"])
+                for q in o["ps"]:
+                    q[1], q[2] = sh(q[1]), sh(q[2])
+        if text != src and not text.startswith(IMPORT_GUARD):
+            text = IMPORT_GUARD + text
+        if text != src:
+            sides.add(side)
+            changed.append((path, inner, len(recs)))
+            if not dry:
+                with open(path, "w", encoding="utf-8", newline="\r\n" if crlf else "\n") as f:
+                    f.write(text)
+    if changed and not dry:
+        patch_meta(rdir, sides | ({"shared"} if "shared" in scripts.values() else set()))
+    errs = [] if dry else syntax_errors([p for p, _, _ in changed] + [os.path.join(rdir, IMPORT_FILE)])
+    for p, inner, n in changed:
+        print("%s %-46s %4d texts" % ("DRY " if dry else "EDIT", inner, n))
+    for n in notes:
+        print(n)
+    if server_msgs:
+        print("server L.msg by sink:", dict(server_msgs.most_common()))
+    for e in errs:
+        print("SYNTAX", e)
+    print("apply %s: %d files, %d texts, %d syntax errors" % (res, len(changed), sum(n for _, _, n in changed), len(errs)))
+    return 1 if errs else 0
+
+
+def cmd_residue(res):
+    """string literals of a (migrated) resource that may still be UI text: for review"""
+    global TECH
+    TECH = compile_list("technical_patterns")
+    rdir = resource_dir(res)
+    scripts = meta_scripts(rdir)
+    sc = Scanner()
+    out = []
+    for inner, side in sorted(scripts.items()):
+        if not inner.endswith(".lua") or inner == IMPORT_FILE:
+            continue
+        path = os.path.join(rdir, inner)
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+            src = f.read()
+        lf = LuaFile(inner, src)
+        sc.mark_scopes(lf)
+        for i, t in enumerate(lf.toks):
+            if t.kind != "str" or not t.value.strip():
+                continue
+            prev = lf.tok(i - 2)
+            if is_op(lf.tok(i - 1), "(") and prev is not None and prev.kind == "name" and prev.value in ("L", "msg", "forPlayer", "forLang"):
+                continue                                      # L("key") / L.msg("key")
+            if KEY_LIT_RX.fullmatch('"%s"' % t.value) and "." in t.value:
+                continue
+            ctx = lf.context(i, i)
+            sink, _ = sc.sink_of(lf, ctx, i)
+            if sink in ("debug", "technical") or ctx["kind"] in ("compare", "index") or sc.in_test(lf, i):
+                continue
+            v = t.value.strip()
+            if technical(v) or not LETTER.search(v):
+                continue
+            if not (" " in v or v[0].isupper() or not v.isascii()):
+                continue
+            out.append((inner, t.line, ctx.get("name") or ctx.get("field") or ctx.get("var") or ctx["kind"], v))
+    for inner, line, c, v in out:
+        print("%s:%d  [%s]  %r" % (inner, line, c, v[:90]))
+    print("residue %s: %d literals to look at" % (res, len(out)))
+
+
+def cmd_check(res):
+    rdir = resource_dir(res)
+    paths = [os.path.join(rdir, s) for s in meta_scripts(rdir) if s.endswith(".lua")]
+    errs = syntax_errors([p for p in paths if os.path.exists(p)])
+    for e in errs:
+        print("SYNTAX", e)
+    print("check %s: %d files, %d syntax errors" % (res, len(paths), len(errs)))
+    return 1 if errs else 0
 
 
 def main():
@@ -1415,6 +1775,12 @@ def main():
         cmd_build(sc.items)
     elif cmd == "lint":
         sys.exit(cmd_lint())
+    elif cmd == "apply":
+        sys.exit(cmd_apply(sys.argv[2], dry="--dry" in sys.argv, force="--force" in sys.argv))
+    elif cmd == "residue":
+        cmd_residue(sys.argv[2])
+    elif cmd == "check":
+        sys.exit(cmd_check(sys.argv[2]))
     else:
         print(__doc__)
         sys.exit(2)

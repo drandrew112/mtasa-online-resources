@@ -1,10 +1,7 @@
 {
   "rw_customtracks.config.passenger_coach": "Passenger coach",
   "rw_customtracks.switches.damaged": "{g}: damaged",
-  "rw_customtracks.switches.destination": "destination",
   "rw_customtracks.switches.end_of_track": "end of track",
-  "rw_customtracks.switches.horizon": "horizon",
-  "rw_customtracks.switches.line": "line",
   "rw_customtracks.switches.no_such_switch": "{g}: no such switch",
   "rw_customtracks.switches.reserved_by": "{g}: reserved by {reserved}",
   "rw_customtracks.switches.signal": "signal {id}",

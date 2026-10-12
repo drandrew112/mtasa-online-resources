@@ -22,7 +22,6 @@
   "v_weekly.admin.paid_once_per_to_every_player": "Paid once per {period} to every player who logs in. Max €{max_money} / {max_xp} XP.",
   "v_weekly.admin.preview_panel": "Preview panel",
   "v_weekly.admin.reset_week_inherit_previous": "Reset week (inherit previous)",
-  "v_weekly.admin.saved": "Saved.",
   "v_weekly.admin.select": "Select",
   "v_weekly.admin.text": "Text",
   "v_weekly.admin.this_week": "This week",
@@ -49,5 +48,6 @@
   "v_weekly.panel.time_trial_of_week": "TIME TRIAL OF THE WEEK",
   "v_weekly.panel.weekly_update": "WEEKLY UPDATE",
   "v_weekly.panel.xp": "XP {xp}",
-  "v_weekly.panel.xp_2": "{xp|int} XP"
+  "v_weekly.panel.xp_2": "{xp|int} XP",
+  "v_weekly.time.04d_02d_02d_02d_02d_utc": "%04d-%02d-%02d %02d:%02d UTC"
 }

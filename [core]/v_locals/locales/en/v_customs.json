@@ -1,8 +1,4 @@
 {
-  "v_customs.door.closed": "closed",
-  "v_customs.door.closing": "closing",
-  "v_customs.door.open": "open",
-  "v_customs.door.opening": "opening",
   "v_customs.menu.custom_license_plate": "Custom license plate",
   "v_customs.menu.default": "Default",
   "v_customs.menu.not_available_for_this_vehicle": "(not available for this vehicle)",
@@ -37,7 +33,6 @@
   "v_customs.tuning.horn_5": "Horn 5",
   "v_customs.tuning.horns_are_coming_soon": "Horns are coming soon.",
   "v_customs.tuning.hydraulics": "Hydraulics",
-  "v_customs.tuning.installed": "{name} installed.",
   "v_customs.tuning.license_plate": "License Plate",
   "v_customs.tuning.lime": "Lime",
   "v_customs.tuning.lsd_doors": "LSD Doors",

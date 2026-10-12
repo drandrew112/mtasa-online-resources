@@ -184,7 +184,6 @@
   "v_admin.players.yes_min_left": "yes, {jail_left} min left",
   "v_admin.players.zone": "Zone",
   "v_admin.report.call_admin": "Call an admin",
-  "v_admin.report.claimed": "claimed",
   "v_admin.report.claimed_by": "#66FF66Claimed by: #FFFFFF{claimed_by_name}",
   "v_admin.report.claimed_this_report": "{claimed_by_name} claimed this report.",
   "v_admin.report.click_again_to_confirm": "Click again to confirm",

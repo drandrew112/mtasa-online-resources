@@ -101,8 +101,6 @@
   "v_introduce.admin.no_such_player_or_account": "No such player or account.",
   "v_introduce.admin.not_in_introduction": "Not in the introduction.",
   "v_introduce.admin.order_v_xp": "{id}  #aaaaaa({kind}, order {order|int}, v{version|int}, {xp|int} XP)",
-  "v_introduce.admin.started": "Started.",
-  "v_introduce.admin.stopped": "Stopped.",
   "v_introduce.admin.unknown_module": "Unknown module: {extra}",
   "v_introduce.draw.continue": "Continue",
   "v_introduce.lock.admin_panel": "admin panel",

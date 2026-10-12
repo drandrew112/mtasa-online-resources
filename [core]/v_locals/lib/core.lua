@@ -207,7 +207,26 @@ do
         return tostring(x)
     end
 
+    -- Message objects: { t = key, p = params, __loc = true }. The marker survives a
+    -- copy across resources (exports) so every lib recognises them. Used where the
+    -- receiver is not known yet (server, DESIGN.md 4.5 / 4.6). Safety net: when a
+    -- message is used like a string by mistake (concatenation, tostring, string
+    -- methods) it turns into the text of LIB.curLang() instead of raising an error.
+    local MSG_MT = {}
+    MSG_MT.__tostring = function(m) return translate(LIB.curLang(), m.t, m.p) end
+    MSG_MT.__concat = function(a, b) return tostring(a) .. tostring(b) end
+    MSG_MT.__index = function(_, k)
+        local f = (k == "upper" and U.upper) or (k == "lower" and U.lower) or (k == "len" and U.len)
+            or (k == "sub" and U.sub) or string[k]
+        if f then return function(self, ...) return f(tostring(self), ...) end end
+    end
+    C.MSG_MT = MSG_MT
+
     function C.msg(key, params)
-        return { t = key, p = params }
+        return setmetatable({ t = key, p = params, __loc = true }, MSG_MT)
+    end
+
+    function C.isMsg(x)
+        return type(x) == "table" and rawget(x, "__loc") == true and type(rawget(x, "t")) == "string"
     end
 end

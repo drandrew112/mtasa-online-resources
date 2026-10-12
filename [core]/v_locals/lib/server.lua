@@ -70,7 +70,12 @@ do
 
     function L.forPlayer(player, key, params) return C.translate(langOf(player), key, params) end
     function L.forLang(lang, key, params) return C.translate(langOf(lang), key, params) end
-    function L.msg(key, params) return { t = key, p = params } end
+    LIB.curLang = function() return LIB.defaultLang end
+    function L.msg(key, params) return C.msg(key, params) end
+    L.isMsg = C.isMsg
+    -- shared scripts (config tables): a message object here, plain text on the
+    -- client; it becomes the receiving player's language when it is sent
+    L.text = L.msg
     function L.resolveFor(player, x) return C.resolve(langOf(player), x) end
     function L.lang(player) return langOf(player) end
     function L.has(key, lang) return C.find(langOf(lang or LIB.defaultLang), key) ~= nil end
@@ -104,6 +109,100 @@ do
         playerLang = setmetatable({}, { __mode = "k" })
         LIB.langs = B.getLanguageInfo() or LIB.langs
     end
+
+    ----------------------------------------------------------------------------
+    -- Send-time resolution (DESIGN.md 4.6, D4): message objects handed to
+    -- triggerClientEvent / triggerLatentClientEvent / outputChatBox / kickPlayer
+    -- become text in the language of EACH receiving player. Without a message in
+    -- the arguments the original function is called unchanged.
+    ----------------------------------------------------------------------------
+    local isMsg = C.isMsg
+
+    -- true when v is or (up to depth 4) contains a message object
+    local function hasMsg(v, depth)
+        if isMsg(v) then return true end
+        if type(v) ~= "table" or depth > 4 then return false end
+        for k, w in pairs(v) do
+            if type(w) == "table" and hasMsg(w, depth + 1) then return true end
+        end
+        return false
+    end
+
+    -- copy of v with every message object resolved in lang (unchanged parts shared)
+    local function resolveDeep(v, lang, depth)
+        if isMsg(v) then return C.resolve(lang, v) end
+        if type(v) ~= "table" or depth > 4 or not hasMsg(v, depth) then return v end
+        local out = {}
+        for k, w in pairs(v) do out[k] = resolveDeep(w, lang, depth + 1) end
+        return out
+    end
+
+    local function anyMsg(args, from, n)
+        for i = from, n do
+            if type(args[i]) == "table" and hasMsg(args[i], 1) then return true end
+        end
+        return false
+    end
+
+    -- players behind a sendTo argument (player / table of players / element tree)
+    local function receivers(to)
+        if to == nil then return getElementsByType("player") end
+        if isElement(to) then
+            if getElementType(to) == "player" then return { to } end
+            return getElementsByType("player", to)
+        end
+        if type(to) == "table" then return to end
+        return {}
+    end
+
+    -- triggerClientEvent([sendTo,] name, source, ...) and
+    -- triggerLatentClientEvent([sendTo,] name, [bandwidth, persist,] source, ...):
+    -- every argument after the optional receiver is resolved (non-messages stay as
+    -- they are), one send per receiving player
+    local function wrapTrigger(orig)
+        return function(...)
+            local n = select("#", ...)
+            local args = { ... }
+            local hasTo = type(args[1]) ~= "string"
+            local k0 = hasTo and 2 or 1
+            if not anyMsg(args, k0, n) then return orig(...) end
+            local ok = true
+            for _, p in ipairs(receivers(hasTo and args[1] or nil)) do
+                local lang = langOf(p)
+                local copy, c = { p }, 1
+                for i = k0, n do
+                    c = c + 1
+                    copy[c] = resolveDeep(args[i], lang, 1)
+                end
+                ok = orig(unpack(copy, 1, c)) and ok
+            end
+            return ok
+        end
+    end
+
+    if not internal then
+        triggerClientEvent = wrapTrigger(triggerClientEvent)
+        if triggerLatentClientEvent then triggerLatentClientEvent = wrapTrigger(triggerLatentClientEvent) end
+
+        local origChat = outputChatBox
+        outputChatBox = function(text, to, ...)
+            if not isMsg(text) then return origChat(text, to, ...) end
+            local ok = true
+            for _, p in ipairs(receivers(to)) do
+                ok = origChat(C.resolve(langOf(p), text), p, ...) and ok
+            end
+            return ok
+        end
+
+        local origKick = kickPlayer
+        kickPlayer = function(player, a, b)
+            if isMsg(a) then a = C.resolve(langOf(player), a) end
+            if isMsg(b) then b = C.resolve(langOf(player), b) end
+            return origKick(player, a, b)
+        end
+    end
+
+    L.resolveDeep = function(v, who) return resolveDeep(v, langOf(who), 1) end
 
     if not internal then
         addEvent("onPlayerLanguageChange")

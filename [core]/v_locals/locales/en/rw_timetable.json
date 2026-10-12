@@ -27,7 +27,6 @@
   "rw_timetable.notify.timetable": "Timetable",
   "rw_timetable.services.already_done": "already done",
   "rw_timetable.services.already_running": "already running",
-  "rw_timetable.services.cancelled": "cancelled",
   "rw_timetable.services.cannot_take_service": "Cannot take the service: {err}",
   "rw_timetable.services.completed_arrival_stop_s_served_train": "{number} completed. Arrival {d}, {served|int} stop(s) served. The train is taken out of service in {remove_after|int} s.",
   "rw_timetable.services.doors_were_not_open_for_s": "{name}: doors were not open for {door_min|int} s - stop not served.",

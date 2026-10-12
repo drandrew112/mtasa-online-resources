@@ -10,6 +10,7 @@
   "ui_pause.pausemenu.combat": "Combat",
   "ui_pause.pausemenu.community": "COMMUNITY ",
   "ui_pause.pausemenu.community_created": "Community created",
+  "ui_pause.pausemenu.community_label": "Community",
   "ui_pause.pausemenu.creator": "Creator",
   "ui_pause.pausemenu.details": "DETAILS",
   "ui_pause.pausemenu.disconnect_from_server": "Disconnect from the server.",
@@ -29,6 +30,7 @@
   "ui_pause.pausemenu.jobs": "Jobs",
   "ui_pause.pausemenu.jobs_created_by_other_players": "Jobs created by other players.",
   "ui_pause.pausemenu.jobs_made_by_server_team": "Jobs made by the server team.",
+  "ui_pause.pausemenu.jobs_title": "JOBS",
   "ui_pause.pausemenu.jobs_unavailable": "Jobs unavailable",
   "ui_pause.pausemenu.join_arena_war": "Join Arena War",
   "ui_pause.pausemenu.join_arena_war_minigame": "Join an Arena War minigame.",
@@ -74,5 +76,9 @@
   "ui_pause.pausemenu.xp_to_next_level": "XP to next level",
   "ui_pause.pausemenu.you_left_server": "You left the server.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "Your level, XP, played time and statistics.",
-  "ui_pause.settings_shared.uipause_setting": "uipause.setting."
+  "ui_pause.settings.language": "Language",
+  "ui_pause.settings.language_desc": "The language of the game texts.",
+  "ui_pause.settings.off": "OFF",
+  "ui_pause.settings.on": "ON",
+  "ui_pause.settings.unavailable": "unavailable"
 }

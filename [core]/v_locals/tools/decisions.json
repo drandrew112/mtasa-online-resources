@@ -27,9 +27,17 @@
     "Julia": "ignore",
     "Markus": "ignore",
     "TELEFON": "translate",
-    "WASTED": "ignore"
+    "WASTED": "ignore",
+    "th": "ignore",
+    "semleges": "translate"
   },
   "rules": [
+    {
+      "_why": "state / reason codes assigned to variables (enroute, claimed, idle, open ...)",
+      "sink": "^var:",
+      "text": "^[a-z_]+$",
+      "status": "ignore"
+    },
     {
       "_why": "prefix wrappers: '[Tag] ' .. text - the texts are at the call sites",
       "text": "^(#[0-9a-fA-F]{6})?\\[[^\\]]*\\]\\s*(#[0-9a-fA-F]{6})?\\s*\\{\\w+\\}$",
@@ -259,5 +267,17 @@
     "common.job": "Job",
     "common.get_ready": "Get ready",
     "common.time_left_s": "{time_left|1f} s"
+  },
+  "add": {
+    "ui_pause.settings.language": "Language",
+    "ui_pause.settings.language_desc": "The language of the game texts.",
+    "ui_pause.settings.unavailable": "unavailable",
+    "ui_pause.settings.on": "ON",
+    "ui_pause.settings.off": "OFF",
+    "ui_pause.pausemenu.jobs_title": "JOBS",
+    "ui_pause.pausemenu.community_label": "Community",
+    "ui_interactobject.render.key_close": "{key} close",
+    "ui_phone.settings.wallpaper": "Wallpaper",
+    "ui_inac.temp.menu": "MENU"
   }
 }

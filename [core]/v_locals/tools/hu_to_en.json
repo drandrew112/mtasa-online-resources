@@ -60,5 +60,6 @@
   "JÁRMŰIKONOK": "VEHICLE ICONS",
   "JÁRMŰNÉV": "VEHICLE NAME",
   "TELEFON": "PHONE",
-  "[workpos] {text} (vágólapra másolva)": "[workpos] {text} (copied to clipboard)"
+  "[workpos] {text} (vágólapra másolva)": "[workpos] {text} (copied to clipboard)",
+  "semleges": "neutral"
 }

@@ -110,7 +110,6 @@
   "work_ems.steps.rest_is_automatic_your_status_becomes": "The rest is automatic: your status becomes On Scene when you arrive, and Handover when you park in a hospital's ambulance bay with the patient.\n\nLeave Case releases your unit while another unit stays on the case. Close Case ends a false call (a reason is needed). End Shift is in the menu.",
   "work_ems.steps.restock_bag": "Restock the bag",
   "work_ems.steps.skip": "Skip",
-  "work_ems.steps.something": "something",
   "work_ems.steps.splint_did_not_hold": "The splint did not hold",
   "work_ems.steps.start_tutorial": "Start tutorial",
   "work_ems.steps.step_1_8_ems_tablet": "Step 1 / 8  ·  EMS tablet",

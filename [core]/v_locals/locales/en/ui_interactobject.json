@@ -1,5 +1,6 @@
 {
   "ui_interactobject.render.bksp_back": "BKSP back",
+  "ui_interactobject.render.key_close": "{key} close",
   "ui_interactobject.render.next_page": "{key_page} next page",
   "ui_interactobject.render.no_options": "No options",
   "ui_interactobject.util.interact": "Interact"

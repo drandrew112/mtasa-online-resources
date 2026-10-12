@@ -56,6 +56,7 @@
   "ui_inac.ownveh.you_have_no_personal_vehicle_out": "You have no personal vehicle out.",
   "ui_inac.render.free": "Free",
   "ui_inac.render.id": "ID {model}",
+  "ui_inac.temp.menu": "MENU",
   "ui_inac.vehicles.group": "Group",
   "ui_inac.vehicles.vehicle": "Vehicle {model}"
 }
