@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Timetable module (every locomotive): the left panel (toggle LOCO.KEYS.timetable) to pick a
 -- service and follow its stops, and a small always-on display above the minimap with the
 -- essentials (next stop, delay, signal in front, Sifa). Picking a service needs the railway
@@ -131,7 +132,7 @@ local function drawMini(ctx)
         local now = serverNow()
         if st and now then
             local target = (st.state == "stopped" and st.dep) or st.arr or st.dep
-            local label = st.state == "stopped" and "Dep. " or "Next: "
+            local label = st.state == "stopped" and "Dep. " or L("rw_loco.timetable.next")
             local rest = target and ("  " .. hhmm(target) .. "  (" .. mmss(target - now) .. ")") or ""
             txt(label .. st.name .. rest, x + pad, cy, w - pad * 2, lineH, C.text, f)
         end
@@ -139,27 +140,27 @@ local function drawMini(ctx)
         txt(v.trip .. " completed", x + pad, cy, w - pad * 2, lineH, C.green, fB)
         cy = cy + lineH
     else
-        txt("No service", x + pad, cy, w - pad * 2, lineH, C.muted, fB)
+        txt(L("rw_loco.timetable.no_service"), x + pad, cy, w - pad * 2, lineH, C.muted, fB)
         cy = cy + lineH
-        txt(("Press %s to pick a timetable"):format(LOCO.KEYS.timetable:upper()), x + pad, cy, w - pad * 2, lineH, C.muted, f)
+        txt(L("rw_loco.timetable.press_to_pick_timetable", { timetable = LOCO.KEYS.timetable:upper() }), x + pad, cy, w - pad * 2, lineH, C.muted, f)
     end
     cy = y + h - lineH * 2 - 6 * s
     -- signal in front
     if sig.id then
         local c = ASPECT_COLOR[sig.aspect] or { 120, 120, 120 }
         dxDrawCircle(x + pad + 6 * s, cy + lineH / 2, 6 * s, 0, 360, tocolor(c[1], c[2], c[3]), tocolor(255, 255, 255), 16)
-        txt(("Signal %s   %d m"):format(sig.name, math.floor(sig.dist / 10 + 0.5) * 10), x + pad + 18 * s, cy, w, lineH, C.text, f)
+        txt(L("rw_loco.timetable.signal_m", { name = sig.name, dist = math.floor(sig.dist / 10 + 0.5) * 10 }), x + pad + 18 * s, cy, w, lineH, C.text, f)
     else
-        txt("No signal ahead", x + pad, cy, w, lineH, C.muted, f)
+        txt(L("rw_loco.timetable.no_signal_ahead"), x + pad, cy, w, lineH, C.muted, f)
     end
     cy = cy + lineH
     local spd = math.floor(ctx.speed() + 0.5)
-    txt(spd .. " km/h", x + pad, cy, w, lineH, C.text, fB)
+    txt(L("rw_loco.timetable.km_h", { spd = spd }), x + pad, cy, w, lineH, C.text, fB)
     -- Sifa state
     local st = Sifa and Sifa.state or "idle"
     local sc = st == "idle" and tocolor(40, 46, 58) or (st == "lamp" and tocolor(230, 230, 230) or tocolor(240, 70, 60))
     dxDrawRectangle(x + w - pad - 60 * s, cy + 2 * s, 60 * s, lineH - 4 * s, sc)
-    txt("SIFA", x + w - pad - 60 * s, cy, 60 * s, lineH, st == "idle" and C.muted or tocolor(20, 20, 20), ctx.font(true, 10), "center")
+    txt(L("rw_loco.br232.sifa"), x + w - pad - 60 * s, cy, 60 * s, lineH, st == "idle" and C.muted or tocolor(20, 20, 20), ctx.font(true, 10), "center")
 end
 
 ------------------------------------------------------------------ panel
@@ -171,9 +172,9 @@ local function drawPanel(ctx)
     local pad = 14 * s
     dxDrawRectangle(x, y, w, h, C.bg)
     dxDrawRectangle(x, y, w, 34 * s, C.head)
-    txt("TIMETABLE", x + pad, y, w, 34 * s, C.text, ctx.font(true, 13))
+    txt(L("rw_loco.timetable.timetable"), x + pad, y, w, 34 * s, C.text, ctx.font(true, 13))
     txt(hhmmss(serverNow()), x, y, w - 40 * s, 34 * s, tocolor(255, 215, 120), ctx.font(true, 14), "right")
-    button(x + w - 32 * s, y + 5 * s, 24 * s, 24 * s, "×", function() open = false end, tocolor(0, 0, 0, 0))
+    button(x + w - 32 * s, y + 5 * s, 24 * s, 24 * s, L("rw_loco.timetable.text"), function() open = false end, tocolor(0, 0, 0, 0))
     local cy = y + 44 * s
     local v = service()
     local fB, f, fS = ctx.font(true, 12), ctx.font(false, 11), ctx.font(false, 9)
@@ -181,7 +182,7 @@ local function drawPanel(ctx)
     if v then
         txt(v.trip, x + pad, cy, w, 26 * s, C.text, ctx.font(true, 18))
         local dt, dc = delayText(v.delay)
-        txt(v.status == "completed" and "COMPLETED" or dt, x, cy, w - pad, 26 * s, v.status == "completed" and C.green or dc, ctx.font(true, 14), "right")
+        txt(v.status == "completed" and L("rw_loco.timetable.completed") or dt, x, cy, w - pad, 26 * s, v.status == "completed" and C.green or dc, ctx.font(true, 14), "right")
         cy = cy + 26 * s
         txt(v.name .. ":  " .. (v.fromName or "") .. "  →  " .. (v.toName or ""), x + pad, cy, w - pad * 2, 20 * s, C.muted, f)
         cy = cy + 28 * s
@@ -192,7 +193,7 @@ local function drawPanel(ctx)
         if st and v.status ~= "completed" then
             dxDrawRectangle(x + pad, cy, w - pad * 2, 64 * s, C.next)
             local standing = st.state == "stopped"
-            txt(standing and "AT STATION" or "NEXT STOP", x + pad + 10 * s, cy + 4 * s, w, 16 * s, tocolor(170, 195, 235), fS, "left", "top")
+            txt(standing and L("rw_loco.timetable.at_station") or L("rw_loco.timetable.next_stop"), x + pad + 10 * s, cy + 4 * s, w, 16 * s, tocolor(170, 195, 235), fS, "left", "top")
             txt(st.name, x + pad + 10 * s, cy + 18 * s, w, 22 * s, C.text, ctx.font(true, 14), "left", "top")
             local target = standing and st.dep or st.arr or st.dep
             if target and now then
@@ -204,8 +205,8 @@ local function drawPanel(ctx)
                 local bx, by, bw = x + pad + 10 * s, cy + 46 * s, w - pad * 2 - 20 * s
                 dxDrawRectangle(bx, by, bw, 8 * s, tocolor(10, 14, 22))
                 dxDrawRectangle(bx, by, bw * frac, 8 * s, frac >= 1 and C.green or C.yellow)
-                local doorsTxt = Loco.doors() == "closed" and "doors closed" or "doors open"
-                local side = v.side and (" - platform on the " .. v.side) or ""
+                local doorsTxt = Loco.doors() == "closed" and L("rw_loco.timetable.doors_closed") or L("rw_loco.timetable.doors_open")
+                local side = v.side and (L("rw_loco.timetable.platform_on", { side = v.side })) or ""
                 txt(doorsTxt .. side, bx, by - 14 * s, bw, 12 * s, C.muted, fS, "right", "top")
             end
             cy = cy + 74 * s
@@ -214,10 +215,10 @@ local function drawPanel(ctx)
         -- stop list
         local cols = { w * 0.44, w * 0.15, w * 0.15, w * 0.18 }
         local hx = x + pad
-        txt("STATION", hx, cy, cols[1], 16 * s, C.muted, fS)
-        txt("ARR", hx + cols[1], cy, cols[2], 16 * s, C.muted, fS)
-        txt("DEP", hx + cols[1] + cols[2], cy, cols[3], 16 * s, C.muted, fS)
-        txt("ACTUAL", hx + cols[1] + cols[2] + cols[3], cy, cols[4], 16 * s, C.muted, fS)
+        txt(L("rw_loco.timetable.station"), hx, cy, cols[1], 16 * s, C.muted, fS)
+        txt(L("rw_loco.timetable.arr"), hx + cols[1], cy, cols[2], 16 * s, C.muted, fS)
+        txt(L("rw_loco.timetable.dep_2"), hx + cols[1] + cols[2], cy, cols[3], 16 * s, C.muted, fS)
+        txt(L("rw_loco.timetable.actual"), hx + cols[1] + cols[2] + cols[3], cy, cols[4], 16 * s, C.muted, fS)
         cy = cy + 18 * s
         dxDrawRectangle(x + pad, cy, w - pad * 2, 1, C.line)
         cy = cy + 4 * s
@@ -231,7 +232,7 @@ local function drawPanel(ctx)
             txt(i > 1 and hhmm(st2.arr) or "", hx + cols[1], cy, cols[2], rowH, col, f)
             txt(i < n and hhmm(st2.dep) or "", hx + cols[1] + cols[2], cy, cols[3], rowH, col, f)
             local act, ac = "", C.text
-            if st2.state == "skipped" then act, ac = "not served", C.red
+            if st2.state == "skipped" then act, ac = L("rw_loco.timetable.not_served"), C.red
             elseif st2.actDep or (i > 1 and st2.actArr) then
                 local t = st2.actDep or st2.actArr
                 local sched = st2.actDep and st2.dep or st2.arr
@@ -242,7 +243,7 @@ local function drawPanel(ctx)
             cy = cy + rowH
         end
         if v.status ~= "completed" then
-            button(x + pad, y + h - 42 * s, w - pad * 2, 30 * s, "End service", function()
+            button(x + pad, y + h - 42 * s, w - pad * 2, 30 * s, L("rw_loco.timetable.end_service"), function()
                 local rr = ttRoot()
                 if rr then triggerServerEvent("rw:tt:end", rr) end
             end, Loco.cursorIn(x + pad, y + h - 42 * s, w - pad * 2, 30 * s) and tocolor(170, 50, 45) or tocolor(130, 40, 36))
@@ -252,7 +253,7 @@ local function drawPanel(ctx)
 
     -- no service: pick one
     if not ttRoot() then
-        txt("Timetable service offline.", x + pad, cy, w, 20 * s, C.muted, f)
+        txt(L("rw_loco.timetable.timetable_service_offline"), x + pad, cy, w, 20 * s, C.muted, f)
         return
     end
     if list == nil or getTickCount() - listTick > 10000 then requestList() end
@@ -265,16 +266,16 @@ local function drawPanel(ctx)
         end
     end
     if not listAccess then
-        txt("Railway staff only.", x + pad, cy, w - pad * 2, 22 * s, C.red, fB)
-        txt("You can drive, but taking a service needs the railway role.", x + pad, cy + 24 * s, w - pad * 2, 40 * s, C.muted, f, "left", "top", true)
+        txt(L("rw_loco.timetable.railway_staff_only"), x + pad, cy, w - pad * 2, 22 * s, C.red, fB)
+        txt(L("rw_loco.timetable.you_can_drive_but_taking_service"), x + pad, cy + 24 * s, w - pad * 2, 40 * s, C.muted, f, "left", "top", true)
         return
     end
-    txt("Pick a service", x + pad, cy, w, 22 * s, C.text, fB)
-    button(x + w - pad - 80 * s, cy - 2 * s, 80 * s, 24 * s, "Refresh", requestList)
+    txt(L("rw_loco.timetable.pick_service"), x + pad, cy, w, 22 * s, C.text, fB)
+    button(x + w - pad - 80 * s, cy - 2 * s, 80 * s, 24 * s, L("rw_loco.timetable.refresh"), requestList)
     cy = cy + 32 * s
     if not list or #list == 0 then
-        txt(list and ("No service available from here right now. A service must be taken at least 30 s before its departure.")
-            or "Loading...", x + pad, cy, w - pad * 2, 60 * s, C.muted, f, "left", "top", true)
+        txt(list and (L("rw_loco.timetable.no_service_available_from_here_right"))
+            or L("common.loading"), x + pad, cy, w - pad * 2, 60 * s, C.muted, f, "left", "top", true)
         return
     end
     local rowH = 46 * s
@@ -286,7 +287,7 @@ local function drawPanel(ctx)
         dxDrawRectangle(x + pad, cy, w - pad * 2, rowH, hover and C.rowHover or C.row)
         dxDrawRectangle(x + pad, cy, 4 * s, rowH, e.ok and C.green or tocolor(90, 96, 110))
         txt(hhmm(e.dep) .. "   " .. e.number, x + pad + 12 * s, cy + 4 * s, w, 20 * s, e.ok and C.text or C.muted, fB, "left", "top")
-        txt(e.ok and ("to " .. (e.toName or e.to) .. " - click to take it") or e.reason or "",
+        txt(e.ok and (L("rw_loco.timetable.to_click_to_take_it", { to = (e.toName or e.to) })) or e.reason or "",
             x + pad + 12 * s, cy + 24 * s, w - pad * 2 - 20 * s, 18 * s, e.ok and C.muted or tocolor(200, 120, 100), fS, "left", "top")
         if e.ok then
             local tripId = e.tripId

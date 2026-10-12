@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Block signalling (both tracks, both directions; the main line all the way round).
 --
 -- Every signalled stretch is cut into blocks at fixed boundaries (stations, junction areas)
@@ -43,9 +44,9 @@ end
 local function rel(route, a, b)
     local d = b - a
     if route.loop then
-        local L = route.L
-        d = d % L
-        if d > L / 2 then d = d - L end
+        local routeLen = route.L
+        d = d % routeLen
+        if d > routeLen / 2 then d = d - routeLen end
     end
     return d
 end
@@ -54,9 +55,9 @@ end
 local function touches(route, lo, hi, a, b)
     if hi >= a and lo <= b then return true end
     if route.loop then
-        local L = route.L
-        if hi + L >= a and lo + L <= b then return true end
-        if hi - L >= a and lo - L <= b then return true end
+        local routeLen = route.L
+        if hi + routeLen >= a and lo + routeLen <= b then return true end
+        if hi - routeLen >= a and lo - routeLen <= b then return true end
     end
     return false
 end
@@ -132,7 +133,7 @@ local function buildRoute(def)
             local gap = nbTp - b.tp
             local n = math.floor(gap / SIG.AUTO_BLOCK + 0.5)
             for k = 1, n - 1 do
-                filled[#filled + 1] = { tp = b.tp + gap * k / n, name = "Block", kind = "block" }
+                filled[#filled + 1] = { tp = b.tp + gap * k / n, name = L.msg("rw_signals.signals.block"), kind = "block" }
             end
         end
     end
@@ -259,8 +260,8 @@ function buildSingles()
 end
 
 -- distance on a loop track from a to b going in direction dir (>= 0)
-local function ahead(L, a, b, dir)
-    return ((b - a) * dir) % L
+local function ahead(routeLen, a, b, dir)
+    return ((b - a) * dir) % routeLen
 end
 
 local function computeSingles(consists)
@@ -272,17 +273,17 @@ local function computeSingles(consists)
             if r then
                 local mem = memory[c.id]
                 local dir = c.moveDir ~= 0 and c.moveDir or (mem and mem.lastDir) or 0
-                local L = r.L
+                local routeLen = r.L
                 -- overlap of the train [c.lo, c.hi] with the stretch [r.lo, r.hi] (wrap-aware)
                 local inside = false
-                for _, k in ipairs({ 0, L, -L }) do
+                for _, k in ipairs({ 0, routeLen, -routeLen }) do
                     if c.hi + k >= r.lo and c.lo + k <= r.hi then inside = true end
                 end
                 if inside then
                     sg.occ = true
                     if dir ~= 0 then insideDir = insideDir or dir * r.sign end
                 elseif c.moveDir ~= 0 then
-                    local dist = c.moveDir > 0 and ahead(L, c.hi, r.lo, 1) or ahead(L, c.lo, r.hi, -1)
+                    local dist = c.moveDir > 0 and ahead(routeLen, c.hi, r.lo, 1) or ahead(routeLen, c.lo, r.hi, -1)
                     local abDir = c.moveDir * r.sign
                     if dist < SIG.APPROACH then
                         if sg.claim == abDir then keepPrev = true end

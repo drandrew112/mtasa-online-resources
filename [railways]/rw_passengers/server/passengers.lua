@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Passengers: boarding through a coach's door anchor, the coach interior (interior 1, dimension =
 -- coach id), leaving through the exit anchor inside, and forced exits when the coach goes away.
 -- Players move freely inside; nothing here restricts what they do in the cabin.
@@ -127,11 +128,11 @@ local function board(player, coach, door)
     if isPedInVehicle(player) or isPedDead(player) then return end
     local ok, reason = isDoorUsable(coach, door)
     if not ok then tell(player, reason) return end
-    if coach.count >= RWP.CAPACITY then tell(player, "The coach is full.") return end
+    if coach.count >= RWP.CAPACITY then tell(player, L.msg("rw_passengers.passengers.coach_is_full")) return end
 
     -- the ticket system / conductor can refuse here (cancelEvent)
     if not triggerEvent("onPlayerBoardTrain", player, coach.train, coach.index, coach.dim) then
-        tell(player, "You cannot board this train.")
+        tell(player, L.msg("rw_passengers.passengers.you_cannot_board_this_train"))
         return
     end
 

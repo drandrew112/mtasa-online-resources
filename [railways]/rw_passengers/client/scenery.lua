@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Window scenery: environment classes and their layer textures (far / mid / near curtains, see
 -- DESIGN.md 4.2). The textures are painted procedurally into render targets the first time a
 -- class is needed (deterministic random, so every passenger sees the same scenery) and copied
@@ -202,7 +203,7 @@ local function platform(w, h, R, opt)
         dxDrawRectangle(x, 0, 14, h * 0.62, col(opt.col[1], opt.col[2], opt.col[3]))
         if i % 2 == 0 then
             dxDrawRectangle(x + 30, h * 0.2, 120, 26, col(22, 70, 160))
-            dxDrawText("SUNLINE RAIL", x + 30, h * 0.2, x + 150, h * 0.2 + 26, col(240, 244, 250), 1, "default-bold", "center", "center")
+            dxDrawText(L("rw_passengers.scenery.sunline_rail"), x + 30, h * 0.2, x + 150, h * 0.2 + 26, col(240, 244, 250), 1, "default-bold", "center", "center")
         end
     end
     if opt.roof then dxDrawRectangle(0, 0, w, h * 0.06, col(60, 60, 64)) end
@@ -379,14 +380,14 @@ local function fileLayer(id, layer)
 end
 
 local function paint(id, layer, painter, seedName)
-    local L = Scenery.LAYERS[layer]
+    local layerDef = Scenery.LAYERS[layer]
     local f = fileLayer(id, layer)
     if f then return f end
     if not painter then return emptyTexture() end
-    local rt = dxCreateRenderTarget(L.w, L.h, true)
+    local rt = dxCreateRenderTarget(layerDef.w, layerDef.h, true)
     if not rt then return emptyTexture() end
     dxSetRenderTarget(rt, true)
-    painter(L.w, L.h, rng(seedOf((seedName or id) .. layer)))
+    painter(layerDef.w, layerDef.h, rng(seedOf((seedName or id) .. layer)))
     dxSetRenderTarget()
     local px = dxGetTexturePixels(rt)
     destroyElement(rt)

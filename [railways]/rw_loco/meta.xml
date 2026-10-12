@@ -3,6 +3,8 @@
           description="Sunline Rail locomotive simulation: cab panels (BR 232), timetable module, vigilance device (Sifa)" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <script src="server/loco.lua"   type="server" />

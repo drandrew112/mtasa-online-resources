@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Coach registry: every passenger coach of every consist gets a coach id = the dimension of its
 -- interior (RWP.DIM_BASE + n). Outside door anchors (invisible objects attached to the coach,
 -- one per side) carry the "Board the train" ui_interactobject menus; they are enabled only while
@@ -82,10 +83,10 @@ function usableSides(trainId, info)
     local t = Trains[trainId]
     info = info or core:getConsist(trainId)
     if not t or not info or not isElement(info.lead) then return {}, "no train" end
-    if t.locked then return {}, t.lockReason or "Boarding closed" end
-    if not t.standSince or getTickCount() - t.standSince < RWP.STAND_TIME * 1000 then return {}, "The train is moving" end
+    if t.locked then return {}, t.lockReason or L.msg("rw_passengers.coaches.boarding_closed") end
+    if not t.standSince or getTickCount() - t.standSince < RWP.STAND_TIME * 1000 then return {}, L.msg("rw_passengers.coaches.train_is_moving") end
     local doors = getElementData(info.lead, "rw.doors") or "closed"
-    if doors == "closed" then return {}, "Doors closed" end
+    if doors == "closed" then return {}, L.msg("rw_passengers.coaches.doors_closed") end
     return { left = doors == "left" or doors == "both", right = doors == "right" or doors == "both" }, doors
 end
 
@@ -95,7 +96,7 @@ function isDoorUsable(coach, door, info)
     local sides, reason = usableSides(coach.train, info)
     if not sides.left and not sides.right then return false, reason end
     local side = doorTrainSide(coach, door, info)
-    if not side or not sides[side] then return false, "Doors closed on this side" end
+    if not side or not sides[side] then return false, L.msg("rw_passengers.coaches.doors_closed_on_this_side") end
     return true, side
 end
 
@@ -104,19 +105,19 @@ end
 local function serviceTitle(coach, info)
     info = info or core:getConsist(coach.train)
     local s = info and isElement(info.lead) and getElementData(info.lead, "rw.service")
-    local base = ("Sunline Rail · Coach %d"):format(coach.index)
+    local base = L.msg("rw_passengers.coaches.sunline_rail_coach", { index = coach.index })
     if type(s) == "table" and s.name then return base .. " (" .. s.name .. ")" end
     return base
 end
 
 local function boardItems(coach, usable, reason)
-    local desc = usable and ("%d / %d on board"):format(coach.count, RWP.CAPACITY) or tostring(reason)
-    return { { label = "Board the train", value = "board", desc = desc, disabled = not usable } }
+    local desc = usable and L.msg("rw_passengers.coaches.on_board", { count = coach.count, capacity = RWP.CAPACITY }) or tostring(reason)
+    return { { label = L.msg("rw_passengers.coaches.board_train"), value = "board", desc = desc, disabled = not usable } }
 end
 
 local function exitItems(coach, usable, reason)
-    local desc = usable and "Doors open" or tostring(reason)
-    return { { label = "Leave the train", value = "leave", desc = desc, disabled = not usable } }
+    local desc = usable and L.msg("rw_passengers.coaches.doors_open") or tostring(reason)
+    return { { label = L.msg("rw_passengers.coaches.leave_train"), value = "leave", desc = desc, disabled = not usable } }
 end
 
 -- pushes enabled state / texts to ui_interactobject only when they changed
@@ -128,7 +129,7 @@ local function refreshMenus(coach, info)
     for _, a in ipairs(coach.anchors) do
         if a.menu then
             local ok, reason = isDoorUsable(coach, a.door, info)
-            if ok and coach.count >= RWP.CAPACITY then ok, reason = false, "The coach is full" end
+            if ok and coach.count >= RWP.CAPACITY then ok, reason = false, L.msg("rw_passengers.coaches.coach_is_full") end
             local sig = tostring(ok) .. "|" .. tostring(reason) .. "|" .. coach.count .. "|" .. title
             if sig ~= a.sig then
                 a.sig = sig
@@ -157,7 +158,7 @@ local function registerAnchorMenus(coach)
             a.sig = nil
             local m = io():addInteractMenu(a.obj, {
                 title = serviceTitle(coach), range = RWP.ANCHOR_RANGE, priority = 7, lineOfSight = false,
-                items = boardItems(coach, false, "Doors closed"),
+                items = boardItems(coach, false, L.msg("rw_passengers.coaches.doors_closed")),
             })
             if m then a.menu = m menuOwner[m] = { coach = coach, door = a.door } end
         end
@@ -187,7 +188,7 @@ function ensureExitAnchor(coach)
         if not coach.exit or coach.exit.obj ~= o or not isElement(o) or not running("ui_interactobject") then return end
         local m = io():addInteractMenu(o, {
             title = "Sunline Rail", range = RWP.ANCHOR_RANGE, priority = 7, lineOfSight = false,
-            items = exitItems(coach, false, "Doors closed"),
+            items = exitItems(coach, false, L.msg("rw_passengers.coaches.doors_closed")),
         })
         if m then coach.exit.menu = m menuOwner[m] = { coach = coach, exit = true } end
         refreshMenus(coach)
@@ -263,7 +264,7 @@ function syncTrain(trainId)
         end
     end
     for _, coach in ipairs(t.coaches) do
-        if not keep[coach] then dropCoach(coach, "The coach was uncoupled") end
+        if not keep[coach] then dropCoach(coach, L.msg("rw_passengers.coaches.coach_was_uncoupled")) end
     end
     t.coaches = list
 end
@@ -282,7 +283,7 @@ function coachOfMenu(menuId) return menuOwner[menuId] end
 function setTrainLocked(trainId, on, reason)
     local t = Trains[trainId]
     if not t then return false end
-    t.locked, t.lockReason = on and true or nil, on and (reason or "Boarding closed") or nil
+    t.locked, t.lockReason = on and true or nil, on and (reason or L.msg("rw_passengers.coaches.boarding_closed")) or nil
     for _, coach in ipairs(t.coaches) do refreshMenus(coach) end
     return true
 end
@@ -294,7 +295,7 @@ function refreshCoach(coach) refreshMenus(coach) end
 addEventHandler("onRailConsistSpawn", root, function(id) syncTrain(id) end)
 addEventHandler("onRailConsistChange", root, function(id) setTimer(syncTrain, 200, 1, id) end)
 addEventHandler("onRailConsistDestroy", root, function(id, reason)
-    forgetTrain(id, reason == "the network train is gone" and "The train was taken out of service" or ("The train was removed (" .. tostring(reason) .. ")"))
+    forgetTrain(id, reason == "the network train is gone" and L.msg("rw_passengers.coaches.train_was_taken_out_of_service") or (L.msg("rw_passengers.coaches.train_was_removed", { reason = tostring(reason) })))
 end)
 
 -- standing check + menu refresh for every train with coaches
@@ -302,7 +303,7 @@ setTimer(function()
     for trainId, t in pairs(Trains) do
         local info = core:getConsist(trainId)
         if not info then
-            forgetTrain(trainId, "The train was taken out of service")
+            forgetTrain(trainId, L.msg("rw_passengers.coaches.train_was_taken_out_of_service"))
         elseif #t.coaches > 0 then
             if (info.speed or 99) < RWP.STAND_SPEED * 3.6 then
                 t.standSince = t.standSince or getTickCount()

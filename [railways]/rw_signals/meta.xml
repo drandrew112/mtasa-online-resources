@@ -3,6 +3,8 @@
           description="Sunline Rail block signalling: station + automatic block signals, direction lock, SPAD detection" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"   type="shared" />
     <script src="server/signals.lua"  type="server" />
     <script src="client/signals.lua"  type="client" />

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Vigilance device (Sifa). While the train moves faster than LOCO.SIFA.MIN_SPEED the driver
 -- has to press the acknowledge key every INTERVAL_MIN..MAX seconds, and whenever the signal
 -- in front of the train changes its aspect. Sequence: lamp (silent) -> alarm sound ->
@@ -38,7 +39,7 @@ end
 
 local function notify(text)
     local res = getResourceFromName("ui_core")
-    if res and getResourceState(res) == "running" then exports.ui_core:addNotification("Locomotive", text)
+    if res and getResourceState(res) == "running" then exports.ui_core:addNotification(L("rw_loco.core.locomotive"), text)
     else outputChatBox("[Locomotive] " .. text, 255, 120, 80) end
 end
 
@@ -49,7 +50,7 @@ function Sifa.emergency(reason)
     brakeReason = reason
     Loco.lock("emergency", true)
     Loco.emergency(true)
-    if reason then notify(reason .. " Emergency brake applied.") end
+    if reason then notify(L("rw_loco.sifa.emergency_brake_applied", { reason = reason })) end
 end
 
 local function trigger()
@@ -111,7 +112,7 @@ local function update()
     elseif Sifa.state == "alarm" and now - phaseT > S.ALARM_TIME * 1000 then
         setPhase("brake")
         Loco.send("sifa")
-        Sifa.emergency("Vigilance device not acknowledged!")
+        Sifa.emergency(L("rw_loco.sifa.vigilance_device_not_acknowledged"))
     end
 end
 

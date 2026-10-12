@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Services: a trip (one run of a line) driven by a consist. Taking a trip, watching the
 -- stops (standing in the platform zone, doors open long enough, door side), departures,
 -- delays, completion. The loco timetable module talks to this through the rw:tt:* events.
@@ -30,7 +31,7 @@ end
 -- "+2 min" / "on time" / "-1 min" (early)
 local function fmtDelay(d)
     d = (d or 0) >= 0 and math.floor(d / 60) or math.ceil(d / 60)
-    if d == 0 then return "on time" end
+    if d == 0 then return L.msg("rw_timetable.services.on_time") end
     return (d > 0 and "+" or "") .. d .. " min"
 end
 
@@ -42,9 +43,9 @@ local function compatible(c, line)
     local req = line.consist
     local okLoco = false
     for _, l in ipairs(req.locos) do if l == c.loco then okLoco = true end end
-    if not okLoco then return false, "needs a " .. table.concat(req.locos, "/") .. " locomotive" end
-    if c.passengerCars < (req.minPassenger or 0) then return false, ("needs at least %d passenger coach(es)"):format(req.minPassenger) end
-    if req.maxPassenger and c.passengerCars > req.maxPassenger then return false, ("at most %d passenger coaches"):format(req.maxPassenger) end
+    if not okLoco then return false, L.msg("rw_timetable.services.needs_locomotive", { locos = table.concat(req.locos, "/") }) end
+    if c.passengerCars < (req.minPassenger or 0) then return false, L.msg("rw_timetable.services.needs_at_least_passenger_coach_es", { min_passenger = req.minPassenger }) end
+    if req.maxPassenger and c.passengerCars > req.maxPassenger then return false, L.msg("rw_timetable.services.at_most_passenger_coaches", { max_passenger = req.maxPassenger }) end
     return true
 end
 
@@ -52,13 +53,13 @@ end
 local function placed(c, trip)
     local st = Stations[trip.from]
     local z = st and st.zones[c.track]
-    if not z or c.tp < z.lo or c.tp > z.hi then return false, "not at " .. (st and st.name or trip.from) end
+    if not z or c.tp < z.lo or c.tp > z.hi then return false, L.msg("rw_timetable.services.not_at", { from = (st and st.name or trip.from) }) end
     local nst = Stations[trip.stops[2].station]
     local nz = nst and nst.zones[c.track]
     -- a dead-end station track (Cranberry 3 / 4) has no next station: the train leaves it
     if not nz then return true end
     local towards = core:getTrackDelta(c.track, z.center, nz.center) > 0 and 1 or -1
-    if towards ~= c.dir then return false, "the locomotive faces the wrong way" end
+    if towards ~= c.dir then return false, L.msg("rw_timetable.services.locomotive_faces_wrong_way") end
     return true
 end
 
@@ -68,8 +69,8 @@ local function tripsFor(c)
     local out = {}
     for _, trip in ipairs(tripsBetween(t + TT.TAKE_LEAD, t + TT.TAKE_BEFORE)) do
         local ok, reason = true, nil
-        if taken[trip.id] then ok, reason = false, "already running"
-        elseif finished[trip.id] then ok, reason = false, "already done" end
+        if taken[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_running")
+        elseif finished[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_done") end
         if ok and cancelled[trip.id] then ok, reason = false, "cancelled" end
         if ok then ok, reason = compatible(c, trip.line) end
         if ok then ok, reason = placed(c, trip) end
@@ -184,22 +185,22 @@ end
 -- -> true | false, reason. player: role + driver are checked when given.
 -- force (rw_auto): no take window, the trip only has to be free and the train fit + placed.
 function assignService(consistId, tripId, player, force)
-    if Services[consistId] then return false, "the train already runs a service" end
+    if Services[consistId] then return false, L.msg("rw_timetable.services.train_already_runs_service") end
     local c = core:getConsist(consistId)
-    if not c then return false, "no such train" end
+    if not c then return false, L.msg("rw_timetable.services.no_such_train") end
     if player then
-        if not core:hasRailwayAccess(player) then return false, "railway staff only" end
+        if not core:hasRailwayAccess(player) then return false, L.msg("rw_timetable.services.railway_staff_only") end
     end
     local trip = getTrip(tripId)
     if not trip then
         for _, e in ipairs(tripsFor(c)) do if e.trip.id == tripId then trip = e.trip end end
     end
-    if not trip then return false, "unknown trip" end
-    local ok, reason = false, "not available now"
+    if not trip then return false, L.msg("rw_timetable.services.unknown_trip") end
+    local ok, reason = false, L.msg("rw_timetable.services.not_available_now")
     if force then
         ok, reason = true, nil
-        if taken[trip.id] then ok, reason = false, "already running"
-        elseif finished[trip.id] then ok, reason = false, "already done" end
+        if taken[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_running")
+        elseif finished[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_done") end
         if ok then ok, reason = compatible(c, trip.line) end
         if ok then ok, reason = placed(c, trip) end
     else
@@ -325,12 +326,12 @@ local function applyTick()
             elseif t >= a.deadline then
                 s.apply = nil
                 local trip = s.trip
-                local reason = "service not started in time"
+                local reason = L.msg("rw_timetable.services.service_not_started_in_time")
                 rlog("service", "warn", ("%s: %s - trip cancelled, train removed"):format(trip.number, reason), id)
                 outputServerLog(("[rw_timetable] %s: %s - trip cancelled, train removed"):format(trip.number, reason))
                 finish(s, c, "cancelled", reason)
                 cancelTrip(trip.id, reason)
-                tell(a.player, ("Service %s was not started in time - cancelled, the train is removed."):format(trip.number))
+                tell(a.player, L.msg("rw_timetable.services.service_was_not_started_in_time", { number = trip.number }))
                 if c then removeTrain(id, c, reason) end
             end
         end
@@ -403,7 +404,7 @@ local function tick()
                 elseif rec.passing then
                     rec.state = "skipped"
                     s.next = k + 1
-                    tell(driver, ("%s passed without stopping - stop not served."):format(st.name))
+                    tell(driver, L.msg("rw_timetable.services.passed_without_stopping_stop_not_served", { name = st.name }))
                     rlog("stop", "warn", ("%s: passed %s without stopping - stop not served"):format(s.trip.number, st.name), id)
                     triggerEvent("onRailServiceStop", c.lead, id, s.trip.id, k, rec)
                     changed = true
@@ -416,7 +417,7 @@ local function tick()
                     if rec.side and doors ~= rec.side and doors ~= "both" then
                         if not rec.wrongSide then
                             rec.wrongSide = true
-                            tell(driver, "The platform is on the " .. rec.side .. " - wrong doors released!")
+                            tell(driver, L.msg("rw_timetable.services.platform_is_on_wrong_doors_released", { side = rec.side }))
                             rlog("stop", "warn", ("%s: wrong side doors released at %s (platform on the %s)"):format(s.trip.number, st.name, rec.side), id)
                         end
                     else
@@ -434,19 +435,17 @@ local function tick()
                         retire(id, "service " .. s.trip.number .. " completed")
                         triggerEvent("onRailServiceComplete", lead, id, s.trip.id, s.player or false, sum)
                         local d = sum.arrivalDelay or 0
-                        tell(driver, ("%s completed. Arrival %s, %d stop(s) served. The train is taken out of service in %d s."):format(
-                            s.trip.number, d >= 60 and ("+" .. math.floor(d / 60) .. " min late") or "on time", sum.served,
-                            TT.REMOVE_AFTER), true)
+                        tell(driver, L.msg("rw_timetable.services.completed_arrival_stop_s_served_train", { number = s.trip.number, d = d >= 60 and ("+" .. math.floor(d / 60) .. " min late") or "on time", served = sum.served, remove_after = TT.REMOVE_AFTER }), true)
                     end
                 elseif not inZone then
                     rec.actDep = rec.moveAt or t
                     rec.state = rec.doorTime >= TT.DOOR_MIN and "done" or "skipped"
                     if stop.dep and t < stop.dep - TT.EARLY_DEP then
                         rec.early = true
-                        tell(driver, ("Early departure from %s!"):format(st.name))
+                        tell(driver, L.msg("rw_timetable.services.early_departure_from", { name = st.name }))
                     end
                     if rec.state == "skipped" then
-                        tell(driver, ("%s: doors were not open for %d s - stop not served."):format(st.name, TT.DOOR_MIN))
+                        tell(driver, L.msg("rw_timetable.services.doors_were_not_open_for_s", { name = st.name, door_min = TT.DOOR_MIN }))
                     end
                     rlog("stop", (rec.early or rec.state == "skipped") and "warn" or "info", ("%s: departed %s, %s%s%s"):format(
                         s.trip.number, st.name, stop.dep and fmtDelay(rec.actDep - stop.dep) or "",
@@ -563,8 +562,8 @@ function getDepotServices(spawnIds)
         local a = trip.line.auto
         if a and set[a.spawn] then
             local ok, reason = true, nil
-            if taken[trip.id] then ok, reason = false, "already running"
-            elseif finished[trip.id] then ok, reason = false, "already done"
+            if taken[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_running")
+            elseif finished[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_done")
             elseif cancelled[trip.id] then ok, reason = false, "cancelled" end
             out[#out + 1] = { tripId = trip.id, number = trip.number, name = trip.name, line = trip.line.id,
                 from = trip.from, to = trip.to, toName = Stations[trip.to].name, fromName = Stations[trip.from].name,
@@ -584,7 +583,7 @@ function checkDepotService(tripId, spawnIds)
             return true, e
         end
     end
-    return false, "not available now"
+    return false, L.msg("rw_timetable.services.not_available_now")
 end
 
 -- The depot has created the train (consistId) for the applied trip: starts the service
@@ -647,10 +646,10 @@ end
 -- may the doors be released: standing inside a station zone -> true, side | false, reason
 function canOpenDoors(consistId)
     local c = core:getConsist(consistId)
-    if not c then return false, "no such train" end
-    if c.speed >= TT.STOP_SPEED then return false, "the train is moving" end
+    if not c then return false, L.msg("rw_timetable.services.no_such_train") end
+    if c.speed >= TT.STOP_SPEED then return false, L.msg("rw_timetable.services.train_is_moving") end
     local st = stationAt(c.track, c.tp)
-    if not st then return false, "not at a platform" end
+    if not st then return false, L.msg("rw_timetable.services.not_at_platform") end
     return true, platformSide(st, c.track, c.tp, c.dir) or "both"
 end
 
@@ -691,9 +690,9 @@ addEventHandler("rw:tt:take", resourceRoot, function(tripId)
     local ok, err = assignService(id, tostring(tripId), player)
     if ok then
         local trip = getTrip(tostring(tripId))
-        tell(player, ("Service %s to %s started. Have a good trip!"):format(trip.number, Stations[trip.to].name), true)
+        tell(player, L.msg("rw_timetable.services.service_to_started_have_good_trip", { number = trip.number, name = Stations[trip.to].name }), true)
     else
-        tell(player, "Cannot take the service: " .. tostring(err))
+        tell(player, L.msg("rw_timetable.services.cannot_take_service", { err = tostring(err) }))
     end
 end)
 
@@ -704,7 +703,7 @@ addEventHandler("rw:tt:end", resourceRoot, function()
     if id and Services[id] then
         cancelService(id, "ended by the driver")
         retire(id, "service ended by the driver")
-        tell(player, "Service ended. The train is taken out of service once it stands.")
+        tell(player, L.msg("rw_timetable.services.service_ended_train_is_taken_out"))
     end
 end)
 

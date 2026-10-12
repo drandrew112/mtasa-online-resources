@@ -3,6 +3,8 @@
           description="Sunline Rail timetables: stations, lines, services (trips), stop / door / delay monitoring, station displays" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"    type="shared" />
     <script src="server/stations.lua"  type="server" />
     <script src="server/services.lua"  type="server" />

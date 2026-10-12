@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- rw_core settings (server + client)
 
 RW = {
@@ -21,7 +22,7 @@ RW = {
     -- track position (tp) is the distance along the line. Trains elsewhere (yards, crossovers,
     -- Cranberry tracks 3 / 4) have no track.
     TRACKS      = { 0, 3 },
-    TRACK_NAMES = { [0] = "Main line", [3] = "Second track", [5] = "Cranberry track 3", [6] = "Cranberry track 4" },
+    TRACK_NAMES = { [0] = L.text("rw_core.config.main_line"), [3] = L.text("rw_core.config.second_track"), [5] = L.text("rw_core.config.cranberry_track_3"), [6] = L.text("rw_core.config.cranberry_track_4") },
 
     -- consist extent on a line (the network trains use rw_customtracks NET.STOCK lengths)
     CAR_SPACING = 20.87,
@@ -32,16 +33,16 @@ RW = {
     -- free one at random, the train is called after it ("BR 232 1112") while it has no service.
     VEHICLES = {
         br232     = { model = 538, kind = "loco",  name = "BR 232",          module = "br232", numbers = { 1101, 1199 } },
-        passenger = { model = 570, kind = "coach", name = "Passenger coach", passenger = true, seats = 64 },
+        passenger = { model = 570, kind = "coach", name = L.text("rw_core.config.passenger_coach"), passenger = true, seats = 64 },
     },
     MAX_CARRIAGES = 4,
 
     -- ready-made compositions offered in the depot menu
     PRESETS = {
-        { id = "light", name = "BR 232 light engine",  loco = "br232", cars = {} },
-        { id = "re2",   name = "BR 232 + 2 coaches",   loco = "br232", cars = { "passenger", "passenger" } },
-        { id = "re3",   name = "BR 232 + 3 coaches",   loco = "br232", cars = { "passenger", "passenger", "passenger" } },
-        { id = "re4",   name = "BR 232 + 4 coaches",   loco = "br232", cars = { "passenger", "passenger", "passenger", "passenger" } },
+        { id = "light", name = L.text("rw_core.config.br_232_light_engine"),  loco = "br232", cars = {} },
+        { id = "re2",   name = L.text("rw_core.config.br_232_2_coaches"),   loco = "br232", cars = { "passenger", "passenger" } },
+        { id = "re3",   name = L.text("rw_core.config.br_232_3_coaches"),   loco = "br232", cars = { "passenger", "passenger", "passenger" } },
+        { id = "re4",   name = L.text("rw_core.config.br_232_4_coaches"),   loco = "br232", cars = { "passenger", "passenger", "passenger", "passenger" } },
     },
 
     -- Spawn points: the lead's centre lands on (x, y) projected onto `track`; dir = +1 faces
@@ -49,26 +50,26 @@ RW = {
     -- Unity -> Market -> Cranberry -> Yellow Bell -> Linden -> Unity; second track (3) +1 runs
     -- towards San Fierro.
     SPAWNS = {
-        { id = "unity_1", name = "Unity Station, track 1 (to SF)",     track = 0, x = 1745, y = -1953.8, dir = 1 },
-        { id = "unity_1e", name = "Unity Station, track 1 (to LV)",    track = 0, x = 1745, y = -1953.8, dir = -1 },
-        { id = "unity_2", name = "Unity Station, track 2 (from SF)",   track = 3, x = 1745, y = -1957.9, dir = -1 },
-        { id = "unity_e", name = "Unity East yard, track 2",           track = 3, x = 2150, y = -1957.9, dir = 1 },
-        { id = "cranb_2", name = "Cranberry Station (to LS)",          track = 0, x = -1944.1, y = 150, dir = -1 },
+        { id = "unity_1", name = L.text("rw_core.config.unity_station_track_1_to_sf"),     track = 0, x = 1745, y = -1953.8, dir = 1 },
+        { id = "unity_1e", name = L.text("rw_core.config.unity_station_track_1_to_lv"),    track = 0, x = 1745, y = -1953.8, dir = -1 },
+        { id = "unity_2", name = L.text("rw_core.config.unity_station_track_2_from_sf"),   track = 3, x = 1745, y = -1957.9, dir = -1 },
+        { id = "unity_e", name = L.text("rw_core.config.unity_east_yard_track_2"),           track = 3, x = 2150, y = -1957.9, dir = 1 },
+        { id = "cranb_2", name = L.text("rw_core.config.cranberry_station_to_ls"),          track = 0, x = -1944.1, y = 150, dir = -1 },
         -- Cranberry track 2 = the second track's through platform (anticlockwise ICs from SF start here)
-        { id = "cranb_2t", name = "Cranberry Station, track 2 (to LS)", track = 3, x = -1947.8, y = 150, dir = -1 },
-        { id = "cranb_1", name = "Cranberry Station (to LV)",          track = 0, x = -1944.1, y = 150, dir = 1 },
+        { id = "cranb_2t", name = L.text("rw_core.config.cranberry_station_track_2_to_ls"), track = 3, x = -1947.8, y = 150, dir = -1 },
+        { id = "cranb_1", name = L.text("rw_core.config.cranberry_station_to_lv"),          track = 0, x = -1944.1, y = 150, dir = 1 },
         -- Cranberry hall track 3 (dead end, line 5): LS-bound regionals start here facing south
-        { id = "cranb_3", name = "Cranberry Station, track 3 (to LS)", track = 5, x = -1933.5, y = 95, dir = -1 },
-        { id = "yb_ls",   name = "Yellow Bell Station (to SF)",        track = 0, x = 1433, y = 2632.3, dir = -1 },
-        { id = "yb_lv",   name = "Yellow Bell Station (to Linden)",    track = 0, x = 1433, y = 2632.3, dir = 1 },
-        { id = "lin_ls",  name = "Linden Station (to LS)",             track = 0, x = 2854.6, y = 1292, dir = 1 },
-        { id = "lin_sf",  name = "Linden Station (to Yellow Bell)",    track = 0, x = 2854.6, y = 1292, dir = -1 },
+        { id = "cranb_3", name = L.text("rw_core.config.cranberry_station_track_3_to_ls"), track = 5, x = -1933.5, y = 95, dir = -1 },
+        { id = "yb_ls",   name = L.text("rw_core.config.yellow_bell_station_to_sf"),        track = 0, x = 1433, y = 2632.3, dir = -1 },
+        { id = "yb_lv",   name = L.text("rw_core.config.yellow_bell_station_to_linden"),    track = 0, x = 1433, y = 2632.3, dir = 1 },
+        { id = "lin_ls",  name = L.text("rw_core.config.linden_station_to_ls"),             track = 0, x = 2854.6, y = 1292, dir = 1 },
+        { id = "lin_sf",  name = L.text("rw_core.config.linden_station_to_yellow_bell"),    track = 0, x = 2854.6, y = 1292, dir = -1 },
     },
 
     -- Depots: railway staff open the depot menu in these markers (E). spawns = ids above.
     DEPOTS = {
-        { name = "Unity Station depot", x = 1771.5, y = -1936.5, z = 13.56, spawns = { "unity_1", "unity_1e", "unity_2", "unity_e" } },
-        { name = "Cranberry depot",     x = -1957.51904, y = 175.79410, z = 26.28125, spawns = { "cranb_2", "cranb_1", "cranb_2t", "cranb_3" } },
+        { name = L.text("rw_core.config.unity_station_depot"), x = 1771.5, y = -1936.5, z = 13.56, spawns = { "unity_1", "unity_1e", "unity_2", "unity_e" } },
+        { name = L.text("rw_core.config.cranberry_depot"),     x = -1957.51904, y = 175.79410, z = 26.28125, spawns = { "cranb_2", "cranb_1", "cranb_2t", "cranb_3" } },
         --{ name = "Yellow Bell depot",   x = 1433.0, y = 2624.0,  z = 11.82, spawns = { "yb_ls", "yb_lv" } },
         --{ name = "Linden depot",        x = 2852.0, y = 1290.0,  z = 11.82, spawns = { "lin_ls", "lin_sf" } },
     },

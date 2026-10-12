@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Depots: railway staff apply for services here (the train is created for the trip and the
 -- service starts at once), couple / uncouple coaches and send trains to the shed
 -- (client/depot.lua shows the ui_inac menu). Free train creation is for admins only
@@ -67,8 +68,8 @@ local function nearbyConsists(d)
 end
 
 local function describe(info)
-    local driver = info.driver and getPlayerName(info.driver):gsub("#%x%x%x%x%x%x", "") or "no driver"
-    return ("%s + %d car(s), %s"):format(info.label, info.carriages, driver)
+    local driver = info.driver and getPlayerName(info.driver):gsub("#%x%x%x%x%x%x", "") or L.msg("rw_core.depot.no_driver")
+    return L.msg("rw_core.depot.car_s", { label = info.label, carriages = info.carriages, driver = driver })
 end
 
 -- the menu data the client turns into a ui_inac temp menu
@@ -101,7 +102,7 @@ addEventHandler("rw:depot:open", resourceRoot, function()
     local d = depotOf(player)
     if not d then return end
     if not hasRailwayAccess(player) then
-        notify(player, "Only railway staff can use the depot.")
+        notify(player, L.msg("rw_core.depot.only_railway_staff_can_use_depot"))
         return
     end
     triggerClientEvent(player, "rw:depot:menu", resourceRoot, menuData(player, d))
@@ -117,53 +118,52 @@ addEventHandler("rw:depot:action", resourceRoot, function(action, a, b)
         -- a = trip id. The client only names the trip: availability, window, the depot's spawn
         -- point and the train's fitness are all decided here.
         a = tostring(a)
-        if tt("getDepotServices", {}) == nil then notify(player, "The timetable is not available.") return end
+        if tt("getDepotServices", {}) == nil then notify(player, L.msg("rw_core.depot.timetable_is_not_available")) return end
         local ok, e = tt("checkDepotService", a, d.def.spawns)
-        if not ok then notify(player, "Cannot apply: " .. tostring(e or "not available now")) return end
+        if not ok then notify(player, L.msg("rw_core.depot.cannot_apply", { e = tostring(e or L.msg("rw_core.depot.not_available_now")) })) return end
         if not depotHasSpawn(d, e.spawn) then return end
-        if getConsistByDriver(player) then notify(player, "Leave your train first.") return end
+        if getConsistByDriver(player) then notify(player, L.msg("rw_core.depot.leave_your_train_first")) return end
         if spawnOccupied(e.spawn) then
-            notify(player, ("Cannot apply: %s is occupied."):format(getSpawnPoint(e.spawn).name))
+            notify(player, L.msg("rw_core.depot.cannot_apply_is_occupied", { name = getSpawnPoint(e.spawn).name }))
             return
         end
         local id, err = spawnConsist({ preset = e.preset, spawn = e.spawn, owner = player })
-        if not id then notify(player, "Cannot apply: " .. tostring(err)) return end
+        if not id then notify(player, L.msg("rw_core.depot.cannot_apply_2", { err = tostring(err) })) return end
         local started, why = tt("startAppliedService", id, a, player)
         if not started then
-            destroyConsist(id, "service could not be started")
-            notify(player, "Cannot apply: " .. tostring(why or "not available now"))
+            destroyConsist(id, L.msg("rw_core.depot.service_could_not_be_started"))
+            notify(player, L.msg("rw_core.depot.cannot_apply_3", { why = tostring(why or L.msg("rw_core.depot.not_available_now")) }))
             return
         end
-        notify(player, ("Service %s to %s: your train is ready at %s. Board it and depart on time."):format(
-            e.number, e.toName, getSpawnPoint(e.spawn).name), true)
+        notify(player, L.msg("rw_core.depot.service_to_your_train_is_ready", { number = e.number, to_name = e.toName, name = getSpawnPoint(e.spawn).name }), true)
         return
     end
 
     if action == "spawn" then
         if not canSpawnFree(player) then return end
         if not depotHasSpawn(d, a) then return end
-        if spawnOccupied(a) then notify(player, ("Cannot spawn: %s is occupied."):format(getSpawnPoint(a).name)) return end
+        if spawnOccupied(a) then notify(player, L.msg("rw_core.depot.cannot_spawn_is_occupied", { name = getSpawnPoint(a).name })) return end
         local id, err = spawnConsist({ preset = tostring(b), spawn = a, owner = player })
-        if id then notify(player, ("%s is ready at %s."):format(getConsist(id).label, getSpawnPoint(a).name), true)
-        else notify(player, "Cannot spawn: " .. tostring(err)) end
+        if id then notify(player, L.msg("rw_core.depot.is_ready_at", { label = getConsist(id).label, name = getSpawnPoint(a).name }), true)
+        else notify(player, L.msg("rw_core.depot.cannot_spawn", { err = tostring(err) })) end
         return
     end
 
     -- the rest works on a train standing at this depot
     local ok = false
     for _, info in ipairs(nearbyConsists(d)) do if info.id == a then ok = true break end end
-    if not ok then notify(player, "That train is not at this depot any more.") return end
+    if not ok then notify(player, L.msg("rw_core.depot.that_train_is_not_at_this")) return end
 
     local done, err
     if action == "add" then done, err = addCarriage(a, tostring(b))
     elseif action == "remove" then done, err = removeCarriage(a)
     elseif action == "despawn" then
         local info = getConsist(a)
-        if tt("getConsistService", a) then err = "it runs a service"
-        elseif info and info.driver and info.driver ~= player then err = "somebody is driving it"
-        else done = destroyConsist(a, "sent to the shed by " .. getPlayerName(player):gsub("#%x%x%x%x%x%x", "")) end
+        if tt("getConsistService", a) then err = L.msg("rw_core.depot.it_runs_service")
+        elseif info and info.driver and info.driver ~= player then err = L.msg("rw_core.depot.somebody_is_driving_it")
+        else done = destroyConsist(a, L.msg("rw_core.depot.sent_to_shed_by", { player = getPlayerName(player):gsub("#%x%x%x%x%x%x", "") })) end
     end
-    if done then notify(player, "Done.", true) else notify(player, "Cannot do it: " .. tostring(err)) end
+    if done then notify(player, "Done.", true) else notify(player, L.msg("rw_core.depot.cannot_do_it", { err = tostring(err) })) end
 end)
 
 -- /rwdespawn [running number | id]  (admins): removes a train, or every train without one
@@ -174,11 +174,11 @@ addCommandHandler("rwdespawn", function(player, _, id)
         for cid, c in pairs(Consists) do
             if c.number == n then n = cid break end
         end
-        outputChatBox(destroyConsist(n, "admin /rwdespawn") and "[SLR] Szerelvény törölve." or "[SLR] Nincs ilyen szerelvény.", player)
+        outputChatBox(destroyConsist(n, "admin /rwdespawn") and L.msg("rw_core.depot.slr_train_removed") or L.msg("rw_core.depot.slr_no_such_train"), player)
     else
         local n = 0
         for cid in pairs(Consists) do destroyConsist(cid, "admin /rwdespawn") n = n + 1 end
-        outputChatBox("[SLR] " .. n .. " szerelvény törölve.", player)
+        outputChatBox(L.msg("rw_core.depot.slr_trains_removed", { n = n }), player)
     end
 end)
 

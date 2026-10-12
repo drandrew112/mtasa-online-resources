@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Station displays: the departure / arrival board of a station drawn on its walls
 -- (TT.DISPLAYS). A station near the camera gets a render target, its board data comes from
 -- the server every TT.BOARD.REFRESH seconds (rw:tt:boards) and the picture is redrawn a few
@@ -54,16 +55,16 @@ end
 -- remark text (one or two lines) + colour of an entry
 local function remark(e, blink)
     local d = math.floor((e.delay or 0) / 60)
-    local late = d >= 1 and ("+%d min"):format(d) or nil
-    if e.state == "cancelled" then return "Cancelled", nil, C.red end
-    if e.state == "departed" then return "Departed", nil, C.dim end
-    if e.state == "arrived" then return "Arrived", late, C.green end
-    if e.state == "platform" then return "At platform", late, C.text end
-    if e.state == "boarding" then return blink and "Boarding" or "", late, C.text end
+    local late = d >= 1 and L("rw_timetable.displays.min", { d = d }) or nil
+    if e.state == "cancelled" then return L("rw_timetable.displays.cancelled"), nil, C.red end
+    if e.state == "departed" then return L("rw_timetable.displays.departed"), nil, C.dim end
+    if e.state == "arrived" then return L("rw_timetable.displays.arrived"), late, C.green end
+    if e.state == "platform" then return L("rw_timetable.displays.at_platform"), late, C.text end
+    if e.state == "boarding" then return blink and L("rw_timetable.displays.boarding") or "", late, C.text end
     -- the train does not exist physically yet: no delay / on-time claim
-    if e.state == "scheduled" then return "Scheduled", nil, C.dim end
+    if e.state == "scheduled" then return L("rw_timetable.displays.scheduled"), nil, C.dim end
     if late then return late, nil, C.amber end
-    return "On time", nil, C.green
+    return L("rw_timetable.displays.on_time"), nil, C.green
 end
 
 local function drawColumn(list, x, y, w, title, placeTitle, isDep)
@@ -73,15 +74,15 @@ local function drawColumn(list, x, y, w, title, placeTitle, isDep)
 
     local hy = y + 52
     local hf = font(false, 16)
-    dxDrawText("Time", x + 8, hy, 0, 0, C.dim, 1, hf)
-    dxDrawText("Train", x + 92, hy, 0, 0, C.dim, 1, hf)
+    dxDrawText(L("rw_timetable.displays.time"), x + 8, hy, 0, 0, C.dim, 1, hf)
+    dxDrawText(L("rw_timetable.displays.train"), x + 92, hy, 0, 0, C.dim, 1, hf)
     dxDrawText(placeTitle, x + 196, hy, 0, 0, C.dim, 1, hf)
-    dxDrawText("Track", x + 440, hy, x + 500, 0, C.dim, 1, hf, "center")
-    dxDrawText("Remarks", x + 512, hy, 0, 0, C.dim, 1, hf)
+    dxDrawText(L("rw_timetable.displays.track"), x + 440, hy, x + 500, 0, C.dim, 1, hf, "center")
+    dxDrawText(L("rw_timetable.displays.remarks"), x + 512, hy, 0, 0, C.dim, 1, hf)
 
     local ry, rh = hy + 26, 57
     if #list == 0 then
-        dxDrawText(isDep and "No departures" or "No arrivals", x, ry, x + w, ry + rh * 2, C.dim, 1, font(false, 22), "center", "center")
+        dxDrawText(isDep and L("rw_timetable.displays.no_departures") or L("rw_timetable.displays.no_arrivals"), x, ry, x + w, ry + rh * 2, C.dim, 1, font(false, 22), "center", "center")
         return
     end
     for i, e in ipairs(list) do
@@ -145,7 +146,7 @@ local function drawBoard(id)
     local st
     for _, s in ipairs(TT.STATIONS) do if s.id == id then st = s end end
     dxDrawText(st and st.name or id, 28, 6, RT_W - 260, 56, C.text, 1, font(true, 38), "left", "center")
-    dxDrawText("SUNLINE RAIL  ·  " .. string.upper(st and st.city or ""), 30, 54, RT_W - 260, 80, C.accent, 1, font(true, 15), "left", "center")
+    dxDrawText(L("rw_timetable.displays.sunline_rail", { city = string.upper(st and st.city or "") }), 30, 54, RT_W - 260, 80, C.accent, 1, font(true, 15), "left", "center")
     local now = clock()
     if now then
         local s = math.floor(now) % 86400
@@ -153,11 +154,11 @@ local function drawBoard(id)
     end
 
     if b then
-        drawColumn(b.departures or {}, 20, 98, 610, "Departures", "Destination", true)
-        drawColumn(b.arrivals or {}, 650, 98, 610, "Arrivals", "From", false)
+        drawColumn(b.departures or {}, 20, 98, 610, L("rw_timetable.displays.departures"), L("rw_timetable.displays.destination"), true)
+        drawColumn(b.arrivals or {}, 650, 98, 610, L("rw_timetable.displays.arrivals"), L("rw_timetable.displays.from"), false)
         dxDrawRectangle(639, 100, 2, RT_H - 112, C.stripe)
     else
-        dxDrawText("Loading timetable…", 0, 88, RT_W, RT_H, C.dim, 1, font(false, 26), "center", "center")
+        dxDrawText(L("rw_timetable.displays.loading_timetable"), 0, 88, RT_W, RT_H, C.dim, 1, font(false, 26), "center", "center")
     end
 
     dxSetBlendMode("blend")
@@ -247,9 +248,9 @@ addCommandHandler("rwboardpos", function(_, w, h)
     if len == 0 then return end
     local hit, x, y, z, _, nx, ny = processLineOfSight(cx, cy, cz, cx + dx / len * 80, cy + dy / len * 80, cz + dz / len * 80,
         true, false, false, true, false, false, false, false, localPlayer)
-    if not hit then return outputChatBox("[Timetable] No wall in front of the camera.", 255, 160, 90) end
+    if not hit then return outputChatBox(L("rw_timetable.displays.timetable_no_wall_in_front_of"), 255, 160, 90) end
     local nl = math.sqrt(nx * nx + ny * ny)
-    if nl < 0.5 then return outputChatBox("[Timetable] That is not a wall (floor / ceiling).", 255, 160, 90) end
+    if nl < 0.5 then return outputChatBox(L("rw_timetable.displays.timetable_that_is_not_wall_floor"), 255, 160, 90) end
     nx, ny = nx / nl, ny / nl
     local best, bestD
     for _, s in ipairs(TT.STATIONS) do
@@ -257,8 +258,7 @@ addCommandHandler("rwboardpos", function(_, w, h)
         if not bestD or d < bestD then best, bestD = s.id, d end
     end
     w, h = tonumber(w) or 6, tonumber(h) or 3
-    local line = ('{ station = "%s", x = %.2f, y = %.2f, z = %.2f, nx = %.3f, ny = %.3f, w = %.1f, h = %.1f },')
-        :format(best, x, y, z, nx, ny, w, h)
+    local line = L("rw_timetable.displays.x_y_z_nx_ny_w", { best = best, x = x, y = y, z = z, nx = nx, ny = ny, w = w, h = h })
     outputChatBox("[Timetable] " .. line, 120, 200, 255)
     outputConsole(line)
 end)

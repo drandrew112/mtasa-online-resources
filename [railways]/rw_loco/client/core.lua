@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Cab core: finds out when the local player drives a locomotive, runs that loco type's
 -- modules (cab panel, timetable, vigilance), lays the panels out around the v_radar minimap,
 -- handles the cursor, clickable areas and the traction lock.
@@ -283,7 +284,7 @@ end)
 addEvent("rw:loco:notify", true)
 addEventHandler("rw:loco:notify", resourceRoot, function(text)
     local res = getResourceFromName("ui_core")
-    if res and getResourceState(res) == "running" then exports.ui_core:addNotification("Locomotive", text)
+    if res and getResourceState(res) == "running" then exports.ui_core:addNotification(L("rw_loco.core.locomotive"), text)
     else outputChatBox("[Locomotive] " .. text, 255, 200, 90) end
 end)
 

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- rw_timetable settings (server + client)
 
 TT = {
@@ -7,15 +8,15 @@ TT = {
     -- tell the door side (left / right of the train); no entry = both sides open.
     -- tracks = the track number passengers see per GTA track (station displays).
     STATIONS = {
-        { id = "unity",      name = "Unity Station",       city = "Los Santos",   x = 1745,    y = -1955.9, length = 230,
+        { id = "unity",      name = L.text("rw_timetable.config.unity_station"),       city = "Los Santos",   x = 1745,    y = -1955.9, length = 230,
           platform = { [0] = { x = 1745, y = -1946 } }, tracks = { [0] = "1", [3] = "2" } },
-        { id = "market",     name = "Market Station",      city = "Los Santos",   x = 815,     y = -1366,   length = 180,
+        { id = "market",     name = L.text("rw_timetable.config.market_station"),      city = "Los Santos",   x = 815,     y = -1366,   length = 180,
           tracks = { [0] = "1", [3] = "2" } },
-        { id = "cranberry",  name = "Cranberry Station",   city = "San Fierro",   x = -1946,   y = 140,     length = 260,
+        { id = "cranberry",  name = L.text("rw_timetable.config.cranberry_station"),   city = "San Fierro",   x = -1946,   y = 140,     length = 260,
           platform = { [0] = { x = -1938, y = 150 } }, tracks = { [0] = "1", [3] = "2", [5] = "3", [6] = "4" } },
-        { id = "yellowbell", name = "Yellow Bell Station", city = "Las Venturas", x = 1433,    y = 2632.3,  length = 220,
+        { id = "yellowbell", name = L.text("rw_timetable.config.yellow_bell_station"), city = "Las Venturas", x = 1433,    y = 2632.3,  length = 220,
           tracks = { [0] = "1", [3] = "2" } },
-        { id = "linden",     name = "Linden Station",      city = "Las Venturas", x = 2854.6,  y = 1292,    length = 220,
+        { id = "linden",     name = L.text("rw_timetable.config.linden_station"),      city = "Las Venturas", x = 2854.6,  y = 1292,    length = 220,
           tracks = { [0] = "1", [3] = "2" } },
     },
     ROUTE_TRACKS = { 0, 3, 5, 6 },    -- 5 / 6 = Cranberry hall tracks 3 / 4 (dead ends)
@@ -48,35 +49,35 @@ TT = {
     -- displays; a train standing in the station shows its real track, e.g. after a diversion).
     LINES = {
         -- RB: LS -> SF on the main line, into Cranberry track 4
-        { id = "SL1", prefix = "RB", base = 1101, name = "Sunline Regional", from = "unity", to = "cranberry",
+        { id = "SL1", prefix = "RB", base = 1101, name = L.text("rw_timetable.config.sunline_regional"), from = "unity", to = "cranberry",
           first = 0, last = 24 * 60 - 1, headway = 15, track = 0,
           stops = { { station = "unity", dep = 0 }, { station = "market", arr = 2, dep = 3 }, { station = "cranberry", arr = 7, track = 6 } },
           consist = { locos = { "br232" }, minPassenger = 1, maxPassenger = 4 }, auto = { preset = "re3", spawn = "unity_1" } },
         -- RB: SF -> LS from Cranberry track 3 (W21, main line, W19 onto the second track)
-        { id = "SL2", prefix = "RB", base = 1102, name = "Sunline Regional", from = "cranberry", to = "unity",
+        { id = "SL2", prefix = "RB", base = 1102, name = L.text("rw_timetable.config.sunline_regional"), from = "cranberry", to = "unity",
           first = 10, last = 24 * 60 - 1, headway = 15, track = 3,
           stops = { { station = "cranberry", dep = 0, track = 5 }, { station = "market", arr = 4, dep = 5 }, { station = "unity", arr = 7 } },
           consist = { locos = { "br232" }, minPassenger = 1, maxPassenger = 4 }, auto = { preset = "re3", spawn = "cranb_3" } },
         -- IC clockwise circle: Unity - Market - Cranberry - Yellow Bell - Linden - Unity (main line)
-        { id = "SL3", prefix = "IC", base = 2101, name = "Sunline Circle", from = "unity", to = "unity",
+        { id = "SL3", prefix = "IC", base = 2101, name = L.text("rw_timetable.config.sunline_circle"), from = "unity", to = "unity",
           first = 6, last = 24 * 60 - 1, headway = 30, track = 0,
           stops = { { station = "unity", dep = 0 }, { station = "market", arr = 2, dep = 3 }, { station = "cranberry", arr = 7, dep = 8 },
                     { station = "yellowbell", arr = 12, dep = 13 }, { station = "linden", arr = 16, dep = 17 }, { station = "unity", arr = 21 } },
           consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "unity_1" } },
         -- IC anticlockwise circle: Unity - Linden - Yellow Bell - Cranberry - Market - Unity (second track)
-        { id = "SL4", prefix = "IC", base = 2102, name = "Sunline Circle", from = "unity", to = "unity",
+        { id = "SL4", prefix = "IC", base = 2102, name = L.text("rw_timetable.config.sunline_circle"), from = "unity", to = "unity",
           first = 5, last = 24 * 60 - 1, headway = 30, track = 3,
           stops = { { station = "unity", dep = 0 }, { station = "linden", arr = 4, dep = 5 }, { station = "yellowbell", arr = 8, dep = 9 },
                     { station = "cranberry", arr = 13, dep = 14 }, { station = "market", arr = 18, dep = 19 }, { station = "unity", arr = 21 } },
           consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "unity_2" } },
         -- IC clockwise circle from SF: Cranberry - Yellow Bell - Linden - Unity - Market - Cranberry (main line, track 1)
-        { id = "SL5", prefix = "IC", base = 2201, name = "Sunline Circle", from = "cranberry", to = "cranberry",
+        { id = "SL5", prefix = "IC", base = 2201, name = L.text("rw_timetable.config.sunline_circle"), from = "cranberry", to = "cranberry",
           first = 10, last = 24 * 60 - 1, headway = 30, track = 0,
           stops = { { station = "cranberry", dep = 0 }, { station = "yellowbell", arr = 4, dep = 5 }, { station = "linden", arr = 8, dep = 9 },
                     { station = "unity", arr = 13, dep = 14 }, { station = "market", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },
           consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "cranb_1" } },
         -- IC anticlockwise circle from SF: Cranberry - Market - Unity - Linden - Yellow Bell - Cranberry (second track, track 2)
-        { id = "SL6", prefix = "IC", base = 2202, name = "Sunline Circle", from = "cranberry", to = "cranberry",
+        { id = "SL6", prefix = "IC", base = 2202, name = L.text("rw_timetable.config.sunline_circle"), from = "cranberry", to = "cranberry",
           first = 15, last = 24 * 60 - 1, headway = 30, track = 3,
           stops = { { station = "cranberry", dep = 0 }, { station = "market", arr = 4, dep = 5 }, { station = "unity", arr = 7, dep = 8 },
                     { station = "linden", arr = 12, dep = 13 }, { station = "yellowbell", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },

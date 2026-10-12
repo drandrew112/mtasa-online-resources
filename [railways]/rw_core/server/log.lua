@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Railway event log: every event of the network in one place - trains (spawn / removal /
 -- composition / driver / crossing between lines), services (start, stops, delays, completion,
 -- cancellation), hold-ups (standing at a red signal, behind a train, without a route, stuck),
@@ -8,7 +9,7 @@
 -- Storage: the newest RW.LOG.KEEP entries in memory (/rwlog, getRailLog) and a daily file
 -- logs/rail_YYYY-MM-DD.log (buffered, written every FLUSH_EVERY ms).
 
-local L = RW.LOG
+local LOGC = RW.LOG
 local LEVELS = { debug = 1, info = 2, warn = 3, error = 4 }
 local ASPECTS = { [0] = "red", [1] = "yellow", [2] = "green" }
 
@@ -55,22 +56,22 @@ end
     data:     extra fields kept with the entry (optional table) ]]
 function railLog(category, level, text, train, data)
     category = tostring(category or "misc")
-    if L.CATEGORIES[category] == false then return false end
+    if LOGC.CATEGORIES[category] == false then return false end
     if not LEVELS[level] then level = "info" end
     seq = seq + 1
     local ts = getRealTime().timestamp
     local day, time = stamp(ts)
     local e = { seq = seq, ts = ts, time = time, level = level, cat = category, text = tostring(text),
         train = train, tag = train and tagOf(train) or nil, data = data }
-    head = head % L.KEEP + 1
+    head = head % LOGC.KEEP + 1
     entries[head] = e
-    size = math.min(size + 1, L.KEEP)
+    size = math.min(size + 1, LOGC.KEEP)
 
     local line = ("%s %s %-5s %-7s %s%s"):format(day, time, level:upper(), category,
         e.tag and ("[" .. e.tag .. "] ") or "", e.text)
-    if L.FILE then pending[#pending + 1] = { day, line } end
-    if LEVELS[level] >= LEVELS[L.DEBUG_LEVEL] then
-        if L.DEBUG_ENABLED then
+    if LOGC.FILE then pending[#pending + 1] = { day, line } end
+    if LEVELS[level] >= LEVELS[LOGC.DEBUG_LEVEL] then
+        if LOGC.DEBUG_ENABLED then
             outputDebugString("[rw_log] " .. line:sub(12), level == "error" and 1 or 2)
         end
     end
@@ -87,7 +88,7 @@ function getRailLog(opts)
     local match = opts.match and tostring(opts.match):lower()
     local out = {}
     for k = 0, size - 1 do
-        local e = entries[(head - k - 1) % L.KEEP + 1]
+        local e = entries[(head - k - 1) % LOGC.KEEP + 1]
         if e and (not opts.since or e.seq > opts.since) and LEVELS[e.level] >= minLevel
             and (not cats or cats[e.cat]) and (not opts.train or e.train == opts.train)
             and (not match or (e.tag or ""):lower():find(match, 1, true) or e.text:lower():find(match, 1, true)) then
@@ -112,7 +113,7 @@ local function flush()
     end
     pending = {}
     for _, day in ipairs(order) do
-        local path = L.FILE_DIR .. "rail_" .. day .. ".log"
+        local path = LOGC.FILE_DIR .. "rail_" .. day .. ".log"
         local f = fileExists(path) and fileOpen(path) or fileCreate(path)
         if f then
             fileSetPos(f, fileGetSize(f))
@@ -121,7 +122,7 @@ local function flush()
         end
     end
 end
-setTimer(flush, L.FLUSH_EVERY, 0)
+setTimer(flush, LOGC.FLUSH_EVERY, 0)
 
 ------------------------------------------------------------------ helpers
 
@@ -168,9 +169,9 @@ addEventHandler("onRailConsistSpawn", root, function(id)
     if not c then return end
     local types = {}
     for i = 2, #c.types do types[#types + 1] = RW.VEHICLES[c.types[i]] and RW.VEHICLES[c.types[i]].name or c.types[i] end
-    local where = c.track and (RW.TRACK_NAMES[c.track] or ("line " .. c.track)) or "off the lines"
+    local where = c.track and (RW.TRACK_NAMES[c.track] or ("line " .. c.track)) or L.msg("rw_core.log.off_lines")
     railLog("train", "info", ("spawned%s on %s, %d carriage(s)%s"):format(c.auto and " (automatic)" or "",
-        where, #c.cars, c.owner and (", by " .. playerName(c.owner)) or ""), id, { cars = types })
+        where, #c.cars, c.owner and (L.msg("rw_core.log.by", { owner = playerName(c.owner) })) or ""), id, { cars = types })
 end)
 
 addEventHandler("onRailConsistDestroy", root, function(id, reason)
@@ -225,7 +226,7 @@ addEventHandler("onNetTrainStates", root, function(list)
         -- hold-ups: standing close to the end of the movement authority
         local standing = math.abs(st.speed) < 0.1
         local A = st.authority
-        local reason = standing and A and A.reason and (A.remaining or 0) <= L.BLOCK_DIST and not IGNORED[A.reason] and A.reason or nil
+        local reason = standing and A and A.reason and (A.remaining or 0) <= LOGC.BLOCK_DIST and not IGNORED[A.reason] and A.reason or nil
         local h = w.hold
         if reason then
             if not h then
@@ -240,12 +241,12 @@ addEventHandler("onNetTrainStates", root, function(list)
                 h.reason = reason
             end
             local held = (tick - h.since) / 1000
-            if not h.logged and held >= L.HOLD_MIN then
+            if not h.logged and held >= LOGC.HOLD_MIN then
                 h.logged = true
                 local text, kind = holdReason(reason)
                 railLog("hold", "info", "stopped: " .. text, id, { reason = reason, kind = kind })
             end
-            if not h.stuck and held >= L.STUCK_AFTER then
+            if not h.stuck and held >= LOGC.STUCK_AFTER then
                 h.stuck = true
                 railLog("stuck", "warn", ("stuck for %s: %s"):format(minutes(held), (holdReason(reason))), id, { reason = reason })
             end
@@ -264,7 +265,7 @@ addEventHandler("onNetTrainStates", root, function(list)
             local i = w.idle
             if not i then i = { since = tick } w.idle = i end
             local idle = (tick - i.since) / 1000
-            if not i.warned and idle >= L.STUCK_AFTER and not call("rw_timetable", "isConsistAtStation", id) then
+            if not i.warned and idle >= LOGC.STUCK_AFTER and not call("rw_timetable", "isConsistAtStation", id) then
                 i.warned = true
                 railLog("stuck", "warn", ("automatic train standing for %s outside a station (authority: %s)"):format(
                     minutes(idle), A and tostring(A.reason) or "none"), id)
@@ -281,7 +282,7 @@ end)
 
 addEvent("onNetTrainCrash", false)
 addEventHandler("onNetTrainCrash", root, function(id, hit, speed)
-    local what = hit == "end" and "the buffer stop / end of track" or ("train " .. tagOf(tonumber(hit) or hit))
+    local what = hit == "end" and L.msg("rw_core.log.buffer_stop_end_of_track") or ("train " .. tagOf(tonumber(hit) or hit))
     railLog("safety", "error", ("collided with %s at %.0f km/h"):format(what, (speed or 0) * 3.6), id)
 end)
 
@@ -295,7 +296,7 @@ end)
 
 addEvent("onNetSwitchChange", false)
 addEventHandler("onNetSwitchChange", root, function(group, state, reason, owner)
-    local why = reason == "route" and ("route of " .. readableOwner(owner or "?")) or tostring(reason)
+    local why = reason == "route" and (L.msg("rw_core.log.route_of", { owner = readableOwner(owner or "?") })) or tostring(reason)
     local trainId = owner and tonumber(tostring(owner):match("^train:(%d+)$"))
     railLog("switch", reason == "trailed" and "warn" or "info", ("%s -> %s (%s)"):format(switchName(group), tostring(state), why),
         trainId, { switch = group, state = state, reason = reason })
@@ -346,7 +347,7 @@ addEventHandler("onRailServiceComplete", root, function(id, tripId, player, sum)
     sum = type(sum) == "table" and sum or {}
     local d = sum.arrivalDelay or 0
     railLog("service", "info", ("service %s completed: arrival %s, %d stop(s) served, %d skipped, %d early departure(s), max delay %s"):format(
-        tostring(sum.number or tripId), d >= 60 and ("+" .. math.floor(d / 60) .. " min") or "on time",
+        tostring(sum.number or tripId), d >= 60 and (L.msg("rw_core.log.min", { d = math.floor(d / 60) })) or L.msg("rw_core.trainlabel.on_time"),
         sum.served or 0, sum.skipped or 0, sum.earlyDepartures or 0, minutes(sum.maxDelay or 0)), id, { trip = tripId, summary = sum })
 end)
 
@@ -383,26 +384,26 @@ local COLORS = { debug = { 150, 150, 150 }, info = { 200, 220, 255 }, warn = { 2
 -- /rwlog <category>      e.g. hold, stuck, delay, switch, signal, service, spad
 -- /rwlog <text>          a running number / trip number / station / switch ("1112", "SL3", "W19")
 -- /rwlog ... <count>
-addCommandHandler(L.CMD, function(player, _, a, b)
+addCommandHandler(LOGC.CMD, function(player, _, a, b)
     if not isRailwayAdmin(player) then
-        outputChatBox("[" .. RW.COMPANY_SHORT .. "] Nincs jogod ehhez.", player, 255, 80, 80)
+        outputChatBox(L.msg("rw_core.log.you_are_not_allowed_to_do", { company_short = RW.COMPANY_SHORT }), player, 255, 80, 80)
         return
     end
     -- a lone small number is the count; running numbers (1001+) are filters
     local filter, count = a, tonumber(b)
     if a and not b and tonumber(a) and tonumber(a) <= 100 then filter, count = nil, tonumber(a) end
-    count = count or L.CMD_LINES
+    count = count or LOGC.CMD_LINES
     local opts = { limit = math.min(count, 100) }
     if not filter then
         local cats = {}
-        for k, on in pairs(L.CATEGORIES) do if on and k ~= "signal" then cats[k] = true end end
+        for k, on in pairs(LOGC.CATEGORIES) do if on and k ~= "signal" then cats[k] = true end end
         opts.category, opts.level = cats, "info"
     elseif filter == "all" then
     elseif LEVELS[filter] then opts.level = filter
-    elseif L.CATEGORIES[filter] ~= nil then opts.category = filter
+    elseif LOGC.CATEGORIES[filter] ~= nil then opts.category = filter
     else opts.match = filter end
     local list = getRailLog(opts)
-    outputChatBox(("[%s] Vasúti napló (%s) - %d bejegyzés:"):format(RW.COMPANY_SHORT, filter or "minden", #list), player, 120, 200, 255)
+    outputChatBox(L.msg("rw_core.log.railway_log_entries", { company_short = RW.COMPANY_SHORT, filter = filter or "minden", list = #list }), player, 120, 200, 255)
     for _, e in ipairs(list) do
         local col = COLORS[e.level] or COLORS.info
         outputChatBox(("%s %s %s%s"):format(e.time, e.cat, e.tag and ("[" .. e.tag .. "] ") or "", e.text), player, col[1], col[2], col[3])

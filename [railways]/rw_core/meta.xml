@@ -4,6 +4,8 @@
     <min_mta_version server="1.6.0" client="1.6.0" />
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"    type="shared" />
 
     <!-- ================= SERVER ================= -->

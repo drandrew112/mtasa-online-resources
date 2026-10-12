@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Depot menu (ui_inac temp menu). The server sends the options when the player presses the
 -- depot key inside a depot marker, and re-checks every pick.
 
@@ -38,7 +39,7 @@ local function drawLabel(sx, sy, k, alpha, title, hint)
     local a = alpha / 255
     local nameStr = RW.COMPANY:upper()
     local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
-    local textW = math.max(dxGetTextWidth(title, k, fTitle), dxGetTextWidth(nameStr, k, fName), dxGetTextWidth(hint, k, fHint))
+    local textW = math.max(L.width(title, k, fTitle), L.width(nameStr, k, fName), L.width(hint, k, fHint))
     local w = pad + iconSize + gap + textW + pad * 1.4
     local headH, hintH = s(46) * k, s(22) * k
     local h = headH + hintH
@@ -49,7 +50,7 @@ local function drawLabel(sx, sy, k, alpha, title, hint)
 
     local ix, iy = x + pad, y + (headH - iconSize) / 2 + s(2) * k
     round(ix, iy, iconSize, iconSize, s(5) * k, rgb(COLOR, 240 * a))
-    dxDrawText("D", ix, iy, ix + iconSize, iy + iconSize, tocolor(255, 255, 255, 255 * a), k, font(16, true), "center", "center")
+    dxDrawText(L("rw_core.depot.d"), ix, iy, ix + iconSize, iy + iconSize, tocolor(255, 255, 255, 255 * a), k, font(16, true), "center", "center")
 
     local tx = ix + iconSize + gap
     dxDrawText(nameStr, tx, y + s(6) * k, tx + textW, y + headH * 0.45, rgb(COLOR, 255 * a), k, fName, "left", "center")
@@ -78,7 +79,7 @@ addEventHandler("onClientRender", root, function()
                     local k = 1
                     if dist > FULL_DIST then k = 1 - (dist - FULL_DIST) / (MAX_DIST - FULL_DIST) * (1 - MIN_SCALE) end
                     local alpha = dist > MAX_DIST * 0.8 and 255 * (MAX_DIST - dist) / (MAX_DIST * 0.2) or 255
-                    local hint = ("Press %s · services, train assembly"):format(RW.DEPOT_KEY:upper())
+                    local hint = L("rw_core.depot.press_services_train_assembly", { depot_key = RW.DEPOT_KEY:upper() })
                     drawLabel(sx, sy, k, alpha, def.name, hint)
                 end
             end
@@ -111,13 +112,13 @@ addEventHandler("rw:depot:menu", resourceRoot, function(data)
     for _, v in ipairs(data.services) do
         local label = ("%s %02d:%02d - %s"):format(v.number, math.floor(v.dep / 3600) % 24, math.floor(v.dep / 60) % 60, v.toName)
         if v.ok then
-            serviceItems[#serviceItems + 1] = { label = label, value = { "apply", v.tripId }, desc = ("%s, from %s. The train is created now."):format(v.name, v.fromName) }
+            serviceItems[#serviceItems + 1] = { label = label, value = { "apply", v.tripId }, desc = L("rw_core.depot.from_train_is_created_now", { name = v.name, from_name = v.fromName }) }
         else
-            serviceItems[#serviceItems + 1] = { label = label, value = { "none" }, desc = "Not available: " .. tostring(v.reason) }
+            serviceItems[#serviceItems + 1] = { label = label, value = { "none" }, desc = L("rw_core.depot.not_available", { reason = tostring(v.reason) }) }
         end
     end
     if #serviceItems == 0 then
-        serviceItems[1] = { label = "No service available now", value = { "none" } }
+        serviceItems[1] = { label = L("rw_core.depot.no_service_available_now"), value = { "none" } }
     end
 
     local spawnItems = {}
@@ -133,24 +134,24 @@ addEventHandler("rw:depot:menu", resourceRoot, function(data)
     for _, c in ipairs(data.consists) do
         local sub = {}
         for _, t in ipairs(data.carriageTypes) do
-            sub[#sub + 1] = { label = "Add " .. t.name:lower(), value = { "add", c.id, t.id }, desc = "Coupled to the end of the train" }
+            sub[#sub + 1] = { label = L("rw_core.depot.add", { name = t.name:lower() }), value = { "add", c.id, t.id }, desc = L("rw_core.depot.coupled_to_end_of_train") }
         end
         if c.carriages > 0 then
-            sub[#sub + 1] = { label = "Uncouple last carriage", value = { "remove", c.id } }
+            sub[#sub + 1] = { label = L("rw_core.depot.uncouple_last_carriage"), value = { "remove", c.id } }
         end
-        sub[#sub + 1] = { label = "Send to the shed (remove)", value = { "despawn", c.id } }
+        sub[#sub + 1] = { label = L("rw_core.depot.send_to_shed_remove"), value = { "despawn", c.id } }
         trainItems[#trainItems + 1] = { label = c.label, title = c.number, items = sub }
     end
     if #trainItems == 0 then
-        trainItems[1] = { label = "No train at this depot", value = { "none" } }
+        trainItems[1] = { label = L("rw_core.depot.no_train_at_this_depot"), value = { "none" } }
     end
 
     local items = {
-        { label = "Services", title = "Services", desc = "Apply for a service: your train is created and the service starts", items = serviceItems },
-        { label = "Trains at the depot", title = "Assembly", desc = "Couple / uncouple carriages", items = trainItems },
+        { label = L("rw_core.depot.services"), title = L("rw_core.depot.services"), desc = L("rw_core.depot.apply_for_service_your_train_is"), items = serviceItems },
+        { label = L("rw_core.depot.trains_at_depot"), title = L("rw_core.depot.assembly"), desc = L("rw_core.depot.couple_uncouple_carriages"), items = trainItems },
     }
     if data.admin then
-        items[#items + 1] = { label = "New train (admin)", title = "Spawn point", desc = "Assemble a free train on a free track", items = spawnItems }
+        items[#items + 1] = { label = L("rw_core.depot.new_train_admin"), title = L("rw_core.depot.spawn_point"), desc = L("rw_core.depot.assemble_free_train_on_free_track"), items = spawnItems }
     end
     menuId = exports.ui_inac:createTempMenu({ title = data.depot, items = items })
 end)

@@ -7,6 +7,8 @@
          The network data (data/network/*.json) is read by the server only and sent to the clients. -->
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"    type="shared" />
     <script src="shared/geometry.lua"  type="shared" />
     <script src="shared/network.lua"   type="shared" />

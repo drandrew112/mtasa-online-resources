@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Trains on the network (server). Every train is simulated here; the cars are derailed + frozen
 -- vehicles ("puppets") that every client places each frame from the snapshots (client/trains.lua).
 --
@@ -345,7 +346,7 @@ addEventHandler("rw:net:leave", resourceRoot, function()
     local t = Trains.ofPlayer(client)
     if not t then return end
     if t.driver == client and math.abs(t.v) > 1 then
-        return tell(client, "Menet közben nem szállhatsz ki a vezetőállásból.")
+        return tell(client, L.msg("rw_customtracks.trains.you_cannot_leave_cab_while_train"))
     end
     dropPlayer(t, client)
 end)
@@ -726,31 +727,31 @@ end
 
 -- /rwtrain spawn [preset] | drive [id] | ride [car] | leave | remove [id|all] | list | tp <seg> <s>
 addCommandHandler("rwtrain", function(p, _, cmd, a1, a2)
-    if not NetServer.isAdmin(p) then return tell(p, "Nincs jogod ehhez.") end
+    if not NetServer.isAdmin(p) then return tell(p, L.msg("rw_customtracks.trains.you_are_not_allowed_to_do")) end
     if cmd == "spawn" then
         local x, y, z = getElementPosition(p)
         local seg, s = Net.project(x, y, z, 30)
-        if not seg then return tell(p, "Nincs vágány 30 m-en belül.") end
+        if not seg then return tell(p, L.msg("rw_customtracks.trains.no_track_within_30_m")) end
         local _, _, _, tx, ty = Net.pointAt(seg, s)
         local _, _, rz = getElementRotation(p)
         local hx, hy = -math.sin(math.rad(rz)), math.cos(math.rad(rz))
         local dir = (hx * tx + hy * ty) >= 0 and 1 or -1
         local id, err = Trains.spawn(a1 or "re2", seg, s, dir, { dimension = getElementDimension(p) })
-        if id then tell(p, "Vonat #%d létrehozva (%s, %s %.0f m).", id, a1 or "re2", seg, s)
-        else tell(p, "Nem sikerült: %s", err) end
+        if id then tell(p, L("rw_customtracks.trains.train_d_created_s_s_0f"), id, a1 or "re2", seg, s)
+        else tell(p, L("rw_customtracks.trains.failed_s"), err) end
     elseif cmd == "drive" then
         local t = tonumber(a1) and trains[tonumber(a1)] or nearestTrain(p)
-        if not t then return tell(p, "Nincs vonat a közelben.") end
+        if not t then return tell(p, L.msg("rw_customtracks.trains.no_train_nearby")) end
         local ok, err = Trains.setDriver(p, t.id)
-        if ok then tell(p, "W / S = kontroller, X = vészfék, R = irányváltó (állva), F = kiszállás.")
-        else tell(p, "Nem sikerült: %s", err) end
+        if ok then tell(p, L.msg("rw_customtracks.trains.w_s_controller_x_emergency_brake"))
+        else tell(p, L("rw_customtracks.trains.failed_s"), err) end
     elseif cmd == "ride" then
         local t, k = nearestTrain(p)
-        if not t then return tell(p, "Nincs vonat a közelben.") end
+        if not t then return tell(p, L.msg("rw_customtracks.trains.no_train_nearby")) end
         k = tonumber(a1) or k
         if k == 1 and #t.cars > 1 then k = 2 end
         local ok, err = Trains.addRider(p, t.id, k)
-        if ok then tell(p, "Felszálltál (%d. kocsi). F = leszállás.", k) else tell(p, "Nem sikerült: %s", err) end
+        if ok then tell(p, L("rw_customtracks.trains.you_boarded_car_d_f_get"), k) else tell(p, L("rw_customtracks.trains.failed_s"), err) end
     elseif cmd == "leave" then
         Trains.removePlayer(p)
     elseif cmd == "remove" then
@@ -763,26 +764,26 @@ addCommandHandler("rwtrain", function(p, _, cmd, a1, a2)
     elseif cmd == "list" then
         for _, t in pairs(trains) do
             local seg, s = t.path:at(t.u)
-            tell(p, "#%d  %d kocsi  %s %.0f m  %.0f km/h  vezető: %s", t.id, #t.cars, seg, s, math.abs(t.v) * 3.6,
+            tell(p, L("rw_customtracks.trains.d_d_cars_s_0f_m"), t.id, #t.cars, seg, s, math.abs(t.v) * 3.6,
                 t.driver and getPlayerName(t.driver) or "-")
         end
     elseif cmd == "dest" then
         local t = Trains.ofPlayer(p) or nearestTrain(p)
-        if not t then return tell(p, "Nincs vonat a közelben.") end
+        if not t then return tell(p, L.msg("rw_customtracks.trains.no_train_nearby")) end
         if not a1 or a1 == "clear" then
             Switches.setDestination(t, nil)
-            return tell(p, "Cél törölve (#%d).", t.id)
+            return tell(p, L("rw_customtracks.trains.destination_cleared_d"), t.id)
         end
-        if not Net.segment(a1) then return tell(p, "Ismeretlen szakasz.") end
+        if not Net.segment(a1) then return tell(p, L.msg("rw_customtracks.trains.unknown_section")) end
         Switches.setDestination(t, a1, tonumber(a2) or 0)
         local A = t.authority
-        tell(p, "Cél: %s %.0f m (#%d) - engedély: %s, %.0f m", a1, tonumber(a2) or 0, t.id, A and A.reason or "-", A and A.remaining or 0)
+        tell(p, L("rw_customtracks.trains.destination_s_0f_m_d_authority"), a1, tonumber(a2) or 0, t.id, A and A.reason or "-", A and A.remaining or 0)
     elseif cmd == "tp" then
         local seg, s = a1, tonumber(a2) or 0
-        if not Net.segment(seg) then return tell(p, "Ismeretlen szakasz.") end
+        if not Net.segment(seg) then return tell(p, L.msg("rw_customtracks.trains.unknown_section")) end
         local x, y, z, tx, ty = Net.pointAt(seg, s)
         setElementPosition(p, x + ty * 3, y - tx * 3, z + 1.2)
     else
-        tell(p, "/rwtrain spawn [light|re2|re3|re4] | drive [id] | ride [kocsi] | leave | remove [id|all] | list | dest <szakasz> <s> | dest clear | tp <szakasz> <s>")
+        tell(p, L.msg("rw_customtracks.trains.rwtrain_spawn_light_re2_re3_re4"))
     end
 end)

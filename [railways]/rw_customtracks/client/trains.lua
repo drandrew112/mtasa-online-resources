@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Trains on the client: places every car of every train each frame from the server snapshots
 -- (extrapolated with v / a, errors blended out), runs the driver's input and HUD and the
 -- passengers' camera. Other client files read the train list through TrainsClient.
@@ -131,8 +132,8 @@ addEventHandler("onClientRender", root, function()
     local bw, bh = 360, 92
     local x, y = (sx - bw) / 2, sy - bh - 30
     dxDrawRectangle(x, y, bw, bh, tocolor(10, 16, 30, 200))
-    dxDrawText(string.format("%.0f km/h", kmh), x + 14, y + 8, 0, 0, tocolor(255, 255, 255), 2, "default-bold")
-    local revText = t.rev > 0 and "ELŐRE" or "HÁTRA"
+    dxDrawText(L("rw_customtracks.trains.km_h", { kmh = kmh }), x + 14, y + 8, 0, 0, tocolor(255, 255, 255), 2, "default-bold")
+    local revText = t.rev > 0 and L("rw_customtracks.trains.forward") or L("rw_customtracks.trains.reverse")
     dxDrawText(revText, x + bw - 14, y + 10, x + bw - 14, 0, tocolor(120, 200, 255), 1.2, "default-bold", "right")
     -- controller bar: centre = 0, right = power, left = brake
     local barX, barY, barW = x + 14, y + 52, bw - 28
@@ -145,18 +146,18 @@ addEventHandler("onClientRender", root, function()
         dxDrawRectangle(mid + barW / 2 * t.ctrl, barY, -barW / 2 * t.ctrl, 14, col)
     end
     dxDrawRectangle(mid - 1, barY - 2, 2, 18, tocolor(255, 255, 255))
-    local label = t.emergency and "VÉSZFÉK" or (t.ctrl > 0.01 and string.format("vontatás %d%%", t.ctrl * 100))
-        or (t.ctrl < -0.01 and string.format("fék %d%%", -t.ctrl * 100)) or "semleges"
+    local label = t.emergency and L("rw_customtracks.trains.emergency_brake") or (t.ctrl > 0.01 and L("rw_customtracks.trains.power", { ctrl = t.ctrl * 100 }))
+        or (t.ctrl < -0.01 and L("rw_customtracks.trains.brake", { ctrl = -t.ctrl * 100 })) or L("rw_customtracks.trains.semleges")
     local grade = t.path:grade((t.uNow or t.u) - t.length / 2) * 100
     local auth = ""
     if t.auth then
         local u = t.uNow or t.u
         local lead = t.auth[2] > 0 and u or u - t.length
-        auth = string.format("   engedély %.0f m (%s)", math.max(0, (t.auth[1] - lead) * t.auth[2]), tostring(t.auth[3]))
+        auth = L("rw_customtracks.trains.authority_m", { auth = math.max(0, (t.auth[1] - lead) * t.auth[2]), auth2 = tostring(t.auth[3]) })
     end
-    dxDrawText(string.format("%s   lejtés %.1f%%%s", label, grade, auth), x + 14, y + 70, 0, 0, tocolor(200, 210, 230), 1, "default")
+    dxDrawText(L("rw_customtracks.trains.gradient", { label = label, grade = grade, auth = auth }), x + 14, y + 70, 0, 0, tocolor(200, 210, 230), 1, "default")
     if t.atp then
-        dxDrawText("ATP FÉKEZÉS", x + bw - 14, y + 34, x + bw - 14, 0, tocolor(255, 80, 60), 1.2, "default-bold", "right")
+        dxDrawText(L("rw_customtracks.trains.atp_braking"), x + bw - 14, y + 34, x + bw - 14, 0, tocolor(255, 80, 60), 1.2, "default-bold", "right")
     end
 end)
 

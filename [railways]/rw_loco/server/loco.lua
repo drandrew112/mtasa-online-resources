@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Locomotive state (server authority): battery, fuel pump, engine, lights, passenger doors.
 -- Clients only request changes ("rw:loco:action"); the driver of the lead is checked, and
 -- the state is mirrored to the lead as element data:
@@ -67,7 +68,7 @@ function actions.battery(id, s, info)
 end
 
 function actions.fuel(id, s, info, player)
-    if not s.bat and not s.fuel then tell(player, "No power - switch the battery on first.") return end
+    if not s.bat and not s.fuel then tell(player, L.msg("rw_loco.loco.no_power_switch_battery_on_first")) return end
     s.fuel = not s.fuel
     if not s.fuel and s.eng ~= "off" then setEngine(id, s, "off", info) return end
     push(id, info)
@@ -75,8 +76,8 @@ end
 
 function actions.start(id, s, info, player)
     if s.eng ~= "off" then return end
-    if not s.bat then tell(player, "No power - switch the battery on first.") return end
-    if not s.fuel then tell(player, "No fuel pressure - switch the fuel pump on.") return end
+    if not s.bat then tell(player, L.msg("rw_loco.loco.no_power_switch_battery_on_first")) return end
+    if not s.fuel then tell(player, L.msg("rw_loco.loco.no_fuel_pressure_switch_fuel_pump")) return end
     setEngine(id, s, "cranking", info)
     setTimer(function()
         local st = State[id]
@@ -91,7 +92,7 @@ function actions.stop(id, s, info)
 end
 
 function actions.lights(id, s, info, player)
-    if not s.bat then tell(player, "No power.") return end
+    if not s.bat then tell(player, L.msg("rw_loco.loco.no_power")) return end
     s.lights = not s.lights
     push(id, info)
 end
@@ -103,15 +104,15 @@ function actions.doors(id, s, info, player, side)
         return
     end
     if side ~= "left" and side ~= "right" then return end
-    if not hasPassengerCars(info) then tell(player, "This train has no passenger coaches.") return end
-    if not s.bat then tell(player, "No power.") return end
+    if not hasPassengerCars(info) then tell(player, L.msg("rw_loco.loco.this_train_has_no_passenger_coaches")) return end
+    if not s.bat then tell(player, L.msg("rw_loco.loco.no_power")) return end
     local ok, reason = true, nil
     if running("rw_timetable") then
         ok, reason = exports.rw_timetable:canOpenDoors(id)
     elseif info.speed > 2 then
-        ok, reason = false, "the train is moving"
+        ok, reason = false, L.msg("rw_loco.loco.train_is_moving")
     end
-    if not ok then tell(player, "Doors stay closed: " .. tostring(reason) .. ".") return end
+    if not ok then tell(player, L.msg("rw_loco.loco.doors_stay_closed", { reason = tostring(reason) })) return end
     s.doors = (s.doors ~= "closed" and s.doors ~= side) and "both" or side
     push(id, info)
 end

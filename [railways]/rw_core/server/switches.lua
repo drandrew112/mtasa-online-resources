@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Switches: the real switches of rw_customtracks (always thrown by the system: a train's route
 -- reserves them ahead of it). This keeps the old rw_core switch API for the other resources;
 -- an "owner" reservation is a rw_customtracks route reservation.
@@ -63,7 +64,7 @@ end
 -- Without an owner (players, admin tools) the switch is thrown when it is free.
 function setSwitchState(id, state, player, owner)
     if state ~= "normal" and state ~= "reverse" then return false, "bad state" end
-    if player and not hasRailwayAccess(player) then return false, "Railway staff only" end
+    if player and not hasRailwayAccess(player) then return false, L.msg("rw_core.switches.railway_staff_only") end
     if owner then
         local ok, err = net():reserveNetRoute(owner, { [id] = state })
         if ok then held[id] = owner end

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- BR 232 (Streak model) cab desk. Black / dark blue housing, blue switch bands, white analog
 -- instruments with black needles (no digital displays on this loco). Diesel: battery,
 -- fuel pump, engine start / stop; lights; passenger doors (with coaches); Sifa acknowledge.
@@ -17,41 +18,41 @@ local lastT = getTickCount()
 
 -- base-unit layout (900 x 270), scaled by Loco.s
 local G = {
-    volt  = { 60, 46, 30, { min = 0, max = 150, major = 50, minor = 10, title = "BATTERY", unit = "V" } },
-    fuel  = { 146, 46, 30, { min = 0, max = 6, major = 2, minor = 0.5, title = "FUEL", unit = "bar" } },
-    oil   = { 232, 46, 30, { min = 0, max = 8, major = 4, minor = 1, title = "OIL", unit = "bar" } },
-    temp  = { 60, 124, 30, { min = 0, max = 120, major = 60, minor = 10, red = { 100, 120 }, title = "COOLANT", unit = "°C" } },
-    rpm   = { 146, 124, 30, { min = 0, max = 1200, major = 600, minor = 100, div = 100, red = { 1050, 1200 }, title = "ENGINE", unit = "x100" } },
-    load  = { 232, 124, 30, { min = 0, max = 100, major = 50, minor = 10, title = "LOAD", unit = "%" } },
+    volt  = { 60, 46, 30, { min = 0, max = 150, major = 50, minor = 10, title = L("rw_loco.br232.battery"), unit = "V" } },
+    fuel  = { 146, 46, 30, { min = 0, max = 6, major = 2, minor = 0.5, title = L("rw_loco.br232.fuel"), unit = "bar" } },
+    oil   = { 232, 46, 30, { min = 0, max = 8, major = 4, minor = 1, title = L("rw_loco.br232.oil"), unit = "bar" } },
+    temp  = { 60, 124, 30, { min = 0, max = 120, major = 60, minor = 10, red = { 100, 120 }, title = L("rw_loco.br232.coolant"), unit = "°C" } },
+    rpm   = { 146, 124, 30, { min = 0, max = 1200, major = 600, minor = 100, div = 100, red = { 1050, 1200 }, title = L("rw_loco.br232.engine"), unit = "x100" } },
+    load  = { 232, 124, 30, { min = 0, max = 100, major = 50, minor = 10, title = L("rw_loco.br232.load"), unit = "%" } },
     speed = { 420, 88, 72, { min = 0, max = 140, major = 20, minor = 5, labelStep = 20, red = { 120, 140 }, unit = "km/h" } },
-    ctrl  = { 305, 46, 30, { min = -100, max = 100, major = 100, minor = 25, title = "CONTROL", unit = "%" } },
-    target = { 305, 124, 30, { min = 0, max = 2000, major = 1000, minor = 250, div = 100, red = { 0, 250 }, title = "TARGET", unit = "x100 m" } },
+    ctrl  = { 305, 46, 30, { min = -100, max = 100, major = 100, minor = 25, title = L("rw_loco.br232.control"), unit = "%" } },
+    target = { 305, 124, 30, { min = 0, max = 2000, major = 1000, minor = 250, div = 100, red = { 0, 250 }, title = L("rw_loco.br232.target"), unit = "x100 m" } },
 }
 
 local LAMPS = {
-    { id = "bat",    label = "BATTERY", x = 560, y = 112, color = { 255, 255, 240 } },
-    { id = "fuel",   label = "FUEL",    x = 620, y = 112, color = { 255, 255, 240 } },
-    { id = "eng",    label = "ENGINE",  x = 680, y = 112, color = { 60, 255, 120 } },
-    { id = "doorl",  label = "DOOR L",  x = 740, y = 112, color = { 255, 200, 40 } },
-    { id = "doorr",  label = "DOOR R",  x = 800, y = 112, color = { 255, 200, 40 } },
-    { id = "closed", label = "CLOSED",  x = 860, y = 112, color = { 60, 255, 120 } },
-    { id = "sifa",   label = "SIFA",    x = 560, y = 40,  color = { 255, 255, 255 } },
-    { id = "atp",    label = "ATP",     x = 740, y = 40,  color = { 255, 170, 30 } },
-    { id = "rev",    label = "REVERSE", x = 800, y = 40,  color = { 255, 255, 240 } },
+    { id = "bat",    label = L("rw_loco.br232.battery"), x = 560, y = 112, color = { 255, 255, 240 } },
+    { id = "fuel",   label = L("rw_loco.br232.fuel"),    x = 620, y = 112, color = { 255, 255, 240 } },
+    { id = "eng",    label = L("rw_loco.br232.engine"),  x = 680, y = 112, color = { 60, 255, 120 } },
+    { id = "doorl",  label = L("rw_loco.br232.door_l"),  x = 740, y = 112, color = { 255, 200, 40 } },
+    { id = "doorr",  label = L("rw_loco.br232.door_r"),  x = 800, y = 112, color = { 255, 200, 40 } },
+    { id = "closed", label = L("rw_loco.br232.closed"),  x = 860, y = 112, color = { 60, 255, 120 } },
+    { id = "sifa",   label = L("rw_loco.br232.sifa"),    x = 560, y = 40,  color = { 255, 255, 255 } },
+    { id = "atp",    label = L("rw_loco.br232.atp"),     x = 740, y = 40,  color = { 255, 170, 30 } },
+    { id = "rev",    label = L("rw_loco.br232.reverse"), x = 800, y = 40,  color = { 255, 255, 240 } },
     { id = "emerg",  label = "EMERG.",  x = 860, y = 40,  color = { 255, 50, 40 } },
 }
 
 local CONTROLS = {
-    { id = "battery", kind = "toggle", label = "BATTERY",   x = 48 },
-    { id = "fuel",    kind = "toggle", label = "FUEL PUMP", x = 122 },
-    { id = "start",   kind = "button", label = "START",     x = 202, color = { 40, 170, 70 } },
-    { id = "stop",    kind = "button", label = "STOP",      x = 262, color = { 200, 40, 35 } },
-    { id = "lights",  kind = "toggle", label = "LIGHTS",    x = 330 },
-    { id = "rev",     kind = "toggle", label = "DIR",       x = 384 },
-    { id = "doorl",   kind = "button", label = "DOORS L",   x = 432, color = { 230, 180, 30 } },
-    { id = "doorc",   kind = "button", label = "CLOSE",     x = 496, color = { 230, 230, 230 } },
-    { id = "doorr",   kind = "button", label = "DOORS R",   x = 560, color = { 230, 180, 30 } },
-    { id = "sifa",    kind = "button", label = "SIFA",      x = 650, color = { 245, 245, 245 }, big = true },
+    { id = "battery", kind = "toggle", label = L("rw_loco.br232.battery"),   x = 48 },
+    { id = "fuel",    kind = "toggle", label = L("rw_loco.br232.fuel_pump"), x = 122 },
+    { id = "start",   kind = "button", label = L("rw_loco.br232.start"),     x = 202, color = { 40, 170, 70 } },
+    { id = "stop",    kind = "button", label = L("rw_loco.br232.stop"),      x = 262, color = { 200, 40, 35 } },
+    { id = "lights",  kind = "toggle", label = L("rw_loco.br232.lights"),    x = 330 },
+    { id = "rev",     kind = "toggle", label = L("rw_loco.br232.dir"),       x = 384 },
+    { id = "doorl",   kind = "button", label = L("rw_loco.br232.doors_l"),   x = 432, color = { 230, 180, 30 } },
+    { id = "doorc",   kind = "button", label = L("rw_loco.br232.close"),     x = 496, color = { 230, 230, 230 } },
+    { id = "doorr",   kind = "button", label = L("rw_loco.br232.doors_r"),   x = 560, color = { 230, 180, 30 } },
+    { id = "sifa",    kind = "button", label = L("rw_loco.br232.sifa"),      x = 650, color = { 245, 245, 245 }, big = true },
 }
 
 local function drawStatic(ctx)
@@ -65,7 +66,7 @@ local function drawStatic(ctx)
     -- lamp field + Sifa plate
     Gfx.box(520 * s, 14 * s, 368 * s, 154 * s, tocolor(18, 23, 33), dark, tocolor(50, 60, 78), math.max(1, 2 * s))
     Gfx.box(596 * s, 22 * s, 104 * s, 40 * s, tocolor(8, 9, 12), tocolor(60, 66, 80), tocolor(4, 4, 6), math.max(1, 2 * s))
-    Gfx.text("SIFA", 596 * s, 22 * s, 104 * s, 40 * s, tocolor(210, 215, 225), ctx.font(true, 20), "center", "center")
+    Gfx.text(L("rw_loco.br232.sifa"), 596 * s, 22 * s, 104 * s, 40 * s, tocolor(210, 215, 225), ctx.font(true, 20), "center", "center")
     local smallB = ctx.font(true, 9)
     local small = ctx.font(false, 8)
     local numBig = ctx.font(true, 13)
@@ -93,7 +94,7 @@ local function drawStatic(ctx)
     Gfx.rect(716 * s, 188 * s, 1 * s, 70 * s, tocolor(20, 48, 100))
     local hint = ctx.font(false, 9)
     local keys = LOCO.KEYS
-    Gfx.text(("%s  cursor\n%s  Sifa\n%s  timetable"):format(keys.cursor:upper(), keys.sifa:upper(), keys.timetable:upper()),
+    Gfx.text(L("rw_loco.br232.cursor_sifa_timetable", { cursor = keys.cursor:upper(), sifa = keys.sifa:upper(), timetable = keys.timetable:upper() }),
         728 * s, 204 * s, 160 * s, 54 * s, tocolor(220, 230, 250), hint, "left", "top")
 end
 

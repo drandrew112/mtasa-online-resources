@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Cab access for locomotives with a `cab` definition (LOCO.TYPES): the game's own enter /
 -- exit is blocked; each cab door is an invisible object attached to the lead with a
 -- ui_interactobject menu ("Enter the cab"), and leaving puts the driver down beside the cab,
@@ -50,8 +51,8 @@ local function registerMenus(id)
     for _, o in ipairs(d.objs) do
         if isElement(o) then
             local m = exports.ui_interactobject:addInteractMenu(o, {
-                title = "Locomotive cab", range = 2.6, priority = 8, lineOfSight = false,
-                items = { { label = "Enter the cab", value = "enter", desc = "Take the driver's seat" } },
+                title = L.msg("rw_loco.cab.locomotive_cab"), range = 2.6, priority = 8, lineOfSight = false,
+                items = { { label = L.msg("rw_loco.cab.enter_cab"), value = "enter", desc = L.msg("rw_loco.cab.take_driver_s_seat") } },
             })
             if m then d.menus[#d.menus + 1] = m menuOwner[m] = id end
         end
@@ -85,8 +86,8 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value)
     local player = source
     local info = core:getConsist(id)
     if not info or not isElement(info.lead) or isPedInVehicle(player) then return end
-    if info.auto then tell(player, "Automatic train - the cab is locked. Passengers can board the coaches.") return end
-    if info.driver or getVehicleOccupant(info.lead, 0) then tell(player, "Somebody is already driving this locomotive.") return end
+    if info.auto then tell(player, L.msg("rw_loco.cab.automatic_train_cab_is_locked_passengers")) return end
+    if info.driver or getVehicleOccupant(info.lead, 0) then tell(player, L.msg("rw_loco.cab.somebody_is_already_driving_this_locomotive")) return end
     -- the network train takes the driver (its driver seat, controller input)
     local ok, err = exports.rw_customtracks:setNetTrainDriver(player, id)
     if not ok then tell(player, tostring(err)) end
@@ -128,7 +129,7 @@ addEventHandler("onVehicleStartExit", root, function(player, seat)
     cancelEvent()
     if seat ~= 0 then return end
     if info.speed > LOCO.CAB_EXIT_MAX_SPEED then
-        tell(player, "Stop the train before leaving the cab.")
+        tell(player, L.msg("rw_loco.cab.stop_train_before_leaving_cab"))
         return
     end
     local sign = exitSide(id, source, def)

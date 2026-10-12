@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Consists (trains) on top of rw_customtracks: every train is a network train (puppet vehicles
 -- moved by its simulation); this keeps the old consist API of the other rw_ resources:
 --   track = line id (0 main line, 3 second track), tp = line position of the lead's centre,
@@ -184,13 +185,13 @@ local function resolveComposition(spec)
             if p.id == spec.preset then loco, cars = p.loco, p.cars break end
         end
     end
-    if not loco or not RW.VEHICLES[loco] or RW.VEHICLES[loco].kind ~= "loco" then return nil, "unknown locomotive" end
+    if not loco or not RW.VEHICLES[loco] or RW.VEHICLES[loco].kind ~= "loco" then return nil, L.msg("rw_core.consist.unknown_locomotive") end
     local types = { loco }
     for _, t in ipairs(cars or {}) do
-        if not RW.VEHICLES[t] or RW.VEHICLES[t].kind == "loco" then return nil, "unknown carriage " .. tostring(t) end
+        if not RW.VEHICLES[t] or RW.VEHICLES[t].kind == "loco" then return nil, L.msg("rw_core.consist.unknown_carriage", { t = tostring(t) }) end
         types[#types + 1] = t
     end
-    if #types - 1 > RW.MAX_CARRIAGES then return nil, "too many carriages" end
+    if #types - 1 > RW.MAX_CARRIAGES then return nil, L.msg("rw_core.consist.too_many_carriages") end
     return types
 end
 
@@ -202,13 +203,13 @@ local function resolvePlace(spec)
     local track, tp, dir = spec.track, spec.tp, spec.dir
     if spec.spawn then
         local s = getSpawnPoint(spec.spawn)
-        if not s then return nil, "unknown spawn point" end
+        if not s then return nil, L.msg("rw_core.consist.unknown_spawn_point") end
         track, dir = s.track, s.dir
         tp = Track.project(s.track, s.x, s.y, 60)
     elseif track and spec.x and spec.y then
         tp = Track.project(track, spec.x, spec.y, 60)
     end
-    if not track or not Track.get(track) or not tp then return nil, "no track there" end
+    if not track or not Track.get(track) or not tp then return nil, L.msg("rw_core.consist.no_track_there") end
     return track, tp, (dir or 1) < 0 and -1 or 1
 end
 
@@ -246,7 +247,7 @@ function destroyConsist(id, reason)
     reason = reason or "removed"
     local st = states[id]
     if st and isElement(st.driver) and not c.auto then
-        triggerClientEvent(st.driver, "rw:notify", resourceRoot, "Your train was removed (" .. reason .. ").", false)
+        triggerClientEvent(st.driver, "rw:notify", resourceRoot, L.msg("rw_core.consist.your_train_was_removed", { reason = reason }), false)
     end
     forget(id, reason)
     net():destroyNetTrain(id)
@@ -256,10 +257,10 @@ end
 -- Adds a carriage to the end of a standing consist
 function addCarriage(id, typeId)
     local c = Consists[id]
-    if not c then return false, "no such train" end
+    if not c then return false, L.msg("rw_core.consist.no_such_train") end
     local def = RW.VEHICLES[typeId]
-    if not def or def.kind == "loco" then return false, "unknown carriage" end
-    if #c.cars >= RW.MAX_CARRIAGES then return false, "the train is at its maximum length" end
+    if not def or def.kind == "loco" then return false, L.msg("rw_core.consist.unknown_carriage_2") end
+    if #c.cars >= RW.MAX_CARRIAGES then return false, L.msg("rw_core.consist.train_is_at_its_maximum_length") end
     local types = {}
     for i, t in ipairs(c.types) do types[i] = t end
     types[#types + 1] = typeId
@@ -269,8 +270,8 @@ end
 -- Removes the last carriage of a standing consist
 function removeCarriage(id)
     local c = Consists[id]
-    if not c then return false, "no such train" end
-    if #c.cars == 0 then return false, "the locomotive has no carriages" end
+    if not c then return false, L.msg("rw_core.consist.no_such_train") end
+    if #c.cars == 0 then return false, L.msg("rw_core.consist.locomotive_has_no_carriages") end
     local types = {}
     for i = 1, #c.types - 1 do types[i] = c.types[i] end
     return net():setNetTrainComposition(id, types)

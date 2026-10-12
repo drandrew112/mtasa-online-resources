@@ -1,9 +1,10 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- 3D info board above the locomotives (the same idea as the med_erm unit labels): running
 -- number, speed, the service (line, trip, destination, next stop, delay), doors and driver.
 -- Everything comes from the lead's element data: rw.number / rw.cars / rw.auto (consist.lua),
 -- rw.service (rw_timetable), rw.doors (rw_loco). /rwlabels hides / shows the boards.
 
-local L = RW.LABEL
+local LBL = RW.LABEL
 local sw, sh = guiGetScreenSize()
 local S = sh / 1080
 local enabled = true
@@ -49,9 +50,9 @@ end)
 addEventHandler("onClientElementStreamOut", root, function() leads[source] = nil end)
 addEventHandler("onClientElementDestroy", root, function() leads[source] = nil end)
 
-addCommandHandler(L.TOGGLE_CMD, function()
+addCommandHandler(LBL.TOGGLE_CMD, function()
     enabled = not enabled
-    rwNotify(enabled and "Train info boards on." or "Train info boards off.", true)
+    rwNotify(enabled and L("rw_core.trainlabel.train_info_boards_on") or L("rw_core.trainlabel.train_info_boards_off"), true)
 end)
 
 local function hhmm(s)
@@ -73,32 +74,32 @@ local function content(veh, info)
             font = font(15, true), badge = { text = tostring(v.line or ""), rgb = PREFIX[prefix] or C.head } }
         local st = v.stops and v.stops[v.nextStop]
         if v.status == "completed" then
-            rows[#rows + 1] = { text = "Terminates here - please alight", color = C.yellow, font = font(12, true) }
+            rows[#rows + 1] = { text = L("rw_core.trainlabel.terminates_here_please_alight"), color = C.yellow, font = font(12, true) }
         elseif v.status == "cancelled" then
-            rows[#rows + 1] = { text = "Service cancelled", color = C.red, font = font(12, true) }
+            rows[#rows + 1] = { text = L("rw_core.trainlabel.service_cancelled"), color = C.red, font = font(12, true) }
         elseif st then
             local text
             if st.state == "stopped" then
-                text = ("At %s, dep %s"):format(st.name or st.station, hhmm(st.dep))
+                text = L("rw_core.trainlabel.at_dep", { station = st.name or st.station, dep = hhmm(st.dep) })
             else
-                text = ("Next: %s  %s"):format(st.name or st.station, hhmm(st.arr))
+                text = L("rw_core.trainlabel.next", { station = st.name or st.station, arr = hhmm(st.arr) })
             end
             local m = math.floor((v.delay or 0) / 60 + 0.5)
             rows[#rows + 1] = { text = text, color = C.muted, font = font(12),
-                right = m >= 1 and { "+" .. m .. " min", C.red } or { "on time", C.green } }
+                right = m >= 1 and { L("rw_core.trainlabel.min", { m = m }), C.red } or { L("rw_core.trainlabel.on_time"), C.green } }
         end
         local doors = getElementData(veh, "rw.doors")
         if doors and doors ~= "closed" then
-            rows[#rows + 1] = { text = "Doors open - boarding", color = C.green, font = font(12, true) }
+            rows[#rows + 1] = { text = L("rw_core.trainlabel.doors_open_boarding"), color = C.green, font = font(12, true) }
         end
     else
-        rows[#rows + 1] = { text = "Not in service", color = C.muted, font = font(13, true) }
+        rows[#rows + 1] = { text = L("rw_core.trainlabel.not_in_service"), color = C.muted, font = font(13, true) }
     end
     local driver = getVehicleOccupant(veh, 0)
-    local who = auto and "Automatic" or (driver and getElementType(driver) == "player" and clean(getPlayerName(driver))) or "No driver"
+    local who = auto and L("rw_core.trainlabel.automatic") or (driver and getElementType(driver) == "player" and clean(getPlayerName(driver))) or L("rw_core.trainlabel.no_driver")
     local cars = tonumber(getElementData(veh, "rw.cars")) or 0
     rows[#rows + 1] = { text = who, color = C.muted, font = font(11),
-        right = { cars > 0 and (cars .. (cars == 1 and " coach" or " coaches")) or "light engine", C.muted } }
+        right = { cars > 0 and (cars .. (cars == 1 and " coach" or " coaches")) or L("rw_core.trainlabel.light_engine"), C.muted } }
     return rows
 end
 
@@ -108,15 +109,15 @@ local function drawBoard(veh, info, sx, sy, k)
     local pad = 10 * S * k
     local fHead, fSpeed = font(15, true), font(12, true)
     local headH = 26 * S * k
-    local speedText = ("%d km/h"):format(math.floor(info.speed * 3.6 + 0.5))
+    local speedText = L("rw_core.trainlabel.km_h", { speed = math.floor(info.speed * 3.6 + 0.5) })
 
     -- width: the widest row
-    local w = dxGetTextWidth(RW.COMPANY_SHORT .. "   " .. number, k, fHead) + dxGetTextWidth(speedText, k, fSpeed) + pad * 3
+    local w = L.width(RW.COMPANY_SHORT .. "   " .. number, k, fHead) + L.width(speedText, k, fSpeed) + pad * 3
     local rowH = {}
     for i, r in ipairs(rows) do
-        local rw = dxGetTextWidth(r.text, k, r.font) + pad * 2
-        if r.badge then rw = rw + dxGetTextWidth(r.badge.text, k, font(11, true)) + 14 * S * k end
-        if r.right then rw = rw + dxGetTextWidth(r.right[1], k, r.font) + pad end
+        local rw = L.width(r.text, k, r.font) + pad * 2
+        if r.badge then rw = rw + L.width(r.badge.text, k, font(11, true)) + 14 * S * k end
+        if r.right then rw = rw + L.width(r.right[1], k, r.font) + pad end
         w = math.max(w, rw)
         rowH[i] = dxGetFontHeight(k, r.font) + 5 * S * k
     end
@@ -131,7 +132,7 @@ local function drawBoard(veh, info, sx, sy, k)
     dxDrawRectangle(x, y + headH, w, math.max(1, S * k), col(C.line))
     dxDrawRectangle(sx - 1.5 * S * k, y + h, 3 * S * k, 10 * S * k, col(C.bg))
 
-    local shortW = dxGetTextWidth(RW.COMPANY_SHORT, k, fHead)
+    local shortW = L.width(RW.COMPANY_SHORT, k, fHead)
     dxDrawText(RW.COMPANY_SHORT, x + pad, y, 0, y + headH, col(C.blue), k, fHead, "left", "center")
     dxDrawText(number, x + pad + shortW + 8 * S * k, y, 0, y + headH, col(C.text), k, fHead, "left", "center")
     dxDrawText(speedText, x, y, x + w - pad, y + headH, col(C.text), k, fSpeed, "right", "center")
@@ -141,7 +142,7 @@ local function drawBoard(veh, info, sx, sy, k)
         local tx = x + pad
         if r.badge then
             local bf = font(11, true)
-            local bw = dxGetTextWidth(r.badge.text, k, bf) + 10 * S * k
+            local bw = L.width(r.badge.text, k, bf) + 10 * S * k
             local bh = rowH[i] - 7 * S * k
             dxDrawRectangle(tx, cy + (rowH[i] - bh) / 2, bw, bh, col(r.badge.rgb, 255))
             dxDrawText(r.badge.text, tx, cy, tx + bw, cy + rowH[i], col(C.text), k, bf, "center", "center")
@@ -184,15 +185,15 @@ addEventHandler("onClientRender", root, function()
             -- not the driver's own train (the cab panel shows it all)
             if veh ~= mine and getElementDimension(veh) == dim and getElementInterior(veh) == int then
                 local _, _, _, _, _, maxZ = getElementBoundingBox(veh)
-                local lz = z + (maxZ or 2) + L.HEIGHT
+                local lz = z + (maxZ or 2) + LBL.HEIGHT
                 local dist = getDistanceBetweenPoints3D(cx, cy, cz, x, y, lz)
-                if dist <= L.MAX_DIST
+                if dist <= LBL.MAX_DIST
                     and isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false, veh) then
                     local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.05)
                     if sx then
                         local k = 1
-                        if dist > L.FULL_DIST then
-                            k = 1 - (1 - L.MIN_SCALE) * (dist - L.FULL_DIST) / (L.MAX_DIST - L.FULL_DIST)
+                        if dist > LBL.FULL_DIST then
+                            k = 1 - (1 - LBL.MIN_SCALE) * (dist - LBL.FULL_DIST) / (LBL.MAX_DIST - LBL.FULL_DIST)
                         end
                         drawBoard(veh, info, sx, sy, k)
                     end

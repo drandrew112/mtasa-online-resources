@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Switches (server). Nobody throws them by hand: a train with a destination gets its route
 -- reserved switch by switch ahead of it (the router), and an authority (ATP) up to the first
 -- switch it could not get or to its destination. Reservations are released behind the train.
@@ -100,10 +101,10 @@ end
 function Switches.reserve(owner, settings)
     for g, st in pairs(settings) do
         local i = inf(g)
-        if not Net.group(g) then return false, g .. ": no such switch" end
-        if i.reserved and i.reserved ~= owner then return false, g .. ": reserved by " .. tostring(i.reserved) end
-        if i.damaged then return false, g .. ": damaged" end
-        if Net.getState(g) ~= st and Switches.isLocked(g) then return false, g .. ": a train is on it" end
+        if not Net.group(g) then return false, L.msg("rw_customtracks.switches.no_such_switch", { g = g }) end
+        if i.reserved and i.reserved ~= owner then return false, L.msg("rw_customtracks.switches.reserved_by", { g = g, reserved = tostring(i.reserved) }) end
+        if i.damaged then return false, L.msg("rw_customtracks.switches.damaged", { g = g }) end
+        if Net.getState(g) ~= st and Switches.isLocked(g) then return false, L.msg("rw_customtracks.switches.train_is_on_it", { g = g }) end
     end
     owned[owner] = owned[owner] or {}
     for g, st in pairs(settings) do
@@ -222,7 +223,7 @@ local function route(t)
     local want = {}
     local limit, reason = r.length - SW.DEST_GAP, "destination"
     if not d then
-        if r.deadEnd then limit, reason = r.length - 2, "end of track"
+        if r.deadEnd then limit, reason = r.length - 2, L.msg("rw_customtracks.switches.end_of_track")
         else limit, reason = r.length, "line" end
     end
     -- red signals and the moving block (never closer than TRAIN_GAP to another train) come
@@ -237,7 +238,7 @@ local function route(t)
             local dd
             if p.dir == sdir and sdir > 0 and p.s >= entry then dd = base + p.s - entry
             elseif p.dir == sdir and sdir < 0 and p.s <= entry then dd = base + entry - p.s end
-            if dd and dd >= SW.STOP_PASSING and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, "signal " .. tostring(p.id) end
+            if dd and dd >= SW.STOP_PASSING and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, L.msg("rw_customtracks.switches.signal", { id = tostring(p.id) }) end
         end
         for _, o in pairs(Trains.all()) do
             if o ~= t and o.dim == t.dim then
@@ -246,7 +247,7 @@ local function route(t)
                         local d
                         if sdir > 0 and sp[3] >= entry then d = base + math.max(0, sp[2] - entry)
                         elseif sdir < 0 and sp[2] <= entry then d = base + math.max(0, entry - sp[3]) end
-                        if d and d - SW.TRAIN_GAP < limit then limit, reason = d - SW.TRAIN_GAP, "train " .. o.id end
+                        if d and d - SW.TRAIN_GAP < limit then limit, reason = d - SW.TRAIN_GAP, L.msg("rw_customtracks.switches.train", { id = o.id }) end
                     end
                 end
             end

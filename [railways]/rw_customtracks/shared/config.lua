@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- rw_customtracks settings (server + client)
 
 -- console debug output (outputDebugString) of this resource; the rail log file is not affected
@@ -70,7 +71,7 @@ NET = {
     STOCK = {
         br232 = { model = 538, kind = "loco", name = "BR 232", length = 20.87, bogie = 13.5, mass = 116,
                   power = 2200, maxForce = 350, base = 0.203 },
-        passenger = { model = 570, kind = "coach", name = "Passenger coach", length = 20.87, bogie = 14.5, mass = 45,
+        passenger = { model = 570, kind = "coach", name = L.text("rw_customtracks.config.passenger_coach"), length = 20.87, bogie = 14.5, mass = 45,
                   base = 2.595, ride = { z = -0.3, spots = {
                       { -0.6, -7 }, { 0.6, -5 }, { -0.6, -3 }, { 0.6, -1 }, { -0.6, 1 }, { 0.6, 3 }, { -0.6, 5 }, { 0.6, 7 },
                       { 0.6, -7 }, { -0.6, -5 }, { 0.6, -3 }, { -0.6, -1 }, { 0.6, 1 }, { -0.6, 3 }, { 0.6, 5 }, { -0.6, 7 } } } },

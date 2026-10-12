@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Passenger information inside the coach: the display above the cockpit door (render target
 -- drawn as a 3D material line, station display style) and the announcements (chime + banner):
 -- "Next stop" after departing, the station + door side when the doors open, the terminus.
@@ -43,9 +44,9 @@ local function nextStopOf(s)
 end
 
 local function doorsText(doors)
-    if doors == "left" then return "Doors open – left side"
-    elseif doors == "right" then return "Doors open – right side"
-    elseif doors == "both" then return "Doors open – both sides" end
+    if doors == "left" then return L("rw_passengers.display.doors_open_left_side")
+    elseif doors == "right" then return L("rw_passengers.display.doors_open_right_side")
+    elseif doors == "both" then return L("rw_passengers.display.doors_open_both_sides") end
     return nil
 end
 
@@ -68,24 +69,24 @@ local function redraw()
     local stop, terminus = nextStopOf(s)
     if s and stop then
         local standing = math.abs(Ride.vNow) < 0.3 and doors
-        dxDrawText(standing and "This station" or "Next stop", 22, 86, RT_W, 116, C.muted, 1, font("Roboto", 15), "left", "top")
+        dxDrawText(standing and L("rw_passengers.display.this_station") or L("rw_passengers.display.next_stop"), 22, 86, RT_W, 116, C.muted, 1, font("Roboto", 15), "left", "top")
         dxDrawText(stop.name or "?", 22, 112, RT_W - 150, 170, C.white, 1, font("RobotoB", 30), "left", "top", true)
         local due = stop.arr or stop.dep
         local delay = math.floor((s.delay or 0) / 60 + 0.5)
         dxDrawText(hhmm(due), RT_W - 150, 112, RT_W - 20, 150, C.white, 1, font("RobotoB", 24), "right", "top")
         if due then
-            local txt, col = "on time", C.green
-            if delay > 0 then txt, col = ("+%d min"):format(delay), delay >= 5 and C.red or C.amber end
+            local txt, col = L("rw_passengers.display.on_time"), C.green
+            if delay > 0 then txt, col = L("rw_passengers.display.min", { delay = delay }), delay >= 5 and C.red or C.amber end
             dxDrawText(txt, RT_W - 150, 146, RT_W - 20, 176, col, 1, font("Roboto", 15), "right", "top")
         end
-        local line3 = doors or (terminus and "Terminus" or ("Final stop: " .. (s.toName or "")))
+        local line3 = doors or (terminus and L("rw_passengers.display.terminus") or (L("rw_passengers.display.final_stop", { to_name = (s.toName or "") })))
         dxDrawText(line3, 22, 196, RT_W - 160, 250, doors and C.amber or C.muted, 1, font("RobotoB", 18), "left", "center", true)
     else
-        dxDrawText("Not in service", 22, 100, RT_W, 160, C.white, 1, font("RobotoB", 28), "left", "top")
+        dxDrawText(L("rw_passengers.display.not_in_service"), 22, 100, RT_W, 160, C.white, 1, font("RobotoB", 28), "left", "top")
         dxDrawText(doors or (Ride.train or ""), 22, 196, RT_W - 160, 250, doors and C.amber or C.muted, 1,
             font("RobotoB", 18), "left", "center", true)
     end
-    dxDrawText(("%d km/h"):format(math.floor(math.abs(Ride.vNow) * 3.6 + 0.5)), RT_W - 160, 196, RT_W - 20, 250,
+    dxDrawText(L("rw_passengers.display.km_h", { v_now = math.floor(math.abs(Ride.vNow) * 3.6 + 0.5) }), RT_W - 160, 196, RT_W - 20, 250,
         C.muted, 1, font("RobotoB", 18), "right", "center")
     dxSetRenderTarget()
     dirty = false
@@ -126,14 +127,14 @@ local function watch()
         -- doors opening at a stop
         if lastDoors == "closed" and doors ~= "closed" and stop then
             if terminus then
-                announce(stop.name or "", "This train terminates here. Please leave the train.")
+                announce(stop.name or "", L("rw_passengers.display.this_train_terminates_here_please_leave"))
             else
-                local side = doors == "both" and "both sides" or (doors .. " side")
-                announce(stop.name or "", "Doors open on the " .. side .. ".")
+                local side = doors == "both" and L("rw_passengers.display.both_sides") or (doors .. " side")
+                announce(stop.name or "", L("rw_passengers.display.doors_open_on", { side = side }))
             end
         -- departed: the next stop changed while running
         elseif lastTrip == trip and lastNext and s.nextStop ~= lastNext and stop then
-            announce("Next stop: " .. (stop.name or ""), terminus and "Terminus. This train terminates there." or nil)
+            announce(L("rw_passengers.display.next_stop_2", { name = (stop.name or "") }), terminus and L("rw_passengers.display.terminus_this_train_terminates_there") or nil)
         end
         lastNext = s.nextStop
     else

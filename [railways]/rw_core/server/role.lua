@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Railway role ("vasutas jog"), the same model as the medsys medic role. The server table is
 -- the authority; the element data copy (RW.DATA_ROLE) only tells clients, and client-side
 -- changes to it are reverted. Not persisted: work_traindriver / admins hand it out.
@@ -64,7 +65,7 @@ end
 -- /rwrole [player] [on|off]  (admins) - no player = yourself, no state = toggle
 addCommandHandler("rwrole", function(player, _, name, state)
     if not isRailwayAdmin(player) then
-        outputChatBox("[" .. RW.COMPANY_SHORT .. "] Nincs jogod ehhez.", player, 255, 80, 80)
+        outputChatBox(L.msg("rw_core.log.you_are_not_allowed_to_do", { company_short = RW.COMPANY_SHORT }), player, 255, 80, 80)
         return
     end
     local target = player
@@ -78,7 +79,7 @@ addCommandHandler("rwrole", function(player, _, name, state)
         end
     end
     if not target then
-        outputChatBox("[" .. RW.COMPANY_SHORT .. "] Nincs ilyen játékos.", player, 255, 80, 80)
+        outputChatBox(L.msg("rw_core.role.no_such_player", { company_short = RW.COMPANY_SHORT }), player, 255, 80, 80)
         return
     end
     local enable
@@ -86,8 +87,8 @@ addCommandHandler("rwrole", function(player, _, name, state)
     else enable = not isPlayerRailway(target) end
     setPlayerRailway(target, enable)
     local who = getPlayerName(target):gsub("#%x%x%x%x%x%x", "")
-    outputChatBox(("[%s] Vasutas jog %s: %s"):format(RW.COMPANY_SHORT, enable and "megadva" or "elvéve", who), player, 120, 200, 255)
+    outputChatBox(L.msg("rw_core.role.vasutas_jog", { company_short = RW.COMPANY_SHORT, enable = enable and "megadva" or L.msg("rw_core.role.revoked"), who = who }), player, 120, 200, 255)
     if target ~= player then
-        outputChatBox(("[%s] Vasutas jogod %s."):format(RW.COMPANY_SHORT, enable and "lett" or "megszűnt"), target, 120, 200, 255)
+        outputChatBox(L.msg("rw_core.role.your_railway_rights_were", { company_short = RW.COMPANY_SHORT, enable = enable and "lett" or L.msg("rw_core.role.revoked") }), target, 120, 200, 255)
     end
 end)
