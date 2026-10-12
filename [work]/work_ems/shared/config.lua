@@ -12,8 +12,8 @@ EMS = {
     -- Outfits (276 = OMSZ shirt, replaced by v_modloader)
     SKINS = {
         { model = 276, name = L.text("work_ems.config.paramedic_omsz") },
-        { model = 274, name = L.text("work_ems.config.female_paramedic") },
-        { model = 275, name = L.text("work_ems.config.male_paramedic") },
+        { model = 274, name = L.text("work_ems.config.male_paramedic") },
+        { model = 275, name = L.text("work_ems.config.female_paramedic") },
     },
 
     -- Work levels (work_core). XP is earned per treated patient (completed hospital handover).
