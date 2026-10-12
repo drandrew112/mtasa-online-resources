@@ -9,10 +9,17 @@ local active = false
 local screenW, screenH = guiGetScreenSize()
 
 addEvent("acc:loadingScreen", true)
+addEvent("onClientPlayerLoaded") -- local; fired when the server finished loading the player (arg 1 = account name)
+addEvent("acc:playerLoaded", true)
+addEventHandler("acc:playerLoaded", root, function(accName)
+    triggerEvent("onClientPlayerLoaded", localPlayer, accName)
+end)
+addEvent("onClientLoadingStarted") -- local; fired when the loading screen appears
 addEventHandler("acc:loadingScreen", root, function(show)
     active = show and true or false
 
     if active then
+        triggerEvent("onClientLoadingStarted", localPlayer)
         setElementData(localPlayer, "hideHUD", true)
         showCursor(false)
         fadeCamera(true)
@@ -32,4 +39,33 @@ addEventHandler("onClientResourceStop", resourceRoot, function()
     if active then
         toggleAllControls(localPlayer, true, true, true)
     end
+end)
+
+-- Exported (client only). A required resource calls
+-- exports.v_accounts:resourceReady() once it is fully set up; the name comes
+-- from sourceResource. When the server asks (acc:checkReady) and every required
+-- resource has reported, the client answers acc:clientReady and loading goes on.
+local REQUIRED = { "ui_inac" }
+local ready = {}
+local checking = false
+
+local function tryReport()
+    if not checking then return end
+    for _, name in ipairs(REQUIRED) do
+        if not ready[name] then return end
+    end
+    checking = false
+    triggerServerEvent("acc:clientReady", localPlayer)
+end
+
+function resourceReady()
+    if not sourceResource then return end
+    ready[getResourceName(sourceResource)] = true
+    tryReport()
+end
+
+addEvent("acc:checkReady", true)
+addEventHandler("acc:checkReady", root, function()
+    checking = true
+    tryReport()
 end)

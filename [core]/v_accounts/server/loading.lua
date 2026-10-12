@@ -10,6 +10,8 @@
 --
 -- When the player is finally ready, v_accounts fires the custom server event
 --   onPlayerLoaded ( accountName )   -- source = player, arg 1 = name string
+-- At the start of the gate it fires
+--   onPlayerLoadingStarted ( accountName )   -- source = player
 -- This is the point every other resource should hook to load a player's
 -- account data. Each consumer must addEvent("onPlayerLoaded") on its own side.
 --
@@ -18,8 +20,13 @@
 -- (onPlayerResourceStart), so onPlayerLoaded never fires while the client is
 -- still downloading. There is no timeout on this wait on purpose; a resource
 -- stopped meanwhile is dropped from the list.
+--
+-- Then it waits for the player's client to report the required resources
+-- (today: ui_inac) ready through the client export resourceReady(); also
+-- without a timeout.
 
 addEvent("onPlayerLoaded")
+addEvent("onPlayerLoadingStarted")
 
 local LOAD_TIMEOUT = 10000 -- ms; spawn anyway if a provider never answers
 
@@ -119,6 +126,40 @@ addEventHandler("onResourceStart", resourceRoot, function()
     end
 end)
 
+-- Ready gate. The required resources report ready on the CLIENT only (client
+-- export resourceReady, client/loading.lua). When all of them have, the
+-- client tells us through acc:clientReady and the player moves on.
+-- readyWait[player] = { onReady = fn, warnTimer = t }
+local readyWait = {}
+
+local function clearReadyWait(player)
+    local w = readyWait[player]
+    if w and isTimer(w.warnTimer) then killTimer(w.warnTimer) end
+    readyWait[player] = nil
+end
+
+-- Runs onReady(player) once the player's client reports all required resources ready.
+local function waitRequiredReady(player, onReady)
+    clearReadyWait(player)
+    readyWait[player] = {
+        onReady   = onReady,
+        warnTimer = setTimer(function()
+            outputServerLog(("[v_accounts] %s client still not ready (waiting for required resources)")
+                :format(isElement(player) and getPlayerName(player) or "?"))
+        end, CLIENT_WAIT_WARN, 0),
+    }
+    triggerClientEvent(player, "acc:checkReady", player)
+end
+
+addEvent("acc:clientReady", true)
+addEventHandler("acc:clientReady", root, function()
+    local w = readyWait[client]
+    if not w then return end
+    local player = client
+    clearReadyWait(player)
+    w.onReady(player)
+end)
+
 local function clearPlayer(player)
     local s = state[player]
     if s and isTimer(s.timer) then killTimer(s.timer) end
@@ -145,8 +186,13 @@ local startProviderGate
 -- every resource started, then for the provider ids in `types` (may be empty).
 -- `onReady(player)` runs once they have all reported.
 function beginLoading(player, types, onReady)
+    -- Announces the start of the loading (source = player, arg 1 = account name).
+    -- Consumers must addEvent("onPlayerLoadingStarted") on their own side.
+    triggerEvent("onPlayerLoadingStarted", player, getElementData(player, "accName"))
     waitClientResources(player, function(p)
-        startProviderGate(p, types, onReady)
+        waitRequiredReady(p, function(p2)
+            startProviderGate(p2, types, onReady)
+        end)
     end)
 end
 
@@ -202,6 +248,7 @@ end
 addEventHandler("onPlayerQuit", root, function()
     clearPlayer(source)
     clearClientWait(source)
+    clearReadyWait(source)
     clientStarted[source] = nil
 end)
 
@@ -211,5 +258,8 @@ addEventHandler("onResourceStop", resourceRoot, function()
     end
     for player in pairs(clientWait) do
         clearClientWait(player)
+    end
+    for player in pairs(readyWait) do
+        clearReadyWait(player)
     end
 end)

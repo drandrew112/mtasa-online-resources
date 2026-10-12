@@ -60,6 +60,8 @@
 
     <!-- Kept for the loading gate (external providers report a step done). -->
     <export function="loadingComplete" type="server" />
+    <!-- Required resources (ui_inac) report ready on the client; loading waits for them. -->
+    <export function="resourceReady" type="client" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />

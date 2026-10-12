@@ -287,7 +287,9 @@ local function spawnLoggedInPlayer(player)
 
     -- The player is fully loaded. Other resources hook this (arg 1 = account
     -- name string) instead of the old onPlayerLogin.
+    setElementData(player, "loaded", true)
     triggerEvent("onPlayerLoaded", player, getElementData(player, "accName"))
+    triggerClientEvent(player, "acc:playerLoaded", player, getElementData(player, "accName"))
 end
 
 local function markLoggedIn(player, username, accId)
@@ -396,6 +398,7 @@ function register_player(username, password)
             triggerClientEvent(p, "acc:loadingScreen", p, false)
             triggerClientEvent(p, "acc:setPanel", p, nil)
             triggerEvent("onPlayerLoaded", p, getElementData(p, "accName"))
+            triggerClientEvent(p, "acc:playerLoaded", p, getElementData(p, "accName"))
         end)
     end)
 end
