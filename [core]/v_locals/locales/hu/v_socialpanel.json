@@ -42,7 +42,7 @@
   "v_socialpanel.shared.tag_may_only_contain_letters_and": "A tag csak betűt és számjegyet tartalmazhat.",
   "v_socialpanel.shared.tag_must_be_characters": "A tagnek {crew_tag_min|int}-{crew_tag_max|int} karakter hosszúnak kell lennie.",
   "v_socialpanel.ui.accept": "Elfogadás",
-  "v_socialpanel.ui.achievements": "ACHIEVEMENTEK",
+  "v_socialpanel.ui.achievements": "MÉRFÖLDKÖVEK",
   "v_socialpanel.ui.achievements_are_not_available_right_now": "Az achievementek jelenleg nem érhetők el.",
   "v_socialpanel.ui.add": "Hozzáadás",
   "v_socialpanel.ui.add_friend": "Barát hozzáadása",
