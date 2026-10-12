@@ -230,6 +230,7 @@ local function rebuild()
     setRendering(isActive())
 end
 
+addEvent("medfx:state", true)
 addEventHandler("medfx:state", resourceRoot, function(payload)
     real = payload
     if payload and payload.deathLeft then
