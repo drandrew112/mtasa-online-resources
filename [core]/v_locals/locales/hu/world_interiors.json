@@ -13,8 +13,8 @@
   "world_interiors.admin.resources_register_them_via_exports_world": "A resource-ok az exports.world_interiors:registerInterior exporttal regisztrálják őket",
   "world_interiors.admin.return_to_where_you_were_before": "Visszatérés oda, ahol a böngészés előtt voltál",
   "world_interiors.admin.stock_interiors": "Alap belső terek (",
-  "world_interiors.markers.enter": "Belépés",
-  "world_interiors.markers.exit": "Kilépés",
+  "world_interiors.markers.enter": "Bejárat",
+  "world_interiors.markers.exit": "Kijárat",
   "world_interiors.markers.press": "Nyomd meg: {key} · {entering}",
   "world_interiors.markers.step_into_marker": "Lépj a markerbe"
 }
