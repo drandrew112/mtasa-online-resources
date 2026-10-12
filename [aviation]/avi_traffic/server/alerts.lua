@@ -86,8 +86,10 @@ function updateAlerts(dt)
                         if ac.ctl and not seen[ac.ctl] then seen[ac.ctl] = true; pos[#pos + 1] = ac.ctl end
                     end
                     triggerEvent("onAviSeparationLoss", resourceRoot, kind, pos, a.cs, b.cs)
-                    outputDebugString(("[avi_traffic] separation loss %s: %s / %s (%s)"):format(kind, a.cs, b.cs,
-                        #pos > 0 and table.concat(pos, ", ") or "uncontrolled"))
+                    if #pos > 0 then
+                        outputDebugString(("[avi_traffic] separation loss %s: %s / %s (%s)"):format(kind, a.cs, b.cs,
+                            table.concat(pos, ", ")))
+                    end
                     c = { kind = kind }
                     conflicts[key] = c
                 end
