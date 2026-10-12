@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 BannedPanel = {}
 
 function BannedPanel:create()
@@ -11,20 +12,20 @@ function BannedPanel:create()
         local cx = X + ui(24)
         local right = X + W - ui(24)
 
-        drawPanelFrame(X, Y, W, H, "ACCOUNT BANNED")
+        drawPanelFrame(X, Y, W, H, L("v_accounts.banned.account_banned"))
 
         local date   = getElementData(localPlayer, "banned_date")   or "n/a"
         local admin  = getElementData(localPlayer, "banned_admin")  or "n/a"
-        local reason = getElementData(localPlayer, "banned_reason") or "n/a"
+        local reason = getElementData(localPlayer, "banned_reason") or L("v_accounts.banned.n")
 
         local top = Y + ui(64)
-        dxDrawText("Start date:  "..date.."\nAdmin:  "..admin.."\nExpires:  NEVER",
+        dxDrawText(L("v_accounts.banned.start_date_admin_expires_never", { date = date, admin = admin }),
             cx, top, right, top + ui(84),
             Theme.text, ui(1.3), "default", "left", "top")
 
         -- Reason on its own line, with automatic word wrapping inside the card.
         local reasonTop = top + ui(96)
-        dxDrawText("REASON", cx, reasonTop, right, reasonTop + ui(16),
+        dxDrawText(L("v_accounts.banned.reason"), cx, reasonTop, right, reasonTop + ui(16),
             Theme.label, ui(1.2), "default-bold", "left", "top")
         dxDrawText(reason,
             cx, reasonTop + ui(22), right, Y + H - ui(18),

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 LoginPanel = {}
 
 function LoginPanel:create()
@@ -28,14 +29,14 @@ function LoginPanel:create()
     self.pass = DGS:dgsCreateEdit(cx, passY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
     DGS:dgsSetProperty(self.pass, "masked", true)
 
-    self.login = DGS:dgsCreateButton(cx, btnY, btnW, btnH, "Login", false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnPrimary[1], Theme.btnPrimary[2], Theme.btnPrimary[3])
-    self.reg   = DGS:dgsCreateButton(cx + btnW + ui(10), btnY, btnW, btnH, "Register", false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnGhost[1], Theme.btnGhost[2], Theme.btnGhost[3])
-    self.remember = DGS:dgsCreateCheckBox(cx, remY, fieldW, ui(18), "Remember me", false, _, Theme.text)
+    self.login = DGS:dgsCreateButton(cx, btnY, btnW, btnH, L("v_accounts.login.login"), false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnPrimary[1], Theme.btnPrimary[2], Theme.btnPrimary[3])
+    self.reg   = DGS:dgsCreateButton(cx + btnW + ui(10), btnY, btnW, btnH, L("v_accounts.login.register"), false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnGhost[1], Theme.btnGhost[2], Theme.btnGhost[3])
+    self.remember = DGS:dgsCreateCheckBox(cx, remY, fieldW, ui(18), L("v_accounts.login.remember_me"), false, _, Theme.text)
 
     function self:draw()
-        drawPanelFrame(X, Y, W, H, "LOGIN")
-        drawFieldLabel("USERNAME", cx, userLabelY, fieldW)
-        drawFieldLabel("PASSWORD", cx, passLabelY, fieldW)
+        drawPanelFrame(X, Y, W, H, L("v_accounts.login.title"))
+        drawFieldLabel(L("v_accounts.login.username"), cx, userLabelY, fieldW)
+        drawFieldLabel(L("v_accounts.login.password"), cx, passLabelY, fieldW)
     end
 
     addEventHandler("onDgsMouseClick", self.login, function(_, state)
@@ -44,8 +45,8 @@ function LoginPanel:create()
         local u = DGS:dgsGetText(self.user)
         local p = DGS:dgsGetText(self.pass)
 
-        if u == "" then return uicore:setInfobox("Username missing") end
-        if p == "" then return uicore:setInfobox("Password missing") end
+        if u == "" then return uicore:setInfobox(L("v_accounts.login.username_missing")) end
+        if p == "" then return uicore:setInfobox(L("v_accounts.login.password_missing")) end
 
         local remember = DGS:dgsCheckBoxGetSelected(self.remember)
         UserData.set("username", remember and u or "")

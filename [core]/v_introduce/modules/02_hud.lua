@@ -1,24 +1,21 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 2: the HUD - minimap, money and level.
 Intro.module {
     id = "hud", order = 20, version = 1, xp = 200,
-    title = "Your HUD",
+    title = L.msg("v_introduce.02_hud.your_hud"),
     requires = { "v_radar" },
     scenes = {
         { type = "highlight", target = "minimap",
-          title = "Minimap & GPS",
-          text = "The minimap shows where you are and what is around you. A purple route leads to your own "
-              .. "waypoint, a yellow route to your current objective. The bars under it are your health and armor." },
+          title = L.msg("v_introduce.02_hud.minimap_gps"),
+          text = L.msg("v_introduce.02_hud.minimap_shows_where_you_are_and") },
         { type = "task", requires = { "ui_core" },
-          title = "Money and level",
-          text = "Your cash, your bank balance and your level are hidden most of the time to keep the screen clean.",
+          title = L.msg("v_introduce.02_hud.money_and_level"),
+          text = L.msg("v_introduce.02_hud.your_cash_your_bank_balance_and"),
           tasks = {
-              { text = "Press {key:hudinfo} to show them", check = { key = "y" } },
+              { text = L.msg("v_introduce.02_hud.press_to_show_them"), check = { key = "y" } },
           } },
         { type = "card",
-          title = "Level and XP",
-          text = "You earn XP with jobs (races, deathmatches), work jobs and other activities - and with every "
-              .. "chapter of this introduction. "
-              .. "Your level shows other players how experienced you are.\n\n"
-              .. "Short messages at the top of the screen tell you what just happened. Read them." },
+          title = L.msg("v_introduce.02_hud.level_and_xp"),
+          text = L.msg("v_introduce.02_hud.you_earn_xp_with_jobs_races") },
     },
 }

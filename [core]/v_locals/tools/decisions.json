@@ -33,6 +33,12 @@
   },
   "rules": [
     {
+      "_why": "template for new intro modules, not loaded (copy it, then run apply)",
+      "res": "^v_introduce$",
+      "file": "updates/_TEMPLATE\\.lua$",
+      "status": "ignore"
+    },
+    {
       "_why": "state / reason codes assigned to variables (enroute, claimed, idle, open ...)",
       "sink": "^var:",
       "text": "^[a-z_]+$",
@@ -278,6 +284,8 @@
     "ui_pause.pausemenu.community_label": "Community",
     "ui_interactobject.render.key_close": "{key} close",
     "ui_phone.settings.wallpaper": "Wallpaper",
-    "ui_inac.temp.menu": "MENU"
+    "ui_inac.temp.menu": "MENU",
+    "v_accounts.login.title": "LOGIN",
+    "v_accounts.register.title": "REGISTER"
   }
 }

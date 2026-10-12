@@ -1,43 +1,41 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 7: own vehicles, the Customs workshop, and "On the road": the player sits in a
 -- practice vehicle (INTRO.VEHICLE, an ELS ambulance) and tries the headlights, the radio and the
 -- emergency lights and siren.
 Intro.module {
     id = "vehicles", order = 70, version = 1, xp = 250,
-    title = "Vehicles",
+    title = L.msg("v_introduce.07_vehicles.vehicles"),
     requires = { "v_ownveh" },
     scenes = {
         { type = "card",
-          title = "Your own vehicles",
-          text = "Vehicles you buy are yours for good. They are saved with their colour, upgrades and plate. "
-              .. "Call them with the MyVeh app on your phone and they are delivered to a parking spot near you." },
+          title = L.msg("v_introduce.07_vehicles.your_own_vehicles"),
+          text = L.msg("v_introduce.07_vehicles.vehicles_you_buy_are_yours_for") },
         { type = "world", requires = { "v_customs" }, duration = 9,
           camera = { from = { 1290, 1350, 24, 1322, 1396, 11 }, to = { 1355, 1360, 22, 1322, 1396, 11 } },
-          point = { 1322.97, 1396.46, 10.65 }, radius = 4, label = "Customs workshop", blip = 27,
-          text = "Drive your own vehicle into the Customs workshop to change the paint, wheels, performance "
-              .. "parts and the plate. The upgrades stay on the vehicle." },
+          point = { 1322.97, 1396.46, 10.65 }, radius = 4, label = L.msg("v_introduce.07_vehicles.customs_workshop"), blip = 27,
+          text = L.msg("v_introduce.07_vehicles.drive_your_own_vehicle_into_customs") },
         { type = "task", vehicle = true, camera = "vehicle", requires = { "v_headlights", "v_radio" },
-          title = "On the road",
-          text = "Here is a vehicle to try things out. It stays where it is - just use the switches.",
+          title = L.msg("v_introduce.07_vehicles.on_road"),
+          text = L.msg("v_introduce.07_vehicles.here_is_vehicle_to_try_things"),
           tasks = {
-              { text = "Press {key:headlights} to switch the headlights",
+              { text = L.msg("v_introduce.07_vehicles.press_to_switch_headlights"),
                 check = { vehicleData = "headlights:on", changed = true } },
-              { text = "Hold {key:radio} and turn the mouse wheel to change the radio station",
+              { text = L.msg("v_introduce.07_vehicles.hold_and_turn_mouse_wheel_to"),
                 check = { vehicleData = "radiostation_id", changed = true } },
           } },
         { type = "task", vehicle = true, camera = "vehicle", requires = { "v_els" },
-          title = "Emergency lights",
-          text = "Emergency vehicles - ambulances, police cars - have emergency lights and a siren. "
-              .. "Use them only on duty, when you really respond to an emergency.",
+          title = L.msg("v_introduce.07_vehicles.emergency_lights"),
+          text = L.msg("v_introduce.07_vehicles.emergency_vehicles_ambulances_police_cars_have"),
           tasks = {
-              { text = "Press {key:elsLights} to switch on the emergency lights",
+              { text = L.msg("v_introduce.07_vehicles.press_to_switch_on_emergency_lights"),
                 check = { vehicleData = "mkjState", equals = true } },
-              { text = "Press {key:elsSiren} to switch on the siren",
+              { text = L.msg("v_introduce.07_vehicles.press_to_switch_on_siren"),
                 check = { vehicleData = "sirenState", equals = true } },
-              { text = "Press {key:elsPattern} to change the flashing pattern",
+              { text = L.msg("v_introduce.07_vehicles.press_to_change_flashing_pattern"),
                 check = { vehicleData = "elsPattern", changed = true } },
-              { text = "Press {key:elsLights} to switch everything off",
+              { text = L.msg("v_introduce.07_vehicles.press_to_switch_everything_off"),
                 check = { vehicleData = "mkjState", equals = false } },
           },
-          note = "Hold 3 for the air horn, 2 changes the siren sound." },
+          note = L.msg("v_introduce.07_vehicles.hold_3_for_air_horn_2") },
     },
 }

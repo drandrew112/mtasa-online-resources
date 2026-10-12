@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Drawing helpers of the introduction (DX). The look follows the work_ems tutorial card: a dark
 -- panel on the left, Roboto, with an amber accent for the introduction.
 
@@ -51,7 +52,7 @@ function Draw.textHeight(text, width, font)
         if paragraph == "" then lines = lines + 1 end
         for word in paragraph:gmatch("%S+") do
             local try = line == "" and word or (line .. " " .. word)
-            if dxGetTextWidth(try, 1, font) > width and line ~= "" then
+            if L.width(try, 1, font) > width and line ~= "" then
                 lines = lines + 1
                 line = word
             else
@@ -95,7 +96,7 @@ function Draw.progress(index, total, label)
         dxDrawRectangle(x, y, w, segH, color, true)
         x = x + w + gap
     end
-    text(label:upper(), 0, y + s(12), sw, y + s(32), C.muted, f.small, "center", "top")
+    text(L.upper(label), 0, y + s(12), sw, y + s(32), C.muted, f.small, "center", "top")
 end
 
 -- state = { ready = bool, remaining = seconds, fraction = 0..1, message = string }
@@ -107,9 +108,9 @@ function Draw.continue(state)
         return
     end
     local key = INTRO.KEYS.continue
-    local keyW = dxGetTextWidth(key, 1, f.bold) + s(16)
-    local label = "Continue"
-    local labelW = dxGetTextWidth(label, 1, f.bold)
+    local keyW = L.width(key, 1, f.bold) + s(16)
+    local label = L("v_introduce.draw.continue")
+    local labelW = L.width(label, 1, f.bold)
     local x = right - keyW
     local color = state.ready and C.text or C.faint
     frame(x, bottom - s(30), keyW, s(30), math.max(1, s(1.5)), state.ready and C.text or C.edge)
@@ -141,13 +142,13 @@ end
 function Draw.bigTitle(small, big)
     local f = Draw.fonts()
     local x, y = s(70), sh * 0.5
-    text(small:upper(), x, y, sw, y + s(24), C.muted, f.label, "left", "top")
-    text(big:upper(), x - s(3), y + s(22), sw, y + s(110), C.text, f.big, "left", "top")
+    text(L.upper(small), x, y, sw, y + s(24), C.muted, f.label, "left", "top")
+    text(L.upper(big), x - s(3), y + s(22), sw, y + s(110), C.text, f.big, "left", "top")
 end
 
 function Draw.toast(str, alpha)
     local f = Draw.fonts()
-    local w = dxGetTextWidth(str, 1, f.label) + s(28)
+    local w = L.width(str, 1, f.label) + s(28)
     local x, y, h = (sw - w) / 2, s(74), s(34)
     dxDrawRectangle(x, y, w, h, tocolor(10, 13, 19, 220 * alpha), true)
     dxDrawRectangle(x, y + h - s(3), w, s(3), tocolor(242, 171, 47, 255 * alpha), true)
@@ -179,7 +180,7 @@ function Draw.card(spec)
 
     local cy = y + PAD
     if spec.step then
-        text(spec.step:upper(), x + PAD, cy, x + W - PAD, cy + s(18), C.accent, f.small)
+        text(L.upper(spec.step), x + PAD, cy, x + W - PAD, cy + s(18), C.accent, f.small)
         cy = cy + s(20)
     end
     text(spec.title or "", x + PAD, cy, x + W - PAD, cy + s(32), C.text, f.title)
@@ -236,7 +237,7 @@ function Draw.callout(x, y, title, str)
     y = math.min(math.max(s(10), y), sh - h - s(10))
     dxDrawRectangle(x, y, W, h, C.panel, true)
     frame(x, y, W, h, 1, C.accentSoft)
-    text(title:upper(), x + PAD, y + PAD, x + W - PAD, y + PAD + s(18), C.accent, f.small)
+    text(L.upper(title), x + PAD, y + PAD, x + W - PAD, y + PAD + s(18), C.accent, f.small)
     text(str, x + PAD, y + PAD + s(20), x + W - PAD, y + h - PAD, C.text, f.body, "left", "top", true)
 end
 
@@ -258,7 +259,7 @@ function Draw.worldPoint(px, py, pz, label, radius)
         local x, y = getScreenFromWorldPosition(px, py, pz + 6.5, 0.1)
         if x then
             local f = Draw.fonts()
-            local w = dxGetTextWidth(label, 1, f.label) + s(28)
+            local w = L.width(label, 1, f.label) + s(28)
             local h = s(36)
             dxDrawRectangle(x - w / 2, y - h, w, h, C.panel, true)
             dxDrawRectangle(x - w / 2, y - s(3), w, s(3), C.accent, true)
@@ -271,7 +272,7 @@ end
 function Draw.mapIcon(image, str)
     local f = Draw.fonts()
     local icon = s(34)
-    local tw = dxGetTextWidth(str, 1, f.bold)
+    local tw = L.width(str, 1, f.bold)
     local w, h = icon + tw + s(40), s(52)
     local x, y = s(36), sh - sh * 0.1 - h - s(20)
     dxDrawRectangle(x, y, w, h, C.panel, true)

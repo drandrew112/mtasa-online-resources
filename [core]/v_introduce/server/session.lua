@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The introduction session: one per player, in the player's own dimension. The server decides
 -- which modules run, records every finished module (seen + XP) right away, and puts the player
 -- back into the world at the end. The client plays the scenes (client/runner.lua).
@@ -135,10 +136,10 @@ end)
 -- opts = { modules = { def, ... }, mode = "full" | "new" | "preview" }
 -- -> true | false, reason
 function Session.start(player, opts)
-    if sessions[player] then return false, "The introduction is already running." end
-    if not isLogged(player) then return false, "The player is not logged in." end
+    if sessions[player] then return false, L.msg("v_introduce.session.introduction_is_already_running") end
+    if not isLogged(player) then return false, L.msg("v_introduce.session.player_is_not_logged_in") end
     local defs = opts.modules
-    if not defs or #defs == 0 then return false, "There is nothing to show." end
+    if not defs or #defs == 0 then return false, L.msg("v_introduce.session.there_is_nothing_to_show") end
 
     local x, y, z = getElementPosition(player)
     local _, _, rot = getElementRotation(player)

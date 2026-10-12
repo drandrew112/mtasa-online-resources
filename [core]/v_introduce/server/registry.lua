@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Module registry. A module is one chapter of the introduction: plain data (no functions), so
 -- it can be sent to the client as it is. The modules of this resource are in modules/*.lua and
 -- call Intro.module{...}; other resources call exports.v_introduce:registerModule{...}.
@@ -36,23 +37,23 @@ local SCENE_TYPES = { camera = true, card = true, task = true, highlight = true,
 local function validate(def)
     if type(def) ~= "table" then return false, "module is not a table" end
     if type(def.id) ~= "string" or def.id == "" then return false, "missing id" end
-    if type(def.title) ~= "string" then return false, def.id .. ": missing title" end
-    if type(def.scenes) ~= "table" or #def.scenes == 0 then return false, def.id .. ": no scenes" end
+    if type(def.title) ~= "string" then return false, L.msg("v_introduce.registry.missing_title", { id = def.id }) end
+    if type(def.scenes) ~= "table" or #def.scenes == 0 then return false, L.msg("v_introduce.registry.no_scenes", { id = def.id }) end
     for i, scene in ipairs(def.scenes) do
         if type(scene) ~= "table" or not SCENE_TYPES[scene.type] then
-            return false, ("%s: scene %d has an unknown type"):format(def.id, i)
+            return false, L.msg("v_introduce.registry.scene_has_unknown_type", { id = def.id, i = i })
         end
         for _, name in ipairs(scene.requires or {}) do
-            if INTRO.isBlocked(name) then return false, def.id .. ": requires a blocked resource (" .. name .. ")" end
+            if INTRO.isBlocked(name) then return false, L.msg("v_introduce.registry.requires_blocked_resource", { id = def.id, name = name }) end
         end
     end
     for _, name in ipairs(def.requires or {}) do
-        if INTRO.isBlocked(name) then return false, def.id .. ": requires a blocked resource (" .. name .. ")" end
+        if INTRO.isBlocked(name) then return false, L.msg("v_introduce.registry.requires_blocked_resource", { id = def.id, name = name }) end
     end
     if def.expires ~= nil and (type(def.expires) ~= "string" or not def.expires:match("^%d%d%d%d%-%d%d%-%d%d$")) then
-        return false, def.id .. ": expires must be \"YYYY-MM-DD\""
+        return false, L.msg("v_introduce.registry.expires_must_be_yyyy_mm_dd", { id = def.id })
     end
-    if def.update and def.final then return false, def.id .. ": an update module cannot be final" end
+    if def.update and def.final then return false, L.msg("v_introduce.registry.update_module_cannot_be_final", { id = def.id }) end
     return true
 end
 
@@ -67,7 +68,7 @@ end
 
 -- -> true | false, reason
 function Intro.register(def, ownerName)
-    if INTRO.isBlocked(ownerName) then return false, ownerName .. " may not add introduction modules" end
+    if INTRO.isBlocked(ownerName) then return false, L.msg("v_introduce.registry.may_not_add_introduction_modules", { owner_name = ownerName }) end
     local ok, err = validate(def)
     if not ok then return false, err end
     if modules[def.id] and owners[def.id] ~= ownerName then

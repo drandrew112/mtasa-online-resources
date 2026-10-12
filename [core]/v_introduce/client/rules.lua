@@ -1,13 +1,22 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The accept scene: rules.txt in a scrollable box. The player has to scroll to the end, tick
 -- the box and press Accept. Mouse wheel / arrow keys scroll, the cursor is shown.
 
 local rulesText
 
+-- language change: load the rules again in the new language
+L.onChange(function() rulesText = nil end)
+
 local function loadRules()
     if rulesText then return rulesText end
+    local localized = L.file("v_introduce/rules.txt")
+    if localized ~= "" then
+        rulesText = localized
+        return rulesText
+    end
     local f = fileOpen("rules.txt", true)
     if not f then
-        rulesText = "The rules could not be loaded."
+        rulesText = L("v_introduce.rules.rules_could_not_be_loaded")
         return rulesText
     end
     rulesText = fileRead(f, fileGetSize(f)):gsub("\r", "")
@@ -79,7 +88,7 @@ Scenes.accept = {
         local PAD = s(26)
         dxDrawRectangle(x, y, W, H, C.panel, true)
         dxDrawRectangle(x, y, W, s(4), C.accent, true)
-        dxDrawText(Scenes.resolve(sc.title) or "Server rules", x + PAD, y + PAD, x + W - PAD, y + PAD + s(32),
+        dxDrawText(Scenes.resolve(sc.title) or L("v_introduce.rules.server_rules"), x + PAD, y + PAD, x + W - PAD, y + PAD + s(32),
             C.text, 1, f.title, "left", "top", true, false, true)
 
         -- text box
@@ -121,12 +130,12 @@ Scenes.accept = {
         -- hint / checkbox / button
         local fy = by + bh + s(16)
         if not st.reachedEnd then
-            dxDrawText("Scroll to the end of the rules (mouse wheel or arrow keys)", bx, fy, bx + bw, fy + s(24),
+            dxDrawText(L("v_introduce.rules.scroll_to_end_of_rules_mouse"), bx, fy, bx + bw, fy + s(24),
                 C.accent, 1, f.bold, "left", "top", true, false, true)
         end
         local box = s(22)
         local cy = fy + s(34)
-        st.boxRect = { bx, cy, box + s(12) + dxGetTextWidth("I have read and accept the rules", 1, f.bold), box }
+        st.boxRect = { bx, cy, box + s(12) + L.width(L("v_introduce.rules.i_have_read_and_accept_rules"), 1, f.bold), box }
         local boxColor = st.reachedEnd and C.accent or C.edge
         if st.checked then
             dxDrawRectangle(bx, cy, box, box, C.good, true)
@@ -134,7 +143,7 @@ Scenes.accept = {
             dxDrawRectangle(bx, cy, box, box, boxColor, true)
             dxDrawRectangle(bx + s(2), cy + s(2), box - s(4), box - s(4), C.panel, true)
         end
-        dxDrawText("I have read and accept the rules", bx + box + s(12), cy, bx + bw, cy + box,
+        dxDrawText(L("v_introduce.rules.i_have_read_and_accept_rules"), bx + box + s(12), cy, bx + bw, cy + box,
             st.reachedEnd and C.text or C.faint, 1, f.bold, "left", "center", true, false, true)
 
         local btnW, btnH = s(170), s(42)
@@ -143,10 +152,10 @@ Scenes.accept = {
         local cx, cyy = cursor()
         local hover = st.checked and inside(btnX, btnY, btnW, btnH, cx, cyy)
         dxDrawRectangle(btnX, btnY, btnW, btnH, st.checked and (hover and tocolor(255, 190, 80) or C.accent) or C.row, true)
-        dxDrawText("ACCEPT", btnX, btnY, btnX + btnW, btnY + btnH,
+        dxDrawText(L("v_introduce.rules.accept"), btnX, btnY, btnX + btnW, btnY + btnH,
             st.checked and tocolor(27, 19, 5) or C.faint, 1, f.bold, "center", "center", true, false, true)
     end,
     complete = function() return st.accepted == true end,
     autoNext = true,
-    message = function() return "Accept the rules to finish this chapter" end,
+    message = function() return L("v_introduce.rules.accept_rules_to_finish_this_chapter") end,
 }

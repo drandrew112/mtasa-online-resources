@@ -1,25 +1,20 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 4: the phone and its apps.
 Intro.module {
     id = "phone", order = 40, version = 1, xp = 250,
-    title = "Phone",
+    title = L.msg("v_introduce.04_phone.phone"),
     requires = { "ui_phone" },
     scenes = {
         { type = "task", allow = { "phone" },
-          title = "Your phone",
-          text = "Your phone is the remote control of your life here: your vehicles, invites from other players, "
-              .. "people who can help you and the in-game internet.",
+          title = L.msg("v_introduce.04_phone.your_phone"),
+          text = L.msg("v_introduce.04_phone.your_phone_is_remote_control_of"),
           tasks = {
-              { text = "Open your phone with {key:phone}", check = { data = "phoneOpen" } },
-              { text = "Open the MyVeh app (arrow keys, then ENTER)", check = { phoneApp = "myveh" } },
+              { text = L.msg("v_introduce.04_phone.open_your_phone_with"), check = { data = "phoneOpen" } },
+              { text = L.msg("v_introduce.04_phone.open_myveh_app_arrow_keys_then"), check = { phoneApp = "myveh" } },
           },
-          note = "BACKSPACE goes back. On the home screen it closes the phone." },
+          note = L.msg("v_introduce.04_phone.backspace_goes_back_on_home_screen") },
         { type = "card",
-          title = "The apps",
-          text = "MyVeh - call your own vehicles to you.\n"
-              .. "Invites - races, deathmatches and other activities other players invite you to.\n"
-              .. "Contacts - call people of the city who help you: patch you up, get you into an "
-              .. "activity, handle your vehicle insurance and more.\n"
-              .. "Browser - the in-game internet: shops, vehicles, property and your bank.\n"
-              .. "Settings - wallpaper and phone options." },
+          title = L.msg("v_introduce.04_phone.apps"),
+          text = L.msg("v_introduce.04_phone.myveh_call_your_own_vehicles_to") },
     },
 }

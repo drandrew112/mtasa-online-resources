@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Plays the modules the server sent, scene by scene. There is no skip: Continue
 -- (INTRO.CONTINUE_KEY) works only when the scene's minimum time has passed, its tasks are done
 -- and no panel is open. Every finished module is reported to the server right away.
@@ -18,9 +19,9 @@ local function handlerOf(scene) return Scenes[scene.type] end
 local function chapter() return R.offset + R.mIndex end
 
 local function stepLabel()
-    local prefix = R.mode == "new" and "What's new  ·  " or ""
-    local title = R.module.update and ("Update: " .. R.module.title) or R.module.title
-    return ("%sChapter %d / %d  ·  %s"):format(prefix, chapter(), R.total, title)
+    local prefix = R.mode == "new" and L("v_introduce.runner.what_s_new") or ""
+    local title = R.module.update and (L("v_introduce.runner.update", { title = R.module.title })) or R.module.title
+    return L("v_introduce.runner.chapter", { prefix = prefix, chapter = chapter(), total = R.total, title = title })
 end
 
 -- nextScene: the scene that follows in the same module (keeps the practice vehicle if it needs it)
@@ -96,10 +97,10 @@ end
 local function continueState()
     local h, sc = R.handler, R.scene
     if h.complete and not h.complete(sc, R) then
-        return false, { message = h.message and h.message(sc, R) or "Complete the task to continue" }
+        return false, { message = h.message and h.message(sc, R) or L("v_introduce.runner.complete_task_to_continue") }
     end
     local panel = Lock.openPanel()
-    if panel then return false, { message = "Close the " .. panel .. " to continue" } end
+    if panel then return false, { message = L("v_introduce.runner.close_to_continue", { panel = panel }) } end
     local passed = (getTickCount() - R.sceneStart) / 1000
     if passed < R.minTime then
         return false, { ready = false, remaining = R.minTime - passed, fraction = passed / R.minTime }
@@ -199,7 +200,7 @@ end)
 
 addEvent("intro:reward", true)
 addEventHandler("intro:reward", resourceRoot, function(_, xp)
-    R.toast = { text = ("+%d XP"):format(xp), tick = getTickCount() }
+    R.toast = { text = L("v_introduce.runner.xp", { xp = xp }), tick = getTickCount() }
 end)
 
 -- every handler above exists now: the server may send intro:start (first connection: the
@@ -223,6 +224,6 @@ addCommandHandler("introcam", function()
     if (tonumber(getElementData(localPlayer, "admin_level")) or 0) < INTRO.ADMIN_LEVEL then return end
     local x, y, z, lx, ly, lz = getCameraMatrix()
     local line = ("{ %.1f, %.1f, %.1f, %.1f, %.1f, %.1f }"):format(x, y, z, lx, ly, lz)
-    outputChatBox("[Intro] camera: " .. line)
+    outputChatBox(L("v_introduce.runner.intro_camera", { line = line }))
     setClipboard(line)
 end)

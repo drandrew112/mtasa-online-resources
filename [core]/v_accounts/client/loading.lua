@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Account System - client loading screen
 --
 -- A plain black screen with the ui_core loading spinner, shown between a
@@ -24,7 +25,7 @@ end)
 addEventHandler("onClientRender", root, function()
     if not active then return end
     dxDrawRectangle(0, 0, screenW, screenH, tocolor(0, 0, 0, 255))
-    exports.ui_core:drawLoadingText("Loading")
+    exports.ui_core:drawLoadingText(L("v_accounts.loading.loading"))
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()

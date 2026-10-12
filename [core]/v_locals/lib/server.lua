@@ -118,10 +118,10 @@ do
     ----------------------------------------------------------------------------
     local isMsg = C.isMsg
 
-    -- true when v is or (up to depth 4) contains a message object
+    -- true when v is or (up to depth 8) contains a message object
     local function hasMsg(v, depth)
         if isMsg(v) then return true end
-        if type(v) ~= "table" or depth > 4 then return false end
+        if type(v) ~= "table" or depth > 8 then return false end
         for k, w in pairs(v) do
             if type(w) == "table" and hasMsg(w, depth + 1) then return true end
         end
@@ -131,7 +131,7 @@ do
     -- copy of v with every message object resolved in lang (unchanged parts shared)
     local function resolveDeep(v, lang, depth)
         if isMsg(v) then return C.resolve(lang, v) end
-        if type(v) ~= "table" or depth > 4 or not hasMsg(v, depth) then return v end
+        if type(v) ~= "table" or depth > 8 or not hasMsg(v, depth) then return v end
         local out = {}
         for k, w in pairs(v) do out[k] = resolveDeep(w, lang, depth + 1) end
         return out

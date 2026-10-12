@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Account System - server side
 --
 -- The mod does NOT use MTA's built-in account system. An "account" is a row in
@@ -146,23 +147,23 @@ end)
 
 function banAccount(accountName, reason, adminName)
     if type(accountName) ~= "string" or accountName == "" then
-        return false, "Invalid account name"
+        return false, L.msg("v_accounts.server.invalid_account_name")
     end
 
     local canonical = accountNameExists(accountName)
     if not canonical then
-        return false, "Account not found: " .. accountName
+        return false, L.msg("v_accounts.server.account_not_found", { account_name = accountName })
     end
     accountName = canonical
 
-    reason    = (type(reason) == "string"    and reason    ~= "") and reason    or "No reason given"
+    reason    = (type(reason) == "string"    and reason    ~= "") and reason    or L.msg("v_accounts.server.no_reason_given")
     adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
 
     local target = playerOnAccount(accountName)
     local serial = isElement(target) and getPlayerSerial(target) or nil
 
     local xml = loadBansXml(true)
-    if not xml then return false, "Could not open the ban file" end
+    if not xml then return false, L.msg("v_accounts.server.could_not_open_ban_file") end
 
     local node
     for _, child in ipairs(xmlNodeGetChildren(xml)) do
@@ -195,14 +196,14 @@ end
 
 function unbanAccount(accountName)
     if type(accountName) ~= "string" or accountName == "" then
-        return false, "Invalid account name"
+        return false, L.msg("v_accounts.server.invalid_account_name")
     end
 
     local canonical = accountNameExists(accountName)
     if canonical then accountName = canonical end
 
     local xml = xmlLoadFile(BANS_FILE)
-    if not xml then return false, "No bans on record" end
+    if not xml then return false, L.msg("v_accounts.server.no_bans_on_record") end
 
     local found = false
     for _, child in ipairs(xmlNodeGetChildren(xml)) do
@@ -216,7 +217,7 @@ function unbanAccount(accountName)
     xmlUnloadFile(xml)
 
     if not found then
-        return false, "No active ban for account: " .. accountName
+        return false, L.msg("v_accounts.server.no_active_ban_for_account", { account_name = accountName })
     end
 
     for _, player in ipairs(getElementsByType("player")) do
@@ -307,26 +308,26 @@ function login_player(username, password)
 
     if type(username) ~= "string" or type(password) ~= "string"
     or username == "" or password == "" then
-        triggerClientEvent(player, "acc:error", player, "Username or password missing")
+        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.username_or_password_missing"))
         return
     end
 
     local canonical = accountNameExists(username)
     local auth = canonical and fetchAccountAuth(canonical) or nil
     if not auth or type(auth.password) ~= "string" then
-        triggerClientEvent(player, "acc:error", player, "Wrong username or password")
+        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.wrong_username_or_password"))
         return
     end
 
     passwordVerify(password, auth.password, {}, function(matches)
         if not isElement(player) or getElementData(player, "isLogged") == true then return end
         if not matches then
-            triggerClientEvent(player, "acc:error", player, "Wrong username or password")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.wrong_username_or_password"))
             return
         end
 
         if isElement(playerOnAccount(canonical)) then
-            triggerClientEvent(player, "acc:error", player, "This account is already in use")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.this_account_is_already_in_use"))
             return
         end
 
@@ -334,7 +335,7 @@ function login_player(username, password)
         if ban then
             applyBanState(player, ban)
             triggerClientEvent(player, "acc:setPanel", player, "banned")
-            triggerClientEvent(player, "acc:error", player, "This account is banned")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.this_account_is_banned"))
             return
         end
 
@@ -355,32 +356,32 @@ function register_player(username, password)
 
     if type(username) ~= "string" or type(password) ~= "string" then return end
     if not username:find("^[%w_%-%.]+$") or #username < 3 or #username > 30 then
-        triggerClientEvent(player, "acc:error", player, "Username must be 3-30 chars (letters, digits, _ - .)")
+        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.username_must_be_3_30_chars"))
         return
     end
     if #password < 5 then
-        triggerClientEvent(player, "acc:error", player, "Password too short")
+        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.register.password_too_short"))
         return
     end
     if accountNameExists(username) then
-        triggerClientEvent(player, "acc:error", player, "Account already exists")
+        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.account_already_exists"))
         return
     end
 
     passwordHash(password, "bcrypt", {}, function(hash)
         if not isElement(player) or getElementData(player, "isLogged") == true then return end
         if type(hash) ~= "string" then
-            triggerClientEvent(player, "acc:error", player, "Registration failed")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.registration_failed"))
             return
         end
         if accountNameExists(username) then
-            triggerClientEvent(player, "acc:error", player, "Account already exists")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.account_already_exists"))
             return
         end
 
         local id = createAccountRow(username, hash, nil)
         if not id then
-            triggerClientEvent(player, "acc:error", player, "Registration failed")
+            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.registration_failed"))
             return
         end
 

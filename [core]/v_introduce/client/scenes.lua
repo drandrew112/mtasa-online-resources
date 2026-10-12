@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Scene types. Every scene is plain data from a module (server/registry.lua). Common fields:
 --   type, title, text, hud (show the HUD; default: false for camera/world, true otherwise),
 --   requires (left out by the server when a resource is not running), duration (seconds)
@@ -212,7 +213,7 @@ Scenes.task = {
         end
         return true
     end,
-    message = function() return "Complete the task to continue" end,
+    message = function() return L("v_introduce.runner.complete_task_to_continue") end,
 }
 
 ---------------------------------------------------------------- highlight
@@ -266,7 +267,7 @@ Scenes.world = {
         local p = sc.point
         if p then Draw.worldPoint(p[1], p[2], p[3], Scenes.resolve(sc.label), sc.radius) end
         if sc.blip or sc.mapText then
-            Draw.mapIcon(blipImage(sc.blip), Scenes.resolve(sc.mapText) or "Look for this icon on your map")
+            Draw.mapIcon(blipImage(sc.blip), Scenes.resolve(sc.mapText) or L("v_introduce.scenes.look_for_this_icon_on_your"))
         end
         if sc.text then Draw.subtitle(Scenes.resolve(sc.text), Draw.s(70)) end
     end,

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Menu music: plays "main_menu.mp3" on a loop while any account panel is
 -- visible. The player can mute/unmute it from a corner toggle at any time and
 -- the choice is persisted in userdata.xml.
@@ -80,7 +81,7 @@ function Music.drawToggle()
     dxDrawRectangle(btn.x, btn.y, ui(3), btn.h, Theme.accent)
     dxDrawRectangle(btn.x + ui(15), btn.y + btn.h / 2 - ui(5), ui(10), ui(10),
         enabled and tocolor(90, 200, 120, 255) or tocolor(210, 90, 90, 255))
-    dxDrawText(enabled and "MUSIC: ON" or "MUSIC: OFF",
+    dxDrawText(enabled and L("v_accounts.music.music_on") or L("v_accounts.music.music_off"),
         btn.x + ui(34), btn.y, btn.x + btn.w - ui(8), btn.y + btn.h,
         Theme.text, ui(1.15), "default-bold", "left", "center")
 end

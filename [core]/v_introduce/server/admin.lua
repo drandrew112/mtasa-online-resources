@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Admin / test commands. Players cannot skip the introduction; these are for testing and support.
 --   /intro start <player> [full | updates | <moduleId>]
 --                                    pending modules / the main line / every update / one module
@@ -31,26 +32,26 @@ addCommandHandler("intro", function(player, _, action, target, extra)
 
     if action == "list" then
         for _, def in ipairs(Intro.available()) do
-            local kind = def.update and ("update" .. (def.expires and (", expires " .. def.expires) or "")) or "main"
-            chat(player, ("%s  #aaaaaa(%s, order %d, v%d, %d XP)"):format(def.id, kind, def.order, def.version, def.xp))
+            local kind = def.update and ("update" .. (def.expires and (L.msg("v_introduce.admin.expires", { expires = def.expires })) or "")) or "main"
+            chat(player, L.msg("v_introduce.admin.order_v_xp", { id = def.id, kind = kind, order = def.order, version = def.version, xp = def.xp }))
         end
         return
     end
 
     if action == "reset" then
-        if not target then return chat(player, "/intro reset <player | account> [xp]") end
+        if not target then return chat(player, L.msg("v_introduce.admin.intro_reset_player_account_xp")) end
         local p = findPlayer(target)
         local who = p or exports.v_accounts:accountNameExists(target)
-        if not who then return chat(player, "No such player or account.") end
+        if not who then return chat(player, L.msg("v_introduce.admin.no_such_player_or_account")) end
         Progress.reset(who, extra == "xp")
-        return chat(player, "Introduction progress reset for " .. (p and getPlayerName(p) or who) .. ".")
+        return chat(player, L.msg("v_introduce.admin.introduction_progress_reset_for", { who = (p and getPlayerName(p) or who) }))
     end
 
     local p = findPlayer(target)
-    if not p then return chat(player, "/intro start|stop|reset <player>, /intro list") end
+    if not p then return chat(player, L.msg("v_introduce.admin.intro_start_stop_reset_player_intro")) end
 
     if action == "stop" then
-        if Session.finish(p, "stopped") then chat(player, "Stopped.") else chat(player, "Not in the introduction.") end
+        if Session.finish(p, "stopped") then chat(player, "Stopped.") else chat(player, L.msg("v_introduce.admin.not_in_introduction")) end
     elseif action == "start" then
         local list, mode
         if extra == "full" then
@@ -59,7 +60,7 @@ addCommandHandler("intro", function(player, _, action, target, extra)
             list, mode = Intro.available("update"), "new"
         elseif extra then
             local def = Intro.get(extra)
-            if not def then return chat(player, "Unknown module: " .. extra) end
+            if not def then return chat(player, L.msg("v_introduce.admin.unknown_module", { extra = extra })) end
             list, mode = { def }, "preview"
         else
             list, mode = Session.pending(p)
@@ -67,6 +68,6 @@ addCommandHandler("intro", function(player, _, action, target, extra)
         local ok, err = Session.start(p, { modules = list, mode = mode })
         chat(player, ok and "Started." or err)
     else
-        chat(player, "/intro start|stop|reset <player>, /intro list")
+        chat(player, L.msg("v_introduce.admin.intro_start_stop_reset_player_intro"))
     end
 end)

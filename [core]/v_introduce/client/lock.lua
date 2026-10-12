@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Keeps the player inside the introduction: no movement, no weapons, no damage, and only the
 -- panel the current scene teaches may open.
 --
@@ -20,14 +21,14 @@ local CONTROLS = {
 -- the panels whose open flag blocks Continue (the player closes them first)
 Lock.PANEL_FLAGS = {
     { data = "phoneOpen", name = "phone" },
-    { data = "socialPanelOpen", name = "social panel" },
+    { data = "socialPanelOpen", name = L("v_introduce.lock.social_panel") },
     { data = "interactionMenuOpen", name = "menu" },
-    { data = "paused", name = "pause menu" },
+    { data = "paused", name = L("v_introduce.lock.pause_menu") },
     { data = "browserOpen", name = "browser" },
     { data = "showChatInput", name = "chat" },
-    { data = "reportPanelOpen", name = "report panel" },
-    { data = "adminPanelOpen", name = "admin panel" },
-    { data = "textInputOpen", name = "text input" },
+    { data = "reportPanelOpen", name = L("v_introduce.lock.report_panel") },
+    { data = "adminPanelOpen", name = L("v_introduce.lock.admin_panel") },
+    { data = "textInputOpen", name = L("v_introduce.lock.text_input") },
 }
 
 local controlTimer

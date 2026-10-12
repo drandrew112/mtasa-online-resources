@@ -1,20 +1,19 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 5: the interaction menu (M) and the 3D menus (X).
 Intro.module {
     id = "interaction", order = 50, version = 1, xp = 200,
-    title = "Interaction",
+    title = L.msg("v_introduce.05_interaction.interaction"),
     requires = { "ui_inac" },
     scenes = {
         { type = "task", allow = { "interaction" },
-          title = "Interaction menu",
-          text = "The interaction menu holds what you can do right now: things about you, your vehicle and "
-              .. "your surroundings.",
+          title = L.msg("v_introduce.05_interaction.interaction_menu"),
+          text = L.msg("v_introduce.05_interaction.interaction_menu_holds_what_you_can"),
           tasks = {
-              { text = "Press {key:interaction} to open the menu", check = { data = "interactionMenuOpen" } },
+              { text = L.msg("v_introduce.05_interaction.press_to_open_menu"), check = { data = "interactionMenuOpen" } },
           },
-          note = "Arrow keys move, ENTER selects, BACKSPACE goes back. {key:interaction} closes the menu." },
+          note = L.msg("v_introduce.05_interaction.arrow_keys_move_enter_selects_backspace") },
         { type = "card", requires = { "ui_interactobject" },
-          title = "Menus in the world",
-          text = "Some objects, vehicles and people have a menu of their own. When you look at one, a small "
-              .. "prompt appears: press {key:interact3d} to open it and pick an option with the number keys 1-9." },
+          title = L.msg("v_introduce.05_interaction.menus_in_world"),
+          text = L.msg("v_introduce.05_interaction.some_objects_vehicles_and_people_have") },
     },
 }

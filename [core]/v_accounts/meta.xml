@@ -3,6 +3,8 @@
     <info author="Free V" name="Account System" version="2.0.0" />
 
     <!-- ================= CLIENT ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="client/state.lua" type="client" />
     <script src="client/theme.lua" type="client" />
     <script src="client/userdata.lua" type="client" />

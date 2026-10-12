@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 RegisterPanel = {}
 
 function RegisterPanel:create()
@@ -32,14 +33,14 @@ function RegisterPanel:create()
     DGS:dgsSetProperty(self.pass, "masked", true)
     DGS:dgsSetProperty(self.conf, "masked", true)
 
-    self.reg  = DGS:dgsCreateButton(cx, btnY, btnW, btnH, "Register", false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnPrimary[1], Theme.btnPrimary[2], Theme.btnPrimary[3])
-    self.back = DGS:dgsCreateButton(cx + btnW + ui(10), btnY, btnW, btnH, "Login", false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnGhost[1], Theme.btnGhost[2], Theme.btnGhost[3])
+    self.reg  = DGS:dgsCreateButton(cx, btnY, btnW, btnH, L("v_accounts.login.register"), false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnPrimary[1], Theme.btnPrimary[2], Theme.btnPrimary[3])
+    self.back = DGS:dgsCreateButton(cx + btnW + ui(10), btnY, btnW, btnH, L("v_accounts.login.login"), false, _, tocolor(255,255,255,255), 1,1, _,_,_, Theme.btnGhost[1], Theme.btnGhost[2], Theme.btnGhost[3])
 
     function self:draw()
-        drawPanelFrame(X, Y, W, H, "REGISTER")
-        drawFieldLabel("USERNAME", cx, userLabelY, fieldW)
-        drawFieldLabel("PASSWORD", cx, passLabelY, fieldW)
-        drawFieldLabel("CONFIRM PASSWORD", cx, confLabelY, fieldW)
+        drawPanelFrame(X, Y, W, H, L("v_accounts.register.title"))
+        drawFieldLabel(L("v_accounts.login.username"), cx, userLabelY, fieldW)
+        drawFieldLabel(L("v_accounts.login.password"), cx, passLabelY, fieldW)
+        drawFieldLabel(L("v_accounts.register.confirm_password"), cx, confLabelY, fieldW)
     end
 
     addEventHandler("onDgsMouseClick", self.reg, function(_, state)
@@ -49,10 +50,10 @@ function RegisterPanel:create()
         local p = DGS:dgsGetText(self.pass)
         local c = DGS:dgsGetText(self.conf)
 
-        if u == "" then return uicore:setInfobox("Username missing") end
-        if p == "" then return uicore:setInfobox("Password missing") end
-        if p ~= c then return uicore:setInfobox("Passwords do not match") end
-        if #p < 5 then return uicore:setInfobox("Password too short") end
+        if u == "" then return uicore:setInfobox(L("v_accounts.login.username_missing")) end
+        if p == "" then return uicore:setInfobox(L("v_accounts.login.password_missing")) end
+        if p ~= c then return uicore:setInfobox(L("v_accounts.register.passwords_do_not_match")) end
+        if #p < 5 then return uicore:setInfobox(L("v_accounts.register.password_too_short")) end
 
         uiSound("audio/ui_btn_click.mp3")
         triggerServerEvent("register_player", localPlayer, u, p)
