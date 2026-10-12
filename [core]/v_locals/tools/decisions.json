@@ -316,6 +316,8 @@
     "v_admin.players.guest": "GUEST",
     "v_admin.report.title": "REPORT",
     "v_admin.report.system": "SYSTEM",
-    "v_radar.client.phone": "PHONE"
+    "v_radar.client.phone": "PHONE",
+    "work_core.labels.level_named": "LEVEL {level|int} · {name}",
+    "work_core.labels.level": "LEVEL {level|int}"
   }
 }

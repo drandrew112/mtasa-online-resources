@@ -229,4 +229,19 @@ do
     function C.isMsg(x)
         return type(x) == "table" and rawget(x, "__loc") == true and type(rawget(x, "t")) == "string"
     end
+
+    -- message objects that crossed a resource boundary (exports copy tables and
+    -- drop the metatable) get their safety net back; tables are walked (depth 8)
+    function C.adopt(x, depth)
+        depth = depth or 1
+        if type(x) ~= "table" or depth > 8 then return x end
+        if C.isMsg(x) then
+            if getmetatable(x) ~= MSG_MT then setmetatable(x, MSG_MT) end
+            return x
+        end
+        for _, v in pairs(x) do
+            if type(v) == "table" then C.adopt(v, depth + 1) end
+        end
+        return x
+    end
 end

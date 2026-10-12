@@ -330,6 +330,11 @@ eq("string.format %s with message", ("[%s] %d"):format(X.msg("t.hello"), 5), "[H
 eq("string.format plain", string.format("%d-%s", 1, "x"), "1-x")
 eq("table.concat with message", table.concat({ "a", X.msg("t.hello"), "b" }, " "), "a Hello b")
 eq("table.concat plain", table.concat({ 1, 2 }, ","), "1,2")
+eq("format with a copied message", ("%s!"):format({ t = "t.hello", __loc = true }), "Hello!")
+local copied = { name = { t = "t.hello", __loc = true }, list = { { t = "t.hello", __loc = true } } }
+X.adopt(copied)
+eq("adopt: concat works again", copied.name .. "!", "Hello!")
+eq("adopt: nested", tostring(copied.list[1]), "Hello")
 
 print(("tests: %d passed, %d failed"):format(passed, failed))
 return failed > 0

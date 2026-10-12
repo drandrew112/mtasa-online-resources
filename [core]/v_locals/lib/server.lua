@@ -73,6 +73,7 @@ do
     LIB.curLang = function() return LIB.defaultLang end
     function L.msg(key, params) return C.msg(key, params) end
     L.isMsg = C.isMsg
+    L.adopt = C.adopt
     -- shared scripts (config tables): a message object here, plain text on the
     -- client; it becomes the receiving player's language when it is sent
     L.text = L.msg
@@ -198,12 +199,12 @@ do
         -- the text (default language) instead of failing on a message object
         local origFormat, origConcat = string.format, table.concat
         string.format = function(fmt, ...)
-            if isMsg(fmt) then fmt = tostring(fmt) end
+            if isMsg(fmt) then fmt = C.resolve(LIB.defaultLang, fmt) end
             local n = select("#", ...)
             for i = 1, n do
                 if isMsg((select(i, ...))) then
                     local args = { ... }
-                    for j = i, n do if isMsg(args[j]) then args[j] = tostring(args[j]) end end
+                    for j = i, n do if isMsg(args[j]) then args[j] = C.resolve(LIB.defaultLang, args[j]) end end
                     return origFormat(fmt, unpack(args, 1, n))
                 end
             end
@@ -213,7 +214,7 @@ do
             for k = i or 1, j or #t do
                 if isMsg(t[k]) then
                     local copy = {}
-                    for m = i or 1, j or #t do copy[m] = isMsg(t[m]) and tostring(t[m]) or t[m] end
+                    for m = i or 1, j or #t do copy[m] = isMsg(t[m]) and C.resolve(LIB.defaultLang, t[m]) or t[m] end
                     return origConcat(copy, sep, i, j)
                 end
             end
@@ -229,6 +230,66 @@ do
     end
 
     L.resolveDeep = function(v, who) return resolveDeep(v, langOf(who), 1) end
+
+    -- Results of exports.res:fn(...) get their message objects back as well
+    -- (return false, L.msg(...) from another resource). Only the server wraps
+    -- this: client render loops call exports every frame.
+    if not internal and type(exports) == "table" then
+        local origExports = exports
+        local function adoptAll(...)
+            for i = 1, select("#", ...) do
+                local v = select(i, ...)
+                if type(v) == "table" then C.adopt(v) end
+            end
+            return ...
+        end
+        local proxies = {}
+        exports = setmetatable({}, {
+            __index = function(_, resName)
+                local res = origExports[resName]
+                if type(res) ~= "table" then return res end
+                local proxy = proxies[resName]
+                if not proxy then
+                    proxy = setmetatable({}, {
+                        __index = function(_, fnName)
+                            local f = res[fnName]
+                            if type(f) ~= "function" then return f end
+                            return function(_, ...) return adoptAll(f(res, ...)) end
+                        end,
+                    })
+                    proxies[resName] = proxy
+                end
+                return proxy
+            end,
+        })
+    end
+
+    -- Exports copy tables between resources and drop the metatable of message
+    -- objects. Every exported server function of the importing resource is
+    -- wrapped once all its scripts ran, so the arguments it receives get their
+    -- message objects back (concatenation / tostring keep working).
+    if not internal then
+        addEventHandler("onResourceStart", resourceRoot, function()
+            local xml = xmlLoadFile("meta.xml")
+            if not xml then return end
+            for _, node in ipairs(xmlNodeGetChildren(xml)) do
+                local name, typ = xmlNodeGetAttribute(node, "function"), xmlNodeGetAttribute(node, "type")
+                if xmlNodeGetName(node) == "export" and name and (typ == false or typ == "server" or typ == "shared")
+                        and type(_G[name]) == "function" then
+                    local orig = _G[name]
+                    _G[name] = function(...)
+                        local n = select("#", ...)
+                        for i = 1, n do
+                            local a = select(i, ...)
+                            if type(a) == "table" then C.adopt(a) end
+                        end
+                        return orig(...)
+                    end
+                end
+            end
+            xmlUnloadFile(xml)
+        end, false, "high+9")
+    end
 
     if not internal then
         addEvent("onPlayerLanguageChange")

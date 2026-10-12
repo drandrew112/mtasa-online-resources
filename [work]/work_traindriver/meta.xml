@@ -3,6 +3,8 @@
           description="Train driver work on work_core: duty gives the railway role (vasutas jog) of rw_core" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="server/main.lua"   type="server" />
     <script src="server/pay.lua"    type="server" />

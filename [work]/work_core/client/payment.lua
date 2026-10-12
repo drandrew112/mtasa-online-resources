@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Itemised payment receipts (server/payment.lua triggers "work:payment" after a successful
 -- payWork()). One is shown at a time; further payments queue up. It fades out on its own after
 -- WORK.PAYMENT_DURATION, and ENTER skips straight to the next one in the queue.
@@ -64,7 +65,7 @@ end
 addEvent("work:payment", true)
 addEventHandler("work:payment", resourceRoot, function(workName, color, items, total, reason)
     queue[#queue + 1] = {
-        workName = tostring(workName or "Work"),
+        workName = tostring(workName or L("work_core.menus.work")),
         color = type(color) == "table" and color or WORK.DEFAULT_COLOR,
         items = type(items) == "table" and items or {},
         total = tonumber(total) or 0,
@@ -86,23 +87,23 @@ local function draw(d, alpha)
     local rowH, totalH, hintH = s(22), s(30), s(22)
     local iconSize = s(28)
 
-    local amountColW = math.max(dxGetTextWidth("TOTAL", 1, fTotalAmount), s(1))
+    local amountColW = math.max(L.width(L("work_core.payment.total"), 1, fTotalAmount), s(1))
     local labelColW = 0
     for _, it in ipairs(d.items) do
-        labelColW = math.max(labelColW, dxGetTextWidth(it.label, 1, fLabel))
-        amountColW = math.max(amountColW, dxGetTextWidth(money(it.amount), 1, fAmount))
+        labelColW = math.max(labelColW, L.width(it.label, 1, fLabel))
+        amountColW = math.max(amountColW, L.width(money(it.amount), 1, fAmount))
     end
-    amountColW = math.max(amountColW, dxGetTextWidth(money(d.total), 1, fTotalAmount))
+    amountColW = math.max(amountColW, L.width(money(d.total), 1, fTotalAmount))
     local rowsW = labelColW + gap + amountColW
 
-    local titleStr = "PAYMENT RECEIPT"
-    local nameStr = d.workName:upper()
-    local titleW = math.max(dxGetTextWidth(titleStr, 1, fTitle), dxGetTextWidth(nameStr, 1, fName))
+    local titleStr = L("work_core.payment.payment_receipt")
+    local nameStr = L.upper(d.workName)
+    local titleW = math.max(L.width(titleStr, 1, fTitle), L.width(nameStr, 1, fName))
 
-    local hintStr = "ENTER · SKIP"
-    local reasonW = d.reason and dxGetTextWidth(d.reason, 1, fReason) or 0
+    local hintStr = L("work_core.payment.enter_skip")
+    local reasonW = d.reason and L.width(d.reason, 1, fReason) or 0
 
-    local contentW = math.max(rowsW, titleW + iconSize + gap, reasonW, dxGetTextWidth(hintStr, 1, fHint))
+    local contentW = math.max(rowsW, titleW + iconSize + gap, reasonW, L.width(hintStr, 1, fHint))
     local w = contentW + pad * 2
     local headH = s(44)
     local h = headH + #d.items * rowH + s(10) + totalH + (d.reason and s(18) or 0) + hintH
@@ -115,7 +116,7 @@ local function draw(d, alpha)
     -- header: colour icon + work name / "PAYMENT RECEIPT"
     local ix, iy = x + pad, y + (headH - iconSize) / 2
     round(ix, iy, iconSize, iconSize, s(6), rgb(d.color, 240 * a))
-    dxDrawText(d.workName:sub(1, 1):upper(), ix, iy, ix + iconSize, iy + iconSize,
+    dxDrawText(L.upper(L.sub(d.workName, 1, 1)), ix, iy, ix + iconSize, iy + iconSize,
         tocolor(255, 255, 255, 255 * a), 1, font(13, true), "center", "center")
 
     local tx = ix + iconSize + gap
@@ -139,7 +140,7 @@ local function draw(d, alpha)
 
     -- total
     local totalCol = d.total > 0 and GREEN or (d.total < 0 and RED or GREY)
-    dxDrawText("TOTAL", x + pad, ry, x + pad + labelColW, ry + totalH,
+    dxDrawText(L("work_core.payment.total"), x + pad, ry, x + pad + labelColW, ry + totalH,
         tocolor(255, 255, 255, 255 * a), 1, fTotalLabel, "left", "center")
     dxDrawText(money(d.total), x + w - pad - amountColW, ry, x + w - pad, ry + totalH,
         rgb(totalCol, 255 * a), 1, fTotalAmount, "right", "center")

@@ -1,18 +1,19 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- work_traindriver - shared configuration.
 -- No vehicle marker: trains are spawned through the rw_core depot menu.
 -- Positions: fine-tune with work_core's /workpos (on foot: marker point).
 
 TRAINDRIVER = {
     WORK_ID = "traindriver",
-    NAME = "Train driver",
-    DESCRIPTION = "Sunline Rail locomotive driver",
+    NAME = L.text("work_traindriver.config.train_driver"),
+    DESCRIPTION = L.text("work_traindriver.config.sunline_rail_locomotive_driver"),
     COLOR = { 255, 170, 30 },
 
     -- Outfits
     SKINS = {
-        { model = 255, name = "Driver" },
-        { model = 50,  name = "Technician", level = 2 },
-        { model = 71,  name = "Station staff", level = 3 },
+        { model = 255, name = L.text("work_traindriver.config.driver") },
+        { model = 50,  name = L.text("work_traindriver.config.technician"), level = 2 },
+        { model = 71,  name = L.text("work_traindriver.config.station_staff"), level = 3 },
     },
 
     -- Work levels (work_core). XP is earned per completed service.
@@ -20,8 +21,8 @@ TRAINDRIVER = {
     LEVEL_XP = 400,                    -- XP for level 2
     LEVEL_STEP = 200,                  -- added for every further level
     LEVEL_NAMES = {
-        [1] = "Trainee", [2] = "Driver", [4] = "Senior Driver", [6] = "Express Driver",
-        [8] = "Chief Driver", [10] = "Master Driver",
+        [1] = L.text("work_traindriver.config.trainee"), [2] = L.text("work_traindriver.config.driver"), [4] = L.text("work_traindriver.config.senior_driver"), [6] = L.text("work_traindriver.config.express_driver"),
+        [8] = L.text("work_traindriver.config.chief_driver"), [10] = L.text("work_traindriver.config.master_driver"),
     },
     XP = {
         BASE = { RB = 50, IC = 90 },    -- by line prefix, like PAY.BASE
@@ -37,8 +38,8 @@ TRAINDRIVER = {
         BASE_DEFAULT = 1500,
         PER_STOP = 1000,                     -- per served stop
         PUNCTUAL = {                        -- arrival delay (s) <= max -> bonus (first match)
-            { max = 60,  amount = 500, label = "Punctuality bonus" },
-            { max = 180, amount = 250, label = "Punctuality bonus (minor delay)" },
+            { max = 60,  amount = 500, label = L.text("work_traindriver.config.punctuality_bonus") },
+            { max = 180, amount = 250, label = L.text("work_traindriver.config.punctuality_bonus_minor_delay") },
         },
         SKIP_FINE = 1000,                    -- per skipped stop
         EARLY_FINE = 250,                   -- per early departure
@@ -48,7 +49,7 @@ TRAINDRIVER = {
 
     -- Duty markers (z = ground level)
     STATIONS = {
-        { name = "Unity Station",     duty = { 1764.41846, -1938.67603, 12.57635 },  blip = false },
-        { name = "Cranberry Station", duty = { -1958.68762, 167.07697, 26.69405 },   blip = false }
+        { name = L.text("work_traindriver.config.unity_station"),     duty = { 1764.41846, -1938.67603, 12.57635 },  blip = false },
+        { name = L.text("work_traindriver.config.cranberry_station"), duty = { -1958.68762, 167.07697, 26.69405 },   blip = false }
     },
 }

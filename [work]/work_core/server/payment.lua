@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Work payments. Every work resource computes its own amounts and calls payWork() with an
 -- itemised breakdown; this module only totals the items, deposits the total to the player's
 -- bank account (exports.v_bank:giveBankMoney) and shows a timed, itemised receipt on the
@@ -67,10 +68,10 @@ end
 
 function testEMSPayment(player)
     return payWork(player, "ems", {
-        { label = "Patient Treatment", amount = 2500 },
-        { label = "Emergency Response Bonus", amount = 750 },
-        { label = "Medical Supplies Fee", amount = -300 },
-    }, "Shift completed")
+        { label = L.msg("work_core.payment.patient_treatment"), amount = 2500 },
+        { label = L.msg("work_core.payment.emergency_response_bonus"), amount = 750 },
+        { label = L.msg("work_core.payment.medical_supplies_fee"), amount = -300 },
+    }, L.msg("work_core.payment.shift_completed"))
 end
 
 addCommandHandler("testemsreceipt", function(player)

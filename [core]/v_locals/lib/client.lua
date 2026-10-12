@@ -53,6 +53,7 @@ do
     LIB.curLang = function() return LIB.lang end
     function L.msg(key, params) return C.msg(key, params) end
     L.isMsg = C.isMsg
+    L.adopt = C.adopt
     -- shared scripts: text on the client, message object on the server (see lib/server.lua)
     function L.text(key, params) return C.translate(LIB.lang, key, params) end
     function L.resolve(x) return C.resolve(LIB.lang, x) end

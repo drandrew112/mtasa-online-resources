@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Client requests from the marker menus. Everything is validated here: the player has to
 -- stand at the marker, the work has to exist, the outfit / vehicle has to belong to it.
 
@@ -12,7 +13,7 @@ end
 
 local function workName(workId)
     local w = Works[workId]
-    return w and w.name or "Work"
+    return w and w.name or L.msg("work_core.menus.work")
 end
 
 -- -> marker data | nil
@@ -24,7 +25,7 @@ local function check(player, marker, kind)
     local m = Markers[marker]
     if not m or m.kind ~= kind or not Works[m.work] then return nil end
     if not isPlayerAtMarker(player, marker) then
-        notifyPlayer(player, workName(m.work), "You are too far from the marker.")
+        notifyPlayer(player, workName(m.work), L.msg("work_core.requests.you_are_too_far_from_marker"))
         return nil
     end
     return m
@@ -39,7 +40,7 @@ addEventHandler("work:dutyOn", resourceRoot, function(marker, skin)
     local m = check(client, marker, "duty")
     if not m then return end
     local ok, err = startDuty(client, m.work, skin)
-    notifyPlayer(client, workName(m.work), ok and "You are now on duty." or err)
+    notifyPlayer(client, workName(m.work), ok and L.msg("work_core.requests.you_are_now_on_duty") or err)
 end)
 
 addEvent("work:dutyOff", true)
@@ -48,7 +49,7 @@ addEventHandler("work:dutyOff", resourceRoot, function(marker)
     if not m then return end
     if not isPlayerOnDuty(client, m.work) then return end
     endDuty(client, "player")
-    notifyPlayer(client, workName(m.work), "You are now off duty.")
+    notifyPlayer(client, workName(m.work), L.msg("work_core.requests.you_are_now_off_duty"))
 end)
 
 addEvent("work:outfit", true)
@@ -73,5 +74,5 @@ addEventHandler("work:vehicleReturn", resourceRoot, function(marker)
     local m = check(client, marker, "vehicle")
     if not m then return end
     local ok, err = returnWorkVehicle(client, marker)
-    notifyPlayer(client, workName(m.work), ok and "Vehicle returned." or err)
+    notifyPlayer(client, workName(m.work), ok and L.msg("work_core.requests.vehicle_returned") or err)
 end)

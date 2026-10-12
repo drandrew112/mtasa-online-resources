@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- EMS work on top of work_core. Being on duty = holding the medsys medic role; the medical
 -- logic itself (examination, stretcher, ERM tablet, hospitals) lives in the [medical] resources.
 
@@ -83,7 +84,7 @@ end
 addEventHandler("onPlayerWorkDutyRequest", root, function(workId)
     if workId ~= EMS.WORK_ID then return end
     local ok, reason = EmsModules.canGoOnDuty(source)
-    if not ok then cancelEvent(true, reason or "You cannot go on duty right now.") end
+    if not ok then cancelEvent(true, reason or L.msg("work_ems.main.you_cannot_go_on_duty_right")) end
 end)
 
 addEventHandler("onPlayerWorkDutyStart", root, function(workId, skin)
@@ -101,14 +102,14 @@ addEventHandler("onPlayerWorkDutyEnd", root, function(workId, reason)
     setMedic(source, false)
     -- off duty = out of the ERM unit (the unit signs out when nobody is left)
     if isRunning("med_erm") then
-        exports.med_erm:removePlayerFromUnit(source, "You went off duty.")
+        exports.med_erm:removePlayerFromUnit(source, L.msg("work_ems.main.you_went_off_duty"))
     end
     EmsModules.fire("onDutyEnd", source, reason)
 end)
 
 addEventHandler("onWorkVehicleSpawn", root, function(player, workId)
     if workId ~= EMS.WORK_ID then return end
-    notify(player, "Press J to open the EMS tablet and sign in as a unit.")
+    notify(player, L.msg("work_ems.main.press_j_to_open_ems_tablet"))
     EmsModules.fire("onVehicleSpawn", source, player)
 end)
 

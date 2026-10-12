@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- work_ems tutorial module - shared configuration. The texts of the steps are in client/steps.lua.
 -- Positions are placeholders: fine-tune them with work_core's /workpos (in a vehicle it prints
 -- { x, y, z, rot }).
@@ -32,10 +33,9 @@ TUTORIAL = {
 
     -- Demo case on the tablet
     CASE = {
-        title = "Fall from a ladder",
-        description = "A man fell off a ladder in his kitchen and knocked over a pot of boiling water. "
-            .. "His arm is burned and his leg hurts badly. He is conscious. The caller is waiting next to him.",
-        caller = "Bystander",
+        title = L.text("work_ems.config.fall_from_ladder"),
+        description = L.text("work_ems.config.man_fell_off_ladder_in_his"),
+        caller = L.text("work_ems.config.bystander"),
         priority = 3,
     },
 
@@ -46,18 +46,15 @@ TUTORIAL = {
 
     -- Optional practice on the final card (no patient), any number of times
     GAMES = {
-        { id = "arrows", label = "Bandage", resource = "mg_arrows",
-          desc = "Press the arrow keys when the arrows reach the target. Used for bandages and dressings." },
-        { id = "splinting", label = "Splint", resource = "mg_splinting",
-          desc = "Press SPACE when the gauge needle is centred to cinch each wrap. Used for fractures." },
-        { id = "cpr", label = "CPR", resource = "mg_cpr",
-          desc = "Press SPACE in a steady rhythm (100-120 per minute). Used when the heart has stopped. "
-              .. "On a patient, good compressions can change the heart rhythm: the game stops and the panel "
-              .. "shows the new rhythm." },
-        { id = "iv", label = "IV access", resource = "mg_intravenous",
-          desc = "Push the needle into the vein, then pull it back. Needed for fluids and medicines." },
-        { id = "airway", label = "Intubation", resource = "mg_airway",
-          desc = "Place the breathing tube while the oxygen level falls. On a patient put to sleep (Ketamine) "
-              .. "and relaxed (Rocuronium), or in cardiac arrest." },
+        { id = "arrows", label = L.text("work_ems.config.bandage"), resource = "mg_arrows",
+          desc = L.text("work_ems.config.press_arrow_keys_when_arrows_reach") },
+        { id = "splinting", label = L.text("work_ems.config.splint"), resource = "mg_splinting",
+          desc = L.text("work_ems.config.press_space_when_gauge_needle_is") },
+        { id = "cpr", label = L.text("work_ems.config.cpr"), resource = "mg_cpr",
+          desc = L.text("work_ems.config.press_space_in_steady_rhythm_100") },
+        { id = "iv", label = L.text("work_ems.config.iv_access"), resource = "mg_intravenous",
+          desc = L.text("work_ems.config.push_needle_into_vein_then_pull") },
+        { id = "airway", label = L.text("work_ems.config.intubation"), resource = "mg_airway",
+          desc = L.text("work_ems.config.place_breathing_tube_while_oxygen_level") },
     },
 }

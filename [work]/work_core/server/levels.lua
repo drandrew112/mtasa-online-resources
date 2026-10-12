@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Work levels. Every work has its own XP and level per account; the level is derived from the
 -- XP. Works use it as a progression: giveWorkXp() after a job, hasWorkLevel() to gate rights
 -- (for example work_atc positions), skin `level` in registerWork() to lock outfits.
@@ -156,8 +157,7 @@ local function applyXp(player, workId, newXp, silent)
     if newLevel ~= oldLevel then
         if not silent and newLevel > oldLevel then
             local lvName = getPlayerWorkLevelName(player, workId)
-            notifyPlayer(player, w.name, ("Level up! You reached level %d%s."):format(newLevel,
-                lvName and (" · " .. lvName) or ""))
+            notifyPlayer(player, w.name, L.msg("work_core.levels.level_up_you_reached_level", { new_level = newLevel, lv_name = lvName and (" · " .. lvName) or "" }))
         end
         triggerEvent("onPlayerWorkLevelChange", player, workId, newLevel, oldLevel)
     end
@@ -173,7 +173,7 @@ function giveWorkXp(player, workId, amount)
     if not isLogged(player) or not progress[player] then return false, "player not logged in" end
     amount = math.min(math.floor(amount), WORK.MAX_XP_PER_GRANT)
     local total = (progress[player][workId] or 0) + amount
-    notifyPlayer(player, Works[workId].name, ("+%d XP"):format(amount), true)
+    notifyPlayer(player, Works[workId].name, L.msg("work_core.levels.xp", { amount = amount }), true)
     applyXp(player, workId, total)
     triggerEvent("onPlayerWorkXpGain", player, workId, amount, total)
     return true, getPlayerWorkLevel(player, workId)
@@ -211,16 +211,16 @@ end
 addCommandHandler("giveworkxp", function(admin, _, name, workId, amount)
     if not isAdmin(admin) then return end
     local target = name and getPlayerFromName(name)
-    if not (target and workId and amount) then return reply(admin, "usage: /giveworkxp <player> <workId> <xp>") end
+    if not (target and workId and amount) then return reply(admin, L.msg("work_core.levels.usage_giveworkxp_player_workid_xp")) end
     local ok, res = giveWorkXp(target, workId, amount)
-    reply(admin, ok and ("XP given, level is now " .. res) or ("failed: " .. tostring(res)))
+    reply(admin, ok and (L.msg("work_core.levels.xp_given_level_is_now", { res = res })) or (L.msg("work_core.levels.failed", { res = tostring(res) })))
 end)
 
 -- /setworklevel <player> <workId> <level>
 addCommandHandler("setworklevel", function(admin, _, name, workId, level)
     if not isAdmin(admin) then return end
     local target = name and getPlayerFromName(name)
-    if not (target and workId and level) then return reply(admin, "usage: /setworklevel <player> <workId> <level>") end
+    if not (target and workId and level) then return reply(admin, L.msg("work_core.levels.usage_setworklevel_player_workid_level")) end
     local ok, res = setPlayerWorkLevel(target, workId, level)
-    reply(admin, ok and "level set" or ("failed: " .. tostring(res)))
+    reply(admin, ok and L.msg("work_core.levels.level_set") or (L.msg("work_core.levels.failed", { res = tostring(res) })))
 end)

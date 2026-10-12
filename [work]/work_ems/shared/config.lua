@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- work_ems - shared configuration.
 -- Positions are placeholders around All Saints: fine-tune them with work_core's /workpos
 -- (on foot: marker point, in a vehicle: spawn point { x, y, z, rot }).
@@ -5,14 +6,14 @@
 EMS = {
     WORK_ID = "ems",
     NAME = "EMS",
-    DESCRIPTION = "Emergency Medical Services",
+    DESCRIPTION = L.text("work_ems.config.emergency_medical_services"),
     COLOR = { 220, 50, 50 },
 
     -- Outfits (276 = OMSZ shirt, replaced by v_modloader)
     SKINS = {
-        { model = 276, name = "Paramedic (OMSZ)" },
-        { model = 274, name = "Female paramedic" },
-        { model = 275, name = "Male paramedic" },
+        { model = 276, name = L.text("work_ems.config.paramedic_omsz") },
+        { model = 274, name = L.text("work_ems.config.female_paramedic") },
+        { model = 275, name = L.text("work_ems.config.male_paramedic") },
     },
 
     -- Work levels (work_core). XP is earned per treated patient (completed hospital handover).
@@ -20,8 +21,8 @@ EMS = {
     LEVEL_XP = 500,                    -- XP for level 2
     LEVEL_STEP = 250,                  -- added for every further level
     LEVEL_NAMES = {
-        [1] = "Trainee", [2] = "EMT", [4] = "Paramedic", [6] = "Senior Paramedic",
-        [8] = "Critical Care Paramedic", [10] = "Chief Paramedic",
+        [1] = L.text("work_ems.config.trainee"), [2] = L.text("work_ems.config.emt"), [4] = L.text("work_ems.config.paramedic"), [6] = L.text("work_ems.config.senior_paramedic"),
+        [8] = L.text("work_ems.config.critical_care_paramedic"), [10] = L.text("work_ems.config.chief_paramedic"),
     },
     XP_PER_PATIENT = 100,              -- every crew member, completed ERM task handover
     XP_HANDOVER = 60,                  -- the medic who hands a patient over at a hospital
@@ -38,15 +39,15 @@ EMS = {
     PLATE_PREFIX = "A-",
     PLATE_DIGITS = 4,
     VEHICLES = {
-        { model = 416, name = "Mercedes Sprinter (HU)" },
-        { model = 456, name = "Mission Row Ambulance" },
+        { model = 416, name = L.text("work_ems.config.mercedes_sprinter_hu") },
+        { model = 456, name = L.text("work_ems.config.mission_row_ambulance") },
     },
 
     -- Stations: a duty marker and (optionally) a duty vehicle marker with spawn points.
     -- z = ground level for the markers.
     STATIONS = {
         {
-            name = "LS All Saints General Hospital",
+            name = L.text("work_ems.config.ls_all_saints_general_hospital"),
             duty = { 1182.82, -1330.80, 12.58 },
             blip = false,
             vehicle = {
@@ -58,7 +59,7 @@ EMS = {
             },
         },
         {
-            name = "LS Country General Hospital",
+            name = L.text("work_ems.config.ls_country_general_hospital"),
             duty = { 2011.27, -1436.85, 12.55 },
             blip = false,
             vehicle = {
@@ -71,7 +72,7 @@ EMS = {
             },
         },
         {
-            name = "LV General Hospital",
+            name = L.text("work_ems.config.lv_general_hospital"),
             duty = { 1600.46, 1817.23, 9.82 },
             blip = false,
             vehicle = {
@@ -86,7 +87,7 @@ EMS = {
             },
         },
         {
-            name = "SF Medical Center",
+            name = L.text("work_ems.config.sf_medical_center"),
             duty = { -2652.48511, 637.51929, 13.45312 },
             blip = false,
             vehicle = {

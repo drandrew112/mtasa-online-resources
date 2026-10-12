@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Work registry. work_core stores no works by default: every work resource registers its own
 -- with registerWork(). A work is owned by the resource that registered it and is removed
 -- (markers destroyed, players taken off duty) when that resource stops.
@@ -38,7 +39,7 @@ local function normaliseSkins(list)
             if not seen[model] then
                 seen[model] = true
                 local level = type(s) == "table" and tonumber(s.level) or nil
-                out[#out + 1] = { model = model, name = name and tostring(name) or ("Outfit " .. model),
+                out[#out + 1] = { model = model, name = name and tostring(name) or (L.msg("work_core.registry.outfit", { model = model })),
                                   level = level and math.max(1, math.floor(level)) or 1 }
             end
         end

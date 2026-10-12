@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Client side of the EMS tutorial: the texts of every step and the sub-steps the client drives
 -- itself (tablet explanation through med_erm's tutorial mode, the equipment through med_bag's
 -- hand data and contents window, examination panel highlights through medsys' panel layout).
@@ -16,20 +17,20 @@ local T = {
 }
 
 local STEP_LABELS = {
-    tablet = "Step 1 / 8  ·  EMS tablet",
-    equipment = "Step 2 / 8  ·  Equipment",
-    examine = "Step 3 / 8  ·  Examination",
-    treat = "Step 4 / 8  ·  Treatment",
-    stretcher = "Step 5 / 8  ·  Stretcher",
-    transfer = "Step 6 / 8  ·  Transport",
-    handover = "Step 6 / 8  ·  Hospital handover",
-    restock = "Step 7 / 8  ·  Restock",
-    done = "Step 8 / 8  ·  Finished",
+    tablet = L("work_ems.steps.step_1_8_ems_tablet"),
+    equipment = L("work_ems.steps.step_2_8_equipment"),
+    examine = L("work_ems.steps.step_3_8_examination"),
+    treat = L("work_ems.steps.step_4_8_treatment"),
+    stretcher = L("work_ems.steps.step_5_8_stretcher"),
+    transfer = L("work_ems.steps.step_6_8_transport"),
+    handover = L("work_ems.steps.step_6_8_hospital_handover"),
+    restock = L("work_ems.steps.step_7_8_restock"),
+    done = L("work_ems.steps.step_8_8_finished"),
 }
 
 local ITEM_STATE = {
-    stowed = "in the ambulance", carried = "in your hands", ground = "on the ground",
-    stretcher = "on the stretcher", none = "-",
+    stowed = L("work_ems.steps.in_ambulance"), carried = L("work_ems.steps.in_your_hands"), ground = L("work_ems.steps.on_ground"),
+    stretcher = L("work_ems.steps.on_stretcher"), none = "-",
 }
 
 local function isRunning(name)
@@ -87,8 +88,7 @@ end
 
 local function itemsLine()
     if not T.world.items then return nil end
-    return ("Medical bag: %s  ·  Monitor: %s"):format(ITEM_STATE[itemState("bag")] or "-",
-        ITEM_STATE[itemState("monitor")] or "-")
+    return L("work_ems.steps.medical_bag_monitor", { item_state = ITEM_STATE[itemState("bag")] or "-", item_state2 = ITEM_STATE[itemState("monitor")] or "-" })
 end
 
 local function noEquipment() return not T.equipment end
@@ -124,44 +124,30 @@ end
 local TABLET_KEY = "J"
 
 local TABLET = {
-    { text = "You are sitting in your ambulance. Every EMS unit works with the EMS tablet: "
-          .. "you sign in on it, get your cases and talk to the dispatchers.\n\nPress " .. TABLET_KEY .. " to open the tablet.",
+    { text = L("work_ems.steps.you_are_sitting_in_your_ambulance", { tablet_key = TABLET_KEY }),
       wait = "tablet:open" },
-    { text = "This is the sign-in screen. Pick a unit type: SOLO (single responder), DOC (physician), "
-          .. "BLS / ALS (basic / advanced life support ambulance) or HELI (air ambulance). An ambulance crew "
-          .. "is usually BLS or ALS.\n\nYou can also set a unit number and add the crew mates sitting near you. "
-          .. "Then press Sign In.",
+    { text = L("work_ems.steps.this_is_sign_in_screen_pick"),
       wait = "tablet:signIn", tablet = true },
-    { text = "You are signed in. The header shows your callsign, unit type, plate and status "
-          .. "(green = Available).\n\nThe Home page shows your shift and your active case. Cases are assigned to "
-          .. "free units by the dispatchers, or automatically by the system.",
+    { text = L("work_ems.steps.you_are_signed_in_header_shows"),
       next = true, tablet = true,
       leave = function()
           tablet("setTabletTutorialCase", TUTORIAL.CASE)
       end },
-    { text = "A case was assigned to you - that was the alert sound.\n\nOpen it: click the case card on the "
-          .. "Home page, or open the menu (top right) and choose Active Case.",
+    { text = L("work_ems.steps.case_was_assigned_to_you_that"),
       wait = "tablet:page:case", tablet = true },
-    { text = "The Active Case page: the priority (P1 is the most urgent, P4 the least), the title, the location "
-          .. "and distance, the caller and the description. On a real case a yellow route on the GPS leads you "
-          .. "to the scene.\n\nStart Response means lights & siren and status En Route. It switches on by itself "
-          .. "when you drive off (to the scene or away from it), but you can also press it - do it now.",
+    { text = L("work_ems.steps.active_case_page_priority_p1_is"),
       wait = "tablet:caseAction:start", tablet = true },
-    { text = "The rest is automatic: your status becomes On Scene when you arrive, and Handover when you park "
-          .. "in a hospital's ambulance bay with the patient.\n\nLeave Case releases your unit while another unit "
-          .. "stays on the case. Close Case ends a false call (a reason is needed). End Shift is in the menu.",
+    { text = L("work_ems.steps.rest_is_automatic_your_status_becomes"),
       next = true, tablet = true,
       leave = function()
           tablet("setTabletTutorialUnit", { status = "onscene", reachedScene = true, responding = false })
-          tablet("addTabletTutorialMessage", "The caller says the patient is waiting right next to your ambulance.", "case")
+          tablet("addTabletTutorialMessage", L("work_ems.steps.caller_says_patient_is_waiting_right"), "case")
       end },
-    { text = "You got a message. Messages has two channels: Dispatch (your unit and the dispatchers) and "
-          .. "Case (every unit on the case and the dispatchers).\n\nOpen the menu and choose Messages.",
+    { text = L("work_ems.steps.you_got_message_messages_has_two"),
       wait = "tablet:page:messages", tablet = true },
-    { text = "Here you read and send messages. Switch between the two channels at the top, and write with the "
-          .. "button at the bottom. Try it if you like.",
+    { text = L("work_ems.steps.here_you_read_and_send_messages"),
       next = true, tablet = true },
-    { text = "You arrived at the scene, so your status is On Scene.\n\nClose the tablet with " .. TABLET_KEY .. ".",
+    { text = L("work_ems.steps.you_arrived_at_scene_so_your", { tablet_key = TABLET_KEY }),
       wait = "tablet:close",
       leave = function() serverNext() end },
 }
@@ -169,22 +155,13 @@ local TABLET = {
 ---------------------------------------------------------------- step 2: equipment (med_bag)
 
 local EQUIPMENT = {
-    { text = "Your patient is standing next to the ambulance. Before you go to them, take your equipment: "
-          .. "with bare hands you can only examine.\n\nGet out (F) and go to the side door on the right side of "
-          .. "the ambulance. Press X there to open the Ambulance equipment menu and choose Check contents.",
+    { text = L("work_ems.steps.your_patient_is_standing_next_to"),
       wait = "bag:contents" },
-    { text = "The contents of the medical bag (the window on the right): IV kits, the oxygen cylinder and every "
-          .. "medicine as left / full.\n\nThey run out as you use them: one IV kit per attempt (a failed one too), "
-          .. "one dose per medicine, and the oxygen drains while a mask or a tube is on. You restock the bag "
-          .. "in a hospital's ambulance bay - you will do it at the end of the tutorial.",
+    { text = L("work_ems.steps.contents_of_medical_bag_window_on"),
       next = true },
-    { text = "Now take the equipment: in the same menu choose Take both. The medical bag goes into your left "
-          .. "hand, the monitor / defibrillator into your right.",
+    { text = L("work_ems.steps.now_take_equipment_in_same_menu"),
       check = function() return carrying("bag") and carrying("monitor") end },
-    { text = "The panel on the right shows what you carry and the bag's IV kits and oxygen. While carrying you "
-          .. "cannot jump or get into another vehicle; getting into your own ambulance puts everything back.\n\n"
-          .. "Carry them to the patient: they work within 4 m. Never leave them at a scene - when the ambulance "
-          .. "drives away without them, the crew is warned.\n\nAt the patient press X, then 1: Examine patient.",
+    { text = L("work_ems.steps.panel_on_right_shows_what_you"),
       wait = "panel:open",
       leave = function() serverNext() end },
 }
@@ -192,43 +169,25 @@ local EQUIPMENT = {
 ---------------------------------------------------------------- step 3: examination
 
 local EXAMINE = {
-    { text = "Look at the patient and press X to open the world menu (Q / E switch between nearby menus), "
-          .. "then press 1: Examine patient.",
+    { text = L("work_ems.steps.look_at_patient_and_press_x"),
       check = panelOpen },
-    { text = "This is the examination panel. The top bar is the consciousness: Stable, Dazed, Unconscious, "
-          .. "Clinical death or Dead. In clinical death a countdown runs next to it.",
+    { text = L("work_ems.steps.this_is_examination_panel_top_bar"),
       next = true, panel = "consciousness" },
-    { text = "These chips show the equipment within reach (4 m) of the patient: the MONITOR, the BAG and the "
-          .. "oxygen left in it. Green = here, grey = missing.\n\nWithout equipment you can still examine, do a "
-          .. "Neuro exam, CPR and request transport - every other button is grey, hover it to see why.",
+    { text = L("work_ems.steps.these_chips_show_equipment_within_reach"),
       next = true, panel = "equipment", skip = noEquipment },
-    { text = "Without the monitor you only see what you can feel and see: the pulse (heart rate), the bleeding "
-          .. "and the skin (pale = blood loss, blue = too little oxygen).\n\nGreen is normal; yellow, orange and "
-          .. "red are worse. The values change live.",
+    { text = L("work_ems.steps.without_monitor_you_only_see_what"),
       next = true, panel = "vitals" },
-    { text = "IV access, airway and pain. Most medicines need an IV access; the ones marked oral do not.",
+    { text = L("work_ems.steps.iv_access_airway_and_pain_most"),
       next = true, panel = "status" },
-    { text = "The injuries: their severity and whether they are treated. This patient has a minor burn and a "
-          .. "fracture. You will treat both in the next step.",
+    { text = L("work_ems.steps.injuries_their_severity_and_whether_they"),
       next = true, panel = "injuries" },
-    { text = "The treatments, in rows. A grey button cannot be used now - hover it to see why.\n\n"
-          .. "AB (airway, breathing): Intubate - after Ketamine, then Rocuronium (or in cardiac arrest)  ·  "
-          .. "O2 mask.\nCD (circulation): Bandage - wounds, burns  ·  Splint - fractures  ·  "
-          .. "CPR - stopped heart  ·  IV access  ·  Medication - a list of medicines, point at one to read what it does.\n"
-          .. "Transport: a vehicle for a stable, intubated or dead patient (off in the tutorial).",
+    { text = L("work_ems.steps.treatments_in_rows_grey_button_cannot"),
       next = true, panel = "buttons" },
-    { text = "Blood pressure, oxygen level (SpO2) and the heart rhythm (ECG) need the monitor.\n\n"
-          .. "Click Attach monitor / defibrillator in the heart rate tile.",
+    { text = L("work_ems.steps.blood_pressure_oxygen_level_spo2_and"),
       check = function() return panelRect("lifepak") ~= nil end, panel = "monitorButton" },
-    { text = "The Lifepak 15 monitor. Top: the heart rate with the ECG and the name of the rhythm under it - "
-          .. "you do not have to read the ECG. Bottom: SpO2 with its wave and the blood pressure (NIBP: the "
-          .. "upper value big, the lower one under it, the mean in brackets).\n\nThe monitor beeps on every heart beat. "
-          .. "It stays connected up to 6 m: do not walk away with it.",
+    { text = L("work_ems.steps.lifepak_15_monitor_top_heart_rate"),
       next = true, panel = "lifepakScreen" },
-    { text = "The defibrillator. CHARGE (200 J), then SHOCK when it flashes. Only two rhythms need a shock: VF and "
-          .. "pulseless VT. ANALYZE checks an unresponsive patient for you and charges if a shock is needed. SYNC is "
-          .. "for VT with a pulse, SOUND mutes the beep and the alarm.\n\n"
-          .. "Never shock a patient with a normal rhythm - it stops the heart. Do not shock this patient.",
+    { text = L("work_ems.steps.defibrillator_charge_200_j_then_shock"),
       next = true, panel = "lifepakKeypad",
       leave = function() serverNext() end },
 }
@@ -238,27 +197,17 @@ local EXAMINE = {
 local function treated(key) return function() return T.done[key] == true end end
 
 local TREAT = {
-    { text = "Treat the injuries. Start with the burn: press Bandage.\n\n"
-          .. "Press the matching arrow key when an arrow reaches the target.",
+    { text = L("work_ems.steps.treat_injuries_start_with_burn_press"),
       check = treated("bandage"), panel = "action:bandage" },
-    { text = "The burn is dressed. Now the fracture: press Splint.\n\n"
-          .. "A needle swings across a gauge: press SPACE while it is inside the centre window to tighten each "
-          .. "wrap. A miss is not a failure, wait for the next pass.",
+    { text = L("work_ems.steps.burn_is_dressed_now_fracture_press"),
       check = treated("splint"), panel = "action:splint" },
-    { text = "The fracture still hurts a lot - the pain needs a medicine through a vein. First: press IV access.\n\n"
-          .. "Push the needle into the vein, then pull it back. Every attempt uses one IV kit from the bag.",
+    { text = L("work_ems.steps.fracture_still_hurts_lot_pain_needs"),
       check = treated("iv"), panel = "action:iv" },
-    { text = "Now press Medication and choose Fentanyl (a strong painkiller).\n\n"
-          .. "The number on each medicine card is the doses left in the bag (x3 = three). A medicine at 0 cannot "
-          .. "be given until you restock.",
+    { text = L("work_ems.steps.now_press_medication_and_choose_fentanyl"),
       check = treated("painkiller"), panel = "drug:" .. TUTORIAL.PAINKILLER },
-    { text = "Last: press O2 mask.\n\nThe O2 chip in the header drops while the mask is on - also in the "
-          .. "ambulance. If the bag is farther than 6 m from the patient or the cylinder runs empty, the mask "
-          .. "comes off (an intubated patient keeps the tube, but it does nothing without oxygen).",
+    { text = L("work_ems.steps.last_press_o2_mask_o2_chip"),
       check = treated("oxygen"), panel = "action:oxygen" },
-    { text = "Well done: the burn is dressed, the leg splinted, the pain treated and the patient gets oxygen.\n\n"
-          .. "Close the panel (the X in its corner, or Backspace) whenever you like. The patient goes to the "
-          .. "hospital next.",
+    { text = L("work_ems.steps.well_done_burn_is_dressed_leg"),
       next = true,
       leave = function() serverNext() end },
 }
@@ -285,9 +234,9 @@ local function subCard(list, step)
 
     local blocked
     if def.tablet and not tabletOpen() then
-        blocked = "Press " .. TABLET_KEY .. " to open the tablet again."
+        blocked = L("work_ems.steps.press_to_open_tablet_again", { tablet_key = TABLET_KEY })
     elseif def.panel and not panelOpen() then
-        blocked = "Open the examination panel again: look at the patient, press X, then 1."
+        blocked = L("work_ems.steps.open_examination_panel_again_look_at")
     end
     if blocked then
         spec.note, spec.noteColor = blocked, Card.colors.bad
@@ -296,7 +245,7 @@ local function subCard(list, step)
     if def.next then
         -- the tablet and the panel show the cursor themselves, otherwise the card does
         spec.modal = not tabletOpen() and not panelOpen()
-        spec.buttons = { { label = "Next", primary = true, disabled = blocked ~= nil, fn = function()
+        spec.buttons = { { label = L("work_ems.steps.next"), primary = true, disabled = blocked ~= nil, fn = function()
             if def.leave then def.leave() end
             nextSub()
         end } }
@@ -312,12 +261,12 @@ local function gamesCard()
         local stats = T.games[g.id]
         local status, color
         if stats then
-            status = ("%d / %d successful"):format(stats.success or 0, stats.played or 0)
+            status = L("work_ems.steps.successful", { success = stats.success or 0, played = stats.played or 0 })
             color = (stats.success or 0) > 0 and Card.colors.good or Card.colors.muted
         end
         rows[#rows + 1] = {
             title = g.label, desc = g.desc, status = status, statusColor = color,
-            button = { label = "Practice", disabled = T.running ~= false, fn = function()
+            button = { label = L("work_ems.steps.practice"), disabled = T.running ~= false, fn = function()
                 T.note = nil
                 triggerServerEvent("ems:tut:game", resourceRoot, g.id)
             end },
@@ -325,12 +274,11 @@ local function gamesCard()
     end
     return {
         step = STEP_LABELS.done,
-        title = "Practice the minigames",
-        text = "Every treatment of the panel is a minigame. Here they run without a patient: play any of them "
-            .. "as many times as you like. CPR and intubation are worth a try - you did not need them today.",
+        title = L("work_ems.steps.practice_minigames"),
+        text = L("work_ems.steps.every_treatment_of_panel_is_minigame"),
         note = T.note, noteColor = T.noteColor,
         rows = rows,
-        buttons = { { label = "Back", primary = true, disabled = T.running ~= false, fn = function()
+        buttons = { { label = L("common.back"), primary = true, disabled = T.running ~= false, fn = function()
             T.practice, T.note = false, nil
             refresh()
         end } },
@@ -341,8 +289,8 @@ end
 -- The item that is still out of the ambulance, in words ("the medical bag" / "the monitor" / both)
 local function itemsOutside()
     local out = {}
-    if itemState("bag") ~= "stowed" then out[#out + 1] = "the medical bag" end
-    if itemState("monitor") ~= "stowed" then out[#out + 1] = "the monitor" end
+    if itemState("bag") ~= "stowed" then out[#out + 1] = L("work_ems.steps.medical_bag") end
+    if itemState("monitor") ~= "stowed" then out[#out + 1] = L("work_ems.steps.monitor") end
     return #out > 0 and table.concat(out, " and ") or nil
 end
 
@@ -350,98 +298,77 @@ local function stretcherCard()
     local st = T.world.stretcher
     local text
     if st.loaded and st.state == "stowed" then
-        text = "The patient is in the ambulance, but " .. (itemsOutside() or "something")
-            .. " is still outside. Bring it back: go to the side door, press X and put it back "
-            .. "(or simply get into the ambulance while holding it)."
+        text = L("work_ems.steps.patient_is_in_ambulance_but_is", { items_outside = (itemsOutside() or "something") })
     elseif st.patient and st.state ~= "stowed" then
-        text = "The patient is on the stretcher. Now the equipment: it rides on the side of the stretcher, so the "
-            .. "oxygen and the monitor travel with the patient.\n\nIn the stretcher menu choose Put medical bag on "
-            .. "stretcher and Put monitor on stretcher (the items must lie within 2 m of it). Then Push stretcher "
-            .. "to the rear doors and choose Load into ambulance."
+        text = L("work_ems.steps.patient_is_on_stretcher_now_equipment")
     elseif st.state == "ground" or st.state == "pushing" then
-        text = "The stretcher is out. Bring it next to the patient if needed (Push stretcher, then Release "
-            .. "stretcher to put it down).\n\nThen choose Place patient on stretcher in its menu and click the patient."
+        text = L("work_ems.steps.stretcher_is_out_bring_it_next")
     elseif st.state == "moving" then
         text = T.lastStretcherText or "..."
     else
-        text = "Your patient is treated and goes to the hospital. Your equipment lies next to them - a treatment "
-            .. "put it down there.\n\nGo to the rear doors of the ambulance, press X and choose Take out stretcher."
+        text = L("work_ems.steps.your_patient_is_treated_and_goes")
     end
     if not T.equipment and st.patient and st.state ~= "stowed" then
-        text = "The patient is on the stretcher. Choose Push stretcher, walk back to the rear doors of the "
-            .. "ambulance and choose Load into ambulance."
+        text = L("work_ems.steps.patient_is_on_stretcher_choose_push")
     end
     T.lastStretcherText = text
-    return { step = STEP_LABELS.stretcher, title = "Load the patient", text = text, note = itemsLine() }
+    return { step = STEP_LABELS.stretcher, title = L("work_ems.steps.load_patient"), text = text, note = itemsLine() }
 end
 
 local function handoverCard()
     local st = T.world.stretcher
     local text
     if st.patient and st.state ~= "stowed" then
-        text = "Push the stretcher into the blue Patient Handover marker and stay in it for 5 seconds."
+        text = L("work_ems.steps.push_stretcher_into_blue_patient_handover")
     elseif st.state == "moving" then
         text = T.lastHandoverText or "..."
     else
-        text = "You arrived at the hospital. On a real case, parking in a yellow ambulance bay with the patient "
-            .. "starts the Handover status.\n\nGet out, go to the rear doors and take out the stretcher - "
-            .. "the patient comes out on it."
+        text = L("work_ems.steps.you_arrived_at_hospital_on_real")
         if T.equipment then
-            text = text .. " The equipment that went in on the stretcher comes out with it: the oxygen and the "
-                .. "monitor stay connected."
+            text = L("work_ems.steps.equipment_that_went_in_on_stretcher", { text = text })
         end
     end
     T.lastHandoverText = text
-    return { step = STEP_LABELS.handover, title = "Hand over the patient", text = text, note = itemsLine() }
+    return { step = STEP_LABELS.handover, title = L("work_ems.steps.hand_over_patient"), text = text, note = itemsLine() }
 end
 
 local function restockCard()
     local st = T.world.stretcher
     local text
     if st.state ~= "stowed" then
-        text = "The patient is handed over. The equipment stays on the stretcher (in a bay the ambulance shows "
-            .. "EQUIPMENT MISSING while something is out).\n\nPush the empty stretcher back to the rear doors and "
-            .. "choose Load into ambulance: the equipment on it goes back in."
+        text = L("work_ems.steps.patient_is_handed_over_equipment_stays")
     elseif itemsOutside() then
-        text = "The stretcher is in, but " .. itemsOutside() .. " is still outside. Put it back at the side door "
-            .. "(X, Put ... back)."
+        text = L("work_ems.steps.stretcher_is_in_but_is_still", { items_outside = itemsOutside() })
     else
-        text = "Everything is back in the ambulance. You used an IV kit, a dose of Fentanyl and oxygen.\n\n"
-            .. "Go to the side door, press X and choose Restock bag. It works only while the ambulance stands in "
-            .. "a hospital's ambulance bay; stand still for a few seconds. Restocking is free."
+        text = L("work_ems.steps.everything_is_back_in_ambulance_you")
     end
-    return { step = STEP_LABELS.restock, title = "Restock the bag", text = text, note = itemsLine() }
+    return { step = STEP_LABELS.restock, title = L("work_ems.steps.restock_bag"), text = text, note = itemsLine() }
 end
 
 local function doneCard()
     local lines = {
-        "·  Go on duty, take an ambulance at the vehicle point and sign in on the tablet (" .. TABLET_KEY .. ").",
-        "·  Cases come from the dispatchers or the automatic dispatcher. Press Start Response and follow the route.",
+        L("work_ems.steps.go_on_duty_take_ambulance_at", { tablet_key = TABLET_KEY }),
+        L("work_ems.steps.cases_come_from_dispatchers_or_automatic"),
     }
     if T.equipment then
-        lines[#lines + 1] = "·  Take the bag and the monitor at the side door. Keep them within 4 m of the patient, "
-            .. "and never leave them at the scene."
+        lines[#lines + 1] = L("work_ems.steps.take_bag_and_monitor_at_side")
     end
-    lines[#lines + 1] = "·  Examine the patient (X, 1), attach the monitor, and treat what the panel shows: bandage, "
-        .. "splint, IV access, medicines, oxygen. Shock only VF and pulseless VT."
-    lines[#lines + 1] = "·  Load the patient with the stretcher, park in a hospital's ambulance bay and push the "
-        .. "stretcher into the handover marker."
+    lines[#lines + 1] = L("work_ems.steps.examine_patient_x_1_attach_monitor")
+    lines[#lines + 1] = L("work_ems.steps.load_patient_with_stretcher_park_in")
     if T.equipment then
-        lines[#lines + 1] = "·  Load the empty stretcher and restock the bag in the bay."
+        lines[#lines + 1] = L("work_ems.steps.load_empty_stretcher_and_restock_bag")
     end
     return {
         step = STEP_LABELS.done,
-        title = "Tutorial complete",
-        text = "You know the basics now:\n\n" .. table.concat(lines, "\n") .. "\n\n"
-            .. "You can practice the minigames here, or watch this tutorial again any time with /"
-            .. TUTORIAL.COMMAND .. ".",
+        title = L("work_ems.steps.tutorial_complete"),
+        text = L("work_ems.steps.you_know_basics_now_you_can", { lines = table.concat(lines, "\n"), command = TUTORIAL.COMMAND }),
         note = T.note, noteColor = T.noteColor,
         buttons = {
-            { label = "Practice minigames", fn = function()
+            { label = L("work_ems.steps.practice_minigames_2"), fn = function()
                 T.practice, T.note = true, nil
                 refresh()
             end },
-            { label = "Finish", primary = true, fn = serverNext },
+            { label = L("work_ems.steps.finish"), primary = true, fn = serverNext },
         },
         modal = true, noSkip = true,
     }
@@ -457,8 +384,8 @@ function refresh()
     elseif T.step == "stretcher" then
         spec = stretcherCard()
     elseif T.step == "transfer" then
-        spec = { step = STEP_LABELS.transfer, title = "Off to the hospital",
-                 text = "The patient is in the ambulance. Driving to the hospital...", noSkip = true }
+        spec = { step = STEP_LABELS.transfer, title = L("work_ems.steps.off_to_hospital"),
+                 text = L("work_ems.steps.patient_is_in_ambulance_driving_to"), noSkip = true }
     elseif T.step == "handover" then
         spec = handoverCard()
     elseif T.step == "restock" then
@@ -507,17 +434,14 @@ handle("ems:tut:offer", function()
     if T.active then return end
     Card.onSkip = nil
     Card.show({
-        title = "EMS tutorial",
-        text = "Is this your first shift? The tutorial shows you the EMS tablet, your equipment, the examination "
-            .. "panel and the monitor / defibrillator, the treatments, the stretcher, the hospital handover and "
-            .. "restocking. It takes about 15 minutes in a private copy of the world.\n\nIt is not required: you "
-            .. "can skip it now and start it any time later with /" .. TUTORIAL.COMMAND .. ".",
+        title = L("work_ems.card.ems_tutorial"),
+        text = L("work_ems.steps.is_this_your_first_shift_tutorial", { command = TUTORIAL.COMMAND }),
         buttons = {
-            { label = "Skip", fn = function()
+            { label = L("work_ems.steps.skip"), fn = function()
                 Card.hide()
                 triggerServerEvent("ems:tut:answer", resourceRoot, false)
             end },
-            { label = "Start tutorial", primary = true, fn = function()
+            { label = L("work_ems.steps.start_tutorial"), primary = true, fn = function()
                 Card.hide()
                 triggerServerEvent("ems:tut:answer", resourceRoot, true)
             end },
@@ -546,8 +470,8 @@ handle("ems:tut:step", function(step)
 end)
 
 local TREATMENT_LABELS = {
-    bandage = "The bandage did not hold", splint = "The splint did not hold", iv = "The IV access failed",
-    painkiller = "The medicine was not given", oxygen = "The oxygen mask was not changed",
+    bandage = L("work_ems.steps.bandage_did_not_hold"), splint = L("work_ems.steps.splint_did_not_hold"), iv = L("work_ems.steps.iv_access_failed"),
+    painkiller = L("work_ems.steps.medicine_was_not_given"), oxygen = L("work_ems.steps.oxygen_mask_was_not_changed"),
 }
 
 handle("ems:tut:info", function(kind, data)
@@ -556,7 +480,7 @@ handle("ems:tut:info", function(kind, data)
         if data.success then
             T.note = nil
         elseif TREATMENT_LABELS[data.key] then
-            T.note, T.noteColor = TREATMENT_LABELS[data.key] .. ". The panel is open again - try once more.", Card.colors.bad
+            T.note, T.noteColor = L("work_ems.steps.panel_is_open_again_try_once", { key = TREATMENT_LABELS[data.key] }), Card.colors.bad
         end
         refresh()
     elseif kind == "world" then
@@ -574,9 +498,9 @@ handle("ems:tut:games", function(games, running, lastId, lastSuccess)
         local label = lastId
         for _, g in ipairs(TUTORIAL.GAMES) do if g.id == lastId then label = g.label end end
         if lastSuccess then
-            T.note, T.noteColor = label .. ": success!", Card.colors.good
+            T.note, T.noteColor = L("work_ems.steps.success", { label = label }), Card.colors.good
         else
-            T.note, T.noteColor = label .. ": not this time - try again.", Card.colors.bad
+            T.note, T.noteColor = L("work_ems.steps.not_this_time_try_again", { label = label }), Card.colors.bad
         end
     end
     refresh()

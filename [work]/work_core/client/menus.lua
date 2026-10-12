@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Marker menus (ui_inac temp menus): outfit selector / off duty at duty markers, vehicle
 -- list / return at vehicle markers. Hovering an outfit previews it on the local player.
 
@@ -9,7 +10,7 @@ addEvent("ui_inac:tempMenuClose")
 
 local function notify(text, workId)
     local w = workId and Works[workId]
-    exports.ui_core:addNotification(w and w.name or "Work", text)
+    exports.ui_core:addNotification(w and w.name or L("work_core.menus.work"), text)
 end
 
 ---------------------------------------------------------------- outfit preview
@@ -50,7 +51,7 @@ local function skinItems(work, action, desc)
     local lv = getPlayerWorkLevel(localPlayer, work.id)
     for i, s in ipairs(work.skins) do
         if (s.level or 1) > lv then
-            items[i] = { label = s.name .. " (level " .. s.level .. ")", desc = "Unlocks at " .. work.name .. " level " .. s.level,
+            items[i] = { label = L("work_core.menus.level", { name = s.name, level = s.level }), desc = L("work_core.menus.unlocks_at_level", { name = work.name, level = s.level }),
                          value = { a = "locked" } }
         else
             items[i] = { label = s.name, desc = desc, value = { a = action, skin = s.model } }
@@ -67,25 +68,25 @@ local function openDutyMenu(marker)
 
     if mine and mine ~= workId then
         local other = Works[mine]
-        notify(("You are already working as %s. Go off duty first."):format(other and other.name or mine), workId)
+        notify(L("work_core.menus.you_are_already_working_as_go", { mine = other and other.name or mine }), workId)
         return
     end
 
     if mine == workId then
         local items = {}
         if #work.skins > 1 then
-            items[#items + 1] = { label = "Change outfit", desc = "Pick another work outfit",
-                                  title = "OUTFIT", items = skinItems(work, "outfit", "Wear this outfit") }
+            items[#items + 1] = { label = L("work_core.menus.change_outfit"), desc = L("work_core.menus.pick_another_work_outfit"),
+                                  title = L("work_core.menus.outfit"), items = skinItems(work, "outfit", L("work_core.menus.wear_this_outfit")) }
         end
-        items[#items + 1] = { label = "Go off duty", desc = "Finish work and put your own clothes back on",
+        items[#items + 1] = { label = L("work_core.menus.go_off_duty"), desc = L("work_core.menus.finish_work_and_put_your_own"),
                               value = { a = "off" } }
         open({ title = work.name:upper(), items = items }, marker, "duty", #work.skins > 1)
     else
-        local desc = "Go on duty in this outfit"
+        local desc = L("work_core.menus.go_on_duty_in_this_outfit")
         local lvName = getPlayerWorkLevelName(localPlayer, workId)
-        desc = ("Level %d%s · %s"):format(getPlayerWorkLevel(localPlayer, workId), lvName and (" " .. lvName) or "", desc)
+        desc = L("work_core.menus.level_2", { work_id = getPlayerWorkLevel(localPlayer, workId), lv_name = lvName and (" " .. lvName) or "", desc = desc })
         if work.description ~= "" then desc = work.description .. " · " .. desc end
-        open({ title = work.name:upper() .. " · ON DUTY", items = skinItems(work, "on", desc) },
+        open({ title = L("work_core.menus.on_duty", { name = work.name:upper() }), items = skinItems(work, "on", desc) },
             marker, "duty", true)
     end
 end
@@ -94,18 +95,18 @@ local function openVehicleMenu(marker)
     local workId = getElementData(marker, WORK_DATA.MARKER_WORK)
     local work = Works[workId]
     if not work then return end
-    local title = work.name:upper() .. " · VEHICLES"
+    local title = L("work_core.menus.vehicles", { name = work.name:upper() })
 
     if getPedOccupiedVehicle(localPlayer) then
         open({ title = title, items = {
-            { label = "Return vehicle", desc = "Hand the work vehicle back", value = { a = "return" } },
+            { label = L("work_core.menus.return_vehicle"), desc = L("work_core.menus.hand_work_vehicle_back"), value = { a = "return" } },
         } }, marker, "vehicle")
         return
     end
 
     local items = {}
     for i, v in ipairs(getElementData(marker, WORK_DATA.MARKER_VEHICLES) or {}) do
-        items[i] = { label = v.name, desc = "Request this work vehicle", value = { a = "spawn", i = i } }
+        items[i] = { label = v.name, desc = L("work_core.menus.request_this_work_vehicle"), value = { a = "spawn", i = i } }
     end
     if #items == 0 then return end
     open({ title = title, items = items }, marker, "vehicle")

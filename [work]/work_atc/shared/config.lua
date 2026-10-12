@@ -1,17 +1,18 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- work_atc - shared configuration.
 -- Positions: fine-tune with work_core's /workpos (on foot: marker point).
 
 ATC = {
     WORK_ID = "atc",                 -- must match AVI.MARKER_WORK in avi_core
-    NAME = "Air traffic control",
-    DESCRIPTION = "Air traffic controller (San Andreas Control, San Fierro)",
+    NAME = L.text("work_atc.config.air_traffic_control"),
+    DESCRIPTION = L.text("work_atc.config.air_traffic_controller_san_andreas_control"),
     COLOR = { 70, 130, 210 },
 
     -- Outfits (the Supervisor outfit unlocks at the last level)
     SKINS = {
-        { model = 147,  name = "Controller" },
-        { model = 186,  name = "Controller (casual)" },
-        { model = 265, name = "Supervisor", level = 14 },
+        { model = 147,  name = L.text("work_atc.config.controller") },
+        { model = 186,  name = L.text("work_atc.config.controller_casual") },
+        { model = 265, name = L.text("work_atc.config.supervisor"), level = 14 },
     },
 
     -- Level table: XP curve + name and ATC rights of each level. Rights are cumulative by design
@@ -20,20 +21,20 @@ ATC = {
     LEVEL_BASE_XP = 400,
     LEVEL_STEP_XP = 250,
     LEVELS = {
-        [1]  = { name = "Trainee",                    rights = { "TWR" } },
-        [2]  = { name = "Tower Controller Bronze",    rights = { "TWR" } },
-        [3]  = { name = "Tower Controller Silver",    rights = { "TWR" } },
-        [4]  = { name = "Tower Controller Gold",      rights = { "TWR" } },
-        [5]  = { name = "Approach Controller Bronze", rights = { "TWR", "APP" } },
-        [6]  = { name = "Approach Controller Silver", rights = { "TWR", "APP" } },
-        [7]  = { name = "Approach Controller Gold",   rights = { "TWR", "APP" } },
-        [8]  = { name = "Radar Controller Bronze",    rights = { "TWR", "APP", "RADAR" } },
-        [9]  = { name = "Radar Controller Silver",    rights = { "TWR", "APP", "RADAR" } },
-        [10] = { name = "Radar Controller Gold",      rights = { "TWR", "APP", "RADAR" } },
-        [11] = { name = "Senior Controller Bronze",   rights = { "TWR", "APP", "RADAR" } },
-        [12] = { name = "Senior Controller Silver",   rights = { "TWR", "APP", "RADAR" } },
-        [13] = { name = "Senior Controller Gold",     rights = { "TWR", "APP", "RADAR" } },
-        [14] = { name = "Supervisor",                 rights = { "TWR", "APP", "RADAR" } },
+        [1]  = { name = L.text("work_atc.config.trainee"),                    rights = { "TWR" } },
+        [2]  = { name = L.text("work_atc.config.tower_controller_bronze"),    rights = { "TWR" } },
+        [3]  = { name = L.text("work_atc.config.tower_controller_silver"),    rights = { "TWR" } },
+        [4]  = { name = L.text("work_atc.config.tower_controller_gold"),      rights = { "TWR" } },
+        [5]  = { name = L.text("work_atc.config.approach_controller_bronze"), rights = { "TWR", "APP" } },
+        [6]  = { name = L.text("work_atc.config.approach_controller_silver"), rights = { "TWR", "APP" } },
+        [7]  = { name = L.text("work_atc.config.approach_controller_gold"),   rights = { "TWR", "APP" } },
+        [8]  = { name = L.text("work_atc.config.radar_controller_bronze"),    rights = { "TWR", "APP", "RADAR" } },
+        [9]  = { name = L.text("work_atc.config.radar_controller_silver"),    rights = { "TWR", "APP", "RADAR" } },
+        [10] = { name = L.text("work_atc.config.radar_controller_gold"),      rights = { "TWR", "APP", "RADAR" } },
+        [11] = { name = L.text("work_atc.config.senior_controller_bronze"),   rights = { "TWR", "APP", "RADAR" } },
+        [12] = { name = L.text("work_atc.config.senior_controller_silver"),   rights = { "TWR", "APP", "RADAR" } },
+        [13] = { name = L.text("work_atc.config.senior_controller_gold"),     rights = { "TWR", "APP", "RADAR" } },
+        [14] = { name = L.text("work_atc.config.supervisor"),                 rights = { "TWR", "APP", "RADAR" } },
     },
 
     -- Work stations: one duty marker for now (z = ground level). More can be added later.

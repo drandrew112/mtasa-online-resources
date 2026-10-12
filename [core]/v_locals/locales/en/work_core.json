@@ -7,6 +7,8 @@
   "work_core.duty.you_are_not_on_duty": "You are not on duty.",
   "work_core.duty.you_cannot_go_on_duty_right": "You cannot go on duty right now.",
   "work_core.labels.go_on_duty": "Go On Duty",
+  "work_core.labels.level": "LEVEL {level|int}",
+  "work_core.labels.level_named": "LEVEL {level|int} · {name}",
   "work_core.labels.max_xp": "MAX · {xp|int} XP",
   "work_core.labels.on_duty": "On Duty",
   "work_core.labels.press_choose_your_outfit": "Press {key} · choose your outfit",

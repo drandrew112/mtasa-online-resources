@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The tutorial card (DX): a panel on the left side of the screen with the current instruction,
 -- optional rows (minigame list), buttons and a "Skip tutorial" link, plus a pulsing highlight
 -- around a screen rectangle (e.g. a section of the examination panel).
@@ -86,7 +87,7 @@ local function textHeight(text, width, font)
         if paragraph == "" then lines = lines + 1 end
         for word in paragraph:gmatch("%S+") do
             local try = line == "" and word or (line .. " " .. word)
-            if dxGetTextWidth(try, 1, font) > width and line ~= "" then
+            if L.width(try, 1, font) > width and line ~= "" then
                 lines = lines + 1
                 line = word
             else
@@ -166,11 +167,11 @@ local function render()
 
     local cy0 = y + PAD
     if spec.step then
-        dxDrawText(spec.step:upper(), x + PAD, cy0, x + W - PAD, cy0 + s(16), C.accent, 1, fonts.small,
+        dxDrawText(L.upper(spec.step), x + PAD, cy0, x + W - PAD, cy0 + s(16), C.accent, 1, fonts.small,
             "left", "top", false, false, true)
         cy0 = cy0 + s(18)
     end
-    dxDrawText(spec.title or "EMS tutorial", x + PAD, cy0, x + W - PAD, cy0 + s(28), C.text, 1, fonts.title,
+    dxDrawText(spec.title or L("work_ems.card.ems_tutorial"), x + PAD, cy0, x + W - PAD, cy0 + s(28), C.text, 1, fonts.title,
         "left", "top", true, false, true)
     cy0 = cy0 + s(30)
     if spec.text then
@@ -221,8 +222,8 @@ local function render()
         -- nothing
     elseif cursorOn then
         local armed = getTickCount() - skipArmed < 3000
-        local label = armed and "Click again to skip the tutorial" or "Skip tutorial"
-        local lw = dxGetTextWidth(label, 1, fonts.small)
+        local label = armed and L("work_ems.card.click_again_to_skip_tutorial") or L("work_ems.card.skip_tutorial")
+        local lw = L.width(label, 1, fonts.small)
         local hov = inside(x + PAD, fy, lw, s(24), cx, cy)
         dxDrawText(label, x + PAD, fy, x + W, fy + s(24), (hov or armed) and C.bad or C.faint, 1, fonts.small,
             "left", "center", false, false, true)
@@ -235,7 +236,7 @@ local function render()
             end
         end }
     else
-        dxDrawText(("Press %s for the cursor  ·  /%s skip"):format(TUTORIAL.CURSOR_KEY:upper(), TUTORIAL.COMMAND),
+        dxDrawText(L("work_ems.card.press_for_cursor_skip", { cursor_key = TUTORIAL.CURSOR_KEY:upper(), command = TUTORIAL.COMMAND }),
             x + PAD, fy, x + W - PAD, fy + s(24), C.faint, 1, fonts.small, "left", "center", false, false, true)
     end
 

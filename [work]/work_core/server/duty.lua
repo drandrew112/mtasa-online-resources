@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Duty state. A player can be on duty in one work at a time (this is what "having a work"
 -- means). Going on duty saves the civilian skin and puts on the chosen work outfit, going off
 -- duty restores it and removes the player's work vehicle.
@@ -83,28 +84,28 @@ end
 -- -> true | false, errorText
 function startDuty(player, workId, skin)
     local work = Works[workId]
-    if not work then return false, "This work is not available." end
+    if not work then return false, L.msg("work_core.duty.this_work_is_not_available") end
     local d = duty[player]
     if d then
-        if d.work == workId then return false, "You are already on duty." end
+        if d.work == workId then return false, L.msg("work_core.duty.you_are_already_on_duty") end
         local other = Works[d.work]
-        return false, ("You are already working as %s. Go off duty first."):format(other and other.name or d.work)
+        return false, L.msg("work_core.duty.you_are_already_working_as_go", { work = other and other.name or d.work })
     end
 
     skin = tonumber(skin) or work.skins[1].model
-    if not isWorkSkin(work, skin) then return false, "This outfit does not belong to this work." end
+    if not isWorkSkin(work, skin) then return false, L.msg("work_core.duty.this_outfit_does_not_belong_to") end
     local need = skinLevel(work, skin)
     if need > 1 and getPlayerWorkLevel(player, workId) < need then
-        return false, ("This outfit needs %s level %d."):format(work.name, need)
+        return false, L.msg("work_core.duty.this_outfit_needs_level", { name = work.name, need = need })
     end
 
     if not triggerEvent("onPlayerWorkDutyRequest", player, workId) then
         local reason = getCancelReason()
-        return false, (reason and reason ~= "") and reason or "You cannot go on duty right now."
+        return false, (reason and reason ~= "") and reason or L.msg("work_core.duty.you_cannot_go_on_duty_right")
     end
     -- a handler may have changed things
     if duty[player] or not Works[workId] or not isElement(player) then
-        return false, "You cannot go on duty right now."
+        return false, L.msg("work_core.duty.you_cannot_go_on_duty_right")
     end
 
     local civil = getElementModel(player)
@@ -134,14 +135,14 @@ end
 
 function changeDutySkin(player, skin)
     local d = duty[player]
-    if not d then return false, "You are not on duty." end
+    if not d then return false, L.msg("work_core.duty.you_are_not_on_duty") end
     skin = tonumber(skin)
     if not skin or not isWorkSkin(Works[d.work], skin) then
-        return false, "This outfit does not belong to this work."
+        return false, L.msg("work_core.duty.this_outfit_does_not_belong_to")
     end
     local need = skinLevel(Works[d.work], skin)
     if need > 1 and getPlayerWorkLevel(player, d.work) < need then
-        return false, ("This outfit needs %s level %d."):format(Works[d.work].name, need)
+        return false, L.msg("work_core.duty.this_outfit_needs_level", { name = Works[d.work].name, need = need })
     end
     d.skin = skin
     setElementModel(player, skin)

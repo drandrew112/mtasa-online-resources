@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Duty markers and duty vehicle markers, created by the work resources through exports.
 -- The markers belong to work_core (the client finds them under its resourceRoot) but are
 -- destroyed when the work is unregistered or the resource that created them stops.
@@ -201,10 +202,10 @@ addCommandHandler("workpos", function(player)
     end
     local int, dim = getElementInterior(e), getElementDimension(e)
     if int ~= 0 or dim ~= 0 then
-        text = text .. ("  -- interior = %d, dimension = %d"):format(int, dim)
+        text = text .. L.msg("work_core.markers.interior_dimension", { int = int, dim = dim })
     end
     outputConsole("[workpos] " .. text, player)
-    outputChatBox("[workpos] " .. text .. " (vágólapra másolva)", player, 200, 200, 200)
+    outputChatBox(L.msg("work_core.markers.workpos_copied_to_clipboard", { text = text }), player, 200, 200, 200)
     if isPlayerReady(player) then
         triggerClientEvent(player, "work:clipboard", resourceRoot, text)
     end

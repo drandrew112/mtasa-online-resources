@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Client state: the registered works (synced from the server), the marker the local player
 -- stands in, client-side queries/exports and the onClientPlayerWorkChange event.
 
@@ -11,7 +12,7 @@ end)
 
 addEvent("work:notify", true)
 addEventHandler("work:notify", resourceRoot, function(title, text, silent)
-    exports.ui_core:addNotification(tostring(title or "Work"), tostring(text or ""), silent == true)
+    exports.ui_core:addNotification(tostring(title or L("work_core.menus.work")), tostring(text or ""), silent == true)
 end)
 
 addEvent("work:clipboard", true)

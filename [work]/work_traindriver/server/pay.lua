@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Pay for a completed rail service. rw_timetable fires onRailServiceComplete when the last stop
 -- is served; the player sitting in the driver's seat at that moment (the one who closes the
 -- service) is paid through work_core:payWork, which deposits it and shows the receipt.
@@ -13,9 +14,9 @@ function computePay(summary)
     local number = tostring(summary.number or "?")      -- "RB 1101" / "IC 2101"
     local base = P.BASE[number:match("^(%a+)")] or P.BASE_DEFAULT
 
-    local items = { { label = "Service " .. number, amount = base } }
+    local items = { { label = L.msg("work_traindriver.pay.service", { number = number }), amount = base } }
     local served = summary.served or 0
-    if served > 0 then items[#items + 1] = { label = ("Stops served (%d)"):format(served), amount = served * P.PER_STOP } end
+    if served > 0 then items[#items + 1] = { label = L.msg("work_traindriver.pay.stops_served", { served = served }), amount = served * P.PER_STOP } end
 
     local delay = summary.arrivalDelay
     if delay then
@@ -24,13 +25,13 @@ function computePay(summary)
         end
     end
     if (summary.skipped or 0) > 0 then
-        items[#items + 1] = { label = ("Skipped stops (%d)"):format(summary.skipped), amount = -summary.skipped * P.SKIP_FINE }
+        items[#items + 1] = { label = L.msg("work_traindriver.pay.skipped_stops", { skipped = summary.skipped }), amount = -summary.skipped * P.SKIP_FINE }
     end
     if (summary.earlyDepartures or 0) > 0 then
-        items[#items + 1] = { label = ("Early departures (%d)"):format(summary.earlyDepartures), amount = -summary.earlyDepartures * P.EARLY_FINE }
+        items[#items + 1] = { label = L.msg("work_traindriver.pay.early_departures", { early_departures = summary.earlyDepartures }), amount = -summary.earlyDepartures * P.EARLY_FINE }
     end
     if P.DELAY_FINE_FROM and (summary.maxDelay or 0) > P.DELAY_FINE_FROM then
-        items[#items + 1] = { label = "Delay", amount = -P.DELAY_FINE }
+        items[#items + 1] = { label = L.msg("work_traindriver.pay.delay"), amount = -P.DELAY_FINE }
     end
     return items
 end
@@ -59,8 +60,8 @@ end
 
 local function pay(player, summary)
     local items = computePay(summary)
-    if total(items) < 0 then items[#items + 1] = { label = "Adjustment", amount = -total(items) } end
-    local ok, result = exports.work_core:payWork(player, TRAINDRIVER.WORK_ID, items, "Service " .. tostring(summary.number) .. " completed")
+    if total(items) < 0 then items[#items + 1] = { label = L.msg("work_traindriver.pay.adjustment"), amount = -total(items) } end
+    local ok, result = exports.work_core:payWork(player, TRAINDRIVER.WORK_ID, items, L.msg("work_traindriver.pay.service_completed", { number = tostring(summary.number) }))
     if ok then
         exports.work_core:giveWorkXp(player, TRAINDRIVER.WORK_ID, computeXp(summary))
         outputServerLog(("[work_traindriver] %s paid %d for %s"):format(getPlayerName(player), result, tostring(summary.number)))

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- EMS tutorial: one session per player in its own dimension. The server owns the session and
 -- the world (ambulance, patient, hospital markers); the client shows the tutorial card and
 -- drives the tablet / equipment / panel explanations (client/*.lua).
@@ -232,7 +233,7 @@ STEP_ENTER.examine = function(s)
     setElementFrozen(s.vehicle, false)
     startPolling(s)
     if not s.patient and not spawnPatient(s) then
-        chat(s.player, "The medical system is not running - the patient steps are skipped.")
+        chat(s.player, L.msg("work_ems.session.medical_system_is_not_running_patient"))
         return later(s, 2000, function() setStep(s, "done") end)
     end
 end
@@ -260,7 +261,7 @@ STEP_ENTER.transfer = function(s)
             if isRunning("med_hospitals") then
                 s.handoverId = exports.med_hospitals:createTutorialHandover(player, h.id, s.dimension, vehicle) or nil
             end
-            if not s.handoverId then chat(player, "The hospital markers could not be created (med_hospitals).") end
+            if not s.handoverId then chat(player, L.msg("work_ems.session.hospital_markers_could_not_be_created")) end
             later(s, 600, function()
                 fadeCamera(player, true, TUTORIAL.FADE_TIME)
                 later(s, fadeMs(), function() nextStep(s) end)
@@ -278,11 +279,11 @@ end
 
 -- -> true | false, reason
 function Tutorial.start(player)
-    if sessions[player] then return false, "The tutorial is already running." end
-    if isPedDead(player) then return false, "You cannot start the tutorial now." end
-    if getElementData(player, "isLogged") ~= true then return false, "Log in first." end
+    if sessions[player] then return false, L.msg("work_ems.session.tutorial_is_already_running") end
+    if isPedDead(player) then return false, L.msg("work_ems.session.you_cannot_start_tutorial_now") end
+    if getElementData(player, "isLogged") ~= true then return false, L.msg("work_ems.session.log_in_first") end
     if not isRunning("medsys") or not isRunning("med_stretcher") then
-        return false, "The medical system is not running."
+        return false, L.msg("work_ems.session.medical_system_is_not_running")
     end
 
     local x, y, z = getElementPosition(player)
@@ -306,7 +307,7 @@ function Tutorial.start(player)
         s.grantedMedic = true
     end
     if isRunning("med_erm") then
-        exports.med_erm:removePlayerFromUnit(player, "You started the EMS tutorial.")
+        exports.med_erm:removePlayerFromUnit(player, L.msg("work_ems.session.you_started_ems_tutorial"))
     end
 
     fadeCamera(player, false, TUTORIAL.FADE_TIME)
@@ -317,7 +318,7 @@ function Tutorial.start(player)
             EMS.PLATE_PREFIX .. ("%0" .. EMS.PLATE_DIGITS .. "d"):format(math.random(0, 10 ^ EMS.PLATE_DIGITS - 1)))
         if not vehicle then
             Tutorial.finish(player, "error")
-            return chat(player, "The tutorial could not be started.")
+            return chat(player, L.msg("work_ems.session.tutorial_could_not_be_started"))
         end
         s.vehicle = vehicle
         setElementDimension(vehicle, s.dimension)
@@ -377,9 +378,9 @@ function Tutorial.finish(player, reason)
     end
 
     if reason == "completed" then
-        chat(player, "Tutorial completed. Good luck on duty!")
+        chat(player, L.msg("work_ems.session.tutorial_completed_good_luck_on_duty"))
     elseif reason == "skipped" then
-        chat(player, ("Tutorial skipped. You can start it again any time with /%s."):format(TUTORIAL.COMMAND))
+        chat(player, L.msg("work_ems.session.tutorial_skipped_you_can_start_it", { command = TUTORIAL.COMMAND }))
     end
     return true
 end
@@ -424,12 +425,12 @@ local function startGame(s, id)
     local game, def = GAMES[id], gameDef(id)
     if not game or not def or s.step ~= "done" or s.gameRunning then return end
     if not isRunning(def.resource) then
-        return send(s.player, "ems:tut:info", "gameError", "This minigame is not available right now.")
+        return send(s.player, "ems:tut:info", "gameError", L.msg("work_ems.session.this_minigame_is_not_available_right"))
     end
     if getPedOccupiedVehicle(s.player) then removePedFromVehicle(s.player) end
     local sessionId = game.start(s.player)
     if not sessionId then
-        return send(s.player, "ems:tut:info", "gameError", "The minigame could not be started.")
+        return send(s.player, "ems:tut:info", "gameError", L.msg("work_ems.session.minigame_could_not_be_started"))
     end
     s.gameRunning = { id = id, sessionId = sessionId }
     send(s.player, "ems:tut:games", s.games, id)
@@ -468,7 +469,7 @@ handle("ems:tut:answer", function(player, accept)
         if not ok then chat(player, err) end
     else
         markDone(player)
-        chat(player, ("No problem. You can start the tutorial any time with /%s."):format(TUTORIAL.COMMAND))
+        chat(player, L.msg("work_ems.session.no_problem_you_can_start_tutorial", { command = TUTORIAL.COMMAND }))
     end
 end)
 
@@ -528,7 +529,7 @@ end)
 addEventHandler("onPlayerWasted", root, function()
     if sessions[source] then
         Tutorial.finish(source, "died")
-        chat(source, "The tutorial ended because you died.")
+        chat(source, L.msg("work_ems.session.tutorial_ended_because_you_died"))
     end
 end)
 
@@ -543,7 +544,7 @@ addEventHandler("onPedWasted", root, function()
     for player, s in pairs(sessions) do
         if source == s.patient and PATIENT_STEPS[s.step] then
             local ped = source
-            chat(player, "The patient died - a new patient is waiting.")
+            chat(player, L.msg("work_ems.session.patient_died_new_patient_is_waiting"))
             later(s, 2000, function()
                 if isRunning("medsys") then exports.medsys:closeExamination(player) end
                 if isElement(ped) then
@@ -570,7 +571,7 @@ addEventHandler("onVehicleExplode", root, function()
     for player, s in pairs(sessions) do
         if s.vehicle == source then
             Tutorial.finish(player, "error")
-            chat(player, "The tutorial ambulance was destroyed. Start again with /" .. TUTORIAL.COMMAND .. ".")
+            chat(player, L.msg("work_ems.session.tutorial_ambulance_was_destroyed_start_again", { command = TUTORIAL.COMMAND }))
         end
     end
 end)
@@ -579,7 +580,7 @@ end)
 
 addCommandHandler(TUTORIAL.COMMAND, function(player, _, arg)
     if arg == "skip" or arg == "stop" then
-        if not Tutorial.finish(player, "skipped") then chat(player, "The tutorial is not running.") end
+        if not Tutorial.finish(player, "skipped") then chat(player, L.msg("work_ems.session.tutorial_is_not_running")) end
         return
     end
     local ok, err = Tutorial.start(player)

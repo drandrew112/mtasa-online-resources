@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- 3D DX labels above the work markers (same look as the med_hospitals labels). Vehicle
 -- markers are labelled only for the players on duty in their work.
 
@@ -33,27 +34,27 @@ end)
 -- -> color, icon, title, hint
 local function labelFor(marker, kind, work)
     local mine = getPlayerWork(localPlayer)
-    local key = WORK.KEY:upper()
-    local icon = work.name:sub(1, 1):upper()
+    local key = L.upper(WORK.KEY)
+    local icon = L.upper(L.sub(work.name, 1, 1))
 
     if kind == "duty" then
         if mine and mine ~= work.id then
             local other = Works[mine]
             return RED, "!", work.name,
-                ("You are working as %s · go off duty first"):format(other and other.name or mine)
+                L("work_core.labels.you_are_working_as_go_off", { mine = other and other.name or mine })
         elseif mine == work.id then
-            return work.color, icon, "On Duty", ("Press %s · outfit / go off duty"):format(key)
+            return work.color, icon, L("work_core.labels.on_duty"), L("work_core.labels.press_outfit_go_off_duty", { key = key })
         end
-        return work.color, icon, "Go On Duty", ("Press %s · choose your outfit"):format(key)
+        return work.color, icon, L("work_core.labels.go_on_duty"), L("work_core.labels.press_choose_your_outfit", { key = key })
     end
 
     -- vehicle marker
     if mine ~= work.id then return nil end
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if vehicle and getElementData(vehicle, WORK_DATA.VEHICLE_OWNER) == localPlayer then
-        return work.color, "V", "Work Vehicles", ("Press %s · return the vehicle"):format(key)
+        return work.color, "V", L("work_core.labels.work_vehicles"), L("work_core.labels.press_return_vehicle", { key = key })
     end
-    return work.color, "V", "Work Vehicles", ("Press %s · request a vehicle"):format(key)
+    return work.color, "V", L("work_core.labels.work_vehicles"), L("work_core.labels.press_request_vehicle", { key = key })
 end
 
 ---------------------------------------------------------------- drawing
@@ -77,17 +78,18 @@ local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint, lvl)
     local a = alpha / 255
 
     local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
-    local nameStr = name:upper()
-    local textW = math.max(dxGetTextWidth(title, k, fTitle), dxGetTextWidth(nameStr, k, fName),
-        dxGetTextWidth(hint, k, fHint))
+    local nameStr = L.upper(name)
+    local textW = math.max(L.width(title, k, fTitle), L.width(nameStr, k, fName),
+        L.width(hint, k, fHint))
     local w = pad + iconSize + gap + textW + pad * 1.4
     local fLv, fXp
     local lvLeft, lvRight
     if lvl then
         fLv, fXp = font(10, true), font(9)
-        lvLeft = ("LEVEL %d%s"):format(lvl.level, lvl.name and (" · " .. lvl.name:upper()) or "")
-        lvRight = lvl.to and ("%d / %d XP"):format(lvl.xp, lvl.to) or ("MAX · %d XP"):format(lvl.xp)
-        w = math.max(w, pad * 2 + dxGetTextWidth(lvLeft, k, fLv) + s(16) * k + dxGetTextWidth(lvRight, k, fXp))
+        lvLeft = lvl.name and L("work_core.labels.level_named", { level = lvl.level, name = L.upper(lvl.name) })
+            or L("work_core.labels.level", { level = lvl.level })
+        lvRight = lvl.to and L("work_core.labels.xp", { xp = lvl.xp, to = lvl.to }) or L("work_core.labels.max_xp", { xp = lvl.xp })
+        w = math.max(w, pad * 2 + L.width(lvLeft, k, fLv) + s(16) * k + L.width(lvRight, k, fXp))
     end
     local headH, hintH = s(46) * k, s(22) * k
     local h = headH + hintH

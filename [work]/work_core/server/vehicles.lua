@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Work vehicles requested at duty vehicle markers. One per player; removed when the player
 -- goes off duty / quits, returns it at a vehicle marker, or some seconds after it explodes.
 -- Only players on duty in the vehicle's work may drive it (passengers are not restricted).
@@ -70,25 +71,25 @@ end
 -- -> vehicle | false, errorText
 function spawnWorkVehicle(player, marker, index)
     local m = Markers[marker]
-    if not m or m.kind ~= "vehicle" then return false, "Invalid vehicle point." end
+    if not m or m.kind ~= "vehicle" then return false, L.msg("work_core.vehicles.invalid_vehicle_point") end
     local def = m.vehicles[tonumber(index) or 0]
-    if not def then return false, "Invalid vehicle." end
-    if not isPlayerOnDuty(player, m.work) then return false, "You must be on duty to request a work vehicle." end
-    if isPedInVehicle(player) then return false, "Leave your vehicle first." end
+    if not def then return false, L.msg("work_core.vehicles.invalid_vehicle") end
+    if not isPlayerOnDuty(player, m.work) then return false, L.msg("work_core.vehicles.you_must_be_on_duty_to") end
+    if isPedInVehicle(player) then return false, L.msg("work_core.vehicles.leave_your_vehicle_first") end
 
     local old = getPlayerWorkVehicle(player)
     if old and hasOtherOccupants(old, player) then
-        return false, "Your current work vehicle is still in use."
+        return false, L.msg("work_core.vehicles.your_current_work_vehicle_is_still")
     end
     destroyPlayerWorkVehicle(player)
 
     local int, dim = getElementInterior(marker), getElementDimension(marker)
     local s = freeSpawn(m, int, dim)
-    if not s then return false, "The vehicle spawn point is blocked." end
+    if not s then return false, L.msg("work_core.vehicles.vehicle_spawn_point_is_blocked") end
 
     local plate = def.platePrefix and generatePlate(def.platePrefix, def.plateDigits) or def.plate
     local vehicle = createVehicle(def.model, s[1], s[2], s[3], 0, 0, s[4], plate)
-    if not vehicle then return false, "The vehicle could not be created." end
+    if not vehicle then return false, L.msg("work_core.vehicles.vehicle_could_not_be_created") end
     setElementInterior(vehicle, int)
     setElementDimension(vehicle, dim)
     if def.color then setVehicleColor(vehicle, unpack(def.color)) end
@@ -115,10 +116,10 @@ end
 function returnWorkVehicle(player, marker)
     local m = Markers[marker]
     local vehicle = getPedOccupiedVehicle(player)
-    if not m or m.kind ~= "vehicle" or not vehicle then return false, "You are not in a work vehicle." end
+    if not m or m.kind ~= "vehicle" or not vehicle then return false, L.msg("work_core.vehicles.you_are_not_in_work_vehicle") end
     local d = byVehicle[vehicle]
-    if not d or d.owner ~= player or d.work ~= m.work then return false, "This is not your work vehicle." end
-    if hasOtherOccupants(vehicle, player) then return false, "Everyone has to get out first." end
+    if not d or d.owner ~= player or d.work ~= m.work then return false, L.msg("work_core.vehicles.this_is_not_your_work_vehicle") end
+    if hasOtherOccupants(vehicle, player) then return false, L.msg("work_core.vehicles.everyone_has_to_get_out_first") end
     destroyPlayerWorkVehicle(player)
     return true
 end
@@ -131,8 +132,8 @@ addEventHandler("onVehicleStartEnter", root, function(player, seat)
     if d and not isPlayerOnDuty(player, d.work) then
         cancelEvent()
         local work = Works[d.work]
-        notifyPlayer(player, work and work.name or "Work",
-            "Only on-duty workers can drive this vehicle.")
+        notifyPlayer(player, work and work.name or L.msg("work_core.menus.work"),
+            L.msg("work_core.vehicles.only_on_duty_workers_can_drive"))
     end
 end)
 
