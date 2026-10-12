@@ -183,8 +183,9 @@ end
 --   lineup / backtrack                holding short of its departure runway (enter, roll to the
 --                                     threshold, turn round = lined up)
 --   takeoff                           holding short (no backtrack needed) / lined up
---   approach                          airborne arrival: cleared approach (needed to start the final; on a
---                                     procedure, or vectors intercepting the centre line within APP_CLR_ANGLE)
+--   approach                          airborne arrival: cleared approach (needed to start the final): on a
+--                                     procedure it flies that, vectors intercepting a centre line within
+--                                     APP_CLR_ANGLE keep the heading, otherwise direct to the nearest final fix
 --   land                              airborne arrival
 --   vacate (value = taxiway id)       arrival: leave the runway there
 --   goaround                          arrival on approach / final: flies the go-around procedure of the
@@ -252,9 +253,8 @@ function giveClearance(id, kind, value)
         end
         ac.toClr = true
     elseif kind == "approach" then
-        local ok, err = approachCheck(ac)
+        local ok, err = clearApproach(ac)
         if not ok then return false, err end
-        ac.appClr = true
     elseif kind == "land" then
         if (p ~= "air" and p ~= "final") or not airport(ac.arr) then return false, "not an arrival" end
         ac.landClr = true

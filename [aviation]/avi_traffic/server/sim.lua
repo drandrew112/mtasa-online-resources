@@ -795,8 +795,9 @@ end
 function trafficGoAround(ac) goAround(ac) end
 
 -- approach set-up: a base point when the aircraft is on the airport side of the final fix
-local function startApproach(ac)
-    local rwy, ff = arrivalFinal(ac)
+-- (rwy / ff: that runway end and its final fix, default = the arrival runway)
+local function startApproach(ac, rwy, ff)
+    if not rwy then rwy, ff = arrivalFinal(ac) end
     if not rwy or not ff then return false end
     ac.rwy = rwy
     ac.approach = ff
@@ -918,18 +919,9 @@ function approachCleared(ac)
     return ac.appClr or ac.landClr or not controlled(ac) or false
 end
 
--- may "cleared approach" be given now? On a procedure (STAR / final fix target) always; on radar
--- vectors only when the heading intercepts the extended centre line of the arrival runway ahead of the
--- threshold, at most TR.APP_CLR_ANGLE deg, within TR.APP_CLR_FAR final lengths.
-function approachCheck(ac)
-    if ac.phase ~= "air" then return false, "not airborne / already on final" end
-    if not airport(ac.arr) then return false, "not an arrival" end
-    if not ac.ahdg then
-        if ac.star or ac.approach or ac.ga then return true end
-        return false, "no arrival procedure or radar heading to the final"
-    end
-    local rwy, ff = arrivalFinal(ac)
-    if not rwy then return false, "no arrival runway" end
+-- does the radar heading intercept the extended centre line of this runway end ahead of the threshold,
+-- at most TR.APP_CLR_ANGLE deg, within TR.APP_CLR_FAR final lengths? true, or false + the reason
+local function headingIntercepts(ac, rwy, ff)
     local hdg = ac.ahdg
     local h = math.rad(rwy.hdg)
     local ux, uy = math.sin(h), math.cos(h)
@@ -953,6 +945,70 @@ function approachCheck(ac)
     elseif along < -finalLen * TR.APP_CLR_FAR then
         return false, "too far from the runway"
     end
+    return true
+end
+
+-- runway ends (with a final fix) of the arrival airport: { {rwy, ff}, ... }
+local function arrivalEnds(ac)
+    local out = {}
+    local apt = airport(ac.arr)
+    for _, rw in ipairs(apt and apt.runways or {}) do
+        for _, e in ipairs(rw.ends or {}) do
+            local ff = e.final and navPoint(e.final)
+            if ff then out[#out + 1] = { e, ff } end
+        end
+    end
+    return out
+end
+
+-- the runway end whose final the radar heading intercepts (the arrival runway first), or nil
+local function interceptedFinal(ac)
+    local rwy, ff = arrivalFinal(ac)
+    if rwy and headingIntercepts(ac, rwy, ff) then return rwy end
+    for _, r in ipairs(arrivalEnds(ac)) do
+        if headingIntercepts(ac, r[1], r[2]) then return r[1] end
+    end
+end
+
+-- the runway end of the arrival airport with the nearest final fix: rwy, ff, distance (m)
+local function nearestFinal(ac)
+    local best, bestFf, bestD
+    for _, r in ipairs(arrivalEnds(ac)) do
+        local d = dist(ac.x, ac.y, r[2].x, r[2].y)
+        if not bestD or d < bestD then best, bestFf, bestD = r[1], r[2], d end
+    end
+    return best, bestFf, bestD
+end
+
+-- "cleared approach" (airborne arrival, no arrival procedure needed):
+--   on a STAR / go-around procedure / already heading for a final fix: it flies that one on
+--   radar heading intercepting a final (APP_CLR_ANGLE, APP_CLR_FAR): it keeps the heading and intercepts
+--   anything else: direct to the nearest final fix of the destination (with a base point when it is on
+--   the airport side of it), the rest of the route / heading is dropped
+function clearApproach(ac)
+    if ac.phase ~= "air" then return false, "not airborne / already on final" end
+    if not airport(ac.arr) then return false, "not an arrival" end
+    if ac.ahdg then
+        local e = interceptedFinal(ac)
+        if e then
+            ac.arrRwy, ac.appClr = e.ident, true
+            return true
+        end
+    elseif ac.star or ac.approach or ac.ga then
+        ac.appClr = true
+        return true
+    end
+    local rwy, ff = nearestFinal(ac)
+    if not rwy then return false, "no final fix at " .. ac.arr end
+    ac.ahdg, ac.ahdgDir, ac.dct, ac.via, ac.approach, ac.missed, ac.ga = nil, nil, nil, nil, nil, nil, nil
+    ac.ri = #ac.route + 1
+    ac.star, ac.procStart, ac.procEnd, ac.starTried = nil, nil, nil, true
+    ac.arrRwy = rwy.ident
+    ac.rwy = rwy
+    ac.proc = ff.id
+    startApproach(ac, rwy, ff)
+    ac.approach = ff
+    ac.appClr = true
     return true
 end
 
@@ -1172,7 +1228,10 @@ local function pendingClearance(ac)
         -- calls for the approach clearance close to the final fix / when the vectors intercept the final
         local ready = false
         if ac.approach then ready = dist(ac.x, ac.y, ac.approach.x, ac.approach.y) < TR.APP_CALL_DIST
-        elseif ac.ahdg then ready = approachCheck(ac) end
+        elseif ac.ahdg then
+            local _, _, d = nearestFinal(ac)
+            ready = interceptedFinal(ac) ~= nil or (d ~= nil and d < TR.APP_CALL_DIST)
+        end
         return "APP", ready
     elseif (p == "final" or (p == "air" and (ac.approach or ac.ahdg))) and airport(ac.arr) and not ac.landClr then
         -- calls for the landing clearance on final / close to the final fix

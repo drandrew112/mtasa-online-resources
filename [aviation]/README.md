@@ -109,11 +109,15 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
   resume own navigation, cleared approach, cleared to land,
   vacate via <taxiway>, go around, transfer, show route.
 - Cleared approach (APP / centre / tower, whoever controls the aircraft): a controlled arrival does not start
-  its final without it. On a STAR (or heading to the final fix) it is always accepted; on radar vectors the
-  heading must intercept the extended centre line ahead of the threshold at max 30 deg
-  (`APP_CLR_ANGLE`, within `APP_CLR_FAR` final lengths), otherwise the reason is shown. Without it the
-  aircraft flies through the final fix / centre line on its heading (vectors needed). The pilots ask for it
-  (`APP`, yellow frame) within `APP_CALL_DIST` of the final fix or when their vectors would intercept.
+  its final without it. No arrival procedure is needed: on a STAR / GA procedure it flies that one on; on radar
+  vectors that intercept the extended centre line of any runway end of the destination ahead of the threshold
+  at max 30 deg (`APP_CLR_ANGLE`, within `APP_CLR_FAR` final lengths) it keeps the heading and intercepts;
+  otherwise it goes direct to the **nearest final fix** of the destination (base point first when it is on the
+  airport side of it), dropping the rest of its route / heading (the label waypoint shows the final fix).
+  Ideal level at the final fix: field + `FINAL_AGL` 1200 ft (cleared 1500 ft is fine; above field + 1700 ft =
+  go-around). Glide = 1 ft per metre from the threshold. Without the clearance the aircraft flies through the
+  final fix / centre line on its heading (vectors needed). The pilots ask for it (`APP`, yellow frame) within
+  `APP_CALL_DIST` of the final fix or when their vectors would intercept.
   A new direct / STAR or a go-around cancels it; uncontrolled aircraft need none.
 - Tower / ground: IFR clearance at the stand (initial level, accepts the route), pushback (tail first onto
   the nearest taxiway, nose towards the departure runway), taxi (to a runway / to a stand).
