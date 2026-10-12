@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Test runs. The server puts the player into a vehicle (race) or gives the
 -- weapon (deathmatch); race checkpoints run locally here. F6 ends the test.
 
@@ -44,7 +45,7 @@ addEventHandler("onClientMarkerHit", root, function(hitElement, matchingDimensio
     playSoundFrontEnd(43)
     if isFinish then
         clearMarker()
-        notify("Finished in " .. formatTime(getTickCount() - run.startTick) .. ".")
+        notify(L("v_jobcreator.test.finished_in", { start_tick = formatTime(getTickCount() - run.startTick) }))
         setTimer(Test.stop, 2500, 1)
         return
     end
@@ -55,7 +56,7 @@ end)
 function Test.start(x, y, z, rz, firstCheckpoint)
     if Editor.testing or not Editor.doc then return end
     local doc = Editor.doc
-    if doc.type == "race" and not doc.race.finish then notify("Place the finish first.") return end
+    if doc.type == "race" and not doc.race.finish then notify(L("v_jobcreator.test.place_finish_first")) return end
     Tools.cancel()
     Menus.close()
     if Editor.camMode == "free" then Freecam.stop() end
@@ -79,9 +80,9 @@ addEventHandler("jobcreator:testStarted", resourceRoot, function()
     run.startTick = getTickCount()
     if Editor.doc.type == "race" then
         showCheckpoint()
-        notify("Test started.  F6 ends it.")
+        notify(L("v_jobcreator.test.test_started_f6_ends_it"))
     else
-        notify("Test started with your weapon.  F6 ends it.")
+        notify(L("v_jobcreator.test.test_started_with_your_weapon_f6"))
     end
 end)
 
@@ -103,5 +104,5 @@ end
 addEvent("jobcreator:testStopped", true)
 addEventHandler("jobcreator:testStopped", resourceRoot, function()
     Test.cleanup()
-    notify("Test ended.")
+    notify(L("v_jobcreator.test.test_ended"))
 end)

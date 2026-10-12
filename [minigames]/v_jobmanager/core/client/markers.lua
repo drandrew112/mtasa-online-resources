@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- 3D DX labels above every job marker (same card style as the medical / work markers)
 -- and the E key inside a marker, which joins a waiting lobby of that job or opens a new one.
 
@@ -11,10 +12,10 @@ local LABEL_MIN_SCALE = 0.55
 local KEY = "e"
 
 local TYPE_STYLE = {
-    race       = { color = { 56, 132, 244 }, icon = "R", title = "Race" },
-    deathmatch = { color = { 218, 54, 51 },  icon = "DM", title = "Deathmatch" },
+    race       = { color = { 56, 132, 244 }, icon = "R", title = L("common.race") },
+    deathmatch = { color = { 218, 54, 51 },  icon = "DM", title = L("common.deathmatch") },
 }
-local DEFAULT_STYLE = { color = { 230, 190, 40 }, icon = "J", title = "Job" }
+local DEFAULT_STYLE = { color = { 230, 190, 40 }, icon = "J", title = L("common.job") }
 
 local fonts = {}
 local function font(size, bold)
@@ -47,11 +48,11 @@ local function drawLabel(sx, sy, k, alpha, job, inside)
     local fTitle, fSub, fHint = font(13, true), font(9, true), font(9)
     local a = alpha / 255
 
-    local subStr = (st.title .. "  -  " .. job.minPlayers .. "-" .. job.maxPlayers .. " players"):upper()
-    local hint = inside and "Press  E  to start a lobby" or "Step into the marker to start a lobby"
+    local subStr = (L("v_jobmanager.markers.players", { title = st.title, min_players = job.minPlayers, max_players = job.maxPlayers })):upper()
+    local hint = inside and L("v_jobmanager.markers.press_e_to_start_lobby") or L("v_jobmanager.markers.step_into_marker_to_start_lobby")
     local pad, icon, gap = s(10) * k, s(34) * k, s(10) * k
-    local textW = math.max(dxGetTextWidth(job.name, k, fTitle), dxGetTextWidth(subStr, k, fSub),
-        dxGetTextWidth(hint, k, fHint))
+    local textW = math.max(L.width(job.name, k, fTitle), L.width(subStr, k, fSub),
+        L.width(hint, k, fHint))
     local w = pad + icon + gap + textW + pad * 1.4
     local headH = s(46) * k
     local hintH = s(22) * k

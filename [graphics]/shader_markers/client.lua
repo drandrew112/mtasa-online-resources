@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     shader_markers
     Replaces the look of cylinder markers with a modern gradient (wall + ground disc).
@@ -238,9 +239,9 @@ end
 addCommandHandler("markershader", function()
     if enabled then
         disable()
-        outputChatBox("Marker shader: KI", 255, 200, 0)
+        outputChatBox(L("shader_markers.client.marker_shader_ki"), 255, 200, 0)
     else
         local ok = enable()
-        outputChatBox(ok and "Marker shader: BE" or "Marker shader: nem támogatott", 255, 200, 0)
+        outputChatBox(ok and L("shader_markers.client.marker_shader_be") or L("shader_markers.client.marker_shader_not_supported"), 255, 200, 0)
     end
 end)

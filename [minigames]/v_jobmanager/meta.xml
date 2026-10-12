@@ -1,6 +1,8 @@
 <meta>
     <info author="DrAndrew112, rewritten by Codex" name="v_jobmanager" type="script" version="2.0.0" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config/jobs.lua" type="shared" />
 
     <script src="mode_race/server.lua" type="server" />

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 JobModes = JobModes or {}
 
 -- player -> { match, vehicle, model, pos = {x, y, z, rot}, locked }
@@ -52,7 +53,7 @@ local function createCheckpoint(match, player, endMatch)
     local index = match.progress[player] or 1
     local point, isFinish = route.checkpoints[index], false
     if not point then point, isFinish = route.finish, true end
-    if not point then endMatch(match, "Invalid race configuration.") return end
+    if not point then endMatch(match, L.msg("v_jobmanager.mode_race.invalid_race_configuration")) return end
 
     local marker = createMarker(point[1], point[2], point[3], "checkpoint", point[4] or 5, isFinish and 0 or 255, isFinish and 180 or 255, 0, 140, player)
     setElementDimension(marker, match.dimension)
@@ -66,7 +67,7 @@ local function createCheckpoint(match, player, endMatch)
             match.finishTime[player] = getTickCount() - (match.raceStartTick or getTickCount())
             releasePlayer(player)
             for _, participant in ipairs(match.players) do if not match.finished[participant] then return end end
-            endMatch(match, "Everyone finished the race.")
+            endMatch(match, L.msg("v_jobmanager.core.everyone_finished_race"))
         else
             local state = raceState[player]
             if state then state.pos = { point[1], point[2], point[3], 0 } end
@@ -113,7 +114,7 @@ JobModes[JOB_TYPE_RACE] = {
     start = function(match, endMatch)
         local route = match.job.race
         if not route or #route.spawnpoints < #match.players then
-            endMatch(match, "Race configuration is incomplete.")
+            endMatch(match, L.msg("v_jobmanager.mode_race.race_configuration_is_incomplete"))
             return
         end
         local vehicleModel = route.vehicles[1] or 411

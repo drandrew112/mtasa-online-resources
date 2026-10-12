@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- shader_colors / c_main.lua
 --
 -- Lifecycle of the full-screen grading pass. The shader and the screen source
@@ -10,7 +11,7 @@ local WATCHDOG_MS         = 5000
 local VRAM_MARGIN_MB      = 32 -- must stay free on top of the screen source
 local VRAM_CRITICAL_MB    = 16 -- running: drop the effect below this
 local LUMA                = { 0.2126, 0.7152, 0.0722 }
-local CHAT_PREFIX         = "#3fa9f5[Színkorrekció] #ffffff"
+local CHAT_PREFIX         = L("shader_colors.api.color_grading")
 
 PRESET_FADE_MS = 800
 
@@ -161,9 +162,9 @@ local function disable(reason)
     if Status == reason then return end
     Status = reason
     if reason == "unsupported" then
-        notify("A videokártyád nem támogatja a színkorrekciót, ezért ki lett kapcsolva.")
+        notify(L("shader_colors.main.your_graphics_card_does_not_support"))
     else
-        notify("Kevés a szabad videómemória, ezért a színkorrekció ki lett kapcsolva. A grafikai beállítás módosításakor újra megpróbálja.")
+        notify(L("shader_colors.main.not_enough_free_video_memory_so"))
     end
 end
 
@@ -262,8 +263,8 @@ render = function()
     if Split then
         local x = screenW / 2
         dxDrawLine(x, 0, x, screenH, tocolor(255, 255, 255, 170), 2)
-        dxDrawText("ORIGINAL", 0, 20, x - 20, 40, tocolor(255, 255, 255, 220), 1.2, "default-bold", "right")
-        dxDrawText("GRADED", x + 20, 20, screenW, 40, tocolor(255, 255, 255, 220), 1.2, "default-bold", "left")
+        dxDrawText(L("shader_colors.main.original"), 0, 20, x - 20, 40, tocolor(255, 255, 255, 220), 1.2, "default-bold", "right")
+        dxDrawText(L("shader_colors.main.graded"), x + 20, 20, screenW, 40, tocolor(255, 255, 255, 220), 1.2, "default-bold", "left")
     end
 end
 

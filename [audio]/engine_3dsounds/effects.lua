@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 DEBUG = false
 
 local SOUND_SPEED_OF_SOUND = 343.0
@@ -282,11 +283,11 @@ local function drawDebugSound(sound, state, sx, sy, sz, cx, cy, cz, distance, ma
     local status
 
     if not state.inRange then
-        status = "OUT OF RANGE"
+        status = L("engine_3dsounds.effects.out_of_range")
     elseif state.obstructed then
-        status = "OCCLUDED"
+        status = L("engine_3dsounds.effects.occluded")
     else
-        status = "CLEAR"
+        status = L("engine_3dsounds.effects.clear")
     end
 
     local lineColor
@@ -355,7 +356,7 @@ local function drawDebugSound(sound, state, sx, sy, sz, cx, cy, cz, distance, ma
         maxDistance,
         status,
         state.appliedVolume,
-        state.isStream and "OFF (STREAM)" or "ON",
+        state.isStream and L("engine_3dsounds.effects.off_stream") or "ON",
         state.appliedSpeed,
         state.radialVelocity * 3.6
     )
@@ -384,7 +385,7 @@ local function drawDebugHeader(registeredCount)
     end
 
     dxDrawText(
-        "Registered 3D sounds: " .. registeredCount,
+        L("engine_3dsounds.effects.registered_3d_sounds", { registered_count = registeredCount }),
         20,
         85,
         500,

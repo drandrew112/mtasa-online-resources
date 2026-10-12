@@ -1,6 +1,8 @@
 <meta>
 	<info author="DrAndrew112" version="2" type="script" name="TimeTrials" />
 	
+	<include resource="v_locals" />
+	<script src="locals.lua" type="shared" />
 	<script src="shared.lua"	   	type="shared"/>
 	<script src="c_timetrial.lua"	type="client"/>
 	<script src="s_timetrial.lua" 	type="server"/>

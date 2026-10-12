@@ -3,6 +3,8 @@
           description="Interior registry: enter/exit markers, fixed dimension per interior, admin browser (/interiors)" />
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->

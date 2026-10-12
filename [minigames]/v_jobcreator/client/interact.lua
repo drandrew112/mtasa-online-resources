@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- On foot, every editor element gets a ui_interactobject menu (Q/E focus, X open,
 -- number keys). In freecam the cursor shows, which hides these menus; clicking
 -- an element opens the ui_inac item menu instead.
@@ -5,16 +6,16 @@
 Interact = { ids = {} }
 
 local DEF = {
-    title = "Editor",
+    title = L("v_jobcreator.interact.editor"),
     range = 6,
     lineOfSight = false,
     allowInVehicle = false,
     dataKey = "jobcreator.item",
     items = {
-        { label = "Move", value = "move" },
-        { label = "Duplicate", value = "dup" },
-        { label = "Options...", value = "options" },
-        { label = "Delete", value = "delete" },
+        { label = L("v_jobcreator.interact.move"), value = "move" },
+        { label = L("v_jobcreator.interact.duplicate"), value = "dup" },
+        { label = L("v_jobcreator.interact.options"), value = "options" },
+        { label = L("v_jobcreator.interact.delete"), value = "delete" },
     },
 }
 
@@ -40,7 +41,7 @@ addEventHandler("onClientInteractMenuSelect", root, function(menuId, value, targ
         if Kinds[item.kind].fixed then return Menus.openItem(item) end
         Tools.move(item)
     elseif value == "dup" then
-        if item.kind == "object" or item.kind == "spawn" then Ops.duplicate(item) else notify("This cannot be duplicated.") end
+        if item.kind == "object" or item.kind == "spawn" then Ops.duplicate(item) else notify(L("v_jobcreator.interact.this_cannot_be_duplicated")) end
     elseif value == "options" then
         Menus.openItem(item)
     elseif value == "delete" then

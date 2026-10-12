@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     manageResources.lua
     ---------------------------------------------------------------------------
@@ -35,12 +36,12 @@ end
 --- Resolve a resource-name argument; prints the error and returns nil on failure.
 local function resolveResource(player, name)
     if not name or name == "" then
-        commandFeedback(player, "res", "Usage: <command> <resource name>")
+        commandFeedback(player, "res", L.msg("v_main.manageresources.usage_command_resource_name"))
         return nil
     end
     local res = getResourceFromName(name)
     if not res then
-        commandFeedback(player, "res", ("No such resource: '%s'."):format(name))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.no_such_resource", { name = name }))
         return nil
     end
     return res
@@ -53,12 +54,12 @@ local function cmdStart(player, cmd, name)
     if not res then return end
 
     if getResourceState(res) == "running" then
-        return commandFeedback(player, "res", ("'%s' is already running."):format(name))
+        return commandFeedback(player, "res", L.msg("v_main.manageresources.is_already_running", { name = name }))
     end
     if startResource(res) then
-        commandFeedback(player, "res", ("Started '%s' (by %s)."):format(name, actor(player)))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.started_by", { name = name, player = actor(player) }))
     else
-        commandFeedback(player, "res", ("Could not start '%s' - check its meta.xml / dependencies."):format(name))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.could_not_start_check_its_meta", { name = name }))
     end
 end
 
@@ -69,15 +70,15 @@ local function cmdStop(player, cmd, name)
     if not res then return end
 
     if PROTECT[getResourceName(res)] then
-        return commandFeedback(player, "res", ("'%s' is protected - it cannot be stopped from here."):format(name))
+        return commandFeedback(player, "res", L.msg("v_main.manageresources.is_protected_it_cannot_be_stopped", { name = name }))
     end
     if getResourceState(res) ~= "running" then
-        return commandFeedback(player, "res", ("'%s' is not running."):format(name))
+        return commandFeedback(player, "res", L.msg("v_main.manageresources.is_not_running", { name = name }))
     end
     if stopResource(res) then
-        commandFeedback(player, "res", ("Stop requested for '%s' (by %s)."):format(name, actor(player)))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.stop_requested_for_by", { name = name, player = actor(player) }))
     else
-        commandFeedback(player, "res", ("Could not stop '%s'."):format(name))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.could_not_stop", { name = name }))
     end
 end
 
@@ -88,15 +89,15 @@ local function cmdRestart(player, cmd, name)
     if not res then return end
 
     if PROTECT[getResourceName(res)] then
-        return commandFeedback(player, "res", ("'%s' is protected - use /restartallresource instead."):format(name))
+        return commandFeedback(player, "res", L.msg("v_main.manageresources.is_protected_use_restartallresource_instead", { name = name }))
     end
     if getResourceState(res) ~= "running" then
-        return commandFeedback(player, "res", ("'%s' is not running - use /startres."):format(name))
+        return commandFeedback(player, "res", L.msg("v_main.manageresources.is_not_running_use_startres", { name = name }))
     end
     if restartResource(res) then
-        commandFeedback(player, "res", ("Restarting '%s' (by %s)."):format(name, actor(player)))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.restarting_by", { name = name, player = actor(player) }))
     else
-        commandFeedback(player, "res", ("Could not restart '%s'."):format(name))
+        commandFeedback(player, "res", L.msg("v_main.manageresources.could_not_restart", { name = name }))
     end
 end
 

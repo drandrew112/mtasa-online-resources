@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ATC markers: a 3D label above the marker and the interact key (server/marker.lua validates).
 
 local markers = {}
@@ -62,9 +63,9 @@ addEventHandler("onClientRender", root, function()
                     local w, h, bar = 230 * U * k, 50 * U * k, 3 * U * k
                     dxDrawRectangle(sx - w / 2, sy - h, w, h, tocolor(14, 17, 21, 220 * a / 255))
                     dxDrawRectangle(sx - w / 2, sy - bar, w, bar, tocolor(70, 130, 210, a))
-                    dxDrawText(getElementData(m, "avi.marker") or "ATC", sx - w / 2, sy - h, sx + w / 2, sy - h * 0.5,
+                    dxDrawText(getElementData(m, "avi.marker") or L("avi_core.marker.atc"), sx - w / 2, sy - h, sx + w / 2, sy - h * 0.5,
                         tocolor(255, 255, 255, a), k, "default-bold", "center", "center")
-                    dxDrawText(("Press %s · ATC position"):format(AVI.MARKER_KEY:upper()), sx - w / 2, sy - h * 0.5,
+                    dxDrawText(L("avi_core.marker.press_atc_position", { marker_key = AVI.MARKER_KEY:upper() }), sx - w / 2, sy - h * 0.5,
                         sx + w / 2, sy - bar, tocolor(200, 205, 212, a), k * 0.9, "default", "center", "center")
                 end
             end

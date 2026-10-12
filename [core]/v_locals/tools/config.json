@@ -25,12 +25,15 @@
       "med_erm/server/webapp.lua": "dispatcher web console (3.2)",
       "med_erm/server/http.lua": "dispatcher web console (3.2)",
       "rw_core/server/web.lua": "railway web map (3.2)",
-      "v_mysql/config.lua": "credentials (never scanned)"
+      "v_mysql/config.lua": "credentials (never scanned)",
+      "medsys/client/test.lua": "test command (D14)",
+      "medsys/server/test.lua": "test command (D14)",
+      "medsys_effects/client/test.lua": "test command (D14)",
+      "medsys_effects/server/test.lua": "test command (D14)"
     },
     "paths": {
       "(^|/)old/": "old code, not loaded",
       "(^|/)tests?/": "tests",
-      "(^|/)test\\.lua$": "test command (D14)",
       "(^|/)tools/": "dev tools",
       "(^|/)data/": "generated data"
     },

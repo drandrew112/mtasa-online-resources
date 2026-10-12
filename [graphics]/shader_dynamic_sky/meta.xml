@@ -1,6 +1,8 @@
 <meta>
 	<info name="Shader Dynamic Sky" description="Shader Dynamic Sky" author="Ren712" version="2.2.2" type="script" />
 	<min_mta_version client="1.4.0" server="1.4.0" />
+	<include resource="v_locals" />
+	<script src="locals.lua" type="client" />
 	<script src="c_main.lua" type="client" />
 	<script src="c_helper_functions.lua" type="client" />
 	<script src="c_switch.lua" type="client" />

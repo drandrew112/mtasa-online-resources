@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ATC rights ("légiforgalmi irányító jogok"): tower, approach and radar are separate. The server
 -- table is the authority; the element data copy (AVI.DATA_RIGHTS) only tells clients, and
 -- client-side changes to it are reverted. Not persisted: work_atc / admins hand them out.
@@ -92,7 +93,7 @@ addEventHandler("onPlayerQuit", root, function() RIGHTS[source] = nil end)
 -- /atcright [player] <twr|app|radar|all|reset> [on|off]  (admins) - no player = yourself, no state = toggle
 addCommandHandler("atcright", function(player, _, a, b, c)
     if not isAviationAdmin(player) then
-        aviNotify(player, "You are not allowed to do this.")
+        aviNotify(player, L.msg("avi_core.role.you_are_not_allowed_to_do"))
         return
     end
     -- the player name is optional: the first argument that is not a keyword
@@ -101,27 +102,27 @@ addCommandHandler("atcright", function(player, _, a, b, c)
     if a and not keywords[a:lower()] then
         target = findPlayer(a)
         if not target then
-            aviNotify(player, "No such player.")
+            aviNotify(player, L.msg("avi_core.role.no_such_player"))
             return
         end
         right, state = b, c
     end
     right = right and right:lower()
     if not right or not keywords[right] then
-        aviNotify(player, "Usage: /atcright [player] <twr|app|radar|all|reset> [on|off]")
+        aviNotify(player, L.msg("avi_core.role.usage_atcright_player_twr_app_radar"))
         return
     end
     local who = getPlayerName(target):gsub("#%x%x%x%x%x%x", "")
     if right == "reset" then
         setPlayerATCRights(target, false)
-        aviNotify(player, "ATC rights reset: " .. who)
+        aviNotify(player, L.msg("avi_core.role.atc_rights_reset", { who = who }))
     else
         local list = right == "all" and AVI.RIGHTS or { right:upper() }
         local enable
         if state == "on" then enable = true elseif state == "off" then enable = false
         else enable = not hasATCRight(target, list[1]) end
         for _, r in ipairs(list) do setPlayerATCRight(target, r, enable) end
-        aviNotify(player, ("ATC right %s %s: %s"):format(right:upper(), enable and "given" or "removed", who))
+        aviNotify(player, L.msg("avi_core.role.atc_right", { right = right:upper(), enable = enable and "given" or "removed", who = who }))
     end
-    if target ~= player then aviNotify(target, "Your ATC rights were changed.") end
+    if target ~= player then aviNotify(target, L.msg("avi_core.role.your_atc_rights_were_changed")) end
 end)

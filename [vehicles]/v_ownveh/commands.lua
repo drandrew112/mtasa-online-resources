@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_ownveh :: admin commands
 --
 --   /vehspawn       collect the spawn point under the admin's vehicle
@@ -57,13 +58,13 @@ end
 
 addCommandHandler("vehspawn", function(player)
     if not isAdmin(player) then
-        outputChatBox("v_ownveh: you don't have permission for /vehspawn.", player, 255, 90, 90)
+        outputChatBox(L.msg("v_ownveh.commands.v_ownveh_you_don_t_have"), player, 255, 90, 90)
         return
     end
 
     local veh = getPedOccupiedVehicle(player)
     if not veh then
-        outputChatBox("v_ownveh: sit in a vehicle first.", player, 255, 90, 90)
+        outputChatBox(L.msg("v_ownveh.commands.v_ownveh_sit_in_vehicle_first"), player, 255, 90, 90)
         return
     end
 
@@ -76,7 +77,7 @@ addCommandHandler("vehspawn", function(player)
     local path = Vehicles.config.spawnpointFile
     local file = fileExists(path) and fileOpen(path) or fileCreate(path)
     if not file then
-        outputChatBox("v_ownveh: could not write " .. path, player, 255, 90, 90)
+        outputChatBox(L.msg("v_ownveh.commands.v_ownveh_could_not_write", { path = path }), player, 255, 90, 90)
         return
     end
     fileSetPos(file, fileGetSize(file))
@@ -89,7 +90,7 @@ addCommandHandler("vehspawn", function(player)
         table.insert(newPointMarkers[player], marker)
     end
 
-    outputChatBox("v_ownveh [" .. category .. "] " .. line, player, 120, 220, 120)
+    outputChatBox(L.msg("v_ownveh.commands.v_ownveh", { category = category, line = line }), player, 120, 220, 120)
     outputServerLog("[v_ownveh] /vehspawn by " .. getPlayerName(player) .. " -> " .. line)
 end)
 
@@ -99,7 +100,7 @@ end)
 
 addCommandHandler("showvehspawns", function(player)
     if not isAdmin(player) then
-        outputChatBox("v_ownveh: you don't have permission for /showvehspawns.", player, 255, 90, 90)
+        outputChatBox(L.msg("v_ownveh.commands.v_ownveh_you_don_t_have_2"), player, 255, 90, 90)
         return
     end
 
@@ -107,7 +108,7 @@ addCommandHandler("showvehspawns", function(player)
     if shownMarkers[player] then
         destroyMarkerList(shownMarkers[player])
         shownMarkers[player] = nil
-        outputChatBox("v_ownveh: spawn point markers hidden.", player, 200, 200, 200)
+        outputChatBox(L.msg("v_ownveh.commands.v_ownveh_spawn_point_markers_hidden"), player, 200, 200, 200)
         return
     end
 
@@ -123,8 +124,7 @@ addCommandHandler("showvehspawns", function(player)
     end
     shownMarkers[player] = markers
 
-    outputChatBox(string.format("v_ownveh: showing %d spawn point marker(s). " ..
-        "land=green boats=blue heli=yellow plane=red. /showvehspawns again to hide.",
+    outputChatBox(string.format(L("v_ownveh.commands.v_ownveh_showing_d_spawn_point"),
         count), player, 120, 220, 120)
 end)
 

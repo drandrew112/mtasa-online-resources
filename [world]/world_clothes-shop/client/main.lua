@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- world_clothes-shop / client/main.lua
 -- Changer markers: press CLOTHES.key inside one to open the outfit list (ui_inac temp menu).
 -- While the list is open the camera looks at the player from the front and the controls are
@@ -81,8 +82,8 @@ function isClothesMenuOpen() return menu ~= nil end
 ---------------------------------------------------------------- menu
 
 local GROUPS = {
-    { key = "male",   label = "Men",   title = "MEN" },
-    { key = "female", label = "Women", title = "WOMEN" },
+    { key = "male",   label = L("world_clothes_shop.main.men"),   title = L("world_clothes_shop.main.men_2") },
+    { key = "female", label = L("world_clothes_shop.main.women"), title = L("world_clothes_shop.main.women_2") },
 }
 
 local function openMenu()
@@ -94,13 +95,13 @@ local function openMenu()
             local own = skin == current
             if own then wornPath = g .. "/" .. i end
             items[i] = {
-                label = "Outfit " .. skin, desc = "Buy and wear this outfit", value = skin,
+                label = L("world_clothes_shop.main.outfit", { skin = skin }), desc = L("world_clothes_shop.main.buy_and_wear_this_outfit"), value = skin,
                 price = CLOTHES.price, checked = own or nil, closeOnSelect = false,
             }
         end
-        groups[g] = { label = group.label, desc = group.label .. "'s outfits", title = group.title, items = items }
+        groups[g] = { label = group.label, desc = L("world_clothes_shop.main.s_outfits", { label = group.label }), title = group.title, items = items }
     end
-    local id = exports.ui_inac:createTempMenu({ title = "CLOTHES", items = groups })
+    local id = exports.ui_inac:createTempMenu({ title = L("world_clothes_shop.main.clothes"), items = groups })
     if not id then return end
     menu = { id = id, previewFrom = current, wornPath = wornPath }
     Status = nil
@@ -158,7 +159,7 @@ end)
 
 -- The outfit is bought: it becomes the menu's base model and the list marks it as worn
 addEventHandler("clothes:bought", resourceRoot, function(skin)
-    setStatus(("Outfit bought · €%d"):format(CLOTHES.price), true)
+    setStatus(L("world_clothes_shop.main.outfit_bought", { price = CLOTHES.price }), true)
     if not menu then return end
     menu.previewFrom = skin
     if menu.wornPath then exports.ui_inac:updateTempMenuItem(menu.wornPath, { checked = false }) end

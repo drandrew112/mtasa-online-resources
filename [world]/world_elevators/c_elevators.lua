@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 
 local elevatorId = nil   -- elevator the player is currently standing in
@@ -18,7 +19,7 @@ local function openSelector()
     end
 
     menuId = exports.ui_inac:createTempMenu({
-        title = elevator.name or "ELEVATOR",
+        title = elevator.name or L("world_elevators.elevators.elevator"),
         items = items,
     }) or nil
 end
@@ -58,7 +59,7 @@ end)
 addEventHandler("onClientRender", root, function()
     if showHelp and not menuId then
         local sw, sh = guiGetScreenSize()
-        dxDrawText("Press E to use the elevator", sw / 2, sh * 0.12, _, _,
+        dxDrawText(L("world_elevators.elevators.press_e_to_use_elevator"), sw / 2, sh * 0.12, _, _,
             tocolor(255, 255, 255, 255), 1.4, "default", "center", "center")
     end
 end)

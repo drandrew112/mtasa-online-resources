@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_customs :: purchase + apply (server, authoritative)
 --
 -- The client sends only the catalogue path. This file resolves it, checks the
@@ -46,7 +47,7 @@ local function applyItem(player, veh, node, optIdx)
         if optIdx and optIdx > 1 then
             local up = compatible[optIdx - 1]
             if not up then
-                notify(player, "Customs", "That part does not fit this vehicle.")
+                notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.that_part_does_not_fit_this"))
                 return false
             end
             addVehicleUpgrade(veh, up)
@@ -117,7 +118,7 @@ local function applyItem(player, veh, node, optIdx)
         return true
 
     elseif kind == "horn" then
-        notify(player, "Horn", "Horns are coming soon.")
+        notify(player, L.msg("v_customs.tuning.horn"), L.msg("v_customs.tuning.horns_are_coming_soon"))
         return true
     end
 
@@ -142,7 +143,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     local price = freeReset and 0 or Customs.price(node.price or 0)
 
     if price > 0 and getPlayerMoney(player) < price then
-        notify(player, "Customs", "You don't have enough money.")
+        notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         triggerClientEvent(player, "v_customs:buyResult", player, false)
         return
     end
@@ -160,7 +161,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     end
 
     if node.kind ~= "horn" then
-        notify(player, "Customs", (node.name or "Part") .. " installed.")
+        notify(player, L.msg("v_customs.tuning.customs"), (node.name or L.msg("v_customs.tuning.part")) .. " installed.")
     end
     triggerClientEvent(player, "v_customs:buyResult", player, true, path, charged)
 end)
@@ -175,12 +176,12 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
 
     local price = Customs.price(15000)
     if getPlayerMoney(player) < price then
-        notify(player, "Customs", "You don't have enough money.")
+        notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         return
     end
 
     setVehiclePlateText(veh, text)
     takePlayerMoney(player, price)
     triggerClientEvent(player, "v_customs:buyResult", player, true, nil, price)
-    notify(player, "Customs", "Custom plate installed.")
+    notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.custom_plate_installed"))
 end)

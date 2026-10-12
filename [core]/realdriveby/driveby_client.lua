@@ -1,4 +1,5 @@
-﻿local driver = false
+﻿if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+local driver = false
 local shooting = false
 local helpText,helpAnimation
 lastSlot = 0
@@ -116,7 +117,7 @@ function toggleDriveby()
 		local prevw,nextw = next(getBoundKeys ( "Previous driveby weapon" )),next(getBoundKeys ( "Next driveby weapon" ))
 		if prevw and nextw then
 			if animation then Animation:remove() end
-			helpText:text( "Press '"..prevw.."' or '"..nextw.."' to change weapon" )
+			helpText:text( L("realdriveby.driveby_client.press_or_to_change_weapon", { prevw = prevw, nextw = nextw }) )
 			fadeInHelp()
 			setTimer ( fadeOutHelp, 10000, 1 )
 		end

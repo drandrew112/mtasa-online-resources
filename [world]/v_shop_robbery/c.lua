@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 
 function isPedAiming (thePedToCheck)
@@ -82,5 +83,5 @@ addEvent("v_shop_robbery:storeClosed", true)
 addEventHandler("v_shop_robbery:storeClosed", resourceRoot, function()
     if (getTickCount() - lastClosedNotify) < 3000 then return end
     lastClosedNotify = getTickCount()
-    uicore:setInfobox("The store is closed")
+    uicore:setInfobox(L("v_shop_robbery.c.store_is_closed"))
 end)

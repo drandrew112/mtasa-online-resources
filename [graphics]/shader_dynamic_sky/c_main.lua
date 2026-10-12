@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 ----------------------------------------------------------------
 -- resource: Shader Dynamic SKY v2.22 
 -- author: Ren712
@@ -66,7 +67,7 @@ function startDynamicSky()
 		bAllValid = part and bAllValid
 	end
 	if not bAllValid then 
-		outputChatBox('Dynamic Sky v2: failed to start shaders!',255,0,0)
+		outputChatBox(L("shader_dynamic_sky.main.dynamic_sky_v2_failed_to_start"),255,0,0)
 		return
 	end
 

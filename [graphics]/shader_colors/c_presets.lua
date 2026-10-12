@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- shader_colors / c_presets.lua
 --
 -- Grading parameters (all optional in presets/overrides, missing = neutral):
@@ -32,16 +33,16 @@ DEFAULT_PRESET    = "vivid"
 DEFAULT_INTENSITY = 70
 
 PRESETS = {
-    { id = "off", label = "Off" },
+    { id = "off", label = L("shader_colors.presets.off") },
     {
-        id = "natural", label = "Natural",
+        id = "natural", label = L("shader_colors.presets.natural"),
         day = {
             contrast = 0.25, black = 0.03, white = 0.98,
             saturation = 1.12, vibrance = 0.3, temperature = 0.04,
         },
     },
     {
-        id = "vivid", label = "Vivid",
+        id = "vivid", label = L("shader_colors.presets.vivid"),
         day = {
             exposure = 1.03, contrast = 0.5, black = 0.05, white = 0.96,
             saturation = 1.3, vibrance = 0.6,
@@ -49,7 +50,7 @@ PRESETS = {
         },
     },
     {
-        id = "cinematic", label = "Cinematic",
+        id = "cinematic", label = L("shader_colors.presets.cinematic"),
         day = {
             exposure = 0.98, contrast = 0.6, black = 0.05, white = 0.95,
             saturation = 0.95, vibrance = 0.35,
@@ -57,14 +58,14 @@ PRESETS = {
         },
     },
     {
-        id = "warm", label = "Warm",
+        id = "warm", label = L("shader_colors.presets.warm"),
         day = {
             temperature = 0.5, contrast = 0.35, black = 0.03, white = 0.97,
             saturation = 1.15, vibrance = 0.35, gain = { 1.05, 1, 0.93 },
         },
     },
     {
-        id = "cold", label = "Cold",
+        id = "cold", label = L("shader_colors.presets.cold"),
         day = {
             temperature = -0.5, tint = 0.05, contrast = 0.4, black = 0.03, white = 0.97,
             saturation = 1.0, vibrance = 0.3, lift = { -0.02, 0, 0.04 },

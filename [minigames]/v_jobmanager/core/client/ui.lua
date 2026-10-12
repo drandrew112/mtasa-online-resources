@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local screenW, screenH = guiGetScreenSize()
 local uicore = exports.ui_core
 local SCALE = (uicore:ui(1000) or 1000) / 1000
@@ -182,11 +183,16 @@ end)
 
 -- BACKSPACE leaves the lobby, so there is no "Leave Lobby" row. "Start Game"
 -- sits at the bottom (host only).
+local ACTION_LABEL = {
+    invite = "v_jobmanager.ui.invite_player",
+    start  = "v_jobmanager.ui.start_game",
+}
+
 local function lobbyActions()
     if lobby and lobby.isHost then
-        return { "Invite Player", "Start Game" }
+        return { "invite", "start" }
     end
-    return { "Invite Player" }
+    return { "invite" }
 end
 
 addEventHandler("onClientKey", root, function(key, down)
@@ -228,9 +234,9 @@ addEventHandler("onClientKey", root, function(key, down)
     elseif key == "enter" then
         click("click")
         local action = actions[selected]
-        if action == "Start Game" then
+        if action == "start" then
             triggerServerEvent("jobmanager:startJob", resourceRoot)
-        elseif action == "Invite Player" then
+        elseif action == "invite" then
             triggerServerEvent("jobmanager:requestInvitablePlayers", resourceRoot)
         end
     end
@@ -263,12 +269,12 @@ local function drawRows(x, y, w, rowH, rows, sel, active)
             isSel and C.rowSelT or (r.dim and C.txtDim or C.txt), S(1.05),
             labelFont, "left", "center")
         if r.crewTag and r.crewTag ~= "" then
-            local lw = dxGetTextWidth(r.label, S(1.05), labelFont)
+            local lw = L.width(r.label, S(1.05), labelFont)
             uicore:drawCrewTagBox(x + S(12) + lw + S(6), ry + rowH / 2, S(1.05),
                 r.crewTag, r.crewColor, 255, "left", "center")
         end
         if r.badge then
-            local bw = dxGetTextWidth(r.badge, S(0.8), FONT.rowB) + S(14)
+            local bw = L.width(r.badge, S(0.8), FONT.rowB) + S(14)
             dxDrawRectangle(x + w - S(12) - bw, ry + rowH / 2 - S(9), bw, S(18), C.accent)
             dxDrawText(r.badge, x + w - S(12) - bw, ry + rowH / 2 - S(9), x + w - S(12), ry + rowH / 2 + S(9),
                 tocolor(255, 255, 255), S(0.8), FONT.rowB, "center", "center")
@@ -296,9 +302,9 @@ addEventHandler("onClientRender", root, function()
     -- title / briefing band
     local bandH = S(60)
     dxDrawRectangle(fx, fy, fw, bandH, C.band)
-    dxDrawText(string.upper(lobby.name or "JOB"), fx + S(16), fy + S(6), fx + fw - S(16), fy + S(28),
+    dxDrawText(L.upper(lobby.name or L("v_jobmanager.ui.job_title")), fx + S(16), fy + S(6), fx + fw - S(16), fy + S(28),
         tocolor(255, 255, 255), S(1.15), FONT.title, "left", "top")
-    dxDrawText(lobby.description or "Waiting for the host to start the job.",
+    dxDrawText(lobby.description or L("v_jobmanager.ui.waiting_for_host_to_start_job"),
         fx + S(16), fy + S(28), fx + fw - S(16), fy + bandH - S(4),
         C.txtDim, S(0.95), FONT.row, "left", "top", false, true)
 
@@ -312,25 +318,25 @@ addEventHandler("onClientRender", root, function()
     local c3 = fx + (colW + gap) * 2
 
     -- column 1: lobby actions
-    drawColHeader(c1, colY, colW, "LOBBY")
+    drawColHeader(c1, colY, colW, L("v_jobmanager.ui.lobby"))
     local actions = lobbyActions()
     if selected > #actions then selected = #actions end
     local actionRows = {}
     for i, a in ipairs(actions) do
-        actionRows[i] = { label = a, bg = (a == "Start Game") and C.startBg or nil }
+        actionRows[i] = { label = L(ACTION_LABEL[a]), bg = (a == "start") and C.startBg or nil }
     end
     drawRows(c1, colY + HEAD_H, colW, rowH, actionRows, selected, true)
 
     -- column 2: players
-    drawColHeader(c2, colY, colW, "PLAYERS", #lobby.players .. " of " .. lobby.min .. "-" .. lobby.max)
+    drawColHeader(c2, colY, colW, L("v_jobmanager.ui.players"), L("v_jobmanager.ui.of", { players = #lobby.players, min = lobby.min, max = lobby.max }))
     local playerRows = {}
     for i, p in ipairs(lobby.players) do
-        playerRows[i] = { label = p.name, badge = p.host and "HOST" or nil, crewTag = p.crewTag, crewColor = p.crewColor }
+        playerRows[i] = { label = p.name, badge = p.host and L("v_jobmanager.ui.host") or nil, crewTag = p.crewTag, crewColor = p.crewColor }
     end
     drawRows(c2, colY + HEAD_H, colW, rowH, playerRows, 0, false)
 
     -- column 3: details
-    drawColHeader(c3, colY, colW, "DETAILS")
+    drawColHeader(c3, colY, colW, L("v_jobmanager.ui.details"))
     local dY = colY + HEAD_H
     dxDrawRectangle(c3, dY, colW, colH, C.row)
     local imgH = math.min(colW * 9 / 16, colH * 0.55)
@@ -342,10 +348,10 @@ addEventHandler("onClientRender", root, function()
         tocolor(255, 255, 255), S(1.1), FONT.title, "right", "bottom")
 
     local details = {
-        { "Type", (lobby.type == "race" and "Race") or (lobby.type == "deathmatch" and "Deathmatch") or "Job" },
-        { "Players", tostring(lobby.min) .. "-" .. tostring(lobby.max) },
-        { "In lobby", tostring(#lobby.players) },
-        { "Created by", lobby.createdBy or "-" },
+        { L("v_jobmanager.ui.type"), (lobby.type == "race" and L("common.race")) or (lobby.type == "deathmatch" and L("common.deathmatch")) or L("common.job") },
+        { L("common.players"), tostring(lobby.min) .. "-" .. tostring(lobby.max) },
+        { L("v_jobmanager.ui.in_lobby"), tostring(#lobby.players) },
+        { L("v_jobmanager.ui.created_by"), lobby.createdBy or "-" },
     }
     for i, d in ipairs(details) do
         local ry = dY + imgH + (i - 1) * rowH
@@ -357,11 +363,11 @@ addEventHandler("onClientRender", root, function()
     -- info bar
     local infoY = fy + fh - INFO_H
     dxDrawRectangle(fx, infoY, fw, INFO_H, C.infobar)
-    local help = (actions[selected] == "Start Game")
-        and "Start the job for everyone in the lobby."
-        or "Invite another player to this lobby through their phone."
+    local help = (actions[selected] == "start")
+        and L("v_jobmanager.ui.start_job_for_everyone_in_lobby")
+        or L("v_jobmanager.ui.invite_another_player_to_this_lobby")
     dxDrawText(help, fx + S(14), infoY, fx + fw * 0.55, infoY + INFO_H, C.txtDim, S(0.92), FONT.row, "left", "center", true)
-    dxDrawText("ARROWS  Navigate      ENTER  Select      BACKSPACE  Leave",
+    dxDrawText(L("v_jobmanager.ui.arrows_navigate_enter_select_backspace_leave"),
         fx + fw * 0.55, infoY, fx + fw - S(14), infoY + INFO_H, C.txt, S(0.92), FONT.rowB, "right", "center")
 
     -- "Invite Player" sub-panel
@@ -373,7 +379,7 @@ addEventHandler("onClientRender", root, function()
         local mx, my = math.floor(fx + (fw - mw) / 2), math.floor(fy + (fh - mh) / 2)
         dxDrawRectangle(0, 0, screenW, screenH, C.wash)
         dxDrawRectangle(mx, my, mw, mh, C.band)
-        dxDrawText("INVITE PLAYER", mx + S(14), my + S(8), mx + mw - S(14), my + S(30),
+        dxDrawText(L("v_jobmanager.ui.invite_player_2"), mx + S(14), my + S(8), mx + mw - S(14), my + S(30),
             tocolor(255, 255, 255), S(1.15), FONT.title, "left", "top")
 
         local listY = my + S(38)
@@ -381,7 +387,7 @@ addEventHandler("onClientRender", root, function()
         local maxRows = math.max(1, math.floor((listBottom - listY) / rowH))
 
         if #rows == 0 then
-            dxDrawText("No players available to invite.", mx + S(14), listY, mx + mw - S(14), listY + rowH,
+            dxDrawText(L("v_jobmanager.ui.no_players_available_to_invite"), mx + S(14), listY, mx + mw - S(14), listY + rowH,
                 C.txtDim, S(1.0), FONT.row, "left", "center")
         else
             local first = math.max(1, math.min(inviteMenu.sel - math.floor(maxRows / 2), #rows - maxRows + 1))
@@ -394,7 +400,7 @@ addEventHandler("onClientRender", root, function()
                 dxDrawText(r.name, mx + S(12), ry, mx + mw - S(12), ry + rowH,
                     isSel and C.rowSelT or C.txt, S(1.05), isSel and FONT.rowB or FONT.row, "left", "center")
                 if r.sent then
-                    dxDrawText("INVITED", mx + S(12), ry, mx + mw - S(12), ry + rowH,
+                    dxDrawText(L("v_jobmanager.ui.invited"), mx + S(12), ry, mx + mw - S(12), ry + rowH,
                         isSel and C.rowSelT or C.txtDim, S(0.85), FONT.rowB, "right", "center")
                 end
             end
@@ -402,7 +408,7 @@ addEventHandler("onClientRender", root, function()
 
         local mInfoY = my + mh - INFO_H
         dxDrawRectangle(mx, mInfoY, mw, INFO_H, C.infobar)
-        dxDrawText("ARROWS  Navigate      ENTER  Invite      BACKSPACE  Back",
+        dxDrawText(L("v_jobmanager.ui.arrows_navigate_enter_invite_backspace_back"),
             mx + S(12), mInfoY, mx + mw - S(12), mInfoY + INFO_H, C.txt, S(0.9), FONT.rowB, "center", "center")
     end
 end)

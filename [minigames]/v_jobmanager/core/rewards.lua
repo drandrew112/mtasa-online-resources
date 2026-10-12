@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- End-of-match payouts. Cash + XP are computed from the game's own data (route
 -- length, player count, placement / kills), paid on the server the moment the
 -- match ends, and sent to the client for the results screen
@@ -31,7 +32,7 @@ function jobmanagerSetMultiplier(jobId, money, xp, label)
     if money == 1 and xp == 1 then
         multipliers[jobId] = nil
     else
-        multipliers[jobId] = { money = money, xp = xp, label = type(label) == "string" and label ~= "" and label or "Bonus" }
+        multipliers[jobId] = { money = money, xp = xp, label = type(label) == "string" and label ~= "" and label or L.msg("v_jobmanager.rewards.bonus") }
     end
     return true
 end
@@ -150,21 +151,21 @@ local function computeOne(match, player, ctx)
 
     local moneyLines, xpLines = {}, {}
     local money, xp = 0, REWARDS.xp.participation
-    table.insert(xpLines, { "Participation", "+" .. REWARDS.xp.participation })
+    table.insert(xpLines, { L.msg("v_jobmanager.rewards.participation"), "+" .. REWARDS.xp.participation })
 
     if solo then
         money = REWARDS.soloMoney
-        table.insert(moneyLines, { "Solo game", euro(money) })
+        table.insert(moneyLines, { L.msg("v_jobmanager.rewards.solo_game"), euro(money) })
     else
         if isRace then
             local cfg, km = REWARDS.race, ctx.km
             money = clamp(round(km * cfg.perKm), cfg.minBase, cfg.maxBase)
-            table.insert(moneyLines, { string.format("Route %.1f km", km), euro(money) })
+            table.insert(moneyLines, { L.msg("v_jobmanager.rewards.route_km", { km = km }), euro(money) })
         else
             local cfg = REWARDS.deathmatch
             local minutes = math.min(ctx.minutes, cfg.maxMinutes)
             money = clamp(round(minutes * cfg.perMinute), cfg.minBase, cfg.maxBase)
-            table.insert(moneyLines, { string.format("Match %d min", math.max(1, round(minutes))), euro(money) })
+            table.insert(moneyLines, { L.msg("v_jobmanager.rewards.match_min", { minutes = math.max(1, round(minutes)) }), euro(money) })
             local kills = match.kills[player] or 0
             if kills > 0 then
                 money = money + kills * cfg.perKill
@@ -177,13 +178,13 @@ local function computeOne(match, player, ctx)
         local pm = finished and (REWARDS.place[place] or 1) or REWARDS.dnf
         money = money * pm
         if pm ~= 1 then
-            table.insert(moneyLines, { finished and (ordinal(place) .. " place") or "Not finished", mult(pm) })
+            table.insert(moneyLines, { finished and (ordinal(place) .. " place") or L.msg("v_jobmanager.rewards.not_finished"), mult(pm) })
         end
     end
 
     if isRace and finished then
         xp = xp + REWARDS.xp.finished
-        table.insert(xpLines, { "Finished", "+" .. REWARDS.xp.finished })
+        table.insert(xpLines, { L.msg("v_jobmanager.rewards.finished"), "+" .. REWARDS.xp.finished })
     end
     if not isRace and (match.kills[player] or 0) > 0 then
         local k = match.kills[player]

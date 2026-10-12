@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ai_land_traffic server: start-up, main loop, events, commands, exports.
 
 Traffic = { enabled = true, players = {} }
@@ -146,22 +147,21 @@ addCommandHandler("traffic", function(p, _, arg)
     if not isAdmin(p) then return end
     if arg == "on" then
         Traffic.enabled = true
-        notify(p, "AI traffic enabled")
+        notify(p, L.msg("ai_land_traffic.main.ai_traffic_enabled"))
     elseif arg == "off" then
         Traffic.enabled = false
         Agents.clear()
-        notify(p, "AI traffic disabled and cleared")
+        notify(p, L.msg("ai_land_traffic.main.ai_traffic_disabled_and_cleared"))
     elseif arg == "clear" then
         Agents.clear()
-        notify(p, "AI traffic cleared")
+        notify(p, L.msg("ai_land_traffic.main.ai_traffic_cleared"))
     elseif arg == "debug" then
         triggerClientEvent(p, "ai_traffic:debug", resourceRoot)
     else
         local s = Traffic.stats()
         local h = {}
         for k, v in pairs(s.holds) do h[#h + 1] = k .. " " .. v end
-        notify(p, string.format("Traffic %s: %d vehicles, %d released, %d players, %d emergency | %s",
-            s.enabled and "on" or "off", s.agents, s.released, s.players, s.els, table.concat(h, ", ")))
+        notify(p, L.msg("ai_land_traffic.main.traffic_vehicles_released_players_emergency", { enabled = s.enabled and "on" or "off", agents = s.agents, released = s.released, players = s.players, els = s.els, h = table.concat(h, ", ") }))
     end
 end)
 

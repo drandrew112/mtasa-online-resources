@@ -8,6 +8,8 @@
          resource, kept only for reference (not loaded). sim.dat is server-only (not downloaded). -->
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"   type="shared" />
     <script src="shared/geometry.lua" type="shared" />
 

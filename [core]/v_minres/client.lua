@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local sw, sh = guiGetScreenSize()
 local active = false
 local blocker, dgsBlocker
@@ -15,10 +16,10 @@ local function draw()
     dxDrawRectangle(0, 0, sw, sh, tocolor(8, 8, 12, 255), true)
     local s = math.max(0.6, math.min(sw / 1920, sh / 1080))
     local cx, cy = sw / 2, sh / 2
-    dxDrawText("LOW RESOLUTION", 0, cy - 140 * s, sw, cy - 60 * s, tocolor(255, 90, 90), 3.2 * s, fontBig, "center", "center", false, false, true)
-    dxDrawText(("Your screen is %dx%d.\nThis server requires at least %dx%d."):format(sw, sh, MINRES.width, MINRES.height),
+    dxDrawText(L("v_minres.client.low_resolution"), 0, cy - 140 * s, sw, cy - 60 * s, tocolor(255, 90, 90), 3.2 * s, fontBig, "center", "center", false, false, true)
+    dxDrawText(L("v_minres.client.your_screen_is_x_this_server", { sw = sw, sh = sh, width = MINRES.width, height = MINRES.height }),
         0, cy - 40 * s, sw, cy + 40 * s, tocolor(255, 255, 255), 1.8 * s, fontSmall, "center", "center", false, false, true)
-    dxDrawText("Increase your resolution (Settings > Video > Resolution / maximize the window).\nThis message disappears automatically once the requirement is met.",
+    dxDrawText(L("v_minres.client.increase_your_resolution_settings_video_resoluti"),
         0, cy + 70 * s, sw, cy + 170 * s, tocolor(190, 190, 200), 1.3 * s, fontSmall, "center", "top", false, false, true)
 end
 

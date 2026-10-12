@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: core/webview.lua
 -- "Web" sites: a real (CEF) page shown in the content area instead of vhtml
 -- markup. Registered with   registerBrowserSite(url, { web = "http://mta/<res>/page.html", ... })
@@ -75,7 +76,7 @@ function BR.webDraw(x, y, w, h)
     if isElement(v.browser) and v.ready then
         dxDrawImage(x, y, w, h, v.browser, 0, 0, 0, tocolor(255, 255, 255, 255))
     else
-        dxDrawText("Loading...", x, y, x + w, y + h, tocolor(160, 170, 180, 255),
+        dxDrawText(L("common.loading"), x, y, x + w, y + h, tocolor(160, 170, 180, 255),
             BR.fscale(1.1), BR.fonts.regular, "center", "center")
     end
 end

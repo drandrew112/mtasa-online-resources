@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local activeIndex = ACTIVE_TIMETRIAL
 local trial = Timetrials[activeIndex]
 local startMarker, endMarker, startBlip
@@ -87,7 +88,7 @@ local function stopTest(player, silent)
         setElementData(player, "tt:canStart", false)
         setElementData(player, "tt:active", false)
         triggerClientEvent(player, "tt:test", resourceRoot, false)
-        if not silent then notice(player, "Time trial test stopped") end
+        if not silent then notice(player, L.msg("v_timetrial.timetrial.time_trial_test_stopped")) end
     end
 end
 

@@ -1,9 +1,10 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Every creator menu is a ui_inac temp menu. Item values are small arrays:
 -- { action, arg1, arg2 } and are dispatched in onSelect below.
 
 Menus = { rootId = nil, kind = nil, item = nil, leaves = {} }
 
-local L = CREATOR.LIMITS
+local LIM = CREATOR.LIMITS
 local SCALES = { 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 3 }
 local ALPHAS = { 255, 200, 150, 100, 50 }
 
@@ -62,23 +63,23 @@ end
 
 function Menus.openStart()
     local items = {
-        leaf("New Race", { "new", "race" }, "Checkpoint race with one vehicle model"),
-        leaf("New Deathmatch", { "new", "deathmatch" }, "Last player standing"),
-        leaf("My Games", { "list", "mine" }, "Open, delete or check the status of your games"),
+        leaf(L("v_jobcreator.menus.new_race"), { "new", "race" }, L("v_jobcreator.menus.checkpoint_race_with_one_vehicle_model")),
+        leaf(L("v_jobcreator.menus.new_deathmatch"), { "new", "deathmatch" }, L("v_jobcreator.menus.last_player_standing")),
+        leaf(L("v_jobcreator.menus.my_games"), { "list", "mine" }, L("v_jobcreator.menus.open_delete_or_check_status_of")),
     }
     if Editor.info.admin then
-        items[#items + 1] = leaf("Community Games", { "list", "all" }, "Every player-made game (admin)")
-        items[#items + 1] = leaf("Official Games", { "list", "official" }, "The server's own games (admin)")
+        items[#items + 1] = leaf(L("v_jobcreator.menus.community_games"), { "list", "all" }, L("v_jobcreator.menus.every_player_made_game_admin"))
+        items[#items + 1] = leaf(L("v_jobcreator.menus.official_games"), { "list", "official" }, L("v_jobcreator.menus.server_s_own_games_admin"))
     end
-    items[#items + 1] = leaf("Exit Creator", { "exit" })
-    open("start", "JOB CREATOR", items)
+    items[#items + 1] = leaf(L("v_jobcreator.menus.exit_creator"), { "exit" })
+    open("start", L("v_jobcreator.menus.job_creator"), items)
 end
 
 local function statusText(entry)
-    if entry.official then return entry.pending and "Official, draft not published yet" or "Official" end
-    if entry.published and entry.pending then return "Published, newer changes saved" end
-    if entry.published then return "Published" end
-    return "Private"
+    if entry.official then return entry.pending and L("v_jobcreator.menus.official_draft_not_published_yet") or L("v_jobcreator.menus.official") end
+    if entry.published and entry.pending then return L("v_jobcreator.menus.published_newer_changes_saved") end
+    if entry.published then return L("v_jobcreator.menus.published") end
+    return L("v_jobcreator.menus.private")
 end
 
 addEvent("jobcreator:list", true)
@@ -87,28 +88,28 @@ addEventHandler("jobcreator:list", resourceRoot, function(scope, list)
     Menus.lastScope = scope
     local items = {}
     for _, entry in ipairs(list) do
-        local actions = { leaf("Edit", { "load", entry.id }) }
+        local actions = { leaf(L("common.edit"), { "load", entry.id }) }
         if entry.official then
-            if entry.pending then actions[#actions + 1] = leaf("Publish draft", { "manage", entry.id, "publish" }) end
+            if entry.pending then actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish_draft"), { "manage", entry.id, "publish" }) end
         elseif Editor.info.admin then
             if entry.published then
-                if entry.pending then actions[#actions + 1] = leaf("Publish changes", { "manage", entry.id, "publish" }) end
-                actions[#actions + 1] = leaf("Unpublish", { "manage", entry.id, "unpublish" })
+                if entry.pending then actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish_changes"), { "manage", entry.id, "publish" }) end
+                actions[#actions + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "manage", entry.id, "unpublish" })
             else
-                actions[#actions + 1] = leaf("Publish", { "manage", entry.id, "publish" })
+                actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish"), { "manage", entry.id, "publish" })
             end
         end
         if not entry.official and (Editor.info.admin or not entry.published) then
-            actions[#actions + 1] = sub("Delete", { leaf("Yes, delete " .. tostring(entry.name), { "manage", entry.id, "delete" }) })
+            actions[#actions + 1] = sub("Delete", { leaf(L("v_jobcreator.menus.yes_delete", { name = tostring(entry.name) }), { "manage", entry.id, "delete" }) })
         end
-        local typeName = entry.type == "race" and "Race" or "Deathmatch"
+        local typeName = entry.type == "race" and L("common.race") or L("common.deathmatch")
         items[#items + 1] = sub(tostring(entry.name or entry.id), actions,
-            typeName .. "  ·  " .. statusText(entry) .. "  ·  by " .. tostring(entry.owner), tostring(entry.name or entry.id):upper())
+            L("v_jobcreator.menus.entry_line", { type = typeName, status = statusText(entry), owner = tostring(entry.owner) }), L.upper(tostring(entry.name or entry.id)))
     end
-    if #items == 0 then items[1] = info("No games yet") end
-    items[#items + 1] = leaf("Back", { "start" })
-    local titles = { all = "COMMUNITY GAMES", official = "OFFICIAL GAMES" }
-    open("list", titles[scope] or "MY GAMES", items)
+    if #items == 0 then items[1] = info(L("v_jobcreator.menus.no_games_yet")) end
+    items[#items + 1] = leaf(L("common.back"), { "start" })
+    local titles = { all = L("v_jobcreator.menus.community_games_2"), official = L("v_jobcreator.menus.official_games_2") }
+    open("list", titles[scope] or L("v_jobcreator.menus.my_games_2"), items)
 end)
 
 addEvent("jobcreator:managed", true)
@@ -141,11 +142,11 @@ local function objectMenu()
     for _, cat in ipairs(CATALOG.objects) do
         local items = {}
         for _, entry in ipairs(cat.items) do
-            items[#items + 1] = leaf(entry[2], { "place", "object", entry[1] }, "Model " .. entry[1])
+            items[#items + 1] = leaf(entry[2], { "place", "object", entry[1] }, L("v_jobcreator.menus.model", { entry = entry[1] }))
         end
         cats[#cats + 1] = sub(cat.name, items)
     end
-    return sub("Objects", cats, #Editor.doc.objects .. " / " .. L.objects .. " placed  ·  click an object to edit it")
+    return sub(L("v_jobcreator.menus.objects"), cats, L("v_jobcreator.menus.objects_placed", { count = #Editor.doc.objects, max = LIM.objects }))
 end
 
 local function vehicleMenu()
@@ -183,23 +184,23 @@ function Menus.openHub()
     local isRace = doc.type == "race"
     local problems = Editor.problems()
 
-    local status = (isRace and "Race" or "Deathmatch") .. "  ·  " .. (Editor.dirty and "Unsaved changes" or "Saved")
+    local status = (isRace and L("common.race") or L("common.deathmatch")) .. "  ·  " .. (Editor.dirty and L("v_jobcreator.menus.unsaved_changes") or L("v_jobcreator.menus.saved"))
     local official = Editor.meta and Editor.meta.official
     if official then
-        status = status .. "  ·  Official" .. (Editor.meta.pending and ", draft" or "")
+        status = L("v_jobcreator.menus.official", { status = status, pending = (Editor.meta.pending and L("v_jobcreator.menus.draft") or "") })
     elseif Editor.meta and Editor.meta.published then
-        status = status .. "  ·  Published"
+        status = L("v_jobcreator.menus.published", { status = status })
     end
-    local items = { info(status, #problems == 0 and "Ready to publish" or (#problems .. " thing(s) to check, see Check Problems")) }
+    local items = { info(status, #problems == 0 and L("v_jobcreator.menus.ready_to_publish") or (L("v_jobcreator.menus.thing_s_to_check_see_check", { problems = #problems }))) }
 
-    local place = { leaf("Spawnpoint", { "place", "spawn" }, #Editor.spawnList() .. " placed, " .. doc.maxPlayers .. " needed") }
+    local place = { leaf(L("v_jobcreator.menus.spawnpoint"), { "place", "spawn" }, L("v_jobcreator.menus.placed_needed", { spawn_list = #Editor.spawnList(), max_players = doc.maxPlayers })) }
     if isRace then
-        place[#place + 1] = leaf("Checkpoint", { "place", "checkpoint" }, #doc.race.checkpoints .. " placed  ·  added at the end of the route")
-        place[#place + 1] = leaf("Finish", { "place", "finish" }, doc.race.finish and "Placed  ·  placing again moves it" or "Not placed yet")
-        place[#place + 1] = leaf("Finish camera (current view)", { "finishcam" }, "Scoreboard camera after the race")
+        place[#place + 1] = leaf(L("v_jobcreator.menus.checkpoint"), { "place", "checkpoint" }, L("v_jobcreator.menus.placed_added_at_end_of_route", { checkpoints = #doc.race.checkpoints }))
+        place[#place + 1] = leaf(L("v_jobcreator.menus.finish"), { "place", "finish" }, doc.race.finish and L("v_jobcreator.menus.placed_placing_again_moves_it") or L("v_jobcreator.menus.not_placed_yet"))
+        place[#place + 1] = leaf(L("v_jobcreator.menus.finish_camera_current_view"), { "finishcam" }, L("v_jobcreator.menus.scoreboard_camera_after_race"))
     end
     if admin then
-        place[#place + 1] = leaf("Job marker (admin)", { "place", "marker" }, "World marker + blip for joining the game")
+        place[#place + 1] = leaf(L("v_jobcreator.menus.job_marker_admin"), { "place", "marker" }, L("v_jobcreator.menus.world_marker_blip_for_joining_game"))
     end
     items[#items + 1] = sub("Place", place)
     items[#items + 1] = objectMenu()
@@ -216,49 +217,49 @@ function Menus.openHub()
     end
 
     items[#items + 1] = sub("Game Info", {
-        leaf("Name", { "name" }, doc.name),
-        leaf("Description", { "desc" }, doc.description ~= "" and doc.description or "(empty)"),
-        sub("Min Players", numberList("min", range(1, L.maxPlayers), doc.minPlayers), "now: " .. doc.minPlayers),
-        sub("Max Players", numberList("max", range(1, L.maxPlayers), doc.maxPlayers), "now: " .. doc.maxPlayers),
+        leaf(L("common.name"), { "name" }, doc.name),
+        leaf(L("v_jobcreator.menus.description"), { "desc" }, doc.description ~= "" and doc.description or L("v_jobcreator.menus.empty")),
+        sub("Min Players", numberList("min", range(1, LIM.maxPlayers), doc.minPlayers), "now: " .. doc.minPlayers),
+        sub("Max Players", numberList("max", range(1, LIM.maxPlayers), doc.maxPlayers), "now: " .. doc.maxPlayers),
     })
 
     if isRace then
         items[#items + 1] = sub("Test", {
-            leaf("From the start", { "test", "start" }, "Spawnpoint #1, every checkpoint"),
-            leaf("From here", { "test", "here" }, "Your position, from the nearest checkpoint"),
+            leaf(L("v_jobcreator.menus.from_start"), { "test", "start" }, L("v_jobcreator.menus.spawnpoint_1_every_checkpoint")),
+            leaf(L("v_jobcreator.menus.from_here"), { "test", "here" }, L("v_jobcreator.menus.your_position_from_nearest_checkpoint")),
         }, "F6 ends the test")
     else
-        items[#items + 1] = leaf("Test", { "test", "here" }, "Spawn here with the weapon  ·  F6 ends the test")
+        items[#items + 1] = leaf(L("v_jobcreator.menus.test"), { "test", "here" }, L("v_jobcreator.menus.spawn_here_with_weapon_f6_ends"))
     end
 
     items[#items + 1] = sub("Thumbnail", {
-        leaf("Take photo", { "photo" }, "Free camera, HUD hidden, SPACE takes the picture"),
-        leaf("Remove photo", { "photoRemove" }),
-    }, Editor.hasThumb and "Has a photo" or "No photo yet")
+        leaf(L("v_jobcreator.menus.take_photo"), { "photo" }, L("v_jobcreator.menus.free_camera_hud_hidden_space_takes")),
+        leaf(L("v_jobcreator.menus.remove_photo"), { "photoRemove" }),
+    }, Editor.hasThumb and L("v_jobcreator.menus.has_photo") or L("v_jobcreator.menus.no_photo_yet"))
 
     local problemItems = {}
     for _, text in ipairs(problems) do problemItems[#problemItems + 1] = info(text) end
-    if #problemItems == 0 then problemItems[1] = info("Nothing found") end
-    problemItems[#problemItems + 1] = leaf("Check with the server", { "validate" }, "The same check Publish runs")
-    items[#items + 1] = sub("Check Problems", problemItems, #problems == 0 and "Nothing found" or (#problems .. " found"))
+    if #problemItems == 0 then problemItems[1] = info(L("v_jobcreator.menus.nothing_found")) end
+    problemItems[#problemItems + 1] = leaf(L("v_jobcreator.menus.check_with_server"), { "validate" }, L("v_jobcreator.menus.same_check_publish_runs"))
+    items[#items + 1] = sub("Check Problems", problemItems, #problems == 0 and L("v_jobcreator.menus.nothing_found") or (#problems .. " found"))
 
-    items[#items + 1] = leaf("Undo", { "undo" }, "Ctrl+Z", { closeOnSelect = false })
-    items[#items + 1] = leaf("Redo", { "redo" }, "Ctrl+Y", { closeOnSelect = false })
-    items[#items + 1] = leaf("Save", { "save" }, official and "Saves a draft, the live game changes on Publish"
-        or (admin and "Saves the private copy (not live)" or "Only admins can publish games"))
+    items[#items + 1] = leaf(L("v_jobcreator.menus.undo"), { "undo" }, L("v_jobcreator.menus.ctrl_z"), { closeOnSelect = false })
+    items[#items + 1] = leaf(L("v_jobcreator.menus.redo"), { "redo" }, L("v_jobcreator.menus.ctrl_y"), { closeOnSelect = false })
+    items[#items + 1] = leaf(L("common.save"), { "save" }, official and L("v_jobcreator.menus.saves_draft_live_game_changes_on")
+        or (admin and L("v_jobcreator.menus.saves_private_copy_not_live") or L("v_jobcreator.menus.only_admins_can_publish_games")))
     if admin then
-        items[#items + 1] = leaf("Save & Publish", { "publish" }, "Makes this version live")
+        items[#items + 1] = leaf(L("v_jobcreator.menus.save_publish"), { "publish" }, L("v_jobcreator.menus.makes_this_version_live"))
         if Editor.meta and Editor.meta.published and not official then
-            items[#items + 1] = leaf("Unpublish", { "unpublish" }, "Removes it from the job list")
+            items[#items + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "unpublish" }, L("v_jobcreator.menus.removes_it_from_job_list"))
         end
     end
     items[#items + 1] = sub("Close Game", {
-        leaf("Save and close", { "close", "save" }),
-        leaf("Close without saving", { "close", "discard" }),
+        leaf(L("v_jobcreator.menus.save_and_close"), { "close", "save" }),
+        leaf(L("v_jobcreator.menus.close_without_saving"), { "close", "discard" }),
     })
     items[#items + 1] = sub("Exit Creator", {
-        leaf("Save and exit", { "exit", "save" }),
-        leaf("Exit without saving", { "exit", "discard" }),
+        leaf(L("v_jobcreator.menus.save_and_exit"), { "exit", "save" }),
+        leaf(L("v_jobcreator.menus.exit_without_saving"), { "exit", "discard" }),
     })
     open("hub", doc.name:upper(), items)
 end
@@ -273,21 +274,21 @@ function Menus.openItem(item)
     Editor.selected = item
     local K, ref = Kinds[item.kind], item.ref
     local items = {}
-    if not K.fixed then items[#items + 1] = leaf("Move", { "move" }, "Follows the cursor  ·  arrows / PgUp / PgDn fine-tune  ·  Enter to drop") end
-    if item.kind == "object" or item.kind == "spawn" then items[#items + 1] = leaf("Duplicate", { "dup" }) end
+    if not K.fixed then items[#items + 1] = leaf(L("v_jobcreator.interact.move"), { "move" }, L("v_jobcreator.menus.follows_cursor_arrows_pgup_pgdn_fine")) end
+    if item.kind == "object" or item.kind == "spawn" then items[#items + 1] = leaf(L("v_jobcreator.interact.duplicate"), { "dup" }) end
     if item.kind == "object" then
         items[#items + 1] = sub("Scale", numberList("scale", SCALES, ref.scale or 1, "x"), "now: " .. (ref.scale or 1) .. "x")
         items[#items + 1] = sub("Transparency", numberList("alpha", ALPHAS, ref.alpha or 255), "255 = solid")
-        items[#items + 1] = leaf("Collisions", { "toggle", "collisions" }, "Off = vehicles and players pass through", { checked = ref.collisions ~= false, closeOnSelect = false })
-        items[#items + 1] = leaf("Double-sided", { "toggle", "doublesided" }, "Draw the back faces too", { checked = ref.doublesided == true, closeOnSelect = false })
+        items[#items + 1] = leaf(L("v_jobcreator.menus.collisions"), { "toggle", "collisions" }, L("v_jobcreator.menus.off_vehicles_and_players_pass_through"), { checked = ref.collisions ~= false, closeOnSelect = false })
+        items[#items + 1] = leaf(L("v_jobcreator.menus.double_sided"), { "toggle", "doublesided" }, L("v_jobcreator.menus.draw_back_faces_too"), { checked = ref.doublesided == true, closeOnSelect = false })
     elseif item.kind == "checkpoint" or item.kind == "finish" then
         items[#items + 1] = sub("Size", numberList("size", CATALOG.checkpointSizes, ref[4] or 5), "now: " .. (ref[4] or 5))
-        if item.kind == "checkpoint" then items[#items + 1] = leaf("Insert checkpoints after this", { "insertAfter" }) end
+        if item.kind == "checkpoint" then items[#items + 1] = leaf(L("v_jobcreator.menus.insert_checkpoints_after_this"), { "insertAfter" }) end
     elseif item.kind == "camera" then
-        items[#items + 1] = leaf("Set to the current view", { "finishcam" })
-        items[#items + 1] = leaf("Preview", { "camPreview" }, "3 seconds")
+        items[#items + 1] = leaf(L("v_jobcreator.menus.set_to_current_view"), { "finishcam" })
+        items[#items + 1] = leaf(L("v_jobcreator.menus.preview"), { "camPreview" }, "3 seconds")
     end
-    items[#items + 1] = sub("Delete", { leaf("Yes, delete", { "delete" }) })
+    items[#items + 1] = sub("Delete", { leaf(L("v_jobcreator.menus.yes_delete_2"), { "delete" }) })
 
     local title = K.label
     if item.kind == "object" then title = CATALOG.objectName[ref.model] or title
@@ -389,7 +390,7 @@ actions.validate = function() triggerServerEvent("jobcreator:validate", resource
 actions.place = function(v)
     if Editor.testing then return end
     Tools.place(v[2], { model = v[3] })
-    notify("Click (or LMB at the crosshair) to place  ·  wheel rotates  ·  Backspace stops")
+    notify(L("v_jobcreator.menus.click_or_lmb_at_crosshair_to"))
 end
 actions.finishcam = function() Ops.setFinishCamera() end
 
@@ -415,13 +416,13 @@ actions.max = function(v)
     end)
     retick("max", v[2])
 end
-actions.name = function() askText("name", "Game name", L.name, Editor.doc.name) end
-actions.desc = function() askText("desc", "Description", L.description, Editor.doc.description) end
+actions.name = function() askText("name", L("v_jobcreator.menus.game_name"), LIM.name, Editor.doc.name) end
+actions.desc = function() askText("desc", L("v_jobcreator.menus.description"), LIM.description, Editor.doc.description) end
 
 actions.test = function(v)
     if v[2] == "start" then
         local spawn = Editor.spawnList()[1]
-        if not spawn then notify("Place spawnpoint #1 first.") return end
+        if not spawn then notify(L("v_jobcreator.menus.place_spawnpoint_1_first")) return end
         Test.start(spawn[1], spawn[2], spawn[3], spawn[4] or 0, 1)
     else
         if Editor.camMode == "free" then Freecam.stop() end
@@ -478,5 +479,5 @@ end)
 
 addEvent("jobcreator:validated", true)
 addEventHandler("jobcreator:validated", resourceRoot, function(ok, err)
-    notify(ok and "The server found no problems: ready to publish." or ("Server check: " .. tostring(err)))
+    notify(ok and L("v_jobcreator.menus.server_found_no_problems_ready_to") or (L("v_jobcreator.menus.server_check", { err = tostring(err) })))
 end)

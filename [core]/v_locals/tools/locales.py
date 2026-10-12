@@ -921,7 +921,7 @@ class Scanner:
             if not strong and ctx["kind"] in ("item", "field", "return", "assign") and self.sentence(text):
                 status = "translate"
         if ctx["kind"] == "return" and not strong and status == "review" and not self.sentence(text):
-            return              # lower-case internal error / code returned by an API
+            status = "ignore"   # lower-case internal error / code returned by an API (decisions may flip it)
         if fmt_args is not None and not template_ok:
             status = "review"
         if sink is None and status == "translate":

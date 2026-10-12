@@ -3,6 +3,8 @@
           description="Emergency lighting and sirens: client-drawn flashing lights with patterns, dynamic environment lighting, /elseditor" />
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Loads the road geometry (data/runtime/geo.dat) in small steps, then tells the server it can
 -- start sending traffic states.
 
@@ -33,7 +34,7 @@ end)
 addEvent("ai_traffic:notify", true)
 addEventHandler("ai_traffic:notify", resourceRoot, function(text)
     if getResourceFromName("ui_core") and getResourceState(getResourceFromName("ui_core")) == "running" then
-        exports.ui_core:addNotification("Traffic", text)
+        exports.ui_core:addNotification(L("ai_land_traffic.network.traffic"), text)
     else
         outputDebugString("[ai_land_traffic] " .. text)
     end

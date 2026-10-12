@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ATC markers (config AVI.MARKERS). Standing in one and pressing the key opens the position login
 -- of avi_controller (or the scope toggle when already logged in). The markers are visible only to
 -- the players on duty in the work AVI.MARKER_WORK (work_core), and the server checks that too.
@@ -63,20 +64,20 @@ addEventHandler("avi:markerUse", resourceRoot, function(marker)
     local x, y, z = getElementPosition(marker)
     if getDistanceBetweenPoints2D(px, py, x, y) > AVI.MARKER_SIZE / 2 + 3 or math.abs(pz - z) > 5 then return end
     if not atWork(player) then
-        aviNotify(player, "Only air traffic controllers can use this.")
+        aviNotify(player, L.msg("avi_core.marker.only_air_traffic_controllers_can_use"))
         return
     end
     if not hasATCAccess(player) then
-        aviNotify(player, "You do not have any ATC rights.")
+        aviNotify(player, L.msg("avi_core.marker.you_do_not_have_any_atc"))
         return
     end
     if not isRunning("avi_controller") then
-        aviNotify(player, "The controller software is not running.")
+        aviNotify(player, L.msg("avi_core.marker.controller_software_is_not_running"))
         return
     end
     local ok, err = pcall(function() return exports.avi_controller:useATCConsole(player, markers[marker].available_positions) end)
     if not ok then
-        aviNotify(player, "The controller software needs a restart (restart avi_controller).")
+        aviNotify(player, L.msg("avi_core.marker.controller_software_needs_restart_restart_avi"))
         outputDebugString("[avi_core] useATCConsole failed: " .. tostring(err), 2)
     end
 end)

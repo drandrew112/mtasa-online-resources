@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local lobbies, matches, playerState = {}, {}, {}
 local nextLobbyId, nextMatchId = 1, 1
 local jobMarkers = {}
@@ -112,7 +113,7 @@ local function leaveLobby(player, quiet)
         syncLobby(lobby)
     end
     triggerClientEvent(player, "jobmanager:closeUi", resourceRoot)
-    if not quiet then message(player, "You left the lobby.") end
+    if not quiet then message(player, L.msg("v_jobmanager.core.you_left_lobby")) end
     return true
 end
 
@@ -125,7 +126,7 @@ end
 local function joinJob(player, job)
     if inCreator(player) then return false end
     if playerState[player] then
-        message(player, "Leave your current lobby or match first.", 255, 120, 120)
+        message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
     end
     local lobby = getJoinableLobby(job) or createLobby(job)
@@ -133,26 +134,26 @@ local function joinJob(player, job)
     if not lobby.host then lobby.host = player end
     playerState[player] = { kind = "lobby", lobbyId = lobby.id, returnState = snapshotPlayer(player) }
     syncLobby(lobby)
-    message(player, "Lobby " .. lobby.id .. " (" .. #lobby.players .. "/" .. job.maxPlayers .. ").")
+    message(player, L.msg("v_jobmanager.core.lobby", { id = lobby.id, players = #lobby.players, max_players = job.maxPlayers }))
     return true
 end
 
 local function joinLobbyById(player, lobbyId)
     if inCreator(player) then return false end
     if playerState[player] then
-        message(player, "Leave your current lobby or match first.", 255, 120, 120)
+        message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
     end
     local lobby = lobbies[lobbyId]
     if not lobby or lobby.locked or #lobby.players >= lobby.job.maxPlayers then
-        message(player, "That lobby is no longer available.", 255, 120, 120)
+        message(player, L.msg("v_jobmanager.core.that_lobby_is_no_longer_available"), 255, 120, 120)
         return false
     end
     table.insert(lobby.players, player)
     if not lobby.host then lobby.host = player end
     playerState[player] = { kind = "lobby", lobbyId = lobby.id, returnState = snapshotPlayer(player) }
     syncLobby(lobby)
-    message(player, "Lobby " .. lobby.id .. " (" .. #lobby.players .. "/" .. lobby.job.maxPlayers .. ").")
+    message(player, L.msg("v_jobmanager.core.lobby", { id = lobby.id, players = #lobby.players, max_players = lobby.job.maxPlayers }))
     return true
 end
 
@@ -161,7 +162,7 @@ end
 local function quickJob(player)
     if inCreator(player) then return false end
     if playerState[player] then
-        message(player, "Leave your current lobby or match first.", 255, 120, 120)
+        message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
     end
     local candidates = {}
@@ -174,11 +175,11 @@ local function quickJob(player)
         if not lobby.host then lobby.host = player end
         playerState[player] = { kind = "lobby", lobbyId = lobby.id, returnState = snapshotPlayer(player) }
         syncLobby(lobby)
-        message(player, "Quick-joined " .. lobby.job.name .. ".")
+        message(player, L.msg("v_jobmanager.core.quick_joined", { name = lobby.job.name }))
         return true
     end
     if #jobs == 0 then
-        message(player, "There are no jobs configured.", 255, 200, 100)
+        message(player, L.msg("v_jobmanager.core.there_are_no_jobs_configured"), 255, 200, 100)
         return false
     end
     return joinJob(player, jobs[math.random(#jobs)])
@@ -276,7 +277,7 @@ local function endMatch(match, reason, aborted)
 end
 
 local function startMatch(lobby)
-    if lobby.locked or #lobby.players < lobby.job.minPlayers then return false, "Not enough players." end
+    if lobby.locked or #lobby.players < lobby.job.minPlayers then return false, L.msg("v_jobmanager.core.not_enough_players") end
     lobby.locked = true
     local match = {
         id = nextMatchId, job = lobby.job, players = lobby.players, dimension = 50000 + nextMatchId,
@@ -299,7 +300,7 @@ local function startMatch(lobby)
         triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, match.job.name)
     end
     local mode = JobModes[match.job.type]
-    if not mode then endMatch(match, "Unsupported job type.", true) return false, "Unsupported job type." end
+    if not mode then endMatch(match, L.msg("v_jobmanager.core.unsupported_job_type"), true) return false, L.msg("v_jobmanager.core.unsupported_job_type") end
     for index, def in ipairs(match.job.objects or {}) do
         local object = createObject(def.model, def.x, def.y, def.z, def.rx or 0, def.ry or 0, def.rz or 0)
         if object then
@@ -324,8 +325,8 @@ end)
 local function requestStart(player)
     local state = playerState[player]
     local lobby = state and state.kind == "lobby" and lobbies[state.lobbyId]
-    if not lobby then message(player, "You are not in a lobby.", 255, 120, 120) return end
-    if lobby.host ~= player then message(player, "Only the lobby host can start the job.", 255, 120, 120) return end
+    if not lobby then message(player, L.msg("v_jobmanager.core.you_are_not_in_lobby"), 255, 120, 120) return end
+    if lobby.host ~= player then message(player, L.msg("v_jobmanager.core.only_lobby_host_can_start_job"), 255, 120, 120) return end
     local ok, err = startMatch(lobby)
     if not ok then message(player, err, 255, 120, 120) return end
     -- v_achievements is optional: only called while it runs
@@ -341,7 +342,7 @@ end)
 
 local function requestLeave(player)
     if leaveLobby(player) then return end
-    message(player, "You can only leave before the job starts.", 255, 200, 100)
+    message(player, L.msg("v_jobmanager.core.you_can_only_leave_before_job"), 255, 200, 100)
 end
 
 addCommandHandler("leavejob", function(player)
@@ -443,15 +444,15 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
     if not isElement(target) or getElementType(target) ~= "player" then return end
     if target == client then return end
     if playerState[target] then
-        message(client, getPlayerName(target) .. " is already in a lobby or match.", 255, 200, 100)
+        message(client, L.msg("v_jobmanager.core.is_already_in_lobby_or_match", { player = getPlayerName(target) }), 255, 200, 100)
         return
     end
     if lobby.locked or #lobby.players >= lobby.job.maxPlayers then
-        message(client, "This lobby cannot take any more players.", 255, 200, 100)
+        message(client, L.msg("v_jobmanager.core.this_lobby_cannot_take_any_more"), 255, 200, 100)
         return
     end
     if not phoneReady() then
-        message(client, "The phone service is unavailable right now.", 255, 120, 120)
+        message(client, L.msg("v_jobmanager.core.phone_service_is_unavailable_right_now"), 255, 120, 120)
         return
     end
 
@@ -459,20 +460,19 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
         target,
         tostring(lobby.id),
         lobby.job.name .. " lobby",
-        getPlayerName(client) .. " invited you  -  " .. #lobby.players .. "/" .. lobby.job.maxPlayers .. " players",
+        L.msg("v_jobmanager.core.invited_you_players", { player = getPlayerName(client), players = #lobby.players, max_players = lobby.job.maxPlayers }),
         "v_jobmanager",
         "jobmanagerAcceptInvite"
     )
     if not ok then
-        message(client, "Could not send the invite.", 255, 120, 120)
+        message(client, L.msg("v_jobmanager.core.could_not_send_invite"), 255, 120, 120)
         return
     end
 
     lobby.invited = lobby.invited or {}
     lobby.invited[target] = true
-    message(client, "Invited " .. getPlayerName(target) .. ".")
-    message(target, getPlayerName(client) .. " invited you to a " .. lobby.job.name ..
-        " lobby. Open your phone to respond.", 120, 200, 255)
+    message(client, L.msg("v_jobmanager.core.invited", { player = getPlayerName(target) }))
+    message(target, L.msg("v_jobmanager.core.invited_you_to_lobby_open_your", { player = getPlayerName(client), name = lobby.job.name }), 120, 200, 255)
 end)
 
 addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
@@ -490,7 +490,7 @@ addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
 
     match.eliminated[source] = true
     local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-    if count <= 1 then endMatch(match, winner and (getPlayerName(winner) .. " won the deathmatch.") or "Deathmatch ended.") end
+    if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = getPlayerName(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
 end)
 
 addEventHandler("onPlayerQuit", root, function()
@@ -504,7 +504,7 @@ addEventHandler("onPlayerQuit", root, function()
             if match.job.type == JOB_TYPE_DM then
                 match.eliminated[source] = true
                 local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-                if count <= 1 then endMatch(match, winner and (getPlayerName(winner) .. " won the deathmatch.") or "Deathmatch ended.") end
+                if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = getPlayerName(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
             elseif match.job.type == JOB_TYPE_RACE then
                 -- A player who disconnects mid-race must still count as "finished"
                 -- (with no time), otherwise the race waits forever for them.
@@ -513,7 +513,7 @@ addEventHandler("onPlayerQuit", root, function()
                 for _, participant in ipairs(match.players) do
                     if not match.finished[participant] then allDone = false break end
                 end
-                if allDone then endMatch(match, "Everyone finished the race.") end
+                if allDone then endMatch(match, L.msg("v_jobmanager.core.everyone_finished_race")) end
             end
         end
         playerState[source] = nil
@@ -593,7 +593,7 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     local activeMatches = {}
     for _, match in pairs(matches) do table.insert(activeMatches, match) end
-    for _, match in ipairs(activeMatches) do endMatch(match, "Resource stopped.", true) end
+    for _, match in ipairs(activeMatches) do endMatch(match, L.msg("v_jobmanager.core.resource_stopped"), true) end
 end)
 
 -- Public server API for other resources. These functions keep the validation and

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -------------------------------------
 --Resource: Shader Dynamic lights  --
 --Author: Ren712                   --
@@ -618,7 +619,7 @@ function funcTable.createWorldLightShader(ligNumber,vertLigNumber,isLayer,isWrdS
 	if shaderTable.isStarted then return end
 	if shaderTable.isConfigChanged then
 		if not createLightShaderFiles(ligNumber,vertLigNumber,isLayer,isWrdSobel,isNightMod,isPedDiffuse,isShading,isDirLight,isDiffuse,isNightSpot,isSM3,forceVertex) then 
-			outputChatBox('Pixel Lighting: Shader files not created!',255,0,0) 
+			outputChatBox(L("dynamic_lighting.main.pixel_lighting_shader_files_not_created"),255,0,0) 
 			return 
 		end
 	end
@@ -676,22 +677,22 @@ addEventHandler("onClientResourceStart", getResourceRootElement( getThisResource
 	local ver = getVersion ().sortable
 	local build = string.sub( ver, 9, 13 )
 	if build<"04938" or ver < "1.3.1" then 
-		outputChatBox('Pixel Lighting: is not compatible with this client version!',255,0,0)
+		outputChatBox(L("dynamic_lighting.main.pixel_lighting_is_not_compatible_with"),255,0,0)
 		return
 	end
 	shaderTable.smVersion = vCardPSVer()
 	shaderSettings.gVertexLights = math.max(math.min(shaderSettings.gMaxLights - 1, shaderSettings.gVertexLights), 0)
 	if (shaderTable.smVersion~="3") then 
-		outputChatBox('Pixel Lighting: shader model 3 not supported',255,0,0)
+		outputChatBox(L("dynamic_lighting.main.pixel_lighting_shader_model_3_not"),255,0,0)
 	end
 	shaderTable.isConfigChanged = true
 	funcTable.forceStart()
 	if not shaderTable.isStarted  then 
-		outputChatBox('Pixel Lighting: failed to start shaders!',255,0,0)
+		outputChatBox(L("dynamic_lighting.main.pixel_lighting_failed_to_start_shaders"),255,0,0)
 		shaderTable.isError = true
 		return
 	else
-		outputChatBox('Pixel Lighting: started',0,255,0)			
+		outputChatBox(L("dynamic_lighting.main.pixel_lighting_started"),0,255,0)			
 	end
 end
 )

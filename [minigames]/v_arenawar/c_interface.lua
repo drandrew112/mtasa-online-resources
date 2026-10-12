@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local isArenaPanelVisible = false
 local arenaPlayerCount = 0
 
@@ -5,7 +6,7 @@ uicore = exports.ui_core
 local sw, sh = guiGetScreenSize()
 local w,h = 540,400
 
-local arenaDescription = "ArenaWar is a vehicle deathmatch fought inside a single arena. You're handed a random vehicle from a mix of muscle cars, buggies and off-roaders, and you can't leave your seat once the match starts - it's pure vehicle vs. vehicle combat. Use the terrain and ram your rivals (collisions deal extra damage here) to wreck their ride before they wreck yours. Once your vehicle is destroyed you're eliminated: after a short 5-second countdown you can jump back in with a fresh vehicle, or leave the arena.\nHave fun!"
+local arenaDescription = L("v_arenawar.interface.arenawar_is_vehicle_deathmatch_fought_inside")
 
 --------------------------------------------------------------------------------
 -- theme / drawing helpers
@@ -61,8 +62,8 @@ local margin, gap, btnH = 18, 16, 46
 local btnW = (w - margin*2 - gap) / 2
 
 local buttons = {
-    {label = "PLAY", x = fx+margin, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "good", action = function() triggerServerEvent("enterArena", localPlayer, localPlayer) toggleArenaPanel() end},
-    {label = "CLOSE", x = fx+margin+btnW+gap, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "bad", action = function () toggleArenaPanel() end}
+    {label = L("v_arenawar.interface.play"), x = fx+margin, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "good", action = function() triggerServerEvent("enterArena", localPlayer, localPlayer) toggleArenaPanel() end},
+    {label = L("v_arenawar.interface.close"), x = fx+margin+btnW+gap, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "bad", action = function () toggleArenaPanel() end}
 }
 
 function toggleArenaPanel()
@@ -79,10 +80,10 @@ end
 function renderArenaPanel()
     drawCard(fx, fy, w, h, col(THEME.accent))
 
-    dxDrawText("Welcome to ArenaWar!", fx+20, fy+16, fx+w-20, fy+46, col(THEME.text), 1.5, "default-bold", "left", "top")
+    dxDrawText(L("v_arenawar.interface.welcome_to_arenawar"), fx+20, fy+16, fx+w-20, fy+46, col(THEME.text), 1.5, "default-bold", "left", "top")
 
-    local badge = "Players in arena: "..arenaPlayerCount
-    local bw = dxGetTextWidth(badge, 0.95, "default-bold") + 24
+    local badge = L("v_arenawar.interface.players_in_arena", { arena_player_count = arenaPlayerCount })
+    local bw = L.width(badge, 0.95, "default-bold") + 24
     local bx, by, bh = fx+w-20-bw, fy+18, 24
     dxDrawRectangle(bx, by, bw, bh, col(THEME.accentDim))
     dxDrawRectangle(bx, by, bw, 2, col(THEME.accent))
@@ -107,8 +108,8 @@ end
 
 function renderMarkerInfo()
     if not isArenaPanelVisible then
-        local text = "Press E to open ArenaWar panel"
-        local tw = dxGetTextWidth(text, 1.05, "default-bold")
+        local text = L("v_arenawar.interface.press_e_to_open_arenawar_panel")
+        local tw = L.width(text, 1.05, "default-bold")
         local pad = 14
         local pw, ph = tw + pad*2, 30
         local px, py = sw/2 - pw/2, 22
@@ -187,7 +188,7 @@ end
 function renderEliminationPanel()
     if isEliminationPanelVisible then
         drawCard(efx, efy, ew, eh, col(THEME.accent))
-        dxDrawText("Do you want to continue?", efx+20, efy+20, efx+ew-20, efy+56, col(THEME.text), 1.3, "default-bold", "center", "top")
+        dxDrawText(L("v_arenawar.interface.do_you_want_to_continue"), efx+20, efy+20, efx+ew-20, efy+56, col(THEME.text), 1.3, "default-bold", "center", "top")
 
         for _, button in ipairs(eliminationButtons) do
             local hovered = isMouseInPosition(button.x, button.y, button.width, button.height)
@@ -195,7 +196,7 @@ function renderEliminationPanel()
         end
     elseif getElementData(localPlayer, "arenawar_died") then
         local timeleft = getElementData(localPlayer, "arenawar_died_timeleft") or "?"
-        local text = "Time to Revive: "..timeleft
+        local text = L("v_arenawar.interface.time_to_revive", { timeleft = timeleft })
         local tw, th = 240, 52
         local tx, ty = sw/2 - tw/2, sh/4 - th/2
         drawCard(tx, ty, tw, th, col(THEME.accent2))

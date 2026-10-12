@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 ui = function(z) return uicore:ui(z) end
 
@@ -38,7 +39,7 @@ end
 
 addEvent("tt:notice", true)
 addEventHandler("tt:notice", resourceRoot, function(text)
-    uicore:setBanner("TIME TRIAL TEST", text)
+    uicore:setBanner(L("v_timetrial.timetrial.time_trial_test"), text)
 end)
 
 addEvent("tt:test", true)
@@ -88,13 +89,13 @@ local function drawLabel(sx, sy, k, alpha, tr, inside, isTest)
     local fTitle, fSub, fHint = "default-bold", "default-bold", "default"
     local ts, ss = 1.25 * k * sh / 1080 * 1.2, 0.95 * k * sh / 1080 * 1.2
 
-    local sub = (isTest and "TIME TRIAL  -  TEST" or "TIME TRIAL")
-    local stats = tr.time .. " sec   -   " .. (isTest and "no reward" or ("EUR " .. tr.reward))
-    local hint = not inside and "Step into the marker to start"
-        or (isLandDriver(localPlayer) and "Press  E  to start" or "Land vehicle required")
+    local sub = (isTest and L("v_timetrial.timetrial.time_trial_test_2") or L("v_timetrial.timetrial.time_trial"))
+    local stats = L("v_timetrial.timetrial.sec", { time = tr.time, reward = (isTest and L("v_timetrial.timetrial.no_reward") or ("EUR " .. tr.reward)) })
+    local hint = not inside and L("v_timetrial.timetrial.step_into_marker_to_start")
+        or (isLandDriver(localPlayer) and L("v_timetrial.timetrial.press_e_to_start") or L("v_timetrial.timetrial.land_vehicle_required"))
     local pad, icon, gap = sc(10) * k, sc(34) * k, sc(10) * k
-    local textW = math.max(dxGetTextWidth(tr.name, ts, fTitle), dxGetTextWidth(sub, ss, fSub),
-        dxGetTextWidth(stats, ss, fSub), dxGetTextWidth(hint, ss, fHint))
+    local textW = math.max(L.width(tr.name, ts, fTitle), L.width(sub, ss, fSub),
+        L.width(stats, ss, fSub), L.width(hint, ss, fHint))
     local w = pad + icon + gap + textW + pad * 1.4
     local headH, hintH = sc(66) * k, sc(22) * k
     local h = headH + hintH
@@ -105,7 +106,7 @@ local function drawLabel(sx, sy, k, alpha, tr, inside, isTest)
 
     local ix, iy = x + pad, y + (headH - icon) / 2 + sc(2) * k
     round(ix, iy, icon, icon, sc(5) * k, tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 240 * a))
-    dxDrawText("TT", ix, iy, ix + icon, iy + icon, tocolor(255, 255, 255, 255 * a), ss * 1.2, fTitle, "center", "center")
+    dxDrawText(L("v_timetrial.timetrial.tt"), ix, iy, ix + icon, iy + icon, tocolor(255, 255, 255, 255 * a), ss * 1.2, fTitle, "center", "center")
 
     local tx = ix + icon + gap
     dxDrawText(sub, tx, y + sc(6) * k, tx + textW, y + headH * 0.3, tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 255 * a), ss, fSub, "left", "center")
@@ -162,7 +163,7 @@ bindKey("e", "down", function()
     clearObjective()
     objectiveId = exports.v_radar:addObjective(tr.finish.x, tr.finish.y, tr.finish.z, tr.name) or nil
     setElementData(localPlayer, "tt:active", true)
-    uicore:setBanner("TIME TRIAL STARTED", "Good luck!")
+    uicore:setBanner(L("v_timetrial.timetrial.time_trial_started"), L("v_timetrial.timetrial.good_luck"))
 
     timer = setTimer(function()
         timeLeft = timeLeft - 1
@@ -184,9 +185,9 @@ addEventHandler("tt:finish", root, function(success)
     setElementData(localPlayer, "tt:active", false)
 
     if success then
-        uicore:setBanner("TIME TRIAL COMPLETED", test and "Test run - no reward" or ("Reward: €" .. trial.reward))
+        uicore:setBanner(L("v_timetrial.timetrial.time_trial_completed"), test and L("v_timetrial.timetrial.test_run_no_reward") or (L("v_timetrial.timetrial.reward", { reward = trial.reward })))
     else
-        uicore:setBanner("TIME TRIAL FAILED", "Out of time")
+        uicore:setBanner(L("v_timetrial.timetrial.time_trial_failed"), L("v_timetrial.timetrial.out_of_time"))
     end
 end)
 

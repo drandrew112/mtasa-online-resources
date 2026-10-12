@@ -172,6 +172,7 @@
   "medsys.equipment.out_of_iv_kits_restock_at": "Out of IV kits - restock at a hospital",
   "medsys.equipment.out_of_stock": "{option} - out of stock",
   "medsys.equipment.oxygen_cylinder_empty": "Oxygen cylinder empty",
+  "medsys.glucometer.02d_02d_ago": "%02d:%02d ago",
   "medsys.glucometer.blood_glucose": "blood glucose",
   "medsys.glucometer.err": "Err",
   "medsys.glucometer.glucometer": "GLUCOMETER",

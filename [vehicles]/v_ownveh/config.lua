@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_ownveh :: configuration
 --
 -- Shared namespace for this resource. spawnpoints.lua adds Vehicles.spawnpoints.
@@ -40,7 +41,7 @@ Vehicles.config = {
         ordering        = 0,
         visibleDistance = 5000,
         farShow         = true,
-        tooltip         = "Personal vehicle",
+        tooltip         = L.msg("v_ownveh.config.personal_vehicle"),
     },
 
     -- Minimum admin_level (account data) allowed to use /vehspawn and

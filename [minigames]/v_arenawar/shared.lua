@@ -1,9 +1,10 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 prefix = "#CC00FFArenaWar #FFFFFF// "
 arena_dim = 2
 
 local prevNum = 0
 function mathRandom(min, max)
-    outputChatBox(min.." m "..max)
+    outputChatBox(L.text("v_arenawar.shared.m", { min = min, max = max }))
     local rand = math.random(tonumber(min), tonumber(max))
     if (rand ~= prevNum) then
         prevNum = rand

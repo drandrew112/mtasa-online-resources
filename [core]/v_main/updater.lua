@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     updater.lua
     ---------------------------------------------------------------------------
@@ -75,7 +76,7 @@ local function runCheck(triggeredBy, player)
 
     local function emit(event, text)
         local line = (EVENT_PREFIX[event] or "") .. tostring(text)
-        if event == "missing" then line = line .. "   (in repo, not found locally)" end
+        if event == "missing" then line = L.msg("v_main.updater.in_repo_not_found_locally", { line = line }) end
         log(line)
         if echo then outputConsole("[updater] " .. line, echo) end
         if checker then checker:pushEvent(event, text) end

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 ------------------------------------------------------------
 -- JÁRMŰVEK
 ------------------------------------------------------------
@@ -175,25 +176,25 @@ ELS_GROUPS = { "A", "B", "C", "D" }
 -- Villogási minták. step = egy lépés hossza (ms), a szöveg minden karaktere egy
 -- lépés: "1" = ég, "0" = nem ég. A hiányzó csoport nem világít.
 ELS_PATTERNS = {
-    { name = "Wig-wag",      step = 200,
+    { name = L.text("v_els.config.wig_wag"),      step = 200,
       A = "10", B = "01", C = "10", D = "01" },
-    { name = "Double flash", step = 70,
+    { name = L.text("v_els.config.double_flash"), step = 70,
       A = "1010000000", B = "0000010100", C = "1010000000", D = "0000010100" },
-    { name = "Quad flash",   step = 50,
+    { name = L.text("v_els.config.quad_flash"),   step = 50,
       A = "1010101000000000", B = "0000000010101010", C = "1010101000000000", D = "0000000010101010" },
-    { name = "Front / rear", step = 80,
+    { name = L.text("v_els.config.front_rear"), step = 80,
       A = "1010000000", B = "1010000000", C = "0000010100", D = "0000010100" },
-    { name = "Steady",       step = 100,
+    { name = L.text("v_els.config.steady"),       step = 100,
       A = "1", B = "1", C = "1", D = "1" },
 }
 
 -- szerkesztőben választható színek ({név, r, g, b})
 ELS_COLORS = {
-    { "Blue",  30,  60,  255 },
-    { "Red",   255, 30,  30  },
-    { "White", 255, 255, 255 },
-    { "Amber", 255, 140, 0   },
-    { "Green", 30,  255, 60  },
+    { L.text("v_els.config.blue"),  30,  60,  255 },
+    { L.text("v_els.config.red"),   255, 30,  30  },
+    { L.text("v_els.config.white"), 255, 255, 255 },
+    { L.text("v_els.config.amber"), 255, 140, 0   },
+    { L.text("v_els.config.green"), 30,  255, 60  },
 }
 
 ELS_MAX_POINTS = 32

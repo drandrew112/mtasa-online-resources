@@ -1,8 +1,9 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Rebuilds a game sent by a client from scratch: only known fields, clamped
 -- numbers, catalog models, list limits. The result is in the v_jobmanager game
 -- format (README "Game files"); id / createdBy / image are added by the storage.
 
-local L = CREATOR.LIMITS
+local LIM = CREATOR.LIMITS
 
 local function num(v, min, max)
     v = tonumber(v)
@@ -59,7 +60,7 @@ end
 local function objects(list, official)
     local out = {}
     if type(list) ~= "table" then return out end
-    local max = official and OFFICIAL.objects or L.objects
+    local max = official and OFFICIAL.objects or LIM.objects
     for _, o in ipairs(list) do
         if #out >= max then break end
         local model = type(o) == "table" and tonumber(o.model)
@@ -87,12 +88,12 @@ end
 -- official: an official game edited by an admin (any model, bigger limits)
 function sanitizeGame(doc, gameType, marker, official)
     if type(doc) ~= "table" then return nil end
-    local maxPlayers = math.floor(num(doc.maxPlayers, 1, L.maxPlayers) or 8)
+    local maxPlayers = math.floor(num(doc.maxPlayers, 1, LIM.maxPlayers) or 8)
     local game = {
-        name = text(doc.name, L.name, "Untitled"),
+        name = text(doc.name, LIM.name, L.msg("v_jobcreator.sanitize.untitled")),
         type = gameType,
-        description = text(doc.description, L.description, ""),
-        minPlayers = math.min(math.floor(num(doc.minPlayers, 1, L.maxPlayers) or 1), maxPlayers),
+        description = text(doc.description, LIM.description, ""),
+        minPlayers = math.min(math.floor(num(doc.minPlayers, 1, LIM.maxPlayers) or 1), maxPlayers),
         maxPlayers = maxPlayers,
         objects = objects(doc.objects, official),
     }
@@ -107,8 +108,8 @@ function sanitizeGame(doc, gameType, marker, official)
         local vehicle = type(race.vehicles) == "table" and tonumber(race.vehicles[1])
         game.race = {
             vehicles = { (CATALOG.vehicleAllowed[vehicle] or (official and vehicle and vehicle >= 400 and vehicle <= 611)) and vehicle or 411 },
-            spawnpoints = points(race.spawnpoints, L.spawnpoints, true, -360, 360, 0),
-            checkpoints = points(race.checkpoints, official and OFFICIAL.checkpoints or L.checkpoints, true, 2, 15, 5),
+            spawnpoints = points(race.spawnpoints, LIM.spawnpoints, true, -360, 360, 0),
+            checkpoints = points(race.checkpoints, official and OFFICIAL.checkpoints or LIM.checkpoints, true, 2, 15, 5),
             finish = point(race.finish, true, 2, 15, 5),
         }
         local cam = race.finishCamera
@@ -122,7 +123,7 @@ function sanitizeGame(doc, gameType, marker, official)
             weapon = (CATALOG.weaponAllowed[weapon] or (official and weapon and weapon >= 1 and weapon <= 46)) and weapon or 24,
             ammo = math.floor(num(dm.ammo, 1, 9999) or 120),
             armour = math.floor(num(dm.armour, 0, 100) or 0),
-            spawnpoints = points(dm.spawnpoints, L.spawnpoints, true, -360, 360, 0),
+            spawnpoints = points(dm.spawnpoints, LIM.spawnpoints, true, -360, 360, 0),
         }
     end
     return game

@@ -77,7 +77,7 @@ end
 
 local function formatAgo(ms)
     local seconds = math.floor(ms / 1000)
-    return ("%02d:%02d ago"):format(math.floor(seconds / 60), seconds % 60)
+    return (L("medsys.glucometer.02d_02d_ago")):format(math.floor(seconds / 60), seconds % 60)
 end
 
 local function drawLCD(lx, ly, lw, lh)

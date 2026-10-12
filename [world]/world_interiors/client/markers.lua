@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- world_interiors / client/markers.lua
 -- 3D DX labels above the interior markers (same look as the work_core labels) and the
 -- interact key: standing in a marker is not enough, INT.key has to be pressed.
@@ -94,9 +95,9 @@ local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint, activ
     local a = alpha / 255
 
     local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
-    local nameStr = name:upper()
-    local textW = math.max(dxGetTextWidth(title, k, fTitle), dxGetTextWidth(nameStr, k, fName),
-        dxGetTextWidth(hint, k, fHint))
+    local nameStr = L.upper(name)
+    local textW = math.max(L.width(title, k, fTitle), L.width(nameStr, k, fName),
+        L.width(hint, k, fHint))
     local w = pad + iconSize + gap + textW + pad * 1.4
     local headH, hintH = s(46) * k, s(22) * k
     local h = headH + hintH
@@ -150,12 +151,12 @@ addEventHandler("onClientRender", root, function()
                         local active = m == current
                         local hint
                         if active then
-                            hint = ("Press %s · %s"):format(key, entering and "enter" or "leave")
+                            hint = L("world_interiors.markers.press", { key = key, entering = entering and "enter" or "leave" })
                         else
-                            hint = "Step into the marker"
+                            hint = L("world_interiors.markers.step_into_marker")
                         end
                         drawLabel(sx, sy, k, alpha, color, entering and "»" or "«", name,
-                            entering and "Enter" or "Exit", hint, active)
+                            entering and L("world_interiors.markers.enter") or L("world_interiors.markers.exit"), hint, active)
                     end
                 end
             end

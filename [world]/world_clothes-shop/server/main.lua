@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- world_clothes-shop / server/main.lua
 -- Registers the shop interiors in world_interiors (on start and on world_interiors:ready),
 -- puts a blip on every entrance, creates the changer markers inside and sells outfits.
@@ -84,15 +85,15 @@ addEventHandler("clothes:buy", resourceRoot, function(skin)
     if not inChanger(player) or isPedDead(player) then return end
 
     if onDuty(player) then
-        status(player, "Go off duty before changing your clothes.")
+        status(player, L.msg("world_clothes_shop.main.go_off_duty_before_changing_your"))
         return
     end
     if getElementModel(player) == skin then
-        status(player, "You are already wearing this outfit.")
+        status(player, L.msg("world_clothes_shop.main.you_are_already_wearing_this_outfit"))
         return
     end
     if getPlayerMoney(player) < CLOTHES.price then
-        status(player, "You don't have enough money.")
+        status(player, L.msg("world_clothes_shop.main.you_don_t_have_enough_money"))
         return
     end
 

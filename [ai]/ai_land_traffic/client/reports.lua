@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Crashes and shots by the local player: reported to the server, which releases the traffic vehicle
 -- (it leaves the simulation and becomes a normal physics vehicle). Only the involved player reports.
 
@@ -54,8 +55,7 @@ addEventHandler("onClientRender", root, function()
             if getDistanceBetweenPoints3D(cx, cy, cz, x, y, z) < 120 then
                 local sx, sy = getScreenFromWorldPosition(x, y, z + 2)
                 if sx then
-                    dxDrawText(string.format("%s%d  %.0f km/h  a %.1f  lat %.1f", st.code > 0 and "L" or "C",
-                        math.abs(st.code), st.v * 3.6, st.a, st.lat), sx, sy, sx, sy, tocolor(255, 255, 255),
+                    dxDrawText(L("ai_land_traffic.reports.km_h_lat", { code = st.code > 0 and "L" or "C", code2 = math.abs(st.code), v = st.v * 3.6, a = st.a, lat = st.lat }), sx, sy, sx, sy, tocolor(255, 255, 255),
                         1, "default-bold", "center", "center")
                 end
                 -- planned path

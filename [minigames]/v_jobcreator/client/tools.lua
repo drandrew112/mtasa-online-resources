@@ -1,10 +1,11 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Placing (ghost follows the surface under the cursor / crosshair) and moving
 -- (pick up and drop, then fine-tune with keys), plus the item operations the
 -- menus call.
 
 Tools = { current = nil }
 
-local L = CREATOR.LIMITS
+local LIM = CREATOR.LIMITS
 local M = CREATOR.MOVE
 local sw, sh = guiGetScreenSize()
 
@@ -37,9 +38,9 @@ end
 
 local function listFor(kind)
     local doc = Editor.doc
-    if kind == "object" then return doc.objects, L.objects end
-    if kind == "spawn" then return Editor.spawnList(), L.spawnpoints end
-    if kind == "checkpoint" then return doc.race.checkpoints, L.checkpoints end
+    if kind == "object" then return doc.objects, LIM.objects end
+    if kind == "spawn" then return Editor.spawnList(), LIM.spawnpoints end
+    if kind == "checkpoint" then return doc.race.checkpoints, LIM.checkpoints end
 end
 
 local function createGhost(kind, model)
@@ -68,9 +69,9 @@ function Tools.place(kind, opts)
     Tools.cancel()
     opts = opts or {}
     local list, max = listFor(kind)
-    if list and #list >= max then notify("Limit reached (" .. max .. ").") return end
+    if list and #list >= max then notify(L("v_jobcreator.tools.limit_reached", { max = max })) return end
     local ghost = createGhost(kind, opts.model)
-    if not ghost then notify("This model cannot be created.") return end
+    if not ghost then notify(L("v_jobcreator.tools.this_model_cannot_be_created")) return end
     Tools.current = { type = "place", kind = kind, model = opts.model, insertAt = opts.insertAt, ghost = ghost, rz = 0 }
     Editor.selected = nil
 end
@@ -97,7 +98,7 @@ local function commitPlace(tool)
     local x, y, z, rz = round3(tool.x), round3(tool.y), round3(tool.z), tool.rz % 360
     local kind, done = tool.kind, false
     local list, max = listFor(kind)
-    if list and #list >= max then notify("Limit reached (" .. max .. ").") Tools.cancel() return end
+    if list and #list >= max then notify(L("v_jobcreator.tools.limit_reached", { max = max })) Tools.cancel() return end
     Editor.change(function(doc)
         if kind == "object" then
             table.insert(doc.objects, { model = tool.model, x = x, y = y, z = z, rz = rz ~= 0 and rz or nil })
@@ -302,7 +303,7 @@ end
 function Ops.duplicate(item)
     if not item or (item.kind ~= "object" and item.kind ~= "spawn") then return end
     local list, max = listFor(item.kind)
-    if #list >= max then notify("Limit reached (" .. max .. ").") return end
+    if #list >= max then notify(L("v_jobcreator.tools.limit_reached", { max = max })) return end
     Editor.change(function()
         table.insert(list, item.index + 1, deepCopy(item.ref))
     end)
@@ -320,7 +321,7 @@ function Ops.setFinishCamera()
     Editor.change(function(doc)
         doc.race.finishCamera = { pos = { round3(cx), round3(cy), round3(cz) }, lookAt = { round3(lx), round3(ly), round3(lz) }, roll = 0, fov = 70 }
     end)
-    notify("Finish camera set to the current view.")
+    notify(L("v_jobcreator.tools.finish_camera_set_to_current_view"))
 end
 
 function Ops.previewCamera(cam)

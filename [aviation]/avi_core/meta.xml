@@ -3,6 +3,8 @@
           description="Aviation core: ATC rights (tower / approach / radar), ATC markers, shared units and admin helpers for the avi_* resources" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="shared/units.lua"  type="shared" />
 

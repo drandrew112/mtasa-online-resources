@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- shader_colors / c_api.lua
 --
 -- Exports. Persistence is owned by ui_pause (gfx_colorpreset / gfx_colorintensity);
@@ -133,23 +134,22 @@ end)
 --------------------------------------------------------------------------------
 
 addCommandHandler("colorgrade", function(_, arg)
-    local prefix = "#3fa9f5[Színkorrekció] #ffffff"
+    local prefix = L("shader_colors.api.color_grading")
     if arg == "split" then
         setSplit(not Split)
-        outputChatBox(prefix .. "Osztott nézet: " .. (Split and "BE" or "KI"), 255, 255, 255, true)
+        outputChatBox(L("shader_colors.api.split_view", { prefix = prefix, split = (Split and L("shader_colors.api.be") or L("shader_colors.api.ki")) }), 255, 255, 255, true)
     elseif arg and PRESET_BY_ID[arg] then
         setColorPreset(arg)
-        outputChatBox(prefix .. "Preset: " .. arg .. " (nincs mentve)", 255, 255, 255, true)
+        outputChatBox(L("shader_colors.api.preset_not_saved", { prefix = prefix, arg = arg }), 255, 255, 255, true)
     elseif tonumber(arg) then
         setColorIntensity(arg)
-        outputChatBox(prefix .. "Erősség: " .. Settings.intensity .. "% (nincs mentve)", 255, 255, 255, true)
+        outputChatBox(L("shader_colors.api.intensity_not_saved", { prefix = prefix, intensity = Settings.intensity }), 255, 255, 255, true)
     elseif arg == "info" or not arg then
         local n = 0
         for _ in pairs(Overrides) do n = n + 1 end
-        outputChatBox(prefix .. string.format("Állapot: %s | Preset: %s | Erősség: %d%% | Technique: %s | Éjszaka: %.2f | Override: %d",
-            Status, Settings.preset, Settings.intensity, tostring(Technique), NightWeight, n), 255, 255, 255, true)
-        outputChatBox(prefix .. "Használat: /colorgrade [split | info | off/natural/vivid/cinematic/warm/cold | 0-100]", 255, 255, 255, true)
+        outputChatBox(prefix .. L("shader_colors.api.status_preset_intensity_technique_night_override", { status = Status, preset = Settings.preset, intensity = Settings.intensity, technique = tostring(Technique), night_weight = NightWeight, n = n }), 255, 255, 255, true)
+        outputChatBox(L("shader_colors.api.usage_colorgrade_split_info_off_natural", { prefix = prefix }), 255, 255, 255, true)
     else
-        outputChatBox(prefix .. "Ismeretlen paraméter: " .. tostring(arg), 255, 255, 255, true)
+        outputChatBox(L("shader_colors.api.unknown_parameter", { prefix = prefix, arg = tostring(arg) }), 255, 255, 255, true)
     end
 end)

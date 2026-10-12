@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     updateResources.lua
     ---------------------------------------------------------------------------
@@ -37,10 +38,10 @@ end
 -- ---------------------------------------------------------------------------
 local function finalizeUpdate(player, written, failed, affected, created)
     commandFeedback(player, "update",
-        ("Download done - written: %d, failed: %d."):format(#written, #failed))
+        L.msg("v_main.updateresources.download_done_written_failed", { written = #written, failed = #failed }))
 
     if #created > 0 then
-        commandFeedback(player, "update", "New resources installed: " .. table.concat(created, ", "))
+        commandFeedback(player, "update", L.msg("v_main.updateresources.new_resources_installed", { created = table.concat(created, ", ") }))
     end
 
     for _, path in ipairs(written) do log("  ok   " .. path) end
@@ -51,12 +52,12 @@ local function finalizeUpdate(player, written, failed, affected, created)
     table.sort(names)
 
     if #names == 0 then
-        commandFeedback(player, "update", "No files were changed.")
+        commandFeedback(player, "update", L.msg("v_main.updateresources.no_files_were_changed"))
         busy = false
         return
     end
 
-    commandFeedback(player, "update", "Changed resources: " .. table.concat(names, ", "))
+    commandFeedback(player, "update", L.msg("v_main.updateresources.changed_resources", { names = table.concat(names, ", ") }))
 
     -- v_main / v_mysql cannot cleanly restart themselves from inside this
     -- handler (this script is running, and the DB layer backs the auth check).
@@ -70,8 +71,7 @@ local function finalizeUpdate(player, written, failed, affected, created)
     end
 
     if #selfHit > 0 then
-        commandFeedback(player, "update", "NOTE: " .. table.concat(selfHit, ", ")
-            .. " changed - restart from the server console manually.")
+        commandFeedback(player, "update", L.msg("v_main.updateresources.note_changed_restart_from_server_console", { self_hit = table.concat(selfHit, ", ") }))
     end
 
     if #toReload == 0 then
@@ -89,7 +89,7 @@ local function finalizeUpdate(player, written, failed, affected, created)
     end
 
     commandFeedback(player, "update",
-        ("Reloading %d resource(s) in dependency order..."):format(#toReload))
+        L.msg("v_main.updateresources.reloading_resource_s_in_dependency_order", { to_reload = #toReload }))
 
     setTimer(function()
         refreshResources(false)
@@ -177,13 +177,12 @@ end
 -- ---------------------------------------------------------------------------
 local function runUpdate(triggeredBy, player)
     if busy then
-        commandFeedback(player, "update", "An update is already running - ignoring this request.")
+        commandFeedback(player, "update", L.msg("v_main.updateresources.update_is_already_running_ignoring_this"))
         return
     end
     busy = true
 
-    commandFeedback(player, "update", ("Update started (%s). Repo: %s/%s @ %s")
-        :format(triggeredBy, RepoSync.USER, RepoSync.NAME, RepoSync.BRANCH))
+    commandFeedback(player, "update", L.msg("v_main.updateresources.update_started_repo", { triggered_by = triggeredBy, user = RepoSync.USER, name = RepoSync.NAME, branch = RepoSync.BRANCH }))
 
     fetchRemote(RepoSync.API_TREE_URL,
         { headers = RepoSync.API_HEADERS, connectionAttempts = 2, connectTimeout = 20000 },
@@ -192,20 +191,20 @@ local function runUpdate(triggeredBy, player)
                         or (type(info) == "number" and info == 0)
             if not httpOk then
                 local code = (type(info) == "table") and tostring(info.statusCode) or tostring(info)
-                commandFeedback(player, "update", "Could not fetch the repo tree from GitHub (HTTP " .. code .. ").")
+                commandFeedback(player, "update", L.msg("v_main.updateresources.could_not_fetch_repo_tree_from", { code = code }))
                 busy = false
                 return
             end
 
             local parsed = fromJSON(data)
             if type(parsed) ~= "table" or type(parsed.tree) ~= "table" then
-                commandFeedback(player, "update", "Could not parse the GitHub tree response.")
+                commandFeedback(player, "update", L.msg("v_main.updateresources.could_not_parse_github_tree_response"))
                 busy = false
                 return
             end
             if parsed.truncated then
                 commandFeedback(player, "update",
-                    "WARNING: GitHub returned a TRUNCATED tree - some files will be missed.")
+                    L.msg("v_main.updateresources.warning_github_returned_truncated_tree_some"))
             end
 
             local roots = RepoSync.buildResourceRoots(parsed.tree)
@@ -228,9 +227,7 @@ local function runUpdate(triggeredBy, player)
                 end
             end
             if #createFailed > 0 then
-                commandFeedback(player, "update", "Could not create new resource(s): "
-                    .. table.concat(createFailed, ", ")
-                    .. " - the folder may already exist with a broken meta.xml; check it, then 'refresh'.")
+                commandFeedback(player, "update", L.msg("v_main.updateresources.could_not_create_new_resource_s", { create_failed = table.concat(createFailed, ", ") }))
             end
 
             local todo         = {}
@@ -261,17 +258,16 @@ local function runUpdate(triggeredBy, player)
             end
 
             if notInstalled > 0 then
-                commandFeedback(player, "update", notInstalled
-                    .. " repo file(s) belong to resources that could not be installed here (skipped).")
+                commandFeedback(player, "update", L.msg("v_main.updateresources.repo_file_s_belong_to_resources", { not_installed = notInstalled }))
             end
 
             if #todo == 0 then
-                commandFeedback(player, "update", "Everything is already up to date with the repo.")
+                commandFeedback(player, "update", L.msg("v_main.updateresources.everything_is_already_up_to_date"))
                 busy = false
                 return
             end
 
-            commandFeedback(player, "update", ("%d file(s) to download and apply..."):format(#todo))
+            commandFeedback(player, "update", L.msg("v_main.updateresources.file_s_to_download_and_apply", { todo = #todo }))
             downloadAndApply(player, todo, created)
         end)
 end

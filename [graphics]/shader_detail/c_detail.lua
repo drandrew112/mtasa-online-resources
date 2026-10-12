@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --
 -- c_detail.lua
 --
@@ -58,7 +59,7 @@ function enableDetail()
 	bEffectEnabled = true
 
 	if not bAllValid then
-		outputChatBox( "dr_shader_detail: Could not create some things.", 255, 0, 0 )
+		outputChatBox( L("shader_detail.detail.dr_shader_detail_could_not_create"), 255, 0, 0 )
 		disableDetail()
 	else
 		outputDebugString( "dr_shader_detail: is using technique " .. tec )

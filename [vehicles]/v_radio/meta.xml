@@ -1,6 +1,8 @@
 <meta>
 	<info author="DrAndrew112" type="script" name="radio" />
 	
+	<include resource="v_locals" />
+	<script src="locals.lua" type="shared" />
 	<script src="c_ui.lua" type="client" />
 	<script src="c_radio.lua" type="client" />
 	<script src="s_radio.lua" type="server" />

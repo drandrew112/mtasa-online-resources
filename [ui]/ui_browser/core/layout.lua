@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: core/layout.lua
 -- Turns the parsed markup tree into an absolute-positioned list of draw ops and
 -- clickable links, flowing vertically inside a given width. Drawn into a render
@@ -23,7 +24,7 @@ local function fontHeight(mult, font)
 end
 
 local function textWidth(text, mult, font)
-    return dxGetTextWidth(text, BR.fscale(mult), font or BR.fonts.regular)
+    return L.width(text, BR.fscale(mult), font or BR.fonts.regular)
 end
 
 --------------------------------------------------------------------------------
@@ -203,7 +204,7 @@ handlers.link = function(ctx, node, x, w, y)
     y = y + S(2)
     local label = BR.nodeText(node)
     local scale = BR.fscale(FS.p)
-    local tw = math.min(w, dxGetTextWidth(label, scale, BR.fonts.regular))
+    local tw = math.min(w, L.width(label, scale, BR.fonts.regular))
     local lh = dxGetFontHeight(scale, BR.fonts.regular)
     pushText(ctx, label, x, y, w, FS.p, ctx.col.link)
     pushLine(ctx, x, y + lh, tw, S(1), ctx.col.link)
@@ -222,7 +223,7 @@ handlers.button = function(ctx, node, x, w, y)
     local h = (node.attrs.class == "btn-cta") and S(48) or S(38)
     local padX = S(20)
     local bw = (node.attrs.block == "1") and w
-        or math.min(w, dxGetTextWidth(label, scale, BR.fonts.bold) + padX * 2)
+        or math.min(w, L.width(label, scale, BR.fonts.bold) + padX * 2)
 
     local bx = x
     if node.attrs.align == "right" then
@@ -247,7 +248,7 @@ handlers.buttons = function(ctx, node, x, w, y)
     for _, kid in ipairs(BR.elementChildren(node)) do
         if kid.tag == "button" then
             local label = BR.nodeText(kid)
-            local bw = math.min(w, dxGetTextWidth(label, scale, BR.fonts.bold) + S(40))
+            local bw = math.min(w, L.width(label, scale, BR.fonts.bold) + S(40))
             if bx > x and bx + bw > x + w then
                 bx = x
                 rowY = rowY + h + gap
@@ -356,12 +357,12 @@ end
 
 local function drawSortBar(ctx, x, w, y)
     local segs = {
-        { key = "default", label = "Default" },
-        { key = "asc",     label = "Price: low to high" },
-        { key = "desc",    label = "Price: high to low" },
+        { key = "default", label = L("ui_browser.layout.default") },
+        { key = "asc",     label = L("ui_browser.layout.price_low_to_high") },
+        { key = "desc",    label = L("ui_browser.layout.price_high_to_low") },
     }
     local cur = BR.state.sort
-    y = pushText(ctx, "Sort", x, y, w, FS.small, ctx.col.muted) + S(2)
+    y = pushText(ctx, L("ui_browser.layout.sort"), x, y, w, FS.small, ctx.col.muted) + S(2)
     local sx, h = x, S(30)
     for _, seg in ipairs(segs) do
         local active = (cur == seg.key) or (cur == nil and seg.key == "default")
@@ -426,7 +427,7 @@ handlers.tabs = function(ctx, node, x, w, y)
         local sel = (i == active)
         pushRect(ctx, tx, y, tabW - S(2), h, sel and accent or ctx.col.card)
         if not sel then strokeRect(ctx, tx, y, tabW - S(2), h, ctx.col.cardLine) end
-        pushTextOp(ctx, t.attrs.title or ("Tab " .. i), tx, y, tx + tabW - S(2), y + h,
+        pushTextOp(ctx, t.attrs.title or (L("ui_browser.layout.tab", { i = i })), tx, y, tx + tabW - S(2), y + h,
             sel and tocolor(255, 255, 255, 255) or ctx.col.text, FS.p, BR.fonts.bold, "center", "center")
         registerLink(ctx, tx, y, tabW - S(2), h, nil, { tab = i })
     end
@@ -445,7 +446,7 @@ handlers.product = function(ctx, node, x, w, y)
     ctx.forceCardH = nil
 
     local id = node.attrs.id or ""
-    local name = node.attrs.name or "Product"
+    local name = node.attrs.name or L("ui_browser.layout.product")
     local price = node.attrs.price or ""
     local path = resolveAsset(ctx, node.attrs.img or node.attrs.src)
     local hasImg = path and fileExists(path)
@@ -487,14 +488,14 @@ handlers.productimage = function(ctx, node, x, w, y)
     if path and fileExists(path) then
         pushImage(ctx, x, y, w, ih, path)
     else
-        pushTextOp(ctx, node.attrs.alt or "no image", x, y, x + w, y + ih, ctx.col.muted, FS.small, BR.fonts.regular, "center", "center")
+        pushTextOp(ctx, node.attrs.alt or L("ui_browser.layout.no_image"), x, y, x + w, y + ih, ctx.col.muted, FS.small, BR.fonts.regular, "center", "center")
     end
     strokeRect(ctx, x, y, w, ih, ctx.col.cardLine)
     return y + ih + S(10)
 end
 
 handlers.swatches = function(ctx, node, x, w, y)
-    y = pushText(ctx, node.attrs.label or "Colour", x, y, w, FS.small, ctx.col.muted) + S(8)
+    y = pushText(ctx, node.attrs.label or L("ui_browser.layout.colour"), x, y, w, FS.small, ctx.col.muted) + S(8)
     local sz, gap = S(38), S(12)
     local bx = x
     for _, sw in ipairs(BR.elementChildren(node)) do
@@ -561,7 +562,7 @@ handlers.searchbox = function(ctx, node, x, w, y)
     pushRect(ctx, bx, y + S(3), bw, h, tocolor(0, 0, 0, 35))
     pushRect(ctx, bx, y, bw, h, tocolor(255, 255, 255, 255))
     ctx.searchRect = { x = bx, y = y, w = bw, h = h }
-    ctx.searchPlaceholder = node.attrs.placeholder or "Search the virtual web or type an address"
+    ctx.searchPlaceholder = node.attrs.placeholder or L("ui_browser.layout.search_virtual_web_or_type_address")
     registerLink(ctx, bx, y, bw, h, nil, { search = true })
     return y + h + S(8)
 end
@@ -584,7 +585,7 @@ handlers.sitecard = function(ctx, node, x, w, y)
     local forced = ctx.forceCardH
     ctx.forceCardH = nil
 
-    local title = node.attrs.title or node.attrs.href or "Website"
+    local title = node.attrs.title or node.attrs.href or L("ui_browser.layout.website")
     local url = node.attrs.url or node.attrs.href or ""
     local desc = BR.nodeText(node)
     local logo = node.attrs.logo

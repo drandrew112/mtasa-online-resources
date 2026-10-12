@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --
 -- c_helper_functions.lua
 --
@@ -36,11 +37,11 @@ end
 
 local scx,scy = guiGetScreenSize()
 function renderDebugLights()
-	dxDrawText(fpscheck()..' FPS', scx/2, 25)
+	dxDrawText(L("dynamic_lighting.helper_functions.fps", { fpscheck = fpscheck() }), scx/2, 25)
 	if (#lightTable.outputLights<1) then 
 		return
 	end
-	dxDrawText(lightTable.thisLight..' Active', scx/2 ,10 )
+	dxDrawText(L("dynamic_lighting.helper_functions.active", { this_light = lightTable.thisLight }), scx/2 ,10 )
 	for index,this in ipairs(lightTable.outputLights) do
 		if this.enabled then
 			local col = tocolor(this.color[1] * 255, this.color[2] * 255,this.color[3] * 255,this.color[4] * 255)

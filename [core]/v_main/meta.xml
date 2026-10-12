@@ -9,6 +9,7 @@
 
     <!-- admin_level lookups for the privileged console commands
          (/restartallresource, /updateresources) -->
+    <include resource="v_locals" />
     <include resource="v_mysql" />
 
     <settings>
@@ -18,6 +19,7 @@
         <setting name="*enableUpdateChecker" value="[true]" friendlyname="Enable update checker" group="Updater" accept="true,false" />
     </settings>
 
+    <script src="locals.lua" type="server" />
     <script src="server.lua" type="server" />
     <script src="loadResources.lua" type="server" />
 

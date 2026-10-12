@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 local sx, sy = uicore:getScreenWH()
 ui = function(z) return uicore:ui(z) end
@@ -97,7 +98,7 @@ function drawRadioUI()
     end
 
     -- középső szöveg
-    local stationName = "Radio off"
+    local stationName = L("v_radio.ui.radio_off")
     if selectedStation ~= 0 and RADIO_STATIONS[selectedStation] then
         dxDrawImage(cx-20,cy-80,40,25, "images/flags/"..RADIO_STATIONS[selectedStation].country..".png")
         stationName = RADIO_STATIONS[selectedStation].name
@@ -114,10 +115,10 @@ function drawRadioUI()
     )
 
     -- vezérlés súgó a jobb alsó sarokban (ui_pause stílusú info sáv)
-    local hint = "MOUSE WHEEL  Change station"
+    local hint = L("v_radio.ui.mouse_wheel_change_station")
     local pad = ui(16)
     local barH = ui(30)
-    local barW = dxGetTextWidth(hint, ui(1), "default-bold") + pad * 2
+    local barW = L.width(hint, ui(1), "default-bold") + pad * 2
     dxDrawRectangle(sx - barW, sy - barH, barW, barH, tocolor(0, 0, 0, 200))
     dxDrawText(
         hint,

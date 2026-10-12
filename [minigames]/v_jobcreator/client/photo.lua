@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Thumbnail photos: freecam with every HUD element hidden (shared "hideHUD"
 -- element data + the editor's own helpers), a 16:9 frame guide, SPACE shoots.
 -- The 16:9 middle of the screen is scaled to 640x360 and sent to the server as
@@ -70,7 +71,7 @@ local function capture()
     if not source or not target then
         if source then destroyElement(source) end
         if target then destroyElement(target) end
-        notify("Could not take the photo (video memory).")
+        notify(L("v_jobcreator.photo.could_not_take_photo_video_memory"))
         return
     end
     dxUpdateScreenSource(source, true)
@@ -81,13 +82,13 @@ local function capture()
     destroyElement(source)
     destroyElement(target)
     local jpeg = pixels and dxConvertPixels(pixels, "jpeg", T.quality)
-    if not jpeg then notify("Could not take the photo.") return end
+    if not jpeg then notify(L("v_jobcreator.photo.could_not_take_photo")) return end
 
     triggerLatentServerEvent("jobcreator:thumbnail", 100000, false, resourceRoot, jpeg)
     Photo.setPreview(jpeg)
     Editor.hasThumb = true
     Editor.dirty = true
-    notify("Photo taken. It is stored with the game when you save.")
+    notify(L("v_jobcreator.photo.photo_taken_it_is_stored_with"))
 end
 
 function Photo.setPreview(bytes)
@@ -97,11 +98,11 @@ function Photo.setPreview(bytes)
 end
 
 function Photo.remove()
-    if not Editor.hasThumb then notify("There is no photo.") return end
+    if not Editor.hasThumb then notify(L("v_jobcreator.photo.there_is_no_photo")) return end
     triggerServerEvent("jobcreator:thumbnail", resourceRoot, false)
     Photo.clear()
     Editor.dirty = true
-    notify("Photo removed (on the next save).")
+    notify(L("v_jobcreator.photo.photo_removed_on_next_save"))
 end
 
 function Photo.clear()
@@ -146,7 +147,7 @@ addEventHandler("onClientRender", root, function()
         dxDrawLine(fx + fw * 2 / 3, fy, fx + fw * 2 / 3, fy + fh, c)
         dxDrawLine(fx, fy + fh / 3, fx + fw, fy + fh / 3, c)
         dxDrawLine(fx, fy + fh * 2 / 3, fx + fw, fy + fh * 2 / 3, c)
-        dxDrawText("PHOTO MODE   SPACE take photo   ·   BACKSPACE cancel   ·   hold RMB to look, WASD / Q / E move",
+        dxDrawText(L("v_jobcreator.photo.photo_mode_space_take_photo_backspace"),
             0, sh - 40, sw, sh - 10, tocolor(255, 255, 255), 1, "default-bold", "center", "center")
         return
     end

@@ -2,11 +2,13 @@
     <info author="drandrew112" name="Vehicle Customs" type="script" version="2.0.0"
           description="Vehicle tuning workshop on the ui_inac temp-menu system." />
 
+    <include resource="v_locals" />
     <include resource="ui_core" />
     <include resource="ui_inac" />
     <include resource="v_ownveh" />
 
     <!-- shared catalogue + config -->
+    <script src="locals.lua" type="shared" />
     <script src="config.lua"        type="shared" />
     <script src="shared/tuning.lua" type="shared" />
 

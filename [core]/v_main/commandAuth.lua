@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     commandAuth.lua
     ---------------------------------------------------------------------------
@@ -30,8 +31,7 @@ end
 
 --- Uniform "no permission" reply + false (so callers can `return denyAdminCommand(...)`).
 function denyAdminCommand(player, cmdName)
-    local msg = ("Access denied - '%s' requires admin level %d or the server console.")
-        :format(tostring(cmdName), PRIV_ADMIN_LEVEL)
+    local msg = L.msg("v_main.commandauth.access_denied_requires_admin_level_or", { cmd_name = tostring(cmdName), priv_admin_level = PRIV_ADMIN_LEVEL })
 
     if isElement(player) then
         outputConsole(msg, player)

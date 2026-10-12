@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: core/util.lua
 -- Kozos segedfuggvenyek a virtualis bongeszohoz (szin- es URL-elemzes,
 -- szoveg-tordeles). Minden a globalis BR tablaba kerul, hogy a tobbi
@@ -102,7 +103,7 @@ function BR.wrapText(text, maxW, scale, font)
             local line = ""
             for word in raw:gmatch("%S+") do
                 local try = (line == "") and word or (line .. " " .. word)
-                if line == "" or dxGetTextWidth(try, scale, font) <= maxW then
+                if line == "" or L.width(try, scale, font) <= maxW then
                     line = try
                 else
                     out[#out + 1] = line

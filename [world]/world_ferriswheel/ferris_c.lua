@@ -1,8 +1,9 @@
-﻿local scX, scY = guiGetScreenSize();
+﻿if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+local scX, scY = guiGetScreenSize();
 local lps = { x = 383.705, y = -2028.377, z = 7.835, rz = 90 };  -- Position where player will be teleported after he leaves a cabin
 local bdKey = { 'K', 'L' };                                      -- Keys to get inside [1] and outside [2] of the cabin ('K' and 'L' by default)
 local tstgs = {
-  text = "Press '"..bdKey[ 1 ].."' to get into the cabin",       -- Text that will show up when cabin gets closer to a player
+  text = L("world_ferriswheel.ferris.press_to_get_into_cabin", { bd_key = bdKey[ 1 ] }),       -- Text that will show up when cabin gets closer to a player
   font = 'bankgothic',                                           -- Text font (can be a custom font too)
   scale = 0.7,                                                   -- Text scale
   color = tocolor( 255, 255, 255, 255 ),                         -- Text color
@@ -30,7 +31,7 @@ addEventHandler( 'server_sendCabinsCollision', root, function( t )
     addEventHandler( 'onClientColShapeHit', col, function( player, dim )
       if player == localPlayer and dim then
         bindKey( bdKey[ 1 ], 'down', getInside, col );
-        tstgs.text = "Press '"..bdKey[ 1 ].."' to get into the cabin";
+        tstgs.text = L("world_ferriswheel.ferris.press_to_get_into_cabin", { bd_key = bdKey[ 1 ] });
         addEventHandler( 'onClientRender', root, drawNotice );
         setCameraClip( false, true );
       end;
@@ -54,15 +55,15 @@ addEventHandler( 'onClientPlayerWasted', localPlayer, function()
 end );
 
 function drawNotice()
-  dxDrawText( tstgs.text, scX*0.5 - dxGetTextWidth( tstgs.text, tstgs.scale, tstgs.font )/2, scY*0.85 + 1, scX, scY, tstgs.shadow, tstgs.scale, tstgs.font );
-  dxDrawText( tstgs.text, scX*0.5 - dxGetTextWidth( tstgs.text, tstgs.scale, tstgs.font )/2, scY*0.85, scX, scY, tstgs.color, tstgs.scale, tstgs.font );
+  dxDrawText( tstgs.text, scX*0.5 - L.width( tstgs.text, tstgs.scale, tstgs.font )/2, scY*0.85 + 1, scX, scY, tstgs.shadow, tstgs.scale, tstgs.font );
+  dxDrawText( tstgs.text, scX*0.5 - L.width( tstgs.text, tstgs.scale, tstgs.font )/2, scY*0.85, scX, scY, tstgs.color, tstgs.scale, tstgs.font );
 end;
 
 function getInside( key, state, col )
   local x, y, z = getElementPosition( col );
   setElementPosition( localPlayer, x - 0.5, y, z );
   
-  tstgs.text = "Press '"..bdKey[ 2 ].."' to leave the cabin";
+  tstgs.text = L("world_ferriswheel.ferris.press_to_leave_cabin", { bd_key = bdKey[ 2 ] });
   unbindKey( bdKey[ 1 ], 'down', getInside );
   bindKey( bdKey[ 2 ], 'down', leaveCabin );
 end;

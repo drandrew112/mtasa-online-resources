@@ -1,6 +1,8 @@
 <meta>
     <info name="shader_markers" author="drandrew112" type="script" version="1.0.0" description="Modern gradient rendering for cylinder markers (keeps original marker colors)" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
     <script src="server.lua" type="server" />
     <script src="client.lua" type="client" />
 

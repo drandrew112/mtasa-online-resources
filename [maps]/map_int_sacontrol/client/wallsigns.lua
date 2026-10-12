@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Draws the wall signs from shared/wallsigns.lua: each sign is rendered once into its own
 -- render target (again after a device restore) and drawn with dxDrawMaterialLine3D.
 
@@ -33,7 +34,7 @@ local function renderSign(s)
     for _, l in ipairs(s.def.lines) do
         local px = rh * 0.45 * (l.size or 1) * 0.75
         local font = getFont(l.bold, px)
-        local tw = dxGetTextWidth(l.text, 1, font)
+        local tw = L.width(l.text, 1, font)
         if tw > maxW then fit = math.min(fit, maxW / tw) end
         lines[#lines + 1] = { l = l, font = font, h = dxGetFontHeight(1, font) }
     end

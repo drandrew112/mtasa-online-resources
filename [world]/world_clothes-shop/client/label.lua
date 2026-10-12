@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- world_clothes-shop / client/label.lua
 -- Marker UI of the changer markers (same look as the work_core / med_hospitals labels):
 -- a 3D DX label above the marker, and while the outfit list is open the same box fixed at
@@ -17,7 +18,7 @@ local function font(size, bold)
 end
 
 local GREEN, RED = { 70, 190, 90 }, { 218, 54, 51 }
-local L = CLOTHES.label
+local LBL = CLOTHES.label
 
 local markers = {}
 
@@ -37,19 +38,19 @@ end)
 local function labelFor(marker)
     local shop = CLOTHES.shopById[getElementData(marker, "clothes:shop")]
     local int = shop and CLOTHES.interiors[shop.interior]
-    local name = int and int.name or "Clothes"
-    local color, hint = L.color, nil
+    local name = int and int.name or L("world_clothes_shop.label.clothes")
+    local color, hint = LBL.color, nil
 
     if marker == ChangerMarker and Status and getTickCount() < Status.untilTick then
         color, hint = Status.ok and GREEN or RED, Status.text
     elseif isClothesMenuOpen() then
-        hint = ("Every outfit €%d · Enter buy · Backspace back"):format(CLOTHES.price)
+        hint = L("world_clothes_shop.label.every_outfit_enter_buy_backspace_back", { price = CLOTHES.price })
     elseif marker == ChangerMarker then
-        hint = ("Press %s · browse outfits · €%d each"):format(CLOTHES.key:upper(), CLOTHES.price)
+        hint = L("world_clothes_shop.label.press_browse_outfits_each", { key = CLOTHES.key:upper(), price = CLOTHES.price })
     else
-        hint = ("Outfits · €%d each"):format(CLOTHES.price)
+        hint = L("world_clothes_shop.label.outfits_each", { price = CLOTHES.price })
     end
-    return color, name:sub(1, 1):upper(), name, "Changing Room", hint
+    return color, L.upper(L.sub(name, 1, 1)), name, L("world_clothes_shop.label.changing_room"), hint
 end
 
 ---------------------------------------------------------------- drawing
@@ -74,9 +75,9 @@ local function drawLabel(sx, sy, k, alpha, color, icon, name, title, hint, stem)
     local a = alpha / 255
 
     local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
-    local nameStr = name:upper()
-    local textW = math.max(dxGetTextWidth(title, k, fTitle), dxGetTextWidth(nameStr, k, fName),
-        dxGetTextWidth(hint, k, fHint))
+    local nameStr = L.upper(name)
+    local textW = math.max(L.width(title, k, fTitle), L.width(nameStr, k, fName),
+        L.width(hint, k, fHint))
     local w = pad + iconSize + gap + textW + pad * 1.4
     local headH, hintH = s(46) * k, s(22) * k
     local h = headH + hintH
@@ -119,17 +120,17 @@ addEventHandler("onClientRender", root, function()
         if isElement(m) and getElementDimension(m) == dim and getElementInterior(m) == int then
             local x, y, z = getElementPosition(m)
             local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
-            local lz = z + L.height
-            if dist <= L.distance
+            local lz = z + LBL.height
+            if dist <= LBL.distance
                 and isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
                 local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
                 if sx then
                     local k = 1
-                    if dist > L.fullDistance then
-                        k = 1 - (dist - L.fullDistance) / (L.distance - L.fullDistance) * (1 - L.minScale)
+                    if dist > LBL.fullDistance then
+                        k = 1 - (dist - LBL.fullDistance) / (LBL.distance - LBL.fullDistance) * (1 - LBL.minScale)
                     end
                     local alpha = 255
-                    if dist > L.distance * 0.8 then alpha = 255 * (L.distance - dist) / (L.distance * 0.2) end
+                    if dist > LBL.distance * 0.8 then alpha = 255 * (LBL.distance - dist) / (LBL.distance * 0.2) end
                     local color, icon, name, title, hint = labelFor(m)
                     drawLabel(sx, sy, k, alpha, color, icon, name, title, hint, true)
                 end

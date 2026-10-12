@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- End-of-match scoreboard: cinematic camera + stats, then a "pick next game"
 -- tile grid (6 wide x 2 tall) plus a shorter Replay / Free Mode row below it.
 -- Opens on jobmanager:matchEnded, entirely separate from the pause menu. When
@@ -175,7 +176,7 @@ local function drawStats()
     local headerH, colHeadH, rowH, footerH = S(50), S(22), S(26), S(26)
 
     dxDrawRectangle(fx, fy, fw, headerH, C.band)
-    dxDrawText(string.upper(payload.jobName or "MATCH"), fx + S(16), fy + S(4), fx + fw - S(16), fy + S(30),
+    dxDrawText(L.upper(payload.jobName or L("v_jobmanager.scoreboard.match")), fx + S(16), fy + S(4), fx + fw - S(16), fy + S(30),
         tocolor(255, 255, 255), S(1.3), FONT.title, "left", "top")
     dxDrawText(payload.reason or "", fx + S(16), fy + S(28), fx + fw - S(16), fy + headerH - S(4),
         C.txtDim, S(0.95), FONT.row, "left", "top")
@@ -186,13 +187,13 @@ local function drawStats()
     local y = fy + headerH + S(6)
     dxDrawRectangle(fx, y, fw, colHeadH, C.colHead)
     if isRace then
-        dxDrawText("PLACE", fx + S(12), y, fx + fw * 0.2, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
-        dxDrawText("NAME", fx + fw * 0.2, y, fx + fw * 0.7, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
-        dxDrawText("TIME", fx + fw * 0.7, y, fx + fw - S(12), y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.place"), fx + S(12), y, fx + fw * 0.2, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.name"), fx + fw * 0.2, y, fx + fw * 0.7, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.time"), fx + fw * 0.7, y, fx + fw - S(12), y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
     else
-        dxDrawText("NAME", fx + S(12), y, fx + fw * 0.6, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
-        dxDrawText("KILLS", fx + fw * 0.6, y, fx + fw * 0.8, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
-        dxDrawText("DEATHS", fx + fw * 0.8, y, fx + fw - S(12), y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.name"), fx + S(12), y, fx + fw * 0.6, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "left", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.kills"), fx + fw * 0.6, y, fx + fw * 0.8, y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
+        dxDrawText(L("v_jobmanager.scoreboard.deaths"), fx + fw * 0.8, y, fx + fw - S(12), y + colHeadH, tocolor(255, 255, 255), S(1.0), FONT.head, "right", "center")
     end
     y = y + colHeadH
 
@@ -201,7 +202,7 @@ local function drawStats()
         dxDrawRectangle(fx, ry, fw, rowH, i % 2 == 0 and C.rowAlt or C.row)
         local nameX = isRace and (fx + fw * 0.2) or (fx + S(12))
         if isRace then
-            local placeText = row.place and ("#" .. row.place) or "DNF"
+            local placeText = row.place and ("#" .. row.place) or L("v_jobmanager.results.dnf")
             dxDrawText(placeText, fx + S(12), ry, fx + fw * 0.2, ry + rowH, C.accent, S(1.0), FONT.rowB, "left", "center")
             dxDrawText(row.name, nameX, ry, fx + fw * 0.7, ry + rowH, C.txt, S(1.0), FONT.row, "left", "center")
             dxDrawText(fmtTime(row.timeMs), fx + fw * 0.7, ry, fx + fw - S(12), ry + rowH, C.txt, S(1.0), FONT.rowB, "right", "center")
@@ -211,7 +212,7 @@ local function drawStats()
             dxDrawText(tostring(row.deaths), fx + fw * 0.8, ry, fx + fw - S(12), ry + rowH, C.txt, S(1.0), FONT.rowB, "right", "center")
         end
         if row.crewTag and row.crewTag ~= "" then
-            local nw = dxGetTextWidth(row.name, S(1.0), FONT.row)
+            local nw = L.width(row.name, S(1.0), FONT.row)
             uicore:drawCrewTagBox(nameX + nw + S(6), ry + rowH / 2, S(1.0),
                 row.crewTag, row.crewColor, 255, "left", "center")
         end
@@ -219,8 +220,8 @@ local function drawStats()
 
     local infoY = y + #stats * rowH + S(10)
     dxDrawRectangle(fx, infoY, fw, footerH, C.infobar)
-    dxDrawText("Match results", fx + S(14), infoY, fx + fw * 0.4, infoY + footerH, C.txtDim, S(0.92), FONT.row, "left", "center")
-    dxDrawText("ENTER  Continue      BACKSPACE  Free Mode", fx + fw * 0.35, infoY, fx + fw - S(14), infoY + footerH,
+    dxDrawText(L("v_jobmanager.scoreboard.match_results"), fx + S(14), infoY, fx + fw * 0.4, infoY + footerH, C.txtDim, S(0.92), FONT.row, "left", "center")
+    dxDrawText(L("v_jobmanager.scoreboard.enter_continue_backspace_free_mode"), fx + fw * 0.35, infoY, fx + fw - S(14), infoY + footerH,
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end
 
@@ -236,7 +237,7 @@ local function drawPicker()
     local tileH = tileW * 0.65
     local gy = math.floor(screenH * 0.5 - (tileH * MAIN_ROWS + gap) / 2)
 
-    dxDrawText("PICK THE NEXT GAME", gx, gy - S(34), gx + gw, gy - S(6),
+    dxDrawText(L("v_jobmanager.scoreboard.pick_next_game"), gx, gy - S(34), gx + gw, gy - S(6),
         tocolor(255, 255, 255), S(1.3), FONT.title, "left", "bottom")
 
     for i = 1, COLS * MAIN_ROWS do
@@ -269,17 +270,17 @@ local function drawPicker()
     local freeSel = activeRow == 2 and bottomIndex == 2
 
     dxDrawRectangle(gx, by, bw, bh, replaySel and C.tileSel or C.replay)
-    dxDrawText("REPLAY", gx, by, gx + bw, by + bh,
+    dxDrawText(L("v_jobmanager.scoreboard.replay"), gx, by, gx + bw, by + bh,
         replaySel and C.tileSelT or tocolor(255, 255, 255), S(1.0), FONT.head, "center", "center")
 
     dxDrawRectangle(gx + bw + gap, by, bw, bh, freeSel and C.tileSel or C.free)
-    dxDrawText("FREE MODE", gx + bw + gap, by, gx + bw + gap + bw, by + bh,
+    dxDrawText(L("v_jobmanager.scoreboard.free_mode"), gx + bw + gap, by, gx + bw + gap + bw, by + bh,
         freeSel and C.tileSelT or tocolor(255, 255, 255), S(1.0), FONT.head, "center", "center")
 
     local infoY = by + bh + S(10)
     dxDrawRectangle(gx, infoY, gw, S(26), C.infobar)
-    dxDrawText("ARROWS  Navigate", gx + S(14), infoY, gx + gw * 0.6, infoY + S(26), C.txtDim, S(0.92), FONT.row, "left", "center")
-    dxDrawText("ENTER  Select      BACKSPACE  Back", gx + gw * 0.4, infoY, gx + gw - S(14), infoY + S(26),
+    dxDrawText(L("v_jobmanager.scoreboard.arrows_navigate"), gx + S(14), infoY, gx + gw * 0.6, infoY + S(26), C.txtDim, S(0.92), FONT.row, "left", "center")
+    dxDrawText(L("v_jobmanager.scoreboard.enter_select_backspace_back"), gx + gw * 0.4, infoY, gx + gw - S(14), infoY + S(26),
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end
 

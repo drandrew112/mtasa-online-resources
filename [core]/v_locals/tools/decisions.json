@@ -29,9 +29,18 @@
     "TELEFON": "translate",
     "WASTED": "ignore",
     "th": "ignore",
-    "semleges": "translate"
+    "semleges": "translate",
+    "%d min %02d s": "ignore"
   },
   "rules": [
+    {
+      "_why": "railway refusals reach the player (Cannot apply: ...)",
+      "res": "^(rw_core|rw_timetable)$",
+      "file": "server/(consist|services)\\.lua$",
+      "sink": "^return$",
+      "text": "^(?!bad )",
+      "status": "translate"
+    },
     {
       "_why": "stat unit is a code (ui_pause compares def.unit == \"km\")",
       "res": "^v_stats$",
@@ -342,6 +351,24 @@
     "mg_airway.client.difficulty_easy": "easy",
     "mg_airway.client.difficulty_normal": "normal",
     "mg_airway.client.difficulty_hard": "hard",
-    "mg_airway.client.difficulty_nightmare": "nightmare"
+    "mg_airway.client.difficulty_nightmare": "nightmare",
+    "rw_timetable.displays.cancelled": "Cancelled",
+    "rw_timetable.displays.departed": "Departed",
+    "rw_timetable.displays.arrived": "Arrived",
+    "rw_timetable.displays.boarding": "Boarding",
+    "rw_timetable.displays.scheduled": "Scheduled",
+    "v_jobmanager.ui.job_title": "JOB",
+    "v_jobmanager.ui.host": "HOST",
+    "v_jobmanager.results.payout": "PAYOUT",
+    "v_jobmanager.results.experience": "EXPERIENCE",
+    "v_jobmanager.scoreboard.match": "MATCH",
+    "v_jobcreator.menus.official": "Official",
+    "v_jobcreator.menus.published": "Published",
+    "v_jobcreator.menus.private": "Private",
+    "v_jobcreator.menus.entry_line": "{type}  ·  {status}  ·  by {owner}",
+    "v_jobcreator.menus.objects": "Objects",
+    "v_jobcreator.menus.objects_placed": "{count} / {max} placed  ·  click an object to edit it",
+    "v_jobcreator.menus.has_photo": "Has a photo",
+    "v_jobcreator.menus.no_photo_yet": "No photo yet"
   }
 }

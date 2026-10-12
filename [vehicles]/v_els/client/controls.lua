@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Sofőr vezérlés (0-5 gombok) és /debugels kijelzés.
 
 -- a jármű, amit a localPlayer sofőrként vezet, ha ELS-es
@@ -173,16 +174,12 @@ local function drawDebug()
 
     local sirenState = getElementData(veh, "sirenState")
     local pattern = ELS_PATTERNS[getElementData(veh, "elsPattern") or 1]
-    local text = "ELS: " .. onOff(getElementData(veh, "mkjState")) ..
-                 "\nPattern: " .. (pattern and pattern.name or "?") ..
-                 "\nSiren type: " .. tostring(getElementData(veh, "sirenType") or "?") ..
-                 "\nSiren state: " .. onOff(sirenState)
+    local text = L("v_els.controls.els_pattern_siren_type_siren_state", { veh = onOff(getElementData(veh, "mkjState")), name = (pattern and pattern.name or "?"), veh2 = tostring(getElementData(veh, "sirenType") or "?"), siren_state = onOff(sirenState) })
 
     if sirenState then
-        text = text .. "\nSiren index: #FFFF00" .. tostring(getElementData(veh, "sirenIndex") or "?") .. "#FFFFFF" ..
-                       "\nSecondary: " .. onOff(getElementData(veh, "sirenSecondary"))
+        text = L("v_els.controls.siren_index_secondary", { text = text, veh = tostring(getElementData(veh, "sirenIndex") or "?"), veh2 = onOff(getElementData(veh, "sirenSecondary")) })
     end
-    text = text .. "\nHorn state: " .. onOff(getElementData(veh, "sirenHorn"))
+    text = L("v_els.controls.horn_state", { text = text, veh = onOff(getElementData(veh, "sirenHorn")) })
 
     dxDrawText(text, sx * 0.2, sy - 60, nil, nil, tocolor(255, 255, 255, 255), 1.3, "default",
         "left", "bottom", false, false, false, true)

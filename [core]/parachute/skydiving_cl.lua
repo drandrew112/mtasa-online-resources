@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local WARNING_HEIGHT = 300 -- height at which the 'open your parachute' message is shown
 local slow_speed = 0.75 -- overall (x,y,z) speed limit after which z_accelerate is used
 local accelerate_speed = 0.03 -- forward acceleration speed while holding forward (skydiving)
@@ -169,11 +170,11 @@ local shadowColor = tocolor(0,0,0)
 local color = tocolor(255,255,255)
 function warningText()
 	warning = true
-	dxDrawText ( "Open your parachute!",
+	dxDrawText ( L("parachute.skydiving_cl.open_your_parachute"),
 		0 + 3, g_screenY*0.75 + 3,
 		g_screenX, g_screenY,
 		shadowColor, 2, "default", "center", "top", false, true, false )
-	dxDrawText ( "Open your parachute!",
+	dxDrawText ( L("parachute.skydiving_cl.open_your_parachute"),
 		0, g_screenY*0.75,
 		g_screenX, g_screenY,
 		color, 2, "default", "center", "top", false, true, false )

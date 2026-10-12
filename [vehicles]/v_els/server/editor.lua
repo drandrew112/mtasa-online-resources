@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /elseditor: fénypont szerkesztő az épp használt ELS jármű modelljéhez.
 -- A szerkesztés a kliensen történik; ide csak a megnyitás és a mentés fut be.
 
@@ -15,13 +16,13 @@ end
 
 addCommandHandler("elseditor", function(player)
     if not isEditor(player) then
-        outputChatBox("Nincs jogosultságod az ELS szerkesztőhöz.", player, 255, 80, 80)
+        outputChatBox(L.msg("v_els.editor.you_do_not_have_access_to"), player, 255, 80, 80)
         return
     end
 
     local veh = getPedOccupiedVehicle(player)
     if not isSirenVehicle(veh) or getVehicleController(veh) ~= player then
-        outputChatBox("Ülj be sofőrként egy ELS-es járműbe a szerkesztéshez.", player, 255, 200, 0)
+        outputChatBox(L.msg("v_els.editor.get_in_els_vehicle_as_driver"), player, 255, 200, 0)
         return
     end
 
@@ -37,10 +38,10 @@ addEventHandler("els:editorSave", resourceRoot, function(model, layout)
     local ok = Layouts.set(model, layout)
     local saved = Layouts.get(model)
     local message = saved
-        and ("%d light point(s) saved for %s."):format(#saved.points, getVehicleNameFromModel(model))
-        or ("Layout removed for %s."):format(getVehicleNameFromModel(model))
+        and L.msg("v_els.editor.light_point_s_saved_for", { points = #saved.points, model = getVehicleNameFromModel(model) })
+        or L.msg("v_els.editor.layout_removed_for", { model = getVehicleNameFromModel(model) })
     if not ok then
-        message = "Could not write lights.json!"
+        message = L.msg("v_els.editor.could_not_write_lights_json")
     end
     triggerClientEvent(client, "els:editorSaved", resourceRoot, ok, message)
 end)

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Mirrors Editor.doc into client-side elements (only the editor sees them) and
 -- draws the editor overlay: numbers, route lines, selection boxes.
 --
@@ -16,7 +17,7 @@ local HIDDEN_DIMENSION = 65000
 Kinds = {}
 
 Kinds.object = {
-    label = "Object",
+    label = L("v_jobcreator.view.object"),
     create = function(ref)
         local el = createObject(ref.model, ref.x, ref.y, ref.z, ref.rx or 0, ref.ry or 0, ref.rz or 0)
         return el
@@ -45,7 +46,7 @@ local function spawnModel()
 end
 
 Kinds.spawn = {
-    label = "Spawnpoint",
+    label = L("v_jobcreator.menus.spawnpoint"),
     helper = true,
     create = function(ref)
         if Editor.doc.type == "race" then
@@ -86,11 +87,11 @@ local function pointKind(label, helperModel, markerColor)
     }
 end
 
-Kinds.checkpoint = pointKind("Checkpoint", H.checkpoint, { 255, 200, 0 })
-Kinds.finish = pointKind("Finish", H.finish, { 255, 70, 70 })
-Kinds.marker = pointKind("Job marker", H.marker)
+Kinds.checkpoint = pointKind(L("v_jobcreator.menus.checkpoint"), H.checkpoint, { 255, 200, 0 })
+Kinds.finish = pointKind(L("v_jobcreator.menus.finish"), H.finish, { 255, 70, 70 })
+Kinds.marker = pointKind(L("v_jobcreator.view.job_marker"), H.marker)
 Kinds.camera = {
-    label = "Finish camera",
+    label = L("v_jobcreator.view.finish_camera"),
     helper = true,
     create = function(ref) return createObject(H.camera, ref.pos[1], ref.pos[2], ref.pos[3]) end,
     apply = function(el, ref)
@@ -261,7 +262,7 @@ local FONT = "default-bold"
 local function label(x, y, z, text, color)
     local px, py = getScreenFromWorldPosition(x, y, z)
     if not px then return end
-    local w = dxGetTextWidth(text, 1, FONT) + 12
+    local w = L.width(text, 1, FONT) + 12
     dxDrawRectangle(px - w / 2, py - 10, w, 20, tocolor(0, 0, 0, 170))
     dxDrawText(text, px - w / 2, py - 10, px + w / 2, py + 10, color or tocolor(255, 255, 255), 1, FONT, "center", "center")
 end
@@ -318,18 +319,18 @@ addEventHandler("onClientRender", root, function()
                 if prev then dxDrawLine3D(prev[1], prev[2], prev[3], cp[1], cp[2], cp[3], C.route, 3) end
                 local size = cp[4] or 5
                 dxDrawLine3D(cp[1] - size / 2, cp[2], cp[3] - 0.9, cp[1] + size / 2, cp[2], cp[3] - 0.9, C.route, 2)
-                label(cp[1], cp[2], cp[3] + 1.6, "CP " .. i .. "  (" .. size .. ")", C.checkpoint)
+                label(cp[1], cp[2], cp[3] + 1.6, L("v_jobcreator.view.cp", { i = i, size = size }), C.checkpoint)
                 prev = cp
             end
             local fin = doc.race.finish
             if fin then
                 if prev then dxDrawLine3D(prev[1], prev[2], prev[3], fin[1], fin[2], fin[3], C.finish, 3) end
-                label(fin[1], fin[2], fin[3] + 1.6, "FINISH  (" .. (fin[4] or 5) .. ")", C.finish)
+                label(fin[1], fin[2], fin[3] + 1.6, L("v_jobcreator.view.finish", { fin = (fin[4] or 5) }), C.finish)
             end
             local cam = doc.race.finishCamera
             if cam then
                 dxDrawLine3D(cam.pos[1], cam.pos[2], cam.pos[3], cam.lookAt[1], cam.lookAt[2], cam.lookAt[3], C.finish, 1)
-                label(cam.pos[1], cam.pos[2], cam.pos[3] + 0.8, "FINISH CAMERA", C.finish)
+                label(cam.pos[1], cam.pos[2], cam.pos[3] + 0.8, L("v_jobcreator.view.finish_camera_2"), C.finish)
             end
         end
         for i, sp in ipairs(Editor.spawnList()) do
@@ -339,7 +340,7 @@ addEventHandler("onClientRender", root, function()
         end
         if doc.marker then
             local m = doc.marker
-            label(m[1], m[2], m[3] + 1.2, "JOB MARKER", C.marker)
+            label(m[1], m[2], m[3] + 1.2, L("v_jobcreator.view.job_marker_2"), C.marker)
         end
     end
 

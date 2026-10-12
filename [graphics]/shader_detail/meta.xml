@@ -2,6 +2,8 @@
 	<info name="dr_shader_detail" version="0.0.8" type="script" />
 	<min_mta_version client="1.5.0" server="1.5.0" />
 
+	<include resource="v_locals" />
+	<script src="locals.lua" type="client" />
 	<script src="c_detail.lua" type="client" />
 	<script src="c_switch.lua" type="client" />
 

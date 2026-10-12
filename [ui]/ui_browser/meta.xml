@@ -2,9 +2,11 @@
     <info author="DrAndrew112" name="ui_browser" type="script" version="1.2.0" />
     <download_priority_group>997</download_priority_group>
 
+    <include resource="v_locals" />
     <include resource="ui_core" />
 
     <!-- CORE (client) -->
+    <script src="locals.lua" type="shared" />
     <script src="core/util.lua"     type="client" />
     <script src="core/styles.lua"   type="client" />
     <script src="core/registry.lua" type="client" />

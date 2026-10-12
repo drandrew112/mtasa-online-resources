@@ -5,6 +5,8 @@
 
     <download_priority_group>10</download_priority_group>
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
     <script src="c_presets.lua" type="client" />
     <script src="c_main.lua" type="client" />
     <script src="c_api.lua" type="client" />

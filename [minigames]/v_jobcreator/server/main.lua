@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Editing sessions: entering / leaving the creator, permissions, locks, loading
 -- and saving through v_jobmanager's community storage, test runs.
 
@@ -145,11 +146,11 @@ local function openCreator(player, gameId)
     if getElementData(player, "isLogged") ~= true or not accountName(player) then return false end
     local jmRes = getResourceFromName("v_jobmanager")
     if not jmRes or getResourceState(jmRes) ~= "running" then
-        notify(player, "Job Creator", "The job manager is not running.")
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.job_manager_is_not_running"))
         return false
     end
     if jm:jobmanagerGetState(player) then
-        notify(player, "Job Creator", "Leave your lobby or match first.")
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.leave_your_lobby_or_match_first"))
         return false
     end
     if isPedDead(player) then return false end
@@ -183,10 +184,10 @@ end
 
 local function defaultGame(gameType)
     if gameType == "race" then
-        return { name = "Untitled race", type = "race", description = "", minPlayers = 1, maxPlayers = 8, objects = {},
+        return { name = L.msg("v_jobcreator.main.untitled_race"), type = "race", description = "", minPlayers = 1, maxPlayers = 8, objects = {},
             race = { vehicles = { 411 }, spawnpoints = {}, checkpoints = {} } }
     end
-    return { name = "Untitled deathmatch", type = "deathmatch", description = "", minPlayers = 2, maxPlayers = 8, objects = {},
+    return { name = L.msg("v_jobcreator.main.untitled_deathmatch"), type = "deathmatch", description = "", minPlayers = 2, maxPlayers = 8, objects = {},
         deathmatch = { weapon = 24, ammo = 120, armour = 100, spawnpoints = {} } }
 end
 
@@ -205,15 +206,15 @@ end
 
 function loadGame(player, session, id)
     local entry = findEntry(id)
-    if not entry then notify(player, "Job Creator", "That game does not exist.") return false end
-    if not canEdit(player, entry) then notify(player, "Job Creator", "You cannot edit this game.") return false end
+    if not entry then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.that_game_does_not_exist")) return false end
+    if not canEdit(player, entry) then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.you_cannot_edit_this_game")) return false end
     if locks[id] and locks[id] ~= player then
-        notify(player, "Job Creator", getPlayerName(locks[id]) .. " is editing this game right now.")
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.is_editing_this_game_right_now", { player = getPlayerName(locks[id]) }))
         return false
     end
     local game
     if entry.official then game = jm:jobmanagerOfficialLoad(id) else game = jm:jobmanagerCommunityLoad(id) end
-    if type(game) ~= "table" then notify(player, "Job Creator", "This game could not be loaded.") return false end
+    if type(game) ~= "table" then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.this_game_could_not_be_loaded")) return false end
     unlock(player, session)
     locks[id] = player
     session.gameId, session.type, session.image, session.official = id, game.type, nil, entry.official == true
@@ -272,55 +273,55 @@ addEventHandler("jobcreator:save", resourceRoot, function(doc, publish)
     if not session.gameId and not admin then
         local count = #(jm:jobmanagerCommunityList(owner) or {})
         if count >= CREATOR.MAX_GAMES_PER_PLAYER then
-            notify(player, "Job Creator", "You already have " .. count .. " games. Delete one to make room.")
+            notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.you_already_have_games_delete_one", { count = count }))
             return
         end
     end
     local entry = session.gameId and findEntry(session.gameId)
     if session.gameId and (not entry or not canEdit(player, entry)) then
-        notify(player, "Job Creator", "You cannot save this game.")
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.you_cannot_save_this_game"))
         return
     end
 
     if session.official then
-        if not admin then return notify(player, "Job Creator", "Only admins can edit official games.") end
+        if not admin then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.only_admins_can_edit_official_games")) end
         local game = sanitizeGame(doc, session.type, "keep", true)
-        if not game then return notify(player, "Job Creator", "The game data is invalid.") end
+        if not game then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.game_data_is_invalid")) end
         game.id = session.gameId
         local id, err = jm:jobmanagerOfficialSave(game, session.image)
-        if not id then return notify(player, "Job Creator", "Saving failed: " .. tostring(err)) end
+        if not id then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.saving_failed", { err = tostring(err) })) end
         session.image = nil
-        local message, published = "Draft saved. The live version changes on Publish.", false
+        local message, published = L.msg("v_jobcreator.main.draft_saved_live_version_changes_on"), false
         if publish then
             local ok
             ok, err = jm:jobmanagerOfficialPublish(id)
             published = ok
-            message = ok and "Saved and published." or ("Saved, but not published: " .. tostring(err))
+            message = ok and L.msg("v_jobcreator.main.saved_and_published") or (L.msg("v_jobcreator.main.saved_but_not_published", { err = tostring(err) }))
         end
         triggerClientEvent(player, "jobcreator:saved", resourceRoot, {
             id = id, published = true, pending = not published, owner = entry.owner, official = true,
         })
-        return notify(player, "Job Creator", message)
+        return notify(player, L.msg("v_jobcreator.core.job_creator"), message)
     end
 
     local game = sanitizeGame(doc, session.type, admin and "keep" or session.storedMarker)
-    if not game then notify(player, "Job Creator", "The game data is invalid.") return end
+    if not game then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.game_data_is_invalid")) return end
     game.id = session.gameId
     local id, saved = jm:jobmanagerCommunitySave(game, entry and entry.owner or owner, session.image)
-    if not id then notify(player, "Job Creator", "Saving failed: " .. tostring(saved)) return end
+    if not id then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.saving_failed_2", { saved = tostring(saved) })) return end
     if not session.gameId then locks[id] = player end
     session.gameId, session.image, session.storedMarker = id, nil, game.marker
 
     local message = "Saved."
     if publish and admin then
         local ok, err = jm:jobmanagerCommunityPublish(id)
-        message = ok and "Saved and published." or ("Saved, but not published: " .. tostring(err))
+        message = ok and L.msg("v_jobcreator.main.saved_and_published") or (L.msg("v_jobcreator.main.saved_but_not_published", { err = tostring(err) }))
         saved = findEntry(id) or saved
     end
     triggerClientEvent(player, "jobcreator:saved", resourceRoot, {
         id = id, published = saved.published, pending = saved.pending, owner = saved.owner,
     })
-    notify(player, "Job Creator", message)
+    notify(player, L.msg("v_jobcreator.core.job_creator"), message)
 end)
 
 -- Validation report for "Check problems" (the same check Publish runs).
@@ -329,36 +330,36 @@ addEventHandler("jobcreator:validate", resourceRoot, function(doc)
     local session = sessions[client]
     if not session or not session.type then return end
     local game = sanitizeGame(doc, session.type, "keep", session.official)
-    local ok, err = false, "invalid game data"
+    local ok, err = false, L.msg("v_jobcreator.main.invalid_game_data")
     if game then ok, err = jm:jobmanagerValidateGame(game) end
     triggerClientEvent(client, "jobcreator:validated", resourceRoot, ok, err)
 end)
 
 local function manage(player, id, action)
     local entry = findEntry(id)
-    if not entry then return notify(player, "Job Creator", "That game does not exist.") end
+    if not entry then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.that_game_does_not_exist")) end
     local admin = isCreatorAdmin(player)
     if entry.official then
         if not admin or action ~= "publish" then
-            return notify(player, "Job Creator", "Official games can only be edited and published by admins.")
+            return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.official_games_can_only_be_edited"))
         end
         local ok, err = jm:jobmanagerOfficialPublish(id)
-        return notify(player, "Job Creator", ok and (entry.name .. " is published.") or ("Failed: " .. tostring(err)))
+        return notify(player, L.msg("v_jobcreator.core.job_creator"), ok and (L.msg("v_jobcreator.main.is_published", { name = entry.name })) or (L.msg("v_jobcreator.main.failed", { err = tostring(err) })))
     end
     if action == "publish" or action == "unpublish" then
-        if not admin then return notify(player, "Job Creator", "Only admins can publish games.") end
+        if not admin then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.only_admins_can_publish_games")) end
         local ok, err
         if action == "publish" then ok, err = jm:jobmanagerCommunityPublish(id) else ok, err = jm:jobmanagerCommunityUnpublish(id) end
-        notify(player, "Job Creator", ok and (entry.name .. (action == "publish" and " is published." or " is unpublished.")) or ("Failed: " .. tostring(err)))
+        notify(player, L.msg("v_jobcreator.core.job_creator"), ok and (entry.name .. (action == "publish" and L.msg("v_jobcreator.main.is_published_2") or L.msg("v_jobcreator.main.is_unpublished"))) or (L.msg("v_jobcreator.main.failed", { err = tostring(err) })))
     elseif action == "delete" then
         if not canEdit(player, entry) or (entry.published and not admin) then
-            return notify(player, "Job Creator", "You cannot delete this game.")
+            return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.you_cannot_delete_this_game"))
         end
-        if locks[id] and locks[id] ~= player then return notify(player, "Job Creator", "Someone is editing this game.") end
+        if locks[id] and locks[id] ~= player then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.someone_is_editing_this_game")) end
         local session = sessions[player]
-        if session and session.gameId == id then return notify(player, "Job Creator", "Close the game before deleting it.") end
+        if session and session.gameId == id then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.close_game_before_deleting_it")) end
         jm:jobmanagerCommunityDelete(id)
-        notify(player, "Job Creator", entry.name .. " was deleted.")
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.was_deleted", { name = entry.name }))
     end
 end
 

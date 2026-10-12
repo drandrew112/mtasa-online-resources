@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     restartAllResources.lua
     ---------------------------------------------------------------------------
@@ -98,6 +99,6 @@ addCommandHandler("restartallresource", function(player)
         and ("player " .. getPlayerName(player) .. " (#" .. tostring(getElementData(player, "ID")) .. ")")
         or  "console"
 
-    commandFeedback(player, "restartall", "Restarting all resources...")
+    commandFeedback(player, "restartall", L.msg("v_main.restartallresources.restarting_all_resources"))
     restartAllResources(who)
 end, false, false)

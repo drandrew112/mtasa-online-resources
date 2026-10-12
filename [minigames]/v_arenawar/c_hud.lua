@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local sw,sh = guiGetScreenSize()
 
 local function lerp(a,b,t) return a + (b - a) * t end
@@ -32,7 +33,7 @@ function renderHud()
             dxDrawRectangle(x, y, w, h, tocolor(10,10,14,200))
             dxDrawRectangle(x+2, y+2, (w-4)*math.max(0, math.min(1, ratio)), h-4, healthColor(ratio))
 
-            local text = ("Your vehicle")
+            local text = (L("v_arenawar.hud.your_vehicle"))
             dxDrawText(text, sw/2+1, y+h/2+1, _,_, tocolor(0,0,0,180), 1.1, "default-bold", "center", "center")
             dxDrawText(text, sw/2, y+h/2, _,_, tocolor(255,255,255,255), 1.1, "default-bold", "center", "center")
         end

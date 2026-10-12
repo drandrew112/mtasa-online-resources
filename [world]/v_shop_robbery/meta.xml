@@ -1,5 +1,7 @@
 <meta>
 	<info author="VSCode MTA:SA Lua" type="script" name="shop_robbery" />
+	<include resource="v_locals" />
+	<script src="locals.lua" type="shared" />
 	<script src="c.lua" type="client" cache="false" />
 	<script src="s.lua" type="server" />
 

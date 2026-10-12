@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /elseditor kliens: fénypontok elhelyezése az épp vezetett jármű körül.
 -- A munkapéldányt helyben szerkesztjük (Beacons előnézettel), a szerverre csak
 -- mentéskor megy. Menü: ui_inac temp menu (E), szövegbevitel: ui_core.
@@ -52,7 +53,7 @@ addEvent("ui_core:textInputResult")
 ------------------------------------------------------------
 
 local function notify(text)
-    exports.ui_core:addNotification("ELS Editor", text)
+    exports.ui_core:addNotification(L("v_els.editor.els_editor"), text)
 end
 
 local function copyPoint(p)
@@ -79,7 +80,7 @@ local function colorName(p)
 end
 
 local function previewName()
-    return ed.preview and ELS_PATTERNS[ed.preview].name or "Steady"
+    return ed.preview and ELS_PATTERNS[ed.preview].name or L("v_els.config.steady")
 end
 
 local function changed()
@@ -114,7 +115,7 @@ end
 function Actions.add()
     local points = ed.layout.points
     if #points >= ELS_MAX_POINTS then
-        notify(("Maximum %d points per vehicle."):format(ELS_MAX_POINTS))
+        notify(L("v_els.editor.maximum_points_per_vehicle", { els_max_points = ELS_MAX_POINTS }))
         return
     end
     local p = selected()
@@ -158,7 +159,7 @@ end
 function Actions.customColor()
     local p = selected()
     if not p then return end
-    ed.colorToken = exports.ui_core:openTextInput("Light color (R G B)", 11, ("%d %d %d"):format(p.r, p.g, p.b))
+    ed.colorToken = exports.ui_core:openTextInput(L("v_els.editor.light_color_r_g_b"), 11, ("%d %d %d"):format(p.r, p.g, p.b))
 end
 
 function Actions.group(group)
@@ -218,19 +219,19 @@ local function buildMenu()
     local pointItems = {}
     for i, pt in ipairs(ed.layout.points) do
         pointItems[i] = item(("#%d  %s  %s"):format(i, pt.group, colorName(pt)), "select", i,
-            ("x %.2f  y %.2f  z %.2f  size %.2f"):format(pt.x, pt.y, pt.z, pt.size), { checked = i == ed.sel })
+            L("v_els.editor.x_y_z_size", { x = pt.x, y = pt.y, z = pt.z, size = pt.size }), { checked = i == ed.sel })
     end
-    if #pointItems == 0 then pointItems[1] = item("No points yet", "noop") end
+    if #pointItems == 0 then pointItems[1] = item(L("v_els.editor.no_points_yet"), "noop") end
 
     local colorItems = {}
     for i, c in ipairs(ELS_COLORS) do
         colorItems[i] = item(c[1], "color", i, nil, { checked = p and colorName(p) == c[1] })
     end
-    colorItems[#colorItems + 1] = item("Custom (R G B)...", "customColor")
+    colorItems[#colorItems + 1] = item(L("v_els.editor.custom_r_g_b"), "customColor")
 
     local groupItems = {}
     for i, g in ipairs(ELS_GROUPS) do
-        groupItems[i] = item("Group " .. g, "group", g, "Patterns flash the groups separately",
+        groupItems[i] = item(L("v_els.editor.group", { g = g }), "group", g, L("v_els.editor.patterns_flash_groups_separately"),
             { checked = p and p.group == g })
     end
 
@@ -239,29 +240,29 @@ local function buildMenu()
         sizeItems[i] = item(("%.2f"):format(s), "size", s, nil, { checked = p and p.size == s })
     end
 
-    local previewItems = { item("Steady (all on)", "preview", false, nil, { checked = not ed.preview }) }
+    local previewItems = { item(L("v_els.editor.steady_all_on"), "preview", false, nil, { checked = not ed.preview }) }
     for i, pat in ipairs(ELS_PATTERNS) do
         previewItems[#previewItems + 1] = item(pat.name, "preview", i, nil, { checked = ed.preview == i })
     end
 
     local items = {
-        { label = ("Points (%d)"):format(#ed.layout.points), title = "Select point", items = pointItems },
-        item("Add point", "add", nil, "Copy of the selected point (N)"),
-        item("Mirror point", "mirror", nil, "Mirrored copy on the other side, A<->B, C<->D (M)"),
-        item("Delete point", "delete", nil, "Delete the selected point (Del)"),
+        { label = L("v_els.editor.points", { points = #ed.layout.points }), title = L("v_els.editor.select_point"), items = pointItems },
+        item(L("v_els.editor.add_point"), "add", nil, L("v_els.editor.copy_of_selected_point_n")),
+        item(L("v_els.editor.mirror_point"), "mirror", nil, L("v_els.editor.mirrored_copy_on_other_side_b")),
+        item(L("v_els.editor.delete_point"), "delete", nil, L("v_els.editor.delete_selected_point_del")),
     }
     if p then
-        items[#items + 1] = { label = "Color: " .. colorName(p), title = "Color", items = colorItems }
-        items[#items + 1] = { label = "Group: " .. p.group, title = "Group", items = groupItems }
-        items[#items + 1] = { label = ("Size: %.2f"):format(p.size), title = "Size", items = sizeItems }
+        items[#items + 1] = { label = L("v_els.editor.color", { p = colorName(p) }), title = L("v_els.editor.color_2"), items = colorItems }
+        items[#items + 1] = { label = L("v_els.editor.group_2", { group = p.group }), title = L("v_els.editor.group_3"), items = groupItems }
+        items[#items + 1] = { label = L("v_els.editor.size", { size = p.size }), title = L("v_els.editor.size_2"), items = sizeItems }
     end
-    items[#items + 1] = { label = "Preview: " .. previewName(), title = "Preview", items = previewItems }
-    items[#items + 1] = item("Save", "save", nil, #ed.layout.points == 0
-        and "No points: removes the layout, the vehicle gets the GTA siren lights back"
-        or "Saves to lights.json for every vehicle of this model")
-    items[#items + 1] = item("Exit editor", "exit", nil, ed.dirty and "Unsaved changes will be lost!" or nil)
+    items[#items + 1] = { label = L("v_els.editor.preview", { preview_name = previewName() }), title = L("v_els.editor.preview_2"), items = previewItems }
+    items[#items + 1] = item(L("common.save"), "save", nil, #ed.layout.points == 0
+        and L("v_els.editor.no_points_removes_layout_vehicle_gets")
+        or L("v_els.editor.saves_to_lights_json_for_every"))
+    items[#items + 1] = item(L("v_els.editor.exit_editor"), "exit", nil, ed.dirty and L("v_els.editor.unsaved_changes_will_be_lost") or nil)
 
-    return { title = "ELS Editor - " .. getVehicleNameFromModel(ed.model), items = items }
+    return { title = L("v_els.editor.els_editor_2", { model = getVehicleNameFromModel(ed.model) }), items = items }
 end
 
 local function toggleMenu()
@@ -293,7 +294,7 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     local r, g, b = text:match("^%s*(%d+)[%s,]+(%d+)[%s,]+(%d+)%s*$")
     local p = selected()
     if not (r and p) then
-        notify("Invalid color, use: R G B (0-255)")
+        notify(L("v_els.editor.invalid_color_use_r_g_b"))
         return
     end
     p.r, p.g, p.b = math.min(255, tonumber(r)), math.min(255, tonumber(g)), math.min(255, tonumber(b))
@@ -378,21 +379,20 @@ end
 local function drawPanel()
     local p = selected()
     local lines = {
-        ("#FFFFFF%s  #AAAAAA(%s)%s"):format(getVehicleNameFromModel(ed.model), "model " .. ed.model,
-            ed.dirty and "  #FFC800* unsaved" or ""),
-        p and ("#FFFFFFPoint %d/%d   Group %s   %s   Size %.2f"):format(ed.sel, #ed.layout.points, p.group, colorName(p), p.size)
-          or "#FFFFFFNo points - press N to add one",
-        p and ("#AAAAAAx %.3f   y %.3f   z %.3f"):format(p.x, p.y, p.z) or "",
-        "#FFFFFFPreview: " .. previewName(),
-        "#888888Arrows X/Y  PgUp/PgDn Z  Shift fine   [ ] select",
-        "#888888N add  M mirror  Del delete  C color  G group  +/- size  P preview  E menu",
+        L("v_els.editor.text", { model = getVehicleNameFromModel(ed.model), model2 = "model " .. ed.model, dirty = ed.dirty and L("v_els.editor.unsaved") or "" }),
+        p and L("v_els.editor.point_group_size", { sel = ed.sel, points = #ed.layout.points, group = p.group, p = colorName(p), size = p.size })
+          or L("v_els.editor.no_points_press_n_to_add"),
+        p and L("v_els.editor.x_y_z", { x = p.x, y = p.y, z = p.z }) or "",
+        L("v_els.editor.preview_3", { preview_name = previewName() }),
+        L("v_els.editor.arrows_x_y_pgup_pgdn_z"),
+        L("v_els.editor.n_add_m_mirror_del_delete"),
     }
 
     local w, h = 560 * scale, (#lines * 20 + 34) * scale
     local x, y = 24 * scale, sh - h - 200 * scale
     dxDrawRectangle(x, y, w, h, tocolor(10, 12, 16, 200))
     dxDrawRectangle(x, y, w, 3 * scale, tocolor(60, 120, 255, 255))
-    dxDrawText("ELS Editor", x + 12 * scale, y + 8 * scale, 0, 0, tocolor(255, 255, 255), 1.3 * scale, "default-bold")
+    dxDrawText(L("v_els.editor.els_editor"), x + 12 * scale, y + 8 * scale, 0, 0, tocolor(255, 255, 255), 1.3 * scale, "default-bold")
     for i, line in ipairs(lines) do
         dxDrawText(line, x + 12 * scale, y + (12 + i * 20) * scale, 0, 0, tocolor(255, 255, 255), 1.0 * scale,
             "default", "left", "top", false, false, false, true)
@@ -441,13 +441,13 @@ local function startEditor(veh, model, layout)
     addEventHandler("onClientPreRender", root, onPreRender)
     addEventHandler("onClientRender", root, onRender)
     Beacons.setPreview(veh, ed.layout, ed.preview)
-    notify("Editor opened. Press E for the menu, /elseditor to close.")
+    notify(L("v_els.editor.editor_opened_press_e_for_menu"))
 end
 
 function stopEditor()
     if not ed then return end
     if menuOpen() then exports.ui_inac:closeTempMenu() end
-    if ed.dirty then notify("Editor closed, unsaved changes discarded.") end
+    if ed.dirty then notify(L("v_els.editor.editor_closed_unsaved_changes_discarded")) end
 
     removeEventHandler("onClientPreRender", root, onPreRender)
     removeEventHandler("onClientRender", root, onRender)

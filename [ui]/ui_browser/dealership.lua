@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: dealership.lua (server)
 -- Turns a "buy" action fired on a vehicles-category site into a real purchase:
 -- charges the player (cash first, then Liberty Bank) and registers the car with
@@ -105,7 +106,7 @@ local function addProductsFrom(markupPath, siteName)
             catalog[id] = {
                 model  = model,
                 price  = priceToNumber(attrs.price),
-                name   = attrs.name or ("Vehicle " .. model),
+                name   = attrs.name or (L.msg("ui_browser.dealership.vehicle", { model = model })),
                 site   = siteName,
                 colors = colors,
             }
@@ -174,7 +175,7 @@ function Dealership.purchase(player, id, colourKey, url)
     if not item then return false end
 
     if not ownvehReady() then
-        notify(player, "Dealership", "The vehicle registry is offline right now. Try again later.")
+        notify(player, L.msg("ui_browser.dealership.dealership"), L.msg("ui_browser.dealership.vehicle_registry_is_offline_right_now"))
         return true
     end
 
@@ -187,9 +188,8 @@ function Dealership.purchase(player, id, colourKey, url)
     local price = item.price
     local paidFrom = charge(player, price)
     if not paidFrom then
-        notify(player, "Dealership",
-            ("You cannot afford the %s (%s). Cash and bank balance together are not enough.")
-                :format(item.name, money(price)))
+        notify(player, L.msg("ui_browser.dealership.dealership"),
+            L.msg("ui_browser.dealership.you_cannot_afford_cash_and_bank", { name = item.name, price = money(price) }))
         return true
     end
 
@@ -198,15 +198,14 @@ function Dealership.purchase(player, id, colourKey, url)
 
     if not vehId then
         refund(player, price, paidFrom)
-        notify(player, "Dealership", "The sale could not be completed - you have not been charged.")
+        notify(player, L.msg("ui_browser.dealership.dealership"), L.msg("ui_browser.dealership.sale_could_not_be_completed_you"))
         outputServerLog(("[ui_browser] dealership: giveVehicle failed for %s (model %s): %s")
             :format(getPlayerName(player), item.model, tostring(err)))
         return true
     end
 
-    notify(player, "Dealership",
-        ("You bought a %s for %s. It is registered to your account - summon it from the MyVeh phone app.")
-            :format(item.name, money(price)))
+    notify(player, L.msg("ui_browser.dealership.dealership"),
+        L.msg("ui_browser.dealership.you_bought_for_it_is_registered", { name = item.name, price = money(price) }))
     triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
 
     outputServerLog(("[ui_browser] %s bought %s (model %s) as vehicle #%s for %d from %s (%s)")

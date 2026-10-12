@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_customs :: temp-menu builder + wiring (client)
 --
 -- shared/tuning.lua is an alphabetical list of parts / folders. Folders nest one
@@ -115,7 +116,7 @@ local function opticalOptions(part, prefix)
     local items, paths = {}, {}
 
     paths[1] = prefix .. "/1"
-    items[1] = makeOption(paths[1], "Default", 0, cur == 0,
+    items[1] = makeOption(paths[1], L("v_customs.menu.default"), 0, cur == 0,
         { kind = "optical", slot = part.slot, upgrade = 0 })
 
     for k, up in ipairs(ups) do
@@ -126,7 +127,7 @@ local function opticalOptions(part, prefix)
     end
 
     if #ups == 0 then
-        return { { label = "(not available for this vehicle)", closeOnSelect = false } }, {}
+        return { { label = L("v_customs.menu.not_available_for_this_vehicle"), closeOnSelect = false } }, {}
     end
     return items, paths
 end
@@ -198,7 +199,7 @@ function Menu.open(veh)
     Preview.init(veh)
 
     menuId = exports.ui_inac:createTempMenu({
-        title = "SA CUSTOMS",
+        title = L("v_customs.menu.sa_customs"),
         items = buildLevel(Customs.parts, ""),
     }) or nil
     return menuId ~= nil
@@ -256,7 +257,7 @@ addEventHandler("v_customs:buyResult", root, function(ok, path, charged)
 end)
 
 addEventHandler("v_customs:promptPlate", root, function()
-    plateToken = exports.ui_core:openTextInput("Custom license plate", 8)
+    plateToken = exports.ui_core:openTextInput(L("v_customs.menu.custom_license_plate"), 8)
 end)
 
 addEventHandler("ui_core:textInputResult", root, function(token, text)

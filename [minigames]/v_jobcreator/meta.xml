@@ -4,12 +4,14 @@
 
     <!-- v_jobmanager is a soft dependency (exports only): an include would restart
          the creator, and kick every editor out, whenever v_jobmanager restarts -->
+    <include resource="v_locals" />
     <include resource="ui_core" />
     <include resource="ui_inac" />
     <include resource="ui_interactobject" />
     <include resource="v_mysql" />
     <include resource="v_accounts" />
 
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="shared/catalog.lua" type="shared" />
 

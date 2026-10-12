@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- End-of-match results screen, shown between the match end and the scoreboard
 -- (core/client/scoreboard.lua owns the view state, camera and input routing).
 -- Big headlines revealed step by step, bottom to top:
@@ -62,7 +63,7 @@ local function font(name, size)
 end
 
 local function fh(name, size) return dxGetFontHeight(1, font(name, size)) end
-local function fw(text, name, size) return dxGetTextWidth(text, 1, font(name, size)) end
+local function fw(text, name, size) return L.width(text, 1, font(name, size)) end
 
 local function easeOut(k) return 1 - (1 - k) * (1 - k) end
 local function easeOutCubic(k) return 1 - (1 - k) ^ 3 end
@@ -236,23 +237,23 @@ local function drawPlace(x, y, w, a)
         text(suf, nx + numW + P(4), y + placeH * 0.16, P(300), C.gold, a, "RobotoB", F.suffix)
         nx = nx + numW + fw(suf, "RobotoB", F.suffix) + P(44)
     else
-        text("DNF", nx, y, P(800), C.dnf, a, "RobotoB", F.place)
-        nx = nx + fw("DNF", "RobotoB", F.place) + P(44)
+        text(L("v_jobmanager.results.dnf"), nx, y, P(800), C.dnf, a, "RobotoB", F.place)
+        nx = nx + fw(L("v_jobmanager.results.dnf"), "RobotoB", F.place) + P(44)
     end
 
     local sub
     if info.type == "race" then
-        sub = (reward.place and ("PLACE " .. reward.place .. " OF " .. reward.players .. "  ·  " .. fmtTime(reward.timeMs)) or "NOT FINISHED") .. "  ·  RACE"
+        sub = L("v_jobmanager.results.race", { time_ms = (reward.place and (L("v_jobmanager.results.place_of", { place = reward.place, players = reward.players, time_ms = fmtTime(reward.timeMs) })) or L("v_jobmanager.results.not_finished")) })
     else
-        sub = "PLACE " .. reward.place .. " OF " .. reward.players .. "  ·  " .. reward.kills .. " KILLS  ·  " .. reward.deaths .. " DEATHS  ·  DEATHMATCH"
+        sub = L("v_jobmanager.results.place_of_kills_deaths_deathmatch", { place = reward.place, players = reward.players, kills = reward.kills, deaths = reward.deaths })
     end
-    if reward.solo then sub = sub .. "  ·  SOLO" end
+    if reward.solo then sub = L("v_jobmanager.results.solo", { sub = sub }) end
 
     local nameH, capH = fh("RobotoB", F.name), fh("RobotoB", F.cap)
     local ny = y + placeH - nameH - capH - P(24)
-    text(string.upper(info.jobName or ""), nx, ny, x + w - nx, C.txt, a, "RobotoB", F.name)
+    text(L.upper(info.jobName or ""), nx, ny, x + w - nx, C.txt, a, "RobotoB", F.name)
     text(sub, nx, ny + nameH + P(4), x + w - nx, C.cap, a, "RobotoB", F.cap)
-    text("ENTER", x, y + placeH - capH - P(26), w, C.cap, a, "RobotoB", F.cap, "right")
+    text(L("v_jobmanager.results.enter"), x, y + placeH - capH - P(26), w, C.cap, a, "RobotoB", F.cap, "right")
 end
 
 local function drawValue(x, y, w, a, t, caption, value, color, lines, align)
@@ -278,13 +279,13 @@ local function drawLevel(x, y, w, a, t)
     end
     local st = lv.steps[si]
 
-    text("LEVEL", x, y, w, C.cap, a, "RobotoB", F.cap)
-    text("NEXT", x, y, w, C.cap, a, "RobotoB", F.cap, "right")
+    text(L("v_jobmanager.results.level"), x, y, w, C.cap, a, "RobotoB", F.cap)
+    text(L("v_jobmanager.results.next"), x, y, w, C.cap, a, "RobotoB", F.cap, "right")
     text(tostring(st.level), x, y + capH, w, C.txt, a, "RobotoB", F.level)
     text(tostring(st.level + 1), x, y + capH, w, C.next, a, "RobotoB", F.level, "right")
     if si > 1 then
         local upH = fh("RobotoB", F.levelUp)
-        text("LEVEL UP", x, y + capH + numH - upH, w, C.gold, a, "RobotoB", F.levelUp, "center")
+        text(L("v_jobmanager.results.level_up"), x, y + capH + numH - upH, w, C.gold, a, "RobotoB", F.levelUp, "center")
     end
 
     local by = y + capH + numH + P(10)
@@ -297,7 +298,7 @@ local function drawLevel(x, y, w, a, t)
     if nowW > oldW then dxDrawRectangle(x + oldW, by, nowW - oldW, barH, col(C.xp, a)) end
     local flash = 1 - clamp01((getTickCount() - flashTick) / 900)
     if si > 1 and flash > 0 then dxDrawRectangle(x, by, w, barH, tocolor(255, 255, 255, 200 * flash)) end
-    text(group(xpNow) .. " / " .. group(st.max) .. " XP", x, by + barH + P(6), w, C.cap, a, "RobotoB", F.cap, "right")
+    text(L("v_jobmanager.results.xp", { xp_now = group(xpNow), max = group(st.max) }), x, by + barH + P(6), w, C.cap, a, "RobotoB", F.cap, "right")
 end
 
 function Results.draw()
@@ -317,10 +318,10 @@ function Results.draw()
         if id == "place" then
             drawPlace(cx, y, cw, a)
         elseif id == "money" then
-            drawValue(cx + cw - half, y, half, a, t, "PAYOUT",
+            drawValue(cx + cw - half, y, half, a, t, L("v_jobmanager.results.payout"),
                 function(k) return "+€" .. group(reward.money.total * k) end, C.money, reward.money.lines, "right")
         elseif id == "xp" then
-            drawValue(cx, y, half, a, t, "EXPERIENCE",
+            drawValue(cx, y, half, a, t, L("v_jobmanager.results.experience"),
                 function(k) return "+" .. group(reward.xp.total * k) .. " XP" end, C.xp, reward.xp.lines, "left")
         elseif id == "level" then
             drawLevel(cx, y, cw, a, t)

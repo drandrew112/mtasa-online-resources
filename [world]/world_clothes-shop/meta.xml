@@ -3,6 +3,8 @@
           description="Clothes shops: world_interiors interiors with entrance blips and skin changer markers (every outfit 500)" />
 
     <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->

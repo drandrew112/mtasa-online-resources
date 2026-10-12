@@ -1,5 +1,7 @@
 <meta>
 	<info name="Shader Dynamic Lighting" description="Dynamic per pixel lighting resource." author="Ren712" version="1.5.8" type="script" />
+	<include resource="v_locals" />
+	<script src="locals.lua" type="client" />
 	<script src="c_main.lua" type="client" />
 	<script src="c_helper_functions.lua" type="client" />
 	<script src="c_exported_functions.lua" type="client" />

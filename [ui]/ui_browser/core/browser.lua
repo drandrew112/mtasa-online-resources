@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: core/browser.lua
 -- The virtual browser window: URL bar on top (read-only), back button on the
 -- left, close button on the right. Right click = go back; if there is nothing
@@ -470,7 +471,7 @@ local function drawSearchOverlay()
     elseif s.focused then
         text, col = "", BR.theme.text
     else
-        text, col = layout.searchPlaceholder or "Search...", BR.theme.muted
+        text, col = layout.searchPlaceholder or L("ui_browser.browser.search"), BR.theme.muted
     end
     if s.focused and (getTickCount() % 1000) < 500 then text = text .. "|" end
 

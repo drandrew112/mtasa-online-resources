@@ -215,6 +215,8 @@ do
     local MSG_MT = {}
     MSG_MT.__tostring = function(m) return translate(LIB.curLang(), m.t, m.p) end
     MSG_MT.__concat = function(a, b) return tostring(a) .. tostring(b) end
+    MSG_MT.__lt = function(a, b) return tostring(a) < tostring(b) end      -- table.sort by name
+    MSG_MT.__le = function(a, b) return tostring(a) <= tostring(b) end
     MSG_MT.__index = function(_, k)
         local f = (k == "upper" and U.upper) or (k == "lower" and U.lower) or (k == "len" and U.len)
             or (k == "sub" and U.sub) or string[k]

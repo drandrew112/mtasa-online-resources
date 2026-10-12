@@ -1,6 +1,8 @@
 <meta>
     <info author="andrasxa" name="Aréna háború" version="1.0" type="script"/>
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared.lua" type="shared"/>
     <script src="c_vars.lua" type="client"/>
     <script src="s_gamevars.lua" type="server"/>

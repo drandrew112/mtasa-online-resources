@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: server.lua
 -- Server-side export wrappers + the action router. Liberty Bank goes through the
 -- v_bank exports; balance persistence is entirely v_bank's job.
@@ -65,8 +66,8 @@ local function bankTransaction(player, kind, arg)
 
     -- Only report + refresh when the transaction actually went through.
     if result == true then
-        notify(player, "Liberty Bank",
-            (kind == "bank_deposit" and "Deposited €" or "Withdrew €") .. amount .. ".")
+        notify(player, L.msg("ui_browser.server.liberty_bank"),
+            (kind == "bank_deposit" and L.msg("ui_browser.server.deposited") or L.msg("ui_browser.server.withdrew")) .. amount .. ".")
         triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
     else
         outputServerLog(("[ui_browser] Liberty Bank %s %s failed: %s")
@@ -97,10 +98,10 @@ addEventHandler("ui_browser:action", root, function(url, verb, arg, category)
             Dealership.purchase(player, id, colour, url)
         elseif category == "vehicles" then
             -- A vehicles site registered by another resource: it owns the sale.
-            notify(player, "Dealership",
-                "Order noted: " .. id .. (colour and (" (" .. colour .. ")") or ""))
+            notify(player, L.msg("ui_browser.dealership.dealership"),
+                L.msg("ui_browser.server.order_noted", { id = id, colour = (colour and (" (" .. colour .. ")") or "") }))
         else
-            notify(player, "Purchase", "Request noted: " .. id)
+            notify(player, L.msg("ui_browser.server.purchase"), L.msg("ui_browser.server.request_noted", { id = id }))
         end
         outputServerLog(("[ui_browser] %s buy %s / %s colour=%s (%s)")
             :format(getPlayerName(player), tostring(category), id, tostring(colour), tostring(url)))

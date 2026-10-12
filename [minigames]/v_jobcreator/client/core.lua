@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Editor state, the game document, undo / redo and the session lifecycle.
 --
 -- Editor.doc is the game in v_jobmanager's JSON format (the creator's contract):
@@ -25,7 +26,7 @@ Editor = {
 local MAX_UNDO = 50
 
 function notify(text)
-    uicore:addNotification("Job Creator", text)
+    uicore:addNotification(L("v_jobcreator.core.job_creator"), text)
 end
 
 function deepCopy(value)
@@ -97,16 +98,16 @@ end
 function Editor.problems()
     local doc, list = Editor.doc, {}
     if not doc then return list end
-    if doc.name:find("^Untitled") then list[#list + 1] = "Give the game a name" end
+    if doc.name:find("^Untitled") then list[#list + 1] = L("v_jobcreator.core.give_game_name") end
     local spawns = #Editor.spawnList()
     if spawns < doc.maxPlayers then
-        list[#list + 1] = "Spawnpoints: " .. spawns .. " placed, " .. doc.maxPlayers .. " needed (max players)"
+        list[#list + 1] = L("v_jobcreator.core.spawnpoints_placed_needed_max_players", { spawns = spawns, max_players = doc.maxPlayers })
     end
     if doc.type == "race" then
-        if not doc.race.finish then list[#list + 1] = "Place the finish" end
-        if #doc.race.checkpoints == 0 then list[#list + 1] = "No checkpoints yet (optional)" end
+        if not doc.race.finish then list[#list + 1] = L("v_jobcreator.core.place_finish") end
+        if #doc.race.checkpoints == 0 then list[#list + 1] = L("v_jobcreator.core.no_checkpoints_yet_optional") end
     end
-    if not Editor.hasThumb then list[#list + 1] = "No thumbnail yet (optional)" end
+    if not Editor.hasThumb then list[#list + 1] = L("v_jobcreator.core.no_thumbnail_yet_optional") end
     return list
 end
 
@@ -156,8 +157,7 @@ addEventHandler("jobcreator:loaded", resourceRoot, function(game, meta)
     if x then
         if Editor.camMode == "free" then Freecam.setPosition(x, y, z + 15) else setElementPosition(localPlayer, x, y, z + 1) end
     end
-    notify((meta.id and "Opened " or "New ") .. (game.type == "race" and "race" or "deathmatch") .. ": " .. game.name
-        .. ".  Press " .. CREATOR.KEYS.menu:upper() .. " for the menu.")
+    notify(L("v_jobcreator.core.press_for_menu", { id = (meta.id and L("v_jobcreator.core.opened") or L("v_jobcreator.core.new")), type = (game.type == "race" and "race" or "deathmatch"), name = game.name, menu = CREATOR.KEYS.menu:upper() }))
 end)
 
 addEvent("jobcreator:saved", true)

@@ -298,6 +298,9 @@ ok("isMsg", X.isMsg(m) and not X.isMsg({ t = "x" }) and not X.isMsg("x"))
 eq("msg tostring", tostring(m), "A paid you €5.")
 eq("msg concat", "> " .. m, "> A paid you €5.")
 eq("msg string method", m:upper(), "A PAID YOU €5.")
+local sorted = { X.msg("t.paid", { name = "B", amount = 1 }), X.msg("t.hello") }
+table.sort(sorted, function(a, b) return a < b end)
+eq("msg sortable", tostring(sorted[1]), "B paid you €1.")
 local plainCopy = { t = "t.hello", p = nil, __loc = true }     -- crossed a resource boundary (no metatable)
 local pHu, pEn = { isPlayer = true, lang = "hu" }, { isPlayer = true, lang = "en" }
 fire("onPlayerQuit", pHu); fire("onPlayerQuit", pEn)

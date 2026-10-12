@@ -13,6 +13,8 @@
         <setting name="#weather" value="[ 0 ]"></setting>
         <setting name="#time" value="12:0"></setting>
     </settings>
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="mapEditorScriptingExtension_s.lua" type="server"></script>
     <script src="mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>
     <script src="shared/wallsigns.lua" type="shared"></script>
