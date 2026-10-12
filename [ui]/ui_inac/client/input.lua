@@ -37,96 +37,105 @@ local function otherPanelOpen()
         or inJobLobby()
 end
 
-bindKey("m", "down", function()
-    if isTempMenuOpen() then return end
-    if not MenuState.open and otherPanelOpen() then return end
-    MenuState.open = not MenuState.open
-    setElementData(localPlayer, "interactionMenuOpen", MenuState.open)
-    uicore:toggleMoveControls(not MenuState.open)
-    playSelect()
-end)
-
-bindKey("arrow_u", "down", function()
-    if not MenuState.open then return end
-    local items = MenuState:getMenu().items
-    MenuState.selected = MenuState.selected > 1 and MenuState.selected - 1 or #items
-    playSelect()
-end)
-
-bindKey("arrow_d", "down", function()
-    if not MenuState.open then return end
-    local items = MenuState:getMenu().items
-    MenuState.selected = MenuState.selected < #items and MenuState.selected + 1 or 1
-    playSelect()
-end)
-
-bindKey("arrow_l", "down", function()
-    if not MenuState.open then return end
-    local item = MenuState:getMenu().items[MenuState.selected]
-    if item.type == "select" then
-        item.value = item.value > 1 and item.value - 1 or #item.options
+function bindAllKeys()
+    bindKey("m", "down", function()
+        if isTempMenuOpen() then return end
+        if not MenuState.open and otherPanelOpen() then return end
+        MenuState.open = not MenuState.open
+        setElementData(localPlayer, "interactionMenuOpen", MenuState.open)
+        uicore:toggleMoveControls(not MenuState.open)
         playSelect()
-    end
-end)
+    end)
 
-bindKey("arrow_r", "down", function()
-    if not MenuState.open then return end
-    local item = MenuState:getMenu().items[MenuState.selected]
-    if item.type == "select" then
-        item.value = item.value < #item.options and item.value + 1 or 1
+    bindKey("arrow_u", "down", function()
+        if not MenuState.open then return end
+        local items = MenuState:getMenu().items
+        MenuState.selected = MenuState.selected > 1 and MenuState.selected - 1 or #items
         playSelect()
-    end
-end)
+    end)
 
-bindKey("enter", "down", function()
-    if not MenuState.open then return end
-    local item = MenuState:getMenu().items[MenuState.selected]
+    bindKey("arrow_d", "down", function()
+        if not MenuState.open then return end
+        local items = MenuState:getMenu().items
+        MenuState.selected = MenuState.selected < #items and MenuState.selected + 1 or 1
+        playSelect()
+    end)
 
-    if item.type == "submenu" then
-        MenuState.current = item.target
-        MenuState:resetSelection()
-        if item.onOpen then item.onOpen() end
-        playClick()
+    bindKey("arrow_l", "down", function()
+        if not MenuState.open then return end
+        local item = MenuState:getMenu().items[MenuState.selected]
+        if item.type == "select" then
+            item.value = item.value > 1 and item.value - 1 or #item.options
+            playSelect()
+        end
+    end)
 
-    elseif item.type == "select" then
-        item.options[item.value].action()
-        playClick()
+    bindKey("arrow_r", "down", function()
+        if not MenuState.open then return end
+        local item = MenuState:getMenu().items[MenuState.selected]
+        if item.type == "select" then
+            item.value = item.value < #item.options and item.value + 1 or 1
+            playSelect()
+        end
+    end)
 
-    elseif item.type == "action" and item.action then
-        item.action()
-        playClick()
-        if item.closeOnSelect and isTempMenuOpen() then closeTempMenu() end
+    bindKey("enter", "down", function()
+        if not MenuState.open then return end
+        local item = MenuState:getMenu().items[MenuState.selected]
 
-    elseif item.type == "spawnvehicle" then
-        triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
-        playClick()
-    end
-end)
+        if item.type == "submenu" then
+            MenuState.current = item.target
+            MenuState:resetSelection()
+            if item.onOpen then item.onOpen() end
+            playClick()
 
-bindKey("backspace", "down", function()
-    if not MenuState.open then return end
+        elseif item.type == "select" then
+            item.options[item.value].action()
+            playClick()
 
-    local menu = MenuState:getMenu()
+        elseif item.type == "action" and item.action then
+            item.action()
+            playClick()
+            if item.closeOnSelect and isTempMenuOpen() then closeTempMenu() end
 
-    -- Ideiglenes menu: submenubol egy szintet vissza, a gyokerrol bezar.
-    if menu and menu.temporary then
+        elseif item.type == "spawnvehicle" then
+            triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
+            playClick()
+        end
+    end)
+
+    bindKey("backspace", "down", function()
+        if not MenuState.open then return end
+
+        local menu = MenuState:getMenu()
+
+        -- Ideiglenes menu: submenubol egy szintet vissza, a gyokerrol bezar.
+        if menu and menu.temporary then
+            if menu.back then
+                MenuState.current = menu.back
+                MenuState:resetSelection()
+            else
+                closeTempMenu()
+            end
+            playSelect()
+            return
+        end
+
         if menu.back then
             MenuState.current = menu.back
             MenuState:resetSelection()
         else
-            closeTempMenu()
+            MenuState.open = false
+            setElementData(localPlayer, "interactionMenuOpen", false)
+            uicore:toggleMoveControls(not MenuState.open)
         end
         playSelect()
-        return
+    end)
+end
+addEvent("onClientPlayerLoaded", true)
+addEventHandler("onClientPlayerLoaded", localPlayer, bindAllKeys)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then
+        bindAllKeys()
     end
-
-    if menu.back then
-        MenuState.current = menu.back
-        MenuState:resetSelection()
-    else
-        MenuState.open = false
-        setElementData(localPlayer, "interactionMenuOpen", false)
-        uicore:toggleMoveControls(not MenuState.open)
-    end
-    playSelect()
 end)
