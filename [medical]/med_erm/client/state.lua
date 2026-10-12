@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Client-side copy of the unit state pushed by the server.
 
 -- Tutorial (demo) mode, filled in by client/tutorial.lua
@@ -148,8 +149,8 @@ function State.receiveMessage(msg)
     if not reading then
         State.unreadBy[channel] = State.unreadBy[channel] + 1
         State.unread = State.unread + 1
-        local title = msg.channel == "broadcast" and "Dispatch broadcast"
-            or channel == "case" and (msg.label or "Case chat") or "Dispatch"
+        local title = msg.channel == "broadcast" and L("med_erm.state.dispatch_broadcast")
+            or channel == "case" and (msg.label or L("med_erm.messages.case_chat")) or L("med_erm.messages.dispatch")
         State.notify(title, msg.fromDispatch and msg.text or (msg.from:gsub("#%x%x%x%x%x%x", "") .. ": " .. msg.text))
     end
 end
@@ -161,7 +162,7 @@ addEventHandler("erm:signedOut", resourceRoot, function(reason)
     State.messages, State.unread, State.unreadBy = {}, 0, { dispatch = 0, case = 0 }
     State.updateObjective()
     if Tablet.open then Tablet.close() end
-    State.notify("EMS Tablet", reason or "Signed out.")
+    State.notify(L("med_erm.case.ems_tablet"), reason or L("med_erm.state.signed_out"))
 end)
 
 addEvent("erm:notify", true)
@@ -194,5 +195,5 @@ setTimer(function()
 
     autoStarted[leg] = true
     Tablet.send("erm:caseAction", "start")
-    State.notify("EMS Tablet", string.format("Response started automatically for case #%d.", t.id))
+    State.notify(L("med_erm.case.ems_tablet"), L("med_erm.state.response_started_automatically_for_case", { id = t.id }))
 end, 500, 0)

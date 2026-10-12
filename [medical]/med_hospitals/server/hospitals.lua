@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Loads hospitals.json and builds the world elements of every hospital:
 --   bays      ambulance parking markers (handover status of the unit, server/handover.lua)
 --   handover  stretcher handover markers (patient handed over, server/handover.lua)
@@ -72,7 +73,7 @@ end
 ---------------------------------------------------------------- loading
 
 local function readFile(path)
-    if not fileExists(path) then return nil, path .. " not found" end
+    if not fileExists(path) then return nil, L.msg("med_hospitals.hospitals.not_found", { path = path }) end
     local f = fileOpen(path, true)
     if not f then return nil, "cannot open " .. path end
     local text = fileRead(f, fileGetSize(f))
@@ -104,26 +105,26 @@ local function parseHospital(raw, index)
     }
     for i, p in ipairs(type(raw.bays) == "table" and raw.bays or {}) do
         local point = parsePoint(p, HOSP.BAY_SIZE)
-        if not point then return nil, id .. ": bay #" .. i .. " needs x, y, z" end
+        if not point then return nil, L.msg("med_hospitals.hospitals.bay_needs_x_y_z", { id = id, i = i }) end
         h.bays[#h.bays + 1] = point
     end
     for i, p in ipairs(type(raw.handover) == "table" and raw.handover or {}) do
         local point = parsePoint(p, HOSP.HANDOVER_SIZE)
-        if not point then return nil, id .. ": handover #" .. i .. " needs x, y, z" end
+        if not point then return nil, L.msg("med_hospitals.hospitals.handover_needs_x_y_z", { id = id, i = i }) end
         h.handover[#h.handover + 1] = point
     end
     if raw.heal ~= nil then
         h.heal = parsePoint(raw.heal, HOSP.HEAL_SIZE)
-        if not h.heal then return nil, id .. ": heal needs x, y, z" end
+        if not h.heal then return nil, L.msg("med_hospitals.hospitals.heal_needs_x_y_z", { id = id }) end
     end
     if raw.release ~= nil then
         h.release = parsePoint(raw.release, 0)
-        if not h.release then return nil, id .. ": release needs x, y, z" end
+        if not h.release then return nil, L.msg("med_hospitals.hospitals.release_needs_x_y_z", { id = id }) end
     end
 
     -- objective point: the first bay (ambulances), else the heal / handover marker
     local main = h.bays[1] or h.heal or h.handover[1]
-    if not main then return nil, id .. ": no bays, handover or heal marker" end
+    if not main then return nil, L.msg("med_hospitals.hospitals.no_bays_handover_or_heal_marker", { id = id }) end
     h.x, h.y, h.z = main.x, main.y, main.z
     return h
 end
@@ -202,14 +203,14 @@ function loadHospitals()
     if not text then return false, err end
     local data = fromJSON(text)
     if type(data) ~= "table" or type(data.hospitals) ~= "table" then
-        return false, HOSP.FILE .. ": invalid JSON or missing \"hospitals\" array"
+        return false, L.msg("med_hospitals.hospitals.invalid_json_or_missing_hospitals_array", { file = HOSP.FILE })
     end
 
     local list, byId = {}, {}
     for i, raw in ipairs(data.hospitals) do
         local h, perr = parseHospital(raw, i)
         if not h then return false, HOSP.FILE .. ": " .. perr end
-        if byId[h.id] then return false, HOSP.FILE .. ": duplicate id \"" .. h.id .. "\"" end
+        if byId[h.id] then return false, L.msg("med_hospitals.hospitals.duplicate_id", { file = HOSP.FILE, id = h.id }) end
         list[#list + 1] = h
         byId[h.id] = h
     end

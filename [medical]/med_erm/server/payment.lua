@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Shift-end pay: when a unit signs out (server/units.lua Units.signOut), work_core's
 -- payWork() is called once for every account that was ever part of the shift
 -- (u.roster - the sign-in crew; unlike u.members it never shrinks when someone
@@ -26,9 +27,18 @@ local function taskAmount(c)
     return rate.base + (c.duration or 0) / 60 * rate.perMinute
 end
 
+-- closedTasks outcome code -> shown word (the codes are also the Config.PAY.RATES keys)
+local OUTCOME_LABEL = {
+    handover          = "med_erm.outcome.handover",
+    released          = "med_erm.outcome.released",
+    left              = "med_erm.outcome.left",
+    ["task closed"]   = "med_erm.outcome.task_closed",
+    ["shift ended"]   = "med_erm.outcome.shift_ended",
+}
+
 local function taskLabel(c)
     local mins = math.floor((c.duration or 0) / 60 + 0.5)
-    return string.format("#%d %s (%s, %dm)", c.id, c.title, c.outcome or "released", mins)
+    return L.msg("med_erm.payment.m", { id = c.id, title = c.title, outcome = L.msg(OUTCOME_LABEL[c.outcome or "released"] or "med_erm.outcome.released"), mins = mins })
 end
 
 function Payment.payUnit(u)
@@ -46,7 +56,7 @@ function Payment.payUnit(u)
 
     for _, player in ipairs(u.roster) do
         if isElement(player) and getElementType(player) == "player" then
-            exports.work_core:payWork(player, Config.PAY.WORK_ID, items, u.callsign .. " - shift ended")
+            exports.work_core:payWork(player, Config.PAY.WORK_ID, items, L.msg("med_erm.payment.shift_ended", { callsign = u.callsign }))
         end
     end
 end

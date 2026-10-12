@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Emergency Response Manager - shared configuration
 
 Config = {}
@@ -47,10 +48,10 @@ Config.RECENT_CLOSED = 30
 
 -- Unit statuses.
 Config.STATUS = {
-    available = { label = "Available", color = { 46, 160, 67 } },   -- green
-    enroute   = { label = "En Route",  color = { 218, 54, 51 } },   -- red
-    onscene   = { label = "On Scene",  color = { 56, 132, 244 } },  -- blue
-    handover  = { label = "Handover",  color = { 230, 190, 40 } },  -- yellow
+    available = { label = L.text("med_erm.config.available"), color = { 46, 160, 67 } },   -- green
+    enroute   = { label = L.text("med_erm.config.en_route"),  color = { 218, 54, 51 } },   -- red
+    onscene   = { label = L.text("med_erm.config.on_scene"),  color = { 56, 132, 244 } },  -- blue
+    handover  = { label = L.text("med_erm.config.handover"),  color = { 230, 190, 40 } },  -- yellow
 }
 
 Config.PRIORITY_COLORS = {

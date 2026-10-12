@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Immediate-mode dx drawing helpers for the tablet.
 --
 -- Every frame the widgets register their clickable rectangles in Gfx.hits and
@@ -74,38 +75,14 @@ function Gfx.text(str, x, y, w, h, color, font, alignX, alignY, wordBreak)
         alignX or "left", alignY or "center", true, wordBreak or false)
 end
 
--- Truncates text with an ellipsis so it fits in width.
+-- Truncates text with an ellipsis so it fits in width (v_locals: cached, UTF-8 safe).
 function Gfx.fit(str, width, font)
-    str = tostring(str or "")
-    if dxGetTextWidth(str, 1, font) <= width then return str end
-    local n = utf8.len(str) or #str
-    while n > 0 and dxGetTextWidth(utf8.sub(str, 1, n) .. "…", 1, font) > width do n = n - 1 end
-    return utf8.sub(str, 1, n) .. "…"
+    return L.fit(tostring(str or ""), width, 1, font)
 end
 
--- Word-wraps text into lines that fit width.
+-- Word-wraps text into lines that fit width (v_locals: cached; read-only table).
 function Gfx.wrap(str, width, font)
-    local lines = {}
-    for para in (tostring(str or "") .. "\n"):gmatch("(.-)\n") do
-        local line = ""
-        for word in para:gmatch("%S+") do
-            local try = (line == "") and word or (line .. " " .. word)
-            if dxGetTextWidth(try, 1, font) <= width then
-                line = try
-            else
-                if line ~= "" then lines[#lines + 1] = line end
-                while dxGetTextWidth(word, 1, font) > width and (utf8.len(word) or 0) > 1 do
-                    local n = utf8.len(word)
-                    while n > 1 and dxGetTextWidth(utf8.sub(word, 1, n), 1, font) > width do n = n - 1 end
-                    lines[#lines + 1] = utf8.sub(word, 1, n)
-                    word = utf8.sub(word, n + 1)
-                end
-                line = word
-            end
-        end
-        lines[#lines + 1] = line
-    end
-    return lines
+    return L.wrap(tostring(str or ""), width, 1, font)
 end
 
 ---------------------------------------------------------------- input
@@ -191,7 +168,7 @@ function Gfx.priorityBadge(x, y, w, h, priority)
     local c = Config.PRIORITY_COLORS[priority]
     if c then
         Gfx.round(x, y, w, h, Gfx.s(4), Gfx.rgb(c))
-        Gfx.text("P" .. priority, x, y, w, h, tocolor(15, 15, 15), Gfx.font(10, true), "center")
+        Gfx.text(L("med_erm.detail.p", { priority = priority }), x, y, w, h, tocolor(15, 15, 15), Gfx.font(10, true), "center")
     else
         Gfx.round(x, y, w, h, Gfx.s(4), Theme.panel2)
         Gfx.text("--", x, y, w, h, Theme.dim, Gfx.font(10, true), "center")

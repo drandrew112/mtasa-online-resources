@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Configuration and shared constants of the medical system.
 -- Everything that tunes the physiology, the interaction or the treatments lives here.
 
@@ -188,14 +189,14 @@ MEDIC = {
 -- pulse = the heart pumps (palpable pulse), shockable = defibrillation can end it (VF, pVT only),
 -- wave = the curve the client draws (client/ecg.lua)
 MEDIC_RHYTHMS = {
-    SINUS = { label = "Normal Sinus Rhythm", pulse = true, wave = "sinus" },
-    SINUS_BRADY = { label = "Sinus Bradycardia", pulse = true, wave = "sinus" },
-    SINUS_TACHY = { label = "Sinus Tachycardia", pulse = true, wave = "sinus" },
-    VT_WITH_PULSE = { label = "Ventricular Tachycardia with Pulse", pulse = true, wave = "vt" },
-    VF = { label = "Ventricular Fibrillation", shockable = true, wave = "vf" },
-    PULSELESS_VT = { label = "Pulseless Ventricular Tachycardia", shockable = true, wave = "vt" },
-    PEA = { label = "Pulseless Electrical Activity - continue CPR", wave = "pea" },
-    ASYSTOLE = { label = "Asystole", wave = "flat" },
+    SINUS = { label = L.text("medsys.config.normal_sinus_rhythm"), pulse = true, wave = "sinus" },
+    SINUS_BRADY = { label = L.text("medsys.config.sinus_bradycardia"), pulse = true, wave = "sinus" },
+    SINUS_TACHY = { label = L.text("medsys.config.sinus_tachycardia"), pulse = true, wave = "sinus" },
+    VT_WITH_PULSE = { label = L.text("medsys.config.ventricular_tachycardia_with_pulse"), pulse = true, wave = "vt" },
+    VF = { label = L.text("medsys.config.ventricular_fibrillation"), shockable = true, wave = "vf" },
+    PULSELESS_VT = { label = L.text("medsys.config.pulseless_ventricular_tachycardia"), shockable = true, wave = "vt" },
+    PEA = { label = L.text("medsys.config.pulseless_electrical_activity_continue_cpr"), wave = "pea" },
+    ASYSTOLE = { label = L.text("medsys.config.asystole"), wave = "flat" },
 }
 
 -- Rhythm a cardiac arrest starts with, by its cause (weights). default: a forced arrest
@@ -223,47 +224,47 @@ MEDIC_TEST = {
 
     -- Predefined cases. injuries = { { type, severity } }, set = ordered setMedicalState calls
     SCENARIOS = {
-        { id = "gsw_torso", label = "Gunshot - torso", desc = "Critical gunshot wound, arterial bleeding",
+        { id = "gsw_torso", label = L.text("medsys.config.gunshot_torso"), desc = L.text("medsys.config.critical_gunshot_wound_arterial_bleeding"),
             injuries = { { "gunshot", 3 } } },
-        { id = "gsw_limb", label = "Gunshot - limb", desc = "Serious gunshot wound to the leg",
+        { id = "gsw_limb", label = L.text("medsys.config.gunshot_limb"), desc = L.text("medsys.config.serious_gunshot_wound_to_leg"),
             injuries = { { "gunshot", 2 } } },
-        { id = "shock", label = "Hemorrhagic shock", desc = "Critical gunshot, already lost 40% of the blood",
+        { id = "shock", label = L.text("medsys.config.hemorrhagic_shock"), desc = L.text("medsys.config.critical_gunshot_already_lost_40_of"),
             injuries = { { "gunshot", 3 } }, set = { { "bloodVolume", 3000 }, { "heartRate", 138 }, { "systolic", 68 }, { "diastolic", 45 } } },
-        { id = "car_crash", label = "Car crash", desc = "Open fracture and a laceration",
+        { id = "car_crash", label = L.text("medsys.config.car_crash"), desc = L.text("medsys.config.open_fracture_and_laceration"),
             injuries = { { "fracture", 3 }, { "gunshot", 1 } } },
-        { id = "fall", label = "Fall from height", desc = "Two closed fractures, severe pain",
+        { id = "fall", label = L.text("medsys.config.fall_from_height"), desc = L.text("medsys.config.two_closed_fractures_severe_pain"),
             injuries = { { "fracture", 2 }, { "fracture", 2 } } },
-        { id = "house_fire", label = "House fire", desc = "Critical burns with inhalation injury",
+        { id = "house_fire", label = L.text("medsys.config.house_fire"), desc = L.text("medsys.config.critical_burns_with_inhalation_injury"),
             injuries = { { "burn", 3 }, { "suffocation", 1 } } },
-        { id = "drowning", label = "Drowning", desc = "Pulled out of the water, SpO2 falling fast",
+        { id = "drowning", label = L.text("medsys.config.drowning"), desc = L.text("medsys.config.pulled_out_of_water_spo2_falling"),
             injuries = { { "suffocation", 3 } }, set = { { "spo2", 74 } } },
-        { id = "overdose", label = "Overdose", desc = "Unconscious, respiratory depression",
+        { id = "overdose", label = L.text("medsys.config.overdose"), desc = L.text("medsys.config.unconscious_respiratory_depression"),
             injuries = { { "suffocation", 2 } }, set = { { "consciousness", "unconscious" } } },
-        { id = "cardiac_arrest", label = "Cardiac arrest", desc = "No pulse, clinical death - start CPR",
+        { id = "cardiac_arrest", label = L.text("medsys.config.cardiac_arrest"), desc = L.text("medsys.config.no_pulse_clinical_death_start_cpr"),
             injuries = {}, set = { { "consciousness", "clinical_death" } } },
-        { id = "vf_arrest", label = "Cardiac arrest - VF", desc = "Shockable rhythm - monitor, CPR and shock",
+        { id = "vf_arrest", label = L.text("medsys.config.cardiac_arrest_vf"), desc = L.text("medsys.config.shockable_rhythm_monitor_cpr_and_shock"),
             injuries = {}, set = { { "rhythm", "VF" } } },
-        { id = "asystole", label = "Cardiac arrest - asystole", desc = "Non-shockable - CPR and adrenaline",
+        { id = "asystole", label = L.text("medsys.config.cardiac_arrest_asystole"), desc = L.text("medsys.config.non_shockable_cpr_and_adrenaline"),
             injuries = {}, set = { { "rhythm", "ASYSTOLE" } } },
-        { id = "vt_pulse", label = "VT with pulse", desc = "Wide fast rhythm, pulse present - SYNC cardioversion",
+        { id = "vt_pulse", label = L.text("medsys.config.vt_with_pulse"), desc = L.text("medsys.config.wide_fast_rhythm_pulse_present_sync"),
             injuries = {}, set = { { "rhythm", "VT_WITH_PULSE" } } },
-        { id = "minor_burn", label = "Minor burn", desc = "Scalded hand, conscious and stable",
+        { id = "minor_burn", label = L.text("medsys.config.minor_burn"), desc = L.text("medsys.config.scalded_hand_conscious_and_stable"),
             injuries = { { "burn", 1 } } },
-        { id = "hypertension", label = "Hypertensive crisis", desc = "Very high blood pressure - give Captopril",
+        { id = "hypertension", label = L.text("medsys.config.hypertensive_crisis"), desc = L.text("medsys.config.very_high_blood_pressure_give_captopril"),
             injuries = {}, set = { { "hypertension", 70 }, { "systolic", 190 }, { "diastolic", 125 } } },
-        { id = "dead_body", label = "Dead body", desc = "Biological death - request transport",
+        { id = "dead_body", label = L.text("medsys.config.dead_body"), desc = L.text("medsys.config.biological_death_request_transport"),
             injuries = {}, set = { { "consciousness", "dead" } } },
-        { id = "stroke", label = "Stroke", desc = "Neuro exam: FAST positive - keep the BP safe, transport",
+        { id = "stroke", label = L.text("medsys.config.stroke"), desc = L.text("medsys.config.neuro_exam_fast_positive_keep_bp"),
             injuries = { { "stroke", 2 } } },
-        { id = "hypo", label = "Hypoglycaemia", desc = "Glucose 32 mg/dL - Glucose 40% IV",
+        { id = "hypo", label = L.text("medsys.config.hypoglycaemia"), desc = L.text("medsys.config.glucose_32_mg_dl_glucose_40"),
             injuries = {}, set = { { "glucose", 32 } } },
-        { id = "dka", label = "Diabetic ketoacidosis", desc = "Glucose 520, dehydrated - fluids, insulin",
+        { id = "dka", label = L.text("medsys.config.diabetic_ketoacidosis"), desc = L.text("medsys.config.glucose_520_dehydrated_fluids_insulin"),
             injuries = {}, set = { { "glucose", 520 }, { "bloodVolume", 4100 } } },
-        { id = "opioid", label = "Opioid overdose", desc = "Slow breathing, pinpoint pupils - Naloxone",
+        { id = "opioid", label = L.text("medsys.config.opioid_overdose"), desc = L.text("medsys.config.slow_breathing_pinpoint_pupils_naloxone"),
             injuries = { { "opioid", 2 } } },
-        { id = "asthma", label = "Asthma attack", desc = "Wheezing, SpO2 falling - Salbutamol, O2",
+        { id = "asthma", label = L.text("medsys.config.asthma_attack"), desc = L.text("medsys.config.wheezing_spo2_falling_salbutamol_o2"),
             injuries = { { "asthma", 2 } } },
-        { id = "drunk", label = "Alcohol intoxication", desc = "Confused, smells of alcohol",
+        { id = "drunk", label = L.text("medsys.config.alcohol_intoxication"), desc = L.text("medsys.config.confused_smells_of_alcohol"),
             injuries = { { "alcohol", 1 } } },
     },
 }
@@ -285,19 +286,19 @@ MEDIC_TEST = {
 -- Conditions without a prehospital treatment show "Needs hospital" (hospital = the cure).
 MEDIC_INJURIES = {
     gunshot = {
-        label = "Gunshot wound",
+        label = L.text("medsys.config.gunshot_wound"),
         bleed = { 1, 2, 3 },
         pain = { 30, 50, 70 },
-        treat = "bandage", treatedLabel = "Bandaged", treatedPain = 0.6,
+        treat = "bandage", treatedLabel = L.text("medsys.config.bandaged"), treatedPain = 0.6,
     },
     fracture = {
-        label = "Fracture",
+        label = L.text("medsys.config.fracture"),
         bleed = { 0, 0, 1 },            -- a critical one is an open fracture
         pain = { 40, 60, 85 },
-        treat = "splint", treatedLabel = "Splinted", treatedPain = 0.4,
+        treat = "splint", treatedLabel = L.text("medsys.config.splinted"), treatedPain = 0.4,
     },
     burn = {
-        label = "Burn",
+        label = L.text("medsys.config.burn"),
         bleed = { 0, 0, 0 },
         loss = { 0.5, 1.5, 3 },         -- plasma loss
         treatedLoss = 0.3,
@@ -305,20 +306,20 @@ MEDIC_INJURIES = {
         spo2 = { nil, nil, 80 },        -- inhalation injury swells the airway
         treatedSpo2 = { nil, nil, 80 }, -- the dressing does not help the airway
         spo2Rate = 0.3,
-        treat = "bandage", treatedLabel = "Dressed", treatedPain = 0.5,
+        treat = "bandage", treatedLabel = L.text("medsys.config.dressed"), treatedPain = 0.5,
     },
     suffocation = {
-        label = "Suffocation",
+        label = L.text("medsys.config.suffocation"),
         bleed = { 0, 0, 0 },
         pain = { 0, 0, 0 },
         spo2 = { 88, 65, 0 },
         spo2Rate = 0.8,
-        treat = "airway", treatedLabel = "Airway secured", treatedPain = 1,
+        treat = "airway", treatedLabel = L.text("medsys.config.airway_secured"), treatedPain = 1,
     },
 
     -- Visible, hospital only: head injury (fall, crash). Cushing reflex when severe.
     head_injury = {
-        label = "Head injury",
+        label = L.text("medsys.config.head_injury"),
         bleed = { 0, 0, 0 },
         pain = { 25, 40, 50 },
         consciousness = { "confused", "dazed", "unconscious" },
@@ -326,16 +327,16 @@ MEDIC_INJURIES = {
         spo2 = { nil, nil, 86 }, spo2Rate = 0.3,
         breathing = { nil, nil, "snoring" },
         neuro = {
-            { { "Scalp haematoma, asks the same questions again", 1 } },
-            { { "Scalp haematoma, vomited twice", 2 }, { "Drowsy, keeps closing the eyes", 2 } },
-            { { "Pupils: UNEQUAL - one is wide and slow", 3 }, { "Blood / clear fluid from the ear", 3 } },
+            { { L.text("medsys.config.scalp_haematoma_asks_same_questions_again"), 1 } },
+            { { L.text("medsys.config.scalp_haematoma_vomited_twice"), 2 }, { L.text("medsys.config.drowsy_keeps_closing_eyes"), 2 } },
+            { { L.text("medsys.config.pupils_unequal_one_is_wide_and"), 3 }, { L.text("medsys.config.blood_clear_fluid_from_ear"), 3 } },
         },
         treatedPain = 1,
     },
 
     ---------------------------------------------------------------- medical conditions (hidden)
     stroke = {
-        label = "Stroke", hidden = true, progress = true,
+        label = L.text("medsys.config.stroke"), hidden = true, progress = true,
         bleed = { 0, 0, 0 },
         pain = { 0, 0, 0 },
         systolic = { 25, 40, 55 }, heartRate = { 0, 0, -5 },
@@ -344,14 +345,14 @@ MEDIC_INJURIES = {
         breathing = { nil, nil, "snoring" },
         -- %s = the affected side ("left" / "right"), the gaze turns to the other one
         neuro = {
-            { { "FAST: face droops on the %s side", 3 }, { "FAST: speech slurred", 3 } },
-            { { "FAST: face droops on the %s side", 3 }, { "FAST: %s arm drifts down, weak grip", 3 },
-                { "FAST: speech slurred, words mixed up", 3 } },
-            { { "%s side paralysed", 3 }, { "Eyes deviated to one side", 3 } },
+            { { L("medsys.config.fast_face_droops_on_s_side"), 3 }, { L.text("medsys.config.fast_speech_slurred"), 3 } },
+            { { L("medsys.config.fast_face_droops_on_s_side"), 3 }, { L("medsys.config.fast_s_arm_drifts_down_weak"), 3 },
+                { L.text("medsys.config.fast_speech_slurred_words_mixed_up"), 3 } },
+            { { L("medsys.config.s_side_paralysed"), 3 }, { L.text("medsys.config.eyes_deviated_to_one_side"), 3 } },
         },
     },
     opioid = {
-        label = "Opioid overdose", hidden = true, treatDrugs = { "naloxone" }, treatedVitals = 0,
+        label = L.text("medsys.config.opioid_overdose"), hidden = true, treatDrugs = { "naloxone" }, treatedVitals = 0,
         bleed = { 0, 0, 0 },
         pain = { 0, 0, 0 },
         consciousness = { "dazed", "unconscious", "unconscious" },
@@ -359,13 +360,13 @@ MEDIC_INJURIES = {
         spo2 = { 90, 76, 50 }, spo2Rate = 0.35,
         breathing = { "slow", "slow", "agonal" },
         neuro = {
-            { { "Pupils: pinpoint", 2 }, { "Needle marks on the arms", 1 } },
-            { { "Pupils: pinpoint", 3 }, { "Needle marks on the arms", 1 } },
-            { { "Pupils: pinpoint", 3 }, { "Syringe lying next to the patient", 1 } },
+            { { L.text("medsys.config.pupils_pinpoint"), 2 }, { L.text("medsys.config.needle_marks_on_arms"), 1 } },
+            { { L.text("medsys.config.pupils_pinpoint"), 3 }, { L.text("medsys.config.needle_marks_on_arms"), 1 } },
+            { { L.text("medsys.config.pupils_pinpoint"), 3 }, { L.text("medsys.config.syringe_lying_next_to_patient"), 1 } },
         },
     },
     sedative = { -- sleeping pills / benzodiazepines (often with alcohol): no antidote, support only
-        label = "Sedative overdose", hidden = true,
+        label = L.text("medsys.config.sedative_overdose"), hidden = true,
         bleed = { 0, 0, 0 },
         pain = { 0, 0, 0 },
         consciousness = { "dazed", "unconscious", "unconscious" },
@@ -373,26 +374,26 @@ MEDIC_INJURIES = {
         spo2 = { nil, 86, 72 }, spo2Rate = 0.25,
         breathing = { nil, "slow", "snoring" },
         neuro = {
-            { { "Pupils: normal size, sluggish", 1 }, { "Slurred speech, very sleepy", 2 } },
-            { { "Pupils: normal size, sluggish", 1 }, { "Empty pill packets nearby", 2 } },
-            { { "Pupils: sluggish", 2 }, { "Empty pill packets nearby", 2 }, { "No gag reflex", 3 } },
+            { { L.text("medsys.config.pupils_normal_size_sluggish"), 1 }, { L.text("medsys.config.slurred_speech_very_sleepy"), 2 } },
+            { { L.text("medsys.config.pupils_normal_size_sluggish"), 1 }, { L.text("medsys.config.empty_pill_packets_nearby"), 2 } },
+            { { L.text("medsys.config.pupils_sluggish"), 2 }, { L.text("medsys.config.empty_pill_packets_nearby"), 2 }, { L.text("medsys.config.no_gag_reflex"), 3 } },
         },
     },
     stimulant = { -- cocaine / amphetamine: Midazolam calms it
-        label = "Stimulant intoxication", hidden = true, treatDrugs = { "midazolam" }, treatedVitals = 0.3,
+        label = L.text("medsys.config.stimulant_intoxication"), hidden = true, treatDrugs = { "midazolam" }, treatedVitals = 0.3,
         bleed = { 0, 0, 0 },
         pain = { 10, 20, 30 },
         consciousness = { "confused", "confused", "dazed" },
         systolic = { 25, 45, 65 }, heartRate = { 30, 50, 70 },
         breathing = { "rapid", "rapid", "rapid" },
         neuro = {
-            { { "Pupils: dilated", 2 }, { "Agitated, talks fast", 1 } },
-            { { "Pupils: dilated", 2 }, { "Agitated, jaw clenching, sweating", 2 } },
-            { { "Pupils: dilated", 3 }, { "Paranoid, hot to the touch", 3 } },
+            { { L.text("medsys.config.pupils_dilated"), 2 }, { L.text("medsys.config.agitated_talks_fast"), 1 } },
+            { { L.text("medsys.config.pupils_dilated"), 2 }, { L.text("medsys.config.agitated_jaw_clenching_sweating"), 2 } },
+            { { L.text("medsys.config.pupils_dilated"), 3 }, { L.text("medsys.config.paranoid_hot_to_touch"), 3 } },
         },
     },
     alcohol = {
-        label = "Alcohol intoxication", hidden = true,
+        label = L.text("medsys.config.alcohol_intoxication"), hidden = true,
         bleed = { 0, 0, 0 },
         pain = { 0, 0, 0 },
         consciousness = { "confused", "dazed", "unconscious" },
@@ -400,110 +401,110 @@ MEDIC_INJURIES = {
         spo2 = { nil, nil, 85 }, spo2Rate = 0.2, -- vomit in the airway
         breathing = { nil, nil, "snoring" },
         neuro = {
-            { { "Smells strongly of alcohol", 1 }, { "Slurred speech, unsteady", 1 } },
-            { { "Smells strongly of alcohol", 1 }, { "Vomited, cannot stand", 2 } },
-            { { "Smells strongly of alcohol", 1 }, { "Vomit around the mouth", 3 } },
+            { { L.text("medsys.config.smells_strongly_of_alcohol"), 1 }, { L.text("medsys.config.slurred_speech_unsteady"), 1 } },
+            { { L.text("medsys.config.smells_strongly_of_alcohol"), 1 }, { L.text("medsys.config.vomited_cannot_stand"), 2 } },
+            { { L.text("medsys.config.smells_strongly_of_alcohol"), 1 }, { L.text("medsys.config.vomit_around_mouth"), 3 } },
         },
     },
     postictal = { -- after an epileptic seizure, wears off by itself
-        label = "Post-seizure state", hidden = true,
+        label = L.text("medsys.config.post_seizure_state"), hidden = true,
         bleed = { 0, 0, 0 },
         pain = { 5, 10, 10 },
         consciousness = { "confused", "dazed", "unconscious" },
         heartRate = { 15, 20, 25 },
         duration = { 240, 480, 720 },
         neuro = {
-            { { "Bitten tongue", 2 }, { "Does not remember what happened", 1 } },
-            { { "Bitten tongue, wet trousers", 2 }, { "Very sleepy", 1 } },
-            { { "Bitten tongue, wet trousers", 2 }, { "Snoring, hard to wake", 3 } },
+            { { L.text("medsys.config.bitten_tongue"), 2 }, { L.text("medsys.config.does_not_remember_what_happened"), 1 } },
+            { { L.text("medsys.config.bitten_tongue_wet_trousers"), 2 }, { L.text("medsys.config.very_sleepy"), 1 } },
+            { { L.text("medsys.config.bitten_tongue_wet_trousers"), 2 }, { L.text("medsys.config.snoring_hard_to_wake"), 3 } },
         },
     },
 
     -- breathing (lung) conditions
     asthma = {
-        label = "Asthma attack", hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.2,
+        label = L.text("medsys.config.asthma_attack"), hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.2,
         bleed = { 0, 0, 0 },
         pain = { 10, 15, 20 },
         heartRate = { 15, 25, 40 },
         spo2 = { 93, 86, 74 }, treatedSpo2 = { nil, 95, 90 }, spo2Rate = 0.3,
         breathing = { "wheeze", "wheeze", "silent" },
-        neuro = { { { "Speaks in full sentences", 1 } }, { { "Speaks in short phrases only", 2 } },
-            { { "Cannot speak, exhausted", 3 } } },
+        neuro = { { { L.text("medsys.config.speaks_in_full_sentences"), 1 } }, { { L.text("medsys.config.speaks_in_short_phrases_only"), 2 } },
+            { { L.text("medsys.config.cannot_speak_exhausted"), 3 } } },
     },
     copd = { -- chronic lung disease flare-up: Salbutamol helps a little, oxygen helps more
-        label = "COPD exacerbation", hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.5,
+        label = L.text("medsys.config.copd_exacerbation"), hidden = true, treatDrugs = { "salbutamol" }, treatedVitals = 0.5,
         bleed = { 0, 0, 0 },
         pain = { 5, 10, 15 },
         heartRate = { 10, 20, 30 },
         spo2 = { 90, 84, 76 }, treatedSpo2 = { 92, 88, 83 }, spo2Rate = 0.2,
         breathing = { "wheeze", "laboured", "laboured" },
-        neuro = { { { "Pursed-lip breathing, long-time smoker", 1 } },
-            { { "Pursed-lip breathing, sits leaning forward", 2 } },
-            { { "Exhausted, drowsy from the CO2", 3 } } },
+        neuro = { { { L.text("medsys.config.pursed_lip_breathing_long_time_smoker"), 1 } },
+            { { L.text("medsys.config.pursed_lip_breathing_sits_leaning_forward"), 2 } },
+            { { L.text("medsys.config.exhausted_drowsy_from_co2"), 3 } } },
     },
     pulmonary_edema = { -- fluid on the lungs (heart failure): Nitroglycerin + oxygen
-        label = "Pulmonary oedema", hidden = true, treatDrugs = { "nitroglycerin" }, treatedVitals = 0.3,
+        label = L.text("medsys.config.pulmonary_oedema"), hidden = true, treatDrugs = { "nitroglycerin" }, treatedVitals = 0.3,
         bleed = { 0, 0, 0 },
         pain = { 10, 15, 20 },
         systolic = { 25, 40, 55 }, heartRate = { 15, 25, 35 },
         spo2 = { 90, 82, 70 }, treatedSpo2 = { 95, 91, 86 }, spo2Rate = 0.25,
         breathing = { "crackles", "crackles", "crackles" },
-        neuro = { { { "Swollen ankles", 1 } }, { { "Swollen ankles, pink frothy sputum", 2 } },
-            { { "Pink frothy sputum, drowning feeling", 3 } } },
+        neuro = { { { L.text("medsys.config.swollen_ankles"), 1 } }, { { L.text("medsys.config.swollen_ankles_pink_frothy_sputum"), 2 } },
+            { { L.text("medsys.config.pink_frothy_sputum_drowning_feeling"), 3 } } },
     },
 }
 
 -- What the breathing looks like. level: 0 normal - 3 critical (panel colour),
 -- dyspnea = the patient visibly struggles for air (medsys_effects animation)
 MEDIC_BREATHING = {
-    normal = { label = "Normal", level = 0 },
-    rapid = { label = "Rapid", level = 1 },
-    wheeze = { label = "Wheezing", level = 2, dyspnea = true },
-    laboured = { label = "Laboured", level = 2, dyspnea = true },
-    crackles = { label = "Laboured, crackles", level = 2, dyspnea = true },
-    kussmaul = { label = "Deep and rapid", level = 2, dyspnea = true },
-    silent = { label = "Silent chest, exhausted", level = 3, dyspnea = true },
-    slow = { label = "Slow, shallow", level = 2 },
-    snoring = { label = "Snoring", level = 3 },
-    agonal = { label = "Gasping", level = 3 },
-    none = { label = "Not breathing", level = 3 },
-    ventilated = { label = "Ventilated", level = 0 },
+    normal = { label = L.text("medsys.config.normal"), level = 0 },
+    rapid = { label = L.text("medsys.config.rapid"), level = 1 },
+    wheeze = { label = L.text("medsys.config.wheezing"), level = 2, dyspnea = true },
+    laboured = { label = L.text("medsys.config.laboured"), level = 2, dyspnea = true },
+    crackles = { label = L.text("medsys.config.laboured_crackles"), level = 2, dyspnea = true },
+    kussmaul = { label = L.text("medsys.config.deep_and_rapid"), level = 2, dyspnea = true },
+    silent = { label = L.text("medsys.config.silent_chest_exhausted"), level = 3, dyspnea = true },
+    slow = { label = L.text("medsys.config.slow_shallow"), level = 2 },
+    snoring = { label = L.text("medsys.config.snoring"), level = 3 },
+    agonal = { label = L.text("medsys.config.gasping"), level = 3 },
+    none = { label = L.text("medsys.config.not_breathing"), level = 3 },
+    ventilated = { label = L.text("medsys.config.ventilated"), level = 0 },
 }
 
-MEDIC_SEVERITY = { "Minor", "Serious", "Critical" }
-MEDIC_BLEEDING = { [0] = "None", "Mild", "Severe", "Critical" }
+MEDIC_SEVERITY = { L.text("medsys.config.minor"), L.text("medsys.config.serious"), L.text("medsys.config.critical") }
+MEDIC_BLEEDING = { [0] = L.text("medsys.config.none"), L.text("medsys.config.mild"), L.text("medsys.config.severe"), L.text("medsys.config.critical") }
 
 -- Consciousness states from the best to the worst
 MEDIC_CONSCIOUSNESS = {
-    stable = "Stable",
-    confused = "Confused",  -- awake but disoriented (intoxication, after a seizure, glucose, stroke)
-    dazed = "Dazed",
-    unconscious = "Unconscious",
-    clinical_death = "Clinical death",
-    dead = "Dead",
+    stable = L.text("medsys.config.stable"),
+    confused = L.text("medsys.config.confused"),  -- awake but disoriented (intoxication, after a seizure, glucose, stroke)
+    dazed = L.text("medsys.config.dazed"),
+    unconscious = L.text("medsys.config.unconscious"),
+    clinical_death = L.text("medsys.config.clinical_death"),
+    dead = L.text("medsys.config.dead"),
 }
 
 -- Treatment actions offered on the examination panel
 MEDIC_ACTIONS = {
-    bandage = { label = "Bandage" },
-    splint = { label = "Splint" },
-    cpr = { label = "CPR" },
-    iv = { label = "IV access" },
-    airway = { label = "Intubate" },
-    oxygen = { label = "O2 mask", activeLabel = "Remove O2" }, -- activeLabel: while the mask is on
-    medication = { label = "Medication" },
-    neuro = { label = "Neuro exam", activeLabel = "Neuro exam done" },
-    glucometer = { label = "Glucometer", activeLabel = "Put meter away" }, -- client-side device window
-    transport = { label = "Transport", wideLabel = "Request transport" }, -- wideLabel: alone in its row
+    bandage = { label = L.text("medsys.config.bandage") },
+    splint = { label = L.text("medsys.config.splint") },
+    cpr = { label = L.text("medsys.config.cpr") },
+    iv = { label = L.text("medsys.config.iv_access") },
+    airway = { label = L.text("medsys.config.intubate") },
+    oxygen = { label = L.text("medsys.config.o2_mask"), activeLabel = L.text("medsys.config.remove_o2") }, -- activeLabel: while the mask is on
+    medication = { label = L.text("medsys.config.medication") },
+    neuro = { label = L.text("medsys.config.neuro_exam"), activeLabel = L.text("medsys.treatment.neuro_exam_done") },
+    glucometer = { label = L.text("medsys.config.glucometer"), activeLabel = L.text("medsys.config.put_meter_away") }, -- client-side device window
+    transport = { label = L.text("medsys.config.transport"), wideLabel = L.text("medsys.config.request_transport") }, -- wideLabel: alone in its row
 }
 -- Button rows of the examination panel (ABCDE approach, E is not used for now).
 -- The monitor ("monitor" procedure) has no row button: it is attached from the heart rate tile.
 -- tag = the big letters on the row label (optional), label = the text under them
 MEDIC_ACTION_GROUPS = {
-    { tag = "AB", label = "Airway, Breathing", actions = { "airway", "oxygen" } },
-    { tag = "C", label = "Circulation", actions = { "bandage", "splint", "cpr", "iv", "medication" } },
-    { tag = "D", label = "Disability", actions = { "neuro", "glucometer" } },
-    { label = "Transport", actions = { "transport" } },
+    { tag = "AB", label = L.text("medsys.config.airway_breathing"), actions = { "airway", "oxygen" } },
+    { tag = "C", label = L.text("medsys.config.circulation"), actions = { "bandage", "splint", "cpr", "iv", "medication" } },
+    { tag = "D", label = L.text("medsys.config.disability"), actions = { "neuro", "glucometer" } },
+    { label = L.text("medsys.config.transport"), actions = { "transport" } },
 }
 -- Equipment each action needs (server/equipment.lua): item = "bag" | "monitor", stock = the bag
 -- consumable it uses ("ivKits" per attempt, "oxygen" while the mask is on; medication: per drug).
@@ -519,7 +520,7 @@ MEDIC_EQUIPMENT = {
     monitor = { item = "monitor" },
 }
 MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
-    { label = "Transport", actions = { "transport" } },
+    { label = L.text("medsys.config.transport"), actions = { "transport" } },
 }
 
 -- Medicines (given through the IV access). name = the active ingredient, desc = what it is for,
@@ -539,9 +540,8 @@ MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
 MEDIC_DRUGS = {
     ketamine = {
         name = "Ketamine (Calypsol)",
-        class = "Anaesthetic - RSI step 1",
-        desc = "Puts the patient to sleep and takes away all pain, raises the blood pressure a little. "
-            .. "Intubation: give it BEFORE the muscle relaxant.",
+        class = L.text("medsys.config.anaesthetic_rsi_step_1"),
+        desc = L.text("medsys.config.puts_patient_to_sleep_and_takes"),
         sedation = true,
         analgesia = 1,
         systolic = 15,
@@ -550,25 +550,23 @@ MEDIC_DRUGS = {
     },
     rocuronium = {
         name = "Rocuronium bromide (Esmeron)",
-        class = "Muscle relaxant - RSI step 2",
-        desc = "Paralyses the muscles and stops the breathing: the SpO2 falls until the patient is "
-            .. "intubated. An awake patient panics - put them to sleep first.",
+        class = L.text("medsys.config.muscle_relaxant_rsi_step_2"),
+        desc = L.text("medsys.config.paralyses_muscles_and_stops_breathing_spo2"),
         paralysis = true,
         duration = 2400,
     },
     fentanyl = {
         name = "Fentanyl",
-        class = "Painkiller",
-        desc = "Strong painkiller for a patient who is awake. Lowers the blood pressure slightly.",
+        class = L.text("medsys.config.painkiller"),
+        desc = L.text("medsys.config.strong_painkiller_for_patient_who_is"),
         analgesia = 0.7,
         systolic = -10,
         duration = 1800,
     },
     epinephrine = {
         name = "Adrenalin (Tonogen)",
-        class = "Heart stimulant",
-        desc = "Raises the pulse and the blood pressure. In cardiac arrest it makes CPR more likely "
-            .. "to restart the heart. Too many doses drive the pulse dangerously high.",
+        class = L.text("medsys.config.heart_stimulant"),
+        desc = L.text("medsys.config.raises_pulse_and_blood_pressure_in"),
         heartRate = 30,
         systolic = 30,
         roscBonus = 0.15,
@@ -576,18 +574,16 @@ MEDIC_DRUGS = {
     },
     captopril = {
         name = "Captopril (Tensiomin)",
-        class = "Blood pressure lowering",
-        desc = "Tablet under the tongue, no IV needed. Lowers high blood pressure. It lowers a normal "
-            .. "or low pressure too: given to a patient in shock it can stop the heart.",
+        class = L.text("medsys.config.blood_pressure_lowering"),
+        desc = L.text("medsys.config.tablet_under_tongue_no_iv_needed"),
         route = "oral", -- no IV access needed
         systolic = -40,
         duration = 600,
     },
     nitroglycerin = {
         name = "Nitroglycerin spray",
-        class = "Vasodilator",
-        desc = "Spray under the tongue. Lowers the blood pressure fast and clears fluid from the lungs "
-            .. "(pulmonary oedema). Never with a low pressure.",
+        class = L.text("medsys.config.vasodilator"),
+        desc = L.text("medsys.config.spray_under_tongue_lowers_blood_pressure"),
         route = "oral",
         systolic = -30,
         treats = { "pulmonary_edema" },
@@ -595,17 +591,15 @@ MEDIC_DRUGS = {
     },
     glucose = {
         name = "Glucose 40%",
-        class = "Blood sugar raising",
-        desc = "Raises a low blood sugar within seconds (about +100 mg/dL). Check the glucometer before "
-            .. "and after - it wears off, measure again.",
+        class = L.text("medsys.config.blood_sugar_raising"),
+        desc = L.text("medsys.config.raises_low_blood_sugar_within_seconds"),
         glucose = 100,
         duration = 60,
     },
     glucose_gel = {
         name = "Oral glucose gel",
-        class = "Blood sugar raising",
-        desc = "Sugar gel into the cheek for an AWAKE patient who can swallow (about +40 mg/dL). "
-            .. "Unconscious patient: give Glucose 40% IV.",
+        class = L.text("medsys.config.blood_sugar_raising"),
+        desc = L.text("medsys.config.sugar_gel_into_cheek_for_awake"),
         route = "oral",
         awake = true,
         glucose = 40,
@@ -613,25 +607,23 @@ MEDIC_DRUGS = {
     },
     insulin = {
         name = "Insulin (Actrapid)",
-        class = "Blood sugar lowering",
-        desc = "Slowly lowers a very high blood sugar (ketoacidosis). Given to a patient with a normal "
-            .. "or low sugar it causes a dangerous hypoglycaemia.",
+        class = L.text("medsys.config.blood_sugar_lowering"),
+        desc = L.text("medsys.config.slowly_lowers_very_high_blood_sugar"),
         glucoseRate = -0.35,
         duration = 900,
     },
     naloxone = {
         name = "Naloxone (Narcan)",
-        class = "Opioid antidote - nasal",
-        desc = "Nasal spray. Reverses an opioid (heroin, fentanyl) overdose: the breathing and the "
-            .. "consciousness come back. No effect on other poisonings.",
+        class = L.text("medsys.config.opioid_antidote_nasal"),
+        desc = L.text("medsys.config.nasal_spray_reverses_opioid_heroin_fentanyl"),
         route = "nasal",
         treats = { "opioid" },
         duration = 1800,
     },
     salbutamol = {
         name = "Salbutamol (Ventolin)",
-        class = "Bronchodilator - nebuliser",
-        desc = "Nebulised: opens the airways in an asthma or COPD attack (wheezing). Raises the pulse a little.",
+        class = L.text("medsys.config.bronchodilator_nebuliser"),
+        desc = L.text("medsys.config.nebulised_opens_airways_in_asthma_or"),
         route = "inhaled",
         heartRate = 12,
         treats = { "asthma", "copd" },
@@ -639,9 +631,8 @@ MEDIC_DRUGS = {
     },
     midazolam = {
         name = "Midazolam (Dormicum)",
-        class = "Sedative",
-        desc = "Calms an agitated patient (cocaine, amphetamine): lowers the pulse and the pressure. "
-            .. "Makes the breathing weaker - watch the SpO2.",
+        class = L.text("medsys.config.sedative"),
+        desc = L.text("medsys.config.calms_agitated_patient_cocaine_amphetamine_lower"),
         systolic = -15,
         heartRate = -15,
         treats = { "stimulant" },

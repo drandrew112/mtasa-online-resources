@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Ambulance bays are for on-duty ambulances only.
 --
 -- A vehicle in a bay that is not an on-duty ERM unit's vehicle (an off-duty ambulance or anything
@@ -18,8 +19,7 @@ local function isAuthorized(vehicle)
 end
 
 local function warn(player, h)
-    notify(player, ("#da3633Only ambulances on duty may stop in the bays of %s.#ffffff Leave now, or you are fined #da3633€%d#ffffff every %d seconds.")
-        :format(h.name, HOSP.BAY_FINE, HOSP.BAY_FINE_INTERVAL / 1000))
+    notify(player, L.msg("med_hospitals.restricted.only_ambulances_on_duty_may_stop", { name = h.name, bay_fine = HOSP.BAY_FINE, bay_fine_interval = HOSP.BAY_FINE_INTERVAL / 1000 }))
 end
 
 local function fine(v, vehicle)
@@ -27,8 +27,7 @@ local function fine(v, vehicle)
     if not isResourceRunning("v_bank") then return end
     local ok = exports.v_bank:forceTakeMoney(player, HOSP.BAY_FINE)
     if ok ~= true then return end
-    notify(player, ("You were fined #da3633€%d#ffffff for blocking an ambulance bay of %s.")
-        :format(HOSP.BAY_FINE, v.hospital.name))
+    notify(player, L.msg("med_hospitals.restricted.you_were_fined_for_blocking_ambulance", { bay_fine = HOSP.BAY_FINE, name = v.hospital.name }))
     triggerEvent("onHospitalBayFine", resourceRoot, player, vehicle, v.hospital.id, HOSP.BAY_FINE)
 end
 

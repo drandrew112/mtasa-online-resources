@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- "Examine patient" entry in the ui_interactobject world menu. Every ped / player that carries
 -- the medical status element data (= every patient) gets it; picking it opens the panel.
 
@@ -7,12 +8,12 @@ local IO_RESOURCE = "ui_interactobject"
 local menuIds = {}
 
 local MENU = {
-    title = "Patient",
+    title = L.msg("medsys.interaction.patient"),
     priority = 10,
     range = MEDIC.INTERACT_RANGE,
     dataKey = MEDIC.DATA_STATUS,
     items = {
-        { label = "Examine patient", value = "examine", desc = "Open the examination panel" },
+        { label = L.msg("medsys.interaction.examine_patient"), value = "examine", desc = L.msg("medsys.interaction.open_examination_panel") },
     },
 }
 

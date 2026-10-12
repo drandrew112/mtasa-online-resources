@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- 3D DX labels above every hospital marker (bay / handover / heal) + the local player's
 -- progress bar (stretcher handover 5 s, treatment 15 s). Occupied bays have no label (and an
 -- invisible marker, set by the server).
@@ -90,9 +91,9 @@ local function drawLabel(sx, sy, k, alpha, kind, name, prog)
     local a = alpha / 255
 
     local pad, icon, gap = s(10) * k, s(34) * k, s(10) * k
-    local nameStr = name:upper()
-    local textW = math.max(dxGetTextWidth(text.title, k, fTitle), dxGetTextWidth(nameStr, k, fName),
-        dxGetTextWidth(text.hint, k, fHint))
+    local nameStr = L.upper(name)
+    local textW = math.max(L.width(text.title, k, fTitle), L.width(nameStr, k, fName),
+        L.width(text.hint, k, fHint))
     local w = pad + icon + gap + textW + pad * 1.4
     local headH = s(46) * k
     local hintH = s(22) * k
@@ -130,7 +131,7 @@ local function drawLabel(sx, sy, k, alpha, kind, name, prog)
         local f = math.min(1, elapsed / prog.duration)
         local left = math.max(0, math.ceil((prog.duration - elapsed) / 1000))
         dxDrawText(prog.text, bx, py, bx + bw, py + s(14) * k, tocolor(255, 255, 255, 240 * a), k, fHint, "left", "center")
-        dxDrawText(left .. " s", bx, py, bx + bw, py + s(14) * k, rgb(st.color, 255 * a), k, font(9, true), "right", "center")
+        dxDrawText(L("med_hospitals.labels.s", { left = left }), bx, py, bx + bw, py + s(14) * k, rgb(st.color, 255 * a), k, font(9, true), "right", "center")
         local by = py + s(16) * k
         round(bx, by, bw, bh, bh / 2, tocolor(255, 255, 255, 40 * a))
         if f > 0 then round(bx, by, math.max(bh, bw * f), bh, bh / 2, rgb(st.color, 255 * a)) end

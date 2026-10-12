@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Units (signed-in ambulance crews). One unit = one shift row in the DB.
 
 Units = {
@@ -103,23 +104,23 @@ local function hasMedicAccess(player)
 end
 
 function Units.signIn(player, unitType, candidates, unitNumber)
-    if Units.byPlayer[player] then return false, "You are already signed in." end
-    if not isAccountLoggedIn(player) then return false, "You are not logged in." end
-    if not hasMedicAccess(player) then return false, "Only on-duty medics can sign in." end
+    if Units.byPlayer[player] then return false, L.msg("med_erm.units.you_are_already_signed_in") end
+    if not isAccountLoggedIn(player) then return false, L.msg("med_erm.units.you_are_not_logged_in") end
+    if not hasMedicAccess(player) then return false, L.msg("med_erm.units.only_on_duty_medics_can_sign") end
 
     local veh = getPedOccupiedVehicle(player)
     if not veh or not Config.TABLET_VEHICLES[getElementModel(veh)] then
-        return false, "You must be inside an ambulance to sign in."
+        return false, L.msg("med_erm.units.you_must_be_inside_ambulance_to")
     end
-    if not hasValue(Config.UNIT_TYPES, unitType) then return false, "Select a unit type." end
+    if not hasValue(Config.UNIT_TYPES, unitType) then return false, L.msg("med_erm.units.select_unit_type") end
 
     local callsign
     unitNumber = tostring(unitNumber or ""):gsub("%s", "")
     if unitNumber ~= "" then
         local n = tonumber(unitNumber:match("^%d%d?%d?$"))
-        if not n or n < 1 then return false, "Invalid unit number (1-999)." end
+        if not n or n < 1 then return false, L.msg("med_erm.units.invalid_unit_number_1_999") end
         callsign = string.format("%s-%02d", unitType, n)
-        if callsignUsed()[callsign] then return false, callsign .. " is already on duty." end
+        if callsignUsed()[callsign] then return false, L.msg("med_erm.units.is_already_on_duty", { callsign = callsign }) end
     else
         callsign = freeCallsign(unitType)
     end
@@ -130,13 +131,13 @@ function Units.signIn(player, unitType, candidates, unitNumber)
         if isElement(p) and getElementType(p) == "player" and p ~= player and not hasValue(members, p) then
             local x, y, z = getElementPosition(p)
             if Units.byPlayer[p] then
-                return false, getPlayerName(p) .. " is already in another unit."
+                return false, L.msg("med_erm.units.is_already_in_another_unit", { player = getPlayerName(p) })
             elseif not isAccountLoggedIn(p) then
-                return false, getPlayerName(p) .. " is not logged in."
+                return false, L.msg("med_erm.units.is_not_logged_in", { player = getPlayerName(p) })
             elseif not hasMedicAccess(p) then
-                return false, getPlayerName(p) .. " is not an on-duty medic."
+                return false, L.msg("med_erm.units.is_not_on_duty_medic", { player = getPlayerName(p) })
             elseif getDistanceBetweenPoints3D(px, py, pz, x, y, z) > Config.ADD_MEMBER_RADIUS + 5 then
-                return false, getPlayerName(p) .. " is too far away."
+                return false, L.msg("med_erm.units.is_too_far_away", { player = getPlayerName(p) })
             end
             members[#members + 1] = p
         end
@@ -170,7 +171,7 @@ function Units.signIn(player, unitType, candidates, unitNumber)
     for _, p in ipairs(members) do
         triggerClientEvent(p, "erm:messages", resourceRoot, Chat.forUnit(u.id))
     end
-    Units.notify(u, "Shift started", "Signed in as " .. u.callsign .. ".")
+    Units.notify(u, L.msg("med_erm.tutorial.shift_started"), L.msg("med_erm.tutorial.signed_in_as", { callsign = u.callsign }))
     Events.fire("onErmUnitSignIn", u.id)
     return u
 end
@@ -185,10 +186,10 @@ function Units.signOut(u, reason)
     Units.untagVehicle(u)
     for _, p in ipairs(u.members) do
         Units.byPlayer[p] = nil
-        if isElement(p) then triggerClientEvent(p, "erm:signedOut", resourceRoot, reason or "Shift ended.") end
+        if isElement(p) then triggerClientEvent(p, "erm:signedOut", resourceRoot, reason or L.msg("med_erm.units.shift_ended")) end
     end
     Units.list[u.id] = nil
-    Events.fire("onErmUnitSignOut", u.id, u.callsign, reason or "Shift ended.")
+    Events.fire("onErmUnitSignOut", u.id, u.callsign, reason or L.msg("med_erm.units.shift_ended"))
 end
 
 function Units.removeMember(player, reason)
@@ -196,10 +197,10 @@ function Units.removeMember(player, reason)
     if not u then return end
     Units.byPlayer[player] = nil
     removeValue(u.members, player)
-    if isElement(player) then triggerClientEvent(player, "erm:signedOut", resourceRoot, reason or "You left the unit.") end
+    if isElement(player) then triggerClientEvent(player, "erm:signedOut", resourceRoot, reason or L.msg("med_erm.units.you_left_unit")) end
 
     if #u.members == 0 then
-        Units.signOut(u, "Unit disbanded.")
+        Units.signOut(u, L.msg("med_erm.units.unit_disbanded"))
     else
         Units.sync(u)
     end
@@ -259,7 +260,7 @@ function Units.finishHandover(u)
         Units.creditTask(u, t, "handover")
         Tasks.unassign(t.id, u.id, true, "handover")
         if #t.units == 0 then
-            Tasks.close(t.id, "Completed - handover by " .. u.callsign)
+            Tasks.close(t.id, L.msg("med_erm.units.completed_handover_by", { callsign = u.callsign }))
         end
     end
     Units.sync(u)
@@ -288,7 +289,7 @@ end
 -- handoverTime (ms, only for "handover"): nil = Config.HANDOVER_TIME,
 -- false / 0 = no automatic finish.
 function Units.setStatus(u, status, handoverTime)
-    if not Config.STATUS[status] then return false, "Unknown status" end
+    if not Config.STATUS[status] then return false, L.msg("med_erm.units.unknown_status") end
 
     if status ~= "handover" and u.status == "handover" then
         if isTimer(u.handoverTimer) then killTimer(u.handoverTimer) end
@@ -326,27 +327,27 @@ end
 
 -- Active Case panel buttons.
 function Units.caseAction(u, action)
-    if not u.task then return false, "No active case." end
+    if not u.task then return false, L.msg("med_erm.tablet.no_active_case") end
     if action == "start" then
-        if u.status == "handover" then return false, "Handover in progress." end
+        if u.status == "handover" then return false, L.msg("med_erm.tasks.handover_in_progress") end
         return Units.setStatus(u, "enroute")
     elseif action == "stop" then
         -- only the log stops; On Scene is set automatically at the scene
-        if not u.responseEntry then return false, "Response not started." end
+        if not u.responseEntry then return false, L.msg("med_erm.units.response_not_started") end
         stopResponse(u)
         Units.sync(u)
         local t = Tasks.get(u.task)
         if t then Tasks.syncUnits(t) end
         return true
     elseif action == "onscene" then
-        if not u.responseEntry then return false, "Start the response first." end
+        if not u.responseEntry then return false, L.msg("med_erm.units.start_response_first") end
         return Units.setStatus(u, "onscene")
     elseif action == "handover" then
-        if not u.reachedScene then return false, "Reach the scene first." end
-        if u.status == "handover" then return false, "Handover already in progress." end
+        if not u.reachedScene then return false, L.msg("med_erm.units.reach_scene_first") end
+        if u.status == "handover" then return false, L.msg("med_erm.units.handover_already_in_progress") end
         return Units.setStatus(u, "handover")
     end
-    return false, "Unknown action"
+    return false, L.msg("med_erm.tablet.unknown_action")
 end
 
 ---------------------------------------------------------------- public data
@@ -424,7 +425,7 @@ setTimer(function()
                 if atScene(u, t) then
                     u.leftScene, u.sceneLeg = false, 0
                     Units.setStatus(u, "onscene")
-                    Units.notify(u, "On scene", string.format("Arrived at case #%d.", t.id))
+                    Units.notify(u, L.msg("med_erm.units.on_scene"), L.msg("med_erm.units.arrived_at_case", { id = t.id }))
                 end
             else
                 local d = sceneDistance(u, t)
@@ -434,7 +435,7 @@ setTimer(function()
                     u.leftScene = false
                     u.sceneLeg = (u.sceneLeg or 0) + 1
                     Units.setStatus(u, "onscene")  -- also syncs the new sceneLeg
-                    Units.notify(u, "On scene", string.format("Back at case #%d.", t.id))
+                    Units.notify(u, L.msg("med_erm.units.on_scene"), L.msg("med_erm.units.back_at_case", { id = t.id }))
                 end
             end
         end

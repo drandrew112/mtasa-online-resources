@@ -3,6 +3,7 @@
     <min_mta_version server="1.5.8" client="1.5.8" />
 
     <!-- treatment minigames -->
+    <include resource="v_locals" />
     <include resource="mg_arrows" />
     <include resource="mg_cpr" />
     <include resource="mg_intravenous" />
@@ -11,6 +12,7 @@
     <!-- "Examine patient" world menu -->
     <include resource="ui_interactobject" />
 
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <script src="server/state.lua" type="server" />

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Heart rhythm (ECG) and the monitor / defibrillator (Lifepak 15).
 --
 -- With a pulse the rhythm is named from the heart rate (sinus / bradycardia / tachycardia, VT at
@@ -114,10 +115,10 @@ end
 
 -- Panel line after a rhythm change (without a monitor the medic only knows that something changed)
 local function rhythmChangeMessage(state)
-    if not state.monitor then return "The patient's condition changed - attach the monitor" end
+    if not state.monitor then return L.msg("medsys.rhythm.patient_s_condition_changed_attach_monitor") end
     local def = MEDIC_RHYTHMS[state.rhythm]
-    if def.shockable then return "Rhythm change: " .. def.label .. " - shock!" end
-    return "Rhythm change: " .. def.label
+    if def.shockable then return L.msg("medsys.rhythm.rhythm_change_shock", { label = def.label }) end
+    return L.msg("medsys.rhythm.rhythm_change", { label = def.label })
 end
 
 -- Outcome of a change during CPR: "ROSC" or the new rhythm (may equal the current one = no change)
@@ -155,7 +156,7 @@ local function checkCPRChange(state, medic, dt)
     if outcome == "ROSC" then
         returnOfCirculation(state)
         writeVitalsData(state)
-        message = "Pulse restored (ROSC) - stop CPR"
+        message = L.msg("medsys.rhythm.pulse_restored_rosc_stop_cpr")
     else
         setRhythm(state, outcome)
         message = rhythmChangeMessage(state)
@@ -209,9 +210,9 @@ function updateMonitor(state, now)
         if shock then
             monitor.sync = false
             monitor.chargeTick = now -- AED mode: charges on its own
-            notifyExaminers(state.element, "Shock advised - charging, stand clear!", true)
+            notifyExaminers(state.element, L.msg("medsys.rhythm.shock_advised_charging_stand_clear"), true)
         else
-            notifyExaminers(state.element, "No shock advised - continue CPR if there is no pulse")
+            notifyExaminers(state.element, L.msg("medsys.rhythm.no_shock_advised_continue_cpr_if"))
         end
     end
 
@@ -253,7 +254,7 @@ local function deliverShock(state, medic)
 
     -- stand clear: whoever does the compressions lets go
     local cprMedic = getProcedureMedic(target, "cpr")
-    if cprMedic then interruptProcedure(cprMedic, "Stand clear - shock delivered") end
+    if cprMedic then interruptProcedure(cprMedic, L.msg("medsys.rhythm.stand_clear_shock_delivered")) end
 
     local before = state.rhythm
     local def = MEDIC_RHYTHMS[before]
@@ -261,18 +262,18 @@ local function deliverShock(state, medic)
 
     if isInClinicalDeath(state) then
         if not def.shockable then
-            message, bad = "No effect - not a shockable rhythm, continue CPR", true
+            message, bad = L.msg("medsys.rhythm.no_effect_not_shockable_rhythm_continue"), true
         elseif math.random() < MEDIC.SHOCK_SUCCESS then
             if math.random() < roscChance(state, MEDIC.SHOCK_ROSC) then
                 returnOfCirculation(state)
-                message = "Shock delivered - pulse restored (ROSC)"
+                message = L.msg("medsys.rhythm.shock_delivered_pulse_restored_rosc")
             else
                 setRhythm(state, math.random() < MEDIC.SHOCK_ROSC_PEA and "PEA" or "ASYSTOLE")
-                message = "Shock delivered - continue CPR, check the rhythm"
+                message = L.msg("medsys.rhythm.shock_delivered_continue_cpr_check_rhythm")
             end
         else
             if before == "PULSELESS_VT" and math.random() < 0.5 then setRhythm(state, "VF") end
-            message = "Shock delivered - continue CPR, check the rhythm"
+            message = L.msg("medsys.rhythm.shock_delivered_continue_cpr_check_rhythm")
         end
     else
         -- a beating heart
@@ -286,17 +287,17 @@ local function deliverShock(state, medic)
                 state.vtTick = nil
                 state.heartRate = math.min(state.heartRate, 110)
                 refreshPulseRhythm(state)
-                message = "Cardioversion successful"
+                message = L.msg("medsys.rhythm.cardioversion_successful")
             elseif unsyncVF then
                 cardiacArrest(state, "shock")
-                message, bad = "Unsynchronised shock - the heart went into VF!", true
+                message, bad = L.msg("medsys.rhythm.unsynchronised_shock_heart_went_into_vf"), true
             else
-                message, bad = "Shock delivered - still ventricular tachycardia", true
+                message, bad = L.msg("medsys.rhythm.shock_delivered_still_ventricular_tachycardia"), true
             end
         else
             -- a shock on a normally beating (sinus) heart stops it, synchronised or not
             cardiacArrest(state, "shock")
-            message, bad = "Shock on a beating heart - cardiac arrest!", true
+            message, bad = L.msg("medsys.rhythm.shock_on_beating_heart_cardiac_arrest"), true
         end
     end
 
@@ -318,21 +319,21 @@ DEFIB_OPS.sound = function(_, monitor)
 end
 
 DEFIB_OPS.charge = function(_, monitor, _, _, now)
-    if monitor.analyzeTick then return "Analysing - wait", true end
+    if monitor.analyzeTick then return L.msg("medsys.rhythm.analysing_wait"), true end
     if monitor.chargeTick then return nil end
     monitor.chargeTick = now
     monitor.message = nil
 end
 
 DEFIB_OPS.shock = function(state, monitor, medic, _, now)
-    if not isCharged(monitor, now) then return "Charge the defibrillator first", true end
+    if not isCharged(monitor, now) then return L.msg("medsys.rhythm.charge_defibrillator_first"), true end
     return deliverShock(state, medic)
 end
 
 DEFIB_OPS.analyze = function(state, monitor, _, _, now)
     if monitor.analyzeTick then return nil end
     if state.consciousness ~= "clinical_death" and state.consciousness ~= "unconscious" then
-        return "Analyse only an unresponsive patient", true
+        return L.msg("medsys.rhythm.analyse_only_unresponsive_patient"), true
     end
     monitor.analyzeTick = now
     monitor.chargeTick, monitor.advice, monitor.message = nil, nil, nil
@@ -348,9 +349,9 @@ addEventHandler("medic:defib", resourceRoot, function(target, op, value)
 
     local message, isError, everyone
     if state.dead then
-        message, isError = "Patient is dead", true
+        message, isError = L.msg("medsys.rhythm.patient_is_dead"), true
     elseif not canMedicAttend(medic, target, MEDIC.PANEL_RANGE) then
-        message, isError = "Too far from the patient", true
+        message, isError = L.msg("medsys.rhythm.too_far_from_patient"), true
     else
         local charged = isCharged(state.monitor, getTickCount())
         message, isError = handler(state, state.monitor, medic, value, getTickCount())

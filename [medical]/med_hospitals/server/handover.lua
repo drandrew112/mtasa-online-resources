@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Hospital handover together with med_erm and med_stretcher.
 --
 -- 1. An ERM unit with an active case parks its vehicle in an ambulance bay with a patient aboard
@@ -55,7 +56,7 @@ local function onVehicleParked(bay, vehicle)
     if unit.status ~= "handover" and not hasPatientAboard(vehicle) then return end
     if unit.task == 0 then
         local driver = getVehicleOccupant(vehicle, 0)
-        if driver then notify(driver, "Your unit has no active case - no handover started.") end
+        if driver then notify(driver, L.msg("med_hospitals.handover.your_unit_has_no_active_case")) end
         return
     end
 
@@ -70,8 +71,7 @@ local function onVehicleParked(bay, vehicle)
 
     local h = bay.hospital
     active[unit.id] = { bay = bay, vehicle = vehicle, hospital = h }
-    notifyCrew(unit, ("Handover started at #f0c040%s#ffffff. Push the patient on the stretcher into the handover marker.")
-        :format(h.name))
+    notifyCrew(unit, L.msg("med_hospitals.handover.handover_started_at_push_patient_on", { name = h.name }))
     triggerEvent("onHospitalHandoverStart", resourceRoot, unit.id, h.id)
 end
 
@@ -105,7 +105,7 @@ local function updateActive()
         elseif not isElement(a.vehicle) or a.bay.vehicle ~= a.vehicle then
             active[unitId] = nil
             exports.med_erm:setUnitStatus(unitId, "enroute")
-            notifyCrew(unit, "You left the ambulance bay - status is #da3633En Route#ffffff until you park again.")
+            notifyCrew(unit, L.msg("med_hospitals.handover.you_left_ambulance_bay_status_is"))
             triggerEvent("onHospitalHandoverLeft", resourceRoot, unitId, a.hospital.id)
         end
     end
@@ -135,27 +135,27 @@ end)
 local function checkHandover(player, point)
     local obj = getElementData(player, "stretcher.pushing")
     if not isElement(obj) or not isResourceRunning("med_stretcher") then
-        return false, "Bring the patient here on a stretcher."
+        return false, L.msg("med_hospitals.handover.bring_patient_here_on_stretcher")
     end
     local ms = exports.med_stretcher
-    if ms:getStretcherState(obj) ~= "pushing" then return false, "Bring the patient here on a stretcher." end
+    if ms:getStretcherState(obj) ~= "pushing" then return false, L.msg("med_hospitals.handover.bring_patient_here_on_stretcher") end
 
     local patient = ms:getStretcherPatient(obj)
     if not isElement(patient) or ms:getPatientStretcher(patient) ~= obj then
-        return false, "There is no patient on the stretcher."
+        return false, L.msg("med_hospitals.handover.there_is_no_patient_on_stretcher")
     end
 
-    if not ermRunning() then return false, "The dispatch system is offline." end
+    if not ermRunning() then return false, L.msg("med_hospitals.handover.dispatch_system_is_offline") end
     local vehicle = ms:getStretcherVehicle(obj)
     local unit = isElement(vehicle) and exports.med_erm:getVehicleUnit(vehicle)
-    if not unit then return false, "This stretcher's ambulance is not an EMS unit on duty." end
+    if not unit then return false, L.msg("med_hospitals.handover.this_stretcher_s_ambulance_is_not") end
 
     local a = active[unit.id]
     if not a or unit.status ~= "handover" then
-        return false, "Your ambulance is not in handover. Park it in an ambulance bay of this hospital."
+        return false, L.msg("med_hospitals.handover.your_ambulance_is_not_in_handover")
     end
     if a.hospital ~= point.hospital then
-        return false, "Your ambulance is parked at " .. a.hospital.name .. "."
+        return false, L.msg("med_hospitals.handover.your_ambulance_is_parked_at", { name = a.hospital.name })
     end
     return true, { obj = obj, patient = patient, unitId = unit.id }
 end
@@ -165,7 +165,7 @@ local function cancelProc(player, reason)
     if not p then return end
     procs[player] = nil
     stopProgress(player)
-    if reason then notify(player, "Handover cancelled: " .. reason) end
+    if reason then notify(player, L.msg("med_hospitals.handover.handover_cancelled", { reason = reason })) end
 end
 
 -- Where a handed-over player patient is put
@@ -200,7 +200,7 @@ local function completeProc(player)
             setElementPosition(patient, x, y, z)
             setElementRotation(patient, 0, 0, rot)
             setPedAnimation(patient)
-            notify(patient, "You were handed over to " .. h.name .. " and treated.")
+            notify(patient, L.msg("med_hospitals.handover.you_were_handed_over_to_and", { name = h.name }))
         else
             destroyElement(patient) -- med_stretcher clears the stretcher on destroy
         end
@@ -208,7 +208,7 @@ local function completeProc(player)
 
     active[p.unitId] = nil
     exports.med_erm:completeHandover(p.unitId)
-    if unit then notifyCrew(unit, "Patient handed over to #f0c040" .. h.name .. "#ffffff. Case completed.") end
+    if unit then notifyCrew(unit, L.msg("med_hospitals.handover.patient_handed_over_to_case_completed", { name = h.name })) end
 end
 
 local function updateHandoverMarkers()
@@ -226,7 +226,7 @@ local function updateHandoverMarkers()
                         point = point, obj = data.obj, patient = data.patient, unitId = data.unitId,
                         ends = now + HOSP.HANDOVER_TIME,
                     }
-                    startProgress(player, point.marker, HOSP.HANDOVER_TIME, "Handing over the patient")
+                    startProgress(player, point.marker, HOSP.HANDOVER_TIME, L.msg("med_hospitals.handover.handing_over_patient"))
                 elseif refused[player] ~= point then
                     refused[player] = point
                     notify(player, data)
@@ -243,14 +243,14 @@ local function updateHandoverMarkers()
         if not isElement(player) then
             procs[player] = nil
         elseif seen[player] ~= p.point then
-            cancelProc(player, "you left the handover marker.")
+            cancelProc(player, L.msg("med_hospitals.handover.you_left_handover_marker"))
         else
             local ok, data = checkHandover(player, p.point)
             if not ok then
                 refused[player] = p.point
                 cancelProc(player, data)
             elseif data.obj ~= p.obj or data.patient ~= p.patient then
-                cancelProc(player, "the patient changed.")
+                cancelProc(player, L.msg("med_hospitals.handover.patient_changed"))
             elseif now >= p.ends then
                 completeProc(player)
             end
@@ -268,7 +268,7 @@ end
 function isHandingOver(player) return procs[player] ~= nil end
 
 UnloadHandlers[#UnloadHandlers + 1] = function()
-    for player in pairs(procs) do cancelProc(player, "the hospitals were reloaded.") end
+    for player in pairs(procs) do cancelProc(player, L.msg("med_hospitals.handover.hospitals_were_reloaded")) end
     procs, refused, active = {}, {}, {}  -- parked units are taken over again by the new bays
 end
 

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_interactobject menus: one side-door menu per ambulance (on the invisible anchor) and a pick-up
 -- menu on every item lying on the ground. Every selection is re-checked here before
 -- server/kits.lua acts. Also: the put-down key, restocking in a hospital bay, admin commands.
@@ -52,34 +53,34 @@ end
 -- Menu contents
 -- ---------------------------------------------------------------------------------------------
 
-local STATE_TEXT = { carried = "Carried by someone", ground = "On the ground", stowed = "In the vehicle",
-    stretcher = "On the stretcher" }
+local STATE_TEXT = { carried = L.msg("med_bag.interaction.carried_by_someone"), ground = L.msg("med_bag.interaction.on_ground"), stowed = L.msg("med_bag.interaction.in_vehicle"),
+    stretcher = L.msg("med_bag.interaction.on_stretcher") }
 
 local function kitItems(kit)
     local bag, monitor = kit.items.bag, kit.items.monitor
     local bagIn, monIn = bag.state == "stowed", monitor.state == "stowed"
     local inBay = isKitInHospitalBay(kit)
     return {
-        { label = "Take medical bag", value = "take_bag", disabled = not bagIn,
-            desc = bagIn and "Drugs, IV kits, oxygen" or STATE_TEXT[bag.state] },
-        { label = "Take monitor / defibrillator", value = "take_monitor", disabled = not monIn,
-            desc = monIn and "ECG, defibrillator" or STATE_TEXT[monitor.state] },
-        { label = "Take both", value = "take_both", disabled = not (bagIn and monIn) },
-        { label = "Put medical bag back", value = "put_bag", disabled = bagIn,
-            desc = bagIn and "In the vehicle" or "Carry it here, or put it down next to the door" },
-        { label = "Put monitor back", value = "put_monitor", disabled = monIn,
-            desc = monIn and "In the vehicle" or "Carry it here, or put it down next to the door" },
-        { label = "Put everything back", value = "put_all", disabled = bagIn and monIn },
-        { label = "Restock bag", value = "restock", disabled = not (inBay and bagIn),
-            desc = not inBay and "Only in a hospital ambulance bay" or (not bagIn and "The bag must be in the vehicle")
-                or "Refill drugs, IV kits and oxygen" },
-        { label = "Check contents", value = "contents", desc = "What is left in the bag" },
+        { label = L.msg("med_bag.interaction.take_medical_bag"), value = "take_bag", disabled = not bagIn,
+            desc = bagIn and L.msg("med_bag.interaction.drugs_iv_kits_oxygen") or STATE_TEXT[bag.state] },
+        { label = L.msg("med_bag.interaction.take_monitor_defibrillator"), value = "take_monitor", disabled = not monIn,
+            desc = monIn and L.msg("med_bag.interaction.ecg_defibrillator") or STATE_TEXT[monitor.state] },
+        { label = L.msg("med_bag.interaction.take_both"), value = "take_both", disabled = not (bagIn and monIn) },
+        { label = L.msg("med_bag.interaction.put_medical_bag_back"), value = "put_bag", disabled = bagIn,
+            desc = bagIn and L.msg("med_bag.interaction.in_vehicle") or L.msg("med_bag.interaction.carry_it_here_or_put_it") },
+        { label = L.msg("med_bag.interaction.put_monitor_back"), value = "put_monitor", disabled = monIn,
+            desc = monIn and L.msg("med_bag.interaction.in_vehicle") or L.msg("med_bag.interaction.carry_it_here_or_put_it") },
+        { label = L.msg("med_bag.interaction.put_everything_back"), value = "put_all", disabled = bagIn and monIn },
+        { label = L.msg("med_bag.interaction.restock_bag"), value = "restock", disabled = not (inBay and bagIn),
+            desc = not inBay and L.msg("med_bag.interaction.only_in_hospital_ambulance_bay") or (not bagIn and L.msg("med_bag.interaction.bag_must_be_in_vehicle"))
+                or L.msg("med_bag.interaction.refill_drugs_iv_kits_and_oxygen") },
+        { label = L.msg("med_bag.interaction.check_contents"), value = "contents", desc = L.msg("med_bag.interaction.what_is_left_in_bag") },
     }
 end
 
 local function kitDef(kit)
     return {
-        title = "Ambulance equipment (" .. kitLabel(kit) .. ")",
+        title = L.msg("med_bag.interaction.ambulance_equipment", { kit = kitLabel(kit) }),
         range = BAG.MENU_RANGE,
         priority = 15,
         lineOfSight = false,   -- the anchor sits in the door
@@ -93,7 +94,7 @@ local function groundDef(item)
         range = BAG.GROUND_MENU_RANGE,
         priority = 12,
         lineOfSight = false,   -- the model origins sit off-centre / under the ground (would hide the menu)
-        items = { { label = "Pick up", value = "pickup", desc = item.kind == "bag" and "Left hand" or "Right hand" } },
+        items = { { label = L.msg("med_bag.interaction.pick_up"), value = "pickup", desc = item.kind == "bag" and L.msg("med_bag.interaction.left_hand") or L.msg("med_bag.interaction.right_hand") } },
     }
 end
 
@@ -211,9 +212,9 @@ end, 2000, 0)
 -- ---------------------------------------------------------------------------------------------
 
 function canHandleEquipment(player)
-    if isPedDead(player) or isPedInVehicle(player) then return false, "You cannot do that now." end
-    if not hasEquipmentAccess(player) then return false, "Only medics can use the ambulance equipment." end
-    if Restocking[player] then return false, "You are restocking the bag." end
+    if isPedDead(player) or isPedInVehicle(player) then return false, L.msg("med_bag.interaction.you_cannot_do_that_now") end
+    if not hasEquipmentAccess(player) then return false, L.msg("med_bag.interaction.only_medics_can_use_ambulance_equipment") end
+    if Restocking[player] then return false, L.msg("med_bag.interaction.you_are_restocking_bag") end
     return true
 end
 
@@ -229,9 +230,9 @@ local function take(kit, player, kinds)
     for _, kind in ipairs(kinds) do
         local item = kit.items[kind]
         if item.state ~= "stowed" then
-            notify(player, bagItemName(kind) .. " is not in the vehicle.")
+            notify(player, L.msg("med_bag.interaction.is_not_in_vehicle", { kind = bagItemName(kind) }))
         elseif getCarried(player, kind) then
-            notify(player, "You already carry a " .. bagItemName(kind):lower() .. ".")
+            notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(kind):lower() }))
         else
             takeItem(item, player)
             taken[#taken + 1] = bagItemName(kind)
@@ -258,11 +259,11 @@ local function putBack(kit, player, kinds)
             stowItem(own)
             done = done + 1
         elseif own.state ~= "stowed" and #kinds == 1 then
-            notify(player, "Bring the " .. bagItemName(kind):lower() .. " here first.")
+            notify(player, L.msg("med_bag.interaction.bring_here_first", { kind = bagItemName(kind):lower() }))
         end
     end
     if foreign then
-        notify(player, ("This %s belongs to %s."):format(bagItemName(foreign.kind):lower(), kitLabel(foreign.kit)))
+        notify(player, L.msg("med_bag.interaction.this_belongs_to", { kind = bagItemName(foreign.kind):lower(), kit = kitLabel(foreign.kit) }))
     end
     if done > 0 then
         local a = BAG.PUT_ANIM
@@ -291,16 +292,16 @@ local function endRestock(player, finished)
         local bag = r.kit.items.bag
         if Items[bag.id] and bag.state == "stowed" and isKitInHospitalBay(r.kit) then
             restock(bag)
-            notify(player, "Medical bag restocked.")
+            notify(player, L.msg("med_bag.interaction.medical_bag_restocked"))
         else
-            notify(player, "Restocking failed.")
+            notify(player, L.msg("med_bag.interaction.restocking_failed"))
         end
     end
 end
 
 local function startRestock(kit, player)
-    if not isKitInHospitalBay(kit) then return notify(player, "Park the ambulance in a hospital bay first.") end
-    if kit.items.bag.state ~= "stowed" then return notify(player, "Put the bag back into the vehicle first.") end
+    if not isKitInHospitalBay(kit) then return notify(player, L.msg("med_bag.interaction.park_ambulance_in_hospital_bay_first")) end
+    if kit.items.bag.state ~= "stowed" then return notify(player, L.msg("med_bag.interaction.put_bag_back_into_vehicle_first")) end
     if Restocking[player] then return end
     for _, control in ipairs(MOVE_CONTROLS) do toggleControl(player, control, false) end
     setPedAnimation(player, "INT_SHOP", "shop_loop", -1, true, false, false, false)
@@ -331,7 +332,7 @@ local function showContents(kit, player)
     end
     table.sort(drugs, function(a, b) return a[1] < b[1] end)
     triggerClientEvent(player, "bag:contents", resourceRoot, {
-        title = "Medical bag (" .. kitLabel(kit) .. ")",
+        title = L.msg("med_bag.interaction.medical_bag", { kit = kitLabel(kit) }),
         where = STATE_TEXT[bag.state],
         ivKits = { stock.ivKits, BAG.STOCK.ivKits },
         oxygen = math.floor(stock.oxygen + 0.5),
@@ -372,7 +373,7 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value)
         local ok, reason = canHandleEquipment(player)
         if not ok then return notify(player, reason) end
         if getCarried(player, item.kind) then
-            return notify(player, "You already carry a " .. bagItemName(item.kind):lower() .. ".")
+            return notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(item.kind):lower() }))
         end
         pickUpItem(item, player)
     end
@@ -412,10 +413,10 @@ end
 addCommandHandler("bagpos", function(player)
     if not isAdmin(player) then return end
     local kit = nearestKit(player, 10)
-    if not kit then return notify(player, "No ambulance within 10 m.", "med_bag", true) end
+    if not kit then return notify(player, L.msg("med_bag.interaction.no_ambulance_within_10_m"), "med_bag", true) end
     local x, y, z = getElementPosition(player)
     local lx, ly, lz = bagWorldToLocal(kit.vehicle, x, y, z)
-    local text = ("model %d: SIDE_POINT = { %.2f, %.2f, %.2f }"):format(getElementModel(kit.vehicle), lx, ly, lz)
+    local text = L.msg("med_bag.interaction.model_side_point", { vehicle = getElementModel(kit.vehicle), lx = lx, ly = ly, lz = lz })
     notify(player, text, "med_bag")
     outputServerLog("[med_bag] /bagpos " .. text)
 end)
@@ -424,7 +425,7 @@ end)
 addCommandHandler("bagreset", function(player)
     if not isAdmin(player) then return end
     local kit = nearestKit(player, 15)
-    if not kit then return notify(player, "No ambulance within 15 m.", "med_bag", true) end
+    if not kit then return notify(player, L.msg("med_bag.interaction.no_ambulance_within_15_m"), "med_bag", true) end
     for _, item in pairs(kit.items) do returnItemToVehicle(item, false) end
-    notify(player, "Equipment of " .. kitLabel(kit) .. " returned.", "med_bag")
+    notify(player, L.msg("med_bag.interaction.equipment_of_returned", { kit = kitLabel(kit) }), "med_bag")
 end)

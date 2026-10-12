@@ -31,7 +31,8 @@ end
 
 root = {}
 function getThisResource() return "res" end
-function getResourceName(r) return r == "res" and "testres" or tostring(r) end
+function getResourceName(r) if r == "res" then return "testres" elseif r == "vres" then return "v_locals" end return tostring(r) end
+function getResourceRootElement() return {} end
 function getResourceFromName() return nil end
 function getResourceState() return "running" end
 function isElement(e) return type(e) == "table" and e.isPlayer == true end
@@ -264,6 +265,10 @@ function triggerLatentClientEvent(...) SENT[#SENT + 1] = { ... }; return true en
 function outputChatBox(...) CHAT[#CHAT + 1] = { ... }; return true end
 function kickPlayer(...) KICK[#KICK + 1] = { ... }; return true end
 function getElementType(e) return e.isPlayer and "player" or "root" end
+local SED
+function setElementData(e, k, v) SED = v; return true end
+function getElementData() return nil end
+resourceRoot = {}
 local PLAYERS = {}
 function getElementsByType() return PLAYERS end
 _G.L = nil
@@ -330,6 +335,10 @@ eq("string.format %s with message", ("[%s] %d"):format(X.msg("t.hello"), 5), "[H
 eq("string.format plain", string.format("%d-%s", 1, "x"), "1-x")
 eq("table.concat with message", table.concat({ "a", X.msg("t.hello"), "b" }, " "), "a Hello b")
 eq("table.concat plain", table.concat({ 1, 2 }, ","), "1,2")
+setElementData({}, "k", X.msg("t.hello"))
+eq("setElementData stores default-language text", SED, "Hello")
+setElementData({}, "k", { a = X.msg("t.hello"), n = 1 })
+eq("setElementData nested text", SED.a, "Hello")
 eq("format with a copied message", ("%s!"):format({ t = "t.hello", __loc = true }), "Hello!")
 local copied = { name = { t = "t.hello", __loc = true }, list = { { t = "t.hello", __loc = true } } }
 X.adopt(copied)

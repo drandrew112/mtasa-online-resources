@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Home: shift summary, active case, cases closed during this shift.
 
 local s = Gfx.s
@@ -10,16 +11,15 @@ function Pages.home.draw(x, y, w, h)
     local ix, iw = x + pad, w - pad * 2
     local cy = y + s(14)
 
-    Gfx.text("Home", ix, cy, iw, s(26), Theme.text, Gfx.font(15, true))
+    Gfx.text(L("med_erm.home.home"), ix, cy, iw, s(26), Theme.text, Gfx.font(15, true))
     local crew = {}
     for _, m in ipairs(u.members) do crew[#crew + 1] = (m.name:gsub("#%x%x%x%x%x%x", "")) end
-    Gfx.text(Gfx.fit("Shift since " .. State.formatClock(u.startedAt)
-        .. " (" .. State.formatDuration(State.serverNow() - u.startedAt) .. ")  ·  Crew: " .. table.concat(crew, ", "), iw, Gfx.font(9)),
+    Gfx.text(Gfx.fit(L("med_erm.home.shift_since_crew", { started_at = State.formatClock(u.startedAt), started_at2 = State.formatDuration(State.serverNow() - u.startedAt), crew = table.concat(crew, ", ") }), iw, Gfx.font(9)),
         ix, cy + s(24), iw, s(18), Theme.dim, Gfx.font(9))
 
     -- active case ------------------------------------------------------------
     cy = cy + s(56)
-    Gfx.label("ACTIVE CASE", ix, cy, iw)
+    Gfx.label(L("med_erm.home.active_case"), ix, cy, iw)
     cy = cy + s(20)
     local cardH = s(66)
     if t then
@@ -30,23 +30,23 @@ function Pages.home.draw(x, y, w, h)
         Gfx.text(Gfx.fit(string.format("#%d  %s", t.id, t.title), iw - s(140), Gfx.font(12, true)),
             ix + s(60), cy + s(10), iw - s(140), s(26), Theme.text, Gfx.font(12, true))
         Gfx.text(Gfx.fit(t.zone, iw - s(80), Gfx.font(9)), ix + s(60), cy + s(34), iw - s(80), s(20), Theme.dim, Gfx.font(9))
-        Gfx.text("Open  ›", ix, cy, iw - s(16), cardH, Theme.dim, Gfx.font(10, true), "right")
+        Gfx.text(L("med_erm.home.open"), ix, cy, iw - s(16), cardH, Theme.dim, Gfx.font(10, true), "right")
         Gfx.hit(ix, cy, iw, cardH, function() Tablet.setPage("case") end)
     else
         Gfx.round(ix, cy, iw, cardH, s(8), Theme.panel)
-        Gfx.text("No active case. Waiting for dispatch.", ix, cy, iw, cardH, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("med_erm.home.no_active_case_waiting_for_dispatch"), ix, cy, iw, cardH, Theme.faint, Gfx.font(10), "center")
     end
 
     -- closed cases -----------------------------------------------------------
     cy = cy + cardH + s(20)
     local closed = u.closedTasks or {}
-    Gfx.label(string.format("CLOSED CASES THIS SHIFT (%d)", #closed), ix, cy, iw)
+    Gfx.label(L("med_erm.home.closed_cases_this_shift", { closed = #closed }), ix, cy, iw)
     cy = cy + s(20)
 
     local listH = y + h - cy - s(14)
     Gfx.round(ix, cy, iw, listH, s(8), Theme.panel)
     if #closed == 0 then
-        Gfx.text("No closed cases yet.", ix, cy, iw, listH, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("med_erm.home.no_closed_cases_yet"), ix, cy, iw, listH, Theme.faint, Gfx.font(10), "center")
         return
     end
 

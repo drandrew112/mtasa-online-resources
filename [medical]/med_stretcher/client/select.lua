@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Patient selector ("Place patient on stretcher"). The cursor appears and every ped / player within
 -- STRETCHER.PATIENT_RANGE of the stretcher gets a round button above the head; clicking one sends
 -- the pick to the server, which re-checks it. RMB hides / shows the cursor (so the medic can look
@@ -153,8 +154,8 @@ addEventHandler("onClientRender", root, function()
     end
 
     local top = screenH * 0.12
-    drawText("Select patient", top, tocolor(255, 255, 255, 245), 2 * scale, "default-bold")
-    drawText("(RMB to toggle mouse)", top + 34 * scale, tocolor(200, 205, 215, 220), 1 * scale, "default")
+    drawText(L("med_stretcher.select.select_patient"), top, tocolor(255, 255, 255, 245), 2 * scale, "default-bold")
+    drawText(L("med_stretcher.select.rmb_to_toggle_mouse"), top + 34 * scale, tocolor(200, 205, 215, 220), 1 * scale, "default")
 end)
 
 -- ---------------------------------------------------------------------------------------------

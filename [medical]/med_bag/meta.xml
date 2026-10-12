@@ -4,8 +4,10 @@
     <min_mta_version server="1.5.8" client="1.5.8" />
 
     <!-- side-door + ground menus -->
+    <include resource="v_locals" />
     <include resource="ui_interactobject" />
 
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="shared/util.lua" type="shared" />
 

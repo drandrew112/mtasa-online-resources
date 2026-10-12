@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Endotracheal intubation in four phases, against a falling SpO2:
 --   1. LARYNGOSCOPY  hold SPACE to lift the blade until the vocal cords come into view
 --   2. THE CORDS     aim the tube tip with the mouse and push it (SPACE) between the
@@ -26,13 +27,21 @@ local COLOR_BAD = { 235, 60, 60 }
 local COLOR_INFO = { 110, 190, 255 }
 local COLOR_TEXT = { 225, 225, 225 }
 
-local PHASES = { "Laryngoscopy", "Pass the cords", "Tube depth", "Cuff pressure" }
+-- difficulty ids (game options) -> shown word
+local DIFFICULTY_LABEL = {
+    easy      = "mg_airway.client.difficulty_easy",
+    normal    = "mg_airway.client.difficulty_normal",
+    hard      = "mg_airway.client.difficulty_hard",
+    nightmare = "mg_airway.client.difficulty_nightmare",
+}
+
+local PHASES = { L("mg_airway.client.laryngoscopy"), L("mg_airway.client.pass_cords"), L("mg_airway.client.tube_depth"), L("mg_airway.client.cuff_pressure") }
 
 local HINTS = {
-    "Hold SPACE to lift the laryngoscope - keep it in the green zone",
-    "Aim with the MOUSE, hold SPACE to push the tube between the open cords",
-    "SPACE push / S pull back - release inside the green zone",
-    "SPACE inflate / S deflate the cuff - release inside the green zone",
+    L("mg_airway.client.hold_space_to_lift_laryngoscope_keep"),
+    L("mg_airway.client.aim_with_mouse_hold_space_to"),
+    L("mg_airway.client.space_push_s_pull_back_release"),
+    L("mg_airway.client.space_inflate_s_deflate_cuff_release"),
 }
 
 local LOCK_CONTROLS = { "forwards", "backwards", "left", "right", "jump", "sprint", "crouch", "walk",
@@ -262,7 +271,7 @@ local function mistake(key)
     game.details[key] = game.details[key] + 1
     game.mistakes = game.mistakes + 1
     game.flashTick = getTickCount()
-    toast(AIRWAY_MISTAKES[key]:upper() .. "!", COLOR_BAD)
+    toast(L.upper(AIRWAY_MISTAKES[key]) .. "!", COLOR_BAD)
     if game.mistakes > game.options.maxMistakes then
         endGame("too_many_mistakes")
     end
@@ -380,7 +389,7 @@ local function updatePhase(dt, t)
         elseif game.lift >= o.liftMin and game.lift <= o.liftMax then
             game.liftHold = game.liftHold + dt
             if game.liftHold >= AIRWAY.LIFT_HOLD then
-                nextPhase("CORDS IN VIEW")
+                nextPhase(L("mg_airway.client.cords_in_view"))
                 game.lift = (o.liftMin + o.liftMax) / 2
             end
         else
@@ -419,7 +428,7 @@ local function updatePhase(dt, t)
             game.eso = math.max(0, game.eso - 0.8 * dt)
         end
         if game.progress >= 1 then
-            nextPhase("THROUGH THE CORDS")
+            nextPhase(L("mg_airway.client.through_cords"))
         end
 
     elseif phase == 3 then
@@ -436,7 +445,7 @@ local function updatePhase(dt, t)
             and game.depth >= AIRWAY.DEPTH_MIN and game.depth <= AIRWAY.DEPTH_MAX then
             game.lockTime = game.lockTime + dt
             if game.lockTime >= AIRWAY.LOCK_TIME then
-                nextPhase(("DEPTH OK - %d CM AT THE TEETH"):format(math.floor(game.depth + 0.5)))
+                nextPhase(L("mg_airway.client.depth_ok_cm_at_teeth", { depth = math.floor(game.depth + 0.5) }))
             end
         else
             game.lockTime = 0
@@ -537,7 +546,7 @@ local function drawTrachea(bx, by, t)
         dxDrawLine(rulerX - (long and 10 or 5) * scale, y, rulerX + (long and 10 or 5) * scale, y,
             tocolor(220, 220, 220, 180), 1)
         if long or cm == 26 then
-            dxDrawText(cm == 26 and "carina" or (cm .. " cm"), rulerX + 14 * scale, y, rulerX + 14 * scale, y,
+            dxDrawText(cm == 26 and L("mg_airway.client.carina") or (L("mg_airway.client.cm", { cm = cm })), rulerX + 14 * scale, y, rulerX + 14 * scale, y,
                 tocolor(200, 200, 200, 200), 0.9 * scale, "default-bold", "left", "center")
         end
     end
@@ -571,11 +580,11 @@ local function drawTrachea(bx, by, t)
             dxDrawImage(bx2 - size / 2, by2 - size / 2, size, size, textures.blob, 0, 0, 0,
                 tocolor(210, 230, 255, 200 * (1 - k)))
         end
-        dxDrawText("AIR LEAK", tx - 20 * scale, cuffY, tx - 20 * scale, cuffY, rgba(COLOR_WARN), 1.1 * scale,
+        dxDrawText(L("mg_airway.client.air_leak"), tx - 20 * scale, cuffY, tx - 20 * scale, cuffY, rgba(COLOR_WARN), 1.1 * scale,
             "default-bold", "right", "center")
     end
 
-    local label = game.phase == 3 and ("%.1f cm"):format(game.depth) or ("%d cmH2O"):format(math.floor(game.cuff + 0.5))
+    local label = game.phase == 3 and L("mg_airway.client.cm_2", { depth = game.depth }) or ("%d cmH2O"):format(math.floor(game.cuff + 0.5))
     dxDrawText(label, bx + HALF - R * 0.9, by + HALF + R * 0.72, bx + HALF + R * 0.9, by + HALF + R * 0.92,
         tocolor(255, 255, 255, 235), 1.6 * scale, "default-bold", "center", "center")
 end
@@ -599,7 +608,7 @@ local function drawView(now, t)
     end
     dxDrawImage(VCX - HALF, VCY - HALF, HALF * 2, HALF * 2, textures.mask)
 
-    dxDrawText(("%d. %s"):format(math.min(4, game.phase), PHASES[math.min(4, game.phase)]:upper()),
+    dxDrawText(("%d. %s"):format(math.min(4, game.phase), L.upper(PHASES[math.min(4, game.phase)])),
         VCX - HALF + 16 * scale, VCY - HALF + 8 * scale, VCX + HALF, VCY - HALF + 36 * scale,
         tocolor(200, 200, 200, 220), 1.1 * scale, "default-bold", "left", "center")
 end
@@ -640,9 +649,9 @@ local function drawPassGauge()
 
     local warning
     if game.holdAction then
-        if game.region == "esophagus" then warning = { "That's the oesophagus!", COLOR_BAD }
-        elseif game.region == "tissue" then warning = { "Pushing against tissue", COLOR_WARN }
-        elseif not game.cordsOpen then warning = { "Cords closed - wait", COLOR_WARN } end
+        if game.region == "esophagus" then warning = { L("mg_airway.client.that_s_oesophagus"), COLOR_BAD }
+        elseif game.region == "tissue" then warning = { L("mg_airway.client.pushing_against_tissue"), COLOR_WARN }
+        elseif not game.cordsOpen then warning = { L("mg_airway.client.cords_closed_wait"), COLOR_WARN } end
     end
     if warning then
         dxDrawText(warning[1], x, y - 30 * scale, x + w, y - 6 * scale, rgba(warning[2]), 1.2 * scale,
@@ -667,7 +676,7 @@ local function drawBottom()
 
     if phase <= 4 then
         local hint = HINTS[phase]
-        if #game.blood > 0 then hint = hint .. "   |   hold E - suction" end
+        if #game.blood > 0 then hint = L("mg_airway.client.hold_e_suction", { hint = hint }) end
         shadowText(hint, GAUGE_X - 100 * scale, GAUGE_Y + GAUGE_H + 10 * scale, GAUGE_X + GAUGE_W + 100 * scale,
             GAUGE_Y + GAUGE_H + 40 * scale, rgba(COLOR_TEXT, 235), 1.15 * scale, "center", "center")
     end
@@ -707,9 +716,9 @@ local function drawPanel(now, t)
     dxDrawRectangle(x, y, w, h, tocolor(10, 12, 16, 215))
     dxDrawRectangle(x, y, w, 4 * scale, rgba(COLOR_BAD, 220))
 
-    dxDrawText("INTUBATION", ix, y + 10 * scale, ix + iw, y + 40 * scale, tocolor(255, 255, 255, 240),
+    dxDrawText(L("mg_airway.client.intubation"), ix, y + 10 * scale, ix + iw, y + 40 * scale, tocolor(255, 255, 255, 240),
         1.4 * scale, "default-bold", "left", "center")
-    dxDrawText(game.options.difficulty:upper(), ix, y + 10 * scale, ix + iw, y + 40 * scale,
+    dxDrawText(L.upper(DIFFICULTY_LABEL[game.options.difficulty] and L(DIFFICULTY_LABEL[game.options.difficulty]) or tostring(game.options.difficulty)), ix, y + 10 * scale, ix + iw, y + 40 * scale,
         tocolor(170, 170, 170, 220), 1.0 * scale, "default-bold", "right", "center")
 
     -- SpO2 + pleth
@@ -718,20 +727,20 @@ local function drawPanel(now, t)
     local color = spo2 >= 90 and COLOR_GOOD or (spo2 >= 85 and COLOR_WARN or COLOR_BAD)
     local blink = spo2 < 85 and not game.resultTick and (now % 600) < 300
     local sy = y + 52 * scale
-    dxDrawText("SpO2", ix, sy, ix + iw, sy + 20 * scale, tocolor(160, 160, 160, 220), 1.0 * scale, "default-bold", "left", "top")
+    dxDrawText(L("mg_airway.client.spo2"), ix, sy, ix + iw, sy + 20 * scale, tocolor(160, 160, 160, 220), 1.0 * scale, "default-bold", "left", "top")
     dxDrawText(("%d%%"):format(math.floor(spo2 + 0.5)), ix, sy + 14 * scale, ix + iw, sy + 70 * scale,
         rgba(color, blink and 110 or 255), 3.0 * scale, "default-bold", "left", "center")
     local hr = game.options.liveSpO2 and tonumber(isElement(game.ped) and getElementData(game.ped, AIRWAY.HR_DATA))
     hr = math.floor(hr or (92 + (game.options.spo2Start - spo2) * 3))
-    dxDrawText(("HR %d"):format(hr), ix, sy, ix + iw, sy + 20 * scale, tocolor(120, 255, 140, 220),
+    dxDrawText(L("mg_airway.client.hr", { hr = hr }), ix, sy, ix + iw, sy + 20 * scale, tocolor(120, 255, 140, 220),
         1.0 * scale, "default-bold", "right", "top")
     drawWave(ix + iw * 0.45, sy + 26 * scale, iw * 0.55, 38 * scale, pleth, tt, hr / 60, rgba(COLOR_INFO, 220))
 
     -- time + mistakes
     local my = sy + 90 * scale
-    dxDrawText(("Time  %.1f s"):format(tt), ix, my, ix + iw, my + 24 * scale, rgba(COLOR_TEXT, 230),
+    dxDrawText(L("mg_airway.client.time_s", { tt = tt }), ix, my, ix + iw, my + 24 * scale, rgba(COLOR_TEXT, 230),
         1.1 * scale, "default-bold", "left", "center")
-    dxDrawText("Mistakes", ix, my + 28 * scale, ix + iw, my + 52 * scale, rgba(COLOR_TEXT, 230),
+    dxDrawText(L("mg_airway.client.mistakes"), ix, my + 28 * scale, ix + iw, my + 52 * scale, rgba(COLOR_TEXT, 230),
         1.1 * scale, "default-bold", "left", "center")
     local box = 16 * scale
     for i = 1, game.options.maxMistakes + 1 do
@@ -760,10 +769,10 @@ local function drawPanel(now, t)
 
     -- capnography: flat until the tube is confirmed
     local capY = y + h - 70 * scale
-    dxDrawText("EtCO2", ix, capY - 22 * scale, ix + iw, capY, tocolor(160, 160, 160, 220), 1.0 * scale,
+    dxDrawText(L("mg_airway.client.etco2"), ix, capY - 22 * scale, ix + iw, capY, tocolor(160, 160, 160, 220), 1.0 * scale,
         "default-bold", "left", "center")
     local secured = game.reason == "intubated"
-    dxDrawText(secured and ("%d mmHg"):format(game.etco2) or "-- mmHg", ix, capY - 22 * scale, ix + iw, capY,
+    dxDrawText(secured and ("%d mmHg"):format(game.etco2) or L("mg_airway.client.mmhg"), ix, capY - 22 * scale, ix + iw, capY,
         tocolor(255, 230, 90, 230), 1.0 * scale, "default-bold", "right", "center")
     dxDrawRectangle(ix, capY, iw, 52 * scale, tocolor(255, 255, 255, 12))
     if secured then
@@ -790,7 +799,7 @@ local function drawOverlays(now, t)
         dxDrawRectangle(VCX - R, VCY - 70 * scale, R * 2, 150 * scale, tocolor(0, 0, 0, 120))
         shadowText(tostring(n), VCX - R, VCY - 70 * scale, VCX + R, VCY + 30 * scale,
             tocolor(255, 255, 255, 255 * (1 - k * 0.6)), (4 - k) * scale, "center", "center")
-        shadowText("Pre-oxygenated. Get ready.", VCX - R, VCY + 30 * scale, VCX + R, VCY + 70 * scale,
+        shadowText(L("mg_airway.client.pre_oxygenated_get_ready"), VCX - R, VCY + 30 * scale, VCX + R, VCY + 70 * scale,
             tocolor(220, 220, 220, 230), 1.3 * scale, "center", "center")
     end
 
@@ -798,13 +807,12 @@ local function drawOverlays(now, t)
         local k = math.min(1, (now - game.resultTick) / 250)
         local title, color, sub
         if game.reason == "intubated" then
-            title, color = "AIRWAY SECURED", COLOR_GOOD
-            sub = ("Score %d   |   %.1f s   |   %d mistake%s"):format(airwayScore(game.finalTime, game.mistakes),
-                game.finalTime, game.mistakes, game.mistakes == 1 and "" or "s")
+            title, color = L("mg_airway.client.airway_secured"), COLOR_GOOD
+            sub = L("mg_airway.client.score_s_mistake", { mistakes = airwayScore(game.finalTime, game.mistakes), final_time = game.finalTime, mistakes2 = game.mistakes, mistakes3 = game.mistakes == 1 and "" or "s" })
         elseif game.reason == "desaturated" then
-            title, color, sub = "PATIENT DESATURATED", COLOR_BAD, "Too slow - the SpO2 fell below " .. AIRWAY.FAIL_SPO2 .. "%"
+            title, color, sub = L("mg_airway.client.patient_desaturated"), COLOR_BAD, L("mg_airway.client.too_slow_spo2_fell_below", { fail_spo2 = AIRWAY.FAIL_SPO2 })
         else
-            title, color, sub = "PROCEDURE FAILED", COLOR_BAD, "Too many mistakes"
+            title, color, sub = L("mg_airway.client.procedure_failed"), COLOR_BAD, L("mg_airway.client.too_many_mistakes")
         end
         dxDrawRectangle(VCX - HALF, VCY - 70 * scale, HALF * 2, 140 * scale, tocolor(0, 0, 0, 170 * k))
         shadowText(title, VCX - HALF, VCY - 60 * scale, VCX + HALF, VCY + 10 * scale, rgba(color, 255 * k),

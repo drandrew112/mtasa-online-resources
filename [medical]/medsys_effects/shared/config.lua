@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Configuration of medsys_effects: what a player experiences from their own medical state, and
 -- the animations forced on every patient (players and peds) by their consciousness.
 
@@ -77,9 +78,9 @@ MEDFX_STATE_ANIM = {
 MEDFX_STATES = {
     confused = { shake = 20, walk = 126 },
     dazed = { shake = 40, walk = 126, controls = { "sprint", "jump" } },
-    unconscious = { lock = true, blackout = { title = "UNCONSCIOUS", sub = "You passed out. Wait for medical help." } },
-    clinical_death = { lock = true, blackout = { title = "CLINICAL DEATH",
-        sub = "Your heart has stopped. Resuscitation window: %02d:%02d", red = true } },
+    unconscious = { lock = true, blackout = { title = L.text("medsys_effects.config.unconscious"), sub = L.text("medsys_effects.config.you_passed_out_wait_for_medical") } },
+    clinical_death = { lock = true, blackout = { title = L.text("medsys_effects.config.clinical_death"),
+        sub = L("medsys_effects.config.your_heart_has_stopped_resuscitation_window"), red = true } },
 }
 
 -- Controls disabled while the player is down

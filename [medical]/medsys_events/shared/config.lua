@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Configuration of medsys_events: which in-game events hurt a player and how.
 --
 -- Every rule is a list of tiers. The highest tier whose `min` is at or below the measured value
@@ -43,16 +44,16 @@ MEDEV = {
 MEDEV_BODYPARTS = { [3] = "torso", [4] = "pelvis", [5] = "left_arm", [6] = "right_arm",
     [7] = "left_leg", [8] = "right_leg", [9] = "head" }
 
-MEDEV_BODYPART_LABELS = { head = "Head", torso = "Torso", pelvis = "Pelvis", left_arm = "Left arm",
-    right_arm = "Right arm", left_leg = "Left leg", right_leg = "Right leg" }
+MEDEV_BODYPART_LABELS = { head = L.text("medsys_events.config.head"), torso = L.text("medsys_events.config.torso"), pelvis = L.text("medsys_events.config.pelvis"), left_arm = L.text("medsys_events.config.left_arm"),
+    right_arm = L.text("medsys_events.config.right_arm"), left_leg = L.text("medsys_events.config.left_leg"), right_leg = L.text("medsys_events.config.right_leg") }
 
 -- Body part -> group used by the rules (head / torso / pelvis / arm / leg)
 MEDEV_PART_GROUP = { head = "head", torso = "torso", pelvis = "pelvis", left_arm = "arm",
     right_arm = "arm", left_leg = "leg", right_leg = "leg" }
 
-MEDEV_CAUSE_LABELS = { fall = "Fall", gun = "Gunshot", fist = "Punch", blunt = "Blunt trauma",
-    sharp = "Cut / stab wound", explosion = "Explosion", fire = "Fire", drown = "Drowning",
-    gas = "Tear gas", vehicle_hit = "Hit by a vehicle", crash = "Vehicle crash", punch = "Punched a hard surface" }
+MEDEV_CAUSE_LABELS = { fall = L.text("medsys_events.config.fall"), gun = L.text("medsys_events.config.gunshot"), fist = L.text("medsys_events.config.punch"), blunt = L.text("medsys_events.config.blunt_trauma"),
+    sharp = L.text("medsys_events.config.cut_stab_wound"), explosion = L.text("medsys_events.config.explosion"), fire = L.text("medsys_events.config.fire"), drown = L.text("medsys_events.config.drowning"),
+    gas = L.text("medsys_events.config.tear_gas"), vehicle_hit = L.text("medsys_events.config.hit_by_vehicle"), crash = L.text("medsys_events.config.vehicle_crash"), punch = L.text("medsys_events.config.punched_hard_surface") }
 
 -- Weapon id -> cause
 MEDEV_WEAPONS = {

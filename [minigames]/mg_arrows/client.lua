@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Arrows slide from left to right along the bottom of the screen. The player
 -- has to press the matching arrow key while an arrow is inside the centre ring.
 
@@ -107,7 +108,7 @@ local function drawHud(now)
 
     dxDrawText(("%d / %d"):format(game.judged, game.total), 0, y, screenW, y,
         tocolor(255, 255, 255, 230), textScale, "default-bold", "center", "center")
-    dxDrawText(("Accuracy: %d%%   (need > %d%%)"):format(accuracy, game.options.passPercent),
+    dxDrawText(L("mg_arrows.client.accuracy_need", { accuracy = accuracy, pass_percent = game.options.passPercent }),
         0, y + 26 * scale, screenW, y + 26 * scale, tocolor(200, 200, 200, 200), 1.1 * scale,
         "default-bold", "center", "center")
 

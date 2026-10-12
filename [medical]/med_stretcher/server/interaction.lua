@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_interactobject menu on every stretcher object. There is no separate ambulance menu: while
 -- the stretcher is stowed, its own menu is reached at the rear of the ambulance. The items follow
 -- the stretcher state; selections are re-checked here before server/stretcher.lua acts.
@@ -49,24 +50,24 @@ end
 -- Menu contents
 -- ---------------------------------------------------------------------------------------------
 
-local LOAD_ITEM = { label = "Load into ambulance", value = "load", desc = "At the rear doors of its ambulance" }
+local LOAD_ITEM = { label = L.msg("med_stretcher.interaction.load_into_ambulance"), value = "load", desc = L.msg("med_stretcher.interaction.at_rear_doors_of_its_ambulance") }
 
 local function stretcherItems(s)
     if s.state == "stowed" then
-        return { { label = s.seated and "Take out stretcher (with patient)" or "Take out stretcher",
-            value = "take", desc = "Stand at the rear doors" } }
+        return { { label = s.seated and L.msg("med_stretcher.interaction.take_out_stretcher_with_patient") or L.msg("med_stretcher.interaction.take_out_stretcher"),
+            value = "take", desc = L.msg("med_stretcher.interaction.stand_at_rear_doors") } }
     elseif s.state == "pushing" then
         return {
-            { label = "Release stretcher", value = "release", desc = "Put it down in front of you" },
+            { label = L.msg("med_stretcher.interaction.release_stretcher"), value = "release", desc = L.msg("med_stretcher.interaction.put_it_down_in_front_of") },
             LOAD_ITEM,
         }
     end
-    local items = { { label = "Push stretcher", value = "push", desc = "Walk with the stretcher in front of you" } }
+    local items = { { label = L.msg("med_stretcher.interaction.push_stretcher"), value = "push", desc = L.msg("med_stretcher.interaction.walk_with_stretcher_in_front_of") } }
     if s.patient then
-        items[#items + 1] = { label = "Take patient off", value = "unload" }
+        items[#items + 1] = { label = L.msg("med_stretcher.interaction.take_patient_off"), value = "unload" }
     else
-        items[#items + 1] = { label = "Place patient on stretcher", value = "place",
-            desc = "The injured / nearest person next to the stretcher" }
+        items[#items + 1] = { label = L.msg("med_stretcher.interaction.place_patient_on_stretcher"), value = "place",
+            desc = L.msg("med_stretcher.interaction.injured_nearest_person_next_to_stretcher") }
     end
     items[#items + 1] = LOAD_ITEM
     return items
@@ -74,7 +75,7 @@ end
 
 local function stretcherDef(s)
     return {
-        title = s.state == "stowed" and "Ambulance stretcher" or (s.patient and "Stretcher (patient)" or "Stretcher"),
+        title = s.state == "stowed" and L.msg("med_stretcher.interaction.ambulance_stretcher") or (s.patient and L.msg("med_stretcher.interaction.stretcher_patient") or L.msg("med_stretcher.interaction.stretcher")),
         range = s.state == "stowed" and STRETCHER.STOWED_MENU_RANGE or STRETCHER.MENU_RANGE,
         priority = 20,
         lineOfSight = false,          -- inside the vehicle / collisions off while pushed
@@ -154,14 +155,14 @@ local actions = {}
 
 function actions.take(s, player)
     if s.state ~= "stowed" then return end
-    if getPusherStretcher(player) then return notify(player, "You are already pushing a stretcher.") end
-    if not isAtVehicleRear(player, s.vehicle) then return notify(player, "Stand at the rear doors of the ambulance.") end
+    if getPusherStretcher(player) then return notify(player, L.msg("med_stretcher.interaction.you_are_already_pushing_stretcher")) end
+    if not isAtVehicleRear(player, s.vehicle) then return notify(player, L.msg("med_stretcher.interaction.stand_at_rear_doors_of_ambulance")) end
     takeOutStretcher(s, player)
 end
 
 function actions.push(s, player)
     if s.state ~= "ground" then return end
-    if getPusherStretcher(player) then return notify(player, "You are already pushing a stretcher.") end
+    if getPusherStretcher(player) then return notify(player, L.msg("med_stretcher.interaction.you_are_already_pushing_stretcher")) end
     startPushing(s, player)
 end
 
@@ -174,7 +175,7 @@ end
 -- through stretcher:pickPatient.
 function actions.place(s, player)
     if s.state ~= "ground" or s.patient then return end
-    if not hasPatientCandidate(s, player) then return notify(player, "There is nobody next to the stretcher.") end
+    if not hasPatientCandidate(s, player) then return notify(player, L.msg("med_stretcher.interaction.there_is_nobody_next_to_stretcher")) end
     triggerClientEvent(player, "stretcher:selectPatient", resourceRoot, s.object)
 end
 
@@ -189,7 +190,7 @@ addEventHandler("stretcher:pickPatient", resourceRoot, function(obj, ped)
     local x, y, z = getElementPosition(obj)
     if getDistanceBetweenPoints3D(px, py, pz, x, y, z) > STRETCHER.SELECT_MAX_DISTANCE + 2 then return end
     if not isPatientCandidate(s, ped, player) then
-        return notify(player, "That person cannot be placed on the stretcher.")
+        return notify(player, L.msg("med_stretcher.interaction.that_person_cannot_be_placed_on"))
     end
     putPatient(s, ped)
 end)
@@ -212,6 +213,6 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
     if not action or not Stretchers[s.object] then return end
     -- the patient cannot move their own stretcher
     if getPatientStretcher(source) then return end
-    if not hasStretcherAccess(source) then return notify(source, "Only medics can handle the stretcher.") end
+    if not hasStretcherAccess(source) then return notify(source, L.msg("med_stretcher.interaction.only_medics_can_handle_stretcher")) end
     action(s, source)
 end)

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /ermadmin detail pane: shift and task views.
 --
 -- A view is built as a list of fixed-height items ({ h, draw, click }) every
@@ -90,26 +91,26 @@ end
 
 local function buildShift(d)
     local live = d.live
-    local pillText, pillColor = "Ended", { 110, 118, 130 }
+    local pillText, pillColor = L("med_erm.detail.ended"), { 110, 118, 130 }
     if live then
         local st = Config.STATUS[live.status]
-        pillText, pillColor = "On duty · " .. (st and st.label or live.status), st and st.color or { 46, 160, 67 }
+        pillText, pillColor = L("med_erm.detail.on_duty", { status = (st and st.label or live.status) }), st and st.color or { 46, 160, 67 }
     end
-    header(d.callsign .. "  ·  " .. d.type, string.format("Shift #%d   ·   Plate %s", d.id, d.plate ~= "" and d.plate or "-"),
+    header(d.callsign .. "  ·  " .. d.type, L("med_erm.detail.shift_plate", { id = d.id, plate = d.plate ~= "" and d.plate or "-" }),
         pillText, pillColor)
     gap(6)
     kvGrid({
-        { "STARTED", d.startedAt },
-        { "ENDED", d.endedAt ~= "" and d.endedAt or (live and "still on duty" or "-") },
-        { "DURATION", State.formatDuration(d.duration) },
-        { "CLOSED TASKS", tostring(d.closed) },
+        { L("med_erm.detail.started"), d.startedAt },
+        { L("med_erm.detail.ended_2"), d.endedAt ~= "" and d.endedAt or (live and L("med_erm.detail.still_on_duty") or "-") },
+        { L("med_erm.detail.duration"), State.formatDuration(d.duration) },
+        { L("med_erm.detail.closed_tasks"), tostring(d.closed) },
     })
     if live and live.task and live.task > 0 then
-        kvGrid({ { "CURRENT TASK", "#" .. live.task } })
+        kvGrid({ { L("med_erm.detail.current_task"), "#" .. live.task } })
     end
 
-    section(string.format("CREW (%d)", #d.members))
-    if #d.members == 0 then note("No members recorded.") end
+    section(L("med_erm.detail.crew", { members = #d.members }))
+    if #d.members == 0 then note(L("med_erm.detail.no_members_recorded")) end
     for _, name in ipairs(d.members) do
         add(26, function(x, y, w, h)
             dxDrawCircle(x + s(6), y + h / 2, s(3), 0, 360, Theme.accent, Theme.accent, 10)
@@ -117,8 +118,8 @@ local function buildShift(d)
         end)
     end
 
-    section(string.format("TASKS IN THIS SHIFT (%d)", #d.tasks))
-    if #d.tasks == 0 then note("The unit did not work on any task.") end
+    section(L("med_erm.detail.tasks_in_this_shift", { tasks = #d.tasks }))
+    if #d.tasks == 0 then note(L("med_erm.detail.unit_did_not_work_on_any")) end
     for _, t in ipairs(d.tasks) do
         local times = (t.assignedAt ~= "" and Admin.shortDate(t.assignedAt) or "?") .. "  →  "
             .. (t.releasedAt ~= "" and Admin.shortDate(t.releasedAt) or "now")
@@ -135,43 +136,41 @@ local function buildTask(d, width)
         AdminStatusLabel[d.status] or d.status, AdminStatusColor[d.status] or { 110, 118, 130 }, d.priority)
     gap(6)
     kvGrid({
-        { "CALLER", d.caller },
-        { "SOURCE", d.source ~= "" and d.source or "Web / dispatcher" },
-        { "POSITION", string.format("%.1f, %.1f, %.1f", d.x, d.y, d.z) },
-        { "PRIORITY", d.priority > 0 and ("P" .. d.priority) or "not set" },
+        { L("med_erm.detail.caller"), d.caller },
+        { L("med_erm.detail.source"), d.source ~= "" and d.source or L("med_erm.detail.web_dispatcher") },
+        { L("med_erm.detail.position"), string.format("%.1f, %.1f, %.1f", d.x, d.y, d.z) },
+        { L("med_erm.detail.priority"), d.priority > 0 and (L("med_erm.detail.p", { priority = d.priority })) or L("med_erm.detail.not_set") },
     })
 
-    section("TIMELINE")
+    section(L("med_erm.detail.timeline"))
     kvGrid({
-        { "CREATED", d.createdAt },
-        { "PRIORITIZED", d.prioritizedAt },
-        { "FIRST ASSIGNED", d.assignedAt },
-        { "CLOSED", d.closedAt },
+        { L("med_erm.detail.created"), d.createdAt },
+        { L("med_erm.detail.prioritized"), d.prioritizedAt },
+        { L("med_erm.detail.first_assigned"), d.assignedAt },
+        { L("med_erm.detail.closed"), d.closedAt },
     })
-    if d.closeReason ~= "" then kvGrid({ { "CLOSE REASON", d.closeReason } }) end
+    if d.closeReason ~= "" then kvGrid({ { L("med_erm.detail.close_reason"), d.closeReason } }) end
 
-    section("DESCRIPTION")
-    if d.description ~= "" then paragraph(d.description, width) else note("No description.") end
+    section(L("med_erm.detail.description"))
+    if d.description ~= "" then paragraph(d.description, width) else note(L("med_erm.detail.no_description")) end
 
-    section(string.format("UNITS (%d)", #d.links))
+    section(L("med_erm.detail.units", { links = #d.links }))
     if #d.links == 0 then
         if #d.unitLog > 0 then
             paragraph(table.concat(d.unitLog, ", "), width, Theme.dim)
         else
-            note("No unit was assigned.")
+            note(L("med_erm.detail.no_unit_was_assigned"))
         end
     end
     for _, l in ipairs(d.links) do
-        local line2 = string.format("Shift #%d   ·   %s  →  %s   ·   %s", l.shift,
-            Admin.shortDate(l.assignedAt), l.releasedAt ~= "" and Admin.shortDate(l.releasedAt) or "now",
-            l.outcome ~= "" and l.outcome or "-")
+        local line2 = L("med_erm.detail.shift", { shift = l.shift, assigned_at = Admin.shortDate(l.assignedAt), released_at = l.releasedAt ~= "" and Admin.shortDate(l.releasedAt) or "now", outcome = l.outcome ~= "" and l.outcome or "-" })
         linkRow(l.callsign .. (l.type ~= "" and ("  ·  " .. l.type) or ""), line2, function()
             Admin.openDetail("shift", l.shift)
         end)
     end
 
-    section(string.format("LIGHTS & SIREN   ·   total %s", State.formatDuration(d.responseTotal)))
-    if #d.responseLog == 0 then note("Not used.") end
+    section(L("med_erm.detail.lights_siren_total", { response_total = State.formatDuration(d.responseTotal) }))
+    if #d.responseLog == 0 then note(L("med_erm.detail.not_used")) end
     for _, e in ipairs(d.responseLog) do
         add(26, function(x, y, w, h)
             Gfx.text(e.unit, x, y, s(90), h, Theme.text, Gfx.font(10, true))
@@ -182,7 +181,7 @@ local function buildTask(d, width)
     end
 
     if d.meta ~= "" then
-        section("META (automation data)")
+        section(L("med_erm.detail.meta_automation_data"))
         paragraph(d.meta, width, Theme.dim)
     end
 end
@@ -193,7 +192,7 @@ function AdminDetail.draw(x, y, w, h)
     Gfx.round(x, y, w, h, s(10), Theme.panel)
     local det = Admin.detail
     if not det then
-        Gfx.text("Select a shift or a task to see its details.", x, y, w, h, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("med_erm.detail.select_shift_or_task_to_see"), x, y, w, h, Theme.faint, Gfx.font(10), "center")
         return
     end
 
@@ -201,14 +200,14 @@ function AdminDetail.draw(x, y, w, h)
     local pad = s(18)
     local barH = s(40)
     if #Admin.history > 0 then
-        Gfx.button(x + pad, y + s(10), s(84), s(28), "‹  Back", { font = Gfx.font(9, true) }, Admin.back)
+        Gfx.button(x + pad, y + s(10), s(84), s(28), L("med_erm.detail.back"), { font = Gfx.font(9, true) }, Admin.back)
     end
-    Gfx.text(det.kind == "shift" and "SHIFT DETAILS" or "TASK DETAILS", x, y + s(10), w - pad, s(28),
+    Gfx.text(det.kind == "shift" and L("med_erm.detail.shift_details") or L("med_erm.detail.task_details"), x, y + s(10), w - pad, s(28),
         Theme.faint, Gfx.font(8, true), "right")
 
     local ax, ay, aw, ah = x + pad, y + barH + s(8), w - pad * 2, h - barH - s(16)
     if det.loading or not det.data then
-        Gfx.text("Loading...", ax, ay, aw, ah, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("common.loading"), ax, ay, aw, ah, Theme.faint, Gfx.font(10), "center")
         return
     end
     if det.data.error then

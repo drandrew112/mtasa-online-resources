@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Tutorial (demo) mode of the unit tablet, driven by an outside tutorial (work_ems).
 -- While it runs nothing reaches the server: sign-in, case buttons and messages are answered
 -- locally with demo data, and the real server pushes are ignored (client/state.lua).
@@ -72,14 +73,14 @@ handlers["erm:signIn"] = function(unitType, members, unitNumber)
         closedTasks  = {},
     }
     Tablet.setPage("home")
-    State.notify("Shift started", "Signed in as " .. State.unit.callsign .. ".")
+    State.notify(L("med_erm.tutorial.shift_started"), L("med_erm.tutorial.signed_in_as", { callsign = State.unit.callsign }))
     TabletTutorial.report("signIn", State.unit.callsign)
 end
 
 handlers["erm:signOut"] = function()
     State.unit, State.task = nil, nil
     if Tablet.open then Tablet.close() end
-    State.notify("EMS Tablet", "Signed out.")
+    State.notify(L("med_erm.case.ems_tablet"), L("med_erm.state.signed_out"))
     TabletTutorial.report("signOut")
 end
 
@@ -99,12 +100,12 @@ handlers["erm:caseAction"] = function(action)
 end
 
 handlers["erm:leaveCase"] = function()
-    State.notify("EMS Tablet", "Leave Case is only possible while another unit stays on the case.")
+    State.notify(L("med_erm.case.ems_tablet"), L("med_erm.tutorial.leave_case_is_only_possible_while"))
     TabletTutorial.report("leaveCase")
 end
 
 handlers["erm:closeCase"] = function()
-    State.notify("EMS Tablet", "Closing the case is not available in the tutorial.")
+    State.notify(L("med_erm.case.ems_tablet"), L("med_erm.tutorial.closing_case_is_not_available_in"))
     TabletTutorial.report("closeCase")
 end
 
@@ -115,7 +116,7 @@ handlers["erm:sendMessage"] = function(text, channel)
     State.receiveMessage({
         channel = case and "task" or "unit",
         target = case and t.id or u.id,
-        label = case and string.format("Case #%d", t.id) or u.callsign,
+        label = case and L("med_erm.messages.case", { id = t.id }) or u.callsign,
         from = u.callsign .. " (" .. plainName(localPlayer) .. ")",
         fromDispatch = false,
         fromUnit = u.id,
@@ -157,7 +158,7 @@ function setTabletTutorialCase(task)
     local x, y, z = getElementPosition(localPlayer)
     State.task = {
         id          = nextTaskId,
-        title       = tostring(task.title or "Injured person"),
+        title       = tostring(task.title or L("med_erm.tutorial.injured_person")),
         description = tostring(task.description or ""),
         caller      = tostring(task.caller or ""),
         x = tonumber(task.x) or x, y = tonumber(task.y) or y, z = tonumber(task.z) or z,
@@ -171,7 +172,7 @@ function setTabletTutorialCase(task)
         closedLabel = "",
     }
     syncTaskUnits()
-    State.notify("New case assigned", string.format("#%d %s", State.task.id, State.task.title), true)
+    State.notify(L("med_erm.tutorial.new_case_assigned"), string.format("#%d %s", State.task.id, State.task.title), true)
     TabletTutorial.report("case", State.task.id)
     return State.task.id
 end
@@ -190,8 +191,8 @@ function addTabletTutorialMessage(text, channel)
     State.receiveMessage({
         channel = case and "task" or "unit",
         target = case and t.id or u.id,
-        label = case and string.format("Case #%d", t.id) or u.callsign,
-        from = "Dispatch",
+        label = case and L("med_erm.messages.case", { id = t.id }) or u.callsign,
+        from = L("med_erm.messages.dispatch"),
         fromDispatch = true,
         text = tostring(text),
         time = clock(),

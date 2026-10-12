@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Kits and items: every ambulance owns one kit = one medical bag + one monitor. The server is the
 -- only authority. An item is in exactly one state:
 --   "stowed"   in its ambulance, no world object
@@ -31,7 +32,7 @@ local resolvedModel = {} -- kind -> model id that could be created (id or fallba
 
 function notify(player, text, title, alert)
     if not isElement(player) or getElementType(player) ~= "player" then return end
-    triggerClientEvent(player, "bag:notify", resourceRoot, title or "EMS equipment", text, alert == true)
+    triggerClientEvent(player, "bag:notify", resourceRoot, title or L.msg("med_bag.kits.ems_equipment"), text, alert == true)
 end
 
 function kitLabel(kit)
@@ -359,7 +360,7 @@ local function destroyKit(kit)
         Items[item.id] = nil
         item.state = "gone"
         onItemGone(item)
-        if isElement(holder) then notify(holder, bagItemName(item.kind) .. " was lost with its ambulance.") end
+        if isElement(holder) then notify(holder, L.msg("med_bag.kits.was_lost_with_its_ambulance", { kind = bagItemName(item.kind) })) end
     end
     onKitDestroyed(kit)
     if isElement(kit.anchor) then destroyElement(kit.anchor) end
@@ -463,7 +464,7 @@ addEventHandler("onVehicleStartEnter", root, function(player)
     for _, item in pairs(hands) do
         if item.kit.vehicle ~= source then
             cancelEvent()
-            notify(player, "Put the equipment down or back into its ambulance first.")
+            notify(player, L.msg("med_bag.kits.put_equipment_down_or_back_into"))
             return
         end
     end
@@ -487,7 +488,7 @@ addEventHandler("onPlayerVehicleEnter", root, function(vehicle)
             end
         end
     end
-    if stowed then notify(source, "Equipment stowed in the ambulance.") end
+    if stowed then notify(source, L.msg("med_bag.kits.equipment_stowed_in_ambulance")) end
 end)
 
 -- ---------------------------------------------------------------------------------------------

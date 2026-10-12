@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Transport to hospital: when a unit that reached its scene drives away from it
 -- (u.leftScene, Config.HOSPITAL_DEPART_RADIUS - units.lua), every crew member gets
 -- a v_radar objective to the nearest hospital (med_hospitals). Returning to the
@@ -45,7 +46,7 @@ local function startRoute(u, t, e)
         setObjective(p, hospitalId)
         r.players[p] = true
     end
-    Units.notify(u, "Transport", "Nearest hospital: " .. tostring(name) .. ".")
+    Units.notify(u, L.msg("med_erm.hospitalroute.transport"), L.msg("med_erm.hospitalroute.nearest_hospital", { name = tostring(name) }))
 end
 
 -- Members who left the unit lose the objective, missing ones get it.

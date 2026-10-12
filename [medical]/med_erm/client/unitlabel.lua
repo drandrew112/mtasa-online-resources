@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- 3D label above the vehicles of signed-in units: red cross + callsign and
 -- a status line. The server tags the vehicle with "erm.unit" element data
 -- (server/units.lua: Units.tagVehicle).
@@ -44,9 +45,9 @@ local function drawLabel(sx, sy, k, data)
     local st = Config.STATUS[data.status] or { label = tostring(data.status), color = { 150, 150, 150 } }
 
     local callsign = tostring(data.callsign or "EMS")
-    local status = st.label:upper()
+    local status = L.upper(st.label)
     local pad, icon, gap = s(8) * k, s(26) * k, s(8) * k
-    local textW = math.max(dxGetTextWidth(callsign, k, fBig), dxGetTextWidth(status, k, fSmall))
+    local textW = math.max(L.width(callsign, k, fBig), L.width(status, k, fSmall))
     local w = pad + icon + gap + textW + pad * 1.4
     local h = s(38) * k
     local x, y = sx - w / 2, sy - h

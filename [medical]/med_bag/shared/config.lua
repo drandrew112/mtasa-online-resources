@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- med_bag tunables. Offsets are { x, y, z, rx, ry, rz } in the parent's local space
 -- (x = right, y = forward, z = up). See DESIGN.md.
 
@@ -46,7 +47,7 @@ BAG = {
         monitor = { 0.30, 0.55, 0.20, 0, 0, 90 },   -- side rail, head end, screen outwards
     },
     BONES = { bag = 35, monitor = 25 },   -- left hand / right hand
-    ITEM_NAMES = { bag = "Medical bag", monitor = "Monitor / defibrillator" },
+    ITEM_NAMES = { bag = L.text("med_bag.config.medical_bag"), monitor = L.text("med_bag.config.monitor_defibrillator") },
     KINDS = { "bag", "monitor" },
 
     -- Putting down

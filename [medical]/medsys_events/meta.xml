@@ -3,8 +3,10 @@
     <min_mta_version server="1.5.8" client="1.5.8" />
 
     <!-- the medical system: every injury goes through its exports -->
+    <include resource="v_locals" />
     <include resource="medsys" />
 
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
 
     <script src="server/medsys.lua" type="server" />

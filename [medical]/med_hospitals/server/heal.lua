@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Free treatment marker: a player standing in it for HOSP.HEAL_TIME (15 s) is healed completely
 -- (medsys healCompletely: injuries, bleeding, vitals; plus full health). Leaving cancels it.
 
@@ -20,7 +21,7 @@ local function refusal(player)
     if isPedDead(player) or getPedOccupiedVehicle(player) then return "" end
     if getElementData(player, "stretcher.on") then return "" end          -- lying on a stretcher
     if getElementData(player, "stretcher.pushing") then return "" end     -- pushing one
-    if not needsTreatment(player) then return "You do not need any treatment." end
+    if not needsTreatment(player) then return L.msg("med_hospitals.heal.you_do_not_need_any_treatment") end
     return nil
 end
 
@@ -28,7 +29,7 @@ local function cancel(player, reason)
     if not procs[player] then return end
     procs[player] = nil
     stopProgress(player)
-    if reason then notify(player, "Treatment cancelled: " .. reason) end
+    if reason then notify(player, L.msg("med_hospitals.heal.treatment_cancelled", { reason = reason })) end
 end
 
 local function finish(player, p)
@@ -37,7 +38,7 @@ local function finish(player, p)
     local h = p.point.hospital
     if isResourceRunning("medsys") then exports.medsys:healCompletely(player) end
     setElementHealth(player, 100)
-    notify(player, "You were treated at " .. h.name .. ". Get well soon!")
+    notify(player, L.msg("med_hospitals.heal.you_were_treated_at_get_well", { name = h.name }))
     triggerEvent("onHospitalPlayerHealed", resourceRoot, player, h.id)
 end
 
@@ -52,9 +53,8 @@ local function update()
                 local reason = refusal(player)
                 if not reason then
                     procs[player] = { point = point, ends = now + HOSP.HEAL_TIME }
-                    startProgress(player, point.marker, HOSP.HEAL_TIME, "Treatment in progress")
-                    notify(player, ("Treatment started - stay in the marker for %d seconds. It is free of charge.")
-                        :format(HOSP.HEAL_TIME / 1000))
+                    startProgress(player, point.marker, HOSP.HEAL_TIME, L.msg("med_hospitals.heal.treatment_in_progress"))
+                    notify(player, L.msg("med_hospitals.heal.treatment_started_stay_in_marker_for", { heal_time = HOSP.HEAL_TIME / 1000 }))
                 elseif reason ~= "" then
                     done[player] = point
                     notify(player, reason)
@@ -71,7 +71,7 @@ local function update()
         if not isElement(player) then
             procs[player] = nil
         elseif seen[player] ~= p.point then
-            cancel(player, "you left the treatment marker.")
+            cancel(player, L.msg("med_hospitals.heal.you_left_treatment_marker"))
         elseif isPedDead(player) or getPedOccupiedVehicle(player) or getElementData(player, "stretcher.on") then
             cancel(player)
         elseif now >= p.ends then
@@ -84,7 +84,7 @@ end
 function isHealing(player) return procs[player] ~= nil end
 
 UnloadHandlers[#UnloadHandlers + 1] = function()
-    for player in pairs(procs) do cancel(player, "the hospitals were reloaded.") end
+    for player in pairs(procs) do cancel(player, L.msg("med_hospitals.handover.hospitals_were_reloaded")) end
     procs, done = {}, {}
 end
 

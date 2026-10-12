@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The unit tablet: frame, header, hamburger menu, input.
 -- Pages live in client/pages/*.lua and register themselves in Pages.
 
@@ -60,10 +61,10 @@ local function drawHeader(x, y, w, h)
     local u = State.unit
     if u then
         Gfx.text(u.callsign, tx, y, s(120), h, Theme.text, Gfx.font(13, true))
-        local cw = dxGetTextWidth(u.callsign, 1, Gfx.font(13, true))
+        local cw = L.width(u.callsign, 1, Gfx.font(13, true))
         Gfx.text(u.type .. "  ·  " .. u.plate, tx + cw + s(10), y, s(200), h, Theme.dim, Gfx.font(9))
     else
-        Gfx.text("EMS Unit Terminal", tx, y, s(220), h, Theme.text, Gfx.font(12, true))
+        Gfx.text(L("med_erm.tablet.ems_unit_terminal"), tx, y, s(220), h, Theme.text, Gfx.font(12, true))
     end
 
     -- clock
@@ -76,7 +77,7 @@ local function drawHeader(x, y, w, h)
     if u then
         local st = Config.STATUS[u.status]
         local label = st.label:upper()
-        local pw = dxGetTextWidth(label, 1, Gfx.font(8, true)) + s(20)
+        local pw = L.width(label, 1, Gfx.font(8, true)) + s(20)
         Gfx.round(mx - pw - s(4), y + (h - s(22)) / 2, pw, s(22), s(11), Gfx.rgb(st.color))
         Gfx.text(label, mx - pw - s(4), y + (h - s(22)) / 2, pw, s(22), tocolor(255, 255, 255), Gfx.font(8, true), "center")
     end
@@ -100,22 +101,22 @@ local function drawMenu(screen)
     local items = {}
     if State.unit then
         items = {
-            { "Home",        function() Tablet.setPage("home") end,     "home" },
-            { "Active Case", function() Tablet.setPage("case") end,     "case" },
-            { "Messages",    function() Tablet.setPage("messages") end, "messages", State.unread },
+            { L("med_erm.home.home"),        function() Tablet.setPage("home") end,     "home" },
+            { L("med_erm.case.active_case"), function() Tablet.setPage("case") end,     "case" },
+            { L("med_erm.messages.messages"),    function() Tablet.setPage("messages") end, "messages", State.unread },
             false,
-            { "End Shift", function()
+            { L("med_erm.tablet.end_shift"), function()
                 Tablet.menu = false
                 Tablet.confirm = {
-                    title = "End shift?",
-                    text  = "Your unit will be signed out and released from its active case.",
-                    label = "End Shift",
+                    title = L("med_erm.tablet.end_shift_2"),
+                    text  = L("med_erm.tablet.your_unit_will_be_signed_out"),
+                    label = L("med_erm.tablet.end_shift"),
                     action = function() Tablet.send("erm:signOut") end,
                 }
             end, nil, nil, true },
         }
     end
-    items[#items + 1] = { "Close Tablet", function() Tablet.close() end }
+    items[#items + 1] = { L("med_erm.tablet.close_tablet"), function() Tablet.close() end }
 
     local iw, ih = s(200), s(38)
     local total = 0
@@ -166,7 +167,7 @@ local function drawConfirm(sx, sy, sw, sh)
     Gfx.text(c.text, x + s(20), y + s(46), w - s(40), s(50), Theme.dim, Gfx.font(10), "left", "top", true)
 
     local bw = (w - s(52)) / 2
-    Gfx.button(x + s(20), y + h - s(56), bw, s(38), "Cancel", {}, function() Tablet.confirm = nil end)
+    Gfx.button(x + s(20), y + h - s(56), bw, s(38), L("common.cancel"), {}, function() Tablet.confirm = nil end)
     Gfx.button(x + s(32) + bw, y + h - s(56), bw, s(38), c.label, { color = { 200, 50, 45 } }, function()
         Tablet.confirm = nil
         c.action()
@@ -299,7 +300,7 @@ function Tablet.toggle()
     if not canUseKeys() then return end
     if not TabletTutorial.active and not Tablet.hasMedicRole() then
         -- only a hint inside an ambulance, J stays silent for everyone else
-        if inTabletVehicle() then State.notify("EMS Tablet", "Only on-duty medics can use the tablet.") end
+        if inTabletVehicle() then State.notify(L("med_erm.case.ems_tablet"), L("med_erm.tablet.only_on_duty_medics_can_use")) end
         return
     end
 
@@ -310,7 +311,7 @@ function Tablet.toggle()
 
     local veh = inTabletVehicle()
     if not veh then
-        State.notify("EMS Tablet", "The tablet can only be used inside an ambulance until you sign in.")
+        State.notify(L("med_erm.case.ems_tablet"), L("med_erm.tablet.tablet_can_only_be_used_inside"))
         return
     end
     Login.reset(veh)

@@ -2,6 +2,8 @@
     <info author="DrAndrew112" name="mg_intravenous" version="1.0" type="script" description="IV cannulation minigame (needle into the vein, then withdraw it), driven through exports" />
     <min_mta_version client="1.5.8" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared.lua" type="shared" />
     <script src="client.lua" type="client" />
     <script src="server.lua" type="server" />

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Automation API for other resources (server side).
 --
 -- ERM stays the interface: everything done through these exports goes through
@@ -24,7 +25,7 @@ function createTask(title, description, x, y, z, caller, priority, meta)
     if not id then return false, err end
     if priority ~= nil then
         local ok, perr = Tasks.setPriority(id, priority)
-        if not ok then return id, "Task created, priority not set: " .. perr end
+        if not ok then return id, L.msg("med_erm.exports.task_created_priority_not_set", { perr = perr }) end
     end
     return id
 end
@@ -53,7 +54,7 @@ end
 
 -- closeTask(taskId [, reason]) -> bool, error   (assigned units are released)
 function closeTask(taskId, reason)
-    return Tasks.close(taskId, reason or ("Closed by " .. callerName()))
+    return Tasks.close(taskId, reason or (L.msg("med_erm.exports.closed_by", { caller_name = callerName() })))
 end
 
 -- getTask(taskId) -> task | false   (open or recently closed)
@@ -155,7 +156,7 @@ end
 --   available -> stops the log, keeps the task
 function setUnitStatus(unitId, status, handoverTime)
     local u = Units.get(unitId)
-    if not u then return false, "Unit not found" end
+    if not u then return false, L.msg("med_erm.chat.unit_not_found") end
     return Units.setStatus(u, status, handoverTime)
 end
 
@@ -164,7 +165,7 @@ end
 -- siren log, "onscene" only while responding, "handover" only after the scene).
 function unitCaseAction(unitId, action)
     local u = Units.get(unitId)
-    if not u then return false, "Unit not found" end
+    if not u then return false, L.msg("med_erm.chat.unit_not_found") end
     return Units.caseAction(u, action)
 end
 
@@ -172,8 +173,8 @@ end
 -- Re-times a running handover: ms from now, or false = wait for completeHandover.
 function setHandoverTime(unitId, ms)
     local u = Units.get(unitId)
-    if not u then return false, "Unit not found" end
-    if u.status ~= "handover" then return false, "Unit is not in handover" end
+    if not u then return false, L.msg("med_erm.chat.unit_not_found") end
+    if u.status ~= "handover" then return false, L.msg("med_erm.exports.unit_is_not_in_handover") end
     Units.scheduleHandover(u, ms)
     Units.sync(u)
     return true
@@ -184,8 +185,8 @@ end
 -- closed when it was the last unit on it (same as the timer running out).
 function completeHandover(unitId)
     local u = Units.get(unitId)
-    if not u then return false, "Unit not found" end
-    if u.status ~= "handover" then return false, "Unit is not in handover" end
+    if not u then return false, L.msg("med_erm.chat.unit_not_found") end
+    if u.status ~= "handover" then return false, L.msg("med_erm.exports.unit_is_not_in_handover") end
     Units.finishHandover(u)
     return true
 end
@@ -199,7 +200,7 @@ end
 -- The message appears in the dispatcher chat as a dispatch message.
 function sendMessage(channel, target, text, from)
     from = cleanText(from, 40)
-    if from == "" then from = "Dispatch" end
+    if from == "" then from = L.msg("med_erm.messages.dispatch") end
     return Chat.post(channel, tonumber(target), from, true, text)
 end
 

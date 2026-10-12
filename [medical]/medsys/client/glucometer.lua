@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Glucometer window, drawn right of the examination panel while the medic holds it out (the
 -- "Glucometer" button of the D row toggles it, panel.lua calls drawGlucometer / clickGlucometer).
 -- MEASURE pricks the finger: the server reads the glucose after MEDIC.GLUCOMETER_TIME seconds and
@@ -57,8 +58,8 @@ end
 local function getButtons(gx, gy)
     local bw, bh = GW - s(40), s(40)
     return {
-        { op = "measure", label = "MEASURE", x = gx + s(20), y = gy + GH - s(108), w = bw, h = bh },
-        { op = "close", label = "PUT AWAY", x = gx + s(20), y = gy + GH - s(58), w = bw, h = bh },
+        { op = "measure", label = L("medsys.glucometer.measure"), x = gx + s(20), y = gy + GH - s(108), w = bw, h = bh },
+        { op = "close", label = L("medsys.glucometer.put_away"), x = gx + s(20), y = gy + GH - s(58), w = bw, h = bh },
     }
 end
 
@@ -89,12 +90,12 @@ local function drawLCD(lx, ly, lw, lh)
         dxDrawText(tostring(left), lx, ly + s(10), lx + lw, ly + lh - s(30), C.lcdDark, 1, fonts.number,
             "center", "center")
         local dots = ("."):rep(math.floor(now / 400) % 4)
-        dxDrawText("Measuring" .. dots, lx, ly + lh - s(34), lx + lw, ly + lh - s(8), C.lcdDark, 1, fonts.bold,
+        dxDrawText(L("medsys.glucometer.measuring", { dots = dots }), lx, ly + lh - s(34), lx + lw, ly + lh - s(8), C.lcdDark, 1, fonts.bold,
             "center", "center")
         return
     end
     if meter.phase == "error" then
-        dxDrawText("Err", lx, ly + s(6), lx + lw, ly + lh * 0.6, C.lcdBad, 1, fonts.number, "center", "center")
+        dxDrawText(L("medsys.glucometer.err"), lx, ly + s(6), lx + lw, ly + lh * 0.6, C.lcdBad, 1, fonts.number, "center", "center")
         dxDrawText(meter.error or "", lx + s(8), ly + lh * 0.6, lx + lw - s(8), ly + lh - s(6), C.lcdDark, 1,
             fonts.small, "center", "center", true, true)
         return
@@ -103,7 +104,7 @@ local function drawLCD(lx, ly, lw, lh)
     local reading = meter.phase == "result" and meter or memory[meter.target]
     if not reading then
         dxDrawText("- - -", lx, ly + s(6), lx + lw, ly + lh - s(34), C.lcdFaint, 1, fonts.number, "center", "center")
-        dxDrawText("Insert a strip, press MEASURE", lx, ly + lh - s(34), lx + lw, ly + lh - s(8), C.lcdDark, 1,
+        dxDrawText(L("medsys.glucometer.insert_strip_press_measure"), lx, ly + lh - s(34), lx + lw, ly + lh - s(8), C.lcdDark, 1,
             fonts.small, "center", "center")
         return
     end
@@ -111,16 +112,16 @@ local function drawLCD(lx, ly, lw, lh)
     local value = reading.value
     local text, mmol
     if value < MEDIC.GLUCOMETER_LOW then
-        text = "LO"
+        text = L("medsys.glucometer.lo")
     elseif value > MEDIC.GLUCOMETER_HIGH then
-        text = "HI"
+        text = L("medsys.glucometer.hi")
     else
         text = tostring(value)
         mmol = ("%.1f mmol/L"):format(medicGlucoseMmol(value))
     end
     local color = (value < MEDIC.HYPO_GLUCOSE or value >= 250) and C.lcdBad or C.lcdDark
     if meter.phase ~= "result" then
-        dxDrawText("MEM", lx + s(8), ly + s(6), lx + lw, ly + s(24), C.lcdDark, 1, fonts.bold, "left", "top")
+        dxDrawText(L("medsys.glucometer.mem"), lx + s(8), ly + s(6), lx + lw, ly + s(24), C.lcdDark, 1, fonts.bold, "left", "top")
     end
     dxDrawText(text, lx, ly + s(8), lx + lw - s(56), ly + lh - s(44), color, 1, fonts.number, "right", "center")
     dxDrawText("mg/dL", lx + lw - s(54), ly + s(8), lx + lw, ly + lh - s(52), C.lcdDark, 1, fonts.bold,
@@ -138,8 +139,8 @@ function drawGlucometer(panelX, panelY, panelW, cx, cy, disabled)
     local gx, gy = getOrigin(panelX, panelY, panelW)
     dxDrawRectangle(gx, gy, GW, GH, C.body)
     dxDrawRectangle(gx, gy, GW, s(4), C.bodyEdge)
-    dxDrawText("GLUCOMETER", gx + s(16), gy + s(14), gx + GW, gy + s(34), C.text, 1, fonts.title, "left", "top")
-    dxDrawText("blood glucose", gx + s(16), gy + s(34), gx + GW, gy + s(52), C.muted, 1, fonts.small, "left", "top")
+    dxDrawText(L("medsys.glucometer.glucometer"), gx + s(16), gy + s(14), gx + GW, gy + s(34), C.text, 1, fonts.title, "left", "top")
+    dxDrawText(L("medsys.glucometer.blood_glucose"), gx + s(16), gy + s(34), gx + GW, gy + s(52), C.muted, 1, fonts.small, "left", "top")
 
     local lx, ly, lw, lh = gx + s(20), gy + s(66), GW - s(40), s(150)
     drawLCD(lx, ly, lw, lh)
@@ -189,7 +190,7 @@ addEventHandler("medic:glucoseResult", resourceRoot, function(target, value, rea
         memory[target] = { value = value, tick = meter.tick }
     else
         -- "Measuring..." = a request while the previous one runs: keep counting
-        if meter.phase == "measuring" and reason == "Measuring..." then return end
+        if meter.phase == "measuring" and reason == L("medsys.treatment.measuring") then return end
         meter.phase, meter.error = "error", reason
     end
 end)

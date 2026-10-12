@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Transport requested from the examination panel ("Transport"). Useful when the ambulance
 -- crews on the scene cannot take every patient: a hearse comes for a dead body, an ambulance
 -- for a living patient who is stable or intubated. Only peds (a player cannot be removed, and a
@@ -44,25 +45,25 @@ end
 -- true | false, reason (also the hover text of the button). state = the patient state or nil
 function canRequestTransport(target, state)
     if not isElement(target) or getElementType(target) ~= "ped" then
-        return false, "Players cannot be transported"
+        return false, L.msg("medsys.transport.players_cannot_be_transported")
     end
-    if TutorialPatients[target] then return false, "Not available in the tutorial" end
+    if TutorialPatients[target] then return false, L.msg("medsys.transport.not_available_in_tutorial") end
     local transport = Transports[target]
     if transport then
-        if transport.phase == "waiting" then return false, "Transport is on the way" end
-        return false, "The patient is being loaded"
+        if transport.phase == "waiting" then return false, L.msg("medsys.transport.transport_is_on_way") end
+        return false, L.msg("medsys.transport.patient_is_being_loaded")
     end
     -- a living patient: stable (or only confused), or intubated with a pulse (the RSI medicines keep it asleep)
     if not isBodyDead(target) and state and state.consciousness ~= "stable" and state.consciousness ~= "confused"
         and not (state.intubated and state.consciousness == "unconscious") then
-        return false, "Only a stable or intubated patient can be transported"
+        return false, L.msg("medsys.transport.only_stable_or_intubated_patient_can")
     end
     -- a living patient's blood pressure must be in a safe range for the ride
     if not isBodyDead(target) and state then
         if state.systolic < MEDIC.TRANSPORT_MIN_SYSTOLIC then
-            return false, ("Blood pressure too low for transport (systolic below %d)"):format(MEDIC.TRANSPORT_MIN_SYSTOLIC)
+            return false, L.msg("medsys.transport.blood_pressure_too_low_for_transport", { transport_min_systolic = MEDIC.TRANSPORT_MIN_SYSTOLIC })
         elseif state.systolic > MEDIC.TRANSPORT_MAX_SYSTOLIC then
-            return false, ("Blood pressure too high for transport (systolic above %d)"):format(MEDIC.TRANSPORT_MAX_SYSTOLIC)
+            return false, L.msg("medsys.transport.blood_pressure_too_high_for_transport", { transport_max_systolic = MEDIC.TRANSPORT_MAX_SYSTOLIC })
         end
     end
     return true

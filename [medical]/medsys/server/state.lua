@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Patient registry and the medical state data structure.
 --
 -- Only elements that are not perfectly healthy are kept in the registry (Patients), except the
@@ -280,22 +281,22 @@ function getNeuroFindings(state)
     local list = {}
     local function add(text, level) list[#list + 1] = { text, level or 0 } end
     if state.dead or state.arrestTick then
-        add("Unresponsive, pupils fixed and dilated", 3)
+        add(L.msg("medsys.state.unresponsive_pupils_fixed_and_dilated"), 3)
         return list
     end
 
     local status = state.consciousness
     if status == "stable" then
-        add("Alert and oriented", 0)
+        add(L.msg("medsys.state.alert_and_oriented"), 0)
     elseif status == "confused" then
-        add("Awake but confused, disoriented", 1)
+        add(L.msg("medsys.state.awake_but_confused_disoriented"), 1)
     elseif status == "dazed" then
-        add("Drowsy, responds to voice", 2)
+        add(L.msg("medsys.state.drowsy_responds_to_voice"), 2)
     elseif isSedated(state) or isParalyzed(state) then
-        add("Sedated - not assessable", 1)
+        add(L.msg("medsys.state.sedated_not_assessable"), 1)
         return list
     else
-        add("Responds to pain only", 3)
+        add(L.msg("medsys.state.responds_to_pain_only"), 3)
     end
 
     local pupils, fast = false, false
@@ -310,11 +311,11 @@ function getNeuroFindings(state)
             if injury.type == "stroke" then fast = true end
         end
     end
-    if state.glucose < MEDIC.HYPO_GLUCOSE then add("Sweaty, trembling, pale", 2) end
-    if state.glucose >= MEDIC.KUSSMAUL_GLUCOSE then add("Fruity (acetone) smell on the breath", 2) end
-    if not pupils then add("Pupils: equal, react to light", 0) end
+    if state.glucose < MEDIC.HYPO_GLUCOSE then add(L.msg("medsys.state.sweaty_trembling_pale"), 2) end
+    if state.glucose >= MEDIC.KUSSMAUL_GLUCOSE then add(L.msg("medsys.state.fruity_acetone_smell_on_breath"), 2) end
+    if not pupils then add(L.msg("medsys.state.pupils_equal_react_to_light"), 0) end
     if not fast then
-        add(status == "unconscious" and "FAST: not assessable" or "FAST: negative (face, arms, speech normal)", 0)
+        add(status == "unconscious" and L.msg("medsys.state.fast_not_assessable") or L.msg("medsys.state.fast_negative_face_arms_speech_normal"), 0)
     end
     return list
 end
@@ -410,7 +411,7 @@ function buildSnapshot(state)
             severityLabel = MEDIC_SEVERITY[injury.severity],
             bleeding = injury.bleeding,
             treated = injury.treated,
-            treatedLabel = injury.treated and (def.treatedLabel or "Treated") or nil,
+            treatedLabel = injury.treated and (def.treatedLabel or L.msg("medsys.state.treated")) or nil,
             hospital = not def.treat and not def.treatDrugs or nil, -- no prehospital treatment
         }
         local list = def.hidden and conditions or injuries

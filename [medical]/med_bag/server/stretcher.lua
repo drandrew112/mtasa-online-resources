@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The equipment on the stretcher (med_stretcher). Every stretcher belongs to one ambulance and only
 -- that ambulance's bag / monitor can go on it (no mixing between ambulances).
 --   push start           the pusher's carried items go onto the stretcher's side
@@ -62,13 +63,13 @@ local function menuItems(kit, obj)
         local item = kit.items[kind]
         local name = bagItemName(kind)
         if item.state == "stretcher" and item.stretcher == obj then
-            list[#list + 1] = { label = "Take " .. name:lower(), value = "off_" .. kind,
-                desc = kind == "bag" and "Left hand" or "Right hand" }
+            list[#list + 1] = { label = L.msg("med_bag.stretcher.take", { name = name:lower() }), value = "off_" .. kind,
+                desc = kind == "bag" and L.msg("med_bag.interaction.left_hand") or L.msg("med_bag.interaction.right_hand") }
         else
             local can = item.state == "carried" or item.state == "ground"
-            list[#list + 1] = { label = "Put " .. name:lower() .. " on stretcher", value = "on_" .. kind,
-                disabled = not can, desc = can and "Carried, or lying next to the stretcher"
-                    or (item.state == "stowed" and "In the ambulance - take it at the side door" or nil) }
+            list[#list + 1] = { label = L.msg("med_bag.stretcher.put_on_stretcher", { name = name:lower() }), value = "on_" .. kind,
+                disabled = not can, desc = can and L.msg("med_bag.stretcher.carried_or_lying_next_to_stretcher")
+                    or (item.state == "stowed" and L.msg("med_bag.stretcher.in_ambulance_take_it_at_side") or nil) }
         end
     end
     return list
@@ -77,7 +78,7 @@ end
 local function menuDef(kit, obj)
     local st = stretcherState(obj)
     return {
-        title = "Equipment",
+        title = L.msg("med_bag.stretcher.equipment"),
         range = 2.5,
         priority = 10,           -- under the stretcher's own items
         lineOfSight = false,
@@ -169,7 +170,7 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value)
     if action == "off" then
         if item.state ~= "stretcher" or item.stretcher ~= obj then return end
         if getCarried(player, kind) then
-            return notify(player, "You already carry a " .. bagItemName(kind):lower() .. ".")
+            return notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(kind):lower() }))
         end
         pickUpItem(item, player)
     elseif action == "on" then
@@ -179,16 +180,15 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value)
             local x, y, z = getElementPosition(item.object)
             local sx, sy, sz = getElementPosition(obj)
             if getDistanceBetweenPoints3D(x, y, z, sx, sy, sz) > 3 then
-                return notify(player, "The " .. bagItemName(kind):lower() .. " is too far from the stretcher.")
+                return notify(player, L.msg("med_bag.stretcher.is_too_far_from_stretcher", { kind = bagItemName(kind):lower() }))
             end
             putOnStretcher(item, obj)
         else
             local carried = getCarried(player, kind)
             if carried and carried.kit ~= kit then
-                return notify(player, ("This %s belongs to %s, not to this stretcher."):format(
-                    bagItemName(kind):lower(), kitLabel(carried.kit)))
+                return notify(player, L.msg("med_bag.stretcher.this_belongs_to_not_to_this", { kind = bagItemName(kind):lower(), kit = kitLabel(carried.kit) }))
             end
-            notify(player, "Carry the " .. bagItemName(kind):lower() .. " here, or put it down next to the stretcher.")
+            notify(player, L.msg("med_bag.stretcher.carry_here_or_put_it_down", { kind = bagItemName(kind):lower() }))
         end
     end
 end)
@@ -215,7 +215,7 @@ addEventHandler("onStretcherPushStart", root, function(player)
     end
     if foreign then
         dropCarried(player)
-        notify(player, "That equipment belongs to another ambulance - you put it down.")
+        notify(player, L.msg("med_bag.stretcher.that_equipment_belongs_to_another_ambulance"))
     end
 end)
 
@@ -243,7 +243,7 @@ addEventHandler("onStretcherLoaded", root, function(player, vehicle, patient)
             stowed = true
         end
     end
-    if stowed then notifyCrew(kit, "Equipment loaded into " .. kitLabel(kit) .. " with the stretcher.") end
+    if stowed then notifyCrew(kit, L.msg("med_bag.stretcher.equipment_loaded_into_with_stretcher", { kit = kitLabel(kit) })) end
 end)
 
 -- Hook of server/interaction.lua (every item change)

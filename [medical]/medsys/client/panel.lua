@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Patient examination panel (DX). The server opens it (medic:panelOpen), pushes a snapshot
 -- every simulation step while it is open (medic:panelUpdate) and closes it when a procedure
 -- starts. The buttons only send requests, the server validates and runs everything.
@@ -89,13 +90,13 @@ end
 
 -- What the medic sees on the skin instead of a blood volume number
 local function describeSkin(data)
-    if data.dead then return "Cold, mottled", C.dead end
-    if data.spo2 < 85 then return "Cyanotic", C.bad end
-    if data.bloodPercent < 70 then return "Pale, cold, clammy", C.orange end
-    if data.skinSign == "sweaty" then return "Pale, sweaty", C.warn end
-    if data.bloodPercent < 85 then return "Pale", C.warn end
-    if data.skinSign == "dry" then return "Dry, warm", C.warn end
-    return "Warm, normal", C.good
+    if data.dead then return L("medsys.panel.cold_mottled"), C.dead end
+    if data.spo2 < 85 then return L("medsys.panel.cyanotic"), C.bad end
+    if data.bloodPercent < 70 then return L("medsys.panel.pale_cold_clammy"), C.orange end
+    if data.skinSign == "sweaty" then return L("medsys.panel.pale_sweaty"), C.warn end
+    if data.bloodPercent < 85 then return L("medsys.panel.pale"), C.warn end
+    if data.skinSign == "dry" then return L("medsys.panel.dry_warm"), C.warn end
+    return L("medsys.panel.warm_normal"), C.good
 end
 
 local function formatTime(seconds)
@@ -132,11 +133,11 @@ local function drawVitals(x, y, data, cx, cy)
     local monitored = data.monitor ~= nil
 
     -- heart rate (palpated, no monitor needed) + the ECG of the monitor
-    drawTile(x, y, tw, th, "HEART RATE")
+    drawTile(x, y, tw, th, L("medsys.panel.heart_rate"))
     local hrColor = heartRateColor(data.heartRate)
     dxDrawText(dead and "---" or tostring(data.heartRate), x + s(12), y + s(24), x + tw * 0.45, y + s(64),
         hrColor, 1, fonts.big, "left", "top")
-    dxDrawText(dead and "no pulse" or "BPM", x + s(12), y + s(64), x + tw, y + s(84), C.muted, 1, fonts.small,
+    dxDrawText(dead and L("medsys.panel.no_pulse") or L("medsys.panel.bpm"), x + s(12), y + s(64), x + tw, y + s(84), C.muted, 1, fonts.small,
         "left", "top")
     local ex, ew = x + tw * 0.4, tw * 0.56
     if monitored then
@@ -154,20 +155,20 @@ local function drawVitals(x, y, data, cx, cy)
             panel.monitorReason = reason
         end
         dxDrawRectangle(bx, by, bw, bh, enabled and (hovered and C.buttonHover or C.button) or C.buttonOff)
-        dxDrawText("Attach monitor /\ndefibrillator", bx, by, bx + bw, by + bh, enabled and C.text or C.muted, 1,
+        dxDrawText(L("medsys.panel.attach_monitor_defibrillator"), bx, by, bx + bw, by + bh, enabled and C.text or C.muted, 1,
             fonts.bold, "center", "center", true, true)
         panel.monitorButton = { bx, by, bw, bh }
     end
 
     -- bleeding + skin + breathing (the SpO2 and the blood pressure are only on the Lifepak)
-    drawTile(x2, y, tw, th, "BLEEDING")
+    drawTile(x2, y, tw, th, L("medsys.panel.bleeding"))
     dxDrawText(data.bleedingLabel, x2 + s(12), y + s(24), x2 + tw, y + s(56),
         BLEEDING_COLOR[data.bleeding] or C.text, 1, fonts.title, "left", "top")
     local skin, skinColor = describeSkin(data)
-    dxDrawText("Skin:", x2 + s(12), y + s(62), x2 + tw, y + s(84), C.muted, 1, fonts.body, "left", "top")
+    dxDrawText(L("medsys.panel.skin"), x2 + s(12), y + s(62), x2 + tw, y + s(84), C.muted, 1, fonts.body, "left", "top")
     dxDrawText(skin, x2 + s(88), y + s(62), x2 + tw - s(6), y + s(84), skinColor, 1, fonts.body, "left", "top", true)
     local breath = MEDIC_BREATHING[data.breathing or "normal"] or MEDIC_BREATHING.normal
-    dxDrawText("Breathing:", x2 + s(12), y + s(86), x2 + tw, y + s(108), C.muted, 1, fonts.body, "left", "top")
+    dxDrawText(L("medsys.panel.breathing"), x2 + s(12), y + s(86), x2 + tw, y + s(108), C.muted, 1, fonts.body, "left", "top")
     dxDrawText(breath.label, x2 + s(88), y + s(86), x2 + tw - s(6), y + s(108), LEVEL_COLOR[breath.level] or C.text,
         1, fonts.body, "left", "top", true)
 
@@ -175,13 +176,13 @@ local function drawVitals(x, y, data, cx, cy)
 end
 
 local function drawInjuries(x, y, data)
-    dxDrawText("INJURIES", x, y, x + W, y + s(20), C.muted, 1, fonts.small, "left", "top")
+    dxDrawText(L("medsys.panel.injuries"), x, y, x + W, y + s(20), C.muted, 1, fonts.small, "left", "top")
     y = y + s(22)
     local rowH = s(26)
     local injuries = data.injuries
 
     if #injuries == 0 then
-        dxDrawText("No visible injuries", x, y, x + W, y + rowH, C.text, 1, fonts.body, "left", "center")
+        dxDrawText(L("medsys.panel.no_visible_injuries"), x, y, x + W, y + rowH, C.text, 1, fonts.body, "left", "center")
         return y + rowH
     end
 
@@ -192,16 +193,16 @@ local function drawInjuries(x, y, data)
         dxDrawText(injury.label, x + s(12), y, x + s(210), y + rowH, C.text, 1, fonts.bold, "left", "center")
         dxDrawText(injury.severityLabel, x + s(210), y, x + s(300), y + rowH, severityColor, 1, fonts.body, "left", "center")
         if injury.bleeding > 0 then
-            dxDrawText("Bleeding: " .. MEDIC_BLEEDING[injury.bleeding], x + s(300), y, x + s(460), y + rowH,
+            dxDrawText(L("medsys.panel.bleeding", { bleeding = MEDIC_BLEEDING[injury.bleeding] }), x + s(300), y, x + s(460), y + rowH,
                 BLEEDING_COLOR[injury.bleeding], 1, fonts.body, "left", "center")
         end
-        local status = injury.treated and injury.treatedLabel or (injury.hospital and "Needs hospital") or "Untreated"
+        local status = injury.treated and injury.treatedLabel or (injury.hospital and L("medsys.panel.needs_hospital")) or L("medsys.panel.untreated")
         dxDrawText(status, x, y, x + W - PAD * 2, y + rowH, injury.treated and C.good or C.muted, 1,
             fonts.body, "right", "center")
         y = y + rowH
     end
     if #injuries > MAX_INJURY_ROWS then
-        dxDrawText(("+ %d more"):format(#injuries - MAX_INJURY_ROWS), x + s(12), y, x + W, y + s(18),
+        dxDrawText(L("medsys.panel.more", { max_injury_rows = #injuries - MAX_INJURY_ROWS }), x + s(12), y, x + W, y + s(18),
             C.muted, 1, fonts.small, "left", "top")
         y = y + s(18)
     end
@@ -213,7 +214,7 @@ local function drawNeuro(x, y, data, maxY)
     local findings = data.neuro
     if not findings or #findings == 0 or data.dead then return y end
     y = y + s(8)
-    dxDrawText("NEURO EXAM", x, y, x + W, y + s(20), C.muted, 1, fonts.small, "left", "top")
+    dxDrawText(L("medsys.panel.neuro_exam"), x, y, x + W, y + s(20), C.muted, 1, fonts.small, "left", "top")
     y = y + s(20)
     local rowH, colW = s(19), (W - PAD * 2) / 2
     local rows = math.max(0, math.min(MAX_NEURO_ROWS, math.ceil(#findings / 2), math.floor((maxY - y) / rowH)))
@@ -301,7 +302,7 @@ local function drawDrugMenu(cx, cy, hoverReason)
     local _, buttonsTop = getButtonRows()
     local bottom = buttonsTop - s(6)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
-    dxDrawText("MEDICATION  -  through the IV line unless marked oral / inhaled / nasal", x, y, X + W - PAD, y + s(20), C.muted, 1,
+    dxDrawText(L("medsys.panel.medication_through_iv_line_unless_marked"), x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
     local hoveredDrug, hoveredOff, cardsBottom = nil, false, y
     for _, card in ipairs(getDrugCards()) do
@@ -315,10 +316,10 @@ local function drawDrugMenu(cx, cy, hoverReason)
         local tx = card.x + s(12)
         local stockW = left ~= nil and s(26) or 0
         if left ~= nil then
-            dxDrawText("x" .. left, card.x, card.y + s(4), card.x + card.w - s(6), card.y + s(24),
+            dxDrawText(L("medsys.panel.x", { left = left }), card.x, card.y + s(4), card.x + card.w - s(6), card.y + s(24),
                 left <= 0 and C.bad or (left <= 1 and C.warn or C.muted), 1, fonts.small, "right", "top")
         end
-        local nameFont = dxGetTextWidth(drug.name, 1, fonts.bold) > card.w - s(18) - stockW and fonts.small or fonts.bold
+        local nameFont = L.width(drug.name, 1, fonts.bold) > card.w - s(18) - stockW and fonts.small or fonts.bold
         dxDrawText(drug.name, tx, card.y + s(4), card.x + card.w - s(6) - stockW, card.y + s(24), usable and C.text or C.muted,
             1, nameFont, "left", "top", true)
         local class = drug.class
@@ -328,11 +329,11 @@ local function drawDrugMenu(cx, cy, hoverReason)
         cardsBottom = card.y + card.h
     end
     if not hoveredDrug and hoverReason then return end
-    local text = hoveredDrug and hoveredDrug.desc or "Point at a medicine to see what it does."
+    local text = hoveredDrug and hoveredDrug.desc or L("medsys.panel.point_at_medicine_to_see_what")
     if hoveredOff == "stock" then
-        text = "Out of stock - restock the bag at a hospital.  " .. text
+        text = L("medsys.panel.out_of_stock_restock_bag_at", { text = text })
     elseif hoveredOff then
-        text = "Needs IV access.  " .. text
+        text = L("medsys.panel.needs_iv_access", { text = text })
     end
     dxDrawText(text, x, cardsBottom + s(8), X + W - PAD, bottom,
         hoveredOff and C.warn or hoveredDrug and C.text or C.muted, 1, fonts.small, "left", "top", true, true)
@@ -410,7 +411,7 @@ local function drawButtons(cx, cy)
             if stock and button.action == "iv" and not panel.data.ivAccess then
                 label = ("%s (%d)"):format(label, stock.ivKits or 0)
             end
-            local font = dxGetTextWidth(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
+            local font = L.width(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
             dxDrawText(label, button.x, button.y, button.x + button.w, button.y + button.h,
                 enabled and C.text or C.muted, 1, font, "center", "center")
 
@@ -457,7 +458,7 @@ local function render()
 
     -- header
     local x = X + PAD
-    dxDrawText("PATIENT EXAMINATION", x, Y + s(16), X + W, Y + s(32), C.muted, 1, fonts.small, "left", "top")
+    dxDrawText(L("medsys.panel.patient_examination"), x, Y + s(16), X + W, Y + s(32), C.muted, 1, fonts.small, "left", "top")
     local nameRight = X + W - s(60) - (data.equipment and s(250) or 0) -- room for the equipment chips
     dxDrawText(panel.name, x, Y + s(30), nameRight, Y + s(58), C.text, 1, fonts.title, "left", "top", true)
     local bx, by, bs = getCloseButton()
@@ -468,12 +469,12 @@ local function render()
         local stock = data.equipment.stock
         local oxygen = stock and stock.oxygen
         local chips = {
-            { "MONITOR", data.equipment.monitor },
-            { "BAG", data.equipment.bag },
-            { oxygen and ("O2 %d%%"):format(oxygen) or "O2 --", oxygen ~= nil and oxygen > 0 },
+            { L("medsys.panel.monitor"), data.equipment.monitor },
+            { L("medsys.panel.bag"), data.equipment.bag },
+            { oxygen and ("O2 %d%%"):format(oxygen) or L("medsys.panel.o2"), oxygen ~= nil and oxygen > 0 },
         }
         for _, item in ipairs(chips) do
-            local w = dxGetTextWidth(item[1], 1, fonts.small) + s(16)
+            local w = L.width(item[1], 1, fonts.small) + s(16)
             dxDrawRectangle(ex - w, by + s(4), w, bs - s(8), item[2] and C.button or C.buttonOff)
             dxDrawRectangle(ex - w, by + bs - s(6), w, s(2), item[2] and C.good or C.line)
             dxDrawText(item[1], ex - w, by + s(4), ex, by + bs - s(4), item[2] and C.text or C.muted, 1, fonts.small,
@@ -495,13 +496,13 @@ local function render()
     local stateColor = CONSCIOUSNESS_COLOR[data.consciousness] or C.text
     dxDrawRectangle(x, y, W - PAD * 2, s(40), C.tile)
     dxDrawRectangle(x, y, s(6), s(40), stateColor)
-    dxDrawText("CONSCIOUSNESS", x + s(18), y, x + s(160), y + s(40), C.muted, 1, fonts.small, "left", "center")
-    dxDrawText(data.consciousnessLabel:upper(), x + s(140), y, X + W - PAD, y + s(40), stateColor, 1,
+    dxDrawText(L("medsys.panel.consciousness"), x + s(18), y, x + s(160), y + s(40), C.muted, 1, fonts.small, "left", "center")
+    dxDrawText(L.upper(data.consciousnessLabel), x + s(140), y, X + W - PAD, y + s(40), stateColor, 1,
         fonts.title, "left", "center")
     if data.clinicalDeath and data.deathTimeLeft then
         local blink = getTickCount() % 1000 < 600
         local left = math.max(0, data.deathTimeLeft - math.floor((getTickCount() - panel.dataTick) / 1000))
-        dxDrawText("Time left " .. formatTime(left), x, y, X + W - PAD - s(14), y + s(40),
+        dxDrawText(L("medsys.panel.time_left", { left = formatTime(left) }), x, y, X + W - PAD - s(14), y + s(40),
             blink and C.bad or C.text, 1, fonts.title, "right", "center")
     end
 
@@ -521,31 +522,30 @@ local function render()
     local elapsed = math.floor((getTickCount() - panel.dataTick) / 1000)
     local transportText
     if data.transportPhase == "waiting" then
-        transportText = "Transport: on the way, arrives in "
-            .. formatTime(math.max(0, (data.transportTimeLeft or 0) - elapsed))
+        transportText = L("medsys.panel.transport_on_way_arrives_in", { elapsed = formatTime(math.max(0, (data.transportTimeLeft or 0) - elapsed)) })
     elseif data.transportPhase then
-        transportText = "Transport: the patient is being loaded"
+        transportText = L("medsys.panel.transport_patient_is_being_loaded")
     end
 
     -- treatment status line (the transport status for a dead body)
     if data.dead then
-        dxDrawText(transportText or "Transport: not requested", x, y, x + W, y + s(22),
+        dxDrawText(transportText or L("medsys.panel.transport_not_requested"), x, y, x + W, y + s(22),
             transportText and C.warn or C.muted, 1, fonts.body, "left", "center")
     else
-        local iv = data.ivAccess and "IV access: in place" or "IV access: none"
-        local airway = data.intubated and (data.noOxygen and "Airway: tube, NO OXYGEN" or "Airway: secured")
-            or (data.oxygenMask and "Airway: O2 mask") or "Airway: not secured"
+        local iv = data.ivAccess and L("medsys.panel.iv_access_in_place") or L("medsys.panel.iv_access_none")
+        local airway = data.intubated and (data.noOxygen and L("medsys.panel.airway_tube_no_oxygen") or L("medsys.panel.airway_secured"))
+            or (data.oxygenMask and L("medsys.panel.airway_o2_mask")) or L("medsys.panel.airway_not_secured")
         local airwayColor = data.noOxygen and C.bad or ((data.intubated or data.oxygenMask) and C.good or C.muted)
         dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
         dxDrawText(airway, x + s(190), y, x + W, y + s(22), airwayColor, 1, fonts.body, "left", "center")
-        dxDrawText(("Pain: %d/10"):format(math.floor(data.pain / 10 + 0.5)), x, y, X + W - PAD, y + s(22),
+        dxDrawText(L("medsys.panel.pain_10", { pain = math.floor(data.pain / 10 + 0.5) }), x, y, X + W - PAD, y + s(22),
             data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
     end
     y = y + s(32)
 
     -- active medicines, transport of a living patient
     if data.drugs and #data.drugs > 0 and not data.dead then
-        dxDrawText("ACTIVE MEDICATION", x, y - s(8), X + W - PAD, y + s(10), C.muted, 1, fonts.small, "left", "top")
+        dxDrawText(L("medsys.panel.active_medication"), x, y - s(8), X + W - PAD, y + s(10), C.muted, 1, fonts.small, "left", "top")
         y = y + s(12)
         local colW = (W - PAD * 2) / 2
         local rowH = s(20)
@@ -592,7 +592,7 @@ local function render()
     elseif panel.message and getTickCount() - panel.messageTick < MESSAGE_TIME then
         text, color = panel.message, panel.messageError and C.bad or C.good
     elseif panel.pending then
-        text, color = "Preparing...", C.muted
+        text, color = L("medsys.panel.preparing"), C.muted
     end
     if text then
         dxDrawText(text, x, messageY, X + W - PAD, messageY + s(24), color, 1, fonts.bold, "center", "center")

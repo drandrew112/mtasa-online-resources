@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- med_hospitals - shared configuration. The hospitals themselves are in hospitals.json.
 
 HOSP = {
@@ -58,9 +59,9 @@ HOSP_DATA = {
 }
 
 HOSP_TEXT = {
-    bay      = { title = "Ambulance Bay",    hint = "Park here to start the handover" },
-    handover = { title = "Patient Handover", hint = "Push the patient in on the stretcher" },
-    bayRestricted = { title = "Ambulances Only",
-                      hint = ("Leave the bay · €%d fine every %d s"):format(HOSP.BAY_FINE, HOSP.BAY_FINE_INTERVAL / 1000) },
-    heal     = { title = "Treatment",       hint = ("Stand here · %d s · free of charge"):format(HOSP.HEAL_TIME / 1000) },
+    bay      = { title = L.text("med_hospitals.config.ambulance_bay"),    hint = L.text("med_hospitals.config.park_here_to_start_handover") },
+    handover = { title = L.text("med_hospitals.config.patient_handover"), hint = L.text("med_hospitals.config.push_patient_in_on_stretcher") },
+    bayRestricted = { title = L.text("med_hospitals.config.ambulances_only"),
+                      hint = L.text("med_hospitals.config.leave_bay_fine_every_s", { bay_fine = HOSP.BAY_FINE, bay_fine_interval = HOSP.BAY_FINE_INTERVAL / 1000 }) },
+    heal     = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_free_of_charge", { heal_time = HOSP.HEAL_TIME / 1000 }) },
 }

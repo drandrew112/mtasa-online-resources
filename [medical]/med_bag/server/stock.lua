@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Consumables of the bags, the oxygen drain and the monitor links.
 --
 -- Which item serves a patient: same dimension / interior and within BAG.USE_RANGE of the patient
@@ -96,8 +97,8 @@ end
 
 function stockLabel(category, key)
     if category == "drugs" then return drugName(key) end
-    if category == "ivKits" then return "IV kits" end
-    if category == "oxygen" then return "Oxygen" end
+    if category == "ivKits" then return L.msg("med_bag.stock.iv_kits") end
+    if category == "oxygen" then return L.msg("med_bag.stock.oxygen") end
     return tostring(key or category)
 end
 
@@ -111,12 +112,12 @@ local function checkLow(item, category, key)
     if amount <= 0 then
         if item.warned[flag] ~= "out" then
             item.warned[flag] = "out"
-            notifyCrew(item.kit, ("Medical bag (%s): %s is out. Restock at a hospital."):format(kitLabel(item.kit), label), true)
+            notifyCrew(item.kit, L.msg("med_bag.stock.medical_bag_is_out_restock_at", { kit = kitLabel(item.kit), label = label }), true)
         end
     elseif amount <= full * (category == "oxygen" and BAG.OXYGEN_LOW / 100 or BAG.LOW_STOCK_FRACTION) then
         if not item.warned[flag] then
             item.warned[flag] = "low"
-            notifyCrew(item.kit, ("Medical bag (%s): %s is running low."):format(kitLabel(item.kit), label))
+            notifyCrew(item.kit, L.msg("med_bag.stock.medical_bag_is_running_low", { kit = kitLabel(item.kit), label = label }))
         end
     end
 end
@@ -200,7 +201,7 @@ function linkMonitor(target, medic)
     local other = linkedPatient[monitor.id]
     if other and other ~= target then
         unlinkMonitor(other)
-        removeFromPatient(other, "monitor", "Monitor disconnected - attached to another patient")
+        removeFromPatient(other, "monitor", L.msg("med_bag.stock.monitor_disconnected_attached_to_another_patient"))
     end
     MonitorLinks[target] = monitor.id
     linkedPatient[monitor.id] = target
@@ -239,9 +240,9 @@ local function tick()
                     if not session.starved then
                         local empty = session.item and Items[session.item]
                             and itemServes(Items[session.item], target, BAG.CONNECT_RANGE)
-                        local what = state.intubated and "the tube has no effect" or "mask removed"
-                        removeFromPatient(target, "oxygen", (empty and "Oxygen cylinder empty - " or
-                            (session.item and "Oxygen disconnected, the bag is too far - " or "No oxygen - ")) .. what)
+                        local what = state.intubated and L.msg("med_bag.stock.tube_has_no_effect") or L.msg("med_bag.stock.mask_removed")
+                        removeFromPatient(target, "oxygen", (empty and L.msg("med_bag.stock.oxygen_cylinder_empty") or
+                            (session.item and L.msg("med_bag.stock.oxygen_disconnected_bag_is_too_far") or L.msg("med_bag.stock.no_oxygen"))) .. what)
                         if state.intubated then
                             session.starved = true  -- keeps looking for a bag with oxygen
                         else
@@ -253,7 +254,7 @@ local function tick()
             if bag then
                 if session.starved then
                     session.starved = nil
-                    medsys:restorePatientEquipment(target, "oxygen", "Oxygen connected - ventilating with oxygen")
+                    medsys:restorePatientEquipment(target, "oxygen", L.msg("med_bag.stock.oxygen_connected_ventilating_with_oxygen"))
                 end
                 consume(bag, "oxygen", nil, BAG.OXYGEN_DRAIN * dt)
             end
@@ -268,7 +269,7 @@ local function tick()
             local monitor = Items[id]
             if not monitor or not itemServes(monitor, target, BAG.CONNECT_RANGE) then
                 unlinkMonitor(target)
-                removeFromPatient(target, "monitor", "Monitor disconnected - attach it again")
+                removeFromPatient(target, "monitor", L.msg("med_bag.stock.monitor_disconnected_attach_it_again"))
             end
         end
     end
@@ -289,6 +290,6 @@ function onItemGone(item)
     local target = linkedPatient[item.id]
     if target then
         unlinkMonitor(target)
-        removeFromPatient(target, "monitor", "Monitor disconnected")
+        removeFromPatient(target, "monitor", L.msg("med_bag.stock.monitor_disconnected"))
     end
 end

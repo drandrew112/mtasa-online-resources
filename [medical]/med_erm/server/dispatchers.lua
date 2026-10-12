@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Dispatcher login for the web console.
 --
 -- Codes live in data/dispatchers.json (re-read on every login attempt, so
@@ -65,7 +66,7 @@ end
 function Dispatchers.login(code)
     local id = clientId()
     if tooManyFails(id) then
-        return nil, "Too many failed attempts. Try again in a minute."
+        return nil, L.msg("med_erm.dispatchers.too_many_failed_attempts_try_again")
     end
 
     code = trim(code):upper()
@@ -73,11 +74,11 @@ function Dispatchers.login(code)
     if not name then
         table.insert(fails[id], now())
         outputServerLog("[erm] failed dispatcher login from " .. id)
-        return nil, "Invalid dispatcher code."
+        return nil, L.msg("med_erm.dispatchers.invalid_dispatcher_code")
     end
 
     local token = newToken(code)
-    local session = { name = name, display = "Dispatcher " .. name, code = code, lastSeen = now() }
+    local session = { name = name, display = L.msg("med_erm.dispatchers.dispatcher", { name = name }), code = code, lastSeen = now() }
     Dispatchers.sessions[token] = session
     outputServerLog("[erm] " .. session.display .. " logged in (" .. id .. ")")
     return session, token

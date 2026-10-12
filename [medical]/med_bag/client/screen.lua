@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Static monitor screen (removable: delete this file and fx/screen.fx from meta.xml, or set
 -- BAG.STATIC_SCREEN = false). One render target, drawn once (and again after a minimise), is put
 -- on the screen texture of every monitor object. No live data.
@@ -30,7 +31,7 @@ local function drawPicture()
     dxSetRenderTarget(rt, true)
     dxDrawRectangle(0, 0, RT_W, RT_H, tocolor(8, 10, 9))
     local green, cyan, orange, grey = tocolor(80, 220, 150), tocolor(110, 190, 245), tocolor(240, 150, 120), tocolor(130, 130, 125)
-    dxDrawText("HR", 14, 10, 0, 0, green, 1.4, "default-bold")
+    dxDrawText(L("med_bag.screen.hr"), 14, 10, 0, 0, green, 1.4, "default-bold")
     dxDrawText("78", 14, 30, 0, 0, green, 4, "default-bold")
     -- ECG trace
     local baseY, x = 70, 140
@@ -43,11 +44,11 @@ local function drawPicture()
         x = x + 100
     end
     dxDrawLine(0, 128, RT_W, 128, tocolor(40, 44, 42), 1)
-    dxDrawText("SpO2", 14, 138, 0, 0, cyan, 1.4, "default-bold")
+    dxDrawText(L("med_bag.screen.spo2"), 14, 138, 0, 0, cyan, 1.4, "default-bold")
     dxDrawText("98", 14, 160, 0, 0, cyan, 3.5, "default-bold")
-    dxDrawText("NIBP", 260, 138, 0, 0, orange, 1.4, "default-bold")
+    dxDrawText(L("med_bag.screen.nibp"), 260, 138, 0, 0, orange, 1.4, "default-bold")
     dxDrawText("122/78", 260, 160, 0, 0, orange, 3, "default-bold")
-    dxDrawText("LIFEPAK 15", 14, RT_H - 24, 0, 0, grey, 1.2, "default-bold")
+    dxDrawText(L("med_bag.screen.lifepak_15"), 14, RT_H - 24, 0, 0, grey, 1.2, "default-bold")
     dxDrawText("200 J", RT_W - 70, RT_H - 24, 0, 0, grey, 1.2, "default-bold")
     dxSetRenderTarget()
 end
@@ -111,7 +112,7 @@ addCommandHandler("bagscreen", function()
     applied = {}
     textureName = cycleNames[cycleIndex]
     scan()
-    showBagNotification("Monitor screen test", ("%d/%d: %s"):format(cycleIndex, #cycleNames, textureName))
+    showBagNotification(L("med_bag.screen.monitor_screen_test"), ("%d/%d: %s"):format(cycleIndex, #cycleNames, textureName))
 end)
 
 -- render targets lose their content on minimise

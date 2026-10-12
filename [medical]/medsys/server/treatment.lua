@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Examination sessions (who has the panel open on whom) and treatments (minigames).
 --
 -- Examining[medic] = target                      -- open examination panels
@@ -35,7 +36,7 @@ local function getDisplayName(element)
         return (getPlayerName(element):gsub("#%x%x%x%x%x%x", ""))
     end
     local name = getElementData(element, MEDIC.DATA_NAME)
-    return type(name) == "string" and name ~= "" and name or "Unknown patient"
+    return type(name) == "string" and name ~= "" and name or L.msg("medsys.treatment.unknown_patient")
 end
 
 -- The registered patient, registering it if it is alive (dead bodies are not simulated)
@@ -198,7 +199,7 @@ PROCEDURES.bandage = {
     resource = "mg_arrows",
     can = function(state)
         if findBandageTarget(state) or state.baseBleeding > 0 then return true end
-        return false, "Nothing to bandage"
+        return false, L.msg("medsys.treatment.nothing_to_bandage")
     end,
     start = function(medic, target, state)
         local injury = findBandageTarget(state)
@@ -210,7 +211,7 @@ PROCEDURES.bandage = {
     sessionArg = 6, -- success, hits, total, percent, reason, sessionId
     animated = true,
     apply = function(state, success)
-        if not success then return "The bandage did not hold" end
+        if not success then return L.msg("medsys.treatment.bandage_did_not_hold") end
         local injury = findBandageTarget(state)
         if injury then
             local def = MEDIC_INJURIES[injury.type]
@@ -220,7 +221,7 @@ PROCEDURES.bandage = {
             return ("%s: %s"):format(def.label, def.treatedLabel:lower())
         end
         state.baseBleeding = math.max(0, state.baseBleeding - 2)
-        return "Bleeding controlled"
+        return L.msg("medsys.treatment.bleeding_controlled")
     end,
 }
 
@@ -228,7 +229,7 @@ PROCEDURES.splint = {
     resource = "mg_splinting",
     can = function(state)
         if findSplintTarget(state) then return true end
-        return false, "No fracture to splint"
+        return false, L.msg("medsys.treatment.no_fracture_to_splint")
     end,
     start = function(medic, target, state)
         local injury = findSplintTarget(state)
@@ -239,14 +240,14 @@ PROCEDURES.splint = {
     finishEvent = "onSplintGameFinish",
     sessionArg = 6, -- success, hits, total, percent, reason, sessionId
     apply = function(state, success)
-        if not success then return "The splint did not hold" end
+        if not success then return L.msg("medsys.treatment.splint_did_not_hold") end
         local injury = findSplintTarget(state)
         if injury then
             local def = MEDIC_INJURIES[injury.type]
             injury.treated = true
             return ("%s: %s"):format(def.label, def.treatedLabel:lower())
         end
-        return "Fracture splinted"
+        return L.msg("medsys.treatment.fracture_splinted")
     end,
 }
 
@@ -254,7 +255,7 @@ PROCEDURES.cpr = {
     resource = "mg_cpr",
     can = function(state)
         if isInClinicalDeath(state) then return true end
-        return false, "The patient has a pulse"
+        return false, L.msg("medsys.treatment.patient_has_pulse")
     end,
     start = function(medic, target)
         return exports.mg_cpr:startCPRGame(medic, MEDIC.CPR_DURATION, target)
@@ -267,14 +268,14 @@ PROCEDURES.cpr = {
     -- rhythm.lua: a round that reaches its end saw no change.
     apply = function(state, success)
         if not isInClinicalDeath(state) then return nil end
-        if not success then return "Ineffective compressions" end
+        if not success then return L.msg("medsys.treatment.ineffective_compressions") end
         -- good compressions keep the brain perfused: the death timer is pushed back
         extendDeathTimer(state, MEDIC.CPR_TIME_BONUS)
-        if not canRestartHeart(state) then return "No pulse - too much blood lost, give fluids" end
+        if not canRestartHeart(state) then return L.msg("medsys.treatment.no_pulse_too_much_blood_lost") end
         if state.monitor and MEDIC_RHYTHMS[state.rhythm].shockable then
-            return "Shockable rhythm - charge and shock!"
+            return L.msg("medsys.treatment.shockable_rhythm_charge_and_shock")
         end
-        return "No pulse yet - continue CPR"
+        return L.msg("medsys.treatment.no_pulse_yet_continue_cpr")
     end,
 }
 
@@ -282,7 +283,7 @@ PROCEDURES.iv = {
     resource = "mg_intravenous",
     can = function(state)
         if not state.ivAccess then return true end
-        return false, "IV access already in place"
+        return false, L.msg("medsys.treatment.iv_access_already_in_place")
     end,
     start = function(medic, target, state)
         local bloodFraction = state.bloodVolume / MEDIC.BLOOD_VOLUME
@@ -299,10 +300,10 @@ PROCEDURES.iv = {
     finishEvent = "onIVGameFinish",
     sessionArg = 5, -- success, attempts, quality, reason, sessionId
     apply = function(state, success, _, quality)
-        if not success then return "Cannulation failed" end
+        if not success then return L.msg("medsys.treatment.cannulation_failed") end
         state.ivAccess = true
         state.ivQuality = quality
-        return ("IV access secured (quality %d%%) - fluids running"):format(quality)
+        return L.msg("medsys.treatment.iv_access_secured_quality_fluids_running", { quality = quality })
     end,
 }
 
@@ -312,15 +313,15 @@ PROCEDURES.airway = {
     -- (after its onset) both have to work. Given in the wrong order the patient panics while the
     -- breathing stops (simulation.lua).
     can = function(state)
-        if state.intubated then return false, "Airway already secured" end
+        if state.intubated then return false, L.msg("medsys.treatment.airway_already_secured") end
         if not isSedated(state) then
             if state.consciousness == "stable" or state.consciousness == "confused" or state.consciousness == "dazed" then
-                return false, "Patient is conscious - give Ketamine first"
+                return false, L.msg("medsys.treatment.patient_is_conscious_give_ketamine_first")
             end
-            return false, "Give Ketamine first (induction)"
+            return false, L.msg("medsys.treatment.give_ketamine_first_induction")
         end
-        if not hasDrugEffect(state, "paralysis") then return false, "Give Rocuronium (muscle relaxant)" end
-        if not isParalyzed(state) then return false, "Waiting for the muscle relaxant to work" end
+        if not hasDrugEffect(state, "paralysis") then return false, L.msg("medsys.treatment.give_rocuronium_muscle_relaxant") end
+        if not isParalyzed(state) then return false, L.msg("medsys.treatment.waiting_for_muscle_relaxant_to_work") end
         return true
     end,
     start = function(medic, target, state)
@@ -344,7 +345,7 @@ PROCEDURES.airway = {
     sessionArg = 6, -- success, score, time, mistakes, reason, sessionId, details
     apply = function(state, success, _, _, _, reason)
         if not success then
-            return reason == "desaturated" and "Intubation failed - patient desaturated" or "Intubation failed"
+            return reason == "desaturated" and L.msg("medsys.treatment.intubation_failed_patient_desaturated") or L.msg("medsys.treatment.intubation_failed")
         end
         state.intubated = true
         state.noOxygen = nil
@@ -352,7 +353,7 @@ PROCEDURES.airway = {
         for _, injury in ipairs(state.injuries) do
             if injury.type == "suffocation" then injury.treated = true end
         end
-        return "Airway secured - patient ventilated"
+        return L.msg("medsys.treatment.airway_secured_patient_ventilated")
     end,
 }
 
@@ -361,18 +362,18 @@ PROCEDURES.oxygen = {
     duration = MEDIC.OXYGEN_TIME,
     animated = true,
     can = function(state)
-        if state.intubated then return false, "Ventilated through the tube" end
+        if state.intubated then return false, L.msg("medsys.treatment.ventilated_through_tube") end
         return true
     end,
     progress = function(_, state)
-        return state.oxygenMask and "Removing the oxygen mask..." or "Putting on the oxygen mask..."
+        return state.oxygenMask and L.msg("medsys.treatment.removing_oxygen_mask") or L.msg("medsys.treatment.putting_on_oxygen_mask")
     end,
     stop = function() end, -- releaseTreatment kills the timer
     apply = function(state, success)
-        if not success then return "The oxygen mask was not changed" end
-        if state.intubated then return "Ventilated through the tube" end
+        if not success then return L.msg("medsys.treatment.oxygen_mask_was_not_changed") end
+        if state.intubated then return L.msg("medsys.treatment.ventilated_through_tube") end
         state.oxygenMask = not state.oxygenMask
-        return state.oxygenMask and "Oxygen mask on" or "Oxygen mask removed"
+        return state.oxygenMask and L.msg("medsys.treatment.oxygen_mask_on") or L.msg("medsys.treatment.oxygen_mask_removed")
     end,
 }
 
@@ -381,15 +382,15 @@ PROCEDURES.monitor = {
     duration = MEDIC.MONITOR_TIME,
     animated = true,
     can = function(state)
-        if state.monitor then return false, "Monitor attached" end
+        if state.monitor then return false, L.msg("medsys.treatment.monitor_attached") end
         return true
     end,
-    progress = function() return "Attaching the monitor / defibrillator pads..." end,
+    progress = function() return L.msg("medsys.treatment.attaching_monitor_defibrillator_pads") end,
     stop = function() end, -- releaseTreatment kills the timer
     apply = function(state, success)
-        if not success then return "The monitor was not attached" end
+        if not success then return L.msg("medsys.treatment.monitor_was_not_attached") end
         attachMonitor(state)
-        return "Monitor attached: " .. MEDIC_RHYTHMS[state.rhythm].label
+        return L.msg("medsys.treatment.monitor_attached_2", { label = MEDIC_RHYTHMS[state.rhythm].label })
     end,
 }
 
@@ -400,20 +401,20 @@ PROCEDURES.medication = {
     can = function() return true end,
     validate = function(state, drugId)
         local drug = MEDIC_DRUGS[drugId]
-        if not drug then return false, "Unknown medicine" end
-        if medicDrugNeedsIV(drug) and not state.ivAccess then return false, "Needs IV access" end
+        if not drug then return false, L.msg("medsys.treatment.unknown_medicine") end
+        if medicDrugNeedsIV(drug) and not state.ivAccess then return false, L.msg("medsys.treatment.needs_iv_access") end
         if drug.awake and state.consciousness ~= "stable" and state.consciousness ~= "confused" then
-            return false, "The patient cannot swallow"
+            return false, L.msg("medsys.treatment.patient_cannot_swallow")
         end
         return true
     end,
     progress = function(drugId)
-        return "Giving " .. MEDIC_DRUGS[drugId].name .. "..."
+        return L.msg("medsys.treatment.giving", { name = MEDIC_DRUGS[drugId].name })
     end,
     stop = function() end, -- releaseTreatment kills the timer
     apply = function(state, success, drugId)
         local drug = MEDIC_DRUGS[drugId]
-        if not success or not drug then return "The medicine was not given" end
+        if not success or not drug then return L.msg("medsys.treatment.medicine_was_not_given") end
         local now = getTickCount()
         state.drugs[#state.drugs + 1] = { id = drugId, tick = now, untilTick = now + drug.duration * 1000 }
         if drug.glucose then
@@ -433,15 +434,15 @@ PROCEDURES.neuro = {
     duration = MEDIC.NEURO_TIME,
     animated = true,
     can = function(state)
-        if state.neuroChecked then return false, "Neuro exam done - findings below" end
+        if state.neuroChecked then return false, L.msg("medsys.treatment.neuro_exam_done_findings_below") end
         return true
     end,
-    progress = function() return "Checking responsiveness, pupils, face, arms and speech..." end,
+    progress = function() return L.msg("medsys.treatment.checking_responsiveness_pupils_face_arms_and") end,
     stop = function() end, -- releaseTreatment kills the timer
     apply = function(state, success)
-        if not success then return "The neuro exam was interrupted" end
+        if not success then return L.msg("medsys.treatment.neuro_exam_was_interrupted") end
         state.neuroChecked = true
-        return "Neuro exam done"
+        return L.msg("medsys.treatment.neuro_exam_done")
     end,
 }
 
@@ -452,7 +453,7 @@ local function getAvailability(state, target, equipment)
     local dead = not state or state.dead
     for action, procedure in pairs(PROCEDURES) do
         if dead then
-            result[action] = "Patient is dead"
+            result[action] = L.msg("medsys.rhythm.patient_is_dead")
         else
             local ok, reason = procedure.can(state)
             result[action] = ok or reason
@@ -460,7 +461,7 @@ local function getAvailability(state, target, equipment)
     end
     local ok, reason = canRequestTransport(target, state)
     result.transport = ok or reason
-    result.glucometer = dead and "Patient is dead" or true -- a device, measured from its own window
+    result.glucometer = dead and L.msg("medsys.rhythm.patient_is_dead") or true -- a device, measured from its own window
     if not dead then applyEquipmentAvailability(result, equipment, state) end
     return result
 end
@@ -563,12 +564,12 @@ addEventHandler("medic:requestTransport", resourceRoot, function(target, spot)
     if Examining[medic] ~= target then return end
     local ok, reason
     if not canAttend(medic, target, MEDIC.PANEL_RANGE) then
-        ok, reason = false, "Too far from the patient"
+        ok, reason = false, L.msg("medsys.rhythm.too_far_from_patient")
     else
         ok, reason = requestTransport(medic, target, spot)
     end
     if ok then
-        openExamination(medic, target, ("Transport requested - arrives in %d s"):format(MEDIC.TRANSPORT_DELAY))
+        openExamination(medic, target, L.msg("medsys.treatment.transport_requested_arrives_in_s", { transport_delay = MEDIC.TRANSPORT_DELAY }))
     else
         triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
     end
@@ -585,17 +586,17 @@ addEventHandler("medic:measureGlucose", resourceRoot, function(target)
         triggerClientEvent(medic, "medic:glucoseResult", resourceRoot, target, false, reason)
     end
     if Examining[medic] ~= target then return end
-    if Glucometers[medic] then return fail("Measuring...") end
-    if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return fail("Too far from the patient") end
+    if Glucometers[medic] then return fail(L.msg("medsys.treatment.measuring")) end
+    if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return fail(L.msg("medsys.rhythm.too_far_from_patient")) end
     local state = getLivePatient(target)
-    if not state or state.dead then return fail("No blood flow - no reading") end
+    if not state or state.dead then return fail(L.msg("medsys.treatment.no_blood_flow_no_reading")) end
     local hasBag, reason = checkGlucometerEquipment(medic, target)
     if not hasBag then return fail(reason) end
 
     Glucometers[medic] = setTimer(function()
         Glucometers[medic] = nil
         if not isElement(medic) or not isElement(target) then return end
-        if not canAttend(medic, target, MEDIC.PANEL_RANGE) then return fail("Moved away - measure again") end
+        if not canAttend(medic, target, MEDIC.PANEL_RANGE) then return fail(L.msg("medsys.treatment.moved_away_measure_again")) end
         local now = Patients[target]
         local value = now and not now.dead and math.floor(now.glucose + 0.5) or MEDIC.GLUCOSE
         triggerClientEvent(medic, "medic:glucoseResult", resourceRoot, target, value)
@@ -727,13 +728,13 @@ end
 -- Starts a procedure. option: e.g. the medicine id. Returns true, or false + reason.
 function startTreatment(medic, target, action, option)
     local procedure = PROCEDURES[action]
-    if not procedure then return false, "Unknown procedure" end
-    if Treatments[medic] then return false, "You are busy" end
-    if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return false, "Too far from the patient" end
-    if procedure.resource and not isResourceRunning(procedure.resource) then return false, "Equipment unavailable" end
+    if not procedure then return false, L.msg("medsys.treatment.unknown_procedure") end
+    if Treatments[medic] then return false, L.msg("medsys.treatment.you_are_busy") end
+    if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return false, L.msg("medsys.rhythm.too_far_from_patient") end
+    if procedure.resource and not isResourceRunning(procedure.resource) then return false, L.msg("medsys.treatment.equipment_unavailable") end
 
     local state = getLivePatient(target)
-    if not state or state.dead then return false, "Patient is dead" end
+    if not state or state.dead then return false, L.msg("medsys.rhythm.patient_is_dead") end
     local ok, reason = procedure.can(state)
     if not ok then return false, reason end
     if procedure.validate then
@@ -745,7 +746,7 @@ function startTreatment(medic, target, action, option)
 
     local locks = Locks[target]
     if locks and isElement(locks[action]) then
-        return false, "Someone else is already doing this"
+        return false, L.msg("medsys.treatment.someone_else_is_already_doing_this")
     end
 
     closeExamination(medic)
@@ -770,7 +771,7 @@ function startTreatment(medic, target, action, option)
     local sessionId = procedure.start(medic, target, state)
     if not sessionId then
         releaseTreatment(medic)
-        openExamination(medic, target, "Could not start the procedure", true)
+        openExamination(medic, target, L.msg("medsys.treatment.could_not_start_procedure"), true)
         return true
     end
     Treatments[medic].sessionId = sessionId

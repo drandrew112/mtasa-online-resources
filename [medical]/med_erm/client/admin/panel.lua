@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /ermadmin panel: frame, tabs, paged lists (shifts / tasks), input.
 -- Detail views (right side) live in client/admin/detail.lua.
 
@@ -18,12 +19,12 @@ local W, H = 1180, 700
 local LIST_W, ROW_H = 580, 34
 
 local FILTERS = {
-    shifts = { { "all", "All" }, { "active", "On duty" }, { "ended", "Ended" } },
-    tasks  = { { "all", "All" }, { "open", "Open" }, { "closed", "Closed" } },
+    shifts = { { "all", L("med_erm.panel.all") }, { "active", L("med_erm.panel.on_duty") }, { "ended", L("med_erm.detail.ended") } },
+    tasks  = { { "all", L("med_erm.panel.all") }, { "open", L("med_erm.panel.open") }, { "closed", L("med_erm.panel.closed") } },
 }
 local PLACEHOLDER = {
-    shifts = "Search callsign, crew, plate, type...",
-    tasks  = "Search #id, title, zone, caller, unit...",
+    shifts = L("med_erm.panel.search_callsign_crew_plate_type"),
+    tasks  = L("med_erm.panel.search_id_title_zone_caller_unit"),
 }
 
 AdminStatusColor = {
@@ -33,7 +34,7 @@ AdminStatusColor = {
     closed      = { 110, 118, 130 },
 }
 AdminStatusLabel = {
-    unassigned = "Not assigned", prioritized = "Prioritized", assigned = "Assigned", closed = "Closed",
+    unassigned = L("med_erm.panel.not_assigned"), prioritized = L("med_erm.panel.prioritized"), assigned = L("med_erm.panel.assigned"), closed = L("med_erm.panel.closed"),
 }
 
 function Admin.shortDate(str)
@@ -47,9 +48,9 @@ function Admin.request(kind, params)
 end
 
 function Admin.loadList(tab)
-    local L = Admin.lists[tab]
-    L.loading = true
-    Admin.request(tab, { page = L.page, search = L.search, filter = L.filter })
+    local lst = Admin.lists[tab]
+    lst.loading = true
+    Admin.request(tab, { page = lst.page, search = lst.search, filter = lst.filter })
 end
 
 function Admin.openDetail(kind, id, push)
@@ -69,9 +70,9 @@ end
 addEvent("erm:admin:result", true)
 addEventHandler("erm:admin:result", resourceRoot, function(kind, data)
     if Admin.lists[kind] then
-        local L = Admin.lists[kind]
-        L.data, L.loading = data, false
-        if data and data.page then L.page = data.page end
+        local lst = Admin.lists[kind]
+        lst.data, lst.loading = data, false
+        if data and data.page then lst.page = data.page end
     elseif Admin.detail and Admin.detail.kind == kind then
         if data and (data.error or data.id == Admin.detail.id) then
             Admin.detail.data, Admin.detail.loading = data, false
@@ -82,7 +83,7 @@ end)
 addEvent("erm:admin:denied", true)
 addEventHandler("erm:admin:denied", resourceRoot, function()
     Admin.close()
-    State.notify("ERM Admin", "Access denied.")
+    State.notify(L("med_erm.panel.erm_admin"), L("med_erm.panel.access_denied"))
 end)
 
 addEvent("erm:admin:auto", true)
@@ -105,7 +106,7 @@ local searchToken
 local function editSearch()
     local res = getResourceFromName("ui_core")
     if not res or getResourceState(res) ~= "running" then return end
-    searchToken = exports.ui_core:openTextInput("Search " .. Admin.tab, 40, Admin.lists[Admin.tab].search)
+    searchToken = exports.ui_core:openTextInput(L("med_erm.panel.search", { tab = Admin.tab }), 40, Admin.lists[Admin.tab].search)
 end
 
 addEvent("ui_core:textInputResult")
@@ -116,9 +117,9 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     if token ~= searchToken then return end
     searchToken = nil
     if text == false then return end
-    local L = Admin.lists[Admin.tab]
-    L.search = tostring(text):gsub("^%s+", ""):gsub("%s+$", "")
-    L.page = 1
+    local lst = Admin.lists[Admin.tab]
+    lst.search = tostring(text):gsub("^%s+", ""):gsub("%s+$", "")
+    lst.page = 1
     Admin.loadList(Admin.tab)
 end)
 
@@ -133,12 +134,12 @@ end
 Admin.pill = pill
 
 local SHIFT_COLS = {
-    { "#", 0, 46 }, { "UNIT", 46, 124 }, { "STARTED", 170, 110 }, { "DURATION", 280, 84 },
-    { "CREW", 364, 56 }, { "TASKS", 420, 56 }, { "STATUS", 476, 104 },
+    { "#", 0, 46 }, { L("med_erm.panel.unit"), 46, 124 }, { L("med_erm.detail.started"), 170, 110 }, { L("med_erm.detail.duration"), 280, 84 },
+    { L("med_erm.panel.crew"), 364, 56 }, { L("med_erm.panel.tasks"), 420, 56 }, { L("med_erm.panel.status"), 476, 104 },
 }
 local TASK_COLS = {
-    { "#", 0, 50 }, { "P", 50, 40 }, { "TITLE", 90, 196 }, { "STATUS", 286, 100 },
-    { "ZONE", 386, 110 }, { "CREATED", 496, 84 },
+    { "#", 0, 50 }, { L("med_erm.panel.p"), 50, 40 }, { L("med_erm.panel.title"), 90, 196 }, { L("med_erm.panel.status"), 286, 100 },
+    { L("med_erm.panel.zone"), 386, 110 }, { L("med_erm.detail.created"), 496, 84 },
 }
 
 local function col(cols, i) return s(cols[i][2]), s(cols[i][3]) end
@@ -149,7 +150,7 @@ local function drawShiftRow(r, x, y, w, h)
     cx, cw = col(c, 1); Gfx.text("#" .. r.id, x + cx, y, cw, h, Theme.faint, Gfx.font(9, true))
     cx, cw = col(c, 2)
     Gfx.text(r.callsign, x + cx, y, cw, h, Theme.text, Gfx.font(10, true))
-    local tw = dxGetTextWidth(r.callsign, 1, Gfx.font(10, true))
+    local tw = L.width(r.callsign, 1, Gfx.font(10, true))
     Gfx.text(r.type, x + cx + tw + s(6), y, cw - tw, h, Theme.faint, Gfx.font(8, true))
     cx, cw = col(c, 3); Gfx.text(Admin.shortDate(r.startedAt), x + cx, y, cw, h, Theme.dim, Gfx.font(9))
     cx, cw = col(c, 4); Gfx.text(State.formatDuration(r.duration), x + cx, y, cw, h, Theme.dim, Gfx.font(9))
@@ -158,11 +159,11 @@ local function drawShiftRow(r, x, y, w, h)
     cx, cw = col(c, 7)
     if r.live then
         local st = Config.STATUS[r.live]
-        pill(st and st.label or "On duty", x + cx, y + (h - s(18)) / 2, s(92), s(18), st and st.color or { 46, 160, 67 })
+        pill(st and st.label or L("med_erm.panel.on_duty"), x + cx, y + (h - s(18)) / 2, s(92), s(18), st and st.color or { 46, 160, 67 })
     elseif r.endedAt == "" then
-        pill("Open", x + cx, y + (h - s(18)) / 2, s(92), s(18), { 120, 120, 120 })
+        pill(L("med_erm.panel.open"), x + cx, y + (h - s(18)) / 2, s(92), s(18), { 120, 120, 120 })
     else
-        pill("Ended", x + cx, y + (h - s(18)) / 2, s(92), s(18), { 110, 118, 130 })
+        pill(L("med_erm.detail.ended"), x + cx, y + (h - s(18)) / 2, s(92), s(18), { 110, 118, 130 })
     end
 end
 
@@ -180,34 +181,34 @@ end
 
 local function drawList(x, y, w, h)
     local tab = Admin.tab
-    local L = Admin.lists[tab]
+    local lst = Admin.lists[tab]
 
     -- toolbar: search + filters
     local fw = s(74)
     local sw = w - fw * 3 - s(4) * 2 - s(10)
     local hov = Gfx.hover(x, y, sw, s(34))
     Gfx.round(x, y, sw, s(34), s(6), hov and Theme.panel2 or Theme.panel)
-    if L.search ~= "" then
-        Gfx.text(Gfx.fit(L.search, sw - s(60), Gfx.font(10)), x + s(12), y, sw - s(60), s(34), Theme.text, Gfx.font(10))
-        Gfx.button(x + sw - s(34), y + s(4), s(26), s(26), "×", { color = { 60, 68, 80 } }, function()
-            L.search, L.page = "", 1
+    if lst.search ~= "" then
+        Gfx.text(Gfx.fit(lst.search, sw - s(60), Gfx.font(10)), x + s(12), y, sw - s(60), s(34), Theme.text, Gfx.font(10))
+        Gfx.button(x + sw - s(34), y + s(4), s(26), s(26), L("med_erm.panel.text"), { color = { 60, 68, 80 } }, function()
+            lst.search, lst.page = "", 1
             Admin.loadList(tab)
         end)
     else
         Gfx.text(PLACEHOLDER[tab], x + s(12), y, sw - s(24), s(34), Theme.faint, Gfx.font(10))
     end
-    Gfx.hit(x, y, sw - (L.search ~= "" and s(38) or 0), s(34), editSearch)
+    Gfx.hit(x, y, sw - (lst.search ~= "" and s(38) or 0), s(34), editSearch)
 
     local fx = x + sw + s(10)
     for i, f in ipairs(FILTERS[tab]) do
-        local active = L.filter == f[1]
+        local active = lst.filter == f[1]
         Gfx.button(fx + (i - 1) * (fw + s(4)), y, fw, s(34), f[2], {
             color = active and { 224, 60, 49 } or { 39, 46, 55 },
             textColor = active and Theme.text or Theme.dim,
             font = Gfx.font(9, true),
         }, function()
-            if L.filter ~= f[1] then
-                L.filter, L.page = f[1], 1
+            if lst.filter ~= f[1] then
+                lst.filter, lst.page = f[1], 1
                 Admin.loadList(tab)
             end
         end)
@@ -222,11 +223,11 @@ local function drawList(x, y, w, h)
     dxDrawRectangle(x, ty + s(22), w, 1, Theme.line)
 
     local ry = ty + s(28)
-    local data = L.data
+    local data = lst.data
     if not data then
-        Gfx.text("Loading...", x, ry, w, s(ROW_H) * 3, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("common.loading"), x, ry, w, s(ROW_H) * 3, Theme.faint, Gfx.font(10), "center")
     elseif #(data.list or {}) == 0 then
-        Gfx.text("No results.", x, ry, w, s(ROW_H) * 3, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("med_erm.panel.no_results"), x, ry, w, s(ROW_H) * 3, Theme.faint, Gfx.font(10), "center")
     else
         local selKind = tab == "shifts" and "shift" or "task"
         for i, r in ipairs(data.list) do
@@ -255,15 +256,14 @@ local function drawList(x, y, w, h)
     -- pager
     local py = y + h - s(36)
     dxDrawRectangle(x, py - s(8), w, 1, Theme.line)
-    local page, pages, total = L.page, data and data.pages or 1, data and data.total or 0
-    Gfx.button(x, py, s(96), s(32), "‹  Prev", { disabled = page <= 1 }, function()
-        L.page = page - 1
+    local page, pages, total = lst.page, data and data.pages or 1, data and data.total or 0
+    Gfx.button(x, py, s(96), s(32), L("med_erm.panel.prev"), { disabled = page <= 1 }, function()
+        lst.page = page - 1
         Admin.loadList(tab)
     end)
-    Gfx.text(string.format("Page %d / %d   ·   %d result%s%s", page, pages, total, total == 1 and "" or "s",
-        L.loading and "   ·   loading..." or ""), x, py, w, s(32), Theme.dim, Gfx.font(9), "center")
-    Gfx.button(x + w - s(96), py, s(96), s(32), "Next  ›", { disabled = page >= pages }, function()
-        L.page = page + 1
+    Gfx.text(L("med_erm.panel.page_result", { page = page, pages = pages, total = total, total2 = total == 1 and "" or "s", loading = lst.loading and L("med_erm.panel.loading") or "" }), x, py, w, s(32), Theme.dim, Gfx.font(9), "center")
+    Gfx.button(x + w - s(96), py, s(96), s(32), L("med_erm.panel.next"), { disabled = page >= pages }, function()
+        lst.page = page + 1
         Admin.loadList(tab)
     end)
 end
@@ -291,10 +291,10 @@ local function render()
     local ls = s(30)
     Gfx.round(x + s(16), y + (hh - ls) / 2, ls, ls, s(6), Theme.accent)
     Gfx.cross(x + s(16) + s(7), y + (hh - ls) / 2 + s(7), ls - s(14), tocolor(255, 255, 255))
-    Gfx.text("ERM Admin", x + s(58), y + s(9), s(200), s(22), Theme.text, Gfx.font(14, true))
-    Gfx.text("Shift & task history", x + s(58), y + s(30), s(200), s(18), Theme.dim, Gfx.font(9))
+    Gfx.text(L("med_erm.panel.erm_admin"), x + s(58), y + s(9), s(200), s(22), Theme.text, Gfx.font(14, true))
+    Gfx.text(L("med_erm.panel.shift_task_history"), x + s(58), y + s(30), s(200), s(18), Theme.dim, Gfx.font(9))
 
-    local tabs = { { "shifts", "Shifts" }, { "tasks", "Tasks" } }
+    local tabs = { { "shifts", L("med_erm.panel.shifts") }, { "tasks", L("med_erm.panel.tasks_2") } }
     for i, t in ipairs(tabs) do
         local active = Admin.tab == t[1]
         Gfx.button(x + s(280) + (i - 1) * s(118), y + s(12), s(110), s(34), t[2], {
@@ -312,11 +312,11 @@ local function render()
     local a = Admin.auto
     local aw = s(210)
     local ax = x + w - s(52) - s(10) - aw
-    local label, color = "Auto dispatch: ...", { 48, 56, 66 }
+    local label, color = L("med_erm.panel.auto_dispatch"), { 48, 56, 66 }
     if a and not a.available then
-        label = "Auto dispatch: N/A"
+        label = L("med_erm.panel.auto_dispatch_n")
     elseif a then
-        label = a.enabled and "Auto dispatch: ON" or "Auto dispatch: OFF"
+        label = a.enabled and L("med_erm.panel.auto_dispatch_on") or L("med_erm.panel.auto_dispatch_off")
         color = a.enabled and { 46, 160, 67 } or { 60, 68, 80 }
     end
     Gfx.button(ax, y + s(12), aw, s(34), label, {
@@ -325,7 +325,7 @@ local function render()
         font = Gfx.font(10, true),
     }, toggleAuto)
 
-    Gfx.button(x + w - s(52), y + s(12), s(36), s(34), "×", { color = { 30, 36, 43 }, font = Gfx.font(14, true) }, Admin.close)
+    Gfx.button(x + w - s(52), y + s(12), s(36), s(34), L("med_erm.panel.text"), { color = { 30, 36, 43 }, font = Gfx.font(14, true) }, Admin.close)
 
     -- body
     local by, bh = y + hh + s(14), h - hh - s(28)

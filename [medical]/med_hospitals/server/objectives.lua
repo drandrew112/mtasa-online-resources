@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- v_radar objective (yellow blip + auto route) to a hospital, one per player.
 -- Removed automatically within HOSP.ARRIVE_RADIUS of the hospital (unless set with keep = true,
 -- then only the caller removes it), on quit and on reload.
@@ -16,7 +17,7 @@ end
 
 -- keep = true: not removed on arrival -> objectiveId | false, error
 function setPlayerObjective(player, h, label, keep)
-    if not isElement(player) or getElementType(player) ~= "player" then return false, "Invalid player" end
+    if not isElement(player) or getElementType(player) ~= "player" then return false, L.msg("med_hospitals.exports.invalid_player") end
     if not radarRunning() then return false, "v_radar is not running" end
     removePlayerObjective(player)
     local id = exports.v_radar:addObjective(player, h.x, h.y, h.z, label or h.name)

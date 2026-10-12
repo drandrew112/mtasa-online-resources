@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /ermadmin: shift & task history panel (client/admin/*.lua) for admins.
 -- Every query re-checks the admin level; the data comes straight from erm.db.
 
@@ -104,7 +105,7 @@ end
 function handlers.shift(p)
     local id = tonumber(p.id)
     local r = id and (DB.query("SELECT * FROM shifts WHERE id = ?", id) or {})[1]
-    if not r then return { error = "Shift not found" } end
+    if not r then return { error = L.msg("med_erm.admin.shift_not_found") } end
 
     local tasks, linked = {}, {}
     for _, l in ipairs(DB.query([[SELECT st.*, t.title, t.priority, t.status, t.zone FROM shift_tasks st
@@ -180,7 +181,7 @@ end
 function handlers.task(p)
     local id = tonumber(p.id)
     local r = id and (DB.query("SELECT * FROM tasks WHERE id = ?", id) or {})[1]
-    if not r then return { error = "Task not found" } end
+    if not r then return { error = L.msg("med_erm.admin.task_not_found") } end
 
     local log, total = {}, 0
     for _, e in ipairs(DB.unjson(r.response_log)) do
@@ -227,8 +228,8 @@ end
 
 addCommandHandler("ermadmin", function(player)
     if not isAdmin(player) then
-        triggerClientEvent(player, "erm:notify", resourceRoot, "ERM Admin",
-            string.format("You need admin level %d or higher.", Config.ADMIN_LEVEL))
+        triggerClientEvent(player, "erm:notify", resourceRoot, L.msg("med_erm.panel.erm_admin"),
+            L.msg("med_erm.admin.you_need_admin_level_or_higher", { admin_level = Config.ADMIN_LEVEL }))
         return
     end
     triggerClientEvent(player, "erm:admin:open", resourceRoot)
@@ -245,7 +246,7 @@ addEventHandler("erm:admin:query", resourceRoot, function(kind, params)
     local ok, result = pcall(handlers[kind], type(params) == "table" and params or {})
     if not ok then
         outputDebugString("[erm] admin query " .. kind .. ": " .. tostring(result), 1)
-        result = { error = "Query failed" }
+        result = { error = L.msg("med_erm.admin.query_failed") }
     end
     triggerClientEvent(player, "erm:admin:result", resourceRoot, kind, result)
 end)
@@ -271,7 +272,7 @@ addEventHandler("erm:admin:autoSet", resourceRoot, function(on)
     end
     local ok, err = AutoDispatch.set(on == true, "admin " .. accountName(player))
     if not ok then
-        triggerClientEvent(player, "erm:notify", resourceRoot, "ERM Admin", tostring(err or "Failed"))
+        triggerClientEvent(player, "erm:notify", resourceRoot, L.msg("med_erm.panel.erm_admin"), tostring(err or L.msg("med_erm.admin.failed")))
     end
     sendAutoState(player)
 end)

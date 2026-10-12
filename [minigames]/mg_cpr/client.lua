@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The player presses SPACE in a steady rhythm. Every press after the first is
 -- judged by the time since the previous one: inside [minBPM, maxBPM] is good,
 -- otherwise too fast / too slow. Long pauses count as missed compressions.
@@ -23,8 +24,8 @@ local COLOR_FAIL = { 230, 60, 60 }
 
 local FEEDBACK = {
     good = { "GOOD", COLOR_GOOD },
-    fast = { "TOO FAST", COLOR_FAST },
-    slow = { "TOO SLOW", COLOR_SLOW },
+    fast = { L("mg_cpr.client.too_fast"), COLOR_FAST },
+    slow = { L("mg_cpr.client.too_slow"), COLOR_SLOW },
 }
 
 -- movement/combat controls disabled while kneeling next to a ped
@@ -236,15 +237,15 @@ local function drawPanel(now, t)
     local right = x + w - 20 * scale
 
     -- header: hint + time left
-    dxDrawText(("Press %s in rhythm"):format(CPR.KEY:upper()), cx, y + 12 * scale, right, y + 36 * scale,
+    dxDrawText(L("mg_cpr.client.press_in_rhythm", { key = CPR.KEY:upper() }), cx, y + 12 * scale, right, y + 36 * scale,
         tocolor(220, 220, 220, 220), 1.1 * scale, "default-bold", "left", "center")
     local timeLeft = playing and math.max(0, game.duration - t) or game.duration
-    dxDrawText(("%.1f s"):format(timeLeft), cx, y + 12 * scale, right, y + 36 * scale,
+    dxDrawText(L("common.time_left_s", { time_left = timeLeft }), cx, y + 12 * scale, right, y + 36 * scale,
         tocolor(255, 255, 255, 240), 1.3 * scale, "default-bold", "right", "center")
 
     -- current rate + feedback
     local bpm = playing and currentBPM(t)
-    local bpmText = bpm and ("%d BPM"):format(math.floor(bpm + 0.5)) or "--- BPM"
+    local bpmText = bpm and L("mg_cpr.client.bpm", { bpm = math.floor(bpm + 0.5) }) or L("mg_cpr.client.bpm_2")
     dxDrawText(bpmText, cx, y + 40 * scale, right, y + 84 * scale, tocolor(255, 255, 255, 255),
         2.0 * scale, "default-bold", "left", "center")
 
@@ -272,7 +273,7 @@ local function drawPanel(now, t)
 
     local total = game.judged + game.missed
     local accuracy = total > 0 and cprPercent(game.good, total) or 100
-    dxDrawText(("Accuracy: %d%%   (need %d%%)"):format(accuracy, game.options.passPercent),
+    dxDrawText(L("mg_cpr.client.accuracy_need", { accuracy = accuracy, pass_percent = game.options.passPercent }),
         cx, y + 132 * scale, right, y + 158 * scale, tocolor(200, 200, 200, 210), 1.05 * scale,
         "default-bold", "left", "center")
 end
@@ -295,7 +296,7 @@ render = function()
         local cy = PANEL_Y - 110 * scale
         shadowText(tostring(n), 0, cy, screenW, cy, tocolor(255, 255, 255, 255 * (1 - k * 0.6)),
             (4 - k) * scale, "center", "center")
-        shadowText("Get ready", 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
+        shadowText(L("common.get_ready"), 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
             1.4 * scale, "center", "center")
     end
 

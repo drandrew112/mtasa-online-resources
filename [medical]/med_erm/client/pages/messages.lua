@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Messages: two channels, like the dispatcher console (without broadcast sending).
 --   Dispatch -> the unit's thread with the dispatchers (broadcasts show here too)
 --   Case     -> case chat: every unit on the active task + the dispatchers
@@ -7,9 +8,9 @@ local s = Gfx.s
 Pages.messages = { channel = "dispatch" }
 
 local TAGS = {
-    broadcast = { "BROADCAST", { 163, 113, 247 } },
-    task      = { "CASE",      { 247, 107, 21 } },
-    unit      = { "DIRECT",    { 62, 155, 255 } },
+    broadcast = { "med_erm.messages.tag_broadcast", { 163, 113, 247 } },
+    task      = { "med_erm.messages.tag_case",      { 247, 107, 21 } },
+    unit      = { "med_erm.messages.tag_direct",    { 62, 155, 255 } },
 }
 
 local inputToken
@@ -18,7 +19,7 @@ local function openInput()
     local res = getResourceFromName("ui_core")
     if not res or getResourceState(res) ~= "running" then return end
     local t = State.task
-    local prompt = Pages.messages.channel == "case" and t and string.format("Message to case #%d chat", t.id) or "Message to dispatch"
+    local prompt = Pages.messages.channel == "case" and t and L("med_erm.messages.message_to_case_chat", { id = t.id }) or L("med_erm.messages.message_to_dispatch")
     inputToken = exports.ui_core:openTextInput(prompt, 200, "")
 end
 
@@ -47,12 +48,12 @@ local function buildRows(width, channel)
     for _, m in ipairs(State.messages) do
         if inChannel(m, channel) then
             local tag = TAGS[m.channel] or TAGS.unit
-            local tagText, color = m.channel == "task" and "DISPATCH" or tag[1], tag[2]
+            local tagText, color = L(m.channel == "task" and "med_erm.messages.tag_dispatch" or tag[1]), tag[2]
             if not m.fromDispatch then
                 if m.fromUnit == myUnit then
-                    tagText, color = "SENT", { 46, 160, 67 }
+                    tagText, color = L("med_erm.messages.tag_sent"), { 46, 160, 67 }
                 else
-                    tagText, color = "UNIT", { 62, 155, 255 }
+                    tagText, color = L("med_erm.panel.unit"), { 62, 155, 255 }
                 end
             end
             rows[#rows + 1] = { kind = "head", msg = m, tag = tagText, color = color }
@@ -68,8 +69,8 @@ end
 local function drawTabs(x, y, h)
     local t = State.task
     local tabs = {
-        { "dispatch", "Dispatch", true },
-        { "case", t and string.format("Case #%d", t.id) or "Case chat", t and true or false },
+        { "dispatch", L("med_erm.messages.dispatch"), true },
+        { "case", t and L("med_erm.messages.case", { id = t.id }) or L("med_erm.messages.case_chat"), t and true or false },
     }
     local tx = x
     for _, tab in ipairs(tabs) do
@@ -77,7 +78,7 @@ local function drawTabs(x, y, h)
         local active = Pages.messages.channel == key
         local badge = not active and State.unreadBy[key] or 0
         local font = Gfx.font(9, true)
-        local tw = dxGetTextWidth(label, 1, font) + s(28) + (badge > 0 and s(26) or 0)
+        local tw = L.width(label, 1, font) + s(28) + (badge > 0 and s(26) or 0)
         local hov = enabled and not active and Gfx.hover(tx, y, tw, h)
         Gfx.round(tx, y, tw, h, s(6), active and Theme.accent or (hov and Theme.line or Theme.panel))
         Gfx.text(label, tx + s(14), y, tw, h, enabled and (active and tocolor(255, 255, 255) or Theme.dim) or Theme.faint, font)
@@ -103,10 +104,10 @@ function Pages.messages.draw(x, y, w, h)
 
     local pad = s(18)
     local ix, iw = x + pad, w - pad * 2
-    Gfx.text("Messages", ix, y + s(14), s(120), s(30), Theme.text, Gfx.font(15, true))
+    Gfx.text(L("med_erm.messages.messages"), ix, y + s(14), s(120), s(30), Theme.text, Gfx.font(15, true))
     drawTabs(ix + s(120), y + s(14), s(30))
-    Gfx.text(channel == "case" and "Case chat  ·  every unit on the case + dispatch"
-        or "Dispatch channel  ·  " .. State.unit.callsign, ix, y + s(42), iw, s(18), Theme.dim, Gfx.font(9))
+    Gfx.text(channel == "case" and L("med_erm.messages.case_chat_every_unit_on_case")
+        or L("med_erm.messages.dispatch_channel", { callsign = State.unit.callsign }), ix, y + s(42), iw, s(18), Theme.dim, Gfx.font(9))
 
     local ly = y + s(66)
     local inputH = s(42)
@@ -121,7 +122,7 @@ function Pages.messages.draw(x, y, w, h)
     Gfx.scrollArea("messages", ix, ly, iw, listH)
 
     if #rows == 0 then
-        Gfx.text("No messages yet.", ix, ly, iw, listH, Theme.faint, Gfx.font(10), "center")
+        Gfx.text(L("med_erm.messages.no_messages_yet"), ix, ly, iw, listH, Theme.faint, Gfx.font(10), "center")
     end
 
     local last = #rows - offset
@@ -130,7 +131,7 @@ function Pages.messages.draw(x, y, w, h)
         local r = rows[i]
         local ry = ly + s(6) + (i - first) * lh
         if r.kind == "head" then
-            local tw = dxGetTextWidth(r.tag, 1, Gfx.font(7, true)) + s(12)
+            local tw = L.width(r.tag, 1, Gfx.font(7, true)) + s(12)
             Gfx.round(ix + s(12), ry + s(3), tw, s(15), s(3), Gfx.rgb(r.color))
             Gfx.text(r.tag, ix + s(12), ry + s(3), tw, s(15), tocolor(255, 255, 255), Gfx.font(7, true), "center")
             local from = r.msg.from:gsub("#%x%x%x%x%x%x", "")
@@ -145,7 +146,7 @@ function Pages.messages.draw(x, y, w, h)
     local by = y + h - inputH - s(14)
     local hov = Gfx.hover(ix, by, iw - s(96), inputH)
     Gfx.round(ix, by, iw - s(96), inputH, s(8), hov and Theme.panel2 or Theme.panel)
-    Gfx.text(channel == "case" and "Write to the case chat…" or "Write a message to dispatch…", ix + s(14), by, iw - s(120), inputH, Theme.faint, Gfx.font(10))
+    Gfx.text(channel == "case" and L("med_erm.messages.write_to_case_chat") or L("med_erm.messages.write_message_to_dispatch"), ix + s(14), by, iw - s(120), inputH, Theme.faint, Gfx.font(10))
     Gfx.hit(ix, by, iw - s(96), inputH, openInput)
-    Gfx.button(ix + iw - s(88), by, s(88), inputH, "Send", { color = { 224, 60, 49 } }, openInput)
+    Gfx.button(ix + iw - s(88), by, s(88), inputH, L("common.send"), { color = { 224, 60, 49 } }, openInput)
 end

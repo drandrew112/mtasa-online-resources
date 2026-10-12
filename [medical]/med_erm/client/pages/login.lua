@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Sign-in screen: unit type, auto plate, crew list (add / remove).
 
 Login = {
@@ -11,11 +12,11 @@ Login = {
 local s = Gfx.s
 
 local TYPE_HINTS = {
-    SOLO = "Single responder",
-    DOC  = "Physician unit",
-    BLS  = "Basic Life Support",
-    ALS  = "Advanced Life Support",
-    HELI = "Air ambulance",
+    SOLO = L("med_erm.login.single_responder"),
+    DOC  = L("med_erm.login.physician_unit"),
+    BLS  = L("med_erm.login.basic_life_support"),
+    ALS  = L("med_erm.login.advanced_life_support"),
+    HELI = L("med_erm.login.air_ambulance"),
 }
 
 function Login.reset(vehicle)
@@ -50,7 +51,7 @@ local numberToken
 local function editUnitNumber()
     local res = getResourceFromName("ui_core")
     if not res or getResourceState(res) ~= "running" then return end
-    numberToken = exports.ui_core:openTextInput("Unit number (empty = automatic)", 3, Login.unitNumber)
+    numberToken = exports.ui_core:openTextInput(L("med_erm.login.unit_number_empty_automatic"), 3, Login.unitNumber)
 end
 
 addEvent("ui_core:textInputResult")
@@ -60,7 +61,7 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     if not text then return end
     text = text:gsub("%s", "")
     if text ~= "" and not text:match("^%d+$") then
-        State.notify("EMS Tablet", "The unit number can only contain digits.")
+        State.notify(L("med_erm.case.ems_tablet"), L("med_erm.login.unit_number_can_only_contain_digits"))
         return
     end
     Login.unitNumber = text
@@ -71,7 +72,7 @@ local function field(label, value, x, y, w, tag)
     Gfx.round(x, y + s(18), w, s(34), s(6), Theme.panel)
     Gfx.text(value, x + s(12), y + s(18), w - s(70), s(34), Theme.text, Gfx.font(11, true))
     if tag then
-        local tw = dxGetTextWidth(tag, 1, Gfx.font(7, true)) + s(12)
+        local tw = L.width(tag, 1, Gfx.font(7, true)) + s(12)
         Gfx.round(x + w - tw - s(8), y + s(27), tw, s(16), s(8), Theme.panel2)
         Gfx.text(tag, x + w - tw - s(8), y + s(27), tw, s(16), Theme.dim, Gfx.font(7, true), "center")
     end
@@ -86,8 +87,8 @@ function Login.draw(x, y, w, h)
 
     local pad = s(20)
     local ix, iy, iw = x + pad, y + s(14), w - pad * 2
-    Gfx.text("Unit Sign-In", ix, iy, iw, s(26), Theme.text, Gfx.font(15, true))
-    Gfx.text("Register your crew to start a shift.", ix, iy + s(24), iw, s(18), Theme.dim, Gfx.font(9))
+    Gfx.text(L("med_erm.login.unit_sign_in"), ix, iy, iw, s(26), Theme.text, Gfx.font(15, true))
+    Gfx.text(L("med_erm.login.register_your_crew_to_start_shift"), ix, iy + s(24), iw, s(18), Theme.dim, Gfx.font(9))
 
     local colY = iy + s(56)
     local lw = iw * 0.47
@@ -95,18 +96,18 @@ function Login.draw(x, y, w, h)
 
     -- left column ---------------------------------------------------------
     local veh = Login.vehicle
-    field("VEHICLE PLATE", isElement(veh) and getVehiclePlateText(veh) or "-", ix, colY, lw, "AUTO")
+    field(L("med_erm.login.vehicle_plate"), isElement(veh) and getVehiclePlateText(veh) or "-", ix, colY, lw, L("med_erm.login.badge_auto"))
     local ny = colY + s(62)
     local nhov = Gfx.hover(ix, ny + s(18), lw, s(34))
-    field("UNIT NUMBER", Login.unitNumber ~= "" and Login.unitNumber or "", ix, ny, lw, "EDIT")
+    field(L("med_erm.login.unit_number"), Login.unitNumber ~= "" and Login.unitNumber or "", ix, ny, lw, L("med_erm.login.badge_edit"))
     if Login.unitNumber == "" then
-        Gfx.text("Automatic", ix + s(12), ny + s(18), lw - s(70), s(34), Theme.faint, Gfx.font(11))
+        Gfx.text(L("med_erm.login.automatic"), ix + s(12), ny + s(18), lw - s(70), s(34), Theme.faint, Gfx.font(11))
     end
     if nhov then Gfx.round(ix, ny + s(50), lw, s(2), s(1), Theme.accent) end
     Gfx.hit(ix, ny + s(18), lw, s(34), editUnitNumber)
 
     local ty = colY + s(124)
-    Gfx.label("UNIT TYPE", ix, ty, lw)
+    Gfx.label(L("med_erm.login.unit_type"), ix, ty, lw)
     local n = #Config.UNIT_TYPES
     local gap = s(6)
     local bw = (lw - gap * (n - 1)) / n
@@ -117,11 +118,11 @@ function Login.draw(x, y, w, h)
             textColor = selected and Theme.text or Theme.dim,
         }, function() Login.unitType = t end)
     end
-    Gfx.text(Login.unitType and TYPE_HINTS[Login.unitType] or "Select the type of your unit.",
+    Gfx.text(Login.unitType and TYPE_HINTS[Login.unitType] or L("med_erm.login.select_type_of_your_unit"),
         ix, ty + s(58), lw, s(18), Theme.dim, Gfx.font(9))
 
     -- right column: crew ----------------------------------------------------
-    Gfx.label(string.format("CREW (%d)", #Login.members), rx, colY, rw)
+    Gfx.label(L("med_erm.detail.crew", { members = #Login.members }), rx, colY, rw)
     local listY, rowH = colY + s(18), s(32)
     local listH = s(150)
     Gfx.round(rx, listY, rw, listH, s(6), Theme.panel)
@@ -142,15 +143,15 @@ function Login.draw(x, y, w, h)
         local name = getPlayerName(p):gsub("#%x%x%x%x%x%x", "")
         Gfx.text(Gfx.fit(name, rw - s(80), Gfx.font(10)), rx + s(14), ry, rw - s(80), rowH, Theme.text, Gfx.font(10))
         if p == localPlayer then
-            Gfx.text("YOU", rx, ry, rw - s(16), rowH, Theme.faint, Gfx.font(8, true), "right")
+            Gfx.text(L("med_erm.login.you"), rx, ry, rw - s(16), rowH, Theme.faint, Gfx.font(8, true), "right")
         end
         Gfx.hit(rx + s(4), ry, rw - s(8), rowH, function() Login.selected = p end)
     end
 
     local by = listY + listH + s(8)
     local hbw = (rw - s(8)) / 2
-    Gfx.button(rx, by, hbw, s(34), "+  Add", {}, function() Login.picker = true end)
-    Gfx.button(rx + hbw + s(8), by, hbw, s(34), "−  Remove", {
+    Gfx.button(rx, by, hbw, s(34), L("med_erm.login.add"), {}, function() Login.picker = true end)
+    Gfx.button(rx + hbw + s(8), by, hbw, s(34), L("med_erm.login.remove"), {
         disabled = not Login.selected or Login.selected == localPlayer,
     }, function()
         for i, m in ipairs(Login.members) do
@@ -162,9 +163,9 @@ function Login.draw(x, y, w, h)
     -- footer ----------------------------------------------------------------
     local fy = y + h - s(58)
     dxDrawRectangle(ix, fy - s(10), iw, 1, Theme.line)
-    Gfx.text(string.format("Only on-duty medics within %d m can be added to the crew.", Config.ADD_MEMBER_RADIUS),
+    Gfx.text(L("med_erm.login.only_on_duty_medics_within_m", { add_member_radius = Config.ADD_MEMBER_RADIUS }),
         ix, fy, iw - s(170), s(42), Theme.faint, Gfx.font(9))
-    Gfx.button(ix + iw - s(160), fy, s(160), s(42), "Sign In", {
+    Gfx.button(ix + iw - s(160), fy, s(160), s(42), L("med_erm.login.sign_in"), {
         color = { 46, 160, 67 },
         font = Gfx.font(11, true),
         disabled = not Login.unitType,
@@ -186,12 +187,12 @@ function Login.drawPicker(sx, sy, sw, sh)
 
     Gfx.round(x, y, w, h, s(10), Theme.panel)
     Gfx.hit(x, y, w, h, function() end)       -- clicks inside don't close
-    Gfx.text("Add crew member", x + s(18), y + s(14), w - s(36), s(24), Theme.text, Gfx.font(13, true))
-    Gfx.text("On-duty medics near you", x + s(18), y + s(36), w - s(36), s(18), Theme.dim, Gfx.font(9))
+    Gfx.text(L("med_erm.login.add_crew_member"), x + s(18), y + s(14), w - s(36), s(24), Theme.text, Gfx.font(13, true))
+    Gfx.text(L("med_erm.login.on_duty_medics_near_you"), x + s(18), y + s(36), w - s(36), s(18), Theme.dim, Gfx.font(9))
 
     local ly = y + s(64)
     if #list == 0 then
-        Gfx.text("No medics nearby.", x + s(18), ly, w - s(36), rowH, Theme.faint, Gfx.font(10))
+        Gfx.text(L("med_erm.login.no_medics_nearby"), x + s(18), ly, w - s(36), rowH, Theme.faint, Gfx.font(10))
     end
     local offset = Gfx.getScroll("picker", #list - visible)
     Gfx.scrollArea("picker", x, ly, w, visible * rowH)
@@ -207,5 +208,5 @@ function Login.drawPicker(sx, sy, sw, sh)
         Gfx.text(string.format("%.1f m", e.dist), x + s(12), ry, w - s(36), rowH, Theme.faint, Gfx.font(9), "right")
     end
 
-    Gfx.button(x + w - s(112), y + h - s(48), s(96), s(34), "Cancel", {}, function() Login.picker = false end)
+    Gfx.button(x + w - s(112), y + h - s(48), s(96), s(34), L("common.cancel"), {}, function() Login.picker = false end)
 end

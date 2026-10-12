@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Equipment adapter (med_bag). Interventions need the medical bag / the monitor near the patient
 -- (MEDIC_EQUIPMENT); the bag's consumables (medicines, IV kits, oxygen) run out. Everything goes
 -- through this file, so medsys works unchanged when MEDIC.REQUIRE_EQUIPMENT is false or med_bag is
@@ -23,8 +24,8 @@ local function isExempt(target)
     return isEquipmentExemptPatient(target)
 end
 
-local ITEM_MISSING = { bag = "Needs the medical bag", monitor = "Needs the monitor" }
-local STOCK_EMPTY = { ivKits = "Out of IV kits - restock at a hospital", oxygen = "Oxygen cylinder empty" }
+local ITEM_MISSING = { bag = L.msg("medsys.equipment.needs_medical_bag"), monitor = L.msg("medsys.equipment.needs_monitor") }
+local STOCK_EMPTY = { ivKits = L.msg("medsys.equipment.out_of_iv_kits_restock_at"), oxygen = L.msg("medsys.equipment.oxygen_cylinder_empty") }
 
 -- What reaches the patient (med_bag getEquipmentNear) or nil when the equipment is not checked.
 -- One call per panel snapshot / treatment start.
@@ -51,7 +52,7 @@ function checkActionEquipment(equipment, action, state, option)
         local left = stock.drugs[option]
         if left ~= nil and left <= 0 then
             local drug = MEDIC_DRUGS[option]
-            return false, (drug and drug.name or option) .. " - out of stock"
+            return false, L.msg("medsys.equipment.out_of_stock", { option = (drug and drug.name or option) })
         end
     end
     return true

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Server-owned stretcher state. Every Ambulance gets one stretcher object. States:
 --   "stowed"  hidden inside the vehicle (attached, alpha 0, no collisions)
 --   "moving"  sliding in / out of the vehicle (moveObject), menu disabled
@@ -341,12 +342,12 @@ end
 function loadStretcher(s, player)
     if s.state ~= "ground" and s.state ~= "pushing" then return false end
     local obj, vehicle = s.object, s.vehicle
-    if blown[vehicle] then return false, "The ambulance is wrecked." end
+    if blown[vehicle] then return false, L.msg("med_stretcher.stretcher.ambulance_is_wrecked") end
     if not isStretcherAtRear(s) then
-        return false, "Bring the stretcher to the rear doors of the ambulance."
+        return false, L.msg("med_stretcher.stretcher.bring_stretcher_to_rear_doors_of")
     end
     if not isLoadAligned(vehicle, stretcherYaw(s)) then
-        return false, "Turn the stretcher to face into the ambulance."
+        return false, L.msg("med_stretcher.stretcher.turn_stretcher_to_face_into_ambulance")
     end
 
     local seat
@@ -354,7 +355,7 @@ function loadStretcher(s, player)
         for _, candidate in ipairs(STRETCHER.REAR_SEATS) do
             if not getVehicleOccupant(vehicle, candidate) then seat = candidate break end
         end
-        if not seat then return false, "There is no free rear seat for the patient." end
+        if not seat then return false, L.msg("med_stretcher.stretcher.there_is_no_free_rear_seat") end
     end
 
     -- let go of the pusher, keep the current world position
@@ -569,7 +570,7 @@ end)
 addEventHandler("onVehicleStartExit", root, function(player)
     if lockedIn[player] == source then
         cancelEvent()
-        notify(player, "You can only leave the ambulance on the stretcher.")
+        notify(player, L.msg("med_stretcher.stretcher.you_can_only_leave_ambulance_on"))
     end
 end)
 

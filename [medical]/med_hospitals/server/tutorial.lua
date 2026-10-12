@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Tutorial handovers (work_ems tutorial): a private copy of one hospital's bay and handover
 -- markers in another dimension, for a single player. There is no ERM unit and no case: a patient
 -- pushed on the stretcher of the given ambulance into the handover marker is handed over after
@@ -56,7 +57,7 @@ function createTutorialHandover(player, hospitalId, dimension, vehicle)
     if not isElement(player) or getElementType(player) ~= "player" then return false, "invalid player" end
     local h = Hospitals.byId[tostring(hospitalId)]
     if not h then return false, "unknown hospital" end
-    if #h.handover == 0 then return false, h.id .. " has no handover marker" end
+    if #h.handover == 0 then return false, L.msg("med_hospitals.tutorial.has_no_handover_marker", { id = h.id }) end
     dimension = tonumber(dimension)
     if not dimension then return false, "invalid dimension" end
 
@@ -99,16 +100,16 @@ local function checkTutorialHandover(t)
     local player = t.player
     local obj = getElementData(player, "stretcher.pushing")
     if not isElement(obj) or not isResourceRunning("med_stretcher") then
-        return false, "Bring the patient here on the stretcher."
+        return false, L.msg("med_hospitals.tutorial.bring_patient_here_on_stretcher")
     end
     local ms = exports.med_stretcher
-    if ms:getStretcherState(obj) ~= "pushing" then return false, "Bring the patient here on the stretcher." end
+    if ms:getStretcherState(obj) ~= "pushing" then return false, L.msg("med_hospitals.tutorial.bring_patient_here_on_stretcher") end
     local patient = ms:getStretcherPatient(obj)
     if not isElement(patient) or ms:getPatientStretcher(patient) ~= obj then
-        return false, "There is no patient on the stretcher."
+        return false, L.msg("med_hospitals.handover.there_is_no_patient_on_stretcher")
     end
     if t.vehicle and ms:getStretcherVehicle(obj) ~= t.vehicle then
-        return false, "Use the stretcher of your ambulance."
+        return false, L.msg("med_hospitals.tutorial.use_stretcher_of_your_ambulance")
     end
     return true, obj, patient
 end
@@ -144,7 +145,7 @@ local function updateSession(t)
         if t.proc then
             t.proc = nil
             stopProgress(player)
-            notify(player, "Handover cancelled: you left the handover marker.")
+            notify(player, L.msg("med_hospitals.tutorial.handover_cancelled_you_left_handover_marker"))
         end
         t.refused = nil
         return
@@ -155,7 +156,7 @@ local function updateSession(t)
         if not ok or obj ~= t.proc.obj or patient ~= t.proc.patient then
             t.proc = nil
             stopProgress(player)
-            notify(player, "Handover cancelled: " .. (ok and "the patient changed." or obj))
+            notify(player, L.msg("med_hospitals.tutorial.handover_cancelled", { obj = (ok and L.msg("med_hospitals.handover.patient_changed") or obj) }))
             t.refused = inside
         elseif getTickCount() >= t.proc.ends then
             complete(t)
@@ -163,7 +164,7 @@ local function updateSession(t)
     elseif ok then
         t.refused = nil
         t.proc = { obj = obj, patient = patient, ends = getTickCount() + HOSP.HANDOVER_TIME }
-        startProgress(player, inside.marker, HOSP.HANDOVER_TIME, "Handing over the patient")
+        startProgress(player, inside.marker, HOSP.HANDOVER_TIME, L.msg("med_hospitals.handover.handing_over_patient"))
     elseif t.refused ~= inside then
         t.refused = inside
         notify(player, obj)

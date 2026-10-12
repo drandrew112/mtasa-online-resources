@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Active Case: task details + response / case buttons.
 --
 --   Start Response -> En Route (lights & siren log starts)
@@ -18,7 +19,7 @@ local function askCloseReason(t)
     local res = getResourceFromName("ui_core")
     if not res or getResourceState(res) ~= "running" then return end
     reasonTask = t.id
-    reasonToken = exports.ui_core:openTextInput(string.format("Reason for closing case #%d", t.id), 90, "")
+    reasonToken = exports.ui_core:openTextInput(L("med_erm.case.reason_for_closing_case", { id = t.id }), 90, "")
 end
 
 addEvent("ui_core:textInputResult")
@@ -29,22 +30,22 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     if not text or not t or t.id ~= reasonTask then return end
     text = text:gsub("^%s+", ""):gsub("%s+$", "")
     if #text < 3 then
-        State.notify("EMS Tablet", "Give a reason for closing the case.")
+        State.notify(L("med_erm.case.ems_tablet"), L("med_erm.case.give_reason_for_closing_case"))
         return
     end
     Tablet.confirm = {
-        title = string.format("Close case #%d?", t.id),
-        text  = "Reason: " .. text,
-        label = "Close Case",
+        title = L("med_erm.case.close_case", { id = t.id }),
+        text  = L("med_erm.case.reason", { text = text }),
+        label = L("med_erm.case.close_case_2"),
         action = function() Tablet.send("erm:closeCase", text) end,
     }
 end)
 
 local function askLeave(t)
     Tablet.confirm = {
-        title = string.format("Leave case #%d?", t.id),
-        text  = "Your unit will be released from the case. The other units stay on it.",
-        label = "Leave Case",
+        title = L("med_erm.case.leave_case", { id = t.id }),
+        text  = L("med_erm.case.your_unit_will_be_released_from"),
+        label = L("med_erm.case.leave_case_2"),
         action = function() Tablet.send("erm:leaveCase") end,
     }
 end
@@ -67,12 +68,12 @@ function Pages.case.draw(x, y, w, h)
     local ix, iw = x + pad, w - pad * 2
 
     if not t then
-        Gfx.text("Active Case", ix, y + s(14), iw, s(26), Theme.text, Gfx.font(15, true))
+        Gfx.text(L("med_erm.case.active_case"), ix, y + s(14), iw, s(26), Theme.text, Gfx.font(15, true))
         local cy = y + h / 2 - s(30)
         dxDrawCircle(x + w / 2, cy - s(14), s(22), 0, 360, Theme.panel, Theme.panel, 24)
         Gfx.cross(x + w / 2 - s(9), cy - s(23), s(18), Theme.faint)
-        Gfx.text("No active case", x, cy + s(16), w, s(24), Theme.text, Gfx.font(12, true), "center")
-        Gfx.text("You will be notified when dispatch assigns a case to your unit.", x + s(30), cy + s(40), w - s(60), s(20), Theme.dim, Gfx.font(9), "center")
+        Gfx.text(L("med_erm.case.no_active_case"), x, cy + s(16), w, s(24), Theme.text, Gfx.font(12, true), "center")
+        Gfx.text(L("med_erm.case.you_will_be_notified_when_dispatch"), x + s(30), cy + s(40), w - s(60), s(20), Theme.dim, Gfx.font(9), "center")
         return
     end
 
@@ -90,9 +91,9 @@ function Pages.case.draw(x, y, w, h)
     local cw = iw / 3
     local units = {}
     for _, tu in ipairs(t.units) do units[#units + 1] = tu.callsign end
-    info("RECEIVED", string.format("%s  (%s ago)", State.formatClock(t.createdAt), State.formatDuration(now - t.createdAt)), ix, cy, cw - s(10))
-    info("CALLER", t.caller ~= "" and t.caller or "-", ix + cw, cy, cw - s(10))
-    info("UNITS", table.concat(units, ", "), ix + cw * 2, cy, cw)
+    info(L("med_erm.case.received"), L("med_erm.case.ago", { created_at = State.formatClock(t.createdAt), created_at2 = State.formatDuration(now - t.createdAt) }), ix, cy, cw - s(10))
+    info(L("med_erm.detail.caller"), t.caller ~= "" and t.caller or "-", ix + cw, cy, cw - s(10))
+    info(L("med_erm.case.units"), table.concat(units, ", "), ix + cw * 2, cy, cw)
 
     -- description
     cy = cy + s(46)
@@ -100,7 +101,7 @@ function Pages.case.draw(x, y, w, h)
     local descH = y + h - cy - btnH - s(58)
     Gfx.round(ix, cy, iw, descH, s(8), Theme.panel)
     local font = Gfx.font(10)
-    local lines = Gfx.wrap(t.description ~= "" and t.description or "No description.", iw - s(24), font)
+    local lines = Gfx.wrap(t.description ~= "" and t.description or L("med_erm.detail.no_description"), iw - s(24), font)
     local lh = dxGetFontHeight(1, font) + s(2)
     local maxLines = math.floor((descH - s(16)) / lh)
     for i = 1, math.min(#lines, maxLines) do
@@ -112,16 +113,16 @@ function Pages.case.draw(x, y, w, h)
     -- response state line
     local ly = cy + descH + s(8)
     if u.status == "handover" then
-        Gfx.text(u.handoverEnds > 0 and string.format("●  Handover in progress - %d s", math.max(0, u.handoverEnds - now))
-            or "●  Handover in progress",
+        Gfx.text(u.handoverEnds > 0 and L("med_erm.case.handover_in_progress_s", { now = math.max(0, u.handoverEnds - now) })
+            or L("med_erm.case.handover_in_progress"),
             ix, ly, iw, s(30), Gfx.rgb(Config.STATUS.handover.color), Gfx.font(10, true))
     elseif u.responding then
-        Gfx.text("●  Lights & siren active - " .. State.formatDuration(now - u.responseFrom),
+        Gfx.text(L("med_erm.case.lights_siren_active", { response_from = State.formatDuration(now - u.responseFrom) }),
             ix, ly, iw, s(30), Gfx.rgb(Config.STATUS.enroute.color), Gfx.font(10, true))
     elseif u.reachedScene then
-        Gfx.text("●  On scene", ix, ly, iw, s(30), Gfx.rgb(Config.STATUS.onscene.color), Gfx.font(10, true))
+        Gfx.text(L("med_erm.case.on_scene"), ix, ly, iw, s(30), Gfx.rgb(Config.STATUS.onscene.color), Gfx.font(10, true))
     else
-        Gfx.text("●  Awaiting response", ix, ly, iw, s(30), Theme.faint, Gfx.font(10, true))
+        Gfx.text(L("med_erm.case.awaiting_response"), ix, ly, iw, s(30), Theme.faint, Gfx.font(10, true))
     end
 
     -- buttons
@@ -130,13 +131,13 @@ function Pages.case.draw(x, y, w, h)
     local bw = (iw - gap * 3) / 4
     local handover = u.status == "handover"
     local buttons = {
-        { "Start Response", Config.STATUS.enroute.color, not u.responding and not handover,
+        { L("med_erm.case.start_response"), Config.STATUS.enroute.color, not u.responding and not handover,
             function() Tablet.send("erm:caseAction", "start") end },
-        { "End Response", { 84, 94, 108 }, u.responding,
+        { L("med_erm.case.end_response"), { 84, 94, 108 }, u.responding,
             function() Tablet.send("erm:caseAction", "stop") end },
-        { "Leave Case", { 48, 56, 66 }, #t.units > 1 and not handover,
+        { L("med_erm.case.leave_case_2"), { 48, 56, 66 }, #t.units > 1 and not handover,
             function() askLeave(t) end },
-        { "Close Case", { 200, 50, 45 }, not handover,
+        { L("med_erm.case.close_case_2"), { 200, 50, 45 }, not handover,
             function() askCloseReason(t) end },
     }
     for i, b in ipairs(buttons) do

@@ -3,10 +3,12 @@
     <min_mta_version server="1.5.8" client="1.5.8" />
 
     <!-- world menus on the stretcher and the ambulance -->
+    <include resource="v_locals" />
     <include resource="ui_interactobject" />
     <!-- medic role check (MEDIC.REQUIRE_MEDIC_ROLE) -->
     <include resource="medsys" />
 
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="shared/util.lua" type="shared" />
 

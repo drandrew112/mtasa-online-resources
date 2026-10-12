@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Securing a splint: a needle sweeps back and forth across a gauge. Press SPACE while it is
 -- inside the centre window to cinch a wrap. No time pressure beyond the overall timer - wait for
 -- the next pass if you miss. The game ends after `count` presses; it is won when the hit ratio is
@@ -177,15 +178,15 @@ local function drawHud(now, t)
     local playing = t >= 0
     local y = GAUGE_Y - PIP_SIZE - 18 * scale - 54 * scale
 
-    dxDrawText(("Wraps secured: %d / %d"):format(g.judged, g.total), 0, y, screenW, y,
+    dxDrawText(L("mg_splinting.client.wraps_secured", { judged = g.judged, total = g.total }), 0, y, screenW, y,
         tocolor(220, 220, 220, 220), 1.15 * scale, "default-bold", "center", "center")
 
     if playing and not g.resultTick then
-        dxDrawText(("Press %s when the needle is in the green zone"):format(SPLINT.KEY:upper()),
+        dxDrawText(L("mg_splinting.client.press_when_needle_is_in_green", { key = SPLINT.KEY:upper() }),
             0, y + 28 * scale, screenW, y + 28 * scale, tocolor(200, 200, 200, 200), 1.0 * scale,
             "default-bold", "center", "center")
         local timeLeft = math.max(0, g.options.time - t)
-        dxDrawText(("%.1f s"):format(timeLeft), 0, GAUGE_Y + GAUGE_H + 10 * scale, screenW,
+        dxDrawText(L("common.time_left_s", { time_left = timeLeft }), 0, GAUGE_Y + GAUGE_H + 10 * scale, screenW,
             GAUGE_Y + GAUGE_H + 10 * scale, tocolor(255, 255, 255, 200), 1.05 * scale, "default-bold", "center")
     end
 
@@ -218,7 +219,7 @@ render = function()
         local cy = GAUGE_Y - 220 * scale
         shadowText(tostring(n), 0, cy, screenW, cy, tocolor(255, 255, 255, 255 * (1 - k * 0.6)),
             (4 - k) * scale, "center", "center")
-        shadowText("Get ready", 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
+        shadowText(L("common.get_ready"), 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
             1.4 * scale, "center", "center")
     end
 

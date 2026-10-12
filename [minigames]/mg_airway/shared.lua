@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 AIRWAY = {
     DEFAULT_DIFFICULTY = "normal",
 
@@ -70,11 +71,11 @@ AIRWAY = {
 }
 
 AIRWAY_MISTAKES = {
-    teeth = "Chipped tooth",
-    trauma = "Airway trauma",
-    esophageal = "Oesophageal intubation",
-    bronchus = "Right mainstem intubation",
-    cuff = "Cuff overinflated",
+    teeth = L.text("mg_airway.shared.chipped_tooth"),
+    trauma = L.text("mg_airway.shared.airway_trauma"),
+    esophageal = L.text("mg_airway.shared.oesophageal_intubation"),
+    bronchus = L.text("mg_airway.shared.right_mainstem_intubation"),
+    cuff = L.text("mg_airway.shared.cuff_overinflated"),
 }
 
 -- Normalises the options table passed to startAirwayGame:

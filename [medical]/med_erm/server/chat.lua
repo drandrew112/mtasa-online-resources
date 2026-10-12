@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Dispatcher <-> unit messaging. Kept in memory only.
 --
 -- Channels:
@@ -28,28 +29,28 @@ end
 -- fromUnit: id of the sending unit (tablet), so its own messages show as SENT.
 function Chat.post(channel, target, from, fromDispatch, text, fromUnit)
     text = cleanText(text, 300)
-    if text == "" then return false, "Empty message" end
+    if text == "" then return false, L.msg("med_erm.chat.empty_message") end
 
     local recipients, label = {}, ""
     if channel == "broadcast" then
         for id in pairs(Units.list) do recipients[#recipients + 1] = id end
-        label = "Broadcast"
+        label = L.msg("med_erm.chat.broadcast")
         target = 0
     elseif channel == "unit" then
         local u = Units.get(target)
-        if not u then return false, "Unit not found" end
+        if not u then return false, L.msg("med_erm.chat.unit_not_found") end
         recipients = { u.id }
         label = u.callsign
         target = u.id
     elseif channel == "task" then
         local t = Tasks.get(target)
-        if not t then return false, "Task not found" end
-        if #t.units == 0 then return false, "No units assigned to this task" end
+        if not t then return false, L.msg("med_erm.admin.task_not_found") end
+        if #t.units == 0 then return false, L.msg("med_erm.chat.no_units_assigned_to_this_task") end
         recipients = { unpack(t.units) }
-        label = string.format("Case #%d", t.id)
+        label = L.msg("med_erm.messages.case", { id = t.id })
         target = t.id
     else
-        return false, "Unknown channel"
+        return false, L.msg("med_erm.chat.unknown_channel")
     end
 
     local ts = now()

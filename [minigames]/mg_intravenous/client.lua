@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- IV cannulation: aim the needle over the vein (mouse, with hand tremor), press LMB to puncture,
 -- hold LMB to advance until the tip and the cannula are inside the vein (flashback), release,
 -- then drag the needle back out slowly so only the cannula stays in the vein.
@@ -42,9 +43,9 @@ local COLOR_FAIL = { 230, 60, 60 }
 local COLOR_BLOOD = { 175, 20, 30 }
 
 local MISTAKES = {
-    missed = "Missed the vein",
-    through = "Went through the vein",
-    dislodged = "Pulled too fast - the cannula came out",
+    missed = L("mg_intravenous.client.missed_vein"),
+    through = L("mg_intravenous.client.went_through_vein"),
+    dislodged = L("mg_intravenous.client.pulled_too_fast_cannula_came_out"),
 }
 
 -- movement/combat controls disabled for the whole game (the mouse is used for the needle)
@@ -445,25 +446,25 @@ local function hintText()
     local g = game
     local state = g.state
     if state == "aim" then
-        return "Aim over the vein with the mouse, press LMB to puncture the skin", nil
+        return L("mg_intravenous.client.aim_over_vein_with_mouse_press"), nil
     elseif state == "push" then
         if g.flashback and g.holdTime == 0 and g.catheterDepth then
             local _, chord = currentChord()
             if inLumen(g.depth, chord) then
-                return "Flashback! Advance a little more so the cannula is in the vein too", COLOR_WARN
+                return L("mg_intravenous.client.flashback_advance_little_more_so_cannula"), COLOR_WARN
             end
         end
-        if g.flashback then return "Flashback! The needle tip is in the vein", COLOR_GOOD end
-        return "Hold LMB to advance the needle - release when blood appears in the chamber", nil
+        if g.flashback then return L("mg_intravenous.client.flashback_needle_tip_is_in_vein"), COLOR_GOOD end
+        return L("mg_intravenous.client.hold_lmb_to_advance_needle_release"), nil
     elseif state == "flash" then
-        return "Cannula in the vein", COLOR_GOOD
+        return L("mg_intravenous.client.cannula_in_vein"), COLOR_GOOD
     elseif state == "pull" then
-        return "Hold LMB and drag LEFT to withdraw the needle - slowly!", nil
+        return L("mg_intravenous.client.hold_lmb_and_drag_left_to"), nil
     elseif state == "retry" then
-        return MISTAKES[g.mistake] .. " - try again", COLOR_FAIL
+        return L("mg_intravenous.client.try_again", { mistake = MISTAKES[g.mistake] }), COLOR_FAIL
     elseif state == "result" then
-        if g.resultReason == "completed" then return "IV access secured", COLOR_GOOD end
-        return MISTAKES[g.resultReason] or "Out of time", COLOR_FAIL
+        if g.resultReason == "completed" then return L("mg_intravenous.client.iv_access_secured"), COLOR_GOOD end
+        return MISTAKES[g.resultReason] or L("mg_intravenous.client.out_of_time"), COLOR_FAIL
     end
     return "", nil
 end
@@ -480,12 +481,12 @@ local function drawPanel(now, t)
 
     -- header: hint + time left
     local hint, hintColor = hintText()
-    if not playing then hint, hintColor = "Get ready", nil end
+    if not playing then hint, hintColor = L("common.get_ready"), nil end
     dxDrawText(hint, x + PAD, y + 12 * scale, x + w - 120 * scale, y + 46 * scale,
         hintColor and rgba(hintColor) or tocolor(230, 230, 230, 230), 1.2 * scale, "default-bold", "left", "center",
         true)
     local timeLeft = playing and math.max(0, g.options.time - t) or g.options.time
-    dxDrawText(("%.1f s"):format(timeLeft), x, y + 12 * scale, x + w - PAD, y + 46 * scale,
+    dxDrawText(L("common.time_left_s", { time_left = timeLeft }), x, y + 12 * scale, x + w - PAD, y + 46 * scale,
         tocolor(255, 255, 255, 240), 1.3 * scale, "default-bold", "right", "center")
 
     -- the two views, clipped through render targets when available
@@ -507,24 +508,24 @@ local function drawPanel(now, t)
 
     local labelColor = tocolor(255, 255, 255, 200)
     local labelBottom = TOP_Y + 30 * scale
-    dxDrawText("TOP VIEW", TOP_X + 8 * scale, TOP_Y + 6 * scale, TOP_X + TOP_W, labelBottom, labelColor,
+    dxDrawText(L("mg_intravenous.client.top_view"), TOP_X + 8 * scale, TOP_Y + 6 * scale, TOP_X + TOP_W, labelBottom, labelColor,
         0.9 * scale, "default-bold")
-    dxDrawText("CROSS-SECTION", SEC_X + 8 * scale, SEC_Y + 6 * scale, SEC_X + SEC_W, labelBottom, labelColor,
+    dxDrawText(L("mg_intravenous.client.cross_section"), SEC_X + 8 * scale, SEC_Y + 6 * scale, SEC_X + SEC_W, labelBottom, labelColor,
         0.9 * scale, "default-bold")
-    dxDrawText(("Depth %.1f mm"):format(g.depth), SEC_X, SEC_Y + 6 * scale, SEC_X + SEC_W - 8 * scale, labelBottom,
+    dxDrawText(L("mg_intravenous.client.depth_mm", { depth = g.depth }), SEC_X, SEC_Y + 6 * scale, SEC_X + SEC_W - 8 * scale, labelBottom,
         labelColor, 0.9 * scale, "default-bold", "right")
 
     -- footer: attempts + withdraw bars
     local fy = TOP_Y + TOP_H + 14 * scale
-    dxDrawText(("Attempt %d / %d"):format(g.attempt, g.options.attempts), x + PAD, fy, x + w, fy + 60 * scale,
+    dxDrawText(L("mg_intravenous.client.attempt", { attempt = g.attempt, attempts = g.options.attempts }), x + PAD, fy, x + w, fy + 60 * scale,
         tocolor(200, 200, 200, 220), 1.1 * scale, "default-bold", "left", "center")
 
     if g.state == "pull" or (g.state == "result" and g.releaseDepth) then
         local bx, bw, bh = x + 260 * scale, 330 * scale, 12 * scale
         local by = fy + 34 * scale
-        drawBar(bx, by, bw, bh, g.retract / IV.NEEDLE_LENGTH, { 90, 170, 255 }, "Needle withdrawn")
+        drawBar(bx, by, bw, bh, g.retract / IV.NEEDLE_LENGTH, { 90, 170, 255 }, L("mg_intravenous.client.needle_withdrawn"))
         local stressColor = g.stress > 0.6 and COLOR_FAIL or (g.stress > 0.25 and COLOR_WARN or COLOR_GOOD)
-        drawBar(bx + bw + 30 * scale, by, bw, bh, g.stress, stressColor, "Cannula strain")
+        drawBar(bx + bw + 30 * scale, by, bw, bh, g.stress, stressColor, L("mg_intravenous.client.cannula_strain"))
     end
 end
 
@@ -557,7 +558,7 @@ render = function()
         local cy = PANEL_Y - 110 * scale
         shadowText(tostring(n), 0, cy, screenW, cy, tocolor(255, 255, 255, 255 * (1 - k * 0.6)),
             (4 - k) * scale, "center", "center")
-        shadowText("Get ready", 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
+        shadowText(L("common.get_ready"), 0, cy + 60 * scale, screenW, cy + 60 * scale, tocolor(220, 220, 220, 230),
             1.4 * scale, "center", "center")
     end
 
@@ -565,7 +566,7 @@ render = function()
         local elapsed = now - g.stateTick
         local k = math.min(1, elapsed / 250)
         local success = g.resultReason == "completed"
-        local text = success and ("SUCCESS  %d%%"):format(g.quality) or "FAILED"
+        local text = success and L("mg_intravenous.client.success", { quality = g.quality }) or L("mg_intravenous.client.failed")
         local ty = PANEL_Y - 70 * scale
         shadowText(text, 0, ty, screenW, ty, rgba(success and COLOR_GOOD or COLOR_FAIL, 255 * k),
             (2.4 + (1 - k)) * scale, "center", "center", k)

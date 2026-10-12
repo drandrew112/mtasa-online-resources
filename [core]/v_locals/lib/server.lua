@@ -46,6 +46,8 @@ do
     local B = LIB.backend
 
     LIB.langs = B.getLanguageInfo() or {}
+    -- mark this resource as a v_locals user (read by other libs, see usesLocals)
+    if not internal then setElementData(resourceRoot, "v_locals.consumer", true, false) end
 
     -- cache only outside v_locals (inside, the lookup is a direct table read)
     local playerLang = setmetatable({}, { __mode = "k" })
@@ -195,6 +197,26 @@ do
             return ok
         end
 
+        -- Stored / shared data gets text in the default language: a message
+        -- object has no receiver there (database, element data, JSON files).
+        local function plainArgs(orig)
+            return function(...)
+                local n = select("#", ...)
+                for i = 1, n do
+                    local a = select(i, ...)
+                    if type(a) == "table" and hasMsg(a, 1) then
+                        local args = { ... }
+                        for j = i, n do args[j] = resolveDeep(args[j], LIB.defaultLang, 1) end
+                        return orig(unpack(args, 1, n))
+                    end
+                end
+                return orig(...)
+            end
+        end
+        for _, fname in ipairs({ "dbExec", "dbQuery", "setElementData", "toJSON", "setAccountData" }) do
+            if type(_G[fname]) == "function" then _G[fname] = plainArgs(_G[fname]) end
+        end
+
         -- string.format("%s") and table.concat do not call __tostring: give them
         -- the text (default language) instead of failing on a message object
         local origFormat, origConcat = string.format, table.concat
@@ -231,6 +253,14 @@ do
 
     L.resolveDeep = function(v, who) return resolveDeep(v, langOf(who), 1) end
 
+    -- does a resource import v_locals? Every importing server lib marks its
+    -- resource root (element data "v_locals.consumer", not synced)
+    local function usesLocals(res)
+        if getResourceName(res) == "v_locals" then return true end
+        local rootEl = getResourceRootElement(res)
+        return rootEl and getElementData(rootEl, "v_locals.consumer") == true or false
+    end
+
     -- Results of exports.res:fn(...) get their message objects back as well
     -- (return false, L.msg(...) from another resource). Only the server wraps
     -- this: client render loops call exports every frame.
@@ -254,7 +284,17 @@ do
                         __index = function(_, fnName)
                             local f = res[fnName]
                             if type(f) ~= "function" then return f end
-                            return function(_, ...) return adoptAll(f(res, ...)) end
+                            return function(_, ...)
+                                -- a resource without v_locals gets plain text (v_mysql, web_api ...)
+                                local target = getResourceFromName(resName)
+                                if target and not usesLocals(target) then
+                                    local n = select("#", ...)
+                                    local args = { ... }
+                                    for i = 1, n do args[i] = resolveDeep(args[i], LIB.defaultLang, 1) end
+                                    return adoptAll(f(res, unpack(args, 1, n)))
+                                end
+                                return adoptAll(f(res, ...))
+                            end
                         end,
                     })
                     proxies[resName] = proxy
@@ -268,14 +308,22 @@ do
     -- objects. Every exported server function of the importing resource is
     -- wrapped once all its scripts ran, so the arguments it receives get their
     -- message objects back (concatenation / tostring keep working).
+    -- does a resource import v_locals (<include resource="v_locals"/>)? cached
+    local localsUsers = {}
+    -- callers that do not import v_locals (med_scenemanager, dev tools) get text
+    -- in the default language instead of message objects
+    local function plainResults(...)
+        local n = select("#", ...)
+        if n == 0 then return end
+        local out = { ... }
+        for i = 1, n do out[i] = resolveDeep(out[i], LIB.defaultLang, 1) end
+        return unpack(out, 1, n)
+    end
+
     if not internal then
         addEventHandler("onResourceStart", resourceRoot, function()
-            local xml = xmlLoadFile("meta.xml")
-            if not xml then return end
-            for _, node in ipairs(xmlNodeGetChildren(xml)) do
-                local name, typ = xmlNodeGetAttribute(node, "function"), xmlNodeGetAttribute(node, "type")
-                if xmlNodeGetName(node) == "export" and name and (typ == false or typ == "server" or typ == "shared")
-                        and type(_G[name]) == "function" then
+            for _, name in ipairs(getResourceExportedFunctions(getThisResource()) or {}) do
+                if type(_G[name]) == "function" then
                     local orig = _G[name]
                     _G[name] = function(...)
                         local n = select("#", ...)
@@ -283,11 +331,14 @@ do
                             local a = select(i, ...)
                             if type(a) == "table" then C.adopt(a) end
                         end
+                        local caller = sourceResource
+                        if caller and caller ~= getThisResource() and not usesLocals(caller) then
+                            return plainResults(orig(...))
+                        end
                         return orig(...)
                     end
                 end
             end
-            xmlUnloadFile(xml)
         end, false, "high+9")
     end
 

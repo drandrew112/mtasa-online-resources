@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Left-behind watch. Every BAG.WATCH_INTERVAL an item lying on the ground is "left behind" when
 -- no medic is near it and its ambulance is far away (or driving away). The crew is warned (repeated
 -- every BAG.WARN_REPEAT s) and sees a blip on the item; after BAG.ABANDON_TIME s it is returned to
@@ -42,7 +43,7 @@ function getKitCrew(kit)
 end
 
 function notifyCrew(kit, text, alert)
-    for _, player in ipairs(getKitCrew(kit)) do notify(player, text, "EMS equipment", alert) end
+    for _, player in ipairs(getKitCrew(kit)) do notify(player, text, L.msg("med_bag.kits.ems_equipment"), alert) end
 end
 
 -- ---------------------------------------------------------------------------------------------
@@ -122,8 +123,7 @@ local function watch()
                     removeBlip(item)
                     item.leftTick, item.warnTick = nil, nil
                     returnItemToVehicle(item, true)
-                    notifyCrew(kit, ("%s was recovered by dispatch and returned to %s%s."):format(
-                        bagItemName(kind), kitLabel(kit), kind == "bag" and " - EMPTY, restock it at a hospital" or ""), true)
+                    notifyCrew(kit, L.msg("med_bag.watch.was_recovered_by_dispatch_and_returned", { kind = bagItemName(kind), kit = kitLabel(kit), kind2 = kind == "bag" and L.msg("med_bag.watch.empty_restock_it_at_hospital") or "" }), true)
                 else
                     showBlip(item, crew)
                     if not item.warnTick or now - item.warnTick >= BAG.WARN_REPEAT * 1000 then
@@ -137,7 +137,7 @@ local function watch()
             end
         end
         if #leftNames > 0 then
-            notifyCrew(kit, ("Equipment left at the scene: %s. Go back for it."):format(table.concat(leftNames, ", ")), true)
+            notifyCrew(kit, L.msg("med_bag.watch.equipment_left_at_scene_go_back", { left_names = table.concat(leftNames, ", ") }), true)
         end
         updateMissing(kit)
     end
@@ -157,7 +157,7 @@ function updateMissing(kit)
         kit.missingText = text
         if text then
             setElementData(kit.anchor, BAG_DATA.MISSING, text)
-            notifyCrew(kit, "Equipment missing from " .. kitLabel(kit) .. ": " .. text .. ".", true)
+            notifyCrew(kit, L.msg("med_bag.watch.equipment_missing_from", { kit = kitLabel(kit), text = text }), true)
         else
             removeElementData(kit.anchor, BAG_DATA.MISSING)
         end
