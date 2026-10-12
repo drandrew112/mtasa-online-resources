@@ -97,7 +97,8 @@ SF `GARCI1A/1D`, LV `GARCI2A/2D`). Written as `VINEW1A 27R` (STAR + runway), `VI
 - Alerts (any aircraft): red text above the label frame and a red frame. `EMRG` = squawk 7700,
   `COMS` = squawk 7600, `DUPE` = another aircraft has the same squawk, `STCA` = separation lost, `RAM` = off the cleared route (more than 90° off the
   next point for 40 s while on own navigation; should never happen). `/avitraffic sqk <cs> <code>` sets a squawk.
-- Separation (avi_traffic `alerts.lua`, fined once per pair, on every staffed controller of the two aircraft;
+- Separation (avi_traffic `alerts.lua`, fined once per pair, on every staffed controller of the two aircraft whose own
+  sector it happened in (an aircraft controlled outside the controller's sector after an early transfer is not fined);
   the sum is the `Mistakes` item of the pay, a negative total is taken from the bank):
   ground head-on (60 m, facing each other) -€300; TMA / CTA closer than 0.1 nm and 1000 ft -€500.
   Amounts: `CTL.PENALTY`, distances: `TR.SEP_*`.

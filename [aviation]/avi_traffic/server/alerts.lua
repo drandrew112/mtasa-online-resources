@@ -5,7 +5,9 @@
 --   STCA  separation lost (rules below)
 --   RAM   route deviation: off the cleared route (heading to the next point more than
 --         TR.RAM_ANGLE off for TR.RAM_TIME s) while flying its own navigation. Should never happen.
--- Separation rules (each loss is fined once per pair, on the controllers of both aircraft):
+-- Separation rules (each loss is fined once per pair, on the controllers of both aircraft, but only when it
+-- happened in that controller's own sector: an aircraft handed over early, e.g. CNU controlling one still
+-- in the CSU sector, does not cost CNU anything):
 --   GND  two ground aircraft head-on (facing each other, close, on the same line)
 --   TMA  closer than TR.SEP_AIR_DIST (horizontal) and TR.SEP_AIR_VERT (vertical) in a TMA
 --   CTA  the same in the CTA
@@ -83,7 +85,9 @@ function updateAlerts(dt)
                 if not c then
                     local pos, seen = {}, {}
                     for _, ac in ipairs({ a, b }) do
-                        if ac.ctl and not seen[ac.ctl] then seen[ac.ctl] = true; pos[#pos + 1] = ac.ctl end
+                        if ac.ctl and not seen[ac.ctl] and sectorPosition(ac) == ac.ctl then
+                            seen[ac.ctl] = true; pos[#pos + 1] = ac.ctl
+                        end
                     end
                     triggerEvent("onAviSeparationLoss", resourceRoot, kind, pos, a.cs, b.cs)
                     if #pos > 0 then
