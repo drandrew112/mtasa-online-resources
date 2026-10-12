@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Debug drawing of the network: /rwnet toggles it, /rwnet pts also shows the control points.
 -- Centre lines coloured by kind, a chevron every 25 m pointing towards the segment's b end,
 -- labels (segment + s every 50 m, nodes), switch legs (green = set, red = not set), and a
@@ -151,7 +152,7 @@ addCommandHandler(D.CMD, function(_, arg)
         enabled = not enabled
     end
     lastBuild = 0
-    outputChatBox("[SLR] Pálya debug: " .. (enabled and "be" or "ki") .. (showPts and " (kontrollpontok)" or ""), 120, 200, 255)
+    outputChatBox(L("rw_customtracks.debugdraw.track_debug", { state = enabled and L("rw_customtracks.debugdraw.on") or L("rw_customtracks.debugdraw.off"), points = showPts and L("rw_customtracks.debugdraw.points") or "" }), 120, 200, 255)
 end)
 
 addEventHandler("rw:net:onClientNetworkReady", resourceRoot, function() lastBuild = 0 end)

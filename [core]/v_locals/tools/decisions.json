@@ -369,6 +369,21 @@
     "v_jobcreator.menus.objects": "Objects",
     "v_jobcreator.menus.objects_placed": "{count} / {max} placed  ·  click an object to edit it",
     "v_jobcreator.menus.has_photo": "Has a photo",
-    "v_jobcreator.menus.no_photo_yet": "No photo yet"
+    "v_jobcreator.menus.no_photo_yet": "No photo yet",
+    "shader_colors.api.be": "ON",
+    "shader_colors.api.ki": "OFF",
+    "rw_core.role.vasutas_jog": "[{company_short}] Railway rights {enable}: {who}",
+    "rw_core.role.granted": "granted",
+    "rw_core.log.all": "all",
+    "rw_customtracks.network.not_allowed": "[SLR] You are not allowed to do this.",
+    "rw_customtracks.network.unknown_switch": "[SLR] Unknown switch: {group}",
+    "rw_customtracks.network.check_summary": "[SLR] Network: {errors|int} errors, {warnings|int} warnings (details in the debug log)",
+    "rw_customtracks.network.reloaded": "[SLR] Network reloaded.",
+    "rw_customtracks.debugdraw.track_debug": "[SLR] Track debug: {state}{points}",
+    "rw_customtracks.debugdraw.on": "on",
+    "rw_customtracks.debugdraw.off": "off",
+    "rw_customtracks.debugdraw.points": " (control points)",
+    "shader_markers.client.marker_shader_be": "Marker shader: ON",
+    "shader_markers.client.marker_shader_ki": "Marker shader: OFF"
   }
 }

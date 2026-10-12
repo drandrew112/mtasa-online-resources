@@ -1,5 +1,5 @@
 {
-  "shader_markers.client.marker_shader_be": "Marker shader: BE",
-  "shader_markers.client.marker_shader_ki": "Marker shader: KI",
+  "shader_markers.client.marker_shader_be": "Marker shader: ON",
+  "shader_markers.client.marker_shader_ki": "Marker shader: OFF",
   "shader_markers.client.marker_shader_not_supported": "Marker shader: not supported"
 }

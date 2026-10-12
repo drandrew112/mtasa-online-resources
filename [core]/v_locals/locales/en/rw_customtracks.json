@@ -1,5 +1,13 @@
 {
   "rw_customtracks.config.passenger_coach": "Passenger coach",
+  "rw_customtracks.debugdraw.off": "off",
+  "rw_customtracks.debugdraw.on": "on",
+  "rw_customtracks.debugdraw.points": " (control points)",
+  "rw_customtracks.debugdraw.track_debug": "[SLR] Track debug: {state}{points}",
+  "rw_customtracks.network.check_summary": "[SLR] Network: {errors|int} errors, {warnings|int} warnings (details in the debug log)",
+  "rw_customtracks.network.not_allowed": "[SLR] You are not allowed to do this.",
+  "rw_customtracks.network.reloaded": "[SLR] Network reloaded.",
+  "rw_customtracks.network.unknown_switch": "[SLR] Unknown switch: {group}",
   "rw_customtracks.switches.damaged": "{g}: damaged",
   "rw_customtracks.switches.end_of_track": "end of track",
   "rw_customtracks.switches.no_such_switch": "{g}: no such switch",

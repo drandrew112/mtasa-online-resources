@@ -87,8 +87,8 @@ addCommandHandler("rwrole", function(player, _, name, state)
     else enable = not isPlayerRailway(target) end
     setPlayerRailway(target, enable)
     local who = getPlayerName(target):gsub("#%x%x%x%x%x%x", "")
-    outputChatBox(L.msg("rw_core.role.vasutas_jog", { company_short = RW.COMPANY_SHORT, enable = enable and "megadva" or L.msg("rw_core.role.revoked"), who = who }), player, 120, 200, 255)
+    outputChatBox(L.msg("rw_core.role.vasutas_jog", { company_short = RW.COMPANY_SHORT, enable = enable and L.msg("rw_core.role.granted") or L.msg("rw_core.role.revoked"), who = who }), player, 120, 200, 255)
     if target ~= player then
-        outputChatBox(L.msg("rw_core.role.your_railway_rights_were", { company_short = RW.COMPANY_SHORT, enable = enable and "lett" or L.msg("rw_core.role.revoked") }), target, 120, 200, 255)
+        outputChatBox(L.msg("rw_core.role.your_railway_rights_were", { company_short = RW.COMPANY_SHORT, enable = enable and L.msg("rw_core.role.granted") or L.msg("rw_core.role.revoked") }), target, 120, 200, 255)
     end
 end)

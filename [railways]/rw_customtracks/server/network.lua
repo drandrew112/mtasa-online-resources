@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Network data on the server: loads the files of the manifest, builds the network, sends the raw
 -- data to every client, and offers the edit / query exports (MCP, editor). Edits are applied in
 -- memory, rebuilt and broadcast at once; netSave() writes them back to their files.
@@ -386,8 +387,8 @@ end
 -- /rwnetswitch <group> [normal|reverse]
 -- /rwnetswitch <group> [normal|reverse] [force]   (debug: the system throws the switches itself)
 addCommandHandler("rwnetswitch", function(p, _, group, state, force)
-    if not isAdmin(p) then return outputChatBox("[SLR] Nincs jogod ehhez.", p, 255, 80, 80) end
-    if not group or not Net.group(group) then return outputChatBox("[SLR] Ismeretlen váltó: " .. tostring(group), p, 255, 80, 80) end
+    if not isAdmin(p) then return outputChatBox(L.msg("rw_customtracks.network.not_allowed"), p, 255, 80, 80) end
+    if not group or not Net.group(group) then return outputChatBox(L.msg("rw_customtracks.network.unknown_switch", { group = tostring(group) }), p, 255, 80, 80) end
     if state == "force" then state, force = nil, "force" end
     state = state or (Net.getState(group) == "normal" and "reverse" or "normal")
     local ok, err = netSetSwitch(group, state, force == "force")
@@ -397,9 +398,9 @@ end)
 
 -- /rwnetcheck : validation summary
 addCommandHandler("rwnetcheck", function(p)
-    if not isAdmin(p) then return outputChatBox("[SLR] Nincs jogod ehhez.", p, 255, 80, 80) end
+    if not isAdmin(p) then return outputChatBox(L.msg("rw_customtracks.network.not_allowed"), p, 255, 80, 80) end
     local r = netValidate()
-    outputChatBox(string.format("[SLR] Hálózat: %d hiba, %d figyelmeztetés (részletek a debug logban)", r.errors, r.warnings), p, 120, 200, 255)
+    outputChatBox(L.msg("rw_customtracks.network.check_summary", { errors = r.errors, warnings = r.warnings }), p, 120, 200, 255)
     for _, i in ipairs(r.issues) do
         if i.level ~= "info" then log("%s %s %s: %s", i.level, i.code, i.ref or "", i.msg) end
     end
@@ -407,7 +408,7 @@ end)
 
 -- /rwnetreload : reload the files (drops unsaved edits)
 addCommandHandler("rwnetreload", function(p)
-    if not isAdmin(p) then return outputChatBox("[SLR] Nincs jogod ehhez.", p, 255, 80, 80) end
+    if not isAdmin(p) then return outputChatBox(L.msg("rw_customtracks.network.not_allowed"), p, 255, 80, 80) end
     netReload()
-    outputChatBox("[SLR] Hálózat újratöltve.", p, 120, 200, 255)
+    outputChatBox(L.msg("rw_customtracks.network.reloaded"), p, 120, 200, 255)
 end)

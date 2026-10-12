@@ -403,7 +403,7 @@ addCommandHandler(LOGC.CMD, function(player, _, a, b)
     elseif LOGC.CATEGORIES[filter] ~= nil then opts.category = filter
     else opts.match = filter end
     local list = getRailLog(opts)
-    outputChatBox(L.msg("rw_core.log.railway_log_entries", { company_short = RW.COMPANY_SHORT, filter = filter or "minden", list = #list }), player, 120, 200, 255)
+    outputChatBox(L.msg("rw_core.log.railway_log_entries", { company_short = RW.COMPANY_SHORT, filter = filter or L.msg("rw_core.log.all"), list = #list }), player, 120, 200, 255)
     for _, e in ipairs(list) do
         local col = COLORS[e.level] or COLORS.info
         outputChatBox(("%s %s %s%s"):format(e.time, e.cat, e.tag and ("[" .. e.tag .. "] ") or "", e.text), player, col[1], col[2], col[3])
