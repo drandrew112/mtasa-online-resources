@@ -52,6 +52,8 @@
   "rw_timetable.services.service_not_started_in_time": "service not started in time",
   "rw_timetable.services.service_to_started_have_good_trip": "Service {number} to {name} started. Have a good trip!",
   "rw_timetable.services.service_was_not_started_in_time": "Service {number} was not started in time - cancelled, the train is removed.",
+  "rw_timetable.services.side.left": "left",
+  "rw_timetable.services.side.right": "right",
   "rw_timetable.services.train_already_runs_service": "the train already runs a service",
   "rw_timetable.services.train_is_moving": "the train is moving",
   "rw_timetable.services.unknown_trip": "unknown trip"

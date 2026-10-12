@@ -1,0 +1,6 @@
+{
+  "medsys_effects.config.clinical_death": "KLINIKAI HALÁL",
+  "medsys_effects.config.unconscious": "ÁJULT",
+  "medsys_effects.config.you_passed_out_wait_for_medical": "Elájultál. Várj orvosi segítségre.",
+  "medsys_effects.config.your_heart_has_stopped_resuscitation_window": "A szíved megállt. Újraélesztési időablak: %02d:%02d"
+}

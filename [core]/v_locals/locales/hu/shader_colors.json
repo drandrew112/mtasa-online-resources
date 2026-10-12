@@ -1,0 +1,21 @@
+{
+  "shader_colors.api.be": "BE",
+  "shader_colors.api.color_grading": "#3fa9f5[Color grading] #ffffff",
+  "shader_colors.api.intensity_not_saved": "{prefix}Intenzitás: {intensity}% (nincs mentve)",
+  "shader_colors.api.ki": "KI",
+  "shader_colors.api.preset_not_saved": "{prefix}Előbeállítás: {arg} (nincs mentve)",
+  "shader_colors.api.split_view": "{prefix}Osztott nézet: {split}",
+  "shader_colors.api.status_preset_intensity_technique_night_override": "Állapot: {status} | Előbeállítás: {preset} | Intenzitás: {intensity|int}% | Technika: {technique} | Éjszaka: {night_weight|2f} | Felülírás: {n|int}",
+  "shader_colors.api.unknown_parameter": "{prefix}Ismeretlen paraméter: {arg}",
+  "shader_colors.api.usage_colorgrade_split_info_off_natural": "{prefix}Használat: /colorgrade [split | info | off/natural/vivid/cinematic/warm/cold | 0-100]",
+  "shader_colors.main.graded": "SZÍNKORRIGÁLT",
+  "shader_colors.main.not_enough_free_video_memory_so": "Nincs elég szabad videómemória, ezért a színkorrekció ki lett kapcsolva. Újra megpróbálja, ha módosítasz egy grafikai beállítást.",
+  "shader_colors.main.original": "EREDETI",
+  "shader_colors.main.your_graphics_card_does_not_support": "A videókártyád nem támogatja a színkorrekciót, ezért ki lett kapcsolva.",
+  "shader_colors.presets.cinematic": "Filmes",
+  "shader_colors.presets.cold": "Hideg",
+  "shader_colors.presets.natural": "Természetes",
+  "shader_colors.presets.off": "Ki",
+  "shader_colors.presets.vivid": "Élénk",
+  "shader_colors.presets.warm": "Meleg"
+}

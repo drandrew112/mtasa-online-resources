@@ -1,0 +1,44 @@
+FreeV - Szerverszabályok
+
+A szerveren való játékkal elfogadod az alábbi szabályokat. Megszegésük figyelmeztetést, némítást, admin börtönt vagy kitiltást vonhat maga után, a súlyosságtól függően. Az adminok eseti alapon döntenek.
+
+1. Tisztelet
+- Bánj tisztelettel a többi játékossal. Tilos a sértegetés, zaklatás, fenyegetés, rasszizmus, szexizmus vagy bármilyen gyűlöletbeszéd - a chaten, privát üzenetben, crew nevekben vagy bárhol máshol.
+- Ne spameld a chatet, és ne reklámozz más szervereket vagy szolgáltatásokat.
+- Ne add ki magad adminnak vagy más játékosnak.
+
+2. Fair play
+- Tilos a csalás, hack, trainer, makró vagy bármilyen mod, ami előnyt ad a többi játékossal szemben.
+- Ne használj ki hibákat vagy glitcheket. Ha találsz egyet, jelentsd egy adminnak.
+- Ne használj több fiókot előny szerzésére (pénz, XP, tárgyak).
+
+3. Ölés és erőszak
+- Ne ölj meg más játékosokat ok nélkül nyilvános helyeken.
+- Ne támadj meg AFK játékosokat, a bevezetőben lévőket vagy menüben lévőket.
+- Ne ölj meg játékosokat újra és újra közvetlenül az újraéledésük után.
+- A saját szabályokkal rendelkező tevékenységekre (versenyek, deathmatchek, Arena War) ezek a szabályok vonatkoznak.
+
+4. Jobok és sürgősségi szolgálatok
+- A sürgősségi munkában szolgálatban lévő játékosok (például EMS) nem célpontok. Hagyd őket dolgozni.
+- A munkajárműveket és munkaeszközöket ne használd másra, mint a munkára.
+- Ne torlaszolj el szándékosan kórházakat, állomásokat vagy munkahelyeket.
+
+5. Járművek
+- Ne ütközz, ne torlaszolj el és ne rongálj meg más játékosok járműveit ok nélkül.
+- Ne parkolj úgy, hogy elzárd az utakat, bejáratokat vagy markereket.
+
+6. Pénz és kereskedelem
+- Ne csapj be más játékosokat. A játékosok közötti megállapodásokat be kell tartani.
+- Játékbeli pénz, tárgyak vagy fiókok valódi pénzért való eladása vagy vétele tilos.
+
+7. Nevek és crew-k
+- A játékosnevek, crew nevek és crew tagek nem lehetnek sértőek vagy félrevezetőek.
+
+8. Adminok és bejelentések
+- Ha valaki megszegi a szabályokat, használd a /report parancsot. Írd le, mi történt, ki tette és mikor.
+- Kövesd az adminok utasításait. Ha nem értesz egyet egy döntéssel, beszélj nyugodtan az adminnal, vagy keresd a szerver csapatát a Discordon.
+- Ne élj vissza a bejelentési rendszerrel.
+
+A szabályok változhatnak. Ha változnak, újra meg fogják kérni, hogy olvasd el és fogadd el őket.
+
+Jó szórakozást!

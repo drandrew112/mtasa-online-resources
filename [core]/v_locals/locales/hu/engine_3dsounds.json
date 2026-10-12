@@ -1,0 +1,7 @@
+{
+  "engine_3dsounds.effects.clear": "SZABAD",
+  "engine_3dsounds.effects.occluded": "ELTAKARVA",
+  "engine_3dsounds.effects.off_stream": "KI (STREAM)",
+  "engine_3dsounds.effects.out_of_range": "HATÓTÁVOLSÁGON KÍVÜL",
+  "engine_3dsounds.effects.registered_3d_sounds": "Regisztrált 3D hangok: {registered_count}"
+}

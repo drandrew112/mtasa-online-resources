@@ -1,0 +1,9 @@
+{
+  "v_joinquit.joinquit.player_got_banned": "A játékos ki lett tiltva",
+  "v_joinquit.joinquit.player_got_kicked": "A játékos ki lett rúgva",
+  "v_joinquit.joinquit.player_joined": "A játékos csatlakozott",
+  "v_joinquit.joinquit.player_left": "A játékos kilépett",
+  "v_joinquit.joinquit.player_needs_better_computer_or_internet": "A játékosnak jobb számítógép vagy internet kell",
+  "v_joinquit.joinquit.player_should_pay_for_their_internet": "A játékosnak ki kellene fizetnie az internetét",
+  "v_joinquit.joinquit.player_swallowed_by_black_hole": "A játékost elnyelte egy fekete lyuk"
+}

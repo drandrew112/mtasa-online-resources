@@ -1,0 +1,21 @@
+{
+  "medsys_events.config.blunt_trauma": "Tompa sérülés",
+  "medsys_events.config.cut_stab_wound": "Vágott / szúrt seb",
+  "medsys_events.config.drowning": "Fulladás",
+  "medsys_events.config.explosion": "Robbanás",
+  "medsys_events.config.fall": "Esés",
+  "medsys_events.config.fire": "Tűz",
+  "medsys_events.config.gunshot": "Lövés",
+  "medsys_events.config.head": "Fej",
+  "medsys_events.config.hit_by_vehicle": "Járműbe ütközés",
+  "medsys_events.config.left_arm": "Bal kar",
+  "medsys_events.config.left_leg": "Bal láb",
+  "medsys_events.config.pelvis": "Medence",
+  "medsys_events.config.punch": "Ütés",
+  "medsys_events.config.punched_hard_surface": "Kemény felületbe ütött",
+  "medsys_events.config.right_arm": "Jobb kar",
+  "medsys_events.config.right_leg": "Jobb láb",
+  "medsys_events.config.tear_gas": "Könnygáz",
+  "medsys_events.config.torso": "Törzs",
+  "medsys_events.config.vehicle_crash": "Járműbaleset"
+}

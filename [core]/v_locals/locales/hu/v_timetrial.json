@@ -1,0 +1,19 @@
+{
+  "v_timetrial.timetrial.good_luck": "Sok sikert!",
+  "v_timetrial.timetrial.land_vehicle_required": "Szárazföldi jármű szükséges",
+  "v_timetrial.timetrial.no_reward": "nincs jutalom",
+  "v_timetrial.timetrial.out_of_time": "Lejárt az idő",
+  "v_timetrial.timetrial.press_e_to_start": "Nyomd meg az  E  gombot az indításhoz",
+  "v_timetrial.timetrial.reward": "Jutalom: €{reward}",
+  "v_timetrial.timetrial.sec": "{time} mp   -   {reward}",
+  "v_timetrial.timetrial.step_into_marker_to_start": "Lépj a markerbe az indításhoz",
+  "v_timetrial.timetrial.test_run_no_reward": "Tesztfutam - nincs jutalom",
+  "v_timetrial.timetrial.time_trial": "IDŐFUTAM",
+  "v_timetrial.timetrial.time_trial_completed": "IDŐFUTAM TELJESÍTVE",
+  "v_timetrial.timetrial.time_trial_failed": "IDŐFUTAM SIKERTELEN",
+  "v_timetrial.timetrial.time_trial_started": "IDŐFUTAM ELINDULT",
+  "v_timetrial.timetrial.time_trial_test": "IDŐFUTAM TESZT",
+  "v_timetrial.timetrial.time_trial_test_2": "IDŐFUTAM  -  TESZT",
+  "v_timetrial.timetrial.time_trial_test_stopped": "Az időfutam teszt leállítva",
+  "v_timetrial.timetrial.tt": "TT"
+}

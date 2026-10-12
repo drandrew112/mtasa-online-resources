@@ -1,0 +1,13 @@
+{
+  "v_arenawar.gamemanager.arena_war_script_is_stopping_or": "Az Arena War script leáll vagy újraindul.",
+  "v_arenawar.hud.your_vehicle": "A járműved",
+  "v_arenawar.interface.arenawar_is_vehicle_deathmatch_fought_inside": "Az ArenaWar egy járműves deathmatch, amelyet egyetlen arénában vívnak. Véletlenszerű járművet kapsz izomautók, buggyk és terepjárók közül, és a meccs indulása után nem hagyhatod el az ülésed - ez tiszta jármű a jármű ellen harc. Használd ki a terepet, és döngöld az ellenfeleidet (az ütközések itt extra sebzést okoznak), hogy tönkretedd az autójukat, mielőtt ők teszik tönkre a tiédet. Ha a járműved megsemmisül, kiesel: egy rövid 5 másodperces visszaszámlálás után újra beszállhatsz egy új járművel, vagy elhagyhatod az arénát.\nJó szórakozást!",
+  "v_arenawar.interface.close": "BEZÁR",
+  "v_arenawar.interface.do_you_want_to_continue": "Szeretnéd folytatni?",
+  "v_arenawar.interface.play": "JÁTÉK",
+  "v_arenawar.interface.players_in_arena": "Játékosok az arénában: {arena_player_count}",
+  "v_arenawar.interface.press_e_to_open_arenawar_panel": "Nyomd meg az E-t az ArenaWar panel megnyitásához",
+  "v_arenawar.interface.time_to_revive": "Újraéledésig: {timeleft}",
+  "v_arenawar.interface.welcome_to_arenawar": "Üdv az ArenaWarban!",
+  "v_arenawar.shared.m": "{min} m {max}"
+}

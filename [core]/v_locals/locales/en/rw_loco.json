@@ -41,6 +41,7 @@
   "rw_loco.timetable.arr": "ARR",
   "rw_loco.timetable.at_station": "AT STATION",
   "rw_loco.timetable.completed": "COMPLETED",
+  "rw_loco.timetable.dep": "Dep. ",
   "rw_loco.timetable.dep_2": "DEP",
   "rw_loco.timetable.doors_closed": "doors closed",
   "rw_loco.timetable.doors_open": "doors open",
@@ -57,11 +58,14 @@
   "rw_loco.timetable.press_to_pick_timetable": "Press {timetable} to pick a timetable",
   "rw_loco.timetable.railway_staff_only": "Railway staff only.",
   "rw_loco.timetable.refresh": "Refresh",
+  "rw_loco.timetable.side.left": "left",
+  "rw_loco.timetable.side.right": "right",
   "rw_loco.timetable.signal_m": "Signal {name}   {dist|int} m",
   "rw_loco.timetable.station": "STATION",
   "rw_loco.timetable.text": "×",
   "rw_loco.timetable.timetable": "TIMETABLE",
   "rw_loco.timetable.timetable_service_offline": "Timetable service offline.",
   "rw_loco.timetable.to_click_to_take_it": "to {to} - click to take it",
+  "rw_loco.timetable.trip_completed": "{trip} completed",
   "rw_loco.timetable.you_can_drive_but_taking_service": "You can drive, but taking a service needs the railway role."
 }

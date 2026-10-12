@@ -1,0 +1,4 @@
+{
+  "mg_splinting.client.press_when_needle_is_in_green": "Nyomd a(z) {key} gombot, amikor a mutató a zöld zónában van",
+  "mg_splinting.client.wraps_secured": "Rögzített tekercsek: {judged|int} / {total|int}"
+}

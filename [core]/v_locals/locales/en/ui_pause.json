@@ -77,7 +77,7 @@
   "ui_pause.pausemenu.you_left_server": "You left the server.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "Your level, XP, played time and statistics.",
   "ui_pause.settings.language": "Language",
-  "ui_pause.settings.language_desc": "The language of the game texts.",
+  "ui_pause.settings.language_desc": "The language of the game texts. - change the language may require a reconnect",
   "ui_pause.settings.off": "OFF",
   "ui_pause.settings.on": "ON",
   "ui_pause.settings.unavailable": "unavailable"

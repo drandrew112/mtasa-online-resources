@@ -1,0 +1,13 @@
+{
+  "v_stats.config.deaths_all": "Halálok (összes)",
+  "v_stats.config.deaths_killed_by_players": "Halálok (játékos ölte meg)",
+  "v_stats.config.distance_driven_land_vehicles": "Megtett távolság (szárazföldi járművek)",
+  "v_stats.config.distance_flown_air_vehicles": "Megtett távolság (légi járművek)",
+  "v_stats.config.distance_sailed_water_vehicles": "Megtett távolság (vízi járművek)",
+  "v_stats.config.distance_walked": "Gyalog megtett távolság",
+  "v_stats.config.kills_peds": "Ölések (pedek)",
+  "v_stats.config.kills_players": "Ölések (játékosok)",
+  "v_stats.config.time_driving_land_vehicles": "Vezetési idő (szárazföldi járművek)",
+  "v_stats.config.time_flying_air_vehicles": "Repülési idő (légi járművek)",
+  "v_stats.config.time_sailing_water_vehicles": "Hajózási idő (vízi járművek)"
+}

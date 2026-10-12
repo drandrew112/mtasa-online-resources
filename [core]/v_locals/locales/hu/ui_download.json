@@ -1,0 +1,5 @@
+{
+  "ui_download.client.downloading_mb": "Letöltés... ({downloaded}/{total} MB) {progresz}%",
+  "ui_download.client.join_our_discord_community_press_c": "Csatlakozz a Discord közösségünkhöz!\n#7289DA{discord}\n#ffffff(Nyomd meg a C-t a link másolásához)",
+  "ui_download.client.welcome_to_freev_while_you_wait": "Üdv a FreeV-n!\nAmíg vársz, nézd meg a Discordunkat a legfrissebb hírekért!\n\nFreeV — éld át San Andreast úgy, ahogy még soha."
+}

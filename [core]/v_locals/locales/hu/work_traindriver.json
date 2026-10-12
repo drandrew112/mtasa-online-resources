@@ -1,0 +1,23 @@
+{
+  "work_traindriver.config.chief_driver": "Főmozdonyvezető",
+  "work_traindriver.config.cranberry_station": "Cranberry állomás",
+  "work_traindriver.config.driver": "Mozdonyvezető",
+  "work_traindriver.config.express_driver": "Expressz mozdonyvezető",
+  "work_traindriver.config.master_driver": "Mester mozdonyvezető",
+  "work_traindriver.config.punctuality_bonus": "Pontossági bónusz",
+  "work_traindriver.config.punctuality_bonus_minor_delay": "Pontossági bónusz (kisebb késés)",
+  "work_traindriver.config.senior_driver": "Vezető mozdonyvezető",
+  "work_traindriver.config.station_staff": "Állomási személyzet",
+  "work_traindriver.config.sunline_rail_locomotive_driver": "Sunline Rail mozdonyvezető",
+  "work_traindriver.config.technician": "Technikus",
+  "work_traindriver.config.train_driver": "Vonatvezető",
+  "work_traindriver.config.trainee": "Gyakornok",
+  "work_traindriver.config.unity_station": "Unity állomás",
+  "work_traindriver.pay.adjustment": "Korrekció",
+  "work_traindriver.pay.delay": "Késés",
+  "work_traindriver.pay.early_departures": "Korai indulások ({early_departures|int})",
+  "work_traindriver.pay.service": "{number}. járat",
+  "work_traindriver.pay.service_completed": "{number}. járat teljesítve",
+  "work_traindriver.pay.skipped_stops": "Kihagyott megállók ({skipped|int})",
+  "work_traindriver.pay.stops_served": "Kiszolgált megállók ({served|int})"
+}

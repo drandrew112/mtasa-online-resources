@@ -1,0 +1,12 @@
+{
+  "v_chat.chat.text": "#FFFFFF{sender}: #dcdcdc{text}",
+  "v_chat.mute.invalid_duration": "Érvénytelen időtartam",
+  "v_chat.mute.invalid_player": "Érvénytelen játékos",
+  "v_chat.mute.is_not_muted": "{player} nincs némítva",
+  "v_chat.mute.m_s": "{m}p {s}mp",
+  "v_chat.mute.muted_by_min_for": "{admin_name} lenémított ({minutes|int} perc), indok: {reason}",
+  "v_chat.mute.no_reason_given": "Nincs megadva indok",
+  "v_chat.mute.unmuted_by_you_can_use_chat": "{admin_name} feloldotta a némításod, újra használhatod a chatet.",
+  "v_chat.mute.you_are_muted_time_left": "Le vagy némítva! Hátralévő idő: {player}",
+  "v_chat.mute.your_mute_has_expired_you_can": "A némításod lejárt, újra használhatod a chatet."
+}

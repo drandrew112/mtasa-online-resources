@@ -1,0 +1,19 @@
+{
+  "v_achievements.admin.achievements": "Achievementek",
+  "v_achievements.admin.already_unlocked_no_account": "Már feloldva / nincs fiók.",
+  "v_achievements.admin.ignored_all_done_unknown_stat_bad": "Figyelmen kívül hagyva (mind kész / ismeretlen stat / hibás mennyiség).",
+  "v_achievements.admin.ignored_done_bad_id_bad_amount": "Figyelmen kívül hagyva (kész / hibás azonosító / hibás mennyiség).",
+  "v_achievements.admin.progress_added": "Haladás hozzáadva.",
+  "v_achievements.admin.reset_done": "Visszaállítva.",
+  "v_achievements.admin.stat_added": "Stat hozzáadva.",
+  "v_achievements.admin.unknown_account": "Ismeretlen fiók.",
+  "v_achievements.admin.unknown_account_id": "Ismeretlen fiók / azonosító.",
+  "v_achievements.admin.unknown_achievement_id": "Ismeretlen achievement azonosító.",
+  "v_achievements.admin.unlocked": "Feloldva: {a}.",
+  "v_achievements.admin.unlocked_list_printed_to_f8": "{done|int}/{total|int} feloldva - a lista kiírva az F8 konzolra.",
+  "v_achievements.admin.usage_ach_list_give_prog_stat": "Használat: /ach list|give|prog|stat|reset <játékos> ...",
+  "v_achievements.admin.usage_ach_reset_player_id_all": "Használat: /ach reset <játékos> <azonosító|all>",
+  "v_achievements.admin.you_have_no_permission": "Nincs jogosultságod.",
+  "v_achievements.notify.achievement_unlocked": "Achievement feloldva",
+  "v_achievements.notify.xp": "{text}  (+{xp} XP)"
+}

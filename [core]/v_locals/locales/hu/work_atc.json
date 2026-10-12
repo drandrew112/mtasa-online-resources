@@ -1,0 +1,20 @@
+{
+  "work_atc.config.air_traffic_control": "Légiforgalmi irányítás",
+  "work_atc.config.air_traffic_controller_san_andreas_control": "Légiforgalmi irányító (San Andreas Control, San Fierro)",
+  "work_atc.config.approach_controller_bronze": "Approach irányító - Bronz",
+  "work_atc.config.approach_controller_gold": "Approach irányító - Arany",
+  "work_atc.config.approach_controller_silver": "Approach irányító - Ezüst",
+  "work_atc.config.controller": "Irányító",
+  "work_atc.config.controller_casual": "Irányító (alkalmi)",
+  "work_atc.config.radar_controller_bronze": "Radar irányító - Bronz",
+  "work_atc.config.radar_controller_gold": "Radar irányító - Arany",
+  "work_atc.config.radar_controller_silver": "Radar irányító - Ezüst",
+  "work_atc.config.senior_controller_bronze": "Vezető irányító - Bronz",
+  "work_atc.config.senior_controller_gold": "Vezető irányító - Arany",
+  "work_atc.config.senior_controller_silver": "Vezető irányító - Ezüst",
+  "work_atc.config.supervisor": "Felügyelő",
+  "work_atc.config.tower_controller_bronze": "Tower irányító - Bronz",
+  "work_atc.config.tower_controller_gold": "Tower irányító - Arany",
+  "work_atc.config.tower_controller_silver": "Tower irányító - Ezüst",
+  "work_atc.config.trainee": "Gyakornok"
+}

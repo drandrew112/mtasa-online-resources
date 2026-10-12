@@ -417,7 +417,7 @@ local function tick()
                     if rec.side and doors ~= rec.side and doors ~= "both" then
                         if not rec.wrongSide then
                             rec.wrongSide = true
-                            tell(driver, L.msg("rw_timetable.services.platform_is_on_wrong_doors_released", { side = rec.side }))
+                            tell(driver, L.msg("rw_timetable.services.platform_is_on_wrong_doors_released", { side = L.msg("rw_timetable.services.side." .. rec.side) }))
                             rlog("stop", "warn", ("%s: wrong side doors released at %s (platform on the %s)"):format(s.trip.number, st.name, rec.side), id)
                         end
                     else

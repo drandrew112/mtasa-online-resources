@@ -1,0 +1,22 @@
+{
+  "mg_intravenous.client.aim_over_vein_with_mouse_press": "Célozd meg az eret az egérrel, a bal egérgombbal szúrd át a bőrt",
+  "mg_intravenous.client.attempt": "{attempt|int}. / {attempts|int} kísérlet",
+  "mg_intravenous.client.cannula_in_vein": "A kanül az érben van",
+  "mg_intravenous.client.cannula_strain": "Kanül feszülés",
+  "mg_intravenous.client.cross_section": "KERESZTMETSZET",
+  "mg_intravenous.client.depth_mm": "Mélység {depth|1f} mm",
+  "mg_intravenous.client.failed": "SIKERTELEN",
+  "mg_intravenous.client.flashback_advance_little_more_so_cannula": "Visszaáramlás! Told még egy kicsit, hogy a kanül is az érben legyen",
+  "mg_intravenous.client.flashback_needle_tip_is_in_vein": "Visszaáramlás! A tű hegye az érben van",
+  "mg_intravenous.client.hold_lmb_and_drag_left_to": "Tartsd a bal egérgombot és húzd BALRA a tű kihúzásához - lassan!",
+  "mg_intravenous.client.hold_lmb_to_advance_needle_release": "Tartsd a bal egérgombot a tű előretolásához - engedd el, amikor vér jelenik meg a kamrában",
+  "mg_intravenous.client.iv_access_secured": "IV hozzáférés biztosítva",
+  "mg_intravenous.client.missed_vein": "Elvétetted az eret",
+  "mg_intravenous.client.needle_withdrawn": "Tű kihúzva",
+  "mg_intravenous.client.out_of_time": "Lejárt az idő",
+  "mg_intravenous.client.pulled_too_fast_cannula_came_out": "Túl gyorsan húztad - a kanül kicsúszott",
+  "mg_intravenous.client.success": "SIKER  {quality|int}%",
+  "mg_intravenous.client.top_view": "FELSŐ NÉZET",
+  "mg_intravenous.client.try_again": "{mistake} - próbáld újra",
+  "mg_intravenous.client.went_through_vein": "Átszúrtad az eret"
+}

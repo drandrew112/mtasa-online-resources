@@ -24,6 +24,8 @@
   "rw_passengers.display.next_stop_2": "Next stop: {name}",
   "rw_passengers.display.not_in_service": "Not in service",
   "rw_passengers.display.on_time": "on time",
+  "rw_passengers.display.side.left": "left side",
+  "rw_passengers.display.side.right": "right side",
   "rw_passengers.display.terminus": "Terminus",
   "rw_passengers.display.terminus_this_train_terminates_there": "Terminus. This train terminates there.",
   "rw_passengers.display.this_station": "This station",

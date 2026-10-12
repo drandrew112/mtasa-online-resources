@@ -1,0 +1,19 @@
+{
+  "world_clothes_shop.label.changing_room": "Próbafülke",
+  "world_clothes_shop.label.clothes": "Ruhák",
+  "world_clothes_shop.label.every_outfit_enter_buy_backspace_back": "Minden öltözet €{price|int} · Enter vásárlás · Backspace vissza",
+  "world_clothes_shop.label.outfits_each": "Öltözetek · egyenként €{price|int}",
+  "world_clothes_shop.label.press_browse_outfits_each": "Nyomd meg: {key} · öltözetek böngészése · egyenként €{price|int}",
+  "world_clothes_shop.main.buy_and_wear_this_outfit": "Öltözet megvétele és felvétele",
+  "world_clothes_shop.main.clothes": "RUHÁK",
+  "world_clothes_shop.main.go_off_duty_before_changing_your": "Öltözés előtt lépj le a szolgálatból.",
+  "world_clothes_shop.main.men": "Férfi",
+  "world_clothes_shop.main.men_2": "FÉRFI",
+  "world_clothes_shop.main.outfit": "Öltözet {skin}",
+  "world_clothes_shop.main.outfit_bought": "Öltözet megvéve · €{price|int}",
+  "world_clothes_shop.main.s_outfits": "{label} öltözetek",
+  "world_clothes_shop.main.women": "Női",
+  "world_clothes_shop.main.women_2": "NŐI",
+  "world_clothes_shop.main.you_are_already_wearing_this_outfit": "Ez az öltözet már rajtad van.",
+  "world_clothes_shop.main.you_don_t_have_enough_money": "Nincs elég pénzed."
+}

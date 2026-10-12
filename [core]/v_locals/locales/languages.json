@@ -2,6 +2,6 @@
     "default": "en",
     "languages": [
         { "code": "en", "name": "English",   "nativeName": "English", "plural": "one_other", "enabled": true },
-        { "code": "hu", "name": "Hungarian", "nativeName": "Magyar",  "plural": "other", "fallback": "en", "enabled": false }
+        { "code": "hu", "name": "Hungarian", "nativeName": "Magyar",  "plural": "other", "fallback": "en", "enabled": true }
     ]
 }

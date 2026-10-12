@@ -851,3 +851,14 @@ A kliens oldalon nincs ilyen csomagolás: a kliens kódja szöveget kap. A ui_co
 - **Tárolt adat:** a némítás alapértelmezett oka (`mute_reason` elementData) angol.
 - **Kimaradt magyar seedek:** az `add`-ban felülírt, ékezet nélküli magyar szövegekhez nincs `hu.seed` bejegyzés: Uj uzenet, BE/KI, Vasutas jog, az rw_customtracks admin-parancsai.
 - **MTA meta-gyorsítótár:** a v_locals, ui_core, ui_inac, ui_interactobject, ui_browser, rw_customtracks meta.xml-je csak a **szerverfolyamat újraindítása** után töltődik be teljesen. Működés közben az őrsor pótolja.
+
+---
+
+## 13. A magyar fordítás (2026-10-12)
+
+- `locales/hu/<ns>.json`: mind a 68 katalógus + `locales/hu/files/v_introduce/rules.txt`, kulcsra pontosan az `en` párja (3126 kulcs). A `languages.json`-ban a `hu` **be van kapcsolva** (plural: `other`, fallback: `en`), a `meta.xml` felsorolja a fájlokat (a `tools/locales.py build` ezentúl a meglévő `locales/hu` fájlokat is beírja).
+- **Szójegyzék / meghagyott kifejezések:** `Job` = Job, `Jobs` = Jobok (a versenyek / deathmatchek), a work_core „work” = *munka*; `Model LOD`, `Ped LOD`, `Vehicle LOD`, `Color Grading` marad; `lobby`, `crew`, `tag`, `nametag`, `blip`, `marker`, `spawn pont`, `checkpoint` bevett játékszavak; gyógyszernevek (Ketamine, Fentanyl …), `SpO2`, `NIBP`, `BPM`, `SIFA`, `ATP`, rangok (Admin, Mod, SuperAdmin …), állomás- és márkanevek változatlanok.
+- **Lifepak kivétel (D2):** a medsys ritmusnevek (`normal_sinus_rhythm`, `asystole`, `ventricular_fibrillation` … 8 kulcs) angolok maradnak, mert a Lifepak kijelzőn jelennek meg.
+- **ERM állapotok:** Szabad / Úton / Helyszínen / Átadás; `Start Response` = *Kivonulás indítása* (a med_hospitals és a work_ems oktatóprogram ugyanezeket a szavakat használja).
+- **Az angol szövegbe égetett töredékek javítva** (a magyarnak nem volt hova fordulnia): `world_interiors` Enter/Exit, `v_weekly` day/week (`v_weekly.period.*`), `rw_loco` / `rw_passengers` / `rw_timetable` left/right (`*.side.left|right`), `rw_loco` „Dep.” és „completed”, `v_socialpanel` szabályok 1-4., `mg_airway` „mistake(s)” és `med_erm` „result(s)” (plural kulcsok `.one` / `.other`), `medsys` neuro vizsgálat (`{side}` paraméter, `side_left|right|cap_*`; a „Pupils” felismerés kulcs alapú lett).
+- **Ismert határ:** GTA-fontok (pricedown, bankgothic) nem tudnak ő/ű-t (D8/D20: „WASTED”, „GO” angol). Játékban nem tesztelt: a hosszabb magyar szövegek túlnyúlását `/locdebug overflow` móddal kell végigjárni.

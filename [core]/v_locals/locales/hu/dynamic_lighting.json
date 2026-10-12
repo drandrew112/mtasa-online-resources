@@ -1,0 +1,9 @@
+{
+  "dynamic_lighting.helper_functions.active": "{this_light} aktív",
+  "dynamic_lighting.helper_functions.fps": "{fpscheck} FPS",
+  "dynamic_lighting.main.pixel_lighting_failed_to_start_shaders": "Pixel Lighting: a shaderek indítása sikertelen!",
+  "dynamic_lighting.main.pixel_lighting_is_not_compatible_with": "Pixel Lighting: nem kompatibilis ezzel a kliensverzióval!",
+  "dynamic_lighting.main.pixel_lighting_shader_files_not_created": "Pixel Lighting: a shader fájlok nem jöttek létre!",
+  "dynamic_lighting.main.pixel_lighting_shader_model_3_not": "Pixel Lighting: a Shader Model 3 nem támogatott",
+  "dynamic_lighting.main.pixel_lighting_started": "Pixel Lighting: elindult"
+}

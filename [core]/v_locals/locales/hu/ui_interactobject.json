@@ -1,0 +1,7 @@
+{
+  "ui_interactobject.render.bksp_back": "BKSP vissza",
+  "ui_interactobject.render.key_close": "{key} bezár",
+  "ui_interactobject.render.next_page": "{key_page} következő oldal",
+  "ui_interactobject.render.no_options": "Nincs lehetőség",
+  "ui_interactobject.util.interact": "Interakció"
+}

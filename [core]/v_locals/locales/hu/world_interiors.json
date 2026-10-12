@@ -1,0 +1,20 @@
+{
+  "world_interiors.admin.also": "{desc} | még: {aliases}",
+  "world_interiors.admin.back_to_previous_position": "<< Vissza az előző pozícióra",
+  "world_interiors.admin.dim_int_by": "{id} | dim {dimension|int} | int {interior|int} | regisztrálta: {resource}",
+  "world_interiors.admin.entrance": "Bejárat: {id}",
+  "world_interiors.admin.go_inside": "Belépés",
+  "world_interiors.admin.go_to_entrance": "Ugrás a bejárathoz",
+  "world_interiors.admin.int_dim": "{x|1f}, {y|1f}, {z|1f} (int {interior|int}, dim {dimension|int})",
+  "world_interiors.admin.int_entrance_s": "int {interior|int} | {entrances|int} bejárat",
+  "world_interiors.admin.int_no_stock_entrance_wiki": "int {interior|int} | nincs alap bejárat (wiki)",
+  "world_interiors.admin.interiors": "Belső terek (",
+  "world_interiors.admin.no_interiors_registered": "Nincs regisztrált belső tér",
+  "world_interiors.admin.resources_register_them_via_exports_world": "A resource-ok az exports.world_interiors:registerInterior exporttal regisztrálják őket",
+  "world_interiors.admin.return_to_where_you_were_before": "Visszatérés oda, ahol a böngészés előtt voltál",
+  "world_interiors.admin.stock_interiors": "Alap belső terek (",
+  "world_interiors.markers.enter": "Belépés",
+  "world_interiors.markers.exit": "Kilépés",
+  "world_interiors.markers.press": "Nyomd meg: {key} · {entering}",
+  "world_interiors.markers.step_into_marker": "Lépj a markerbe"
+}

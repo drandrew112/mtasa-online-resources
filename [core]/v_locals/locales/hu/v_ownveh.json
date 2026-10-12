@@ -1,0 +1,10 @@
+{
+  "v_ownveh.commands.v_ownveh": "v_ownveh [{category}] {line}",
+  "v_ownveh.commands.v_ownveh_could_not_write": "v_ownveh: nem sikerült írni: {path}",
+  "v_ownveh.commands.v_ownveh_showing_d_spawn_point": "v_ownveh: %d spawn pont marker megjelenítve. szárazföld=zöld hajók=kék helikopter=sárga repülő=piros. Az elrejtéshez add ki újra: /showvehspawns.",
+  "v_ownveh.commands.v_ownveh_sit_in_vehicle_first": "v_ownveh: előbb ülj be egy járműbe.",
+  "v_ownveh.commands.v_ownveh_spawn_point_markers_hidden": "v_ownveh: a spawn pont markerek elrejtve.",
+  "v_ownveh.commands.v_ownveh_you_don_t_have": "v_ownveh: nincs jogod a /vehspawn parancshoz.",
+  "v_ownveh.commands.v_ownveh_you_don_t_have_2": "v_ownveh: nincs jogod a /showvehspawns parancshoz.",
+  "v_ownveh.config.personal_vehicle": "Saját jármű"
+}

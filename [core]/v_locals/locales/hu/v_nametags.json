@@ -1,0 +1,9 @@
+{
+  "v_nametags.sourcec.admin": "#000000[#BAFFBAADMIN#000000] #FF0000",
+  "v_nametags.sourcec.dev": "#000000[#FFBB00DEV#000000] #FFFFFF",
+  "v_nametags.sourcec.lvl": "lvl {player_info}",
+  "v_nametags.sourcec.mod": "#000000[#00BAFFMOD#000000] #FF0000",
+  "v_nametags.sourcec.owner": "#000000[#FF4400OWNER#000000] #FFFFFF",
+  "v_nametags.sourcec.superadmin": "#000000[#fc1f17SUPERADMIN#000000] #FF0000",
+  "v_nametags.sourcec.trial_mod": "#000000[#00BAFFTRIAL MOD#000000] #FF0000"
+}

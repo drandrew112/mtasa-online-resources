@@ -1,0 +1,5 @@
+{
+  "v_minres.client.increase_your_resolution_settings_video_resoluti": "Növeld a felbontásod (Settings > Video > Resolution / maximalizáld az ablakot).\nEz az üzenet magától eltűnik, ha a feltétel teljesül.",
+  "v_minres.client.low_resolution": "ALACSONY FELBONTÁS",
+  "v_minres.client.your_screen_is_x_this_server": "A képernyőd {sw|int}x{sh|int}.\nA szerverhez legalább {width|int}x{height|int} szükséges."
+}

@@ -1,0 +1,14 @@
+{
+  "avi_core.marker.atc": "ATC",
+  "avi_core.marker.controller_software_is_not_running": "Az irányítói szoftver nem fut.",
+  "avi_core.marker.controller_software_needs_restart_restart_avi": "Az irányítói szoftvert újra kell indítani (restart avi_controller).",
+  "avi_core.marker.only_air_traffic_controllers_can_use": "Ezt csak légiforgalmi irányítók használhatják.",
+  "avi_core.marker.press_atc_position": "Nyomd meg: {marker_key} · ATC pozíció",
+  "avi_core.marker.you_do_not_have_any_atc": "Nincs ATC jogosultságod.",
+  "avi_core.role.atc_right": "ATC jog {right} {enable}: {who}",
+  "avi_core.role.atc_rights_reset": "ATC jogok visszaállítva: {who}",
+  "avi_core.role.no_such_player": "Nincs ilyen játékos.",
+  "avi_core.role.usage_atcright_player_twr_app_radar": "Használat: /atcright [játékos] <twr|app|radar|all|reset> [on|off]",
+  "avi_core.role.you_are_not_allowed_to_do": "Ehhez nincs jogod.",
+  "avi_core.role.your_atc_rights_were_changed": "Az ATC jogosultságaid megváltoztak."
+}

@@ -1,0 +1,8 @@
+{
+  "mg_cpr.client.accuracy_need": "Pontosság: {accuracy|int}%   (kell: {pass_percent|int}%)",
+  "mg_cpr.client.bpm": "{bpm|int} BPM",
+  "mg_cpr.client.bpm_2": "--- BPM",
+  "mg_cpr.client.press_in_rhythm": "Nyomd a(z) {key} gombot ritmusra",
+  "mg_cpr.client.too_fast": "TÚL GYORS",
+  "mg_cpr.client.too_slow": "TÚL LASSÚ"
+}

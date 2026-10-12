@@ -1,0 +1,11 @@
+{
+  "v_levelsys.server.enter_name_of_player_to_give": "{prefix}Add meg annak a játékosnak a nevét, akinek XP-t adsz",
+  "v_levelsys.server.level_system": "#00ffffSzintrendszer #ff0000// #ffffff",
+  "v_levelsys.server.player_not_found": "{prefix}A játékos nem található",
+  "v_levelsys.server.this_player_cannot_receive_xp_right": "{prefix}Ez a játékos most nem kaphat XP-t",
+  "v_levelsys.server.usage_givexp_name_xp": "{prefix}Használat: /givexp <név> <xp>",
+  "v_levelsys.server.you_are_not_allowed_to_do": "{prefix}Ehhez nincs jogod!",
+  "v_levelsys.server.you_gave_xp_to": "{prefix}#ffffffAdtál #00ffff{add_xp}#ffffff XP-t neki: {target_name}#ffffff",
+  "v_levelsys.server.you_reached_level": "{prefix}Elérted a(z) {level}. szintet!",
+  "v_levelsys.server.you_received_xp_from": "{prefix}#ffffffKaptál #00ffff{add_xp}#ffffff XP-t tőle: #00ffff{player}#ffffff"
+}

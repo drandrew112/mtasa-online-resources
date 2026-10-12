@@ -1,0 +1,8 @@
+{
+  "ai_land_traffic.main.ai_traffic_cleared": "AI-forgalom törölve",
+  "ai_land_traffic.main.ai_traffic_disabled_and_cleared": "AI-forgalom kikapcsolva és törölve",
+  "ai_land_traffic.main.ai_traffic_enabled": "AI-forgalom bekapcsolva",
+  "ai_land_traffic.main.traffic_vehicles_released_players_emergency": "Forgalom {enabled}: {agents|int} jármű, {released|int} elengedve, {players|int} játékos, {els|int} szirénás | {h}",
+  "ai_land_traffic.network.traffic": "Forgalom",
+  "ai_land_traffic.reports.km_h_lat": "{code}{code2|int}  {v|0f} km/h  a {a|1f}  lat {lat|1f}"
+}

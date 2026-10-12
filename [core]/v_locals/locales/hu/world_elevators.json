@@ -1,0 +1,8 @@
+{
+  "world_elevators.elevators.elevator": "LIFT",
+  "world_elevators.elevators.press_e_to_use_elevator": "Nyomd meg az E-t a lift használatához",
+  "world_elevators.shared.garage": "Garázs",
+  "world_elevators.shared.gnd": "Fszt",
+  "world_elevators.shared.ls_police_station": "LS Rendőrkapitányság",
+  "world_elevators.shared.roof": "Tető"
+}

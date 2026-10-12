@@ -1420,6 +1420,11 @@ def update_meta(namespaces, files):
     lines = ['    <file src="locales/languages.json" />']
     lines += ['    <file src="locales/en/%s.json" />' % ns for ns in namespaces]
     lines += ['    <file src="%s" />' % p for p in files]
+    # translations written by hand (locales/hu/...): listed when the file exists
+    hudir = os.path.join(LOCALS, "locales", "hu")
+    lines += ['    <file src="locales/hu/%s.json" />' % ns for ns in namespaces if os.path.exists(os.path.join(hudir, ns + ".json"))]
+    lines += ['    <file src="%s" />' % p.replace("locales/en/", "locales/hu/") for p in files
+              if os.path.exists(os.path.join(LOCALS, p.replace("locales/en/", "locales/hu/")))]
     meta = meta[:start] + "\n".join(lines) + "\n" + meta[end:]
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(meta)
@@ -1492,7 +1497,7 @@ def cmd_lint():
                     for m in call_rx.finditer(f.read()):
                         k = m.group(1) or m.group(2)
                         used.add(k)
-                        if k not in en:
+                        if k not in en and (k + ".other") not in en:
                             unknown.append("%s: %s" % (os.path.relpath(p, RESOURCES), k))
     for u in unknown:
         errors.append("unknown key used: " + u)

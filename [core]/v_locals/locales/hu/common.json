@@ -1,0 +1,18 @@
+{
+  "common.back": "Vissza",
+  "common.cancel": "Mégse",
+  "common.confirm": "Megerősítés",
+  "common.deathmatch": "Deathmatch",
+  "common.edit": "Szerkesztés",
+  "common.get_ready": "Készülj",
+  "common.job": "Job",
+  "common.level": "Szint",
+  "common.loading": "Betöltés...",
+  "common.name": "Név",
+  "common.played_time": "Játszott idő",
+  "common.players": "Játékosok",
+  "common.race": "Verseny",
+  "common.save": "Mentés",
+  "common.send": "Küldés",
+  "common.time_left_s": "{time_left|1f} mp"
+}

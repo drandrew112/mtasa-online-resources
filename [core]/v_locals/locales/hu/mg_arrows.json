@@ -1,0 +1,3 @@
+{
+  "mg_arrows.client.accuracy_need": "Pontosság: {accuracy|int}%   (min. {pass_percent|int}% felett)"
+}

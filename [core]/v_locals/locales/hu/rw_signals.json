@@ -1,0 +1,19 @@
+{
+  "rw_signals.config.caution": "Vigyázat",
+  "rw_signals.config.clear": "Szabad",
+  "rw_signals.config.cranberry_junction": "Cranberry Junction",
+  "rw_signals.config.cranberry_north": "Cranberry North",
+  "rw_signals.config.cranberry_south": "Cranberry South",
+  "rw_signals.config.las_venturas_ne": "Las Venturas NE",
+  "rw_signals.config.linden_north": "Linden North",
+  "rw_signals.config.linden_south": "Linden South",
+  "rw_signals.config.market_east": "Market East",
+  "rw_signals.config.market_west": "Market West",
+  "rw_signals.config.stop": "Megállj",
+  "rw_signals.config.unity_east": "Unity East",
+  "rw_signals.config.unity_home": "Unity Home",
+  "rw_signals.config.unity_west": "Unity West",
+  "rw_signals.config.yellow_bell_east": "Yellow Bell East",
+  "rw_signals.config.yellow_bell_west": "Yellow Bell West",
+  "rw_signals.signals.block": "Térköz"
+}
