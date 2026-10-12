@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / server/apps/invites.lua
 
@@ -44,7 +45,7 @@ function phoneAddInvite(player, id, title, subtitle, cbRes, cbFn)
 
     table.insert(invites[player], {
         id = id,
-        title = tostring(title or "Lobby invite"),
+        title = tostring(title or L.msg("ui_phone.invites.lobby_invite")),
         subtitle = tostring(subtitle or ""),
         cbRes = cbRes, cbFn = cbFn,
     })

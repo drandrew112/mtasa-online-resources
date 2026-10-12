@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Bridges the interaction menu's personal-vehicle actions to v_ownveh.
 --
 --   ui_inac:requestPersonalVehicleList  -> send the player's owned vehicles
@@ -24,7 +25,7 @@ local function buildList(player)
         out[#out + 1] = {
             id          = v.id,
             model       = v.model,
-            modelName   = exports.veh_manager:getModelName(v.model) or ("Vehicle " .. tostring(v.model)),
+            modelName   = exports.veh_manager:getModelName(v.model) or (L.msg("ui_inac.vehicles.vehicle", { model = tostring(v.model) })),
             plate       = v.plate,
             isDestroyed = v.isDestroyed,
             spawned     = v.spawned,
@@ -45,13 +46,13 @@ addEventHandler("ui_inac:requestPersonalVehicleList", root, function()
 end)
 
 local REQUEST_ERRORS = {
-    not_found          = "That vehicle no longer exists.",
-    not_owner          = "That is not your vehicle.",
-    destroyed          = "That vehicle is destroyed.",
-    already_spawned    = "You already have a personal vehicle out.",
-    no_free_spawnpoint = "No free spawn point nearby.",
-    create_failed      = "Could not spawn the vehicle.",
-    invalid_player     = "Could not request vehicle.",
+    not_found          = L.msg("ui_inac.ownveh.that_vehicle_no_longer_exists"),
+    not_owner          = L.msg("ui_inac.ownveh.that_is_not_your_vehicle"),
+    destroyed          = L.msg("ui_inac.ownveh.that_vehicle_is_destroyed"),
+    already_spawned    = L.msg("ui_inac.ownveh.you_already_have_personal_vehicle_out"),
+    no_free_spawnpoint = L.msg("ui_inac.ownveh.no_free_spawn_point_nearby"),
+    create_failed      = L.msg("ui_inac.ownveh.could_not_spawn_vehicle"),
+    invalid_player     = L.msg("ui_inac.ownveh.could_not_request_vehicle"),
 }
 
 addEvent("ui_inac:requestPersonalVehicle", true)
@@ -59,7 +60,7 @@ addEventHandler("ui_inac:requestPersonalVehicle", root, function(id)
     local player = client
     if not isElement(player) then return end
     if not ownvehReady() then
-        notify(player, "Error", "Personal vehicles are unavailable right now.")
+        notify(player, L.msg("ui_inac.main.error"), L.msg("ui_inac.ownveh.personal_vehicles_are_unavailable_right_now"))
         return
     end
 
@@ -73,20 +74,20 @@ addEventHandler("ui_inac:requestPersonalVehicle", root, function(id)
     end
 
     if not mine then
-        notify(player, "Error", "That is not your vehicle.")
+        notify(player, L.msg("ui_inac.main.error"), L.msg("ui_inac.ownveh.that_is_not_your_vehicle"))
         return
     end
     if anySpawned then
-        notify(player, "Vehicle", "You already have a personal vehicle out. Store it first.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.you_already_have_personal_vehicle_out_2"))
         sendList(player)
         return
     end
 
     local veh, err = exports.v_ownveh:spawnOwnedVehicle(player, id)
     if veh then
-        notify(player, "Vehicle", "Personal vehicle requested.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.personal_vehicle_requested"))
     else
-        notify(player, "Vehicle", REQUEST_ERRORS[err] or ("Could not request vehicle (" .. tostring(err) .. ")."))
+        notify(player, L.msg("ui_inac.main.vehicle"), REQUEST_ERRORS[err] or (L.msg("ui_inac.ownveh.could_not_request_vehicle_2", { err = tostring(err) })))
     end
     sendList(player)
 end)
@@ -96,18 +97,18 @@ addEventHandler("ui_inac:storePersonalVehicle", root, function()
     local player = client
     if not isElement(player) then return end
     if not ownvehReady() then
-        notify(player, "Error", "Personal vehicles are unavailable right now.")
+        notify(player, L.msg("ui_inac.main.error"), L.msg("ui_inac.ownveh.personal_vehicles_are_unavailable_right_now"))
         return
     end
 
     local ok, err = exports.v_ownveh:storePersonalVehicle(player)
     if ok then
-        notify(player, "Vehicle", "Personal vehicle stored.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.personal_vehicle_stored"))
     elseif err == "not_spawned" then
-        notify(player, "Vehicle", "You have no personal vehicle out.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.you_have_no_personal_vehicle_out"))
     elseif err == "occupied" then
-        notify(player, "Vehicle", "Someone is still inside it.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.someone_is_still_inside_it"))
     else
-        notify(player, "Vehicle", "Could not store vehicle.")
+        notify(player, L.msg("ui_inac.main.vehicle"), L.msg("ui_inac.ownveh.could_not_store_vehicle"))
     end
 end)

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Builds what the open menu shows right now: the focused element's merged root list (every menu on
 -- it, grouped) or the current submenu, cut to the current page. Used by both render and input, so
 -- the number on screen and the number key always point at the same entry.
@@ -12,7 +13,7 @@ local function rootEntries(candidate)
             end
         end
     end
-    return entries, candidate.menus[1] and candidate.menus[1].def.title or "Interact"
+    return entries, candidate.menus[1] and candidate.menus[1].def.title or L("ui_interactobject.util.interact")
 end
 
 local function submenuEntries(top)

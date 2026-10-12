@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/apps/settings.lua
     Settings root menu. "Wallpaper" opens a sub-screen for picking the screen
@@ -50,19 +51,19 @@ end
 
 PhoneApp.register({
     id    = "settings",
-    name  = "Settings",
+    name  = L("ui_phone.settings.settings"),
     order = 50,
 
     open  = function() sub = nil end,
     close = function() sub = nil end,
 
     headerTitle = function()
-        return sub == "wallpaper" and "Wallpaper" or "Settings"
+        return sub == "wallpaper" and L("ui_phone.settings.wallpaper") or L("ui_phone.settings.settings")
     end,
 
     hint = function()
-        if sub == "wallpaper" then return "[Enter] apply    [Backspace] back" end
-        return "[Enter] open"
+        if sub == "wallpaper" then return L("ui_phone.settings.enter_apply_backspace_back") end
+        return L("ui_phone.myveh.enter_open")
     end,
 
     items = function()
@@ -72,7 +73,7 @@ PhoneApp.register({
                 rows[#rows + 1] = {
                     title  = w.name,
                     swatch = swatchRGB(w),
-                    right  = (w.key == currentKey) and "Active" or nil,
+                    right  = (w.key == currentKey) and L("ui_phone.settings.active") or nil,
                     _wp    = w.key,
                 }
             end
@@ -82,7 +83,7 @@ PhoneApp.register({
         -- settings root
         return {
             {
-                title    = "Wallpaper",
+                title    = L("ui_phone.settings.wallpaper"),
                 subtitle = PHONE_CONFIG.wallpaperByKey(currentKey).name,
                 _open    = "wallpaper",
             },

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Menu definition helpers shared by the server and client registries.
 
 function ioTruthy(value)
@@ -44,7 +45,7 @@ function ioSanitizeDef(def)
     end
 
     return {
-        title = def.title ~= nil and tostring(def.title) or "Interact",
+        title = def.title ~= nil and tostring(def.title) or L.text("ui_interactobject.util.interact"),
         items = items,
         range = math.max(0.5, math.min(tonumber(def.range) or IO.DEFAULT_RANGE, IO.MAX_RANGE)),
         priority = tonumber(def.priority) or 0,

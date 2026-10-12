@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / server/apps/emergency.lua
     "Emergency Services" contact. Only EMS works for now: the caller types a
@@ -30,7 +31,7 @@ local function contact()
 end
 
 local function say(player, text)
-    PhoneServer.toast(player, "Emergency Services: " .. text)
+    PhoneServer.toast(player, L.msg("ui_phone.emergency.emergency_services", { text = text }))
 end
 
 local function clean(text, maxLen)
@@ -41,16 +42,16 @@ end
 
 -- true | false, reason (already worded for the caller)
 local function canCallEms(player)
-    if not running(ERM) then return false, "Nobody answers the line." end
+    if not running(ERM) then return false, L.msg("ui_phone.emergency.nobody_answers_line") end
     if #(exports[ERM]:getUnits() or {}) == 0 then
-        return false, "There are no ambulance crews on duty right now."
+        return false, L.msg("ui_phone.emergency.there_are_no_ambulance_crews_on")
     end
 
     local taskId = openCalls[player]
     if taskId then
         local t = exports[ERM]:getTask(taskId)
         if t and t.status ~= "closed" then
-            return false, ("Your call (case #%d) is already being handled."):format(taskId)
+            return false, L.msg("ui_phone.emergency.your_call_case_is_already_being", { task_id = taskId })
         end
         openCalls[player] = nil
     end
@@ -58,7 +59,7 @@ local function canCallEms(player)
     if running(SCENES) then
         local x, y, z = getElementPosition(player)
         if exports[SCENES]:getSceneAt(x, y, z) then
-            return false, "An ambulance is already on its way to this location."
+            return false, L.msg("ui_phone.emergency.ambulance_is_already_on_its_way")
         end
     end
     return true
@@ -80,16 +81,16 @@ local function submitEms(player, title, description)
         dimension = getElementDimension(player),
     })
     if not taskId then
-        say(player, "The call could not be registered.")
+        say(player, L.msg("ui_phone.emergency.call_could_not_be_registered"))
         outputDebugString("[phone] EMS call failed: " .. tostring(err), 2)
         return
     end
 
     openCalls[player] = taskId
     if #(exports[ERM]:getFreeUnits() or {}) > 0 then
-        say(player, ("Call registered (case #%d). An ambulance is being dispatched."):format(taskId))
+        say(player, L.msg("ui_phone.emergency.call_registered_case_ambulance_is_being", { task_id = taskId }))
     else
-        say(player, ("Call registered (case #%d). All crews are busy - an ambulance will come as soon as one is free."):format(taskId))
+        say(player, L.msg("ui_phone.emergency.call_registered_case_all_crews_are", { task_id = taskId }))
     end
     PhoneServer.close(player)
 end
@@ -97,14 +98,14 @@ end
 -- Called by the "contacts:action" router (server/apps/contacts.lua).
 function emergencyCall(player, actionKey)
     if actionKey == "pd" then
-        say(player, "The police line is not available yet.")
+        say(player, L.msg("ui_phone.emergency.police_line_is_not_available_yet"))
     elseif actionKey == "fd" then
-        say(player, "The fire department line is not available yet.")
+        say(player, L.msg("ui_phone.emergency.fire_department_line_is_not_available"))
     elseif actionKey == "ems" then
         local ok, reason = canCallEms(player)
         if not ok then say(player, reason) return end
         pending[player] = {}
-        prompt(player, "title", "What is the emergency? (short title)", contact().titleMax)
+        prompt(player, "title", L.msg("ui_phone.emergency.what_is_emergency_short_title"), contact().titleMax)
     end
 end
 
@@ -124,11 +125,11 @@ PhoneServer.on("contacts:promptResult", function(player, contactKey, step, text)
         local title = clean(text, c.titleMax)
         if title == "" then
             pending[player] = nil
-            say(player, "The call was cancelled - no emergency was given.")
+            say(player, L.msg("ui_phone.emergency.call_was_cancelled_no_emergency_was"))
             return
         end
         p.title = title
-        prompt(player, "description", "Describe the situation (patients, injuries, ...)", c.descMax)
+        prompt(player, "description", L.msg("ui_phone.emergency.describe_situation_patients_injuries"), c.descMax)
     elseif step == "description" and p.title then
         pending[player] = nil
         submitEms(player, p.title, clean(text, c.descMax))

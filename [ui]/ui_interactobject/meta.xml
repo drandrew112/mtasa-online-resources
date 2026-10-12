@@ -2,6 +2,8 @@
     <info author="DrAndrew112" name="ui_interactobject" version="1.0" type="script" description="3D world-space interaction menus on objects, peds, players and vehicles, driven through exports" />
     <min_mta_version client="1.5.8" server="1.5.8" />
 
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
     <script src="shared/util.lua" type="shared" />
 

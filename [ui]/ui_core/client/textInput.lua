@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Reusable modal text-input overlay (fully DX drawn).
 --
 -- Other resources open it through the exports below and get the result back as
@@ -74,7 +75,7 @@ local function cw(ch, scale)
     local key = ch .. "|" .. scale
     local w = charW[key]
     if not w then
-        w = dxGetTextWidth(ch, scale, FONT)
+        w = L.width(ch, scale, FONT)
         charW[key] = w
     end
     return w
@@ -87,7 +88,7 @@ end
 
 local function width(ti, i, j)
     if j < i then return 0 end
-    return dxGetTextWidth(sub(ti.chars, i, j), ti.L.fs, FONT)
+    return L.width(sub(ti.chars, i, j), ti.L.fs, FONT)
 end
 
 --------------------------------------------------------------------------------
@@ -95,27 +96,27 @@ end
 --------------------------------------------------------------------------------
 
 local function buildLayout(maxLen)
-    local L = {}
-    L.fs     = ui(1.25)
-    L.ts     = ui(1.35)
-    L.ss     = ui(1.0)
-    L.w      = math.min(ui(640), UI.sw - ui(40))
-    L.pad    = ui(22)
-    L.fpad   = ui(12)
-    L.lineH  = dxGetFontHeight(L.fs, FONT) + ui(4)
-    L.titleH = dxGetFontHeight(L.ts, FONT_BOLD)
-    L.innerW = L.w - L.pad * 2 - L.fpad * 2
+    local lay = {}
+    lay.fs     = ui(1.25)
+    lay.ts     = ui(1.35)
+    lay.ss     = ui(1.0)
+    lay.w      = math.min(ui(640), UI.sw - ui(40))
+    lay.pad    = ui(22)
+    lay.fpad   = ui(12)
+    lay.lineH  = dxGetFontHeight(lay.fs, FONT) + ui(4)
+    lay.titleH = dxGetFontHeight(lay.ts, FONT_BOLD)
+    lay.innerW = lay.w - lay.pad * 2 - lay.fpad * 2
 
     local sample = "the quick brown fox jumps over THE LAZY DOG 0123456789"
-    local avg = dxGetTextWidth(sample, L.fs, FONT) / #sample
-    local est = maxLen * avg / L.innerW
-    L.multi = est > 1
-    L.rows  = L.multi and math.max(2, math.min(MAX_ROWS, math.ceil(est))) or 1
+    local avg = L.width(sample, lay.fs, FONT) / #sample
+    local est = maxLen * avg / lay.innerW
+    lay.multi = est > 1
+    lay.rows  = lay.multi and math.max(2, math.min(MAX_ROWS, math.ceil(est))) or 1
 
-    L.fieldH  = L.rows * L.lineH + L.fpad * 2
-    L.btnH    = ui(38)
-    L.h       = L.pad + L.titleH + ui(14) + L.fieldH + ui(16) + L.btnH + L.pad
-    return L
+    lay.fieldH  = lay.rows * lay.lineH + lay.fpad * 2
+    lay.btnH    = ui(38)
+    lay.h       = lay.pad + lay.titleH + ui(14) + lay.fieldH + ui(16) + lay.btnH + lay.pad
+    return lay
 end
 
 -- Word wrap into { s, e } char ranges. Spaces may overhang the right edge so a
@@ -426,23 +427,23 @@ local function drawButton(ti, id, label, keyLabel, x, y, w, h, primary, a, mx, m
     local bg = primary and COL.accent or (hover and COL.btnHover or COL.btn)
     rect(x, y, w, h, bg, a * ((primary and hover) and 0.85 or 1))
 
-    local L = ti.L
-    local kw = dxGetTextWidth(keyLabel, L.ss * 0.9, FONT_BOLD) + ui(12)
+    local lay = ti.L
+    local kw = L.width(keyLabel, lay.ss * 0.9, FONT_BOLD) + ui(12)
     local kh = h - ui(14)
     local kx = x + w - ui(8) - kw
     rect(kx, y + ui(7), kw, kh, COL.chip, a)
-    text(keyLabel, kx, y + ui(7), kw, kh, COL.text, a * 0.85, L.ss * 0.9, FONT_BOLD, "center")
-    text(label, x + ui(12), y, kx - x - ui(16), h, COL.text, a, L.ss * 1.1, FONT_BOLD, "left")
+    text(keyLabel, kx, y + ui(7), kw, kh, COL.text, a * 0.85, lay.ss * 0.9, FONT_BOLD, "center")
+    text(label, x + ui(12), y, kx - x - ui(16), h, COL.text, a, lay.ss * 1.1, FONT_BOLD, "left")
 end
 
 local function buttonWidth(ti, label, keyLabel)
-    local L = ti.L
-    return dxGetTextWidth(label, L.ss * 1.1, FONT_BOLD) + dxGetTextWidth(keyLabel, L.ss * 0.9, FONT_BOLD) + ui(48)
+    local lay = ti.L
+    return L.width(label, lay.ss * 1.1, FONT_BOLD) + L.width(keyLabel, lay.ss * 0.9, FONT_BOLD) + ui(48)
 end
 
 function UI.textInput:draw()
     if not self.active then return end
-    local L, now = self.L, getTickCount()
+    local lay, now = self.L, getTickCount()
 
     -- held key auto-repeat
     local rep = self.rep
@@ -460,85 +461,85 @@ function UI.textInput:draw()
     local a = ease
     local mx, my = cursorXY()
 
-    local x = (UI.sw - L.w) / 2
-    local y = (UI.sh - L.h) / 2 + (1 - ease) * ui(16)
+    local x = (UI.sw - lay.w) / 2
+    local y = (UI.sh - lay.h) / 2 + (1 - ease) * ui(16)
 
     -- backdrop + card
     rect(0, 0, UI.sw, UI.sh, COL.dim, a)
     for i = 1, 3 do
         local o = ui(i * 3)
-        rect(x - o + ui(4), y - o + ui(8), L.w + o * 2, L.h + o * 2, COL.shadow, a * (0.5 / i))
+        rect(x - o + ui(4), y - o + ui(8), lay.w + o * 2, lay.h + o * 2, COL.shadow, a * (0.5 / i))
     end
-    rect(x, y, L.w, L.h, COL.card, a)
-    rect(x, y, L.w, ui(3), COL.accent, a)
+    rect(x, y, lay.w, lay.h, COL.card, a)
+    rect(x, y, lay.w, ui(3), COL.accent, a)
 
     -- title
-    local cy = y + L.pad
-    text(self.title, x + L.pad, cy, L.w - L.pad * 2, L.titleH, COL.text, a, L.ts, FONT_BOLD, "left", "center", true)
-    cy = cy + L.titleH + ui(14)
+    local cy = y + lay.pad
+    text(self.title, x + lay.pad, cy, lay.w - lay.pad * 2, lay.titleH, COL.text, a, lay.ts, FONT_BOLD, "left", "center", true)
+    cy = cy + lay.titleH + ui(14)
 
     -- field
-    local fx, fw = x + L.pad, L.w - L.pad * 2
-    rect(fx, cy, fw, L.fieldH, COL.accent, a)
-    rect(fx + ui(2), cy + ui(2), fw - ui(4), L.fieldH - ui(4), COL.field, a)
-    local tx, ty = fx + L.fpad, cy + L.fpad
-    self.hits.text = { x = fx, y = cy, w = fw, h = L.fieldH }
+    local fx, fw = x + lay.pad, lay.w - lay.pad * 2
+    rect(fx, cy, fw, lay.fieldH, COL.accent, a)
+    rect(fx + ui(2), cy + ui(2), fw - ui(4), lay.fieldH - ui(4), COL.field, a)
+    local tx, ty = fx + lay.fpad, cy + lay.fpad
+    self.hits.text = { x = fx, y = cy, w = fw, h = lay.fieldH }
 
     local n = #self.chars
     local blink = (now - self.openTick) % 1000 < 530
     local caretX, caretY
 
     if n == 0 and self.placeholder ~= "" then
-        text(self.placeholder, tx, ty, L.innerW, L.lineH, COL.muted, a, L.fs, FONT, "left", "center", true)
+        text(self.placeholder, tx, ty, lay.innerW, lay.lineH, COL.muted, a, lay.fs, FONT, "left", "center", true)
     end
 
-    if L.multi then
+    if lay.multi then
         local lines = self.lines
         local cli = caretLine(self)
-        for row = 0, L.rows - 1 do
+        for row = 0, lay.rows - 1 do
             local ln = lines[self.top + row]
             if not ln then break end
-            local ly = ty + row * L.lineH
+            local ly = ty + row * lay.lineH
             local str = sub(self.chars, ln.s, ln.e)
             if self.selAll and ln.e >= ln.s then
-                rect(tx, ly + ui(1), dxGetTextWidth(str, L.fs, FONT), L.lineH - ui(2), COL.sel, a)
+                rect(tx, ly + ui(1), L.width(str, lay.fs, FONT), lay.lineH - ui(2), COL.sel, a)
             end
-            text(str, tx, ly, L.innerW + ui(8), L.lineH, COL.text, a, L.fs, FONT, "left", "center", true)
+            text(str, tx, ly, lay.innerW + ui(8), lay.lineH, COL.text, a, lay.fs, FONT, "left", "center", true)
             if self.top + row == cli then
                 caretX, caretY = tx + width(self, ln.s, self.caret), ly
             end
         end
         -- scroll indicator
-        if #lines > L.rows then
-            local trackH = L.fieldH - ui(12)
-            local barH = math.max(ui(16), trackH * L.rows / #lines)
-            local barY = cy + ui(6) + (trackH - barH) * (self.top - 1) / (#lines - L.rows)
+        if #lines > lay.rows then
+            local trackH = lay.fieldH - ui(12)
+            local barH = math.max(ui(16), trackH * lay.rows / #lines)
+            local barY = cy + ui(6) + (trackH - barH) * (self.top - 1) / (#lines - lay.rows)
             rect(fx + fw - ui(7), barY, ui(3), barH, COL.muted, a * 0.8)
         end
     else
         local str = sub(self.chars, self.first + 1, n)
         if self.selAll and n > 0 then
-            rect(tx, ty + ui(1), math.min(L.innerW, dxGetTextWidth(str, L.fs, FONT)), L.lineH - ui(2), COL.sel, a)
+            rect(tx, ty + ui(1), math.min(lay.innerW, L.width(str, lay.fs, FONT)), lay.lineH - ui(2), COL.sel, a)
         end
-        text(str, tx, ty, L.innerW, L.lineH, COL.text, a, L.fs, FONT, "left", "center", true)
+        text(str, tx, ty, lay.innerW, lay.lineH, COL.text, a, lay.fs, FONT, "left", "center", true)
         caretX, caretY = tx + width(self, self.first + 1, self.caret), ty
     end
 
     if caretX and blink and not self.selAll then
-        rect(caretX, caretY + L.lineH * 0.15, ui(2), L.lineH * 0.7, COL.accent, a)
+        rect(caretX, caretY + lay.lineH * 0.15, ui(2), lay.lineH * 0.7, COL.accent, a)
     end
-    cy = cy + L.fieldH + ui(16)
+    cy = cy + lay.fieldH + ui(16)
 
     -- footer: counter + buttons
     local ratio = n / self.maxLen
     local cc = (n >= self.maxLen) and COL.full or (ratio >= 0.9 and COL.warn or COL.muted)
-    text(n .. " / " .. self.maxLen, fx, cy, fw / 2, L.btnH, cc, a, L.ss * 1.05, FONT_BOLD, "left")
+    text(n .. " / " .. self.maxLen, fx, cy, fw / 2, lay.btnH, cc, a, lay.ss * 1.05, FONT_BOLD, "left")
 
-    local okW = buttonWidth(self, "Confirm", "ENTER")
-    local noW = buttonWidth(self, "Cancel", "ESC")
+    local okW = buttonWidth(self, L("common.confirm"), L("ui_core.textinput.enter"))
+    local noW = buttonWidth(self, L("common.cancel"), L("ui_core.textinput.esc"))
     local bx = fx + fw - okW
-    drawButton(self, "confirm", "Confirm", "ENTER", bx, cy, okW, L.btnH, true, a, mx, my)
-    drawButton(self, "cancel", "Cancel", "ESC", bx - ui(10) - noW, cy, noW, L.btnH, false, a, mx, my)
+    drawButton(self, "confirm", L("common.confirm"), L("ui_core.textinput.enter"), bx, cy, okW, lay.btnH, true, a, mx, my)
+    drawButton(self, "cancel", L("common.cancel"), L("ui_core.textinput.esc"), bx - ui(10) - noW, cy, noW, lay.btnH, false, a, mx, my)
 end
 
 addEventHandler("onClientResourceStop", resourceRoot, function()

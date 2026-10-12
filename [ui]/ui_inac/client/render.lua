@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 uicore = exports.ui_core
 ui = function(v) return uicore:ui(v) end
 
@@ -31,7 +32,7 @@ local function wrapText(text, maxW, scale, font)
         local line = ""
         for word in para:gmatch("%S+") do
             local try = line == "" and word or (line .. " " .. word)
-            if line ~= "" and dxGetTextWidth(try, scale, font) > maxW then
+            if line ~= "" and L.width(try, scale, font) > maxW then
                 lines[#lines + 1] = line
                 line = word
             else
@@ -167,7 +168,7 @@ addEventHandler("onClientRender", root, function()
                 valueText = "< " .. opt.label .. " >"
             end
         elseif item.type == "spawnvehicle" then
-            valueText = "ID " .. tostring(item.model)
+            valueText = L("ui_inac.render.id", { model = tostring(item.model) })
         elseif item.type == "data" then
             local raw = getElementData(item.source, item.key)
             if item.format then
@@ -182,7 +183,7 @@ addEventHandler("onClientRender", root, function()
             elseif item.owned then
                 rightIcon = "ring"
             elseif type(item.price) == "number" then
-                valueText = item.price > 0 and money(item.price) or "Free"
+                valueText = item.price > 0 and money(item.price) or L("ui_inac.render.free")
             end
         end
 

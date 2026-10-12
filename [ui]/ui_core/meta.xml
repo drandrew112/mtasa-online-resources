@@ -3,6 +3,8 @@
     <download_priority_group>999</download_priority_group>
 
     <!-- CLIENT FILES -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
     <script src="client/scale.lua" type="client" />
     <script src="client/layout.lua" type="client" />
 

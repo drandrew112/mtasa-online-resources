@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local uicore = exports["ui_core"]
 local sw,sh = uicore:getScreenWH()
 local safe_x, safe_y = uicore:getSafeZone()
@@ -70,11 +71,11 @@ function render()
             logosize,
             roundedShader
         )
-        dxDrawText("Welcome to FreeV!\nWhile you wait, check out our Discord for the latest updates!\n\nFreeV — experience San Andreas like never before.", sw/2+10, sh/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
+        dxDrawText(L("ui_download.client.welcome_to_freev_while_you_wait"), sw/2+10, sh/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
         
-        dxDrawText( "Join our Discord community!\n#7289DA"..discord.."\n#ffffff(Press C to copy link)", sw/2, sh-safe_y, _,_, tocolor(255,255,255), uicore:ui(1.1), "default", "center", "bottom", false,false,false,true)
+        dxDrawText( L("ui_download.client.join_our_discord_community_press_c", { discord = discord }), sw/2, sh-safe_y, _,_, tocolor(255,255,255), uicore:ui(1.1), "default", "center", "bottom", false,false,false,true)
         
-        local downloadtext = "Downloading... ("..downloaded.."/"..total.." MB) " .. (progresz or "0") .."%"
+        local downloadtext = L("ui_download.client.downloading_mb", { downloaded = downloaded, total = total, progresz = (progresz or "0") })
         uicore:drawLoadingText(downloadtext)
 
         if getKeyState("c") then

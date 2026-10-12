@@ -2,6 +2,8 @@
 	<info author="andrasxa" name="download" type="script" />
 	<download_priority_group>998</download_priority_group>
 
+	<include resource="v_locals" />
+	<script src="locals.lua" type="client" />
 	<script src="client.lua" type="client" />
 	<script src="server.lua" type="server" />
 

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/core/net.lua
     Thin client <-> server transport shared by every app.
@@ -31,7 +32,7 @@ end)
 
 addEvent("phone:toast", true)
 addEventHandler("phone:toast", root, function(text)
-    local ok = pcall(function() exports.ui_core:addNotification("Phone", tostring(text)) end)
+    local ok = pcall(function() exports.ui_core:addNotification(L("ui_phone.net.phone"), tostring(text)) end)
     if not ok then
         outputChatBox("#5aaaff[Phone] #ffffff" .. tostring(text), 255, 255, 255, true)
     end

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/apps/browser.lua
     Opens the virtual browser (ui_browser) as its own full-screen panel. The
@@ -6,7 +7,7 @@
 
 PhoneApp.register({
     id    = "browser",
-    name  = "Browser",
+    name  = L("ui_phone.browser.browser"),
     order = 40,
 
     open = function()
@@ -15,7 +16,7 @@ PhoneApp.register({
             if Phone and Phone.close then Phone.close() end
             exports.ui_browser:openBrowser()
         else
-            outputChatBox("#ff8800[Phone]#ffffff The browser is not available right now.", 255, 255, 255, true)
+            outputChatBox(L("ui_phone.browser.phone_browser_is_not_available_right"), 255, 255, 255, true)
         end
         -- Return false so the phone home grid stays put (we handled entry ourselves).
         return false

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/apps/myveh.lua
     Personal vehicles, fed by v_ownveh through server/apps/myveh.lua.
@@ -13,10 +14,10 @@ local vehicles = {}   -- { { id, model, modelName, plate, isDestroyed, spawned }
 local sub      = nil  -- nil = category list | "land" | "plane" | "helicopter" | "boat"
 
 local CATEGORIES = {
-    { key = "land",       name = "Land"       },
-    { key = "plane",      name = "Plane"      },
-    { key = "helicopter", name = "Helicopter" },
-    { key = "boat",       name = "Boat"       },
+    { key = "land",       name = L("ui_phone.myveh.land")       },
+    { key = "plane",      name = L("ui_phone.myveh.plane")      },
+    { key = "helicopter", name = L("ui_phone.myveh.helicopter") },
+    { key = "boat",       name = L("ui_phone.myveh.boat")       },
 }
 
 local function categoryOf(model)
@@ -32,7 +33,7 @@ local function categoryName(key)
     for _, c in ipairs(CATEGORIES) do
         if c.key == key then return c.name end
     end
-    return "My Vehicles"
+    return L("ui_phone.myveh.my_vehicles")
 end
 
 local function inCategory(key)
@@ -58,20 +59,20 @@ end)
 
 PhoneApp.register({
     id    = "myveh",
-    name  = "My Vehicles",
+    name  = L("ui_phone.myveh.my_vehicles"),
     order = 10,
 
     open  = function() sub = nil; phonePull() end,
     close = function() sub = nil end,
 
     headerTitle = function()
-        return sub and categoryName(sub) or "My Vehicles"
+        return sub and categoryName(sub) or L("ui_phone.myveh.my_vehicles")
     end,
 
     hint = function()
-        if not sub then return "[Enter] open" end
-        if anySpawned() then return "Store your vehicle first (interaction menu)" end
-        return "[Enter] request vehicle"
+        if not sub then return L("ui_phone.myveh.enter_open") end
+        if anySpawned() then return L("ui_phone.myveh.store_your_vehicle_first_interaction_menu") end
+        return L("ui_phone.myveh.enter_request_vehicle")
     end,
 
     items = function()
@@ -81,7 +82,7 @@ PhoneApp.register({
                 local n = #inCategory(c.key)
                 rows[#rows + 1] = {
                     title    = c.name,
-                    subtitle = n == 1 and "1 vehicle" or (n .. " vehicles"),
+                    subtitle = n == 1 and "1 vehicle" or (L("ui_phone.myveh.vehicles", { n = n })),
                     _cat     = c.key,
                 }
             end
@@ -92,14 +93,14 @@ PhoneApp.register({
         for _, v in ipairs(inCategory(sub)) do
             local right, rightColor
             if v.spawned then
-                right = "Out"
+                right = L("ui_phone.myveh.out")
             elseif v.isDestroyed then
-                right, rightColor = "Destroyed", PhoneUI.C.bad
+                right, rightColor = L("ui_phone.myveh.destroyed"), PhoneUI.C.bad
             end
             local plate = (v.plate and v.plate ~= "") and ("   -   " .. v.plate) or ""
             rows[#rows + 1] = {
-                title      = v.modelName .. "  (ID " .. v.id .. ")",
-                subtitle   = "Model " .. v.model .. plate,
+                title      = L("ui_phone.myveh.id", { model_name = v.modelName, id = v.id }),
+                subtitle   = L("ui_phone.myveh.model", { model = v.model, plate = plate }),
                 right      = right,
                 rightColor = rightColor,
                 _id        = v.id,
@@ -107,7 +108,7 @@ PhoneApp.register({
         end
         return rows
     end,
-    empty = "You have no vehicles yet",
+    empty = L("ui_phone.myveh.you_have_no_vehicles_yet"),
 
     onSelect = function(_, row)
         if row._cat then

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- GTA V style pause menu ("FreeV").
 --
 -- Opens with P or BACKSPACE. Controls: ARROWS navigate, ENTER confirm,
@@ -48,7 +49,7 @@ local C = {
     bank       = tocolor(120, 180, 255, 255),
 }
 
-local TABS = { "MAP", "ONLINE", "STATS", "SETTINGS" }
+local TABS = { L("ui_pause.pausemenu.map"), L("ui_pause.pausemenu.online"), L("ui_pause.pausemenu.stats"), L("ui_pause.pausemenu.settings") }
 
 local pauseMenuOpen = false
 local pauseMapOpen  = false
@@ -58,22 +59,22 @@ local selectedTab   = 1
 -- JOBS tab: a small 2-level drill-down.
 --   view = "root" | "joinlobby" | "race" | "deathmatch"
 local JOBS_ROOT = {
-    { id = "jobs",    label = "Jobs",              desc = "Quick Job, lobbies, official and community jobs." },
-    { id = "arenawar",label = "Join Arena War",    desc = "Join an Arena War minigame." },
-    { id = "leave",   label = "Leave Server",      desc = "Disconnect from the server." }
+    { id = "jobs",    label = L("ui_pause.pausemenu.jobs"),              desc = L("ui_pause.pausemenu.quick_job_lobbies_official_and_community") },
+    { id = "arenawar",label = L("ui_pause.pausemenu.join_arena_war"),    desc = L("ui_pause.pausemenu.join_arena_war_minigame") },
+    { id = "leave",   label = L("ui_pause.pausemenu.leave_server"),      desc = L("ui_pause.pausemenu.disconnect_from_server") }
 }
 -- Jobs sub-menu.
 local JOBS_SUB = {
-    { id = "quick",   label = "Quick Job",         desc = "Join a random open lobby, or start a new one with a random game." },
-    { id = "lobbies", label = "Join Lobby",        desc = "Browse every open lobby: game, mode and host." },
-    { id = "official",  label = "Official",          desc = "Jobs made by the server team." },
-    { id = "community", label = "Community created", desc = "Jobs created by other players." },
-    { id = "creator",   label = "Creator",           desc = "Open the job creator to build your own job." },
+    { id = "quick",   label = L("ui_pause.pausemenu.quick_job"),         desc = L("ui_pause.pausemenu.join_random_open_lobby_or_start") },
+    { id = "lobbies", label = L("ui_pause.pausemenu.join_lobby"),        desc = L("ui_pause.pausemenu.browse_every_open_lobby_game_mode") },
+    { id = "official",  label = L("ui_pause.pausemenu.official"),          desc = L("ui_pause.pausemenu.jobs_made_by_server_team") },
+    { id = "community", label = L("ui_pause.pausemenu.community_created"), desc = L("ui_pause.pausemenu.jobs_created_by_other_players") },
+    { id = "creator",   label = L("ui_pause.pausemenu.creator"),           desc = L("ui_pause.pausemenu.open_job_creator_to_build_your") },
 }
 -- Official / Community sub-menu: pick a game type, then list the jobs.
 local JOBS_CATS = {
-    { id = "race",       label = "Race",       desc = "Browse the available Race jobs." },
-    { id = "deathmatch", label = "Deathmatch", desc = "Browse the available Deathmatch jobs." },
+    { id = "race",       label = L("common.race"),       desc = L("ui_pause.pausemenu.browse_available_race_jobs") },
+    { id = "deathmatch", label = L("common.deathmatch"), desc = L("ui_pause.pausemenu.browse_available_deathmatch_jobs") },
 }
 --   view = "root" | "joinlobby" | "cat" | "race" | "deathmatch"; src = "official" | "community"
 local jobsMenu     = { view = "root", rootSel = 1, listSel = 1, catSel = 1, subSel = 1, src = "official" }
@@ -107,6 +108,24 @@ end
 local function colorsAvailable()
     local res = getResourceFromName("shader_colors")
     return res and getResourceState(res) == "running"
+end
+
+local function localsAvailable()
+    local res = getResourceFromName("v_locals")
+    return res and getResourceState(res) == "running"
+end
+
+-- Language choice options (v_locals: { value, label } -> choice { id, label }).
+-- The list only changes with a v_locals restart, so it is fetched once.
+local languageOptions = nil
+local function getLanguageOptions()
+    if not languageOptions and localsAvailable() then
+        languageOptions = {}
+        for i, l in ipairs(exports.v_locals:getLanguages() or {}) do
+            languageOptions[i] = { id = l.value, label = l.label }
+        end
+    end
+    return languageOptions or {}
 end
 
 local function jobsAvailable()
@@ -175,57 +194,57 @@ end
 -- account-saved values after login.
 SETTINGS_TREE = {
     {
-        id = "graphics", label = "Graphics",
+        id = "graphics", label = L("ui_pause.pausemenu.graphics"),
         items = {
             {
-                id = "gfx_farclip", label = "Render distance", type = "range",
+                id = "gfx_farclip", label = L("ui_pause.pausemenu.render_distance"), type = "range",
                 min = 400, max = 3400, step = 200, default = 1400,
-                desc = "How far the world is drawn. Higher values cost performance.",
+                desc = L("ui_pause.pausemenu.how_far_world_is_drawn_higher"),
                 available = drawdistanceAvailable,
                 get = function() return drawdistanceAvailable() and exports.drawdistance:getFarClip() end,
                 set = function(v) if drawdistanceAvailable() then exports.drawdistance:setFarClip(v) end end,
             },
             {
-                id = "gfx_modellod", label = "Model LOD", type = "range",
+                id = "gfx_modellod", label = L("ui_pause.pausemenu.model_lod"), type = "range",
                 min = 200, max = 2800, step = 200, default = 400,
-                desc = "Distance at which mapped objects switch to their low-detail version.",
+                desc = L("ui_pause.pausemenu.distance_at_which_mapped_objects_switch"),
                 available = drawdistanceAvailable,
                 get = function() return drawdistanceAvailable() and exports.drawdistance:getModelLOD() end,
                 set = function(v) if drawdistanceAvailable() then exports.drawdistance:setModelLOD(v) end end,
             },
             {
-                id = "gfx_pedlod", label = "Ped LOD", type = "range",
+                id = "gfx_pedlod", label = L("ui_pause.pausemenu.ped_lod"), type = "range",
                 min = 200, max = 500, step = 200, default = 500,
-                desc = "How far away other pedestrians keep being drawn (engine limit 500).",
+                desc = L("ui_pause.pausemenu.how_far_away_other_pedestrians_keep"),
                 available = drawdistanceAvailable,
                 get = function() return drawdistanceAvailable() and exports.drawdistance:getPedLOD() end,
                 set = function(v) if drawdistanceAvailable() then exports.drawdistance:setPedLOD(v) end end,
             },
             {
-                id = "gfx_vehiclelod", label = "Vehicle LOD", type = "range",
+                id = "gfx_vehiclelod", label = L("ui_pause.pausemenu.vehicle_lod"), type = "range",
                 min = 200, max = 500, step = 200, default = 500,
-                desc = "How far away other vehicles keep being drawn (engine limit 500).",
+                desc = L("ui_pause.pausemenu.how_far_away_other_vehicles_keep"),
                 available = drawdistanceAvailable,
                 get = function() return drawdistanceAvailable() and exports.drawdistance:getVehicleLOD() end,
                 set = function(v) if drawdistanceAvailable() then exports.drawdistance:setVehicleLOD(v) end end,
             },
             {
-                id = "gfx_colorpreset", label = "Color Grading", type = "choice",
-                desc = "Color correction filter for livelier colors and modern contrast. Off saves performance.",
+                id = "gfx_colorpreset", label = L("ui_pause.pausemenu.color_grading"), type = "choice",
+                desc = L("ui_pause.pausemenu.color_correction_filter_for_livelier_colors"),
                 available = colorsAvailable,
                 options = function() return colorsAvailable() and exports.shader_colors:getColorPresets() or {} end,
                 get = function() return colorsAvailable() and exports.shader_colors:getColorPreset() end,
                 set = function(v) if colorsAvailable() then exports.shader_colors:setColorPreset(v) end end,
                 valueText = function()
                     if colorsAvailable() and not exports.shader_colors:isColorGradingSupported() then
-                        return "Not supported"
+                        return L("ui_pause.pausemenu.not_supported")
                     end
                 end,
             },
             {
-                id = "gfx_colorintensity", label = "Color Intensity", type = "range",
+                id = "gfx_colorintensity", label = L("ui_pause.pausemenu.color_intensity"), type = "range",
                 min = 0, max = 100, step = 10, default = 70, suffix = "%",
-                desc = "Strength of the color grading filter.",
+                desc = L("ui_pause.pausemenu.strength_of_color_grading_filter"),
                 available = colorsAvailable,
                 get = function() return colorsAvailable() and exports.shader_colors:getColorIntensity() end,
                 set = function(v) if colorsAvailable() then exports.shader_colors:setColorIntensity(v) end end,
@@ -233,30 +252,40 @@ SETTINGS_TREE = {
         },
     },
     {
-        id = "display", label = "Display",
+        id = "display", label = L("ui_pause.pausemenu.display"),
         items = {
             {
-                id = "show3dblips", label = "Show 3D Blips", type = "toggle",
-                desc = "Show 3D world markers above map blips while on foot or driving.",
+                id = "show3dblips", label = L("ui_pause.pausemenu.show_3d_blips"), type = "toggle",
+                desc = L("ui_pause.pausemenu.show_3d_world_markers_above_map"),
                 available = radarAvailable,
                 get = function() return radarAvailable() and exports.v_radar:getShow3DBlips() end,
                 set = function(v) if radarAvailable() then exports.v_radar:setShow3DBlips(v) end end,
             },
             {
-                id = "enable3dnavigation", label = "Enable 3D Navigation", type = "toggle",
-                desc = "Enable 3D navigation features.",
+                id = "enable3dnavigation", label = L("ui_pause.pausemenu.enable_3d_navigation"), type = "toggle",
+                desc = L("ui_pause.pausemenu.enable_3d_navigation_features"),
                 available = radarAvailable,
                 get = function() return radarAvailable() and exports.v_radar:getEnable3DNavigation() end,
                 set = function(v) if radarAvailable() then exports.v_radar:setEnable3DNavigation(v) end end,
             },
+            {
+                -- D12: the language of the game texts. v_locals stores it on the
+                -- account itself, so this id is not in PAUSE_SETTINGS.
+                id = "language", label = L("ui_pause.settings.language"), type = "choice",
+                desc = L("ui_pause.settings.language_desc"),
+                available = localsAvailable,
+                options = getLanguageOptions,
+                get = function() return L.lang() end,
+                set = function(v) if localsAvailable() then exports.v_locals:setLanguage(v) end end,
+            },
         },
     },
     {
-        id = "online", label = "Online",
+        id = "online", label = L("ui_pause.pausemenu.online_2"),
         items = {
             {
-                id = "toggleOwnNametag", label = "Show Own Nametag", type = "toggle",
-                desc = "Show your own nametag in the 3D world.",
+                id = "toggleOwnNametag", label = L("ui_pause.pausemenu.show_own_nametag"), type = "toggle",
+                desc = L("ui_pause.pausemenu.show_your_own_nametag_in_3d"),
                 -- v_nametags stores the INVERSE: elementData "toggleOwnNametag" == true
                 -- means "hide my own nametag". The menu speaks in "show" terms, so
                 -- flip on the way in and out.
@@ -471,7 +500,15 @@ end
 
 -- STATS ------------------------------------------------------------------------
 
-local STAT_CATS_ORDER = { "General", "Distance", "Vehicle time", "Combat", "Other" }
+-- Category ids are internal; the label is looked up when the list is built (D3).
+local STAT_CATS_ORDER = { "general", "distance", "vehicle_time", "combat", "other" }
+local STAT_CAT_LABEL = {
+    general      = "ui_pause.pausemenu.general",
+    distance     = "ui_pause.pausemenu.distance",
+    vehicle_time = "ui_pause.pausemenu.vehicle_time",
+    combat       = "ui_pause.pausemenu.combat",
+    other        = "ui_pause.pausemenu.other",
+}
 
 local function formatDuration(sec)
     sec = math.floor(tonumber(sec) or 0)
@@ -495,10 +532,10 @@ local function formatStatValue(def, v)
 end
 
 local function statCategoryOf(def)
-    if def.unit == "km" then return "Distance" end
-    if def.unit == "s" then return "Vehicle time" end
-    if def.id:find("^kills") or def.id:find("^deaths") then return "Combat" end
-    return "Other"
+    if def.unit == "km" then return "distance" end
+    if def.unit == "s" then return "vehicle_time" end
+    if def.id:find("^kills") or def.id:find("^deaths") then return "combat" end
+    return "other"
 end
 
 -- Builds { {label=, rows={ {label=, value=} }}, ... }; empty categories dropped.
@@ -509,11 +546,11 @@ local function buildStatCategories()
     local played = getElementData(localPlayer, "Játékidő")
 
     local byName = {
-        General = {
-            { label = "Level", value = level and tostring(level) or "-" },
-            { label = "Total XP", value = xp and formatInt(xp) or "-" },
-            { label = "XP to next level", value = (xp and nextXp) and formatInt(math.max(0, nextXp - xp)) or "-" },
-            { label = "Played time", value = (type(played) == "string" and played ~= "N/A") and played or "-" },
+        general = {
+            { label = L("common.level"), value = level and tostring(level) or "-" },
+            { label = L("ui_pause.pausemenu.total_xp"), value = xp and formatInt(xp) or "-" },
+            { label = L("ui_pause.pausemenu.xp_to_next_level"), value = (xp and nextXp) and formatInt(math.max(0, nextXp - xp)) or "-" },
+            { label = L("common.played_time"), value = (type(played) == "string" and played ~= "N/A") and played or "-" },
         },
     }
     for _, def in ipairs(statsData.defs or {}) do
@@ -525,7 +562,7 @@ local function buildStatCategories()
 
     local out = {}
     for _, name in ipairs(STAT_CATS_ORDER) do
-        if byName[name] then out[#out + 1] = { label = name, rows = byName[name] } end
+        if byName[name] then out[#out + 1] = { label = L(STAT_CAT_LABEL[name]), rows = byName[name] } end
     end
     return out
 end
@@ -728,7 +765,7 @@ local function drawRows(x, y, w, rows, selectedIndex, active)
             labelCol, S(1.18), sel and FONT.rowB or FONT.row, "left", "center")
 
         if r.badge and r.badge ~= "" then
-            local bw = dxGetTextWidth(r.badge, S(0.85), FONT.rowB) + S(14)
+            local bw = L.width(r.badge, S(0.85), FONT.rowB) + S(14)
             dxDrawRectangle(x + w - S(12) - bw, ry + ROW_H / 2 - S(9), bw, S(18), C.accent)
             dxDrawText(r.badge, x + w - S(12) - bw, ry + ROW_H / 2 - S(9), x + w - S(12), ry + ROW_H / 2 + S(9),
                 tocolor(255, 255, 255), S(0.85), FONT.rowB, "center", "center")
@@ -750,7 +787,7 @@ local function drawMapTab(x, y, w, h)
         exports.v_radar:renderPausePreview(x, y, w, h)
     else
         dxDrawRectangle(x, y, w, h, tocolor(0, 0, 0, 180))
-        dxDrawText("Map unavailable", x, y, x + w, y + h, C.txtDim, S(1.1), FONT.row, "center", "center")
+        dxDrawText(L("ui_pause.pausemenu.map_unavailable"), x, y, x + w, y + h, C.txtDim, S(1.1), FONT.row, "center", "center")
     end
 end
 
@@ -777,7 +814,7 @@ local function drawJobDetails(x, y, w, h, job)
     -- reward multiplier bubbles, top-right of the image (only when != 1)
     local bx = x + w - S(8)
     local function bubble(txt, col)
-        local tw = dxGetTextWidth(txt, S(0.95), FONT.rowB)
+        local tw = L.width(txt, S(0.95), FONT.rowB)
         local bw, bh = tw + S(20), S(22)
         bx = bx - bw
         local by = y + S(8)
@@ -796,8 +833,8 @@ local function drawJobDetails(x, y, w, h, job)
     if job.moneyMult and job.moneyMult ~= 1 then bubble("\226\130\172 " .. fmtMult(job.moneyMult), tocolor(46, 160, 80, 235)) end
 
     local info = {
-        { "Type",    (job.type == "race" and "Race") or (job.type == "deathmatch" and "Deathmatch") or "Job" },
-        { "Players", tostring(job.min or "?") .. "-" .. tostring(job.max or "?") },
+        { L("ui_pause.pausemenu.type"),    (job.type == "race" and L("common.race")) or (job.type == "deathmatch" and L("common.deathmatch")) or L("common.job") },
+        { L("common.players"), tostring(job.min or "?") .. "-" .. tostring(job.max or "?") },
     }
     local iy = y + boxH
     for i, row in ipairs(info) do
@@ -820,7 +857,7 @@ local function drawJobsRoot(x, y, w, h, items, sel, title)
     local rightW = w - leftW - gap
 
     drawColumnHeader(x, y, leftW, title)
-    drawColumnHeader(rightX, y, rightW, "ABOUT")
+    drawColumnHeader(rightX, y, rightW, L("ui_pause.pausemenu.about"))
 
     local listY = y + HEAD_H
     local rows = {}
@@ -837,22 +874,29 @@ local function drawJobsRoot(x, y, w, h, items, sel, title)
     end
 end
 
+-- view id -> shown name ("race" / "deathmatch" are ids, not texts)
+local function jobViewLabel(view)
+    if view == "race" then return L("common.race") end
+    if view == "deathmatch" then return L("common.deathmatch") end
+    return view
+end
+
 local function drawJobsList(x, y, w, h, list)
     local gap = S(6)
     local leftW = math.floor(w * 0.30)
     local rightX = x + leftW + gap
     local rightW = w - leftW - gap
 
-    drawColumnHeader(x, y, leftW, jobsMenu.view == "joinlobby" and "OPEN LOBBIES"
-        or ((jobsMenu.src == "community" and "COMMUNITY " or "OFFICIAL ") .. string.upper(jobsMenu.view)))
-    drawColumnHeader(rightX, y, rightW, "DETAILS")
+    drawColumnHeader(x, y, leftW, jobsMenu.view == "joinlobby" and L("ui_pause.pausemenu.open_lobbies")
+        or ((jobsMenu.src == "community" and L("ui_pause.pausemenu.community") or L("ui_pause.pausemenu.official_2")) .. L.upper(jobViewLabel(jobsMenu.view))))
+    drawColumnHeader(rightX, y, rightW, L("ui_pause.pausemenu.details"))
 
     local listY = y + HEAD_H
     local detH = h - HEAD_H
 
     if #list == 0 then
         dxDrawRectangle(x, listY, leftW, detH, C.row)
-        dxDrawText(jobsMenu.view == "joinlobby" and "No open lobbies" or "No jobs available",
+        dxDrawText(jobsMenu.view == "joinlobby" and L("ui_pause.pausemenu.no_open_lobbies") or L("ui_pause.pausemenu.no_jobs_available"),
             x + S(12), listY + S(10), x + leftW - S(12), listY + detH, C.txtDim, S(1.0), FONT.row, "left", "top")
         return
     end
@@ -862,15 +906,15 @@ local function drawJobsList(x, y, w, h, list)
     if jobsMenu.view == "joinlobby" then
         for i, entry in ipairs(list) do
             rows[i] = {
-                label = entry.jobName or ("Lobby " .. entry.id),
-                value = (entry.type == "race" and "Race" or "Deathmatch") .. "  " .. entry.count .. "/" .. entry.max,
+                label = entry.jobName or (L("ui_pause.pausemenu.lobby", { id = entry.id })),
+                value = (entry.type == "race" and L("common.race") or L("common.deathmatch")) .. "  " .. entry.count .. "/" .. entry.max,
                 badge = entry.hostName,
             }
         end
     else
         for i, job in ipairs(list) do
             rows[i] = {
-                label = job.name or ("Job " .. i),
+                label = job.name or (L("ui_pause.pausemenu.job_2", { i = i })),
                 value = tostring(job.min or "?") .. "-" .. tostring(job.max or "?"),
             }
         end
@@ -891,19 +935,19 @@ end
 
 local function drawJobsTab(x, y, w, h)
     if not jobsAvailable() then
-        drawColumnHeader(x, y, w, "ONLINE")
+        drawColumnHeader(x, y, w, L("ui_pause.pausemenu.online"))
         dxDrawRectangle(x, y + HEAD_H, w, h - HEAD_H, C.row)
-        dxDrawText("Jobs unavailable", x + S(12), y + HEAD_H, x + w - S(12), y + h,
+        dxDrawText(L("ui_pause.pausemenu.jobs_unavailable"), x + S(12), y + HEAD_H, x + w - S(12), y + h,
             C.txtDim, S(1.0), FONT.row, "left", "top")
         return
     end
 
     if jobsMenu.view == "root" then
-        drawJobsRoot(x, y, w, h, JOBS_ROOT, jobsMenu.rootSel, "ONLINE")
+        drawJobsRoot(x, y, w, h, JOBS_ROOT, jobsMenu.rootSel, L("ui_pause.pausemenu.online"))
     elseif jobsMenu.view == "jobs" then
-        drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, "JOBS")
+        drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, L("ui_pause.pausemenu.jobs_title"))
     elseif jobsMenu.view == "cat" then
-        drawJobsRoot(x, y, w, h, JOBS_CATS, jobsMenu.catSel, string.upper(jobsMenu.src))
+        drawJobsRoot(x, y, w, h, JOBS_CATS, jobsMenu.catSel, L.upper(jobsMenu.src == "community" and L("ui_pause.pausemenu.community_label") or L("ui_pause.pausemenu.official")))
     elseif jobsMenu.view == "joinlobby" then
         drawJobsList(x, y, w, h, getLobbyList())
     else
@@ -921,8 +965,8 @@ local function drawStatsTab(x, y, w, h)
     local catIndex = math.max(1, math.min(statsCat or statsSel, #cats))
     local cat = cats[catIndex]
 
-    drawColumnHeader(x, y, leftW, "STATS")
-    drawColumnHeader(rightX, y, rightW, cat and string.upper(cat.label) or "")
+    drawColumnHeader(x, y, leftW, L("ui_pause.pausemenu.stats"))
+    drawColumnHeader(rightX, y, rightW, cat and L.upper(cat.label) or "")
 
     local listY = y + HEAD_H
     local catRows = {}
@@ -934,7 +978,7 @@ local function drawStatsTab(x, y, w, h)
 
     if statsData.loaded and not statsData.defs then
         local ty = listY + #cat.rows * ROW_H + S(8)
-        dxDrawText("Statistics unavailable", rightX + S(12), ty, rightX + rightW, ty + S(22),
+        dxDrawText(L("ui_pause.pausemenu.statistics_unavailable"), rightX + S(12), ty, rightX + rightW, ty + S(22),
             C.txtDim, S(1.0), FONT.row, "left", "top")
     end
 end
@@ -948,8 +992,8 @@ local function drawSettingsTab(x, y, w, h)
     local catIndex = settingsCat or settingsSel
     local cat = SETTINGS_TREE[catIndex]
 
-    drawColumnHeader(x, y, leftW, "SETTINGS")
-    drawColumnHeader(rightX, y, rightW, cat and string.upper(cat.label) or "")
+    drawColumnHeader(x, y, leftW, L("ui_pause.pausemenu.settings"))
+    drawColumnHeader(rightX, y, rightW, cat and L.upper(cat.label) or "")
 
     local listY = y + HEAD_H
 
@@ -966,9 +1010,9 @@ local function drawSettingsTab(x, y, w, h)
         local enabled = (not item.available) or item.available()
         local value = ""
         if not enabled then
-            value = "unavailable"
+            value = L("ui_pause.settings.unavailable")
         elseif item.type == "toggle" then
-            value = (item.get() and true or false) and "ON" or "OFF"
+            value = (item.get() and true or false) and L("ui_pause.settings.on") or L("ui_pause.settings.off")
         elseif item.type == "range" then
             value = tostring(tonumber(item.get()) or item.default or item.min) .. (item.suffix or "")
         elseif item.type == "choice" then
@@ -994,10 +1038,10 @@ end
 local function contextHelp()
     if focus == "tabs" then
         local t = TABS[selectedTab]
-        if t == "MAP" then return "Open the full-screen map." end
-        if t == "ONLINE" then return "Join jobs, lobbies and minigames." end
-        if t == "STATS" then return "Your level, XP, played time and statistics." end
-        return "Change your settings."
+        if t == "MAP" then return L("ui_pause.pausemenu.open_full_screen_map") end
+        if t == "ONLINE" then return L("ui_pause.pausemenu.join_jobs_lobbies_and_minigames") end
+        if t == "STATS" then return L("ui_pause.pausemenu.your_level_xp_played_time_and") end
+        return L("ui_pause.pausemenu.change_your_settings")
     end
     local tab = TABS[selectedTab]
     if tab == "ONLINE" then
@@ -1012,20 +1056,20 @@ local function contextHelp()
             return item and item.desc or ""
         elseif jobsMenu.view == "joinlobby" then
             local entry = getLobbyList()[jobsMenu.listSel]
-            return entry and (entry.description or "Join this lobby.") or "No open lobbies right now."
+            return entry and (entry.description or L("ui_pause.pausemenu.join_this_lobby")) or L("ui_pause.pausemenu.no_open_lobbies_right_now")
         else
             local list = filteredJobs(jobsMenu.view == "race" and "race" or "deathmatch")
             local job = list[jobsMenu.listSel]
-            return job and (job.description or "Join this job.") or ""
+            return job and (job.description or L("ui_pause.pausemenu.join_this_job")) or ""
         end
     end
     if tab == "STATS" then
-        return "Your level, XP, played time and statistics."
+        return L("ui_pause.pausemenu.your_level_xp_played_time_and")
     end
     if tab == "SETTINGS" then
         if settingsCat == nil then
             local c = SETTINGS_TREE[settingsSel]
-            return c and ("Open the " .. c.label .. " settings.") or ""
+            return c and (L("ui_pause.pausemenu.open_settings", { label = c.label })) or ""
         end
         local item = SETTINGS_TREE[settingsCat].items[settingsSel]
         return item and item.desc or ""
@@ -1058,7 +1102,7 @@ local function drawPanel()
     local moneyScale = S(1.05)
     local cashText = formatMoney(playerMoney())
     local bankText = formatMoney(tonumber(getElementData(localPlayer, "bank_money")) or 0)
-    local bankW = dxGetTextWidth(bankText, moneyScale, FONT.rowB)
+    local bankW = L.width(bankText, moneyScale, FONT.rowB)
     dxDrawText(bankText, moneyL, fy + S(29), moneyR, fy + S(50),
         C.bank, moneyScale, FONT.rowB, "right", "top")
     dxDrawText(cashText, moneyL, fy + S(29), moneyR - bankW - S(10), fy + S(50),
@@ -1101,8 +1145,8 @@ local function drawPanel()
     dxDrawText(contextHelp(), fx + S(16), infoY, fx + fw * 0.62, infoY + footerH,
         C.txtDim, S(0.92), FONT.row, "left", "center", true)
     local hint = focus == "tabs"
-        and "ENTER  Select      BACKSPACE / P  Close"
-        or  "ENTER  Select      BACKSPACE  Back"
+        and L("ui_pause.pausemenu.enter_select_backspace_p_close")
+        or  L("ui_pause.pausemenu.enter_select_backspace_back")
     dxDrawText(hint, fx + fw * 0.62, infoY, fx + fw - S(16), infoY + footerH,
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end

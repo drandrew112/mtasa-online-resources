@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/core/ui.lua
     Geometry, palette and the shared drawing helpers (incl. the standard list
@@ -109,7 +110,7 @@ function PhoneUI.drawList(rows, selected, opts)
     local top  = s.y + u(10)
 
     if #rows == 0 then
-        PhoneUI.drawEmpty(opts.empty or "Nothing here yet")
+        PhoneUI.drawEmpty(opts.empty or L("ui_phone.phone.nothing_here_yet"))
         return
     end
 

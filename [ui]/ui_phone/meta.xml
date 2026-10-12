@@ -3,11 +3,13 @@
           description="Modular in-game phone (MyVeh, Invites, Contacts, Browser, Settings)" />
     <oop>false</oop>
 
+    <include resource="v_locals" />
     <include resource="v_mysql" />
     <include resource="v_accounts" />
 
     <!-- Shared config, listed explicitly on each side so it is guaranteed to
          run before the scripts that use it at file scope. -->
+    <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="client" cache="false" />
     <script src="shared/config.lua" type="server" />
 

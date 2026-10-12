@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 local sw, sh = UI.sw, UI.sh 
 
 -- Notifications
@@ -56,7 +57,7 @@ local function wrapText(text, font, scale, maxWidth)
             local current = words[1]
             for i = 2, #words do
                 local candidate = current .. " " .. words[i]
-                if dxGetTextWidth(candidate, scale, font, true) <= maxWidth then
+                if L.width(candidate, scale, font, true) <= maxWidth then
                     current = candidate
                 else
                     lines[#lines + 1] = current
@@ -197,7 +198,7 @@ local loadingStart = getTickCount()
 
 function UI:drawLoading(text)
     local h = 25*ui(1.7)
-    local w = dxGetTextWidth(text, ui(1.7), "default", true)+10+h
+    local w = L.width(text, ui(1.7), "default", true)+10+h
     -- background
     dxDrawRectangle(UI.slots.bottomRight.x-w, UI.slots.bottomRight.y-h, w, h, tocolor(0,0,0,160))
     -- icon

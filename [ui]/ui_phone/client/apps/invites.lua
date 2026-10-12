@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/apps/invites.lua
     Pending lobby invites (fed by the server, e.g. from v_jobmanager).
@@ -12,7 +13,7 @@ end)
 
 PhoneApp.register({
     id    = "invites",
-    name  = "Invites",
+    name  = L("ui_phone.invites.invites"),
     order = 20,
 
     badge = function() return #invites end,
@@ -26,8 +27,8 @@ PhoneApp.register({
         end
         return rows
     end,
-    empty = "No pending invites",
-    hint  = "[Enter] join    [Backspace] back",
+    empty = L("ui_phone.invites.no_pending_invites"),
+    hint  = L("ui_phone.invites.enter_join_backspace_back"),
 
     onSelect = function(_, row)
         phoneRPC("invites:accept", row._id)

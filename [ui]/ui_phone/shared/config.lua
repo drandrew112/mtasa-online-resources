@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / shared/config.lua
     Values the client UI and the server logic both need.
@@ -25,13 +26,13 @@ PHONE_CONFIG = {
 --------------------------------------------------------------------------------
 
 PHONE_CONFIG.wallpapers = {
-    { key = "graphite", name = "Graphite",    color = { 18, 20, 26 } },
-    { key = "ocean",    name = "Ocean",       color = { 12, 38, 60 } },
-    { key = "violet",   name = "Violet",      color = { 34, 18, 52 } },
-    { key = "forest",   name = "Forest",      color = { 14, 40, 26 } },
-    { key = "crimson",  name = "Crimson",     color = { 52, 16, 22 } },
-    { key = "sunset",   name = "Sunset",      color = { 58, 32, 14 } },
-    { key = "crew",     name = "Crew colour", color = false          },
+    { key = "graphite", name = L.text("ui_phone.config.graphite"),    color = { 18, 20, 26 } },
+    { key = "ocean",    name = L.text("ui_phone.config.ocean"),       color = { 12, 38, 60 } },
+    { key = "violet",   name = L.text("ui_phone.config.violet"),      color = { 34, 18, 52 } },
+    { key = "forest",   name = L.text("ui_phone.config.forest"),      color = { 14, 40, 26 } },
+    { key = "crimson",  name = L.text("ui_phone.config.crimson"),     color = { 52, 16, 22 } },
+    { key = "sunset",   name = L.text("ui_phone.config.sunset"),      color = { 58, 32, 14 } },
+    { key = "crew",     name = L.text("ui_phone.config.crew_colour"), color = false          },
 }
 PHONE_CONFIG.defaultWallpaper = "graphite"
 
@@ -51,15 +52,15 @@ PHONE_CONFIG.contacts = {
     {
         key = "julia", name = "Julia", photo = "img/contacts/julia.png",
         actions = {
-            { key = "heal",  label = "Heal  -  €200",          cost = 200 },
-            { key = "armor", label = "Refill armour  -  €500", cost = 500 },
+            { key = "heal",  label = L.text("ui_phone.config.heal_200"),          cost = 200 },
+            { key = "armor", label = L.text("ui_phone.config.refill_armour_500"), cost = 500 },
         },
     },
     {
         key = "markus", name = "Markus", photo = "img/contacts/markus.png",
         actions = {
-            { key = "arena", label = "Join Arena War" },
-            { key = "job",   label = "Request Job"   },
+            { key = "arena", label = L.text("ui_phone.config.join_arena_war") },
+            { key = "job",   label = L.text("ui_phone.config.request_job")   },
         },
     },
     {
@@ -68,7 +69,7 @@ PHONE_CONFIG.contacts = {
         -- v_ownveh isDestroyed flag for `claimCost`. With nothing to claim the
         -- call rings out and drops back to the contact list
         -- (client/apps/contacts.lua) - `dynamic` is the channel both sides use.
-        key = "insurance", name = "Insurance", photo = "img/contacts/insurance.png",
+        key = "insurance", name = L.text("ui_phone.config.insurance"), photo = "img/contacts/insurance.png",
         dynamic   = "insurance",
         claimCost = 1000,
     },
@@ -77,11 +78,11 @@ PHONE_CONFIG.contacts = {
         -- the caller types a title + description and a med_erm task is created at
         -- the caller's position. Refused while no ambulance unit is signed in, or
         -- at an open med_scenemanager scene (an ambulance is already on its way).
-        key = "emergency", name = "Emergency Services", photo = "img/contacts/emergency.png",
+        key = "emergency", name = L.text("ui_phone.config.emergency_services"), photo = "img/contacts/emergency.png",
         actions = {
-            { key = "ems", label = "Ambulance (EMS)"      },
-            { key = "pd",  label = "Police (PD)"          },
-            { key = "fd",  label = "Fire Department (FD)" },
+            { key = "ems", label = L.text("ui_phone.config.ambulance_ems")      },
+            { key = "pd",  label = L.text("ui_phone.config.police_pd")          },
+            { key = "fd",  label = L.text("ui_phone.config.fire_department_fd") },
         },
         titleMax = 60,     -- characters of the ERM task title
         descMax  = 200,    -- characters of the ERM task description

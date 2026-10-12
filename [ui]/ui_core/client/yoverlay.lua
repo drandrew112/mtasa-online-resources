@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 UI.yOverlay = {
     active = false,
     startTick = 0,
@@ -134,7 +135,7 @@ local function drawMoneyRow(text, ty, color, alpha, scale)
     if prefix ~= "" then
         -- a default-bold kisebb, felskalazzuk hogy nagyjabol a szamjegyek magassagat hozza
         local pScale = scale * 0.62 * boxH / dxGetFontHeight(scale, MONEY_PREFIX_FONT)
-        local pRx = rx - dxGetTextWidth(amount, scale, "pricedown") - ui(6)
+        local pRx = rx - L.width(amount, scale, "pricedown") - ui(6)
         drawShadowed(prefix, lx, ty, pRx, y2, color, shadow, soff, pScale, MONEY_PREFIX_FONT, "right")
     end
     return lh
@@ -281,13 +282,13 @@ function UI.yOverlay:draw()
 
     dxDrawRectangle(listX, listY, listW, rowH, tocolor(0,0,0,alpha))
     dxDrawText(
-        "FreeV ("..#players..")",
+        L("ui_core.yoverlay.freev", { players = #players }),
         listX + ui(8), listY+(rowH/2),
         _,_, tocolor(255,255,255,alpha),
         ui(1.3), "default-bold", "left", "center"
     )
     dxDrawText(
-        "lvl",
+        L("ui_core.yoverlay.lvl"),
         listX + listW - ui(8), listY+(rowH/2),
         _,_, tocolor(255,255,255,alpha),
         ui(1.3), "default", "right", "center"
@@ -314,7 +315,7 @@ function UI.yOverlay:draw()
         )
 
         -- crew tag box a név mellett jobbra, a névvel azonos betűméretben
-        local nameW = dxGetTextWidth(pName, ui(1.2), "default")
+        local nameW = L.width(pName, ui(1.2), "default")
         drawCrewTagBoxForPlayer(
             player,
             listX + ui(8) + nameW + ui(6),

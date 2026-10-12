@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Minden export-hivas, ami a kepernyore ir valamit, itt egy sorral a konzolba
 -- (log) is bekerul, hogy kesobb visszakovetheto legyen mit mutatott a UI.
 local function uiLog(fmt, ...)
@@ -9,35 +10,49 @@ end
 local lastLoadingText = nil
 local lastTimerValue  = nil
 
+-- Every text argument may be a plain string or a v_locals message object
+-- { t = key, p = params } (DESIGN.md 4.5): messages become text in the player's
+-- language here, strings pass through unchanged.
+local function txt(x)
+    if type(x) == "table" then return L.resolve(x) end
+    return x
+end
+
 function setBanner(title, text, r,g,b)
+    title, text = txt(title), txt(text)
     uiLog("setBanner: %s | %s (r=%s g=%s b=%s)",
         tostring(title), tostring(text), tostring(r), tostring(g), tostring(b))
     UI.banner:set(title, text, r,g,b)
 end
 
 function setInfobox(text, r, g, b)
+    text = txt(text)
     uiLog("setInfobox: %s (r=%s g=%s b=%s)",
         tostring(text), tostring(r), tostring(g), tostring(b))
     UI.infobox:set(text, r, g, b)
 end
 
 function drawSubtitle(text, duration)
+    text = txt(text)
     uiLog("subtitle: %s (duration=%s)", tostring(text), tostring(duration))
     UI.subtitle:set(text, duration)
 end
 
 function setAlert(text, r, g, b, duration)
+    text = txt(text)
     uiLog("setAlert: %s (r=%s g=%s b=%s duration=%s)",
         tostring(text), tostring(r), tostring(g), tostring(b), tostring(duration))
     UI.alert:set(text, r, g, b, duration)
 end
 
 function addNotification(title, text, silent)
+    title, text = txt(title), txt(text)
     uiLog("addNotification: %s | %s", tostring(title), tostring(text))
     UI:addNotification(title, text, silent == true)
 end
 
 function drawLoadingText(text)
+    text = txt(text)
     if text ~= lastLoadingText then
         lastLoadingText = text
         uiLog("drawLoadingText: %s", tostring(text))
@@ -79,6 +94,7 @@ end
 -- the opener so the console keeps a trace of what asked for input.
 local _openTextInput = openTextInput
 function openTextInput(title, maxLength, defaultText, placeholder)
+    title, placeholder = txt(title), txt(placeholder)
     uiLog("openTextInput: %s (max=%s)", tostring(title), tostring(maxLength))
     return _openTextInput(title, maxLength, defaultText, placeholder)
 end

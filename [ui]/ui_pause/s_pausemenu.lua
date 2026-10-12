@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 addEvent("pausemenu_joinArenawar", true)
 addEventHandler("pausemenu_joinArenawar", root, function()
     exports["v_arenawar"]:arenawarJoin(source)
@@ -24,6 +25,6 @@ end)
 addEvent("uipause:leaveServer", true)
 addEventHandler("uipause:leaveServer", root, function()
     if isElement(client) then
-        kickPlayer(client, "You left the server.")
+        kickPlayer(client, L.msg("ui_pause.pausemenu.you_left_server"))
     end
 end)

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 UI.infobox = {
     active = false,
     text = nil,
@@ -50,7 +51,7 @@ function UI.infobox:draw()
     local s = UI.slots.topLeft
         
     local h = 20*ui(1.7)
-    local w = dxGetTextWidth(self.text, ui(1.7), "default-bold", true)+10
+    local w = L.width(self.text, ui(1.7), "default-bold", true)+10
     outputDebugString(w.." - "..h)
 
     local a = alpha

@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Builds the "Spawn vehicle" menu tree from vehicles.xml.
 --
 -- Every <group> becomes a submenu, every <vehicle> becomes an item that
@@ -14,7 +15,7 @@ local function buildMenu(node, menuId, title, backId)
         local nodeType = xmlNodeGetName(child)
 
         if nodeType == "group" then
-            local name    = xmlNodeGetAttribute(child, "name") or "Group"
+            local name    = xmlNodeGetAttribute(child, "name") or L("ui_inac.vehicles.group")
             local childId = menuId .. "/" .. name
 
             buildMenu(child, childId, name, menuId)
@@ -26,7 +27,7 @@ local function buildMenu(node, menuId, title, backId)
 
             if model then
                 items[#items + 1] = {
-                    label = name or ("Vehicle " .. model),
+                    label = name or (L("ui_inac.vehicles.vehicle", { model = model })),
                     type  = "spawnvehicle",
                     model = model
                 }
@@ -44,7 +45,7 @@ end
 
 local xml = xmlLoadFile("vehicles.xml")
 if xml then
-    buildMenu(xml, ROOT_MENU_ID, "Spawn vehicle", ROOT_MENU_BACK)
+    buildMenu(xml, ROOT_MENU_ID, L("ui_inac.main.spawn_vehicle"), ROOT_MENU_BACK)
     xmlUnloadFile(xml)
 else
     outputDebugString("ui_inac: could not load vehicles.xml", 1)

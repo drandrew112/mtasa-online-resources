@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/apps/contacts.lua
     Contact list. Enter "calls" a contact: 2s of ringing, then a menu of the
@@ -80,7 +81,7 @@ end)
 
 PhoneApp.register({
     id    = "contacts",
-    name  = "Contacts",
+    name  = L("ui_phone.contacts.contacts"),
     order = 30,
 
     open  = function() endCall() end,
@@ -93,7 +94,7 @@ PhoneApp.register({
         end
         return rows
     end,
-    hint = "[Enter] call",
+    hint = L("ui_phone.contacts.enter_call"),
 
     -- Pressing Enter on a contact should only start the ring, no select blip.
     selectSound = false,
@@ -172,9 +173,9 @@ PhoneApp.register({
 
         if call.phase == "ring" then
             local dots = ("."):rep(1 + math.floor((getTickCount() - call.start) / 400) % 3)
-            PhoneUI.text("Calling" .. dots, scr.x, py + photo + u(38), scr.w, u(20),
+            PhoneUI.text(L("ui_phone.contacts.calling", { dots = dots }), scr.x, py + photo + u(38), scr.w, u(20),
                 PhoneUI.C.dim, u(1.0), "default", "center", "top")
-            PhoneUI.text("[Backspace] cancel", scr.x, scr.y + scr.h - u(22), scr.w, u(18),
+            PhoneUI.text(L("ui_phone.contacts.backspace_cancel"), scr.x, scr.y + scr.h - u(22), scr.w, u(18),
                 PhoneUI.C.faint, u(0.85), "default", "center", "top")
             return
         end
@@ -189,7 +190,7 @@ PhoneApp.register({
             PhoneUI.text(a.label, x + u(14), y, w - u(24), rowH - u(6),
                 PhoneUI.C.white, u(1.05), "default-bold", "left", "center")
         end
-        PhoneUI.text("[Backspace] back", scr.x, scr.y + scr.h - u(22), scr.w, u(18),
+        PhoneUI.text(L("ui_phone.contacts.backspace_back"), scr.x, scr.y + scr.h - u(22), scr.w, u(18),
             PhoneUI.C.faint, u(0.85), "default", "center", "top")
     end,
 })

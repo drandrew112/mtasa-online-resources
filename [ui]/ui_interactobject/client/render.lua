@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- World-space drawing: a dot above every nearby element with a menu, a key prompt on the focused
 -- one, and the numbered option panel next to it while the menu is open.
 
@@ -32,7 +33,7 @@ local C = {
 local MARGIN = 16
 
 local function textWidth(text, font)
-    return dxGetTextWidth(text, 1, font)
+    return L.width(text, 1, font)
 end
 
 local function drawText(text, x1, y1, x2, y2, color, font, alignX, clip)
@@ -62,7 +63,7 @@ local function focusCounter()
     for i, candidate in ipairs(State.candidates) do
         if candidate.element == State.focus then index = i break end
     end
-    return ("%s  %d/%d  %s"):format(IO.KEY_PREV:upper(), index, count, IO.KEY_NEXT:upper())
+    return ("%s  %d/%d  %s"):format(L.upper(IO.KEY_PREV), index, count, L.upper(IO.KEY_NEXT))
 end
 
 local function drawPrompt(candidate, ax, ay)
@@ -74,7 +75,7 @@ local function drawPrompt(candidate, ax, ay)
 
     dxDrawRectangle(x, y, w, h, C.bg)
     dxDrawRectangle(x, y, s(3), h, C.accent)
-    drawKeyBadge(IO.KEY_OPEN:upper(), x + s(10), y + (h - badge) / 2, badge, C.accent)
+    drawKeyBadge(L.upper(IO.KEY_OPEN), x + s(10), y + (h - badge) / 2, badge, C.accent)
     drawText(title, x + s(10) + badge + s(8), y, x + w, y + h, C.text, fonts.title)
 
     local counter = focusCounter()
@@ -153,7 +154,7 @@ local function drawPanel(candidate, ax, ay)
         local item = entry.item
         if view.grouped and entry.group ~= lastGroup then
             lastGroup = entry.group
-            drawText(entry.group:upper(), x + padX, cy, x + w - padX, cy + groupH, C.textDim, fonts.small, "left", true)
+            drawText(L.upper(entry.group), x + padX, cy, x + w - padX, cy + groupH, C.textDim, fonts.small, "left", true)
             dxDrawRectangle(x + padX, cy + groupH - 1, w - padX * 2, 1, C.divider)
             cy = cy + groupH
         end
@@ -174,7 +175,7 @@ local function drawPanel(candidate, ax, ay)
         cy = cy + rh
     end
     if #view.entries == 0 then
-        drawText("No options", x + padX, cy, x + w, cy + rowH, C.textDim, fonts.row)
+        drawText(L("ui_interactobject.render.no_options"), x + padX, cy, x + w, cy + rowH, C.textDim, fonts.row)
         cy = cy + rowH
     end
 
@@ -182,8 +183,8 @@ local function drawPanel(candidate, ax, ay)
     dxDrawRectangle(x, cy, w, footerH, C.header)
     local hints = {}
     if #view.entries > 0 then hints[#hints + 1] = ("1-%d select"):format(#view.entries) end
-    if view.pages > 1 then hints[#hints + 1] = IO.KEY_PAGE .. " next page" end
-    hints[#hints + 1] = view.depth > 0 and "BKSP back" or (IO.KEY_OPEN:upper() .. " close")
+    if view.pages > 1 then hints[#hints + 1] = L("ui_interactobject.render.next_page", { key_page = IO.KEY_PAGE }) end
+    hints[#hints + 1] = view.depth > 0 and L("ui_interactobject.render.bksp_back") or L("ui_interactobject.render.key_close", { key = L.upper(IO.KEY_OPEN) })
     drawText(table.concat(hints, "  ·  "), x + padX, cy, x + w - padX, cy + footerH, C.textDim, fonts.small, "left", true)
 end
 

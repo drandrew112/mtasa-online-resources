@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / client/core/phone.lua
     The shell: open / close, the status + header bars, the home grid, the input
@@ -236,7 +237,7 @@ local function drawStatusBar()
     PhoneUI.image(bx, s.y + s.h / 2 - batH / 2, batW, batH, "img/battery.png")
 
     local pingStr = (getPlayerPing(localPlayer) or 0) .. " ms"
-    local pingW = dxGetTextWidth(pingStr, u(0.95), "default-bold") + u(6)
+    local pingW = L.width(pingStr, u(0.95), "default-bold") + u(6)
     local px = bx - u(8) - pingW
     PhoneUI.text(pingStr, px, s.y, pingW, s.h, C.dim, u(0.95), "default-bold", "left", "center")
 
@@ -247,7 +248,7 @@ end
 local function headerTitle()
     if state.view == "home" then
         local a = PhoneApp.list()[state.home]
-        return a and a.name or "Phone"
+        return a and a.name or L("ui_phone.net.phone")
     end
     local a = currentApp()
     if not a then return "" end
@@ -334,7 +335,7 @@ addEventHandler("onClientRender", root, function()
                 if type(hint) == "function" then hint = app:hint() end
                 PhoneUI.drawList(app:items(), state.list, { hint = hint, empty = app.empty })
             elseif not app.render then
-                PhoneUI.drawEmpty(app.empty or "Nothing here yet")
+                PhoneUI.drawEmpty(app.empty or L("ui_phone.phone.nothing_here_yet"))
             end
             if app.render then app:render(scr) end
         end

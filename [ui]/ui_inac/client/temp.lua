@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Temporary, on-the-fly menus for other resources.
 --
 -- A temporary menu is registered, opened and drawn through the same render /
@@ -62,19 +63,26 @@ end
 --   id         = menu id to register under
 --   backId     = parent menu id (nil for the root)
 --   pathPrefix = "" for the root, "2/1/..." for nested levels
+-- title / label / desc may be plain strings or v_locals message objects
+-- { t = key, p = params } (DESIGN.md 4.5); messages become text here.
+local function txt(x)
+    if type(x) == "table" then return L.resolve(x) end
+    return x
+end
+
 local function registerNode(node, id, backId, pathPrefix)
     local rid   = rootId
     local items = {}
 
     for idx, src in ipairs(node.items or {}) do
         local itemPath = pathPrefix == "" and tostring(idx) or (pathPrefix .. "/" .. idx)
-        local label    = tostring(src.label or "")
-        local desc     = src.desc ~= nil and tostring(src.desc) or nil
+        local label    = tostring(txt(src.label) or "")
+        local desc     = src.desc ~= nil and tostring(txt(src.desc)) or nil
 
         if type(src.items) == "table" then
             -- submenu
             local subId = id .. "/" .. idx
-            registerNode({ title = src.title or src.label, items = src.items }, subId, id, itemPath)
+            registerNode({ title = txt(src.title) or label, items = src.items }, subId, id, itemPath)
             items[idx] = {
                 label = label, desc = desc, type = "submenu", target = subId,
                 path = itemPath,   -- value stays nil for submenu rows
@@ -109,7 +117,7 @@ local function registerNode(node, id, backId, pathPrefix)
 
     MenuRegistry:register({
         id        = id,
-        title     = tostring(node.title or "MENU"),
+        title     = tostring(txt(node.title) or L("ui_inac.temp.menu")),
         back      = backId,
         header    = false,
         temporary = true,

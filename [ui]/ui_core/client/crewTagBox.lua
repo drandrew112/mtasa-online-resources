@@ -1,3 +1,4 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- crewTagBox.lua
 --------------------------------------------------------------------------------
 -- "Crew tag box": egy TEGLALAP alaku hatter, aminek a szine a crew szine
@@ -59,7 +60,7 @@ end
 -- A doboz merete a szoveg kore, a megadott skalan.
 local function boxMetrics(crewTag, textScale)
     local th   = dxGetFontHeight(textScale, BOX_FONT)
-    local tw   = dxGetTextWidth(crewTag, textScale, BOX_FONT)
+    local tw   = L.width(crewTag, textScale, BOX_FONT)
     local padX = math.max(4, th * 0.40)
     local padY = math.max(2, th * 0.16)
     return math.ceil(tw + padX * 2), math.ceil(th + padY * 2)

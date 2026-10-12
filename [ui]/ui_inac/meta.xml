@@ -1,5 +1,7 @@
 <meta>
     <info author="Andris" name="Interaction Menu (Modular)" version="1.0" />
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
     <script src="shared/registry.lua" type="shared" />
     <script src="server/spawn.lua" type="server" />
     <script src="server/ownveh.lua" type="server" />
