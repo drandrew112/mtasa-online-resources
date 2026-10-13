@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- ============================================================
 --  v_admin / config.lua
 --  Shared configuration, available on both sides.
@@ -136,3 +137,4 @@ ADMIN.report = {
     maxHistory = 60,    -- messages kept per report
     logDir     = "report_logs/",  -- JSON logs of closed reports (index.json + one file each)
 }
+end)

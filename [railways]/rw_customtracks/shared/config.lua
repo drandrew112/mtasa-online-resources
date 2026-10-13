@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- rw_customtracks settings (server + client)
 
 -- console debug output (outputDebugString) of this resource; the rail log file is not affected
@@ -132,3 +133,4 @@ NET = {
         SQUEAL_RADIUS = 150, -- curve squeal below this radius
     },
 }
+end)

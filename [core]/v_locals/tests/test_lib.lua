@@ -202,6 +202,37 @@ CUR_LANG = "en"
 fire("v_locals:onClientLanguageChange", root, "en", "hu")
 eq("back to en", L("t.hello"), "Hello")
 
+-- L.config: runs at once, texts refreshed in place after the player is loaded
+localPlayer = {}
+function getElementData() return false end
+local readyCalls = 0
+exports = { v_accounts = { resourceReady = function() readyCalls = readyCalls + 1 end } }
+CFG = { name = "keep" }
+local held
+L.config(function()
+    CFG = CFG or {}
+    CFG.items = { { label = L.text("t.hello") } }
+    CFG.fn = function() return 1 end
+    CFG_TITLE = L.text("t.hello")
+    held = held or CFG.items[1]
+end)
+eq("config: first run", CFG.items[1].label, "Hello")
+local itemsBefore = CFG.items
+CUR_LANG = "hu"
+fire("v_locals:onClientLanguageChange", root, "hu", "en")
+eq("config: texts refreshed on language change", CFG.items[1].label, "Szia")
+eq("config: table identity kept", CFG.items == itemsBefore, true)
+eq("config: global string refreshed", CFG_TITLE, "Szia")
+eq("config: not ready before the gate", readyCalls, 0)
+fire("onClientLoadingStarted", root)
+eq("config: ready reported once", readyCalls, 1)
+fire("onClientLoadingStarted", root)
+eq("config: ready not reported twice", readyCalls, 1)
+CUR_LANG = "en"
+fire("v_locals:onClientLanguageChange", root, "en", "hu")
+CFG, CFG_TITLE = nil, nil
+exports = nil
+
 -- debug modes
 fire("v_locals:onClientDebugModeChange", root, "keys")
 eq("keys mode", L("t.hello"), "t.hello")

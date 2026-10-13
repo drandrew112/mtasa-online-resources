@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- v_customs :: tuning catalogue (shared)
 --
 -- Top level is an alphabetically sorted list of entries. An entry is either:
@@ -220,3 +221,4 @@ function Customs.setHandlingFlagByte(veh, byte, value)
     end
     setVehicleHandling(veh, "handlingFlags", tonumber("0x" .. string.reverse(out)), false)
 end
+end)

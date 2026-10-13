@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- med_bag tunables. Offsets are { x, y, z, rx, ry, rz } in the parent's local space
 -- (x = right, y = forward, z = up). See DESIGN.md.
 
@@ -106,3 +107,4 @@ BAG_DATA = {
     MISSING = "medbag.missing",    -- on an anchor: "Medical bag, Monitor" while in a hospital bay with items out
     ON_STRETCHER = "medbag.onStretcher", -- on a stretcher object: { bag = true, monitor = true } riding on it
 }
+end)

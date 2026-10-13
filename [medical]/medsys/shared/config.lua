@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- Configuration and shared constants of the medical system.
 -- Everything that tunes the physiology, the interaction or the treatments lives here.
 
@@ -669,3 +670,4 @@ end
 function medicIsDown(status)
     return status == "unconscious" or status == "clinical_death" or status == "dead"
 end
+end)

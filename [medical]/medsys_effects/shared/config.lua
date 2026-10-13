@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- Configuration of medsys_effects: what a player experiences from their own medical state, and
 -- the animations forced on every patient (players and peds) by their consciousness.
 
@@ -130,3 +131,4 @@ function medfxPartMatches(effectPart, part)
     if effectPart == nil then return true end
     return effectPart == part or (part ~= nil and effectPart == MEDFX_PART_GROUP[part])
 end
+end)

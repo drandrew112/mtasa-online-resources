@@ -76,6 +76,8 @@ do
     function L.msg(key, params) return C.msg(key, params) end
     L.isMsg = C.isMsg
     L.adopt = C.adopt
+    -- shared config chunk with texts: on the server it simply runs (the client lib refreshes the texts)
+    function L.config(fn) fn() end
     -- shared scripts (config tables): a message object here, plain text on the
     -- client; it becomes the receiving player's language when it is sent
     L.text = L.msg

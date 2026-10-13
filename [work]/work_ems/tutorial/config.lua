@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- work_ems tutorial module - shared configuration. The texts of the steps are in client/steps.lua.
 -- Positions are placeholders: fine-tune them with work_core's /workpos (in a vehicle it prints
 -- { x, y, z, rot }).
@@ -58,3 +59,4 @@ TUTORIAL = {
           desc = L.text("work_ems.config.place_breathing_tube_while_oxygen_level") },
     },
 }
+end)

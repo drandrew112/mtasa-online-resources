@@ -22,11 +22,14 @@ local COLOR_FAST = { 255, 150, 40 }
 local COLOR_SLOW = { 80, 170, 255 }
 local COLOR_FAIL = { 230, 60, 60 }
 
-local FEEDBACK = {
+local FEEDBACK = {}
+local function build_FEEDBACK()
+FEEDBACK = {
     good = { "GOOD", COLOR_GOOD },
     fast = { L("mg_cpr.client.too_fast"), COLOR_FAST },
     slow = { L("mg_cpr.client.too_slow"), COLOR_SLOW },
 }
+end
 
 -- movement/combat controls disabled while kneeling next to a ped
 local LOCK_CONTROLS = { "forwards", "backwards", "left", "right", "jump", "sprint", "crouch", "walk",
@@ -379,4 +382,18 @@ end)
 
 addEventHandler("onClientPlayerWasted", localPlayer, function()
     if game and not game.sessionId then finish("died", false) end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_FEEDBACK()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

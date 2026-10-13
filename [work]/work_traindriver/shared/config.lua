@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- work_traindriver - shared configuration.
 -- No vehicle marker: trains are spawned through the rw_core depot menu.
 -- Positions: fine-tune with work_core's /workpos (on foot: marker point).
@@ -53,3 +54,4 @@ TRAINDRIVER = {
         { name = L.text("work_traindriver.config.cranberry_station"), duty = { -1958.68762, 167.07697, 26.69405 },   blip = false }
     },
 }
+end)

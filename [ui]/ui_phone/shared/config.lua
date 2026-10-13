@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 --[[
     ui_phone / shared/config.lua
     Values the client UI and the server logic both need.
@@ -104,3 +105,4 @@ function PHONE_CONFIG.contactActionByKey(contactKey, actionKey)
     end
     return nil
 end
+end)

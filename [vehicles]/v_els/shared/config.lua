@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 ------------------------------------------------------------
 -- JÁRMŰVEK
 ------------------------------------------------------------
@@ -226,3 +227,4 @@ SIREN_DATA_KEYS = {
     sirenType  = "string",  -- sirenTypes kulcs
     elsPattern = "number",  -- ELS_PATTERNS index
 }
+end)

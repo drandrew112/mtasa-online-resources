@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- work_atc - shared configuration.
 -- Positions: fine-tune with work_core's /workpos (on foot: marker point).
 
@@ -45,3 +46,4 @@ ATC = {
 }
 
 ATC.MAX_LEVEL = #ATC.LEVELS
+end)

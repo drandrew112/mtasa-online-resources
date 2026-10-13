@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- med_hospitals - shared configuration. The hospitals themselves are in hospitals.json.
 
 HOSP = {
@@ -65,3 +66,4 @@ HOSP_TEXT = {
                       hint = L.text("med_hospitals.config.leave_bay_fine_every_s", { bay_fine = HOSP.BAY_FINE, bay_fine_interval = HOSP.BAY_FINE_INTERVAL / 1000 }) },
     heal     = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_free_of_charge", { heal_time = HOSP.HEAL_TIME / 1000 }) },
 }
+end)

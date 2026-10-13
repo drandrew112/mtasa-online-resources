@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- work_ems - shared configuration.
 -- Positions are placeholders around All Saints: fine-tune them with work_core's /workpos
 -- (on foot: marker point, in a vehicle: spawn point { x, y, z, rot }).
@@ -102,3 +103,4 @@ EMS = {
         }
     },
 }
+end)

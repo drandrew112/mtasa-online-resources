@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- Wall signs inside the SA Control interior (int 3), typically above the doors.
 -- Every sign is a flat plate on a wall:
 --   x, y      point on the wall face (centre of the sign horizontally)
@@ -61,3 +62,4 @@ WS.SIGNS = {
         },
     },
 }
+end)

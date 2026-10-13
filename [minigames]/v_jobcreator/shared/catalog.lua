@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- What creators may place / pick. The server only accepts models listed here.
 -- Object models were checked against the game's model table (dff names in the
 -- comments) through the claude-mcp probe.
@@ -192,3 +193,4 @@ end
 for _, cat in ipairs(CATALOG.weapons) do
     for _, id in ipairs(cat.items) do CATALOG.weaponAllowed[id] = true end
 end
+end)

@@ -3,7 +3,9 @@ uicore = exports.ui_core
 ui = function(z) return uicore:ui(z) end
 
 local lineTo = false
-local adminTitles_forNametag = {
+local adminTitles_forNametag = {}
+local function build_adminTitles_forNametag()
+adminTitles_forNametag = {
     [1] = L("v_nametags.sourcec.trial_mod"),
     [2] = L("v_nametags.sourcec.mod"),
     [3] = L("v_nametags.sourcec.admin"),
@@ -11,6 +13,7 @@ local adminTitles_forNametag = {
     [5] = L("v_nametags.sourcec.dev"),
     [6] = L("v_nametags.sourcec.owner"),
 }
+end
 
 function RGBToHex(red, green, blue, alpha)
 	if( ( red < 0 or red > 255 or green < 0 or green > 255 or blue < 0 or blue > 255 ) or ( alpha and ( alpha < 0 or alpha > 255 ) ) ) then
@@ -247,4 +250,18 @@ addCommandHandler("toggleowntag", function()
 		setElementData(localPlayer, "toggleOwnNametag", true)
 	end
 	setElementData(localPlayer, "toggleOwnNametag", not getElementData(localPlayer, "toggleOwnNametag"))
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_adminTitles_forNametag()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

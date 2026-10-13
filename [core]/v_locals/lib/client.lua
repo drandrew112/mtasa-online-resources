@@ -9,6 +9,7 @@
 --   L.bind{ field = "key" | { "key", params } }   table kept up to date on
 --                             language change (static labels)
 --   L.onChange(fn)            fn(lang, reason) after a language / debug change
+--   L.config(fn)              shared config with texts: texts refreshed after the player is loaded
 --   L.file(path)              long text file (locales/<lang>/files/<path>)
 --   L.upper / L.lower / L.len / L.sub      UTF-8 safe
 --   L.width / L.fit / L.fitScale / L.wrap  cached DX measuring (DESIGN.md 5)
@@ -235,6 +236,82 @@ do
     function L.onChange(fn)
         if type(fn) == "function" then callbacks[#callbacks + 1] = fn end
         return fn
+    end
+
+    -- L.config(fn): a shared config chunk that holds texts (L.text). It runs
+    -- right away, so the tables exist for scripts that read them at load time.
+    -- Once the player is loaded (onClientLoadingStarted) and on every language
+    -- change it runs again in a sandbox and only the texts (strings) are
+    -- written into the existing tables, so references to them stay valid.
+    -- After the first rerun the resource reports exports.v_accounts:resourceReady().
+    local function mergeTexts(old, new, seen)
+        if seen[new] then return end
+        seen[new] = true
+        for k, v in pairs(new) do
+            local o = old[k]
+            if type(v) == "string" then
+                if type(o) == "string" and o ~= v then old[k] = v end
+            elseif type(v) == "table" and type(o) == "table" and o ~= v then
+                mergeTexts(o, v, seen)
+            end
+        end
+    end
+
+    local STD_LIBS = { string = true, table = true, math = true, os = true, io = true,
+        coroutine = true, debug = true, package = true, _G = true, L = true }
+    local function deepCopy(v, map)
+        if type(v) ~= "table" or getmetatable(v) ~= nil then return v end
+        if map[v] then return map[v] end
+        local c = {}
+        map[v] = c
+        for k, x in pairs(v) do c[k] = deepCopy(x, map) end
+        return c
+    end
+
+    function L.config(fn)
+        fn()
+        local function rerun()
+            -- global data tables the chunk reads are copied first, so the rerun
+            -- never writes into (or replaces parts of) the live tables
+            local map = {}
+            local env = setmetatable({}, { __index = function(t, k)
+                local v = _G[k]
+                if type(v) == "table" and not STD_LIBS[k] then
+                    v = deepCopy(v, map)
+                    rawset(t, k, v)
+                end
+                return v
+            end })
+            setfenv(fn, env)
+            local ok, err = pcall(fn)
+            if not ok then
+                outputDebugString(("[v_locals] L.config rerun failed in %s: %s"):format(LIB.resName, tostring(err)), 1)
+                return
+            end
+            local seen = {}
+            for k, v in pairs(env) do
+                local o = rawget(_G, k)
+                if type(v) == "string" then
+                    if type(o) == "string" then rawset(_G, k, v) end
+                elseif type(v) == "table" and type(o) == "table" then
+                    mergeTexts(o, v, seen)
+                end
+            end
+        end
+        L.onChange(rerun)
+
+        local reported = false
+        local function ready()
+            if reported then return end
+            reported = true
+            rerun()
+            pcall(function() exports.v_accounts:resourceReady() end)
+        end
+        addEvent("onClientLoadingStarted", true)
+        addEventHandler("onClientLoadingStarted", root, ready)
+        addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), function()
+            if getElementData(localPlayer, "loaded") then ready() end
+        end)
     end
 
     local function refresh(reason)

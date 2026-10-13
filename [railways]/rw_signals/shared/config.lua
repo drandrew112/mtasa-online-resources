@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- rw_signals settings (server + client)
 
 -- console debug output (outputDebugString) of this resource; the rail log file is not affected
@@ -58,3 +59,4 @@ SIG = {
     ASPECT = { RED = 0, YELLOW = 1, GREEN = 2 },
     ASPECT_NAMES = { [0] = L.text("rw_signals.config.stop"), [1] = L.text("rw_signals.config.caution"), [2] = L.text("rw_signals.config.clear") },
 }
+end)

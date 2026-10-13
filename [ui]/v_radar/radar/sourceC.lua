@@ -293,7 +293,9 @@ local mainBlips = {
 }
 -- createCustomBlip(x, y, z, icon, farShow, visibleDistance, size, color)
 
-local blipTooltips = {
+local blipTooltips = {}
+local function build_blipTooltips()
+blipTooltips = {
 	["blips/1.png"] = L("v_radar.sourcec.player"),
 	["blips/2.png"] = "",
 	["blips/3.png"] = "",
@@ -363,6 +365,7 @@ local blipTooltips = {
 	["blips/objective.png"] = L("v_radar.objectives.objective"),
 	["blips/north.png"] = L("v_radar.sourcec.north"),
 }
+end
 
 -- Per-element blip name: the "tooltipText" element data of a blip element (e.g. the job
 -- name of a v_jobmanager blip). Read lazily, so blips created with the data already set
@@ -1837,3 +1840,17 @@ function renderPausePreview(px, py, pw, ph)
 
 	dxDrawOuterBorder(px, py, pw, ph, 2, tocolor(0, 0, 0, 220))
 end
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_blipTooltips()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

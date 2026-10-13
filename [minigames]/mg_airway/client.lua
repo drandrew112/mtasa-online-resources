@@ -35,14 +35,20 @@ local DIFFICULTY_LABEL = {
     nightmare = "mg_airway.client.difficulty_nightmare",
 }
 
-local PHASES = { L("mg_airway.client.laryngoscopy"), L("mg_airway.client.pass_cords"), L("mg_airway.client.tube_depth"), L("mg_airway.client.cuff_pressure") }
+local PHASES = {}
+local function build_PHASES()
+PHASES = { L("mg_airway.client.laryngoscopy"), L("mg_airway.client.pass_cords"), L("mg_airway.client.tube_depth"), L("mg_airway.client.cuff_pressure") }
+end
 
-local HINTS = {
+local HINTS = {}
+local function build_HINTS()
+HINTS = {
     L("mg_airway.client.hold_space_to_lift_laryngoscope_keep"),
     L("mg_airway.client.aim_with_mouse_hold_space_to"),
     L("mg_airway.client.space_push_s_pull_back_release"),
     L("mg_airway.client.space_inflate_s_deflate_cuff_release"),
 }
+end
 
 local LOCK_CONTROLS = { "forwards", "backwards", "left", "right", "jump", "sprint", "crouch", "walk",
     "fire", "aim_weapon", "enter_exit", "enter_passenger", "next_weapon", "previous_weapon",
@@ -954,4 +960,19 @@ end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     if game then finish("cancelled", false) end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_PHASES()
+    build_HINTS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

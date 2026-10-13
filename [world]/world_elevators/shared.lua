@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 
 function tablelength(T)
     local count = 0
@@ -31,3 +32,4 @@ elevators = {
         }
     }
 }
+end)

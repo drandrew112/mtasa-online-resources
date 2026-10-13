@@ -176,7 +176,7 @@ local fixTable = {
 
 local boundingBoxes = {
 	{ -- Élet HUD
-		["name"] = L("v_radar.client.health"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 226,
 		["height"] = 60,
@@ -184,7 +184,7 @@ local boundingBoxes = {
 		["y"] = 70,
 	},
 	{ -- Body
-		["name"] = L("v_radar.client.body"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 18,
 		["height"] = 46,
@@ -192,7 +192,7 @@ local boundingBoxes = {
 		["y"] = 35,
 	},
 	{ -- Phone
-		["name"] = L("v_radar.client.phone"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 300,
 		["height"] = 512,
@@ -200,7 +200,7 @@ local boundingBoxes = {
 		["y"] = y/2-512/2,
 	},
 	{ -- SPRINT
-		["name"] = L("v_radar.client.stamina"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 226,
 		["height"] = 8,
@@ -208,7 +208,7 @@ local boundingBoxes = {
 		["y"] = 81,
 	},
 	{ -- Pénz
-		["name"] = L("v_radar.client.cash"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 220,
 		["height"] = 30,
@@ -224,7 +224,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- Minimap
-		["name"] = L("v_radar.client.radar"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 320,
 		["height"] = 225,
@@ -232,7 +232,7 @@ local boundingBoxes = {
 		["y"] = y - 235,
 	},
 	{ -- Óra
-		["name"] = L("v_radar.client.clock"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 70,
 		["height"] = 30,
@@ -240,7 +240,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- ActionBar
-		["name"] = L("v_radar.client.action_bar"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 255+3,
 		["height"] = 55+2,
@@ -248,7 +248,7 @@ local boundingBoxes = {
 		["y"] = y - 54 - 10,
 	},
 	{ -- Videókártya
-		["name"] = L("v_radar.client.graphics_card"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 256,
 		["height"] = 80,
@@ -256,7 +256,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- OOC --11
-		["name"] = L("v_radar.client.ooc_chat"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 170,
@@ -264,7 +264,7 @@ local boundingBoxes = {
 		["y"] = 16+15+25+100,
 	},
 	{ -- speedometer --12
-		["name"] = L("v_radar.client.speedometer"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 256,
@@ -272,7 +272,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- benzinmeter 13
-		["name"] = L("v_radar.client.fuel"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 110,
 		["height"] = 110,
@@ -280,7 +280,7 @@ local boundingBoxes = {
 		["y"] = y-195,
 	},
 	{ -- speedometerkijelzo 14
-		["name"] = L("v_radar.client.vehicle_icons"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 110,
 		["height"] = 70,
@@ -288,7 +288,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- kickban notification
-		["name"] = L("v_radar.client.kick_ban"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 324,
 		["height"] = 120,
@@ -296,7 +296,7 @@ local boundingBoxes = {
 		["y"] = y - 235-80-70,
 	},
 	{ -- Járműnév
-		["name"] = L("v_radar.client.vehicle_name"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 300,
 		["height"] = 45,
@@ -304,7 +304,7 @@ local boundingBoxes = {
 		["y"] = y - 315,
 	},
 	{ -- guns
-		["name"] = L("v_radar.client.guns"),
+		["name"] = "",
 		["showing"] = true,
 		["width"] = 256,
 		["height"] = 128,
@@ -312,7 +312,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- name
-		["name"] = L("common.name"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 300,
 		["height"] = 30,
@@ -320,7 +320,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- Ping
-		["name"] = L("v_radar.client.ping"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 80,
 		["height"] = 30,
@@ -336,7 +336,7 @@ local boundingBoxes = {
 		["y"] = y-256-5,
 	},
 	{ -- TraffiRadar
-		["name"] = L("v_radar.client.traffipax_radar"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 274,
 		["height"] = 45,
@@ -344,7 +344,7 @@ local boundingBoxes = {
 		["y"] = 125,
 	},
 	{ -- customchat
-		["name"] = L("v_radar.client.customchat"),
+		["name"] = "",
 		["showing"] = false,
 		["width"] = 600,
 		["height"] = 350,
@@ -352,6 +352,30 @@ local boundingBoxes = {
 		["y"] = 12,
 	},
 }
+
+-- Names load only once the player is loaded (v_accounts loading gate).
+local function loadBoundingBoxNames()
+	boundingBoxes[1].name = L("v_radar.client.health")
+	boundingBoxes[2].name = L("v_radar.client.body")
+	boundingBoxes[3].name = L("v_radar.client.phone")
+	boundingBoxes[4].name = L("v_radar.client.stamina")
+	boundingBoxes[5].name = L("v_radar.client.cash")
+	boundingBoxes[7].name = L("v_radar.client.radar")
+	boundingBoxes[8].name = L("v_radar.client.clock")
+	boundingBoxes[9].name = L("v_radar.client.action_bar")
+	boundingBoxes[10].name = L("v_radar.client.graphics_card")
+	boundingBoxes[11].name = L("v_radar.client.ooc_chat")
+	boundingBoxes[12].name = L("v_radar.client.speedometer")
+	boundingBoxes[13].name = L("v_radar.client.fuel")
+	boundingBoxes[14].name = L("v_radar.client.vehicle_icons")
+	boundingBoxes[15].name = L("v_radar.client.kick_ban")
+	boundingBoxes[16].name = L("v_radar.client.vehicle_name")
+	boundingBoxes[17].name = L("v_radar.client.guns")
+	boundingBoxes[18].name = L("common.name")
+	boundingBoxes[19].name = L("v_radar.client.ping")
+	boundingBoxes[21].name = L("v_radar.client.traffipax_radar")
+	boundingBoxes[22].name = L("v_radar.client.customchat")
+end
 
 
 local hudhely = {(x/2*1.60), (y/2*0.111)}
@@ -833,3 +857,16 @@ function drawTextWithBorder(text, offset, x, y, w, h, borderColor, color, scale,
 
 	dxDrawText(text, x, y, w, h, color, scale, font, alignX, alignY, clip, wordBreak, postGUI, colorCoded, subPixelPositioning, fRotation, fRotationCenterX, fRotationCenterY)
 end
+
+local textsLoaded = false
+local function loadTexts()
+	if textsLoaded then return end
+	textsLoaded = true
+	loadBoundingBoxNames()
+	exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+	if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

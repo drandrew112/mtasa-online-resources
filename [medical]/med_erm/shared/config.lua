@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- Emergency Response Manager - shared configuration
 
 Config = {}
@@ -80,3 +81,4 @@ Config.PAY = {
         default         = { base = 1000,  perMinute = 100 },
     },
 }
+end)

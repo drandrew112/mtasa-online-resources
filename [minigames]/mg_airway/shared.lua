@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 AIRWAY = {
     DEFAULT_DIFFICULTY = "normal",
 
@@ -138,3 +139,4 @@ end
 function airwayClamp(v, lo, hi)
     return math.max(lo, math.min(hi, v))
 end
+end)

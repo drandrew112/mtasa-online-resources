@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- Configuration of medsys_events: which in-game events hurt a player and how.
 --
 -- Every rule is a list of tiers. The highest tier whose `min` is at or below the measured value
@@ -224,3 +225,4 @@ MEDEV_PUNCH = {
     severity = { 1, 1 },        -- hand / forearm fracture
     WORLD_FACTOR = 0.6,         -- chance multiplier for walls / objects (MEDEV.PUNCH_WORLD)
 }
+end)

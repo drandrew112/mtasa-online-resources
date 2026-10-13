@@ -42,11 +42,14 @@ local COLOR_WARN = { 255, 170, 40 }
 local COLOR_FAIL = { 230, 60, 60 }
 local COLOR_BLOOD = { 175, 20, 30 }
 
-local MISTAKES = {
+local MISTAKES = {}
+local function build_MISTAKES()
+MISTAKES = {
     missed = L("mg_intravenous.client.missed_vein"),
     through = L("mg_intravenous.client.went_through_vein"),
     dislodged = L("mg_intravenous.client.pulled_too_fast_cannula_came_out"),
 }
+end
 
 -- movement/combat controls disabled for the whole game (the mouse is used for the needle)
 local LOCK_CONTROLS = { "forwards", "backwards", "left", "right", "jump", "sprint", "crouch", "walk",
@@ -643,4 +646,18 @@ end)
 
 addEventHandler("onClientPlayerWasted", localPlayer, function()
     if game and not game.sessionId then finish("died", false) end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_MISTAKES()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

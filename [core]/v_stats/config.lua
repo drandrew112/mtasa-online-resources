@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- v_stats configuration (shared).
 --
 -- Every stat is registered here. `id` is the stable string key used by the
@@ -48,3 +49,4 @@ STATS.LIST = {
     { id = "deaths",            name = L.text("v_stats.config.deaths_all"),               unit = "", achStat = "deaths"            },
     { id = "deaths_by_players", name = L.text("v_stats.config.deaths_killed_by_players"), unit = "", achStat = "deaths_by_players" },
 }
+end)
