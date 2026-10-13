@@ -11,11 +11,17 @@ local LABEL_FULL_DISTANCE = 12  -- full size up to this
 local LABEL_MIN_SCALE = 0.55
 local KEY = "e"
 
-local TYPE_STYLE = {
+local TYPE_STYLE = {}
+local function build_TYPE_STYLE()
+TYPE_STYLE = {
     race       = { color = { 56, 132, 244 }, icon = "R", title = L("common.race") },
     deathmatch = { color = { 218, 54, 51 },  icon = "DM", title = L("common.deathmatch") },
 }
-local DEFAULT_STYLE = { color = { 230, 190, 40 }, icon = "J", title = L("common.job") }
+end
+local DEFAULT_STYLE = {}
+local function build_DEFAULT_STYLE()
+DEFAULT_STYLE = { color = { 230, 190, 40 }, icon = "J", title = L("common.job") }
+end
 
 local fonts = {}
 local function font(size, bold)
@@ -145,4 +151,19 @@ addEvent("jobmanager:hideJoinHint", true)
 addEventHandler("jobmanager:hideJoinHint", resourceRoot, function()
     if nearbyJobId then unbindKey(KEY, "down", onKey) end
     nearbyJobId = nil
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_TYPE_STYLE()
+    build_DEFAULT_STYLE()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

@@ -79,6 +79,7 @@ phoneOnServer("contacts:prompt", function(contactKey, step, title, maxLen)
     promptToken, promptContact, promptStep = token, contactKey, step
 end)
 
+PhoneApp.defer(function()
 PhoneApp.register({
     id    = "contacts",
     name  = L("ui_phone.contacts.contacts"),
@@ -194,3 +195,4 @@ PhoneApp.register({
             PhoneUI.C.faint, u(0.85), "default", "center", "top")
     end,
 })
+end)

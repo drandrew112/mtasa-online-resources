@@ -18,14 +18,20 @@ local s = Gfx.s
 local W, H = 1180, 700
 local LIST_W, ROW_H = 580, 34
 
-local FILTERS = {
+local FILTERS = {}
+local function build_FILTERS()
+FILTERS = {
     shifts = { { "all", L("med_erm.panel.all") }, { "active", L("med_erm.panel.on_duty") }, { "ended", L("med_erm.detail.ended") } },
     tasks  = { { "all", L("med_erm.panel.all") }, { "open", L("med_erm.panel.open") }, { "closed", L("med_erm.panel.closed") } },
 }
-local PLACEHOLDER = {
+end
+local PLACEHOLDER = {}
+local function build_PLACEHOLDER()
+PLACEHOLDER = {
     shifts = L("med_erm.panel.search_callsign_crew_plate_type"),
     tasks  = L("med_erm.panel.search_id_title_zone_caller_unit"),
 }
+end
 
 AdminStatusColor = {
     unassigned  = { 229, 72, 77 },
@@ -33,9 +39,12 @@ AdminStatusColor = {
     assigned    = { 46, 160, 67 },
     closed      = { 110, 118, 130 },
 }
+AdminStatusLabel = {}
+local function build_AdminStatusLabel()
 AdminStatusLabel = {
     unassigned = L("med_erm.panel.not_assigned"), prioritized = L("med_erm.panel.prioritized"), assigned = L("med_erm.panel.assigned"), closed = L("med_erm.panel.closed"),
 }
+end
 
 function Admin.shortDate(str)
     return (str and str ~= "") and str:sub(6, 16) or "-"
@@ -133,14 +142,20 @@ local function pill(text, x, y, w, h, color, dark)
 end
 Admin.pill = pill
 
-local SHIFT_COLS = {
+local SHIFT_COLS = {}
+local function build_SHIFT_COLS()
+SHIFT_COLS = {
     { "#", 0, 46 }, { L("med_erm.panel.unit"), 46, 124 }, { L("med_erm.detail.started"), 170, 110 }, { L("med_erm.detail.duration"), 280, 84 },
     { L("med_erm.panel.crew"), 364, 56 }, { L("med_erm.panel.tasks"), 420, 56 }, { L("med_erm.panel.status"), 476, 104 },
 }
-local TASK_COLS = {
+end
+local TASK_COLS = {}
+local function build_TASK_COLS()
+TASK_COLS = {
     { "#", 0, 50 }, { L("med_erm.panel.p"), 50, 40 }, { L("med_erm.panel.title"), 90, 196 }, { L("med_erm.panel.status"), 286, 100 },
     { L("med_erm.panel.zone"), 386, 110 }, { L("med_erm.detail.created"), 496, 84 },
 }
+end
 
 local function col(cols, i) return s(cols[i][2]), s(cols[i][3]) end
 
@@ -378,4 +393,22 @@ end
 addEvent("erm:admin:open", true)
 addEventHandler("erm:admin:open", resourceRoot, function()
     if Admin.open then Admin.close() else Admin.show() end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_AdminStatusLabel()
+    build_FILTERS()
+    build_PLACEHOLDER()
+    build_SHIFT_COLS()
+    build_TASK_COLS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

@@ -5,6 +5,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
     phone closes itself first; ui_browser then owns the foreground.
 ]]
 
+PhoneApp.defer(function()
 PhoneApp.register({
     id    = "browser",
     name  = L("ui_phone.browser.browser"),
@@ -22,3 +23,4 @@ PhoneApp.register({
         return false
     end,
 })
+end)

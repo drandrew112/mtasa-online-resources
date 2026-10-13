@@ -124,7 +124,7 @@ local function drawOverview(x, y, w, h)
 end
 
 AP.addTab({
-    id = "server", label = L("v_admin.panel.server_2"), perm = "panel", order = 3,
+    id = "server", label = function() return L("v_admin.panel.server_2") end, perm = "panel", order = 3,
     draw = function(x, y, w, h)
         local gap = S(18)
         local leftW = (w - gap) * 0.6

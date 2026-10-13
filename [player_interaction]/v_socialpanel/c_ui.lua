@@ -32,7 +32,10 @@ local C = {
     sub    = tocolor(110, 110, 110, 255),
 }
 
-local TABS = { L("v_socialpanel.ui.home"), L("v_socialpanel.ui.help"), L("v_socialpanel.ui.achievements"), L("v_socialpanel.ui.social"), L("v_socialpanel.ui.profile") }
+local TABS = {}
+local function build_TABS()
+TABS = { L("v_socialpanel.ui.home"), L("v_socialpanel.ui.help"), L("v_socialpanel.ui.achievements"), L("v_socialpanel.ui.social"), L("v_socialpanel.ui.profile") }
+end
 
 --------------------------------------------------------------------------------
 -- HELP content
@@ -47,7 +50,9 @@ local HELP_LABEL = {
     ["VEHICLES"]  = "v_socialpanel.ui.vehicles",
     ["RULES"]     = "v_socialpanel.ui.rules",
 }
-local HELP_TEXT = {
+local HELP_TEXT = {}
+local function build_HELP_TEXT()
+HELP_TEXT = {
     ["BASICS"] = {
         L("v_socialpanel.ui.three_menus_run_everything_on_server"),
         "",
@@ -127,13 +132,17 @@ local HELP_TEXT = {
         L("v_socialpanel.ui.breaking_rules_can_get_you_banned"),
     },
 }
+end
 local help_tab = 1
 
 --------------------------------------------------------------------------------
 -- SOCIAL sub-tabs
 --------------------------------------------------------------------------------
 
-local SOCIAL_TABS = { L("v_socialpanel.ui.friends"), L("v_socialpanel.ui.requests"), L("v_socialpanel.ui.find_player"), L("v_socialpanel.ui.messages"), L("v_socialpanel.ui.my_crew"), L("v_socialpanel.ui.find_crew") }
+local SOCIAL_TABS = {}
+local function build_SOCIAL_TABS()
+SOCIAL_TABS = { L("v_socialpanel.ui.friends"), L("v_socialpanel.ui.requests"), L("v_socialpanel.ui.find_player"), L("v_socialpanel.ui.messages"), L("v_socialpanel.ui.my_crew"), L("v_socialpanel.ui.find_crew") }
+end
 local social_tab = 1
 
 --------------------------------------------------------------------------------
@@ -966,3 +975,19 @@ function renderProfile()
             X + 30, Y + H - 40, X + W - 30, Y + H - 16, C.sub, 1.15, "default", "left", "top")
     end
 end
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_TABS()
+    build_HELP_TEXT()
+    build_SOCIAL_TABS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

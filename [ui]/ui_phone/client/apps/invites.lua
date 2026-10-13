@@ -11,6 +11,7 @@ phoneOnServer("invites:list", function(list)
     invites = type(list) == "table" and list or {}
 end)
 
+PhoneApp.defer(function()
 PhoneApp.register({
     id    = "invites",
     name  = L("ui_phone.invites.invites"),
@@ -34,3 +35,4 @@ PhoneApp.register({
         phoneRPC("invites:accept", row._id)
     end,
 })
+end)

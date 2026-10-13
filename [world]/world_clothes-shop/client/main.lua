@@ -81,10 +81,24 @@ function isClothesMenuOpen() return menu ~= nil end
 
 ---------------------------------------------------------------- menu
 
-local GROUPS = {
-    { key = "male",   label = L("world_clothes_shop.main.men"),   title = L("world_clothes_shop.main.men_2") },
-    { key = "female", label = L("world_clothes_shop.main.women"), title = L("world_clothes_shop.main.women_2") },
-}
+local GROUPS = {}
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    GROUPS = {
+        { key = "male",   label = L("world_clothes_shop.main.men"),   title = L("world_clothes_shop.main.men_2") },
+        { key = "female", label = L("world_clothes_shop.main.women"), title = L("world_clothes_shop.main.women_2") },
+    }
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)
 
 local function openMenu()
     local current, wornPath = getElementModel(localPlayer), nil

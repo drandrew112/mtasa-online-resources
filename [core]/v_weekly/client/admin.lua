@@ -29,12 +29,15 @@ local C = {
     dangerHot = tocolor(200, 70, 70, 255),
 }
 
-local TABS = {
+local TABS = {}
+local function build_TABS()
+TABS = {
     { id = "jobs",  label = L("v_weekly.admin.job_multipliers") },
     { id = "trial", label = L("v_weekly.admin.time_trial") },
     { id = "login", label = L("v_weekly.admin.login_bonus") },
     { id = "news",  label = L("v_weekly.admin.news") },
 }
+end
 
 local function fmtInt(n)
     local s = tostring(math.floor(tonumber(n) or 0))
@@ -344,4 +347,18 @@ bindKey("mouse_wheel_down", "down", function() wheel(1) end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     if adm then closePanel() end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_TABS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

@@ -33,16 +33,16 @@ DEFAULT_PRESET    = "vivid"
 DEFAULT_INTENSITY = 70
 
 PRESETS = {
-    { id = "off", label = L("shader_colors.presets.off") },
+    { id = "off", label = "" },
     {
-        id = "natural", label = L("shader_colors.presets.natural"),
+        id = "natural", label = "",
         day = {
             contrast = 0.25, black = 0.03, white = 0.98,
             saturation = 1.12, vibrance = 0.3, temperature = 0.04,
         },
     },
     {
-        id = "vivid", label = L("shader_colors.presets.vivid"),
+        id = "vivid", label = "",
         day = {
             exposure = 1.03, contrast = 0.5, black = 0.05, white = 0.96,
             saturation = 1.3, vibrance = 0.6,
@@ -50,7 +50,7 @@ PRESETS = {
         },
     },
     {
-        id = "cinematic", label = L("shader_colors.presets.cinematic"),
+        id = "cinematic", label = "",
         day = {
             exposure = 0.98, contrast = 0.6, black = 0.05, white = 0.95,
             saturation = 0.95, vibrance = 0.35,
@@ -58,14 +58,14 @@ PRESETS = {
         },
     },
     {
-        id = "warm", label = L("shader_colors.presets.warm"),
+        id = "warm", label = "",
         day = {
             temperature = 0.5, contrast = 0.35, black = 0.03, white = 0.97,
             saturation = 1.15, vibrance = 0.35, gain = { 1.05, 1, 0.93 },
         },
     },
     {
-        id = "cold", label = L("shader_colors.presets.cold"),
+        id = "cold", label = "",
         day = {
             temperature = -0.5, tint = 0.05, contrast = 0.4, black = 0.03, white = 0.97,
             saturation = 1.0, vibrance = 0.3, lift = { -0.02, 0, 0.04 },
@@ -156,4 +156,19 @@ function presetDayNight(id)
     local night = p and p.night and completeParams(p.night) or lerpParams(neutral, day, NIGHT_KEEP)
     cache[id] = { day, night }
     return day, night
+end
+
+-- Preset labels load only once the player is loaded (called from c_main.lua's gate).
+function loadPresetLabels()
+    local labels = {
+        off       = L("shader_colors.presets.off"),
+        natural   = L("shader_colors.presets.natural"),
+        vivid     = L("shader_colors.presets.vivid"),
+        cinematic = L("shader_colors.presets.cinematic"),
+        warm      = L("shader_colors.presets.warm"),
+        cold      = L("shader_colors.presets.cold"),
+    }
+    for _, p in ipairs(PRESETS) do
+        p.label = labels[p.id] or p.id
+    end
 end

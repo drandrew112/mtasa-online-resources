@@ -17,7 +17,7 @@ local HIDDEN_DIMENSION = 65000
 Kinds = {}
 
 Kinds.object = {
-    label = L("v_jobcreator.view.object"),
+    label = "",   -- set in loadTexts
     create = function(ref)
         local el = createObject(ref.model, ref.x, ref.y, ref.z, ref.rx or 0, ref.ry or 0, ref.rz or 0)
         return el
@@ -46,7 +46,7 @@ local function spawnModel()
 end
 
 Kinds.spawn = {
-    label = L("v_jobcreator.menus.spawnpoint"),
+    label = "",   -- set in loadTexts
     helper = true,
     create = function(ref)
         if Editor.doc.type == "race" then
@@ -87,11 +87,11 @@ local function pointKind(label, helperModel, markerColor)
     }
 end
 
-Kinds.checkpoint = pointKind(L("v_jobcreator.menus.checkpoint"), H.checkpoint, { 255, 200, 0 })
-Kinds.finish = pointKind(L("v_jobcreator.menus.finish"), H.finish, { 255, 70, 70 })
-Kinds.marker = pointKind(L("v_jobcreator.view.job_marker"), H.marker)
+Kinds.checkpoint = pointKind("", H.checkpoint, { 255, 200, 0 })
+Kinds.finish = pointKind("", H.finish, { 255, 70, 70 })
+Kinds.marker = pointKind("", H.marker)
 Kinds.camera = {
-    label = L("v_jobcreator.view.finish_camera"),
+    label = "",   -- set in loadTexts
     helper = true,
     create = function(ref) return createObject(H.camera, ref.pos[1], ref.pos[2], ref.pos[3]) end,
     apply = function(el, ref)
@@ -362,4 +362,23 @@ addEventHandler("onClientPreRender", root, function()
         destroyElement(markerPreview)
         markerPreview = nil
     end
+end)
+
+-- Kind labels load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    Kinds.object.label     = L("v_jobcreator.view.object")
+    Kinds.spawn.label      = L("v_jobcreator.menus.spawnpoint")
+    Kinds.checkpoint.label = L("v_jobcreator.menus.checkpoint")
+    Kinds.finish.label     = L("v_jobcreator.menus.finish")
+    Kinds.marker.label     = L("v_jobcreator.view.job_marker")
+    Kinds.camera.label     = L("v_jobcreator.view.finish_camera")
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

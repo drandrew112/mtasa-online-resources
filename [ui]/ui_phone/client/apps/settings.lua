@@ -49,6 +49,7 @@ end
 
 --------------------------------------------------------------------------------
 
+PhoneApp.defer(function()
 PhoneApp.register({
     id    = "settings",
     name  = L("ui_phone.settings.settings"),
@@ -112,3 +113,4 @@ PhoneApp.register({
         return false
     end,
 })
+end)

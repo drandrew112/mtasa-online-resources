@@ -19,6 +19,8 @@ local CONTROLS = {
 }
 
 -- the panels whose open flag blocks Continue (the player closes them first)
+Lock.PANEL_FLAGS = {}
+local function build_PANEL_FLAGS()
 Lock.PANEL_FLAGS = {
     { data = "phoneOpen", name = "phone" },
     { data = "socialPanelOpen", name = L("v_introduce.lock.social_panel") },
@@ -30,6 +32,7 @@ Lock.PANEL_FLAGS = {
     { data = "adminPanelOpen", name = L("v_introduce.lock.admin_panel") },
     { data = "textInputOpen", name = L("v_introduce.lock.text_input") },
 }
+end
 
 local controlTimer
 
@@ -80,4 +83,18 @@ end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     Lock.disable()
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_PANEL_FLAGS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

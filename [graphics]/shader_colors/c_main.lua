@@ -11,7 +11,7 @@ local WATCHDOG_MS         = 5000
 local VRAM_MARGIN_MB      = 32 -- must stay free on top of the screen source
 local VRAM_CRITICAL_MB    = 16 -- running: drop the effect below this
 local LUMA                = { 0.2126, 0.7152, 0.0722 }
-local CHAT_PREFIX         = L("shader_colors.api.color_grading")
+local CHAT_PREFIX         = ""   -- set in loadTexts
 
 PRESET_FADE_MS = 800
 
@@ -296,3 +296,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, destroyResources)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    CHAT_PREFIX = L("shader_colors.api.color_grading")
+    loadPresetLabels()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

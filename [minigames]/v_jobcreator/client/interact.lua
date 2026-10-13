@@ -5,7 +5,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 Interact = { ids = {} }
 
-local DEF = {
+local function buildDef() return {
     title = L("v_jobcreator.interact.editor"),
     range = 6,
     lineOfSight = false,
@@ -17,12 +17,12 @@ local DEF = {
         { label = L("v_jobcreator.interact.options"), value = "options" },
         { label = L("v_jobcreator.interact.delete"), value = "delete" },
     },
-}
+} end
 
 function Interact.register()
     Interact.unregister()
     for _, elementType in ipairs({ "object", "vehicle", "ped" }) do
-        local id = iobj:addInteractTypeMenu(elementType, DEF)
+        local id = iobj:addInteractTypeMenu(elementType, buildDef())
         if id then Interact.ids[id] = true end
     end
 end

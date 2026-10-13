@@ -13,12 +13,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 local vehicles = {}   -- { { id, model, modelName, plate, isDestroyed, spawned }, ... }
 local sub      = nil  -- nil = category list | "land" | "plane" | "helicopter" | "boat"
 
-local CATEGORIES = {
-    { key = "land",       name = L("ui_phone.myveh.land")       },
-    { key = "plane",      name = L("ui_phone.myveh.plane")      },
-    { key = "helicopter", name = L("ui_phone.myveh.helicopter") },
-    { key = "boat",       name = L("ui_phone.myveh.boat")       },
-}
+local CATEGORIES = {}  -- filled once the player is loaded (PhoneApp.defer)
 
 local function categoryOf(model)
     local t = getVehicleType(model)
@@ -57,6 +52,11 @@ phoneOnServer("myveh:list", function(list)
     vehicles = type(list) == "table" and list or {}
 end)
 
+PhoneApp.defer(function()
+CATEGORIES[1] = { key = "land",       name = L("ui_phone.myveh.land")       }
+CATEGORIES[2] = { key = "plane",      name = L("ui_phone.myveh.plane")      }
+CATEGORIES[3] = { key = "helicopter", name = L("ui_phone.myveh.helicopter") }
+CATEGORIES[4] = { key = "boat",       name = L("ui_phone.myveh.boat")       }
 PhoneApp.register({
     id    = "myveh",
     name  = L("ui_phone.myveh.my_vehicles"),
@@ -132,3 +132,4 @@ PhoneApp.register({
         return false
     end,
 })
+end)

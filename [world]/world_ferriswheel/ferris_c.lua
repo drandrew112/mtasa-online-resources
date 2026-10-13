@@ -3,16 +3,28 @@ local scX, scY = guiGetScreenSize();
 local lps = { x = 383.705, y = -2028.377, z = 7.835, rz = 90 };  -- Position where player will be teleported after he leaves a cabin
 local bdKey = { 'K', 'L' };                                      -- Keys to get inside [1] and outside [2] of the cabin ('K' and 'L' by default)
 local tstgs = {
-  text = L("world_ferriswheel.ferris.press_to_get_into_cabin", { bd_key = bdKey[ 1 ] }),       -- Text that will show up when cabin gets closer to a player
+  text = '',                                                     -- Text that will show up when cabin gets closer to a player (set in loadTexts)
   font = 'bankgothic',                                           -- Text font (can be a custom font too)
   scale = 0.7,                                                   -- Text scale
   color = tocolor( 255, 255, 255, 255 ),                         -- Text color
   shadow = tocolor( 0, 0, 0, 255 )                               -- Text shadow color
 };
 
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false;
+local function loadTexts()
+  if textsLoaded then return end;
+  textsLoaded = true;
+  tstgs.text = L("world_ferriswheel.ferris.press_to_get_into_cabin", { bd_key = bdKey[ 1 ] });
+  exports.v_accounts:resourceReady();
+end;
+addEvent( 'onClientLoadingStarted', true );
+addEventHandler( 'onClientLoadingStarted', root, loadTexts );
+
 addEventHandler( 'onClientResourceStart', resourceRoot, function()
   engineReplaceCOL( engineLoadCOL( 'fcabin.col' ), 3752 );
   triggerServerEvent( 'client_getCabinsCollision', localPlayer );
+  if getElementData( localPlayer, 'loaded' ) then loadTexts() end;
 end );
 
 addEventHandler( 'onClientResourceStop', resourceRoot, function()

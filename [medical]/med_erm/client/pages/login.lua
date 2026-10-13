@@ -11,13 +11,16 @@ Login = {
 
 local s = Gfx.s
 
-local TYPE_HINTS = {
+local TYPE_HINTS = {}
+local function build_TYPE_HINTS()
+TYPE_HINTS = {
     SOLO = L("med_erm.login.single_responder"),
     DOC  = L("med_erm.login.physician_unit"),
     BLS  = L("med_erm.login.basic_life_support"),
     ALS  = L("med_erm.login.advanced_life_support"),
     HELI = L("med_erm.login.air_ambulance"),
 }
+end
 
 function Login.reset(vehicle)
     Login.vehicle  = vehicle
@@ -210,3 +213,17 @@ function Login.drawPicker(sx, sy, sw, sh)
 
     Gfx.button(x + w - s(112), y + h - s(48), s(96), s(34), L("common.cancel"), {}, function() Login.picker = false end)
 end
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_TYPE_HINTS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

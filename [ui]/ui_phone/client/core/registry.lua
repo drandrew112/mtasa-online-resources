@@ -48,6 +48,30 @@ function PhoneApp.register(def)
     table.sort(orderList, function(a, b) return byId[a].order < byId[b].order end)
 end
 
+-- Apps build their texts (L) inside a deferred function: PhoneApp.defer(fn).
+-- The queue runs once the player is loaded (v_accounts loading gate), then the
+-- resource reports ready.
+local deferred, loaded = {}, false
+
+local function runDeferred()
+    if loaded then return end
+    loaded = true
+    for _, fn in ipairs(deferred) do fn() end
+    deferred = {}
+    exports.v_accounts:resourceReady()
+end
+
+function PhoneApp.defer(fn)
+    if loaded then return fn() end
+    deferred[#deferred + 1] = fn
+end
+
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, runDeferred)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then runDeferred() end
+end)
+
 function PhoneApp.get(id)
     return byId[id]
 end

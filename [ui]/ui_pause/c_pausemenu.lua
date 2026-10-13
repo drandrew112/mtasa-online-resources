@@ -65,13 +65,15 @@ local selectedTab   = 1
 
 -- JOBS tab: a small 2-level drill-down.
 --   view = "root" | "joinlobby" | "race" | "deathmatch"
-local JOBS_ROOT = {
+local JOBS_ROOT, JOBS_SUB, JOBS_CATS = {}, {}, {}
+local function buildJobTexts()
+JOBS_ROOT = {
     { id = "jobs",    label = L("ui_pause.pausemenu.jobs"),              desc = L("ui_pause.pausemenu.quick_job_lobbies_official_and_community") },
     { id = "arenawar",label = L("ui_pause.pausemenu.join_arena_war"),    desc = L("ui_pause.pausemenu.join_arena_war_minigame") },
     { id = "leave",   label = L("ui_pause.pausemenu.leave_server"),      desc = L("ui_pause.pausemenu.disconnect_from_server") }
 }
 -- Jobs sub-menu.
-local JOBS_SUB = {
+JOBS_SUB = {
     { id = "quick",   label = L("ui_pause.pausemenu.quick_job"),         desc = L("ui_pause.pausemenu.join_random_open_lobby_or_start") },
     { id = "lobbies", label = L("ui_pause.pausemenu.join_lobby"),        desc = L("ui_pause.pausemenu.browse_every_open_lobby_game_mode") },
     { id = "official",  label = L("ui_pause.pausemenu.official"),          desc = L("ui_pause.pausemenu.jobs_made_by_server_team") },
@@ -79,10 +81,11 @@ local JOBS_SUB = {
     { id = "creator",   label = L("ui_pause.pausemenu.creator"),           desc = L("ui_pause.pausemenu.open_job_creator_to_build_your") },
 }
 -- Official / Community sub-menu: pick a game type, then list the jobs.
-local JOBS_CATS = {
+JOBS_CATS = {
     { id = "race",       label = L("common.race"),       desc = L("ui_pause.pausemenu.browse_available_race_jobs") },
     { id = "deathmatch", label = L("common.deathmatch"), desc = L("ui_pause.pausemenu.browse_available_deathmatch_jobs") },
 }
+end
 --   view = "root" | "joinlobby" | "cat" | "race" | "deathmatch"; src = "official" | "community"
 local jobsMenu     = { view = "root", rootSel = 1, listSel = 1, catSel = 1, subSel = 1, src = "official" }
 local jobRefreshAt = 0
@@ -199,6 +202,8 @@ end
 
 -- Global (not local): c_settings.lua walks this tree by item id to apply
 -- account-saved values after login.
+SETTINGS_TREE = {}
+local function buildSettingsTree()
 SETTINGS_TREE = {
     {
         id = "graphics", label = L("ui_pause.pausemenu.graphics"),
@@ -302,6 +307,7 @@ SETTINGS_TREE = {
         },
     },
 }
+end
 
 --------------------------------------------------------------------------------
 -- ui sounds
@@ -1209,4 +1215,22 @@ addEventHandler("onClientResourceStop", resourceRoot, function()
     if pauseMenuOpen then
         setPauseMenuOpen(false)
     end
+end)
+
+--------------------------------------------------------------------------------
+-- texts: built once the player is loaded (v_accounts loading gate)
+--------------------------------------------------------------------------------
+
+local textsBuilt = false
+local function loadTexts()
+    if textsBuilt then return end
+    textsBuilt = true
+    buildJobTexts()
+    buildSettingsTree()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

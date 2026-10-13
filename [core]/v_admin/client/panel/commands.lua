@@ -10,7 +10,7 @@ local S, F, C = AP.S, AP.F, AP.C
 local scroll = 0
 
 AP.addTab({
-    id = "commands", label = L("v_admin.commands.commands"), perm = "panel", order = 4,
+    id = "commands", label = function() return L("v_admin.commands.commands") end, perm = "panel", order = 4,
     draw = function(x, y, w, h)
         local cmdW, lvlW = w * 0.3, S(250)
         local descX = x + cmdW + lvlW + S(20)

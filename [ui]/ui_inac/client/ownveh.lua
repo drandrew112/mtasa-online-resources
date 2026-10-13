@@ -5,14 +5,17 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- onOpen asks the server for the player's vehicles and the list below is
 -- rebuilt from the reply. Every row summons that vehicle through v_ownveh.
 
-registerMenu({
-    id    = "request_personal_vehicle",
-    title = L("ui_inac.main.request_personal_vehicle"),
-    back  = "vehicle",
-    items = {
-        { label = L("common.loading"), type = "action", action = function() end },
-    },
-})
+-- called from registerMenus() (main.lua) once the player is loaded
+function registerOwnvehMenu()
+    registerMenu({
+        id    = "request_personal_vehicle",
+        title = L("ui_inac.main.request_personal_vehicle"),
+        back  = "vehicle",
+        items = {
+            { label = L("common.loading"), type = "action", action = function() end },
+        },
+    })
+end
 
 local function setItems(items)
     local menu = MenuRegistry:get("request_personal_vehicle")

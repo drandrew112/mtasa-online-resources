@@ -6,7 +6,7 @@ uicore = exports.ui_core
 local sw, sh = guiGetScreenSize()
 local w,h = 540,400
 
-local arenaDescription = L("v_arenawar.interface.arenawar_is_vehicle_deathmatch_fought_inside")
+local arenaDescription = ""   -- set once the player is loaded (loadTexts below)
 
 --------------------------------------------------------------------------------
 -- theme / drawing helpers
@@ -61,10 +61,13 @@ local fx, fy = sw/2 - w/2, sh/2 - h/2
 local margin, gap, btnH = 18, 16, 46
 local btnW = (w - margin*2 - gap) / 2
 
-local buttons = {
+local buttons = {}
+local function build_buttons()
+buttons = {
     {label = L("v_arenawar.interface.play"), x = fx+margin, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "good", action = function() triggerServerEvent("enterArena", localPlayer, localPlayer) toggleArenaPanel() end},
     {label = L("v_arenawar.interface.close"), x = fx+margin+btnW+gap, y = fy+h-margin-btnH, width = btnW, height = btnH, kind = "bad", action = function () toggleArenaPanel() end}
 }
+end
 
 function toggleArenaPanel()
     if isArenaPanelVisible then
@@ -237,4 +240,19 @@ addEventHandler("onClientKey", root, function(button, press)
             return
         end
     end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    arenaDescription = L("v_arenawar.interface.arenawar_is_vehicle_deathmatch_fought_inside")
+    build_buttons()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

@@ -17,7 +17,9 @@ local pressed = {}           -- [control] = tick until which it looks pressed
 local lastT = getTickCount()
 
 -- base-unit layout (900 x 270), scaled by Loco.s
-local G = {
+local G = {}
+local function build_G()
+G = {
     volt  = { 60, 46, 30, { min = 0, max = 150, major = 50, minor = 10, title = L("rw_loco.br232.battery"), unit = "V" } },
     fuel  = { 146, 46, 30, { min = 0, max = 6, major = 2, minor = 0.5, title = L("rw_loco.br232.fuel"), unit = "bar" } },
     oil   = { 232, 46, 30, { min = 0, max = 8, major = 4, minor = 1, title = L("rw_loco.br232.oil"), unit = "bar" } },
@@ -28,8 +30,11 @@ local G = {
     ctrl  = { 305, 46, 30, { min = -100, max = 100, major = 100, minor = 25, title = L("rw_loco.br232.control"), unit = "%" } },
     target = { 305, 124, 30, { min = 0, max = 2000, major = 1000, minor = 250, div = 100, red = { 0, 250 }, title = L("rw_loco.br232.target"), unit = "x100 m" } },
 }
+end
 
-local LAMPS = {
+local LAMPS = {}
+local function build_LAMPS()
+LAMPS = {
     { id = "bat",    label = L("rw_loco.br232.battery"), x = 560, y = 112, color = { 255, 255, 240 } },
     { id = "fuel",   label = L("rw_loco.br232.fuel"),    x = 620, y = 112, color = { 255, 255, 240 } },
     { id = "eng",    label = L("rw_loco.br232.engine"),  x = 680, y = 112, color = { 60, 255, 120 } },
@@ -41,8 +46,11 @@ local LAMPS = {
     { id = "rev",    label = L("rw_loco.br232.reverse"), x = 800, y = 40,  color = { 255, 255, 240 } },
     { id = "emerg",  label = "EMERG.",  x = 860, y = 40,  color = { 255, 50, 40 } },
 }
+end
 
-local CONTROLS = {
+local CONTROLS = {}
+local function build_CONTROLS()
+CONTROLS = {
     { id = "battery", kind = "toggle", label = L("rw_loco.br232.battery"),   x = 48 },
     { id = "fuel",    kind = "toggle", label = L("rw_loco.br232.fuel_pump"), x = 122 },
     { id = "start",   kind = "button", label = L("rw_loco.br232.start"),     x = 202, color = { 40, 170, 70 } },
@@ -54,6 +62,7 @@ local CONTROLS = {
     { id = "doorr",   kind = "button", label = L("rw_loco.br232.doors_r"),   x = 560, color = { 230, 180, 30 } },
     { id = "sifa",    kind = "button", label = L("rw_loco.br232.sifa"),      x = 650, color = { 245, 245, 245 }, big = true },
 }
+end
 
 local function drawStatic(ctx)
     local s = ctx.s
@@ -246,3 +255,19 @@ function M.leave()
 end
 
 registerLocoModule("br232", M)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_G()
+    build_LAMPS()
+    build_CONTROLS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)

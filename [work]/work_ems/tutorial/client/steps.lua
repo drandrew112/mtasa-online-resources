@@ -16,7 +16,9 @@ local T = {
     note = nil, noteColor = nil,
 }
 
-local STEP_LABELS = {
+local STEP_LABELS, ITEM_STATE = {}, {}
+local function buildLabels()
+STEP_LABELS = {
     tablet = L("work_ems.steps.step_1_8_ems_tablet"),
     equipment = L("work_ems.steps.step_2_8_equipment"),
     examine = L("work_ems.steps.step_3_8_examination"),
@@ -28,10 +30,11 @@ local STEP_LABELS = {
     done = L("work_ems.steps.step_8_8_finished"),
 }
 
-local ITEM_STATE = {
+ITEM_STATE = {
     stowed = L("work_ems.steps.in_ambulance"), carried = L("work_ems.steps.in_your_hands"), ground = L("work_ems.steps.on_ground"),
     stretcher = L("work_ems.steps.on_stretcher"), none = "-",
 }
+end
 
 local function isRunning(name)
     local res = getResourceFromName(name)
@@ -123,7 +126,9 @@ end
 
 local TABLET_KEY = "J"
 
-local TABLET = {
+local TABLET, EQUIPMENT, EXAMINE, TREAT
+local function buildSubs()
+TABLET = {
     { text = L("work_ems.steps.you_are_sitting_in_your_ambulance", { tablet_key = TABLET_KEY }),
       wait = "tablet:open" },
     { text = L("work_ems.steps.this_is_sign_in_screen_pick"),
@@ -154,7 +159,7 @@ local TABLET = {
 
 ---------------------------------------------------------------- step 2: equipment (med_bag)
 
-local EQUIPMENT = {
+EQUIPMENT = {
     { text = L("work_ems.steps.your_patient_is_standing_next_to"),
       wait = "bag:contents" },
     { text = L("work_ems.steps.contents_of_medical_bag_window_on"),
@@ -168,7 +173,7 @@ local EQUIPMENT = {
 
 ---------------------------------------------------------------- step 3: examination
 
-local EXAMINE = {
+EXAMINE = {
     { text = L("work_ems.steps.look_at_patient_and_press_x"),
       check = panelOpen },
     { text = L("work_ems.steps.this_is_examination_panel_top_bar"),
@@ -196,7 +201,7 @@ local EXAMINE = {
 
 local function treated(key) return function() return T.done[key] == true end end
 
-local TREAT = {
+TREAT = {
     { text = L("work_ems.steps.treat_injuries_start_with_burn_press"),
       check = treated("bandage"), panel = "action:bandage" },
     { text = L("work_ems.steps.burn_is_dressed_now_fracture_press"),
@@ -213,6 +218,7 @@ local TREAT = {
 }
 
 STEP_SUBS = { tablet = TABLET, equipment = EQUIPMENT, examine = EXAMINE, treat = TREAT }
+end
 
 ---------------------------------------------------------------- card builders
 
@@ -469,10 +475,13 @@ handle("ems:tut:step", function(step)
     refresh()
 end)
 
-local TREATMENT_LABELS = {
+local TREATMENT_LABELS = {}
+local function buildTreatmentLabels()
+TREATMENT_LABELS = {
     bandage = L("work_ems.steps.bandage_did_not_hold"), splint = L("work_ems.steps.splint_did_not_hold"), iv = L("work_ems.steps.iv_access_failed"),
     painkiller = L("work_ems.steps.medicine_was_not_given"), oxygen = L("work_ems.steps.oxygen_mask_was_not_changed"),
 }
+end
 
 handle("ems:tut:info", function(kind, data)
     if kind == "treatment" then
@@ -551,4 +560,20 @@ end)
 -- med_erm restarted: its tutorial mode is gone, switch it on again
 addEventHandler("onClientResourceStart", root, function(res)
     if T.active and getResourceName(res) == "med_erm" then tablet("startTabletTutorial") end
+end)
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    buildLabels()
+    buildSubs()
+    buildTreatmentLabels()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

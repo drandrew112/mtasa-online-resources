@@ -247,6 +247,8 @@ function registerMenus()
         }
     })
 
+    registerOwnvehMenu()
+
     exports.v_accounts:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)

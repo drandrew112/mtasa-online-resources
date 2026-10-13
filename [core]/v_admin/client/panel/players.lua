@@ -15,7 +15,9 @@ local st = {
 }
 
 -- Action buttons. perm = key in ADMIN.perms.
-local ACTIONS = {
+local ACTIONS = {}
+local function build_ACTIONS()
+ACTIONS = {
     { group = L("v_admin.players.general") },
     { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
     { id = "gethere", label = L("v_admin.players.bring_here"),  perm = "teleport" },
@@ -35,14 +37,18 @@ local ACTIONS = {
     { id = "unban",   label = L("v_admin.players.unban_account"), perm = "ban", show = function(p) return p.banned end },
     { id = "setlevel", label = L("v_admin.players.admin_level"), perm = "setLevel", dropdown = true },
 }
+end
 
 -- Inline forms.
-local FORMS = {
+local FORMS = {}
+local function build_FORMS()
+FORMS = {
     mute = { title = L("v_admin.players.mute"),       minutes = true, chips = { 5, 15, 30, 60, 120 } },
     jail = { title = L("v_admin.players.admin_jail"), minutes = true, chips = { 10, 30, 60, 120, 240 } },
     kick = { title = L("v_admin.players.kick"),       danger = true },
     ban  = { title = L("v_admin.players.ban_account"), danger = true, note = L("v_admin.players.permanent_account_ban_v_accounts_serial") },
 }
+end
 
 local function fmtDuration(seconds)
     seconds = math.max(0, math.floor(seconds or 0))
@@ -366,7 +372,7 @@ end
 --------------------------------------------------------------------------------
 
 AP.addTab({
-    id = "players", label = L("common.players"), perm = "panel", order = 1,
+    id = "players", label = function() return L("common.players") end, perm = "panel", order = 1,
     draw = function(x, y, w, h)
         local listW, actW, gap = S(380), S(420), S(18)
         drawList(x, y, listW, h)
@@ -385,3 +391,18 @@ AP.addTab({
     end,
     onClose = function() st.form = nil end,
 })
+
+-- Texts load only once the player is loaded (v_accounts loading gate).
+local textsLoaded = false
+local function loadTexts()
+    if textsLoaded then return end
+    textsLoaded = true
+    build_ACTIONS()
+    build_FORMS()
+    exports.v_accounts:resourceReady()
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, loadTexts)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then loadTexts() end
+end)
