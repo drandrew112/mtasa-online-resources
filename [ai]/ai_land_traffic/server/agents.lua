@@ -213,7 +213,7 @@ function Agents.spawn(lane, s, v)
         id = id, veh = veh, ped = ped, model = model, len = len, half = len / 2,
         plan = { { code = lane } }, s = s, v = v or 0, a = 0,
         v0f = TRAFFIC.DRIVER_FACTOR[1] + random() * (TRAFFIC.DRIVER_FACTOR[2] - TRAFFIC.DRIVER_FACTOR[1]),
-        lat = 0, latTarget = 0, latSlope = TRAFFIC.RETURN_SLOPE,
+        lat = 0, latRate = 0, latTarget = 0, latSlope = TRAFFIC.RETURN_SLOPE,
         x = x, y = y, z = z, fx = fx, fy = fy, fz = fz, hx = 0, hy = 1,
         born = getTickCount(), posRefresh = getTickCount() + random(TRAFFIC.SERVER_POS_REFRESH),
     }

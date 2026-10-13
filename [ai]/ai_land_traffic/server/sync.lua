@@ -4,14 +4,14 @@
 -- segment / next segment / lateral target changes, or after SEND_MAX_AGE.
 --
 -- EV_STATE payload: flat list, RECORD fields per agent:
---   vehicle, code, s, v, a, lat, latTarget, latSlope, nextCode, flags (1 = horn)
+--   vehicle, code, s, v, a, lat, latTarget, latSlope, nextCode, flags (1 = horn), latRate
 -- lat is at s; the clients continue it with Geo.latAfter over the distance driven since s.
 
 Sync = { players = {} }   -- [player] = { known = { [agent] = true } }
 
 local T = TRAFFIC
 local abs, floor = math.abs, math.floor
-Sync.RECORD = 10
+Sync.RECORD = 11
 
 -- the clients' extrapolation (keep in sync with client/puppets.lua)
 function Sync.predict(s, v, a, dt)
@@ -26,6 +26,7 @@ function Sync.predict(s, v, a, dt)
 end
 
 local function r2(x) return floor(x * 100 + 0.5) / 100 end
+local function r3(x) return floor(x * 1000 + 0.5) / 1000 end
 
 local function isDirty(ag, now)
     local st = ag.sent
@@ -46,9 +47,9 @@ function Sync.flush(players, now)
             local code, nxt = ag.plan[1].code, Agents.nextCode(ag)
             local s, v, a = r2(ag.s), r2(ag.v), r2(ag.a)
             local lat = r2(ag.lat)
-            ag.sent = { code = code, next = nxt, s = s, v = v, a = a, lat = lat, latTarget = ag.latTarget,
+            ag.sent = { code = code, next = nxt, s = s, v = v, a = a, lat = lat, rate = r3(ag.latRate), latTarget = ag.latTarget,
                         slope = ag.latSlope, t = now }
-            records[ag] = { ag.veh, code, s, v, a, lat, ag.latTarget, ag.latSlope, nxt, ag.horn and 1 or 0 }
+            records[ag] = { ag.veh, code, s, v, a, lat, ag.latTarget, ag.latSlope, nxt, ag.horn and 1 or 0, r3(ag.latRate) }
         end
         ag.horn = false
     end
@@ -70,8 +71,8 @@ function Sync.flush(players, now)
                         -- not dirty, but this player has not seen it yet: send the last record
                         -- the client measures age from arrival: send the extrapolated state
                         local ps, pv = Sync.predict(st.s, st.v, st.a, (now - st.t) / 1000)
-                        local lat = Geo.latAfter(st.lat, st.latTarget, st.slope, ps - st.s)
-                        rec = { ag.veh, st.code, r2(ps), r2(pv), 0, r2(lat), st.latTarget, st.slope, st.next, 0 }
+                        local lat, rate = Geo.latAfter(st.lat, st.rate, st.latTarget, st.slope, ps - st.s)
+                        rec = { ag.veh, st.code, r2(ps), r2(pv), 0, r2(lat), st.latTarget, st.slope, st.next, 0, r3(rate) }
                     end
                     if rec then
                         for k = 1, Sync.RECORD do out[n + k] = rec[k] end

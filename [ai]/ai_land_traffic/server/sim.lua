@@ -220,7 +220,7 @@ local function obstacleAccel(ag, v, v0, n, now)
                     local ea, ew = extents(o, ag)
                     local gap = along - ag.half - ea
                     -- where the agent will be laterally when its front reaches the obstacle
-                    local latThere = Geo.latAfter(ag.lat, ag.latTarget, ag.latSlope, gap > 0 and gap or 0)
+                    local latThere = Geo.latAfter(ag.lat, ag.latRate, ag.latTarget, ag.latSlope, gap > 0 and gap or 0)
                     local skip = ag.overtake and ag.overtake.el == o.el
                     if skip and gap > 1.5 and bypassBlocked(ag, o, ag.overtake.lat, gap) then
                         -- the way around got blocked: give up passing, wait behind it
@@ -402,8 +402,8 @@ local function moveLateral(ag, ds)
         ag.latTarget = target
         ag.latSlope = slope
     end
-    if ds > 0 and ag.lat ~= target then
-        ag.lat = Geo.latAfter(ag.lat, target, ag.latSlope, ds)
+    if ds > 0 and (ag.lat ~= target or ag.latRate ~= 0) then
+        ag.lat, ag.latRate = Geo.latAfter(ag.lat, ag.latRate, target, ag.latSlope, ds)
     end
 end
 

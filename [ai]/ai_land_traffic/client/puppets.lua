@@ -53,7 +53,7 @@ end
 
 ------------------------------------------------------------------------ incoming states
 
-local function apply(veh, code, s, v, a, lat, latTarget, latSlope, nxt, flags, t0)
+local function apply(veh, code, s, v, a, lat, latTarget, latSlope, nxt, flags, latRate, t0)
     local st = P[veh]
     local now = getTickCount()
     if st then
@@ -73,11 +73,11 @@ local function apply(veh, code, s, v, a, lat, latTarget, latSlope, nxt, flags, t
             elseif code ~= st.prev then st.prev = nil end
         end
         st.code, st.s, st.v, st.a, st.t0, st.next = code, s, v, a, t0, nxt
-        st.lat, st.latTarget, st.latSlope = lat, latTarget, latSlope
+        st.lat, st.latTarget, st.latSlope, st.latRate = lat, latTarget, latSlope, latRate
         if err and abs(err) < SNAP_ERR then st.err, st.errT = err, now else st.err = 0 end
     else
         st = { code = code, s = s, v = v, a = a, t0 = t0, next = nxt, lat = lat, latTarget = latTarget,
-               latSlope = latSlope, err = 0, errT = now, zfix = 0, zfixTarget = 0, groundAt = 0, farAt = 0,
+               latSlope = latSlope, latRate = latRate, err = 0, errT = now, zfix = 0, zfixTarget = 0, groundAt = 0, farAt = 0,
                ctrlAt = 0 }
         P[veh] = st
     end
@@ -94,11 +94,11 @@ end
 addEvent(EV_STATE, true)
 addEventHandler(EV_STATE, resourceRoot, function(data)
     local t0 = getTickCount() - getPlayerPing(localPlayer) / 2
-    for i = 1, #data, 10 do
+    for i = 1, #data, 11 do
         local veh = data[i]
         if isElement(veh) then
             apply(veh, data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], data[i + 6], data[i + 7],
-                data[i + 8], data[i + 9], t0)
+                data[i + 8], data[i + 9], data[i + 10], t0)
         end
     end
 end)
@@ -136,8 +136,8 @@ local function place(veh, st, now, dt, full)
     local dx = s - st.s     -- distance driven since the record
     local chain, n, base = chainOf(st)
     s = s + base
-    local latAfter, lat0, latT, slope = Geo.latAfter, st.lat, st.latTarget, st.latSlope
-    local lat = latAfter(lat0, latT, slope, dx)
+    local latAfter, lat0, rate0, latT, slope = Geo.latAfter, st.lat, st.latRate, st.latTarget, st.latSlope
+    local lat = latAfter(lat0, rate0, latT, slope, dx)
 
     local x, y, z = Geo.poseOnChain(chain, n, s, lat)
     if not x then return end
@@ -145,8 +145,8 @@ local function place(veh, st, now, dt, full)
         setElementPosition(veh, x, y, z + 1, false)
         return
     end
-    local ax, ay, az = Geo.poseOnChain(chain, n, s - HEAD_SPAN, latAfter(lat0, latT, slope, dx - HEAD_SPAN))
-    local bx, by, bz = Geo.poseOnChain(chain, n, s + HEAD_SPAN, latAfter(lat0, latT, slope, dx + HEAD_SPAN))
+    local ax, ay, az = Geo.poseOnChain(chain, n, s - HEAD_SPAN, (latAfter(lat0, rate0, latT, slope, dx - HEAD_SPAN)))
+    local bx, by, bz = Geo.poseOnChain(chain, n, s + HEAD_SPAN, (latAfter(lat0, rate0, latT, slope, dx + HEAD_SPAN)))
     local fx, fy, fz = bx - ax, by - ay, bz - az
     local l = sqrt(fx * fx + fy * fy + fz * fz)
     if l < 0.05 then

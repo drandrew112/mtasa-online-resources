@@ -121,27 +121,23 @@ function Geo.poseOnChain(chain, n, s, lat)
     return Geo.pose(chain[i], s, lat)
 end
 
--- Lateral manoeuvre (lane offset changes are steered, never slid): after driving x metres the
--- offset moved from lat towards target with at most `slope` metres per metre (steering angle
--- atan(slope)), easing out exponentially over the last LAT_TAIL metres. Memoryless, so the server
--- (tick by tick) and the clients (from the last record) get the same curve. x < 0 runs it backwards.
-local LAT_TAIL = 2.5
-function Geo.latAfter(lat, target, slope, x)
-    local d0 = target - lat
-    local ad = d0 < 0 and -d0 or d0
-    if ad < 0.005 then return target end
-    local d1 = slope * LAT_TAIL
-    local r
-    if x < 0 then
-        r = ad + (ad > d1 and slope or ad / LAT_TAIL) * -x
-    elseif ad > d1 then
-        local x1 = (ad - d1) / slope
-        if x <= x1 then r = ad - slope * x else r = d1 * math.exp(-(x - x1) / LAT_TAIL) end
-    else
-        r = ad * math.exp(-x / LAT_TAIL)
-    end
-    if r < 0.005 then return target end
-    return d0 > 0 and target - r or target + r
+-- Lateral manoeuvre (lane offset changes are steered, never slid): the offset follows a critically
+-- damped response towards the target over the distance driven, with time constant tau = LAT_TAU / slope
+-- metres. It starts with the current lateral rate (m per m), so the heading eases in and out instead of
+-- jumping to a steering angle; the peak rate is about |offset change| / (e * tau). State is (lat, rate).
+-- Closed form, so the server (tick by tick) and the clients (from the last record) get the same curve.
+-- x < 0 runs it backwards (heading samples behind the car).
+local LAT_TAU = 0.65
+function Geo.latAfter(lat, rate, target, slope, x)
+    local tau = LAT_TAU / slope
+    local d = lat - target
+    if d * d < 2.5e-5 and rate * rate < 1e-5 then return target, 0 end
+    local b = rate + d / tau
+    local r = d + b * x
+    local e = math.exp(-x / tau)
+    local nl, nr = target + r * e, (b - r / tau) * e
+    if (nl - target) ^ 2 < 2.5e-5 and nr * nr < 1e-5 then return target, 0 end
+    return nl, nr
 end
 
 function Geo.rotation(fx, fy, fz)
