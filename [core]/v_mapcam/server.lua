@@ -1,5 +1,6 @@
 -- v_mapcam (server): cinematic spawn / teleport camera. The camera itself runs client-side.
 -- Exports:
+--   preSpawn(player, x, y, z)                                 -> bool  (camera parked above the spawn point so the world streams in; call playSpawn afterwards)
 --   playSpawn(player [, x, y, z, rot])                       -> bool
 --   teleportPlayer(player, x, y, z [, rot, interior, dim])    -> bool
 --   isActive(player)                                          -> bool
@@ -35,13 +36,32 @@ local function release(player, fire)
 end
 
 local function begin(player, mode, target)
-    release(player, false)
+    local old = sessions[player]
+    if old and old.mode == "prespawn" and mode == "spawn" then
+        -- keep the client's held camera, no stop/start flicker
+        if isTimer(old.timer) then killTimer(old.timer) end
+        sessions[player] = nil
+    else
+        release(player, false)
+    end
     local el = motionElement(player)
     local s = { mode = mode, target = target, frozen = el }
     s.timer = setTimer(release, TIMEOUT, 1, player, true)
     sessions[player] = s
     setElementFrozen(el, true)
     setElementData(player, "mapcam:active", true)
+    return true
+end
+
+function preSpawn(player, x, y, z)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    if not isElement(player) or getElementType(player) ~= "player" or not (x and y and z) then return false end
+    release(player, false)
+    local s = { mode = "prespawn" }
+    s.timer = setTimer(release, TIMEOUT, 1, player, false)
+    sessions[player] = s
+    setElementData(player, "mapcam:active", true)
+    triggerClientEvent(player, "v_mapcam:preSpawn", resourceRoot, x, y, z)
     return true
 end
 

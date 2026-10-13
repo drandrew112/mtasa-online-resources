@@ -9,11 +9,12 @@ local STREAM_WAIT = 900            -- ms to let the world stream in after a tele
 local CLOSE_DIST, CLOSE_UP = 5, 2
 
 addEvent("v_mapcam:start", true)
+addEvent("v_mapcam:preSpawn", true)
 addEvent("v_mapcam:arrived", true)
 addEvent("v_mapcam:stop", true)
 
 local active, segs, idx, segStart, cur, from, arrivedFlag
-local savedHud
+local savedHud, holding
 
 local function ease(t) return t * t * (3 - 2 * t) end
 local function lerp(a, b, t) return a + (b - a) * t end
@@ -47,7 +48,7 @@ local onRender
 
 local function cleanup()
     if active then removeEventHandler("onClientRender", root, onRender) end
-    active, segs, idx = false, nil, nil
+    active, segs, idx, holding = false, nil, nil, false
     toggleAllControls(true)
     restoreHud()
     setCameraTarget(localPlayer)
@@ -72,6 +73,7 @@ onRender = function()
         s.fn()
         return nextSeg()
     end
+    if s.hold then return setCameraMatrix(unpack(cur)) end
     if s.waitFor then
         if arrivedFlag then return nextSeg() end
         return setCameraMatrix(unpack(cur))
@@ -86,6 +88,13 @@ onRender = function()
 end
 
 local function go(list, startCam)
+    if active and holding then
+        holding = false
+        segs, idx, arrivedFlag = list, 0, false
+        cur = startCam
+        nextSeg()
+        return
+    end
     if active then cleanup() end
     segs, idx, arrivedFlag = list, 0, false
     cur = startCam
@@ -98,6 +107,12 @@ local function go(list, startCam)
 end
 
 local function seg(to, dur) return { to = to, dur = dur or PHASE_TIME } end
+
+addEventHandler("v_mapcam:preSpawn", resourceRoot, function(x, y, z)
+    fadeCamera(true)
+    go({ { hold = true } }, above(x, y, z, HIGH))
+    holding = true
+end)
 
 addEventHandler("v_mapcam:start", resourceRoot, function(mode, x, y, z, rot)
     fadeCamera(true)
