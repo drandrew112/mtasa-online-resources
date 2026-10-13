@@ -191,8 +191,17 @@ local NAV = {
     enter = true, backspace = true,
 }
 
-bindKey(cfg.openKey, "down", function()
-    if state.open then setOpen(false) else Phone.open() end
+function bindPhoneKeys()
+    bindKey(cfg.openKey, "down", function()
+        if state.open then setOpen(false) else Phone.open() end
+    end)
+end
+addEvent("onClientPlayerLoaded", true)
+addEventHandler("onClientPlayerLoaded", localPlayer, bindPhoneKeys)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then
+        bindPhoneKeys()
+    end
 end)
 
 -- A ui_core text input (e.g. Emergency Services) owns the keyboard while it is
@@ -203,6 +212,7 @@ addEventHandler("onClientElementDataChange", localPlayer, function(key, _, new)
 end, false)
 
 addEventHandler("onClientKey", root, function(key, press)
+    if not getElementData(localPlayer, "loaded") then return end
     if not state.open or not press then return end
     if getElementData(localPlayer, "textInputOpen") then return end
     if getTickCount() < textInputQuietUntil then
