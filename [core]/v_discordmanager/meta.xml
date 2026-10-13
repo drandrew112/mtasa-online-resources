@@ -1,4 +1,18 @@
 <meta>
-	<info author="VSCode MTA:SA Lua" type="script" name="discordmanager" />
+	<info author="DrAndrew112" type="script" name="discordmanager" />
 	<script src="c_discordmanager.lua" type="client"/>
+	<script src="s_discordmanager.lua" type="server"/>
+
+	<export function="setDiscordDetails" type="client"/>
+	<export function="setDiscordState" type="client"/>
+	<export function="setDiscordAsset" type="client"/>
+	<export function="setDiscordSmallAsset" type="client"/>
+	<export function="setDiscordButton" type="client"/>
+	<export function="setDiscordPartySize" type="client"/>
+	<export function="setDiscordStartTime" type="client"/>
+	<export function="setDiscordShowLocation" type="client"/>
+	<export function="setDiscordShowParty" type="client"/>
+	<export function="resetDiscordOverrides" type="client"/>
+	<export function="forceDiscordUpdate" type="client"/>
+	<export function="getDiscordPresence" type="client"/>
 </meta>
