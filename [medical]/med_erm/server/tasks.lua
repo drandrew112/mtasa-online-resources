@@ -43,12 +43,46 @@ function Tasks.load()
     Tasks.closed = closed
 end
 
+-- Translations of a task: meta.locales = { hu = { title = "", description = "" }, ... }.
+-- title / description themselves are English (dispatchers always see them); a unit member gets
+-- the text of the language the player plays in, English where a language or field is missing.
+local function cutText(s, max)
+    s = trim(tostring(s or ""):gsub("%c", " "))
+    if utf8 and utf8.len(s) and utf8.len(s) > max then return utf8.sub(s, 1, max) end
+    return s:sub(1, max)
+end
+
+local function cleanLocales(meta)
+    if type(meta.locales) ~= "table" then meta.locales = nil return end
+    local out = {}
+    for code, entry in pairs(meta.locales) do
+        if type(code) == "string" and code:match("^%l%l") and type(entry) == "table" then
+            local title, description = cutText(entry.title, 80), cutText(entry.description, 500)
+            if title ~= "" or description ~= "" then out[code] = { title = title, description = description } end
+        end
+    end
+    meta.locales = next(out) and out or nil
+end
+
+-- title, description of task t for player (or language code); falls back to the English fields
+function Tasks.textFor(t, who)
+    local loc = type(t.meta) == "table" and t.meta.locales
+    if type(loc) ~= "table" then return t.title, t.description end
+    local code = type(who) == "string" and who or (isElement(who) and exports.v_locals:getPlayerLanguage(who))
+    local entry = code and loc[code]
+    if type(entry) ~= "table" then return t.title, t.description end
+    local title = (entry.title ~= nil and entry.title ~= "") and entry.title or t.title
+    local description = (entry.description ~= nil and entry.description ~= "") and entry.description or t.description
+    return title, description
+end
+
 -- source: name of the creating resource ("" = web / dispatcher)
 -- meta:   free table owned by the creator (persisted as JSON, returned by getTask)
 function Tasks.create(title, description, x, y, z, caller, source, meta)
     x, y, z = tonumber(x), tonumber(y), tonumber(z) or 0
     if not x or not y then return false, L.msg("med_erm.tasks.invalid_position") end
     if meta ~= nil and type(meta) ~= "table" then return false, "meta must be a table" end
+    if meta then cleanLocales(meta) end
 
     local t = {
         title       = cleanText(title, 80),
@@ -96,6 +130,7 @@ function Tasks.update(id, fields)
     end
     if fields.meta ~= nil then
         if type(fields.meta) ~= "table" then return false, "meta must be a table" end
+        cleanLocales(fields.meta)
         t.meta = fields.meta
     end
 
@@ -138,7 +173,9 @@ function Tasks.assign(id, unitId)
     DB.shiftTaskStart(u.shiftId, t.id, u.callsign)
     Tasks.save(t)
     Tasks.syncUnits(t)
-    Units.notify(u, L.msg("med_erm.tutorial.new_case_assigned"), L.msg("med_erm.tasks.p", { id = t.id, priority = t.priority, title = t.title, zone = t.zone }), true)
+    Units.notify(u, L.msg("med_erm.tutorial.new_case_assigned"), function(player)
+        return L.msg("med_erm.tasks.p", { id = t.id, priority = t.priority, title = (Tasks.textFor(t, player)), zone = t.zone })
+    end, true)
     Events.fire("onErmTaskAssigned", t.id, u.id)
     return true
 end

@@ -77,3 +77,10 @@ addEvent("onPlayerMedicChange")
 addEventHandler("onPlayerMedicChange", root, function(enabled)
     if not enabled then Units.removeMember(source, L.msg("med_erm.tablet.you_are_no_longer_on_duty")) end
 end)
+
+-- The case text follows the player's language: resend it when they switch (v_locals)
+addEvent("onPlayerLanguageChange")
+addEventHandler("onPlayerLanguageChange", root, function()
+    local u = Units.ofPlayer(source)
+    if u and u.task then Units.sync(u) end
+end)

@@ -80,15 +80,26 @@ end
 function Units.sync(u)
     Units.tagVehicle(u)
     local data = Units.payload(u)
+    local t = u.task and Tasks.get(u.task)
     for _, p in ipairs(u.members) do
-        triggerClientEvent(p, "erm:sync", resourceRoot, data)
+        local payload = data
+        if t and data.task then
+            -- every member gets the task text in the language they play in
+            payload = {}
+            for k, v in pairs(data) do payload[k] = v end
+            payload.task = {}
+            for k, v in pairs(data.task) do payload.task[k] = v end
+            payload.task.title, payload.task.description = Tasks.textFor(t, p)
+        end
+        triggerClientEvent(p, "erm:sync", resourceRoot, payload)
     end
 end
 
 -- alert = true plays the tablet alert sound instead of the ui_core one.
+-- text may be a function(player) -> string for per-player (per-language) content.
 function Units.notify(u, title, text, alert)
     for _, p in ipairs(u.members) do
-        triggerClientEvent(p, "erm:notify", resourceRoot, title, text, alert)
+        triggerClientEvent(p, "erm:notify", resourceRoot, title, type(text) == "function" and text(p) or text, alert)
     end
 end
 
