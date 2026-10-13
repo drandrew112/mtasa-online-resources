@@ -663,6 +663,9 @@ end
 
 addEventHandler("onClientKey", root, function(key, press)
     if not press then return end
+    
+    if not getElementData(localPlayer, "loaded") then return end
+
     if getElementData(localPlayer, "showChatInput") then return end
     if getElementData(localPlayer, "textInputOpen") then return end
 

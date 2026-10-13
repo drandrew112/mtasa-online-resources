@@ -289,6 +289,7 @@ local function otherPanelOpen()
 end
 
 addEventHandler("onClientKey", root, function(key, press)
+    if not getElementData(localPlayer, "loaded") then return end
     -- Panel nyitas / zaras
     if press and (key == "home" or key == "num_7") then
         if not show_socialpanel and otherPanelOpen() then return end

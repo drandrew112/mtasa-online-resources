@@ -141,10 +141,19 @@ local function drawMoneyRow(text, ty, color, alpha, scale)
     return lh
 end
 
-bindKey("y", "down", function()
-    if UI.yOverlay.active then return end
-    UI.yOverlay.active = true
-    UI.yOverlay.startTick = getTickCount()
+function setBindForYOverlay()
+    bindKey("y", "down", function()
+        if UI.yOverlay.active then return end
+        UI.yOverlay.active = true
+        UI.yOverlay.startTick = getTickCount()
+    end)
+end
+addEvent("onClientPlayerLoaded", true)
+addEventHandler("onClientPlayerLoaded", localPlayer, setBindForYOverlay)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "loaded") then
+        setBindForYOverlay()
+    end
 end)
 
 -- ui_core export: rovid ideig megmutatja a valtozott egyenleget es alatta a
