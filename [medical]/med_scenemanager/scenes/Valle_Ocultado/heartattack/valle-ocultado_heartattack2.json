@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-744.811, 2625.678, 67.104],
+    "center": [
+        -744.811,
+        2625.678,
+        67.104
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe chest pain",
                 "description": "A hiker who got lost in the valley reached the road and collapsed with severe chest pain."
+            },
+            "hu": {
+                "title": "Erős mellkasi fájdalom",
+                "description": "Egy, a völgyben eltévedt túrázó elérte az utat, majd erős mellkasi fájdalommal összeesett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [-744.811, 2625.678, 67.104],
+            "pos": [
+                -744.811,
+                2625.678,
+                67.104
+            ],
             "rot": 93,
             "anim": "hold_side",
             "injuries": [],

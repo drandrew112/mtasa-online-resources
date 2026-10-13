@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2650.25, -1702.25, 10.9],
+    "center": [
+        2650.25,
+        -1702.25,
+        10.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache ever, now confused",
                 "description": "A woman on the sidewalk in East Beach grabbed her head and said it was the worst headache of her life, then vomited. Now she does not know what day it is and keeps closing her eyes."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása, most zavart",
+                "description": "Egy nő East Beach járdáján a fejéhez kapott, és azt mondta, élete legerősebb fejfájását érzi, majd hányt. Most nem tudja, milyen nap van, és folyton lehunyja a szemét."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [2650.25, -1702.25, 10.9],
+            "pos": [
+                2650.25,
+                -1702.25,
+                10.9
+            ],
             "rot": 87,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 226, "diastolic": 128, "consciousness": "confused" }
+            "state": {
+                "systolic": 226,
+                "diastolic": 128,
+                "consciousness": "confused"
+            }
         }
     ]
 }

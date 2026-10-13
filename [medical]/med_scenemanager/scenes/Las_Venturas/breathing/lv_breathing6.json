@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1834.81, 1821.53, 6.87],
+    "center": [
+        1834.81,
+        1821.53,
+        6.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cyclist wheezing in the heat",
                 "description": "A cyclist stopped next to the road near the Visage after riding through the midday heat and dust and is wheezing loudly. He has asthma and forgot his inhaler."
+            },
+            "hu": {
+                "title": "A kerékpáros sípolva lélegzik a hőségben",
+                "description": "Egy kerékpáros megállt az út mellett, a Visage közelében, miután a déli hőségben és porban tekert, és most hangosan sípolva lélegzik. Asztmás, és otthon felejtette az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [1834.81, 1821.53, 6.87],
+            "pos": [
+                1834.81,
+                1821.53,
+                6.87
+            ],
             "rot": 88,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 93 }
+            "state": {
+                "spo2": 93
+            }
         }
     ]
 }

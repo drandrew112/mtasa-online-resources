@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-384.75, 1879.08, 55.15],
+    "center": [
+        -384.75,
+        1879.08,
+        55.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and pale",
                 "description": "A jogger outside a small store in Regular Tom sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            },
+            "hu": {
+                "title": "Remegő és sápadt kocogó",
+                "description": "Egy kocogó hirtelen leült Regular Tom egyik kis boltja előtt; remeg, izzad és sápadt. Azt mondja, reggel beadta az inzulinját, de kihagyta a reggelit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [-384.75, 1879.08, 55.15],
+            "pos": [
+                -384.75,
+                1879.08,
+                55.15
+            ],
             "rot": 57,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 43, "heartRate": 120 }
+            "state": {
+                "glucose": 43,
+                "heartRate": 120
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Arco del Oeste",
     "enabled": true,
     "weight": 1,
-    "center": [-769.88, 2564.31, 85.21],
+    "center": [
+        -769.88,
+        2564.31,
+        85.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aspirated vomit, gurgling",
                 "description": "A very drunk man vomited at the side of the road near Valle Ocultado and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy."
+            },
+            "hu": {
+                "title": "Hányadékot lélegzett be, hörög",
+                "description": "Valle Ocultado közelében egy nagyon részeg férfi az út mellett hányt, majd a hátára esve elájult. Hörgő hangokat ad ki, légzése nedves és zajos."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [-769.88, 2564.31, 85.21],
+            "pos": [
+                -769.88,
+                2564.31,
+                85.21
+            ],
             "rot": 192,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 79, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 79,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

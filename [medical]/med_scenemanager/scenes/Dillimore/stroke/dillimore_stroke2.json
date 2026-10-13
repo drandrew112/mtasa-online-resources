@@ -5,7 +5,11 @@
     "location": "Richman",
     "enabled": true,
     "weight": 1,
-    "center": [650, -680, 14.99],
+    "center": [
+        650,
+        -680,
+        14.99
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Face drooping, slurred speech",
                 "description": "A man in a yard just outside Dillimore suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago."
+            },
+            "hu": {
+                "title": "Félrehúzódó arc, elmosódott beszéd",
+                "description": "Egy férfi egy Dillimore külterületén lévő udvaron hirtelen elmosódottan kezdett beszélni, és az arca jobb oldala lefittyed. A felesége szerint húsz perccel korábban még teljesen jól volt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 94,
-            "pos": [650, -680, 14.99],
+            "pos": [
+                650,
+                -680,
+                14.99
+            ],
             "rot": 20,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 181 }
+            "state": {
+                "systolic": 181
+            }
         }
     ]
 }

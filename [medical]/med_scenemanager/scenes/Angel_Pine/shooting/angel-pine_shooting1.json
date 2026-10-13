@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2102.66, -2367.61, 30.63],
+    "center": [
+        -2102.66,
+        -2367.61,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, leg wound",
                 "description": "Someone fired from a passing pickup on the main street in Angel Pine. A young man was hit in the thigh and is bleeding heavily into his jeans."
+            },
+            "hu": {
+                "title": "Autóból leadott lövés, lábsérülés",
+                "description": "Valaki egy elhaladó pickupból lőtt a főutcán, Angel Pine-ban. Egy fiatal férfit combon találtak, és a farmernadrágjába ömlik a vér."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [-2102.66, -2367.61, 30.63],
+            "pos": [
+                -2102.66,
+                -2367.61,
+                30.63
+            ],
             "rot": 35,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4162, "pain": 35 }
+            "state": {
+                "bloodVolume": 4162,
+                "pain": 35
+            }
         }
     ]
 }

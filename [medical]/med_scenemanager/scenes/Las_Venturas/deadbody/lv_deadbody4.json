@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2279, 1006, 10.82],
+    "center": [
+        2279,
+        1006,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman found cold",
                 "description": "A neighbour found an elderly woman lying on the grass in Come-A-Lot where she usually feeds the pigeons. She is cold and does not breathe."
+            },
+            "hu": {
+                "title": "Hidegen talált idős nő",
+                "description": "Egy szomszéd egy idős nőt talált a Come-A-Lot füvén, ott, ahol rendszeresen galambokat etet. A teste hideg, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [2279, 1006, 10.82],
+            "pos": [
+                2279,
+                1006,
+                10.82
+            ],
             "rot": 289,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

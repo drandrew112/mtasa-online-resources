@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1154.43, 565.91, 20.23],
+    "center": [
+        1154.43,
+        565.91,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pounding headache, dizzy",
                 "description": "A farmer next to the country road near Montgomery sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week."
+            },
+            "hu": {
+                "title": "Lüktető fejfájás, szédülés",
+                "description": "Egy gazda a Montgomery közelében lévő országút mellett leült a földre; erősen lüktet a feje, és úgy érzi, forog vele a föld. Múlt héten elfogyott a vérnyomáscsökkentője."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [1154.43, 565.91, 20.23],
+            "pos": [
+                1154.43,
+                565.91,
+                20.23
+            ],
             "rot": 167,
             "anim": "sit",
             "injuries": [],

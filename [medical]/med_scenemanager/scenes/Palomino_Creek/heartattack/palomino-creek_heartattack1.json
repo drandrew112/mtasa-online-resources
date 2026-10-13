@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2271.25, 149.125, 26.484],
+    "center": [
+        2271.25,
+        149.125,
+        26.484
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "An old fisherman walking back from the river with his catch dropped by the road. Not breathing. His bucket of trout is flapping all over the asphalt."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "Egy idős halász hazafelé sétált a folyótól a zsákmányával, amikor összeesett az út mellett. Nem lélegzik. A pisztrángokkal teli vödre felborult, a halak szétcsapkodnak az aszfalton."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 95,
-            "pos": [2271.25, 149.125, 26.484],
+            "pos": [
+                2271.25,
+                149.125,
+                26.484
+            ],
             "rot": 296,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

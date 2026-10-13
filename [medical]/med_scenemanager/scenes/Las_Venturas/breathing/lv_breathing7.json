@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2639, 1366, 10.82],
+    "center": [
+        2639,
+        1366,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot breathe lying down",
                 "description": "A woman on the sand near the Camel's Toe says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly."
+            },
+            "hu": {
+                "title": "Fekve nem kap levegőt",
+                "description": "Egy nő a Camel's Toe közelében, a homokon azt mondja, ülve kell lélegeznie, és előző éjjel arra ébredt, hogy levegő után kapkod. Most gyorsan lélegzik, és bugyborékoló hang hallatszik a légzéséből."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [2639, 1366, 10.82],
+            "pos": [
+                2639,
+                1366,
+                10.82
+            ],
             "rot": 269,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 85, "systolic": 191 }
+            "state": {
+                "spo2": 85,
+                "systolic": 191
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Arco del Oeste",
     "enabled": true,
     "weight": 1,
-    "center": [-769.88, 2564.31, 85.21],
+    "center": [
+        -769.88,
+        2564.31,
+        85.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, snoring breathing",
                 "description": "A man collapsed on the road shoulder near Valle Ocultado and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell."
+            },
+            "hu": {
+                "title": "Összeesett, hangosan horkolva lélegzik",
+                "description": "Valle Ocultado közelében egy férfi összeesett az útpadkán, és a hátán fekszik, hangosan horkoló légzéssel. A járókelők nem tudják felébreszteni. Közvetlenül az esése előtt a fejét fogta."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [-769.88, 2564.31, 85.21],
+            "pos": [
+                -769.88,
+                2564.31,
+                85.21
+            ],
             "rot": 154,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 204, "diastolic": 118, "consciousness": "unconscious" }
+            "state": {
+                "systolic": 204,
+                "diastolic": 118,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

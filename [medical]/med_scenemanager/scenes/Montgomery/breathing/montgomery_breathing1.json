@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1304.89, 266.64, 19.56],
+    "center": [
+        1304.89,
+        266.64,
+        19.56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mild asthma after running",
                 "description": "A girl outside a small store in Montgomery has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little."
+            },
+            "hu": {
+                "title": "Enyhe asztma futás után",
+                "description": "Egy lány Montgomery egyik kis üzlete előtt mellkasi szorítást érez, és sípolva lélegzik, miután átfutott a mezőn. Enyhe asztmája van, az inhalátor csak kicsit segített."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [1304.89, 266.64, 19.56],
+            "pos": [
+                1304.89,
+                266.64,
+                19.56
+            ],
             "rot": 94,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 95 }
+            "state": {
+                "spo2": 95
+            }
         }
     ]
 }

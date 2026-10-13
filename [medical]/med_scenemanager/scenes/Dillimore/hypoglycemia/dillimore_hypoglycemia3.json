@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [610, -640, 19.74],
+    "center": [
+        610,
+        -640,
+        19.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and pale",
                 "description": "A jogger on a grassy patch in Dillimore sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            },
+            "hu": {
+                "title": "A kocogó remeg és sápadt",
+                "description": "Egy kocogó nő hirtelen leült egy füves területen Dillimore-ban. Remeg, izzad és sápadt. Azt mondja, reggel beadta magának az inzulint, de kihagyta a reggelit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [610, -640, 19.74],
+            "pos": [
+                610,
+                -640,
+                19.74
+            ],
             "rot": 261,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 44, "heartRate": 113 }
+            "state": {
+                "glucose": 44,
+                "heartRate": 113
+            }
         }
     ]
 }

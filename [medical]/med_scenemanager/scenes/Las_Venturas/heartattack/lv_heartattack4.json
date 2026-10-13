@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1771.601, 1460.05, 13.194],
+    "center": [
+        1771.601,
+        1460.05,
+        13.194
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "A pit boss on his break is gripping his chest on the sidewalk, crushing pain into his jaw. He is more worried about missing the end of his shift."
+            },
+            "hu": {
+                "title": "Szétfeszítő mellkasi fájdalom",
+                "description": "Egy pihenőidejét töltő pit boss a mellkasát szorítja a járdán; a fájdalom az állkapcsába sugárzik. Jobban aggódik amiatt, hogy lemarad a műszakja végéről."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 94,
-            "pos": [1771.601, 1460.05, 13.194],
+            "pos": [
+                1771.601,
+                1460.05,
+                13.194
+            ],
             "rot": 345,
             "anim": "hold_side",
             "injuries": [],

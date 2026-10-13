@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1713.6, -801.01, 55.87],
+    "center": [
+        1713.6,
+        -801.01,
+        55.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "No helmet, head injury",
                 "description": "A young rider without a helmet crashed in Mulholland Intersection while doing a wheelie. He is lying in the road, unconscious, bleeding from the ear. Friends are filming."
+            },
+            "hu": {
+                "title": "Bukósisak nélkül, fejsérüléssel",
+                "description": "Egy bukósisak nélküli fiatal motoros balesetet szenvedett a Mulholland Intersection területén, miközben egykerekezett. Eszméletlenül fekszik az úton, a füléből vérzik. Barátai videózzák."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 521,
-            "pos": [1712.85, -805.96, 55.42],
-            "rot": [0, 0, 90.4],
+            "pos": [
+                1712.85,
+                -805.96,
+                55.42
+            ],
+            "rot": [
+                0,
+                0,
+                90.4
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                245,
+                245,
+                245,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS46 312",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 116,
-            "pos": [1713.6, -801.01, 55.87],
+            "pos": [
+                1713.6,
+                -801.01,
+                55.87
+            ],
             "rot": 191,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [810.08, 27.83, 75.12],
+    "center": [
+        810.08,
+        27.83,
+        75.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crash with people trapped",
                 "description": "An anonymous caller reports a bad crash with people trapped on the road shoulder in Fern Ridge. No other calls came in about it."
+            },
+            "hu": {
+                "title": "Baleset, beszorult emberekkel",
+                "description": "Egy névtelen bejelentő súlyos balesetről számol be, amelyben emberek szorultak be a járművekbe az útpadkán Fern Ridge-ben. Más nem tett bejelentést az esetről."
             }
         },
         "caller": "SceneManager",

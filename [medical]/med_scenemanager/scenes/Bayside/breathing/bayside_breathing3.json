@@ -5,7 +5,11 @@
     "location": "Bayside Marina",
     "enabled": true,
     "weight": 1,
-    "center": [-2240, 2340, 4.98],
+    "center": [
+        -2240,
+        2340,
+        4.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Gasping, pink frothy cough",
                 "description": "An elderly woman on open ground near Bayside is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days."
+            },
+            "hu": {
+                "title": "Levegő után kapkod, rózsaszín habos köpet",
+                "description": "Egy idős nő Bayside közelében, egy nyílt területen levegő után kapkod, és rózsaszín, habos váladékot köhög fel. Szívelégtelensége van, és azt mondja, napok óta dagad a lába."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 54,
-            "pos": [-2240, 2340, 4.98],
+            "pos": [
+                -2240,
+                2340,
+                4.98
+            ],
             "rot": 292,
             "anim": "cough",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 82, "systolic": 185, "heartRate": 122 }
+            "state": {
+                "spo2": 82,
+                "systolic": 185,
+                "heartRate": 122
+            }
         }
     ]
 }

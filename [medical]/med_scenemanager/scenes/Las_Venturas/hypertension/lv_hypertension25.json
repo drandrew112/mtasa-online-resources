@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1859.964, 1124.268, 10.82],
+    "center": [
+        1859.964,
+        1124.268,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, vomiting",
                 "description": "A woman has vomited on the sidewalk and holds the back of her head. She says she has never had a headache this strong."
+            },
+            "hu": {
+                "title": "Fejfájás, hányás",
+                "description": "Egy nő a járdára hányt, és a tarkóját fogja. Azt mondja, még soha nem fájt ennyire a feje."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [1859.964, 1124.268, 10.82],
+            "pos": [
+                1859.964,
+                1124.268,
+                10.82
+            ],
             "rot": 22.3,
             "anim": "sit",
             "injuries": [],

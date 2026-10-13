@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-381.812, 1865.423, 53.853],
+    "center": [
+        -381.812,
+        1865.423,
+        53.853
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, no breathing",
                 "description": "An old prospector collapsed by the road in the heat. Not breathing. His mule is standing next to him."
+            },
+            "hu": {
+                "title": "Férfi a földön, nem lélegzik",
+                "description": "Egy idős aranyásó összeesett a hőségben, az út mellett. Nem lélegzik. Öszvére mellette áll."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [-381.812, 1865.423, 53.853],
+            "pos": [
+                -381.812,
+                1865.423,
+                53.853
+            ],
             "rot": 296,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

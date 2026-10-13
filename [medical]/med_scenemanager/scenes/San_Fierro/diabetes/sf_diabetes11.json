@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2267.5, -19.98, 35.32],
+    "center": [
+        -2267.5,
+        -19.98,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Very thirsty and confused",
                 "description": "A bike messenger on the sidewalk in Garcia keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            },
+            "hu": {
+                "title": "Nagyon szomjas és zavart",
+                "description": "Egy kerékpáros futár Garcia járdáján újra és újra vizet kér. Egész nap folyamatosan vizelt, most pedig arra sem emlékszik, hová indult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 222,
-            "pos": [-2267.5, -19.98, 35.32],
+            "pos": [
+                -2267.5,
+                -19.98,
+                35.32
+            ],
             "rot": 296,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 530, "consciousness": "confused" }
+            "state": {
+                "glucose": 530,
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-258.625, 1205.75, 19.742],
+    "center": [
+        -258.625,
+        1205.75,
+        19.742
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, no breathing",
                 "description": "A motel guest collapsed by the road in the desert heat. Not breathing. The motel owner is on the phone."
+            },
+            "hu": {
+                "title": "Férfi összeesett, nem lélegzik",
+                "description": "Egy motel vendége összeesett az út mellett a sivatagi hőségben. Nem lélegzik. A motel tulajdonosa telefonál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [-258.625, 1205.75, 19.742],
+            "pos": [
+                -258.625,
+                1205.75,
+                19.742
+            ],
             "rot": 66,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2852, 1290, 11.2],
+    "center": [
+        2852,
+        1290,
+        11.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman found cold",
                 "description": "A neighbour found an elderly woman lying on the platform at Linden Station where she usually feeds the pigeons. She is cold and does not breathe."
+            },
+            "hu": {
+                "title": "Hidegen talált idős nő",
+                "description": "Egy szomszéd egy idős nőt talált a Linden Station peronján, ahol rendszeresen galambokat etet. A teste hideg, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [2852, 1290, 11.2],
+            "pos": [
+                2852,
+                1290,
+                11.2
+            ],
             "rot": 23,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

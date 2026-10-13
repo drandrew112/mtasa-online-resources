@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1877.58, -1039.76, 23.85],
+    "center": [
+        1877.58,
+        -1039.76,
+        23.85
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Head wound after shooting",
                 "description": "Shots fired outside a shop in Glen Park. One man is lying on his back with a head wound, breathing irregularly. Bystanders are too scared to approach."
+            },
+            "hu": {
+                "title": "Fejsérülés lövöldözés után",
+                "description": "Lövések dördültek Glen Park egyik üzlete előtt. Egy férfi a hátán fekszik fejsérüléssel, légzése szabálytalan. A járókelők túlságosan félnek ahhoz, hogy odamenjenek."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 110,
-            "pos": [1877.58, -1039.76, 23.85],
+            "pos": [
+                1877.58,
+                -1039.76,
+                23.85
+            ],
             "rot": 282,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

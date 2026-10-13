@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1660.56, -1970.63, 23.84],
+    "center": [
+        1660.56,
+        -1970.63,
+        23.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old smoker cannot catch breath",
                 "description": "An elderly man on the sidewalk in Verdant Bluffs stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky."
+            },
+            "hu": {
+                "title": "Idős dohányos, nem kap levegőt",
+                "description": "Egy idős férfi megállt Verdant Bluffs járdáján, mert nem kap levegőt. Egy hete csúnyán köhög, naponta egy doboz cigarettát elszív, ajkai pedig szederjesek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [1660.56, -1970.63, 23.84],
+            "pos": [
+                1660.56,
+                -1970.63,
+                23.84
+            ],
             "rot": 110,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                {
+                    "type": "copd",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 84 }
+            "state": {
+                "spo2": 84
+            }
         }
     ]
 }

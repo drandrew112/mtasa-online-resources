@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [310, 30, 3.41],
+    "center": [
+        310,
+        30,
+        3.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found by a rancher",
                 "description": "A rancher checking his fences found a man lying on the grass in Blueberry. He has a head wound and has been there for hours. The guard did not touch him."
+            },
+            "hu": {
+                "title": "Egy farmer talált rá",
+                "description": "Egy farmer a kerítéseit ellenőrizte, amikor egy férfit talált a füvön fekve Blueberryben. Fejsérülése van, és már órák óta ott lehet. Az őr nem nyúlt hozzá."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [310, 30, 3.41],
+            "pos": [
+                310,
+                30,
+                3.41
+            ],
             "rot": 51,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

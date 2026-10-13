@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2335.38, -1591.05, 23.82],
+    "center": [
+        2335.38,
+        -1591.05,
+        23.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak, thirsty, stomach pain",
                 "description": "A man on the sidewalk in East Los Santos says he feels too weak to walk, has a terrible thirst and stomach pain. He admits skipping insulin because he could not afford it. He is pale and breathing heavily."
+            },
+            "hu": {
+                "title": "Gyengeség, szomjúság, hasi fájdalom",
+                "description": "Egy férfi East Los Santos járdáján azt mondja, túl gyenge a járáshoz, borzasztóan szomjas, és fáj a hasa. Bevallja, hogy anyagi okokból kihagyta az inzulint. Sápadt, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 240,
-            "pos": [2335.38, -1591.05, 23.82],
+            "pos": [
+                2335.38,
+                -1591.05,
+                23.82
+            ],
             "rot": 41,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "glucose": 430, "heartRate": 112 }
+            "state": {
+                "bloodVolume": 4200,
+                "glucose": 430,
+                "heartRate": 112
+            }
         }
     ]
 }

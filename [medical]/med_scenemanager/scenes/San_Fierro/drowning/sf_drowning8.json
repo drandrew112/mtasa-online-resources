@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2887, -493, 4.7],
+    "center": [
+        -2887,
+        -493,
+        4.7
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swimmer pulled out, not breathing",
                 "description": "A swimmer was pulled out of the bay and is lying on the beach in Missionary Hill. He is not breathing and has no pulse. A bystander has started CPR."
+            },
+            "hu": {
+                "title": "Kihúzták a vízből, nem lélegzik",
+                "description": "Egy úszót kihúztak az öbölből, és Missionary Hill strandjára fektették. Nem lélegzik, és nincs pulzusa. Egy járókelő megkezdte az újraélesztést."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 108,
-            "pos": [-2887, -493, 4.7],
+            "pos": [
+                -2887,
+                -493,
+                4.7
+            ],
             "rot": 317,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 40, "rhythm": "PEA" }
+            "state": {
+                "spo2": 40,
+                "rhythm": "PEA"
+            }
         }
     ]
 }

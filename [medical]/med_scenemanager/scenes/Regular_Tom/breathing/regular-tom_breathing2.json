@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-370.16, 1808.6, 49.15],
+    "center": [
+        -370.16,
+        1808.6,
+        49.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mild asthma after running",
                 "description": "A girl on the sidewalk in Regular Tom has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little."
+            },
+            "hu": {
+                "title": "Enyhe asztma futás után",
+                "description": "Egy lány Regular Tom járdáján mellkasi szorítást érez, és sípolva lélegzik, miután átfutott a mezőn. Enyhe asztmája van, az inhalátor csak kicsit segített."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [-370.16, 1808.6, 49.15],
+            "pos": [
+                -370.16,
+                1808.6,
+                49.15
+            ],
             "rot": 94,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 94 }
+            "state": {
+                "spo2": 94
+            }
         }
     ]
 }

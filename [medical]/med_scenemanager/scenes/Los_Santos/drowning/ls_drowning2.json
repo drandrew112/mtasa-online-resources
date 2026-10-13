@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1055.453, -1944.809, 13.147],
+    "center": [
+        1055.453,
+        -1944.809,
+        13.147
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Child pulled out of the water",
                 "description": "A child was underwater for about a minute at Verona Beach before his father pulled him out. He is breathing but very drowsy, coughing up water."
+            },
+            "hu": {
+                "title": "Gyermeket húztak ki a vízből",
+                "description": "Egy gyermek körülbelül egy percig volt víz alatt Verona Beachnél, mielőtt az apja kihúzta. Lélegzik, de nagyon álmos, és vizet köhög fel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [1055.453, -1944.809, 13.147],
+            "pos": [
+                1055.453,
+                -1944.809,
+                13.147
+            ],
             "rot": 200,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 78 }
+            "state": {
+                "spo2": 78
+            }
         }
     ]
 }

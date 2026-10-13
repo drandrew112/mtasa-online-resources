@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-372.25, 1770, 45.94],
+    "center": [
+        -372.25,
+        1770,
+        45.94
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman hard to wake",
                 "description": "Her daughter found an elderly woman sitting on the dusty ground in Regular Tom, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar."
+            },
+            "hu": {
+                "title": "Nehezen ébreszthető idős nő",
+                "description": "A lánya egy idős nőt talált a Regular Tom poros talaján ülve. Nagyon álmos, nehezen ébreszthető. Napok óta sokat iszik és állandóan vizel. Vércukorszintre szed tablettát."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-372.25, 1770, 45.94],
+            "pos": [
+                -372.25,
+                1770,
+                45.94
+            ],
             "rot": 274,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3903, "glucose": 726 }
+            "state": {
+                "bloodVolume": 3903,
+                "glucose": 726
+            }
         }
     ]
 }

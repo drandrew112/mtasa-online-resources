@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2350, -94.7, 26.48],
+    "center": [
+        2350,
+        -94.7,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Driver seeing double",
                 "description": "A delivery driver stopped his van on the main street in Palomino Creek because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy."
+            },
+            "hu": {
+                "title": "Kettős látás a sofőrnél",
+                "description": "Egy kiszállító sofőr megállt a furgonjával Palomino Creek főutcáján, mert hirtelen kettősen kezdett látni, és nem tudott egyenesen járni. A járdaszegélyen ül, hányingere van és szédül."
             }
         },
         "caller": "SceneManager",
@@ -22,35 +30,93 @@
         {
             "id": "v1",
             "model": 413,
-            "pos": [2345.33, -96.11, 26.44],
-            "rot": [0, 0, 338.9],
+            "pos": [
+                2345.33,
+                -96.11,
+                26.44
+            ],
+            "rot": [
+                0,
+                0,
+                338.9
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                30,
+                110,
+                50,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC49 413",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 50,
-            "pos": [2350, -94.7, 26.48],
+            "pos": [
+                2350,
+                -94.7,
+                26.48
+            ],
             "rot": 84,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 191 }
+            "state": {
+                "systolic": 191
+            }
         }
     ]
 }

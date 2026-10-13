@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [114, -1582, 10.68],
+    "center": [
+        114,
+        -1582,
+        10.68
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pregnant, confused in park",
                 "description": "A pregnant woman resting on the grass has become confused and keeps asking the same questions. Her friend says her face and hands have been swelling for days."
+            },
+            "hu": {
+                "title": "Várandós nő összezavarodott a parkban",
+                "description": "Egy várandós nő a fűben pihen, de zavarttá vált, és újra meg újra ugyanazokat a kérdéseket teszi fel. Barátja szerint napok óta duzzad az arca és a keze."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [114, -1582, 10.68],
+            "pos": [
+                114,
+                -1582,
+                10.68
+            ],
             "rot": 91,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 196, "diastolic": 118, "heartRate": 98, "consciousness": "dazed" }
+            "state": {
+                "systolic": 196,
+                "diastolic": 118,
+                "heartRate": 98,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

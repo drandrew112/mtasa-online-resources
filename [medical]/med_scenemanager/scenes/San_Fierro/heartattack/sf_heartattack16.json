@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2131.75, 658.25, 52.367],
+    "center": [
+        -2131.75,
+        658.25,
+        52.367
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, short of breath",
                 "description": "A cable car mechanic sat down on the curb after his shift, short of breath with chest pain spreading to his back. He jokes that the hills finally won."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom és légszomj",
+                "description": "Egy siklóvasút-szerelő a műszakja után leült a járdaszegélyre. Légszomja van, és a mellkasi fájdalom a hátába sugárzik. Viccelődik, hogy végül a dombok győztek."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 182,
-            "pos": [-2131.75, 658.25, 52.367],
+            "pos": [
+                -2131.75,
+                658.25,
+                52.367
+            ],
             "rot": 274,
             "anim": "sit",
             "injuries": [],

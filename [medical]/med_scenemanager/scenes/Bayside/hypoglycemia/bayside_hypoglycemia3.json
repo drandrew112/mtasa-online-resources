@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2420, 2320, 6.28],
+    "center": [
+        -2420,
+        2320,
+        6.28
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sweaty and confused",
                 "description": "A woman on open ground in Bayside is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            },
+            "hu": {
+                "title": "Izzad és zavart",
+                "description": "Egy nő erősen izzad, és zavartnak tűnik egy nyílt területen Bayside-ban. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenné vált a beszéde."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-2420, 2320, 6.28],
+            "pos": [
+                -2420,
+                2320,
+                6.28
+            ],
             "rot": 65,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 44, "consciousness": "confused" }
+            "state": {
+                "glucose": 44,
+                "consciousness": "confused"
+            }
         }
     ]
 }

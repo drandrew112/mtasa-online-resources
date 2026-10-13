@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2500.888, 2391.867, 15.789],
+    "center": [
+        -2500.888,
+        2391.867,
+        15.789
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, uneasy",
                 "description": "An old sailor sat by the road, short of breath with a heavy chest. He says the sea air \"isn't working today\"."
+            },
+            "hu": {
+                "title": "Légszomj, rossz közérzet",
+                "description": "Egy idős tengerész leült az út mellé. Légszomja van, és nehéznek érzi a mellkasát. Azt mondja, ma valahogy „nem használ a tengeri levegő”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 170,
-            "pos": [-2500.888, 2391.867, 15.789],
+            "pos": [
+                -2500.888,
+                2391.867,
+                15.789
+            ],
             "rot": 307,
             "anim": "sit",
             "injuries": [],

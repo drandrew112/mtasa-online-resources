@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2754.44, 336.51, 4.38],
+    "center": [
+        -2754.44,
+        336.51,
+        4.38
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger found lifeless",
                 "description": "Cyclists found a jogger lying on the sidewalk in City Hall. He is not breathing, his lips are blue and his body is already cold."
+            },
+            "hu": {
+                "title": "Élettelenül talált kocogó",
+                "description": "Kerékpárosok egy kocogót találtak City Hall járdáján. Nem lélegzik, ajkai kékek, teste már kihűlt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 46,
-            "pos": [-2754.44, 336.51, 4.38],
+            "pos": [
+                -2754.44,
+                336.51,
+                4.38
+            ],
             "rot": 333,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

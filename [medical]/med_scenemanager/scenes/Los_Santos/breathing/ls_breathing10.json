@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2674, -1062, 69.3],
+    "center": [
+        2674,
+        -1062,
+        69.3
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Lips blue, too breathless to talk",
                 "description": "A man with lung disease in a parking lot in Las Colinas ran out of home oxygen on his way back from the pharmacy. He is blue around the lips, using all his neck muscles to breathe and cannot talk."
+            },
+            "hu": {
+                "title": "Kék ajkak, túl nagy légszomj a beszédhez",
+                "description": "Egy tüdőbeteg férfinak elfogyott az otthoni oxigénje, amikor a gyógyszertárból hazafelé tartott Las Colinas egyik parkolójában. Ajkai körül elkékült, minden nyakizmát használja a légzéshez, és nem tud beszélni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [2674, -1062, 69.3],
+            "pos": [
+                2674,
+                -1062,
+                69.3
+            ],
             "rot": 309,
             "anim": "tired",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 74, "heartRate": 118 }
+            "state": {
+                "spo2": 74,
+                "heartRate": 118
+            }
         }
     ]
 }

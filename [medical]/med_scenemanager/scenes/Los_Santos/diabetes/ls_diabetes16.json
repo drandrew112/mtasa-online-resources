@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1428.29, -2660.76, 13.55],
+    "center": [
+        1428.29,
+        -2660.76,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Homeless man, very weak",
                 "description": "Outreach workers outside a shop at Los Santos International report a homeless man who has not eaten properly but has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\"."
+            },
+            "hu": {
+                "title": "Nagyon gyenge hajléktalan férfi",
+                "description": "A Los Santos International egyik üzlete előtt dolgozó segítők egy hajléktalan férfiról számolnak be, aki alig evett rendesen, viszont egész nap üdítőt ivott. Rendkívül gyenge és zavart, azt mondja, „régebben cukorbetegség elleni tablettákat szedett”."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 137,
-            "pos": [1428.29, -2660.76, 13.55],
+            "pos": [
+                1428.29,
+                -2660.76,
+                13.55
+            ],
             "rot": 190,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3900, "glucose": 690, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 3900,
+                "glucose": 690,
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-483.55, 2309.73, 62.64],
+    "center": [
+        -483.55,
+        2309.73,
+        62.64
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Toddler fell in an irrigation ditch",
                 "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on the road shoulder near El Castillo del Diablo. The child is coughing and crying weakly."
+            },
+            "hu": {
+                "title": "Kisgyermek esett az öntözőárokba",
+                "description": "Egy kisgyermek beleesett egy öntözőárokba, és rövid ideig víz alatt volt. A nagymamája az útpadkára vitte El Castillo del Diablo közelében. A gyermek köhög, és gyengén sír."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [-483.55, 2309.73, 62.64],
+            "pos": [
+                -483.55,
+                2309.73,
+                62.64
+            ],
             "rot": 110,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

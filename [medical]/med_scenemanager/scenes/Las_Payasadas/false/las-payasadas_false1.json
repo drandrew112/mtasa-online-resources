@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-320, 2650, 71.44],
+    "center": [
+        -320,
+        2650,
+        71.44
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Person lying on the ground",
                 "description": "A driver saw a person lying on open scrubland in Las Payasadas and did not stop. The caller could not say if the person was moving."
+            },
+            "hu": {
+                "title": "Földön fekvő személy",
+                "description": "Egy sofőr meglátott egy földön fekvő személyt Las Payasadas nyílt, bozótos területén, de nem állt meg. A bejelentő nem tudta megmondani, hogy az illető mozgott-e."
             }
         },
         "caller": "SceneManager",

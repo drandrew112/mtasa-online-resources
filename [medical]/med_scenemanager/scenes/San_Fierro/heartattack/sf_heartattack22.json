@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2132.25, 976.75, 80],
+    "center": [
+        -2132.25,
+        976.75,
+        80
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A student drinking his fifth espresso of the day sat on the sidewalk with a pounding heart and tunnel vision. His friends say he \"studied for 40 hours straight\"."
+            },
+            "hu": {
+                "title": "Szívdobogásérzés, majdnem elájult",
+                "description": "Egy ötödik eszpresszóját fogyasztó diák leült a járdára; hevesen ver a szíve, és beszűkült a látótere. Barátai szerint „40 órája tanul egyfolytában”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 60,
-            "pos": [-2132.25, 976.75, 80],
+            "pos": [
+                -2132.25,
+                976.75,
+                80
+            ],
             "rot": 209,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1722.13, -1370.75, 13.55],
+    "center": [
+        1722.13,
+        -1370.75,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman fell, hip pain",
                 "description": "An elderly woman tripped on a curb on the pavement in Downtown Los Santos and cannot stand up. Her right leg looks shorter and turned outwards. She is in a lot of pain but did not hit her head."
+            },
+            "hu": {
+                "title": "Idős nő elesett, fáj a csípője",
+                "description": "Egy idős nő megbotlott egy járdaszegélyben Downtown Los Santos területén, és nem tud felállni. Jobb lába rövidebbnek látszik, kifelé fordul. Nagyon fájdalmai vannak, de nem ütötte be a fejét."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [1722.13, -1370.75, 13.55],
+            "pos": [
+                1722.13,
+                -1370.75,
+                13.55
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 30 }
+            "state": {
+                "pain": 30
+            }
         }
     ]
 }

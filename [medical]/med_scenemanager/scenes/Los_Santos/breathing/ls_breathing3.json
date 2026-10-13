@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [404.707, -1113.44, 26.986],
+    "center": [
+        404.707,
+        -1113.44,
+        26.986
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman drowning in her own lungs",
                 "description": "A woman in Richman woke up gasping for air, she says she feels like she is drowning. She is coughing up pink froth. She has a heart condition and her ankles are swollen."
+            },
+            "hu": {
+                "title": "Nő, aki a saját tüdejébe fullad",
+                "description": "Egy nő Richmanben arra ébredt, hogy levegőért kapkod; azt mondja, úgy érzi, megfullad. Rózsaszín habot köhög fel. Szívbeteg, bokái meg vannak dagadva."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [404.707, -1113.44, 26.986],
+            "pos": [
+                404.707,
+                -1113.44,
+                26.986
+            ],
             "rot": 45,
             "anim": "cough",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2069.38, -1300.75, 22.82],
+    "center": [
+        2069.38,
+        -1300.75,
+        22.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collision while turning",
                 "description": "A green car turning left was hit by an oncoming blue car at an intersection in Jefferson. The driver of the blue car is still behind the wheel with a head injury and disorientation. The driver of the green car is still behind the wheel with a deep cut that is bleeding."
+            },
+            "hu": {
+                "title": "Ütközés kanyarodás közben",
+                "description": "Egy balra kanyarodó zöld autónak nekiment egy szemből érkező kék autó Jefferson egyik kereszteződésében. A kék autó sofőrje még a volán mögött ül, fejsérüléssel és zavartan. A zöld autó sofőrje még a volán mögött ül, mély, vérző sebbel."
             }
         },
         "caller": "SceneManager",
@@ -22,68 +30,183 @@
         {
             "id": "v1",
             "model": 445,
-            "pos": [2068.73, -1297.34, 23.84],
-            "rot": [0, 0, 142.71],
+            "pos": [
+                2068.73,
+                -1297.34,
+                23.84
+            ],
+            "rot": [
+                0,
+                0,
+                142.71
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS66 572",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 565,
-            "pos": [2064.631, -1301.51, 23.542],
-            "rot": [0, 0, 343.11],
+            "pos": [
+                2064.631,
+                -1301.51,
+                23.542
+            ],
+            "rot": [
+                0,
+                0,
+                343.11
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                30,
+                110,
+                50,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS85 772",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 9,
-            "pos": [2068.73, -1297.34, 24.09],
+            "pos": [
+                2068.73,
+                -1297.34,
+                24.09
+            ],
             "rot": 142.71,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 60, "consciousness": "dazed" }
+            "state": {
+                "pain": 60,
+                "consciousness": "dazed"
+            }
         },
         {
             "id": "p2",
             "skin": 9,
-            "pos": [2064.631, -1301.51, 23.79],
+            "pos": [
+                2064.631,
+                -1301.51,
+                23.79
+            ],
             "rot": 313.11,
             "anim": "none",
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

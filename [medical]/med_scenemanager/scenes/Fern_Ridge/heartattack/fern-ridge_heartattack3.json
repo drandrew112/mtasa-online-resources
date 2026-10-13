@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [521.96, 30.355, 22.594],
+    "center": [
+        521.96,
+        30.355,
+        22.594
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found down by the road",
                 "description": "A logger found a man lying by the road under the pines. No pulse, only an occasional gasp."
+            },
+            "hu": {
+                "title": "Az út mellett találták meg",
+                "description": "Egy favágó egy férfit talált az út mellett, a fenyőfák alatt. Nincs pulzusa, csak időnként vesz egy-egy levegőt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [521.96, 30.355, 22.594],
+            "pos": [
+                521.96,
+                30.355,
+                22.594
+            ],
             "rot": 13,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PEA"
+            }
         }
     ]
 }

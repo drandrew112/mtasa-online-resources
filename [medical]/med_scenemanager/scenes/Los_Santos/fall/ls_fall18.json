@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1112.59, -1841.49, 13.59],
+    "center": [
+        1112.59,
+        -1841.49,
+        13.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell from a roof, not moving",
                 "description": "A man fell from a two-storey roof in a parking lot in Conference Center. He is lying on his back, moaning, bleeding from the head and does not move his legs. Nobody has moved him."
+            },
+            "hu": {
+                "title": "Leesett a tetőről, nem mozdul",
+                "description": "Egy férfi lezuhant egy kétemeletes tetőről a Conference Center egyik parkolójában. A hátán fekszik, nyög, vérzik a feje, és nem mozgatja a lábait. Senki sem mozdította el."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 221,
-            "pos": [1112.59, -1841.49, 13.59],
+            "pos": [
+                1112.59,
+                -1841.49,
+                13.59
+            ],
             "rot": 268,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4400, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 4400,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

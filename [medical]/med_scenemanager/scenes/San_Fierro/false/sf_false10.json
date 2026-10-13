@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2166.37, 1176.25, 55.58],
+    "center": [
+        -2166.37,
+        1176.25,
+        55.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed man, may have left",
                 "description": "A woman says a man collapsed at a busy crossroads in Calton Heights a few minutes ago, but he might have got up and walked away. Nobody stayed with him."
+            },
+            "hu": {
+                "title": "Összeesett férfi, lehet, hogy már elment",
+                "description": "Egy nő szerint néhány perce egy férfi összeesett Calton Heights forgalmas kereszteződésében, de lehet, hogy már felkelt és elsétált. Senki sem maradt a helyszínen."
             }
         },
         "caller": "SceneManager",

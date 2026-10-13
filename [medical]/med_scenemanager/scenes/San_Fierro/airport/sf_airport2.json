@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1487, -565, 14.15],
+    "center": [
+        -1487,
+        -565,
+        14.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted in the queue",
                 "description": "A woman fainted in the queue outside the terminal at Easter Bay Airport. She came around quickly but is pale, sweaty and her pulse feels very slow."
+            },
+            "hu": {
+                "title": "Elájult a sorban",
+                "description": "Egy nő elájult az Easter Bay Airport terminálja előtti sorban. Gyorsan magához tért, de sápadt, izzadt, és pulzusa nagyon lassúnak tűnik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [-1487, -565, 14.15],
+            "pos": [
+                -1487,
+                -565,
+                14.15
+            ],
             "rot": 307,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 86, "heartRate": 50 }
+            "state": {
+                "systolic": 86,
+                "heartRate": 50
+            }
         }
     ]
 }

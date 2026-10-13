@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1354.225, 762.692, 10.82],
+    "center": [
+        1354.225,
+        762.692,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted, very fast pulse",
                 "description": "A young woman passed out on the sidewalk after a pool party. Her friends say her heart was racing before she dropped. She is breathing but will not wake up."
+            },
+            "hu": {
+                "title": "Ájulás, nagyon szapora pulzus",
+                "description": "Egy fiatal nő elájult a járdán egy medencés buli után. A barátai szerint előtte hevesen vert a szíve. Lélegzik, de nem ébreszthető."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [1354.225, 762.692, 10.82],
+            "pos": [
+                1354.225,
+                762.692,
+                10.82
+            ],
             "rot": 311,
             "anim": "ko_back",
             "injuries": [],

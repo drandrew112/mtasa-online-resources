@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2194.37, 1322, 7.19],
+    "center": [
+        -2194.37,
+        1322,
+        7.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man slipped off the rocks",
                 "description": "An old man slipped off the wet rocks into the water. He climbed out by himself and is now on the waterfront promenade in Calton Heights, coughing, with a painful wrist."
+            },
+            "hu": {
+                "title": "Idős férfi csúszott a vízbe a sziklákról",
+                "description": "Egy idős férfi a nedves sziklákról a vízbe csúszott. Saját erejéből kimászott, és most Calton Heights vízparti sétányán van. Köhög, és fáj a csuklója."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 132,
-            "pos": [-2194.37, 1322, 7.19],
+            "pos": [
+                -2194.37,
+                1322,
+                7.19
+            ],
             "rot": 28,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 88 }
+            "state": {
+                "spo2": 88
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2159.75, 2097.05, 10.82],
+    "center": [
+        2159.75,
+        2097.05,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mild asthma after running",
                 "description": "A girl outside a wedding chapel on Old Venturas Strip has a tight chest and is wheezing after running to catch the bus. She has mild asthma and her inhaler only helped a little."
+            },
+            "hu": {
+                "title": "Enyhe asztmás roham futás után",
+                "description": "Egy lány az Old Venturas Strip egyik esküvői kápolnája előtt szorító mellkasérzést és sípoló légzést tapasztal, miután futott, hogy elérje a buszt. Enyhe asztmája van, és az inhalátora csak valamelyest segített."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [2159.75, 2097.05, 10.82],
+            "pos": [
+                2159.75,
+                2097.05,
+                10.82
+            ],
             "rot": 94,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 94 }
+            "state": {
+                "spo2": 94
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2163.27, 2446, 10.82],
+    "center": [
+        2163.27,
+        2446,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crash with people trapped",
                 "description": "An anonymous caller reports a bad crash with people trapped near the Emerald Isle. No other calls came in about it."
+            },
+            "hu": {
+                "title": "Baleset, beszorult emberekkel",
+                "description": "Egy névtelen bejelentő súlyos balesetről számol be, amelyben emberek szorultak be a járművekbe az Emerald Isle közelében. Más nem tett bejelentést az esetről."
             }
         },
         "caller": "SceneManager",

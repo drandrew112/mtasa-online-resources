@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [353.32, -387.06, 18.35],
+    "center": [
+        353.32,
+        -387.06,
+        18.35
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "COPD flare, lips blue",
                 "description": "An old man with emphysema by the road next to a farm near Blueberry ran out of oxygen in his portable tank. He is very drowsy and his lips are blue."
+            },
+            "hu": {
+                "title": "COPD-s rosszabbodás, kék ajkak",
+                "description": "Egy tüdőtágulatban szenvedő idős férfi kifogyott a hordozható oxigénpalackjából egy Blueberry közelében lévő farm melletti úton. Nagyon bágyadt, és kék az ajka."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [353.32, -387.06, 18.35],
+            "pos": [
+                353.32,
+                -387.06,
+                18.35
+            ],
             "rot": 142,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 77, "consciousness": "dazed" }
+            "state": {
+                "spo2": 77,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1319.06, -524.56, 14.15],
+    "center": [
+        -1319.06,
+        -524.56,
+        14.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Overdose, found too late",
                 "description": "Friends found a young woman by the roadside in Easter Bay Airport after she did not come home. She is cold and stiff, a syringe is beside her."
+            },
+            "hu": {
+                "title": "Túladagolás, túl későn találták meg",
+                "description": "Barátai egy fiatal nőt találtak az út mellett, az Easter Bay Airport közelében, miután nem ment haza. Hideg és merev, mellette egy fecskendő hever."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [-1319.06, -524.56, 14.15],
+            "pos": [
+                -1319.06,
+                -524.56,
+                14.15
+            ],
             "rot": 32,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

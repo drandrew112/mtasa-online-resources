@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1230, 0, 29.98],
+    "center": [
+        1230,
+        0,
+        29.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body in the bushes",
                 "description": "A dog walker found a person lying in the brush on a grassy patch in Fern Ridge. The body is cold and there are flies around it."
+            },
+            "hu": {
+                "title": "Holttest a bokrok között",
+                "description": "Egy kutyasétáltató egy embert talált a bozótban, egy füves területen Fern Ridge-ben. A test hideg, és legyek keringenek körülötte."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [1230, 0, 29.98],
+            "pos": [
+                1230,
+                0,
+                29.98
+            ],
             "rot": 183,
             "anim": "ko_front",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

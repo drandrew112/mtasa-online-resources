@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [934, -1842, 11.54],
+    "center": [
+        934,
+        -1842,
+        11.54
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure in the water",
                 "description": "A man had a seizure while in the sea and went under. He was pulled out and brought onto the sand at Verona Beach. He is breathing but confused and keeps coughing up water."
+            },
+            "hu": {
+                "title": "Roham a vízben",
+                "description": "Egy férfit görcsroham ért a tengerben, és elmerült. Kihúzták a vízből, majd Verona Beach homokos partjára vitték. Lélegzik, de zavart, és újra meg újra vizet köhög fel."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 142,
-            "pos": [934, -1842, 11.54],
+            "pos": [
+                934,
+                -1842,
+                11.54
+            ],
             "rot": 347,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "postictal", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "postictal",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 82, "consciousness": "confused" }
+            "state": {
+                "spo2": 82,
+                "consciousness": "confused"
+            }
         }
     ]
 }

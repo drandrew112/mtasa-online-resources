@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-720.75, 1428.7, 18.48],
+    "center": [
+        -720.75,
+        1428.7,
+        18.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest on open scrubland in Las Barrancas. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Egy férfit mellkason lőttek egy nyílt, bozótos területen Las Barrancasban. Nehezen kap levegőt, az ajkai sápadtak, és a sebből vérhab bugyog."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [-720.75, 1428.7, 18.48],
+            "pos": [
+                -720.75,
+                1428.7,
+                18.48
+            ],
             "rot": 342,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3985, "spo2": 84 }
+            "state": {
+                "bloodVolume": 3985,
+                "spo2": 84
+            }
         }
     ]
 }

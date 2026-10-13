@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [487.21, -1416.37, 16.66],
+    "center": [
+        487.21,
+        -1416.37,
+        16.66
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Delivery rider fell",
                 "description": "A pizza delivery rider slipped on oil in Rodeo and fell. He is sitting on the sidewalk with a sore ankle, worried about the pizzas."
+            },
+            "hu": {
+                "title": "Futár elesett",
+                "description": "Egy pizzafutár megcsúszott az olajon Rodeóban, és elesett. A járdán ül, fáj a bokája, és a pizzák miatt aggódik."
             }
         },
         "caller": "SceneManager",
@@ -22,33 +30,89 @@
         {
             "id": "v1",
             "model": 448,
-            "pos": [488.79, -1420.32, 16.03],
-            "rot": [0, 0, 198.9],
+            "pos": [
+                488.79,
+                -1420.32,
+                16.03
+            ],
+            "rot": [
+                0,
+                0,
+                198.9
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS23 230",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 155,
-            "pos": [487.21, -1416.37, 16.66],
+            "pos": [
+                487.21,
+                -1416.37,
+                16.66
+            ],
             "rot": 187,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [348.02, 2304.88, 25.4],
+    "center": [
+        348.02,
+        2304.88,
+        25.4
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, leg wound",
                 "description": "Someone fired from a passing pickup at the side of the road near Verdant Meadows. A young man was hit in the thigh and is bleeding heavily into his jeans."
+            },
+            "hu": {
+                "title": "Autóból leadott lövés, lábsérülés",
+                "description": "Verdant Meadows közelében egy elhaladó pickupból lőttek az út mellett. Egy fiatal férfit combon talált a lövedék, és erősen vérzik a farmernadrágjába."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [348.02, 2304.88, 25.4],
+            "pos": [
+                348.02,
+                2304.88,
+                25.4
+            ],
             "rot": 53,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4106, "pain": 45 }
+            "state": {
+                "bloodVolume": 4106,
+                "pain": 45
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-247.7, 2758.391, 62.688],
+    "center": [
+        -247.7,
+        2758.391,
+        62.688
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain in the heat",
                 "description": "A woman waiting for the bus in the desert sun sat down with tight chest pain and cold sweat despite the heat."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom a hőségben",
+                "description": "Egy nő a buszra várva leült a sivatagi napsütésben, mert szorító mellkasi fájdalma és hideg verejtéke lett a hőség ellenére."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-247.7, 2758.391, 62.688],
+            "pos": [
+                -247.7,
+                2758.391,
+                62.688
+            ],
             "rot": 241,
             "anim": "sit",
             "injuries": [],

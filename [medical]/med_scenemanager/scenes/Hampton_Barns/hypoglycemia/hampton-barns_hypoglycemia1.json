@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [670, 320, 20.23],
+    "center": [
+        670,
+        320,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and pale",
                 "description": "A jogger on farmland in Hampton Barns sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            },
+            "hu": {
+                "title": "A kocogó remeg és sápadt",
+                "description": "Egy kocogó nő hirtelen leült Hampton Barns mezőgazdasági területén. Remeg, izzad és sápadt. Azt mondja, reggel beadta magának az inzulint, de kihagyta a reggelit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [670, 320, 20.23],
+            "pos": [
+                670,
+                320,
+                20.23
+            ],
             "rot": 106,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 47, "heartRate": 121 }
+            "state": {
+                "glucose": 47,
+                "heartRate": 121
+            }
         }
     ]
 }

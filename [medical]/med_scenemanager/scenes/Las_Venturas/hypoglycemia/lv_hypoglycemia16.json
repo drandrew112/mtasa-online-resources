@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1397.68, 2565.63, 10.82],
+    "center": [
+        1397.68,
+        2565.63,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Diabetic not waking up",
                 "description": "A man at the side of the road in Prickle Pine cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning."
+            },
+            "hu": {
+                "title": "A cukorbeteg nem ébreszthető",
+                "description": "Egy férfit nem lehet felébreszteni az út szélén, Prickle Pine-ban. A barátnője szerint beadta az inzulinját, de ma reggel kihányta a reggelijét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 259,
-            "pos": [1397.68, 2565.63, 10.82],
+            "pos": [
+                1397.68,
+                2565.63,
+                10.82
+            ],
             "rot": 80,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 21, "heartRate": 113, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 21,
+                "heartRate": 113,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

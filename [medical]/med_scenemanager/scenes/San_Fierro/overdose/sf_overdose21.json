@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1827.75, -223.7, 18.37],
+    "center": [
+        -1827.75,
+        -223.7,
+        18.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman on a paved square in Doherty mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Tabletták és bor, súlyos álmosság",
+                "description": "Doherty egyik kövezett terén egy nő egy veszekedés után szorongásoldó tablettákat vett be egy üveg borral. Elmosódottan beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [-1827.75, -223.7, 18.37],
+            "pos": [
+                -1827.75,
+                -223.7,
+                18.37
+            ],
             "rot": 129,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89, "consciousness": "dazed" }
+            "state": {
+                "spo2": 89,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

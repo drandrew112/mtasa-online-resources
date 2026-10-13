@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2161.25, 1686, 10.82],
+    "center": [
+        2161.25,
+        1686,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jumped from the railing",
                 "description": "A young man jumped into the water from the railing and hit it badly. Friends dragged him out and he is now lying by the water near Caligula's Palace, dazed and gasping."
+            },
+            "hu": {
+                "title": "Leugrott a korlátról",
+                "description": "Egy fiatal férfi leugrott a korlátról a vízbe, és keményen a víznek csapódott. Barátai kihúzták; most a víz mellett fekszik Caligula's Palace közelében, kábultan, levegő után kapkodva."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [2161.25, 1686, 10.82],
+            "pos": [
+                2161.25,
+                1686,
+                10.82
+            ],
             "rot": 328,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 87, "consciousness": "dazed" }
+            "state": {
+                "spo2": 87,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

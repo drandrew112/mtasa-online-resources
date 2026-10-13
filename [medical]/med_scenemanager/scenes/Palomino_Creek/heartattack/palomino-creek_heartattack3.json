@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2526.75, 94.101, 26.484],
+    "center": [
+        2526.75,
+        94.101,
+        26.484
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "A retired farmer keeps sitting down by the road on his way to the diner. His pulse is slow, he is pale and keeps asking what day it is."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy nyugdíjas gazda újra és újra leül az út mellett, miközben az étkezdéhez tart. Pulzusa lassú, sápadt, és folyton azt kérdezi, milyen nap van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [2526.75, 94.101, 26.484],
+            "pos": [
+                2526.75,
+                94.101,
+                26.484
+            ],
             "rot": 30,
             "anim": "sit",
             "injuries": [],

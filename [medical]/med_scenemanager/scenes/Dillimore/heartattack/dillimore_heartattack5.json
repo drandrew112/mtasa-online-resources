@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [703.577, -492.025, 16.336],
+    "center": [
+        703.577,
+        -492.025,
+        16.336
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A woman leaving the barber shop sat down by the road with a pounding heart and tunnel vision. She says it feels like \"a bird trapped in her chest\"."
+            },
+            "hu": {
+                "title": "Szívdobogásérzés, majdnem elájult",
+                "description": "Egy nő kilépett a fodrászüzletből, majd leült az út mellé, mert hevesen vert a szíve, és beszűkült a látótere. Azt mondja, olyan érzés, mintha „egy madár vergődne a mellkasában”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [703.577, -492.025, 16.336],
+            "pos": [
+                703.577,
+                -492.025,
+                16.336
+            ],
             "rot": 208,
             "anim": "sit",
             "injuries": [],

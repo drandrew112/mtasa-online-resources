@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [1707.63, -1193.62, 23.59],
+    "center": [
+        1707.63,
+        -1193.62,
+        23.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body seen from a distance",
                 "description": "A jogger saw what looked like a body on the pavement in Downtown Los Santos. From the distance it could also be a pile of clothes or a mannequin."
+            },
+            "hu": {
+                "title": "Messziről holttestnek tűnik",
+                "description": "Egy kocogó valami holttestnek tűnő alakot látott Downtown Los Santos járdáján. Távolról akár ruhakupac vagy próbababa is lehet."
             }
         },
         "caller": "SceneManager",

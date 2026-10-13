@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [589.81, -1237.95, 17.86],
+    "center": [
+        589.81,
+        -1237.95,
+        17.86
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the leg, heavy bleeding",
                 "description": "A young man was shot in the thigh at a bus stop in Rodeo. Blood is spurting and his friend is pressing on it with a T-shirt. He is getting pale and sleepy."
+            },
+            "hu": {
+                "title": "Lábon lőtték, erős vérzés",
+                "description": "Egy fiatal férfit combon lőttek Rodeo egyik buszmegállójában. Spriccel a vér, barátja egy pólóval próbálja elszorítani a sebet. A férfi egyre sápadtabb és álmosabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 174,
-            "pos": [589.81, -1237.95, 17.86],
+            "pos": [
+                589.81,
+                -1237.95,
+                17.86
+            ],
             "rot": 250,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3500, "bleeding": 2, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3500,
+                "bleeding": 2,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2354.625, 1154.25, 10.82],
+    "center": [
+        2354.625,
+        1154.25,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "A wedding chapel minister stepped outside between ceremonies and sat on the curb with chest pain and sweat. Three couples are still waiting inside."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, izzadás",
+                "description": "Egy esküvői kápolna lelkésze két szertartás között kilépett, majd mellkasi fájdalommal és izzadva leült a járdaszegélyre. Odabent három pár még mindig várakozik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [2354.625, 1154.25, 10.82],
+            "pos": [
+                2354.625,
+                1154.25,
+                10.82
+            ],
             "rot": 298,
             "anim": "sit",
             "injuries": [],

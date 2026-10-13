@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1307, -505, 14.14],
+    "center": [
+        -1307,
+        -505,
+        14.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, still wheezing",
                 "description": "A man outside the terminal at Easter Bay Airport choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt étel, még mindig sípolva lélegzik",
+                "description": "Egy férfi félrenyelt egy hot dogot az Easter Bay Airport terminálja előtt. Egy járókelő hátba ütéseket alkalmazott, és egy darab kijött, de a férfi még mindig erősen köhög és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 124,
-            "pos": [-1307, -505, 14.14],
+            "pos": [
+                -1307,
+                -505,
+                14.14
+            ],
             "rot": 199,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 87 }
+            "state": {
+                "spo2": 87
+            }
         }
     ]
 }

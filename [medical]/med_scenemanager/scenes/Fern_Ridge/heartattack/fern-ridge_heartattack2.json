@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1222.521, -131.865, 39.507],
+    "center": [
+        1222.521,
+        -131.865,
+        39.507
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain on the trail",
                 "description": "A woman walking her dogs along the ridge road sat down with chest pain and cold sweat. The dogs refuse to leave her side."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom az ösvényen",
+                "description": "Egy nő a kutyáit sétáltatta a hegygerincen futó úton, amikor leült mellkasi fájdalommal és hideg verejtékkel. A kutyák nem hajlandók elmozdulni mellőle."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 151,
-            "pos": [1222.521, -131.865, 39.507],
+            "pos": [
+                1222.521,
+                -131.865,
+                39.507
+            ],
             "rot": 122,
             "anim": "sit",
             "injuries": [],

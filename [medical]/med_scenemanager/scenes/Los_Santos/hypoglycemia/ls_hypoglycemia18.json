@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1000.25, -1387.25, 13.34],
+    "center": [
+        1000.25,
+        -1387.25,
+        13.34
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Acting drunk, sweaty",
                 "description": "A security guard in Market reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and does not smell of alcohol. She is getting more confused."
+            },
+            "hu": {
+                "title": "Részegnek tűnik, izzad",
+                "description": "Egy marketi biztonsági őr egy imbolygó, elmosódottan beszélő és csurom izzadt nőről számol be. Cukorbeteg-azonosító karkötőt visel, és nem érezni rajta alkoholszagot. Egyre zavartabb."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 93,
-            "pos": [1000.25, -1387.25, 13.34],
+            "pos": [
+                1000.25,
+                -1387.25,
+                13.34
+            ],
             "rot": 15,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 42, "heartRate": 112, "consciousness": "confused" }
+            "state": {
+                "glucose": 42,
+                "heartRate": 112,
+                "consciousness": "confused"
+            }
         }
     ]
 }

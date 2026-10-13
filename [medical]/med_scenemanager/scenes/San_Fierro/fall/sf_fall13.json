@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1783.68, 1279.99, 11.9],
+    "center": [
+        -1783.68,
+        1279.99,
+        11.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell from a balcony",
                 "description": "A man fell from a third floor balcony outside a corner shop in Esplanade North. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him."
+            },
+            "hu": {
+                "title": "Leesett egy erkélyről",
+                "description": "Esplanade North egyik kisboltja előtt egy férfi leesett a harmadik emeleti erkélyről. Eszméletlen, zajosan lélegzik, mindkét lába deformálódott. Szomszédok gyűltek köré."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,31 @@
         {
             "id": "p1",
             "skin": 98,
-            "pos": [-1783.68, 1279.99, 11.9],
+            "pos": [
+                -1783.68,
+                1279.99,
+                11.9
+            ],
             "rot": 174,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 4069, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 4069,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

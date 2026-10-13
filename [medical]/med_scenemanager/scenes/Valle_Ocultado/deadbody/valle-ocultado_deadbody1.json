@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-880, 2710, 43.51],
+    "center": [
+        -880,
+        2710,
+        43.51
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body found by a hunter",
                 "description": "A hunter found a man lying face down on open scrubland in Valle Ocultado. He has clearly been dead for some time."
+            },
+            "hu": {
+                "title": "Egy vadász holttestet talált",
+                "description": "Egy vadász arccal lefelé fekvő férfit talált Valle Ocultado nyílt bozótos területén. Egyértelmű, hogy már jó ideje halott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-880, 2710, 43.51],
+            "pos": [
+                -880,
+                2710,
+                43.51
+            ],
             "rot": 280,
             "anim": "ko_front",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

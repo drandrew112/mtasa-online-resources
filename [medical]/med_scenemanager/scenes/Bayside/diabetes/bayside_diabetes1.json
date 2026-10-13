@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2420, 2480, 13.13],
+    "center": [
+        -2420,
+        2480,
+        13.13
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Could not wake him after a party",
                 "description": "Friends in a yard in Bayside cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin."
+            },
+            "hu": {
+                "title": "Nem tudják felébreszteni a buli után",
+                "description": "Barátai nem tudnak felébreszteni egy férfit egy Bayside-i udvaron, miután az éjszakát a helyi bárban töltötte. Cukorbeteg, sok édes bourbont és kólát ivott, és nem adta be az inzulinját."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [-2420, 2480, 13.13],
+            "pos": [
+                -2420,
+                2480,
+                13.13
+            ],
             "rot": 172,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 652, "heartRate": 130, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 652,
+                "heartRate": 130,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

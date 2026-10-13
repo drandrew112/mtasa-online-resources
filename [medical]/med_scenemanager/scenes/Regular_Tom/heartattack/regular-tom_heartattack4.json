@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-397.36, 1714.901, 40.558],
+    "center": [
+        -397.36,
+        1714.901,
+        40.558
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, pounding head",
                 "description": "A man leaning on his fence by the road has chest pain and a splitting headache. He has not taken his pills in months."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, lüktető fejfájás",
+                "description": "Egy férfi a kerítésének támaszkodik az út mellett, mellkasi fájdalma és hasító fejfájása van. Hónapok óta nem vette be a gyógyszereit."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 68,
-            "pos": [-397.36, 1714.901, 40.558],
+            "pos": [
+                -397.36,
+                1714.901,
+                40.558
+            ],
             "rot": 223,
             "anim": "lean",
             "injuries": [],

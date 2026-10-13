@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1055.453, -1944.809, 13.147],
+    "center": [
+        1055.453,
+        -1944.809,
+        13.147
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted, rapid pulse",
                 "description": "A teenager on her way to school passed out on the sidewalk. Her friend says her heart was \"buzzing\" a minute ago. She is breathing but will not wake up."
+            },
+            "hu": {
+                "title": "Elájult, szapora pulzus",
+                "description": "Egy iskolába tartó tinédzser lány elájult a járdán. Barátja szerint egy perccel korábban még „zümmögött” a szíve. Lélegzik, de nem ébreszthető."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [1055.453, -1944.809, 13.147],
+            "pos": [
+                1055.453,
+                -1944.809,
+                13.147
+            ],
             "rot": 308,
             "anim": "ko_back",
             "injuries": [],

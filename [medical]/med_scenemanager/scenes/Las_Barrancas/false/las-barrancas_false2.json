@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-740, 1610, 27.12],
+    "center": [
+        -740,
+        1610,
+        27.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "Someone is screaming for help on open scrubland in Las Barrancas. The caller hung up before giving any more details."
+            },
+            "hu": {
+                "title": "Segítségért kiáltás",
+                "description": "Valaki segítségért kiabál egy nyílt, bozótos területen Las Barrancasban. A bejelentő letette a telefont, mielőtt további részleteket mondott volna."
             }
         },
         "caller": "SceneManager",

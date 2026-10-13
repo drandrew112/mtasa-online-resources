@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2674, 789.68, 49.98],
+    "center": [
+        -2674,
+        789.68,
+        49.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man drowsy and dry",
                 "description": "A neighbour found an old man by the roadside in Santa Flora very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating."
+            },
+            "hu": {
+                "title": "Álmos és kiszáradt idős férfi",
+                "description": "Santa Flora útja mellett egy szomszéd nagyon aluszékony idős férfit talált, akinek száraz az ajka és beesett a szeme. Egy hete mellkasi fertőzése van, és abbahagyta az evést."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 43,
-            "pos": [-2674, 789.68, 49.98],
+            "pos": [
+                -2674,
+                789.68,
+                49.98
+            ],
             "rot": 153,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3731, "glucose": 728, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3731,
+                "glucose": 728,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

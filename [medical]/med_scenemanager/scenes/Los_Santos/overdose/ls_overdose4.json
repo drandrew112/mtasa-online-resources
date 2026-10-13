@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2338.5, -1308.37, 24.25],
+    "center": [
+        2338.5,
+        -1308.37,
+        24.25
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Not breathing properly, blue lips",
                 "description": "A man is lying on the sidewalk in East Los Santos with blue lips, taking a breath only every now and then. A syringe is next to him. A friend ran off when the caller arrived."
+            },
+            "hu": {
+                "title": "Nem lélegzik rendesen, kék ajkak",
+                "description": "Egy férfi East Los Santos járdáján fekszik, ajkai kékek, és csak időnként vesz levegőt. Mellette egy fecskendő hever. A barátja elmenekült, amikor a bejelentő odaért."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 230,
-            "pos": [2338.5, -1308.37, 24.25],
+            "pos": [
+                2338.5,
+                -1308.37,
+                24.25
+            ],
             "rot": 180,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 74, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 74,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

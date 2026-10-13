@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1977.25, 940.625, 10.82],
+    "center": [
+        1977.25,
+        940.625,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A poker player who has not slept in two days sat on the sidewalk with his heart hammering. He is pale and seeing spots. He says he still has a tournament at noon."
+            },
+            "hu": {
+                "title": "Szívdobogás, ájulásközeli állapot",
+                "description": "Egy két napja nem alvó pókerjátékos leült a járdára, mert hevesen ver a szíve. Sápadt, és fényfoltokat lát. Azt mondja, délben még versenyeznie kell."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [1977.25, 940.625, 10.82],
+            "pos": [
+                1977.25,
+                940.625,
+                10.82
+            ],
             "rot": 29,
             "anim": "sit",
             "injuries": [],

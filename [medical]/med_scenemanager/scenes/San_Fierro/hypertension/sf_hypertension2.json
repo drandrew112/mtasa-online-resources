@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2387, 155, 35.32],
+    "center": [
+        -2387,
+        155,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Blurred vision, nausea",
                 "description": "A young mother at the playground says her vision has gone blurry and she feels very sick. Her children are being watched by another parent."
+            },
+            "hu": {
+                "title": "Homályos látás és hányinger",
+                "description": "Egy fiatal anya a játszótéren azt mondja, hogy elhomályosult a látása, és nagyon rosszul érzi magát. Gyermekeire egy másik szülő vigyáz."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [-2387, 155, 35.32],
+            "pos": [
+                -2387,
+                155,
+                35.32
+            ],
             "rot": 218,
             "anim": "crouch",
             "injuries": [],

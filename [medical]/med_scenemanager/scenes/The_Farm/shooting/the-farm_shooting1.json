@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1129.33, -1122.32, 129.2],
+    "center": [
+        -1129.33,
+        -1122.32,
+        129.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Head wound after shooting",
                 "description": "Witnesses heard one shot next to the country road in The Farm. A man is lying on his back with a head wound and is not responding."
+            },
+            "hu": {
+                "title": "Fejsérülés lövöldözés után",
+                "description": "The Farm vidéki útja mellett a szemtanúk egy lövést hallottak. Egy férfi a hátán fekszik, fejsérülése van, és nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [-1129.33, -1122.32, 129.2],
+            "pos": [
+                -1129.33,
+                -1122.32,
+                129.2
+            ],
             "rot": 335,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2377.625, 84.625, 26.484],
+    "center": [
+        2377.625,
+        84.625,
+        26.484
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, pounding head",
                 "description": "A man who just lost an argument with his landlord is leaning on a wall, chest pain and a skull-splitting headache. The whole town heard the argument."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, lüktető fejfájás",
+                "description": "Egy férfi épp elveszített egy vitát a főbérlőjével, most pedig a falnak támaszkodik, mellkasi fájdalommal és szétrepesztő fejfájással. Az egész város hallotta a veszekedést."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [2377.625, 84.625, 26.484],
+            "pos": [
+                2377.625,
+                84.625,
+                26.484
+            ],
             "rot": 111,
             "anim": "lean",
             "injuries": [],

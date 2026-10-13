@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2185.66, 2308.63, 10.76],
+    "center": [
+        2185.66,
+        2308.63,
+        10.76
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Homeless person not waking",
                 "description": "A shop worker opening up on the sidewalk near the Emerald Isle found a homeless man lying under a blanket, cold and stiff. He does not respond at all."
+            },
+            "hu": {
+                "title": "Hajléktalan, akit nem lehet felébreszteni",
+                "description": "Egy bolti dolgozó az Emerald Isle közelében, a járdán nyitáskor egy takaró alatt fekvő hajléktalan férfit talált. A teste hideg és merev, egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 137,
-            "pos": [2185.66, 2308.63, 10.76],
+            "pos": [
+                2185.66,
+                2308.63,
+                10.76
+            ],
             "rot": 44,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

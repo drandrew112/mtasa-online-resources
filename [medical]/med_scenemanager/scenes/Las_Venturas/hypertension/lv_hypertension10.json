@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2860.175, 2631.062, 10.825],
+    "center": [
+        2860.175,
+        2631.062,
+        10.825
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Throbbing temples",
                 "description": "A woman has throbbing temples and feels her heartbeat in her ears. She says salty food at a party last night always does this to her."
+            },
+            "hu": {
+                "title": "Lüktető halánték",
+                "description": "Egy nő halántéka lüktet, és a fülében érzi a szívverését. Azt mondja, ez mindig előjön nála, ha előző este sós ételeket eszik egy partin."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [2860.175, 2631.062, 10.825],
+            "pos": [
+                2860.175,
+                2631.062,
+                10.825
+            ],
             "rot": 0.5,
             "anim": "sit",
             "injuries": [],

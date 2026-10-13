@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1404.599, -1965.06, 40.871],
+    "center": [
+        1404.599,
+        -1965.06,
+        40.871
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found down, no pulse",
                 "description": "A delivery rider found a man lying motionless next to his scooter, helmet still on. No breathing, nobody can feel a pulse. The pizza is still warm."
+            },
+            "hu": {
+                "title": "A földön találták, nincs pulzusa",
+                "description": "Egy futár egy férfit talált mozdulatlanul a robogója mellett, még mindig rajta lévő bukósisakkal. Nem lélegzik, és senki sem érez pulzust. A pizza még meleg."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 182,
-            "pos": [1404.599, -1965.06, 40.871],
+            "pos": [
+                1404.599,
+                -1965.06,
+                40.871
+            ],
             "rot": 130,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PEA"
+            }
         }
     ]
 }

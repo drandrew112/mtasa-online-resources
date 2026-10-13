@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2004.12, 731.13, 45.6],
+    "center": [
+        -2004.12,
+        731.13,
+        45.6
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crash with people trapped",
                 "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Downtown. No other calls came in about it."
+            },
+            "hu": {
+                "title": "Baleset, beszorult sérültekkel",
+                "description": "Egy névtelen bejelentő súlyos balesetről számol be Downtown forgalmas kereszteződéséből; emberek szorultak a járművekbe. Más nem jelentette az esetet."
             }
         },
         "caller": "SceneManager",

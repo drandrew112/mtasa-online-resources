@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [110, 130, 2.43],
+    "center": [
+        110,
+        130,
+        2.43
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swimmer cramped, swallowed water",
                 "description": "A swimmer got a cramp and swallowed a lot of water before friends helped him out. He is sitting on the riverbank in Blueberry, coughing and breathing fast."
+            },
+            "hu": {
+                "title": "Úszás közben begörcsölt, vizet nyelt",
+                "description": "Egy úszó lába begörcsölt, és sok vizet nyelt, mielőtt a barátai kisegítették. A Blueberryben lévő folyóparton ül, köhög, és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 102,
-            "pos": [110, 130, 2.43],
+            "pos": [
+                110,
+                130,
+                2.43
+            ],
             "rot": 74,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91, "heartRate": 115 }
+            "state": {
+                "spo2": 91,
+                "heartRate": 115
+            }
         }
     ]
 }

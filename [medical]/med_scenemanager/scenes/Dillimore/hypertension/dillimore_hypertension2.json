@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [568.03, -405.4, 27.75],
+    "center": [
+        568.03,
+        -405.4,
+        27.75
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache, vomiting",
                 "description": "A woman on open ground near Dillimore has the worst headache of her life and just vomited. She is very pale and her hands are shaking."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása, hányás",
+                "description": "Egy nőnek élete legerősebb fejfájása van egy Dillimore közelében lévő nyílt területen, és éppen hányt. Nagyon sápadt, a keze remeg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [568.03, -405.4, 27.75],
+            "pos": [
+                568.03,
+                -405.4,
+                27.75
+            ],
             "rot": 308,
             "anim": "crouch",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2276.872, 1325.1, 7.188],
+    "center": [
+        -2276.872,
+        1325.1,
+        7.188
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, red-faced",
                 "description": "A red-faced man in a suit is leaning against a wall, chest pain and a pounding headache after a shouting match with his landlord. His blood vessels are clearly visible on his forehead."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, kipirult arc",
+                "description": "Egy kipirult arcú, öltönyt viselő férfi a falnak támaszkodik; mellkasi fájdalma és lüktető fejfájása van, miután összeveszett a főbérlőjével. Homlokán jól láthatók az erei."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 182,
-            "pos": [-2276.872, 1325.1, 7.188],
+            "pos": [
+                -2276.872,
+                1325.1,
+                7.188
+            ],
             "rot": 27,
             "anim": "lean",
             "injuries": [],

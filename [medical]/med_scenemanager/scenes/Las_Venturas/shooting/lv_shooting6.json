@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [883.04, 1028.33, 16.8],
+    "center": [
+        883.04,
+        1028.33,
+        16.8
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Gang fight, two wounded",
                 "description": "A fight between two groups ended in gunfire by the roadside in Las Venturas. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand."
+            },
+            "hu": {
+                "title": "Bandaharc, két sebesült",
+                "description": "Két csoport verekedése lövöldözésbe torkollott Las Venturasban, az út mellett. Egy fiatal férfi a földön fekszik, egy másik pedig egy kuka mögött guggol, vérző kézzel."
             }
         },
         "caller": "SceneManager",
@@ -23,23 +31,42 @@
         {
             "id": "p1",
             "skin": 107,
-            "pos": [883.04, 1028.33, 16.8],
+            "pos": [
+                883.04,
+                1028.33,
+                16.8
+            ],
             "rot": 275,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 3990 }
+            "state": {
+                "bloodVolume": 3990
+            }
         },
         {
             "id": "p2",
             "skin": 115,
-            "pos": [882.03, 1030.29, 17.33],
+            "pos": [
+                882.03,
+                1030.29,
+                17.33
+            ],
             "rot": 318,
             "anim": "crouch",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

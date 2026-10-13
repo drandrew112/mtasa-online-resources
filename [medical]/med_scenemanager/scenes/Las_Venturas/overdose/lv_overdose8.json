@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2577.25, 766.13, 10.82],
+    "center": [
+        2577.25,
+        766.13,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Needle still in his arm",
                 "description": "A man is lying on the sidewalk in Rockshore East with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey."
+            },
+            "hu": {
+                "title": "Tű maradt a karjában",
+                "description": "Egy férfi Rockshore East járdáján fekszik, karjában még mindig egy tűvel. Megrázásra felnyög, de lassan lélegzik, ajkai szürkék."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [2577.25, 766.13, 10.82],
+            "pos": [
+                2577.25,
+                766.13,
+                10.82
+            ],
             "rot": 9,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 86, "consciousness": "dazed" }
+            "state": {
+                "spo2": 86,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

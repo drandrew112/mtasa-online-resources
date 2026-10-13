@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2013.99, 238.55, 28.05],
+    "center": [
+        -2013.99,
+        238.55,
+        28.05
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sideswipe collision",
                 "description": "An orange car and a dark grey car sideswiped each other in Doherty and one of them lost control. The driver of the orange car got out and is sitting on the ground with a bump on the head and a headache. The driver of the dark grey car got out and is sitting on the ground with a painful arm and some cuts."
+            },
+            "hu": {
+                "title": "Súrolásos ütközés",
+                "description": "Doherty területén egy narancssárga és egy sötétszürke autó oldalról súrolta egymást, és az egyik sofőr elvesztette az uralmát. A narancssárga autó vezetője kiszállt és leült; púp van a fején, és fáj a feje. A sötétszürke autó sofőrje is kiszállt, ül a földön, fáj a karja, és néhány vágása van."
             }
         },
         "caller": "SceneManager",
@@ -22,65 +30,180 @@
         {
             "id": "v1",
             "model": 549,
-            "pos": [-2009.15, 237.5, 28.731],
-            "rot": [356.04, 358.85, 162.78],
+            "pos": [
+                -2009.15,
+                237.5,
+                28.731
+            ],
+            "rot": [
+                356.04,
+                358.85,
+                162.78
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [200, 120, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                200,
+                120,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF27 106",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 496,
-            "pos": [-2006.868, 235.276, 28.503],
-            "rot": [356.14, 359.8, 177.03],
+            "pos": [
+                -2006.868,
+                235.276,
+                28.503
+            ],
+            "rot": [
+                356.14,
+                359.8,
+                177.03
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                60,
+                60,
+                70,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF86 330",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 26,
-            "pos": [-2013.99, 238.55, 29.051],
+            "pos": [
+                -2013.99,
+                238.55,
+                29.051
+            ],
             "rot": 267.7,
             "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
             "state": {}
         },
         {
             "id": "p2",
             "skin": 40,
-            "pos": [-2004.307, 231.169, 28.39],
+            "pos": [
+                -2004.307,
+                231.169,
+                28.39
+            ],
             "rot": 211.9,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-940, 1430, 32.71],
+    "center": [
+        -940,
+        1430,
+        32.71
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Moonshine, cannot stand",
                 "description": "A man on the dusty ground near Las Barrancas drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry."
+            },
+            "hu": {
+                "title": "Házi párlatot ivott, nem tud megállni a lábán",
+                "description": "Egy férfi házi párlatot ivott egy üvegből Las Barrancas közelében, a poros földön. Hány, nem tud megállni a lábán, és homályos látásra panaszkodik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [-940, 1430, 32.71],
+            "pos": [
+                -940,
+                1430,
+                32.71
+            ],
             "rot": 10,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 3 }
+                {
+                    "type": "alcohol",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

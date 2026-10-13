@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [514.75, -1682, 18.826],
+    "center": [
+        514.75,
+        -1682,
+        18.826
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe headache at picnic",
                 "description": "A man at a family picnic suddenly grabbed his head and said it felt like it was going to burst. He has vomited behind a tree and the light hurts his eyes."
+            },
+            "hu": {
+                "title": "Erős fejfájás a pikniken",
+                "description": "Egy férfi egy családi pikniken hirtelen a fejéhez kapott, és azt mondta, mindjárt szétrobban. Egy fa mögött hányt, a fény pedig fáj a szemének."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [514.75, -1682, 18.826],
+            "pos": [
+                514.75,
+                -1682,
+                18.826
+            ],
             "rot": 84,
             "anim": "crouch",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-220.37, 1011.38, 19.65],
+    "center": [
+        -220.37,
+        1011.38,
+        19.65
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Asthma from hay dust",
                 "description": "A girl helping to stack hay on the main street in Fort Carson is wheezing badly from the dust. Her inhaler is at home."
+            },
+            "hu": {
+                "title": "Szénaportól kialakult asztma",
+                "description": "Egy lány szénát rakodott Fort Carson főutcáján, és a portól erősen sípolva kezdett lélegezni. Az inhalátora otthon van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 92,
-            "pos": [-220.37, 1011.38, 19.65],
+            "pos": [
+                -220.37,
+                1011.38,
+                19.65
+            ],
             "rot": 21,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

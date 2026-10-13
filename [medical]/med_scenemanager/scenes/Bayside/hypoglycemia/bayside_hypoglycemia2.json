@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2500, 2640, 61.77],
+    "center": [
+        -2500,
+        2640,
+        61.77
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother slurring her words",
                 "description": "A grandmother on open ground in Bayside is slurring her words and trembling. Her family says she started a new diabetes medicine this week."
+            },
+            "hu": {
+                "title": "A nagymama elmosódottan beszél",
+                "description": "Egy nagymama elmosódottan beszél és remeg egy nyílt területen Bayside-ban. A családja szerint ezen a héten új cukorbetegség elleni gyógyszert kezdett szedni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2500, 2640, 61.77],
+            "pos": [
+                -2500,
+                2640,
+                61.77
+            ],
             "rot": 228,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 33, "consciousness": "confused" }
+            "state": {
+                "glucose": 33,
+                "consciousness": "confused"
+            }
         }
     ]
 }

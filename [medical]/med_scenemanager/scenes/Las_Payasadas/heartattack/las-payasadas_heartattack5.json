@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-328.539, 2693.525, 62.688],
+    "center": [
+        -328.539,
+        2693.525,
+        62.688
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted, very fast pulse",
                 "description": "A young woman said her heart was \"buzzing\" and then passed out by the road. Breathing but not waking up."
+            },
+            "hu": {
+                "title": "Elájult, nagyon gyors pulzussal",
+                "description": "Egy fiatal nő azt mondta, hogy a szíve „zümmög”, majd elájult az út mellett. Lélegzik, de nem ébred fel."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 89,
-            "pos": [-328.539, 2693.525, 62.688],
+            "pos": [
+                -328.539,
+                2693.525,
+                62.688
+            ],
             "rot": 41,
             "anim": "ko_back",
             "injuries": [],

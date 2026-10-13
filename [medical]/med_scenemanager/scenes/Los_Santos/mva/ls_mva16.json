@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1150.33, -996.02, 36.39],
+    "center": [
+        1150.33,
+        -996.02,
+        36.39
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Rear-end collision",
                 "description": "A blue car ran into the back of an orange car in Temple. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the blue car is still behind the wheel with a head injury and disorientation."
+            },
+            "hu": {
+                "title": "Ráfutásos baleset",
+                "description": "Egy kék autó hátulról nekiment egy narancssárga autónak Temple területén. A narancssárga autó sofőrje még mindig a volán mögött van, eszméletlen, súlyos fejsérüléssel és törött karral. A kék autó vezetője is a volán mögött ül, fejsérüléssel és zavartan."
             }
         },
         "caller": "SceneManager",
@@ -22,71 +30,193 @@
         {
             "id": "v1",
             "model": 401,
-            "pos": [1154.71, -998.05, 36.919],
-            "rot": [0, 0.1, 181.7],
+            "pos": [
+                1154.71,
+                -998.05,
+                36.919
+            ],
+            "rot": [
+                0,
+                0.1,
+                181.7
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [200, 120, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                200,
+                120,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS57 815",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 419,
-            "pos": [1154.61, -991.579, 38.089],
-            "rot": [0, -0.36, 178.38],
+            "pos": [
+                1154.61,
+                -991.579,
+                38.089
+            ],
+            "rot": [
+                0,
+                -0.36,
+                178.38
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS32 668",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 67,
-            "pos": [1154.71, -998.05, 37.17],
+            "pos": [
+                1154.71,
+                -998.05,
+                37.17
+            ],
             "rot": 181.7,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3750,
+                "bleeding": 2,
+                "consciousness": "unconscious"
+            }
         },
         {
             "id": "p2",
             "skin": 25,
-            "pos": [1154.61, -991.579, 38.34],
+            "pos": [
+                1154.61,
+                -991.579,
+                38.34
+            ],
             "rot": 178.38,
             "anim": "none",
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 60, "consciousness": "dazed" }
+            "state": {
+                "pain": 60,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1223.95, 286.22, 19.56],
+    "center": [
+        1223.95,
+        286.22,
+        19.56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb on the main street in Montgomery and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "Egy idős nő megbotlott Montgomery főutcájának járdaszegélyében, és nem tud felkelni. Jobb lába rövidebbnek látszik, kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [1223.95, 286.22, 19.56],
+            "pos": [
+                1223.95,
+                286.22,
+                19.56
+            ],
             "rot": 127,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 43 }
+            "state": {
+                "pain": 43
+            }
         }
     ]
 }

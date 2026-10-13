@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1805, 2180.225, 10.82],
+    "center": [
+        1805,
+        2180.225,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Heart racing, dizzy",
                 "description": "A bachelor party guest is sitting on the sidewalk, chest pounding and the world spinning. His friends admit to \"a few\" energy drinks and \"maybe more than a few\" shots."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, szédülés",
+                "description": "Egy legénybúcsú vendége a járdán ül; kalapál a szíve, és forog vele a világ. A barátai bevallják, hogy ivott „pár” energiaitalt és „talán valamivel több mint pár” rövidet."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [1805, 2180.225, 10.82],
+            "pos": [
+                1805,
+                2180.225,
+                10.82
+            ],
             "rot": 56,
             "anim": "sit",
             "injuries": [],

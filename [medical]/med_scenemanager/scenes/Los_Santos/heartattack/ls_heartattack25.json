@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1201.466, -954.379, 42.922],
+    "center": [
+        1201.466,
+        -954.379,
+        42.922
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A man checking his blood pressure on a pharmacy machine walked out and sat down on the sidewalk. The printout says \"seek medical attention\" in bold. Now his chest hurts too."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, nagyon magas vérnyomás",
+                "description": "Egy férfi megmérte a vérnyomását a gyógyszertári automatánál, majd kisétált és leült a járdára. A nyomtatott eredmény vastag betűkkel azt írja: „kérjen orvosi segítséget”. Most már a mellkasa is fáj."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 68,
-            "pos": [1201.466, -954.379, 42.922],
+            "pos": [
+                1201.466,
+                -954.379,
+                42.922
+            ],
             "rot": 139,
             "anim": "lean",
             "injuries": [],

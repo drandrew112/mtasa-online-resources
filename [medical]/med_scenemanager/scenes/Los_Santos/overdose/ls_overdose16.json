@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2828.05, -2013.28, 11.1],
+    "center": [
+        2828.05,
+        -2013.28,
+        11.1
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Took a handful of pills",
                 "description": "A man told his friend at the side of the road in Playa del Seville that he swallowed a whole bottle of sleeping pills an hour ago. He is getting harder and harder to wake. The empty bottle is with him."
+            },
+            "hu": {
+                "title": "Egy marék tablettát vett be",
+                "description": "Egy férfi Playa del Seville út menti részén azt mondta a barátjának, hogy egy órája bevett egy egész üveg altatót. Egyre nehezebb felébreszteni. Az üres gyógyszeres üveg mellette van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 25,
-            "pos": [2828.05, -2013.28, 11.1],
+            "pos": [
+                2828.05,
+                -2013.28,
+                11.1
+            ],
             "rot": 34,
             "anim": "ko_back",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

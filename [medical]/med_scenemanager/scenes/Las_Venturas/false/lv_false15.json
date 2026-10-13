@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [919.43, 1928.25, 11.69],
+    "center": [
+        919.43,
+        1928.25,
+        11.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "Someone is screaming for help next to the road near the Whitewood Estates. The caller hung up before giving any more details."
+            },
+            "hu": {
+                "title": "Segítségért kiáltás",
+                "description": "Valaki segítségért kiabál a Whitewood Estates közelében, az út mellett. A bejelentő letette a telefont, mielőtt további részleteket mondott volna."
             }
         },
         "caller": "SceneManager",

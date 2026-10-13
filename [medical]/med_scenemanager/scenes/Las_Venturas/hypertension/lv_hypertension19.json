@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2436.411, 961.277, 10.82],
+    "center": [
+        2436.411,
+        961.277,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, palpitations",
                 "description": "A nurse coming off a night shift has a pounding headache and palpitations. She checked her own pressure and does not like the number."
+            },
+            "hu": {
+                "title": "Fejfájás, szívdobogás",
+                "description": "Egy éjszakai műszakból hazafelé tartó ápolónőnek erősen fáj a feje, és szívdobogást érez. Megmérte a vérnyomását, és nem tetszik neki az eredmény."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [2436.411, 961.277, 10.82],
+            "pos": [
+                2436.411,
+                961.277,
+                10.82
+            ],
             "rot": 67.7,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 168, "diastolic": 98, "heartRate": 100, "consciousness": "stable" }
+            "state": {
+                "systolic": 168,
+                "diastolic": 98,
+                "heartRate": 100,
+                "consciousness": "stable"
+            }
         }
     ]
 }

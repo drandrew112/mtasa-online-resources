@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2729.875, -1040.75, 55.999],
+    "center": [
+        2729.875,
+        -1040.75,
+        55.999
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "An elderly woman waiting for the bus nearly fainted twice. A nurse passing by says her pulse is \"way too slow\" and she looks like wet paper."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy buszra váró idős nő kétszer is majdnem elájult. Egy arra járó ápoló szerint a pulzusa „túlságosan lassú”, a nő pedig olyan sápadt, mint a papír."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [2729.875, -1040.75, 55.999],
+            "pos": [
+                2729.875,
+                -1040.75,
+                55.999
+            ],
             "rot": 253,
             "anim": "sit",
             "injuries": [],

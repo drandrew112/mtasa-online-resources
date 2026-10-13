@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1207, -365, 14.15],
+    "center": [
+        -1207,
+        -365,
+        14.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jet blast knocked a worker over",
                 "description": "A ground worker was knocked over by jet blast on the apron at Easter Bay Airport and hit the concrete face first. He is lying face down, groaning."
+            },
+            "hu": {
+                "title": "A hajtómű légárama fellökött egy dolgozót",
+                "description": "Egy földi kiszolgálót fellökött a hajtómű légárama az Easter Bay Airport forgalmi előterén, és arccal a betonra esett. Arccal lefelé fekszik, és nyög."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [-1207, -365, 14.15],
+            "pos": [
+                -1207,
+                -365,
+                14.15
+            ],
             "rot": 226,
             "anim": "ko_front",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [847.125, -1762.125, 13.55],
+    "center": [
+        847.125,
+        -1762.125,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest tightness, blurred vision",
                 "description": "A man jogging through Marina sat down on the sidewalk with a crushing tightness in his chest and says everything has gone blurry. Bystanders say he is red in the face, short of breath and keeps asking for water."
+            },
+            "hu": {
+                "title": "Mellkasi szorítás, homályos látás",
+                "description": "Egy Marinán átkocogó férfi leült a járdára, mert szorító mellkasi fájdalma lett, és azt mondja, minden elhomályosult előtte. A járókelők szerint kipirult, légszomja van, és folyton vizet kér."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [847.125, -1762.125, 13.55],
+            "pos": [
+                847.125,
+                -1762.125,
+                13.55
+            ],
             "rot": 270,
             "anim": "sit",
             "injuries": [],

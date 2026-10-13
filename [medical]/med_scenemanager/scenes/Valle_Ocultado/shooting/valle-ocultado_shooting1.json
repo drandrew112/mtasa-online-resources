@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-797.75, 2710, 45.97],
+    "center": [
+        -797.75,
+        2710,
+        45.97
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest on the dusty ground in Valle Ocultado. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Valle Ocultado poros földjén egy férfit mellkason lőttek. Nehezen lélegzik, ajka sápadt, és a sebből véres buborékok törnek elő."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [-797.75, 2710, 45.97],
+            "pos": [
+                -797.75,
+                2710,
+                45.97
+            ],
             "rot": 251,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3895, "spo2": 84 }
+            "state": {
+                "bloodVolume": 3895,
+                "spo2": 84
+            }
         }
     ]
 }

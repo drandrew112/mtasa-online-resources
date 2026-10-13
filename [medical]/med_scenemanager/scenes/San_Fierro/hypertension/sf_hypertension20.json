@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1787, -1105, 55.258],
+    "center": [
+        -1787,
+        -1105,
+        55.258
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Neck pain, headache",
                 "description": "A man flying a kite with his son got a sudden stiff neck and a throbbing headache. He looks flushed and is sweating."
+            },
+            "hu": {
+                "title": "Nyakfájás és fejfájás",
+                "description": "Egy férfi a fiával sárkányt eregetett, amikor hirtelen merevvé vált a nyaka, és lüktető fejfájása lett. Kipirultnak tűnik, és izzad."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [-1787, -1105, 55.258],
+            "pos": [
+                -1787,
+                -1105,
+                55.258
+            ],
             "rot": 0,
             "anim": "crouch",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-380.45, 2248.48, 42.62],
+    "center": [
+        -380.45,
+        2248.48,
+        42.62
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker by the dusty roadside in El Castillo del Diablo feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Munkás homályos látással",
+                "description": "Egy építőmunkás rosszul érzi magát El Castillo del Diablo poros útja mellett, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegségre szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-380.45, 2248.48, 42.62],
+            "pos": [
+                -380.45,
+                2248.48,
+                42.62
+            ],
             "rot": 109,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 415 }
+            "state": {
+                "glucose": 415
+            }
         }
     ]
 }

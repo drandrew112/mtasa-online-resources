@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1751.38, 1280.63, 11.82],
+    "center": [
+        1751.38,
+        1280.63,
+        11.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell, one leg will not move",
                 "description": "An old man fell on the sidewalk at Las Venturas Airport and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+            },
+            "hu": {
+                "title": "Elesett, az egyik lába nem mozdul",
+                "description": "Egy idős férfi elesett a Las Venturas Airport járdáján, és nem tud felkelni, mert a jobb lába nem mozdul. Ébren van, de a beszéde nehézkes és lassú."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [1751.38, 1280.63, 11.82],
+            "pos": [
+                1751.38,
+                1280.63,
+                11.82
+            ],
             "rot": 151,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 195 }
+            "state": {
+                "systolic": 195
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-1210, -960, 128.27],
+    "center": [
+        -1210,
+        -960,
+        128.27
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Child pulled from a backyard pool",
                 "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him in a field near The Farm to meet the ambulance. He is breathing weakly and very pale."
+            },
+            "hu": {
+                "title": "Gyermeket húztak ki egy kerti medencéből",
+                "description": "Egy fiút arccal lefelé találtak egy kerti medencében. Anyja kihúzta, majd a The Farm közelében lévő mezőre vitte, hogy ott találkozzon a mentőkkel. Gyengén lélegzik, és nagyon sápadt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [-1210, -960, 128.27],
+            "pos": [
+                -1210,
+                -960,
+                128.27
+            ],
             "rot": 164,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 75, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 75,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

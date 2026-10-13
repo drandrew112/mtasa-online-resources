@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [518.47, 88.9, 22.5],
+    "center": [
+        518.47,
+        88.9,
+        22.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Needle still in his arm",
                 "description": "A man is lying on the road shoulder in Fern Ridge with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey."
+            },
+            "hu": {
+                "title": "A tű még mindig a karjában van",
+                "description": "Egy férfi az útpadkán fekszik Fern Ridge-ben, a karjában még mindig egy tűvel. Megrázásra felnyög, de lassan lélegzik, és szürkék az ajkai."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 160,
-            "pos": [518.47, 88.9, 22.5],
+            "pos": [
+                518.47,
+                88.9,
+                22.5
+            ],
             "rot": 279,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88, "consciousness": "dazed" }
+            "state": {
+                "spo2": 88,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

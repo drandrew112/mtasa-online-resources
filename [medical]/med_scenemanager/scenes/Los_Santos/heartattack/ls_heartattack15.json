@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2523.999, -1823.769, 13.547],
+    "center": [
+        2523.999,
+        -1823.769,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, pounding head",
                 "description": "A furious driver got out of his car to argue about a parking spot, then grabbed his chest and leaned on a wall. Pounding headache and crushing chest pain. The other driver called it in."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, lüktető fejfájás",
+                "description": "Egy dühös sofőr kiszállt az autójából, hogy vitatkozzon egy parkolóhely miatt, majd a mellkasához kapott, és a falnak támaszkodott. Lüktető fejfájása és szorító mellkasi fájdalma van. A másik sofőr hívott segítséget."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [2523.999, -1823.769, 13.547],
+            "pos": [
+                2523.999,
+                -1823.769,
+                13.547
+            ],
             "rot": 331,
             "anim": "lean",
             "injuries": [],

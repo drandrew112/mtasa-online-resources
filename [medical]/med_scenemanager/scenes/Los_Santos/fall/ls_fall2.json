@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1404.599, -1965.06, 40.871],
+    "center": [
+        1404.599,
+        -1965.06,
+        40.871
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man fell off a roof",
                 "description": "A man cleaning the gutters fell off the roof of his house in Verdant Bluffs and landed on his feet. He is screaming in pain, both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Férfi leesett a tetőről",
+                "description": "Egy férfi az ereszcsatornát tisztította, amikor leesett a háza tetejéről Verdant Bluffs területén, és a lábára érkezett. Fájdalmában kiabál; mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 59,
-            "pos": [1404.599, -1965.06, 40.871],
+            "pos": [
+                1404.599,
+                -1965.06,
+                40.871
+            ],
             "rot": 210,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

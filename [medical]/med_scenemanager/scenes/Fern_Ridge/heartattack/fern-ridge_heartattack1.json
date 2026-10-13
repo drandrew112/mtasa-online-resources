@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1256.412, 7.682, 26.944],
+    "center": [
+        1256.412,
+        7.682,
+        26.944
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hiker down, not breathing",
                 "description": "A hiker came out of the woods onto the road, waved at a passing car and collapsed. The driver says he is not breathing."
+            },
+            "hu": {
+                "title": "Túrázó összeesett, nem lélegzik",
+                "description": "Egy túrázó kijött az erdőből az útra, intett egy arra haladó autónak, majd összeesett. A sofőr szerint nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 170,
-            "pos": [1256.412, 7.682, 26.944],
+            "pos": [
+                1256.412,
+                7.682,
+                26.944
+            ],
             "rot": 167,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

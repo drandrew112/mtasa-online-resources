@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2520.25, 1043.13, 10.82],
+    "center": [
+        2520.25,
+        1043.13,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman confused, drinking constantly",
                 "description": "An older woman under the neon signs in Come-A-Lot is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night."
+            },
+            "hu": {
+                "title": "Zavart nő, állandóan iszik",
+                "description": "Egy idősebb nő a Come-A-Lot neonfényei alatt zavart, és folyamatosan egy nagy vizespalackból iszik. A férje szerint lefogyott, és egész éjjel gyakran vizelt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [2520.25, 1043.13, 10.82],
+            "pos": [
+                2520.25,
+                1043.13,
+                10.82
+            ],
             "rot": 233,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 561, "consciousness": "confused" }
+            "state": {
+                "glucose": 561,
+                "consciousness": "confused"
+            }
         }
     ]
 }

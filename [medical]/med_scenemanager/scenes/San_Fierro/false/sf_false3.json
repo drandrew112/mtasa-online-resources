@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2606.62, 908.25, 64.82],
+    "center": [
+        -2606.62,
+        908.25,
+        64.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Child not breathing",
                 "description": "A young-sounding caller says a child is not breathing at a busy crossroads in Paradiso, then laughs and hangs up. The callback goes to voicemail."
+            },
+            "hu": {
+                "title": "Nem lélegző gyermek",
+                "description": "Egy fiatalnak hangzó bejelentő azt mondja, hogy egy gyermek nem lélegzik Paradiso forgalmas kereszteződésénél, majd nevetve leteszi a telefont. A visszahívás hangpostára fut."
             }
         },
         "caller": "SceneManager",

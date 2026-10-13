@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1515.87, 149.21, 31.76],
+    "center": [
+        1515.87,
+        149.21,
+        31.76
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell from the scaffolding of a barn he was repairing next to the country road near Montgomery. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Egy építőmunkás lezuhant egy javítás alatt álló pajta állványzatáról, a Montgomery közelében lévő országút mellett. Lába természetellenes szögben áll, és vérzik a feje. Munkatársai nem mozdították el."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [1515.87, 149.21, 31.76],
+            "pos": [
+                1515.87,
+                149.21,
+                31.76
+            ],
             "rot": 138,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4486 }
+            "state": {
+                "bloodVolume": 4486
+            }
         }
     ]
 }

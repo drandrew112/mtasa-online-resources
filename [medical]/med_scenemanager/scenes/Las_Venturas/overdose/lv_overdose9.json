@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1059, 2446, 10.82],
+    "center": [
+        1059,
+        2446,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming, overheated",
                 "description": "A man on the grass near the Whitewood Estates is shouting at passers-by, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting."
+            },
+            "hu": {
+                "title": "Kiabál, túlmelegedett",
+                "description": "Egy férfi a Whitewood Estates közelében, a füvön kiabál a járókelőkkel, izzad, és tépi a ruháját. Szemtanúk látták, amint üvegpipából szívott. Végül leült és zihál."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,25 @@
         {
             "id": "p1",
             "skin": 185,
-            "pos": [1059, 2446, 10.82],
+            "pos": [
+                1059,
+                2446,
+                10.82
+            ],
             "rot": 13,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 3 }
+                {
+                    "type": "stimulant",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 200, "diastolic": 119, "heartRate": 172, "consciousness": "confused" }
+            "state": {
+                "systolic": 200,
+                "diastolic": 119,
+                "heartRate": 172,
+                "consciousness": "confused"
+            }
         }
     ]
 }

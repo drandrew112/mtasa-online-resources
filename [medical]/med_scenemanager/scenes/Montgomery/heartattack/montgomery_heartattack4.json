@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1409.054, 255.319, 19.547],
+    "center": [
+        1409.054,
+        255.319,
+        19.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Racing heart, dizzy",
                 "description": "A young mechanic says his heart is \"revving like a V8\" after his fourth coffee. He is pale and cannot stand up without the world tilting."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, szédülés",
+                "description": "Egy fiatal szerelő azt mondja, a negyedik kávé után úgy pörög a szíve, „mint egy V8-as motor”. Sápadt, és nem tud felállni anélkül, hogy ne dőlne vele a világ."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 147,
-            "pos": [1409.054, 255.319, 19.547],
+            "pos": [
+                1409.054,
+                255.319,
+                19.547
+            ],
             "rot": 21,
             "anim": "sit",
             "injuries": [],

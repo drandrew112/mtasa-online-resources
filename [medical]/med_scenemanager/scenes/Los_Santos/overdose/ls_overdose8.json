@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1494, -1602, 13.55],
+    "center": [
+        1494,
+        -1602,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen drank too much, vomiting",
                 "description": "A teenager in a parking lot in Pershing Square has been vomiting after drinking with friends for the first time. He is pale, sleepy and cannot stand up on his own."
+            },
+            "hu": {
+                "title": "Tinédzser túl sokat ivott, hány",
+                "description": "Egy tinédzser fiú a Pershing Square egyik parkolójában hány, miután életében először ivott a barátaival. Sápadt, álmos, és önerőből nem tud felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 97,
-            "pos": [1494, -1602, 13.55],
+            "pos": [
+                1494,
+                -1602,
+                13.55
+            ],
             "rot": 359,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

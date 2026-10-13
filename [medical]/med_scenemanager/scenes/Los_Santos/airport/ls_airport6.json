@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2194, -2662, 13.55],
+    "center": [
+        2194,
+        -2662,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Ramp worker collapsed in the heat",
                 "description": "A ramp worker collapsed after a long shift loading planes in the sun at Los Santos International. He is confused, hot to the touch and has stopped sweating."
+            },
+            "hu": {
+                "title": "Hőségben összeesett rakodómunkás",
+                "description": "Egy rakodómunkás összeesett, miután hosszú műszakon át repülőgépeket rakodott a napon a Los Santos International területén. Zavart, tapintásra forró, és már nem izzad."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2194, -2662, 13.55],
+            "pos": [
+                2194,
+                -2662,
+                13.55
+            ],
             "rot": 117,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "systolic": 94, "heartRate": 132, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 4200,
+                "systolic": 94,
+                "heartRate": 132,
+                "consciousness": "confused"
+            }
         }
     ]
 }

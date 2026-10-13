@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2685.243, 2398.863, 59.571],
+    "center": [
+        -2685.243,
+        2398.863,
+        59.571
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted, rapid pulse",
                 "description": "A young woman passed out by the road after complaining of a racing heart. She breathes fast and shallow and will not wake up."
+            },
+            "hu": {
+                "title": "Elájult, szapora pulzus",
+                "description": "Egy fiatal nő elájult az út mellett, miután azt panaszolta, hogy hevesen ver a szíve. Gyorsan és felületesen lélegzik, és nem lehet felébreszteni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 190,
-            "pos": [-2685.243, 2398.863, 59.571],
+            "pos": [
+                -2685.243,
+                2398.863,
+                59.571
+            ],
             "rot": 221,
             "anim": "ko_back",
             "injuries": [],

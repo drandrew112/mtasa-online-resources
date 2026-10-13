@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1780, -1939, 13.2],
+    "center": [
+        1780,
+        -1939,
+        13.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache on platform",
                 "description": "A commuter waiting for his train sat down on the platform holding his head. He says the pain came on suddenly and the announcements are making it worse. He stopped his pills last month."
+            },
+            "hu": {
+                "title": "Fejfájás a peronon",
+                "description": "Egy ingázó a vonatra várva leült a peronon, és a fejét fogja. Azt mondja, a fájdalom hirtelen kezdődött, a hangosbemondó pedig súlyosbítja. A múlt hónapban abbahagyta a gyógyszerei szedését."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [1780, -1939, 13.556],
+            "pos": [
+                1780,
+                -1939,
+                13.556
+            ],
             "rot": 131,
             "anim": "sit",
             "injuries": [],

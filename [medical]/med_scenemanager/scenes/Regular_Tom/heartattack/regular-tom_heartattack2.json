@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-335.468, 1742.175, 42.969],
+    "center": [
+        -335.468,
+        1742.175,
+        42.969
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, short of breath",
                 "description": "A woman carrying water jugs home sat down by the road with chest pain and shortness of breath."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, légszomj",
+                "description": "Egy nő vízzel teli kannákat cipelt hazafelé, amikor mellkasi fájdalom és légszomj miatt leült az út mellett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-335.468, 1742.175, 42.969],
+            "pos": [
+                -335.468,
+                1742.175,
+                42.969
+            ],
             "rot": 341,
             "anim": "sit",
             "injuries": [],

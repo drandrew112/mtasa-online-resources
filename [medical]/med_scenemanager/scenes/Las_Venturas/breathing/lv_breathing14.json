@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1801.2, 1326.13, 6.74],
+    "center": [
+        1801.2,
+        1326.13,
+        6.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager cannot breathe",
                 "description": "A teenager by the roadside near the High Roller is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home."
+            },
+            "hu": {
+                "title": "A tinédzser nem kap levegőt",
+                "description": "Egy tinédzser hangosan sípolva lélegzik az út mellett, a High Roller közelében, és egyszerre csak két-három szót tud kimondani. A barátai szerint asztmás, de otthon felejtette az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 102,
-            "pos": [1801.2, 1326.13, 6.74],
+            "pos": [
+                1801.2,
+                1326.13,
+                6.74
+            ],
             "rot": 265,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

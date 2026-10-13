@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [690, -480, 16.34],
+    "center": [
+        690,
+        -480,
+        16.34
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache of her life",
                 "description": "A woman in a parking lot in Dillimore grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása",
+                "description": "Egy nő egy dillimore-i parkolóban a fejéhez kap, és azt kiabálja, hogy élete legerősebb fejfájása van. Egyszer hányt, most pedig egyre bágyadtabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [690, -480, 16.34],
+            "pos": [
+                690,
+                -480,
+                16.34
+            ],
             "rot": 150,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 200, "diastolic": 114, "consciousness": "dazed" }
+            "state": {
+                "systolic": 200,
+                "diastolic": 114,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

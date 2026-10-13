@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2137.09, -2283.3, 30.63],
+    "center": [
+        -2137.09,
+        -2283.3,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman outside a small store in Angel Pine mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Tabletták és bor, erős álmosság",
+                "description": "Egy nő Angel Pine-ban, egy kis üzlet előtt egy vita után szorongásoldó tablettákat vett be egy üveg borral. Elmosódottan beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-2137.09, -2283.3, 30.63],
+            "pos": [
+                -2137.09,
+                -2283.3,
+                30.63
+            ],
             "rot": 265,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 92, "consciousness": "dazed" }
+            "state": {
+                "spo2": 92,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

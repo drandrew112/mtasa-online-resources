@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [144.87, 2138.29, 17.61],
+    "center": [
+        144.87,
+        2138.29,
+        17.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hunting accident",
                 "description": "A hunter was shot by his friend by the dusty roadside near El Castillo del Diablo, who mistook him for a deer. He has a wound in his thigh that is bleeding heavily."
+            },
+            "hu": {
+                "title": "Vadászbaleset",
+                "description": "Egy vadászt a barátja lőtt meg a poros út mellett, El Castillo del Diablo közelében, mert szarvasnak nézte. A combján lévő sebe erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 240,
-            "pos": [144.87, 2138.29, 17.61],
+            "pos": [
+                144.87,
+                2138.29,
+                17.61
+            ],
             "rot": 195,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3703 }
+            "state": {
+                "bloodVolume": 3703
+            }
         }
     ]
 }

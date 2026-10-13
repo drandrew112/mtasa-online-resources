@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2444, -1925.25, 13.55],
+    "center": [
+        2444,
+        -1925.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming, overheated, raging heart",
                 "description": "A man on the sidewalk in Willowfield is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He is now bent over, panting."
+            },
+            "hu": {
+                "title": "Kiabál, túlmelegedett, heves szívdobogás",
+                "description": "Egy férfi Willowfield járdáján az autókra kiabál, izzad, és rángatja a ruháját. Szemtanúk látták, amint üvegpipából szívott. Most előregörnyedve zihál."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,25 @@
         {
             "id": "p1",
             "skin": 103,
-            "pos": [2444, -1925.25, 13.55],
+            "pos": [
+                2444,
+                -1925.25,
+                13.55
+            ],
             "rot": 180,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 3 }
+                {
+                    "type": "stimulant",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 204, "diastolic": 118, "heartRate": 166, "consciousness": "confused" }
+            "state": {
+                "systolic": 204,
+                "diastolic": 118,
+                "heartRate": 166,
+                "consciousness": "confused"
+            }
         }
     ]
 }

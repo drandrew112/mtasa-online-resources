@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2864.248, 990.559, 41.171],
+    "center": [
+        -2864.248,
+        990.559,
+        41.171
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, blurred vision",
                 "description": "A taxi driver got out of his cab because the road started to blur. He has a band-like headache and his neck feels stiff."
+            },
+            "hu": {
+                "title": "Fejfájás, homályos látás",
+                "description": "Egy taxis kiszállt az autójából, mert elhomályosult előtte az út. Szorító, pántszerű fejfájása van, és merevnek érzi a nyakát."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [-2864.248, 990.559, 41.171],
+            "pos": [
+                -2864.248,
+                990.559,
+                41.171
+            ],
             "rot": 222.6,
             "anim": "sit",
             "injuries": [],

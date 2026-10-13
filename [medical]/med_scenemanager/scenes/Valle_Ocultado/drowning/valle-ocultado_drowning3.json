@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-740, 2770, 46.65],
+    "center": [
+        -740,
+        2770,
+        46.65
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Throat swelling after a bee sting",
                 "description": "A beekeeper on the dusty ground in Valle Ocultado was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before."
+            },
+            "hu": {
+                "title": "Méhcsípés után duzzad a torok",
+                "description": "Valle Ocultado poros földjén egy méhészt többször megcsíptek, a nyelve és a torka gyorsan duzzad. Sípolva lélegzik, és azt mondja, még soha nem reagált így csípésre."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [-740, 2770, 46.65],
+            "pos": [
+                -740,
+                2770,
+                46.65
+            ],
             "rot": 224,
             "anim": "tired",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 83, "systolic": 92, "heartRate": 124 }
+            "state": {
+                "spo2": 83,
+                "systolic": 92,
+                "heartRate": 124
+            }
         }
     ]
 }

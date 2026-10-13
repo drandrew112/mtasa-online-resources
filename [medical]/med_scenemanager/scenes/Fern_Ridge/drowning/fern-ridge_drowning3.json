@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1301.77, -190.45, 22.5],
+    "center": [
+        1301.77,
+        -190.45,
+        22.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swallowed a fish bone",
                 "description": "An old fisherman by the road at the edge of the woods near Fern Ridge has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty."
+            },
+            "hu": {
+                "title": "Halcsont akadt a torkán",
+                "description": "Egy idős halásznak halcsont akadt a torkán az út mellett, az erdő szélén Fern Ridge közelében. Öklendezik, nyálzik, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [1301.77, -190.45, 22.5],
+            "pos": [
+                1301.77,
+                -190.45,
+                22.5
+            ],
             "rot": 358,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 92 }
+            "state": {
+                "spo2": 92
+            }
         }
     ]
 }

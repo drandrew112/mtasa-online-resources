@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2540.22, -1497.25, 24.03],
+    "center": [
+        2540.22,
+        -1497.25,
+        24.03
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell from the second level of scaffolding on the sidewalk in East Los Santos. He is lying face down, groaning, with blood under his head. Coworkers say he landed on his chest."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Egy építőmunkás lezuhant az East Los Santos járdáján álló állványzat második szintjéről. Arccal lefelé fekszik, nyög, feje alatt vér gyűlt össze. Munkatársai szerint a mellkasára esett."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,31 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [2540.22, -1497.25, 24.03],
+            "pos": [
+                2540.22,
+                -1497.25,
+                24.03
+            ],
             "rot": 152,
             "anim": "ko_front",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4300, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 4300,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

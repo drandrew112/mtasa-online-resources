@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [388.79, 2367.74, 25.5],
+    "center": [
+        388.79,
+        2367.74,
+        25.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crash with people trapped",
                 "description": "An anonymous caller reports a bad crash with people trapped by the dusty roadside in Verdant Meadows. No other calls came in about it."
+            },
+            "hu": {
+                "title": "Baleset, beszorult sérültekkel",
+                "description": "Egy névtelen bejelentő súlyos balesetről számol be Verdant Meadows poros útpadkájáról; emberek szorultak be. Más nem jelentette az esetet."
             }
         },
         "caller": "SceneManager",

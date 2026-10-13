@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2578.38, -1294.25, 46.13],
+    "center": [
+        2578.38,
+        -1294.25,
+        46.13
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger lost vision, one side numb",
                 "description": "A jogger on the pavement in East Los Santos stopped and sat down, saying he cannot see on the left side and his left hand is numb. He is speaking clearly but is scared. Symptoms began about fifteen minutes ago."
+            },
+            "hu": {
+                "title": "A kocogó elvesztette látását, egyik oldala zsibbad",
+                "description": "Egy kocogó megállt és leült East Los Santos járdáján; azt mondja, nem lát a bal oldalán, és elzsibbadt a bal keze. Tisztán beszél, de fél. A tünetek körülbelül tizenöt perce kezdődtek."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 96,
-            "pos": [2578.38, -1294.25, 46.13],
+            "pos": [
+                2578.38,
+                -1294.25,
+                46.13
+            ],
             "rot": 86,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

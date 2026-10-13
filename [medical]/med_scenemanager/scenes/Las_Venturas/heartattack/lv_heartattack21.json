@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2612.397, 1380.373, 10.82],
+    "center": [
+        2612.397,
+        1380.373,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found unresponsive",
                 "description": "A street cleaner found a woman lying on the sidewalk in her party dress. Cold, clammy, slow shallow breaths. She does not respond at all."
+            },
+            "hu": {
+                "title": "Eszméletlenül találták",
+                "description": "Egy utcaseprő egy alkalmi ruhába öltözött nőt talált a járdán fekve. Bőre hideg és nyirkos, légzése lassú és felületes. Egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [2612.397, 1380.373, 10.82],
+            "pos": [
+                2612.397,
+                1380.373,
+                10.82
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [],

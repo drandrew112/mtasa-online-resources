@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2324.34, 322.95, 38.39],
+    "center": [
+        -2324.34,
+        322.95,
+        38.39
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car ran off the road",
                 "description": "A blue car left the road and hit the curb in King's. The driver is still behind the wheel with a head injury and disorientation."
+            },
+            "hu": {
+                "title": "Letért az útról az autó",
+                "description": "King's területén egy kék autó letért az útról és a járdaszegélynek ütközött. A sofőr fejsérüléssel és zavartan még mindig a volán mögött ül."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,96 @@
         {
             "id": "v1",
             "model": 547,
-            "pos": [-2323.65, 319.03, 39.113],
-            "rot": [0.05, -0.33, 72.06],
+            "pos": [
+                -2323.65,
+                319.03,
+                39.113
+            ],
+            "rot": [
+                0.05,
+                -0.33,
+                72.06
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF72 704",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 45,
-            "pos": [-2323.65, 319.03, 39.36],
+            "pos": [
+                -2323.65,
+                319.03,
+                39.36
+            ],
             "rot": 72.06,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 60, "consciousness": "dazed" }
+            "state": {
+                "pain": 60,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1547, -365, 6.88],
+    "center": [
+        -1547,
+        -365,
+        6.88
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell, head bleeding",
                 "description": "A drunk man fell backwards on the grass in Easter Bay Airport and hit his head on the hard ground. He is bleeding heavily from the back of the head and keeps trying to get up."
+            },
+            "hu": {
+                "title": "Részeg férfi esett el, vérzik a feje",
+                "description": "Easter Bay Airport füves területén egy részeg férfi hátraesett, és beütötte a fejét a kemény talajba. Erősen vérzik a tarkóján, és folyton fel akar kelni."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 229,
-            "pos": [-1547, -365, 6.88],
+            "pos": [
+                -1547,
+                -365,
+                6.88
+            ],
             "rot": 34,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "alcohol", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

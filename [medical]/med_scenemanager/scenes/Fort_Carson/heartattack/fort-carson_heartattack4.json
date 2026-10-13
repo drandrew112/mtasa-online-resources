@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [11.052, 1155.875, 19.74],
+    "center": [
+        11.052,
+        1155.875,
+        19.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "A deputy found a man slumped by the road at dawn. Grey, clammy, barely breathing."
+            },
+            "hu": {
+                "title": "Nem reagál, szürkés bőr",
+                "description": "Egy járőr hajnalban egy összeroskadt férfit talált az út mellett. Szürkés, nyirkos a bőre, és alig lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [11.052, 1155.875, 19.74],
+            "pos": [
+                11.052,
+                1155.875,
+                19.74
+            ],
             "rot": 213,
             "anim": "ko_back",
             "injuries": [],

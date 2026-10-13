@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [917.5, -1489.12, 12.37],
+    "center": [
+        917.5,
+        -1489.12,
+        12.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car spun out",
                 "description": "A yellow car lost control and spun out in Marina. The driver got out and is sitting on the ground with a bump on the head and a headache."
+            },
+            "hu": {
+                "title": "Megpördült az autó",
+                "description": "Egy sárga autó elvesztette az irányítást és megpördült Marinában. A sofőr kiszállt, és a földre ült; dudor van a fején, és fáj a feje."
             }
         },
         "caller": "SceneManager",
@@ -22,33 +30,89 @@
         {
             "id": "v1",
             "model": 492,
-            "pos": [917.5, -1488.09, 13.306],
-            "rot": [-0.04, 0.01, 258.33],
+            "pos": [
+                917.5,
+                -1488.09,
+                13.306
+            ],
+            "rot": [
+                -0.04,
+                0.01,
+                258.33
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS44 480",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 170,
-            "pos": [918.422, -1483.831, 13.376],
+            "pos": [
+                918.422,
+                -1483.831,
+                13.376
+            ],
             "rot": 95.2,
             "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

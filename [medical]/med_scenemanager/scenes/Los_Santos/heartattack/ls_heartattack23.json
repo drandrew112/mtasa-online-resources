@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2077.337, -2180.136, 13.547],
+    "center": [
+        2077.337,
+        -2180.136,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, uneasy",
                 "description": "A retired man walking his groceries home had to sit on the sidewalk. Short of breath, heavy feeling in his chest, he \"just doesn't feel right\". His milk is getting warm."
+            },
+            "hu": {
+                "title": "Légszomj, rossz közérzet",
+                "description": "Egy nyugdíjas férfinak le kellett ülnie a járdára, miközben hazafelé vitte a bevásárlását. Légszomja van, nehéz érzést tapasztal a mellkasában, és „egyszerűen nincs jól”. A teje közben melegszik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [2077.337, -2180.136, 13.547],
+            "pos": [
+                2077.337,
+                -2180.136,
+                13.547
+            ],
             "rot": 338,
             "anim": "sit",
             "injuries": [],

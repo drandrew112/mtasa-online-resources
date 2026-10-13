@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2370.88, -2164.87, 21.88],
+    "center": [
+        2370.88,
+        -2164.87,
+        21.88
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Driver stopped, cannot speak",
                 "description": "A driver stopped in the middle of the lane in Ocean Docks with hazard lights on. Other drivers say he is sitting behind the wheel, staring, and cannot answer. One side of his face droops."
+            },
+            "hu": {
+                "title": "A sofőr megállt, nem tud beszélni",
+                "description": "Egy sofőr megállt az úttest közepén Ocean Docks területén, és bekapcsolta a vészvillogót. A többi autós szerint a volán mögött ülve maga elé mered, és nem tud válaszolni. Arca egyik oldala lebiggyedt."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,97 @@
         {
             "id": "v1",
             "model": 405,
-            "pos": [2370.88, -2164.87, 21.63],
-            "rot": [0, 0, 50],
+            "pos": [
+                2370.88,
+                -2164.87,
+                21.63
+            ],
+            "rot": [
+                0,
+                0,
+                50
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": true,
             "health": 1000,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS19 314",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 177,
-            "pos": [2370.88, -2164.87, 21.88],
+            "pos": [
+                2370.88,
+                -2164.87,
+                21.88
+            ],
             "rot": 116,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 196, "diastolic": 108, "consciousness": "dazed" }
+            "state": {
+                "systolic": 196,
+                "diastolic": 108,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

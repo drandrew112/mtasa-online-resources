@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1297.83, 329.53, 19.56],
+    "center": [
+        1297.83,
+        329.53,
+        19.56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest tightness, blurred vision",
                 "description": "A heavy-set man on the main street in Montgomery complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples."
+            },
+            "hu": {
+                "title": "Mellkasi szorítás, homályos látás",
+                "description": "Egy túlsúlyos férfi Montgomery főutcáján mellkasi szorításra és homályos látásra panaszkodik. Izzad, fél, és folyton a halántékát dörzsöli."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 217,
-            "pos": [1297.83, 329.53, 19.56],
+            "pos": [
+                1297.83,
+                329.53,
+                19.56
+            ],
             "rot": 118,
             "anim": "crouch",
             "injuries": [],

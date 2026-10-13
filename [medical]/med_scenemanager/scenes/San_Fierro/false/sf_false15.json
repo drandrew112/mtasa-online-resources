@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2672.12, 1251.75, 55.46],
+    "center": [
+        -2672.12,
+        1251.75,
+        55.46
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure reported",
                 "description": "A passer-by reports someone having a seizure at a junction in Battery Point. The caller left before the call was finished."
+            },
+            "hu": {
+                "title": "Rohamról érkezett bejelentés",
+                "description": "Egy járókelő arról számolt be, hogy valaki rohamot kapott Battery Point egyik kereszteződésénél. A bejelentő a hívás befejezése előtt elment."
             }
         },
         "caller": "SceneManager",

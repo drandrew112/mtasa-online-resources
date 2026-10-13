@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-733.216, 2642.495, 65.04],
+    "center": [
+        -733.216,
+        2642.495,
+        65.04
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "A passing driver found a man by the road, unresponsive, grey and barely breathing."
+            },
+            "hu": {
+                "title": "Reagálásképtelen, szürkés bőrű",
+                "description": "Egy arra haladó sofőr egy férfit talált az út mellett. Nem reagál, bőre szürkés, és alig lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 22,
-            "pos": [-733.216, 2642.495, 65.04],
+            "pos": [
+                -733.216,
+                2642.495,
+                65.04
+            ],
             "rot": 254,
             "anim": "ko_back",
             "injuries": [],

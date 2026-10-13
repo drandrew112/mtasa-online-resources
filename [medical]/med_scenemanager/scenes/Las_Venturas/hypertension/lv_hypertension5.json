@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2757.25, 1320.425, 12.251],
+    "center": [
+        2757.25,
+        1320.425,
+        12.251
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, numb fingers",
                 "description": "A woman has a bad headache and her fingers on one hand feel numb. She is worried because her mother had a stroke at the same age."
+            },
+            "hu": {
+                "title": "Fejfájás, zsibbadó ujjak",
+                "description": "Egy nőnek erős fejfájása van, és az egyik kezén zsibbadnak az ujjai. Aggódik, mert az édesanyja ugyanebben a korban kapott stroke-ot."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [2757.25, 1320.425, 12.251],
+            "pos": [
+                2757.25,
+                1320.425,
+                12.251
+            ],
             "rot": 90,
             "anim": "crouch",
             "injuries": [],

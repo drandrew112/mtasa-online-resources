@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2258.75, 48.88, 26.48],
+    "center": [
+        2258.75,
+        48.88,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure reported",
                 "description": "A passer-by reports someone having a seizure outside a house in Palomino Creek. The caller left before the call was finished."
+            },
+            "hu": {
+                "title": "Rohamot jelentettek",
+                "description": "Egy járókelő azt jelentette, hogy valakinek rohama van Palomino Creek egyik háza előtt. A bejelentő még a hívás befejezése előtt elment."
             }
         },
         "caller": "SceneManager",

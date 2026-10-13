@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1919.26, 1467.48, 10.82],
+    "center": [
+        1919.26,
+        1467.48,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hot dog contest, not breathing",
                 "description": "A contestant in an eating competition on a bench near Pirates in Men's Pants collapsed with a mouthful of food. He has stopped breathing and bystanders are trying to clear his airway."
+            },
+            "hu": {
+                "title": "Evőverseny közben összeesett, nem lélegzik",
+                "description": "Egy evőverseny résztvevője összeesett, miközben étel volt a szájában, a Pirates in Men's Pants közelében lévő padon. Leállt a légzése, a körülötte állók próbálják szabaddá tenni a légútját."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [1919.26, 1467.48, 10.82],
+            "pos": [
+                1919.26,
+                1467.48,
+                10.82
+            ],
             "rot": 187,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 55, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 55,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

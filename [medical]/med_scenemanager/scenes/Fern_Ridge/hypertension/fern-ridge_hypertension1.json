@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [516.07, -160.48, 37.78],
+    "center": [
+        516.07,
+        -160.48,
+        37.78
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache, vomiting",
                 "description": "A woman by the road at the edge of the woods near Fern Ridge has the worst headache of her life and just vomited. She is very pale and her hands are shaking."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása, hányás",
+                "description": "Egy nőnek élete legerősebb fejfájása van az út mellett, az erdő szélén Fern Ridge közelében, és éppen hányt. Nagyon sápadt, a keze remeg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [516.07, -160.48, 37.78],
+            "pos": [
+                516.07,
+                -160.48,
+                37.78
+            ],
             "rot": 242,
             "anim": "crouch",
             "injuries": [],

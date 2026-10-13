@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-389.29, 2618.79, 43.61],
+    "center": [
+        -389.29,
+        2618.79,
+        43.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man next to the country road near El Castillo del Diablo cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy El Castillo del Diablo közelében, az országút mellett álló férfi nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzódnak a nyakánál lévő légzőizmai. Ötször használta az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [-389.29, 2618.79, 43.61],
+            "pos": [
+                -389.29,
+                2618.79,
+                43.61
+            ],
             "rot": 275,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 135 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 135
+            }
         }
     ]
 }

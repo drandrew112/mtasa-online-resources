@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2057.6, -1012.3, 32.17],
+    "center": [
+        -2057.6,
+        -1012.3,
+        32.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aggressive, sweaty man",
                 "description": "A security guard by the roadside in Foster Valley reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck."
+            },
+            "hu": {
+                "title": "Agresszív, izzadt férfi",
+                "description": "Foster Valley útja mellett egy biztonsági őr egy izzadt férfiról számol be, aki káromkodik és emberekre támad. A nyakában cukorbetegségre figyelmeztető medál van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-2057.6, -1012.3, 32.17],
+            "pos": [
+                -2057.6,
+                -1012.3,
+                32.17
+            ],
             "rot": 30,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 36, "consciousness": "confused" }
+            "state": {
+                "glucose": 36,
+                "consciousness": "confused"
+            }
         }
     ]
 }

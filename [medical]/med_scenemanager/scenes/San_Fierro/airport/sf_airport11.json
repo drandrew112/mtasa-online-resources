@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1247, -125, 14.14],
+    "center": [
+        -1247,
+        -125,
+        14.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Overdose in the parking area",
                 "description": "Security found a man lying outside the terminal at Easter Bay Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him."
+            },
+            "hu": {
+                "title": "Túladagolás a parkolóban",
+                "description": "A biztonsági szolgálat egy férfit talált az Easter Bay Airport terminálja előtt fekve. Alig lélegzik, pupillái tűhegynyiek. Mellette egy üres gyógyszeres üveg hever."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 258,
-            "pos": [-1247, -125, 14.14],
+            "pos": [
+                -1247,
+                -125,
+                14.14
+            ],
             "rot": 234,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 73, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 73,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

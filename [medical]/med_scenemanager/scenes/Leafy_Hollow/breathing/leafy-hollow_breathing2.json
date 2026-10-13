@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-1175.48, -1887.22, 77.26],
+    "center": [
+        -1175.48,
+        -1887.22,
+        77.26
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man on the road shoulder near Leafy Hollow cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi Leafy Hollow közelében, az útpadkán nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzza a nyakizmai közötti részt. Ötször használta már az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [-1175.48, -1887.22, 77.26],
+            "pos": [
+                -1175.48,
+                -1887.22,
+                77.26
+            ],
             "rot": 273,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 131 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 131
+            }
         }
     ]
 }

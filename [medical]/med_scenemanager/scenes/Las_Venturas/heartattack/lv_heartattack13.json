@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2776.5, 920.75, 10.92],
+    "center": [
+        2776.5,
+        920.75,
+        10.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, arm numb",
                 "description": "A cocktail waitress on her break is sitting on the sidewalk clutching her chest. Severe pain into her left arm, soaked in sweat. She has been on her feet for 14 hours."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, zsibbadt kar",
+                "description": "Egy koktélpultosnő a szünetében a járdán ül, és a mellkasát szorítja. Erős fájdalma a bal karjába sugárzik, csurom víz az izzadságtól. Már 14 órája talpon van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [2776.5, 920.75, 10.92],
+            "pos": [
+                2776.5,
+                920.75,
+                10.92
+            ],
             "rot": 114,
             "anim": "hold_side",
             "injuries": [],

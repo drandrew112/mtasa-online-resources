@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-407.78, 2655.36, 50.01],
+    "center": [
+        -407.78,
+        2655.36,
+        50.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest on the road shoulder near El Castillo del Diablo. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Egy férfit mellkason lőttek az útpadkán, El Castillo del Diablo közelében. Nehezen kap levegőt, az ajkai sápadtak, és a sebből vérhab bugyog."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [-407.78, 2655.36, 50.01],
+            "pos": [
+                -407.78,
+                2655.36,
+                50.01
+            ],
             "rot": 257,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3802, "spo2": 85 }
+            "state": {
+                "bloodVolume": 3802,
+                "spo2": 85
+            }
         }
     ]
 }

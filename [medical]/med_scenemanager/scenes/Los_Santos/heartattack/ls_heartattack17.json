@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2406.75, -2116.463, 13.554],
+    "center": [
+        2406.75,
+        -2116.463,
+        13.554
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain after the gym",
                 "description": "A bodybuilder left the gym, sat on the curb and now cannot catch his breath. Tight chest, sweating, tingling in his arm. He swears it is just \"a really good pump\"."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom edzés után",
+                "description": "Egy testépítő kijött az edzőteremből, leült a járdaszegélyre, és most nem kap levegőt. Szorít a mellkasa, izzad, és bizsereg a karja. Esküszik, hogy ez csak „egy igazán jó izompumpa”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 183,
-            "pos": [2406.75, -2116.463, 13.554],
+            "pos": [
+                2406.75,
+                -2116.463,
+                13.554
+            ],
             "rot": 303,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1474.82, -284.4, 9.85],
+    "center": [
+        -1474.82,
+        -284.4,
+        9.85
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot lift her arm",
                 "description": "An elderly woman on the airport access road dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            },
+            "hu": {
+                "title": "Nem tudja felemelni a karját",
+                "description": "A repülőtérre vezető úton egy idős nő elejtette a bevásárlószatyrait, és már nem tudja felemelni a bal karját. Zavart, és újra meg újra ugyanazt kérdezi."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-1474.82, -284.4, 9.85],
+            "pos": [
+                -1474.82,
+                -284.4,
+                9.85
+            ],
             "rot": 136,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 175, "consciousness": "confused" }
+            "state": {
+                "systolic": 175,
+                "consciousness": "confused"
+            }
         }
     ]
 }

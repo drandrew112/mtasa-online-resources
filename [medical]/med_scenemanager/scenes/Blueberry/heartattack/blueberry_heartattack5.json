@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [176.148, 70.135, 2.43],
+    "center": [
+        176.148,
+        70.135,
+        2.43
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, uneasy",
                 "description": "An elderly woman walking back from church had to sit by the road. She is short of breath, sweaty and just \"feels wrong\"."
+            },
+            "hu": {
+                "title": "Légszomj, rossz közérzet",
+                "description": "Egy idős nő hazafelé tartott a templomból, amikor le kellett ülnie az út mellett. Légszomja van, izzad, és egyszerűen úgy érzi, hogy „valami nincs rendben”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 55,
-            "pos": [176.148, 70.135, 2.43],
+            "pos": [
+                176.148,
+                70.135,
+                2.43
+            ],
             "rot": 241,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2617.08, 224.86, 4.87],
+    "center": [
+        -2617.08,
+        224.86,
+        4.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker at a bus stop in Ocean Flats feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Homályosan látó munkás",
+                "description": "Ocean Flats egyik buszmegállójában egy építőmunkás rosszul érzi magát, homályosan lát, és egész műszak alatt vizet ivott. Ezen a héten otthon felejtette a cukorbetegségére szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 50,
-            "pos": [-2617.08, 224.86, 4.87],
+            "pos": [
+                -2617.08,
+                224.86,
+                4.87
+            ],
             "rot": 155,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 399 }
+            "state": {
+                "glucose": 399
+            }
         }
     ]
 }

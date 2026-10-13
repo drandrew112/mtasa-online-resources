@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [570, -680, 12.14],
+    "center": [
+        570,
+        -680,
+        12.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pounding headache, dizzy",
                 "description": "A farmer on open ground near Dillimore sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week."
+            },
+            "hu": {
+                "title": "Lüktető fejfájás, szédülés",
+                "description": "Egy gazda leült egy Dillimore közelében lévő nyílt területen, mert lüktető fejfájása van, és úgy érzi, forog vele a világ. A vérnyomáscsökkentő gyógyszere a múlt héten elfogyott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [570, -680, 12.14],
+            "pos": [
+                570,
+                -680,
+                12.14
+            ],
             "rot": 149,
             "anim": "sit",
             "injuries": [],

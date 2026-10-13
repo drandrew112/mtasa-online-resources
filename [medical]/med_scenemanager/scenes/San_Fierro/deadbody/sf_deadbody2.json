@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2847, -105, 8.97],
+    "center": [
+        -2847,
+        -105,
+        8.97
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger found lifeless",
                 "description": "Cyclists found a jogger lying in a small park in Ocean Flats. He is not breathing, his lips are blue and his body is already cold."
+            },
+            "hu": {
+                "title": "Élettelenül talált kocogó",
+                "description": "Kerékpárosok egy kocogót találtak egy kis parkban Ocean Flats területén. Nem lélegzik, ajkai kékek, teste már kihűlt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 259,
-            "pos": [-2847, -105, 8.97],
+            "pos": [
+                -2847,
+                -105,
+                8.97
+            ],
             "rot": 73,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

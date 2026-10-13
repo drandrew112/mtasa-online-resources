@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2094, -2282, 13.55],
+    "center": [
+        2094,
+        -2282,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Asthma attack, inhaler in checked bag",
                 "description": "A young passenger at Los Santos International is having a bad asthma attack. Her inhaler is in the checked luggage. She is wheezing and frightened."
+            },
+            "hu": {
+                "title": "Asztmás roham, az inhalátor a feladott poggyászban",
+                "description": "Egy fiatal utasnak súlyos asztmás rohama van a Los Santos International területén. Az inhalátora a feladott poggyászában van. Sípolva lélegzik és nagyon fél."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 152,
-            "pos": [2094, -2282, 13.55],
+            "pos": [
+                2094,
+                -2282,
+                13.55
+            ],
             "rot": 60,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88 }
+            "state": {
+                "spo2": 88
+            }
         }
     ]
 }

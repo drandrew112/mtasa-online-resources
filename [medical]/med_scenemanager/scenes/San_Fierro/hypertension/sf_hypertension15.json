@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2077.956, -300.675, 35.561],
+    "center": [
+        -2077.956,
+        -300.675,
+        35.561
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pregnant, headache, swelling",
                 "description": "A pregnant woman at around thirty weeks has a severe headache and pain under her ribs. Her face and fingers are puffy."
+            },
+            "hu": {
+                "title": "Várandós nő fejfájással és duzzanattal",
+                "description": "Egy körülbelül harminc hetes várandós nőnek erős fejfájása és a bordái alatti fájdalma van. Az arca és az ujjai fel vannak puffadva."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [-2077.956, -300.675, 35.561],
+            "pos": [
+                -2077.956,
+                -300.675,
+                35.561
+            ],
             "rot": 270.3,
             "anim": "sit",
             "injuries": [],

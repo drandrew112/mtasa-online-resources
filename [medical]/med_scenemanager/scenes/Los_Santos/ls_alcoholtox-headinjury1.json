@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2016.563, -1654.142, 13.555],
+    "center": [
+        2016.563,
+        -1654.142,
+        13.555
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Intoxicated woman fell and hit her head",
                 "description": "A woman at a crowded techno party drank a large amount of alcohol and then fell to the ground, hitting her head. She is heavily intoxicated, confused and drowsy after the fall. Partygoers are concerned and have called for an ambulance."
+            },
+            "hu": {
+                "title": "Bódult nő elesett, beütötte a fejét",
+                "description": "Egy zsúfolt techno bulin egy nő nagy mennyiségű alkoholt ivott, majd elesett, és beütötte a fejét. Erősen ittas, zavart és álmos az esés után. A bulizók aggódnak, és mentőt hívtak."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 11,
-            "pos": [2016.563, -1654.142, 13.555],
+            "pos": [
+                2016.563,
+                -1654.142,
+                13.555
+            ],
             "rot": 14.5,
             "anim": "ko_back",
             "injuries": [
-                { "type": "alcohol", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

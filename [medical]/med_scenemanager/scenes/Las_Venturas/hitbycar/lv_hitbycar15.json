@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1109.75, 2053.13, 11.15],
+    "center": [
+        1109.75,
+        2053.13,
+        11.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Struck by a speeding car",
                 "description": "A speeding car hit a pedestrian at a busy crossroads near the Whitewood Estates and crashed into a pole. The pedestrian is unconscious and bleeding heavily from his head and legs."
+            },
+            "hu": {
+                "title": "Elütötte egy száguldó autó",
+                "description": "Egy száguldó autó elütött egy gyalogost a Whitewood Estates közelében lévő forgalmas kereszteződésben, majd egy oszlopnak csapódott. A gyalogos eszméletlen, a fejéből és a lábából erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,102 @@
         {
             "id": "v1",
             "model": 540,
-            "pos": [1102.75, 2053.13, 10.9],
-            "rot": [0, 0, 263.6],
+            "pos": [
+                1102.75,
+                2053.13,
+                10.9
+            ],
+            "rot": [
+                0,
+                0,
+                263.6
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                20,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV52 415",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 217,
-            "pos": [1109.75, 2053.13, 11.15],
+            "pos": [
+                1109.75,
+                2053.13,
+                11.15
+            ],
             "rot": 186,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3586, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3586,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

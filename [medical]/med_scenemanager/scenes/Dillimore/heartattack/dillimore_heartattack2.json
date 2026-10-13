@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [594.16, -638.884, 21.966],
+    "center": [
+        594.16,
+        -638.884,
+        21.966
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pressure, short of breath",
                 "description": "The diner waitress walked outside holding her chest. Short of breath, pain spreading into her left arm. The breakfast rush is still going on without her."
+            },
+            "hu": {
+                "title": "Mellkasi nyomás, légszomj",
+                "description": "Az étkezde pincérnője a mellkasát fogva lépett ki az utcára. Légszomja van, a fájdalom a bal karjába sugárzik. A reggeli csúcsforgalom nélküle is folytatódik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 55,
-            "pos": [594.16, -638.884, 21.966],
+            "pos": [
+                594.16,
+                -638.884,
+                21.966
+            ],
             "rot": 295,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [134, -1742, 6.543],
+    "center": [
+        134,
+        -1742,
+        6.543
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slurred speech in park",
                 "description": "A man playing chess in the park suddenly slurred his words and dropped a piece with his right hand. His opponent says he complained of a headache first."
+            },
+            "hu": {
+                "title": "Elmosódott beszéd a parkban",
+                "description": "Egy parkban sakkozó férfi hirtelen elmosódottan kezdett beszélni, és a jobb kezével elejtett egy sakkfigurát. Ellenfele szerint először fejfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [134, -1742, 6.543],
+            "pos": [
+                134,
+                -1742,
+                6.543
+            ],
             "rot": 0,
             "anim": "sit",
             "injuries": [],

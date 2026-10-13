@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1678.875, -1290.875, 14.039],
+    "center": [
+        1678.875,
+        -1290.875,
+        14.039
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Agitated man, chest pain",
                 "description": "A young man in a suit is pacing outside a Downtown club, sweating, says his heart is going to explode and that someone is following him. His friends admit he took cocaine."
+            },
+            "hu": {
+                "title": "Nyugtalan férfi, mellkasi fájdalom",
+                "description": "Egy öltönyös fiatal férfi fel-alá járkál egy belvárosi klub előtt, izzad, és azt mondja, mindjárt felrobban a szíve, valamint valaki követi. Barátai bevallják, hogy kokaint fogyasztott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [1678.875, -1290.875, 14.039],
+            "pos": [
+                1678.875,
+                -1290.875,
+                14.039
+            ],
             "rot": 250,
             "anim": "lean",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

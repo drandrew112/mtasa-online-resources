@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-872.49, -1829.4, 92.47],
+    "center": [
+        -872.49,
+        -1829.4,
+        92.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker next to the country road in Leafy Hollow feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Homályosan látó munkás",
+                "description": "Egy építőmunkás a Leafy Hollow melletti országút közelében rosszul érzi magát, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegség elleni tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [-872.49, -1829.4, 92.47],
+            "pos": [
+                -872.49,
+                -1829.4,
+                92.47
+            ],
             "rot": 325,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 409 }
+            "state": {
+                "glucose": 409
+            }
         }
     ]
 }

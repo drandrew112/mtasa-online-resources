@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-857.263, 1437.728, 14.387],
+    "center": [
+        -857.263,
+        1437.728,
+        14.387
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A woman screaming at a broken vending machine is now leaning on a wall with chest pain and a pounding headache."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, rendkívül magas vérnyomás",
+                "description": "Egy nő egy elromlott automatával kiabált, most pedig a falnak támaszkodik. Fáj a mellkasa, és lüktető fejfájása van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 216,
-            "pos": [-857.263, 1437.728, 14.387],
+            "pos": [
+                -857.263,
+                1437.728,
+                14.387
+            ],
             "rot": 199,
             "anim": "lean",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2185.902, -2485.014, 30.625],
+    "center": [
+        -2185.902,
+        -2485.014,
+        30.625
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A furious woman who just had her car towed is leaning on a wall with chest pain and a pounding headache."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, rendkívül magas vérnyomás",
+                "description": "Egy feldúlt nő, akinek éppen elszállították az autóját, a falnak támaszkodik. Fáj a mellkasa, és lüktető fejfájása van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [-2185.902, -2485.014, 30.625],
+            "pos": [
+                -2185.902,
+                -2485.014,
+                30.625
+            ],
             "rot": 16,
             "anim": "lean",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2609.68, 1615.55, 10.82],
+    "center": [
+        2609.68,
+        1615.55,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mugging victim shot in the arm",
                 "description": "A man refused to hand over his wallet outside a wedding chapel in Pilgrim and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound."
+            },
+            "hu": {
+                "title": "Rablás áldozata, meglőtték a karját",
+                "description": "Egy férfi nem volt hajlandó átadni a pénztárcáját a Pilgrim egyik esküvői kápolnája előtt, ezért karon lőtték. A falnak támaszkodva ül, és egy inget szorít a sebre."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 185,
-            "pos": [2609.68, 1615.55, 10.82],
+            "pos": [
+                2609.68,
+                1615.55,
+                10.82
+            ],
             "rot": 155,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

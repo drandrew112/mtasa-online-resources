@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [854.55, -558.27, 17.28],
+    "center": [
+        854.55,
+        -558.27,
+        17.28
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker next to the country road in Dillimore feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Munkás homályos látással",
+                "description": "Egy építőmunkás rosszul érzi magát az országút mellett Dillimore-ban, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegségre szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [854.55, -558.27, 17.28],
+            "pos": [
+                854.55,
+                -558.27,
+                17.28
+            ],
             "rot": 170,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 421 }
+            "state": {
+                "glucose": 421
+            }
         }
     ]
 }

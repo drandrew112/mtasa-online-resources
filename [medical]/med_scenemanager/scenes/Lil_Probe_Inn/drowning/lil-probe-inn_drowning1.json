@@ -5,7 +5,11 @@
     "location": "Lil' Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-73.59, 1356.37, 10.43],
+    "center": [
+        -73.59,
+        1356.37,
+        10.43
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aspirated vomit, gurgling",
                 "description": "A very drunk man vomited on the road shoulder at the Lil' Probe Inn and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy."
+            },
+            "hu": {
+                "title": "Hányadék került a légutakba, bugyborékoló légzés",
+                "description": "Egy nagyon részeg férfi kihányta magát a Lil' Probe Inn útpadkáján, majd a hátára esve elájult. Bugyborékoló hangokat ad, légzése nedves és zajos."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [-73.59, 1356.37, 10.43],
+            "pos": [
+                -73.59,
+                1356.37,
+                10.43
+            ],
             "rot": 278,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 77, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 77,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

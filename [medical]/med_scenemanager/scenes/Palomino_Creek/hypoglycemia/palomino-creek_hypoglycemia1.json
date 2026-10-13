@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2400, 100, 26.47],
+    "center": [
+        2400,
+        100,
+        26.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker acting drunk",
                 "description": "Coworkers on a paved lot in Palomino Creek say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+            },
+            "hu": {
+                "title": "Részegnek tűnő dolgozó",
+                "description": "Munkatársak Palomino Creek egyik kövezett területén azt mondják, kollégájuk részegnek tűnik, izzad és elmosódottan beszél, pedig sosem iszik. Cukorbeteg, és kihagyta az ebédszünetét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [2400, 100, 26.47],
+            "pos": [
+                2400,
+                100,
+                26.47
+            ],
             "rot": 264,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 38 }
+            "state": {
+                "glucose": 38
+            }
         }
     ]
 }

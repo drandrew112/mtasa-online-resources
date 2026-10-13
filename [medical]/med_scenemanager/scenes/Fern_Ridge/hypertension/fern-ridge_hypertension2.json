@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1061.19, 142.66, 31.73],
+    "center": [
+        1061.19,
+        142.66,
+        31.73
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, ringing ears",
                 "description": "An elderly man at the side of the road near Fern Ridge says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects."
+            },
+            "hu": {
+                "title": "Szédülés, fülzúgás",
+                "description": "Egy idős férfi az út szélén, Fern Ridge közelében azt mondja, cseng a füle, és mindjárt elájul. Bevallja, hogy a mellékhatások miatt abbahagyta a vérnyomáscsökkentő gyógyszere szedését."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [1061.19, 142.66, 31.73],
+            "pos": [
+                1061.19,
+                142.66,
+                31.73
+            ],
             "rot": 325,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-839.62, 2710.65, 45.95],
+    "center": [
+        -839.62,
+        2710.65,
+        45.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Very thirsty and confused",
                 "description": "A farmhand on the dusty ground in Valle Ocultado keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            },
+            "hu": {
+                "title": "Nagyon szomjas és zavart",
+                "description": "Valle Ocultado poros földjén egy mezőgazdasági munkás újra és újra vizet kér, egész nap folyamatosan vizelt, és most már arra sem emlékszik, hová indult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [-839.62, 2710.65, 45.95],
+            "pos": [
+                -839.62,
+                2710.65,
+                45.95
+            ],
             "rot": 7,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 535, "consciousness": "confused" }
+            "state": {
+                "glucose": 535,
+                "consciousness": "confused"
+            }
         }
     ]
 }

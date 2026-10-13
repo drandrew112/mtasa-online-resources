@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-876.709, -1800.349, 89.396],
+    "center": [
+        -876.709,
+        -1800.349,
+        89.396
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, pounding head",
                 "description": "A woman living in a cabin walked to the road for help. Crushing headache and chest pain. She ran out of her pills a week ago."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, lüktető fejfájás",
+                "description": "Egy kunyhóban élő nő segítségért ment az úthoz. Szétfeszítő fejfájása és mellkasi fájdalma van. Egy hete elfogyott a gyógyszere."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 55,
-            "pos": [-876.709, -1800.349, 89.396],
+            "pos": [
+                -876.709,
+                -1800.349,
+                89.396
+            ],
             "rot": 355,
             "anim": "lean",
             "injuries": [],

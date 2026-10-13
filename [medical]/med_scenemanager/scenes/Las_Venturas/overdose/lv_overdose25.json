@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2539, 1366, 10.82],
+    "center": [
+        2539,
+        1366,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman in a parking lot near the Camel's Toe mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Altató és bor, súlyos álmosság",
+                "description": "Egy nő a Camel's Toe közelében lévő parkolóban egy vita után szorongáscsökkentő tablettákat vett be egy üveg borral. Összefolyó szavakkal beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [2539, 1366, 10.82],
+            "pos": [
+                2539,
+                1366,
+                10.82
+            ],
             "rot": 258,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89, "consciousness": "dazed" }
+            "state": {
+                "spo2": 89,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

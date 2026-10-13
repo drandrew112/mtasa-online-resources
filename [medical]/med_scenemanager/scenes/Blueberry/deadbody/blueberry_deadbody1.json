@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [-30, -430, 2.48],
+    "center": [
+        -30,
+        -430,
+        2.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger found lifeless",
                 "description": "Cyclists found a jogger lying in the park just outside Blueberry. He is not breathing, his lips are blue and his body is already cold."
+            },
+            "hu": {
+                "title": "Élettelenül fekvő kocogót találtak",
+                "description": "Kerékpárosok egy kocogót találtak a Blueberry külterületén lévő parkban. Nem lélegzik, kék az ajka, a teste pedig már hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 223,
-            "pos": [-30, -430, 2.48],
+            "pos": [
+                -30,
+                -430,
+                2.48
+            ],
             "rot": 297,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

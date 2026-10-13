@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1160.04, 855.82, 10.91],
+    "center": [
+        1160.04,
+        855.82,
+        10.91
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest by the roadside at Blackfield Intersection. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Egy férfit mellkason lőttek a Blackfield Intersection út menti részén. Nehezen lélegzik, ajkai sápadtak, a sebből vérbuborékok törnek elő."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 210,
-            "pos": [1160.04, 855.82, 10.91],
+            "pos": [
+                1160.04,
+                855.82,
+                10.91
+            ],
             "rot": 174,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3924, "spo2": 85 }
+            "state": {
+                "bloodVolume": 3924,
+                "spo2": 85
+            }
         }
     ]
 }

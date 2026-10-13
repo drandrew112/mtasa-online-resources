@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-60.191, 2337.137, 21.432],
+    "center": [
+        -60.191,
+        2337.137,
+        21.432
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found unresponsive",
                 "description": "A camper found a woman by the road, unresponsive, barely breathing, grey and cold."
+            },
+            "hu": {
+                "title": "Eszméletlenül találták",
+                "description": "Egy kempingező egy nőt talált az út mellett. A nő eszméletlen, alig lélegzik, bőre szürkés és hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [-60.191, 2337.137, 21.432],
+            "pos": [
+                -60.191,
+                2337.137,
+                21.432
+            ],
             "rot": 92,
             "anim": "ko_back",
             "injuries": [],

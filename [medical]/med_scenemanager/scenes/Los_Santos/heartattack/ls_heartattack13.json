@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1906, -1253.875, 13.559],
+    "center": [
+        1906,
+        -1253.875,
+        13.559
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak, nauseous, pale",
                 "description": "A woman in a business suit sat down on the curb in the middle of a phone call. She feels sick, exhausted and has \"weird jaw pain\". She wants to be back in her meeting in ten minutes."
+            },
+            "hu": {
+                "title": "Gyenge, hányingere van, sápadt",
+                "description": "Egy kosztümös nő leült a járdaszegélyre egy telefonhívás közben. Rosszul érzi magát, kimerült, és „furcsa állkapocsfájdalma” van. Tíz percen belül vissza akar érni a megbeszélésére."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [1906, -1253.875, 13.559],
+            "pos": [
+                1906,
+                -1253.875,
+                13.559
+            ],
             "rot": 31,
             "anim": "sit",
             "injuries": [],

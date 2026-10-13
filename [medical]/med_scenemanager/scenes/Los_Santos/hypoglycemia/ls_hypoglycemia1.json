@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2406.75, -2116.463, 13.554],
+    "center": [
+        2406.75,
+        -2116.463,
+        13.554
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker acting drunk",
                 "description": "Dock workers say their colleague is acting drunk, sweating and talking nonsense, but he does not drink. He skipped lunch. There is an insulin pen in his jacket."
+            },
+            "hu": {
+                "title": "Részegnek tűnő dolgozó",
+                "description": "A dokkmunkások szerint kollégájuk részegnek tűnik, izzad és értelmetlenül beszél, pedig nem iszik. Kihagyta az ebédet. A kabátzsebében inzulinadagoló toll van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2406.75, -2116.463, 13.554],
+            "pos": [
+                2406.75,
+                -2116.463,
+                13.554
+            ],
             "rot": 180,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 40 }
+            "state": {
+                "glucose": 40
+            }
         }
     ]
 }

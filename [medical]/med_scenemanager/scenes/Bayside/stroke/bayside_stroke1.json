@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2619.5, 2582.19, 72.31],
+    "center": [
+        -2619.5,
+        2582.19,
+        72.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot lift her arm",
                 "description": "An elderly woman on open ground in Bayside dropped her groceries and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            },
+            "hu": {
+                "title": "Nem tudja felemelni a karját",
+                "description": "Egy idős nő elejtette a bevásárlószatyrait egy Bayside-ban lévő nyílt területen, és többé nem tudja felemelni a bal karját. Zavart, és újra meg újra ugyanazt a kérdést teszi fel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 31,
-            "pos": [-2619.5, 2582.19, 72.31],
+            "pos": [
+                -2619.5,
+                2582.19,
+                72.31
+            ],
             "rot": 181,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 180, "consciousness": "confused" }
+            "state": {
+                "systolic": 180,
+                "consciousness": "confused"
+            }
         }
     ]
 }

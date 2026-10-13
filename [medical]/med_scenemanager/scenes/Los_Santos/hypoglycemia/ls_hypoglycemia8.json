@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [928, -1860.92, 9.97],
+    "center": [
+        928,
+        -1860.92,
+        9.97
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Had a fit, now very confused",
                 "description": "Witnesses at the side of the road in Verona Beach say a man shook all over for about a minute. Now he is awake but confused and sweating heavily. A friend says he is on insulin."
+            },
+            "hu": {
+                "title": "Rohama volt, most nagyon zavart",
+                "description": "Szemtanúk szerint egy férfi körülbelül egy percig rázkódott Verona Beach út menti részén. Most ébren van, de zavart és erősen izzad. Egy barátja szerint inzulint használ."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 25,
-            "pos": [928, -1860.92, 9.97],
+            "pos": [
+                928,
+                -1860.92,
+                9.97
+            ],
             "rot": 164,
             "anim": "ko_back",
             "injuries": [
-                { "type": "postictal", "severity": 1 }
+                {
+                    "type": "postictal",
+                    "severity": 1
+                }
             ],
-            "state": { "glucose": 30, "consciousness": "confused" }
+            "state": {
+                "glucose": 30,
+                "consciousness": "confused"
+            }
         }
     ]
 }

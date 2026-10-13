@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2486, -1666, 13.5],
+    "center": [
+        2486,
+        -1666,
+        13.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shots fired, two down",
                 "description": "Drive-by shooting on Grove Street. Witnesses report several shots from a passing car. Two young men are on the ground, one of them is not moving. Police are on the way."
+            },
+            "hu": {
+                "title": "Lövések dördültek, két sérült",
+                "description": "Grove Streeten autóból leadott lövések dördültek. Szemtanúk szerint egy elhaladó járműből többször lőttek. Két fiatal férfi fekszik a földön; egyikük nem mozdul. A rendőrség úton van."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,38 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [2486, -1666, 13.5],
+            "pos": [
+                2486,
+                -1666,
+                13.5
+            ],
             "rot": 40,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3700 }
+            "state": {
+                "bloodVolume": 3700
+            }
         },
         {
             "id": "p2",
             "skin": 106,
-            "pos": [2488.2, -1667.5, 13.7],
+            "pos": [
+                2488.2,
+                -1667.5,
+                13.7
+            ],
             "rot": 300,
             "anim": "injured",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-745.12, 1477.34, 23.03],
+    "center": [
+        -745.12,
+        1477.34,
+        23.03
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slumped over, drooling",
                 "description": "A man is slumped over on the road shoulder in Las Barrancas, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer."
+            },
+            "hu": {
+                "title": "Összeroskadva ül, nyálzik",
+                "description": "Egy férfi összeroskadva ül az útpadkán Las Barrancasban, és a szája egyik oldalából nyál folyik. Megszólításra kinyitja a szemét, de nem tud válaszolni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [-745.12, 1477.34, 23.03],
+            "pos": [
+                -745.12,
+                1477.34,
+                23.03
+            ],
             "rot": 1,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 204, "diastolic": 112, "consciousness": "dazed" }
+            "state": {
+                "systolic": 204,
+                "diastolic": 112,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

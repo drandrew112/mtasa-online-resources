@@ -5,7 +5,11 @@
     "location": "Mount Chiliad",
     "enabled": true,
     "weight": 1,
-    "center": [-2298.62, -2165.47, 44.5],
+    "center": [
+        -2298.62,
+        -2165.47,
+        44.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found on the ground, cannot speak",
                 "description": "A dog walker found an elderly woman lying next to the country road near Angel Pine. She is awake and looks at people but cannot speak, and her right side is limp."
+            },
+            "hu": {
+                "title": "A földön találták, nem tud beszélni",
+                "description": "Egy kutyasétáltató egy idős nőt talált az országút mellett, Angel Pine közelében. A nő ébren van, és az emberekre néz, de nem tud beszélni; a jobb oldala petyhüdt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2298.62, -2165.47, 44.5],
+            "pos": [
+                -2298.62,
+                -2165.47,
+                44.5
+            ],
             "rot": 26,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 201, "consciousness": "dazed" }
+            "state": {
+                "systolic": 201,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

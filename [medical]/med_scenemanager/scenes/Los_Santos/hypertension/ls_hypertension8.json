@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [226.529, -1740.245, 4.37],
+    "center": [
+        226.529,
+        -1740.245,
+        4.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe headache, vomiting",
                 "description": "A young mother is sitting on the sidewalk with her head in her hands. She has thrown up twice and says the daylight is stabbing her eyes. Her toddler is safe with a neighbour."
+            },
+            "hu": {
+                "title": "Erős fejfájás, hányás",
+                "description": "Egy fiatal anya a járdán ül, fejét a kezébe temeti. Kétszer hányt, és azt mondja, a nappali fény szinte beleszúr a szemébe. Kisgyermeke biztonságban van egy szomszédnál."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [226.529, -1740.245, 4.37],
+            "pos": [
+                226.529,
+                -1740.245,
+                4.37
+            ],
             "rot": 272,
             "anim": "sit",
             "injuries": [],

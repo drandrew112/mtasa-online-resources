@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1934.2, -1719.25, 13.547],
+    "center": [
+        1934.2,
+        -1719.25,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed, frightened",
                 "description": "A woman has a nosebleed that started suddenly while she was walking. She is frightened, her head aches and her hands are trembling."
+            },
+            "hu": {
+                "title": "Orrvérzés, rémület",
+                "description": "Egy nőnek hirtelen vérezni kezdett az orra séta közben. Megijedt, fáj a feje, és remeg a keze."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 11,
-            "pos": [1934.2, -1719.25, 13.547],
+            "pos": [
+                1934.2,
+                -1719.25,
+                13.547
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [],

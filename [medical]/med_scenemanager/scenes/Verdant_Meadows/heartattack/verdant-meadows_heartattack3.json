@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [424.815, 2670.48, 60.038],
+    "center": [
+        424.815,
+        2670.48,
+        60.038
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A skydiving student sat by the road with her heart racing long after her jump. Pale and dizzy."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, majdnem elájult",
+                "description": "Egy ejtőernyős tanuló az út mellett ült le; még jóval az ugrás után is hevesen ver a szíve. Sápadt és szédül."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [424.815, 2670.48, 60.038],
+            "pos": [
+                424.815,
+                2670.48,
+                60.038
+            ],
             "rot": 79,
             "anim": "sit",
             "injuries": [],

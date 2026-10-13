@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-751.32, -1554.44, 93.89],
+    "center": [
+        -751.32,
+        -1554.44,
+        93.89
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "COPD flare, lips blue",
                 "description": "An old man with emphysema on the road shoulder near Leafy Hollow ran out of oxygen in his portable tank. He is very drowsy and his lips are blue."
+            },
+            "hu": {
+                "title": "COPD-s rosszabbodás, kék ajkak",
+                "description": "Egy tüdőtágulásban szenvedő idős férfinak elfogyott az oxigénje a hordozható palackból Leafy Hollow útpadkájánál. Nagyon álmos, ajkai kékek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 132,
-            "pos": [-751.32, -1554.44, 93.89],
+            "pos": [
+                -751.32,
+                -1554.44,
+                93.89
+            ],
             "rot": 277,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 78, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

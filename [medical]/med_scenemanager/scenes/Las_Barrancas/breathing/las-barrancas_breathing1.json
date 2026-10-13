@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-920, 1470, 30.22],
+    "center": [
+        -920,
+        1470,
+        30.22
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot breathe lying down",
                 "description": "A woman on the dusty ground in Las Barrancas says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly."
+            },
+            "hu": {
+                "title": "Fekve nem kap levegőt",
+                "description": "Egy nő Las Barrancas poros földjén azt mondja, ülve kell lélegeznie, és előző éjjel arra ébredt, hogy levegő után kapkod. Most gyorsan lélegzik, és bugyborékoló hang hallatszik a légzéséből."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-920, 1470, 30.22],
+            "pos": [
+                -920,
+                1470,
+                30.22
+            ],
             "rot": 170,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 86, "systolic": 194 }
+            "state": {
+                "spo2": 86,
+                "systolic": 194
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2752.88, -2042.12, 12.75],
+    "center": [
+        2752.88,
+        -2042.12,
+        12.75
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly diabetic, very drowsy",
                 "description": "A neighbour found an elderly man at a bus stop in Playa del Seville, very sleepy and hard to keep awake. He has been drinking huge amounts of water for days and has diabetes. His skin is dry and warm."
+            },
+            "hu": {
+                "title": "Idős cukorbeteg, nagyon álmos",
+                "description": "Egy szomszéd egy idős férfit talált Playa del Seville egyik buszmegállójában. Nagyon álmos, nehéz ébren tartani. Napok óta hatalmas mennyiségű vizet iszik, és cukorbeteg. Bőre száraz és meleg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 49,
-            "pos": [2752.88, -2042.12, 12.75],
+            "pos": [
+                2752.88,
+                -2042.12,
+                12.75
+            ],
             "rot": 175,
             "anim": "ko_back",
             "injuries": [],

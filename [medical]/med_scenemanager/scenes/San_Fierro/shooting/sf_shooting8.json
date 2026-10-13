@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1979.7, -807.17, 32.19],
+    "center": [
+        -1979.7,
+        -807.17,
+        32.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman shot in the stomach",
                 "description": "A woman was shot in the stomach next to the road in Foster Valley during an argument with her ex-partner. She is bent over, pale and getting weaker."
+            },
+            "hu": {
+                "title": "Haslövést kapott nő",
+                "description": "Foster Valley útja mellett egy nő haslövést kapott, miután összeveszett volt partnerével. Előregörnyed, sápadt, és egyre gyengébb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [-1979.7, -807.17, 32.19],
+            "pos": [
+                -1979.7,
+                -807.17,
+                32.19
+            ],
             "rot": 114,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3907 }
+            "state": {
+                "bloodVolume": 3907
+            }
         }
     ]
 }

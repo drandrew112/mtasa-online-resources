@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2816.37, -140.25, 7.19],
+    "center": [
+        -2816.37,
+        -140.25,
+        7.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Student, fruity breath",
                 "description": "A student on the sidewalk in Ocean Flats has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week."
+            },
+            "hu": {
+                "title": "Diák, gyümölcsös lehelet",
+                "description": "Egy Ocean Flats járdáján tartózkodó diáklánynak fáj a hasa, lehelete körömlakklemosóra emlékeztet. Barátai szerint a vizsgaidőszakban kihagyta az inzulinadagjait."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [-2816.37, -140.25, 7.19],
+            "pos": [
+                -2816.37,
+                -140.25,
+                7.19
+            ],
             "rot": 247,
             "anim": "tired",
             "injuries": [],
-            "state": { "glucose": 510, "heartRate": 114 }
+            "state": {
+                "glucose": 510,
+                "heartRate": 114
+            }
         }
     ]
 }

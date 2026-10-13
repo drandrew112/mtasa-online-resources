@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1999.525, -1.875, 34.311],
+    "center": [
+        -1999.525,
+        -1.875,
+        34.311
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, no breathing",
                 "description": "A man arguing about the price of sourdough collapsed on the sidewalk outside the bakery. Not breathing. The baker is on the phone, flour everywhere."
+            },
+            "hu": {
+                "title": "Férfi összeesett, nem lélegzik",
+                "description": "Egy férfi a kovászos kenyér áráról vitatkozott, majd összeesett a pékség előtti járdán. Nem lélegzik. A pék telefonál, mindenütt liszt van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 147,
-            "pos": [-1999.525, -1.875, 34.311],
+            "pos": [
+                -1999.525,
+                -1.875,
+                34.311
+            ],
             "rot": 168,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

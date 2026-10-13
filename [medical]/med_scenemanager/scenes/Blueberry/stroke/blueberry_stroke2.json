@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [390, -10, 4.74],
+    "center": [
+        390,
+        -10,
+        4.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slumped over, drooling",
                 "description": "A man is slumped over on a grassy patch just outside Blueberry, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer."
+            },
+            "hu": {
+                "title": "Összeroskadva ül, nyálzik",
+                "description": "Egy férfi összeroskadva ül egy Blueberry külterületén lévő füves területen, és a szája egyik oldalából nyál folyik. Megszólításra kinyitja a szemét, de nem tud válaszolni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [390, -10, 4.74],
+            "pos": [
+                390,
+                -10,
+                4.74
+            ],
             "rot": 184,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 198, "diastolic": 114, "consciousness": "dazed" }
+            "state": {
+                "systolic": 198,
+                "diastolic": 114,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

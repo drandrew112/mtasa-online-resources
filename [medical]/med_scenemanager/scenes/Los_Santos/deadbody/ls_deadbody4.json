@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2120.13, -1578.12, 26.22],
+    "center": [
+        2120.13,
+        -1578.12,
+        26.22
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Homeless person not waking",
                 "description": "A shop worker opening up on the sidewalk in Idlewood found a homeless man lying under a blanket, cold and stiff. He does not respond at all."
+            },
+            "hu": {
+                "title": "Nem ébred a hajléktalan",
+                "description": "Egy üzlet dolgozója nyitáskor egy takaró alatt fekvő hajléktalan férfit talált Idlewood járdáján. Hideg és merev, egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [2120.13, -1578.12, 26.22],
+            "pos": [
+                2120.13,
+                -1578.12,
+                26.22
+            ],
             "rot": 232,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

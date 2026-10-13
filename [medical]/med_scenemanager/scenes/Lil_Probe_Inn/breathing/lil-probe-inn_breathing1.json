@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [51, 1284.34, 17.46],
+    "center": [
+        51,
+        1284.34,
+        17.46
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man behind the Lil' Probe Inn cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi a Lil' Probe Inn mögött nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzza a nyakizmai közötti részt. Ötször használta már az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 59,
-            "pos": [51, 1284.34, 17.46],
+            "pos": [
+                51,
+                1284.34,
+                17.46
+            ],
             "rot": 253,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 83, "heartRate": 134 }
+            "state": {
+                "spo2": 83,
+                "heartRate": 134
+            }
         }
     ]
 }

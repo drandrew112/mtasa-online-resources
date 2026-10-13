@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [445.67, -1763.97, 5.8],
+    "center": [
+        445.67,
+        -1763.97,
+        5.8
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man found slumped, pinpoint pupils",
                 "description": "A delivery driver found a man slumped behind the bins on the sidewalk in Santa Maria Beach. He is grey, barely breathing and snoring. There is foil and a lighter next to him."
+            },
+            "hu": {
+                "title": "Összeroskadva találták, tűhegynyi pupillák",
+                "description": "Egy futár egy férfit talált összeroskadva Santa Maria Beach járdáján, a kukák mögött. Szürkés a bőre, alig lélegzik, és horkoló légzést hallat. Fólia és öngyújtó hever mellette."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 78,
-            "pos": [445.67, -1763.97, 5.8],
+            "pos": [
+                445.67,
+                -1763.97,
+                5.8
+            ],
             "rot": 206,
             "anim": "ko_front",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 80, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 80,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

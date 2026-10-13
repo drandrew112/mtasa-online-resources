@@ -5,7 +5,11 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-56.576, 1336.981, 11.08],
+    "center": [
+        -56.576,
+        1336.981,
+        11.08
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Racing heart, dizzy",
                 "description": "A trucker who drank too many energy drinks sat by the road with a racing heart, pale and dizzy."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, szédülés",
+                "description": "Egy kamionsofőr túl sok energiaitalt ivott, majd leült az út mellett, mert hevesen ver a szíve. Sápadt és szédül."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [-56.576, 1336.981, 11.08],
+            "pos": [
+                -56.576,
+                1336.981,
+                11.08
+            ],
             "rot": 333,
             "anim": "sit",
             "injuries": [],

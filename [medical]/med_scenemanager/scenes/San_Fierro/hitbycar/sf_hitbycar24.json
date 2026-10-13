@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2014, 1025.38, 55.47],
+    "center": [
+        -2014,
+        1025.38,
+        55.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hit by a delivery truck",
                 "description": "A truck driver did not see a woman crossing on the street in Calton Heights. She was dragged a few metres and is pale, drowsy and bleeding from her legs."
+            },
+            "hu": {
+                "title": "Áruszállító teherautó ütötte el",
+                "description": "Calton Heights utcáján egy teherautó-sofőr nem vette észre az úton átkelő nőt. A teherautó néhány méteren át vonszolta; a nő sápadt, aluszékony, és vérzik a lába."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,98 @@
         {
             "id": "v1",
             "model": 499,
-            "pos": [-2009.8, 1019.41, 56.59],
-            "rot": [0, 0, 175.2],
+            "pos": [
+                -2009.8,
+                1019.41,
+                56.59
+            ],
+            "rot": [
+                0,
+                0,
+                175.2
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF17 425",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 85,
-            "pos": [-2014, 1025.38, 55.47],
+            "pos": [
+                -2014,
+                1025.38,
+                55.47
+            ],
             "rot": 218,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3683, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3683,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

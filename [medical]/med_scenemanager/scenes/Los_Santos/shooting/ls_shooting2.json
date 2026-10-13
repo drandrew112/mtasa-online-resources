@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1994.635, -1621.884, 13.547],
+    "center": [
+        1994.635,
+        -1621.884,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Robbery, cashier shot",
                 "description": "An armed robbery at the Idlewood diner. The cashier was shot in the shoulder and a customer was hit in the leg by a stray bullet. The robber has fled."
+            },
+            "hu": {
+                "title": "Rablás, meglőtt pénztáros",
+                "description": "Fegyveres rablás történt az Idlewoodi étkezdében. A pénztárost vállon lőtték, egy vásárlót pedig egy kóbor lövedék lábon talált el. A rabló elmenekült."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,36 @@
         {
             "id": "p1",
             "skin": 205,
-            "pos": [1994.635, -1621.884, 13.547],
+            "pos": [
+                1994.635,
+                -1621.884,
+                13.547
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
             "state": {}
         },
         {
             "id": "p2",
             "skin": 100,
-            "pos": [1996.435, -1620.684, 13.747],
+            "pos": [
+                1996.435,
+                -1620.684,
+                13.747
+            ],
             "rot": 90,
             "anim": "injured",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

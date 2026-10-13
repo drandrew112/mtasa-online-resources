@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2406, -2056.12, 20.11],
+    "center": [
+        2406,
+        -2056.12,
+        20.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Diabetic teen, pale and dizzy",
                 "description": "A diabetic teenager at a bus stop in Willowfield feels dizzy and has blurred vision after sports practice. He ate a sweet but is still pale, shaky and getting sleepy."
+            },
+            "hu": {
+                "title": "Cukorbeteg tinédzser, sápadt és szédül",
+                "description": "Egy cukorbeteg tinédzser megszédült és homályosan lát Willowfield egyik buszmegállójában, sportolás után. Evett valami édeset, de még mindig sápadt, remeg és álmosodik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [2406, -2056.12, 20.11],
+            "pos": [
+                2406,
+                -2056.12,
+                20.11
+            ],
             "rot": 343,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 51, "heartRate": 110 }
+            "state": {
+                "glucose": 51,
+                "heartRate": 110
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1541.41, 2509.49, 56],
+    "center": [
+        -1541.41,
+        2509.49,
+        56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, still wheezing",
                 "description": "A man on open scrubland in El Quebrados choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt étel, továbbra is sípoló légzés",
+                "description": "Egy férfi El Quebradosban, a bozótos nyílt terepen félrenyelt egy hot dogot. Egy járókelő hátba ütögette, és egy darab kijött, de a férfi továbbra is erősen köhög és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [-1541.41, 2509.49, 56],
+            "pos": [
+                -1541.41,
+                2509.49,
+                56
+            ],
             "rot": 181,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 85 }
+            "state": {
+                "spo2": 85
+            }
         }
     ]
 }

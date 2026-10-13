@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2105.71, -527.61, 34.52],
+    "center": [
+        -2105.71,
+        -527.61,
+        34.52
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Coughing after chemical fumes",
                 "description": "A man on the sidewalk in Foster Valley breathed in strong fumes from a cleaning chemical that spilled in a shop nearby. He is coughing, his eyes are watering and his chest feels tight."
+            },
+            "hu": {
+                "title": "Köhögés vegyi gőzök belégzése után",
+                "description": "Egy férfi erős tisztítószer-gőzöket lélegzett be, miután egy közeli üzletben kiömlött a vegyszer. Foster Valley járdáján köhög, könnyezik a szeme, és szorít a mellkasa."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 124,
-            "pos": [-2105.71, -527.61, 34.52],
+            "pos": [
+                -2105.71,
+                -527.61,
+                34.52
+            ],
             "rot": 150,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

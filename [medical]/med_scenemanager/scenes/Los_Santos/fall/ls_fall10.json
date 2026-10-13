@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1829, -1782.25, 13.55],
+    "center": [
+        1829,
+        -1782.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen fell from a wall",
                 "description": "A teenager climbing a wall on the pavement in Idlewood fell about three metres onto her side. She is crying with pain in her leg and cannot put weight on it."
+            },
+            "hu": {
+                "title": "Tinédzser lezuhant egy falról",
+                "description": "Egy tinédzser lány megpróbált felmászni egy Idlewood járdáján álló falra, de körülbelül három métert zuhant az oldalára. Sírdogál a lábfájdalomtól, és nem tud ráállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 139,
-            "pos": [1829, -1782.25, 13.55],
+            "pos": [
+                1829,
+                -1782.25,
+                13.55
+            ],
             "rot": 292,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

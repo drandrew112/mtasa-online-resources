@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [874, -1882, 4.48],
+    "center": [
+        874,
+        -1882,
+        4.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager pulled from the water",
                 "description": "A teenage boy was found floating in the sea and brought onto the beach at Verona Beach. He is breathing weakly, coughing up water, and very pale."
+            },
+            "hu": {
+                "title": "Tinédzser fiút húztak ki a vízből",
+                "description": "Egy tinédzser fiút lebegve találtak a tengerben, majd Verona Beach homokos partjára vitték. Gyengén lélegzik, vizet köhög fel, és nagyon sápadt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [874, -1882, 4.48],
+            "pos": [
+                874,
+                -1882,
+                4.48
+            ],
             "rot": 177,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 78, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

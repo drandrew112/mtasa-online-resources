@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1259, 1826, 10.78],
+    "center": [
+        1259,
+        1826,
+        10.78
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Needle still in his arm",
                 "description": "A man is lying in a small park at Las Venturas Airport with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey."
+            },
+            "hu": {
+                "title": "Tű maradt a karjában",
+                "description": "Egy férfi a Las Venturas Airport egyik kis parkjában fekszik, karjában még mindig egy tűvel. Megrázásra felnyög, de lassan lélegzik, ajkai szürkék."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 222,
-            "pos": [1259, 1826, 10.78],
+            "pos": [
+                1259,
+                1826,
+                10.78
+            ],
             "rot": 70,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 85, "consciousness": "dazed" }
+            "state": {
+                "spo2": 85,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

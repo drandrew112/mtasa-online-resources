@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-954.33, -1710.55, 78.04],
+    "center": [
+        -954.33,
+        -1710.55,
+        78.04
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man vomiting",
                 "description": "A very drunk man on the road shoulder in Leafy Hollow has been vomiting and can no longer keep his eyes open. His friends say he drank a whole bottle of whisky on a bet."
+            },
+            "hu": {
+                "title": "Részeg férfi hány",
+                "description": "Egy nagyon részeg férfi Leafy Hollow útpadkáján hány, és már nyitva sem tudja tartani a szemét. A barátai szerint fogadásból megivott egy egész üveg whiskyt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [-954.33, -1710.55, 78.04],
+            "pos": [
+                -954.33,
+                -1710.55,
+                78.04
+            ],
             "rot": 184,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 3 }
+                {
+                    "type": "alcohol",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

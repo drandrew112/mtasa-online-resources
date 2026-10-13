@@ -5,7 +5,11 @@
     "location": "Blueberry Acres",
     "enabled": true,
     "weight": 1,
-    "center": [70, -110, 0.65],
+    "center": [
+        70,
+        -110,
+        0.65
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer wheezing after spraying",
                 "description": "A farmer on a grassy patch just outside Blueberry was spraying crops without a mask. Now he is wheezing, drooling and sweating, and his breathing is getting worse."
+            },
+            "hu": {
+                "title": "A gazda permetezés után sípolva lélegzik",
+                "description": "Egy gazda maszk nélkül permetezte a termést egy Blueberry külterületén lévő füves területen. Most sípolva lélegzik, nyálzik és izzad, a légzése pedig egyre rosszabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 184,
-            "pos": [70, -110, 0.65],
+            "pos": [
+                70,
+                -110,
+                0.65
+            ],
             "rot": 277,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 54 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 54
+            }
         }
     ]
 }

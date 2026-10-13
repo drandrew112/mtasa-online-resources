@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1814.5, -1662.25, 13.55],
+    "center": [
+        1814.5,
+        -1662.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found barely responsive",
                 "description": "A passer-by found a man lying at a bus stop in Idlewood, groaning but not answering. There is an insulin pen and a diabetic ID card in his bag. He is breathing deep and fast."
+            },
+            "hu": {
+                "title": "Alig reagál",
+                "description": "Egy járókelő egy férfit talált Idlewood egyik buszmegállójában. Felnyög, de nem válaszol. Táskájában inzulinadagoló toll és cukorbeteg-azonosító kártya van. Mélyen és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 222,
-            "pos": [1814.5, -1662.25, 13.55],
+            "pos": [
+                1814.5,
+                -1662.25,
+                13.55
+            ],
             "rot": 173,
             "anim": "ko_back",
             "injuries": [],

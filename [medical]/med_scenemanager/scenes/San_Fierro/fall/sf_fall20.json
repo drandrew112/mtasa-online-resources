@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2448.37, 1242.75, 34.7],
+    "center": [
+        -2448.37,
+        1242.75,
+        34.7
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell about two floors from scaffolding in front of an apartment block in Juniper Hollow. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Juniper Hollow egyik lakóháza előtt egy építőmunkás körülbelül két emeletnyi magasságból leesett az állványzatról. Lába rendellenes szögben áll, a feje vérzik. Munkatársai nem mozdították el."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [-2448.37, 1242.75, 34.7],
+            "pos": [
+                -2448.37,
+                1242.75,
+                34.7
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4396 }
+            "state": {
+                "bloodVolume": 4396
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1470.09, 333.27, 18.84],
+    "center": [
+        1470.09,
+        333.27,
+        18.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Empty pill packets",
                 "description": "A woman's flatmate found her next to the country road near Montgomery with empty pill packets around her and a goodbye note. She does not respond and is breathing shallowly."
+            },
+            "hu": {
+                "title": "Üres gyógyszeres levelek",
+                "description": "Egy nő lakótársa üres gyógyszeres levelek és egy búcsúlevél között találta meg őt Montgomery közelében, az országút mellett. Nem reagál, légzése felületes."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [1470.09, 333.27, 18.84],
+            "pos": [
+                1470.09,
+                333.27,
+                18.84
+            ],
             "rot": 33,
             "anim": "ko_back",
             "injuries": [
-                { "type": "sedative", "severity": 3 }
+                {
+                    "type": "sedative",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 84, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 84,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

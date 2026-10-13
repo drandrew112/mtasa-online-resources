@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-371.025, 1822.158, 50.265],
+    "center": [
+        -371.025,
+        1822.158,
+        50.265
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "An elderly woman keeps fainting by the road, slow pulse, pale and confused."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy idős nő újra meg újra elájul az út mellett. Pulzusa lassú, sápadt és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 76,
-            "pos": [-371.025, 1822.158, 50.265],
+            "pos": [
+                -371.025,
+                1822.158,
+                50.265
+            ],
             "rot": 114,
             "anim": "sit",
             "injuries": [],

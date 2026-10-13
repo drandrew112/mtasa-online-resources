@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [986.15, 758.6, 10.78],
+    "center": [
+        986.15,
+        758.6,
+        10.78
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell down concrete stairs",
                 "description": "A man fell down a long flight of concrete stairs by the roadside in Las Venturas. He is dazed, has a bump on his head and his arm hurts badly."
+            },
+            "hu": {
+                "title": "Leesett a betonlépcsőn",
+                "description": "Egy férfi lezuhant egy hosszú betonlépcsőn Las Venturasban, az út szélén. Zavart, dudor van a fején, és erősen fáj a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [986.15, 758.6, 10.78],
+            "pos": [
+                986.15,
+                758.6,
+                10.78
+            ],
             "rot": 17,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

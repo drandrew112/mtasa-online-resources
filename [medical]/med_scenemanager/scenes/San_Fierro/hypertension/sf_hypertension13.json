@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2076.471, 102.965, 32.23],
+    "center": [
+        -2076.471,
+        102.965,
+        32.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, frothy cough",
                 "description": "A woman is struggling to breathe and coughing up pink froth. She says she has felt her heart pounding since the morning and her legs are swollen."
+            },
+            "hu": {
+                "title": "Légszomj, habos köpet",
+                "description": "Egy nő nehezen kap levegőt, és rózsaszínű, habos köpetet köhög fel. Azt mondja, reggel óta hevesen ver a szíve, és bedagadtak a lábai."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 13,
-            "pos": [-2076.471, 102.965, 32.23],
+            "pos": [
+                -2076.471,
+                102.965,
+                32.23
+            ],
             "rot": 266.3,
             "anim": "crouch",
             "injuries": [],

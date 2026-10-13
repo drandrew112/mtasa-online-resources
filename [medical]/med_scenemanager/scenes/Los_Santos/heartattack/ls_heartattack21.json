@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1994.635, -1621.884, 13.547],
+    "center": [
+        1994.635,
+        -1621.884,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, arm numb",
                 "description": "A waitress on her smoke break is gripping her chest outside the diner. The pain shoots down her left arm and she is drenched in sweat. Her manager wants to know when she will be back."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, zsibbadt kar",
+                "description": "Egy pincérnő a cigarettaszünetében a vendéglő előtt szorítja a mellkasát. A fájdalom a bal karjába sugárzik, és csurom víz az izzadságtól. A vezetője azt kérdezi, mikor tud visszamenni dolgozni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [1994.635, -1621.884, 13.547],
+            "pos": [
+                1994.635,
+                -1621.884,
+                13.547
+            ],
             "rot": 13,
             "anim": "hold_side",
             "injuries": [],

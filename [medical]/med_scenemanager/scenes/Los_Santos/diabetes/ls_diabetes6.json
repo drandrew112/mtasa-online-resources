@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2483.63, -965.92, 81.38],
+    "center": [
+        2483.63,
+        -965.92,
+        81.38
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Tourist lost insulin, unwell",
                 "description": "A tourist at the side of the road in Las Colinas lost his luggage with the insulin in it two days ago. Now he feels terrible, has abdominal pain and is breathing heavily."
+            },
+            "hu": {
+                "title": "A turista elvesztette az inzulinját, rosszul van",
+                "description": "Egy turista Las Colinas út menti részén két napja elvesztette a poggyászát az inzulinnal együtt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 142,
-            "pos": [2483.63, -965.92, 81.38],
+            "pos": [
+                2483.63,
+                -965.92,
+                81.38
+            ],
             "rot": 107,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "glucose": 450 }
+            "state": {
+                "bloodVolume": 4200,
+                "glucose": 450
+            }
         }
     ]
 }

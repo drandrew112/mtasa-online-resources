@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2712.12, 507.15, 7.84],
+    "center": [
+        -2712.12,
+        507.15,
+        7.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman found cold",
                 "description": "A neighbour found an elderly woman lying at a bus stop in Santa Flora. She is cold and does not breathe. She lived nearby and was a regular here."
+            },
+            "hu": {
+                "title": "Hidegen talált idős nő",
+                "description": "Egy szomszéd egy idős nőt talált Santa Flora egyik buszmegállójában. Hideg, és nem lélegzik. A közelben lakott, és rendszeresen járt ide."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2712.12, 507.15, 7.84],
+            "pos": [
+                -2712.12,
+                507.15,
+                7.84
+            ],
             "rot": 136,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

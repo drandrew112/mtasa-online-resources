@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2559.75, 2246, 11.06],
+    "center": [
+        2559.75,
+        2246,
+        11.06
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man not breathing, very cold",
                 "description": "A woman found a man lying in a parking lot in Roca Escalante. He is cold, not breathing and his skin is grey and blotchy."
+            },
+            "hu": {
+                "title": "Nem lélegző, nagyon hideg férfi",
+                "description": "Egy nő egy férfit talált a Roca Escalante-i parkolóban fekve. A teste hideg, nem lélegzik, a bőre szürke és foltos."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [2559.75, 2246, 11.06],
+            "pos": [
+                2559.75,
+                2246,
+                11.06
+            ],
             "rot": 349,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [919, 2226, 10.82],
+    "center": [
+        919,
+        2226,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Very thirsty and confused",
                 "description": "A bike messenger on the grass near the Whitewood Estates keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            },
+            "hu": {
+                "title": "Nagyon szomjas és zavart",
+                "description": "Egy kerékpáros futár a Whitewood Estates közelében, a füvön újra és újra vizet kér. Egész nap folyamatosan vizelt, most pedig már arra sem emlékszik, hová indult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [919, 2226, 10.82],
+            "pos": [
+                919,
+                2226,
+                10.82
+            ],
             "rot": 211,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 554, "consciousness": "confused" }
+            "state": {
+                "glucose": 554,
+                "consciousness": "confused"
+            }
         }
     ]
 }

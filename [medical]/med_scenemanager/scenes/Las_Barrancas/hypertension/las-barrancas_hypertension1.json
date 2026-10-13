@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-960, 1390, 33.92],
+    "center": [
+        -960,
+        1390,
+        33.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pregnant, headache, swelling",
                 "description": "A heavily pregnant woman on open scrubland near Las Barrancas has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic."
+            },
+            "hu": {
+                "title": "Várandós nő, fejfájás és duzzanat",
+                "description": "Egy előrehaladott terhességben lévő nőnek erős fejfájása van egy Las Barrancas közelében lévő nyílt, bozótos területen. Duzzadt a bokája, és fényfelvillanásokat lát. A férje kétségbeesett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [-960, 1390, 33.92],
+            "pos": [
+                -960,
+                1390,
+                33.92
+            ],
             "rot": 242,
             "anim": "sit",
             "injuries": [],

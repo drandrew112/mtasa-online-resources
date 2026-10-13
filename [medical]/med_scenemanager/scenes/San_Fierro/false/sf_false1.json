@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1695.62, 525.88, 37.22],
+    "center": [
+        -1695.62,
+        525.88,
+        37.22
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Person lying on the ground",
                 "description": "A driver saw a person lying at a junction in Easter Basin and did not stop. The caller could not say if the person was moving."
+            },
+            "hu": {
+                "title": "Földön fekvő személy",
+                "description": "Egy sofőr meglátott egy földön fekvő embert egy Easter Basin-i kereszteződésben, de nem állt meg. A bejelentő nem tudta megmondani, hogy az illető mozgott-e."
             }
         },
         "caller": "SceneManager",

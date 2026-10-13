@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2227.242, -22.566, 26.484],
+    "center": [
+        2227.242,
+        -22.566,
+        26.484
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "The bank teller stepped out for fresh air and sat down by the road, grey and sweating, pressing on her chest. She says it feels like a sack of feed on her ribs."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, izzadás",
+                "description": "Egy banki pénztárosnő kiment friss levegőt szívni, majd leült az út mellett. Szürkés a bőre, izzad, és a mellkasát szorítja. Azt mondja, olyan érzés, mintha egy takarmányos zsák nehezedne a bordáira."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [2227.242, -22.566, 26.484],
+            "pos": [
+                2227.242,
+                -22.566,
+                26.484
+            ],
             "rot": 201,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2159.75, -1330.62, 24],
+    "center": [
+        2159.75,
+        -1330.62,
+        24
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Argument ended in gunfire",
                 "description": "Two men argued over a parking spot in Jefferson when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm."
+            },
+            "hu": {
+                "title": "A vita lövöldözésbe torkollott",
+                "description": "Két férfi egy parkolóhely miatt vitatkozott Marinában, amikor egyikük fegyvert rántott. Az egyik mellkason lőtt sérülést szenvedett, és nehezen lélegzik, a másik karja lehorzsolódott."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,39 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [2159.75, -1330.62, 24],
+            "pos": [
+                2159.75,
+                -1330.62,
+                24
+            ],
             "rot": 100,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3900, "spo2": 85 }
+            "state": {
+                "bloodVolume": 3900,
+                "spo2": 85
+            }
         },
         {
             "id": "p2",
             "skin": 206,
-            "pos": [2159.45, -1327.62, 24],
+            "pos": [
+                2159.45,
+                -1327.62,
+                24
+            ],
             "rot": 214,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

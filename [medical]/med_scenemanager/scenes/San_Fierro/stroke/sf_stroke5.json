@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2698.5, -288.32, 7.19],
+    "center": [
+        -2698.5,
+        -288.32,
+        7.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found on the ground, cannot speak",
                 "description": "A dog walker found an elderly woman lying on the sidewalk in Avispa Country Club. She is awake and looks at people but cannot speak, and her right side is limp."
+            },
+            "hu": {
+                "title": "A földön találták, nem tud beszélni",
+                "description": "Avispa Country Club járdáján egy kutyasétáltató egy idős nőt talált a földön fekve. Ébren van és ránéz az emberekre, de nem tud beszélni; jobb oldala ernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-2698.5, -288.32, 7.19],
+            "pos": [
+                -2698.5,
+                -288.32,
+                7.19
+            ],
             "rot": 30,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 203, "consciousness": "dazed" }
+            "state": {
+                "systolic": 203,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

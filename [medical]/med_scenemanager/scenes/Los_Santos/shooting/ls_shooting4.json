@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [504.01, -934.44, 76.91],
+    "center": [
+        504.01,
+        -934.44,
+        76.91
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Accidental shot to the hand",
                 "description": "A man at the side of the road in Richman accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain."
+            },
+            "hu": {
+                "title": "Véletlenül kézen lőtte magát",
+                "description": "Egy férfi Richman út menti részén véletlenül kézen lőtte magát, miközben pisztollyal dicsekedett. Véres törölközőt szorít a kezére, és fájdalmában kiabál."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [504.01, -934.44, 76.91],
+            "pos": [
+                504.01,
+                -934.44,
+                76.91
+            ],
             "rot": 297,
             "anim": "crouch",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 60 }
+            "state": {
+                "pain": 60
+            }
         }
     ]
 }

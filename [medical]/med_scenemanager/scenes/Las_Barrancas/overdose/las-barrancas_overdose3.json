@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-879.62, 1550.65, 29.01],
+    "center": [
+        -879.62,
+        1550.65,
+        29.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Took too many sleeping pills",
                 "description": "An old man on the dusty ground in Las Barrancas took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off."
+            },
+            "hu": {
+                "title": "Túl sok altatót vett be",
+                "description": "Egy idős férfi „egy maréknyi” altatót vett be Las Barrancas poros földjén, mert nem tudott elaludni. Zavart, és újra meg újra elbóbiskol."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-879.62, 1550.65, 29.01],
+            "pos": [
+                -879.62,
+                1550.65,
+                29.01
+            ],
             "rot": 22,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

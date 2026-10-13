@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1399.55, -1921.89, 17.11],
+    "center": [
+        1399.55,
+        -1921.89,
+        17.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Not breathing properly, blue lips",
                 "description": "A man is lying outside a shop in Verdant Bluffs with blue lips, taking a breath only every now and then. A syringe is next to him. A friend ran off when the caller arrived."
+            },
+            "hu": {
+                "title": "Nem lélegzik rendesen, kék ajkak",
+                "description": "Egy férfi Verdant Bluffs egyik üzlete előtt fekszik, ajkai kékek, és csak időnként vesz levegőt. Mellette egy fecskendő hever. A barátja elmenekült, amikor a bejelentő odaért."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 135,
-            "pos": [1399.55, -1921.89, 17.11],
+            "pos": [
+                1399.55,
+                -1921.89,
+                17.11
+            ],
             "rot": 176,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 74, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 74,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

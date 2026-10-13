@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2691.822, 1058.345, 6.813],
+    "center": [
+        2691.822,
+        1058.345,
+        6.813
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Blurry vision, worried",
                 "description": "A woman with diabetes says her vision went blurry and her head is throbbing. She checked her sugar and it was fine."
+            },
+            "hu": {
+                "title": "Homályos látás, aggodalom",
+                "description": "Egy cukorbeteg nő azt mondja, homályossá vált a látása, és lüktet a feje. Megmérte a vércukrát, és az rendben volt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [2691.822, 1058.345, 6.813],
+            "pos": [
+                2691.822,
+                1058.345,
+                6.813
+            ],
             "rot": 345.2,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 174, "diastolic": 104, "heartRate": 92, "consciousness": "stable" }
+            "state": {
+                "systolic": 174,
+                "diastolic": 104,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
         }
     ]
 }

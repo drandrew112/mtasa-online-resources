@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-1660, 2710, 60.12],
+    "center": [
+        -1660,
+        2710,
+        60.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Trucker ran out of insulin",
                 "description": "A long-haul trucker on the grass just outside El Quebrados ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily."
+            },
+            "hu": {
+                "title": "A kamionsofőr kifogyott az inzulinból",
+                "description": "Egy távolsági kamionsofőr El Quebrados külterületén, a füvön két napja kifogyott az inzulinból, a legközelebbi gyógyszertár pedig zárva volt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [-1660, 2710, 60.12],
+            "pos": [
+                -1660,
+                2710,
+                60.12
+            ],
             "rot": 66,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4216, "glucose": 433 }
+            "state": {
+                "bloodVolume": 4216,
+                "glucose": 433
+            }
         }
     ]
 }

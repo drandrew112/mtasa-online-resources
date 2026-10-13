@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2279.105, -1179.009, 25.842],
+    "center": [
+        2279.105,
+        -1179.009,
+        25.842
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Train Spotter Struck by Passing Train",
                 "description": "A train spotter was struck by a passing train and thrown next to the tracks. Patient is unconscious with visible traumatic injuries."
+            },
+            "hu": {
+                "title": "Elütött egy vonatrajongót az elhaladó szerelvény",
+                "description": "Egy vonatokat figyelő embert elütött egy elhaladó vonat, és a sínek mellé repült. A beteg eszméletlen, látható traumás sérülésekkel."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [2279.384, -1182.671, 25.658],
+            "pos": [
+                2279.384,
+                -1182.671,
+                25.658
+            ],
             "rot": 119.7,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 1 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-220, 2650, 62.93],
+    "center": [
+        -220,
+        2650,
+        62.93
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, snoring breathing",
                 "description": "A man collapsed on open scrubland in Las Payasadas and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell."
+            },
+            "hu": {
+                "title": "Összeesett, horkoló légzés",
+                "description": "Egy férfi összeesett egy Las Payasadas-i nyílt, bozótos területen, és a hátán fekszik, hangosan horkoló hangokat adva ki. A körülötte állók nem tudják felébreszteni. Közvetlenül az esés előtt a fejét fogta."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [-220, 2650, 62.93],
+            "pos": [
+                -220,
+                2650,
+                62.93
+            ],
             "rot": 335,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 218, "diastolic": 117, "consciousness": "unconscious" }
+            "state": {
+                "systolic": 218,
+                "diastolic": 117,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

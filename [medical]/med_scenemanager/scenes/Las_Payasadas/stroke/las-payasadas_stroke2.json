@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-320, 2730, 62.69],
+    "center": [
+        -320,
+        2730,
+        62.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Young woman, sudden weakness",
                 "description": "A young woman on the dusty ground in Las Payasadas says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes."
+            },
+            "hu": {
+                "title": "Fiatal nő, hirtelen gyengeség",
+                "description": "Egy fiatal nő Las Payasadas poros földjén azt mondja, hogy hirtelen elnehezült és elgyengült a jobb karja és lába. Fél, a szavai lassan jönnek ki. Fogamzásgátló tablettát szed és dohányzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [-320, 2730, 62.69],
+            "pos": [
+                -320,
+                2730,
+                62.69
+            ],
             "rot": 223,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

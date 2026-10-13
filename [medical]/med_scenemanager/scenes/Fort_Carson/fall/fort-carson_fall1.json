@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-25.54, 1155.88, 19.51],
+    "center": [
+        -25.54,
+        1155.88,
+        19.51
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb on the main street in Fort Carson and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "Egy idős nő megbotlott a járdaszegélyben Fort Carson főutcáján, és nem tud felállni. A jobb lába rövidebbnek tűnik, és kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-25.54, 1155.88, 19.51],
+            "pos": [
+                -25.54,
+                1155.88,
+                19.51
+            ],
             "rot": 217,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 38 }
+            "state": {
+                "pain": 38
+            }
         }
     ]
 }

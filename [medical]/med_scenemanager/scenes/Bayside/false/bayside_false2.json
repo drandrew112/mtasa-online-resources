@@ -5,7 +5,11 @@
     "location": "Bayside Marina",
     "enabled": true,
     "weight": 1,
-    "center": [-2272.65, 2398.23, 4.94],
+    "center": [
+        -2272.65,
+        2398.23,
+        4.94
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car in the ditch",
                 "description": "A passing trucker reports a car in the ditch at the side of the road near Bayside, maybe with someone inside. Nothing is there when units arrive."
+            },
+            "hu": {
+                "title": "Autó az árokban",
+                "description": "Egy arra haladó kamionsofőr egy autót jelentett az árokban, az út mellett Bayside közelében; talán valaki is van benne. Mire a mentőegységek kiérkeznek, már nincs ott senki és semmi."
             }
         },
         "caller": "SceneManager",

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2364.87, -37.5, 35.31],
+    "center": [
+        -2364.87,
+        -37.5,
+        35.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Window cleaner fell from a ladder",
                 "description": "A window cleaner fell from her ladder in front of an apartment block in Garcia. She is lying on her back with a very painful hip and a cut on her forehead."
+            },
+            "hu": {
+                "title": "Ablaktisztító leesett a létráról",
+                "description": "Garcia egyik lakóháza előtt egy ablaktisztító nő leesett a létráról. A hátán fekszik, nagyon fáj a csípője, és seb van a homlokán."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 13,
-            "pos": [-2364.87, -37.5, 35.31],
+            "pos": [
+                -2364.87,
+                -37.5,
+                35.31
+            ],
             "rot": 60,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 56 }
+            "state": {
+                "pain": 56
+            }
         }
     ]
 }

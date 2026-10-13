@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1570, 370, 20.1],
+    "center": [
+        1570,
+        370,
+        20.1
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, still wheezing",
                 "description": "A man on a grassy patch in Montgomery choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt étel, még mindig sípolva lélegzik",
+                "description": "Egy férfi félrenyelt egy hot dogot Montgomery egyik füves területén. Egy járókelő hátba ütéseket alkalmazott, és egy darab kijött, de a férfi még mindig erősen köhög és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [1570, 370, 20.1],
+            "pos": [
+                1570,
+                370,
+                20.1
+            ],
             "rot": 155,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 86 }
+            "state": {
+                "spo2": 86
+            }
         }
     ]
 }

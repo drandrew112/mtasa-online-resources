@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [713.49, 325.22, 20.23],
+    "center": [
+        713.49,
+        325.22,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer slumped on his tailgate",
                 "description": "A farmer is slumped on the tailgate of his pickup at the side of the road in Hampton Barns. His wife says he suddenly could not hold his coffee cup and his words are slurred."
+            },
+            "hu": {
+                "title": "A gazda összeroskadt a pickup platóján",
+                "description": "Egy gazda összeroskadva ül a pickupja platóján, az út szélén Hampton Barnsban. A felesége szerint hirtelen nem tudta megtartani a kávéscsészéjét, és elmosódottá vált a beszéde."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [713.49, 325.22, 20.23],
+            "pos": [
+                713.49,
+                325.22,
+                20.23
+            ],
             "rot": 166,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 191 }
+            "state": {
+                "systolic": 191
+            }
         }
     ]
 }

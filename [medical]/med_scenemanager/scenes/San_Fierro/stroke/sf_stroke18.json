@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2816.5, 260.82, 7.18],
+    "center": [
+        -2816.5,
+        260.82,
+        7.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Face drooping, slurred speech",
                 "description": "A man on the sidewalk in Ocean Flats suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago."
+            },
+            "hu": {
+                "title": "Lebiggyedő arc, elmosódott beszéd",
+                "description": "Ocean Flats járdáján egy férfi hirtelen elmosódottan kezdett beszélni, és arcának jobb oldala lebiggyedt. Felesége szerint húsz perccel ezelőtt még teljesen jól volt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [-2816.5, 260.82, 7.18],
+            "pos": [
+                -2816.5,
+                260.82,
+                7.18
+            ],
             "rot": 256,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 194 }
+            "state": {
+                "systolic": 194
+            }
         }
     ]
 }

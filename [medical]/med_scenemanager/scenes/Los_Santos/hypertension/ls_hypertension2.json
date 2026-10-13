@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1479.5, -1724.25, 13.547],
+    "center": [
+        1479.5,
+        -1724.25,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache of his life",
                 "description": "An office worker stepped out of a meeting near Pershing Square clutching his head, says it feels like it is about to split open. He stopped his blood pressure pills last month because he felt fine. Now the lights hurt his eyes and he has vomited twice into a planter."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása",
+                "description": "Egy irodai dolgozó kilépett egy Pershing Square közelében tartott megbeszélésről, és a fejét szorítja. Azt mondja, mindjárt szétreped. Múlt hónapban abbahagyta a vérnyomáscsökkentő szedését, mert jól érezte magát. Most fáj a szemének a fény, és kétszer hányt egy virágtartóba."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [1479.5, -1724.25, 13.547],
+            "pos": [
+                1479.5,
+                -1724.25,
+                13.547
+            ],
             "rot": 90,
             "anim": "sit",
             "injuries": [],

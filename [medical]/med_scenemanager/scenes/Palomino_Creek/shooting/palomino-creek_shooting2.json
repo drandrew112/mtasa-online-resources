@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [2576.02, 34.63, 26.48],
+    "center": [
+        2576.02,
+        34.63,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Gang fight, two wounded",
                 "description": "A fight between two groups ended in gunfire on the sidewalk just outside Palomino Creek. One young man is lying on the ground, another is crouching behind a truck with a bleeding hand."
+            },
+            "hu": {
+                "title": "Bandaharc, két sebesült",
+                "description": "Két csoport verekedése lövöldözésbe torkollott a Palomino Creek melletti járdán. Egy fiatal férfi a földön fekszik, egy másik pedig egy teherautó mögött guggol, vérző kézzel."
             }
         },
         "caller": "SceneManager",
@@ -23,23 +31,42 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [2576.02, 34.63, 26.48],
+            "pos": [
+                2576.02,
+                34.63,
+                26.48
+            ],
             "rot": 327,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4098 }
+            "state": {
+                "bloodVolume": 4098
+            }
         },
         {
             "id": "p2",
             "skin": 116,
-            "pos": [2573.82, 34.62, 26.58],
+            "pos": [
+                2573.82,
+                34.62,
+                26.58
+            ],
             "rot": 352,
             "anim": "crouch",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

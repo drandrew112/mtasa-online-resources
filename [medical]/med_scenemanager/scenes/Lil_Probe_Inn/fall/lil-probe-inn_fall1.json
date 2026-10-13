@@ -5,7 +5,11 @@
     "location": "Lil' Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-90, 1330, 10.95],
+    "center": [
+        -90,
+        1330,
+        10.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Thrown from a horse",
                 "description": "A woman was thrown from her horse on the dusty ground at the Lil' Probe Inn and landed on her back. She is in severe pain and says her legs feel tingly."
+            },
+            "hu": {
+                "title": "Leesett a lóról",
+                "description": "Egy nőt ledobott a lova a Lil' Probe Inn poros talaján, és a hátára esett. Erős fájdalmai vannak, és azt mondja, bizseregnek a lábai."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 219,
-            "pos": [-90, 1330, 10.95],
+            "pos": [
+                -90,
+                1330,
+                10.95
+            ],
             "rot": 35,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 57 }
+            "state": {
+                "pain": 57
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2014.75, 962.93, 10.81],
+    "center": [
+        2014.75,
+        962.93,
+        10.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man outside the Four Dragons Casino cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi a Four Dragons Casino előtt nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzódnak a nyakánál lévő légzőizmai. Ötször használta az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 25,
-            "pos": [2014.75, 962.93, 10.81],
+            "pos": [
+                2014.75,
+                962.93,
+                10.81
+            ],
             "rot": 109,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 128 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 128
+            }
         }
     ]
 }

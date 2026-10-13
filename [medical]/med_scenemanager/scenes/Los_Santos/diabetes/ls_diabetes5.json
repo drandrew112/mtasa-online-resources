@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [349.69, -1723.6, 6.81],
+    "center": [
+        349.69,
+        -1723.6,
+        6.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen sleepy and breathing fast",
                 "description": "A mother on the sidewalk in Santa Maria Beach says her teenage daughter has had stomach ache and vomiting since the morning, drinks constantly and now is very sleepy. The teenager has never been tested for diabetes."
+            },
+            "hu": {
+                "title": "Álmos, gyorsan lélegző tinédzser",
+                "description": "Egy anya a Santa Maria Beach járdáján elmondja, hogy tinédzser lányának reggel óta fáj a hasa és hány, folyton iszik, most pedig nagyon álmos. A lányt még soha nem vizsgálták cukorbetegségre."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 152,
-            "pos": [349.69, -1723.6, 6.81],
+            "pos": [
+                349.69,
+                -1723.6,
+                6.81
+            ],
             "rot": 1,
             "anim": "sit",
             "injuries": [],
-            "state": { "bloodVolume": 4000, "glucose": 490, "heartRate": 128, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 4000,
+                "glucose": 490,
+                "heartRate": 128,
+                "consciousness": "confused"
+            }
         }
     ]
 }

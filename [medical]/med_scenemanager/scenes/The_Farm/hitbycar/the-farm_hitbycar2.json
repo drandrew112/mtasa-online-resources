@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1058.55, -1197.97, 129.21],
+    "center": [
+        -1058.55,
+        -1197.97,
+        129.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pedestrian hit while crossing",
                 "description": "A pedestrian was hit by a car while crossing next to the country road in The Farm. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg."
+            },
+            "hu": {
+                "title": "Átkelés közben elütött gyalogos",
+                "description": "The Farm vidéki útja mellett egy autó elütött egy átkelő gyalogost. Több métert repült, aluszékony, vérzik a feje, és deformálódott a lába."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,102 @@
         {
             "id": "v1",
             "model": 517,
-            "pos": [-1055.73, -1203.02, 128.48],
-            "rot": [0, 0, 181.8],
+            "pos": [
+                -1055.73,
+                -1203.02,
+                128.48
+            ],
+            "rot": [
+                0,
+                0,
+                181.8
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                120,
+                120,
+                125,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "FC27 432",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 185,
-            "pos": [-1058.55, -1197.97, 129.21],
+            "pos": [
+                -1058.55,
+                -1197.97,
+                129.21
+            ],
             "rot": 237,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4252, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 4252,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

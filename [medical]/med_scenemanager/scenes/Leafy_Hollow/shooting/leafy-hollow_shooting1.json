@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-1195.85, -1854.15, 67.83],
+    "center": [
+        -1195.85,
+        -1854.15,
+        67.83
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, leg wound",
                 "description": "Someone fired from a passing pickup next to the country road near Leafy Hollow. A young man was hit in the thigh and is bleeding heavily into his jeans."
+            },
+            "hu": {
+                "title": "Autóból leadott lövés, lábsérülés",
+                "description": "Valaki egy elhaladó pickupból lőtt az országút közelében, Leafy Hollow mellett. Egy fiatal férfit combon találtak; a farmernadrágjába erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [-1195.85, -1854.15, 67.83],
+            "pos": [
+                -1195.85,
+                -1854.15,
+                67.83
+            ],
             "rot": 289,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4119, "pain": 44 }
+            "state": {
+                "bloodVolume": 4119,
+                "pain": 44
+            }
         }
     ]
 }

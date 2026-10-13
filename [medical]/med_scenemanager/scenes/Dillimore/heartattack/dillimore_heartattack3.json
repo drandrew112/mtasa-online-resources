@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [594.625, -500.625, 16.336],
+    "center": [
+        594.625,
+        -500.625,
+        16.336
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Faint and confused",
                 "description": "An old man filling up his pickup at the gas station keeps fainting. His pulse is very slow and he does not remember paying."
+            },
+            "hu": {
+                "title": "Ájulás és zavartság",
+                "description": "Egy idős férfi a benzinkúton tankolja a pickupját, de újra és újra elájul. Nagyon lassú a pulzusa, és nem emlékszik rá, hogy fizetett-e."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 183,
-            "pos": [594.625, -500.625, 16.336],
+            "pos": [
+                594.625,
+                -500.625,
+                16.336
+            ],
             "rot": 127,
             "anim": "sit",
             "injuries": [],

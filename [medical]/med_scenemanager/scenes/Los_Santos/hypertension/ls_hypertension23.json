@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [404.707, -1113.44, 26.986],
+    "center": [
+        404.707,
+        -1113.44,
+        26.986
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, headache",
                 "description": "A woman out walking her dog suddenly got short of breath and had to sit down. She says her head is pulsing with every heartbeat."
+            },
+            "hu": {
+                "title": "Légszomj, fejfájás",
+                "description": "Egy kutyáját sétáltató nő hirtelen légszomjat kapott, és le kellett ülnie. Azt mondja, a feje minden szívveréssel együtt lüktet."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [404.707, -1113.44, 26.986],
+            "pos": [
+                404.707,
+                -1113.44,
+                26.986
+            ],
             "rot": 100.2,
             "anim": "sit",
             "injuries": [],

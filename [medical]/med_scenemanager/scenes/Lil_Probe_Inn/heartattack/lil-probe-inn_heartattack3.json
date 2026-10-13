@@ -5,7 +5,11 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-57.655, 1358.634, 10.415],
+    "center": [
+        -57.655,
+        1358.634,
+        10.415
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Faint and confused",
                 "description": "An old regular keeps fainting outside the bar. Very slow pulse, he claims he saw lights in the sky."
+            },
+            "hu": {
+                "title": "Ájulás és zavartság",
+                "description": "Egy régi törzsvendég újra és újra elájul a bár előtt. Pulzusa nagyon lassú, ő pedig azt állítja, fényeket látott az égen."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 72,
-            "pos": [-57.655, 1358.634, 10.415],
+            "pos": [
+                -57.655,
+                1358.634,
+                10.415
+            ],
             "rot": 195,
             "anim": "sit",
             "injuries": [],

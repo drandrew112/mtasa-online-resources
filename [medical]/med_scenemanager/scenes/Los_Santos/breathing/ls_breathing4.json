@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1946, -1253.87, 20.48],
+    "center": [
+        1946,
+        -1253.87,
+        20.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drowning in own lungs",
                 "description": "An elderly man at a bus stop in Glen Park is sitting bolt upright, bubbling breaths can be heard from a distance. He is sweaty, grey and confused. He skipped his water tablets."
+            },
+            "hu": {
+                "title": "Saját tüdejébe fullad",
+                "description": "Egy idős férfi Glen Park egyik buszmegállójában egyenesen ül; távolról is hallani bugyborékoló légzését. Izzadt, szürkés és zavart. Kihagyta a vízhajtóját."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,25 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [1946, -1253.87, 20.48],
+            "pos": [
+                1946,
+                -1253.87,
+                20.48
+            ],
             "rot": 158,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 3 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
+            "state": {
+                "spo2": 76,
+                "systolic": 206,
+                "heartRate": 134,
+                "consciousness": "confused"
+            }
         }
     ]
 }

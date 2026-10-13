@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2312.75, 1200.63, 10.82],
+    "center": [
+        2312.75,
+        1200.63,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager cannot breathe",
                 "description": "A teenager on the sidewalk near the Camel's Toe is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home."
+            },
+            "hu": {
+                "title": "A tinédzser nem kap levegőt",
+                "description": "Egy tinédzser hangosan sípolva lélegzik a Camel's Toe közelében, a járdán, és egyszerre csak két-három szót tud kimondani. A barátai szerint asztmás, de otthon felejtette az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 136,
-            "pos": [2312.75, 1200.63, 10.82],
+            "pos": [
+                2312.75,
+                1200.63,
+                10.82
+            ],
             "rot": 169,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

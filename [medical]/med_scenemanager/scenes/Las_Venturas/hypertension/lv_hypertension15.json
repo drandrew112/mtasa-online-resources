@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2080.375, 888.25, 7.538],
+    "center": [
+        2080.375,
+        888.25,
+        7.538
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Visual flashes, headache",
                 "description": "A young woman sees zig-zag flashes and has a pounding headache. She says this is not like her usual migraines and she feels very unwell."
+            },
+            "hu": {
+                "title": "Fényvillanások, fejfájás",
+                "description": "Egy fiatal nő cikcakkos fényvillanásokat lát, és erősen lüktet a feje. Azt mondja, ez nem olyan, mint a szokásos migrénje, és nagyon rosszul érzi magát."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [2080.375, 888.25, 7.538],
+            "pos": [
+                2080.375,
+                888.25,
+                7.538
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [],

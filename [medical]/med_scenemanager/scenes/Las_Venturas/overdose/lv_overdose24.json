@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1759, 2426, 8.39],
+    "center": [
+        1759,
+        2426,
+        8.39
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drink may have been spiked",
                 "description": "A young woman on the grass near the Julius Thruway North says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute."
+            },
+            "hu": {
+                "title": "Lehet, hogy valamit tettek az italába",
+                "description": "Egy fiatal nő a Julius Thruway North közelében, a füvön azt mondja, valaki valamit tett az italába egy bárban. Alig tud állni, összefolyó szavakkal beszél, és percről percre álmosabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [1759, 2426, 8.39],
+            "pos": [
+                1759,
+                2426,
+                8.39
+            ],
             "rot": 235,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

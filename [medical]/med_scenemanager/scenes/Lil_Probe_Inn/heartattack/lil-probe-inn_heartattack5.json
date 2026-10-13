@@ -5,7 +5,11 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-57.621, 1321.797, 11.583],
+    "center": [
+        -57.621,
+        1321.797,
+        11.583
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "A woman was found slumped by the road outside the inn. Grey, cold, barely breathing."
+            },
+            "hu": {
+                "title": "Eszméletlen, szürkés bőr",
+                "description": "Egy nőt a fogadó előtt, az út mellett összeroskadva találtak. Bőre szürkés és hideg, alig lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 76,
-            "pos": [-57.621, 1321.797, 11.583],
+            "pos": [
+                -57.621,
+                1321.797,
+                11.583
+            ],
             "rot": 104,
             "anim": "ko_back",
             "injuries": [],

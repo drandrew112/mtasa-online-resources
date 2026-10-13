@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [814, -1882, 3.93],
+    "center": [
+        814,
+        -1882,
+        3.93
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Tourist lost insulin, unwell",
                 "description": "A tourist at the water's edge in Verona Beach lost his luggage with the insulin in it two days ago. Now he feels terrible, has abdominal pain and is breathing heavily."
+            },
+            "hu": {
+                "title": "A turista elvesztette az inzulinját, rosszul van",
+                "description": "Egy verona beachi turista a vízparton áll; két napja elveszett a poggyásza az inzulinnal együtt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 176,
-            "pos": [814, -1882, 3.93],
+            "pos": [
+                814,
+                -1882,
+                3.93
+            ],
             "rot": 132,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "glucose": 450 }
+            "state": {
+                "bloodVolume": 4200,
+                "glucose": 450
+            }
         }
     ]
 }

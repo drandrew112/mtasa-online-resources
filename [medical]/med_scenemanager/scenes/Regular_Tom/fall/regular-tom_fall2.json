@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-408.74, 1911.81, 57.9],
+    "center": [
+        -408.74,
+        1911.81,
+        57.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Skateboarder crashed at speed",
                 "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt on the sidewalk just outside Regular Tom. His wrist is deformed and he has deep grazes."
+            },
+            "hu": {
+                "title": "Nagy sebességű gördeszkás-baleset",
+                "description": "Egy gördeszkás elvesztette az irányítást, amikor legurult egy meredek lejtőn, majd végigcsúszott az aszfalton Regular Tom járdáján. Csuklója deformálódott, mély horzsolásai vannak."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [-408.74, 1911.81, 57.9],
+            "pos": [
+                -408.74,
+                1911.81,
+                57.9
+            ],
             "rot": 143,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

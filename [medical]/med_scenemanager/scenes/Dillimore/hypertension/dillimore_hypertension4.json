@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [903.97, -369.51, 47.71],
+    "center": [
+        903.97,
+        -369.51,
+        47.71
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed, high BP",
                 "description": "A woman at the side of the road near Dillimore has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high."
+            },
+            "hu": {
+                "title": "Orrvérzés, magas vérnyomás",
+                "description": "Egy nőnek nem akar elállni az orrvérzése az út szélén, Dillimore közelében, és szédül. Egy szomszéd otthoni vérnyomásmérővel megmérte a vérnyomását, amely nagyon magas értéket mutatott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [903.97, -369.51, 47.71],
+            "pos": [
+                903.97,
+                -369.51,
+                47.71
+            ],
             "rot": 153,
             "anim": "sit",
             "injuries": [],

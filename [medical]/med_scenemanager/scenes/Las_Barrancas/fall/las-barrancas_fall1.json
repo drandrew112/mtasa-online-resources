@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-940, 1450, 33.64],
+    "center": [
+        -940,
+        1450,
+        33.64
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slipped on loose gravel",
                 "description": "A woman slipped on loose gravel in the park just outside Las Barrancas and landed on her outstretched hand. Her wrist is swollen and bent."
+            },
+            "hu": {
+                "title": "Megcsúszott a laza kavicson",
+                "description": "Egy nő megcsúszott a laza kavicson Las Barrancas külterületén, a parkban, és kinyújtott kézzel esett el. A csuklója megduzzadt és elferdült."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-940, 1450, 33.64],
+            "pos": [
+                -940,
+                1450,
+                33.64
+            ],
             "rot": 291,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 28 }
+            "state": {
+                "pain": 28
+            }
         }
     ]
 }

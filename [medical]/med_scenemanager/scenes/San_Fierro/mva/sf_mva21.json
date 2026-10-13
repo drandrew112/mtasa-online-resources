@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2510, 1166.68, 54.99],
+    "center": [
+        -2510,
+        1166.68,
+        54.99
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Rear-end collision",
                 "description": "A blue car ran into the back of a grey car in Juniper Hollow. The driver of the grey car is lying on their back next to the car with a head injury and disorientation."
+            },
+            "hu": {
+                "title": "Ráfutásos ütközés",
+                "description": "Juniper Hollow területén egy kék autó hátulról nekiütközött egy szürke autónak. A szürke autó vezetője fejsérüléssel és zavartan a kocsi mellett fekszik a hátán."
             }
         },
         "caller": "SceneManager",
@@ -22,55 +30,163 @@
         {
             "id": "v1",
             "model": 419,
-            "pos": [-2510.96, 1162.71, 55.398],
-            "rot": [0, -4.73, 92.16],
+            "pos": [
+                -2510.96,
+                1162.71,
+                55.398
+            ],
+            "rot": [
+                0,
+                -4.73,
+                92.16
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [165, 170, 175, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                165,
+                170,
+                175,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF13 182",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 550,
-            "pos": [-2504.412, 1163.213, 55.391],
-            "rot": [0, 0, 96.93],
+            "pos": [
+                -2504.412,
+                1163.213,
+                55.391
+            ],
+            "rot": [
+                0,
+                0,
+                96.93
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF35 143",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 143,
-            "pos": [-2510, 1166.68, 55.988],
+            "pos": [
+                -2510,
+                1166.68,
+                55.988
+            ],
             "rot": 180,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 60, "consciousness": "dazed" }
+            "state": {
+                "pain": 60,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

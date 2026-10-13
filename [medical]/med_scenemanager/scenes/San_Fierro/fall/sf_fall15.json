@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2331.97, 387.14, 35.17],
+    "center": [
+        -2331.97,
+        387.14,
+        35.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slipped on wet pavement",
                 "description": "A woman slipped on the wet pavement at a bus stop in Queens in the fog and landed on her outstretched hand. Her wrist is swollen and bent."
+            },
+            "hu": {
+                "title": "Megcsúszott a nedves járdán",
+                "description": "A ködben Queens egyik buszmegállójánál egy nő megcsúszott a nedves járdán, és kinyújtott kezére esett. Csuklója duzzadt és elhajlott."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [-2331.97, 387.14, 35.17],
+            "pos": [
+                -2331.97,
+                387.14,
+                35.17
+            ],
             "rot": 60,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 27 }
+            "state": {
+                "pain": 27
+            }
         }
     ]
 }

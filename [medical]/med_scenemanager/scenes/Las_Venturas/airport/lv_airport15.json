@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1799, 1646, 6.72],
+    "center": [
+        1799,
+        1646,
+        6.72
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Traveller with slurred speech",
                 "description": "A traveller outside the terminal at Las Venturas Airport suddenly could not hold her passport and her speech became slurred. Her companion says she was fine at check-in."
+            },
+            "hu": {
+                "title": "Elmosódottan beszélő utas",
+                "description": "Egy utas a Las Venturas-i repülőtér terminálja előtt hirtelen nem tudta megtartani az útlevelét, és elmosódottá vált a beszéde. A társa szerint az utasfelvételkor még teljesen jól volt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [1799, 1646, 6.72],
+            "pos": [
+                1799,
+                1646,
+                6.72
+            ],
             "rot": 318,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 190 }
+            "state": {
+                "systolic": 190
+            }
         }
     ]
 }

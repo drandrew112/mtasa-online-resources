@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-919.25, -1880, 84.95],
+    "center": [
+        -919.25,
+        -1880,
+        84.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, headache",
                 "description": "A trucker at the edge of the woods near Leafy Hollow pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing."
+            },
+            "hu": {
+                "title": "Légszomj, fejfájás",
+                "description": "Egy kamionsofőr félreállt Leafy Hollow erdőszélén, mert lüktet a feje és légszomja van. Bokái meg vannak dagadva, és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [-919.25, -1880, 84.95],
+            "pos": [
+                -919.25,
+                -1880,
+                84.95
+            ],
             "rot": 43,
             "anim": "sit",
             "injuries": [],

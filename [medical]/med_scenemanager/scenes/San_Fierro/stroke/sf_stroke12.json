@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1889.62, 818.38, 35.18],
+    "center": [
+        -1889.62,
+        818.38,
+        35.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Numb side after jogging",
                 "description": "A jogger on the sidewalk in Downtown stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened."
+            },
+            "hu": {
+                "title": "Zsibbadás az egyik oldalon kocogás után",
+                "description": "Downtown járdáján egy kocogó megállt, mert elzsibbadt a bal karja és a bal lába. Leült, beszéde kissé elmosódott, és nagyon meg van ijedve."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 30,
-            "pos": [-1889.62, 818.38, 35.18],
+            "pos": [
+                -1889.62,
+                818.38,
+                35.18
+            ],
             "rot": 96,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 177 }
+            "state": {
+                "systolic": 177
+            }
         }
     ]
 }

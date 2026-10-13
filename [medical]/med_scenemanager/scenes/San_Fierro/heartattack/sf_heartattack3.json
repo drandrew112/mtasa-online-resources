@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2408.626, 268.866, 35.172],
+    "center": [
+        -2408.626,
+        268.866,
+        35.172
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found down in the fog",
                 "description": "A dog walker found a man lying on the damp sidewalk in thick fog. No pulse, not breathing, glasses broken next to him."
+            },
+            "hu": {
+                "title": "A ködben találták a földön",
+                "description": "Egy kutyasétáltató sűrű ködben egy nyirkos járdán fekvő férfit talált. Nincs pulzusa, nem lélegzik, mellette törött szemüveg hever."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 98,
-            "pos": [-2408.626, 268.866, 35.172],
+            "pos": [
+                -2408.626,
+                268.866,
+                35.172
+            ],
             "rot": 211,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PEA"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2472.01, 1933.81, 9.92],
+    "center": [
+        2472.01,
+        1933.81,
+        9.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a roof",
                 "description": "A man fixing his roof fell off and landed on his feet next to the road near the Starfish Casino. He is screaming in pain and both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Leesett a tetőről",
+                "description": "Egy férfi a tetőjét javította, amikor leesett, és a lábára érkezett a Starfish Casino közelében, az út mellett. Fájdalomtól kiabál, mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 210,
-            "pos": [2472.01, 1933.81, 9.92],
+            "pos": [
+                2472.01,
+                1933.81,
+                9.92
+            ],
             "rot": 23,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

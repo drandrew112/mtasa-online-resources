@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [600.197, 310.909, 19.683],
+    "center": [
+        600.197,
+        310.909,
+        19.683
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "An old farmer chasing an escaped goat collapsed by the road. Not breathing. The goat is still at large."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "Egy idős gazda egy elszabadult kecskét kergetett, amikor összeesett az út mellett. Nem lélegzik. A kecske még mindig szabadon kószál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 182,
-            "pos": [600.197, 310.909, 19.683],
+            "pos": [
+                600.197,
+                310.909,
+                19.683
+            ],
             "rot": 157,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

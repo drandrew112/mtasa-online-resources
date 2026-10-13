@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1142.88, -1642.25, 13.95],
+    "center": [
+        1142.88,
+        -1642.25,
+        13.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker vomiting, confused",
                 "description": "A delivery worker on the sidewalk in Verona Beach keeps throwing up and cannot remember the next address on his list. His colleague says he is diabetic and has been ill with the flu all week."
+            },
+            "hu": {
+                "title": "Hányó, zavart munkás",
+                "description": "Egy kiszállító munkás Verona Beach járdáján újra és újra hány, és nem emlékszik a listáján következő címre. Kollégája szerint cukorbeteg, és egész héten influenzás volt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 50,
-            "pos": [1142.88, -1642.25, 13.95],
+            "pos": [
+                1142.88,
+                -1642.25,
+                13.95
+            ],
             "rot": 316,
             "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4100, "glucose": 470, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 4100,
+                "glucose": 470,
+                "consciousness": "confused"
+            }
         }
     ]
 }

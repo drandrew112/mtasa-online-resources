@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1799, 1406, 6.72],
+    "center": [
+        1799,
+        1406,
+        6.72
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly traveller fell at the curb",
                 "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Las Venturas Airport. He cannot stand and his hip hurts badly."
+            },
+            "hu": {
+                "title": "Idős utas elesett a járdaszegélynél",
+                "description": "Egy idős férfi nehéz bőröndöt húzott maga után, amikor elesett a Las Venturas-i repülőtér terminálja előtti járdaszegélynél. Nem tud felállni, és nagyon fáj a csípője."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 43,
-            "pos": [1799, 1406, 6.72],
+            "pos": [
+                1799,
+                1406,
+                6.72
+            ],
             "rot": 168,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 39 }
+            "state": {
+                "pain": 39
+            }
         }
     ]
 }

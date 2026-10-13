@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2195.25, 1283.125, 10.82],
+    "center": [
+        2195.25,
+        1283.125,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Tearing chest pain",
                 "description": "A man is doubled over describing a tearing pain between his shoulder blades. He is grey, sweating and says it came on all at once."
+            },
+            "hu": {
+                "title": "Hasító mellkasi fájdalom",
+                "description": "Egy férfi a fájdalomtól görnyedve írja le, hogy a lapockái között hasító fájdalmat érez. Szürkés a bőre, izzad, és azt mondja, a fájdalom hirtelen kezdődött."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2195.25, 1283.125, 10.82],
+            "pos": [
+                2195.25,
+                1283.125,
+                10.82
+            ],
             "rot": 0,
             "anim": "crouch",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2282.7, 134.7, 26.48],
+    "center": [
+        2282.7,
+        134.7,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Store owner and customer shot",
                 "description": "An armed robbery at the general store went wrong on the sidewalk in Palomino Creek. The store owner is lying on the ground with a chest wound and a customer was hit in the arm."
+            },
+            "hu": {
+                "title": "Lelőttek egy üzlettulajdonost és egy vásárlót",
+                "description": "Fegyveres rablás fajult el Palomino Creek egyik vegyesboltjának járdáján. Az üzlet tulajdonosa mellkasi lőtt sebbel fekszik a földön, egy vásárlót pedig karon találtak el."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,38 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [2282.7, 134.7, 26.48],
+            "pos": [
+                2282.7,
+                134.7,
+                26.48
+            ],
             "rot": 2,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3843 }
+            "state": {
+                "bloodVolume": 3843
+            }
         },
         {
             "id": "p2",
             "skin": 198,
-            "pos": [2280.52, 135.03, 26.58],
+            "pos": [
+                2280.52,
+                135.03,
+                26.58
+            ],
             "rot": 141,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-300.02, 2529.252, 34.758],
+    "center": [
+        -300.02,
+        2529.252,
+        34.758
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "A photographer chasing the sunset sat by the road with dizziness and a very slow pulse. Her water bottle is empty."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy fotós a naplementét üldözve leült az út mellé, mert szédül, és nagyon lassú a pulzusa. A kulacsa üres."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [-300.02, 2529.252, 34.758],
+            "pos": [
+                -300.02,
+                2529.252,
+                34.758
+            ],
             "rot": 336,
             "anim": "sit",
             "injuries": [],

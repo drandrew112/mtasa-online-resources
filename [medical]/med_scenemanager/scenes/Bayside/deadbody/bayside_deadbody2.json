@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2439, 2414.34, 13.32],
+    "center": [
+        -2439,
+        2414.34,
+        13.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot, no signs of life",
                 "description": "Police at the scene in a yard in Bayside report a man with several gunshot wounds. He has no pulse and is not breathing."
+            },
+            "hu": {
+                "title": "Lőtt sérülések, életjelek nélkül",
+                "description": "A helyszínre érkező rendőrök egy Bayside-i udvaron több lőtt sebbel találtak egy férfit. Nincs pulzusa, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-2439, 2414.34, 13.32],
+            "pos": [
+                -2439,
+                2414.34,
+                13.32
+            ],
             "rot": 290,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 3 },
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

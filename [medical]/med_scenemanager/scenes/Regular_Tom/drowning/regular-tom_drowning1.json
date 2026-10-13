@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-419.18, 1811.85, 68.63],
+    "center": [
+        -419.18,
+        1811.85,
+        68.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, turning blue",
                 "description": "A man choking on a piece of steak outside a house just outside Regular Tom cannot breathe or speak and is grabbing his throat. His lips are turning blue."
+            },
+            "hu": {
+                "title": "Steaketől fulladozik, elkékül",
+                "description": "Egy férfi egy Regular Tom melletti ház előtt steaketől fulladozik; nem tud lélegezni vagy beszélni, és a torkát markolja. Ajkai kezdenek elkékülni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [-419.18, 1811.85, 68.63],
+            "pos": [
+                -419.18,
+                1811.85,
+                68.63
+            ],
             "rot": 96,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 69, "consciousness": "dazed" }
+            "state": {
+                "spo2": 69,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

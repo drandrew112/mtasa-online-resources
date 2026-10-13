@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2583.59, 1360.57, 7.19],
+    "center": [
+        -2583.59,
+        1360.57,
+        7.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found floating in the water",
                 "description": "Joggers saw a man floating face down and pulled him out. He is lying on the sidewalk by the waterfront in Battery Point, not breathing. His skin is grey and cold."
+            },
+            "hu": {
+                "title": "Lebegve találták meg a vízben",
+                "description": "Kocogók egy arccal lefelé lebegő férfit láttak, és kihúzták a vízből. Battery Point vízparti járdáján fekszik, nem lélegzik. Bőre szürkés és hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-2583.59, 1360.57, 7.19],
+            "pos": [
+                -2583.59,
+                1360.57,
+                7.19
+            ],
             "rot": 211,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 35, "rhythm": "VF" }
+            "state": {
+                "spo2": 35,
+                "rhythm": "VF"
+            }
         }
     ]
 }

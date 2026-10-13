@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1574.38, -2678.4, 6.16],
+    "center": [
+        1574.38,
+        -2678.4,
+        6.16
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body with gunshot wounds",
                 "description": "Early morning, a street cleaner found a man outside a shop at Los Santos International with several gunshot wounds. There is dried blood around him. Police have been informed."
+            },
+            "hu": {
+                "title": "Lőtt sebekkel talált holttest",
+                "description": "Kora reggel egy utcaseprő több lőtt sebbel talált egy férfit a Los Santos International egyik üzlete előtt. Körülötte megszáradt vér van. Értesítették a rendőrséget."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 173,
-            "pos": [1574.38, -2678.4, 6.16],
+            "pos": [
+                1574.38,
+                -2678.4,
+                6.16
+            ],
             "rot": 74,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 3 },
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 2800, "consciousness": "dead" }
+            "state": {
+                "bloodVolume": 2800,
+                "consciousness": "dead"
+            }
         }
     ]
 }

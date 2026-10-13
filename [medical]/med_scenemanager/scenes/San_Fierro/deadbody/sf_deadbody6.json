@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1724, 1077.88, 45.36],
+    "center": [
+        -1724,
+        1077.88,
+        45.36
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man not breathing, very cold",
                 "description": "A woman found a man lying at a bus stop in Financial. He is cold, not breathing and his skin is grey and blotchy."
+            },
+            "hu": {
+                "title": "Nem lélegzik, nagyon hideg",
+                "description": "Egy nő egy férfit talált Financial egyik buszmegállójában. Hideg, nem lélegzik, bőre szürkés és foltos."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 168,
-            "pos": [-1724, 1077.88, 45.36],
+            "pos": [
+                -1724,
+                1077.88,
+                45.36
+            ],
             "rot": 280,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

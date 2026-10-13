@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1889.62, 893.25, 35.17],
+    "center": [
+        -1889.62,
+        893.25,
+        35.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure, then unresponsive",
                 "description": "An old man at a bus stop in Downtown had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+            },
+            "hu": {
+                "title": "Roham után nem reagál",
+                "description": "Downtown egyik buszmegállójában egy idős férfinak rövid rohama volt, és most nem reagál. Felesége szerint inzulint használ, és ebéd óta semmit sem evett."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-1889.62, 893.25, 35.17],
+            "pos": [
+                -1889.62,
+                893.25,
+                35.17
+            ],
             "rot": 56,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 18, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 18,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

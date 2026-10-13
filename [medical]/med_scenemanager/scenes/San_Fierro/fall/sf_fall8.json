@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1995.67, -969.75, 32.16],
+    "center": [
+        -1995.67,
+        -969.75,
+        32.16
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb at the side of the road in Foster Valley and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "Foster Valley útja mellett egy idős nő megbotlott a járdaszegélyben, és nem tud felállni. Jobb lába rövidebbnek tűnik, és kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [-1995.67, -969.75, 32.16],
+            "pos": [
+                -1995.67,
+                -969.75,
+                32.16
+            ],
             "rot": 279,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 35 }
+            "state": {
+                "pain": 35
+            }
         }
     ]
 }

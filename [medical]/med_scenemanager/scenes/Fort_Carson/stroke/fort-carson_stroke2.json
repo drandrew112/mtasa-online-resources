@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [93.66, 1217.31, 20.21],
+    "center": [
+        93.66,
+        1217.31,
+        20.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot lift her arm",
                 "description": "An elderly woman next to the country road in Fort Carson dropped her groceries and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            },
+            "hu": {
+                "title": "Nem tudja felemelni a karját",
+                "description": "Egy idős nő elejtette a bevásárlószatyrait az országút mellett Fort Carsonban, és többé nem tudja felemelni a bal karját. Zavart, és újra meg újra ugyanazt a kérdést teszi fel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [93.66, 1217.31, 20.21],
+            "pos": [
+                93.66,
+                1217.31,
+                20.21
+            ],
             "rot": 299,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 172, "consciousness": "confused" }
+            "state": {
+                "systolic": 172,
+                "consciousness": "confused"
+            }
         }
     ]
 }

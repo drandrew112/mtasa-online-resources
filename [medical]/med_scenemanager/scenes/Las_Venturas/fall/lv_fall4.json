@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1070.48, 1803.3, 10.82],
+    "center": [
+        1070.48,
+        1803.3,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Skateboarder crashed at speed",
                 "description": "A skateboarder lost control at speed and slid along the asphalt next to the road near the Whitewood Estates. His wrist is deformed and he has deep grazes."
+            },
+            "hu": {
+                "title": "A gördeszkás nagy sebességnél bukott",
+                "description": "Egy gördeszkás nagy sebességnél elvesztette az uralmát a deszka felett, és végigcsúszott az aszfalton a Whitewood Estates közelében, az út mellett. A csuklója deformálódott, és mély horzsolásai vannak."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 136,
-            "pos": [1070.48, 1803.3, 10.82],
+            "pos": [
+                1070.48,
+                1803.3,
+                10.82
+            ],
             "rot": 38,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

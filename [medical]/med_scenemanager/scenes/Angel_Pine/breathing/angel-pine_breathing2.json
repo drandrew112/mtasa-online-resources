@@ -5,7 +5,11 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [-1980.82, -2616.45, 61.65],
+    "center": [
+        -1980.82,
+        -2616.45,
+        61.65
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man at the side of the road near Angel Pine cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy Angel Pine közelében, az út szélén álló férfi nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzódnak a nyakánál lévő légzőizmai. Ötször használta az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 30,
-            "pos": [-1980.82, -2616.45, 61.65],
+            "pos": [
+                -1980.82,
+                -2616.45,
+                61.65
+            ],
             "rot": 13,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 125 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 125
+            }
         }
     ]
 }

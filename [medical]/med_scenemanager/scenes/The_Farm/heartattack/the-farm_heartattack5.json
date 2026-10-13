@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1202.839, -1105.286, 128.273],
+    "center": [
+        -1202.839,
+        -1105.286,
+        128.273
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak, short of breath",
                 "description": "A woman delivering supplies to the farm sat down by the road, short of breath, nauseous and exhausted."
+            },
+            "hu": {
+                "title": "Gyengeség és légszomj",
+                "description": "Egy, a gazdaságba árut szállító nő leült az út mellett. Légszomja van, hányingert érez, és kimerült."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [-1202.839, -1105.286, 128.273],
+            "pos": [
+                -1202.839,
+                -1105.286,
+                128.273
+            ],
             "rot": 229,
             "anim": "sit",
             "injuries": [],

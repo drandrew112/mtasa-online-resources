@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1015.75, -1413, 13.199],
+    "center": [
+        1015.75,
+        -1413,
+        13.199
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Barely breathing",
                 "description": "A woman was found slumped on the pavement next to her stroller-full of laundry. Slow, shallow breaths and she does not react to her name. Her lips are bluish."
+            },
+            "hu": {
+                "title": "Alig lélegzik",
+                "description": "Egy nőt összeroskadva találtak a járdán, a babakocsijából kiborult mosnivaló mellett. Lassan és felületesen lélegzik, a nevére sem reagál. Ajkai kékesek."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [1015.75, -1413, 13.199],
+            "pos": [
+                1015.75,
+                -1413,
+                13.199
+            ],
             "rot": 17,
             "anim": "ko_back",
             "injuries": [],

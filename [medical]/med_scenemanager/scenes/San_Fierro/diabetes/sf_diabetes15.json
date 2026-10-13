@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1800.18, 221.62, 15.11],
+    "center": [
+        -1800.18,
+        221.62,
+        15.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman confused, drinking constantly",
                 "description": "An older woman near the warehouses in Doherty is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night."
+            },
+            "hu": {
+                "title": "Zavart nő, állandóan iszik",
+                "description": "Doherty raktárai közelében egy idősebb nő zavart, és folyamatosan egy nagy vizespalackból iszik. Férje szerint fogyott, és egész éjjel gyakran vizelt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 197,
-            "pos": [-1800.18, 221.62, 15.11],
+            "pos": [
+                -1800.18,
+                221.62,
+                15.11
+            ],
             "rot": 57,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 594, "consciousness": "confused" }
+            "state": {
+                "glucose": 594,
+                "consciousness": "confused"
+            }
         }
     ]
 }

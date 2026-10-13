@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2627.503, 1317.907, 7.188],
+    "center": [
+        -2627.503,
+        1317.907,
+        7.188
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe headache, crying",
                 "description": "A woman is crying with a severe headache and says the pain is behind both eyes. She has vomited and cannot stand straight."
+            },
+            "hu": {
+                "title": "Erős fejfájás, sírás",
+                "description": "Egy nő erős fejfájás miatt sír, és azt mondja, mindkét szeme mögött fájdalmat érez. Hányt, és nem tud egyenesen állni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [-2627.503, 1317.907, 7.188],
+            "pos": [
+                -2627.503,
+                1317.907,
+                7.188
+            ],
             "rot": 312.4,
             "anim": "crouch",
             "injuries": [],

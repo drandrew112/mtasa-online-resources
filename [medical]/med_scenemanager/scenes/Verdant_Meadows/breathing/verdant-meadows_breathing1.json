@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [453.24, 2388.03, 27.9],
+    "center": [
+        453.24,
+        2388.03,
+        27.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager cannot breathe",
                 "description": "A teenager on the road shoulder near Verdant Meadows is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home."
+            },
+            "hu": {
+                "title": "A tinédzser nehezen kap levegőt",
+                "description": "Verdant Meadows közelében, az útpadkán egy tinédzser hangosan sípolva lélegzik, és egyszerre csak két-három szót tud kimondani. Barátai szerint asztmás, de otthon hagyta az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 114,
-            "pos": [453.24, 2388.03, 27.9],
+            "pos": [
+                453.24,
+                2388.03,
+                27.9
+            ],
             "rot": 151,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

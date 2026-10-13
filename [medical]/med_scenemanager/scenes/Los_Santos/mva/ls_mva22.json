@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2448.87, -2164.39, 12.55],
+    "center": [
+        2448.87,
+        -2164.39,
+        12.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Head-on collision",
                 "description": "A white car and a blue car collided head-on in Ocean Docks. The driver of the white car is still behind the wheel with a head injury and a broken arm, in severe pain."
+            },
+            "hu": {
+                "title": "Frontális ütközés",
+                "description": "Egy fehér autó és egy kék autó frontálisan ütközött Ocean Docks területén. A fehér autó sofőrje még mindig a volán mögött ül, fejsérüléssel és törött karral, erős fájdalmak között."
             }
         },
         "caller": "SceneManager",
@@ -22,58 +30,170 @@
         {
             "id": "v1",
             "model": 527,
-            "pos": [2449.39, -2169.85, 13.193],
-            "rot": [-0.22, 0.1, 95.97],
+            "pos": [
+                2449.39,
+                -2169.85,
+                13.193
+            ],
+            "rot": [
+                -0.22,
+                0.1,
+                95.97
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                245,
+                245,
+                245,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS37 278",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 540,
-            "pos": [2442.943, -2170.404, 13.385],
-            "rot": [0, 0, 278.86],
+            "pos": [
+                2442.943,
+                -2170.404,
+                13.385
+            ],
+            "rot": [
+                0,
+                0,
+                278.86
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS43 524",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 30,
-            "pos": [2449.39, -2169.85, 13.44],
+            "pos": [
+                2449.39,
+                -2169.85,
+                13.44
+            ],
             "rot": 95.97,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4250, "pain": 90, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 4250,
+                "pain": 90,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

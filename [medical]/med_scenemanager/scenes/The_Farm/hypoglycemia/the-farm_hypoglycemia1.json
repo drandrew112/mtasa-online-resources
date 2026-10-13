@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1208.6, -1118.24, 129.18],
+    "center": [
+        -1208.6,
+        -1118.24,
+        129.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure, then unresponsive",
                 "description": "An old man in a field in The Farm had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+            },
+            "hu": {
+                "title": "Roham után nem reagál",
+                "description": "The Farm egyik mezőjén egy idős férfinak rövid rohama volt, és most nem reagál. Felesége szerint inzulint használ, és ebéd óta semmit sem evett."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 220,
-            "pos": [-1208.6, -1118.24, 129.18],
+            "pos": [
+                -1208.6,
+                -1118.24,
+                129.18
+            ],
             "rot": 273,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 20, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 20,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

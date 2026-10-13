@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1204.192, 279.078, 19.555],
+    "center": [
+        1204.192,
+        279.078,
+        19.555
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, no breathing",
                 "description": "A trucker climbed down from his rig to stretch his legs and went straight down. Not breathing. The engine is still idling."
+            },
+            "hu": {
+                "title": "Férfi a földön, nem lélegzik",
+                "description": "Egy kamionsofőr lemászott a járművéről, hogy kinyújtóztassa a lábait, majd azonnal összeesett. Nem lélegzik. A motor még mindig jár."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [1204.192, 279.078, 19.555],
+            "pos": [
+                1204.192,
+                279.078,
+                19.555
+            ],
             "rot": 52,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

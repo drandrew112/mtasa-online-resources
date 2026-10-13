@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1998.5, -262.12, 35.59],
+    "center": [
+        -1998.5,
+        -262.12,
+        35.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sweaty and confused",
                 "description": "A woman outside a workshop in Doherty is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            },
+            "hu": {
+                "title": "Izzad és zavart",
+                "description": "Doherty egyik műhelye előtt egy nő erősen izzad és zavartnak tűnik. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenné vált a beszéde."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [-1998.5, -262.12, 35.59],
+            "pos": [
+                -1998.5,
+                -262.12,
+                35.59
+            ],
             "rot": 101,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 46, "consciousness": "confused" }
+            "state": {
+                "glucose": 46,
+                "consciousness": "confused"
+            }
         }
     ]
 }

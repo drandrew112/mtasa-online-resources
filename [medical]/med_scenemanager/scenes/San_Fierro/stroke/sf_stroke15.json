@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1807, -1085, 56.44],
+    "center": [
+        -1807,
+        -1085,
+        56.44
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Talking nonsense",
                 "description": "Passers-by on the grass in Foster Valley called because a man is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk."
+            },
+            "hu": {
+                "title": "Összefüggéstelenül beszél",
+                "description": "Foster Valley füves területén járókelők hívtak segítséget, mert egy férfi halandzsázik, és nem érti, amit mondanak neki. Frusztrálttá válik, de még tud járni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 170,
-            "pos": [-1807, -1085, 56.44],
+            "pos": [
+                -1807,
+                -1085,
+                56.44
+            ],
             "rot": 39,
             "anim": "none",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 180 }
+            "state": {
+                "systolic": 180
+            }
         }
     ]
 }

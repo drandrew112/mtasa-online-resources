@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1152.165, -1037.571, 129.219],
+    "center": [
+        -1152.165,
+        -1037.571,
+        129.219
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A young farmhand who \"tested the product\" sat by the road with his heart hammering. He is pale and terrified."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, majdnem elájult",
+                "description": "Egy fiatal mezőgazdasági munkás, aki „kipróbálta a terméket”, leült az út mellett, mert hevesen ver a szíve. Sápadt és retteg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 170,
-            "pos": [-1152.165, -1037.571, 129.219],
+            "pos": [
+                -1152.165,
+                -1037.571,
+                129.219
+            ],
             "rot": 237,
             "anim": "sit",
             "injuries": [],

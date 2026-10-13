@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-1980.82, -2616.45, 61.65],
+    "center": [
+        -1980.82,
+        -2616.45,
+        61.65
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, headache",
                 "description": "A trucker next to the country road near Angel Pine pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing."
+            },
+            "hu": {
+                "title": "Légszomj és fejfájás",
+                "description": "Egy kamionsofőr félreállt az Angel Pine közelében húzódó országút mellett, mert lüktető fejfájása és légszomja volt. A bokái meg vannak dagadva, és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [-1980.82, -2616.45, 61.65],
+            "pos": [
+                -1980.82,
+                -2616.45,
+                61.65
+            ],
             "rot": 39,
             "anim": "sit",
             "injuries": [],

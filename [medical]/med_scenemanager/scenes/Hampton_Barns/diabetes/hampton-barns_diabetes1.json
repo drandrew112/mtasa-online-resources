@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [790, 300, 21.82],
+    "center": [
+        790,
+        300,
+        21.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman hard to wake",
                 "description": "Her daughter found an elderly woman sitting on the grass just outside Hampton Barns, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar."
+            },
+            "hu": {
+                "title": "Idős nő nehezen ébreszthető",
+                "description": "A lánya egy idős nőt talált a füvön Hampton Barns külterületén. Nagyon bágyadt, nehéz felébreszteni. Napok óta sokat iszik és állandóan vizel. Cukorbetegségre szed tablettákat."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [790, 300, 21.82],
+            "pos": [
+                790,
+                300,
+                21.82
+            ],
             "rot": 228,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3866, "glucose": 788 }
+            "state": {
+                "bloodVolume": 3866,
+                "glucose": 788
+            }
         }
     ]
 }

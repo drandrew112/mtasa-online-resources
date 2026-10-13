@@ -5,7 +5,11 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-60.522, 1300.462, 11.714],
+    "center": [
+        -60.522,
+        1300.462,
+        11.714
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "The bartender stepped outside clutching her chest. Crushing pain into her jaw, soaked in sweat."
+            },
+            "hu": {
+                "title": "Szétfeszítő mellkasi fájdalom",
+                "description": "A pultosnő kilépett a szabadba, miközben a mellkasát szorította. Szétfeszítő fájdalom sugárzik az állkapcsába, és csurom víz az izzadságtól."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 89,
-            "pos": [-60.522, 1300.462, 11.714],
+            "pos": [
+                -60.522,
+                1300.462,
+                11.714
+            ],
             "rot": 155,
             "anim": "hold_side",
             "injuries": [],

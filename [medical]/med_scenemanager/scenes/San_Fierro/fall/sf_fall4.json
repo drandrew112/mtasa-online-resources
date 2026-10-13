@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2134.45, -957.88, 32.02],
+    "center": [
+        -2134.45,
+        -957.88,
+        32.02
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a roof",
                 "description": "A man fixing his roof fell off and landed on his feet outside his house at the side of the road in Foster Valley. He is screaming in pain and both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Leesett a tetőről",
+                "description": "Foster Valley egyik út menti házánál egy férfi a tetőt javította, amikor leesett, és a lábára érkezett. Fájdalmában kiabál, mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 240,
-            "pos": [-2134.45, -957.88, 32.02],
+            "pos": [
+                -2134.45,
+                -957.88,
+                32.02
+            ],
             "rot": 88,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

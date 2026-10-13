@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1917.38, 1720.63, 10.82],
+    "center": [
+        1917.38,
+        1720.63,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found on the ground, cannot speak",
                 "description": "A dog walker found an elderly woman lying outside the Visage. She is awake and looks at people but cannot speak, and her right side is limp."
+            },
+            "hu": {
+                "title": "A földön találták, nem tud beszélni",
+                "description": "Egy kutyasétáltató egy idős nőt talált a Visage előtt. Ébren van, és az emberekre néz, de nem tud beszélni; jobb oldala ernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [1917.38, 1720.63, 10.82],
+            "pos": [
+                1917.38,
+                1720.63,
+                10.82
+            ],
             "rot": 158,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 199, "consciousness": "dazed" }
+            "state": {
+                "systolic": 199,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

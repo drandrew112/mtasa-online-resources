@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2087, 1375, 7.1],
+    "center": [
+        -2087,
+        1375,
+        7.1
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Went in after her dog",
                 "description": "A dog walker went into the water after her dog and was pulled under by a wave. She is now on the quay in Esplanade North, coughing and cold. The dog is fine."
+            },
+            "hu": {
+                "title": "A kutyája után ment a vízbe",
+                "description": "Egy kutyasétáltató a vízbe ment a kutyája után, de egy hullám a víz alá sodorta. Most Esplanade North rakpartján van, köhög és fázik. A kutyának nincs baja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 63,
-            "pos": [-2087, 1375, 7.1],
+            "pos": [
+                -2087,
+                1375,
+                7.1
+            ],
             "rot": 167,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90 }
+            "state": {
+                "spo2": 90
+            }
         }
     ]
 }

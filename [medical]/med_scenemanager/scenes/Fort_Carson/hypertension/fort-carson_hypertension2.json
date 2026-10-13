@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-271.93, 1012.17, 19.73],
+    "center": [
+        -271.93,
+        1012.17,
+        19.73
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Light-headed after hard work",
                 "description": "A farmhand on the sidewalk in Fort Carson felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal."
+            },
+            "hu": {
+                "title": "Szédülés nehéz munka után",
+                "description": "Egy mezőgazdasági munkás egész délelőtt takarmányt hordott Fort Carson járdáján, majd megszédült, és leült az árnyékba. A vérnyomása jóval a normál érték felett van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 170,
-            "pos": [-271.93, 1012.17, 19.73],
+            "pos": [
+                -271.93,
+                1012.17,
+                19.73
+            ],
             "rot": 310,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 168, "diastolic": 99, "heartRate": 88, "consciousness": "stable" }
+            "state": {
+                "systolic": 168,
+                "diastolic": 99,
+                "heartRate": 88,
+                "consciousness": "stable"
+            }
         }
     ]
 }

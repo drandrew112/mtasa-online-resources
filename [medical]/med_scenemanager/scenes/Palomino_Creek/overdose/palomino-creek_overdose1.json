@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2380, 40, 27.13],
+    "center": [
+        2380,
+        40,
+        27.13
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Party pill, overheating",
                 "description": "A young man on the grass in Palomino Creek took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying."
+            },
+            "hu": {
+                "title": "Partidrog, túlmelegedés",
+                "description": "Egy fiatal férfi bevett egy tablettát egy palomino creek-i füves területen tartott bulin, most pedig remeg, izzad, és összeszorítja az állkapcsát. Hevesen ver a szíve, és azt mondja, haldoklik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [2380, 40, 27.13],
+            "pos": [
+                2380,
+                40,
+                27.13
+            ],
             "rot": 293,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 164, "heartRate": 155 }
+            "state": {
+                "systolic": 164,
+                "heartRate": 155
+            }
         }
     ]
 }

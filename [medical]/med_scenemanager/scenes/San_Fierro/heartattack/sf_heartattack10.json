@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2197.75, -77.5, 35.32],
+    "center": [
+        -2197.75,
+        -77.5,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, severe headache",
                 "description": "A woman leaning on a wall in front of her apartment has a splitting headache and chest pain. She says her blood pressure meds \"make her sleepy\" so she stopped them."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, erős fejfájás",
+                "description": "Egy lakása előtt falnak támaszkodó nőnek hasogató fejfájása és mellkasi fájdalma van. Azt mondja, abbahagyta a vérnyomásgyógyszerei szedését, mert „elálmosítják”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [-2197.75, -77.5, 35.32],
+            "pos": [
+                -2197.75,
+                -77.5,
+                35.32
+            ],
             "rot": 218,
             "anim": "lean",
             "injuries": [],

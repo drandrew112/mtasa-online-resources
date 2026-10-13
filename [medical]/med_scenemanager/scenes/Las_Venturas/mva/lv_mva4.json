@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1682.13, 864.8, 6.96],
+    "center": [
+        1682.13,
+        864.8,
+        6.96
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car spun out",
                 "description": "A dark grey car lost control and spun out by the LVA Freight Depot. The driver got out and is sitting on the ground with a head injury and disorientation. The passenger is still in the passenger seat with a painful collarbone and some cuts."
+            },
+            "hu": {
+                "title": "Megpördült az autó",
+                "description": "Egy sötétszürke autó elvesztette az irányítást és megpördült az LVA Freight Depot közelében. A sofőr kiszállt és a földre ült; fejsérülése van, és zavart. Az utas még mindig az ülésben van, fáj a kulcscsontja, és néhány vágása van."
             }
         },
         "caller": "SceneManager",
@@ -22,47 +30,116 @@
         {
             "id": "v1",
             "model": 547,
-            "pos": [1682.23, 861.06, 7.515],
-            "rot": [-2.34, -1.01, 109.2],
+            "pos": [
+                1682.23,
+                861.06,
+                7.515
+            ],
+            "rot": [
+                -2.34,
+                -1.01,
+                109.2
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [60, 60, 70, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                60,
+                60,
+                70,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV82 669",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 73,
-            "pos": [1682.13, 864.8, 7.958],
+            "pos": [
+                1682.13,
+                864.8,
+                7.958
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 60, "consciousness": "dazed" }
+            "state": {
+                "pain": 60,
+                "consciousness": "dazed"
+            }
         },
         {
             "id": "p2",
             "skin": 29,
-            "pos": [1682.23, 861.06, 7.77],
+            "pos": [
+                1682.23,
+                861.06,
+                7.77
+            ],
             "rot": 109.2,
             "anim": "none",
             "vehicle": "v1",
             "seat": 1,
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

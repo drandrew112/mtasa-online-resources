@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2604.467, 2380.143, 9.714],
+    "center": [
+        -2604.467,
+        2380.143,
+        9.714
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "A retired woman walking her poodle sat down by the road with chest pain and cold sweat. The poodle is barking at everyone."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, verejtékezés",
+                "description": "Egy nyugdíjas nő uszkárját sétáltatva leült az út mellé, mert fájt a mellkasa, és hideg verejték lepte el. Az uszkár mindenkire ugat."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [-2604.467, 2380.143, 9.714],
+            "pos": [
+                -2604.467,
+                2380.143,
+                9.714
+            ],
             "rot": 52,
             "anim": "sit",
             "injuries": [],

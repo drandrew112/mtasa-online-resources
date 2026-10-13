@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2424.2, -2248.03, 13.55],
+    "center": [
+        2424.2,
+        -2248.03,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Robbery, victim shot",
                 "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way."
+            },
+            "hu": {
+                "title": "Rablás, meglőtt áldozat",
+                "description": "Egy férfit meglőttek egy rablás során Ocean Docks egyik buszmegállójában. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt. A rendőrség úton van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 188,
-            "pos": [2424.2, -2248.03, 13.55],
+            "pos": [
+                2424.2,
+                -2248.03,
+                13.55
+            ],
             "rot": 22,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4100 }
+            "state": {
+                "bloodVolume": 4100
+            }
         }
     ]
 }

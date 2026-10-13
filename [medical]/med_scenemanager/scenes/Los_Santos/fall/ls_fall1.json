@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [644.75, -1445, 14.293],
+    "center": [
+        644.75,
+        -1445,
+        14.293
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell about two floors from the scaffolding of a new building in Rodeo. He is lying on the ground, his leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Egy építőmunkás körülbelül két emeletnyi magasságból zuhant le egy új rodeói épület állványzatáról. A földön fekszik, lába természetellenes szögben áll, és vérzik a feje. Munkatársai nem mozdították el."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [644.75, -1445, 14.293],
+            "pos": [
+                644.75,
+                -1445,
+                14.293
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4400 }
+            "state": {
+                "bloodVolume": 4400
+            }
         }
     ]
 }

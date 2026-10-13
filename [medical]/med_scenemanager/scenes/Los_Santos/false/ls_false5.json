@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [502.35, -1314.92, 15.87],
+    "center": [
+        502.35,
+        -1314.92,
+        15.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed man, may have left",
                 "description": "A shop owner says a man collapsed at a bus stop in Rodeo a few minutes ago, but he might have got up and walked away. Nobody is with him."
+            },
+            "hu": {
+                "title": "Összeesett férfi, lehet, hogy elment",
+                "description": "Egy üzlettulajdonos szerint néhány perce összeesett egy férfi Rodeo egyik buszmegállójában, de lehet, hogy már felkelt és elment. Senki sincs vele."
             }
         },
         "caller": "SceneManager",

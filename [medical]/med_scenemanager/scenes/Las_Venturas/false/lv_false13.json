@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2620.38, 1275.8, 10.82],
+    "center": [
+        2620.38,
+        1275.8,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man asleep on the ground",
                 "description": "A passer-by reports a man who collapsed at a bus stop near the Camel's Toe. He is sitting up now, says he was only sleeping and refuses help."
+            },
+            "hu": {
+                "title": "Földön fekvő férfi azt állítja, hogy aludt",
+                "description": "Egy járókelő egy férfit jelentett, aki összeesett a Camel's Toe közelében lévő buszmegállóban. Most már felült, azt mondja, csak aludt, és visszautasítja a segítséget."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 212,
-            "pos": [2620.38, 1275.8, 10.82],
+            "pos": [
+                2620.38,
+                1275.8,
+                10.82
+            ],
             "rot": 239,
             "anim": "sit",
             "injuries": [],

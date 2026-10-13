@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-243, 2758.63, 62.69],
+    "center": [
+        -243,
+        2758.63,
+        62.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain after cocaine",
                 "description": "A man on the sidewalk in Las Payasadas says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom kokain után",
+                "description": "Egy férfi Las Payasadas járdáján azt mondja, szorít a mellkasa, és hevesen ver a szíve, miután kokaint szippantott fel. Izzad, és a bal oldalát fogja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-243, 2758.63, 62.69],
+            "pos": [
+                -243,
+                2758.63,
+                62.69
+            ],
             "rot": 172,
             "anim": "hold_side",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 195, "heartRate": 147 }
+            "state": {
+                "systolic": 195,
+                "heartRate": 147
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [426.725, -1483.206, 30.578],
+    "center": [
+        426.725,
+        -1483.206,
+        30.578
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed won't stop, dizzy",
                 "description": "A shop assistant in Rodeo has had a nosebleed for twenty minutes that will not stop no matter how hard she pinches. She is dizzy, flushed and says her heart is pounding. Her manager found a home blood pressure cuff in her bag."
+            },
+            "hu": {
+                "title": "Nem áll el az orrvérzés, szédülés",
+                "description": "Egy rodeói bolti eladónőnek húsz perce vérzik az orra, és semmilyen erős összenyomásra nem áll el. Szédül, kipirult, és azt mondja, hevesen ver a szíve. Vezetője otthoni vérnyomásmérőt talált a táskájában."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [426.725, -1483.206, 30.578],
+            "pos": [
+                426.725,
+                -1483.206,
+                30.578
+            ],
             "rot": 126.2,
             "anim": "crouch",
             "injuries": [],

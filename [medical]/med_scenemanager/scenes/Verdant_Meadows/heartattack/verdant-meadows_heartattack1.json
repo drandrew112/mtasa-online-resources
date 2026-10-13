@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [415.386, 2365.64, 25.658],
+    "center": [
+        415.386,
+        2365.64,
+        25.658
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, no pulse",
                 "description": "A pilot climbed out of his plane at the old airstrip, walked to the road and collapsed. Not breathing, no pulse."
+            },
+            "hu": {
+                "title": "Összeesett, nincs pulzusa",
+                "description": "Egy pilóta kiszállt a repülőgépéből a régi leszállópályán, az úthoz sétált, majd összeesett. Nem lélegzik, és nincs pulzusa."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 17,
-            "pos": [415.386, 2365.64, 25.658],
+            "pos": [
+                415.386,
+                2365.64,
+                25.658
+            ],
             "rot": 221,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

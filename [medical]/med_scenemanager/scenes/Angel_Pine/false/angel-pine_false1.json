@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2058.64, -2488.62, 30.63],
+    "center": [
+        -2058.64,
+        -2488.62,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "Someone is screaming for help outside a house in Angel Pine. The caller hung up before giving any more details."
+            },
+            "hu": {
+                "title": "Segítségért kiáltás",
+                "description": "Valaki segítségért kiabál egy Angel Pine-i ház előtt. A bejelentő letette a telefont, mielőtt további részleteket mondott volna."
             }
         },
         "caller": "SceneManager",

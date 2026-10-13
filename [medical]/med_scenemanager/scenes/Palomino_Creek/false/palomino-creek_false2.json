@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [2467.38, 303.25, 31.57],
+    "center": [
+        2467.38,
+        303.25,
+        31.57
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car in the ditch",
                 "description": "A passing trucker reports a car in the ditch at the crossroads near Palomino Creek, maybe with someone inside. Nothing is there when units arrive."
+            },
+            "hu": {
+                "title": "Autó az árokban",
+                "description": "Egy arra haladó kamionsofőr egy árokban lévő autóról számolt be Palomino Creek közelében, a kereszteződésnél; talán valaki is van benne. Mire az egységek kiérkeztek, már nem volt ott semmi."
             }
         },
         "caller": "SceneManager",

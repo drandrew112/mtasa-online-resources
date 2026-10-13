@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1865.04, 2495.14, 6.81],
+    "center": [
+        1865.04,
+        2495.14,
+        6.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found by a night guard",
                 "description": "A night guard found a man lying by the roadside in Redsands East. He has a head wound and has been there for hours. The guard did not touch him."
+            },
+            "hu": {
+                "title": "Éjjeliőr talált rá",
+                "description": "Egy éjjeliőr egy férfit talált az út mellett Redsands Eastben. Fejsérülése van, és már órák óta ott lehet. Az őr nem nyúlt hozzá."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [1865.04, 2495.14, 6.81],
+            "pos": [
+                1865.04,
+                2495.14,
+                6.81
+            ],
             "rot": 52,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

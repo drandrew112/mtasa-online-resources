@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2301.635, -1899.732, 13.61],
+    "center": [
+        2301.635,
+        -1899.732,
+        13.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pounding headache, dizzy",
                 "description": "A delivery driver pulled over and sat on the curb with a pounding headache at the back of his skull. He ran out of his blood pressure tablets a week ago and has been drinking coffee all day to stay awake."
+            },
+            "hu": {
+                "title": "Lüktető fejfájás, szédülés",
+                "description": "Egy kiszállító sofőr félreállt és leült a járdaszegélyre, mert erősen lüktet a tarkója. Egy hete elfogyott a vérnyomáscsökkentője, azóta pedig egész nap kávét iszik, hogy ébren maradjon."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [2301.635, -1899.732, 13.61],
+            "pos": [
+                2301.635,
+                -1899.732,
+                13.61
+            ],
             "rot": 182.3,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 186, "diastolic": 108, "heartRate": 92, "consciousness": "stable" }
+            "state": {
+                "systolic": 186,
+                "diastolic": 108,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
         }
     ]
 }

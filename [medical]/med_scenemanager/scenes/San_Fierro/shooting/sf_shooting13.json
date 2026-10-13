@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2471.12, -63.25, 30.74],
+    "center": [
+        -2471.12,
+        -63.25,
+        30.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the back",
                 "description": "A man was shot in the back while running away at a bus stop in Hashbury. He is lying on his stomach and says he cannot feel his legs."
+            },
+            "hu": {
+                "title": "Hátba lőtték",
+                "description": "Hashbury egyik buszmegállójában egy menekülő férfit hátba lőttek. Hason fekszik, és azt mondja, nem érzi a lábait."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [-2471.12, -63.25, 30.74],
+            "pos": [
+                -2471.12,
+                -63.25,
+                30.74
+            ],
             "rot": 172,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4312, "pain": 28 }
+            "state": {
+                "bloodVolume": 4312,
+                "pain": 28
+            }
         }
     ]
 }

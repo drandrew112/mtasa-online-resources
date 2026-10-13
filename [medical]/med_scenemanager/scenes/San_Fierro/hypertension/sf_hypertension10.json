@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2787.251, 807.229, 49.165],
+    "center": [
+        -2787.251,
+        807.229,
+        49.165
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "A heavy-set man carrying a mattress up some steps had to stop with sharp chest pain and drenching sweat. He says he has had high blood pressure for years."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom és izzadás",
+                "description": "Egy testes férfi matracot cipelt fel néhány lépcsőn, amikor éles mellkasi fájdalom és erős izzadás miatt meg kellett állnia. Azt mondja, évek óta magas a vérnyomása."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [-2787.251, 807.229, 49.165],
+            "pos": [
+                -2787.251,
+                807.229,
+                49.165
+            ],
             "rot": 58.6,
             "anim": "crouch",
             "injuries": [],

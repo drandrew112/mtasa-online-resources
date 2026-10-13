@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2570.964, 2498.871, 20.949],
+    "center": [
+        -2570.964,
+        2498.871,
+        20.949
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "A yacht owner walking up from the marina collapsed by the road. Not breathing. His captain's hat rolled into the gutter."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "Egy jachttulajdonos a kikötőből felfelé sétálva összeesett az út mellett. Nem lélegzik. A kapitányi sapkája az árokba gurult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [-2570.964, 2498.871, 20.949],
+            "pos": [
+                -2570.964,
+                2498.871,
+                20.949
+            ],
             "rot": 101,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

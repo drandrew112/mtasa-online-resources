@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2399, 906, 10.82],
+    "center": [
+        2399,
+        906,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Asthma attack, inhaler empty",
                 "description": "A woman on the sand in Las Venturas is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale."
+            },
+            "hu": {
+                "title": "Asztmás roham, üres inhalátor",
+                "description": "Egy nő asztmás rohamot kapott Las Venturas homokján, de az inhalátora üres. Előrehajolva ül, sípolva lélegzik, az ajkai pedig sápadni kezdenek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [2399, 906, 10.82],
+            "pos": [
+                2399,
+                906,
+                10.82
+            ],
             "rot": 14,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88 }
+            "state": {
+                "spo2": 88
+            }
         }
     ]
 }

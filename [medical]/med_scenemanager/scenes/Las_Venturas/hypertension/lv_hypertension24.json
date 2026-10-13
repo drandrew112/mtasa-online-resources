@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1384.1, 660.55, 10.82],
+    "center": [
+        1384.1,
+        660.55,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak leg, confused",
                 "description": "A man dragged his right leg and then sat down heavily. He seems confused and his words come out jumbled."
+            },
+            "hu": {
+                "title": "Gyenge láb, zavartság",
+                "description": "Egy férfi húzni kezdte a jobb lábát, majd nehézkesen leült. Zavartnak tűnik, a szavai összefolynak."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [1384.1, 660.55, 10.82],
+            "pos": [
+                1384.1,
+                660.55,
+                10.82
+            ],
             "rot": 90.2,
             "anim": "sit",
             "injuries": [],

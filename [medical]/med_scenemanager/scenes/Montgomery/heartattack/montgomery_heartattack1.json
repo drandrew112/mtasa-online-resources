@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1460.473, 397.895, 20.224],
+    "center": [
+        1460.473,
+        397.895,
+        20.224
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "A factory worker on his cigarette break is doubled over by the road, crushing chest pain going down his arm. His foreman wants to know if he is clocking out."
+            },
+            "hu": {
+                "title": "Szétfeszítő mellkasi fájdalom",
+                "description": "Egy gyári munkás a cigarettaszünetében görnyedve áll az út mellett, szétfeszítő mellkasi fájdalma a karjába sugárzik. Művezetője azt kérdezi, kiüti-e magát a műszakból."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [1460.473, 397.895, 20.224],
+            "pos": [
+                1460.473,
+                397.895,
+                20.224
+            ],
             "rot": 288,
             "anim": "hold_side",
             "injuries": [],

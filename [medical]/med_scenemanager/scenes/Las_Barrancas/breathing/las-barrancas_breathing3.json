@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-880.75, 1411.3, 13.6],
+    "center": [
+        -880.75,
+        1411.3,
+        13.6
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Asthma from hay dust",
                 "description": "A girl helping to stack hay on the dusty ground in Las Barrancas is wheezing badly from the dust. Her inhaler is at home."
+            },
+            "hu": {
+                "title": "Szénaportól kialakult asztma",
+                "description": "Egy lány szénát rakodott Las Barrancas poros földjén, és a portól erősen sípolva kezdett lélegezni. Az inhalátora otthon van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [-880.75, 1411.3, 13.6],
+            "pos": [
+                -880.75,
+                1411.3,
+                13.6
+            ],
             "rot": 352,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

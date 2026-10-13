@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-448, 2241.52, 42.43],
+    "center": [
+        -448,
+        2241.52,
+        42.43
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, ringing ears",
                 "description": "An elderly man at the side of the road in El Castillo del Diablo says his ears are ringing and he feels faint. He admits he stopped taking his pressure pills because of the side effects."
+            },
+            "hu": {
+                "title": "Szédülés, fülzúgás",
+                "description": "Egy idős férfi El Castillo del Diablo útjának szélén azt mondja, cseng a füle, és mindjárt elájul. Bevallja, hogy a mellékhatások miatt abbahagyta a vérnyomáscsökkentő gyógyszere szedését."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 168,
-            "pos": [-448, 2241.52, 42.43],
+            "pos": [
+                -448,
+                2241.52,
+                42.43
+            ],
             "rot": 301,
             "anim": "sit",
             "injuries": [],

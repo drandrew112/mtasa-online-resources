@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [146.62, -1365.67, 49.99],
+    "center": [
+        146.62,
+        -1365.67,
+        49.99
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found barely responsive",
                 "description": "A passer-by found a man lying at the side of the road in Richman, groaning but not answering. There is an insulin pen and a diabetic ID card in his bag. He is breathing deep and fast."
+            },
+            "hu": {
+                "title": "Alig reagál",
+                "description": "Egy járókelő egy férfit talált az út mellett Richmanben. Felnyög, de nem válaszol. Táskájában inzulinadagoló toll és cukorbeteg-azonosító kártya van. Mélyen és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 258,
-            "pos": [146.62, -1365.67, 49.99],
+            "pos": [
+                146.62,
+                -1365.67,
+                49.99
+            ],
             "rot": 146,
             "anim": "ko_back",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [18.89, 1105.72, 19.74],
+    "center": [
+        18.89,
+        1105.72,
+        19.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sweaty and confused",
                 "description": "A woman outside a small store in Fort Carson is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            },
+            "hu": {
+                "title": "Izzad és zavart",
+                "description": "Egy nő erősen izzad, és zavartnak tűnik egy kis üzlet előtt Fort Carsonban. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenné vált a beszéde."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [18.89, 1105.72, 19.74],
+            "pos": [
+                18.89,
+                1105.72,
+                19.74
+            ],
             "rot": 189,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 45, "consciousness": "confused" }
+            "state": {
+                "glucose": 45,
+                "consciousness": "confused"
+            }
         }
     ]
 }

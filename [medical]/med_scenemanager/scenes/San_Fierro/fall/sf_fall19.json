@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2671.49, 408.99, 4.37],
+    "center": [
+        -2671.49,
+        408.99,
+        4.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slipped on wet pavement",
                 "description": "A woman slipped on the wet pavement on the sidewalk in City Hall in the fog and landed on her outstretched hand. Her wrist is swollen and bent."
+            },
+            "hu": {
+                "title": "Megcsúszott a nedves járdán",
+                "description": "A ködben City Hall járdáján egy nő megcsúszott a nedves burkolaton, és kinyújtott kezére esett. Csuklója duzzadt és elhajlott."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [-2671.49, 408.99, 4.37],
+            "pos": [
+                -2671.49,
+                408.99,
+                4.37
+            ],
             "rot": 338,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 33 }
+            "state": {
+                "pain": 33
+            }
         }
     ]
 }

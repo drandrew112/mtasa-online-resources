@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1558.219, 660.914, 10.82],
+    "center": [
+        1558.219,
+        660.914,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe headache, light hurts",
                 "description": "A man is shielding his eyes from the light and moaning with a severe headache. He stopped all his medication after a falling-out with his doctor."
+            },
+            "hu": {
+                "title": "Erős fejfájás, fényérzékenység",
+                "description": "Egy férfi a fénytől eltakarja a szemét, és nyög az erős fejfájás miatt. Miután összeveszett az orvosával, abbahagyta az összes gyógyszerét."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [1558.219, 660.914, 10.82],
+            "pos": [
+                1558.219,
+                660.914,
+                10.82
+            ],
             "rot": 292.8,
             "anim": "crouch",
             "injuries": [],

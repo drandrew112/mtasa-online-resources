@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-953.91, -1716, 77.586],
+    "center": [
+        -953.91,
+        -1716,
+        77.586
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "A woodcutter sat down by the road with tight chest pain and drenched in sweat. He insists he only needs a break."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, izzadás",
+                "description": "Egy favágó leült az út mellett; szorító mellkasi fájdalma van, és csurom víz az izzadságtól. Azt hajtogatja, hogy csak pihennie kell egy kicsit."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [-953.91, -1716, 77.586],
+            "pos": [
+                -953.91,
+                -1716,
+                77.586
+            ],
             "rot": 333,
             "anim": "sit",
             "injuries": [],

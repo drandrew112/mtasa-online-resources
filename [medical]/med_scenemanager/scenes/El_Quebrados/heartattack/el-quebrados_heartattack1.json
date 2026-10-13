@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1462.595, 2721.174, 65.796],
+    "center": [
+        -1462.595,
+        2721.174,
+        65.796
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "The town sheriff sat down by the road with crushing chest pain going down his arm. He is still trying to give orders."
+            },
+            "hu": {
+                "title": "Elviselhetetlen mellkasi fájdalom",
+                "description": "A város seriffje leült az út mellé, mert elviselhetetlen mellkasi fájdalma van, amely a karjába sugárzik. Még mindig megpróbál utasításokat adni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [-1462.595, 2721.174, 65.796],
+            "pos": [
+                -1462.595,
+                2721.174,
+                65.796
+            ],
             "rot": 23,
             "anim": "hold_side",
             "injuries": [],

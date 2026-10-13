@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [837.46, -98.72, 26.33],
+    "center": [
+        837.46,
+        -98.72,
+        26.33
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, headache",
                 "description": "A trucker next to the country road in Fern Ridge pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing."
+            },
+            "hu": {
+                "title": "Légszomj és fejfájás",
+                "description": "Egy kamionsofőr félreállt az országút mellett Fern Ridge-ben, mert lüktető fejfájása és légszomja volt. A bokái meg vannak dagadva, és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [837.46, -98.72, 26.33],
+            "pos": [
+                837.46,
+                -98.72,
+                26.33
+            ],
             "rot": 218,
             "anim": "sit",
             "injuries": [],

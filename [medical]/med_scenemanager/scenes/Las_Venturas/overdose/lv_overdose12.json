@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2032.55, 2423.13, 10.82],
+    "center": [
+        2032.55,
+        2423.13,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman at the side of the road near the Emerald Isle mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Altató és bor, súlyos álmosság",
+                "description": "Egy nő az Emerald Isle közelében, az út szélén egy vita után szorongáscsökkentő tablettákat vett be egy üveg borral. Összefolyó szavakkal beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 214,
-            "pos": [2032.55, 2423.13, 10.82],
+            "pos": [
+                2032.55,
+                2423.13,
+                10.82
+            ],
             "rot": 124,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90, "consciousness": "dazed" }
+            "state": {
+                "spo2": 90,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2926.69, -1352.65, 10.97],
+    "center": [
+        2926.69,
+        -1352.65,
+        10.97
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager and rescuer pulled out",
                 "description": "A teenage boy got into trouble in the storm channel and an adult jumped in after him. Both were pulled out and brought up to the street in East Beach. The teenager is drowsy, the adult is coughing badly."
+            },
+            "hu": {
+                "title": "Tinédzsert és a mentésére sietőt húzták ki",
+                "description": "Egy tinédzser fiú bajba került a csatornában, egy felnőtt pedig utána ugrott. Mindkettőjüket kihúzták, majd felvitték az utcára East Beachen. A tinédzser álmos, a felnőtt erősen köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,24 +31,43 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [2926.69, -1352.65, 10.97],
+            "pos": [
+                2926.69,
+                -1352.65,
+                10.97
+            ],
             "rot": 88,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 80, "consciousness": "dazed" }
+            "state": {
+                "spo2": 80,
+                "consciousness": "dazed"
+            }
         },
         {
             "id": "p2",
             "skin": 69,
-            "pos": [2927.31, -1355.09, 10.97],
+            "pos": [
+                2927.31,
+                -1355.09,
+                10.97
+            ],
             "rot": 309,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

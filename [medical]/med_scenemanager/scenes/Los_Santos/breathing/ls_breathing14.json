@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [532.27, -1024.61, 82.95],
+    "center": [
+        532.27,
+        -1024.61,
+        82.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old smoker cannot catch breath",
                 "description": "An elderly man at the side of the road in Richman stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky."
+            },
+            "hu": {
+                "title": "Idős dohányos, nem kap levegőt",
+                "description": "Egy idős férfi megállt az út mellett Richmanben, mert nem kap levegőt. Egy hete csúnyán köhög, naponta egy doboz cigarettát elszív, ajkai pedig szederjesek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 57,
-            "pos": [532.27, -1024.61, 82.95],
+            "pos": [
+                532.27,
+                -1024.61,
+                82.95
+            ],
             "rot": 357,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                {
+                    "type": "copd",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 84 }
+            "state": {
+                "spo2": 84
+            }
         }
     ]
 }

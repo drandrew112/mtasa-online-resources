@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [790, 400, 19.2],
+    "center": [
+        790,
+        400,
+        19.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shots heard",
                 "description": "Neighbours heard what sounded like gunshots on a grassy patch just outside Hampton Barns. Nobody saw anyone injured. It may have been fireworks."
+            },
+            "hu": {
+                "title": "Lövéseket hallottak",
+                "description": "A Hampton Barns külterületén lévő füves részen lakók lövésekhez hasonló hangokat hallottak. Senki nem látott sérültet. Lehet, hogy csak tűzijáték volt."
             }
         },
         "caller": "SceneManager",

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1227.38, -1565.25, 13.58],
+    "center": [
+        1227.38,
+        -1565.25,
+        13.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe asthma, getting drowsy",
                 "description": "A known asthmatic woman on the pavement in Market has used her inhaler ten times. The wheeze has gone quiet, she is exhausted and getting sleepy. Friends are panicking."
+            },
+            "hu": {
+                "title": "Súlyos asztma, egyre álmosabb",
+                "description": "Egy ismert asztmás nő tízszer használta az inhalátorát Market járdáján. A sípoló légzés elhalkult, kimerült és álmosodik. Barátai pánikba estek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 195,
-            "pos": [1227.38, -1565.25, 13.58],
+            "pos": [
+                1227.38,
+                -1565.25,
+                13.58
+            ],
             "rot": 174,
             "anim": "sit",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 78, "heartRate": 132, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "heartRate": 132,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1135.85, 2063.42, 11.93],
+    "center": [
+        1135.85,
+        2063.42,
+        11.93
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Gasping, pink frothy cough",
                 "description": "An elderly woman at the side of the road near the Whitewood Estates is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days."
+            },
+            "hu": {
+                "title": "Levegő után kapkod, rózsaszín habos köpet",
+                "description": "Egy idős nő a Whitewood Estates közelében, az út szélén levegő után kapkod, és rózsaszín, habos váladékot köhög fel. Szívelégtelensége van, és azt mondja, napok óta dagad a lába."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [1135.85, 2063.42, 11.93],
+            "pos": [
+                1135.85,
+                2063.42,
+                11.93
+            ],
             "rot": 195,
             "anim": "cough",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 82, "systolic": 177, "heartRate": 125 }
+            "state": {
+                "spo2": 82,
+                "systolic": 177,
+                "heartRate": 125
+            }
         }
     ]
 }

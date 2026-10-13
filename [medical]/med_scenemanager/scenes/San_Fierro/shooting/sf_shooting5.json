@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2839.82, 691.55, 22.91],
+    "center": [
+        -2839.82,
+        691.55,
+        22.91
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, leg wound",
                 "description": "Someone fired from a passing car on the sidewalk in Palisades. A young man was hit in the thigh and is bleeding heavily into his jeans."
+            },
+            "hu": {
+                "title": "Autóból leadott lövés, lábsérülés",
+                "description": "Palisades járdáján egy elhaladó autóból lőttek. Egy fiatal férfit combon talált a lövedék, és erősen vérzik a farmernadrágjába."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [-2839.82, 691.55, 22.91],
+            "pos": [
+                -2839.82,
+                691.55,
+                22.91
+            ],
             "rot": 337,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4143, "pain": 39 }
+            "state": {
+                "bloodVolume": 4143,
+                "pain": 39
+            }
         }
     ]
 }

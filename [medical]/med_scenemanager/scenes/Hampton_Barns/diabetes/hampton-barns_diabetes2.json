@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [570, 320, 18.17],
+    "center": [
+        570,
+        320,
+        18.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Trucker ran out of insulin",
                 "description": "A long-haul trucker in a field near Hampton Barns ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily."
+            },
+            "hu": {
+                "title": "A kamionsofőr kifogyott az inzulinból",
+                "description": "Egy távolsági kamionsofőr egy Hampton Barns közelében lévő mezőn két napja kifogyott az inzulinból, a legközelebbi gyógyszertár pedig zárva volt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [570, 320, 18.17],
+            "pos": [
+                570,
+                320,
+                18.17
+            ],
             "rot": 211,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4190, "glucose": 469 }
+            "state": {
+                "bloodVolume": 4190,
+                "glucose": 469
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1754.4, -2666.19, 5.9],
+    "center": [
+        1754.4,
+        -2666.19,
+        5.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell, cannot stand, weak on one side",
                 "description": "An elderly woman fell on the pavement at Los Santos International and cannot get up. She hit her head lightly. Witnesses say her leg just gave way and now her speech is slurred."
+            },
+            "hu": {
+                "title": "Elesett, nem tud felállni, egyik oldala gyenge",
+                "description": "Egy idős nő elesett a Los Santos International járdáján, és nem tud felkelni. Enyhén beütötte a fejét. Szemtanúk szerint egyszerűen összecsuklott a lába, és most elmosódottan beszél."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [1754.4, -2666.19, 5.9],
+            "pos": [
+                1754.4,
+                -2666.19,
+                5.9
+            ],
             "rot": 131,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

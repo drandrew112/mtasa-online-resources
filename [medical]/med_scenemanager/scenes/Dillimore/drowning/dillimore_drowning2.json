@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [903.97, -369.51, 47.71],
+    "center": [
+        903.97,
+        -369.51,
+        47.71
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swallowed a fish bone",
                 "description": "An old fisherman next to the country road near Dillimore has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty."
+            },
+            "hu": {
+                "title": "Halcsont akadt a torkán",
+                "description": "Egy idős halásznak halcsont akadt a torkán az országút mellett, Dillimore közelében. Öklendezik, nyálzik, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [903.97, -369.51, 47.71],
+            "pos": [
+                903.97,
+                -369.51,
+                47.71
+            ],
             "rot": 150,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

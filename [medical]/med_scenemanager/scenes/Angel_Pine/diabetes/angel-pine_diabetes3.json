@@ -5,7 +5,11 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [-1901.4, -2542.36, 40.36],
+    "center": [
+        -1901.4,
+        -2542.36,
+        40.36
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Homeless man, very weak",
                 "description": "Outreach workers next to the country road near Angel Pine report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\"."
+            },
+            "hu": {
+                "title": "Hajléktalan férfi, nagyon legyengült",
+                "description": "Az Angel Pine közelében, az országút mellett dolgozó segítők egy hajléktalan férfiról számolnak be, aki egész nap üdítőt ivott. Rendkívül gyenge és zavart, és azt mondja, hogy „régebben cukorbetegségre szedett tablettákat”."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 78,
-            "pos": [-1901.4, -2542.36, 40.36],
+            "pos": [
+                -1901.4,
+                -2542.36,
+                40.36
+            ],
             "rot": 20,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3891, "glucose": 656, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 3891,
+                "glucose": 656,
+                "consciousness": "confused"
+            }
         }
     ]
 }

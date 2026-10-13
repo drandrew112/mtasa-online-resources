@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-839.62, 2710.65, 45.95],
+    "center": [
+        -839.62,
+        2710.65,
+        45.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman choked at lunch",
                 "description": "An elderly woman choked on a piece of chicken on the dusty ground in Valle Ocultado. Her husband lowered her to the ground when she went limp."
+            },
+            "hu": {
+                "title": "Idős nő félrenyelt ebéd közben",
+                "description": "Valle Ocultado poros talaján egy idős nő félrenyelt egy darab csirkét. Amikor elernyedt, férje óvatosan lefektette a földre."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-839.62, 2710.65, 45.95],
+            "pos": [
+                -839.62,
+                2710.65,
+                45.95
+            ],
             "rot": 191,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 61, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 61,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [2574, -942, 81.41],
+    "center": [
+        2574,
+        -942,
+        81.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "A neighbour heard someone screaming for help in the park near the docks. The screaming has stopped. The caller cannot see anyone from the window."
+            },
+            "hu": {
+                "title": "Segítségért kiált",
+                "description": "Egy szomszéd segítségért kiabáló embert hallott a dokkok melletti parkból. A kiabálás abbamaradt, a bejelentő pedig az ablakából nem lát senkit."
             }
         },
         "caller": "SceneManager",

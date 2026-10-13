@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1227, -5, 14.15],
+    "center": [
+        -1227,
+        -5,
+        14.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "COPD flare, lips blue",
                 "description": "An old man with emphysema outside the terminal at Easter Bay Airport ran out of oxygen in his portable tank. He is very drowsy and his lips are blue."
+            },
+            "hu": {
+                "title": "COPD-s rosszabbodás, kék ajkak",
+                "description": "Egy tüdőtágulásban szenvedő idős férfinak elfogyott az oxigénje a hordozható palackból az Easter Bay Airport terminálja előtt. Nagyon álmos, ajkai kékek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [-1227, -5, 14.15],
+            "pos": [
+                -1227,
+                -5,
+                14.15
+            ],
             "rot": 84,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 78, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

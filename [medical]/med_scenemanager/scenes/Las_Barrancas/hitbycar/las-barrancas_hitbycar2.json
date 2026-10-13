@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-798.63, 1530.76, 27.12],
+    "center": [
+        -798.63,
+        1530.76,
+        27.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Skateboarder hit by a car",
                 "description": "A teenager on a skateboard shot off the curb and into the side of a car outside a small store in Las Barrancas. His leg is deformed and he has deep grazes."
+            },
+            "hu": {
+                "title": "Autó ütötte el a gördeszkást",
+                "description": "Egy tinédzser gördeszkával lecsúszott a járdaszegélyről, és nekicsapódott egy autónak egy kis üzlet előtt Las Barrancasban. A lába deformálódott, és mély horzsolásai vannak."
             }
         },
         "caller": "SceneManager",
@@ -22,34 +30,93 @@
         {
             "id": "v1",
             "model": 500,
-            "pos": [-794.19, 1534.34, 26.81],
-            "rot": [0, 0, 264.8],
+            "pos": [
+                -794.19,
+                1534.34,
+                26.81
+            ],
+            "rot": [
+                0,
+                0,
+                264.8
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                180,
+                90,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "TR18 301",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-798.63, 1530.76, 27.12],
+            "pos": [
+                -798.63,
+                1530.76,
+                27.12
+            ],
             "rot": 16,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

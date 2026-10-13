@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1052.75, -1260.875, 128.313],
+    "center": [
+        -1052.75,
+        -1260.875,
+        128.313
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe chest pain",
                 "description": "A grizzled old farmer is lying by the road with severe chest pain, insisting nobody come near \"the crops\"."
+            },
+            "hu": {
+                "title": "Erős mellkasi fájdalom",
+                "description": "Egy sokat látott idős gazda erős mellkasi fájdalommal fekszik az út mellett, és ragaszkodik hozzá, hogy senki ne menjen a „termények” közelébe."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [-1052.75, -1260.875, 128.313],
+            "pos": [
+                -1052.75,
+                -1260.875,
+                128.313
+            ],
             "rot": 249,
             "anim": "hold_side",
             "injuries": [],

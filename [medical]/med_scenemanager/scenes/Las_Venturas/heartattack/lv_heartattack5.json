@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2304.412, 1366.125, 10.82],
+    "center": [
+        2304.412,
+        1366.125,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "An elderly woman leaving the buffet keeps nearly fainting on the sidewalk. Her pulse is very slow and she looks pale. Her husband is holding her handbag and three plates of dessert."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy idős nő a büféből távozva újra meg újra majdnem elájul a járdán. Pulzusa nagyon lassú, és sápadtnak tűnik. A férje a táskáját és három tányér desszertet tart."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [2304.412, 1366.125, 10.82],
+            "pos": [
+                2304.412,
+                1366.125,
+                10.82
+            ],
             "rot": 185,
             "anim": "sit",
             "injuries": [],

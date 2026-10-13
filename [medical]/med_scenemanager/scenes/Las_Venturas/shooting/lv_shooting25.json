@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1796.31, 2100.14, 10.97],
+    "center": [
+        1796.31,
+        2100.14,
+        10.97
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest at a bus stop in Redsands West. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Egy férfit mellkason lőttek Redsands West egyik buszmegállójánál. Nehezen lélegzik, ajkai sápadtak, a sebből vérbuborékok törnek elő."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [1796.31, 2100.14, 10.97],
+            "pos": [
+                1796.31,
+                2100.14,
+                10.97
+            ],
             "rot": 323,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3885, "spo2": 83 }
+            "state": {
+                "bloodVolume": 3885,
+                "spo2": 83
+            }
         }
     ]
 }

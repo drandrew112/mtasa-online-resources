@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1793.55, 1162.5, 6.73],
+    "center": [
+        1793.55,
+        1162.5,
+        6.73
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and pale",
                 "description": "A jogger by the roadside at Las Venturas Airport sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            },
+            "hu": {
+                "title": "Remegő és sápadt kocogó",
+                "description": "Egy kocogó hirtelen leült az út mellett, a Las Venturas Airportnál; remeg, izzad és sápadt. Azt mondja, reggel beadta az inzulinját, de kihagyta a reggelit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [1793.55, 1162.5, 6.73],
+            "pos": [
+                1793.55,
+                1162.5,
+                6.73
+            ],
             "rot": 81,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 46, "heartRate": 115 }
+            "state": {
+                "glucose": 46,
+                "heartRate": 115
+            }
         }
     ]
 }

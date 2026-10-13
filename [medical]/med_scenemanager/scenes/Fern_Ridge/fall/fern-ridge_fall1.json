@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [973.81, -174.09, 14.95],
+    "center": [
+        973.81,
+        -174.09,
+        14.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell from a tractor",
                 "description": "A farmer fell off his tractor next to the country road near Fern Ridge and the rear wheel rolled over his leg. His leg is crushed and bleeding."
+            },
+            "hu": {
+                "title": "Leesett a traktorról",
+                "description": "Egy gazda leesett a traktoráról az országút mellett, Fern Ridge közelében, majd a hátsó kerék áthajtott a lábán. A lába összeroncsolódott és vérzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [973.81, -174.09, 14.95],
+            "pos": [
+                973.81,
+                -174.09,
+                14.95
+            ],
             "rot": 159,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4183, "pain": 57 }
+            "state": {
+                "bloodVolume": 4183,
+                "pain": 57
+            }
         }
     ]
 }

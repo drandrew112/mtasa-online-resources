@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-199.3, 2495.17, 25.41],
+    "center": [
+        -199.3,
+        2495.17,
+        25.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest tightness, blurred vision",
                 "description": "A heavy-set man on the road shoulder near El Castillo del Diablo complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples."
+            },
+            "hu": {
+                "title": "Mellkasi szorítás, homályos látás",
+                "description": "Egy túlsúlyos férfi mellkasi szorításra és homályos látásra panaszkodik az útpadkán El Castillo del Diablo közelében. Izzad, fél, és folyton a halántékát dörzsöli."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [-199.3, 2495.17, 25.41],
+            "pos": [
+                -199.3,
+                2495.17,
+                25.41
+            ],
             "rot": 350,
             "anim": "crouch",
             "injuries": [],

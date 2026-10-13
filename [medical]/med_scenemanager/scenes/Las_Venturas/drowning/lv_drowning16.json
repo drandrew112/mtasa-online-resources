@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2179, 1166, 11.41],
+    "center": [
+        2179,
+        1166,
+        11.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Rescuer and victim exhausted",
                 "description": "A man jumped in to save a drowning stranger. Both are at the edge of a pond in Come-A-Lot now: the stranger is unconscious, the rescuer is exhausted and coughing."
+            },
+            "hu": {
+                "title": "A mentő és a bajbajutott is kimerült",
+                "description": "Egy férfi a vízbe ugrott, hogy megmentsen egy fuldokló idegent. Most mindketten egy Come-A-Lot-i tó partján vannak: az idegen eszméletlen, a mentő pedig kimerült és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,24 +31,43 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [2179, 1166, 11.41],
+            "pos": [
+                2179,
+                1166,
+                11.41
+            ],
             "rot": 251,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 75, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 75,
+                "consciousness": "unconscious"
+            }
         },
         {
             "id": "p2",
             "skin": 66,
-            "pos": [2178.62, 1168.17, 11.59],
+            "pos": [
+                2178.62,
+                1168.17,
+                11.59
+            ],
             "rot": 81,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 95 }
+            "state": {
+                "spo2": 95
+            }
         }
     ]
 }

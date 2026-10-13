@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1678.875, -1290.875, 14.039],
+    "center": [
+        1678.875,
+        -1290.875,
+        14.039
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, CPR needed",
                 "description": "A tourist in a Hawaiian shirt collapsed in the middle of taking a selfie. His wife is screaming for help. He is blue around the lips and not breathing."
+            },
+            "hu": {
+                "title": "Férfi a földön, újraélesztés szükséges",
+                "description": "Egy hawaii inges turista összeesett, miközben szelfit készített. A felesége segítségért kiabál. A férfi ajkai kékek, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [1678.875, -1290.875, 14.039],
+            "pos": [
+                1678.875,
+                -1290.875,
+                14.039
+            ],
             "rot": 1,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

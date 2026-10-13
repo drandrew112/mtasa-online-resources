@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2176.5, 925.88, 80.01],
+    "center": [
+        -2176.5,
+        925.88,
+        80.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Party pill, overheating",
                 "description": "A young man at a bus stop in Calton Heights took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying."
+            },
+            "hu": {
+                "title": "Buliban bevett tabletta, túlmelegedés",
+                "description": "Calton Heights egyik buszmegállójában egy fiatal férfi bevett egy tablettát egy buliban, most remeg, izzad, és összeszorítja az állkapcsát. Hevesen ver a szíve, és azt mondja, meghal."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 106,
-            "pos": [-2176.5, 925.88, 80.01],
+            "pos": [
+                -2176.5,
+                925.88,
+                80.01
+            ],
             "rot": 162,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 171, "heartRate": 149 }
+            "state": {
+                "systolic": 171,
+                "heartRate": 149
+            }
         }
     ]
 }

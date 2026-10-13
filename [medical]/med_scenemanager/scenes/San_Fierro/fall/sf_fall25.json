@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2154, 260.25, 35.32],
+    "center": [
+        -2154,
+        260.25,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man on blood thinners fell",
                 "description": "An old man slipped on the sidewalk in King's and hit his head. He takes blood thinners, is getting more confused and has vomited once."
+            },
+            "hu": {
+                "title": "Véralvadásgátlót szedő idős férfi elesett",
+                "description": "King's járdáján egy idős férfi megcsúszott és beütötte a fejét. Véralvadásgátlót szed, egyre zavartabb, és egyszer hányt is."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-2154, 260.25, 35.32],
+            "pos": [
+                -2154,
+                260.25,
+                35.32
+            ],
             "rot": 261,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

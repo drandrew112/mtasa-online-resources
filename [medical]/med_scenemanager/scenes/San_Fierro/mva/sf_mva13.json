@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2128.8, -97.59, 34.32],
+    "center": [
+        -2128.8,
+        -97.59,
+        34.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car ran off the road",
                 "description": "A grey car left the road and hit the curb in Doherty. The driver got out and is sitting on the ground with a head injury and a painful wrist."
+            },
+            "hu": {
+                "title": "Letért az útról az autó",
+                "description": "Doherty területén egy szürke autó letért az útról és a járdaszegélynek ütközött. A vezető kiszállt, és a földön ül; fejsérülése van, a csuklója fáj."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 405,
-            "pos": [-2126.55, -95.72, 35.35],
-            "rot": [0, 0, 188.79],
+            "pos": [
+                -2126.55,
+                -95.72,
+                35.35
+            ],
+            "rot": [
+                0,
+                0,
+                188.79
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                120,
+                120,
+                125,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF31 471",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 30,
-            "pos": [-2128.8, -97.59, 35.32],
+            "pos": [
+                -2128.8,
+                -97.59,
+                35.32
+            ],
             "rot": 305.7,
             "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1403.29, 2696.3, 58.14],
+    "center": [
+        -1403.29,
+        2696.3,
+        58.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swallowed a fish bone",
                 "description": "An old fisherman on the road shoulder in El Quebrados has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty."
+            },
+            "hu": {
+                "title": "Halcsont akadt a torkán",
+                "description": "Egy idős halásznak halcsont akadt a torkán az útpadkán El Quebrados területén. Öklendezik, nyálzik, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-1403.29, 2696.3, 58.14],
+            "pos": [
+                -1403.29,
+                2696.3,
+                58.14
+            ],
             "rot": 283,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 92 }
+            "state": {
+                "spo2": 92
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-960, 1390, 33.92],
+    "center": [
+        -960,
+        1390,
+        33.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man not breathing, very cold",
                 "description": "A woman found a man lying on open scrubland near Las Barrancas. He is cold, not breathing and his skin is grey and blotchy."
+            },
+            "hu": {
+                "title": "Nem lélegző, nagyon hideg férfi",
+                "description": "Egy nő egy Las Barrancas közelében lévő nyílt, bozótos területen talált rá egy fekvő férfira. Hideg, nem lélegzik, a bőre szürke és foltos."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 94,
-            "pos": [-960, 1390, 33.92],
+            "pos": [
+                -960,
+                1390,
+                33.92
+            ],
             "rot": 91,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

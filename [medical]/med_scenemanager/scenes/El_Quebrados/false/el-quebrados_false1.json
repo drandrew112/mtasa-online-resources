@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1640, 2670, 55.1],
+    "center": [
+        -1640,
+        2670,
+        55.1
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure reported",
                 "description": "A passer-by reports someone having a seizure on open scrubland in El Quebrados. The caller left before the call was finished."
+            },
+            "hu": {
+                "title": "Görcsrohamot jelentettek",
+                "description": "Egy járókelő arról számol be, hogy valakinek görcsrohama van egy nyílt, bozótos területen El Quebradosban. A bejelentő még a hívás befejezése előtt elment."
             }
         },
         "caller": "SceneManager",

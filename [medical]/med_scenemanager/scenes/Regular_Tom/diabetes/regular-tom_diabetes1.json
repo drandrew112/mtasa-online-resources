@@ -5,7 +5,11 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [-390, 1750, 43.28],
+    "center": [
+        -390,
+        1750,
+        43.28
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Insulin pump failed",
                 "description": "A woman on the dusty ground in Regular Tom says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            },
+            "hu": {
+                "title": "Meghibásodott az inzulinpumpa",
+                "description": "Egy nő Regular Tom poros talaján azt mondja, éjszaka leállt az inzulinpumpája. Borzalmasan érzi magát, hányingere van, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-390, 1750, 43.28],
+            "pos": [
+                -390,
+                1750,
+                43.28
+            ],
             "rot": 145,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 420 }
+            "state": {
+                "glucose": 420
+            }
         }
     ]
 }

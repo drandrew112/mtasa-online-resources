@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2650.13, -1778.87, 10.88],
+    "center": [
+        2650.13,
+        -1778.87,
+        10.88
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker trembling, slurring",
                 "description": "A worker at a bus stop in East Beach worked a double shift without eating. Colleagues say he is diabetic, started shaking, slurring and stumbling. He refuses sweets because he \"is fine\"."
+            },
+            "hu": {
+                "title": "Remegő, elmosódottan beszélő munkás",
+                "description": "Egy munkás East Beach egyik buszmegállójában étkezés nélkül dolgozott végig egy dupla műszakot. Kollégái szerint cukorbeteg, remegni kezdett, elmosódottan beszél, és tántorog. Nem fogad el édességet, mert azt mondja, „jól van”."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2650.13, -1778.87, 10.88],
+            "pos": [
+                2650.13,
+                -1778.87,
+                10.88
+            ],
             "rot": 34,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 44, "heartRate": 114, "consciousness": "confused" }
+            "state": {
+                "glucose": 44,
+                "heartRate": 114,
+                "consciousness": "confused"
+            }
         }
     ]
 }

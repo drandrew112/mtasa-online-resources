@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2687, 1095, 47.52],
+    "center": [
+        -2687,
+        1095,
+        47.52
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell out of a tree",
                 "description": "A man trimming a tree on the grass in Paradiso fell from about three metres. He is screaming in pain and both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Leesett egy fáról",
+                "description": "Paradiso füves területén egy fát metsző férfi körülbelül három méter magasból leesett. Fájdalmában kiabál, mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-2687, 1095, 47.52],
+            "pos": [
+                -2687,
+                1095,
+                47.52
+            ],
             "rot": 192,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

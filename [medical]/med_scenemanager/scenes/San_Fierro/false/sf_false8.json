@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2853, 465.75, 4.23],
+    "center": [
+        -2853,
+        465.75,
+        4.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "Someone is screaming for help at a busy crossroads in Palisades. The caller hung up before giving any more details."
+            },
+            "hu": {
+                "title": "Segítségért kiabál",
+                "description": "Valaki segítségért kiabál Palisades forgalmas kereszteződésénél. A bejelentő további részletek közlése előtt letette a telefont."
             }
         },
         "caller": "SceneManager",

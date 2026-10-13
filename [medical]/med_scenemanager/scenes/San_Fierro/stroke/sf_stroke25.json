@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2245, -128.25, 35.32],
+    "center": [
+        -2245,
+        -128.25,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother suddenly confused",
                 "description": "A grandmother out with her grandson in front of an apartment block in Garcia suddenly stopped making sense and her mouth looks crooked. The boy called from her phone."
+            },
+            "hu": {
+                "title": "A nagymama hirtelen zavarttá vált",
+                "description": "Garcia egyik lakóháza előtt egy nagymama az unokájával volt, amikor hirtelen összefüggéstelenné vált a beszéde, és elferdültnek tűnik a szája. A fiú a telefonjáról hívott segítséget."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2245, -128.25, 35.32],
+            "pos": [
+                -2245,
+                -128.25,
+                35.32
+            ],
             "rot": 89,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 185, "consciousness": "confused" }
+            "state": {
+                "systolic": 185,
+                "consciousness": "confused"
+            }
         }
     ]
 }

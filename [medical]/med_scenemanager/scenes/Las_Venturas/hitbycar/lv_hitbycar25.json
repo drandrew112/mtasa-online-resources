@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1207.87, 916.78, 12.57],
+    "center": [
+        1207.87,
+        916.78,
+        12.57
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger hit at the curb",
                 "description": "A jogger was clipped by a car at the curb at the side of the road at Blackfield Intersection. He is lying on his back with a painful, swollen knee and road rash."
+            },
+            "hu": {
+                "title": "Kocogót ütöttek el a járdaszegélynél",
+                "description": "Egy autó elsodort egy kocogót a Blackfield Intersection melletti út szélén. A hátán fekszik, térde fájdalmasan megduzzadt, bőrén aszfalt okozta horzsolások vannak."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 540,
-            "pos": [1205.81, 911.14, 12.48],
-            "rot": [0, 0, 118.9],
+            "pos": [
+                1205.81,
+                911.14,
+                12.48
+            ],
+            "rot": [
+                0,
+                0,
+                118.9
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV34 424",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 47,
-            "pos": [1207.87, 916.78, 12.57],
+            "pos": [
+                1207.87,
+                916.78,
+                12.57
+            ],
             "rot": 197,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 28 }
+            "state": {
+                "pain": 28
+            }
         }
     ]
 }

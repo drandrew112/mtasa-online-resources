@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-876.64, -1824.67, 92.49],
+    "center": [
+        -876.64,
+        -1824.67,
+        92.49
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man coughing, fever",
                 "description": "An old man at the side of the road in Leafy Hollow has been coughing up green phlegm for a week, has a fever and is now very short of breath."
+            },
+            "hu": {
+                "title": "Idős férfi köhög és lázas",
+                "description": "Egy idős férfi Leafy Hollow út menti részén egy hete zöld váladékot köhög fel, lázas, mostanra pedig nagyon fullad."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [-876.64, -1824.67, 92.49],
+            "pos": [
+                -876.64,
+                -1824.67,
+                92.49
+            ],
             "rot": 255,
             "anim": "cough",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                {
+                    "type": "copd",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 87 }
+            "state": {
+                "spo2": 87
+            }
         }
     ]
 }

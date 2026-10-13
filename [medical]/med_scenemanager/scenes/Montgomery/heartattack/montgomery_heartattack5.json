@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1245.256, 164.337, 19.617],
+    "center": [
+        1245.256,
+        164.337,
+        19.617
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "A woman was found slumped by the road outside the laundromat. Barely breathing, grey, cold and clammy. Her laundry basket is tipped over."
+            },
+            "hu": {
+                "title": "Eszméletlen, szürkés bőr",
+                "description": "Egy nőt összeroskadva találtak az út mellett, a mosoda előtt. Alig lélegzik, szürkés, hideg és nyirkos a bőre. A szennyeskosara felborult."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [1245.256, 164.337, 19.617],
+            "pos": [
+                1245.256,
+                164.337,
+                19.617
+            ],
             "rot": 116,
             "anim": "ko_back",
             "injuries": [],

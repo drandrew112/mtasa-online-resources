@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2288.5, -2311.81, 25.13],
+    "center": [
+        -2288.5,
+        -2311.81,
+        25.13
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Overdose, found too late",
                 "description": "Friends found a young woman at the side of the road in Angel Pine after she did not come home. She is cold and stiff, a syringe is beside her."
+            },
+            "hu": {
+                "title": "Túladagolás, túl későn találták meg",
+                "description": "Barátai egy fiatal nőt találtak az út szélén Angel Pine-ban, miután nem ment haza. A teste hideg és merev, mellette egy fecskendő fekszik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [-2288.5, -2311.81, 25.13],
+            "pos": [
+                -2288.5,
+                -2311.81,
+                25.13
+            ],
             "rot": 308,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

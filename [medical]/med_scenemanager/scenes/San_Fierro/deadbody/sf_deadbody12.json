@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2327, -245, 42.52],
+    "center": [
+        -2327,
+        -245,
+        42.52
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot, no signs of life",
                 "description": "Police at the scene in a small park in Avispa Country Club report a man with several gunshot wounds. He has no pulse and is not breathing."
+            },
+            "hu": {
+                "title": "Lövés, nincs életjel",
+                "description": "A helyszínre érkező rendőrök az Avispa Country Club egyik kis parkjában egy férfiról számolnak be, akinek több lőtt sebe van. Nincs pulzusa, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 114,
-            "pos": [-2327, -245, 42.52],
+            "pos": [
+                -2327,
+                -245,
+                42.52
+            ],
             "rot": 103,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 3 },
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

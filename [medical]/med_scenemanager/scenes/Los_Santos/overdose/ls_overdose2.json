@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2902.242, -1605.821, 11.047],
+    "center": [
+        2902.242,
+        -1605.821,
+        11.047
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman took pills, very sleepy",
                 "description": "A woman's flatmate found her outside with empty pill packets and a bottle of vodka. She left a note. She is very drowsy and only mumbles when spoken to."
+            },
+            "hu": {
+                "title": "Tablettákat vett be, nagyon álmos",
+                "description": "Egy nő lakótársa üres gyógyszeres leveleket és egy vodkásüveget talált nála odakint. A nő búcsúlevelet hagyott. Nagyon álmos, kérdésekre csak motyogva válaszol."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [2902.242, -1605.821, 11.047],
+            "pos": [
+                2902.242,
+                -1605.821,
+                11.047
+            ],
             "rot": 20,
             "anim": "ko_back",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

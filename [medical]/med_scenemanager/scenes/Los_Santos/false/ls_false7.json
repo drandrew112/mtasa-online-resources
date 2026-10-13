@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [1294, -2242, 13.5],
+    "center": [
+        1294,
+        -2242,
+        13.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Person lying on the ground",
                 "description": "A caller driving past saw someone lying on the ground on the grass at Los Santos International. The caller did not stop and does not know if the person is breathing."
+            },
+            "hu": {
+                "title": "Ember fekszik a földön",
+                "description": "Egy autóval elhaladó bejelentő egy földön fekvő embert látott a füvön, a Los Santos International területén. Nem állt meg, így nem tudja, lélegzik-e az illető."
             }
         },
         "caller": "SceneManager",

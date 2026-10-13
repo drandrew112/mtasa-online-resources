@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-840, -1760, 84.2],
+    "center": [
+        -840,
+        -1760,
+        84.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming for help",
                 "description": "Someone is screaming for help at the edge of the woods in Leafy Hollow. The caller hung up before giving any more details."
+            },
+            "hu": {
+                "title": "Segítségért kiált",
+                "description": "Valaki segítségért kiabál Leafy Hollow erdőszélén. A bejelentő letette a telefont, mielőtt további részleteket mondhatott volna."
             }
         },
         "caller": "SceneManager",

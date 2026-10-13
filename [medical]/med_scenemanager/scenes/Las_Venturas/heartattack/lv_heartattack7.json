@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1237.375, 2060.225, 13.584],
+    "center": [
+        1237.375,
+        2060.225,
+        13.584
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "A showgirl in full costume collapsed on the sidewalk on her way to work. Feathers everywhere. A bystander says she is not breathing."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "Egy teljes jelmezben lévő revütáncosnő munkába menet összeesett a járdán. Tollak hevernek mindenütt. Egy járókelő szerint nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 231,
-            "pos": [1237.375, 2060.225, 13.584],
+            "pos": [
+                1237.375,
+                2060.225,
+                13.584
+            ],
             "rot": 122,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

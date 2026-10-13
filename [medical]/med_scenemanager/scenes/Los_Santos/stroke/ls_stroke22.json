@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [592.34, -1330.06, 13.57],
+    "center": [
+        592.34,
+        -1330.06,
+        13.57
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slurred speech, face drooping",
                 "description": "An elderly man waiting on the pavement in Rodeo suddenly could not answer the driver of the bus. A woman next to him says the left side of his face is hanging and he keeps dropping his ticket. It started minutes ago."
+            },
+            "hu": {
+                "title": "Elmosódott beszéd, féloldali arcgyengeség",
+                "description": "Egy idős férfi a rodeói járdán várakozott, amikor hirtelen nem tudott válaszolni a buszsofőrnek. Egy mellette álló nő szerint lebiggyedt az arca bal oldala, és folyton elejti a jegyét. Néhány perce kezdődött."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [592.34, -1330.06, 13.57],
+            "pos": [
+                592.34,
+                -1330.06,
+                13.57
+            ],
             "rot": 14,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 188, "diastolic": 104 }
+            "state": {
+                "systolic": 188,
+                "diastolic": 104
+            }
         }
     ]
 }

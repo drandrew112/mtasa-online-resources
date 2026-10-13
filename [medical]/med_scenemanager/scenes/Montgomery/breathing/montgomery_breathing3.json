@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1150, 530, 19.86],
+    "center": [
+        1150,
+        530,
+        19.86
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot breathe lying down",
                 "description": "A woman in the park just outside Montgomery says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly."
+            },
+            "hu": {
+                "title": "Nem kap levegőt fekvő helyzetben",
+                "description": "Egy nő Montgomery mellett, a parkban azt mondja, csak ülve tud lélegezni, és előző éjjel arra ébredt, hogy levegő után kapkod. Most gyorsan lélegzik, légzése bugyborékoló hangú."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [1150, 530, 19.86],
+            "pos": [
+                1150,
+                530,
+                19.86
+            ],
             "rot": 68,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 83, "systolic": 198 }
+            "state": {
+                "spo2": 83,
+                "systolic": 198
+            }
         }
     ]
 }

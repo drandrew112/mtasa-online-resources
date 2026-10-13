@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [770, -540, 16.34],
+    "center": [
+        770,
+        -540,
+        16.34
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Anxious, racing heart",
                 "description": "A woman on open ground in Dillimore is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly."
+            },
+            "hu": {
+                "title": "Szorongás, heves szívdobogás",
+                "description": "Egy nő egy nyílt területen Dillimore-ban szorong és izzad, és azt mondja, hevesen ver a szíve. Éppen most veszekedett valakivel, és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [770, -540, 16.34],
+            "pos": [
+                770,
+                -540,
+                16.34
+            ],
             "rot": 27,
             "anim": "crouch",
             "injuries": [],

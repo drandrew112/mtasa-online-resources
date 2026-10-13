@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2180.25, 1243.13, 10.82],
+    "center": [
+        2180.25,
+        1243.13,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell about two floors from scaffolding on the sidewalk near the Camel's Toe. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Egy építőmunkás körülbelül két emelet magasságból lezuhant az állványzatról a Camel's Toe közelében, a járdára. A lába rendellenes szögben áll, a feje vérzik. A munkatársai nem mozdították el."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2180.25, 1243.13, 10.82],
+            "pos": [
+                2180.25,
+                1243.13,
+                10.82
+            ],
             "rot": 286,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4311 }
+            "state": {
+                "bloodVolume": 4311
+            }
         }
     ]
 }

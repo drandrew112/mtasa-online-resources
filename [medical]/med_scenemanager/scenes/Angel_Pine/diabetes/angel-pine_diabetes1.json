@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2181.12, -2443.33, 30.63],
+    "center": [
+        -2181.12,
+        -2443.33,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Trucker ran out of insulin",
                 "description": "A long-haul trucker outside a small store in Angel Pine ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily."
+            },
+            "hu": {
+                "title": "A kamionsofőr kifogyott az inzulinból",
+                "description": "Egy távolsági kamionsofőr Angel Pine-ban, egy kis üzlet előtt két napja kifogyott az inzulinból, a legközelebbi gyógyszertár pedig zárva volt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-2181.12, -2443.33, 30.63],
+            "pos": [
+                -2181.12,
+                -2443.33,
+                30.63
+            ],
             "rot": 232,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4113, "glucose": 438 }
+            "state": {
+                "bloodVolume": 4113,
+                "glucose": 438
+            }
         }
     ]
 }

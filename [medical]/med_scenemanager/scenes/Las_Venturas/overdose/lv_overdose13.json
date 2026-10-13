@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1877.57, 640.24, 10.82],
+    "center": [
+        1877.57,
+        640.24,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen drank too much",
                 "description": "A teenager outside a souvenir shop near the Last Dime Motel keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+            },
+            "hu": {
+                "title": "Túl sokat ivott a tinédzser",
+                "description": "Egy tinédzser lány a Last Dime Motel közelében lévő ajándékbolt előtt újra és újra hány, miután a barátaival életében először vodkát ivott. Sápadt, álmos, és önerőből nem tud felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 193,
-            "pos": [1877.57, 640.24, 10.82],
+            "pos": [
+                1877.57,
+                640.24,
+                10.82
+            ],
             "rot": 185,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

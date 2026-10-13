@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2125.38, -1408.68, 23.99],
+    "center": [
+        2125.38,
+        -1408.68,
+        23.99
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aggressive, not making sense",
                 "description": "A store clerk in Jefferson called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card."
+            },
+            "hu": {
+                "title": "Agresszív, összefüggéstelenül beszél",
+                "description": "Egy jeffersoni bolti eladó egy férfi miatt hívott segítséget, aki agresszív lett, majd sírni kezdett, és nem beszél összefüggően. Izzad és remeg. Pénztárcájában cukorbeteg-azonosító kártya van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2125.38, -1408.68, 23.99],
+            "pos": [
+                2125.38,
+                -1408.68,
+                23.99
+            ],
             "rot": 340,
             "anim": "lean",
             "injuries": [],
-            "state": { "glucose": 38, "heartRate": 120, "consciousness": "confused" }
+            "state": {
+                "glucose": 38,
+                "heartRate": 120,
+                "consciousness": "confused"
+            }
         }
     ]
 }

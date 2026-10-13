@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2054, -1202, 23.747],
+    "center": [
+        2054,
+        -1202,
+        23.747
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache on park walk",
                 "description": "A retired man out on his daily walk in the park sat down on the grass with a pounding headache and blurry vision. He admits he forgot his blood pressure pills this morning."
+            },
+            "hu": {
+                "title": "Fejfájás a parkban séta közben",
+                "description": "Egy nyugdíjas férfi a szokásos napi parkbeli sétája közben leült a fűbe, mert erősen lüktet a feje, és homályosan lát. Bevallja, hogy ma reggel elfelejtette bevenni a vérnyomáscsökkentőjét."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [2054, -1202, 23.747],
+            "pos": [
+                2054,
+                -1202,
+                23.747
+            ],
             "rot": 51,
             "anim": "sit",
             "injuries": [],

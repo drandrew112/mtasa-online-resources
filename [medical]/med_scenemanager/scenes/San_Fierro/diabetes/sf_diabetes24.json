@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1971.62, 940.75, 45.44],
+    "center": [
+        -1971.62,
+        940.75,
+        45.44
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Very thirsty and confused",
                 "description": "A bike messenger in front of an apartment block in Downtown keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            },
+            "hu": {
+                "title": "Nagyon szomjas és zavart",
+                "description": "Downtown egyik lakóháza előtt egy biciklis futár újra és újra vizet kér, egész nap folyamatosan vizelt, és most már arra sem emlékszik, hová indult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [-1971.62, 940.75, 45.44],
+            "pos": [
+                -1971.62,
+                940.75,
+                45.44
+            ],
             "rot": 208,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 573, "consciousness": "confused" }
+            "state": {
+                "glucose": 573,
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2519.625, 778.25, 43.678],
+    "center": [
+        -2519.625,
+        778.25,
+        43.678
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "A software engineer on a walking meeting is clutching his chest on the pavement. Crushing pain, numb left arm. His laptop is still open on the bench and the call is still connected."
+            },
+            "hu": {
+                "title": "Szorító mellkasi fájdalom",
+                "description": "Egy sétálva megbeszélést tartó szoftvermérnök a járdán szorítja a mellkasát. Nyomó fájdalmat és a bal karjában zsibbadást érez. A laptopja nyitva maradt a padon, a hívás még csatlakozik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 25,
-            "pos": [-2519.625, 778.25, 43.678],
+            "pos": [
+                -2519.625,
+                778.25,
+                43.678
+            ],
             "rot": 252,
             "anim": "hold_side",
             "injuries": [],

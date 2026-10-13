@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1448.5, -1270.75, 13.55],
+    "center": [
+        1448.5,
+        -1270.75,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Runner wheezing after race",
                 "description": "A runner in Downtown Los Santos finished a charity run and now cannot stop wheezing. He had asthma as a child but no inhaler today."
+            },
+            "hu": {
+                "title": "Verseny után sípolva lélegző futó",
+                "description": "Egy futó teljesített egy jótékonysági futást Downtown Los Santos területén, most pedig nem tudja abbahagyni a sípoló légzést. Gyerekkorában asztmás volt, de ma nincs nála inhalátor."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 96,
-            "pos": [1448.5, -1270.75, 13.55],
+            "pos": [
+                1448.5,
+                -1270.75,
+                13.55
+            ],
             "rot": 54,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 93 }
+            "state": {
+                "spo2": 93
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1806.5, -146.25, 6.69],
+    "center": [
+        -1806.5,
+        -146.25,
+        6.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man on the sidewalk in Doherty cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi Doherty járdáján nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzza a nyakizmai közötti részt. Ötször használta már az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 59,
-            "pos": [-1806.5, -146.25, 6.69],
+            "pos": [
+                -1806.5,
+                -146.25,
+                6.69
+            ],
             "rot": 308,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 83, "heartRate": 128 }
+            "state": {
+                "spo2": 83,
+                "heartRate": 128
+            }
         }
     ]
 }

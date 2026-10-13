@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2444.625, 2129, 10.82],
+    "center": [
+        2444.625,
+        2129,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nausea, chest tightness",
                 "description": "A woman feels sick and her chest is tight. She has been arguing with her landlord all morning and says her heart will not slow down."
+            },
+            "hu": {
+                "title": "Hányinger, mellkasi szorítás",
+                "description": "Egy nő hányingert érez, és szorít a mellkasa. Egész délelőtt a főbérlőjével vitatkozott, és azt mondja, a szíve nem akar lelassulni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [2444.625, 2129, 10.82],
+            "pos": [
+                2444.625,
+                2129,
+                10.82
+            ],
             "rot": 90,
             "anim": "crouch",
             "injuries": [],

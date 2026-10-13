@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1995.8, -891.22, 32.17],
+    "center": [
+        -1995.8,
+        -891.22,
+        32.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the chest",
                 "description": "A man was shot in the chest at the side of the road in Foster Valley. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            },
+            "hu": {
+                "title": "Mellkason lőtték",
+                "description": "Foster Valley útja mellett egy férfit mellkason lőttek. Nehezen lélegzik, ajka sápadt, és a sebből véres buborékok törnek elő."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [-1995.8, -891.22, 32.17],
+            "pos": [
+                -1995.8,
+                -891.22,
+                32.17
+            ],
             "rot": 236,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3788, "spo2": 85 }
+            "state": {
+                "bloodVolume": 3788,
+                "spo2": 85
+            }
         }
     ]
 }

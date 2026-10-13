@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-371.17, 2341.14, 30.41],
+    "center": [
+        -371.17,
+        2341.14,
+        30.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot during a bar fight",
                 "description": "A fight at the local bar spilled outside on the road shoulder in El Castillo del Diablo and ended with a gunshot. A man is sitting on the ground, shot in the shoulder."
+            },
+            "hu": {
+                "title": "Lövés egy bárverekedés során",
+                "description": "A helyi bárban kirobbant verekedés az útpadkára sodródott El Castillo del Diablo területén, és lövéssel végződött. Egy férfi a földön ül, vállán lőtt sebbel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-371.17, 2341.14, 30.41],
+            "pos": [
+                -371.17,
+                2341.14,
+                30.41
+            ],
             "rot": 247,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4181 }
+            "state": {
+                "bloodVolume": 4181
+            }
         }
     ]
 }

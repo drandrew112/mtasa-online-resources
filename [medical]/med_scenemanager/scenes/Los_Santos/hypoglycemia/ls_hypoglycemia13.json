@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1441.49, -1547.44, 13.55],
+    "center": [
+        1441.49,
+        -1547.44,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Runner shaking, pale",
                 "description": "A runner on the pavement in Commerce sat down shaking and sweating, says she took insulin but skipped breakfast before a long run. She is getting vague and cannot open a juice bottle."
+            },
+            "hu": {
+                "title": "Remegő, sápadt futó",
+                "description": "Egy futónő leült Commerce járdáján, remeg és izzad. Azt mondja, beadta az inzulint, de egy hosszú futás előtt kihagyta a reggelit. Egyre zavartabb, és nem tud kinyitni egy üdítős palackot."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 90,
-            "pos": [1441.49, -1547.44, 13.55],
+            "pos": [
+                1441.49,
+                -1547.44,
+                13.55
+            ],
             "rot": 96,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 48, "heartRate": 118 }
+            "state": {
+                "glucose": 48,
+                "heartRate": 118
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2194.75, 1343.13, 10.82],
+    "center": [
+        2194.75,
+        1343.13,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Numb side after jogging",
                 "description": "A jogger outside a wedding chapel near the Camel's Toe stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened."
+            },
+            "hu": {
+                "title": "Kocogás után elzsibbadt az egyik oldala",
+                "description": "Egy kocogó a Camel's Toe közelében lévő esküvői kápolna előtt megállt, mert elzsibbadt a bal karja és lába. Leült; kissé elmosódottan beszél, és nagyon fél."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 17,
-            "pos": [2194.75, 1343.13, 10.82],
+            "pos": [
+                2194.75,
+                1343.13,
+                10.82
+            ],
             "rot": 106,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 176 }
+            "state": {
+                "systolic": 176
+            }
         }
     ]
 }

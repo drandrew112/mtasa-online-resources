@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [374, -1462, 33.33],
+    "center": [
+        374,
+        -1462,
+        33.33
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot with a shotgun",
                 "description": "A man in the park in Rodeo was hit by shotgun pellets in his side and arm during a fight. He is bleeding from many small wounds and is short of breath."
+            },
+            "hu": {
+                "title": "Sörétes puskával meglőtték",
+                "description": "Egy férfit sörétes puska sörétjei találtak el az oldalán és a karján, miközben verekedés tört ki Rodeo parkjában. Sok apró sebből vérzik, és légszomja van."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [374, -1462, 33.33],
+            "pos": [
+                374,
+                -1462,
+                33.33
+            ],
             "rot": 140,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4200, "spo2": 90 }
+            "state": {
+                "bloodVolume": 4200,
+                "spo2": 90
+            }
         }
     ]
 }

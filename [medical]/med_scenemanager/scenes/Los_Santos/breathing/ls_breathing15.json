@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [834.13, -1791.37, 13.9],
+    "center": [
+        834.13,
+        -1791.37,
+        13.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker breathed in fumes",
                 "description": "A worker cleaning a tank in Marina breathed in chemical fumes. He is coughing non-stop, his eyes are streaming and he feels tight in the chest. Coworkers moved him to fresh air."
+            },
+            "hu": {
+                "title": "Munkás vegyi gőzöket lélegzett be",
+                "description": "Egy munkás vegyi gőzöket lélegzett be, miközben egy tartályt tisztított Marinában. Megállás nélkül köhög, könnyezik a szeme, és szorít a mellkasa. Munkatársai friss levegőre vitték."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [834.13, -1791.37, 13.9],
+            "pos": [
+                834.13,
+                -1791.37,
+                13.9
+            ],
             "rot": 2,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                },
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2501.12, -130.25, 24.61],
+    "center": [
+        -2501.12,
+        -130.25,
+        24.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crash with people trapped",
                 "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Hashbury. No other calls came in about it."
+            },
+            "hu": {
+                "title": "Baleset, beszorult sérültekkel",
+                "description": "Egy névtelen bejelentő súlyos balesetről számol be Hashbury forgalmas kereszteződéséből; emberek szorultak a járművekbe. Más nem jelentette az esetet."
             }
         },
         "caller": "SceneManager",

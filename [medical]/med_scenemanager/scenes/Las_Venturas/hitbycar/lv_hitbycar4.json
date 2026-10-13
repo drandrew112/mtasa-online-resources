@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1900.54, 857.55, 7.95],
+    "center": [
+        1900.54,
+        857.55,
+        7.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pedestrian hit while crossing",
                 "description": "A pedestrian was hit by a car while crossing the road near the Four Dragons Casino. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg."
+            },
+            "hu": {
+                "title": "Elütötték átkelés közben",
+                "description": "Egy gyalogost elütött egy autó a Four Dragons Casino közelében, miközben átkelt az úton. Több métert repült; bágyadt, vérző fejsérülése és deformálódott lába van."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,102 @@
         {
             "id": "v1",
             "model": 565,
-            "pos": [1895.36, 854.12, 7.98],
-            "rot": [0, 0, 90.2],
+            "pos": [
+                1895.36,
+                854.12,
+                7.98
+            ],
+            "rot": [
+                0,
+                0,
+                90.2
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV51 405",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 261,
-            "pos": [1900.54, 857.55, 7.95],
+            "pos": [
+                1900.54,
+                857.55,
+                7.95
+            ],
             "rot": 143,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4269, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 4269,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

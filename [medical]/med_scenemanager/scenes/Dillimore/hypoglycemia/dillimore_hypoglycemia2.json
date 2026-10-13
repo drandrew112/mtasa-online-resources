@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [569.48, -437.05, 30.32],
+    "center": [
+        569.48,
+        -437.05,
+        30.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed after baling hay",
                 "description": "A young farmhand collapsed after baling hay all morning in a yard just outside Dillimore. His friends say he is diabetic and took extra insulin before the game."
+            },
+            "hu": {
+                "title": "Összeesett szénabálázás után",
+                "description": "Egy fiatal mezőgazdasági munkás összeesett, miután egész délelőtt szénát bálázott egy Dillimore külterületén lévő udvaron. A barátai szerint cukorbeteg, és a meccs előtt a szokásosnál több inzulint adott be magának."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [569.48, -437.05, 30.32],
+            "pos": [
+                569.48,
+                -437.05,
+                30.32
+            ],
             "rot": 359,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 34, "consciousness": "dazed" }
+            "state": {
+                "glucose": 34,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

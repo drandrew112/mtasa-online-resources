@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2373.51, -983.98, 67.23],
+    "center": [
+        2373.51,
+        -983.98,
+        67.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Confused, took double medication",
                 "description": "An elderly woman at the side of the road in Las Colinas accidentally took her sleeping tablets twice. Family says she is unusually drowsy, unsteady and confused."
+            },
+            "hu": {
+                "title": "Zavart, dupla gyógyszeradagot vett be",
+                "description": "Egy idős nő Las Colinas út menti részén tévedésből kétszer vette be az altatóját. Családja szerint szokatlanul álmos, bizonytalanul jár, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 218,
-            "pos": [2373.51, -983.98, 67.23],
+            "pos": [
+                2373.51,
+                -983.98,
+                67.23
+            ],
             "rot": 43,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2576.02, 34.63, 26.48],
+    "center": [
+        2576.02,
+        34.63,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slurred speech, numb arm",
                 "description": "A man outside a house just outside Palomino Creek suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning."
+            },
+            "hu": {
+                "title": "Elmosódott beszéd, zsibbadt kar",
+                "description": "Egy férfi egy Palomino Creek melletti ház előtt hirtelen elzsibbadt az egyik karjára, és elmosódottan beszél. Egész délelőtt fejfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [2576.02, 34.63, 26.48],
+            "pos": [
+                2576.02,
+                34.63,
+                26.48
+            ],
             "rot": 326,
             "anim": "sit",
             "injuries": [],

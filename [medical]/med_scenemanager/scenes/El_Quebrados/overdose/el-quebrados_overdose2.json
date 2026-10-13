@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1398.5, 2672.6, 55.08],
+    "center": [
+        -1398.5,
+        2672.6,
+        55.08
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Took too many sleeping pills",
                 "description": "An old man on open scrubland in El Quebrados took \"a handful\" of his sleeping pills because he could not sleep. He is confused and keeps nodding off."
+            },
+            "hu": {
+                "title": "Túl sok altatót vett be",
+                "description": "Egy idős férfi egy nyílt, bozótos területen El Quebradosban „egy maréknyi” altatót vett be, mert nem tudott elaludni. Zavart, és újra meg újra elbóbiskol."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-1398.5, 2672.6, 55.08],
+            "pos": [
+                -1398.5,
+                2672.6,
+                55.08
+            ],
             "rot": 181,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

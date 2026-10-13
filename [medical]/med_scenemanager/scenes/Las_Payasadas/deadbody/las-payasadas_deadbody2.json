@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-224.98, 2812.88, 62.34],
+    "center": [
+        -224.98,
+        2812.88,
+        62.34
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body found by a hunter",
                 "description": "A hunter found a man lying face down on the dusty ground in Las Payasadas. He has clearly been dead for some time."
+            },
+            "hu": {
+                "title": "Vadász talált rá a holttestre",
+                "description": "Egy vadász egy arccal lefelé fekvő férfit talált Las Payasadas poros földjén. Egyértelmű, hogy már jó ideje halott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [-224.98, 2812.88, 62.34],
+            "pos": [
+                -224.98,
+                2812.88,
+                62.34
+            ],
             "rot": 314,
             "anim": "ko_front",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

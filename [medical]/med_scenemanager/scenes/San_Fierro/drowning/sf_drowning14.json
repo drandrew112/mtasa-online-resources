@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2887, -505, 4.7],
+    "center": [
+        -2887,
+        -505,
+        4.7
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pulled out by a surfer",
                 "description": "A surfer pulled a young woman out of a rip current. She is lying on the beach in Missionary Hill, confused and with blue lips."
+            },
+            "hu": {
+                "title": "Egy szörfös húzta ki a vízből",
+                "description": "Egy szörfös kihúzott egy fiatal nőt az erős sodrásból. A nő Missionary Hill strandján fekszik, zavart, és kékes az ajka."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 193,
-            "pos": [-2887, -505, 4.7],
+            "pos": [
+                -2887,
+                -505,
+                4.7
+            ],
             "rot": 205,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 79, "consciousness": "dazed" }
+            "state": {
+                "spo2": 79,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

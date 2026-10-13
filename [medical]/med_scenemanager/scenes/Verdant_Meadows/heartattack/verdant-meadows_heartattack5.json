@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [381.598, 2361.107, 25.501],
+    "center": [
+        381.598,
+        2361.107,
+        25.501
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nausea, cold sweat",
                 "description": "An older woman who came to watch the planes sat down by the road feeling sick, sweaty and short of breath."
+            },
+            "hu": {
+                "title": "Hányinger és hideg verejték",
+                "description": "Egy idősebb nő, aki a repülőgépeket jött megnézni, leült az út mellett; rosszul érzi magát, izzad és légszomja van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [381.598, 2361.107, 25.501],
+            "pos": [
+                381.598,
+                2361.107,
+                25.501
+            ],
             "rot": 100,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2540.22, -1191.62, 59.81],
+    "center": [
+        2540.22,
+        -1191.62,
+        59.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, two down",
                 "description": "Several shots fired from a passing car outside a shop in East Los Santos. Two young men are down on the sidewalk, one is not moving and bleeding a lot, the other holds his leg. The car fled."
+            },
+            "hu": {
+                "title": "Autóból leadott lövések, két sérült",
+                "description": "Egy elhaladó autóból több lövést adtak le East Los Santos egyik üzlete előtt. Két fiatal férfi fekszik a járdán; egyikük nem mozdul, erősen vérzik, a másik a lábát fogja. Az autó elmenekült."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,39 @@
         {
             "id": "p1",
             "skin": 175,
-            "pos": [2540.22, -1191.62, 59.81],
+            "pos": [
+                2540.22,
+                -1191.62,
+                59.81
+            ],
             "rot": 265,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3600, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3600,
+                "consciousness": "unconscious"
+            }
         },
         {
             "id": "p2",
             "skin": 102,
-            "pos": [2543.22, -1191.88, 59.81],
+            "pos": [
+                2543.22,
+                -1191.88,
+                59.81
+            ],
             "rot": 189,
             "anim": "injured",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

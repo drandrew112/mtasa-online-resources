@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-1678.33, 2457.83, 84.31],
+    "center": [
+        -1678.33,
+        2457.83,
+        84.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Wheelie gone wrong",
                 "description": "A teenager tried a wheelie by the dusty roadside near El Quebrados to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on."
+            },
+            "hu": {
+                "title": "Rossz vége lett az egykerekezésnek",
+                "description": "Egy tinédzser a poros út mellett, El Quebrados közelében egykerekezett, hogy lenyűgözze a barátait, de hátraesett. Eltört a csuklója, és beütötte a fejét, de a sisak a fején maradt."
             }
         },
         "caller": "SceneManager",
@@ -22,34 +30,93 @@
         {
             "id": "v1",
             "model": 471,
-            "pos": [-1676.37, 2459.42, 83.65],
-            "rot": [0, 0, 334.4],
+            "pos": [
+                -1676.37,
+                2459.42,
+                83.65
+            ],
+            "rot": [
+                0,
+                0,
+                334.4
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                180,
+                90,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "TR47 221",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 143,
-            "pos": [-1678.33, 2457.83, 84.31],
+            "pos": [
+                -1678.33,
+                2457.83,
+                84.31
+            ],
             "rot": 51,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

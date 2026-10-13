@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1440, 2690, 55.84],
+    "center": [
+        -1440,
+        2690,
+        55.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a roof",
                 "description": "A man fixing his roof fell off and landed on his feet on the dusty ground in El Quebrados. He is screaming in pain and both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Leesett a tetőről",
+                "description": "Egy férfi a tetőjét javította, amikor leesett, és a lábára érkezett El Quebrados poros talaján. Fájdalomtól kiabál, mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [-1440, 2690, 55.84],
+            "pos": [
+                -1440,
+                2690,
+                55.84
+            ],
             "rot": 50,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2644.13, -396.05, 34.01],
+    "center": [
+        -2644.13,
+        -396.05,
+        34.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb at a bus stop in San Fierro and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "San Fierro egyik buszmegállójánál egy idős nő megbotlott a járdaszegélyben, és nem tud felállni. Jobb lába rövidebbnek tűnik, és kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 54,
-            "pos": [-2644.13, -396.05, 34.01],
+            "pos": [
+                -2644.13,
+                -396.05,
+                34.01
+            ],
             "rot": 33,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 43 }
+            "state": {
+                "pain": 43
+            }
         }
     ]
 }

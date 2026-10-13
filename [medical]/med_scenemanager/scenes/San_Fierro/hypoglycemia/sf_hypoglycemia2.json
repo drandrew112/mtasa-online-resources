@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2676.62, 997.25, 63.29],
+    "center": [
+        -2676.62,
+        997.25,
+        63.29
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Diabetic not waking up",
                 "description": "A man in front of an apartment block in Paradiso cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning."
+            },
+            "hu": {
+                "title": "Nem ébreszthető cukorbeteg",
+                "description": "Paradiso egyik lakóháza előtt egy férfit nem lehet felébreszteni. Barátnője szerint beadta az inzulinját, de ma reggel kihányta a reggelijét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 228,
-            "pos": [-2676.62, 997.25, 63.29],
+            "pos": [
+                -2676.62,
+                997.25,
+                63.29
+            ],
             "rot": 17,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 23, "heartRate": 104, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 23,
+                "heartRate": 104,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

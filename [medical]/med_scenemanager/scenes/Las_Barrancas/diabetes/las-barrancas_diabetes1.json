@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-883.38, 1477.33, 24.31],
+    "center": [
+        -883.38,
+        1477.33,
+        24.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker at the side of the road in Las Barrancas feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Munkás homályos látással",
+                "description": "Egy építőmunkás rosszul érzi magát Las Barrancasban, az út szélén, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegségre szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [-883.38, 1477.33, 24.31],
+            "pos": [
+                -883.38,
+                1477.33,
+                24.31
+            ],
             "rot": 56,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 415 }
+            "state": {
+                "glucose": 415
+            }
         }
     ]
 }

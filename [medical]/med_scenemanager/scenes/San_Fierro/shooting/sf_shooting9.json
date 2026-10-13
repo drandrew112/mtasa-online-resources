@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2062.75, 575.75, 35.17],
+    "center": [
+        -2062.75,
+        575.75,
+        35.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mugging victim shot in the arm",
                 "description": "A man refused to hand over his wallet on the sidewalk in King's and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound."
+            },
+            "hu": {
+                "title": "Rablás áldozata, karon lőtték",
+                "description": "King's járdáján egy férfi nem volt hajlandó átadni a pénztárcáját, ezért karon lőtték. A falnak támaszkodva ül, és egy inget szorít a sebre."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 184,
-            "pos": [-2062.75, 575.75, 35.17],
+            "pos": [
+                -2062.75,
+                575.75,
+                35.17
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

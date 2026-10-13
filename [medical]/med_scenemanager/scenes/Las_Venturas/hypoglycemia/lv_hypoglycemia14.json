@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1758.75, 636.09, 20.03],
+    "center": [
+        1758.75,
+        636.09,
+        20.03
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly man unresponsive",
                 "description": "An elderly man is lying near the warehouses of the Randolph Industrial Estate and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\"."
+            },
+            "hu": {
+                "title": "Eszméletlen idős férfi",
+                "description": "Egy idős férfi fekszik a Randolph Industrial Estate raktárai közelében, és nem reagál. Hideg és izzadt. A csuklóján lévő karkötőn ez áll: „inzulinfüggő”."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [1758.75, 636.09, 20.03],
+            "pos": [
+                1758.75,
+                636.09,
+                20.03
+            ],
             "rot": 292,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 22, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 22,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

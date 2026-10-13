@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-1018.72, -1669.99, 78.09],
+    "center": [
+        -1018.72,
+        -1669.99,
+        78.09
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman by the road at the edge of the woods in Leafy Hollow mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Altató és bor, súlyos álmosság",
+                "description": "Egy nő Leafy Hollow erdőszéli útja mellett egy vita után szorongáscsökkentő tablettákat vett be egy üveg borral. Összefolyó szavakkal beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-1018.72, -1669.99, 78.09],
+            "pos": [
+                -1018.72,
+                -1669.99,
+                78.09
+            ],
             "rot": 136,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89, "consciousness": "dazed" }
+            "state": {
+                "spo2": 89,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

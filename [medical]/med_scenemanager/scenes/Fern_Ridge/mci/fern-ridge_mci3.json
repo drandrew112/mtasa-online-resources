@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1237.17, 80.63, 22.46],
+    "center": [
+        1237.17,
+        80.63,
+        22.46
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Truck jackknifed, cars crashed",
                 "description": "A box truck lost its brakes coming down the hill and jackknifed at the crossroads in Fern Ridge. Two cars crashed into it. Three people are injured, one is bleeding heavily."
+            },
+            "hu": {
+                "title": "Megcsuklott a teherautó, autók ütköztek",
+                "description": "Egy dobozos teherautó fékje felmondta a szolgálatot, amikor lefelé haladt a dombon, majd keresztbe fordult egy fern ridge-i kereszteződésben. Két autó ütközött vele. Hárman megsérültek, egyikük erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -22,99 +30,277 @@
         {
             "id": "v1",
             "model": 543,
-            "pos": [1233.42, 76.63, 22.21],
-            "rot": [0, 0, 316.3],
+            "pos": [
+                1233.42,
+                76.63,
+                22.21
+            ],
+            "rot": [
+                0,
+                0,
+                316.3
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                120,
+                120,
+                125,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC30 234",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 499,
-            "pos": [1237.29, 73.63, 22.46],
-            "rot": [0, 0, 332.9],
+            "pos": [
+                1237.29,
+                73.63,
+                22.46
+            ],
+            "rot": [
+                0,
+                0,
+                332.9
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                95,
+                60,
+                35,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC26 235",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v3",
             "model": 579,
-            "pos": [1226.93, 74.01, 22.31],
-            "rot": [0, 0, 287.4],
+            "pos": [
+                1226.93,
+                74.01,
+                22.31
+            ],
+            "rot": [
+                0,
+                0,
+                287.4
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC55 236",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 206,
-            "pos": [1237.17, 80.63, 22.46],
+            "pos": [
+                1237.17,
+                80.63,
+                22.46
+            ],
             "rot": 124,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3509 }
+            "state": {
+                "bloodVolume": 3509
+            }
         },
         {
             "id": "p2",
             "skin": 201,
-            "pos": [1234.37, 81.54, 22.46],
+            "pos": [
+                1234.37,
+                81.54,
+                22.46
+            ],
             "rot": 248,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
             "state": {}
         },
         {
             "id": "p3",
             "skin": 202,
-            "pos": [1239.19, 80.5, 22.46],
+            "pos": [
+                1239.19,
+                80.5,
+                22.46
+            ],
             "rot": 166,
             "anim": "hold_side",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 44 }
+            "state": {
+                "pain": 44
+            }
         }
     ]
 }

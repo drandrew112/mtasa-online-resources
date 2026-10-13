@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2874.25, 1149.38, 16.41],
+    "center": [
+        -2874.25,
+        1149.38,
+        16.41
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Kayaker capsized, freezing",
                 "description": "A kayaker capsized in the cold bay and was in the water for twenty minutes. He is sitting on the waterfront promenade in Palisades, shaking hard and coughing."
+            },
+            "hu": {
+                "title": "Felborult kajak, kihűlés veszélye",
+                "description": "Egy kajakos felborult a hideg öbölben, és húsz percet töltött a vízben. Most Palisades vízparti sétányán ül, erősen reszket és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 184,
-            "pos": [-2874.25, 1149.38, 16.41],
+            "pos": [
+                -2874.25,
+                1149.38,
+                16.41
+            ],
             "rot": 126,
             "anim": "sit",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91, "heartRate": 59 }
+            "state": {
+                "spo2": 91,
+                "heartRate": 59
+            }
         }
     ]
 }

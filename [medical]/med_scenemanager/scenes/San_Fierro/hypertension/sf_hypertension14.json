@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2596.037, 1199.99, 50.858],
+    "center": [
+        -2596.037,
+        1199.99,
+        50.858
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache after lifting",
                 "description": "A warehouse worker developed a sudden headache after lifting heavy boxes in the heat. He feels sick and wants to go home, but his boss called for help."
+            },
+            "hu": {
+                "title": "Fejfájás emelés után",
+                "description": "Egy raktári dolgozónál hirtelen fejfájás jelentkezett, miután a hőségben nehéz dobozokat emelt. Rosszul érzi magát és haza akar menni, de a főnöke segítséget hívott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [-2596.037, 1199.99, 50.858],
+            "pos": [
+                -2596.037,
+                1199.99,
+                50.858
+            ],
             "rot": 253.8,
             "anim": "sit",
             "injuries": [],

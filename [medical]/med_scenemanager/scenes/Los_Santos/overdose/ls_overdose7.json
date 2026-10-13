@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2465.48, -2424.42, 13.63],
+    "center": [
+        2465.48,
+        -2424.42,
+        13.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed after a party drug",
                 "description": "A man collapsed on the sidewalk in Ocean Docks after taking an unknown pill at a party. He is burning hot, jaw clenched and twitching. Friends brought water but he is not drinking."
+            },
+            "hu": {
+                "title": "Partidrog után összeesett",
+                "description": "Egy férfi összeesett Ocean Docks járdáján, miután egy bulin ismeretlen tablettát vett be. Teste forró, állkapcsa összeszorult, rángatózik. Barátai vizet hoztak neki, de nem iszik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 45,
-            "pos": [2465.48, -2424.42, 13.63],
+            "pos": [
+                2465.48,
+                -2424.42,
+                13.63
+            ],
             "rot": 108,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stimulant", "severity": 3 }
+                {
+                    "type": "stimulant",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 178, "heartRate": 172, "consciousness": "confused" }
+            "state": {
+                "systolic": 178,
+                "heartRate": 172,
+                "consciousness": "confused"
+            }
         }
     ]
 }

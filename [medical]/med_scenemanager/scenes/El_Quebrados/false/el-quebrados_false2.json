@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1435.5, 2630, 55.84],
+    "center": [
+        -1435.5,
+        2630,
+        55.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman fell",
                 "description": "An elderly woman fell on open scrubland in El Quebrados. She is unhurt and only needs a hand getting up; she does not want to go to hospital."
+            },
+            "hu": {
+                "title": "Idős nő elesett",
+                "description": "Egy idős nő elesett egy nyílt, bozótos területen El Quebradosban. Nem sérült meg, csak segítség kell neki a felálláshoz; nem akar kórházba menni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-1435.5, 2630, 55.84],
+            "pos": [
+                -1435.5,
+                2630,
+                55.84
+            ],
             "rot": 36,
             "anim": "sit",
             "injuries": [],

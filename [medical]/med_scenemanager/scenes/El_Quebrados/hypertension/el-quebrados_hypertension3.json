@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1294.25, 2470, 87.3],
+    "center": [
+        -1294.25,
+        2470,
+        87.3
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Anxious, racing heart",
                 "description": "A woman on open scrubland near El Quebrados is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly."
+            },
+            "hu": {
+                "title": "Szorongás, heves szívdobogás",
+                "description": "Egy nő El Quebrados közelében, egy nyílt bozótos területen szorong és izzad, és azt mondja, hevesen ver a szíve. Éppen most veszekedett valakivel, és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-1294.25, 2470, 87.3],
+            "pos": [
+                -1294.25,
+                2470,
+                87.3
+            ],
             "rot": 197,
             "anim": "crouch",
             "injuries": [],

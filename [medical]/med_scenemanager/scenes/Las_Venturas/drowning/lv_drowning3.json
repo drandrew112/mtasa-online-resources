@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2116.97, 1886.98, 10.82],
+    "center": [
+        2116.97,
+        1886.98,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swallowed the wrong way",
                 "description": "A woman on a bench on The Strip swallowed a drink the wrong way and has been coughing hard for several minutes. She is red in the face and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt egy italt",
+                "description": "Egy nő félrenyelt egy korty italt a Strip egyik padján, és már percek óta hevesen köhög. Kipirult az arca, és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [2116.97, 1886.98, 10.82],
+            "pos": [
+                2116.97,
+                1886.98,
+                10.82
+            ],
             "rot": 286,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90 }
+            "state": {
+                "spo2": 90
+            }
         }
     ]
 }

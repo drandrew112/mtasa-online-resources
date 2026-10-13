@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2095.86, 215.55, 35.23],
+    "center": [
+        -2095.86,
+        215.55,
+        35.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Insulin pump failed",
                 "description": "A woman by the roadside in Doherty says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            },
+            "hu": {
+                "title": "Meghibásodott az inzulinpumpa",
+                "description": "Doherty útja mellett egy nő azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, szaporán lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [-2095.86, 215.55, 35.23],
+            "pos": [
+                -2095.86,
+                215.55,
+                35.23
+            ],
             "rot": 151,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 404 }
+            "state": {
+                "glucose": 404
+            }
         }
     ]
 }

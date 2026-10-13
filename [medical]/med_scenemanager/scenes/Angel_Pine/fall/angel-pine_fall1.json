@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2088.48, -2447.33, 30.63],
+    "center": [
+        -2088.48,
+        -2447.33,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb on the sidewalk in Angel Pine and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "Egy idős nő megbotlott a járdaszegélyben Angel Pine-ban, és nem tud felállni. A jobb lába rövidebbnek tűnik, és kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2088.48, -2447.33, 30.63],
+            "pos": [
+                -2088.48,
+                -2447.33,
+                30.63
+            ],
             "rot": 181,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 39 }
+            "state": {
+                "pain": 39
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2099, 1266, 10.82],
+    "center": [
+        2099,
+        1266,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Went in after her dog",
                 "description": "A dog walker went into the water after her dog and got into trouble. She is now by the water on The Strip, coughing and shivering. The dog is fine."
+            },
+            "hu": {
+                "title": "A kutyája után ment a vízbe",
+                "description": "Egy kutyasétáltató a vízbe ment a kutyája után, de bajba került. Most a Strip melletti vízparton van, köhög és reszket. A kutyának nincs baja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 9,
-            "pos": [2099, 1266, 10.82],
+            "pos": [
+                2099,
+                1266,
+                10.82
+            ],
             "rot": 152,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90 }
+            "state": {
+                "spo2": 90
+            }
         }
     ]
 }

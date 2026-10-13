@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [674.63, -628.75, 16.34],
+    "center": [
+        674.63,
+        -628.75,
+        16.34
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man on blood thinners fell",
                 "description": "An old man slipped on the main street in Dillimore and hit his head. He takes blood thinners, is getting more confused and has vomited once."
+            },
+            "hu": {
+                "title": "Véralvadásgátlót szedő idős férfi elesett",
+                "description": "Egy idős férfi megcsúszott Dillimore főutcáján, és beütötte a fejét. Véralvadásgátlót szed, egyre zavartabb, és egyszer hányt is."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [674.63, -628.75, 16.34],
+            "pos": [
+                674.63,
+                -628.75,
+                16.34
+            ],
             "rot": 249,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

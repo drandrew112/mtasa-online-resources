@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2300, 2660, 57.59],
+    "center": [
+        -2300,
+        2660,
+        57.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pregnant, headache, swelling",
                 "description": "A heavily pregnant woman on open ground near Bayside has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic."
+            },
+            "hu": {
+                "title": "Várandós nő, fejfájás és duzzanat",
+                "description": "Egy előrehaladott terhességben lévő nőnek erős fejfájása van egy Bayside közelében lévő nyílt területen. Duzzadt a bokája, és fényfelvillanásokat lát. A férje kétségbeesett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 92,
-            "pos": [-2300, 2660, 57.59],
+            "pos": [
+                -2300,
+                2660,
+                57.59
+            ],
             "rot": 92,
             "anim": "sit",
             "injuries": [],

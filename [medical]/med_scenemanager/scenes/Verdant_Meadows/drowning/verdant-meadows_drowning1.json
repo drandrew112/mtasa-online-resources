@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [88.72, 2550.18, 16.49],
+    "center": [
+        88.72,
+        2550.18,
+        16.49
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer pulled from a stock tank",
                 "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him by the dusty roadside in Verdant Meadows. He is coughing up water and confused."
+            },
+            "hu": {
+                "title": "Gazdát húztak ki az itatóvályúból",
+                "description": "Egy gazda fejjel előre beleesett egy marhaitató vályúba. A szomszédja kihúzta, és Verdant Meadows poros útpadkájához vitte. Vizet köhög fel, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [88.72, 2550.18, 16.49],
+            "pos": [
+                88.72,
+                2550.18,
+                16.49
+            ],
             "rot": 342,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 84, "consciousness": "confused" }
+            "state": {
+                "spo2": 84,
+                "consciousness": "confused"
+            }
         }
     ]
 }

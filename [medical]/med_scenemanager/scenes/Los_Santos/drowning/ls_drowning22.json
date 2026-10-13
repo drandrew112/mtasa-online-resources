@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [479.95, -1858.54, 3.59],
+    "center": [
+        479.95,
+        -1858.54,
+        3.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dived in, cannot move",
                 "description": "A young man dived head first into shallow water in the sea. Friends pulled him out and brought him up to the street in Santa Maria Beach. He is awake but cannot move his arms or legs and swallowed water."
+            },
+            "hu": {
+                "title": "Fejest ugrott, nem tud mozogni",
+                "description": "Egy fiatal férfi fejjel előre ugrott a sekély tengervízbe. Barátai kihúzták, majd felvitték az utcára Santa Maria Beach területén. Ébren van, de nem tudja mozgatni a karját vagy a lábát, és vizet nyelt."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 18,
-            "pos": [479.95, -1858.54, 3.59],
+            "pos": [
+                479.95,
+                -1858.54,
+                3.59
+            ],
             "rot": 335,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

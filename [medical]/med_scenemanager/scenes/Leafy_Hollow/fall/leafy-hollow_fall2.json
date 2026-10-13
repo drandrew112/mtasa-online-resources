@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-1066.21, -1651.76, 76.56],
+    "center": [
+        -1066.21,
+        -1651.76,
+        76.56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell, head bleeding",
                 "description": "A drunk man fell backwards at the edge of the woods in Leafy Hollow and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up."
+            },
+            "hu": {
+                "title": "Részeg férfi elesett, vérzik a feje",
+                "description": "Egy részeg férfi hátraesett Leafy Hollow erdőszélén, és a fejét a betonnak ütötte. Erősen vérzik a tarkójából, és újra meg újra megpróbál felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [-1066.21, -1651.76, 76.56],
+            "pos": [
+                -1066.21,
+                -1651.76,
+                76.56
+            ],
             "rot": 269,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "alcohol", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

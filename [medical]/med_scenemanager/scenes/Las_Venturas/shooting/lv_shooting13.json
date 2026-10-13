@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1314.29, 1200.25, 10.82],
+    "center": [
+        1314.29,
+        1200.25,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman shot in the stomach",
                 "description": "A woman was shot in the stomach on the sidewalk at Las Venturas Airport during an argument with her ex-partner. She is bent over, pale and getting weaker."
+            },
+            "hu": {
+                "title": "Hason lőtt nő",
+                "description": "Egy nőt hason lőttek a Las Venturas Airport járdáján, miközben vitatkozott volt partnerével. Görnyedten áll, sápadt, és egyre gyengébb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [1314.29, 1200.25, 10.82],
+            "pos": [
+                1314.29,
+                1200.25,
+                10.82
+            ],
             "rot": 183,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3883 }
+            "state": {
+                "bloodVolume": 3883
+            }
         }
     ]
 }

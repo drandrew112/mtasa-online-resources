@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2902.242, -1605.821, 11.047],
+    "center": [
+        2902.242,
+        -1605.821,
+        11.047
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Light-headed after argument",
                 "description": "Two neighbours were shouting at each other over a parking spot when one of them went pale, clutched the railing and sat down. He says his head feels like it is in a vice."
+            },
+            "hu": {
+                "title": "Szédülés vita után",
+                "description": "Két szomszéd egy parkolóhely miatt kiabált egymással, amikor egyikük elsápadt, a korlátba kapaszkodott és leült. Azt mondja, olyan érzése van, mintha satuba szorították volna a fejét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2902.242, -1605.821, 11.047],
+            "pos": [
+                2902.242,
+                -1605.821,
+                11.047
+            ],
             "rot": 162.2,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 168, "diastolic": 98, "heartRate": 88, "consciousness": "stable" }
+            "state": {
+                "systolic": 168,
+                "diastolic": 98,
+                "heartRate": 88,
+                "consciousness": "stable"
+            }
         }
     ]
 }

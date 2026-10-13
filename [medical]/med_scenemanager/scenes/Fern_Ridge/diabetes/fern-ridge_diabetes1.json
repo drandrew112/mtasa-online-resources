@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [616.51, -67.65, 17.06],
+    "center": [
+        616.51,
+        -67.65,
+        17.06
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man drowsy and dry",
                 "description": "A neighbour found an old man by the road at the edge of the woods in Fern Ridge very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating."
+            },
+            "hu": {
+                "title": "Álmos, kiszáradtnak tűnő idős férfi",
+                "description": "Egy szomszéd egy idős férfit talált az út mellett, az erdő szélén Fern Ridge-ben. Nagyon bágyadt, száraz az ajka és beesett a szeme. Egy hete mellkasi fertőzése van, és abbahagyta az evést."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [616.51, -67.65, 17.06],
+            "pos": [
+                616.51,
+                -67.65,
+                17.06
+            ],
             "rot": 203,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3889, "glucose": 767, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3889,
+                "glucose": 767,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

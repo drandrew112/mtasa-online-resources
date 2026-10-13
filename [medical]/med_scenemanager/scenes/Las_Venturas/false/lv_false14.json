@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1727.25, 2273.13, 10.79],
+    "center": [
+        1727.25,
+        2273.13,
+        10.79
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure reported",
                 "description": "A passer-by reports someone having a seizure at a busy crossroads in Redsands West. The caller left before the call was finished."
+            },
+            "hu": {
+                "title": "Görcsrohamot jelentettek",
+                "description": "Egy járókelő arról számol be, hogy valakinek görcsrohama van egy forgalmas kereszteződésben Redsands Westben. A bejelentő még a hívás befejezése előtt elment."
             }
         },
         "caller": "SceneManager",

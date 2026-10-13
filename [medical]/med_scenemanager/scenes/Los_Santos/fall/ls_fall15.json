@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1493.93, -1056.96, 25.06],
+    "center": [
+        1493.93,
+        -1056.96,
+        25.06
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen fell from a wall",
                 "description": "A teenager climbing a wall at the side of the road in Mulholland Intersection fell about three metres onto his side. He is crying with pain in his leg and cannot put weight on it."
+            },
+            "hu": {
+                "title": "Tinédzser lezuhant egy falról",
+                "description": "Egy tinédzser fiú megpróbált felmászni egy falra a Mulholland Intersection út mentén, de körülbelül három métert zuhant az oldalára. Sírdogál a lábfájdalomtól, és nem tud ráállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [1493.93, -1056.96, 25.06],
+            "pos": [
+                1493.93,
+                -1056.96,
+                25.06
+            ],
             "rot": 34,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

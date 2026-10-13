@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2387, 215, 35.7],
+    "center": [
+        -2387,
+        215,
+        35.7
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Glucose meter just says HIGH",
                 "description": "A woman on the grass in Garcia called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert."
+            },
+            "hu": {
+                "title": "A vércukormérő csak HIGH értéket mutat",
+                "description": "Garciában egy füvön ülő nő segítséget kért, mert a vércukormérője csak a „HIGH” feliratot mutatja. Szédül, gyakran vizel, és homályosan lát. Leült, éber állapotban van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 224,
-            "pos": [-2387, 215, 35.7],
+            "pos": [
+                -2387,
+                215,
+                35.7
+            ],
             "rot": 284,
             "anim": "sit",
             "injuries": [],
-            "state": { "bloodVolume": 4428, "glucose": 606 }
+            "state": {
+                "bloodVolume": 4428,
+                "glucose": 606
+            }
         }
     ]
 }

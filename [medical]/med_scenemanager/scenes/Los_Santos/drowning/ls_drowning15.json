@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1009.76, -2198.61, 13.15],
+    "center": [
+        1009.76,
+        -2198.61,
+        13.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cramp in the water, panicking",
                 "description": "A swimmer got a cramp in the lake and swallowed water before being helped out and brought up to the street in Verdant Bluffs. She is anxious, coughing a little and breathing fast."
+            },
+            "hu": {
+                "title": "Begörcsölt a vízben, pánikba esett",
+                "description": "Egy úszónak begörcsölt az izma a tóban, és vizet nyelt, mielőtt kimentették és felvitték az utcára Verdant Bluffs területén. Szorong, kissé köhög, és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 138,
-            "pos": [1009.76, -2198.61, 13.15],
+            "pos": [
+                1009.76,
+                -2198.61,
+                13.15
+            ],
             "rot": 299,
             "anim": "sit",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 94, "heartRate": 112 }
+            "state": {
+                "spo2": 94,
+                "heartRate": 112
+            }
         }
     ]
 }

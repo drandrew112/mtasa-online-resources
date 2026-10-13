@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1690.43, -372.89, 14.23],
+    "center": [
+        -1690.43,
+        -372.89,
+        14.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Driver staring at nothing",
                 "description": "A driver stopped his car at the side of the road in Easter Bay Airport and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat."
+            },
+            "hu": {
+                "title": "A sofőr csak maga elé mered",
+                "description": "Easter Bay Airport útja mellett egy sofőr megállította az autóját, és mereven maga elé bámul. Izzad, és nem válaszol megfelelően. Az utasülésen egy inzulinadagoló toll van."
             }
         },
         "caller": "SceneManager",
@@ -22,35 +30,91 @@
         {
             "id": "v1",
             "model": 540,
-            "pos": [-1690.43, -372.89, 13.98],
-            "rot": [0, 0, 144.6],
+            "pos": [
+                -1690.43,
+                -372.89,
+                13.98
+            ],
+            "rot": [
+                0,
+                0,
+                144.6
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                60,
+                30,
+                90,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF14 429",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 7,
-            "pos": [-1690.43, -372.89, 14.23],
+            "pos": [
+                -1690.43,
+                -372.89,
+                14.23
+            ],
             "rot": 145,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [],
-            "state": { "glucose": 31, "consciousness": "confused" }
+            "state": {
+                "glucose": 31,
+                "consciousness": "confused"
+            }
         }
     ]
 }

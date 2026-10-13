@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-838.03, 1455.4, 15.02],
+    "center": [
+        -838.03,
+        1455.4,
+        15.02
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer pulled from a stock tank",
                 "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him on open scrubland in Las Barrancas. He is coughing up water and confused."
+            },
+            "hu": {
+                "title": "A gazdát kihúzták az itatóvályúból",
+                "description": "Egy gazda fejjel előre beleesett a szarvasmarhák itatóvályújába. A szomszédja kihúzta, és egy nyílt, bozótos területre vitte Las Barrancasban. Vizet köhög fel, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-838.03, 1455.4, 15.02],
+            "pos": [
+                -838.03,
+                1455.4,
+                15.02
+            ],
             "rot": 150,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 86, "consciousness": "confused" }
+            "state": {
+                "spo2": 86,
+                "consciousness": "confused"
+            }
         }
     ]
 }

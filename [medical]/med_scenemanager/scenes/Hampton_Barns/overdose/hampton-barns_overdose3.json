@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [690, 340, 20.23],
+    "center": [
+        690,
+        340,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Meth, not sleeping for days",
                 "description": "A man from a nearby trailer in a field in Hampton Barns has not slept for three days, is paranoid and soaked in sweat. He says his heart is going to explode."
+            },
+            "hu": {
+                "title": "Metamfetamin, napok óta nem alszik",
+                "description": "Egy férfi egy közeli lakókocsiból, egy Hampton Barns-i mezőről három napja nem aludt. Paranoiás és csurom verejték, és azt mondja, mindjárt felrobban a szíve."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [690, 340, 20.23],
+            "pos": [
+                690,
+                340,
+                20.23
+            ],
             "rot": 286,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 3 }
+                {
+                    "type": "stimulant",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 208, "heartRate": 178, "consciousness": "confused" }
+            "state": {
+                "systolic": 208,
+                "heartRate": 178,
+                "consciousness": "confused"
+            }
         }
     ]
 }

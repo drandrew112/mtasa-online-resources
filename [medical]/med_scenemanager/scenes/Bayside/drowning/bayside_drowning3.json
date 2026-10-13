@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2360, 2340, 4.98],
+    "center": [
+        -2360,
+        2340,
+        4.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Throat swelling after a bee sting",
                 "description": "A beekeeper on open ground in Bayside was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before."
+            },
+            "hu": {
+                "title": "Torokduzzanat méhcsípés után",
+                "description": "Egy méhészt többször megcsíptek egy nyílt területen Bayside-ban, a nyelve és a torka pedig gyorsan dagadni kezdett. Sípolva lélegzik, és azt mondja, korábban soha nem volt ilyen reakciója."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [-2360, 2340, 4.98],
+            "pos": [
+                -2360,
+                2340,
+                4.98
+            ],
             "rot": 271,
             "anim": "tired",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 81, "systolic": 87, "heartRate": 127 }
+            "state": {
+                "spo2": 81,
+                "systolic": 87,
+                "heartRate": 127
+            }
         }
     ]
 }

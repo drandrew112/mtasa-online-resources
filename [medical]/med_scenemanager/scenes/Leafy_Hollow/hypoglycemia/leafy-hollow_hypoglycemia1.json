@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-1020, -1640, 76.37],
+    "center": [
+        -1020,
+        -1640,
+        76.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly man unresponsive",
                 "description": "An elderly man is lying in a clearing in Leafy Hollow and does not respond. He is cold and sweaty. A bracelet on his wrist says \"insulin dependent\"."
+            },
+            "hu": {
+                "title": "Eszméletlen idős férfi",
+                "description": "Egy idős férfi fekszik egy tisztáson Leafy Hollow területén, és nem reagál. Hideg és izzadt. A csuklóján lévő karkötőn ez áll: „inzulinfüggő”."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [-1020, -1640, 76.37],
+            "pos": [
+                -1020,
+                -1640,
+                76.37
+            ],
             "rot": 303,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 24, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 24,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

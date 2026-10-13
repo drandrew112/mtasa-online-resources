@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2202.13, -2267.53, 30.63],
+    "center": [
+        -2202.13,
+        -2267.53,
+        30.63
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker fell from scaffolding",
                 "description": "A construction worker fell from the scaffolding of a barn he was repairing outside a small store in Angel Pine. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            },
+            "hu": {
+                "title": "Munkás lezuhant az állványzatról",
+                "description": "Egy építőmunkás leesett annak az istállónak az állványzatáról, amelyet Angel Pine-ban, egy kis üzlet előtt javított. A lába rendellenes szögben áll, a feje vérzik. A munkatársai nem mozdították el."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [-2202.13, -2267.53, 30.63],
+            "pos": [
+                -2202.13,
+                -2267.53,
+                30.63
+            ],
             "rot": 137,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4355 }
+            "state": {
+                "bloodVolume": 4355
+            }
         }
     ]
 }

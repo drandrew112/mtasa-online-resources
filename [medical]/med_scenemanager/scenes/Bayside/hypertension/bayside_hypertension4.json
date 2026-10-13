@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2688.62, 2212.77, 56.82],
+    "center": [
+        -2688.62,
+        2212.77,
+        56.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Anxious, racing heart",
                 "description": "A woman at the side of the road in Bayside is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly."
+            },
+            "hu": {
+                "title": "Szorongás, heves szívdobogás",
+                "description": "Egy nő Bayside-ban, az út szélén szorong, izzad, és azt mondja, hevesen ver a szíve. Éppen most veszekedett valakivel, és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [-2688.62, 2212.77, 56.82],
+            "pos": [
+                -2688.62,
+                2212.77,
+                56.82
+            ],
             "rot": 303,
             "anim": "crouch",
             "injuries": [],

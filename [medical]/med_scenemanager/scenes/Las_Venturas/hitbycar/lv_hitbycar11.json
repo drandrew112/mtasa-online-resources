@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1454.61, 1148.28, 10.82],
+    "center": [
+        1454.61,
+        1148.28,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hit and run, man not moving",
                 "description": "A car hit a man near the warehouses of the LVA Freight Depot and drove off without stopping. He is lying face down, not responding, with blood around his head."
+            },
+            "hu": {
+                "title": "Cserbenhagyás, a férfi nem mozdul",
+                "description": "Egy autó elütött egy férfit az LVA Freight Depot raktárai közelében, majd megállás nélkül elhajtott. A férfi arccal lefelé fekszik, nem reagál, a feje körül vér van."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,31 @@
         {
             "id": "p1",
             "skin": 135,
-            "pos": [1454.61, 1148.28, 10.82],
+            "pos": [
+                1454.61,
+                1148.28,
+                10.82
+            ],
             "rot": 66,
             "anim": "ko_front",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3883, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3883,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

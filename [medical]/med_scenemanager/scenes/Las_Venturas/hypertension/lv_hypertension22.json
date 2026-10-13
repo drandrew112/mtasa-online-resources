@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2142.645, 1698.702, 10.82],
+    "center": [
+        2142.645,
+        1698.702,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Breathless, chest heavy",
                 "description": "A smoker in his fifties became breathless walking up a short slope. His chest feels heavy and his face is flushed red."
+            },
+            "hu": {
+                "title": "Légszomj, nehéz mellkas",
+                "description": "Egy ötvenes éveiben járó dohányosnak már egy rövid emelkedőn felfelé is légszomja lett. Nehéznek érzi a mellkasát, az arca élénkvörösre vált."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2142.645, 1698.702, 10.82],
+            "pos": [
+                2142.645,
+                1698.702,
+                10.82
+            ],
             "rot": 45.5,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1580.32, -979.96, 38.22],
+    "center": [
+        1580.32,
+        -979.96,
+        38.22
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Breathing fast, tingling hands",
                 "description": "A woman at the side of the road in Mulholland Intersection is breathing very fast after hearing bad news on the phone. She says her fingers are tingling and she feels she cannot get enough air."
+            },
+            "hu": {
+                "title": "Gyors légzés, bizsergő kezek",
+                "description": "Egy nő a Mulholland Intersection út mentén nagyon gyorsan lélegzik, miután rossz hírt kapott telefonon. Azt mondja, bizseregnek az ujjai, és úgy érzi, nem jut elég levegőhöz."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 194,
-            "pos": [1580.32, -979.96, 38.22],
+            "pos": [
+                1580.32,
+                -979.96,
+                38.22
+            ],
             "rot": 348,
             "anim": "sit",
             "injuries": [],
-            "state": { "spo2": 99, "heartRate": 118 }
+            "state": {
+                "spo2": 99,
+                "heartRate": 118
+            }
         }
     ]
 }

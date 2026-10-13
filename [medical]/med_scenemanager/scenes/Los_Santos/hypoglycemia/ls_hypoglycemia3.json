@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1015.75, -1413, 13.199],
+    "center": [
+        1015.75,
+        -1413,
+        13.199
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly man unresponsive",
                 "description": "A pensioner was found lying on the pavement in Market, unresponsive but breathing. Neighbours say he lives alone and injects insulin. Nobody has seen him eat since yesterday."
+            },
+            "hu": {
+                "title": "Eszméletlen idős férfi",
+                "description": "Egy nyugdíjast eszméletlenül, de légző állapotban találtak Market járdáján. A szomszédok szerint egyedül él, és inzulint ad be magának. Tegnap óta senki sem látta enni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [1015.75, -1413, 13.199],
+            "pos": [
+                1015.75,
+                -1413,
+                13.199
+            ],
             "rot": 300,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 24 }
+            "state": {
+                "glucose": 24
+            }
         }
     ]
 }

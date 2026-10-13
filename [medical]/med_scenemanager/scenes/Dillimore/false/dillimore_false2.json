@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [810, -360, 23.67],
+    "center": [
+        810,
+        -360,
+        23.67
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shots heard",
                 "description": "Neighbours heard what sounded like gunshots on open ground near Dillimore. Nobody saw anyone injured. It may have been fireworks."
+            },
+            "hu": {
+                "title": "Lövéseket hallottak",
+                "description": "A dillimore-i nyílt terület közelében lakók lövésekhez hasonló hangokat hallottak. Senki nem látott sérültet. Lehet, hogy csak tűzijáték volt."
             }
         },
         "caller": "SceneManager",

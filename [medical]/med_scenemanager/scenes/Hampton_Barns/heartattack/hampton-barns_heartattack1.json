@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [723.09, 310.904, 20.188],
+    "center": [
+        723.09,
+        310.904,
+        20.188
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "A farmhand was stacking hay bales when crushing chest pain dropped him to his knees by the road. His jaw and arm hurt too."
+            },
+            "hu": {
+                "title": "Elviselhetetlen mellkasi fájdalom",
+                "description": "Egy mezőgazdasági munkás szénabálákat rakodott, amikor az elviselhetetlen mellkasi fájdalom térdre kényszerítette az út mellett. Az állkapcsa és a karja is fáj."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 60,
-            "pos": [723.09, 310.904, 20.188],
+            "pos": [
+                723.09,
+                310.904,
+                20.188
+            ],
             "rot": 229,
             "anim": "hold_side",
             "injuries": [],

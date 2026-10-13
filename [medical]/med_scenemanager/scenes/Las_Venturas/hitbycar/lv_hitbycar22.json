@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2455.5, 1380.25, 10.82],
+    "center": [
+        2455.5,
+        1380.25,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hit on the crosswalk",
                 "description": "A young woman was hit on the crosswalk outside a souvenir shop near the Camel's Toe by a driver looking at his phone. She is rolling in pain and holding her leg."
+            },
+            "hu": {
+                "title": "Elütötték a gyalogátkelőn",
+                "description": "Egy fiatal nőt elütött egy, a telefonját néző sofőr egy ajándékbolt előtt, a Camel's Toe közelében lévő gyalogátkelőnél. A nő fájdalmában vonaglik, és a lábát fogja."
             }
         },
         "caller": "SceneManager",
@@ -22,34 +30,93 @@
         {
             "id": "v1",
             "model": 562,
-            "pos": [2450.71, 1375.32, 10.52],
-            "rot": [0, 0, 89.1],
+            "pos": [
+                2450.71,
+                1375.32,
+                10.52
+            ],
+            "rot": [
+                0,
+                0,
+                89.1
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV39 421",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 56,
-            "pos": [2455.5, 1380.25, 10.82],
+            "pos": [
+                2455.5,
+                1380.25,
+                10.82
+            ],
             "rot": 147,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

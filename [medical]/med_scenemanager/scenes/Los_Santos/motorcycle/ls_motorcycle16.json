@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [283.98, -945.04, 37.92],
+    "center": [
+        283.98,
+        -945.04,
+        37.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dirt bike crash",
                 "description": "A dirt bike rider crashed at the side of the road near the docks after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well."
+            },
+            "hu": {
+                "title": "Terepmotoros baleset",
+                "description": "Egy terepmotoros elbukott egy ugrás után a dokkok közelében, az út mellett. Az út szélén fekszik, hátfájásra panaszkodik, és alig érzi a lábfejét."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 468,
-            "pos": [282.33, -946.28, 37.47],
-            "rot": [0, 0, 19],
+            "pos": [
+                282.33,
+                -946.28,
+                37.47
+            ],
+            "rot": [
+                0,
+                0,
+                19
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                245,
+                245,
+                245,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS74 301",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 248,
-            "pos": [283.98, -945.04, 37.92],
+            "pos": [
+                283.98,
+                -945.04,
+                37.92
+            ],
             "rot": 285,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 30 }
+            "state": {
+                "pain": 30
+            }
         }
     ]
 }

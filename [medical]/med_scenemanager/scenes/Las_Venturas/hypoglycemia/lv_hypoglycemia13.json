@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1777.08, 2391.78, 7.01],
+    "center": [
+        1777.08,
+        2391.78,
+        7.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure, then unresponsive",
                 "description": "An old man by the roadside near the Julius Thruway North had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+            },
+            "hu": {
+                "title": "Roham után nem reagál",
+                "description": "Egy idős férfinak rövid rohama volt az út mellett, a Julius Thruway North közelében, most pedig nem reagál. A felesége szerint inzulint használ, és ebéd óta semmit sem evett."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [1777.08, 2391.78, 7.01],
+            "pos": [
+                1777.08,
+                2391.78,
+                7.01
+            ],
             "rot": 143,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 19, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 19,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

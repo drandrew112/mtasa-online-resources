@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-180.016, 2741.601, 62.688],
+    "center": [
+        -180.016,
+        2741.601,
+        62.688
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found down, gasping",
                 "description": "A local found an old man lying by the road, gasping only every few seconds. Nobody can feel a pulse."
+            },
+            "hu": {
+                "title": "A földön találták, levegő után kapkod",
+                "description": "Egy helybéli egy idős férfit talált az út mellett fekve, aki csak néhány másodpercenként kap levegőt. Senki nem tudja kitapintani a pulzusát."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 22,
-            "pos": [-180.016, 2741.601, 62.688],
+            "pos": [
+                -180.016,
+                2741.601,
+                62.688
+            ],
             "rot": 213,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PEA"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1309.31, -2271.64, 13.55],
+    "center": [
+        1309.31,
+        -2271.64,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cyclist went over the handlebars",
                 "description": "A cyclist went over the handlebars at a bus stop at Los Santos International after hitting a pothole. His collarbone is deformed and his helmet is cracked. He is talking but cannot remember the fall."
+            },
+            "hu": {
+                "title": "A kerékpáros átrepült a kormány felett",
+                "description": "Egy kerékpáros egy kátyún hajtott át, majd átrepült a kormány felett a Los Santos International egyik buszmegállójánál. Kulcscsontja deformálódott, a bukósisakja megrepedt. Beszél, de nem emlékszik az esésre."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 481,
-            "pos": [1311.69, -2270.87, 13.1],
-            "rot": [0, 0, 189],
+            "pos": [
+                1311.69,
+                -2270.87,
+                13.1
+            ],
+            "rot": [
+                0,
+                0,
+                189
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS14 233",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 15,
-            "pos": [1309.31, -2271.64, 13.55],
+            "pos": [
+                1309.31,
+                -2271.64,
+                13.55
+            ],
             "rot": 3,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

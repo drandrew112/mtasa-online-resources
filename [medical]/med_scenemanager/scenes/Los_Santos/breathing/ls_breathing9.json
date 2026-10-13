@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2535.04, -2220.37, 13.55],
+    "center": [
+        2535.04,
+        -2220.37,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drowning in own lungs",
                 "description": "An elderly woman outside a shop in Ocean Docks is sitting bolt upright, bubbling breaths can be heard from a distance. She is sweaty, grey and confused. She skipped her water tablets."
+            },
+            "hu": {
+                "title": "Saját tüdejébe fullad",
+                "description": "Egy idős nő az Ocean Docks egyik üzlete előtt egyenesen ül; távolról is hallani bugyborékoló légzését. Izzadt, szürkés és zavart. Kihagyta a vízhajtóját."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,25 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [2535.04, -2220.37, 13.55],
+            "pos": [
+                2535.04,
+                -2220.37,
+                13.55
+            ],
             "rot": 205,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 3 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
+            "state": {
+                "spo2": 76,
+                "systolic": 206,
+                "heartRate": 134,
+                "consciousness": "confused"
+            }
         }
     ]
 }

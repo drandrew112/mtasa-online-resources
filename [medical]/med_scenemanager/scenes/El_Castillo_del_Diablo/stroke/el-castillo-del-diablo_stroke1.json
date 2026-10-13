@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-420.84, 2286.57, 42.8],
+    "center": [
+        -420.84,
+        2286.57,
+        42.8
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer slumped on his tailgate",
                 "description": "A farmer is slumped on the tailgate of his pickup on the road shoulder in El Castillo del Diablo. His wife says he suddenly could not hold his coffee cup and his words are slurred."
+            },
+            "hu": {
+                "title": "A gazda összeroskadt a pickup platóján",
+                "description": "Egy gazda összeroskadva ül a pickupja platóján, az útpadkán El Castillo del Diablo területén. A felesége szerint hirtelen nem tudta megtartani a kávéscsészéjét, és elmosódottá vált a beszéde."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [-420.84, 2286.57, 42.8],
+            "pos": [
+                -420.84,
+                2286.57,
+                42.8
+            ],
             "rot": 1,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 190 }
+            "state": {
+                "systolic": 190
+            }
         }
     ]
 }

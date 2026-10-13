@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [296, -64.75, 1.578],
+    "center": [
+        296,
+        -64.75,
+        1.578
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Barely breathing",
                 "description": "A drinker was found slumped next to the road outside the bar. Very slow breathing, grey skin, does not respond to shouting."
+            },
+            "hu": {
+                "title": "Alig lélegzik",
+                "description": "Egy italozó férfit a bár előtt, az út mellett találtak összeroskadva. Nagyon lassan lélegzik, szürkés a bőre, és kiabálásra sem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [296, -64.75, 1.578],
+            "pos": [
+                296,
+                -64.75,
+                1.578
+            ],
             "rot": 61,
             "anim": "ko_back",
             "injuries": [],

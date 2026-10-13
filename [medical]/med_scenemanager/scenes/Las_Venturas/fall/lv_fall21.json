@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1499, 1866, 10.82],
+    "center": [
+        1499,
+        1866,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell, head bleeding",
                 "description": "A drunk man fell backwards outside the terminal at Las Venturas Airport and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up."
+            },
+            "hu": {
+                "title": "Részeg férfi elesett, vérzik a feje",
+                "description": "Egy részeg férfi hátraesett a Las Venturas-i repülőtér terminálja előtt, és beütötte a fejét a betonba. Erősen vérzik a tarkójából, és folyton megpróbál felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 217,
-            "pos": [1499, 1866, 10.82],
+            "pos": [
+                1499,
+                1866,
+                10.82
+            ],
             "rot": 23,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "alcohol", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

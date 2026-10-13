@@ -5,7 +5,11 @@
     "location": "Mount Chiliad",
     "enabled": true,
     "weight": 1,
-    "center": [-2326, -2174.87, 36.75],
+    "center": [
+        -2326,
+        -2174.87,
+        36.75
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Child not breathing",
                 "description": "A young-sounding caller says a child is not breathing at the crossroads near Angel Pine, then laughs and hangs up. The callback goes to voicemail."
+            },
+            "hu": {
+                "title": "A gyermek nem lélegzik",
+                "description": "Egy fiatalnak hangzó bejelentő azt mondja, hogy egy gyermek nem lélegzik az Angel Pine közelében lévő útkereszteződésnél, majd nevetve leteszi a telefont. A visszahívás hangpostára fut."
             }
         },
         "caller": "SceneManager",

@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1594.25, 2530, 69.81],
+    "center": [
+        -1594.25,
+        2530,
+        69.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Glucose meter just says HIGH",
                 "description": "A woman on open scrubland in El Quebrados called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert."
+            },
+            "hu": {
+                "title": "A vércukormérő csak annyit mutat: HIGH",
+                "description": "Egy nő segítséget hívott egy nyílt, bozótos területről El Quebradosban, mert a vércukormérője csak a „HIGH” feliratot mutatja. Szédül, gyakran vizel, és homályosan lát. Ébren van, és ül."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [-1594.25, 2530, 69.81],
+            "pos": [
+                -1594.25,
+                2530,
+                69.81
+            ],
             "rot": 175,
             "anim": "sit",
             "injuries": [],
-            "state": { "bloodVolume": 4370, "glucose": 564 }
+            "state": {
+                "bloodVolume": 4370,
+                "glucose": 564
+            }
         }
     ]
 }

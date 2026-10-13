@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1282.794, -68.215, 35.395],
+    "center": [
+        1282.794,
+        -68.215,
+        35.395
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, slow pulse",
                 "description": "A camper on his way to fetch water keeps nearly blacking out by the road. Pale, sweaty, very slow pulse."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy kempingező vízért indult, de az út mellett majdnem elájul. Sápadt, verejtékes, a pulzusa nagyon lassú."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 57,
-            "pos": [1282.794, -68.215, 35.395],
+            "pos": [
+                1282.794,
+                -68.215,
+                35.395
+            ],
             "rot": 110,
             "anim": "sit",
             "injuries": [],

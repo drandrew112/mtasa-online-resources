@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2638, 685.75, 10.82],
+    "center": [
+        2638,
+        685.75,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Homeless person not waking",
                 "description": "A shop worker opening up outside a souvenir shop in Las Venturas found a homeless man lying under a blanket, cold and stiff. He does not respond at all."
+            },
+            "hu": {
+                "title": "Hajléktalan, akit nem lehet felébreszteni",
+                "description": "Egy bolti dolgozó egy szuvenírbolt előtt nyitáskor egy takaró alatt fekvő hajléktalan férfit talált Las Venturasban. A teste hideg és merev, egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 134,
-            "pos": [2638, 685.75, 10.82],
+            "pos": [
+                2638,
+                685.75,
+                10.82
+            ],
             "rot": 325,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

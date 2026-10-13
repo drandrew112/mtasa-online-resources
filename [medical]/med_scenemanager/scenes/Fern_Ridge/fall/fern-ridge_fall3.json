@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [1179.63, 35.67, 42.17],
+    "center": [
+        1179.63,
+        35.67,
+        42.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell, head bleeding",
                 "description": "A drunk man fell backwards at the side of the road in Fern Ridge and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up."
+            },
+            "hu": {
+                "title": "Részeg férfi elesett, vérzik a feje",
+                "description": "Egy részeg férfi hátraesett az út szélén Fern Ridge-ben, és beütötte a fejét a betonba. Erősen vérzik a tarkójából, és folyton megpróbál felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,30 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [1179.63, 35.67, 42.17],
+            "pos": [
+                1179.63,
+                35.67,
+                42.17
+            ],
             "rot": 54,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "alcohol", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

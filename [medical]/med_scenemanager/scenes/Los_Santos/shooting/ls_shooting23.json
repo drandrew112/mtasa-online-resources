@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1227.38, -1845.25, 13.55],
+    "center": [
+        1227.38,
+        -1845.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Accidental shot to the hand",
                 "description": "A man on the sidewalk in Verdant Bluffs accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain."
+            },
+            "hu": {
+                "title": "Véletlenül kézen lőtte magát",
+                "description": "Egy férfi Verdant Bluffs járdáján véletlenül kézen lőtte magát, miközben pisztollyal dicsekedett. Véres törölközőt szorít a kezére, és fájdalmában kiabál."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 45,
-            "pos": [1227.38, -1845.25, 13.55],
+            "pos": [
+                1227.38,
+                -1845.25,
+                13.55
+            ],
             "rot": 54,
             "anim": "crouch",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 60 }
+            "state": {
+                "pain": 60
+            }
         }
     ]
 }

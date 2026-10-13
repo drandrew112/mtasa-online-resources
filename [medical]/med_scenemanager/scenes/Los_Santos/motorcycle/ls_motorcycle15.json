@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2431, -1666.25, 13.54],
+    "center": [
+        2431,
+        -1666.25,
+        13.54
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Bike rear-ended a car",
                 "description": "A motorcycle ran into the back of a car stopping at the lights in Ganton. The rider went over the roof and landed on the sidewalk. He complains of chest and wrist pain."
+            },
+            "hu": {
+                "title": "A motoros hátulról autóba ütközött",
+                "description": "Egy motorkerékpár hátulról nekiment egy lámpánál megálló autónak Gantonban. A motoros átrepült a tető felett, és a járdára esett. Mellkasi és csuklófájdalomra panaszkodik."
             }
         },
         "caller": "SceneManager",
@@ -22,56 +30,167 @@
         {
             "id": "v1",
             "model": 517,
-            "pos": [2434, -1661.5, 13.13],
-            "rot": [0, 0, 266],
+            "pos": [
+                2434,
+                -1661.5,
+                13.13
+            ],
+            "rot": [
+                0,
+                0,
+                266
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS25 299",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 586,
-            "pos": [2430, -1661.5, 12.93],
-            "rot": [0, 0, 357],
+            "pos": [
+                2430,
+                -1661.5,
+                12.93
+            ],
+            "rot": [
+                0,
+                0,
+                357
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS54 300",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 254,
-            "pos": [2431, -1666.25, 13.54],
+            "pos": [
+                2431,
+                -1666.25,
+                13.54
+            ],
             "rot": 249,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 30, "spo2": 93 }
+            "state": {
+                "pain": 30,
+                "spo2": 93
+            }
         }
     ]
 }

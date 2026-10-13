@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2288.5, -2311.81, 25.13],
+    "center": [
+        -2288.5,
+        -2311.81,
+        25.13
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Light-headed after hard work",
                 "description": "A farmhand next to the country road in Angel Pine felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal."
+            },
+            "hu": {
+                "title": "Szédülés nehéz munka után",
+                "description": "Egy mezőgazdasági munkás Angel Pine-ban, az országút mellett megszédült, miután egész délelőtt takarmányt hordott, ezért leült az árnyékba. A vérnyomása jóval a normál érték felett van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 124,
-            "pos": [-2288.5, -2311.81, 25.13],
+            "pos": [
+                -2288.5,
+                -2311.81,
+                25.13
+            ],
             "rot": 330,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 171, "diastolic": 102, "heartRate": 92, "consciousness": "stable" }
+            "state": {
+                "systolic": 171,
+                "diastolic": 102,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
         }
     ]
 }

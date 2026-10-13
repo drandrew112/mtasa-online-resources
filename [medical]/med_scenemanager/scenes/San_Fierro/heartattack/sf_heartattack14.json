@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2208.75, 815.75, 49.446],
+    "center": [
+        -2208.75,
+        815.75,
+        49.446
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainting spells",
                 "description": "A man in a tuxedo, on his way to a wedding, keeps fainting on the sidewalk. Slow pulse, sweaty, confused. He is the groom and very late."
+            },
+            "hu": {
+                "title": "Visszatérő ájulás",
+                "description": "Egy szmokingos férfi esküvőre menet újra és újra elájul a járdán. Lassú a pulzusa, izzad és zavart. Ő a vőlegény, és már így is nagyon késésben van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [-2208.75, 815.75, 49.446],
+            "pos": [
+                -2208.75,
+                815.75,
+                49.446
+            ],
             "rot": 278,
             "anim": "sit",
             "injuries": [],

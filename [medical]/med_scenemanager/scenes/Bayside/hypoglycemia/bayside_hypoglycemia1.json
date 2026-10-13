@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2721.4, 2441.76, 78.2],
+    "center": [
+        -2721.4,
+        2441.76,
+        78.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Seizure, then unresponsive",
                 "description": "An old man on open ground in Bayside had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+            },
+            "hu": {
+                "title": "Görcsroham után nem reagál",
+                "description": "Egy idős férfinak rövid görcsrohama volt egy Bayside-ban található nyílt területen, és most nem reagál. A felesége szerint inzulint használ, és ebéd óta semmit sem evett."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-2721.4, 2441.76, 78.2],
+            "pos": [
+                -2721.4,
+                2441.76,
+                78.2
+            ],
             "rot": 337,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 18, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 18,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

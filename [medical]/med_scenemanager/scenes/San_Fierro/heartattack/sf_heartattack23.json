@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1756.375, 1093.75, 45.445],
+    "center": [
+        -1756.375,
+        1093.75,
+        45.445
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Not breathing, face down",
                 "description": "A tourist collapsed face down while photographing the bay view from the sidewalk. Her husband says she is not breathing and he cannot find a pulse."
+            },
+            "hu": {
+                "title": "Arccal lefelé fekszik, nem lélegzik",
+                "description": "Egy turista összeesett arccal lefelé, miközben a járdáról az öbölt fényképezte. Felesége szerint nem lélegzik, és nem talál pulzust."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [-1756.375, 1093.75, 45.445],
+            "pos": [
+                -1756.375,
+                1093.75,
+                45.445
+            ],
             "rot": 96,
             "anim": "ko_front",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PULSELESS_VT"
+            }
         }
     ]
 }

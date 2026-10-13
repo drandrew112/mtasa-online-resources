@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2180, 100, 25.91],
+    "center": [
+        2180,
+        100,
+        25.91
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a porch",
                 "description": "A man missed a step and fell off a high porch on a grassy patch in Palomino Creek. He is dazed, has a bump on his head and his arm hurts badly."
+            },
+            "hu": {
+                "title": "Leesett a verandáról",
+                "description": "Egy férfi elvétett egy lépcsőfokot, és leesett egy magas verandáról Palomino Creek egyik füves területén. Kábult, dudor van a fején, és erősen fáj a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 59,
-            "pos": [2180, 100, 25.91],
+            "pos": [
+                2180,
+                100,
+                25.91
+            ],
             "rot": 45,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

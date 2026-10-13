@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-750.44, -1607.62, 96.14],
+    "center": [
+        -750.44,
+        -1607.62,
+        96.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Skateboarder crashed at speed",
                 "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt on the road shoulder near Leafy Hollow. His wrist is deformed and he has deep grazes."
+            },
+            "hu": {
+                "title": "Nagy sebességű gördeszkás-baleset",
+                "description": "Egy gördeszkás elvesztette az irányítást, amikor legurult egy meredek lejtőn, majd végigcsúszott az aszfalton Leafy Hollow közelében, az útpadkánál. Csuklója deformálódott, mély horzsolásai vannak."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [-750.44, -1607.62, 96.14],
+            "pos": [
+                -750.44,
+                -1607.62,
+                96.14
+            ],
             "rot": 83,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

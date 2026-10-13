@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2319.07, -2246.82, 21.29],
+    "center": [
+        -2319.07,
+        -2246.82,
+        21.29
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman hit by a van",
                 "description": "A delivery van turning at the side of the road in Angel Pine knocked down an elderly woman. She is sitting on the ground holding her hip, with a cut on her arm."
+            },
+            "hu": {
+                "title": "Idős nőt ütött el egy furgon",
+                "description": "Egy kézbesítő furgon kanyarodás közben elütött egy idős nőt Angel Pine-ban, az út szélén. A földön ül, a csípőjét fogja, a karján pedig vágott seb van."
             }
         },
         "caller": "SceneManager",
@@ -22,34 +30,93 @@
         {
             "id": "v1",
             "model": 543,
-            "pos": [-2317.65, -2241.31, 20.99],
-            "rot": [0, 0, 292.6],
+            "pos": [
+                -2317.65,
+                -2241.31,
+                20.99
+            ],
+            "rot": [
+                0,
+                0,
+                292.6
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                95,
+                60,
+                35,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "WS76 128",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 130,
-            "pos": [-2319.07, -2246.82, 21.29],
+            "pos": [
+                -2319.07,
+                -2246.82,
+                21.29
+            ],
             "rot": 348,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

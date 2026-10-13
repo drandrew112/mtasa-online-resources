@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2260, 107.21, 35.32],
+    "center": [
+        -2260,
+        107.21,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mild asthma after running",
                 "description": "A girl at a bus stop in Garcia has a tight chest and is wheezing after running to catch a bus. She has mild asthma and her inhaler only helped a little."
+            },
+            "hu": {
+                "title": "Enyhe asztma futás után",
+                "description": "Egy lány Garcia egyik buszmegállójában mellkasi szorítást érez, és sípolva lélegzik, miután futva próbált elérni egy buszt. Enyhe asztmája van, az inhalátor csak kicsit segített."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [-2260, 107.21, 35.32],
+            "pos": [
+                -2260,
+                107.21,
+                35.32
+            ],
             "rot": 258,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 96 }
+            "state": {
+                "spo2": 96
+            }
         }
     ]
 }

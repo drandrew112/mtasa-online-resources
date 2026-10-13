@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-139.3, 2556.33, 24.39],
+    "center": [
+        -139.3,
+        2556.33,
+        24.39
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Numb side after jogging",
                 "description": "A jogger next to the country road near El Castillo del Diablo stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened."
+            },
+            "hu": {
+                "title": "Zsibbadás a test egyik oldalán kocogás után",
+                "description": "Egy kocogó megállt az országút mellett El Castillo del Diablo közelében, mert elzsibbadt a bal karja és a bal lába. Leült, kissé elkent a beszéde, és nagyon meg van ijedve."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 100,
-            "pos": [-139.3, 2556.33, 24.39],
+            "pos": [
+                -139.3,
+                2556.33,
+                24.39
+            ],
             "rot": 71,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 170 }
+            "state": {
+                "systolic": 170
+            }
         }
     ]
 }

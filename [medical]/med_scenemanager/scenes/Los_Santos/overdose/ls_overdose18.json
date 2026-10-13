@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1911.63, -1605.25, 13.55],
+    "center": [
+        1911.63,
+        -1605.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Stopped breathing after a pill",
                 "description": "A woman on the sidewalk in Idlewood took what was sold as a painkiller and went limp within minutes. Her lips are blue. A bystander gave one dose of nasal naloxone with no change yet."
+            },
+            "hu": {
+                "title": "Tabletta után leállt a légzése",
+                "description": "Egy nő Idlewood járdáján bevett valamit, amit fájdalomcsillapítónak adtak el, majd perceken belül elernyedt. Ajkai kékek. Egy járókelő befújt egy adag naloxont az orrába, de egyelőre nem történt változás."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [1911.63, -1605.25, 13.55],
+            "pos": [
+                1911.63,
+                -1605.25,
+                13.55
+            ],
             "rot": 289,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 64, "heartRate": 52, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 64,
+                "heartRate": 52,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

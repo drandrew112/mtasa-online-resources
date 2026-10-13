@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [939, 1646, 9.01],
+    "center": [
+        939,
+        1646,
+        9.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger found lifeless",
                 "description": "Cyclists found a jogger lying in a small park in Las Venturas. He is not breathing, his lips are blue and his body is already cold."
+            },
+            "hu": {
+                "title": "Élettelenül fekvő kocogót találtak",
+                "description": "Kerékpárosok egy kocogót találtak Las Venturas egyik kis parkjában. Nem lélegzik, kék az ajka, a teste pedig már hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [939, 1646, 9.01],
+            "pos": [
+                939,
+                1646,
+                9.01
+            ],
             "rot": 322,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

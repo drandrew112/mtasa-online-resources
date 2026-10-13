@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2117.757, -2458.963, 30.625],
+    "center": [
+        -2117.757,
+        -2458.963,
+        30.625
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "A lumberjack in a checked shirt collapsed by the road outside the sawmill. Not breathing. His coworkers are shouting for help."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "Egy kockás inget viselő favágó összeesett az út mellett, a fűrészüzem közelében. Nem lélegzik. A munkatársai segítségért kiabálnak."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-2117.757, -2458.963, 30.625],
+            "pos": [
+                -2117.757,
+                -2458.963,
+                30.625
+            ],
             "rot": 125,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

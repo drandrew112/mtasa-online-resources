@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [390, 90, 5.18],
+    "center": [
+        390,
+        90,
+        5.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Insulin pump failed",
                 "description": "A woman in the park just outside Blueberry says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            },
+            "hu": {
+                "title": "Elromlott az inzulinpumpa",
+                "description": "Egy nő Blueberry külterületén, a parkban azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 63,
-            "pos": [390, 90, 5.18],
+            "pos": [
+                390,
+                90,
+                5.18
+            ],
             "rot": 24,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 445 }
+            "state": {
+                "glucose": 445
+            }
         }
     ]
 }

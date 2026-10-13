@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2387, 55, 35.21],
+    "center": [
+        -2387,
+        55,
+        35.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Needle still in his arm",
                 "description": "A man is lying in a small park in Garcia with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey."
+            },
+            "hu": {
+                "title": "Még mindig a karjában van a tű",
+                "description": "Garcia egyik kis parkjában egy férfi fekszik, karjában még mindig tű van. Megrázásra felnyög, de lassan lélegzik, ajka szürkés."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 66,
-            "pos": [-2387, 55, 35.21],
+            "pos": [
+                -2387,
+                55,
+                35.21
+            ],
             "rot": 173,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88, "consciousness": "dazed" }
+            "state": {
+                "spo2": 88,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

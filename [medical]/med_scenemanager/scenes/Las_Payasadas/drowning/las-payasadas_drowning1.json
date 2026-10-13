@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-280, 2650, 67.64],
+    "center": [
+        -280,
+        2650,
+        67.64
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, turning blue",
                 "description": "A man choking on a piece of steak on the dusty ground in Las Payasadas cannot breathe or speak and is grabbing his throat. His lips are turning blue."
+            },
+            "hu": {
+                "title": "Félrenyelt, elkékül",
+                "description": "Egy férfi félrenyelt egy darab steaket Las Payasadas poros földjén, nem kap levegőt, nem tud beszélni, és a torkát markolja. Az ajkai elkékülnek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [-280, 2650, 67.64],
+            "pos": [
+                -280,
+                2650,
+                67.64
+            ],
             "rot": 194,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 69, "consciousness": "dazed" }
+            "state": {
+                "spo2": 69,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

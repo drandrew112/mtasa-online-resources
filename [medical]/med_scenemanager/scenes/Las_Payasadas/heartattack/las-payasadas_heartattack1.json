@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-250, 2650.75, 62.658],
+    "center": [
+        -250,
+        2650.75,
+        62.658
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, no pulse",
                 "description": "A tourist taking a photo with the giant chicken statue collapsed by the road. Not breathing, no pulse."
+            },
+            "hu": {
+                "title": "Összeesett, nincs pulzusa",
+                "description": "Egy turista éppen a hatalmas csirkeszoborról készített fényképet, amikor összeesett az út mellett. Nem lélegzik, nincs pulzusa."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 58,
-            "pos": [-250, 2650.75, 62.658],
+            "pos": [
+                -250,
+                2650.75,
+                62.658
+            ],
             "rot": 275,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

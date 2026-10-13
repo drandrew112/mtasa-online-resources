@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1045.25, -1153.5, 128.149],
+    "center": [
+        -1045.25,
+        -1153.5,
+        128.149
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Barely breathing",
                 "description": "A woman was found by the road near the farm gate, barely breathing, skin grey and cold."
+            },
+            "hu": {
+                "title": "Alig lélegzik",
+                "description": "Egy nőt a gazdaság kapuja közelében, az út mellett találtak. Alig lélegzik, bőre szürkés és hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [-1045.25, -1153.5, 128.149],
+            "pos": [
+                -1045.25,
+                -1153.5,
+                128.149
+            ],
             "rot": 255,
             "anim": "ko_back",
             "injuries": [],

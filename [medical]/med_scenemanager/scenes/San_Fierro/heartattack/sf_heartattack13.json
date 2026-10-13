@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2496.265, 72.501, 25.617],
+    "center": [
+        -2496.265,
+        72.501,
+        25.617
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, arm pain",
                 "description": "A bus driver pulled over, stepped off and sat on the sidewalk gripping her chest. The pain runs into her jaw and arm. The passengers are still on the bus, very confused."
+            },
+            "hu": {
+                "title": "Mellkasi és karfájdalom",
+                "description": "Egy buszvezető félreállt, leszállt, majd leült a járdára, és a mellkasát szorította. A fájdalom az állkapcsába és a karjába sugárzik. Az utasok a buszon maradtak, és zavartan figyelnek."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 232,
-            "pos": [-2496.265, 72.501, 25.617],
+            "pos": [
+                -2496.265,
+                72.501,
+                25.617
+            ],
             "rot": 100,
             "anim": "hold_side",
             "injuries": [],

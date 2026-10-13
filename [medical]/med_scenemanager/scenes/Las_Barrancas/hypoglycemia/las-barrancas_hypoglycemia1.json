@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-859, 1514.39, 22.59],
+    "center": [
+        -859,
+        1514.39,
+        22.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aggressive, sweaty man",
                 "description": "The owner of the diner on open scrubland in Las Barrancas reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck."
+            },
+            "hu": {
+                "title": "Agresszív, izzadó férfi",
+                "description": "Az étkezde tulajdonosa egy Las Barrancas-i nyílt területről egy izzadó férfit jelent, aki káromkodik és emberekre támad. Cukorbetegségre figyelmeztető jelzést visel a nyakában."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-859, 1514.39, 22.59],
+            "pos": [
+                -859,
+                1514.39,
+                22.59
+            ],
             "rot": 242,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 36, "consciousness": "confused" }
+            "state": {
+                "glucose": 36,
+                "consciousness": "confused"
+            }
         }
     ]
 }

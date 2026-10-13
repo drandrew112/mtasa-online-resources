@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [240.25, -99.62, 1.58],
+    "center": [
+        240.25,
+        -99.62,
+        1.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed after baling hay",
                 "description": "A young farmhand collapsed after baling hay all morning on the sidewalk in Blueberry. His friends say he is diabetic and took extra insulin before the game."
+            },
+            "hu": {
+                "title": "Összeesett szénabálázás után",
+                "description": "Egy fiatal mezőgazdasági munkás összeesett, miután egész délelőtt szénát bálázott a járdán Blueberryben. A barátai szerint cukorbeteg, és a meccs előtt a szokásosnál több inzulint adott be magának."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 115,
-            "pos": [240.25, -99.62, 1.58],
+            "pos": [
+                240.25,
+                -99.62,
+                1.58
+            ],
             "rot": 50,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 35, "consciousness": "dazed" }
+            "state": {
+                "glucose": 35,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

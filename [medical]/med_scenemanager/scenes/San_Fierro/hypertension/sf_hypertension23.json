@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2747, 315, 4.457],
+    "center": [
+        -2747,
+        315,
+        4.457
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drowsy, hard to wake",
                 "description": "A woman sunbathing in the park is drowsy and hard to wake. Her friend says she complained of a splitting headache an hour ago."
+            },
+            "hu": {
+                "title": "Aluszékony, nehezen ébreszthető",
+                "description": "Egy parkban napozó nő aluszékony, és nehezen ébreszthető. Barátja szerint egy órával korábban hasogató fejfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 11,
-            "pos": [-2747, 315, 4.457],
+            "pos": [
+                -2747,
+                315,
+                4.457
+            ],
             "rot": 0,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 210, "diastolic": 126, "heartRate": 98, "consciousness": "dazed" }
+            "state": {
+                "systolic": 210,
+                "diastolic": 126,
+                "heartRate": 98,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

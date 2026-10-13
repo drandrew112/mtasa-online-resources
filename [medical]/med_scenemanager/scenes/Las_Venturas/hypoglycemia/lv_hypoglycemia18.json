@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1198.2, 1813.02, 6.87],
+    "center": [
+        1198.2,
+        1813.02,
+        6.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Aggressive, sweaty man",
                 "description": "A passer-by at the side of the road near the Whitewood Estates reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck."
+            },
+            "hu": {
+                "title": "Agresszív, izzadt férfi",
+                "description": "Egy járókelő egy izzadt férfit jelentett az út mellett, a Whitewood Estates közelében. A férfi káromkodik, és emberekre támad. Cukorbetegségre figyelmeztető azonosítót visel a nyakában."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [1198.2, 1813.02, 6.87],
+            "pos": [
+                1198.2,
+                1813.02,
+                6.87
+            ],
             "rot": 269,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 36, "consciousness": "confused" }
+            "state": {
+                "glucose": 36,
+                "consciousness": "confused"
+            }
         }
     ]
 }

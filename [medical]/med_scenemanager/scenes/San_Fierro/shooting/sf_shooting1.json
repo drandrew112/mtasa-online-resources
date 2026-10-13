@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2387, 135, 35.31],
+    "center": [
+        -2387,
+        135,
+        35.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman shot in the stomach",
                 "description": "A woman was shot in the stomach in a small park in Garcia during an argument with her ex-partner. She is bent over, pale and getting weaker."
+            },
+            "hu": {
+                "title": "Haslövést kapott nő",
+                "description": "Garcia egyik kis parkjában egy nő haslövést kapott, miután összeveszett volt partnerével. Előregörnyed, sápadt, és egyre gyengébb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [-2387, 135, 35.31],
+            "pos": [
+                -2387,
+                135,
+                35.31
+            ],
             "rot": 83,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3789 }
+            "state": {
+                "bloodVolume": 3789
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2729.875, -1040.75, 55.999],
+    "center": [
+        2729.875,
+        -1040.75,
+        55.999
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman confused at the bus stop",
                 "description": "A woman at the Los Flores bus stop is confused and cannot lift her right arm. Her speech is jumbled, a passer-by thought she was drunk. She was fine when she got off the previous bus."
+            },
+            "hu": {
+                "title": "Zavart nő a buszmegállóban",
+                "description": "Egy nő a Los Flores buszmegállójában zavart, és nem tudja felemelni a jobb karját. Beszéde összefüggéstelen; egy járókelő azt hitte, részeg. Az előző buszról még teljesen jól szállt le."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [2729.875, -1040.75, 55.999],
+            "pos": [
+                2729.875,
+                -1040.75,
+                55.999
+            ],
             "rot": 90,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

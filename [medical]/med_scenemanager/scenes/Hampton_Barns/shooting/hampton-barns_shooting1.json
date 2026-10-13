@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [764.7, 297.92, 21.18],
+    "center": [
+        764.7,
+        297.92,
+        21.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drive-by, leg wound",
                 "description": "Someone fired from a passing pickup at the side of the road near Hampton Barns. A young man was hit in the thigh and is bleeding heavily into his jeans."
+            },
+            "hu": {
+                "title": "Autóból leadott lövés, lábsérülés",
+                "description": "Valaki egy elhaladó pickupból lőtt az út szélén Hampton Barns közelében. Egy fiatal férfit combon találtak, és a farmernadrágjába ömlik a vér."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [764.7, 297.92, 21.18],
+            "pos": [
+                764.7,
+                297.92,
+                21.18
+            ],
             "rot": 260,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4120, "pain": 45 }
+            "state": {
+                "bloodVolume": 4120,
+                "pain": 45
+            }
         }
     ]
 }

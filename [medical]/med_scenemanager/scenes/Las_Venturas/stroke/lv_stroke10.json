@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2241.37, 2143.38, 10.96],
+    "center": [
+        2241.37,
+        2143.38,
+        10.96
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Talking nonsense",
                 "description": "Passers-by outside a casino entrance on Old Venturas Strip called because a man in a suit is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk."
+            },
+            "hu": {
+                "title": "Összefüggéstelenül beszél",
+                "description": "Járókelők segítséget hívtak az Old Venturas Strip egyik kaszinóbejárata előtt, mert egy öltönyös férfi értelmetlenül beszél, és nem érti, amit mondanak neki. Egyre frusztráltabb, de még tud járni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2241.37, 2143.38, 10.96],
+            "pos": [
+                2241.37,
+                2143.38,
+                10.96
+            ],
             "rot": 206,
             "anim": "none",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 175 }
+            "state": {
+                "systolic": 175
+            }
         }
     ]
 }

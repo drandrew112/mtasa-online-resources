@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-58.5, 1083.823, 19.742],
+    "center": [
+        -58.5,
+        1083.823,
+        19.742
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Crushing chest pain",
                 "description": "A conspiracy theorist on his way to The Big Ear sat by the road with crushing chest pain. He claims the aliens did it."
+            },
+            "hu": {
+                "title": "Elviselhetetlen mellkasi fájdalom",
+                "description": "Egy összeesküvés-elméletekben hívő férfi a Big Ear felé tartott, amikor leült az út mellé, mert elviselhetetlen mellkasi fájdalma lett. Azt állítja, hogy az idegenek tették."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 68,
-            "pos": [-58.5, 1083.823, 19.742],
+            "pos": [
+                -58.5,
+                1083.823,
+                19.742
+            ],
             "rot": 333,
             "anim": "hold_side",
             "injuries": [],

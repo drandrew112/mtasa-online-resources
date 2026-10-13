@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1936.18, 2314.46, 10.82],
+    "center": [
+        1936.18,
+        2314.46,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "COPD flare, lips blue",
                 "description": "An old man with emphysema next to the road in Redsands East ran out of oxygen in his portable tank. He is very drowsy and his lips are blue."
+            },
+            "hu": {
+                "title": "COPD-s rosszabbodás, kék ajkak",
+                "description": "Egy tüdőtágulatban szenvedő idős férfi kifogyott a hordozható oxigénpalackjából az út mellett Redsands Eastben. Nagyon bágyadt, és kék az ajka."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 43,
-            "pos": [1936.18, 2314.46, 10.82],
+            "pos": [
+                1936.18,
+                2314.46,
+                10.82
+            ],
             "rot": 104,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 77, "consciousness": "dazed" }
+            "state": {
+                "spo2": 77,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

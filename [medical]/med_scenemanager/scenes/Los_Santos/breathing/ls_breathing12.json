@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2000.13, -1925.25, 13.55],
+    "center": [
+        2000.13,
+        -1925.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Breathing fast, tingling hands",
                 "description": "A woman at a bus stop in Willowfield is breathing very fast after hearing bad news on the phone. She says her fingers are tingling and she feels she cannot get enough air."
+            },
+            "hu": {
+                "title": "Gyors légzés, bizsergő kezek",
+                "description": "Egy nő Willowfield egyik buszmegállójában nagyon gyorsan lélegzik, miután rossz hírt kapott telefonon. Azt mondja, bizseregnek az ujjai, és úgy érzi, nem jut elég levegőhöz."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [2000.13, -1925.25, 13.55],
+            "pos": [
+                2000.13,
+                -1925.25,
+                13.55
+            ],
             "rot": 198,
             "anim": "sit",
             "injuries": [],
-            "state": { "spo2": 99, "heartRate": 118 }
+            "state": {
+                "spo2": 99,
+                "heartRate": 118
+            }
         }
     ]
 }

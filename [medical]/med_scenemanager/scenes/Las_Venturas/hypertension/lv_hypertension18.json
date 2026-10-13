@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2137.25, 1380.925, 10.82],
+    "center": [
+        2137.25,
+        1380.925,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Confused, unsteady",
                 "description": "A man is unsteady on his feet and cannot answer simple questions. His brother says he was fine at breakfast but complained of a sore head."
+            },
+            "hu": {
+                "title": "Zavart, bizonytalan járás",
+                "description": "Egy férfi bizonytalanul áll a lábán, és egyszerű kérdésekre sem tud válaszolni. A testvére szerint reggelinél még jól volt, de fejfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [2137.25, 1380.925, 10.82],
+            "pos": [
+                2137.25,
+                1380.925,
+                10.82
+            ],
             "rot": 90,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 192, "diastolic": 116, "heartRate": 94, "consciousness": "dazed" }
+            "state": {
+                "systolic": 192,
+                "diastolic": 116,
+                "heartRate": 94,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

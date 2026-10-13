@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2757.25, 1466.325, 12.251],
+    "center": [
+        2757.25,
+        1466.325,
+        12.251
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man down, no breathing",
                 "description": "A tourist collapsed on the sidewalk while watching the lights. His wife says he just said \"wow\" and fell. Not breathing, lips turning blue."
+            },
+            "hu": {
+                "title": "Férfi a földön, nem lélegzik",
+                "description": "Egy turista összeesett a járdán, miközben a fényeket nézte. A felesége szerint épp annyit mondott, hogy „hűha”, aztán elesett. Nem lélegzik, az ajkai elkékülnek."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [2757.25, 1466.325, 12.251],
+            "pos": [
+                2757.25,
+                1466.325,
+                12.251
+            ],
             "rot": 143,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

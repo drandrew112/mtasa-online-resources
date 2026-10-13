@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [919, 2326, 10.82],
+    "center": [
+        919,
+        2326,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Person lying on the ground",
                 "description": "A driver saw a person lying in a small park near the Whitewood Estates and did not stop. The caller could not say if the person was moving."
+            },
+            "hu": {
+                "title": "Földön fekvő személy",
+                "description": "Egy sofőr meglátott egy földön fekvő személyt a Whitewood Estates közelében lévő kis parkban, de nem állt meg. A bejelentő nem tudta megmondani, hogy az illető mozgott-e."
             }
         },
         "caller": "SceneManager",

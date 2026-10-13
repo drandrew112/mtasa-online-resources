@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-160.96, 2518.3, 24.92],
+    "center": [
+        -160.96,
+        2518.3,
+        24.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old farmer only dizzy",
                 "description": "A neighbour reports an old farmer who fell over on the road shoulder near El Castillo del Diablo. He is up again, says he was only dizzy from the heat and refuses to go to hospital."
+            },
+            "hu": {
+                "title": "A gazda csak szédült",
+                "description": "Egy szomszéd egy idős gazdáról számol be, aki elesett az útpadkán El Castillo del Diablo közelében. Már felállt, azt mondja, csak a hőség miatt szédült meg, és nem hajlandó kórházba menni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-160.96, 2518.3, 24.92],
+            "pos": [
+                -160.96,
+                2518.3,
+                24.92
+            ],
             "rot": 92,
             "anim": "sit",
             "injuries": [],

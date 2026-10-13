@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [748.59, 359.49, 21.58],
+    "center": [
+        748.59,
+        359.49,
+        21.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, still wheezing",
                 "description": "A man on a grassy patch in Hampton Barns choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt étel, továbbra is sípoló légzés",
+                "description": "Egy férfi egy füves területen Hampton Barnsban félrenyelt egy hot dogot. Egy járókelő hátba ütögette, és egy darab kijött, de a férfi továbbra is erősen köhög és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [748.59, 359.49, 21.58],
+            "pos": [
+                748.59,
+                359.49,
+                21.58
+            ],
             "rot": 125,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88 }
+            "state": {
+                "spo2": 88
+            }
         }
     ]
 }

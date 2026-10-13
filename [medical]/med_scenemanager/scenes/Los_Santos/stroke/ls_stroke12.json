@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2182.5, -2540.5, 13.55],
+    "center": [
+        2182.5,
+        -2540.5,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Young adult, sudden weakness",
                 "description": "A woman in her twenties at a bus stop at Los Santos International suddenly could not hold her phone and her words became mixed up. Her friend says she complained of neck pain after lifting weights earlier today."
+            },
+            "hu": {
+                "title": "Fiatal felnőtt, hirtelen gyengeség",
+                "description": "Egy húszas éveiben járó nő a Los Santos International egyik buszmegállójában hirtelen nem tudta megtartani a telefonját, és összekeverte a szavakat. Barátja szerint ma korábban súlyemelés után nyakfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 152,
-            "pos": [2182.5, -2540.5, 13.55],
+            "pos": [
+                2182.5,
+                -2540.5,
+                13.55
+            ],
             "rot": 111,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2816.125, 622.399, 7.659],
+    "center": [
+        -2816.125,
+        622.399,
+        7.659
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dropped mid-run",
                 "description": "A marathon trainee dropped face first on the sidewalk during his hill repeats. His running partner says he is not breathing and is shouting for help."
+            },
+            "hu": {
+                "title": "Futás közben összeesett",
+                "description": "Egy maratonra készülő futó arccal előre összeesett a járdán, miközben emelkedőn edzett. Futótársa szerint nem lélegzik, és segítségért kiabál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 60,
-            "pos": [-2816.125, 622.399, 7.659],
+            "pos": [
+                -2816.125,
+                622.399,
+                7.659
+            ],
             "rot": 332,
             "anim": "ko_front",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "PULSELESS_VT"
+            }
         }
     ]
 }

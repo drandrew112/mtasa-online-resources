@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2057.46, -721.92, 32.17],
+    "center": [
+        -2057.46,
+        -721.92,
+        32.17
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man next to the road in Foster Valley cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi Foster Valley út menti részén nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzza a nyakizmai közötti részt. Ötször használta már az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [-2057.46, -721.92, 32.17],
+            "pos": [
+                -2057.46,
+                -721.92,
+                32.17
+            ],
             "rot": 21,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 85, "heartRate": 135 }
+            "state": {
+                "spo2": 85,
+                "heartRate": 135
+            }
         }
     ]
 }

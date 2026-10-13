@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-740, 1570, 26.96],
+    "center": [
+        -740,
+        1570,
+        26.96
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found below a grain silo",
                 "description": "Farm workers found a man lying on the dusty ground in Las Barrancas below a grain silo he had been climbing. His injuries are severe and he has not moved since they found him."
+            },
+            "hu": {
+                "title": "Gabona silója alatt találták meg",
+                "description": "Mezőgazdasági munkások egy férfit találtak Las Barrancas poros földjén, egy gabonasiló alatt, amelyre korábban felmászott. Súlyos sérülései vannak, és a megtalálása óta nem mozdult."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [-740, 1570, 26.96],
+            "pos": [
+                -740,
+                1570,
+                26.96
+            ],
             "rot": 140,
             "anim": "ko_front",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

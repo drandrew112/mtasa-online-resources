@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [870.75, -580, 18.23],
+    "center": [
+        870.75,
+        -580,
+        18.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, snoring breathing",
                 "description": "A man collapsed in a yard just outside Dillimore and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell."
+            },
+            "hu": {
+                "title": "Összeesett, horkoló légzés",
+                "description": "Egy férfi összeesett egy Dillimore külterületén lévő udvaron, és a hátán fekszik, hangosan horkoló hangokat adva ki. A körülötte állók nem tudják felébreszteni. Közvetlenül az esés előtt a fejét fogta."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 46,
-            "pos": [870.75, -580, 18.23],
+            "pos": [
+                870.75,
+                -580,
+                18.23
+            ],
             "rot": 359,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 215, "diastolic": 119, "consciousness": "unconscious" }
+            "state": {
+                "systolic": 215,
+                "diastolic": 119,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

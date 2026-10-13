@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [474.92, 2497.98, 22.95],
+    "center": [
+        474.92,
+        2497.98,
+        22.95
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a porch",
                 "description": "A man missed a step and fell off a high porch at the side of the road near Verdant Meadows. He is dazed, has a bump on his head and his arm hurts badly."
+            },
+            "hu": {
+                "title": "Leesett a verandáról",
+                "description": "Verdant Meadows közelében, az út mellett egy férfi rosszul lépett, és leesett egy magas verandáról. Kábult, púp nőtt a fején, és nagyon fáj a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [474.92, 2497.98, 22.95],
+            "pos": [
+                474.92,
+                2497.98,
+                22.95
+            ],
             "rot": 69,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

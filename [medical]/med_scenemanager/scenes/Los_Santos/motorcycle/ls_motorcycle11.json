@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1005.22, -1858.75, 12.82],
+    "center": [
+        1005.22,
+        -1858.75,
+        12.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Scooter rider hit a car door",
                 "description": "A parked driver opened a door into a scooter rider in Verona Beach. The woman is sitting on the curb holding her wrist, with a grazed knee."
+            },
+            "hu": {
+                "title": "Robogós nekiütközött egy autóajtónak",
+                "description": "Egy parkoló autó sofőrje kinyitotta az ajtaját egy robogós elé Verona Beachen. A nő a járdaszegélyen ül, a csuklóját fogja, térde lehorzsolódott."
             }
         },
         "caller": "SceneManager",
@@ -22,34 +30,93 @@
         {
             "id": "v1",
             "model": 462,
-            "pos": [1003.65, -1855.57, 12.3],
-            "rot": [0, 0, 26.2],
+            "pos": [
+                1003.65,
+                -1855.57,
+                12.3
+            ],
+            "rot": [
+                0,
+                0,
+                26.2
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                30,
+                110,
+                50,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS28 294",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 140,
-            "pos": [1005.22, -1858.75, 12.82],
+            "pos": [
+                1005.22,
+                -1858.75,
+                12.82
+            ],
             "rot": 13,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

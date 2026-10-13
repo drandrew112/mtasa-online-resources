@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2437.75, 2640, 57.37],
+    "center": [
+        -2437.75,
+        2640,
+        57.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Toddler fell in an irrigation ditch",
                 "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her in a yard in Bayside. The child is coughing and crying weakly."
+            },
+            "hu": {
+                "title": "Kisgyermek esett az öntözőárokba",
+                "description": "Egy kisgyermek beleesett egy öntözőárokba, és rövid ideig víz alatt volt. A nagymamája egy bayside-i udvarba vitte. A gyermek köhög, és gyengén sír."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [-2437.75, 2640, 57.37],
+            "pos": [
+                -2437.75,
+                2640,
+                57.37
+            ],
             "rot": 96,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

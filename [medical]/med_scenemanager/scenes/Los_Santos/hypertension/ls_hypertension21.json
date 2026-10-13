@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1319.674, -1660.839, 13.547],
+    "center": [
+        1319.674,
+        -1660.839,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, nausea",
                 "description": "A cashier stepped outside for air after a sudden throbbing headache and nausea. She has a family history of strokes and is scared it is happening to her."
+            },
+            "hu": {
+                "title": "Fejfájás, hányinger",
+                "description": "Egy pénztáros kiment levegőzni, miután hirtelen lüktető fejfájás és hányinger jelentkezett nála. Családjában előfordult stroke, és fél, hogy vele is az történik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 11,
-            "pos": [1319.674, -1660.839, 13.547],
+            "pos": [
+                1319.674,
+                -1660.839,
+                13.547
+            ],
             "rot": 359.3,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 172, "diastolic": 100, "heartRate": 94, "consciousness": "stable" }
+            "state": {
+                "systolic": 172,
+                "diastolic": 100,
+                "heartRate": 94,
+                "consciousness": "stable"
+            }
         }
     ]
 }

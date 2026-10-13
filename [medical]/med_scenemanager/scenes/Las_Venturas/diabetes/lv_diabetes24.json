@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2559.5, 1306.13, 10.81],
+    "center": [
+        2559.5,
+        1306.13,
+        10.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman confused, drinking constantly",
                 "description": "An older woman on the sidewalk near the Camel's Toe is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night."
+            },
+            "hu": {
+                "title": "Zavart nő, állandóan iszik",
+                "description": "Egy idősebb nő a Camel's Toe közelében lévő járdán zavart, és folyamatosan egy nagy vizespalackból iszik. A férje szerint lefogyott, és egész éjjel gyakran vizelt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [2559.5, 1306.13, 10.81],
+            "pos": [
+                2559.5,
+                1306.13,
+                10.81
+            ],
             "rot": 328,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 619, "consciousness": "confused" }
+            "state": {
+                "glucose": 619,
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1598.92, 2626.94, 10.82],
+    "center": [
+        1598.92,
+        2626.94,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain after cocaine",
                 "description": "A man at the side of the road in Prickle Pine says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom kokain után",
+                "description": "Egy férfi Prickle Pine út menti részén azt mondja, kokain felszippantása után szorít a mellkasa, és hevesen ver a szíve. Izzad, és a bal oldalát fogja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [1598.92, 2626.94, 10.82],
+            "pos": [
+                1598.92,
+                2626.94,
+                10.82
+            ],
             "rot": 105,
             "anim": "hold_side",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 184, "heartRate": 144 }
+            "state": {
+                "systolic": 184,
+                "heartRate": 144
+            }
         }
     ]
 }

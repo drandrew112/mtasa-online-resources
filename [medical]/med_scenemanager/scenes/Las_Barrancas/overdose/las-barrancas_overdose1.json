@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-800, 1570, 27.12],
+    "center": [
+        -800,
+        1570,
+        27.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pills and wine, very sleepy",
                 "description": "A woman on the dusty ground in Las Barrancas mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            },
+            "hu": {
+                "title": "Tabletták és bor, erős álmosság",
+                "description": "Egy nő Las Barrancas poros földjén egy vita után szorongásoldó tablettákat vett be egy üveg borral. Elmosódottan beszél, mondat közben elalszik, és lassan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [-800, 1570, 27.12],
+            "pos": [
+                -800,
+                1570,
+                27.12
+            ],
             "rot": 232,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91, "consciousness": "dazed" }
+            "state": {
+                "spo2": 91,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

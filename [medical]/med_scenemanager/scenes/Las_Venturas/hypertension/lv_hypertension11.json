@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2735.3, 1696.346, 6.819],
+    "center": [
+        2735.3,
+        1696.346,
+        6.819
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Uneasy, mild dizziness",
                 "description": "A man feels uneasy and mildly dizzy after hearing his test results on the phone. He has a family history of high blood pressure."
+            },
+            "hu": {
+                "title": "Rosszul érzi magát, enyhén szédül",
+                "description": "Egy férfi nyugtalanul érzi magát, és enyhén szédül, miután telefonon meghallotta a vizsgálati eredményeit. Családjában előfordult magas vérnyomás."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [2735.3, 1696.346, 6.819],
+            "pos": [
+                2735.3,
+                1696.346,
+                6.819
+            ],
             "rot": 359.8,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 166, "diastolic": 96, "heartRate": 92, "consciousness": "stable" }
+            "state": {
+                "systolic": 166,
+                "diastolic": 96,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
         }
     ]
 }

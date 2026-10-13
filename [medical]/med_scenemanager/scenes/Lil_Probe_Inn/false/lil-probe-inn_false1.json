@@ -5,7 +5,11 @@
     "location": "Lil' Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-27.12, 1365.02, 12.23],
+    "center": [
+        -27.12,
+        1365.02,
+        12.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man swaying",
                 "description": "A caller says a man on open scrubland at the Lil' Probe Inn is swaying and might fall over. He is drunk but talking, walking and says he is fine."
+            },
+            "hu": {
+                "title": "Imbolygó, ittas férfi",
+                "description": "Egy bejelentő szerint egy férfi imbolyog a Lil' Probe Inn körüli nyílt, bozótos területen, és bármelyik pillanatban eleshet. Részeg, de beszél és jár, és azt állítja, jól van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [-27.12, 1365.02, 12.23],
+            "pos": [
+                -27.12,
+                1365.02,
+                12.23
+            ],
             "rot": 242,
             "anim": "drunk",
             "injuries": [],

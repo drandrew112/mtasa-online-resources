@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1732.419, 1329.522, 7.188],
+    "center": [
+        -1732.419,
+        1329.522,
+        7.188
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, cold and grey",
                 "description": "Morning commuters found a man in a rain jacket lying on the sidewalk. Cold, grey, barely breathing. His coffee cup is still steaming next to him."
+            },
+            "hu": {
+                "title": "Reagálásképtelen, hideg és szürkés bőrű",
+                "description": "A reggeli ingázók egy esőkabátos férfit találtak a járdán fekve. Hideg a bőre, szürkés, alig lélegzik. Mellette még gőzölög a kávéspohara."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [-1732.419, 1329.522, 7.188],
+            "pos": [
+                -1732.419,
+                1329.522,
+                7.188
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [],

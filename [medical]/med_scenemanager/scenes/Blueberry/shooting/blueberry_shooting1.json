@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [210, -370, 6.16],
+    "center": [
+        210,
+        -370,
+        6.16
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the back",
                 "description": "A man was shot in the back while running away on a grassy patch in Blueberry. He is lying on his stomach and says he cannot feel his legs."
+            },
+            "hu": {
+                "title": "Hátba lőtték",
+                "description": "Egy férfit hátba lőttek, miközben egy füves területen menekült Blueberryben. Hason fekszik, és azt mondja, nem érzi a lábait."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [210, -370, 6.16],
+            "pos": [
+                210,
+                -370,
+                6.16
+            ],
             "rot": 343,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4304, "pain": 33 }
+            "state": {
+                "bloodVolume": 4304,
+                "pain": 33
+            }
         }
     ]
 }

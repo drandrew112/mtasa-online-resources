@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2274, -2082, 13.55],
+    "center": [
+        2274,
+        -2082,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe asthma, getting drowsy",
                 "description": "A known asthmatic man on a paved square in Willowfield has used his inhaler ten times. The wheeze has gone quiet, he is exhausted and getting sleepy. Friends are panicking."
+            },
+            "hu": {
+                "title": "Súlyos asztma, egyre álmosabb",
+                "description": "Egy ismert asztmás férfi tízszer használta az inhalátorát Willowfield egyik kövezett terén. A sípoló légzés elhalkult, kimerült és álmosodik. Barátai pánikba estek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 176,
-            "pos": [2274, -2082, 13.55],
+            "pos": [
+                2274,
+                -2082,
+                13.55
+            ],
             "rot": 19,
             "anim": "sit",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 78, "heartRate": 132, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "heartRate": 132,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

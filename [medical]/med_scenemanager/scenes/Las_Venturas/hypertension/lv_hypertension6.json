@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2299, 986, 10.82],
+    "center": [
+        2299,
+        986,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, shaking",
                 "description": "A woman is shaking with palpitations and a pounding headache. She took several diet pills before going for a run in the park."
+            },
+            "hu": {
+                "title": "Szívdobogás, remegés",
+                "description": "Egy nő remeg, heves szívdobogást és erős fejfájást tapasztal. Mielőtt elindult volna futni a parkba, több fogyókúrás tablettát is bevett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [2299, 986, 10.82],
+            "pos": [
+                2299,
+                986,
+                10.82
+            ],
             "rot": 126,
             "anim": "crouch",
             "injuries": [],

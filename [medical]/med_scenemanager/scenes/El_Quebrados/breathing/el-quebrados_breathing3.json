@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1418.87, 2623.46, 55.84],
+    "center": [
+        -1418.87,
+        2623.46,
+        55.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old smoker cannot catch breath",
                 "description": "An old smoker outside a house in El Quebrados had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen."
+            },
+            "hu": {
+                "title": "Idős dohányos nem kap levegőt",
+                "description": "Egy idős dohányosnak le kellett ülnie egy El Quebrados-i ház előtt, mert nem kap levegőt. Csücsörített ajkakkal lélegzik, és duzzadt a bokája."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [-1418.87, 2623.46, 55.84],
+            "pos": [
+                -1418.87,
+                2623.46,
+                55.84
+            ],
             "rot": 116,
             "anim": "sit",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                {
+                    "type": "copd",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 83 }
+            "state": {
+                "spo2": 83
+            }
         }
     ]
 }

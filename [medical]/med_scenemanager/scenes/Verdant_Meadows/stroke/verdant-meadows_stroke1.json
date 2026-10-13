@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [155.98, 2550.18, 16.47],
+    "center": [
+        155.98,
+        2550.18,
+        16.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found on the ground, cannot speak",
                 "description": "A dog walker found an elderly woman lying by the dusty roadside in Verdant Meadows. She is awake and looks at people but cannot speak, and her right side is limp."
+            },
+            "hu": {
+                "title": "A földön találták, nem tud beszélni",
+                "description": "Verdant Meadows poros útpadkáján egy kutyasétáltató egy idős nőt talált a földön fekve. Ébren van és ránéz az emberekre, de nem tud beszélni; jobb oldala ernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [155.98, 2550.18, 16.47],
+            "pos": [
+                155.98,
+                2550.18,
+                16.47
+            ],
             "rot": 327,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 200, "consciousness": "dazed" }
+            "state": {
+                "systolic": 200,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [625.27, -647.8, 18.4],
+    "center": [
+        625.27,
+        -647.8,
+        18.4
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Party pill, overheating",
                 "description": "A young man next to the country road in Dillimore took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying."
+            },
+            "hu": {
+                "title": "Bulitabletta, túlmelegedés",
+                "description": "Egy fiatal férfi egy Dillimore közelében lévő országút mellett bevett egy tablettát egy buliban, most pedig remeg, izzad, és összeszorítja az állkapcsát. A szíve hevesen ver, és azt mondja, hogy meg fog halni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [625.27, -647.8, 18.4],
+            "pos": [
+                625.27,
+                -647.8,
+                18.4
+            ],
             "rot": 202,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 171, "heartRate": 154 }
+            "state": {
+                "systolic": 171,
+                "heartRate": 154
+            }
         }
     ]
 }

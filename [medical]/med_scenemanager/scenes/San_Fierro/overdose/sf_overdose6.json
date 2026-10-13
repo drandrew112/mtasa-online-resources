@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1741.62, 1198.13, 25.12],
+    "center": [
+        -1741.62,
+        1198.13,
+        25.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Party pill, overheating",
                 "description": "A young man in front of an apartment block in Financial took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying."
+            },
+            "hu": {
+                "title": "Buliban bevett tabletta, túlmelegedés",
+                "description": "Financial egyik lakóháza előtt egy fiatal férfi bevett egy tablettát egy buliban, most remeg, izzad, és összeszorítja az állkapcsát. Hevesen ver a szíve, és azt mondja, meghal."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 107,
-            "pos": [-1741.62, 1198.13, 25.12],
+            "pos": [
+                -1741.62,
+                1198.13,
+                25.12
+            ],
             "rot": 176,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 162, "heartRate": 155 }
+            "state": {
+                "systolic": 162,
+                "heartRate": 155
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Lil' Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [-90, 1410, 9.47],
+    "center": [
+        -90,
+        1410,
+        9.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sweaty and confused",
                 "description": "A woman on the dusty ground at the Lil' Probe Inn is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            },
+            "hu": {
+                "title": "Izzadt és zavart",
+                "description": "Egy nő a Lil' Probe Inn poros talaján erősen izzad és zavartnak tűnik. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenül kezdett beszélni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [-90, 1410, 9.47],
+            "pos": [
+                -90,
+                1410,
+                9.47
+            ],
             "rot": 51,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 49, "consciousness": "confused" }
+            "state": {
+                "glucose": 49,
+                "consciousness": "confused"
+            }
         }
     ]
 }

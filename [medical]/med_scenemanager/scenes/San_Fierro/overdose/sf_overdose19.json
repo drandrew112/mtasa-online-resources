@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2519.62, 738.25, 29.69],
+    "center": [
+        -2519.62,
+        738.25,
+        29.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen drank too much",
                 "description": "A teenager outside a corner shop in Juniper Hill keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+            },
+            "hu": {
+                "title": "Túl sokat ivott egy tinédzser",
+                "description": "Juniper Hill egyik kisboltja előtt egy tinédzser újra és újra hány, miután életében először vodkát ivott a barátaival. Sápadt, álmos, és egyedül nem tud felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [-2519.62, 738.25, 29.69],
+            "pos": [
+                -2519.62,
+                738.25,
+                29.69
+            ],
             "rot": 88,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [387.83, -406.47, 25.61],
+    "center": [
+        387.83,
+        -406.47,
+        25.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Barely breathing, blue lips",
                 "description": "A man is lying next to the country road near Blueberry with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived."
+            },
+            "hu": {
+                "title": "Alig lélegzik, kék ajkak",
+                "description": "Egy férfi az országút mellett fekszik Blueberry közelében, kék ajkakkal; csak időnként vesz levegőt. Mellette egy fecskendő hever. A barátja elmenekült, amikor a bejelentő odaért."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [387.83, -406.47, 25.61],
+            "pos": [
+                387.83,
+                -406.47,
+                25.61
+            ],
             "rot": 18,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 73, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 73,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2824.375, 1247.6, 5.602],
+    "center": [
+        -2824.375,
+        1247.6,
+        5.602
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Tired, chest feels heavy",
                 "description": "A fisherman on his way home sat down on the sidewalk, short of breath and heavy in the chest. He smells of fish, is very polite and insists he can walk."
+            },
+            "hu": {
+                "title": "Fáradt, nyom a mellkasa",
+                "description": "Egy hazafelé tartó halász leült a járdára; légszomja van, és nehéznek érzi a mellkasát. Halszagú, nagyon udvarias, és ragaszkodik hozzá, hogy tud járni."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [-2824.375, 1247.6, 5.602],
+            "pos": [
+                -2824.375,
+                1247.6,
+                5.602
+            ],
             "rot": 345,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1150.4, -915.27, 42.83],
+    "center": [
+        1150.4,
+        -915.27,
+        42.83
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak, thirsty, stomach pain",
                 "description": "A woman at a bus stop in Temple says she feels too weak to walk, has a terrible thirst and stomach pain. She admits skipping insulin because she could not afford it. She is pale and breathing heavily."
+            },
+            "hu": {
+                "title": "Gyengeség, szomjúság, hasi fájdalom",
+                "description": "Egy nő Temple egyik buszmegállójában azt mondja, túl gyenge a járáshoz, borzasztóan szomjas, és fáj a hasa. Bevallja, hogy anyagi okokból kihagyta az inzulint. Sápadt, és nehezen lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 55,
-            "pos": [1150.4, -915.27, 42.83],
+            "pos": [
+                1150.4,
+                -915.27,
+                42.83
+            ],
             "rot": 24,
             "anim": "tired",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "glucose": 430, "heartRate": 112 }
+            "state": {
+                "bloodVolume": 4200,
+                "glucose": 430,
+                "heartRate": 112
+            }
         }
     ]
 }

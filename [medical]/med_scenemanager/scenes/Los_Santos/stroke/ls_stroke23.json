@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1860.38, -2174, 13.55],
+    "center": [
+        1860.38,
+        -2174,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger lost vision, one side numb",
                 "description": "A jogger on the pavement in El Corona stopped and sat down, saying she cannot see on the left side and her left hand is numb. She is speaking clearly but is scared. Symptoms began about fifteen minutes ago."
+            },
+            "hu": {
+                "title": "A kocogó elvesztette látását, egyik oldala zsibbad",
+                "description": "Egy kocogó megállt és leült El Corona járdáján; azt mondja, nem lát a bal oldalán, és elzsibbadt a bal keze. Tisztán beszél, de fél. A tünetek körülbelül tizenöt perce kezdődtek."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 90,
-            "pos": [1860.38, -2174, 13.55],
+            "pos": [
+                1860.38,
+                -2174,
+                13.55
+            ],
             "rot": 2,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2146.65, 1224.17, 47.98],
+    "center": [
+        -2146.65,
+        1224.17,
+        47.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a wall",
                 "description": "A young man climbing a high wall next to the road in Calton Heights fell head first. He is lying face down, groaning, with blood coming from his nose."
+            },
+            "hu": {
+                "title": "Leesett egy falról",
+                "description": "Calton Heights útja mellett egy magas falra mászó fiatal férfi fejjel előre lezuhant. Hason fekszik, nyög, és vér folyik az orrából."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [-2146.65, 1224.17, 47.98],
+            "pos": [
+                -2146.65,
+                1224.17,
+                47.98
+            ],
             "rot": 186,
             "anim": "ko_front",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

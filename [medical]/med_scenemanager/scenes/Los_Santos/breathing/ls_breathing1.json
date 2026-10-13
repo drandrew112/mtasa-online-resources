@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2054, -1202, 23.747],
+    "center": [
+        2054,
+        -1202,
+        23.747
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager cannot breathe",
                 "description": "A teenager at the Glen Park basketball court cannot catch his breath, wheezing loudly. His inhaler is empty. He can only say a few words at a time."
+            },
+            "hu": {
+                "title": "A tinédzser nem kap levegőt",
+                "description": "Egy tinédzser nem kap levegőt a Glen Park kosárlabdapályáján, hangosan sípolva lélegzik. Az inhalátora üres. Egyszerre csak néhány szót tud kimondani."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [2060, -1198, 23.947],
+            "pos": [
+                2060,
+                -1198,
+                23.947
+            ],
             "rot": 160,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

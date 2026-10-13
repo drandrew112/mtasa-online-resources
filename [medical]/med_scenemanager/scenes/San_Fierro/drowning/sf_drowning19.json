@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2080.54, 1313.34, 7.19],
+    "center": [
+        -2080.54,
+        1313.34,
+        7.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell into the bay",
                 "description": "A drunk man fell into the water and was pulled out by friends. He is now on the sidewalk by the waterfront in Calton Heights, coughing up water and shivering."
+            },
+            "hu": {
+                "title": "Részeg férfi esett az öbölbe",
+                "description": "Egy részeg férfi a vízbe esett, a barátai húzták ki. Most Calton Heights vízparti járdáján van, vizet köhög fel és reszket."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 120,
-            "pos": [-2080.54, 1313.34, 7.19],
+            "pos": [
+                -2080.54,
+                1313.34,
+                7.19
+            ],
             "rot": 336,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "alcohol", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

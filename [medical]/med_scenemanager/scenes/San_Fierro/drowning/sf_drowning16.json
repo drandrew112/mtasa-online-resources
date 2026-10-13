@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2271.63, 1344.4, 7.18],
+    "center": [
+        -2271.63,
+        1344.4,
+        7.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Went in after her dog",
                 "description": "A dog walker went into the water after her dog and was pulled under by a wave. She is now on the waterfront promenade in Juniper Hollow, coughing and cold. The dog is fine."
+            },
+            "hu": {
+                "title": "A kutyája után ment a vízbe",
+                "description": "Egy kutyasétáltató a vízbe ment a kutyája után, de egy hullám a víz alá sodorta. Most Juniper Hollow vízparti sétányán van, köhög és fázik. A kutyának nincs baja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 141,
-            "pos": [-2271.63, 1344.4, 7.18],
+            "pos": [
+                -2271.63,
+                1344.4,
+                7.18
+            ],
             "rot": 140,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90 }
+            "state": {
+                "spo2": 90
+            }
         }
     ]
 }

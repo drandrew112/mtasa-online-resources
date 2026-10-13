@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1209.43, 1026.77, 7.2],
+    "center": [
+        1209.43,
+        1026.77,
+        7.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Taxi and van collision",
                 "description": "A taxi ran a red light in the middle of Blackfield Intersection and was hit by a van. The taxi driver and two passengers are injured, one of them is unconscious."
+            },
+            "hu": {
+                "title": "Taxi és furgon ütközése",
+                "description": "Egy taxi áthajtott a piroson a Blackfield Intersection közepén, és egy furgon elütötte. A taxisofőr és két utasa megsérült, egyikük eszméletlen."
             }
         },
         "caller": "SceneManager",
@@ -22,76 +30,202 @@
         {
             "id": "v1",
             "model": 482,
-            "pos": [1208.99, 1033.25, 6.95],
-            "rot": [0, 0, 199.3],
+            "pos": [
+                1208.99,
+                1033.25,
+                6.95
+            ],
+            "rot": [
+                0,
+                0,
+                199.3
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [60, 30, 90, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                60,
+                30,
+                90,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV85 355",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 420,
-            "pos": [1208.34, 1024.61, 6.95],
-            "rot": [0, 0, 320.9],
+            "pos": [
+                1208.34,
+                1024.61,
+                6.95
+            ],
+            "rot": [
+                0,
+                0,
+                320.9
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                220,
+                190,
+                30,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV26 356",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 221,
-            "pos": [1209.94, 1027.69, 7.2],
+            "pos": [
+                1209.94,
+                1027.69,
+                7.2
+            ],
             "rot": 319,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         },
         {
             "id": "p2",
             "skin": 145,
-            "pos": [1211.39, 1027.17, 7.2],
+            "pos": [
+                1211.39,
+                1027.17,
+                7.2
+            ],
             "rot": 98,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 44 }
+            "state": {
+                "pain": 44
+            }
         },
         {
             "id": "p3",
             "skin": 18,
-            "pos": [1205.76, 1026.89, 7.2],
+            "pos": [
+                1205.76,
+                1026.89,
+                7.2
+            ],
             "rot": 54,
             "anim": "hold_side",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

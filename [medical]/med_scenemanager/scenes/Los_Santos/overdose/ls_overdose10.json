@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1094.93, -1110.45, 24.66],
+    "center": [
+        1094.93,
+        -1110.45,
+        24.66
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Took a handful of pills",
                 "description": "A woman told her friend at the side of the road in Temple that she swallowed a whole bottle of sleeping pills an hour ago. She is getting harder and harder to wake. The empty bottle is with her."
+            },
+            "hu": {
+                "title": "Egy marék tablettát vett be",
+                "description": "Egy nő az út mellett Temple területén azt mondta a barátjának, hogy egy órája bevett egy egész üveg altatót. Egyre nehezebb felébreszteni. Az üres gyógyszeres üveg mellette van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [1094.93, -1110.45, 24.66],
+            "pos": [
+                1094.93,
+                -1110.45,
+                24.66
+            ],
             "rot": 8,
             "anim": "ko_back",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

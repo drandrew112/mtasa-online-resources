@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-740, 1570, 26.96],
+    "center": [
+        -740,
+        1570,
+        26.96
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed, high BP",
                 "description": "A woman on the dusty ground in Las Barrancas has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high."
+            },
+            "hu": {
+                "title": "Orrvérzés, magas vérnyomás",
+                "description": "Egy nőnek nem akar elállni az orrvérzése Las Barrancas poros földjén, és szédül. Egy szomszéd otthoni vérnyomásmérővel megmérte a vérnyomását, amely nagyon magas értéket mutatott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [-740, 1570, 26.96],
+            "pos": [
+                -740,
+                1570,
+                26.96
+            ],
             "rot": 36,
             "anim": "sit",
             "injuries": [],

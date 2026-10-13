@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-213.035, 2519.077, 27.87],
+    "center": [
+        -213.035,
+        2519.077,
+        27.87
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe chest pain",
                 "description": "A rock climber came down from the canyon and collapsed by the road with severe chest pain and a numb arm."
+            },
+            "hu": {
+                "title": "Erős mellkasi fájdalom",
+                "description": "Egy sziklamászó lejött a kanyonból, majd az út mellett összeesett. Erős mellkasi fájdalma van, és zsibbad a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [-213.035, 2519.077, 27.87],
+            "pos": [
+                -213.035,
+                2519.077,
+                27.87
+            ],
             "rot": 277,
             "anim": "hold_side",
             "injuries": [],

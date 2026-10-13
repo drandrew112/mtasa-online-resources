@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2857.76, -918.89, 9.49],
+    "center": [
+        -2857.76,
+        -918.89,
+        9.49
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dived into shallow water",
                 "description": "A young man dived off the sea wall into shallow water and hit it badly. Friends dragged him out and he is now lying on the seafront road in San Fierro, dazed and gasping."
+            },
+            "hu": {
+                "title": "Sekély vízbe ugrott fejest",
+                "description": "Egy fiatal férfi a tengerfalról sekély vízbe ugrott, és nagy erővel csapódott bele. Barátai kihúzták; most San Fierro tengerparti útján fekszik, kábult és kapkodja a levegőt."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-2857.76, -918.89, 9.49],
+            "pos": [
+                -2857.76,
+                -918.89,
+                9.49
+            ],
             "rot": 66,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 81, "consciousness": "dazed" }
+            "state": {
+                "spo2": 81,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

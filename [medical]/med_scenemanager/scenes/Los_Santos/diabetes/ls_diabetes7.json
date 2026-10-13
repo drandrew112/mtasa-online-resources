@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1614.38, -2312.25, 13.55],
+    "center": [
+        1614.38,
+        -2312.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Diabetic woman, vomiting for hours",
                 "description": "A diabetic woman outside a shop at Los Santos International has been vomiting for six hours and cannot keep anything down, so she stopped her insulin. She is shaky, weak and her lips are dry."
+            },
+            "hu": {
+                "title": "Cukorbeteg nő, órák óta hány",
+                "description": "Egy cukorbeteg nő a Los Santos International egyik üzlete előtt hat órája hány, és semmit sem tud megtartani, ezért abbahagyta az inzulint. Remeg, gyenge, ajkai szárazak."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [1614.38, -2312.25, 13.55],
+            "pos": [
+                1614.38,
+                -2312.25,
+                13.55
+            ],
             "rot": 299,
             "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4100, "glucose": 380, "heartRate": 116 }
+            "state": {
+                "bloodVolume": 4100,
+                "glucose": 380,
+                "heartRate": 116
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-220, 2590, 62.6],
+    "center": [
+        -220,
+        2590,
+        62.6
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Insulin pump failed",
                 "description": "A woman on the dusty ground in Las Payasadas says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            },
+            "hu": {
+                "title": "Elromlott az inzulinpumpa",
+                "description": "Egy nő Las Payasadas poros földjén azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 11,
-            "pos": [-220, 2590, 62.6],
+            "pos": [
+                -220,
+                2590,
+                62.6
+            ],
             "rot": 88,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 464 }
+            "state": {
+                "glucose": 464
+            }
         }
     ]
 }

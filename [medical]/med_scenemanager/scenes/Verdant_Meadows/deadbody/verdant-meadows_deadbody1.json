@@ -5,7 +5,11 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [278.47, 2552.88, 16.82],
+    "center": [
+        278.47,
+        2552.88,
+        16.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drifter not waking",
                 "description": "A store clerk opening up on the sidewalk in Verdant Meadows found a drifter lying under a blanket, cold and stiff. He does not respond at all."
+            },
+            "hu": {
+                "title": "Nem ébredő vándor",
+                "description": "Verdant Meadows egyik kisboltjában a nyitáskor az alkalmazott egy takaró alatt fekvő vándort talált. Hideg és merev, egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 78,
-            "pos": [278.47, 2552.88, 16.82],
+            "pos": [
+                278.47,
+                2552.88,
+                16.82
+            ],
             "rot": 327,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

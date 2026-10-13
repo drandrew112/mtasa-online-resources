@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1189, -1450.75, 13.55],
+    "center": [
+        1189,
+        -1450.75,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Skateboarder hit head",
                 "description": "A skateboarder fell at a bus stop in Market without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a painful wrist."
+            },
+            "hu": {
+                "title": "Fejét ütötte a gördeszkás",
+                "description": "Egy bukósisak nélküli gördeszkás elesett Market egyik buszmegállójánál, és beütötte a tarkóját. Néhány másodpercre elvesztette az eszméletét; most folyton azt kérdezi, mi történt, és fáj a csuklója."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 154,
-            "pos": [1189, -1450.75, 13.55],
+            "pos": [
+                1189,
+                -1450.75,
+                13.55
+            ],
             "rot": 271,
             "anim": "sit",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "confused" }
+            "state": {
+                "consciousness": "confused"
+            }
         }
     ]
 }

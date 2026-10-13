@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1650.24, 2498.52, 86.16],
+    "center": [
+        -1650.24,
+        2498.52,
+        86.16
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed, high BP",
                 "description": "A woman on the road shoulder near El Quebrados has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high."
+            },
+            "hu": {
+                "title": "Orrvérzés, magas vérnyomás",
+                "description": "Egy nőnek nem akar elállni az orrvérzése az útpadkán El Quebrados közelében, és szédül. Egy szomszéd otthoni vérnyomásmérővel megmérte a vérnyomását, amely nagyon magas értéket mutatott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-1650.24, 2498.52, 86.16],
+            "pos": [
+                -1650.24,
+                2498.52,
+                86.16
+            ],
             "rot": 251,
             "anim": "sit",
             "injuries": [],

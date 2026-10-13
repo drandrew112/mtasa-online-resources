@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1534, -2342, 13.55],
+    "center": [
+        1534,
+        -2342,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Passenger fell on the airstairs",
                 "description": "A woman missed a step getting off a small plane at Los Santos International and fell down the airstairs. She has a painful, swollen ankle and a cut on her forehead."
+            },
+            "hu": {
+                "title": "Utas leesett a repülőgép lépcsőjén",
+                "description": "Egy nő elvétett egy lépcsőfokot, amikor leszállt egy kis repülőgépről a Los Santos International területén, és lezuhant a repülőlépcsőn. Bokaízülete fájdalmasan megduzzadt, homlokán vágott seb van."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 150,
-            "pos": [1534, -2342, 13.55],
+            "pos": [
+                1534,
+                -2342,
+                13.55
+            ],
             "rot": 181,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

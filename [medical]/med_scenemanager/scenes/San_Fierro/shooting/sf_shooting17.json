@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1888.24, 1239.2, 31.64],
+    "center": [
+        -1888.24,
+        1239.2,
+        31.64
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shotgun wound to the side",
                 "description": "A man was hit by a shotgun blast on a steep street in Downtown. He is holding his side, breathing fast and his shirt is soaked with blood."
+            },
+            "hu": {
+                "title": "Sörétes puskával meglőtték az oldalán",
+                "description": "Downtown egyik meredek utcáján egy férfit sörétes lövés talált el az oldalán. Az oldalát fogja, gyorsan lélegzik, és az inge csurom véres."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 250,
-            "pos": [-1888.24, 1239.2, 31.64],
+            "pos": [
+                -1888.24,
+                1239.2,
+                31.64
+            ],
             "rot": 265,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4249, "spo2": 89 }
+            "state": {
+                "bloodVolume": 4249,
+                "spo2": 89
+            }
         }
     ]
 }

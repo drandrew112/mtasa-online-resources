@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1608.16, 335.03, 20.89],
+    "center": [
+        1608.16,
+        335.03,
+        20.89
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Light-headed after hard work",
                 "description": "A farmhand at the side of the road near Montgomery felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal."
+            },
+            "hu": {
+                "title": "Szédülés nehéz munka után",
+                "description": "Egy mezőgazdasági munkás Montgomery közelében, az út mellett egész délelőtt takarmányt hordott, majd megszédült és leült az árnyékba. Vérnyomása jóval a normál érték felett van."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 177,
-            "pos": [1608.16, 335.03, 20.89],
+            "pos": [
+                1608.16,
+                335.03,
+                20.89
+            ],
             "rot": 157,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 166, "diastolic": 104, "heartRate": 89, "consciousness": "stable" }
+            "state": {
+                "systolic": 166,
+                "diastolic": 104,
+                "heartRate": 89,
+                "consciousness": "stable"
+            }
         }
     ]
 }

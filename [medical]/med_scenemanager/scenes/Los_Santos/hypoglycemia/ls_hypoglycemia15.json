@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1154, -2362, 12.18],
+    "center": [
+        1154,
+        -2362,
+        12.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fainted after workout",
                 "description": "A woman fainted in the park in Verdant Bluffs after an outdoor workout, came round, but is very pale and keeps repeating the same question. She uses insulin."
+            },
+            "hu": {
+                "title": "Edzés után elájult",
+                "description": "Egy nő elájult Verdant Bluffs parkjában egy szabadtéri edzés után. Magához tért, de nagyon sápadt, és folyton ugyanazt a kérdést ismétli. Inzulint használ."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [1154, -2362, 12.18],
+            "pos": [
+                1154,
+                -2362,
+                12.18
+            ],
             "rot": 128,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 34, "heartRate": 106, "consciousness": "dazed" }
+            "state": {
+                "glucose": 34,
+                "heartRate": 106,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

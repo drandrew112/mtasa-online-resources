@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [134, -1742, 6.543],
+    "center": [
+        134,
+        -1742,
+        6.543
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slurred speech, face drooping",
                 "description": "An old man feeding the pigeons in the Santa Maria park suddenly could not get his words out. His wife says the corner of his mouth is hanging and he dropped the bread bag. It started about ten minutes ago."
+            },
+            "hu": {
+                "title": "Elmosódott beszéd, féloldali arcgyengeség",
+                "description": "Egy idős férfi a Santa Maria parkban galambokat etetett, amikor hirtelen nem tudta kimondani a szavait. Felesége szerint lebiggyedt a szája sarka, és elejtette a kenyérzacskót. Körülbelül tíz perce kezdődött."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 94,
-            "pos": [134, -1742, 6.543],
+            "pos": [
+                134,
+                -1742,
+                6.543
+            ],
             "rot": 200,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-93.47, 2395.56, 16.75],
+    "center": [
+        -93.47,
+        2395.56,
+        16.75
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Could not wake him after a party",
                 "description": "Friends on the road shoulder in El Castillo del Diablo cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin."
+            },
+            "hu": {
+                "title": "Nem tudják felébreszteni a buli után",
+                "description": "Barátai nem tudnak felébreszteni egy férfit az útpadkán El Castillo del Diablo területén, miután az éjszakát a helyi bárban töltötte. Cukorbeteg, sok édes bourbont és kólát ivott, és nem adta be az inzulinját."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [-93.47, 2395.56, 16.75],
+            "pos": [
+                -93.47,
+                2395.56,
+                16.75
+            ],
             "rot": 321,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 662, "heartRate": 127, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 662,
+                "heartRate": 127,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

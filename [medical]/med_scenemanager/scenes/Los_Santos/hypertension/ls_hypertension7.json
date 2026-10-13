@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2034.355, -1023.193, 35.689],
+    "center": [
+        2034.355,
+        -1023.193,
+        35.689
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nosebleed, high BP",
                 "description": "A man has had a heavy nosebleed for half an hour and the tissues in his hands are soaked through. His wife checked his pressure on a home cuff and it read over two hundred."
+            },
+            "hu": {
+                "title": "Orrvérzés, magas vérnyomás",
+                "description": "Egy férfinak fél órája erősen vérzik az orra, a kezében lévő papír zsebkendők teljesen átáztak. Felesége otthoni vérnyomásmérővel ellenőrizte, és kétszáz feletti értéket látott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [2034.355, -1023.193, 35.689],
+            "pos": [
+                2034.355,
+                -1023.193,
+                35.689
+            ],
             "rot": 80,
             "anim": "crouch",
             "injuries": [],

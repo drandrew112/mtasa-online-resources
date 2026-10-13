@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2419.838, 1764.143, 10.813],
+    "center": [
+        2419.838,
+        1764.143,
+        10.813
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A man has a crushing pain in his chest and his heart is racing. He is clammy and says his blood pressure has been out of control for months."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, nagyon magas vérnyomás",
+                "description": "Egy férfi szétfeszítő mellkasi fájdalmat és heves szívdobogást tapasztal. Bőre nyirkos, és azt mondja, hónapok óta kezelhetetlen a vérnyomása."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [2419.838, 1764.143, 10.813],
+            "pos": [
+                2419.838,
+                1764.143,
+                10.813
+            ],
             "rot": 22.3,
             "anim": "crouch",
             "injuries": [],

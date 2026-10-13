@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-10.5, 1205.38, 19.36],
+    "center": [
+        -10.5,
+        1205.38,
+        19.36
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man not breathing, very cold",
                 "description": "A woman found a man lying on the main street in Fort Carson. He is cold, not breathing and his skin is grey and blotchy."
+            },
+            "hu": {
+                "title": "Nem lélegző, nagyon hideg férfi",
+                "description": "Egy nő egy férfit talált a Fort Carson főutcáján fekve. A teste hideg, nem lélegzik, a bőre szürke és foltos."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [-10.5, 1205.38, 19.36],
+            "pos": [
+                -10.5,
+                1205.38,
+                19.36
+            ],
             "rot": 212,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

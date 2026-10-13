@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [719.13, -1388, 13.68],
+    "center": [
+        719.13,
+        -1388,
+        13.68
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Thought to be drunk, smells sweet",
                 "description": "A bar owner in Vinewood called about a man staggering and slurring who \"is not drunk, he only had a soda\". His breath smells fruity and he keeps asking for water."
+            },
+            "hu": {
+                "title": "Részegnek hiszik, édeskés a lehelete",
+                "description": "Egy bár tulajdonosa Vinewoodból hívott, mert egy férfi tántorog és elmosódottan beszél, pedig „nem részeg, csak üdítőt ivott”. Lehelete gyümölcsös illatú, és folyton vizet kér."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [719.13, -1388, 13.68],
+            "pos": [
+                719.13,
+                -1388,
+                13.68
+            ],
             "rot": 73,
             "anim": "drunk",
             "injuries": [],
-            "state": { "bloodVolume": 4200, "glucose": 520, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 4200,
+                "glucose": 520,
+                "consciousness": "confused"
+            }
         }
     ]
 }

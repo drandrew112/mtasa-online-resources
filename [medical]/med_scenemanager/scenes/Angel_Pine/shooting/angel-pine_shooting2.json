@@ -5,7 +5,11 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [-1970.32, -2644.49, 59.31],
+    "center": [
+        -1970.32,
+        -2644.49,
+        59.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot during a bar fight",
                 "description": "A fight at the local bar spilled outside by the road at the edge of the woods near Angel Pine and ended with a gunshot. A man is sitting on the ground, shot in the shoulder."
+            },
+            "hu": {
+                "title": "Lövés egy bárverekedés során",
+                "description": "A helyi bárban kirobbant verekedés az út mellé, az erdő szélére sodródott Angel Pine közelében, és lövéssel végződött. Egy férfi a földön ül, vállán lőtt sebbel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [-1970.32, -2644.49, 59.31],
+            "pos": [
+                -1970.32,
+                -2644.49,
+                59.31
+            ],
             "rot": 9,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4228 }
+            "state": {
+                "bloodVolume": 4228
+            }
         }
     ]
 }

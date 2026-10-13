@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2662.83, 2161.35, 9.01],
+    "center": [
+        2662.83,
+        2161.35,
+        9.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Car ran off the road",
                 "description": "A green car left the road and hit the curb on the Old Venturas Strip. The driver is still behind the wheel with a crushed leg and heavy bleeding."
+            },
+            "hu": {
+                "title": "Letért az útról az autó",
+                "description": "Egy zöld autó letért az útról és nekicsapódott a járdaszegélynek az Old Venturas Stripen. A sofőr még mindig a volán mögött ül, lába összeroncsolódott, és erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -22,38 +30,101 @@
         {
             "id": "v1",
             "model": 477,
-            "pos": [2660.97, 2163.86, 9.819],
-            "rot": [-0.88, -2.55, 296.07],
+            "pos": [
+                2660.97,
+                2163.86,
+                9.819
+            ],
+            "rot": [
+                -0.88,
+                -2.55,
+                296.07
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                30,
+                110,
+                50,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV53 812",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 98,
-            "pos": [2660.97, 2163.86, 10.07],
+            "pos": [
+                2660.97,
+                2163.86,
+                10.07
+            ],
             "rot": 296.07,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3750,
+                "bleeding": 2,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

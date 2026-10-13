@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2348.5, 1392.4, 7.37],
+    "center": [
+        -2348.5,
+        1392.4,
+        7.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fisherman fell off the quay",
                 "description": "A fisherman slipped and fell into the cold water. Dock workers pulled him out with a rope and laid him on the quay in Esplanade North. He is coughing and very pale."
+            },
+            "hu": {
+                "title": "Halász esett a rakpartról a vízbe",
+                "description": "Egy halász megcsúszott, és a hideg vízbe esett. A kikötői dolgozók kötéllel kihúzták, majd Esplanade North rakpartjára fektették. Köhög, és nagyon sápadt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [-2348.5, 1392.4, 7.37],
+            "pos": [
+                -2348.5,
+                1392.4,
+                7.37
+            ],
             "rot": 210,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 83, "heartRate": 115 }
+            "state": {
+                "spo2": 83,
+                "heartRate": 115
+            }
         }
     ]
 }

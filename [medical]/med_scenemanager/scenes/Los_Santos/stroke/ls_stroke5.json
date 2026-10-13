@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2721.63, -2132.4, 11.09],
+    "center": [
+        2721.63,
+        -2132.4,
+        11.09
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, one side limp",
                 "description": "A passer-by found an elderly woman on the ground at a bus stop in Ocean Docks. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall."
+            },
+            "hu": {
+                "title": "Összeesett, egyik oldala ernyedt",
+                "description": "Egy járókelő egy idős nőt talált a földön Ocean Docks egyik buszmegállójában. Hangosan horkol, nem ébreszthető, és jobb karja, valamint lába ernyedten lóg, ha felemelik. Senki sem látta elesni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [2721.63, -2132.4, 11.09],
+            "pos": [
+                2721.63,
+                -2132.4,
+                11.09
+            ],
             "rot": 50,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 214, "diastolic": 120, "consciousness": "unconscious" }
+            "state": {
+                "systolic": 214,
+                "diastolic": 120,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

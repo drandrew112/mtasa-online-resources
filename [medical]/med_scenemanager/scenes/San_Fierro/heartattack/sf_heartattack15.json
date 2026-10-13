@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2653.625, 32.5, 4.336],
+    "center": [
+        -2653.625,
+        32.5,
+        4.336
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Passed out, fast pulse",
                 "description": "A young woman passed out on the sidewalk outside a café. Witnesses say she complained of \"fluttering\" first. She is breathing fast and shallow and will not wake up."
+            },
+            "hu": {
+                "title": "Elájult, szapora pulzus",
+                "description": "Egy fiatal nő elájult egy kávézó előtti járdán. A szemtanúk szerint előtte „heves szívdobogást” érzett. Gyorsan és felületesen lélegzik, nem ébreszthető."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 193,
-            "pos": [-2653.625, 32.5, 4.336],
+            "pos": [
+                -2653.625,
+                32.5,
+                4.336
+            ],
             "rot": 164,
             "anim": "ko_back",
             "injuries": [],

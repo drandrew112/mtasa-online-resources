@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1959, 1706, 10.82],
+    "center": [
+        1959,
+        1706,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unconscious after near drowning",
                 "description": "A young man was underwater for about two minutes before he was pulled out. He is lying at the water's edge near the Visage, breathing but not waking up."
+            },
+            "hu": {
+                "title": "Eszméletlen, majdnem vízbe fulladt",
+                "description": "Egy fiatal férfi körülbelül két percig volt a víz alatt, mielőtt kihúzták. A Visage közelében, a víz szélén fekszik; lélegzik, de nem ébred fel."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 175,
-            "pos": [1959, 1706, 10.82],
+            "pos": [
+                1959,
+                1706,
+                10.82
+            ],
             "rot": 276,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 79, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 79,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

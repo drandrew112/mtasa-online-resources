@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1373.37, 373.68, 19.73],
+    "center": [
+        1373.37,
+        373.68,
+        19.73
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Driver staring at nothing",
                 "description": "A driver stopped his car on the road shoulder in Montgomery and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat."
+            },
+            "hu": {
+                "title": "A sofőr maga elé mered",
+                "description": "Egy sofőr megállt az autójával Montgomery útpadkájánál, és maga elé mered. Izzad, és nem válaszol rendesen. Az anyósülésen egy inzulinadagoló toll van."
             }
         },
         "caller": "SceneManager",
@@ -22,35 +30,91 @@
         {
             "id": "v1",
             "model": 527,
-            "pos": [1373.37, 373.68, 19.48],
-            "rot": [0, 0, 65.3],
+            "pos": [
+                1373.37,
+                373.68,
+                19.48
+            ],
+            "rot": [
+                0,
+                0,
+                65.3
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                20,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC53 381",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 60,
-            "pos": [1373.37, 373.68, 19.73],
+            "pos": [
+                1373.37,
+                373.68,
+                19.73
+            ],
             "rot": 65,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [],
-            "state": { "glucose": 30, "consciousness": "confused" }
+            "state": {
+                "glucose": 30,
+                "consciousness": "confused"
+            }
         }
     ]
 }

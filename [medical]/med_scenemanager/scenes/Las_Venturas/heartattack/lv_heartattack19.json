@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1977.529, 1400.064, 9.258],
+    "center": [
+        1977.529,
+        1400.064,
+        9.258
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A loud man in a cowboy hat is leaning against a wall, red-faced with chest pain and a splitting headache. He admits to skipping his pills \"for the trip\"."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, nagyon magas vérnyomás",
+                "description": "Egy hangoskodó, cowboykalapos férfi kipirult arccal támaszkodik a falnak, mellkasi fájdalma és hasító fejfájása van. Bevallja, hogy az utazás kedvéért kihagyta a gyógyszereit."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [1977.529, 1400.064, 9.258],
+            "pos": [
+                1977.529,
+                1400.064,
+                9.258
+            ],
             "rot": 259,
             "anim": "lean",
             "injuries": [],

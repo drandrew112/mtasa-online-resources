@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1520.87, 2594, 55.84],
+    "center": [
+        -1520.87,
+        2594,
+        55.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker acting drunk",
                 "description": "Coworkers outside a house in El Quebrados say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+            },
+            "hu": {
+                "title": "Részegnek tűnő munkás",
+                "description": "Egy El Quebrados-i ház előtt dolgozó munkatársak szerint az egyik kollégájuk úgy viselkedik, mintha részeg lenne: izzad és elmosódottan beszél, pedig sosem iszik. Cukorbeteg, és ebéd közben is dolgozott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-1520.87, 2594, 55.84],
+            "pos": [
+                -1520.87,
+                2594,
+                55.84
+            ],
             "rot": 322,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 39 }
+            "state": {
+                "glucose": 39
+            }
         }
     ]
 }

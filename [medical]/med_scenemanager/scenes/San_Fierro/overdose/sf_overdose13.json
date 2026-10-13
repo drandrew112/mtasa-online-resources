@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2817.07, 858.78, 44.09],
+    "center": [
+        -2817.07,
+        858.78,
+        44.09
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drink may have been spiked",
                 "description": "A young woman on the sidewalk in Palisades says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute."
+            },
+            "hu": {
+                "title": "Lehet, hogy valamit kevertek az italába",
+                "description": "Palisades járdáján egy fiatal nő azt mondja, hogy valaki beletehetett valamit az italába egy bárban. Alig tud állni, elmosódottan beszél, és percről percre álmosabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [-2817.07, 858.78, 44.09],
+            "pos": [
+                -2817.07,
+                858.78,
+                44.09
+            ],
             "rot": 55,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

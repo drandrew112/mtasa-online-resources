@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1433, 2624, 11.2],
+    "center": [
+        1433,
+        2624,
+        11.2
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot lift her arm",
                 "description": "An elderly woman on the platform at Yellow Bell Station dropped her handbag and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            },
+            "hu": {
+                "title": "Nem tudja felemelni a karját",
+                "description": "Egy idős nő elejtette a kézitáskáját a Yellow Bell Station peronján, és már nem tudja felemelni a bal karját. Zavart, és újra meg újra ugyanazt kérdezi."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 197,
-            "pos": [1433, 2624, 11.2],
+            "pos": [
+                1433,
+                2624,
+                11.2
+            ],
             "rot": 109,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 175, "consciousness": "confused" }
+            "state": {
+                "systolic": 175,
+                "consciousness": "confused"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [111.69, 2283.9, 20.36],
+    "center": [
+        111.69,
+        2283.9,
+        20.36
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain after cocaine",
                 "description": "A man on the road shoulder in El Castillo del Diablo says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom kokain után",
+                "description": "Egy férfi az útpadkán El Castillo del Diablo területén azt mondja, szorít a mellkasa, és hevesen ver a szíve, miután kokaint szippantott fel. Izzad, és a bal oldalát fogja."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 217,
-            "pos": [111.69, 2283.9, 20.36],
+            "pos": [
+                111.69,
+                2283.9,
+                20.36
+            ],
             "rot": 303,
             "anim": "hold_side",
             "injuries": [
-                { "type": "stimulant", "severity": 2 }
+                {
+                    "type": "stimulant",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 197, "heartRate": 139 }
+            "state": {
+                "systolic": 197,
+                "heartRate": 139
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [670, 300, 20.23],
+    "center": [
+        670,
+        300,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Could not wake him after a party",
                 "description": "Friends on a grassy patch in Hampton Barns cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin."
+            },
+            "hu": {
+                "title": "Nem tudják felébreszteni a buli után",
+                "description": "Barátai nem tudnak felébreszteni egy férfit egy Hampton Barns-i füves területen, miután az éjszakát a helyi bárban töltötte. Cukorbeteg, sok édes bourbont és kólát ivott, és nem adta be az inzulinját."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [670, 300, 20.23],
+            "pos": [
+                670,
+                300,
+                20.23
+            ],
             "rot": 101,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 629, "heartRate": 124, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 629,
+                "heartRate": 124,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

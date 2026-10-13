@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1419.5, 2732.19, 63.93],
+    "center": [
+        -1419.5,
+        2732.19,
+        63.93
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Confused, very high pressure",
                 "description": "An old woman on the dusty ground in El Quebrados is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets."
+            },
+            "hu": {
+                "title": "Zavartság, nagyon magas vérnyomás",
+                "description": "Egy idős nő a poros földön El Quebradosban zavart, és újra meg újra ugyanazt ismételgeti. A lánya szerint évek óta magas a vérnyomása, és most kihagyta a gyógyszereit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-1419.5, 2732.19, 63.93],
+            "pos": [
+                -1419.5,
+                2732.19,
+                63.93
+            ],
             "rot": 67,
             "anim": "sit",
             "injuries": [],
-            "state": { "systolic": 228, "diastolic": 136, "heartRate": 84, "consciousness": "dazed" }
+            "state": {
+                "systolic": 228,
+                "diastolic": 136,
+                "heartRate": 84,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

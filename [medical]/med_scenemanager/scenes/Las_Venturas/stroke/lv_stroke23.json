@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2497.25, 2240.63, 10.82],
+    "center": [
+        2497.25,
+        2240.63,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, snoring breathing",
                 "description": "A man collapsed in front of a house in Roca Escalante and is lying on his back making loud snoring noises. Bystanders cannot wake him. He was holding his head just before he fell."
+            },
+            "hu": {
+                "title": "Összeesett, horkolva lélegzik",
+                "description": "Egy férfi összeesett egy ház előtt Roca Escalante területén, és a hátán fekszik, hangosan horkoló légzési hangokat adva. A járókelők nem tudják felébreszteni. Közvetlenül az esés előtt a fejét fogta."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 177,
-            "pos": [2497.25, 2240.63, 10.82],
+            "pos": [
+                2497.25,
+                2240.63,
+                10.82
+            ],
             "rot": 147,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 212, "diastolic": 117, "consciousness": "unconscious" }
+            "state": {
+                "systolic": 212,
+                "diastolic": 117,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

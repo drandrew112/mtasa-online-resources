@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2511.47, 49.12, 26.48],
+    "center": [
+        2511.47,
+        49.12,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman choked at lunch",
                 "description": "An elderly woman choked on a piece of chicken on the sidewalk in Palomino Creek. Her husband lowered her to the ground when she went limp."
+            },
+            "hu": {
+                "title": "Idős nő félrenyelt ebéd közben",
+                "description": "Egy idős nő félrenyelt egy darab csirkét Palomino Creek járdáján. A férje a földre fektette, amikor elernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [2511.47, 49.12, 26.48],
+            "pos": [
+                2511.47,
+                49.12,
+                26.48
+            ],
             "rot": 181,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 61, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 61,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

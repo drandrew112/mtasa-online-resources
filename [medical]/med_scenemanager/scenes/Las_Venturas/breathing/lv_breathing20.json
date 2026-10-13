@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1315.75, 844.91, 7.59],
+    "center": [
+        1315.75,
+        844.91,
+        7.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot breathe lying down",
                 "description": "A woman by the roadside at Blackfield Intersection says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly."
+            },
+            "hu": {
+                "title": "Fekve nem kap levegőt",
+                "description": "Egy nő a Blackfield Intersectionnél, az út mellett azt mondja, ülve kell lélegeznie, és előző éjjel arra ébredt, hogy levegő után kapkod. Most gyorsan lélegzik, és bugyborékoló hang hallatszik a légzéséből."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [1315.75, 844.91, 7.59],
+            "pos": [
+                1315.75,
+                844.91,
+                7.59
+            ],
             "rot": 219,
             "anim": "sit",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                {
+                    "type": "pulmonary_edema",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 87, "systolic": 203 }
+            "state": {
+                "spo2": 87,
+                "systolic": 203
+            }
         }
     ]
 }

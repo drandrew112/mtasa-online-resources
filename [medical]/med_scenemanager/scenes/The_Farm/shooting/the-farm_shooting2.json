@@ -5,7 +5,11 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [-1210, -1020, 128.27],
+    "center": [
+        -1210,
+        -1020,
+        128.27
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot during a bar fight",
                 "description": "A fight at the local bar spilled outside in a field near The Farm and ended with a gunshot. A man is sitting on the ground, shot in the shoulder."
+            },
+            "hu": {
+                "title": "Lövés egy bárverekedésben",
+                "description": "The Farm közelében egy mezőn lévő helyi bárban verekedés tört ki, amely az utcára terjedt, majd lövés dördült. Egy férfi a földön ül, vállon lőtték."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-1210, -1020, 128.27],
+            "pos": [
+                -1210,
+                -1020,
+                128.27
+            ],
             "rot": 93,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4195 }
+            "state": {
+                "bloodVolume": 4195
+            }
         }
     ]
 }

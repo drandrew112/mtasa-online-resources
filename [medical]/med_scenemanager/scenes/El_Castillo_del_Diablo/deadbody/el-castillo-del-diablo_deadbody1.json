@@ -5,7 +5,11 @@
     "location": "Restricted Area",
     "enabled": true,
     "weight": 1,
-    "center": [-7.19, 2103.33, 17.57],
+    "center": [
+        -7.19,
+        2103.33,
+        17.57
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drifter not waking",
                 "description": "A store clerk opening up by the dusty roadside near El Castillo del Diablo found a drifter lying under a blanket, cold and stiff. He does not respond at all."
+            },
+            "hu": {
+                "title": "Nem ébredő vándor",
+                "description": "Egy bolti eladó a poros út mellett, El Castillo del Diablo közelében nyitáskor egy takaró alatt fekvő vándort talált. A teste hideg és merev, egyáltalán nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 137,
-            "pos": [-7.19, 2103.33, 17.57],
+            "pos": [
+                -7.19,
+                2103.33,
+                17.57
+            ],
             "rot": 82,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

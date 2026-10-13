@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1783.62, 721.63, 34.89],
+    "center": [
+        -1783.62,
+        721.63,
+        34.89
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Young woman, sudden weakness",
                 "description": "A young woman in front of an apartment block in Downtown says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes."
+            },
+            "hu": {
+                "title": "Fiatal nőnél hirtelen gyengeség",
+                "description": "Downtown egyik lakóháza előtt egy fiatal nő azt mondja, hogy a jobb karja és lába hirtelen elgyengült és elnehezült. Fél, a szavai lassan jönnek. Fogamzásgátló tablettát szed és dohányzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 93,
-            "pos": [-1783.62, 721.63, 34.89],
+            "pos": [
+                -1783.62,
+                721.63,
+                34.89
+            ],
             "rot": 351,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

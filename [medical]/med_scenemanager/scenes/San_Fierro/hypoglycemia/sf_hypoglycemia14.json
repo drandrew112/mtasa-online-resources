@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2387, -165, 35.31],
+    "center": [
+        -2387,
+        -165,
+        35.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and pale",
                 "description": "A jogger on the grass in Garcia sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            },
+            "hu": {
+                "title": "Reszkető, sápadt kocogó",
+                "description": "Garcia füves területén egy kocogó nő hirtelen leült; reszket, izzad és sápadt. Azt mondja, reggel beadta az inzulinját, de kihagyta a reggelit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [-2387, -165, 35.31],
+            "pos": [
+                -2387,
+                -165,
+                35.31
+            ],
             "rot": 92,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 41, "heartRate": 114 }
+            "state": {
+                "glucose": 41,
+                "heartRate": 114
+            }
         }
     ]
 }

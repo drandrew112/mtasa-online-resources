@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2787, 455, 4.36],
+    "center": [
+        -2787,
+        455,
+        4.36
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Body found by night guard",
                 "description": "A night guard found a man lying in the park in Palisades. He has a head wound and has been there for hours. The guard did not touch him."
+            },
+            "hu": {
+                "title": "Éjjeliőr talált rá a holttestre",
+                "description": "Egy éjjeliőr egy férfit talált Palisades parkjában fekve. Fejsérülése van, és már órák óta ott feküdhet. Az őr nem nyúlt hozzá."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 240,
-            "pos": [-2787, 455, 4.36],
+            "pos": [
+                -2787,
+                455,
+                4.36
+            ],
             "rot": 274,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

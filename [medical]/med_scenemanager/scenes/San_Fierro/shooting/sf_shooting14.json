@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2447, 555, 23.31],
+    "center": [
+        -2447,
+        555,
+        23.31
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Bystander hit by stray bullet",
                 "description": "A woman walking in a parking lot in Queens was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking."
+            },
+            "hu": {
+                "title": "Elhaladó lövedék sebesített meg egy járókelőt",
+                "description": "Queens egyik parkolójában egy sétáló nőt vállon talált egy eltévedt lövedék, amikor a közelben verekedés tört ki. A ruháján át is vérzik, és reszket."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [-2447, 555, 23.31],
+            "pos": [
+                -2447,
+                555,
+                23.31
+            ],
             "rot": 177,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4489 }
+            "state": {
+                "bloodVolume": 4489
+            }
         }
     ]
 }

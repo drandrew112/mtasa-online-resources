@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2434.75, 1443.125, 10.82],
+    "center": [
+        2434.75,
+        1443.125,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe chest pain",
                 "description": "A limo driver parked, stepped out and is now lying on the sidewalk with severe chest pain. His very drunk passengers are trying to help."
+            },
+            "hu": {
+                "title": "Súlyos mellkasi fájdalom",
+                "description": "Egy limuzin sofőrje leparkolt, kiszállt, és most súlyos mellkasi fájdalommal fekszik a járdán. Erősen ittas utasai próbálnak segíteni rajta."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [2434.75, 1443.125, 10.82],
+            "pos": [
+                2434.75,
+                1443.125,
+                10.82
+            ],
             "rot": 289,
             "anim": "hold_side",
             "injuries": [],

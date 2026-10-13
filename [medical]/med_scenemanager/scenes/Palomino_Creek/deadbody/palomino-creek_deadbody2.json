@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [2140, 60, 26.58],
+    "center": [
+        2140,
+        60,
+        26.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Overdose, found too late",
                 "description": "Friends found a young woman on the grass just outside Palomino Creek after she did not come home. She is cold and stiff, a syringe is beside her."
+            },
+            "hu": {
+                "title": "Túladagolás, túl későn találták meg",
+                "description": "Barátai egy fiatal nőt találtak a füvön Palomino Creek mellett, miután nem ment haza. Hideg és merev, mellette egy fecskendő hever."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [2140, 60, 26.58],
+            "pos": [
+                2140,
+                60,
+                26.58
+            ],
             "rot": 158,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-197, 2670, 62.69],
+    "center": [
+        -197,
+        2670,
+        62.69
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shotgun wound to the side",
                 "description": "A man was hit by a shotgun blast on open scrubland in Las Payasadas. He is holding his side, breathing fast and his shirt is soaked with blood."
+            },
+            "hu": {
+                "title": "Sörétes lövés okozta oldalsérülés",
+                "description": "Egy férfit sörétes puskából leadott lövés talált el egy Las Payasadas-i nyílt, bozótos területen. Az oldalát fogja, gyorsan lélegzik, az inge pedig átázott a vértől."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-197, 2670, 62.69],
+            "pos": [
+                -197,
+                2670,
+                62.69
+            ],
             "rot": 298,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4241, "spo2": 89 }
+            "state": {
+                "bloodVolume": 4241,
+                "spo2": 89
+            }
         }
     ]
 }

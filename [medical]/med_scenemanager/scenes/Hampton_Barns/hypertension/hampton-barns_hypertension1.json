@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [748.07, 314.82, 20.23],
+    "center": [
+        748.07,
+        314.82,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slurred speech, numb arm",
                 "description": "A man on the road shoulder in Hampton Barns suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning."
+            },
+            "hu": {
+                "title": "Elmosódott beszéd, zsibbadt kar",
+                "description": "Egy férfi az útpadkán Hampton Barnsban hirtelen zsibbadást érzett az egyik karjában, és elmosódottá vált a beszéde. Már egész délelőtt fejfájásra panaszkodott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [748.07, 314.82, 20.23],
+            "pos": [
+                748.07,
+                314.82,
+                20.23
+            ],
             "rot": 14,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1479.5, -1725.25, 13.547],
+    "center": [
+        1479.5,
+        -1725.25,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "Caller reports a man in his sixties sitting on the pavement at Pershing Square, pale and drenched in sweat, pressing a fist to his chest. The pain started on his lunch walk and is spreading into his left arm and jaw. He keeps insisting it is just the burrito."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, izzadás",
+                "description": "A bejelentő egy hatvanas éveiben járó férfiról számol be a Pershing Square járdáján. Sápadt, csurom izzadság, öklét a mellkasához szorítja. A fájdalom az ebédszüneti sétája közben kezdődött, és a bal karjába, valamint az állkapcsába sugárzik. Folyton azt állítja, hogy csak a burrito az oka."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [1479.5, -1725.25, 13.547],
+            "pos": [
+                1479.5,
+                -1725.25,
+                13.547
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-1680, 2610, 79.8],
+    "center": [
+        -1680,
+        2610,
+        79.8
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shots fired, two down",
                 "description": "Several shots were fired on the dusty ground near El Quebrados. Two men are down: one is not moving, the other is rolling on the ground holding his leg."
+            },
+            "hu": {
+                "title": "Lövések dördültek, ketten a földre kerültek",
+                "description": "Több lövés dördült a poros földön El Quebrados közelében. Két férfi fekszik a földön: egyikük mozdulatlan, a másik a lábát fogva gurul."
             }
         },
         "caller": "SceneManager",
@@ -23,22 +31,38 @@
         {
             "id": "p1",
             "skin": 160,
-            "pos": [-1680, 2610, 79.8],
+            "pos": [
+                -1680,
+                2610,
+                79.8
+            ],
             "rot": 271,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3684 }
+            "state": {
+                "bloodVolume": 3684
+            }
         },
         {
             "id": "p2",
             "skin": 142,
-            "pos": [-1679.08, 2612, 79.9],
+            "pos": [
+                -1679.08,
+                2612,
+                79.9
+            ],
             "rot": 296,
             "anim": "injured",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

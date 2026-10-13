@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2471.38, 17.88, 26.48],
+    "center": [
+        2471.38,
+        17.88,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Grandmother tripped on the curb",
                 "description": "An elderly woman tripped on the curb outside a house in Palomino Creek and cannot get up. Her right leg looks shorter and turned outwards."
+            },
+            "hu": {
+                "title": "Nagymama megbotlott a járdaszegélyben",
+                "description": "Egy idős nő megbotlott egy ház előtt lévő járdaszegélyben Palomino Creekben, és nem tud felkelni. Jobb lába rövidebbnek látszik, kifelé fordul."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [2471.38, 17.88, 26.48],
+            "pos": [
+                2471.38,
+                17.88,
+                26.48
+            ],
             "rot": 99,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 37 }
+            "state": {
+                "pain": 37
+            }
         }
     ]
 }

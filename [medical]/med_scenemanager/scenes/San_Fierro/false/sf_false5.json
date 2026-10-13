@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2159.37, -748.87, 32.02],
+    "center": [
+        -2159.37,
+        -748.87,
+        32.02
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shots heard",
                 "description": "People nearby heard what sounded like gunshots at a busy crossroads in Foster Valley. Nobody saw anyone injured. It may have been fireworks."
+            },
+            "hu": {
+                "title": "Lövéseket hallottak",
+                "description": "A közelben tartózkodók lövésekhez hasonló hangokat hallottak Foster Valley forgalmas kereszteződésénél. Senki sem látott sérültet; lehet, hogy tűzijáték volt."
             }
         },
         "caller": "SceneManager",

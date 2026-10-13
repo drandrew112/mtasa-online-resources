@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2434, -1822, 13.547],
+    "center": [
+        2434,
+        -1822,
+        13.547
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pounding heart after workout",
                 "description": "A man doing an outdoor workout feels his heart pounding out of his chest and his head throbbing. His gym bag is full of pre-workout powder."
+            },
+            "hu": {
+                "title": "Edzés utáni heves szívdobogás",
+                "description": "Egy férfi szabadtéri edzés közben úgy érzi, kiugrik a szíve a mellkasából, és lüktet a feje. Az edzőtáskája tele van edzés előtti teljesítményfokozó porral."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [2434, -1822, 13.547],
+            "pos": [
+                2434,
+                -1822,
+                13.547
+            ],
             "rot": 0,
             "anim": "crouch",
             "injuries": [],

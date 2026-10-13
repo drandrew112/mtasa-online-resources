@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1173.96, -2404.02, 10.64],
+    "center": [
+        1173.96,
+        -2404.02,
+        10.64
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly swimmer collapsed",
                 "description": "An elderly woman went limp while swimming in the lake. She was under water for about a minute before being pulled out and brought up to the street in Verdant Bluffs. She has just started breathing again."
+            },
+            "hu": {
+                "title": "Úszás közben összeesett az idős nő",
+                "description": "Egy idős nő elernyedt, miközben a tóban úszott. Körülbelül egy percig volt víz alatt, mielőtt kihúzták és felvitték az utcára Verdant Bluffs területén. Épp most kezdett újra lélegezni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [1173.96, -2404.02, 10.64],
+            "pos": [
+                1173.96,
+                -2404.02,
+                10.64
+            ],
             "rot": 264,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 80, "consciousness": "dazed" }
+            "state": {
+                "spo2": 80,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

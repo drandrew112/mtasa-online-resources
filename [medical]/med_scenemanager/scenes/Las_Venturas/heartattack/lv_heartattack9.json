@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2589.75, 700.25, 10.82],
+    "center": [
+        2589.75,
+        700.25,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "Passers-by found a man in a loud shirt lying on the sidewalk, barely breathing and grey. His sunglasses are still on."
+            },
+            "hu": {
+                "title": "Eszméletlen, szürkés bőr",
+                "description": "Járókelők egy feltűnő mintás inget viselő férfit találtak a járdán. Alig lélegzik, bőre szürkés, és a napszemüvege még mindig rajta van."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 95,
-            "pos": [2589.75, 700.25, 10.82],
+            "pos": [
+                2589.75,
+                700.25,
+                10.82
+            ],
             "rot": 346,
             "anim": "ko_back",
             "injuries": [],

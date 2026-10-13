@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1859.26, 1587.48, 10.82],
+    "center": [
+        1859.26,
+        1587.48,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Child pulled from the water",
                 "description": "A father pulled his young daughter out of the water after she wandered off. She is lying by the water near Pirates in Men's Pants, confused and with blue lips."
+            },
+            "hu": {
+                "title": "Gyermeket húztak ki a vízből",
+                "description": "Egy apa kihúzta a vízből a kislányát, miután a gyermek elkóborolt. A Pirates in Men's Pants közelében, a víz mellett fekszik zavartan, elkékült ajkakkal."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 226,
-            "pos": [1859.26, 1587.48, 10.82],
+            "pos": [
+                1859.26,
+                1587.48,
+                10.82
+            ],
             "rot": 175,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 78, "consciousness": "dazed" }
+            "state": {
+                "spo2": 78,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

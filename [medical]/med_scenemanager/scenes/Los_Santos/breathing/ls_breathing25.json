@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [534, -1862, 4.32],
+    "center": [
+        534,
+        -1862,
+        4.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Lips blue, too breathless to talk",
                 "description": "A man with lung disease on the beach at Santa Maria Beach ran out of home oxygen while out for a walk. He is blue around the lips, using all his neck muscles to breathe and cannot talk."
+            },
+            "hu": {
+                "title": "Kék ajkak, túl nagy légszomj a beszédhez",
+                "description": "Egy tüdőbeteg férfinak elfogyott az otthoni oxigénje, miközben a Santa Maria Beach partján sétált. Ajkai körül elkékült, minden nyakizmát használja a légzéshez, és nem tud beszélni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [534, -1862, 4.32],
+            "pos": [
+                534,
+                -1862,
+                4.32
+            ],
             "rot": 132,
             "anim": "tired",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                {
+                    "type": "copd",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 74, "heartRate": 118 }
+            "state": {
+                "spo2": 74,
+                "heartRate": 118
+            }
         }
     ]
 }

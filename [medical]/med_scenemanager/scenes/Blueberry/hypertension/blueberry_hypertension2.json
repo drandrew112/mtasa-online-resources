@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [353.32, -387.06, 18.35],
+    "center": [
+        353.32,
+        -387.06,
+        18.35
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pounding headache, dizzy",
                 "description": "A farmer next to the country road near Blueberry sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week."
+            },
+            "hu": {
+                "title": "Lüktető fejfájás, szédülés",
+                "description": "Egy gazda leült az országút mellett, Blueberry közelében, mert lüktető fejfájása van, és úgy érzi, forog vele a világ. A vérnyomáscsökkentő gyógyszere a múlt héten elfogyott."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [353.32, -387.06, 18.35],
+            "pos": [
+                353.32,
+                -387.06,
+                18.35
+            ],
             "rot": 178,
             "anim": "sit",
             "injuries": [],

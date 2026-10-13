@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-76.42, 1247.79, 14.99],
+    "center": [
+        -76.42,
+        1247.79,
+        14.99
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hit and run, man not moving",
                 "description": "A car hit a man next to the country road near the Lil' Probe Inn and drove off without stopping. He is lying face down, not responding, with blood around his head."
+            },
+            "hu": {
+                "title": "Cserbenhagyás, a férfi nem mozdul",
+                "description": "Egy autó elütött egy férfit a Lil' Probe Inn közelében, az országút mellett, majd megállás nélkül elhajtott. A férfi arccal lefelé fekszik, nem reagál, a feje körül vér van."
             }
         },
         "caller": "SceneManager",
@@ -23,15 +31,31 @@
         {
             "id": "p1",
             "skin": 230,
-            "pos": [-76.42, 1247.79, 14.99],
+            "pos": [
+                -76.42,
+                1247.79,
+                14.99
+            ],
             "rot": 156,
             "anim": "ko_front",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3853, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3853,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

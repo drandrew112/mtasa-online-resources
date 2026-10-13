@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1738.68, 1510.47, 10.82],
+    "center": [
+        1738.68,
+        1510.47,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Talking nonsense",
                 "description": "Passers-by on the sidewalk at Las Venturas Airport called because a man in a suit is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk."
+            },
+            "hu": {
+                "title": "Összefüggéstelenül beszél",
+                "description": "Járókelők segítséget hívtak a Las Venturas Airport járdájáról, mert egy öltönyös férfi értelmetlenül beszél, és nem érti, amit mondanak neki. Egyre frusztráltabb, de még tud járni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [1738.68, 1510.47, 10.82],
+            "pos": [
+                1738.68,
+                1510.47,
+                10.82
+            ],
             "rot": 102,
             "anim": "none",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 187 }
+            "state": {
+                "systolic": 187
+            }
         }
     ]
 }

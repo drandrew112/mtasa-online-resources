@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [646.662, 318.287, 20.225],
+    "center": [
+        646.662,
+        318.287,
+        20.225
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nausea and weakness",
                 "description": "A farmer's wife sat down by the road with nausea, cold sweat and a strange pressure between her shoulders. She blames the heat."
+            },
+            "hu": {
+                "title": "Hányinger és gyengeség",
+                "description": "Egy gazda felesége leült az út mellé hányingerrel, hideg verejtékkel és furcsa, a lapockái közötti nyomásérzéssel. A hőséget okolja."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 211,
-            "pos": [646.662, 318.287, 20.225],
+            "pos": [
+                646.662,
+                318.287,
+                20.225
+            ],
             "rot": 26,
             "anim": "sit",
             "injuries": [],

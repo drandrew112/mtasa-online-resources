@@ -5,7 +5,11 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [-306.92, 1258.46, 23.92],
+    "center": [
+        -306.92,
+        1258.46,
+        23.92
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Farmer pulled from a stock tank",
                 "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him next to the country road near Fort Carson. He is coughing up water and confused."
+            },
+            "hu": {
+                "title": "A gazdát kihúzták az itatóvályúból",
+                "description": "Egy gazda fejjel előre beleesett a szarvasmarhák itatóvályújába. A szomszédja kihúzta, és az országút mellé vitte Fort Carson közelében. Vizet köhög fel, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [-306.92, 1258.46, 23.92],
+            "pos": [
+                -306.92,
+                1258.46,
+                23.92
+            ],
             "rot": 198,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 85, "consciousness": "confused" }
+            "state": {
+                "spo2": 85,
+                "consciousness": "confused"
+            }
         }
     ]
 }

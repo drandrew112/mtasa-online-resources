@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1591.55, -486.575, 6.318],
+    "center": [
+        -1591.55,
+        -486.575,
+        6.318
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed on the hill",
                 "description": "A man pushing a bike up one of the steep San Fierro streets stopped, coughed once and toppled onto the sidewalk. Not breathing. His bike rolled halfway down the block."
+            },
+            "hu": {
+                "title": "Összeesett a dombon",
+                "description": "Egy férfi kerékpárt tolt felfelé San Fierro egyik meredek utcáján, amikor megállt, köhintett, majd összeesett a járdán. Nem lélegzik. A biciklije fél háztömbnyit gurult lefelé."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 20,
-            "pos": [-1591.55, -486.575, 6.318],
+            "pos": [
+                -1591.55,
+                -486.575,
+                6.318
+            ],
             "rot": 150,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

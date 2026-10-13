@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2307.17, 293.44, 28.1],
+    "center": [
+        2307.17,
+        293.44,
+        28.1
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Short of breath, headache",
                 "description": "A trucker at the side of the road near Palomino Creek pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing."
+            },
+            "hu": {
+                "title": "Légszomj, fejfájás",
+                "description": "Egy kamionsofőr félreállt Palomino Creek közelében, az út mellett, mert lüktet a feje és légszomja van. Bokái meg vannak dagadva, és köhög."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2307.17, 293.44, 28.1],
+            "pos": [
+                2307.17,
+                293.44,
+                28.1
+            ],
             "rot": 127,
             "anim": "sit",
             "injuries": [],

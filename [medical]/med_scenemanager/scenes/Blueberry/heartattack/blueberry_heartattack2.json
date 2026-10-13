@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [174.011, -149.101, 1.578],
+    "center": [
+        174.011,
+        -149.101,
+        1.578
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Severe chest pain",
                 "description": "A farmer drove his tractor into town and now lies by the road with severe chest pain. The tractor is blocking half the street."
+            },
+            "hu": {
+                "title": "Erős mellkasi fájdalom",
+                "description": "Egy gazda traktorral behajtott a városba, most pedig súlyos mellkasi fájdalommal fekszik az út mellett. A traktor az utca felét elzárja."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [174.011, -149.101, 1.578],
+            "pos": [
+                174.011,
+                -149.101,
+                1.578
+            ],
             "rot": 353,
             "anim": "hold_side",
             "injuries": [],

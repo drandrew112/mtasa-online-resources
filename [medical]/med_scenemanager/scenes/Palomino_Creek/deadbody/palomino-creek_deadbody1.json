@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2439.25, 58.7, 27.56],
+    "center": [
+        2439.25,
+        58.7,
+        27.56
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found by a rancher",
                 "description": "A rancher checking his fences found a man lying on a grassy patch in Palomino Creek. He has a head wound and has been there for hours. The guard did not touch him."
+            },
+            "hu": {
+                "title": "Egy rancher talált rá",
+                "description": "Egy rancher a kerítését ellenőrizve egy férfit talált egy füves területen Palomino Creekben. Fejsérülése van, és már órák óta ott feküdhet. Az őr nem nyúlt hozzá."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [2439.25, 58.7, 27.56],
+            "pos": [
+                2439.25,
+                58.7,
+                27.56
+            ],
             "rot": 8,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2036.97, 1666.98, 10.82],
+    "center": [
+        2036.97,
+        1666.98,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Found floating in the water",
                 "description": "A street cleaner saw a man floating face down and pulled him out. He is lying by the water near Pirates in Men's Pants, not breathing. His skin is grey and cold."
+            },
+            "hu": {
+                "title": "A vízben lebegve találták",
+                "description": "Egy utcaseprő meglátott egy arccal lefelé lebegő férfit, és kihúzta a vízből. A Pirates in Men's Pants közelében, a víz mellett fekszik, nem lélegzik. A bőre szürke és hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 217,
-            "pos": [2036.97, 1666.98, 10.82],
+            "pos": [
+                2036.97,
+                1666.98,
+                10.82
+            ],
             "rot": 155,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 35, "rhythm": "asystole" }
+            "state": {
+                "spo2": 35,
+                "rhythm": "asystole"
+            }
         }
     ]
 }

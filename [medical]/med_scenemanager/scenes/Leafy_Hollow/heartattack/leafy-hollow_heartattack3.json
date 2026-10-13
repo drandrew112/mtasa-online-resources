@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-1080.86, -1642.394, 76.397],
+    "center": [
+        -1080.86,
+        -1642.394,
+        76.397
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Racing heart, dizzy",
                 "description": "A birdwatcher sat down by the road with her heart racing wildly. She is pale and dizzy, binoculars still around her neck."
+            },
+            "hu": {
+                "title": "Heves szívdobogás, szédülés",
+                "description": "Egy madármegfigyelő leült az út mellett, mert hevesen ver a szíve. Sápadt és szédül, a távcső még mindig a nyakában lóg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 89,
-            "pos": [-1080.86, -1642.394, 76.397],
+            "pos": [
+                -1080.86,
+                -1642.394,
+                76.397
+            ],
             "rot": 23,
             "anim": "sit",
             "injuries": [],

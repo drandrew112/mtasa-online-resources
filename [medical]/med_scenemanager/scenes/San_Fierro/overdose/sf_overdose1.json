@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2133.95, -760.78, 32.02],
+    "center": [
+        -2133.95,
+        -760.78,
+        32.02
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Barely breathing, blue lips",
                 "description": "A man is lying by the roadside in Foster Valley with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived."
+            },
+            "hu": {
+                "title": "Alig lélegzik, kékes az ajka",
+                "description": "Foster Valley útja mellett egy férfi fekszik, ajka kékes, és csak időnként vesz levegőt. Egy fecskendő hever mellette. Amikor a bejelentő odaért, a barátja elmenekült."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [-2133.95, -760.78, 32.02],
+            "pos": [
+                -2133.95,
+                -760.78,
+                32.02
+            ],
             "rot": 64,
             "anim": "ko_back",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 75, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 75,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

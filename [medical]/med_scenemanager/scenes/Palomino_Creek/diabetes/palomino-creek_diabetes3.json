@@ -5,7 +5,11 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [2286.75, -63.2, 26.48],
+    "center": [
+        2286.75,
+        -63.2,
+        26.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Could not wake him after a party",
                 "description": "Friends on the main street in Palomino Creek cannot wake a man after a night at the local bar. He is diabetic, drank a lot of sweet bourbon and cola and did not take his insulin."
+            },
+            "hu": {
+                "title": "Egy buli után nem tudták felébreszteni",
+                "description": "Barátai nem tudnak felébreszteni egy férfit Palomino Creek főutcáján, miután az éjszakát a helyi bárban töltötte. Cukorbeteg, sok édes bourbont és kólát ivott, és nem adta be az inzulint."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [2286.75, -63.2, 26.48],
+            "pos": [
+                2286.75,
+                -63.2,
+                26.48
+            ],
             "rot": 281,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 621, "heartRate": 125, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 621,
+                "heartRate": 125,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

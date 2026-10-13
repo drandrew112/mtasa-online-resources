@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1906, -1253.875, 13.559],
+    "center": [
+        1906,
+        -1253.875,
+        13.559
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager sick and confused",
                 "description": "A teenage girl on her way home from school sat down and started to throw up. Her friend says she has lost a lot of weight lately and drinks litres of soda. Now she seems a bit confused and her breath smells strange."
+            },
+            "hu": {
+                "title": "Beteg és zavart tinédzser",
+                "description": "Egy hazafelé tartó tinédzser lány leült, majd hányni kezdett. Barátja szerint mostanában sokat fogyott, és liternyi üdítőt iszik. Most kissé zavartnak tűnik, a lehelete pedig furcsa szagú."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [1906, -1253.875, 13.559],
+            "pos": [
+                1906,
+                -1253.875,
+                13.559
+            ],
             "rot": 60,
             "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4300, "glucose": 440 }
+            "state": {
+                "bloodVolume": 4300,
+                "glucose": 440
+            }
         }
     ]
 }

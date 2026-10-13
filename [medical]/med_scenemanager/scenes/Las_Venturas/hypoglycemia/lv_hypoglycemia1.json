@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1414.99, 869.52, 6.8],
+    "center": [
+        1414.99,
+        869.52,
+        6.8
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Driver staring at nothing",
                 "description": "A driver stopped his car next to the road at Blackfield Intersection and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat."
+            },
+            "hu": {
+                "title": "A sofőr maga elé mered",
+                "description": "Egy sofőr megállt az autójával a Blackfield Intersection közelében, és maga elé mered. Izzad, és nem válaszol rendesen. Az anyósülésen egy inzulinadagoló toll van."
             }
         },
         "caller": "SceneManager",
@@ -22,35 +30,91 @@
         {
             "id": "v1",
             "model": 551,
-            "pos": [1414.99, 869.52, 6.55],
-            "rot": [0, 0, 63.4],
+            "pos": [
+                1414.99,
+                869.52,
+                6.55
+            ],
+            "rot": [
+                0,
+                0,
+                63.4
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [235, 235, 235, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                235,
+                235,
+                235,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV72 427",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [0, 0, 0, 0, 0, 0, 0],
-            "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "lights": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 221,
-            "pos": [1414.99, 869.52, 6.8],
+            "pos": [
+                1414.99,
+                869.52,
+                6.8
+            ],
             "rot": 63,
             "anim": "none",
             "vehicle": "v1",
             "seat": 0,
             "injuries": [],
-            "state": { "glucose": 32, "consciousness": "confused" }
+            "state": {
+                "glucose": 32,
+                "consciousness": "confused"
+            }
         }
     ]
 }

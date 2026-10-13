@@ -5,7 +5,11 @@
     "location": "Mount Chiliad",
     "enabled": true,
     "weight": 1,
-    "center": [-2177.3, -2164.23, 48.43],
+    "center": [
+        -2177.3,
+        -2164.23,
+        48.43
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman confused, drinking constantly",
                 "description": "An older woman at the side of the road near Angel Pine is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night."
+            },
+            "hu": {
+                "title": "Zavart nő, állandóan iszik",
+                "description": "Egy idősebb nő Angel Pine közelében, az út szélén zavart, és folyamatosan egy nagy vizespalackból iszik. A férje szerint lefogyott, és egész éjjel gyakran vizelt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [-2177.3, -2164.23, 48.43],
+            "pos": [
+                -2177.3,
+                -2164.23,
+                48.43
+            ],
             "rot": 74,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 612, "consciousness": "confused" }
+            "state": {
+                "glucose": 612,
+                "consciousness": "confused"
+            }
         }
     ]
 }

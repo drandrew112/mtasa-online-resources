@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2846.75, 424.88, 4.5],
+    "center": [
+        -2846.75,
+        424.88,
+        4.5
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drink may have been spiked",
                 "description": "A young woman in front of an apartment block in City Hall says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute."
+            },
+            "hu": {
+                "title": "Lehet, hogy valamit kevertek az italába",
+                "description": "City Hall egyik lakóháza előtt egy fiatal nő azt mondja, hogy valaki beletett valamit az italába egy bárban. Alig tud állni, elmosódottan beszél, és percről percre álmosabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 55,
-            "pos": [-2846.75, 424.88, 4.5],
+            "pos": [
+                -2846.75,
+                424.88,
+                4.5
+            ],
             "rot": 127,
             "anim": "sit",
             "injuries": [
-                { "type": "sedative", "severity": 2 }
+                {
+                    "type": "sedative",
+                    "severity": 2
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

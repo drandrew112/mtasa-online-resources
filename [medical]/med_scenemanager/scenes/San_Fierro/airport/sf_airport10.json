@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1447, -485, 14.14],
+    "center": [
+        -1447,
+        -485,
+        14.14
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Traveller with slurred speech",
                 "description": "A traveller outside the terminal at Easter Bay Airport suddenly could not hold her passport and her speech became slurred. Her companion says she was fine at check-in."
+            },
+            "hu": {
+                "title": "Utazó elmosódott beszéddel",
+                "description": "Egy utazó az Easter Bay Airport terminálja előtt hirtelen nem tudta megtartani az útlevelét, és elmosódottá vált a beszéde. Kísérője szerint a becsekkoláskor még jól volt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [-1447, -485, 14.14],
+            "pos": [
+                -1447,
+                -485,
+                14.14
+            ],
             "rot": 348,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 197 }
+            "state": {
+                "systolic": 197
+            }
         }
     ]
 }

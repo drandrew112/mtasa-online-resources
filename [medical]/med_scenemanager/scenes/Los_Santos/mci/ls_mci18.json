@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [156.19, -1539.46, 12.38],
+    "center": [
+        156.19,
+        -1539.46,
+        12.38
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Truck crushed two cars",
                 "description": "A truck lost its brakes in Rodeo and ploughed into two cars. One car is crushed, its driver unconscious inside. The truck driver is walking around with a head wound. A passenger of the other car is lying on the road."
+            },
+            "hu": {
+                "title": "Teherautó két autót zúzott össze",
+                "description": "Egy teherautó fékje felmondta a szolgálatot Rodeóban, és két autónak csapódott. Az egyik autó összeroncsolódott, a sofőrje eszméletlenül bent van. A teherautó vezetője fejsérüléssel járkál, a másik autó egyik utasa pedig az úton fekszik."
             }
         },
         "caller": "SceneManager",
@@ -22,100 +30,280 @@
         {
             "id": "v1",
             "model": 414,
-            "pos": [163.31, -1535.67, 12.68],
-            "rot": [0, 0, 127.7],
+            "pos": [
+                163.31,
+                -1535.67,
+                12.68
+            ],
+            "rot": [
+                0,
+                0,
+                127.7
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                20,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS39 241",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 580,
-            "pos": [156.19, -1539.46, 12.13],
-            "rot": [0, 0, 229.7],
+            "pos": [
+                156.19,
+                -1539.46,
+                12.13
+            ],
+            "rot": [
+                0,
+                0,
+                229.7
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS33 242",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v3",
             "model": 426,
-            "pos": [163.14, -1528.47, 12.13],
-            "rot": [0, 0, 177.7],
+            "pos": [
+                163.14,
+                -1528.47,
+                12.13
+            ],
+            "rot": [
+                0,
+                0,
+                177.7
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                25,
+                60,
+                150,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LS22 243",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 72,
-            "pos": [156.19, -1539.46, 12.38],
+            "pos": [
+                156.19,
+                -1539.46,
+                12.38
+            ],
             "rot": 77,
             "anim": "none",
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3800,
+                "consciousness": "unconscious"
+            }
         },
         {
             "id": "p2",
             "skin": 91,
-            "pos": [159, -1527.04, 11.87],
+            "pos": [
+                159,
+                -1527.04,
+                11.87
+            ],
             "rot": 65,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         },
         {
             "id": "p3",
             "skin": 153,
-            "pos": [155.26, -1532.96, 11.87],
+            "pos": [
+                155.26,
+                -1532.96,
+                11.87
+            ],
             "rot": 278,
             "anim": "none",
             "injuries": [
-                { "type": "head_injury", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

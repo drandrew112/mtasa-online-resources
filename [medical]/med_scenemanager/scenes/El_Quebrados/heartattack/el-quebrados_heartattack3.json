@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1538.186, 2560.096, 55.836],
+    "center": [
+        -1538.186,
+        2560.096,
+        55.836
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Faint and confused",
                 "description": "An old man waiting at the gas station keeps fainting. Slow pulse, cold, confused."
+            },
+            "hu": {
+                "title": "Ájulás és zavartság",
+                "description": "Egy idős férfi a benzinkúton várakozva újra és újra elájul. Lassú a pulzusa, hideg a teste, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [-1538.186, 2560.096, 55.836],
+            "pos": [
+                -1538.186,
+                2560.096,
+                55.836
+            ],
             "rot": 296,
             "anim": "sit",
             "injuries": [],

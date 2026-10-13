@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-334.86, 1141.27, 19.74],
+    "center": [
+        -334.86,
+        1141.27,
+        19.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a roof",
                 "description": "A man fixing his roof fell off and landed on his feet on the main street in Fort Carson. He is screaming in pain and both ankles are swollen and deformed."
+            },
+            "hu": {
+                "title": "Leesett a tetőről",
+                "description": "Egy férfi a tetőjét javította, amikor leesett, és a lábára érkezett Fort Carson főutcáján. Fájdalomtól kiabál, mindkét bokája duzzadt és deformálódott."
             }
         },
         "caller": "SceneManager",
@@ -23,12 +31,22 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [-334.86, 1141.27, 19.74],
+            "pos": [
+                -334.86,
+                1141.27,
+                19.74
+            ],
             "rot": 332,
             "anim": "injured",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

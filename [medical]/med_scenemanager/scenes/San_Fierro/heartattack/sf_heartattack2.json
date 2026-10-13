@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1971.625, 741.125, 45.445],
+    "center": [
+        -1971.625,
+        741.125,
+        45.445
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain on the climb",
                 "description": "A woman carrying two bags of groceries uphill had to sit on the sidewalk. Tight chest, sweating in the cold fog. She says the hill \"never felt this steep\"."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom emelkedőn",
+                "description": "Egy két bevásárlószatyrot cipelő nőnek le kellett ülnie a járdán, miközben felfelé ment a dombon. Szorít a mellkasa, és a hideg ködben izzad. Azt mondja, a domb „még sosem tűnt ilyen meredeknek”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [-1971.625, 741.125, 45.445],
+            "pos": [
+                -1971.625,
+                741.125,
+                45.445
+            ],
             "rot": 0,
             "anim": "sit",
             "injuries": [],

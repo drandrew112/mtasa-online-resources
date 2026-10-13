@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2578.12, -137.62, 6.12],
+    "center": [
+        -2578.12,
+        -137.62,
+        6.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Screaming, overheated",
                 "description": "A man at a bus stop in Hashbury is shouting at cars, sweating and tearing at his clothes. Witnesses saw him smoking from a glass pipe. He finally sat down and is panting."
+            },
+            "hu": {
+                "title": "Kiabál, túlmelegedett",
+                "description": "Hashbury egyik buszmegállójában egy férfi az autókkal kiabál, izzad, és tépi a ruháját. Szemtanúk látták, hogy üvegpipából szívott. Végül leült, és zihál."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,25 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [-2578.12, -137.62, 6.12],
+            "pos": [
+                -2578.12,
+                -137.62,
+                6.12
+            ],
             "rot": 25,
             "anim": "tired",
             "injuries": [
-                { "type": "stimulant", "severity": 3 }
+                {
+                    "type": "stimulant",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 204, "diastolic": 118, "heartRate": 171, "consciousness": "confused" }
+            "state": {
+                "systolic": 204,
+                "diastolic": 118,
+                "heartRate": 171,
+                "consciousness": "confused"
+            }
         }
     ]
 }

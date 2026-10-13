@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2208.607, 880.612, 8.248],
+    "center": [
+        2208.607,
+        880.612,
+        8.248
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, pounding head",
                 "description": "A woman who just lost her savings at the tables is leaning against a wall with chest pain and a pounding headache. She keeps saying she was \"so close\"."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, lüktető fejfájás",
+                "description": "Egy nő, aki épp most vesztette el minden megtakarítását az asztaloknál, mellkasi fájdalommal és erős fejfájással támaszkodik a falnak. Folyton azt ismételgeti, hogy „olyan közel volt”."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [2208.607, 880.612, 8.248],
+            "pos": [
+                2208.607,
+                880.612,
+                8.248
+            ],
             "rot": 44,
             "anim": "lean",
             "injuries": [],

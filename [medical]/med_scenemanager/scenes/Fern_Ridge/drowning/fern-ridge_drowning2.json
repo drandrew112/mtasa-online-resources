@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [651.7, -147.85, 26.19],
+    "center": [
+        651.7,
+        -147.85,
+        26.19
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, turning blue",
                 "description": "A man choking on a piece of steak on the road shoulder near Fern Ridge cannot breathe or speak and is grabbing his throat. His lips are turning blue."
+            },
+            "hu": {
+                "title": "Félrenyelt, elkékül",
+                "description": "Egy férfi félrenyelt egy darab steaket az útpadkán Fern Ridge közelében, nem kap levegőt, nem tud beszélni, és a torkát markolja. Az ajkai elkékülnek."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [651.7, -147.85, 26.19],
+            "pos": [
+                651.7,
+                -147.85,
+                26.19
+            ],
             "rot": 173,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 71, "consciousness": "dazed" }
+            "state": {
+                "spo2": 71,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

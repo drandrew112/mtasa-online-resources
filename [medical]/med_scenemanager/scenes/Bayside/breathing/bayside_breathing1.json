@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2540, 2380, 14.27],
+    "center": [
+        -2540,
+        2380,
+        14.27
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teenager cannot breathe",
                 "description": "A teenager in a yard in Bayside is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home."
+            },
+            "hu": {
+                "title": "A tinédzser nem kap levegőt",
+                "description": "Egy Bayside-ban, egy udvaron tartózkodó tinédzser hangosan sípolva lélegzik, és egyszerre csak két-három szót tud kimondani. A barátai szerint asztmás, de otthon felejtette az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [-2540, 2380, 14.27],
+            "pos": [
+                -2540,
+                2380,
+                14.27
+            ],
             "rot": 15,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

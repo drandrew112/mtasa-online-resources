@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2740.78, 1373.66, 6.84],
+    "center": [
+        2740.78,
+        1373.66,
+        6.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Sweaty and confused",
                 "description": "A woman on the sidewalk near the Julius Thruway East is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            },
+            "hu": {
+                "title": "Izzadt és zavart",
+                "description": "Egy nő erősen izzad és zavartnak tűnik a Julius Thruway East közelében, a járdán. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenül kezdett beszélni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 12,
-            "pos": [2740.78, 1373.66, 6.84],
+            "pos": [
+                2740.78,
+                1373.66,
+                6.84
+            ],
             "rot": 258,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 46, "consciousness": "confused" }
+            "state": {
+                "glucose": 46,
+                "consciousness": "confused"
+            }
         }
     ]
 }

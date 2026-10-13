@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2416.96, 801.25, 35.18],
+    "center": [
+        -2416.96,
+        801.25,
+        35.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell down concrete stairs",
                 "description": "A man fell down a long flight of concrete steps in front of an apartment block in Juniper Hill. He is dazed, has a bump on his head and his arm hurts badly."
+            },
+            "hu": {
+                "title": "Leesett a betonlépcsőn",
+                "description": "Juniper Hill egyik lakóháza előtt egy férfi lezuhant a hosszú betonlépcsőn. Kábult, púp nőtt a fején, és nagyon fáj a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 17,
-            "pos": [-2416.96, 801.25, 35.18],
+            "pos": [
+                -2416.96,
+                801.25,
+                35.18
+            ],
             "rot": 338,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

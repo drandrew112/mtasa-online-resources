@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1556.58, 2241.31, 11.05],
+    "center": [
+        1556.58,
+        2241.31,
+        11.05
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cannot finish a sentence",
                 "description": "A man at the side of the road in Redsands West cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            },
+            "hu": {
+                "title": "Nem tud végigmondani egy mondatot",
+                "description": "Egy férfi Redsands Westben, az út szélén nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzódnak a nyakánál lévő légzőizmai. Ötször használta az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 30,
-            "pos": [1556.58, 2241.31, 11.05],
+            "pos": [
+                1556.58,
+                2241.31,
+                11.05
+            ],
             "rot": 249,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                {
+                    "type": "asthma",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 86, "heartRate": 135 }
+            "state": {
+                "spo2": 86,
+                "heartRate": 135
+            }
         }
     ]
 }

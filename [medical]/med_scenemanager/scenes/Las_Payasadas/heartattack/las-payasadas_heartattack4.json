@@ -5,7 +5,11 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [-169.119, 2622.951, 63.619],
+    "center": [
+        -169.119,
+        2622.951,
+        63.619
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak, nauseous, pale",
                 "description": "A trucker stopped for fried chicken and now sits by the road with nausea, jaw ache and cold sweat. He blames the chicken."
+            },
+            "hu": {
+                "title": "Gyengeség, hányinger, sápadtság",
+                "description": "Egy kamionsofőr megállt sült csirkét venni, most pedig az út mellett ül hányingerrel, állkapocsfájdalommal és hideg verejtékkel. A csirkét okolja."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-169.119, 2622.951, 63.619],
+            "pos": [
+                -169.119,
+                2622.951,
+                63.619
+            ],
             "rot": 155,
             "anim": "sit",
             "injuries": [],

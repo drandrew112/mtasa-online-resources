@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1270, -1078.25, 27.61],
+    "center": [
+        1270,
+        -1078.25,
+        27.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Robbery, victim shot",
                 "description": "A man was shot during a robbery outside a shop in Temple. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way."
+            },
+            "hu": {
+                "title": "Rablás, meglőtt áldozat",
+                "description": "Egy férfit meglőttek egy rablás során Temple egyik üzlete előtt. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt. A rendőrség úton van."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 184,
-            "pos": [1270, -1078.25, 27.61],
+            "pos": [
+                1270,
+                -1078.25,
+                27.61
+            ],
             "rot": 79,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4100 }
+            "state": {
+                "bloodVolume": 4100
+            }
         }
     ]
 }

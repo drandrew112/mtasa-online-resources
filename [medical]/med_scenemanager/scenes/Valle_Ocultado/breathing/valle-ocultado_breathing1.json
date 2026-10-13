@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-900, 2690, 45.15],
+    "center": [
+        -900,
+        2690,
+        45.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Choked on food, still wheezing",
                 "description": "A man on open scrubland in Valle Ocultado choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            },
+            "hu": {
+                "title": "Félrenyelt étel, még mindig sípolva lélegzik",
+                "description": "Valle Ocultado nyílt bozótos területén egy férfi félrenyelt egy hot dogot. Egy járókelő hátba ütéseket alkalmazott, és kijött egy darab étel, de a férfi továbbra is erősen köhög és sípolva lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [-900, 2690, 45.15],
+            "pos": [
+                -900,
+                2690,
+                45.15
+            ],
             "rot": 295,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 85 }
+            "state": {
+                "spo2": 85
+            }
         }
     ]
 }

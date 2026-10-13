@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1510, 410, 20.23],
+    "center": [
+        1510,
+        410,
+        20.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed man, may have left",
                 "description": "A woman says a man collapsed on the grass in Montgomery a few minutes ago, but he might have got up and walked away. Nobody stayed with him."
+            },
+            "hu": {
+                "title": "Összeesett férfi, lehet, hogy elment",
+                "description": "Egy nő szerint néhány perce összeesett egy férfi Montgomery egyik füves területén, de lehet, hogy már felkelt és elment. Senki sem maradt vele."
             }
         },
         "caller": "SceneManager",

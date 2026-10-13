@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2244.89, -680.22, 68.44],
+    "center": [
+        -2244.89,
+        -680.22,
+        68.44
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed after basketball",
                 "description": "A student collapsed on his way home from basketball practice by the roadside in Missionary Hill. His friends say he is diabetic and took extra insulin before the game."
+            },
+            "hu": {
+                "title": "Összeesett kosárlabdázás után",
+                "description": "Egy diák összeesett a kosárlabdaedzésről hazafelé menet, Missionary Hill útja mellett. Barátai szerint cukorbeteg, és a mérkőzés előtt extra inzulint adott be magának."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 114,
-            "pos": [-2244.89, -680.22, 68.44],
+            "pos": [
+                -2244.89,
+                -680.22,
+                68.44
+            ],
             "rot": 119,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 38, "consciousness": "dazed" }
+            "state": {
+                "glucose": 38,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

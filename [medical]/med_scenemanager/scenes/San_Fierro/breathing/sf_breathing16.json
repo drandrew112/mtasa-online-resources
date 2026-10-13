@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2713.25, -35.95, 4.33],
+    "center": [
+        -2713.25,
+        -35.95,
+        4.33
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Cyclist wheezing, no inhaler",
                 "description": "A cyclist stopped at a bus stop in Ocean Flats after a fast ride and is wheezing loudly. He has asthma and forgot his inhaler."
+            },
+            "hu": {
+                "title": "Kerékpáros sípolva lélegzik, nincs inhalátora",
+                "description": "Egy kerékpáros gyors tekerés után megállt Ocean Flats egyik buszmegállójában, és hangosan sípolva lélegzik. Asztmás, de otthon felejtette az inhalátorát."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [-2713.25, -35.95, 4.33],
+            "pos": [
+                -2713.25,
+                -35.95,
+                4.33
+            ],
             "rot": 248,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                {
+                    "type": "asthma",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 92 }
+            "state": {
+                "spo2": 92
+            }
         }
     ]
 }

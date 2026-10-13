@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2311.64, -2047.73, 13.55],
+    "center": [
+        2311.64,
+        -2047.73,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker vomiting, confused",
                 "description": "A delivery worker on the sidewalk in Willowfield keeps throwing up and cannot remember the next address on his list. His colleague says he is diabetic and has been ill with the flu all week."
+            },
+            "hu": {
+                "title": "Hányó, zavart munkás",
+                "description": "Egy kiszállító munkás Willowfield járdáján újra és újra hány, és nem emlékszik a listáján következő címre. Kollégája szerint cukorbeteg, és egész héten influenzás volt."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [2311.64, -2047.73, 13.55],
+            "pos": [
+                2311.64,
+                -2047.73,
+                13.55
+            ],
             "rot": 193,
             "anim": "vomit",
             "injuries": [],
-            "state": { "bloodVolume": 4100, "glucose": 470, "consciousness": "confused" }
+            "state": {
+                "bloodVolume": 4100,
+                "glucose": 470,
+                "consciousness": "confused"
+            }
         }
     ]
 }

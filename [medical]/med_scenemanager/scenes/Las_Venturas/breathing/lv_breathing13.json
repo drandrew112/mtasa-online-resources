@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2277.25, 1886.13, 10.81],
+    "center": [
+        2277.25,
+        1886.13,
+        10.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Mild asthma after running",
                 "description": "A girl on the sidewalk near the Clown's Pocket has a tight chest and is wheezing after running to catch the bus. She has mild asthma and her inhaler only helped a little."
+            },
+            "hu": {
+                "title": "Enyhe asztmás roham futás után",
+                "description": "Egy lány a Clown's Pocket közelében lévő járdán szorító mellkasérzést és sípoló légzést tapasztal, miután futott, hogy elérje a buszt. Enyhe asztmája van, és az inhalátora csak valamelyest segített."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [2277.25, 1886.13, 10.81],
+            "pos": [
+                2277.25,
+                1886.13,
+                10.81
+            ],
             "rot": 340,
             "anim": "tired",
             "injuries": [
-                { "type": "asthma", "severity": 1 }
+                {
+                    "type": "asthma",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 95 }
+            "state": {
+                "spo2": 95
+            }
         }
     ]
 }

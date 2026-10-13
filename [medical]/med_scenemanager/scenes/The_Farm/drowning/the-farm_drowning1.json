@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1170, -1120, 128.96],
+    "center": [
+        -1170,
+        -1120,
+        128.96
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Toddler fell in an irrigation ditch",
                 "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on farmland in The Farm. The child is coughing and crying weakly."
+            },
+            "hu": {
+                "title": "Kisgyermek esett az öntözőárokba",
+                "description": "Egy kisgyermek egy öntözőárokba esett, és rövid időre víz alá került. Nagymamája felkapta, és The Farm egyik földterületén tartja a karjában. A gyermek köhög és gyengén sír."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [-1170, -1120, 128.96],
+            "pos": [
+                -1170,
+                -1120,
+                128.96
+            ],
             "rot": 220,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 89 }
+            "state": {
+                "spo2": 89
+            }
         }
     ]
 }

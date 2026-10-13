@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-900, 2690, 45.15],
+    "center": [
+        -900,
+        2690,
+        45.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Head wound after shooting",
                 "description": "Witnesses heard one shot on the dusty ground in Valle Ocultado. A man is lying on his back with a head wound and is not responding."
+            },
+            "hu": {
+                "title": "Fejsérülés lövöldözés után",
+                "description": "Valle Ocultado poros földjén a szemtanúk egy lövést hallottak. Egy férfi a hátán fekszik, fejsérülése van, és nem reagál."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [-900, 2690, 45.15],
+            "pos": [
+                -900,
+                2690,
+                45.15
+            ],
             "rot": 249,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "head_injury", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

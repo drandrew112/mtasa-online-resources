@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2132.25, 1526.13, 10.81],
+    "center": [
+        2132.25,
+        1526.13,
+        10.81
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Old man coughing, fever",
                 "description": "An old man outside the Royal Casino has been coughing up green phlegm for a week, has a fever and is now very short of breath."
+            },
+            "hu": {
+                "title": "Köhögő, lázas idős férfi",
+                "description": "Egy idős férfi egy hete zöld váladékot köhög fel a Royal Casino előtt, lázas, és mostanra súlyos légszomja lett."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [2132.25, 1526.13, 10.81],
+            "pos": [
+                2132.25,
+                1526.13,
+                10.81
+            ],
             "rot": 338,
             "anim": "cough",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                {
+                    "type": "copd",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88 }
+            "state": {
+                "spo2": 88
+            }
         }
     ]
 }

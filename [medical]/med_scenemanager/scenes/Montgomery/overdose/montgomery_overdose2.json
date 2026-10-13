@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1145.07, 286.07, 20.3],
+    "center": [
+        1145.07,
+        286.07,
+        20.3
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen drank too much",
                 "description": "A teenager on the road shoulder in Montgomery keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+            },
+            "hu": {
+                "title": "Túl sokat ivott a tinédzser",
+                "description": "Egy tinédzser lány a Montgomery útpadkáján újra és újra hány, miután a barátaival életében először vodkát ivott. Sápadt, álmos, és önerőből nem tud felállni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [1145.07, 286.07, 20.3],
+            "pos": [
+                1145.07,
+                286.07,
+                20.3
+            ],
             "rot": 227,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [-360.59, 2530.63, 36.12],
+    "center": [
+        -360.59,
+        2530.63,
+        36.12
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Hit by a reversing car",
                 "description": "A woman was hit by a car reversing out of a parking spot by the dusty roadside in El Castillo del Diablo. She fell on her side and her elbow is swollen and scraped."
+            },
+            "hu": {
+                "title": "Tolató autó ütötte el",
+                "description": "Egy autó kitolatott egy parkolóhelyről a poros út mellett El Castillo del Diablo területén, és elütött egy nőt. A nő az oldalára esett, a könyöke megduzzadt és lehorzsolódott."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 422,
-            "pos": [-357.12, 2529.72, 35.85],
-            "rot": [0, 0, 211.2],
+            "pos": [
+                -357.12,
+                2529.72,
+                35.85
+            ],
+            "rot": [
+                0,
+                0,
+                211.2
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                120,
+                120,
+                125,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "BC13 210",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [0, 0, 0, 0, 0, 0],
-            "panels": [1, 0, 0, 0, 0, 1, 0],
-            "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "panels": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0
+            ],
+            "lights": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 56,
-            "pos": [-360.59, 2530.63, 36.12],
+            "pos": [
+                -360.59,
+                2530.63,
+                36.12
+            ],
             "rot": 344,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 22 }
+            "state": {
+                "pain": 22
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1931.36, 2397.15, 9.82],
+    "center": [
+        1931.36,
+        2397.15,
+        9.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Head-on collision",
                 "description": "A red car and a black pickup collided head-on in Redsands East. The driver of the red car got out and is crouching next to the car with a painful ankle and some cuts."
+            },
+            "hu": {
+                "title": "Frontális ütközés",
+                "description": "Egy piros autó és egy fekete pickup frontálisan ütközött Redsands Eastben. A piros autó sofőrje kiszállt, és fájdalmas bokáját fogva, néhány vágással leguggolt az autó mellé."
             }
         },
         "caller": "SceneManager",
@@ -22,54 +30,162 @@
         {
             "id": "v1",
             "model": 547,
-            "pos": [1933.38, 2394.14, 10.542],
-            "rot": [0, 0, 101.37],
+            "pos": [
+                1933.38,
+                2394.14,
+                10.542
+            ],
+            "rot": [
+                0,
+                0,
+                101.37
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV19 487",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [3, 2, 4, 4, 2, 3],
-            "panels": [3, 3, 3, 3, 3, 3, 3],
-            "lights": [1, 1, 1, 1],
-            "wheels": [1, 0, 0, 0]
+            "doors": [
+                3,
+                2,
+                4,
+                4,
+                2,
+                3
+            ],
+            "panels": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+            ],
+            "lights": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "wheels": [
+                1,
+                0,
+                0,
+                0
+            ]
         },
         {
             "id": "v2",
             "model": 422,
-            "pos": [1927.302, 2392.238, 10.784],
-            "rot": [-0.11, 0, 285.52],
+            "pos": [
+                1927.302,
+                2392.238,
+                10.784
+            ],
+            "rot": [
+                -0.11,
+                0,
+                285.52
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                20,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "LV44 330",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 184,
-            "pos": [1931.36, 2397.15, 10.82],
+            "pos": [
+                1931.36,
+                2397.15,
+                10.82
+            ],
             "rot": 202.3,
             "anim": "crouch",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1697.56, 1867.83, 10.82],
+    "center": [
+        1697.56,
+        1867.83,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker next to the road at Las Venturas Airport feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Munkás homályos látással",
+                "description": "Egy építőmunkás rosszul érzi magát a Las Venturas-i repülőtér melletti úton, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegségre szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [1697.56, 1867.83, 10.82],
+            "pos": [
+                1697.56,
+                1867.83,
+                10.82
+            ],
             "rot": 25,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 426 }
+            "state": {
+                "glucose": 426
+            }
         }
     ]
 }

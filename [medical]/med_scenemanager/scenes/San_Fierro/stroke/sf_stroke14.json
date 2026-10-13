@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2531.04, 81.97, 21.66],
+    "center": [
+        -2531.04,
+        81.97,
+        21.66
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slumped over, drooling",
                 "description": "A man is slumped over on the sidewalk in Queens, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer."
+            },
+            "hu": {
+                "title": "Összegörnyedt, nyáladzik",
+                "description": "Queens járdáján egy férfi összegörnyedve ül, szája egyik oldalából nyál csorog. Megszólításra kinyitja a szemét, de nem tud válaszolni."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [-2531.04, 81.97, 21.66],
+            "pos": [
+                -2531.04,
+                81.97,
+                21.66
+            ],
             "rot": 295,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 192, "diastolic": 108, "consciousness": "dazed" }
+            "state": {
+                "systolic": 192,
+                "diastolic": 108,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

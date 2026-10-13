@@ -5,7 +5,11 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [-765.875, 1508.935, 25.375],
+    "center": [
+        -765.875,
+        1508.935,
+        25.375
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Palpitations, near faint",
                 "description": "A tourist sat down by the road with her heart pounding wildly after crossing the bridge on foot. Pale and dizzy."
+            },
+            "hu": {
+                "title": "Szívdobogásérzés, majdnem elájult",
+                "description": "Egy turista leült az út mellé, mert a gyalogos hídon való átkelés után vadul vert a szíve. Sápadt és szédül."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [-765.875, 1508.935, 25.375],
+            "pos": [
+                -765.875,
+                1508.935,
+                25.375
+            ],
             "rot": 332,
             "anim": "sit",
             "injuries": [],

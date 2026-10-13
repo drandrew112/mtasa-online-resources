@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2439, 1366, 10.82],
+    "center": [
+        2439,
+        1366,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed after basketball",
                 "description": "A student collapsed after playing basketball on a paved square near the Camel's Toe. His friends say he is diabetic and took extra insulin before the game."
+            },
+            "hu": {
+                "title": "Kosárlabdázás után összeesett",
+                "description": "Egy diák összeesett, miután kosárlabdázott egy kövezett téren, a Camel's Toe közelében. A barátai szerint cukorbeteg, és a játék előtt a szokásosnál több inzulint adott be."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 176,
-            "pos": [2439, 1366, 10.82],
+            "pos": [
+                2439,
+                1366,
+                10.82
+            ],
             "rot": 336,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 36, "consciousness": "dazed" }
+            "state": {
+                "glucose": 36,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2154.44, 157.43, 35.32],
+    "center": [
+        -2154.44,
+        157.43,
+        35.32
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, face down",
                 "description": "A homeless man is lying face down on the sidewalk in Garcia and is not responding. Someone found a burnt spoon and a needle in his hand."
+            },
+            "hu": {
+                "title": "Reagálásképtelen, arccal lefelé fekszik",
+                "description": "Garcia járdáján egy hajléktalan férfi arccal lefelé fekszik, és nem reagál. Valaki egy elszenesedett kanalat és egy tűt talált a kezében."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 78,
-            "pos": [-2154.44, 157.43, 35.32],
+            "pos": [
+                -2154.44,
+                157.43,
+                35.32
+            ],
             "rot": 277,
             "anim": "ko_front",
             "injuries": [
-                { "type": "opioid", "severity": 3 }
+                {
+                    "type": "opioid",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 70, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 70,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

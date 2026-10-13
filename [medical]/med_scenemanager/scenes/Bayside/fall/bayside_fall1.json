@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2440, 2520, 14.23],
+    "center": [
+        -2440,
+        2520,
+        14.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell from a ladder picking fruit",
                 "description": "A woman picking fruit fell from her ladder in a yard in Bayside. She is lying on her back with a very painful hip and a cut on her forehead."
+            },
+            "hu": {
+                "title": "Leesett a létráról gyümölcsszedés közben",
+                "description": "Egy gyümölcsöt szedő nő leesett a létrájáról egy bayside-i udvarban. A hátán fekszik, nagyon fáj a csípője, és vágott seb van a homlokán."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [-2440, 2520, 14.23],
+            "pos": [
+                -2440,
+                2520,
+                14.23
+            ],
             "rot": 357,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 48 }
+            "state": {
+                "pain": 48
+            }
         }
     ]
 }

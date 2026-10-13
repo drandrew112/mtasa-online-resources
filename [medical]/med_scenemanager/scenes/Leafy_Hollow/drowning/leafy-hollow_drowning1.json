@@ -5,7 +5,11 @@
     "location": "Back o Beyond",
     "enabled": true,
     "weight": 1,
-    "center": [-760, -1880, 9.04],
+    "center": [
+        -760,
+        -1880,
+        9.04
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swimmer cramped, swallowed water",
                 "description": "A swimmer got a cramp and swallowed a lot of water before friends helped him out. He is sitting at the water's edge near Leafy Hollow, coughing and breathing fast."
+            },
+            "hu": {
+                "title": "Úszás közben begörcsölt, vizet nyelt",
+                "description": "Egy úszónak begörcsölt az izma, és sok vizet nyelt, mielőtt a barátai kisegítették. Leafy Hollow közelében, a vízparton ül, köhög és gyorsan lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 115,
-            "pos": [-760, -1880, 9.04],
+            "pos": [
+                -760,
+                -1880,
+                9.04
+            ],
             "rot": 279,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 92, "heartRate": 114 }
+            "state": {
+                "spo2": 92,
+                "heartRate": 114
+            }
         }
     ]
 }

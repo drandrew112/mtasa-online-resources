@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [795.75, 240, 34.82],
+    "center": [
+        795.75,
+        240,
+        34.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Stopped talking mid-sentence",
                 "description": "A woman chatting with a friend on farmland near Hampton Barns stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp."
+            },
+            "hu": {
+                "title": "Mondat közben elhallgatott",
+                "description": "Egy nő egy Hampton Barns közelében lévő mezőgazdasági területen beszélgetett a barátjával, amikor mondat közben elhallgatott és maga elé meredt. Most már csak egyes szavakat tud kimondani, a jobb keze pedig ernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [795.75, 240, 34.82],
+            "pos": [
+                795.75,
+                240,
+                34.82
+            ],
             "rot": 207,
             "anim": "lean",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 177 }
+            "state": {
+                "systolic": 177
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [-1571.12, 2678.05, 55.84],
+    "center": [
+        -1571.12,
+        2678.05,
+        55.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Breathed in smoke",
                 "description": "A man at the side of the road in El Quebrados pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose."
+            },
+            "hu": {
+                "title": "Füstöt lélegzett be",
+                "description": "Egy férfi kihúzta a barátját egy füstölgő istállóból El Quebradosban, és sűrű, fekete füstöt lélegzett be. Köhög, az orra körül pedig korom látható."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 98,
-            "pos": [-1571.12, 2678.05, 55.84],
+            "pos": [
+                -1571.12,
+                2678.05,
+                55.84
+            ],
             "rot": 169,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 93 }
+            "state": {
+                "spo2": 93
+            }
         }
     ]
 }

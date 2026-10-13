@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1450, 70, 30.4],
+    "center": [
+        1450,
+        70,
+        30.4
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Pregnant, headache, swelling",
                 "description": "A heavily pregnant woman on the grass just outside Montgomery has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic."
+            },
+            "hu": {
+                "title": "Várandós, fejfájás és duzzanat",
+                "description": "Egy előrehaladott terhességben lévő nőnek erős fejfájása van, megdagadtak a bokái, és fényvillanásokat lát a Montgomery mellett lévő füves területen. A férje kétségbeesett."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 226,
-            "pos": [1450, 70, 30.4],
+            "pos": [
+                1450,
+                70,
+                30.4
+            ],
             "rot": 160,
             "anim": "sit",
             "injuries": [],

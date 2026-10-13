@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [890, -680, 120.98],
+    "center": [
+        890,
+        -680,
+        120.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Throat swelling after a bee sting",
                 "description": "A beekeeper on open ground near Dillimore was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before."
+            },
+            "hu": {
+                "title": "Torokduzzanat méhcsípés után",
+                "description": "Egy méhészt többször megcsíptek egy nyílt területen Dillimore közelében, a nyelve és a torka pedig gyorsan dagadni kezdett. Sípolva lélegzik, és azt mondja, korábban soha nem volt ilyen reakciója."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 72,
-            "pos": [890, -680, 120.98],
+            "pos": [
+                890,
+                -680,
+                120.98
+            ],
             "rot": 313,
             "anim": "tired",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 83, "systolic": 87, "heartRate": 129 }
+            "state": {
+                "spo2": 83,
+                "systolic": 87,
+                "heartRate": 129
+            }
         }
     ]
 }

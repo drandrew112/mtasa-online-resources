@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1162.58, 128.6, 27.21],
+    "center": [
+        1162.58,
+        128.6,
+        27.21
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Stopped talking mid-sentence",
                 "description": "A woman chatting with a friend by the road at the edge of the woods near Fern Ridge stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp."
+            },
+            "hu": {
+                "title": "Mondat közben elhallgatott",
+                "description": "Egy nő a barátjával beszélgetett az út mellett, az erdő szélén Fern Ridge közelében, amikor mondat közben elhallgatott, és maga elé meredt. Most már csak egyes szavakat tud kimondani, a jobb keze pedig ernyedt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [1162.58, 128.6, 27.21],
+            "pos": [
+                1162.58,
+                128.6,
+                27.21
+            ],
             "rot": 3,
             "anim": "lean",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                {
+                    "type": "stroke",
+                    "severity": 2
+                }
             ],
-            "state": { "systolic": 179 }
+            "state": {
+                "systolic": 179
+            }
         }
     ]
 }

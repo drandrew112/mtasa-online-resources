@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-860.75, 2691.3, 43.11],
+    "center": [
+        -860.75,
+        2691.3,
+        43.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Woman shot in the stomach",
                 "description": "A woman was shot in the stomach on open scrubland in Valle Ocultado during an argument with her ex-partner. She is bent over, pale and getting weaker."
+            },
+            "hu": {
+                "title": "Haslövést kapott nő",
+                "description": "Valle Ocultado nyílt bozótos területén egy nő haslövést kapott, miután összeveszett volt partnerével. Előregörnyed, sápadt, és egyre gyengébb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 190,
-            "pos": [-860.75, 2691.3, 43.11],
+            "pos": [
+                -860.75,
+                2691.3,
+                43.11
+            ],
             "rot": 168,
             "anim": "hold_side",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3863 }
+            "state": {
+                "bloodVolume": 3863
+            }
         }
     ]
 }

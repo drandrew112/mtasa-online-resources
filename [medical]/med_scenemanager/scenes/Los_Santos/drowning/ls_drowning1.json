@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [226.529, -1740.245, 4.37],
+    "center": [
+        226.529,
+        -1740.245,
+        4.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swimmer pulled out, not breathing",
                 "description": "Lifeguards pulled a swimmer out of the water at Santa Maria Beach and carried him up to the promenade. He is not breathing. A bystander has started chest compressions."
+            },
+            "hu": {
+                "title": "Kihúzták a vízből, nem lélegzik",
+                "description": "Az úszómesterek kihúztak egy úszót a vízből a Santa Maria Beachnél, majd felvitték a sétányra. Nem lélegzik. Egy járókelő megkezdte a mellkasi kompressziókat."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 154,
-            "pos": [226.529, -1740.245, 4.37],
+            "pos": [
+                226.529,
+                -1740.245,
+                4.37
+            ],
             "rot": 90,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 3 }
+                {
+                    "type": "suffocation",
+                    "severity": 3
+                }
             ],
-            "state": { "spo2": 40, "rhythm": "PEA" }
+            "state": {
+                "spo2": 40,
+                "rhythm": "PEA"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [-1041.48, -1165.55, 129.11],
+    "center": [
+        -1041.48,
+        -1165.55,
+        129.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Moonshine, cannot stand",
                 "description": "A man on the road shoulder in The Farm drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry."
+            },
+            "hu": {
+                "title": "Holdfényfőzetet ivott, nem tud felállni",
+                "description": "The Farm útpadkáján egy férfi házi készítésű holdfényt ivott egy befőttesüvegből. Hány, nem tud felállni, és homályos látásra panaszkodik."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [-1041.48, -1165.55, 129.11],
+            "pos": [
+                -1041.48,
+                -1165.55,
+                129.11
+            ],
             "rot": 57,
             "anim": "vomit",
             "injuries": [
-                { "type": "alcohol", "severity": 3 }
+                {
+                    "type": "alcohol",
+                    "severity": 3
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

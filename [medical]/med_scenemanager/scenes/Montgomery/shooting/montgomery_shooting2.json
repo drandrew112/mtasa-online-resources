@@ -5,7 +5,11 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [1409.73, 210.76, 18.9],
+    "center": [
+        1409.73,
+        210.76,
+        18.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Bystander hit by stray bullet",
                 "description": "A woman walking at the side of the road in Montgomery was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking."
+            },
+            "hu": {
+                "title": "Kóbor lövedék találta el a járókelőt",
+                "description": "Egy Montgomeryben, az út mellett sétáló nőt vállon talált egy kóbor lövedék, amikor a közelében verekedés tört ki. Ruháján átüt a vér, és remeg."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 201,
-            "pos": [1409.73, 210.76, 18.9],
+            "pos": [
+                1409.73,
+                210.76,
+                18.9
+            ],
             "rot": 11,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4448 }
+            "state": {
+                "bloodVolume": 4448
+            }
         }
     ]
 }

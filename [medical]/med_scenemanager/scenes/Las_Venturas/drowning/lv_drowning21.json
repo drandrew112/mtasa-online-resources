@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1999.38, 1606.65, 12.33],
+    "center": [
+        1999.38,
+        1606.65,
+        12.33
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Tourist hit her head diving",
                 "description": "A tourist dived into the shallow water and hit the bottom. Strangers pulled her out and she is now lying at the edge of a pond near Pirates in Men's Pants, dazed and gasping."
+            },
+            "hu": {
+                "title": "A turista beütötte a fejét búvárkodás közben",
+                "description": "Egy turista sekély vízbe ugrott, és beütötte a fejét a mederbe. Idegenek húzták ki; most a Pirates in Men's Pants közelében, egy tó partján fekszik, kábultan, levegő után kapkodva."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 138,
-            "pos": [1999.38, 1606.65, 12.33],
+            "pos": [
+                1999.38,
+                1606.65,
+                12.33
+            ],
             "rot": 58,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 86, "consciousness": "dazed" }
+            "state": {
+                "spo2": 86,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

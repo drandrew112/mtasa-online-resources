@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-2121.723, -2392.378, 30.625],
+    "center": [
+        -2121.723,
+        -2392.378,
+        30.625
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, sweating",
                 "description": "A woman from the trailer park sat down by the road with chest pressure and sweat pouring down her face."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, verejtékezés",
+                "description": "Egy lakókocsiparkban élő nő leült az út mellé, mert nyomást érzett a mellkasában, és patakokban folyt az arcán a verejték."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [-2121.723, -2392.378, 30.625],
+            "pos": [
+                -2121.723,
+                -2392.378,
+                30.625
+            ],
             "rot": 82,
             "anim": "sit",
             "injuries": [],

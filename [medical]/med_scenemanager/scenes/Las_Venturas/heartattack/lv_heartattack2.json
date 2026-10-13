@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2854.75, 2083.125, 10.82],
+    "center": [
+        2854.75,
+        2083.125,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain in the heat",
                 "description": "A tourist sat down on the hot sidewalk with a tight chest and cold sweat despite the desert heat. Her friends think it is just the sun."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom a hőségben",
+                "description": "Egy turista leült a forró járdára, mert szorít a mellkasa és hideg verejték lepi el a sivatagi hőség ellenére. A barátai azt hiszik, csak a napsütés viselte meg."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [2854.75, 2083.125, 10.82],
+            "pos": [
+                2854.75,
+                2083.125,
+                10.82
+            ],
             "rot": 104,
             "anim": "sit",
             "injuries": [],

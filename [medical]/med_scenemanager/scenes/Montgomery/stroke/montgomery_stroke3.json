@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1450, 70, 30.4],
+    "center": [
+        1450,
+        70,
+        30.4
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Numb side after jogging",
                 "description": "A jogger on the grass just outside Montgomery stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened."
+            },
+            "hu": {
+                "title": "Kocogás után elzsibbadt az egyik oldala",
+                "description": "Egy kocogó a Montgomery melletti füves területen megállt, mert elzsibbadt a bal karja és lába. Leült; kissé elmosódottan beszél, és nagyon fél."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 185,
-            "pos": [1450, 70, 30.4],
+            "pos": [
+                1450,
+                70,
+                30.4
+            ],
             "rot": 272,
             "anim": "sit",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                {
+                    "type": "stroke",
+                    "severity": 1
+                }
             ],
-            "state": { "systolic": 175 }
+            "state": {
+                "systolic": 175
+            }
         }
     ]
 }

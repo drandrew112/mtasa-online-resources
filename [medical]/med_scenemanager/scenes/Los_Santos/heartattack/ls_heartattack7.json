@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1255.273, -2216.925, 18.264],
+    "center": [
+        1255.273,
+        -2216.925,
+        18.264
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pressure, sweating",
                 "description": "A woman walking her tiny dog sat down hard on the sidewalk, grey and sweating. She describes an elephant sitting on her chest. The dog refuses to let anyone near her."
+            },
+            "hu": {
+                "title": "Mellkasi nyomás, izzadás",
+                "description": "Egy apró kutyát sétáltató nő hirtelen leült a járdán; szürkés a bőre és izzad. Úgy írja le, mintha egy elefánt ülne a mellkasán. A kutya senkit sem enged a közelébe."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [1255.273, -2216.925, 18.264],
+            "pos": [
+                1255.273,
+                -2216.925,
+                18.264
+            ],
             "rot": 279,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2839.27, 1232.78, 5.6],
+    "center": [
+        -2839.27,
+        1232.78,
+        5.6
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unconscious after near drowning",
                 "description": "A young man was underwater for about two minutes before he was pulled out. He is lying on the sidewalk by the waterfront in Palisades, breathing but not waking up."
+            },
+            "hu": {
+                "title": "Eszméletlen egy majdnem fulladás után",
+                "description": "Egy fiatal férfi körülbelül két percig volt a víz alatt, mielőtt kihúzták. Palisades vízparti járdáján fekszik, lélegzik, de nem tér magához."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 115,
-            "pos": [-2839.27, 1232.78, 5.6],
+            "pos": [
+                -2839.27,
+                1232.78,
+                5.6
+            ],
             "rot": 44,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 73, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 73,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

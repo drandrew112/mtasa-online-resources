@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [29.38, 1205.38, 19.09],
+    "center": [
+        29.38,
+        1205.38,
+        19.09
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker with blurry vision",
                 "description": "A construction worker outside a small store in Fort Carson feels sick, has blurry vision and has been drinking water all shift. He forgot his diabetes tablets at home this week."
+            },
+            "hu": {
+                "title": "Munkás homályos látással",
+                "description": "Egy építőmunkás rosszul érzi magát Fort Carsonban, egy kis üzlet előtt, homályosan lát, és egész műszakban vizet ivott. Ezen a héten otthon felejtette a cukorbetegségre szedett tablettáit."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 50,
-            "pos": [29.38, 1205.38, 19.09],
+            "pos": [
+                29.38,
+                1205.38,
+                19.09
+            ],
             "rot": 186,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 425 }
+            "state": {
+                "glucose": 425
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-23, 1068.5, 19.74],
+    "center": [
+        -23,
+        1068.5,
+        19.74
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Breathed in smoke",
                 "description": "A man outside a small store in Fort Carson pulled his friend out of a smoking barn and breathed in thick black smoke. He is coughing and has soot around his nose."
+            },
+            "hu": {
+                "title": "Füstöt lélegzett be",
+                "description": "Egy férfi Fort Carsonban, egy kis üzlet előtt kihúzta a barátját egy füstölgő istállóból, és sűrű, fekete füstöt lélegzett be. Köhög, az orra körül pedig korom látható."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [-23, 1068.5, 19.74],
+            "pos": [
+                -23,
+                1068.5,
+                19.74
+            ],
             "rot": 266,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 91 }
+            "state": {
+                "spo2": 91
+            }
         }
     ]
 }

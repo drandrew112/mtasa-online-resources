@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1954.63, -2017.62, 13.55],
+    "center": [
+        1954.63,
+        -2017.62,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the leg, heavy bleeding",
                 "description": "A young man was shot in the thigh on the pavement in El Corona. Blood is spurting and his friend is pressing on it with a T-shirt. He is getting pale and sleepy."
+            },
+            "hu": {
+                "title": "Lábon lőtték, erős vérzés",
+                "description": "Egy fiatal férfit combon lőttek El Corona járdáján. Spriccel a vér, barátja egy pólóval próbálja elszorítani a sebet. A férfi egyre sápadtabb és álmosabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [1954.63, -2017.62, 13.55],
+            "pos": [
+                1954.63,
+                -2017.62,
+                13.55
+            ],
             "rot": 96,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 3 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                }
             ],
-            "state": { "bloodVolume": 3500, "bleeding": 2, "consciousness": "dazed" }
+            "state": {
+                "bloodVolume": 3500,
+                "bleeding": 2,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

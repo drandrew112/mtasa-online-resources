@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2379.25, 2.815, 35.313],
+    "center": [
+        -2379.25,
+        2.815,
+        35.313
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Nausea and weakness",
                 "description": "An older woman sitting on the sidewalk says she has had heartburn all day, now with nausea and cold sweat. She is sure it was the clam chowder."
+            },
+            "hu": {
+                "title": "Hányinger és gyengeség",
+                "description": "Egy idősebb nő a járdán ülve azt mondja, egész nap gyomorégése volt, most pedig hányingere és hideg verejtékezése is van. Biztos benne, hogy a kagylóleves okozta."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 141,
-            "pos": [-2379.25, 2.815, 35.313],
+            "pos": [
+                -2379.25,
+                2.815,
+                35.313
+            ],
             "rot": 294,
             "anim": "sit",
             "injuries": [],

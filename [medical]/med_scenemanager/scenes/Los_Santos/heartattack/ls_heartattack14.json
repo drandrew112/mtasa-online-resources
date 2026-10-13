@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2203.191, -1067.587, 41.998],
+    "center": [
+        2203.191,
+        -1067.587,
+        41.998
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "Passers-by found a man slumped on the sidewalk, barely breathing, skin like cold ash. His shopping bag is spilled across the pavement."
+            },
+            "hu": {
+                "title": "Eszméletlen, szürkés bőr",
+                "description": "Járókelők egy férfit találtak összeroskadva a járdán. Alig lélegzik, bőre olyan szürke, mint a hideg hamu. A bevásárlószatyra tartalma szétszóródott a járdán."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 58,
-            "pos": [2203.191, -1067.587, 41.998],
+            "pos": [
+                2203.191,
+                -1067.587,
+                41.998
+            ],
             "rot": 221,
             "anim": "ko_back",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-935.62, 1408.97, 29.82],
+    "center": [
+        -935.62,
+        1408.97,
+        29.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Bystander hit by stray bullet",
                 "description": "A woman walking by the dusty roadside near Las Barrancas was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking."
+            },
+            "hu": {
+                "title": "Kóbor lövedék sebesített meg egy járókelőt",
+                "description": "Egy nőt vállon talált egy eltévedt lövedék, miközben Las Barrancas poros útja mellett sétált, és a közelben verekedés tört ki. A ruháján keresztül vérzik, és remeg."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [-935.62, 1408.97, 29.82],
+            "pos": [
+                -935.62,
+                1408.97,
+                29.82
+            ],
             "rot": 20,
             "anim": "sit",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4369 }
+            "state": {
+                "bloodVolume": 4369
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [-1969.53, -2223.01, 63.61],
+    "center": [
+        -1969.53,
+        -2223.01,
+        63.61
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Teen pulled from the creek",
                 "description": "Friends pulled a teenager out of the creek after he jumped in from a rope swing. They carried him up on the road shoulder in Angel Pine. He is gasping and drowsy."
+            },
+            "hu": {
+                "title": "Tinit húztak ki a patakból",
+                "description": "Barátai kihúztak egy tinédzsert a patakból, miután kötélhintáról ugrott a vízbe. Az Angel Pine-i útpadkára vitték. A fiú levegő után kapkod, és bágyadt."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 105,
-            "pos": [-1969.53, -2223.01, 63.61],
+            "pos": [
+                -1969.53,
+                -2223.01,
+                63.61
+            ],
             "rot": 10,
             "anim": "ko_back",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 82, "consciousness": "dazed" }
+            "state": {
+                "spo2": 82,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

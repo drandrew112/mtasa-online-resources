@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [175.625, -259.25, 1.578],
+    "center": [
+        175.625,
+        -259.25,
+        1.578
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, no pulse",
                 "description": "A truck driver at the depot was unloading crates when he grabbed his chest and fell next to the road. No pulse, not breathing."
+            },
+            "hu": {
+                "title": "Összeesett, nincs pulzusa",
+                "description": "Egy teherautó-sofőr ládákat rakodott le a telephelyen, amikor a mellkasához kapott, majd összeesett az út mellett. Nincs pulzusa, és nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [175.625, -259.25, 1.578],
+            "pos": [
+                175.625,
+                -259.25,
+                1.578
+            ],
             "rot": 182,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

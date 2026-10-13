@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2208.62, 738.63, 49.44],
+    "center": [
+        -2208.62,
+        738.63,
+        49.44
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker acting drunk",
                 "description": "Coworkers on the sidewalk in Chinatown say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+            },
+            "hu": {
+                "title": "Részegnek tűnő munkás",
+                "description": "Chinatown járdáján munkatársai szerint egyik kollégájuk részegnek tűnik, izzad és elmosódottan beszél, pedig sosem iszik. Cukorbeteg, és ebédszünet nélkül dolgozott."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 50,
-            "pos": [-2208.62, 738.63, 49.44],
+            "pos": [
+                -2208.62,
+                738.63,
+                49.44
+            ],
             "rot": 202,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 39, "consciousness": "confused" }
+            "state": {
+                "glucose": 39,
+                "consciousness": "confused"
+            }
         }
     ]
 }

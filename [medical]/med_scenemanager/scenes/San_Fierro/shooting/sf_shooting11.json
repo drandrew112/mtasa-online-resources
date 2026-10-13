@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2816.5, 184.13, 7.18],
+    "center": [
+        -2816.5,
+        184.13,
+        7.18
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Gang fight, two wounded",
                 "description": "A fight between two groups ended in gunfire at a bus stop in Ocean Flats. One young man is lying on the ground, another is crouching against a wall with a bleeding hand."
+            },
+            "hu": {
+                "title": "Bandaharc, két sebesült",
+                "description": "Ocean Flats egyik buszmegállójában két csoport verekedése lövöldözésbe torkollott. Egy fiatal férfi a földön fekszik, egy másik a falnak kuporodik, vérző kézzel."
             }
         },
         "caller": "SceneManager",
@@ -23,23 +31,42 @@
         {
             "id": "p1",
             "skin": 175,
-            "pos": [-2816.5, 184.13, 7.18],
+            "pos": [
+                -2816.5,
+                184.13,
+                7.18
+            ],
             "rot": 259,
             "anim": "ko_back",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "bloodVolume": 4097 }
+            "state": {
+                "bloodVolume": 4097
+            }
         },
         {
             "id": "p2",
             "skin": 174,
-            "pos": [-2816.5, 186.33, 7.28],
+            "pos": [
+                -2816.5,
+                186.33,
+                7.28
+            ],
             "rot": 90,
             "anim": "crouch",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
             "state": {}
         }

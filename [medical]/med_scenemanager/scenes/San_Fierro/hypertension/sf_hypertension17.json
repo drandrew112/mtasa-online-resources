@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1706.384, -564.734, 14.939],
+    "center": [
+        -1706.384,
+        -564.734,
+        14.939
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Facial droop, slurred speech",
                 "description": "A woman's friend noticed the left side of her face drooping while they were talking. She is slurring and says her head is pounding."
+            },
+            "hu": {
+                "title": "Féloldali arclógás, elmosódott beszéd",
+                "description": "Egy nő barátja beszélgetés közben észrevette, hogy a nő arcának bal oldala lebiggyed. A beszéde elmosódott, és azt mondja, lüktet a feje."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [-1706.384, -564.734, 14.939],
+            "pos": [
+                -1706.384,
+                -564.734,
+                14.939
+            ],
             "rot": 107.3,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [-308.414, 876.079, 9.567],
+    "center": [
+        -308.414,
+        876.079,
+        9.567
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Faint and confused",
                 "description": "An elderly woman walking to the post office keeps fainting by the road. Slow pulse, cold sweat, confused."
+            },
+            "hu": {
+                "title": "Ájulás és zavartság",
+                "description": "Egy idős nő a postára tartva újra és újra elájul az út mellett. Lassú a pulzusa, hideg verejték lepi el, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [-308.414, 876.079, 9.567],
+            "pos": [
+                -308.414,
+                876.079,
+                9.567
+            ],
             "rot": 85,
             "anim": "sit",
             "injuries": [],

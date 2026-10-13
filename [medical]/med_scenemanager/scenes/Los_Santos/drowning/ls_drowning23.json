@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1020.63, -2112.1, 13.15],
+    "center": [
+        1020.63,
+        -2112.1,
+        13.15
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swimmer swallowed water",
                 "description": "A swimmer got into trouble in the lake and was helped out and brought up to the street in Verdant Bluffs. She is coughing hard, breathless and says her chest hurts."
+            },
+            "hu": {
+                "title": "Úszó vizet nyelt",
+                "description": "Egy úszó bajba került a tóban, majd segítettek neki kijutni, és felvitték az utcára Verdant Bluffs területén. Erősen köhög, légszomja van, és azt mondja, fáj a mellkasa."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 138,
-            "pos": [1020.63, -2112.1, 13.15],
+            "pos": [
+                1020.63,
+                -2112.1,
+                13.15
+            ],
             "rot": 165,
             "anim": "sit",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                }
             ],
-            "state": { "spo2": 90 }
+            "state": {
+                "spo2": 90
+            }
         }
     ]
 }

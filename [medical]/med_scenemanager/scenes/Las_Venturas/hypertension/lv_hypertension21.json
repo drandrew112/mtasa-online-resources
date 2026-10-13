@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2183.27, 1135.013, 12.67],
+    "center": [
+        2183.27,
+        1135.013,
+        12.67
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy, nosebleed",
                 "description": "An older woman feels dizzy and has a slow nosebleed. She is on blood thinners and her daughter is worried."
+            },
+            "hu": {
+                "title": "Szédülés, orrvérzés",
+                "description": "Egy idősebb nő szédül, és lassan vérzik az orra. Véralvadásgátlót szed, a lánya pedig aggódik érte."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [2183.27, 1135.013, 12.67],
+            "pos": [
+                2183.27,
+                1135.013,
+                12.67
+            ],
             "rot": 153.6,
             "anim": "sit",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1414.83, -312.29, 6.3],
+    "center": [
+        -1414.83,
+        -312.29,
+        6.3
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Struck by a speeding car",
                 "description": "A speeding car hit a pedestrian at a busy crossroads in Easter Bay Airport. The pedestrian is unconscious and bleeding heavily from his head and legs."
+            },
+            "hu": {
+                "title": "Elütötte egy száguldó autó",
+                "description": "Easter Bay Airport forgalmas kereszteződésében egy száguldó autó elütött egy gyalogost. A sérült eszméletlen, a fejéből és a lábából erősen vérzik."
             }
         },
         "caller": "SceneManager",
@@ -22,37 +30,102 @@
         {
             "id": "v1",
             "model": 585,
-            "pos": [-1418.18, -318.44, 6.05],
-            "rot": [0, 0, 327.6],
+            "pos": [
+                -1418.18,
+                -318.44,
+                6.05
+            ],
+            "rot": [
+                0,
+                0,
+                327.6
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                170,
+                20,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "SF66 300",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 66,
-            "pos": [-1414.83, -312.29, 6.3],
+            "pos": [
+                -1414.83,
+                -312.29,
+                6.3
+            ],
             "rot": 49,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 3
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3506, "consciousness": "unconscious" }
+            "state": {
+                "bloodVolume": 3506,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

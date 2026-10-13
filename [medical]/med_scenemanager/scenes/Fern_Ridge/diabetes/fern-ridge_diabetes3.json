@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1362.07, -34.76, 34.47],
+    "center": [
+        1362.07,
+        -34.76,
+        34.47
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Insulin pump failed",
                 "description": "A woman on the road shoulder near Fern Ridge says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            },
+            "hu": {
+                "title": "Elromlott az inzulinpumpa",
+                "description": "Egy nő az útpadkán, Fern Ridge közelében azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, erőlködve lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 190,
-            "pos": [1362.07, -34.76, 34.47],
+            "pos": [
+                1362.07,
+                -34.76,
+                34.47
+            ],
             "rot": 14,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 410 }
+            "state": {
+                "glucose": 410
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2179, 1306, 10.82],
+    "center": [
+        2179,
+        1306,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Swallowed a toy part on a dare",
                 "description": "A teenager on a bench near the Camel's Toe swallowed a plastic piece from a toy for a dare. He is coughing weakly, silent between coughs, with a high-pitched wheeze."
+            },
+            "hu": {
+                "title": "Fogadásból lenyelt egy játékalkatrészt",
+                "description": "Egy tinédzser lenyelt egy műanyag alkatrészt egy játékból fogadásból, a Camel's Toe közelében lévő padon. Gyengén köhög, a köhögések között nem ad hangot, és magas sípoló hang hallatszik a légzéséből."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 293,
-            "pos": [2179, 1306, 10.82],
+            "pos": [
+                2179,
+                1306,
+                10.82
+            ],
             "rot": 61,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 80 }
+            "state": {
+                "spo2": 80
+            }
         }
     ]
 }

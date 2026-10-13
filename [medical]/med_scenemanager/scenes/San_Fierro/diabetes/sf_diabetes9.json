@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1770.12, -73.21, 7.49],
+    "center": [
+        -1770.12,
+        -73.21,
+        7.49
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Student, fruity breath",
                 "description": "A student on the sidewalk in Easter Bay Airport has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week."
+            },
+            "hu": {
+                "title": "Diák, gyümölcsös lehelet",
+                "description": "Easter Bay Airport járdáján egy diáklánynak fáj a hasa, lehelete körömlakklemosóra emlékeztet. Barátai szerint a vizsgaidőszakban kihagyta az inzulinadagjait."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [-1770.12, -73.21, 7.49],
+            "pos": [
+                -1770.12,
+                -73.21,
+                7.49
+            ],
             "rot": 273,
             "anim": "tired",
             "injuries": [],
-            "state": { "glucose": 466, "heartRate": 117 }
+            "state": {
+                "glucose": 466,
+                "heartRate": 117
+            }
         }
     ]
 }

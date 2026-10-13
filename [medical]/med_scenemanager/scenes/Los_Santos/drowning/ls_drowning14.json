@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [506.57, -1164.56, 59.23],
+    "center": [
+        506.57,
+        -1164.56,
+        59.23
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man fell in the water",
                 "description": "A drunk man fell into a swimming pool and was pulled out by his friends and brought out to the driveway of a villa in Richman. He is coughing, shivering and confused."
+            },
+            "hu": {
+                "title": "Részeg férfi esett a vízbe",
+                "description": "Egy részeg férfi beleesett egy úszómedencébe. Barátai kihúzták, majd kivitték egy richmani villa felhajtójára. Köhög, reszket, és zavart."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,27 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [506.57, -1164.56, 59.23],
+            "pos": [
+                506.57,
+                -1164.56,
+                59.23
+            ],
             "rot": 27,
             "anim": "cough",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "alcohol", "severity": 2 }
+                {
+                    "type": "suffocation",
+                    "severity": 1
+                },
+                {
+                    "type": "alcohol",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 88, "consciousness": "confused" }
+            "state": {
+                "spo2": 88,
+                "consciousness": "confused"
+            }
         }
     ]
 }

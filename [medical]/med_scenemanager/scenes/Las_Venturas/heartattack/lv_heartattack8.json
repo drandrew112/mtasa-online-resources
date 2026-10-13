@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2080.25, 2701.125, 10.813],
+    "center": [
+        2080.25,
+        2701.125,
+        10.813
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Weak and short of breath",
                 "description": "An older man walking back to his motel had to sit on the sidewalk. He is short of breath, sweating and has a \"heavy\" chest. He blames the all-you-can-eat steak."
+            },
+            "hu": {
+                "title": "Gyengeség és légszomj",
+                "description": "Egy idősebb férfinak le kellett ülnie a járdára, miközben visszafelé sétált a moteléhez. Légszomja van, izzad, és nyomást érez a mellkasában. A korlátlan steakevésre fogja."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 68,
-            "pos": [2080.25, 2701.125, 10.813],
+            "pos": [
+                2080.25,
+                2701.125,
+                10.813
+            ],
             "rot": 38,
             "anim": "sit",
             "injuries": [],

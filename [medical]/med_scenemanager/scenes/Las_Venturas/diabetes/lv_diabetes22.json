@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2051.74, 1809.84, 10.98],
+    "center": [
+        2051.74,
+        1809.84,
+        10.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Could not wake him after a party",
                 "description": "Friends at the side of the road on The Strip cannot wake a man after a night out. He is diabetic, drank a lot of sugary cocktails and did not take his insulin."
+            },
+            "hu": {
+                "title": "Nem tudják felébreszteni a buli után",
+                "description": "Barátai nem tudnak felébreszteni egy férfit a Strip út mellett, miután egy éjszakát szórakozott. Cukorbeteg, sok cukros koktélt ivott, és nem adta be az inzulinját."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 100,
-            "pos": [2051.74, 1809.84, 10.98],
+            "pos": [
+                2051.74,
+                1809.84,
+                10.98
+            ],
             "rot": 258,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 671, "heartRate": 128, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 671,
+                "heartRate": 128,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

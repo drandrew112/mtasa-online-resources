@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2720, 867.25, 10.9],
+    "center": [
+        2720,
+        867.25,
+        10.9
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Diabetic not waking up",
                 "description": "A man outside a souvenir shop in Rockshore East cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning."
+            },
+            "hu": {
+                "title": "A cukorbeteg nem ébreszthető",
+                "description": "Egy férfit nem lehet felébreszteni a Rockshore East egyik ajándékboltja előtt. A barátnője szerint beadta az inzulinját, de ma reggel kihányta a reggelijét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [2720, 867.25, 10.9],
+            "pos": [
+                2720,
+                867.25,
+                10.9
+            ],
             "rot": 265,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "glucose": 23, "heartRate": 104, "consciousness": "unconscious" }
+            "state": {
+                "glucose": 23,
+                "heartRate": 104,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

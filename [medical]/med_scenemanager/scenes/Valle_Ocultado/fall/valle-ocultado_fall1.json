@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-860.75, 2691.3, 43.11],
+    "center": [
+        -860.75,
+        2691.3,
+        43.11
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell from a ladder picking fruit",
                 "description": "A woman picking fruit fell from her ladder on the dusty ground in Valle Ocultado. She is lying on her back with a very painful hip and a cut on her forehead."
+            },
+            "hu": {
+                "title": "Gyümölcsszedés közben leesett a létráról",
+                "description": "Valle Ocultado poros földjén egy gyümölcsszedő nő leesett a létráról. A hátán fekszik, nagyon fáj a csípője, és seb van a homlokán."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [-860.75, 2691.3, 43.11],
+            "pos": [
+                -860.75,
+                2691.3,
+                43.11
+            ],
             "rot": 353,
             "anim": "ko_back",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                },
+                {
+                    "type": "head_injury",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 52 }
+            "state": {
+                "pain": 52
+            }
         }
     ]
 }

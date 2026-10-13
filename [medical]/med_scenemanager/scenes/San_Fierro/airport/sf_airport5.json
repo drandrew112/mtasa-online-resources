@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1225.5, -745, 61.55],
+    "center": [
+        -1225.5,
+        -745,
+        61.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly traveller fell at the curb",
                 "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Easter Bay Airport. He cannot stand and his hip hurts badly."
+            },
+            "hu": {
+                "title": "Idős utas elesett a járdaszegélynél",
+                "description": "Egy nehéz bőröndöt húzó idős férfi elesett az Easter Bay Airport terminálja előtti járdaszegélynél. Nem tud felállni, és erősen fáj a csípője."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [-1225.5, -745, 61.55],
+            "pos": [
+                -1225.5,
+                -745,
+                61.55
+            ],
             "rot": 130,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                {
+                    "type": "fracture",
+                    "severity": 2
+                }
             ],
-            "state": { "pain": 43 }
+            "state": {
+                "pain": 43
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [359.37, -149.86, 2.02],
+    "center": [
+        359.37,
+        -149.86,
+        2.02
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "No helmet, head injury",
                 "description": "A young rider without a helmet crashed outside a house just outside Blueberry while doing a wheelie. He is lying on the road, unconscious, bleeding from the ear."
+            },
+            "hu": {
+                "title": "Sisak nélküli motoros fejsérülése",
+                "description": "Egy fiatal, sisak nélküli motoros egykerekezés közben balesetet szenvedett egy ház előtt, Blueberry külterületén. Eszméletlenül fekszik az úton, a füléből vérzik."
             }
         },
         "caller": "SceneManager",
@@ -22,36 +30,97 @@
         {
             "id": "v1",
             "model": 463,
-            "pos": [363.45, -144.6, 1.56],
-            "rot": [0, 0, 7.4],
+            "pos": [
+                363.45,
+                -144.6,
+                1.56
+            ],
+            "rot": [
+                0,
+                0,
+                7.4
+            ],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "colors": [
+                180,
+                90,
+                20,
+                245,
+                245,
+                245,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
             "paintjob": 3,
             "plate": "RC93 177",
-            "variant": [255, 255],
+            "variant": [
+                255,
+                255
+            ],
             "upgrades": [],
-            "doors": [2, 0, 2, 3, 0, 0],
-            "panels": [3, 2, 2, 1, 2, 3, 1],
-            "lights": [1, 1, 0, 0],
-            "wheels": [0, 0, 0, 0]
+            "doors": [
+                2,
+                0,
+                2,
+                3,
+                0,
+                0
+            ],
+            "panels": [
+                3,
+                2,
+                2,
+                1,
+                2,
+                3,
+                1
+            ],
+            "lights": [
+                1,
+                1,
+                0,
+                0
+            ],
+            "wheels": [
+                0,
+                0,
+                0,
+                0
+            ]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 176,
-            "pos": [359.37, -149.86, 2.02],
+            "pos": [
+                359.37,
+                -149.86,
+                2.02
+            ],
             "rot": 303,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "gunshot", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "unconscious" }
+            "state": {
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

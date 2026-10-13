@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [236.087, -373.741, 8.296],
+    "center": [
+        236.087,
+        -373.741,
+        8.296
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Chest pain, very high BP",
                 "description": "A woman who measured her blood pressure at the pharmacy got a reading \"off the chart\". Now her chest hurts and her head is pounding."
+            },
+            "hu": {
+                "title": "Mellkasi fájdalom, rendkívül magas vérnyomás",
+                "description": "Egy nő megmérte a vérnyomását a gyógyszertárban, és az eredmény „kiakadt a skáláról”. Most fáj a mellkasa, és lüktet a feje."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [236.087, -373.741, 8.296],
+            "pos": [
+                236.087,
+                -373.741,
+                8.296
+            ],
             "rot": 47,
             "anim": "lean",
             "injuries": [],

@@ -5,7 +5,11 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [624.969, 336.003, 19.817],
+    "center": [
+        624.969,
+        336.003,
+        19.817
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Unresponsive, grey skin",
                 "description": "A man was found slumped by the road near the barns. Grey, cold and barely breathing. A pitchfork lies next to him."
+            },
+            "hu": {
+                "title": "Nem reagál, szürkés bőr",
+                "description": "Egy férfit az istállók közelében, az út mellett találtak összeroskadva. Szürkés, hideg, és alig lélegzik. Egy vasvilla hever mellette."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [624.969, 336.003, 19.817],
+            "pos": [
+                624.969,
+                336.003,
+                19.817
+            ],
             "rot": 283,
             "anim": "ko_back",
             "injuries": [],

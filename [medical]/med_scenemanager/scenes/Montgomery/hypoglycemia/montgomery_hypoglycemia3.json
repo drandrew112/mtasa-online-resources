@@ -5,7 +5,11 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [1490, 110, 28.98],
+    "center": [
+        1490,
+        110,
+        28.98
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Acting strange, sweaty",
                 "description": "A woman on the grass just outside Montgomery is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic."
+            },
+            "hu": {
+                "title": "Furcsán viselkedik, izzad",
+                "description": "Egy nő a Montgomery melletti füves területen körbe-körbe bolyong, izzadt és sápadt, és nem tudja, milyen nap van. A barátja szerint cukorbeteg."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,19 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [1490, 110, 28.98],
+            "pos": [
+                1490,
+                110,
+                28.98
+            ],
             "rot": 19,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 43, "heartRate": 108, "consciousness": "confused" }
+            "state": {
+                "glucose": 43,
+                "heartRate": 108,
+                "consciousness": "confused"
+            }
         }
     ]
 }

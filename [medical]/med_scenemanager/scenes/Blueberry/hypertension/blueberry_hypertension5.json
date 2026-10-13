@@ -5,7 +5,11 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [-30, -430, 2.48],
+    "center": [
+        -30,
+        -430,
+        2.48
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Dizzy spell, missed meds",
                 "description": "A woman in the park just outside Blueberry had a dizzy spell and sat down on the ground. She says she forgot her blood pressure medication for three days."
+            },
+            "hu": {
+                "title": "Szédülés, kihagyott gyógyszerek",
+                "description": "Egy nő megszédült, majd leült a földre a Blueberry külterületén lévő parkban. Azt mondja, három napja elfelejtette bevenni a vérnyomáscsökkentő gyógyszerét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,20 @@
         {
             "id": "p1",
             "skin": 219,
-            "pos": [-30, -430, 2.48],
+            "pos": [
+                -30,
+                -430,
+                2.48
+            ],
             "rot": 5,
             "anim": "crouch",
             "injuries": [],
-            "state": { "systolic": 163, "diastolic": 96, "heartRate": 82, "consciousness": "stable" }
+            "state": {
+                "systolic": 163,
+                "diastolic": 96,
+                "heartRate": 82,
+                "consciousness": "stable"
+            }
         }
     ]
 }

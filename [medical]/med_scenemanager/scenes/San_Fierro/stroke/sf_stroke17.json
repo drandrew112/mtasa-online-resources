@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-2265.33, -372.48, 51.01],
+    "center": [
+        -2265.33,
+        -372.48,
+        51.01
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worst headache of her life",
                 "description": "A woman at a bus stop in Avispa Country Club grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy."
+            },
+            "hu": {
+                "title": "Élete legerősebb fejfájása",
+                "description": "Avispa Country Club egyik buszmegállójában egy nő a fejét fogja, és azt kiabálja, soha nem fájt még ennyire. Egyszer hányt, most pedig egyre aluszékonyabb."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,24 @@
         {
             "id": "p1",
             "skin": 214,
-            "pos": [-2265.33, -372.48, 51.01],
+            "pos": [
+                -2265.33,
+                -372.48,
+                51.01
+            ],
             "rot": 274,
             "anim": "ko_back",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                {
+                    "type": "stroke",
+                    "severity": 3
+                }
             ],
-            "state": { "systolic": 206, "diastolic": 112, "consciousness": "dazed" }
+            "state": {
+                "systolic": 206,
+                "diastolic": 112,
+                "consciousness": "dazed"
+            }
         }
     ]
 }

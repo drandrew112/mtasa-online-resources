@@ -5,7 +5,11 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [-725.664, 2689.964, 52.774],
+    "center": [
+        -725.664,
+        2689.964,
+        52.774
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Collapsed, not breathing",
                 "description": "A hermit who lives in the valley walked to the road for help and collapsed. Not breathing."
+            },
+            "hu": {
+                "title": "Összeesett, nem lélegzik",
+                "description": "A völgyben élő remete segítségért az úthoz sétált, majd összeesett. Nem lélegzik."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 17,
-            "pos": [-725.664, 2689.964, 52.774],
+            "pos": [
+                -725.664,
+                2689.964,
+                52.774
+            ],
             "rot": 309,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+            "state": {
+                "consciousness": "clinical_death",
+                "rhythm": "VF"
+            }
         }
     ]
 }

@@ -5,7 +5,11 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [-2680, 2680, 91.24],
+    "center": [
+        -2680,
+        2680,
+        91.24
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Very thirsty and confused",
                 "description": "A farmhand on open ground in Bayside keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            },
+            "hu": {
+                "title": "Nagyon szomjas és zavart",
+                "description": "Egy mezőgazdasági munkás Bayside-ban, egy nyílt területen újra és újra vizet kér. Egész nap folyamatosan vizelt, most pedig már arra sem emlékszik, hová indult."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 22,
-            "pos": [-2680, 2680, 91.24],
+            "pos": [
+                -2680,
+                2680,
+                91.24
+            ],
             "rot": 234,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 506, "consciousness": "confused" }
+            "state": {
+                "glucose": 506,
+                "consciousness": "confused"
+            }
         }
     ]
 }

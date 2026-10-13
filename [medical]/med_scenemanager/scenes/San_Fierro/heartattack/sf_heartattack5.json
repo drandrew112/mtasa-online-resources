@@ -5,7 +5,11 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [-1547.612, 997.225, 7.188],
+    "center": [
+        -1547.612,
+        997.225,
+        7.188
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Lightheaded, slow pulse",
                 "description": "An elderly woman feeding pigeons keeps nearly blacking out. A passing medic student counted a pulse \"in the forties\". The pigeons have not left."
+            },
+            "hu": {
+                "title": "Szédülés, lassú pulzus",
+                "description": "Egy idős nő galambokat etet, és újra meg újra majdnem elveszti az eszméletét. Egy arra járó orvostanhallgató negyven körüli pulzust számolt. A galambok továbbra is ott vannak."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 38,
-            "pos": [-1547.612, 997.225, 7.188],
+            "pos": [
+                -1547.612,
+                997.225,
+                7.188
+            ],
             "rot": 266,
             "anim": "sit",
             "injuries": [],

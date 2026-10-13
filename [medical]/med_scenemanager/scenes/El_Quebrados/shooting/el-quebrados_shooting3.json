@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-1580.15, 2473.75, 66.58],
+    "center": [
+        -1580.15,
+        2473.75,
+        66.58
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Shot in the back",
                 "description": "A man was shot in the back while running away on the road shoulder near El Quebrados. He is lying on his stomach and says he cannot feel his legs."
+            },
+            "hu": {
+                "title": "Hátba lőtték",
+                "description": "Egy férfit hátba lőttek, miközben menekült az útpadkán, El Quebrados közelében. Hason fekszik, és azt mondja, nem érzi a lábait."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [-1580.15, 2473.75, 66.58],
+            "pos": [
+                -1580.15,
+                2473.75,
+                66.58
+            ],
             "rot": 73,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 4197, "pain": 31 }
+            "state": {
+                "bloodVolume": 4197,
+                "pain": 31
+            }
         }
     ]
 }

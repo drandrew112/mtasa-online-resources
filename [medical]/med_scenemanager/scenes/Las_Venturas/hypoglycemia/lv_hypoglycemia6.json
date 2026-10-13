@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1698.4, 2819.95, 10.84],
+    "center": [
+        1698.4,
+        2819.95,
+        10.84
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Worker acting drunk",
                 "description": "Coworkers at the side of the road in Prickle Pine say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+            },
+            "hu": {
+                "title": "Részegnek tűnő dolgozó",
+                "description": "Munkatársak azt mondják az út mellett, Prickle Pine-ban, hogy kollégájuk részegnek tűnik, izzad és összefolyó szavakkal beszél, pedig sosem iszik. Cukorbeteg, és kihagyta az ebédszünetét."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [1698.4, 2819.95, 10.84],
+            "pos": [
+                1698.4,
+                2819.95,
+                10.84
+            ],
             "rot": 125,
             "anim": "drunk",
             "injuries": [],
-            "state": { "glucose": 38 }
+            "state": {
+                "glucose": 38
+            }
         }
     ]
 }

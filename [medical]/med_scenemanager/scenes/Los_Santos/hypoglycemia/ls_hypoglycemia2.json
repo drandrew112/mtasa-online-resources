@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [2438.5, -1556.875, 24],
+    "center": [
+        2438.5,
+        -1556.875,
+        24
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger shaking and sweaty",
                 "description": "A jogger sat down on the pavement, shaking, pale and drenched in sweat. He says he feels weak and his heart is racing. He is diabetic and went running before breakfast."
+            },
+            "hu": {
+                "title": "Remegő, izzadt kocogó",
+                "description": "Egy kocogó leült a járdára, remeg, sápadt és csurom izzadság. Azt mondja, gyenge, és hevesen ver a szíve. Cukorbeteg, reggeli előtt ment futni."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 96,
-            "pos": [2438.5, -1556.875, 24],
+            "pos": [
+                2438.5,
+                -1556.875,
+                24
+            ],
             "rot": 75,
             "anim": "sit",
             "injuries": [],
-            "state": { "glucose": 52 }
+            "state": {
+                "glucose": 52
+            }
         }
     ]
 }

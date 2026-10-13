@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [2380.25, 2583.13, 12.24],
+    "center": [
+        2380.25,
+        2583.13,
+        12.24
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Slipped in high heels",
                 "description": "A woman in high heels slipped on a spilled drink outside a souvenir shop near the Julius Thruway North after a night at the casino and landed on her outstretched hand. Her wrist is swollen and bent."
+            },
+            "hu": {
+                "title": "Magas sarkú cipőben megcsúszott",
+                "description": "Egy magas sarkú cipőt viselő nő megcsúszott egy kilöttyent italon a Julius Thruway North közelében, egy szuvenírbolt előtt, miután az éjszakát a kaszinóban töltötte. Kinyújtott kézzel esett el; a csuklója duzzadt és elferdült."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,22 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [2380.25, 2583.13, 12.24],
+            "pos": [
+                2380.25,
+                2583.13,
+                12.24
+            ],
             "rot": 285,
             "anim": "sit",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "pain": 27 }
+            "state": {
+                "pain": 27
+            }
         }
     ]
 }

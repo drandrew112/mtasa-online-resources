@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [1994.56, -2102.87, 13.55],
+    "center": [
+        1994.56,
+        -2102.87,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man found slumped, pinpoint pupils",
                 "description": "A delivery driver found a man slumped behind the bins at a bus stop in Willowfield. He is grey, barely breathing and snoring. There is foil and a lighter next to him."
+            },
+            "hu": {
+                "title": "Összeroskadva találták, tűhegynyi pupillák",
+                "description": "Egy futár egy férfit talált összeroskadva Willowfield egyik buszmegállójánál, a kukák mögött. Szürkés a bőre, alig lélegzik, és horkoló légzést hallat. Fólia és öngyújtó hever mellette."
             }
         },
         "caller": "SceneManager",
@@ -23,13 +31,23 @@
         {
             "id": "p1",
             "skin": 137,
-            "pos": [1994.56, -2102.87, 13.55],
+            "pos": [
+                1994.56,
+                -2102.87,
+                13.55
+            ],
             "rot": 263,
             "anim": "ko_front",
             "injuries": [
-                { "type": "opioid", "severity": 2 }
+                {
+                    "type": "opioid",
+                    "severity": 2
+                }
             ],
-            "state": { "spo2": 80, "consciousness": "unconscious" }
+            "state": {
+                "spo2": 80,
+                "consciousness": "unconscious"
+            }
         }
     ]
 }

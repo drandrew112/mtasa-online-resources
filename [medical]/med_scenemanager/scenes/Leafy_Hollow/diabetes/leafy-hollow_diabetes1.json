@@ -5,7 +5,11 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [-980, -1720, 77.57],
+    "center": [
+        -980,
+        -1720,
+        77.57
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Elderly woman hard to wake",
                 "description": "Her daughter found an elderly woman sitting at the edge of the woods in Leafy Hollow, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar."
+            },
+            "hu": {
+                "title": "Nehezen ébreszthető idős nő",
+                "description": "A lánya egy idős nőt talált az erdő szélén, Leafy Hollow területén. Nagyon álmos, nehezen ébreszthető. Napok óta sokat iszik és állandóan vizel. Vércukorszintre szed tablettát."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,18 @@
         {
             "id": "p1",
             "skin": 131,
-            "pos": [-980, -1720, 77.57],
+            "pos": [
+                -980,
+                -1720,
+                77.57
+            ],
             "rot": 330,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "bloodVolume": 3959, "glucose": 725 }
+            "state": {
+                "bloodVolume": 3959,
+                "glucose": 725
+            }
         }
     ]
 }

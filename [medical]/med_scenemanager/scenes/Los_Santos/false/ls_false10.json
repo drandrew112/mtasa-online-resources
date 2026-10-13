@@ -5,7 +5,11 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [1107.38, -1565.25, 13.55],
+    "center": [
+        1107.38,
+        -1565.25,
+        13.55
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Drunk man shouting",
                 "description": "A caller reports a drunk man shouting and falling over on the sidewalk in Market. He might be hurt."
+            },
+            "hu": {
+                "title": "Kiabáló, ittas férfi",
+                "description": "Egy bejelentő szerint egy részeg férfi kiabál és elesik a Market járdáján. Lehet, hogy megsérült."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 188,
-            "pos": [1107.38, -1565.25, 13.55],
+            "pos": [
+                1107.38,
+                -1565.25,
+                13.55
+            ],
             "rot": 283,
             "anim": "drunk",
             "injuries": [],

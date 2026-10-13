@@ -5,7 +5,11 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [680.74, -26.77, 23.37],
+    "center": [
+        680.74,
+        -26.77,
+        23.37
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Fell off a porch",
                 "description": "A man missed a step and fell off a high porch on the road shoulder in Fern Ridge. He is dazed, has a bump on his head and his arm hurts badly."
+            },
+            "hu": {
+                "title": "Leesett a verandáról",
+                "description": "Egy férfi mellélépett, és leesett egy magas verandáról Fern Ridge-ben, az útpadkánál. Zavart, dudor van a fején, és erősen fáj a karja."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 180,
-            "pos": [680.74, -26.77, 23.37],
+            "pos": [
+                680.74,
+                -26.77,
+                23.37
+            ],
             "rot": 224,
             "anim": "ko_back",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                {
+                    "type": "head_injury",
+                    "severity": 2
+                },
+                {
+                    "type": "fracture",
+                    "severity": 1
+                }
             ],
-            "state": { "consciousness": "dazed" }
+            "state": {
+                "consciousness": "dazed"
+            }
         }
     ]
 }

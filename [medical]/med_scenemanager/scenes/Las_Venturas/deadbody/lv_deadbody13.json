@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1479.17, 2763.33, 10.82],
+    "center": [
+        1479.17,
+        2763.33,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Jogger found lifeless",
                 "description": "Cyclists found a jogger lying by the roadside near the Yellow Bell Golf Course. He is not breathing, his lips are blue and his body is already cold."
+            },
+            "hu": {
+                "title": "Élettelenül fekvő kocogót találtak",
+                "description": "Kerékpárosok egy kocogót találtak az út mellett, a Yellow Bell Golf Course közelében. Nem lélegzik, kék az ajka, a teste pedig már hideg."
             }
         },
         "caller": "SceneManager",
@@ -23,11 +31,17 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [1479.17, 2763.33, 10.82],
+            "pos": [
+                1479.17,
+                2763.33,
+                10.82
+            ],
             "rot": 101,
             "anim": "ko_back",
             "injuries": [],
-            "state": { "consciousness": "dead" }
+            "state": {
+                "consciousness": "dead"
+            }
         }
     ]
 }

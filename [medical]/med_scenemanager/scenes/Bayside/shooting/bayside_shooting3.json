@@ -5,7 +5,11 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [-2300, 2660, 57.59],
+    "center": [
+        -2300,
+        2660,
+        57.59
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Man shot several times",
                 "description": "A man was shot several times in a yard just outside Bayside and is lying face down in a pool of blood. The shooter ran away on foot."
+            },
+            "hu": {
+                "title": "Többször meglőtt férfi",
+                "description": "Egy férfit többször meglőttek egy Bayside külterületén lévő udvaron. Arccal lefelé, vértócsában fekszik. A lövöldöző gyalog elmenekült."
             }
         },
         "caller": "SceneManager",
@@ -23,14 +31,26 @@
         {
             "id": "p1",
             "skin": 66,
-            "pos": [-2300, 2660, 57.59],
+            "pos": [
+                -2300,
+                2660,
+                57.59
+            ],
             "rot": 193,
             "anim": "ko_front",
             "injuries": [
-                { "type": "gunshot", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                {
+                    "type": "gunshot",
+                    "severity": 3
+                },
+                {
+                    "type": "gunshot",
+                    "severity": 2
+                }
             ],
-            "state": { "bloodVolume": 3282 }
+            "state": {
+                "bloodVolume": 3282
+            }
         }
     ]
 }

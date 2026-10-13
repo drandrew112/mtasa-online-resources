@@ -5,7 +5,11 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [1914.95, 2682.5, 10.82],
+    "center": [
+        1914.95,
+        2682.5,
+        10.82
+    ],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -13,6 +17,10 @@
             "en": {
                 "title": "Headache, nosebleed",
                 "description": "A man stumbled out of a shop with blood pouring from his nose and a crushing headache. He says his doctor warned him about his blood pressure last month."
+            },
+            "hu": {
+                "title": "Fejfájás, orrvérzés",
+                "description": "Egy férfi megtántorodva jött ki egy üzletből; az orrából ömlik a vér, és hasogató fejfájása van. Azt mondja, orvosa már a múlt hónapban figyelmeztette a vérnyomása miatt."
             }
         },
         "caller": "SceneManager",
@@ -23,7 +31,11 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [1914.95, 2682.5, 10.82],
+            "pos": [
+                1914.95,
+                2682.5,
+                10.82
+            ],
             "rot": 180,
             "anim": "sit",
             "injuries": [],
