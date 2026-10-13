@@ -60,16 +60,24 @@ local REQUIRED = {
 }
 local ready = {}
 local checking = false
+local warnTimer
 
-local function tryReport()
-    if not checking then return end
+local function missingResources()
+    local missing = {}
     for _, name in ipairs(REQUIRED) do
         if not ready[name] then
             local res = getResourceFromName(name)
-            if res and getResourceState(res) == "running" then return end
+            if res and getResourceState(res) == "running" then missing[#missing + 1] = name end
         end
     end
+    return missing
+end
+
+local function tryReport()
+    if not checking then return end
+    if #missingResources() > 0 then return end
     checking = false
+    if isTimer(warnTimer) then killTimer(warnTimer) end
     triggerServerEvent("acc:clientReady", localPlayer)
 end
 
@@ -82,5 +90,12 @@ end
 addEvent("acc:checkReady", true)
 addEventHandler("acc:checkReady", root, function()
     checking = true
+    if isTimer(warnTimer) then killTimer(warnTimer) end
+    warnTimer = setTimer(function()
+        local missing = missingResources()
+        if checking and #missing > 0 then
+            outputDebugString("[v_accounts] still waiting for resourceReady from: " .. table.concat(missing, ", "), 2)
+        end
+    end, 10000, 0)
     tryReport()
 end)
