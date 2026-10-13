@@ -5,11 +5,7 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [
-        46.313,
-        2670.74,
-        55.407
-    ],
+    "center": [46.313, 2670.74, 55.407],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 183,
-            "pos": [
-                46.313,
-                2670.74,
-                55.407
-            ],
+            "pos": [46.313, 2670.74, 55.407],
             "rot": 350,
             "anim": "sit",
             "injuries": [],

@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1100.87,
-        -981.5,
-        129.13
-    ],
+    "center": [-1100.87, -981.5, 129.13],
     "interior": 0,
     "dimension": 0,
     "erm": {

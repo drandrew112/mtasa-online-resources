@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        487.53,
-        2421.5,
-        29.18
-    ],
+    "center": [487.53, 2421.5, 29.18],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 190,
-            "pos": [
-                487.53,
-                2421.5,
-                29.18
-            ],
+            "pos": [487.53, 2421.5, 29.18],
             "rot": 252,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4398,
-                "glucose": 642
-            }
+            "state": { "bloodVolume": 4398, "glucose": 642 }
         }
     ]
 }

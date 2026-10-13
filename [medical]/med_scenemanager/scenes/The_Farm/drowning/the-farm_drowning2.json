@@ -5,11 +5,7 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1210,
-        -960,
-        128.27
-    ],
+    "center": [-1210, -960, 128.27],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 28,
-            "pos": [
-                -1210,
-                -960,
-                128.27
-            ],
+            "pos": [-1210, -960, 128.27],
             "rot": 164,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 75,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 75, "consciousness": "unconscious" }
         }
     ]
 }

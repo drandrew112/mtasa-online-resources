@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1059.55,
-        -1260.87,
-        129.18
-    ],
+    "center": [-1059.55, -1260.87, 129.18],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 235,
-            "pos": [
-                -1059.55,
-                -1260.87,
-                129.18
-            ],
+            "pos": [-1059.55, -1260.87, 129.18],
             "rot": 294,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3769,
-                "glucose": 764,
-                "consciousness": "dazed"
-            }
+            "state": { "bloodVolume": 3769, "glucose": 764, "consciousness": "dazed" }
         }
     ]
 }

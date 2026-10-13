@@ -5,11 +5,7 @@
     "location": "Arco del Oeste",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -769.88,
-        2564.31,
-        85.21
-    ],
+    "center": [-769.88, 2564.31, 85.21],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -769.88,
-                2564.31,
-                85.21
-            ],
+            "pos": [-769.88, 2564.31, 85.21],
             "rot": 154,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 3
-                }
+                { "type": "stroke", "severity": 3 }
             ],
-            "state": {
-                "systolic": 204,
-                "diastolic": 118,
-                "consciousness": "unconscious"
-            }
+            "state": { "systolic": 204, "diastolic": 118, "consciousness": "unconscious" }
         }
     ]
 }

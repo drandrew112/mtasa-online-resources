@@ -5,11 +5,7 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -744.811,
-        2625.678,
-        67.104
-    ],
+    "center": [-744.811, 2625.678, 67.104],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [
-                -744.811,
-                2625.678,
-                67.104
-            ],
+            "pos": [-744.811, 2625.678, 67.104],
             "rot": 93,
             "anim": "hold_side",
             "injuries": [],

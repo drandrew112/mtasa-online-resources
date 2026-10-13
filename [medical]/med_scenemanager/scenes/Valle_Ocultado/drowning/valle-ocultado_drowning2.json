@@ -5,11 +5,7 @@
     "location": "Arco del Oeste",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -769.88,
-        2564.31,
-        85.21
-    ],
+    "center": [-769.88, 2564.31, 85.21],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [
-                -769.88,
-                2564.31,
-                85.21
-            ],
+            "pos": [-769.88, 2564.31, 85.21],
             "rot": 192,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
             ],
-            "state": {
-                "spo2": 79,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 79, "consciousness": "unconscious" }
         }
     ]
 }

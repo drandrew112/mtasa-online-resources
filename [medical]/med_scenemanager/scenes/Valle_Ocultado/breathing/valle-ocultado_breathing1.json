@@ -5,11 +5,7 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -900,
-        2690,
-        45.15
-    ],
+    "center": [-900, 2690, 45.15],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                -900,
-                2690,
-                45.15
-            ],
+            "pos": [-900, 2690, 45.15],
             "rot": 295,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 85
-            }
+            "state": { "spo2": 85 }
         }
     ]
 }

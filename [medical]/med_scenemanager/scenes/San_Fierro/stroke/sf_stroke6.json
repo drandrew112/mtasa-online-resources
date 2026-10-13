@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2254.94,
-        1246.89,
-        44.14
-    ],
+    "center": [-2254.94, 1246.89, 44.14],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,93 +26,35 @@
         {
             "id": "v1",
             "model": 413,
-            "pos": [
-                -2259.38,
-                1244.62,
-                44.74
-            ],
-            "rot": [
-                0,
-                0,
-                350.1
-            ],
+            "pos": [-2259.38, 1244.62, 44.74],
+            "rot": [0, 0, 350.1],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [
-                170,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "SF89 426",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "lights": [
-                0,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 16,
-            "pos": [
-                -2254.94,
-                1246.89,
-                44.14
-            ],
+            "pos": [-2254.94, 1246.89, 44.14],
             "rot": 96,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 1
-                }
+                { "type": "stroke", "severity": 1 }
             ],
-            "state": {
-                "systolic": 189
-            }
+            "state": { "systolic": 189 }
         }
     ]
 }

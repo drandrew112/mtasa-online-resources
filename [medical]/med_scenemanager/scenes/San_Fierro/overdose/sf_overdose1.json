@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2133.95,
-        -760.78,
-        32.02
-    ],
+    "center": [-2133.95, -760.78, 32.02],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [
-                -2133.95,
-                -760.78,
-                32.02
-            ],
+            "pos": [-2133.95, -760.78, 32.02],
             "rot": 64,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 3
-                }
+                { "type": "opioid", "severity": 3 }
             ],
-            "state": {
-                "spo2": 75,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 75, "consciousness": "unconscious" }
         }
     ]
 }

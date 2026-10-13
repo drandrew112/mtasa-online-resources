@@ -5,11 +5,7 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [
-        388.79,
-        2367.74,
-        25.5
-    ],
+    "center": [388.79, 2367.74, 25.5],
     "interior": 0,
     "dimension": 0,
     "erm": {

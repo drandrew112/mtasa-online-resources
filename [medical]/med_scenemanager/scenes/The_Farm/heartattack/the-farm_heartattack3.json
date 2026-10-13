@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1045.25,
-        -1153.5,
-        128.149
-    ],
+    "center": [-1045.25, -1153.5, 128.149],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 191,
-            "pos": [
-                -1045.25,
-                -1153.5,
-                128.149
-            ],
+            "pos": [-1045.25, -1153.5, 128.149],
             "rot": 255,
             "anim": "ko_back",
             "injuries": [],

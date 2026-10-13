@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2827,
-        -285,
-        7.88
-    ],
+    "center": [-2827, -285, 7.88],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 222,
-            "pos": [
-                -2827,
-                -285,
-                7.88
-            ],
+            "pos": [-2827, -285, 7.88],
             "rot": 238,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 3
-                }
+                { "type": "alcohol", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

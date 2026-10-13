@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1827,
-        -365,
-        25.57
-    ],
+    "center": [-1827, -365, 25.57],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 169,
-            "pos": [
-                -1827,
-                -365,
-                25.57
-            ],
+            "pos": [-1827, -365, 25.57],
             "rot": 22,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4432
-            }
+            "state": { "bloodVolume": 4432 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -736.99,
-        2738.05,
-        47.01
-    ],
+    "center": [-736.99, 2738.05, 47.01],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 132,
-            "pos": [
-                -736.99,
-                2738.05,
-                47.01
-            ],
+            "pos": [-736.99, 2738.05, 47.01],
             "rot": 212,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 24,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 24, "consciousness": "unconscious" }
         }
     ]
 }

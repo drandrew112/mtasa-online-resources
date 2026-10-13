@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1187.7,
-        -1105.87,
-        129.17
-    ],
+    "center": [-1187.7, -1105.87, 129.17],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -1187.7,
-                -1105.87,
-                129.17
-            ],
+            "pos": [-1187.7, -1105.87, 129.17],
             "rot": 206,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 3
-                }
+                { "type": "stroke", "severity": 3 }
             ],
-            "state": {
-                "systolic": 204,
-                "diastolic": 109,
-                "consciousness": "dazed"
-            }
+            "state": { "systolic": 204, "diastolic": 109, "consciousness": "dazed" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [
-        392.48,
-        2566.49,
-        16.55
-    ],
+    "center": [392.48, 2566.49, 16.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,93 +26,34 @@
         {
             "id": "v1",
             "model": 581,
-            "pos": [
-                391.1,
-                2571.29,
-                16
-            ],
-            "rot": [
-                0,
-                0,
-                132.4
-            ],
+            "pos": [391.1, 2571.29, 16],
+            "rot": [0, 0, 132.4],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                95,
-                60,
-                35,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "BC40 449",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 115,
-            "pos": [
-                392.48,
-                2566.49,
-                16.55
-            ],
+            "pos": [392.48, 2566.49, 16.55],
             "rot": 329,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
             "state": {}
         }

@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2613.87,
-        538.25,
-        14.61
-    ],
+    "center": [-2613.87, 538.25, 14.61],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [
-                -2613.87,
-                538.25,
-                14.61
-            ],
+            "pos": [-2613.87, 538.25, 14.61],
             "rot": 279,
             "anim": "none",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 183
-            }
+            "state": { "systolic": 183 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1167.77,
-        -1114.34,
-        128.27
-    ],
+    "center": [-1167.77, -1114.34, 128.27],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -1167.77,
-                -1114.34,
-                128.27
-            ],
+            "pos": [-1167.77, -1114.34, 128.27],
             "rot": 20,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

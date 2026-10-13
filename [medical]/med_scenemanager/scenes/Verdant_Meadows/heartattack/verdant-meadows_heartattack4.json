@@ -5,11 +5,7 @@
     "location": "Verdant Meadows",
     "enabled": true,
     "weight": 1,
-    "center": [
-        380.458,
-        2337.659,
-        25.457
-    ],
+    "center": [380.458, 2337.659, 25.457],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 24,
-            "pos": [
-                380.458,
-                2337.659,
-                25.457
-            ],
+            "pos": [380.458, 2337.659, 25.457],
             "rot": 215,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PEA"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
         }
     ]
 }

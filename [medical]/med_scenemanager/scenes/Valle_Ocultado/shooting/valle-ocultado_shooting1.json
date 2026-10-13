@@ -5,11 +5,7 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -797.75,
-        2710,
-        45.97
-    ],
+    "center": [-797.75, 2710, 45.97],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                -797.75,
-                2710,
-                45.97
-            ],
+            "pos": [-797.75, 2710, 45.97],
             "rot": 251,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3895,
-                "spo2": 84
-            }
+            "state": { "bloodVolume": 3895, "spo2": 84 }
         }
     ]
 }

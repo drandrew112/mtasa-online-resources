@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1170,
-        -1120,
-        128.96
-    ],
+    "center": [-1170, -1120, 128.96],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [
-                -1170,
-                -1120,
-                128.96
-            ],
+            "pos": [-1170, -1120, 128.96],
             "rot": 220,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 89
-            }
+            "state": { "spo2": 89 }
         }
     ]
 }

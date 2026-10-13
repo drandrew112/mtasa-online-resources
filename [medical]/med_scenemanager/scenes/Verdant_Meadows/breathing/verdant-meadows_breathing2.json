@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        290.01,
-        2738.43,
-        60.84
-    ],
+    "center": [290.01, 2738.43, 60.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [
-                290.01,
-                2738.43,
-                60.84
-            ],
+            "pos": [290.01, 2738.43, 60.84],
             "rot": 171,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 87,
-                "heartRate": 52
-            }
+            "state": { "spo2": 87, "heartRate": 52 }
         }
     ]
 }

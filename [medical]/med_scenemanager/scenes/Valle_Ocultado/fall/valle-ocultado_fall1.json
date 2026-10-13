@@ -5,11 +5,7 @@
     "location": "Valle Ocultado",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -860.75,
-        2691.3,
-        43.11
-    ],
+    "center": [-860.75, 2691.3, 43.11],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -860.75,
-                2691.3,
-                43.11
-            ],
+            "pos": [-860.75, 2691.3, 43.11],
             "rot": 353,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "pain": 52
-            }
+            "state": { "pain": 52 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "The Farm",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1193,
-        -1140,
-        130.98
-    ],
+    "center": [-1193, -1140, 130.98],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [
-                -1193,
-                -1140,
-                130.98
-            ],
+            "pos": [-1193, -1140, 130.98],
             "rot": 131,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4148,
-                "glucose": 416
-            }
+            "state": { "bloodVolume": 4148, "glucose": 416 }
         }
     ]
 }
