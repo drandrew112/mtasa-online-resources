@@ -331,7 +331,11 @@ do
                             local a = select(i, ...)
                             if type(a) == "table" then C.adopt(a) end
                         end
+                        -- sourceResource is stale for local calls (can hold a player,
+                        -- a function name, a number ...): only trust a real resource
                         local caller = sourceResource
+                        -- (pcall would not help: MTA logs bad arguments anyway)
+                        if type(caller) ~= "userdata" or isElement(caller) then caller = nil end
                         if caller and caller ~= getThisResource() and not usesLocals(caller) then
                             return plainResults(orig(...))
                         end
