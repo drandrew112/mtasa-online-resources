@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A pit boss on his break is gripping his chest on the sidewalk, crushing pain into his jaw. He is more worried about missing the end of his shift.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A pit boss on his break is gripping his chest on the sidewalk, crushing pain into his jaw. He is more worried about missing the end of his shift."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

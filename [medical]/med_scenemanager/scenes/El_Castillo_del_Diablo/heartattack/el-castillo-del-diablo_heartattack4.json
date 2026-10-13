@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A biker stopped to admire the canyon, took off his helmet and collapsed by the road. Not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A biker stopped to admire the canyon, took off his helmet and collapsed by the road. Not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

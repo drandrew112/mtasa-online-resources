@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed after a party drug",
-        "description": "A woman collapsed at a bus stop in Market after taking an unknown pill at a party. She is burning hot, jaw clenched and twitching. Friends brought water but she is not drinking.",
+        "locales": {
+            "en": {
+                "title": "Collapsed after a party drug",
+                "description": "A woman collapsed at a bus stop in Market after taking an unknown pill at a party. She is burning hot, jaw clenched and twitching. Friends brought water but she is not drinking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

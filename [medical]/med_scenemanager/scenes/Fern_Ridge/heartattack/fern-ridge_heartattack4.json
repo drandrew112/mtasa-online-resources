@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "A camper on his way to fetch water keeps nearly blacking out by the road. Pale, sweaty, very slow pulse.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "A camper on his way to fetch water keeps nearly blacking out by the road. Pale, sweaty, very slow pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

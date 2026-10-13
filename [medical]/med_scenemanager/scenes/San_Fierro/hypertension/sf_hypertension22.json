@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Uneasy and dizzy",
-        "description": "A man eating lunch on the grass feels uneasy and dizzy after a very salty fast-food meal. He has a history of high blood pressure.",
+        "locales": {
+            "en": {
+                "title": "Uneasy and dizzy",
+                "description": "A man eating lunch on the grass feels uneasy and dizzy after a very salty fast-food meal. He has a history of high blood pressure."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

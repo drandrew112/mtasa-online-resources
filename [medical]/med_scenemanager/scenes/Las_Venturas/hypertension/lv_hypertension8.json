@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy after standing",
-        "description": "An elderly woman felt dizzy and had to sit down. She took her blood pressure pills twice this morning by mistake, then a different one again.",
+        "locales": {
+            "en": {
+                "title": "Dizzy after standing",
+                "description": "An elderly woman felt dizzy and had to sit down. She took her blood pressure pills twice this morning by mistake, then a different one again."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

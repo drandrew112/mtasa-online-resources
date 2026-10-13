@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pounding headache, dizzy",
-        "description": "A farmer next to the country road near Montgomery sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week.",
+        "locales": {
+            "en": {
+                "title": "Pounding headache, dizzy",
+                "description": "A farmer next to the country road near Montgomery sat down heavily with a pounding headache and says the ground is spinning. He ran out of his blood pressure tablets last week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old farmer only dizzy",
-        "description": "A neighbour reports an old farmer who fell over on the road shoulder near El Castillo del Diablo. He is up again, says he was only dizzy from the heat and refuses to go to hospital.",
+        "locales": {
+            "en": {
+                "title": "Old farmer only dizzy",
+                "description": "A neighbour reports an old farmer who fell over on the road shoulder near El Castillo del Diablo. He is up again, says he was only dizzy from the heat and refuses to go to hospital."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

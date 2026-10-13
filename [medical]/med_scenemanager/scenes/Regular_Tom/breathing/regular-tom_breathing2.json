@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Mild asthma after running",
-        "description": "A girl on the sidewalk in Regular Tom has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little.",
+        "locales": {
+            "en": {
+                "title": "Mild asthma after running",
+                "description": "A girl on the sidewalk in Regular Tom has a tight chest and is wheezing after running across the field. She has mild asthma and her inhaler only helped a little."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

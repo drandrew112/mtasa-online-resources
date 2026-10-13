@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swallowed the wrong way",
-        "description": "A woman on a bench on The Strip swallowed a drink the wrong way and has been coughing hard for several minutes. She is red in the face and wheezing.",
+        "locales": {
+            "en": {
+                "title": "Swallowed the wrong way",
+                "description": "A woman on a bench on The Strip swallowed a drink the wrong way and has been coughing hard for several minutes. She is red in the face and wheezing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

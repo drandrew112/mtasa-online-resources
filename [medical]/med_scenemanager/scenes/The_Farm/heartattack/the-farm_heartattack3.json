@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Barely breathing",
-        "description": "A woman was found by the road near the farm gate, barely breathing, skin grey and cold.",
+        "locales": {
+            "en": {
+                "title": "Barely breathing",
+                "description": "A woman was found by the road near the farm gate, barely breathing, skin grey and cold."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

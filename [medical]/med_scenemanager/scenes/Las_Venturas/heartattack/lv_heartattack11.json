@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "No signs of life",
-        "description": "A security guard found a man face down on the sidewalk in the early morning. Cold, no breathing, no pulse. His hotel key card is still in his hand.",
+        "locales": {
+            "en": {
+                "title": "No signs of life",
+                "description": "A security guard found a man face down on the sidewalk in the early morning. Cold, no breathing, no pulse. His hotel key card is still in his hand."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Acting drunk, sweaty",
-        "description": "A security guard in Market reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and does not smell of alcohol. She is getting more confused.",
+        "locales": {
+            "en": {
+                "title": "Acting drunk, sweaty",
+                "description": "A security guard in Market reports a woman swaying, slurring and soaked in sweat. She has a diabetic bracelet and does not smell of alcohol. She is getting more confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, near faint",
-        "description": "A tourist sat down by the road with her heart pounding wildly after crossing the bridge on foot. Pale and dizzy.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, near faint",
+                "description": "A tourist sat down by the road with her heart pounding wildly after crossing the bridge on foot. Pale and dizzy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

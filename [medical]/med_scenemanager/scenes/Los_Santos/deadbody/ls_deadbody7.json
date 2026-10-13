@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body at the roadside",
-        "description": "A driver spotted a person lying at the side of the road near the docks, badly injured and not moving. It looks like a hit and run during the night.",
+        "locales": {
+            "en": {
+                "title": "Body at the roadside",
+                "description": "A driver spotted a person lying at the side of the road near the docks, badly injured and not moving. It looks like a hit and run during the night."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

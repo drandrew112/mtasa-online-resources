@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Struck by a speeding car",
-        "description": "A speeding car hit a man crossing the main road in Commerce. He was thrown about ten metres and is lying in the lane, barely responsive. The car stopped further on, windscreen smashed.",
+        "locales": {
+            "en": {
+                "title": "Struck by a speeding car",
+                "description": "A speeding car hit a man crossing the main road in Commerce. He was thrown about ten metres and is lying in the lane, barely responsive. The car stopped further on, windscreen smashed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

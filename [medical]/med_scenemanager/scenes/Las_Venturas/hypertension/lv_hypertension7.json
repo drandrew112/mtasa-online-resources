@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Breathless, pounding heart",
-        "description": "A man walking uphill suddenly became breathless with a pounding heart. He says he has felt the pressure in his head for days.",
+        "locales": {
+            "en": {
+                "title": "Breathless, pounding heart",
+                "description": "A man walking uphill suddenly became breathless with a pounding heart. He says he has felt the pressure in his head for days."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

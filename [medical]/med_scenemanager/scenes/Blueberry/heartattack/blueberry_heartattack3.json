@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, very high BP",
-        "description": "A woman who measured her blood pressure at the pharmacy got a reading \"off the chart\". Now her chest hurts and her head is pounding.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, very high BP",
+                "description": "A woman who measured her blood pressure at the pharmacy got a reading \"off the chart\". Now her chest hurts and her head is pounding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

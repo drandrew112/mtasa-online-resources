@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Screaming for help",
-        "description": "Someone is screaming for help at the edge of the woods in Leafy Hollow. The caller hung up before giving any more details.",
+        "locales": {
+            "en": {
+                "title": "Screaming for help",
+                "description": "Someone is screaming for help at the edge of the woods in Leafy Hollow. The caller hung up before giving any more details."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

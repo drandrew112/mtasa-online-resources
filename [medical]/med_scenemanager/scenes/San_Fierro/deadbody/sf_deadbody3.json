@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman found cold",
-        "description": "A neighbour found an elderly woman lying on the grass in Foster Valley. She is cold and does not breathe. She lived nearby and was a regular here.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman found cold",
+                "description": "A neighbour found an elderly woman lying on the grass in Foster Valley. She is cold and does not breathe. She lived nearby and was a regular here."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

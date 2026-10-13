@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, cold",
-        "description": "A morning jogger found a man lying face down on the sidewalk in the desert dawn. Cold to the touch, not breathing.",
+        "locales": {
+            "en": {
+                "title": "Found down, cold",
+                "description": "A morning jogger found a man lying face down on the sidewalk in the desert dawn. Cold to the touch, not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

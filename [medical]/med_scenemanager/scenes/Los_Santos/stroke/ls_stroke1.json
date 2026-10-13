@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slurred speech, face drooping",
-        "description": "An old man feeding the pigeons in the Santa Maria park suddenly could not get his words out. His wife says the corner of his mouth is hanging and he dropped the bread bag. It started about ten minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Slurred speech, face drooping",
+                "description": "An old man feeding the pigeons in the Santa Maria park suddenly could not get his words out. His wife says the corner of his mouth is hanging and he dropped the bread bag. It started about ten minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car accident",
-        "description": "Two cars collided at an intersection. One person is injured.",
+        "locales": {
+            "en": {
+                "title": "Car accident",
+                "description": "Two cars collided at an intersection. One person is injured."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

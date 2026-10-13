@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A brown car lost control and spun out near Las Venturas Airport. The driver is still behind the wheel with a deep cut that is bleeding.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A brown car lost control and spun out near Las Venturas Airport. The driver is still behind the wheel with a deep cut that is bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

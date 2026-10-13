@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Neck pain, headache",
-        "description": "A man flying a kite with his son got a sudden stiff neck and a throbbing headache. He looks flushed and is sweating.",
+        "locales": {
+            "en": {
+                "title": "Neck pain, headache",
+                "description": "A man flying a kite with his son got a sudden stiff neck and a throbbing headache. He looks flushed and is sweating."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

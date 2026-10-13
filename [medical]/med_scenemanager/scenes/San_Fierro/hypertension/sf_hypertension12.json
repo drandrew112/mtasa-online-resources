@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pressure behind eyes",
-        "description": "A gym-goer who took a pre-workout supplement says there is a strong pressure behind his eyes and his ears are ringing.",
+        "locales": {
+            "en": {
+                "title": "Pressure behind eyes",
+                "description": "A gym-goer who took a pre-workout supplement says there is a strong pressure behind his eyes and his ears are ringing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

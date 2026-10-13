@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, cold and grey",
-        "description": "Morning commuters found a man in a rain jacket lying on the sidewalk. Cold, grey, barely breathing. His coffee cup is still steaming next to him.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, cold and grey",
+                "description": "Morning commuters found a man in a rain jacket lying on the sidewalk. Cold, grey, barely breathing. His coffee cup is still steaming next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

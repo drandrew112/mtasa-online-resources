@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed on the hill",
-        "description": "A man pushing a bike up one of the steep San Fierro streets stopped, coughed once and toppled onto the sidewalk. Not breathing. His bike rolled halfway down the block.",
+        "locales": {
+            "en": {
+                "title": "Collapsed on the hill",
+                "description": "A man pushing a bike up one of the steep San Fierro streets stopped, coughed once and toppled onto the sidewalk. Not breathing. His bike rolled halfway down the block."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

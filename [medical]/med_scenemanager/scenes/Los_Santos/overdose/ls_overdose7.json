@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed after a party drug",
-        "description": "A man collapsed on the sidewalk in Ocean Docks after taking an unknown pill at a party. He is burning hot, jaw clenched and twitching. Friends brought water but he is not drinking.",
+        "locales": {
+            "en": {
+                "title": "Collapsed after a party drug",
+                "description": "A man collapsed on the sidewalk in Ocean Docks after taking an unknown pill at a party. He is burning hot, jaw clenched and twitching. Friends brought water but he is not drinking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

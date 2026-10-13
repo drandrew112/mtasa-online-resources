@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, no breathing",
-        "description": "An old prospector collapsed by the road in the heat. Not breathing. His mule is standing next to him.",
+        "locales": {
+            "en": {
+                "title": "Man down, no breathing",
+                "description": "An old prospector collapsed by the road in the heat. Not breathing. His mule is standing next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

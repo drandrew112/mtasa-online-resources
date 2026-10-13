@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pizza scooter crash",
-        "description": "A pizza delivery rider skidded on sand blown across the road at a junction in Redsands East. His knee is swollen and bleeding, and the pizzas are all over the road.",
+        "locales": {
+            "en": {
+                "title": "Pizza scooter crash",
+                "description": "A pizza delivery rider skidded on sand blown across the road at a junction in Redsands East. His knee is swollen and bleeding, and the pizzas are all over the road."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

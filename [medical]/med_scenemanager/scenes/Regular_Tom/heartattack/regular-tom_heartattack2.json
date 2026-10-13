@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, short of breath",
-        "description": "A woman carrying water jugs home sat down by the road with chest pain and shortness of breath.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, short of breath",
+                "description": "A woman carrying water jugs home sat down by the road with chest pain and shortness of breath."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

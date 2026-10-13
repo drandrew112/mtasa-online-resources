@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "Passers-by found a man in a loud shirt lying on the sidewalk, barely breathing and grey. His sunglasses are still on.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "Passers-by found a man in a loud shirt lying on the sidewalk, barely breathing and grey. His sunglasses are still on."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

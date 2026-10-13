@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Person lying on the ground",
-        "description": "A driver saw a person lying in a small park near the Whitewood Estates and did not stop. The caller could not say if the person was moving.",
+        "locales": {
+            "en": {
+                "title": "Person lying on the ground",
+                "description": "A driver saw a person lying in a small park near the Whitewood Estates and did not stop. The caller could not say if the person was moving."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

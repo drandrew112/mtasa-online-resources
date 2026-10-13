@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman fell from a ladder",
-        "description": "An elderly woman fell from a ladder while picking fruit in her garden and hit her head. She is confused and keeps asking what happened. Her husband says she takes blood thinners.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman fell from a ladder",
+                "description": "An elderly woman fell from a ladder while picking fruit in her garden and hit her head. She is confused and keeps asking what happened. Her husband says she takes blood thinners."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

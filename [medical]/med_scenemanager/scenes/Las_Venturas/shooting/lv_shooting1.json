@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man shot several times",
-        "description": "A man was shot several times next to the road in Redsands East and is lying face down in a pool of blood. The shooter ran away on foot.",
+        "locales": {
+            "en": {
+                "title": "Man shot several times",
+                "description": "A man was shot several times next to the road in Redsands East and is lying face down in a pool of blood. The shooter ran away on foot."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

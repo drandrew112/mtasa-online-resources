@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, no breathing",
-        "description": "A motel guest collapsed by the road in the desert heat. Not breathing. The motel owner is on the phone.",
+        "locales": {
+            "en": {
+                "title": "Man down, no breathing",
+                "description": "A motel guest collapsed by the road in the desert heat. Not breathing. The motel owner is on the phone."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

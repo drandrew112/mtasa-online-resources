@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Homeless man, very weak",
-        "description": "Outreach workers on the sidewalk in Prickle Pine report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\".",
+        "locales": {
+            "en": {
+                "title": "Homeless man, very weak",
+                "description": "Outreach workers on the sidewalk in Prickle Pine report a homeless man who has been drinking soda all day. He is extremely weak, confused and says he \"used to take diabetes pills\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

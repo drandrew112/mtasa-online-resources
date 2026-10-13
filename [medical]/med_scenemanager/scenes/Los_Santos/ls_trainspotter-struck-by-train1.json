@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Train Spotter Struck by Passing Train",
-        "description": "A train spotter was struck by a passing train and thrown next to the tracks. Patient is unconscious with visible traumatic injuries.",
+        "locales": {
+            "en": {
+                "title": "Train Spotter Struck by Passing Train",
+                "description": "A train spotter was struck by a passing train and thrown next to the tracks. Patient is unconscious with visible traumatic injuries."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

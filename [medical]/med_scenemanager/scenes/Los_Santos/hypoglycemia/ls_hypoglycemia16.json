@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Aggressive, not making sense",
-        "description": "A store clerk in Richman called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card.",
+        "locales": {
+            "en": {
+                "title": "Aggressive, not making sense",
+                "description": "A store clerk in Richman called about a man who became aggressive, then started crying, and does not make sense. He is sweaty and trembling. His wallet holds a diabetes card."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

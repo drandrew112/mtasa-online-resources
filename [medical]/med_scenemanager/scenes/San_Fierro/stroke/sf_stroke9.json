@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Face drooping, slurred speech",
-        "description": "A man outside a corner shop in Palisades suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Face drooping, slurred speech",
+                "description": "A man outside a corner shop in Palisades suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

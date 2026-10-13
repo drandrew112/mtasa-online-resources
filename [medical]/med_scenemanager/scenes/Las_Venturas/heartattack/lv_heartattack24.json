@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A limo driver parked, stepped out and is now lying on the sidewalk with severe chest pain. His very drunk passengers are trying to help.",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A limo driver parked, stepped out and is now lying on the sidewalk with severe chest pain. His very drunk passengers are trying to help."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

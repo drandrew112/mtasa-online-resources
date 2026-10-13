@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman confused, drinking constantly",
-        "description": "An older woman on the sidewalk near the Camel's Toe is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night.",
+        "locales": {
+            "en": {
+                "title": "Woman confused, drinking constantly",
+                "description": "An older woman on the sidewalk near the Camel's Toe is confused and keeps drinking from a big water bottle. Her husband says she has lost weight and has been peeing all night."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

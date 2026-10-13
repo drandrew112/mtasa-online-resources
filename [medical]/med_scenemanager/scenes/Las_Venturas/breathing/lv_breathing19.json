@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Gasping, pink frothy cough",
-        "description": "An elderly woman at the side of the road near the Whitewood Estates is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days.",
+        "locales": {
+            "en": {
+                "title": "Gasping, pink frothy cough",
+                "description": "An elderly woman at the side of the road near the Whitewood Estates is gasping for air and coughing up pink froth. She has heart failure and says her legs have been swelling for days."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

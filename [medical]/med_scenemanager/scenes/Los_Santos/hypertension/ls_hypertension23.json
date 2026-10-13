@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Short of breath, headache",
-        "description": "A woman out walking her dog suddenly got short of breath and had to sit down. She says her head is pulsing with every heartbeat.",
+        "locales": {
+            "en": {
+                "title": "Short of breath, headache",
+                "description": "A woman out walking her dog suddenly got short of breath and had to sit down. She says her head is pulsing with every heartbeat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

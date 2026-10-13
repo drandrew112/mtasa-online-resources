@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A conspiracy theorist on his way to The Big Ear sat by the road with crushing chest pain. He claims the aliens did it.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A conspiracy theorist on his way to The Big Ear sat by the road with crushing chest pain. He claims the aliens did it."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

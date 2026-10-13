@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "No signs of life",
-        "description": "A hunter found a man lying face down by the road among the leaves. Cold, not breathing, no pulse.",
+        "locales": {
+            "en": {
+                "title": "No signs of life",
+                "description": "A hunter found a man lying face down by the road among the leaves. Cold, not breathing, no pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

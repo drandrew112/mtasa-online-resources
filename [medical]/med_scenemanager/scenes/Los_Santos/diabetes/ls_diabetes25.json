@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly diabetic, very drowsy",
-        "description": "A neighbour found an elderly man on the pavement in Glen Park, very sleepy and hard to keep awake. He has been drinking huge amounts of water for days and has diabetes. His skin is dry and warm.",
+        "locales": {
+            "en": {
+                "title": "Elderly diabetic, very drowsy",
+                "description": "A neighbour found an elderly man on the pavement in Glen Park, very sleepy and hard to keep awake. He has been drinking huge amounts of water for days and has diabetes. His skin is dry and warm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

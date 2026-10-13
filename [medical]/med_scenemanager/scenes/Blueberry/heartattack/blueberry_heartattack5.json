@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Short of breath, uneasy",
-        "description": "An elderly woman walking back from church had to sit by the road. She is short of breath, sweaty and just \"feels wrong\".",
+        "locales": {
+            "en": {
+                "title": "Short of breath, uneasy",
+                "description": "An elderly woman walking back from church had to sit by the road. She is short of breath, sweaty and just \"feels wrong\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

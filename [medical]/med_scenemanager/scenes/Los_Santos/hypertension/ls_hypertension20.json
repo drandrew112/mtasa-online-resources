@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, anxious",
-        "description": "A man in a suit feels his heart hammering in his throat and cannot calm down. He had three energy drinks before a job interview and now his hands will not stop shaking.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, anxious",
+                "description": "A man in a suit feels his heart hammering in his throat and cannot calm down. He had three energy drinks before a job interview and now his hands will not stop shaking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

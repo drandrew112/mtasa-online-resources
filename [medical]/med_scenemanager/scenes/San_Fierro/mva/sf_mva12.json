@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "An orange car ran into the back of a white car by the Avispa Country Club. The driver of the white car is still behind the wheel with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "An orange car ran into the back of a white car by the Avispa Country Club. The driver of the white car is still behind the wheel with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

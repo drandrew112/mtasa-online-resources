@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teenager cannot breathe",
-        "description": "A teenager at the Glen Park basketball court cannot catch his breath, wheezing loudly. His inhaler is empty. He can only say a few words at a time.",
+        "locales": {
+            "en": {
+                "title": "Teenager cannot breathe",
+                "description": "A teenager at the Glen Park basketball court cannot catch his breath, wheezing loudly. His inhaler is empty. He can only say a few words at a time."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

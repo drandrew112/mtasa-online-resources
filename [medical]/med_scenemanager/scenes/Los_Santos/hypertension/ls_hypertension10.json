@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pregnant, confused",
-        "description": "A heavily pregnant woman is suddenly confused and cannot remember where she was going. Her ankles and hands are badly swollen and she complained of flashing lights in her eyes.",
+        "locales": {
+            "en": {
+                "title": "Pregnant, confused",
+                "description": "A heavily pregnant woman is suddenly confused and cannot remember where she was going. Her ankles and hands are badly swollen and she complained of flashing lights in her eyes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

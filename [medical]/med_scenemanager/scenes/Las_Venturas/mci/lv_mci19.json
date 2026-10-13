@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Four-car pileup, several injured",
-        "description": "Four cars crashed into each other at a busy crossroads near the Whitewood Estates after one braked suddenly for a jaywalking tourist. One driver is trapped behind the wheel, others are sitting or lying around the cars.",
+        "locales": {
+            "en": {
+                "title": "Four-car pileup, several injured",
+                "description": "Four cars crashed into each other at a busy crossroads near the Whitewood Estates after one braked suddenly for a jaywalking tourist. One driver is trapped behind the wheel, others are sitting or lying around the cars."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

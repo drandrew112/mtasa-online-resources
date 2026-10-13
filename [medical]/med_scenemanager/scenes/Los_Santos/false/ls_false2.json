@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Screaming for help",
-        "description": "Someone is screaming for help. Caller hung up.",
+        "locales": {
+            "en": {
+                "title": "Screaming for help",
+                "description": "Someone is screaming for help. Caller hung up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

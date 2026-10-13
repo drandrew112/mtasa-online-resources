@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man vomiting",
-        "description": "A very drunk man on the sidewalk near the Blackfield Chapel has been vomiting and can no longer keep his eyes open. His friends say he drank a whole bottle of whisky on a bet.",
+        "locales": {
+            "en": {
+                "title": "Drunk man vomiting",
+                "description": "A very drunk man on the sidewalk near the Blackfield Chapel has been vomiting and can no longer keep his eyes open. His friends say he drank a whole bottle of whisky on a bet."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

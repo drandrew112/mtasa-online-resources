@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a ladder picking fruit",
-        "description": "A woman picking fruit fell from her ladder on a grassy patch in Montgomery. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "locales": {
+            "en": {
+                "title": "Fell from a ladder picking fruit",
+                "description": "A woman picking fruit fell from her ladder on a grassy patch in Montgomery. She is lying on her back with a very painful hip and a cut on her forehead."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

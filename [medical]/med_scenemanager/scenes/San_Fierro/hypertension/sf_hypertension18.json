@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, agitated",
-        "description": "A man is pacing and then sitting, sweating heavily and unable to keep still. Friends admit he took something at a party last night.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, agitated",
+                "description": "A man is pacing and then sitting, sweating heavily and unable to keep still. Friends admit he took something at a party last night."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pregnant, headache, swelling",
-        "description": "A pregnant woman at around thirty weeks has a severe headache and pain under her ribs. Her face and fingers are puffy.",
+        "locales": {
+            "en": {
+                "title": "Pregnant, headache, swelling",
+                "description": "A pregnant woman at around thirty weeks has a severe headache and pain under her ribs. Her face and fingers are puffy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

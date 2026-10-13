@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crash with people trapped",
-        "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Hashbury. No other calls came in about it.",
+        "locales": {
+            "en": {
+                "title": "Crash with people trapped",
+                "description": "An anonymous caller reports a bad crash with people trapped at a busy crossroads in Hashbury. No other calls came in about it."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

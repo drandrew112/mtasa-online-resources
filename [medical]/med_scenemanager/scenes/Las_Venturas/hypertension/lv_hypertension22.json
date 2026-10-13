@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Breathless, chest heavy",
-        "description": "A smoker in his fifties became breathless walking up a short slope. His chest feels heavy and his face is flushed red.",
+        "locales": {
+            "en": {
+                "title": "Breathless, chest heavy",
+                "description": "A smoker in his fifties became breathless walking up a short slope. His chest feels heavy and his face is flushed red."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

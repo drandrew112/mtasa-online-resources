@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Clipped by a car mirror",
-        "description": "A man looking at his phone in Willowfield stepped into the road and was clipped by a car mirror. He is sitting on the curb with a swollen elbow and grazes.",
+        "locales": {
+            "en": {
+                "title": "Clipped by a car mirror",
+                "description": "A man looking at his phone in Willowfield stepped into the road and was clipped by a car mirror. He is sitting on the curb with a swollen elbow and grazes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Panic, chest tight",
-        "description": "A woman who just received bad news on the phone is breathing fast and says her chest feels tight. Her own home monitor showed a high reading this morning too.",
+        "locales": {
+            "en": {
+                "title": "Panic, chest tight",
+                "description": "A woman who just received bad news on the phone is breathing fast and says her chest feels tight. Her own home monitor showed a high reading this morning too."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A street musician stopped playing her violin, swayed and went down on the sidewalk. The crowd thought it was part of the show. It is not. She is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A street musician stopped playing her violin, swayed and went down on the sidewalk. The crowd thought it was part of the show. It is not. She is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

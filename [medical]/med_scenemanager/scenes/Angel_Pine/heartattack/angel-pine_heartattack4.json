@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dropped face down",
-        "description": "A tourist back from hiking Mount Chiliad dropped face down by the road. He is not breathing and his face is turning grey.",
+        "locales": {
+            "en": {
+                "title": "Dropped face down",
+                "description": "A tourist back from hiking Mount Chiliad dropped face down by the road. He is not breathing and his face is turning grey."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

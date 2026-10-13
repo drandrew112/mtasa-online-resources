@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A woman was found slumped by the road outside the laundromat. Barely breathing, grey, cold and clammy. Her laundry basket is tipped over.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A woman was found slumped by the road outside the laundromat. Barely breathing, grey, cold and clammy. Her laundry basket is tipped over."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

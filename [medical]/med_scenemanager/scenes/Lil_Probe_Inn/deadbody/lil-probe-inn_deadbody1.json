@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found by a rancher",
-        "description": "A rancher checking his fences found a man lying on the dusty ground near the Lil' Probe Inn. He has a head wound and has been there for hours. The guard did not touch him.",
+        "locales": {
+            "en": {
+                "title": "Found by a rancher",
+                "description": "A rancher checking his fences found a man lying on the dusty ground near the Lil' Probe Inn. He has a head wound and has been there for hours. The guard did not touch him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

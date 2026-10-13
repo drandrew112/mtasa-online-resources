@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hypertension",
-        "description": "The patient is experiencing a sudden onset of dizziness, a severe throbbing headache, and palpitations while waiting for her train.",
+        "locales": {
+            "en": {
+                "title": "Hypertension",
+                "description": "The patient is experiencing a sudden onset of dizziness, a severe throbbing headache, and palpitations while waiting for her train."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found after a fall from height",
-        "description": "Residents found a man lying in front of an apartment block in Queens below a tall building. His injuries are severe and he has not moved since they found him.",
+        "locales": {
+            "en": {
+                "title": "Found after a fall from height",
+                "description": "Residents found a man lying in front of an apartment block in Queens below a tall building. His injuries are severe and he has not moved since they found him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

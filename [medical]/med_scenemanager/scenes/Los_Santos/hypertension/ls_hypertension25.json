@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed, frightened",
-        "description": "A woman has a nosebleed that started suddenly while she was walking. She is frightened, her head aches and her hands are trembling.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed, frightened",
+                "description": "A woman has a nosebleed that started suddenly while she was walking. She is frightened, her head aches and her hands are trembling."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

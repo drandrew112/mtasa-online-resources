@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Argument ended in gunfire",
-        "description": "Two men argued over a parking spot in Jefferson when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm.",
+        "locales": {
+            "en": {
+                "title": "Argument ended in gunfire",
+                "description": "Two men argued over a parking spot in Jefferson when one pulled a gun. One was shot in the chest and is struggling to breathe, the other has a grazed arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pressure, sweating",
-        "description": "A woman walking her tiny dog sat down hard on the sidewalk, grey and sweating. She describes an elephant sitting on her chest. The dog refuses to let anyone near her.",
+        "locales": {
+            "en": {
+                "title": "Chest pressure, sweating",
+                "description": "A woman walking her tiny dog sat down hard on the sidewalk, grey and sweating. She describes an elephant sitting on her chest. The dog refuses to let anyone near her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

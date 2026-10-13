@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car drove onto the sidewalk",
-        "description": "A driver lost control in Downtown Los Santos and drove onto a crowded sidewalk, hitting several pedestrians. Callers report people lying on the ground and screaming. The driver is still in the car.",
+        "locales": {
+            "en": {
+                "title": "Car drove onto the sidewalk",
+                "description": "A driver lost control in Downtown Los Santos and drove onto a crowded sidewalk, hitting several pedestrians. Callers report people lying on the ground and screaming. The driver is still in the car."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nausea and weakness",
-        "description": "A farmer's wife sat down by the road with nausea, cold sweat and a strange pressure between her shoulders. She blames the heat.",
+        "locales": {
+            "en": {
+                "title": "Nausea and weakness",
+                "description": "A farmer's wife sat down by the road with nausea, cold sweat and a strange pressure between her shoulders. She blames the heat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

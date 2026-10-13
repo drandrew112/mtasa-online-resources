@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger hit at the curb",
-        "description": "A jogger was clipped by a car at the curb at the side of the road at Blackfield Intersection. He is lying on his back with a painful, swollen knee and road rash.",
+        "locales": {
+            "en": {
+                "title": "Jogger hit at the curb",
+                "description": "A jogger was clipped by a car at the curb at the side of the road at Blackfield Intersection. He is lying on his back with a painful, swollen knee and road rash."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

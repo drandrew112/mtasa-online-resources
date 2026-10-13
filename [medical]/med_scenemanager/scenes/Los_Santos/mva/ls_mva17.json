@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ran off the road",
-        "description": "A yellow car left the road and hit the curb near Los Santos International. The driver is still behind the wheel with a head injury and a painful leg.",
+        "locales": {
+            "en": {
+                "title": "Car ran off the road",
+                "description": "A yellow car left the road and hit the curb near Los Santos International. The driver is still behind the wheel with a head injury and a painful leg."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

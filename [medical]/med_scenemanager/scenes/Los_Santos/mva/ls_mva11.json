@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Sideswipe collision",
-        "description": "A yellow car and a black car sideswiped each other in Temple and one of them lost control. The driver of the yellow car is still behind the wheel, unconscious, with a serious head injury and a broken arm.",
+        "locales": {
+            "en": {
+                "title": "Sideswipe collision",
+                "description": "A yellow car and a black car sideswiped each other in Temple and one of them lost control. The driver of the yellow car is still behind the wheel, unconscious, with a serious head injury and a broken arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

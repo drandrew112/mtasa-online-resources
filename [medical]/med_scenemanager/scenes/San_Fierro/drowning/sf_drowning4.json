@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Kayaker capsized, freezing",
-        "description": "A kayaker capsized in the cold bay and was in the water for twenty minutes. He is sitting at the water's edge in Missionary Hill, shaking hard and coughing.",
+        "locales": {
+            "en": {
+                "title": "Kayaker capsized, freezing",
+                "description": "A kayaker capsized in the cold bay and was in the water for twenty minutes. He is sitting at the water's edge in Missionary Hill, shaking hard and coughing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

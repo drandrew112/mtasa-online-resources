@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman found cold",
-        "description": "A neighbour found an elderly woman lying in a yard just outside Dillimore where she usually walks her dog. She is cold and does not breathe.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman found cold",
+                "description": "A neighbour found an elderly woman lying in a yard just outside Dillimore where she usually walks her dog. She is cold and does not breathe."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

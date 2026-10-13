@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Sideswipe collision",
-        "description": "A grey Hermes and a grey Primo sideswiped each other in Paradiso and one of them lost control. The driver of the grey Hermes got out and is sitting on the ground with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Sideswipe collision",
+                "description": "A grey Hermes and a grey Primo sideswiped each other in Paradiso and one of them lost control. The driver of the grey Hermes got out and is sitting on the ground with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

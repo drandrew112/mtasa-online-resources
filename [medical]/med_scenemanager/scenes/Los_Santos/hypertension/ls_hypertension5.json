@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pounding headache, dizzy",
-        "description": "A delivery driver pulled over and sat on the curb with a pounding headache at the back of his skull. He ran out of his blood pressure tablets a week ago and has been drinking coffee all day to stay awake.",
+        "locales": {
+            "en": {
+                "title": "Pounding headache, dizzy",
+                "description": "A delivery driver pulled over and sat on the curb with a pounding headache at the back of his skull. He ran out of his blood pressure tablets a week ago and has been drinking coffee all day to stay awake."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A blue van turning left was hit by an oncoming yellow car at an intersection near Easter Bay Airport. The driver of the yellow car is still behind the wheel with a broken collarbone and a bleeding wound. The driver of the blue van is still behind the wheel with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A blue van turning left was hit by an oncoming yellow car at an intersection near Easter Bay Airport. The driver of the yellow car is still behind the wheel with a broken collarbone and a bleeding wound. The driver of the blue van is still behind the wheel with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

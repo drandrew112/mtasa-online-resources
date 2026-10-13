@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a ladder picking fruit",
-        "description": "A woman picking fruit fell from her ladder at the side of the road in El Castillo del Diablo. She is lying on her back with a very painful hip and a cut on her forehead.",
+        "locales": {
+            "en": {
+                "title": "Fell from a ladder picking fruit",
+                "description": "A woman picking fruit fell from her ladder at the side of the road in El Castillo del Diablo. She is lying on her back with a very painful hip and a cut on her forehead."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

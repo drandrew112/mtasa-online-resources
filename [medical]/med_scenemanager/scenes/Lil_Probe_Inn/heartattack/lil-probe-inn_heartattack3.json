@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An old regular keeps fainting outside the bar. Very slow pulse, he claims he saw lights in the sky.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An old regular keeps fainting outside the bar. Very slow pulse, he claims he saw lights in the sky."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

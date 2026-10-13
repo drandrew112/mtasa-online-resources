@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Three-car crash, four injured",
-        "description": "A car ran a red light in Verdant Bluffs and hit two others. A woman is unconscious in the road, a man is trapped in the second car and two more people have minor injuries.",
+        "locales": {
+            "en": {
+                "title": "Three-car crash, four injured",
+                "description": "A car ran a red light in Verdant Bluffs and hit two others. A woman is unconscious in the road, a man is trapped in the second car and two more people have minor injuries."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

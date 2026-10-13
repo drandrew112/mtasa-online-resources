@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Not breathing properly, blue lips",
-        "description": "A man is lying outside a shop in Verdant Bluffs with blue lips, taking a breath only every now and then. A syringe is next to him. A friend ran off when the caller arrived.",
+        "locales": {
+            "en": {
+                "title": "Not breathing properly, blue lips",
+                "description": "A man is lying outside a shop in Verdant Bluffs with blue lips, taking a breath only every now and then. A syringe is next to him. A friend ran off when the caller arrived."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

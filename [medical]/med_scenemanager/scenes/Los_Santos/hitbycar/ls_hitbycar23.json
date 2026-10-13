@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teenager ran out between cars",
-        "description": "A teenager chasing a ball ran out between parked cars in Vinewood and was hit at low speed. The teenager is crying, his arm hurts and he has a bump on the head. The shaken driver is with him.",
+        "locales": {
+            "en": {
+                "title": "Teenager ran out between cars",
+                "description": "A teenager chasing a ball ran out between parked cars in Vinewood and was hit at low speed. The teenager is crying, his arm hurts and he has a bump on the head. The shaken driver is with him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

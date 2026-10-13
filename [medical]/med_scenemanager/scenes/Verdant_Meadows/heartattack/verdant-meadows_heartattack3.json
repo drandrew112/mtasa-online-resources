@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, near faint",
-        "description": "A skydiving student sat by the road with her heart racing long after her jump. Pale and dizzy.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, near faint",
+                "description": "A skydiving student sat by the road with her heart racing long after her jump. Pale and dizzy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

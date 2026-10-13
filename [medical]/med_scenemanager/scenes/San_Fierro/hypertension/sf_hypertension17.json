@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Facial droop, slurred speech",
-        "description": "A woman's friend noticed the left side of her face drooping while they were talking. She is slurring and says her head is pounding.",
+        "locales": {
+            "en": {
+                "title": "Facial droop, slurred speech",
+                "description": "A woman's friend noticed the left side of her face drooping while they were talking. She is slurring and says her head is pounding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

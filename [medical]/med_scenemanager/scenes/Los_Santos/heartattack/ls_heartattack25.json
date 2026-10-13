@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, very high BP",
-        "description": "A man checking his blood pressure on a pharmacy machine walked out and sat down on the sidewalk. The printout says \"seek medical attention\" in bold. Now his chest hurts too.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, very high BP",
+                "description": "A man checking his blood pressure on a pharmacy machine walked out and sat down on the sidewalk. The printout says \"seek medical attention\" in bold. Now his chest hurts too."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

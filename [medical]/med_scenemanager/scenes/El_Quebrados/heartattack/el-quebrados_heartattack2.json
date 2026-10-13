@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, no pulse",
-        "description": "A woman leaving the church collapsed by the road. Not breathing, no pulse. The priest has started praying.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, no pulse",
+                "description": "A woman leaving the church collapsed by the road. Not breathing, no pulse. The priest has started praying."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

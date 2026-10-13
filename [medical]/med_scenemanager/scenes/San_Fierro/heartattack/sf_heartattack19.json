@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, red-faced",
-        "description": "A red-faced man in a suit is leaning against a wall, chest pain and a pounding headache after a shouting match with his landlord. His blood vessels are clearly visible on his forehead.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, red-faced",
+                "description": "A red-faced man in a suit is leaning against a wall, chest pain and a pounding headache after a shouting match with his landlord. His blood vessels are clearly visible on his forehead."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

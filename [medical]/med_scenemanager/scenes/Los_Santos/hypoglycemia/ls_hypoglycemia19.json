@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Had a fit, now very confused",
-        "description": "Witnesses on the sidewalk in East Los Santos say a woman shook all over for about a minute. Now she is awake but confused and sweating heavily. A friend says she is on insulin.",
+        "locales": {
+            "en": {
+                "title": "Had a fit, now very confused",
+                "description": "Witnesses on the sidewalk in East Los Santos say a woman shook all over for about a minute. Now she is awake but confused and sweating heavily. A friend says she is on insulin."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

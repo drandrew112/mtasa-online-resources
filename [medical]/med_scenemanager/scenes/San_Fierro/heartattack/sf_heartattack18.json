@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nausea and weakness",
-        "description": "An older woman sitting on the sidewalk says she has had heartburn all day, now with nausea and cold sweat. She is sure it was the clam chowder.",
+        "locales": {
+            "en": {
+                "title": "Nausea and weakness",
+                "description": "An older woman sitting on the sidewalk says she has had heartburn all day, now with nausea and cold sweat. She is sure it was the clam chowder."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

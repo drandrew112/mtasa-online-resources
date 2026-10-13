@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drowsy, hard to wake",
-        "description": "A woman sunbathing in the park is drowsy and hard to wake. Her friend says she complained of a splitting headache an hour ago.",
+        "locales": {
+            "en": {
+                "title": "Drowsy, hard to wake",
+                "description": "A woman sunbathing in the park is drowsy and hard to wake. Her friend says she complained of a splitting headache an hour ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

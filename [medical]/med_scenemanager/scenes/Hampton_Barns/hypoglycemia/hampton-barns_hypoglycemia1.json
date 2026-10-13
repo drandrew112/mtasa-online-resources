@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger shaking and pale",
-        "description": "A jogger on farmland in Hampton Barns sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast.",
+        "locales": {
+            "en": {
+                "title": "Jogger shaking and pale",
+                "description": "A jogger on farmland in Hampton Barns sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

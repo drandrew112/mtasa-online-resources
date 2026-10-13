@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "T-bone collision at intersection",
-        "description": "A black car ran into the side of a red van at an intersection in Verona Beach. The driver of the red van is still behind the wheel with a bump on the head and a headache. The driver of the black car got out and is crouching next to the car with a painful collarbone and some cuts.",
+        "locales": {
+            "en": {
+                "title": "T-bone collision at intersection",
+                "description": "A black car ran into the side of a red van at an intersection in Verona Beach. The driver of the red van is still behind the wheel with a bump on the head and a headache. The driver of the black car got out and is crouching next to the car with a painful collarbone and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

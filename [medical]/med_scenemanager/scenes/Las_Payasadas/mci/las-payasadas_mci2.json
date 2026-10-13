@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Street race crashed into traffic",
-        "description": "Two street racers on the country road crashed into normal traffic by the dusty roadside near Las Payasadas. Four people are injured, one racer was thrown out of his car and is not moving.",
+        "locales": {
+            "en": {
+                "title": "Street race crashed into traffic",
+                "description": "Two street racers on the country road crashed into normal traffic by the dusty roadside near Las Payasadas. Four people are injured, one racer was thrown out of his car and is not moving."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

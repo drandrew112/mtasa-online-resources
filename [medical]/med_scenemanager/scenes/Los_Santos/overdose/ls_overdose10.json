@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Took a handful of pills",
-        "description": "A woman told her friend at the side of the road in Temple that she swallowed a whole bottle of sleeping pills an hour ago. She is getting harder and harder to wake. The empty bottle is with her.",
+        "locales": {
+            "en": {
+                "title": "Took a handful of pills",
+                "description": "A woman told her friend at the side of the road in Temple that she swallowed a whole bottle of sleeping pills an hour ago. She is getting harder and harder to wake. The empty bottle is with her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

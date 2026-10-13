@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Short of breath, headache",
-        "description": "A trucker at the edge of the woods near Leafy Hollow pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing.",
+        "locales": {
+            "en": {
+                "title": "Short of breath, headache",
+                "description": "A trucker at the edge of the woods near Leafy Hollow pulled over because of a thumping headache and shortness of breath. His ankles are swollen and he is coughing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

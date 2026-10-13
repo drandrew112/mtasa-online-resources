@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger found lifeless",
-        "description": "Cyclists found a jogger lying in a small park in Ocean Flats. He is not breathing, his lips are blue and his body is already cold.",
+        "locales": {
+            "en": {
+                "title": "Jogger found lifeless",
+                "description": "Cyclists found a jogger lying in a small park in Ocean Flats. He is not breathing, his lips are blue and his body is already cold."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

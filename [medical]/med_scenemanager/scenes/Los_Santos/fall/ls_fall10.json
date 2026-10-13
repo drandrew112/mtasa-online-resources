@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teen fell from a wall",
-        "description": "A teenager climbing a wall on the pavement in Idlewood fell about three metres onto her side. She is crying with pain in her leg and cannot put weight on it.",
+        "locales": {
+            "en": {
+                "title": "Teen fell from a wall",
+                "description": "A teenager climbing a wall on the pavement in Idlewood fell about three metres onto her side. She is crying with pain in her leg and cannot put weight on it."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

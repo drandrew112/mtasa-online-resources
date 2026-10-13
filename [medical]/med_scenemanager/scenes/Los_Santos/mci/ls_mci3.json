@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shuttle bus crash at the airport",
-        "description": "An airport shuttle bus crashed into two taxis in front of the terminal. Many passengers are hurt, people are lying on the road. Airport security is on scene.",
+        "locales": {
+            "en": {
+                "title": "Shuttle bus crash at the airport",
+                "description": "An airport shuttle bus crashed into two taxis in front of the terminal. Many passengers are hurt, people are lying on the road. Airport security is on scene."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

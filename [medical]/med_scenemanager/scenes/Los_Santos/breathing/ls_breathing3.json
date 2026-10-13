@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman drowning in her own lungs",
-        "description": "A woman in Richman woke up gasping for air, she says she feels like she is drowning. She is coughing up pink froth. She has a heart condition and her ankles are swollen.",
+        "locales": {
+            "en": {
+                "title": "Woman drowning in her own lungs",
+                "description": "A woman in Richman woke up gasping for air, she says she feels like she is drowning. She is coughing up pink froth. She has a heart condition and her ankles are swollen."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

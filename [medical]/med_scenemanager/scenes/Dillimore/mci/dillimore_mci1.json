@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head-on collision, drivers hurt",
-        "description": "Two cars hit head-on at the crossroads in Dillimore. One driver is stuck in his seat with a crushed leg, the other driver and a passenger got out and are hurt.",
+        "locales": {
+            "en": {
+                "title": "Head-on collision, drivers hurt",
+                "description": "Two cars hit head-on at the crossroads in Dillimore. One driver is stuck in his seat with a crushed leg, the other driver and a passenger got out and are hurt."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

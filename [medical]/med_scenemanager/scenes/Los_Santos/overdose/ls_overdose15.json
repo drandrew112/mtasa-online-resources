@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Screaming, overheated, raging heart",
-        "description": "A man on the sidewalk in East Beach is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He is now bent over, panting.",
+        "locales": {
+            "en": {
+                "title": "Screaming, overheated, raging heart",
+                "description": "A man on the sidewalk in East Beach is shouting at cars, sweating and pulling at his clothes. Witnesses saw him smoking from a glass pipe. He is now bent over, panting."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

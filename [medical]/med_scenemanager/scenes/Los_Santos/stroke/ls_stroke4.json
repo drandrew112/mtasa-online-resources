@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Driver stopped, cannot speak",
-        "description": "A driver stopped in the middle of the lane in Downtown Los Santos with hazard lights on. Other drivers say he is sitting behind the wheel, staring, and cannot answer. One side of his face droops.",
+        "locales": {
+            "en": {
+                "title": "Driver stopped, cannot speak",
+                "description": "A driver stopped in the middle of the lane in Downtown Los Santos with hazard lights on. Other drivers say he is sitting behind the wheel, staring, and cannot answer. One side of his face droops."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

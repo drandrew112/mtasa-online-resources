@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Struck by a speeding car",
-        "description": "A speeding car hit a pedestrian by the roadside in Las Venturas and crashed into a pole. The pedestrian is unconscious and bleeding heavily from his head and legs.",
+        "locales": {
+            "en": {
+                "title": "Struck by a speeding car",
+                "description": "A speeding car hit a pedestrian by the roadside in Las Venturas and crashed into a pole. The pedestrian is unconscious and bleeding heavily from his head and legs."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, no pulse",
-        "description": "A shopper in a tailored suit grabbed his chest outside a designer boutique and hit the pavement face-up, bags of overpriced shoes everywhere. Store staff say he is not breathing and they cannot find a pulse.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, no pulse",
+                "description": "A shopper in a tailored suit grabbed his chest outside a designer boutique and hit the pavement face-up, bags of overpriced shoes everywhere. Store staff say he is not breathing and they cannot find a pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

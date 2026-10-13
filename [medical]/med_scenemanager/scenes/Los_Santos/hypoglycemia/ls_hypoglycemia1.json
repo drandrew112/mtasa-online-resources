@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker acting drunk",
-        "description": "Dock workers say their colleague is acting drunk, sweating and talking nonsense, but he does not drink. He skipped lunch. There is an insulin pen in his jacket.",
+        "locales": {
+            "en": {
+                "title": "Worker acting drunk",
+                "description": "Dock workers say their colleague is acting drunk, sweating and talking nonsense, but he does not drink. He skipped lunch. There is an insulin pen in his jacket."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man shot several times",
-        "description": "A man was shot multiple times outside a shop in Willowfield. He is lying face down in a pool of blood and only gasping. Witnesses heard five or six shots.",
+        "locales": {
+            "en": {
+                "title": "Man shot several times",
+                "description": "A man was shot multiple times outside a shop in Willowfield. He is lying face down in a pool of blood and only gasping. Witnesses heard five or six shots."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

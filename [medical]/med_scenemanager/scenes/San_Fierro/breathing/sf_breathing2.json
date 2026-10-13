@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Asthma attack, inhaler empty",
-        "description": "A woman at a bus stop in Ocean Flats is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale.",
+        "locales": {
+            "en": {
+                "title": "Asthma attack, inhaler empty",
+                "description": "A woman at a bus stop in Ocean Flats is having an asthma attack and her inhaler is empty. She is leaning forward, wheezing, and her lips are turning pale."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

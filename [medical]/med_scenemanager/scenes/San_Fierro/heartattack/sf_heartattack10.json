@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, severe headache",
-        "description": "A woman leaning on a wall in front of her apartment has a splitting headache and chest pain. She says her blood pressure meds \"make her sleepy\" so she stopped them.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, severe headache",
+                "description": "A woman leaning on a wall in front of her apartment has a splitting headache and chest pain. She says her blood pressure meds \"make her sleepy\" so she stopped them."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer pulled out, not breathing",
-        "description": "Lifeguards pulled a swimmer out of the water at Santa Maria Beach and carried him up to the promenade. He is not breathing. A bystander has started chest compressions.",
+        "locales": {
+            "en": {
+                "title": "Swimmer pulled out, not breathing",
+                "description": "Lifeguards pulled a swimmer out of the water at Santa Maria Beach and carried him up to the promenade. He is not breathing. A bystander has started chest compressions."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

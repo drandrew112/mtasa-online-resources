@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Kid hit by a reversing car",
-        "description": "A car reversing out of a driveway on Grove Street hit a boy on a bicycle. The boy is crying, his arm looks broken and his knee is bleeding. The driver stopped and is with him.",
+        "locales": {
+            "en": {
+                "title": "Kid hit by a reversing car",
+                "description": "A car reversing out of a driveway on Grove Street hit a boy on a bicycle. The boy is crying, his arm looks broken and his knee is bleeding. The driver stopped and is with him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

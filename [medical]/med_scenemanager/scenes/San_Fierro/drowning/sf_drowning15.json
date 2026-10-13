@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rescuer and victim exhausted",
-        "description": "A man jumped in to save a drowning stranger. Both are on the waterfront promenade in Missionary Hill now: the stranger is unconscious, the rescuer is exhausted and coughing.",
+        "locales": {
+            "en": {
+                "title": "Rescuer and victim exhausted",
+                "description": "A man jumped in to save a drowning stranger. Both are on the waterfront promenade in Missionary Hill now: the stranger is unconscious, the rescuer is exhausted and coughing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

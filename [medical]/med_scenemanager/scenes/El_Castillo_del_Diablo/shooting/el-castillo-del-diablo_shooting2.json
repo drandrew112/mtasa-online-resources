@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hunting accident",
-        "description": "A hunter was shot by his friend by the dusty roadside near El Castillo del Diablo, who mistook him for a deer. He has a wound in his thigh that is bleeding heavily.",
+        "locales": {
+            "en": {
+                "title": "Hunting accident",
+                "description": "A hunter was shot by his friend by the dusty roadside near El Castillo del Diablo, who mistook him for a deer. He has a wound in his thigh that is bleeding heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

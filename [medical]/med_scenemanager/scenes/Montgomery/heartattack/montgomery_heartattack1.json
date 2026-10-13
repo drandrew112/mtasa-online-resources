@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A factory worker on his cigarette break is doubled over by the road, crushing chest pain going down his arm. His foreman wants to know if he is clocking out.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A factory worker on his cigarette break is doubled over by the road, crushing chest pain going down his arm. His foreman wants to know if he is clocking out."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

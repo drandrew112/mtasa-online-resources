@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Toddler fell in an irrigation ditch",
-        "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on farmland in The Farm. The child is coughing and crying weakly.",
+        "locales": {
+            "en": {
+                "title": "Toddler fell in an irrigation ditch",
+                "description": "A toddler fell into an irrigation ditch and was under water briefly. Her grandmother carried her on farmland in The Farm. The child is coughing and crying weakly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

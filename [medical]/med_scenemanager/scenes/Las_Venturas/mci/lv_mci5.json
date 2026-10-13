@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Bus and car collision",
-        "description": "A city bus and a car collided at a junction in Blackfield. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road.",
+        "locales": {
+            "en": {
+                "title": "Bus and car collision",
+                "description": "A city bus and a car collided at a junction in Blackfield. Several passengers fell inside the bus and the car driver is badly hurt. People are sitting at the edge of the road."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

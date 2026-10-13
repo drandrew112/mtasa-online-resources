@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Farmer wheezing after spraying",
-        "description": "A farmer by the dusty roadside near Verdant Meadows was spraying crops without a mask. Now he is wheezing, drooling and sweating, and his breathing is getting worse.",
+        "locales": {
+            "en": {
+                "title": "Farmer wheezing after spraying",
+                "description": "A farmer by the dusty roadside near Verdant Meadows was spraying crops without a mask. Now he is wheezing, drooling and sweating, and his breathing is getting worse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

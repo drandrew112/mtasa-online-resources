@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer swallowed water",
-        "description": "A swimmer got into trouble in a swimming pool and was helped out and brought out to the driveway of a villa in Richman. He is coughing hard, breathless and says his chest hurts.",
+        "locales": {
+            "en": {
+                "title": "Swimmer swallowed water",
+                "description": "A swimmer got into trouble in a swimming pool and was helped out and brought out to the driveway of a villa in Richman. He is coughing hard, breathless and says his chest hurts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

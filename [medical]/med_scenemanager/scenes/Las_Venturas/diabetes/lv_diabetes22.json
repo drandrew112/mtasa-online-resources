@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Could not wake him after a party",
-        "description": "Friends at the side of the road on The Strip cannot wake a man after a night out. He is diabetic, drank a lot of sugary cocktails and did not take his insulin.",
+        "locales": {
+            "en": {
+                "title": "Could not wake him after a party",
+                "description": "Friends at the side of the road on The Strip cannot wake a man after a night out. He is diabetic, drank a lot of sugary cocktails and did not take his insulin."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Light-headed after argument",
-        "description": "Two neighbours were shouting at each other over a parking spot when one of them went pale, clutched the railing and sat down. He says his head feels like it is in a vice.",
+        "locales": {
+            "en": {
+                "title": "Light-headed after argument",
+                "description": "Two neighbours were shouting at each other over a parking spot when one of them went pale, clutched the railing and sat down. He says his head feels like it is in a vice."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

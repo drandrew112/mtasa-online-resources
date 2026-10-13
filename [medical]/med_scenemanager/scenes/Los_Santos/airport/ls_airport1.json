@@ -9,8 +9,16 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Passenger confused after landing",
-        "description": "A private jet passenger could not walk straight down the stairs after landing. The pilot says she suddenly started slurring her words and cannot hold her coffee in her left hand.",
+        "locales": {
+            "en": {
+                "title": "Passenger confused after landing",
+                "description": "A private jet passenger could not walk straight down the stairs after landing. The pilot says she suddenly started slurring her words and cannot hold her coffee in her left hand."
+            },
+            "hu": {
+                "title": "Zavart utas a leszállás után",
+                "description": "Egy magánrepülő utasa nem tudott egyenesen lemenni a lépcsőn leszállás után. A pilóta azt mondja, hogy hirtelen elkezdett hadarni, és nem tudja a bal kezében tartani a kávéját."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

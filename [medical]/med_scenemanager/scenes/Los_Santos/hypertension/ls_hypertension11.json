@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pressure, very high BP",
-        "description": "A builder on his lunch break felt a heavy pressure across his chest and a racing heart. Coworkers say he is beetroot red and sweating. He takes pills for blood pressure but skips them on work days.",
+        "locales": {
+            "en": {
+                "title": "Chest pressure, very high BP",
+                "description": "A builder on his lunch break felt a heavy pressure across his chest and a racing heart. Coworkers say he is beetroot red and sweating. He takes pills for blood pressure but skips them on work days."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

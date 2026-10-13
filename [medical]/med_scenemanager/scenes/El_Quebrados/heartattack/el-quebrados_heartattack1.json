@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "The town sheriff sat down by the road with crushing chest pain going down his arm. He is still trying to give orders.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "The town sheriff sat down by the road with crushing chest pain going down his arm. He is still trying to give orders."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

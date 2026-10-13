@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slumped over, drooling",
-        "description": "A tourist couple found an older man slumped outside a shop in Pershing Square, drooling from one corner of the mouth. He squeezes with one hand only and cannot answer questions.",
+        "locales": {
+            "en": {
+                "title": "Slumped over, drooling",
+                "description": "A tourist couple found an older man slumped outside a shop in Pershing Square, drooling from one corner of the mouth. He squeezes with one hand only and cannot answer questions."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

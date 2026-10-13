@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Truck jackknifed, cars crashed",
-        "description": "A box truck lost its brakes and jackknifed at a junction in King's. Two cars crashed into it. Three people are injured, one is bleeding heavily.",
+        "locales": {
+            "en": {
+                "title": "Truck jackknifed, cars crashed",
+                "description": "A box truck lost its brakes and jackknifed at a junction in King's. Two cars crashed into it. Three people are injured, one is bleeding heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

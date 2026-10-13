@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Four-car pileup, several injured",
-        "description": "Four cars crashed into each other in Richman after one braked suddenly. One driver is trapped behind the wheel, a woman is lying in the lane and two more people are sitting by the road, dazed.",
+        "locales": {
+            "en": {
+                "title": "Four-car pileup, several injured",
+                "description": "Four cars crashed into each other in Richman after one braked suddenly. One driver is trapped behind the wheel, a woman is lying in the lane and two more people are sitting by the road, dazed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

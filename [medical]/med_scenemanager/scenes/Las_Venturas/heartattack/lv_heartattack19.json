@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, very high BP",
-        "description": "A loud man in a cowboy hat is leaning against a wall, red-faced with chest pain and a splitting headache. He admits to skipping his pills \"for the trip\".",
+        "locales": {
+            "en": {
+                "title": "Chest pain, very high BP",
+                "description": "A loud man in a cowboy hat is leaning against a wall, red-faced with chest pain and a splitting headache. He admits to skipping his pills \"for the trip\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

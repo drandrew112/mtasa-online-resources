@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found below a grain silo",
-        "description": "Farm workers found a man lying on the dusty ground in Las Barrancas below a grain silo he had been climbing. His injuries are severe and he has not moved since they found him.",
+        "locales": {
+            "en": {
+                "title": "Found below a grain silo",
+                "description": "Farm workers found a man lying on the dusty ground in Las Barrancas below a grain silo he had been climbing. His injuries are severe and he has not moved since they found him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

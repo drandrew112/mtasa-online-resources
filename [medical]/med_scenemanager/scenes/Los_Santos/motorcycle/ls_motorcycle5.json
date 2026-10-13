@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rider lost control",
-        "description": "A motorcyclist lost control in Rodeo and slid along the asphalt. The rider is lying in the lane with road rash on the arms, a painful shoulder and is dizzy.",
+        "locales": {
+            "en": {
+                "title": "Rider lost control",
+                "description": "A motorcyclist lost control in Rodeo and slid along the asphalt. The rider is lying in the lane with road rash on the arms, a painful shoulder and is dizzy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

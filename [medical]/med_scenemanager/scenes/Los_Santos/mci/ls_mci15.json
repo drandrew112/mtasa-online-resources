@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Bus and car collision",
-        "description": "A city bus collided with a car in Market. The car driver is badly hurt and several bus passengers fell inside and were helped out to the sidewalk.",
+        "locales": {
+            "en": {
+                "title": "Bus and car collision",
+                "description": "A city bus collided with a car in Market. The car driver is badly hurt and several bus passengers fell inside and were helped out to the sidewalk."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

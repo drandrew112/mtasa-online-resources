@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted, rapid pulse",
-        "description": "A teenager on her way to school passed out on the sidewalk. Her friend says her heart was \"buzzing\" a minute ago. She is breathing but will not wake up.",
+        "locales": {
+            "en": {
+                "title": "Fainted, rapid pulse",
+                "description": "A teenager on her way to school passed out on the sidewalk. Her friend says her heart was \"buzzing\" a minute ago. She is breathing but will not wake up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

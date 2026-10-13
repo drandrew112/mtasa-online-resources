@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pulled out by a surfer",
-        "description": "A surfer pulled a young woman out of a rip current. She is lying on the beach in Missionary Hill, confused and with blue lips.",
+        "locales": {
+            "en": {
+                "title": "Pulled out by a surfer",
+                "description": "A surfer pulled a young woman out of a rip current. She is lying on the beach in Missionary Hill, confused and with blue lips."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

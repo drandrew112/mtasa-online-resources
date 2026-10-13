@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, nausea",
-        "description": "A cashier stepped outside for air after a sudden throbbing headache and nausea. She has a family history of strokes and is scared it is happening to her.",
+        "locales": {
+            "en": {
+                "title": "Headache, nausea",
+                "description": "A cashier stepped outside for air after a sudden throbbing headache and nausea. She has a family history of strokes and is scared it is happening to her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

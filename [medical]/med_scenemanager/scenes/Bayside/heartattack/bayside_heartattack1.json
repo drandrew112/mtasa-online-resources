@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A yacht owner walking up from the marina collapsed by the road. Not breathing. His captain's hat rolled into the gutter.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A yacht owner walking up from the marina collapsed by the road. Not breathing. His captain's hat rolled into the gutter."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

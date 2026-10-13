@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, no breathing",
-        "description": "A man arguing about the price of sourdough collapsed on the sidewalk outside the bakery. Not breathing. The baker is on the phone, flour everywhere.",
+        "locales": {
+            "en": {
+                "title": "Man down, no breathing",
+                "description": "A man arguing about the price of sourdough collapsed on the sidewalk outside the bakery. Not breathing. The baker is on the phone, flour everywhere."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

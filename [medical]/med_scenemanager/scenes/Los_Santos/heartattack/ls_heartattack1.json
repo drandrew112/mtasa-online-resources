@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Heart attack",
-        "description": "a persorn fall down on the street, possible heart attack",
+        "locales": {
+            "en": {
+                "title": "Heart attack",
+                "description": "a persorn fall down on the street, possible heart attack"
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

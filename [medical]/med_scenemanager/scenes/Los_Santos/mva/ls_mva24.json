@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car hit a parked car",
-        "description": "A yellow car swerved into a white car parked at the curb in Ocean Docks. The owner of the parked car, who was sitting in it, was pulled out by bystanders and is lying on their back next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the yellow car is lying on the ground in pain with a head injury and a painful arm.",
+        "locales": {
+            "en": {
+                "title": "Car hit a parked car",
+                "description": "A yellow car swerved into a white car parked at the curb in Ocean Docks. The owner of the parked car, who was sitting in it, was pulled out by bystanders and is lying on their back next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the yellow car is lying on the ground in pain with a head injury and a painful arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

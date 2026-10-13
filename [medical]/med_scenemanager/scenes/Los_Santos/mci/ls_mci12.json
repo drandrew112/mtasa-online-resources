@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chain collision, four cars",
-        "description": "A chain collision involving four cars in Conference Center. One elderly driver is unresponsive in his seat, a young passenger was thrown out and others have whiplash and cuts.",
+        "locales": {
+            "en": {
+                "title": "Chain collision, four cars",
+                "description": "A chain collision involving four cars in Conference Center. One elderly driver is unresponsive in his seat, a young passenger was thrown out and others have whiplash and cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

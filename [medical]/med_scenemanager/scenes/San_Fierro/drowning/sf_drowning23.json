@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found floating in the water",
-        "description": "Joggers saw a man floating face down and pulled him out. He is lying on the sidewalk by the waterfront in Battery Point, not breathing. His skin is grey and cold.",
+        "locales": {
+            "en": {
+                "title": "Found floating in the water",
+                "description": "Joggers saw a man floating face down and pulled him out. He is lying on the sidewalk by the waterfront in Battery Point, not breathing. His skin is grey and cold."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

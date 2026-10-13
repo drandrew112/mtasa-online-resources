@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest tightness, blurred vision",
-        "description": "A heavy-set man next to the country road near Fort Carson complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples.",
+        "locales": {
+            "en": {
+                "title": "Chest tightness, blurred vision",
+                "description": "A heavy-set man next to the country road near Fort Carson complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

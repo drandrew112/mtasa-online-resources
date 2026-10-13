@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Blurry vision, worried",
-        "description": "A woman with diabetes says her vision went blurry and her head is throbbing. She checked her sugar and it was fine.",
+        "locales": {
+            "en": {
+                "title": "Blurry vision, worried",
+                "description": "A woman with diabetes says her vision went blurry and her head is throbbing. She checked her sugar and it was fine."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

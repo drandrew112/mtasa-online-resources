@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man collapsed on a bench",
-        "description": "Man collapsed on a bench, not moving.",
+        "locales": {
+            "en": {
+                "title": "Man collapsed on a bench",
+                "description": "Man collapsed on a bench, not moving."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer swallowed water",
-        "description": "A swimmer got into trouble in the sea and was helped out and brought onto the beach at Santa Maria Beach. He is coughing hard, breathless and says his chest hurts.",
+        "locales": {
+            "en": {
+                "title": "Swimmer swallowed water",
+                "description": "A swimmer got into trouble in the sea and was helped out and brought onto the beach at Santa Maria Beach. He is coughing hard, breathless and says his chest hurts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

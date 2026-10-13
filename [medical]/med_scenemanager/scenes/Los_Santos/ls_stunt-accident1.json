@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Stunt park accident",
-        "description": "A young man fell off his BMX at the stunt park next to the Southern gas station. He broke his leg and an arm.",
+        "locales": {
+            "en": {
+                "title": "Stunt park accident",
+                "description": "A young man fell off his BMX at the stunt park next to the Southern gas station. He broke his leg and an arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

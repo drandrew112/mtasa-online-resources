@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman took pills, very sleepy",
-        "description": "A woman's flatmate found her outside with empty pill packets and a bottle of vodka. She left a note. She is very drowsy and only mumbles when spoken to.",
+        "locales": {
+            "en": {
+                "title": "Woman took pills, very sleepy",
+                "description": "A woman's flatmate found her outside with empty pill packets and a bottle of vodka. She left a note. She is very drowsy and only mumbles when spoken to."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

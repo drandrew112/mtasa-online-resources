@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed, high BP",
-        "description": "A man has had a heavy nosebleed for half an hour and the tissues in his hands are soaked through. His wife checked his pressure on a home cuff and it read over two hundred.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed, high BP",
+                "description": "A man has had a heavy nosebleed for half an hour and the tissues in his hands are soaked through. His wife checked his pressure on a home cuff and it read over two hundred."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

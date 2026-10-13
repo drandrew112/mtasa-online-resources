@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Insulin pump failed",
-        "description": "A woman on the dusty ground in Regular Tom says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily.",
+        "locales": {
+            "en": {
+                "title": "Insulin pump failed",
+                "description": "A woman on the dusty ground in Regular Tom says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

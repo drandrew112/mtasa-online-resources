@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pedestrian hit while crossing",
-        "description": "A pedestrian was hit by a car while crossing outside a house in Montgomery. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg.",
+        "locales": {
+            "en": {
+                "title": "Pedestrian hit while crossing",
+                "description": "A pedestrian was hit by a car while crossing outside a house in Montgomery. He was thrown several metres and is drowsy, with a bleeding head and a deformed leg."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

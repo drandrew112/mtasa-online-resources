@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "An aviation hobbyist is sitting by the road with chest pressure and sweat. He says it hit him right after landing.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "An aviation hobbyist is sitting by the road with chest pressure and sweat. He says it hit him right after landing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A man was found slumped by the road near the barns. Grey, cold and barely breathing. A pitchfork lies next to him.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A man was found slumped by the road near the barns. Grey, cold and barely breathing. A pitchfork lies next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

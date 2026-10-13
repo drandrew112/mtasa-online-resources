@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed mid-sentence",
-        "description": "A woman arguing loudly on her phone dropped mid-sentence and went face down on the sidewalk. Her phone is still on speaker. Bystanders say she is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed mid-sentence",
+                "description": "A woman arguing loudly on her phone dropped mid-sentence and went face down on the sidewalk. Her phone is still on speaker. Bystanders say she is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

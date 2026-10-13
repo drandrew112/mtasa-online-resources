@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, shaking",
-        "description": "A woman is shaking with palpitations and a pounding headache. She took several diet pills before going for a run in the park.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, shaking",
+                "description": "A woman is shaking with palpitations and a pounding headache. She took several diet pills before going for a run in the park."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

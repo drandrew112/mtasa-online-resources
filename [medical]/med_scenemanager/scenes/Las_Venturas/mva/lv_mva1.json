@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car hit a parked car",
-        "description": "A white car swerved into a yellow car parked at the curb in Rockshore West. The owner of the parked car, who was sitting in it, is still in the seat, unconscious, with a serious head injury and a broken arm. The driver of the white car is still behind the wheel with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Car hit a parked car",
+                "description": "A white car swerved into a yellow car parked at the curb in Rockshore West. The owner of the parked car, who was sitting in it, is still in the seat, unconscious, with a serious head injury and a broken arm. The driver of the white car is still behind the wheel with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dirt bike crash in the hills",
-        "description": "A dirt bike rider crashed on the trail below the Vinewood sign. His friend says he hit a rock, flew off and landed on his head. He is not responding properly.",
+        "locales": {
+            "en": {
+                "title": "Dirt bike crash in the hills",
+                "description": "A dirt bike rider crashed on the trail below the Vinewood sign. His friend says he hit a rock, flew off and landed on his head. He is not responding properly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

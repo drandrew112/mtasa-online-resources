@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, restless",
-        "description": "A young man feels his heart racing and cannot sit still. He took cold medicine with decongestant several times today.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, restless",
+                "description": "A young man feels his heart racing and cannot sit still. He took cold medicine with decongestant several times today."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

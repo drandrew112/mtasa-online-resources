@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An old man waiting at the gas station keeps fainting. Slow pulse, cold, confused.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An old man waiting at the gas station keeps fainting. Slow pulse, cold, confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

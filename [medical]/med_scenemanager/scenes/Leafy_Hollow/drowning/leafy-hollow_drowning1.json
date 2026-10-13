@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer cramped, swallowed water",
-        "description": "A swimmer got a cramp and swallowed a lot of water before friends helped him out. He is sitting at the water's edge near Leafy Hollow, coughing and breathing fast.",
+        "locales": {
+            "en": {
+                "title": "Swimmer cramped, swallowed water",
+                "description": "A swimmer got a cramp and swallowed a lot of water before friends helped him out. He is sitting at the water's edge near Leafy Hollow, coughing and breathing fast."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

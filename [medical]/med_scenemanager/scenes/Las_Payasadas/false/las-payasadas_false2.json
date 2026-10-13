@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man asleep on the ground",
-        "description": "A farmer reports a man who collapsed on open scrubland in Las Payasadas. He is sitting up now, says he was only sleeping and refuses help.",
+        "locales": {
+            "en": {
+                "title": "Man asleep on the ground",
+                "description": "A farmer reports a man who collapsed on open scrubland in Las Payasadas. He is sitting up now, says he was only sleeping and refuses help."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

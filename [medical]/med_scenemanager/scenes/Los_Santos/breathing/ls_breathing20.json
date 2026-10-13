@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old smoker cannot catch breath",
-        "description": "An elderly man on the sidewalk in Verdant Bluffs stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky.",
+        "locales": {
+            "en": {
+                "title": "Old smoker cannot catch breath",
+                "description": "An elderly man on the sidewalk in Verdant Bluffs stopped walking and cannot catch his breath. He has had a bad cough for a week, smokes a pack a day and his lips look dusky."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

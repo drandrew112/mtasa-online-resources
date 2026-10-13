@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pulled out of the water",
-        "description": "Passers-by pulled a young woman out of the water and laid her on the waterfront promenade in Queens. She is confused and has blue lips.",
+        "locales": {
+            "en": {
+                "title": "Pulled out of the water",
+                "description": "Passers-by pulled a young woman out of the water and laid her on the waterfront promenade in Queens. She is confused and has blue lips."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

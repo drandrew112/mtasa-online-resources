@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Bus passenger confused, sweaty",
-        "description": "A bus driver put an older man off the bus on the sidewalk in Downtown Los Santos after he became confused and could not find his stop. He is sweating and tremors are visible. He takes diabetes tablets.",
+        "locales": {
+            "en": {
+                "title": "Bus passenger confused, sweaty",
+                "description": "A bus driver put an older man off the bus on the sidewalk in Downtown Los Santos after he became confused and could not find his stop. He is sweating and tremors are visible. He takes diabetes tablets."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

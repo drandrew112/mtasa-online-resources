@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A grey car turning left was hit by an oncoming yellow car at an intersection in East Beach. The driver of the yellow car is lying on the ground in pain with a broken rib and a cut on the head. The driver of the grey car is lying on their back next to the car with a broken leg and a cut on the head. The passenger of the yellow car is still in the passenger seat with a broken rib and a cut on the head.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A grey car turning left was hit by an oncoming yellow car at an intersection in East Beach. The driver of the yellow car is lying on the ground in pain with a broken rib and a cut on the head. The driver of the grey car is lying on their back next to the car with a broken leg and a cut on the head. The passenger of the yellow car is still in the passenger seat with a broken rib and a cut on the head."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

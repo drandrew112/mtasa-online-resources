@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hiker down, not breathing",
-        "description": "A hiker came out of the woods onto the road, waved at a passing car and collapsed. The driver says he is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Hiker down, not breathing",
+                "description": "A hiker came out of the woods onto the road, waved at a passing car and collapsed. The driver says he is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

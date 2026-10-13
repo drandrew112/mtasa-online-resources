@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "An elderly woman leaving the buffet keeps nearly fainting on the sidewalk. Her pulse is very slow and she looks pale. Her husband is holding her handbag and three plates of dessert.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "An elderly woman leaving the buffet keeps nearly fainting on the sidewalk. Her pulse is very slow and she looks pale. Her husband is holding her handbag and three plates of dessert."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

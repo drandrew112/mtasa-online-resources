@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drowning in own lungs",
-        "description": "An elderly man at a bus stop in Glen Park is sitting bolt upright, bubbling breaths can be heard from a distance. He is sweaty, grey and confused. He skipped his water tablets.",
+        "locales": {
+            "en": {
+                "title": "Drowning in own lungs",
+                "description": "An elderly man at a bus stop in Glen Park is sitting bolt upright, bubbling breaths can be heard from a distance. He is sweaty, grey and confused. He skipped his water tablets."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

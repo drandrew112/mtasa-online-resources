@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Road worker struck",
-        "description": "A road worker was hit by a car that ignored the cones next to the country road near El Quebrados. He is lying on the asphalt, dazed, with a deformed arm and a head wound.",
+        "locales": {
+            "en": {
+                "title": "Road worker struck",
+                "description": "A road worker was hit by a car that ignored the cones next to the country road near El Quebrados. He is lying on the asphalt, dazed, with a deformed arm and a head wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

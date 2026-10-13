@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Skateboarder hit by a car",
-        "description": "A teenager on a skateboard shot off the curb and into the side of a car outside a small store in Las Barrancas. His leg is deformed and he has deep grazes.",
+        "locales": {
+            "en": {
+                "title": "Skateboarder hit by a car",
+                "description": "A teenager on a skateboard shot off the curb and into the side of a car outside a small store in Las Barrancas. His leg is deformed and he has deep grazes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

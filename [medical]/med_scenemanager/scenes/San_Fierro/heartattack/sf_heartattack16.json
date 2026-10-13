@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, short of breath",
-        "description": "A cable car mechanic sat down on the curb after his shift, short of breath with chest pain spreading to his back. He jokes that the hills finally won.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, short of breath",
+                "description": "A cable car mechanic sat down on the curb after his shift, short of breath with chest pain spreading to his back. He jokes that the hills finally won."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

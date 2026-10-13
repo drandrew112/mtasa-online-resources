@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Very thirsty and confused",
-        "description": "A farmhand on the dusty ground near the Lil' Probe Inn keeps begging for water, has been peeing constantly all day and now cannot remember where he was going.",
+        "locales": {
+            "en": {
+                "title": "Very thirsty and confused",
+                "description": "A farmhand on the dusty ground near the Lil' Probe Inn keeps begging for water, has been peeing constantly all day and now cannot remember where he was going."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

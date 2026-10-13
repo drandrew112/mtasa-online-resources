@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "An elderly woman waiting for the bus nearly fainted twice. A nurse passing by says her pulse is \"way too slow\" and she looks like wet paper.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "An elderly woman waiting for the bus nearly fainted twice. A nurse passing by says her pulse is \"way too slow\" and she looks like wet paper."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

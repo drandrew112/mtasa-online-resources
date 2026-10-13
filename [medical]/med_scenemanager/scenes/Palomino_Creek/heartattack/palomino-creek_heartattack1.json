@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "An old fisherman walking back from the river with his catch dropped by the road. Not breathing. His bucket of trout is flapping all over the asphalt.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "An old fisherman walking back from the river with his catch dropped by the road. Not breathing. His bucket of trout is flapping all over the asphalt."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

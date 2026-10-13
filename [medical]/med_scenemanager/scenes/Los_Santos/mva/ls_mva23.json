@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "T-bone collision at intersection",
-        "description": "A dark grey car ran into the side of a grey car at an intersection in Market. The driver of the grey car is still behind the wheel with a broken wrist and a bleeding wound. The driver of the dark grey car is lying on the ground in pain with a broken leg and a cut on the head. The passenger of the grey car got out and is sitting on the ground with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "T-bone collision at intersection",
+                "description": "A dark grey car ran into the side of a grey car at an intersection in Market. The driver of the grey car is still behind the wheel with a broken wrist and a bleeding wound. The driver of the dark grey car is lying on the ground in pain with a broken leg and a cut on the head. The passenger of the grey car got out and is sitting on the ground with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

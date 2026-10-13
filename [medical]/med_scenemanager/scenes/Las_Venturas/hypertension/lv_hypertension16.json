@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Neck ache, dizziness",
-        "description": "An office worker with a stiff, aching neck and dizziness sat down outside. He admits he has been ignoring high readings at the pharmacy.",
+        "locales": {
+            "en": {
+                "title": "Neck ache, dizziness",
+                "description": "An office worker with a stiff, aching neck and dizziness sat down outside. He admits he has been ignoring high readings at the pharmacy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

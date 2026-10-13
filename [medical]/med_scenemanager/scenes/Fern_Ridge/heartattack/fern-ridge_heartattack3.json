@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down by the road",
-        "description": "A logger found a man lying by the road under the pines. No pulse, only an occasional gasp.",
+        "locales": {
+            "en": {
+                "title": "Found down by the road",
+                "description": "A logger found a man lying by the road under the pines. No pulse, only an occasional gasp."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

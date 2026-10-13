@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell off a wall",
-        "description": "A young man climbing a high wall next to the road in Calton Heights fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "locales": {
+            "en": {
+                "title": "Fell off a wall",
+                "description": "A young man climbing a high wall next to the road in Calton Heights fell head first. He is lying face down, groaning, with blood coming from his nose."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

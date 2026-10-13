@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman cannot lift her arm",
-        "description": "A woman in her fifties on the sidewalk in Verona Beach dropped her shopping bags and cannot lift her right arm. She is talking, but her words come out wrong and she seems frightened. A shop assistant is staying with her.",
+        "locales": {
+            "en": {
+                "title": "Woman cannot lift her arm",
+                "description": "A woman in her fifties on the sidewalk in Verona Beach dropped her shopping bags and cannot lift her right arm. She is talking, but her words come out wrong and she seems frightened. A shop assistant is staying with her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

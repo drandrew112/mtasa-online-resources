@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Flushed, pounding heart",
-        "description": "A student on his way to an exam feels his heart pounding and his face burning up. He took a friend's diet pills to stay focused last night.",
+        "locales": {
+            "en": {
+                "title": "Flushed, pounding heart",
+                "description": "A student on his way to an exam feels his heart pounding and his face burning up. He took a friend's diet pills to stay focused last night."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

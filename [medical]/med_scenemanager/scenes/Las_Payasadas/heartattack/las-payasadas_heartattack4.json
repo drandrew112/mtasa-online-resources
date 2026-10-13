@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak, nauseous, pale",
-        "description": "A trucker stopped for fried chicken and now sits by the road with nausea, jaw ache and cold sweat. He blames the chicken.",
+        "locales": {
+            "en": {
+                "title": "Weak, nauseous, pale",
+                "description": "A trucker stopped for fried chicken and now sits by the road with nausea, jaw ache and cold sweat. He blames the chicken."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

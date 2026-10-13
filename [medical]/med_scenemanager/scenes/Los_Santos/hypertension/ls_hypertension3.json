@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed won't stop, dizzy",
-        "description": "A shop assistant in Rodeo has had a nosebleed for twenty minutes that will not stop no matter how hard she pinches. She is dizzy, flushed and says her heart is pounding. Her manager found a home blood pressure cuff in her bag.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed won't stop, dizzy",
+                "description": "A shop assistant in Rodeo has had a nosebleed for twenty minutes that will not stop no matter how hard she pinches. She is dizzy, flushed and says her heart is pounding. Her manager found a home blood pressure cuff in her bag."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

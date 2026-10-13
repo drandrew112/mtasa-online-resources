@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found by a rancher",
-        "description": "A rancher checking his fences found a man lying in the park just outside El Quebrados. He has a head wound and has been there for hours. The guard did not touch him.",
+        "locales": {
+            "en": {
+                "title": "Found by a rancher",
+                "description": "A rancher checking his fences found a man lying in the park just outside El Quebrados. He has a head wound and has been there for hours. The guard did not touch him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

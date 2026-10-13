@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer swallowed water",
-        "description": "A swimmer got into trouble in the lake and was helped out and brought up to the street in Verdant Bluffs. She is coughing hard, breathless and says her chest hurts.",
+        "locales": {
+            "en": {
+                "title": "Swimmer swallowed water",
+                "description": "A swimmer got into trouble in the lake and was helped out and brought up to the street in Verdant Bluffs. She is coughing hard, breathless and says her chest hurts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

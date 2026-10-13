@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, pounding head",
-        "description": "A man leaning on his fence by the road has chest pain and a splitting headache. He has not taken his pills in months.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, pounding head",
+                "description": "A man leaning on his fence by the road has chest pain and a splitting headache. He has not taken his pills in months."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

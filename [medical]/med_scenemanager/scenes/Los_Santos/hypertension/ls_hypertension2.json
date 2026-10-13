@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worst headache of his life",
-        "description": "An office worker stepped out of a meeting near Pershing Square clutching his head, says it feels like it is about to split open. He stopped his blood pressure pills last month because he felt fine. Now the lights hurt his eyes and he has vomited twice into a planter.",
+        "locales": {
+            "en": {
+                "title": "Worst headache of his life",
+                "description": "An office worker stepped out of a meeting near Pershing Square clutching his head, says it feels like it is about to split open. He stopped his blood pressure pills last month because he felt fine. Now the lights hurt his eyes and he has vomited twice into a planter."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

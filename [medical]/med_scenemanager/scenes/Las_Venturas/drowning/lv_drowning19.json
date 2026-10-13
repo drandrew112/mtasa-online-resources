@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swallowed a toy part on a dare",
-        "description": "A teenager on a bench near the Camel's Toe swallowed a plastic piece from a toy for a dare. He is coughing weakly, silent between coughs, with a high-pitched wheeze.",
+        "locales": {
+            "en": {
+                "title": "Swallowed a toy part on a dare",
+                "description": "A teenager on a bench near the Camel's Toe swallowed a plastic piece from a toy for a dare. He is coughing weakly, silent between coughs, with a high-pitched wheeze."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

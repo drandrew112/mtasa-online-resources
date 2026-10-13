@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body with gunshot wounds",
-        "description": "Early morning, a street cleaner found a man outside a shop at Los Santos International with several gunshot wounds. There is dried blood around him. Police have been informed.",
+        "locales": {
+            "en": {
+                "title": "Body with gunshot wounds",
+                "description": "Early morning, a street cleaner found a man outside a shop at Los Santos International with several gunshot wounds. There is dried blood around him. Police have been informed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

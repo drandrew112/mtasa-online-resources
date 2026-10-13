@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman hard to wake",
-        "description": "Her daughter found an elderly woman sitting outside a small store in Dillimore, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman hard to wake",
+                "description": "Her daughter found an elderly woman sitting outside a small store in Dillimore, very drowsy and hard to wake. She has been drinking a lot and peeing all the time for days. She takes tablets for sugar."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

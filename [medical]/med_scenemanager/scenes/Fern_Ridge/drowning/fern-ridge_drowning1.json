@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Farmer pulled from a stock tank",
-        "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him at the side of the road in Fern Ridge. He is coughing up water and confused.",
+        "locales": {
+            "en": {
+                "title": "Farmer pulled from a stock tank",
+                "description": "A farmer fell head first into a cattle water tank. His neighbour dragged him out and brought him at the side of the road in Fern Ridge. He is coughing up water and confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

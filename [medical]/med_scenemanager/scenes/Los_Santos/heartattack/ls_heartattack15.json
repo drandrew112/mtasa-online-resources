@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, pounding head",
-        "description": "A furious driver got out of his car to argue about a parking spot, then grabbed his chest and leaned on a wall. Pounding headache and crushing chest pain. The other driver called it in.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, pounding head",
+                "description": "A furious driver got out of his car to argue about a parking spot, then grabbed his chest and leaned on a wall. Pounding headache and crushing chest pain. The other driver called it in."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

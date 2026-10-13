@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe headache, vomiting",
-        "description": "A young mother is sitting on the sidewalk with her head in her hands. She has thrown up twice and says the daylight is stabbing her eyes. Her toddler is safe with a neighbour.",
+        "locales": {
+            "en": {
+                "title": "Severe headache, vomiting",
+                "description": "A young mother is sitting on the sidewalk with her head in her hands. She has thrown up twice and says the daylight is stabbing her eyes. Her toddler is safe with a neighbour."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

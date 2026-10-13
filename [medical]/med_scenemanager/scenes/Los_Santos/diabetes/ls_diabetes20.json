@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Tourist lost insulin, unwell",
-        "description": "A tourist at the water's edge in Verona Beach lost his luggage with the insulin in it two days ago. Now he feels terrible, has abdominal pain and is breathing heavily.",
+        "locales": {
+            "en": {
+                "title": "Tourist lost insulin, unwell",
+                "description": "A tourist at the water's edge in Verona Beach lost his luggage with the insulin in it two days ago. Now he feels terrible, has abdominal pain and is breathing heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

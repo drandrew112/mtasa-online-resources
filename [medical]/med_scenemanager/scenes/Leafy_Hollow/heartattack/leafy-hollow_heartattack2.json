@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A woodcutter sat down by the road with tight chest pain and drenched in sweat. He insists he only needs a break.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A woodcutter sat down by the road with tight chest pain and drenched in sweat. He insists he only needs a break."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

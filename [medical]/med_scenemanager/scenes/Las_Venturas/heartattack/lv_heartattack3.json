@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, no pulse",
-        "description": "A street performer dressed as an Elvis impersonator was found motionless on the sidewalk. No pulse, not breathing. The crowd has not realised it is not part of the act.",
+        "locales": {
+            "en": {
+                "title": "Found down, no pulse",
+                "description": "A street performer dressed as an Elvis impersonator was found motionless on the sidewalk. No pulse, not breathing. The crowd has not realised it is not part of the act."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

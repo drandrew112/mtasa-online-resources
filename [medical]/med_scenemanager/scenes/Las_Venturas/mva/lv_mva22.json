@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A yellow car lost control and spun out in Creek. The driver is lying on the ground in pain with a broken leg and a cut on the head.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A yellow car lost control and spun out in Creek. The driver is lying on the ground in pain with a broken leg and a cut on the head."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

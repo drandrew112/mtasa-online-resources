@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Tired, chest feels heavy",
-        "description": "A fisherman on his way home sat down on the sidewalk, short of breath and heavy in the chest. He smells of fish, is very polite and insists he can walk.",
+        "locales": {
+            "en": {
+                "title": "Tired, chest feels heavy",
+                "description": "A fisherman on his way home sat down on the sidewalk, short of breath and heavy in the chest. He smells of fish, is very polite and insists he can walk."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

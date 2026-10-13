@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man shot several times",
-        "description": "A man was shot several times in front of an apartment block in Queens and is lying face down in a pool of blood. The shooter ran away on foot.",
+        "locales": {
+            "en": {
+                "title": "Man shot several times",
+                "description": "A man was shot several times in front of an apartment block in Queens and is lying face down in a pool of blood. The shooter ran away on foot."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

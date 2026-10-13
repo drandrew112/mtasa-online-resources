@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cyclist went over the handlebars",
-        "description": "A cyclist went over the handlebars at a bus stop at Los Santos International after hitting a pothole. His collarbone is deformed and his helmet is cracked. He is talking but cannot remember the fall.",
+        "locales": {
+            "en": {
+                "title": "Cyclist went over the handlebars",
+                "description": "A cyclist went over the handlebars at a bus stop at Los Santos International after hitting a pothole. His collarbone is deformed and his helmet is cracked. He is talking but cannot remember the fall."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

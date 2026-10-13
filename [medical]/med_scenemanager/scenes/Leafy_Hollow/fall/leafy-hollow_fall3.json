@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Skateboarder crashed at speed",
-        "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt on the road shoulder near Leafy Hollow. His wrist is deformed and he has deep grazes.",
+        "locales": {
+            "en": {
+                "title": "Skateboarder crashed at speed",
+                "description": "A skateboarder lost control coming down a steep hill and slid along the asphalt on the road shoulder near Leafy Hollow. His wrist is deformed and he has deep grazes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

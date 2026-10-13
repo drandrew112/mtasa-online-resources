@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shot in the back, cannot feel legs",
-        "description": "A man running from a fight in a parking lot in Ganton was shot in the back. He is lying face down, conscious, saying he cannot feel his legs.",
+        "locales": {
+            "en": {
+                "title": "Shot in the back, cannot feel legs",
+                "description": "A man running from a fight in a parking lot in Ganton was shot in the back. He is lying face down, conscious, saying he cannot feel his legs."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

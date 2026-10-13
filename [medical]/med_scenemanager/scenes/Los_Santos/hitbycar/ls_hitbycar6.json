@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger hit at the curb",
-        "description": "A car drifted onto the curb at Los Santos International and hit a jogger. He is lying on the sidewalk with a broken leg and grazes, alert and in pain.",
+        "locales": {
+            "en": {
+                "title": "Jogger hit at the curb",
+                "description": "A car drifted onto the curb at Los Santos International and hit a jogger. He is lying on the sidewalk with a broken leg and grazes, alert and in pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

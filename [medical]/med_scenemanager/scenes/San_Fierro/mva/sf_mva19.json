@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Sideswipe collision",
-        "description": "A green car and a blue car sideswiped each other in King's and one of them lost control. The driver of the green car was pulled out by bystanders and is lying face down next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the blue car is still behind the wheel with a painful rib and some cuts.",
+        "locales": {
+            "en": {
+                "title": "Sideswipe collision",
+                "description": "A green car and a blue car sideswiped each other in King's and one of them lost control. The driver of the green car was pulled out by bystanders and is lying face down next to the car, unconscious, with multiple injuries and heavy bleeding. The driver of the blue car is still behind the wheel with a painful rib and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

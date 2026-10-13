@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit and run",
-        "description": "A car hit a man in East Beach and drove off. The victim is lying in the road, face down and not answering. Callers are stopping traffic.",
+        "locales": {
+            "en": {
+                "title": "Hit and run",
+                "description": "A car hit a man in East Beach and drove off. The victim is lying in the road, face down and not answering. Callers are stopping traffic."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

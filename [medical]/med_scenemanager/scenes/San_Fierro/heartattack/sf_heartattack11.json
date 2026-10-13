@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "No signs of life",
-        "description": "A newspaper seller found an old man slumped face down on the sidewalk near his stand. No breathing, no pulse. He might have been there since dawn.",
+        "locales": {
+            "en": {
+                "title": "No signs of life",
+                "description": "A newspaper seller found an old man slumped face down on the sidewalk near his stand. No breathing, no pulse. He might have been there since dawn."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

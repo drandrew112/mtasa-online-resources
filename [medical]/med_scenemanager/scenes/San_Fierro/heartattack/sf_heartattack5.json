@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lightheaded, slow pulse",
-        "description": "An elderly woman feeding pigeons keeps nearly blacking out. A passing medic student counted a pulse \"in the forties\". The pigeons have not left.",
+        "locales": {
+            "en": {
+                "title": "Lightheaded, slow pulse",
+                "description": "An elderly woman feeding pigeons keeps nearly blacking out. A passing medic student counted a pulse \"in the forties\". The pigeons have not left."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

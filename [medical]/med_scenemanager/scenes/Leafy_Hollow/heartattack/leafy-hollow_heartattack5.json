@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, pounding head",
-        "description": "A woman living in a cabin walked to the road for help. Crushing headache and chest pain. She ran out of her pills a week ago.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, pounding head",
+                "description": "A woman living in a cabin walked to the road for help. Crushing headache and chest pain. She ran out of her pills a week ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

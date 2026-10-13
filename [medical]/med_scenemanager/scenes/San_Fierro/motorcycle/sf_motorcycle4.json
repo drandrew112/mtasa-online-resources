@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Motorcyclist not moving",
-        "description": "Drivers at a junction in Palisades saw a motorcycle hit the curb at high speed. The rider is lying face down several metres away and is not moving.",
+        "locales": {
+            "en": {
+                "title": "Motorcyclist not moving",
+                "description": "Drivers at a junction in Palisades saw a motorcycle hit the curb at high speed. The rider is lying face down several metres away and is not moving."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

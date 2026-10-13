@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain in the heat",
-        "description": "A tourist sat down on the hot sidewalk with a tight chest and cold sweat despite the desert heat. Her friends think it is just the sun.",
+        "locales": {
+            "en": {
+                "title": "Chest pain in the heat",
+                "description": "A tourist sat down on the hot sidewalk with a tight chest and cold sweat despite the desert heat. Her friends think it is just the sun."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

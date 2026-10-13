@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cyclist wheezing, no inhaler",
-        "description": "A cyclist stopped at a bus stop in Ocean Flats after a fast ride and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "locales": {
+            "en": {
+                "title": "Cyclist wheezing, no inhaler",
+                "description": "A cyclist stopped at a bus stop in Ocean Flats after a fast ride and is wheezing loudly. He has asthma and forgot his inhaler."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A brown car ran into the back of a dark grey car in Juniper Hill. The driver of the dark grey car is lying on their back next to the car with a broken leg and a cut on the head. The driver of the brown car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the dark grey car is still in the passenger seat with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A brown car ran into the back of a dark grey car in Juniper Hill. The driver of the dark grey car is lying on their back next to the car with a broken leg and a cut on the head. The driver of the brown car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the dark grey car is still in the passenger seat with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainting spells",
-        "description": "A man in a tuxedo, on his way to a wedding, keeps fainting on the sidewalk. Slow pulse, sweaty, confused. He is the groom and very late.",
+        "locales": {
+            "en": {
+                "title": "Fainting spells",
+                "description": "A man in a tuxedo, on his way to a wedding, keeps fainting on the sidewalk. Slow pulse, sweaty, confused. He is the groom and very late."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

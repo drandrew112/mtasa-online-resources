@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dropped face down",
-        "description": "A fisherman unloading his boat walked up to the road and dropped face down. Not breathing.",
+        "locales": {
+            "en": {
+                "title": "Dropped face down",
+                "description": "A fisherman unloading his boat walked up to the road and dropped face down. Not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

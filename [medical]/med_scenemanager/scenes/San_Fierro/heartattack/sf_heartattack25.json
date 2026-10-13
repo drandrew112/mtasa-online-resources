@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, cold",
-        "description": "A street sweeper found a man lying face down at the edge of the sidewalk. Cold skin, not breathing. A half-eaten sandwich lies next to him.",
+        "locales": {
+            "en": {
+                "title": "Found down, cold",
+                "description": "A street sweeper found a man lying face down at the edge of the sidewalk. Cold skin, not breathing. A half-eaten sandwich lies next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

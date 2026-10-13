@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Anxious, racing heart",
-        "description": "A woman next to the country road near Palomino Creek is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly.",
+        "locales": {
+            "en": {
+                "title": "Anxious, racing heart",
+                "description": "A woman next to the country road near Palomino Creek is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "No helmet, head injury",
-        "description": "A young rider without a helmet crashed in Ocean Docks while doing a wheelie. He is lying in the road, unconscious, bleeding from the ear. Friends are filming.",
+        "locales": {
+            "en": {
+                "title": "No helmet, head injury",
+                "description": "A young rider without a helmet crashed in Ocean Docks while doing a wheelie. He is lying in the road, unconscious, bleeding from the ear. Friends are filming."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

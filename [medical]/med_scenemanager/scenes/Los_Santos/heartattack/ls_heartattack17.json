@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain after the gym",
-        "description": "A bodybuilder left the gym, sat on the curb and now cannot catch his breath. Tight chest, sweating, tingling in his arm. He swears it is just \"a really good pump\".",
+        "locales": {
+            "en": {
+                "title": "Chest pain after the gym",
+                "description": "A bodybuilder left the gym, sat on the curb and now cannot catch his breath. Tight chest, sweating, tingling in his arm. He swears it is just \"a really good pump\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

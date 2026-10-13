@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell, cannot stand, weak on one side",
-        "description": "An elderly woman fell on the pavement at Los Santos International and cannot get up. She hit her head lightly. Witnesses say her leg just gave way and now her speech is slurred.",
+        "locales": {
+            "en": {
+                "title": "Fell, cannot stand, weak on one side",
+                "description": "An elderly woman fell on the pavement at Los Santos International and cannot get up. She hit her head lightly. Witnesses say her leg just gave way and now her speech is slurred."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Bike rear-ended a car",
-        "description": "A motorcycle ran into the back of a car stopping at the lights in Mulholland. The rider went over the roof and landed on the sidewalk. He complains of chest and wrist pain.",
+        "locales": {
+            "en": {
+                "title": "Bike rear-ended a car",
+                "description": "A motorcycle ran into the back of a car stopping at the lights in Mulholland. The rider went over the roof and landed on the sidewalk. He complains of chest and wrist pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

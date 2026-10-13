@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, no pulse",
-        "description": "A tourist taking a photo with the giant chicken statue collapsed by the road. Not breathing, no pulse.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, no pulse",
+                "description": "A tourist taking a photo with the giant chicken statue collapsed by the road. Not breathing, no pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

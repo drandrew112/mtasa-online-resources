@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A blue car ran into the back of a grey car in Juniper Hollow. The driver of the grey car is lying on their back next to the car with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A blue car ran into the back of a grey car in Juniper Hollow. The driver of the grey car is lying on their back next to the car with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

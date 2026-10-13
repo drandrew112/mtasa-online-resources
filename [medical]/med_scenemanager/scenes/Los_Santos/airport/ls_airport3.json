@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Diabetic passenger unwell",
-        "description": "A long-haul passenger is sweating, shaking and confused next to the plane. The flight was delayed for hours and he had no food. He mentions he is diabetic.",
+        "locales": {
+            "en": {
+                "title": "Diabetic passenger unwell",
+                "description": "A long-haul passenger is sweating, shaking and confused next to the plane. The flight was delayed for hours and he had no food. He mentions he is diabetic."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

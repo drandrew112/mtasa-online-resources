@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, no pulse",
-        "description": "A farm worker collapsed by the road in the middle of the harvest. Not breathing, no pulse. Nobody on the farm wants to talk about what they grow.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, no pulse",
+                "description": "A farm worker collapsed by the road in the middle of the harvest. Not breathing, no pulse. Nobody on the farm wants to talk about what they grow."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

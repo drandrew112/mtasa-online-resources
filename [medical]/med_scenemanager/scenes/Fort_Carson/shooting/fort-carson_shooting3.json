@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Store owner and customer shot",
-        "description": "An armed robbery at the general store went wrong outside a small store in Fort Carson. The store owner is lying on the ground with a chest wound and a customer was hit in the arm.",
+        "locales": {
+            "en": {
+                "title": "Store owner and customer shot",
+                "description": "An armed robbery at the general store went wrong outside a small store in Fort Carson. The store owner is lying on the ground with a chest wound and a customer was hit in the arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

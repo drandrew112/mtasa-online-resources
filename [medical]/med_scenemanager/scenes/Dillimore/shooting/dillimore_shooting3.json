@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head wound after shooting",
-        "description": "Witnesses heard one shot on open ground near Dillimore. A man is lying on his back with a head wound and is not responding.",
+        "locales": {
+            "en": {
+                "title": "Head wound after shooting",
+                "description": "Witnesses heard one shot on open ground near Dillimore. A man is lying on his back with a head wound and is not responding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "An old farmer chasing an escaped goat collapsed by the road. Not breathing. The goat is still at large.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "An old farmer chasing an escaped goat collapsed by the road. Not breathing. The goat is still at large."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

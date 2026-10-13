@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cramp in the water",
-        "description": "A swimmer got a cramp and swallowed water before she was helped out. She is sitting on the sidewalk by the waterfront in Esplanade North, anxious, coughing a little and breathing fast.",
+        "locales": {
+            "en": {
+                "title": "Cramp in the water",
+                "description": "A swimmer got a cramp and swallowed water before she was helped out. She is sitting on the sidewalk by the waterfront in Esplanade North, anxious, coughing a little and breathing fast."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

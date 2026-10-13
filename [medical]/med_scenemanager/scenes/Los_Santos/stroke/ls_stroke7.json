@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slurred speech, face drooping",
-        "description": "An elderly man waiting on the sidewalk at Los Santos International suddenly could not answer the driver of the bus. A woman next to him says the left side of his face is hanging and he keeps dropping his ticket. It started minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Slurred speech, face drooping",
+                "description": "An elderly man waiting on the sidewalk at Los Santos International suddenly could not answer the driver of the bus. A woman next to him says the left side of his face is hanging and he keeps dropping his ticket. It started minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

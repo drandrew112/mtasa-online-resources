@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child pulled from a backyard pool",
-        "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him in a field near The Farm to meet the ambulance. He is breathing weakly and very pale.",
+        "locales": {
+            "en": {
+                "title": "Child pulled from a backyard pool",
+                "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him in a field near The Farm to meet the ambulance. He is breathing weakly and very pale."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

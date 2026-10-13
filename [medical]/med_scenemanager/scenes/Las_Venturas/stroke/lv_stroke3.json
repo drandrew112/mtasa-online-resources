@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Young woman, sudden weakness",
-        "description": "A young woman by the roadside near the Julius Thruway North says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes.",
+        "locales": {
+            "en": {
+                "title": "Young woman, sudden weakness",
+                "description": "A young woman by the roadside near the Julius Thruway North says her right arm and leg suddenly went weak and heavy. She is scared and her words come out slowly. She takes birth control pills and smokes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

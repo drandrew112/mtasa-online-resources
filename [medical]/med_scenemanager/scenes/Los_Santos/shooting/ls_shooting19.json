@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Robbery, victim shot",
-        "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way.",
+        "locales": {
+            "en": {
+                "title": "Robbery, victim shot",
+                "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, vomiting",
-        "description": "A woman has vomited on the sidewalk and holds the back of her head. She says she has never had a headache this strong.",
+        "locales": {
+            "en": {
+                "title": "Headache, vomiting",
+                "description": "A woman has vomited on the sidewalk and holds the back of her head. She says she has never had a headache this strong."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

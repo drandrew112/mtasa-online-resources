@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Sideswipe collision",
-        "description": "An orange car and a dark grey car sideswiped each other in Doherty and one of them lost control. The driver of the orange car got out and is sitting on the ground with a bump on the head and a headache. The driver of the dark grey car got out and is sitting on the ground with a painful arm and some cuts.",
+        "locales": {
+            "en": {
+                "title": "Sideswipe collision",
+                "description": "An orange car and a dark grey car sideswiped each other in Doherty and one of them lost control. The driver of the orange car got out and is sitting on the ground with a bump on the head and a headache. The driver of the dark grey car got out and is sitting on the ground with a painful arm and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

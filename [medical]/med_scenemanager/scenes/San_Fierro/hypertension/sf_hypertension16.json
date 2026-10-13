@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy and weak",
-        "description": "A man in his sixties feels dizzy and weak after standing in the sun. He thinks he took a double dose of his salt pills by mistake.",
+        "locales": {
+            "en": {
+                "title": "Dizzy and weak",
+                "description": "A man in his sixties feels dizzy and weak after standing in the sun. He thinks he took a double dose of his salt pills by mistake."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

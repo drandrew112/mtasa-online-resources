@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker's arm went numb",
-        "description": "A construction worker on his lunch break on the sidewalk in Las Colinas says his arm went dead and his face feels strange. His foreman noticed his speech is slurred. He insists it is just tiredness and wants to go back to work.",
+        "locales": {
+            "en": {
+                "title": "Worker's arm went numb",
+                "description": "A construction worker on his lunch break on the sidewalk in Las Colinas says his arm went dead and his face feels strange. His foreman noticed his speech is slurred. He insists it is just tiredness and wants to go back to work."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

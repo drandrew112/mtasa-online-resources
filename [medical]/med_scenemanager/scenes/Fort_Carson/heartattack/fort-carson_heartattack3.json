@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An elderly woman walking to the post office keeps fainting by the road. Slow pulse, cold sweat, confused.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An elderly woman walking to the post office keeps fainting by the road. Slow pulse, cold sweat, confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

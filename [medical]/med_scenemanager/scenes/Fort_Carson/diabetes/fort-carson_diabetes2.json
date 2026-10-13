@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Student, fruity breath",
-        "description": "A student on the sidewalk in Fort Carson has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair.",
+        "locales": {
+            "en": {
+                "title": "Student, fruity breath",
+                "description": "A student on the sidewalk in Fort Carson has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

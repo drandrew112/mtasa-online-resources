@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head-on collision",
-        "description": "A red car and an orange car collided head-on in Palisades. The driver of the red car is still behind the wheel, unconscious, with multiple injuries and heavy bleeding. The driver of the orange car is still behind the wheel with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Head-on collision",
+                "description": "A red car and an orange car collided head-on in Palisades. The driver of the red car is still behind the wheel, unconscious, with multiple injuries and heavy bleeding. The driver of the orange car is still behind the wheel with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

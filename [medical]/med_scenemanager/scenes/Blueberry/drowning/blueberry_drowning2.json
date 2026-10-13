@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pulled out, not breathing",
-        "description": "A fisherman pulled a man out of the water and he is lying on the riverbank near Blueberry. He is not breathing and has no pulse. The fisherman has started CPR.",
+        "locales": {
+            "en": {
+                "title": "Pulled out, not breathing",
+                "description": "A fisherman pulled a man out of the water and he is lying on the riverbank near Blueberry. He is not breathing and has no pulse. The fisherman has started CPR."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

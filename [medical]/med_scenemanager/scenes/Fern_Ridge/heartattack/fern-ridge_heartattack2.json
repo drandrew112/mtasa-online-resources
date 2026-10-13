@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain on the trail",
-        "description": "A woman walking her dogs along the ridge road sat down with chest pain and cold sweat. The dogs refuse to leave her side.",
+        "locales": {
+            "en": {
+                "title": "Chest pain on the trail",
+                "description": "A woman walking her dogs along the ridge road sat down with chest pain and cold sweat. The dogs refuse to leave her side."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

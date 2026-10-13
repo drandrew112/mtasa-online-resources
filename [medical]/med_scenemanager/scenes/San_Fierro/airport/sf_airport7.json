@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly traveller fell at the curb",
-        "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Easter Bay Airport. He cannot stand and his hip hurts badly.",
+        "locales": {
+            "en": {
+                "title": "Elderly traveller fell at the curb",
+                "description": "An elderly man pulling a heavy suitcase fell at the curb outside the terminal at Easter Bay Airport. He cannot stand and his hip hurts badly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

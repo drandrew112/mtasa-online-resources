@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, near faint",
-        "description": "A woman leaving the barber shop sat down by the road with a pounding heart and tunnel vision. She says it feels like \"a bird trapped in her chest\".",
+        "locales": {
+            "en": {
+                "title": "Palpitations, near faint",
+                "description": "A woman leaving the barber shop sat down by the road with a pounding heart and tunnel vision. She says it feels like \"a bird trapped in her chest\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

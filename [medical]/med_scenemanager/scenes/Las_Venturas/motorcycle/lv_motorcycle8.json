@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rider and passenger down",
-        "description": "A motorcycle carrying two people crashed at the side of the road at Las Venturas Airport. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm.",
+        "locales": {
+            "en": {
+                "title": "Rider and passenger down",
+                "description": "A motorcycle carrying two people crashed at the side of the road at Las Venturas Airport. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe headache at picnic",
-        "description": "A man at a family picnic suddenly grabbed his head and said it felt like it was going to burst. He has vomited behind a tree and the light hurts his eyes.",
+        "locales": {
+            "en": {
+                "title": "Severe headache at picnic",
+                "description": "A man at a family picnic suddenly grabbed his head and said it felt like it was going to burst. He has vomited behind a tree and the light hurts his eyes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed after basketball",
-        "description": "A student collapsed after playing basketball next to the road in Las Venturas. His friends say he is diabetic and took extra insulin before the game.",
+        "locales": {
+            "en": {
+                "title": "Collapsed after basketball",
+                "description": "A student collapsed after playing basketball next to the road in Las Venturas. His friends say he is diabetic and took extra insulin before the game."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

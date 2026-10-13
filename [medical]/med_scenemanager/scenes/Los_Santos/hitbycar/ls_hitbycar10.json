@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit by a reversing car",
-        "description": "A reversing car knocked down an elderly man in Verdant Bluffs. He fell and hit his head, has a cut above the eye and his wrist is swollen. He is talking.",
+        "locales": {
+            "en": {
+                "title": "Hit by a reversing car",
+                "description": "A reversing car knocked down an elderly man in Verdant Bluffs. He fell and hit his head, has a cut above the eye and his wrist is swollen. He is talking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

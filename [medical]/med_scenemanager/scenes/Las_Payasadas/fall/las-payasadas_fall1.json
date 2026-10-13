@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a tractor",
-        "description": "A farmer fell off his tractor on the dusty ground in Las Payasadas and the rear wheel rolled over his leg. His leg is crushed and bleeding.",
+        "locales": {
+            "en": {
+                "title": "Fell from a tractor",
+                "description": "A farmer fell off his tractor on the dusty ground in Las Payasadas and the rear wheel rolled over his leg. His leg is crushed and bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

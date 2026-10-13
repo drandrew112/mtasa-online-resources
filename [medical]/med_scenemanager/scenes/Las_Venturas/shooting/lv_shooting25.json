@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shot in the chest",
-        "description": "A man was shot in the chest at a bus stop in Redsands West. He is struggling to breathe, his lips are pale and blood bubbles from the wound.",
+        "locales": {
+            "en": {
+                "title": "Shot in the chest",
+                "description": "A man was shot in the chest at a bus stop in Redsands West. He is struggling to breathe, his lips are pale and blood bubbles from the wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

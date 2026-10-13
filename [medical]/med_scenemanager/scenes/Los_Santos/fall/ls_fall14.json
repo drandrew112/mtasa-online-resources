@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell off a ladder",
-        "description": "A worker fell about four metres from a ladder on the sidewalk in Las Colinas while fixing a sign. He landed on his arm, which is clearly deformed, and he has a cut on his forehead.",
+        "locales": {
+            "en": {
+                "title": "Fell off a ladder",
+                "description": "A worker fell about four metres from a ladder on the sidewalk in Las Colinas while fixing a sign. He landed on his arm, which is clearly deformed, and he has a cut on his forehead."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

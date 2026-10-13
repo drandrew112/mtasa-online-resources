@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, cold",
-        "description": "The mailman found a man lying face down next to the road early in the morning. Cold to the touch, no breathing.",
+        "locales": {
+            "en": {
+                "title": "Found down, cold",
+                "description": "The mailman found a man lying face down next to the road early in the morning. Cold to the touch, no breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

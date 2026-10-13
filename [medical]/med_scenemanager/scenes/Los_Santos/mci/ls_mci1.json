@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Multi-vehicle crash, several injured",
-        "description": "Four cars crashed into each other at the Glen Park intersection after one ran a red light. Several people are injured, one is trapped in his car. Callers report screaming.",
+        "locales": {
+            "en": {
+                "title": "Multi-vehicle crash, several injured",
+                "description": "Four cars crashed into each other at the Glen Park intersection after one ran a red light. Several people are injured, one is trapped in his car. Callers report screaming."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

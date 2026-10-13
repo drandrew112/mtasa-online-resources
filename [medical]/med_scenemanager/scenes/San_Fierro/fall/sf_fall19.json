@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slipped on wet pavement",
-        "description": "A woman slipped on the wet pavement on the sidewalk in City Hall in the fog and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "locales": {
+            "en": {
+                "title": "Slipped on wet pavement",
+                "description": "A woman slipped on the wet pavement on the sidewalk in City Hall in the fog and landed on her outstretched hand. Her wrist is swollen and bent."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

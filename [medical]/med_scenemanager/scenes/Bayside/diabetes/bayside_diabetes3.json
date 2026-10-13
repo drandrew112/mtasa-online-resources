@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old man drowsy and dry",
-        "description": "A neighbour found an old man in a yard in Bayside very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating.",
+        "locales": {
+            "en": {
+                "title": "Old man drowsy and dry",
+                "description": "A neighbour found an old man in a yard in Bayside very drowsy, with dry lips and sunken eyes. He has had a chest infection for a week and stopped eating."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

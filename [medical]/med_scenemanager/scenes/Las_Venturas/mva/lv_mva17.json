@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "T-bone collision at intersection",
-        "description": "A black Tahoma ran into the side of a black ZR-350 at an intersection near the Starfish Casino. The driver of the black ZR-350 is lying on their back next to the car with a head injury and disorientation. The driver of the black Tahoma got out and is sitting on the ground, unable to stand, with a broken leg and a bleeding wound. The passenger of the black ZR-350 is still in the passenger seat with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "T-bone collision at intersection",
+                "description": "A black Tahoma ran into the side of a black ZR-350 at an intersection near the Starfish Casino. The driver of the black ZR-350 is lying on their back next to the car with a head injury and disorientation. The driver of the black Tahoma got out and is sitting on the ground, unable to stand, with a broken leg and a bleeding wound. The passenger of the black ZR-350 is still in the passenger seat with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

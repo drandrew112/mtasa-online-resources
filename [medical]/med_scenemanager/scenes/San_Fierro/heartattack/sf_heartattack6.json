@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Heart racing, can't stand",
-        "description": "A cyclist sat down on the curb after a sprint and cannot get his heart to slow down. He is pale and his watch reads over 170. He keeps trying to get back on the bike.",
+        "locales": {
+            "en": {
+                "title": "Heart racing, can't stand",
+                "description": "A cyclist sat down on the curb after a sprint and cannot get his heart to slow down. He is pale and his watch reads over 170. He keeps trying to get back on the bike."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

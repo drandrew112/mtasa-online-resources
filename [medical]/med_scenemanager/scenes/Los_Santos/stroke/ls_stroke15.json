@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worst headache ever, now confused",
-        "description": "A woman on the sidewalk in East Beach grabbed her head and said it was the worst headache of her life, then vomited. Now she does not know what day it is and keeps closing her eyes.",
+        "locales": {
+            "en": {
+                "title": "Worst headache ever, now confused",
+                "description": "A woman on the sidewalk in East Beach grabbed her head and said it was the worst headache of her life, then vomited. Now she does not know what day it is and keeps closing her eyes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

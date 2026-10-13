@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head-on collision",
-        "description": "A red car and a black pickup collided head-on in Redsands East. The driver of the red car got out and is crouching next to the car with a painful ankle and some cuts.",
+        "locales": {
+            "en": {
+                "title": "Head-on collision",
+                "description": "A red car and a black pickup collided head-on in Redsands East. The driver of the red car got out and is crouching next to the car with a painful ankle and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, ringing ears",
-        "description": "A woman carrying grocery bags had to sit down because the street started spinning. She says there is a loud ringing in her ears and her face feels hot.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, ringing ears",
+                "description": "A woman carrying grocery bags had to sit down because the street started spinning. She says there is a loud ringing in her ears and her face feels hot."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

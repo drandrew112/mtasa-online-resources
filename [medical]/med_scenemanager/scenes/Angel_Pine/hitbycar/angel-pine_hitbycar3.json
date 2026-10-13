@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit by a reversing car",
-        "description": "A woman was hit by a car reversing out of a parking spot at the side of the road near Angel Pine. She fell on her side and her elbow is swollen and scraped.",
+        "locales": {
+            "en": {
+                "title": "Hit by a reversing car",
+                "description": "A woman was hit by a car reversing out of a parking spot at the side of the road near Angel Pine. She fell on her side and her elbow is swollen and scraped."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

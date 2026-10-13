@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pressure, short of breath",
-        "description": "The diner waitress walked outside holding her chest. Short of breath, pain spreading into her left arm. The breakfast rush is still going on without her.",
+        "locales": {
+            "en": {
+                "title": "Chest pressure, short of breath",
+                "description": "The diner waitress walked outside holding her chest. Short of breath, pain spreading into her left arm. The breakfast rush is still going on without her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nausea, chest tightness",
-        "description": "A woman feels sick and her chest is tight. She has been arguing with her landlord all morning and says her heart will not slow down.",
+        "locales": {
+            "en": {
+                "title": "Nausea, chest tightness",
+                "description": "A woman feels sick and her chest is tight. She has been arguing with her landlord all morning and says her heart will not slow down."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

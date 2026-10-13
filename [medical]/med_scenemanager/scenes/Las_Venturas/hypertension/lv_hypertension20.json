@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe headache, light hurts",
-        "description": "A man is shielding his eyes from the light and moaning with a severe headache. He stopped all his medication after a falling-out with his doctor.",
+        "locales": {
+            "en": {
+                "title": "Severe headache, light hurts",
+                "description": "A man is shielding his eyes from the light and moaning with a severe headache. He stopped all his medication after a falling-out with his doctor."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

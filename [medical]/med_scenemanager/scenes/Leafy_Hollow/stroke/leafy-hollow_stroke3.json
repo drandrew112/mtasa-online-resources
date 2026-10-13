@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Farmer slumped on his tailgate",
-        "description": "A farmer is slumped on the tailgate of his pickup at the edge of the woods in Leafy Hollow. His wife says he suddenly could not hold his coffee cup and his words are slurred.",
+        "locales": {
+            "en": {
+                "title": "Farmer slumped on his tailgate",
+                "description": "A farmer is slumped on the tailgate of his pickup at the edge of the woods in Leafy Hollow. His wife says he suddenly could not hold his coffee cup and his words are slurred."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

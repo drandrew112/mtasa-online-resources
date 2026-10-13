@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lips blue, too breathless to talk",
-        "description": "A man with lung disease on the beach at Santa Maria Beach ran out of home oxygen while out for a walk. He is blue around the lips, using all his neck muscles to breathe and cannot talk.",
+        "locales": {
+            "en": {
+                "title": "Lips blue, too breathless to talk",
+                "description": "A man with lung disease on the beach at Santa Maria Beach ran out of home oxygen while out for a walk. He is blue around the lips, using all his neck muscles to breathe and cannot talk."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

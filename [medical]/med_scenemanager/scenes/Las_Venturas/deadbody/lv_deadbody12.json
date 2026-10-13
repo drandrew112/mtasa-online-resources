@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Homeless person not waking",
-        "description": "A shop worker opening up outside a souvenir shop in Las Venturas found a homeless man lying under a blanket, cold and stiff. He does not respond at all.",
+        "locales": {
+            "en": {
+                "title": "Homeless person not waking",
+                "description": "A shop worker opening up outside a souvenir shop in Las Venturas found a homeless man lying under a blanket, cold and stiff. He does not respond at all."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

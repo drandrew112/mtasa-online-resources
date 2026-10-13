@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Asthma attack, inhaler in checked bag",
-        "description": "A young passenger at Los Santos International is having a bad asthma attack. Her inhaler is in the checked luggage. She is wheezing and frightened.",
+        "locales": {
+            "en": {
+                "title": "Asthma attack, inhaler in checked bag",
+                "description": "A young passenger at Los Santos International is having a bad asthma attack. Her inhaler is in the checked luggage. She is wheezing and frightened."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

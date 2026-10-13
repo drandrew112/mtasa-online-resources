@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Peanut allergy, cannot breathe",
-        "description": "A young woman on a bench near the Camel's Toe ate a snack with peanuts. Her face is swollen, she has hives and is struggling to breathe. Her adrenaline pen is empty.",
+        "locales": {
+            "en": {
+                "title": "Peanut allergy, cannot breathe",
+                "description": "A young woman on a bench near the Camel's Toe ate a snack with peanuts. Her face is swollen, she has hives and is struggling to breathe. Her adrenaline pen is empty."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

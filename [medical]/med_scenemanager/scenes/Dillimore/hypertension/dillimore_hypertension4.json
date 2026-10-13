@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed, high BP",
-        "description": "A woman at the side of the road near Dillimore has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed, high BP",
+                "description": "A woman at the side of the road near Dillimore has a nosebleed that will not stop and feels dizzy. A neighbour measured her pressure with a home cuff and it read very high."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

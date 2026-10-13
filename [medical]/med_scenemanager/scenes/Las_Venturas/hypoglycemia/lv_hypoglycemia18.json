@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Aggressive, sweaty man",
-        "description": "A passer-by at the side of the road near the Whitewood Estates reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "locales": {
+            "en": {
+                "title": "Aggressive, sweaty man",
+                "description": "A passer-by at the side of the road near the Whitewood Estates reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

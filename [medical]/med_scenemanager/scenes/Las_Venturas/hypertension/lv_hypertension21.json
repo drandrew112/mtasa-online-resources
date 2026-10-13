@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, nosebleed",
-        "description": "An older woman feels dizzy and has a slow nosebleed. She is on blood thinners and her daughter is worried.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, nosebleed",
+                "description": "An older woman feels dizzy and has a slow nosebleed. She is on blood thinners and her daughter is worried."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

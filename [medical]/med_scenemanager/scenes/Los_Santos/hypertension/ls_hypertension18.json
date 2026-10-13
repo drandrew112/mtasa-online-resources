@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed on a bench",
-        "description": "A woman reading on the grass has had a nosebleed for fifteen minutes. She feels dizzy and her head aches. She ran out of her tablets last week.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed on a bench",
+                "description": "A woman reading on the grass has had a nosebleed for fifteen minutes. She feels dizzy and her head aches. She ran out of her tablets last week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Taxi and van collision",
-        "description": "A taxi ran a red light in the middle of Blackfield Intersection and was hit by a van. The taxi driver and two passengers are injured, one of them is unconscious.",
+        "locales": {
+            "en": {
+                "title": "Taxi and van collision",
+                "description": "A taxi ran a red light in the middle of Blackfield Intersection and was hit by a van. The taxi driver and two passengers are injured, one of them is unconscious."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

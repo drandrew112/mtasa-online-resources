@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man walked into traffic",
-        "description": "A drunk man staggered into the road in Glen Park and was hit by a taxi. He is lying in the lane, groaning, with a bleeding head wound. Smells strongly of alcohol.",
+        "locales": {
+            "en": {
+                "title": "Drunk man walked into traffic",
+                "description": "A drunk man staggered into the road in Glen Park and was hit by a taxi. He is lying in the lane, groaning, with a bleeding head wound. Smells strongly of alcohol."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

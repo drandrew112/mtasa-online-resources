@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, pounding head",
-        "description": "A man who just lost an argument with his landlord is leaning on a wall, chest pain and a skull-splitting headache. The whole town heard the argument.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, pounding head",
+                "description": "A man who just lost an argument with his landlord is leaning on a wall, chest pain and a skull-splitting headache. The whole town heard the argument."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

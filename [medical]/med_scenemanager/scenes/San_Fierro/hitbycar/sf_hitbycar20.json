@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit on the crosswalk",
-        "description": "A driver looking at his phone hit a young woman on a crosswalk on a steep street in Downtown. She is rolling in pain and holding her leg.",
+        "locales": {
+            "en": {
+                "title": "Hit on the crosswalk",
+                "description": "A driver looking at his phone hit a young woman on a crosswalk on a steep street in Downtown. She is rolling in pain and holding her leg."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

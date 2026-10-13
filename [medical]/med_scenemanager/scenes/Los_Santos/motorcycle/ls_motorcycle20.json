@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Scooter rider hit a car door",
-        "description": "A parked driver opened a door into a scooter rider near the docks. The man is sitting on the curb holding his wrist, with a grazed knee.",
+        "locales": {
+            "en": {
+                "title": "Scooter rider hit a car door",
+                "description": "A parked driver opened a door into a scooter rider near the docks. The man is sitting on the curb holding his wrist, with a grazed knee."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

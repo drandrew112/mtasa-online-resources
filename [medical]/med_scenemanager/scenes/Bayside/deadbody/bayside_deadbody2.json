@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shot, no signs of life",
-        "description": "Police at the scene in a yard in Bayside report a man with several gunshot wounds. He has no pulse and is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Shot, no signs of life",
+                "description": "Police at the scene in a yard in Bayside report a man with several gunshot wounds. He has no pulse and is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

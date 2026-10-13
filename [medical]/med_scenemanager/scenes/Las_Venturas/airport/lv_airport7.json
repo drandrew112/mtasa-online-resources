@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Ground worker hit by a tug",
-        "description": "A pushback tug reversed into a ground worker on the apron at Las Venturas Airport. He is lying on the concrete with a crushed foot and a cut to his head. The tug driver is with him.",
+        "locales": {
+            "en": {
+                "title": "Ground worker hit by a tug",
+                "description": "A pushback tug reversed into a ground worker on the apron at Las Venturas Airport. He is lying on the concrete with a crushed foot and a cut to his head. The tug driver is with him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

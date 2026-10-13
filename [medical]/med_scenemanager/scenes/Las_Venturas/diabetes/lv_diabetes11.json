@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Tourist lost his insulin",
-        "description": "A tourist on the sand at Linden Station lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "locales": {
+            "en": {
+                "title": "Tourist lost his insulin",
+                "description": "A tourist on the sand at Linden Station lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

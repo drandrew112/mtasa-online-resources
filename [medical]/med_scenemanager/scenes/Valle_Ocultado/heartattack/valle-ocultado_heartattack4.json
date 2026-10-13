@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "A woman photographing the strange rock formations sat by the road with dizziness and a very slow pulse.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "A woman photographing the strange rock formations sat by the road with dizziness and a very slow pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

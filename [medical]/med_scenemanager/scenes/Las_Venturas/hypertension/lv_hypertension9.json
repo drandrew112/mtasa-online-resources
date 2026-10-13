@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, very high BP",
-        "description": "A man has a crushing pain in his chest and his heart is racing. He is clammy and says his blood pressure has been out of control for months.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, very high BP",
+                "description": "A man has a crushing pain in his chest and his heart is racing. He is clammy and says his blood pressure has been out of control for months."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

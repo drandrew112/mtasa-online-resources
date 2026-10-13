@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slurred speech, numb arm",
-        "description": "A man at the side of the road near El Castillo del Diablo suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning.",
+        "locales": {
+            "en": {
+                "title": "Slurred speech, numb arm",
+                "description": "A man at the side of the road near El Castillo del Diablo suddenly went numb in one arm and his words are slurring. He was already complaining of a headache all morning."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

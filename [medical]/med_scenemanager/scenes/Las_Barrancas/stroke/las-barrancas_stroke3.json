@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Driver seeing double",
-        "description": "A delivery driver stopped his van on the road shoulder in Las Barrancas because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy.",
+        "locales": {
+            "en": {
+                "title": "Driver seeing double",
+                "description": "A delivery driver stopped his van on the road shoulder in Las Barrancas because he suddenly started seeing double and could not walk straight. He is sitting on the curb, nauseous and dizzy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

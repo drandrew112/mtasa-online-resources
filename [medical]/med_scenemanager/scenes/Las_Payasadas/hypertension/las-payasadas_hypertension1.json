@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused, very high pressure",
-        "description": "An old woman on the dusty ground in Las Payasadas is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets.",
+        "locales": {
+            "en": {
+                "title": "Confused, very high pressure",
+                "description": "An old woman on the dusty ground in Las Payasadas is confused and keeps repeating herself. Her daughter says she has had high blood pressure for years and skipped her tablets."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

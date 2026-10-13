@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "An elderly woman keeps fainting by the road, slow pulse, pale and confused.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "An elderly woman keeps fainting by the road, slow pulse, pale and confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

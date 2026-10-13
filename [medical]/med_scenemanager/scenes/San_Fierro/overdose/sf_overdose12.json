@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pills and wine, very sleepy",
-        "description": "A woman at a bus stop in Financial mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly.",
+        "locales": {
+            "en": {
+                "title": "Pills and wine, very sleepy",
+                "description": "A woman at a bus stop in Financial mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

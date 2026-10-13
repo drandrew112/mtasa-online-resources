@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Breathing fast, tingling hands",
-        "description": "A woman at the side of the road in Mulholland Intersection is breathing very fast after hearing bad news on the phone. She says her fingers are tingling and she feels she cannot get enough air.",
+        "locales": {
+            "en": {
+                "title": "Breathing fast, tingling hands",
+                "description": "A woman at the side of the road in Mulholland Intersection is breathing very fast after hearing bad news on the phone. She says her fingers are tingling and she feels she cannot get enough air."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

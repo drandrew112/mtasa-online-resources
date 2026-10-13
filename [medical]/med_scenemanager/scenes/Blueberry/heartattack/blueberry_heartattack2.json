@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A farmer drove his tractor into town and now lies by the road with severe chest pain. The tractor is blocking half the street.",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A farmer drove his tractor into town and now lies by the road with severe chest pain. The tractor is blocking half the street."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

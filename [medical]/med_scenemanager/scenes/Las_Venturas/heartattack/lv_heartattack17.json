@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, no breathing",
-        "description": "A tourist collapsed on the sidewalk while watching the lights. His wife says he just said \"wow\" and fell. Not breathing, lips turning blue.",
+        "locales": {
+            "en": {
+                "title": "Man down, no breathing",
+                "description": "A tourist collapsed on the sidewalk while watching the lights. His wife says he just said \"wow\" and fell. Not breathing, lips turning blue."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "A retired man on a casino bus tour keeps fainting on the sidewalk. Confused, sweaty and very slow pulse. The tour guide is counting heads and is one short.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "A retired man on a casino bus tour keeps fainting on the sidewalk. Confused, sweaty and very slow pulse. The tour guide is counting heads and is one short."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

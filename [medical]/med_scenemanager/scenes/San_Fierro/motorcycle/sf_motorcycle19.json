@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lost control on a wet road",
-        "description": "A motorcyclist lost control on the wet road on the street in Hashbury and hit the curb. He is lying still, dazed, and does not know where he is.",
+        "locales": {
+            "en": {
+                "title": "Lost control on a wet road",
+                "description": "A motorcyclist lost control on the wet road on the street in Hashbury and hit the curb. He is lying still, dazed, and does not know where he is."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

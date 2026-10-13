@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slipped on loose gravel",
-        "description": "A woman slipped on loose gravel at the side of the road near Blueberry and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "locales": {
+            "en": {
+                "title": "Slipped on loose gravel",
+                "description": "A woman slipped on loose gravel at the side of the road near Blueberry and landed on her outstretched hand. Her wrist is swollen and bent."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

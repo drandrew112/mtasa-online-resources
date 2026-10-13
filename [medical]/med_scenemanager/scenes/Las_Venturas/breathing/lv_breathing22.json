@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Breathed in smoke",
-        "description": "A man outside Caligula's Palace pulled his friend out of a smoke-filled apartment and breathed in thick black smoke. He is coughing and has soot around his nose.",
+        "locales": {
+            "en": {
+                "title": "Breathed in smoke",
+                "description": "A man outside Caligula's Palace pulled his friend out of a smoke-filled apartment and breathed in thick black smoke. He is coughing and has soot around his nose."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

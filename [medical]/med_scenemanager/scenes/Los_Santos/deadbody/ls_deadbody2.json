@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man not responding near the railway",
-        "description": "Railway workers found a man lying on the tracks in Willowfield. He does not answer when they call him. They do not dare to go closer.",
+        "locales": {
+            "en": {
+                "title": "Man not responding near the railway",
+                "description": "Railway workers found a man lying on the tracks in Willowfield. He does not answer when they call him. They do not dare to go closer."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

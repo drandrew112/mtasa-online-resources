@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman shot in the stomach",
-        "description": "A woman was shot in the stomach next to the road in Foster Valley during an argument with her ex-partner. She is bent over, pale and getting weaker.",
+        "locales": {
+            "en": {
+                "title": "Woman shot in the stomach",
+                "description": "A woman was shot in the stomach next to the road in Foster Valley during an argument with her ex-partner. She is bent over, pale and getting weaker."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

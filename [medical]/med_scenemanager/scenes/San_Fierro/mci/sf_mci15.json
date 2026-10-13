@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ploughed into pedestrians",
-        "description": "A car lost control and mounted the sidewalk in front of an apartment block in Esplanade North, hitting several people. One is not moving, the others are injured and screaming.",
+        "locales": {
+            "en": {
+                "title": "Car ploughed into pedestrians",
+                "description": "A car lost control and mounted the sidewalk in front of an apartment block in Esplanade North, hitting several people. One is not moving, the others are injured and screaming."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

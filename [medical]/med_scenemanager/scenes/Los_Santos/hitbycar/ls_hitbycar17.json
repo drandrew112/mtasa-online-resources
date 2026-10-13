@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cyclist hit by a car",
-        "description": "A car turned into a cyclist in Verona Beach. The rider flew over the car and is lying in the lane, conscious but confused, with an open wound on his shin.",
+        "locales": {
+            "en": {
+                "title": "Cyclist hit by a car",
+                "description": "A car turned into a cyclist in Verona Beach. The rider flew over the car and is lying in the lane, conscious but confused, with an open wound on his shin."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

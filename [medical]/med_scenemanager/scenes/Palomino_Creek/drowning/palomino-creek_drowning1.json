@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman choked at lunch",
-        "description": "An elderly woman choked on a piece of chicken on the sidewalk in Palomino Creek. Her husband lowered her to the ground when she went limp.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman choked at lunch",
+                "description": "An elderly woman choked on a piece of chicken on the sidewalk in Palomino Creek. Her husband lowered her to the ground when she went limp."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

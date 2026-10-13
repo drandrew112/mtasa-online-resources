@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker fell from scaffolding",
-        "description": "A construction worker fell from the second level of scaffolding at the side of the road in Richman. He is lying face down, groaning, with blood under his head. Coworkers say he landed on his chest.",
+        "locales": {
+            "en": {
+                "title": "Worker fell from scaffolding",
+                "description": "A construction worker fell from the second level of scaffolding at the side of the road in Richman. He is lying face down, groaning, with blood under his head. Coworkers say he landed on his chest."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

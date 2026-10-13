@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Motorcyclist vs car",
-        "description": "A car pulled out in front of a motorcycle in Playa del Seville. The rider hit the side of the car and is lying in the road several metres away, helmet on, groaning. His leg is badly deformed.",
+        "locales": {
+            "en": {
+                "title": "Motorcyclist vs car",
+                "description": "A car pulled out in front of a motorcycle in Playa del Seville. The rider hit the side of the car and is lying in the road several metres away, helmet on, groaning. His leg is badly deformed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

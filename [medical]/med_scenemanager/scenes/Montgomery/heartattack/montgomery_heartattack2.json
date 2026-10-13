@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, no breathing",
-        "description": "A trucker climbed down from his rig to stretch his legs and went straight down. Not breathing. The engine is still idling.",
+        "locales": {
+            "en": {
+                "title": "Man down, no breathing",
+                "description": "A trucker climbed down from his rig to stretch his legs and went straight down. Not breathing. The engine is still idling."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

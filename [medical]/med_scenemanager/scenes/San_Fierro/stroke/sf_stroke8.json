@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Face drooping, slurred speech",
-        "description": "A man at a bus stop in Garcia suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Face drooping, slurred speech",
+                "description": "A man at a bus stop in Garcia suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

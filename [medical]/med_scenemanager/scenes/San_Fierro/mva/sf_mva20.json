@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A grey car lost control and spun out in Ocean Flats. The driver got out and is sitting on the ground with a bump on the head and a headache. The passenger is still in the passenger seat, unconscious, with multiple injuries and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A grey car lost control and spun out in Ocean Flats. The driver got out and is sitting on the ground with a bump on the head and a headache. The passenger is still in the passenger seat, unconscious, with multiple injuries and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

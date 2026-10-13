@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Seizure, then unresponsive",
-        "description": "An old man on open ground in Bayside had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch.",
+        "locales": {
+            "en": {
+                "title": "Seizure, then unresponsive",
+                "description": "An old man on open ground in Bayside had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

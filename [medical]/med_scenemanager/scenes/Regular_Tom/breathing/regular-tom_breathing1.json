@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teenager cannot breathe",
-        "description": "A teenager on open scrubland in Regular Tom is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home.",
+        "locales": {
+            "en": {
+                "title": "Teenager cannot breathe",
+                "description": "A teenager on open scrubland in Regular Tom is wheezing loudly and can only say two or three words at a time. His friends say he has asthma but left his inhaler at home."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

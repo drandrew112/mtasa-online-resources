@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "COPD flare, lips blue",
-        "description": "An old man with emphysema next to the road in Redsands East ran out of oxygen in his portable tank. He is very drowsy and his lips are blue.",
+        "locales": {
+            "en": {
+                "title": "COPD flare, lips blue",
+                "description": "An old man with emphysema next to the road in Redsands East ran out of oxygen in his portable tank. He is very drowsy and his lips are blue."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

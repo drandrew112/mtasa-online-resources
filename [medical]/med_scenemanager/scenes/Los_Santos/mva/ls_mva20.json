@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A grey SUV ran into the back of a dark grey van in Verdant Bluffs. The driver of the dark grey van is lying on their back next to the van with a broken rib and a cut on the head. The driver of the grey SUV is still behind the wheel with a head injury and a painful collarbone.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A grey SUV ran into the back of a dark grey van in Verdant Bluffs. The driver of the dark grey van is lying on their back next to the van with a broken rib and a cut on the head. The driver of the grey SUV is still behind the wheel with a head injury and a painful collarbone."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

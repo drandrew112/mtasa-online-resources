@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Thrown over a car",
-        "description": "A car turned in front of a motorcycle on the road in Easter Basin. The rider flew over the bonnet and is lying face down, not responding.",
+        "locales": {
+            "en": {
+                "title": "Thrown over a car",
+                "description": "A car turned in front of a motorcycle on the road in Easter Basin. The rider flew over the bonnet and is lying face down, not responding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

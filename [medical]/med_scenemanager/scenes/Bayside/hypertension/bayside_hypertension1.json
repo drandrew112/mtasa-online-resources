@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pregnant, headache, swelling",
-        "description": "A heavily pregnant woman on open ground near Bayside has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic.",
+        "locales": {
+            "en": {
+                "title": "Pregnant, headache, swelling",
+                "description": "A heavily pregnant woman on open ground near Bayside has a bad headache, swollen ankles and flashing lights in her vision. Her husband is frantic."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

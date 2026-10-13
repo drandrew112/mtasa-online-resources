@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, no pulse",
-        "description": "A wandering artist was found lying by the road in the hidden valley. No pulse, occasional gasps.",
+        "locales": {
+            "en": {
+                "title": "Found down, no pulse",
+                "description": "A wandering artist was found lying by the road in the hidden valley. No pulse, occasional gasps."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

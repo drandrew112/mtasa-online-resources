@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed mid-sentence",
-        "description": "A man complaining loudly about a speeding ticket outside the police station went face down mid-sentence. The deputies say he is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed mid-sentence",
+                "description": "A man complaining loudly about a speeding ticket outside the police station went face down mid-sentence. The deputies say he is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

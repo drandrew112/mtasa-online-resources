@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Throbbing temples",
-        "description": "A woman has throbbing temples and feels her heartbeat in her ears. She says salty food at a party last night always does this to her.",
+        "locales": {
+            "en": {
+                "title": "Throbbing temples",
+                "description": "A woman has throbbing temples and feels her heartbeat in her ears. She says salty food at a party last night always does this to her."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

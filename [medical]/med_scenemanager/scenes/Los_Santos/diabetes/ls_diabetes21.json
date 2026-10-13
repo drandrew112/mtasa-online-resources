@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found barely responsive",
-        "description": "A passer-by found a man lying at the side of the road in Richman, groaning but not answering. There is an insulin pen and a diabetic ID card in his bag. He is breathing deep and fast.",
+        "locales": {
+            "en": {
+                "title": "Found barely responsive",
+                "description": "A passer-by found a man lying at the side of the road in Richman, groaning but not answering. There is an insulin pen and a diabetic ID card in his bag. He is breathing deep and fast."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

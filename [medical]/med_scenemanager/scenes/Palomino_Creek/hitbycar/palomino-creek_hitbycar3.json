@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman hit by a van",
-        "description": "A delivery van turning next to the country road near Palomino Creek knocked down an elderly woman. She is sitting on the ground holding her hip, with a cut on her arm.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman hit by a van",
+                "description": "A delivery van turning next to the country road near Palomino Creek knocked down an elderly woman. She is sitting on the ground holding her hip, with a cut on her arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

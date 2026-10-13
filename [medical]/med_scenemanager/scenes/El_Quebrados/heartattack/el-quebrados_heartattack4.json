@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Barely breathing",
-        "description": "A local found a man slumped by the road at the edge of town. Barely breathing, grey and clammy.",
+        "locales": {
+            "en": {
+                "title": "Barely breathing",
+                "description": "A local found a man slumped by the road at the edge of town. Barely breathing, grey and clammy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

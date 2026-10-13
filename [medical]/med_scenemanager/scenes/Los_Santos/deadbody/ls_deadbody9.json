@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Homeless person not waking",
-        "description": "A shop worker opening up on the pavement in El Corona found a homeless woman lying under a blanket, cold and stiff. She does not respond at all.",
+        "locales": {
+            "en": {
+                "title": "Homeless person not waking",
+                "description": "A shop worker opening up on the pavement in El Corona found a homeless woman lying under a blanket, cold and stiff. She does not respond at all."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

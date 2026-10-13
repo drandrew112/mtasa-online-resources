@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swallowed a fish bone",
-        "description": "An old fisherman next to the country road near Dillimore has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty.",
+        "locales": {
+            "en": {
+                "title": "Swallowed a fish bone",
+                "description": "An old fisherman next to the country road near Dillimore has a fish bone stuck in his throat. He is gagging, drooling and breathing with difficulty."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

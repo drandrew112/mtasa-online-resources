@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A wedding chapel minister stepped outside between ceremonies and sat on the curb with chest pain and sweat. Three couples are still waiting inside.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A wedding chapel minister stepped outside between ceremonies and sat on the curb with chest pain and sweat. Three couples are still waiting inside."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

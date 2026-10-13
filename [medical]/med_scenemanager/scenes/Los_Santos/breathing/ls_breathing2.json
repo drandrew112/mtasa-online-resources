@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old smoker short of breath",
-        "description": "An elderly man with a long history of smoking has been getting more and more breathless since a cold last week. Today he cannot walk to the corner shop, his lips look bluish.",
+        "locales": {
+            "en": {
+                "title": "Old smoker short of breath",
+                "description": "An elderly man with a long history of smoking has been getting more and more breathless since a cold last week. Today he cannot walk to the corner shop, his lips look bluish."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

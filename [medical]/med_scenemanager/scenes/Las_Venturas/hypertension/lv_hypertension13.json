@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Flushed, uneasy",
-        "description": "A woman feels flushed and uneasy, with a mild headache and tingling in her fingers. Her smartwatch keeps warning her about her heart.",
+        "locales": {
+            "en": {
+                "title": "Flushed, uneasy",
+                "description": "A woman feels flushed and uneasy, with a mild headache and tingling in her fingers. Her smartwatch keeps warning her about her heart."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

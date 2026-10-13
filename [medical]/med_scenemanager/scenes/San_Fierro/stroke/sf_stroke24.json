@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found on the ground, cannot speak",
-        "description": "A dog walker found an elderly woman lying at a bus stop in Garcia. She is awake and looks at people but cannot speak, and her right side is limp.",
+        "locales": {
+            "en": {
+                "title": "Found on the ground, cannot speak",
+                "description": "A dog walker found an elderly woman lying at a bus stop in Garcia. She is awake and looks at people but cannot speak, and her right side is limp."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Woman fainted",
-        "description": "A woman fainted on the sidewalk in Fort Carson. She is standing up again, embarrassed, and says she just got up too quickly.",
+        "locales": {
+            "en": {
+                "title": "Woman fainted",
+                "description": "A woman fainted on the sidewalk in Fort Carson. She is standing up again, embarrassed, and says she just got up too quickly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

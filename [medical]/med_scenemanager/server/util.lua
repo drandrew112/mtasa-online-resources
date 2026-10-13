@@ -123,13 +123,47 @@ function msmDecodeJSON(content)
     return nil
 end
 
+---------------------------------------------------------------- ERM locales
+
+local function localeEntry(entry)
+    if type(entry) ~= "table" then return nil end
+    local title = type(entry.title) == "string" and entry.title or ""
+    local description = type(entry.description) == "string" and entry.description or ""
+    if title == "" and description == "" then return nil end
+    return { title = title, description = description }
+end
+
+-- erm (decoded file or editor table) -> { en = { title, description }, hu = ... }
+-- Accepts the old flat erm.title / erm.description (becomes English). English always
+-- exists (default text when missing / empty); other languages with both fields empty are dropped.
+function msmNormalizeLocales(erm)
+    erm = type(erm) == "table" and erm or {}
+    local out = {}
+    if type(erm.locales) == "table" then
+        for code, entry in pairs(erm.locales) do
+            if type(code) == "string" and code:match("^%l%l") then
+                out[code] = localeEntry(entry)
+            end
+        end
+    end
+    if not out.en then
+        out.en = localeEntry({ title = erm.title, description = erm.description })
+    end
+    local default = MSM.DEFAULT_ERM.locales.en
+    out.en = out.en or {}
+    if (out.en.title or "") == "" then out.en.title = default.title end
+    out.en.description = out.en.description or default.description
+    return out
+end
+
 ---------------------------------------------------------------- JSON writer
 
 -- Key order of the written files (scene, erm, vehicle, ped, injury, medical state, index).
 -- Keys missing from the list follow in alphabetical order.
 local KEY_ORDER = {
     "format", "name", "category", "location", "enabled", "weight", "center", "interior", "dimension", "erm", "vehicles", "peds",
-    "title", "description", "caller", "priority",
+    "locales", "caller", "priority",
+    "en", "title", "description",
     "id", "model", "skin", "pos", "rot", "anim", "frozen", "vehicle", "seat",
     "locked", "engine", "lightsOn", "sirens", "health", "colors", "paintjob", "plate", "variant",
     "upgrades", "doors", "panels", "lights", "wheels",
@@ -143,7 +177,8 @@ for i, key in ipairs(KEY_ORDER) do
 end
 
 local EMPTY_OBJECTS = { state = true } -- every other empty table is written as []
-local ALWAYS_EXPANDED = { erm = true }  -- never on one line (its description is often long)
+local ALWAYS_EXPANDED = { erm = true, locales = true }  -- never on one line (descriptions are often long)
+local EXPANDED_CHILDREN = { locales = true }               -- ... and neither is each language inside locales
 local INDENT = "    "
 local INLINE_WIDTH = 100 -- containers of plain values up to this many characters stay on one line
 
@@ -180,7 +215,7 @@ local function sortedKeys(t)
     return keys
 end
 
-local function encodeValue(value, depth, key)
+local function encodeValue(value, depth, key, parent)
     local kind = type(value)
     if kind == "string" then return encodeString(value) end
     if kind == "number" then return encodeNumber(value) end
@@ -200,13 +235,13 @@ local function encodeValue(value, depth, key)
         for i, k in ipairs(sortedKeys(value)) do
             local v = value[k]
             if v == nil then v = value[tonumber(k)] end
-            parts[i] = encodeString(k) .. ": " .. encodeValue(v, depth + 1, k)
+            parts[i] = encodeString(k) .. ": " .. encodeValue(v, depth + 1, k, key)
             if type(v) == "table" then plain = false end
         end
     end
     local open, close = array and "[" or "{", array and "]" or "}"
 
-    if plain and not ALWAYS_EXPANDED[key] then
+    if plain and not ALWAYS_EXPANDED[key] and not EXPANDED_CHILDREN[parent] then
         local line = array and (open .. table.concat(parts, ", ") .. close)
             or (open .. " " .. table.concat(parts, ", ") .. " " .. close)
         if #line + #INDENT * depth <= INLINE_WIDTH then return line end

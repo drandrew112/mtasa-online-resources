@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car and van collision",
-        "description": "A car ran a stop sign at the crossroads near Verdant Meadows and was hit by a van. The car driver and two passengers are injured, one of them is unconscious.",
+        "locales": {
+            "en": {
+                "title": "Car and van collision",
+                "description": "A car ran a stop sign at the crossroads near Verdant Meadows and was hit by a van. The car driver and two passengers are injured, one of them is unconscious."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

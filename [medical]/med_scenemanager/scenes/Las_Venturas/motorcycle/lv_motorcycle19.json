@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lost control in the bend",
-        "description": "A motorcyclist came off the freeway far too fast, lost control at the side of the road near the Yellow Bell Golf Course and hit the curb. He is lying still, dazed, and does not know where he is.",
+        "locales": {
+            "en": {
+                "title": "Lost control in the bend",
+                "description": "A motorcyclist came off the freeway far too fast, lost control at the side of the road near the Yellow Bell Golf Course and hit the curb. He is lying still, dazed, and does not know where he is."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

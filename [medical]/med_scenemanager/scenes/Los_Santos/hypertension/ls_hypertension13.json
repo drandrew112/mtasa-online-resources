@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache on platform",
-        "description": "A commuter waiting for his train sat down on the platform holding his head. He says the pain came on suddenly and the announcements are making it worse. He stopped his pills last month.",
+        "locales": {
+            "en": {
+                "title": "Headache on platform",
+                "description": "A commuter waiting for his train sat down on the platform holding his head. He says the pain came on suddenly and the announcements are making it worse. He stopped his pills last month."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

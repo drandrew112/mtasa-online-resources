@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Blurred vision, headache",
-        "description": "An elderly woman waiting for a friend says the letters on the shop signs have gone blurry and doubled. She has a dull headache and feels sick to her stomach.",
+        "locales": {
+            "en": {
+                "title": "Blurred vision, headache",
+                "description": "An elderly woman waiting for a friend says the letters on the shop signs have gone blurry and doubled. She has a dull headache and feels sick to her stomach."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache on park walk",
-        "description": "A retired man out on his daily walk in the park sat down on the grass with a pounding headache and blurry vision. He admits he forgot his blood pressure pills this morning.",
+        "locales": {
+            "en": {
+                "title": "Headache on park walk",
+                "description": "A retired man out on his daily walk in the park sat down on the grass with a pounding headache and blurry vision. He admits he forgot his blood pressure pills this morning."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

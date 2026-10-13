@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Tearing chest pain",
-        "description": "A man is doubled over describing a tearing pain between his shoulder blades. He is grey, sweating and says it came on all at once.",
+        "locales": {
+            "en": {
+                "title": "Tearing chest pain",
+                "description": "A man is doubled over describing a tearing pain between his shoulder blades. He is grey, sweating and says it came on all at once."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

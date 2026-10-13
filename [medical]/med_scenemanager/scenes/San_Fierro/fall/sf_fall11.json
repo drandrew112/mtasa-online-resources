@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cyclist over the handlebars",
-        "description": "A cyclist went over the handlebars at the side of the road in San Fierro after hitting a pothole. Her collarbone is deformed and her helmet is cracked. She cannot remember the fall.",
+        "locales": {
+            "en": {
+                "title": "Cyclist over the handlebars",
+                "description": "A cyclist went over the handlebars at the side of the road in San Fierro after hitting a pothole. Her collarbone is deformed and her helmet is cracked. She cannot remember the fall."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, cold",
-        "description": "A passing driver spotted a man lying face down by the desert road. Cold, not breathing, no pulse.",
+        "locales": {
+            "en": {
+                "title": "Found down, cold",
+                "description": "A passing driver spotted a man lying face down by the desert road. Cold, not breathing, no pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

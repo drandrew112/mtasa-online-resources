@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Trucker ran out of insulin",
-        "description": "A long-haul trucker outside a small store in Angel Pine ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily.",
+        "locales": {
+            "en": {
+                "title": "Trucker ran out of insulin",
+                "description": "A long-haul trucker outside a small store in Angel Pine ran out of insulin two days ago and the nearest pharmacy was closed. Now he feels terrible, has stomach pain and is breathing heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

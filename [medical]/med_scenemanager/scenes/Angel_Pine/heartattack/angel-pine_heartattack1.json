@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A lumberjack in a checked shirt collapsed by the road outside the sawmill. Not breathing. His coworkers are shouting for help.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A lumberjack in a checked shirt collapsed by the road outside the sawmill. Not breathing. His coworkers are shouting for help."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

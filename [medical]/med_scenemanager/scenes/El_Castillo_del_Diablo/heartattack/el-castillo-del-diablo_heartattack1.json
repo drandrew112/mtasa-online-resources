@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A rock climber came down from the canyon and collapsed by the road with severe chest pain and a numb arm.",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A rock climber came down from the canyon and collapsed by the road with severe chest pain and a numb arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

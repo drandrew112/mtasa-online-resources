@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from stacked luggage carts",
-        "description": "A young man climbed onto a stack of luggage carts outside the terminal at Easter Bay Airport and fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "locales": {
+            "en": {
+                "title": "Fell from stacked luggage carts",
+                "description": "A young man climbed onto a stack of luggage carts outside the terminal at Easter Bay Airport and fell head first. He is lying face down, groaning, with blood coming from his nose."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

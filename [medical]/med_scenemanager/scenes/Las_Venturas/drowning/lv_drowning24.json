@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found floating in the water",
-        "description": "A street cleaner saw a man floating face down and pulled him out. He is lying at the water's edge on The Strip, not breathing. His skin is grey and cold.",
+        "locales": {
+            "en": {
+                "title": "Found floating in the water",
+                "description": "A street cleaner saw a man floating face down and pulled him out. He is lying at the water's edge on The Strip, not breathing. His skin is grey and cold."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

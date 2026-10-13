@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A taxi driver stopped his cab, got out and lay down on the sidewalk with severe chest pain. The meter is still running.",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A taxi driver stopped his cab, got out and lay down on the sidewalk with severe chest pain. The meter is still running."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

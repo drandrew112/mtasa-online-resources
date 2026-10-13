@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, one side limp",
-        "description": "A passer-by found an elderly woman on the ground at the water's edge in Verona Beach. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, one side limp",
+                "description": "A passer-by found an elderly woman on the ground at the water's edge in Verona Beach. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Not breathing, face down",
-        "description": "A tourist collapsed face down while photographing the bay view from the sidewalk. Her husband says she is not breathing and he cannot find a pulse.",
+        "locales": {
+            "en": {
+                "title": "Not breathing, face down",
+                "description": "A tourist collapsed face down while photographing the bay view from the sidewalk. Her husband says she is not breathing and he cannot find a pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

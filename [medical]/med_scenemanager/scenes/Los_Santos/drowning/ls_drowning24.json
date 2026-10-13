@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Seizure in the water",
-        "description": "A woman had a seizure while in the sea and went under. She was pulled out and brought up to the street in Verona Beach. She is breathing but confused and keeps coughing up water.",
+        "locales": {
+            "en": {
+                "title": "Seizure in the water",
+                "description": "A woman had a seizure while in the sea and went under. She was pulled out and brought up to the street in Verona Beach. She is breathing but confused and keeps coughing up water."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

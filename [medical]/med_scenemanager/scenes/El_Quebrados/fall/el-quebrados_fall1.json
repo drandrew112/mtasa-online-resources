@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a hay loft",
-        "description": "A man fell from a hay loft by the dusty roadside near El Quebrados. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him.",
+        "locales": {
+            "en": {
+                "title": "Fell from a hay loft",
+                "description": "A man fell from a hay loft by the dusty roadside near El Quebrados. He is unconscious, breathing noisily, and both legs are deformed. Neighbours are standing around him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

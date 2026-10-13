@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pregnant, confused in park",
-        "description": "A pregnant woman resting on the grass has become confused and keeps asking the same questions. Her friend says her face and hands have been swelling for days.",
+        "locales": {
+            "en": {
+                "title": "Pregnant, confused in park",
+                "description": "A pregnant woman resting on the grass has become confused and keeps asking the same questions. Her friend says her face and hands have been swelling for days."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

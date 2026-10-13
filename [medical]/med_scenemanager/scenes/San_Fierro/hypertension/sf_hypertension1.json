@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused traveller",
-        "description": "A woman with a suitcase is confused on the platform and does not know which train she was waiting for. A station worker says she complained of a pounding headache and blurred vision.",
+        "locales": {
+            "en": {
+                "title": "Confused traveller",
+                "description": "A woman with a suitcase is confused on the platform and does not know which train she was waiting for. A station worker says she complained of a pounding headache and blurred vision."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

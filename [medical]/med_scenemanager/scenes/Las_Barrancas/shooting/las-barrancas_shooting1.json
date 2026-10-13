@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shot in the back",
-        "description": "A man was shot in the back while running away by the dusty roadside in Las Barrancas. He is lying on his stomach and says he cannot feel his legs.",
+        "locales": {
+            "en": {
+                "title": "Shot in the back",
+                "description": "A man was shot in the back while running away by the dusty roadside in Las Barrancas. He is lying on his stomach and says he cannot feel his legs."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

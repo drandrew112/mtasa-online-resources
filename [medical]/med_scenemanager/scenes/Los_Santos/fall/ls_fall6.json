@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell from a roof, not moving",
-        "description": "A man fell from a two-storey roof outside a shop in Ocean Docks. He is lying on his back, moaning, bleeding from the head and does not move his legs. Nobody has moved him.",
+        "locales": {
+            "en": {
+                "title": "Fell from a roof, not moving",
+                "description": "A man fell from a two-storey roof outside a shop in Ocean Docks. He is lying on his back, moaning, bleeding from the head and does not move his legs. Nobody has moved him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

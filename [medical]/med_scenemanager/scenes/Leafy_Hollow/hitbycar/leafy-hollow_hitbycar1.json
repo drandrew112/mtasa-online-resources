@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit walking along the road",
-        "description": "A young woman was hit while walking along the road next to the country road near Leafy Hollow by a driver looking at his phone. She is rolling in pain and holding her leg.",
+        "locales": {
+            "en": {
+                "title": "Hit walking along the road",
+                "description": "A young woman was hit while walking along the road next to the country road near Leafy Hollow by a driver looking at his phone. She is rolling in pain and holding her leg."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

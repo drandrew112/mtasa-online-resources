@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Runner wheezing after race",
-        "description": "A runner in Downtown Los Santos finished a charity run and now cannot stop wheezing. He had asthma as a child but no inhaler today.",
+        "locales": {
+            "en": {
+                "title": "Runner wheezing after race",
+                "description": "A runner in Downtown Los Santos finished a charity run and now cannot stop wheezing. He had asthma as a child but no inhaler today."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

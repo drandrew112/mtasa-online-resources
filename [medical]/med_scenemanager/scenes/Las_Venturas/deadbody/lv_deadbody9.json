@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body floating in the water",
-        "description": "Early morning cleaners found a body floating at the water's edge in Pilgrim. The person has clearly been in the water for some time.",
+        "locales": {
+            "en": {
+                "title": "Body floating in the water",
+                "description": "Early morning cleaners found a body floating at the water's edge in Pilgrim. The person has clearly been in the water for some time."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

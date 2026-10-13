@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell, cannot stand, weak on one side",
-        "description": "An elderly man fell at the side of the road in Mulholland and cannot get up. He hit his head lightly. Witnesses say his leg just gave way and now his speech is slurred.",
+        "locales": {
+            "en": {
+                "title": "Fell, cannot stand, weak on one side",
+                "description": "An elderly man fell at the side of the road in Mulholland and cannot get up. He hit his head lightly. Witnesses say his leg just gave way and now his speech is slurred."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

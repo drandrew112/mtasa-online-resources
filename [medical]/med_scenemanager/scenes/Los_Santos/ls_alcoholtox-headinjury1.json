@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Intoxicated woman fell and hit her head",
-        "description": "A woman at a crowded techno party drank a large amount of alcohol and then fell to the ground, hitting her head. She is heavily intoxicated, confused and drowsy after the fall. Partygoers are concerned and have called for an ambulance.",
+        "locales": {
+            "en": {
+                "title": "Intoxicated woman fell and hit her head",
+                "description": "A woman at a crowded techno party drank a large amount of alcohol and then fell to the ground, hitting her head. She is heavily intoxicated, confused and drowsy after the fall. Partygoers are concerned and have called for an ambulance."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

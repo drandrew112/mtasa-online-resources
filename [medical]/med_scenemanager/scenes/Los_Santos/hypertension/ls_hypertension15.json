@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pounding heart after workout",
-        "description": "A man doing an outdoor workout feels his heart pounding out of his chest and his head throbbing. His gym bag is full of pre-workout powder.",
+        "locales": {
+            "en": {
+                "title": "Pounding heart after workout",
+                "description": "A man doing an outdoor workout feels his heart pounding out of his chest and his head throbbing. His gym bag is full of pre-workout powder."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed while jogging",
-        "description": "A jogger in neon running gear stopped mid-stride, wobbled and folded onto the sidewalk. His smartwatch is still beeping about a personal best. Witnesses say he is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed while jogging",
+                "description": "A jogger in neon running gear stopped mid-stride, wobbled and folded onto the sidewalk. His smartwatch is still beeping about a personal best. Witnesses say he is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

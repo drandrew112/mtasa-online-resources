@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Thrown from a horse",
-        "description": "A woman was thrown from her horse on the road shoulder near El Castillo del Diablo and landed on her back. She is in severe pain and says her legs feel tingly.",
+        "locales": {
+            "en": {
+                "title": "Thrown from a horse",
+                "description": "A woman was thrown from her horse on the road shoulder near El Castillo del Diablo and landed on her back. She is in severe pain and says her legs feel tingly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

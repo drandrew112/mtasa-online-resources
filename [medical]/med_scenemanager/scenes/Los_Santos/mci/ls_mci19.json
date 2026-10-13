@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Work van and car, five hurt",
-        "description": "A crowded work van collided with a car in Verdant Bluffs. The van is badly damaged. Five people are injured, two of them seriously; workers climbed out through the windows.",
+        "locales": {
+            "en": {
+                "title": "Work van and car, five hurt",
+                "description": "A crowded work van collided with a car in Verdant Bluffs. The van is badly damaged. Five people are injured, two of them seriously; workers climbed out through the windows."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worst headache of her life",
-        "description": "A woman at a bus stop near the Last Dime Motel grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy.",
+        "locales": {
+            "en": {
+                "title": "Worst headache of her life",
+                "description": "A woman at a bus stop near the Last Dime Motel grabbed her head screaming about the worst headache of her life, vomited once and is now getting very drowsy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

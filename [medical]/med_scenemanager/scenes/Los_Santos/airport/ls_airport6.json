@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Ramp worker collapsed in the heat",
-        "description": "A ramp worker collapsed after a long shift loading planes in the sun at Los Santos International. He is confused, hot to the touch and has stopped sweating.",
+        "locales": {
+            "en": {
+                "title": "Ramp worker collapsed in the heat",
+                "description": "A ramp worker collapsed after a long shift loading planes in the sun at Los Santos International. He is confused, hot to the touch and has stopped sweating."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

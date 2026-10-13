@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, near faint",
-        "description": "A poker player who has not slept in two days sat on the sidewalk with his heart hammering. He is pale and seeing spots. He says he still has a tournament at noon.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, near faint",
+                "description": "A poker player who has not slept in two days sat on the sidewalk with his heart hammering. He is pale and seeing spots. He says he still has a tournament at noon."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

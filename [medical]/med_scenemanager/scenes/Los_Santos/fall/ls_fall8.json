@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Skateboarder hit head",
-        "description": "A skateboarder fell at a bus stop in Market without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a painful wrist.",
+        "locales": {
+            "en": {
+                "title": "Skateboarder hit head",
+                "description": "A skateboarder fell at a bus stop in Market without a helmet and hit the back of his head. He was out for a few seconds, now keeps asking what happened and has a painful wrist."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

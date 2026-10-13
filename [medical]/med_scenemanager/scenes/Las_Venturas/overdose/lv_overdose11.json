@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drink may have been spiked",
-        "description": "A young woman outside a wedding chapel near Caligula's Palace says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute.",
+        "locales": {
+            "en": {
+                "title": "Drink may have been spiked",
+                "description": "A young woman outside a wedding chapel near Caligula's Palace says someone put something in her drink at a bar. She can barely stand, is slurring and getting drowsier by the minute."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

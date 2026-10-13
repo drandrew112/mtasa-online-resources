@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Heart attack at a store",
-        "description": "A person got a heart attack at the store.",
+        "locales": {
+            "en": {
+                "title": "Heart attack at a store",
+                "description": "A person got a heart attack at the store."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

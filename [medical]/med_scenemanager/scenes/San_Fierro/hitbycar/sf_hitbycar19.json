@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old man knocked down by a taxi",
-        "description": "A taxi knocked down an old man at the side of the road in Foster Valley. He hit the windscreen, is dazed and has a large bleeding wound on his forehead.",
+        "locales": {
+            "en": {
+                "title": "Old man knocked down by a taxi",
+                "description": "A taxi knocked down an old man at the side of the road in Foster Valley. He hit the windscreen, is dazed and has a large bleeding wound on his forehead."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

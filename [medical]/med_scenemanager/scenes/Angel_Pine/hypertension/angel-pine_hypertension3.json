@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Light-headed after hard work",
-        "description": "A farmhand next to the country road in Angel Pine felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal.",
+        "locales": {
+            "en": {
+                "title": "Light-headed after hard work",
+                "description": "A farmhand next to the country road in Angel Pine felt light-headed after hauling feed all morning and sat down in the shade. His pressure is well above normal."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

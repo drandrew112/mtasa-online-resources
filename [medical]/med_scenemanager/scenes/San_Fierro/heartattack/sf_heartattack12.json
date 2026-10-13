@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dropped mid-run",
-        "description": "A marathon trainee dropped face first on the sidewalk during his hill repeats. His running partner says he is not breathing and is shouting for help.",
+        "locales": {
+            "en": {
+                "title": "Dropped mid-run",
+                "description": "A marathon trainee dropped face first on the sidewalk during his hill repeats. His running partner says he is not breathing and is shouting for help."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

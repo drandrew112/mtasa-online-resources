@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "The bartender stepped outside clutching her chest. Crushing pain into her jaw, soaked in sweat.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "The bartender stepped outside clutching her chest. Crushing pain into her jaw, soaked in sweat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

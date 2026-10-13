@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "BMX stunt goes wrong",
-        "description": "A BMX rider crashed while landing a jump at the stunt park. He was thrown over the handlebars and hit the concrete. He is conscious but dazed, with severe arm and leg pain.",
+        "locales": {
+            "en": {
+                "title": "BMX stunt goes wrong",
+                "description": "A BMX rider crashed while landing a jump at the stunt park. He was thrown over the handlebars and hit the concrete. He is conscious but dazed, with severe arm and leg pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

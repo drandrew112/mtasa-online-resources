@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A retired woman walking her poodle sat down by the road with chest pain and cold sweat. The poodle is barking at everyone.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A retired woman walking her poodle sat down by the road with chest pain and cold sweat. The poodle is barking at everyone."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

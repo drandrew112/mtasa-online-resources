@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A farmhand was stacking hay bales when crushing chest pain dropped him to his knees by the road. His jaw and arm hurt too.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A farmhand was stacking hay bales when crushing chest pain dropped him to his knees by the road. His jaw and arm hurt too."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

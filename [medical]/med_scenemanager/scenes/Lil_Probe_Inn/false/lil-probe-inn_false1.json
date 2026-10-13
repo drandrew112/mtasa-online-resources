@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man swaying",
-        "description": "A caller says a man on open scrubland at the Lil' Probe Inn is swaying and might fall over. He is drunk but talking, walking and says he is fine.",
+        "locales": {
+            "en": {
+                "title": "Drunk man swaying",
+                "description": "A caller says a man on open scrubland at the Lil' Probe Inn is swaying and might fall over. He is drunk but talking, walking and says he is fine."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

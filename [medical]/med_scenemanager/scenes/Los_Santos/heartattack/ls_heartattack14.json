@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "Passers-by found a man slumped on the sidewalk, barely breathing, skin like cold ash. His shopping bag is spilled across the pavement.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "Passers-by found a man slumped on the sidewalk, barely breathing, skin like cold ash. His shopping bag is spilled across the pavement."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

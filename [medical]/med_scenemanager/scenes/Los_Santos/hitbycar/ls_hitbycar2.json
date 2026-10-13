@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit and run",
-        "description": "A pedestrian was hit by a car on the crosswalk in Commerce. The car did not stop and drove off at high speed. The victim is lying on the road and is not answering.",
+        "locales": {
+            "en": {
+                "title": "Hit and run",
+                "description": "A pedestrian was hit by a car on the crosswalk in Commerce. The car did not stop and drove off at high speed. The victim is lying on the road and is not answering."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Neighbour not answering",
-        "description": "A woman says her elderly neighbour is lying in front of his door in Rodeo and is not answering. She has not seen him for two days.",
+        "locales": {
+            "en": {
+                "title": "Neighbour not answering",
+                "description": "A woman says her elderly neighbour is lying in front of his door in Rodeo and is not answering. She has not seen him for two days."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

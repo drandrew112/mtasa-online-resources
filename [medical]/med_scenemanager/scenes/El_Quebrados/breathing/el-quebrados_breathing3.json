@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old smoker cannot catch breath",
-        "description": "An old smoker outside a house in El Quebrados had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen.",
+        "locales": {
+            "en": {
+                "title": "Old smoker cannot catch breath",
+                "description": "An old smoker outside a house in El Quebrados had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

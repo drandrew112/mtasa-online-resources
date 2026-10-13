@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A passing driver found a man by the road, unresponsive, grey and barely breathing.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A passing driver found a man by the road, unresponsive, grey and barely breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

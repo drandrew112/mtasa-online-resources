@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Four-car pileup, several injured",
-        "description": "Four cars crashed into each other at a busy crossroads in City Hall after one braked suddenly in the fog. One driver is trapped behind the wheel, the others are lying or sitting on the road, hurt.",
+        "locales": {
+            "en": {
+                "title": "Four-car pileup, several injured",
+                "description": "Four cars crashed into each other at a busy crossroads in City Hall after one braked suddenly in the fog. One driver is trapped behind the wheel, the others are lying or sitting on the road, hurt."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

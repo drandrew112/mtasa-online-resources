@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fisherman fell off the quay",
-        "description": "A fisherman slipped and fell into the cold water. Dock workers pulled him out with a rope and laid him on the quay in Esplanade North. He is coughing and very pale.",
+        "locales": {
+            "en": {
+                "title": "Fisherman fell off the quay",
+                "description": "A fisherman slipped and fell into the cold water. Dock workers pulled him out with a rope and laid him on the quay in Esplanade North. He is coughing and very pale."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cyclist wheezing in the heat",
-        "description": "A cyclist stopped next to the road near the Visage after riding through the midday heat and dust and is wheezing loudly. He has asthma and forgot his inhaler.",
+        "locales": {
+            "en": {
+                "title": "Cyclist wheezing in the heat",
+                "description": "A cyclist stopped next to the road near the Visage after riding through the midday heat and dust and is wheezing loudly. He has asthma and forgot his inhaler."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

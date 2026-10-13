@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pickup ploughed into cars at gas station",
-        "description": "A pickup truck lost control outside the Idlewood gas station and crashed into three cars. Several injured, one woman was thrown onto the pavement and is not responding.",
+        "locales": {
+            "en": {
+                "title": "Pickup ploughed into cars at gas station",
+                "description": "A pickup truck lost control outside the Idlewood gas station and crashed into three cars. Several injured, one woman was thrown onto the pavement and is not responding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

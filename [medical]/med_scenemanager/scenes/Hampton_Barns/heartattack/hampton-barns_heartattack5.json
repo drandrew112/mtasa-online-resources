@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An elderly woman selling eggs by the road keeps fainting. Slow pulse, confused, and she keeps trying to give change to nobody.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An elderly woman selling eggs by the road keeps fainting. Slow pulse, confused, and she keeps trying to give change to nobody."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

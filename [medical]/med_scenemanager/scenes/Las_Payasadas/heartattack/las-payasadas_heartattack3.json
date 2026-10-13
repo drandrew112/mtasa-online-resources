@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, gasping",
-        "description": "A local found an old man lying by the road, gasping only every few seconds. Nobody can feel a pulse.",
+        "locales": {
+            "en": {
+                "title": "Found down, gasping",
+                "description": "A local found an old man lying by the road, gasping only every few seconds. Nobody can feel a pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

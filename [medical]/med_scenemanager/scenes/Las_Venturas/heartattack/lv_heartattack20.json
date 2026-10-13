@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, gasping",
-        "description": "A man in a sweat-soaked suit collapsed on the sidewalk in the midday heat. Only occasional gasps, nobody can find a pulse.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, gasping",
+                "description": "A man in a sweat-soaked suit collapsed on the sidewalk in the midday heat. Only occasional gasps, nobody can find a pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

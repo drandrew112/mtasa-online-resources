@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Accidental shot to the hand",
-        "description": "A man at the side of the road in Richman accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain.",
+        "locales": {
+            "en": {
+                "title": "Accidental shot to the hand",
+                "description": "A man at the side of the road in Richman accidentally shot himself in the hand while showing off a pistol. He is holding a bloody towel and screaming in pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

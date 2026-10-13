@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed man, may have left",
-        "description": "A woman says a man collapsed at a busy crossroads in Easter Bay Airport a few minutes ago, but he might have got up and walked away. Nobody stayed with him.",
+        "locales": {
+            "en": {
+                "title": "Collapsed man, may have left",
+                "description": "A woman says a man collapsed at a busy crossroads in Easter Bay Airport a few minutes ago, but he might have got up and walked away. Nobody stayed with him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

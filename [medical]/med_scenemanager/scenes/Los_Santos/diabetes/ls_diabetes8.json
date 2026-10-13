@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak, thirsty, stomach pain",
-        "description": "A woman at a bus stop in Temple says she feels too weak to walk, has a terrible thirst and stomach pain. She admits skipping insulin because she could not afford it. She is pale and breathing heavily.",
+        "locales": {
+            "en": {
+                "title": "Weak, thirsty, stomach pain",
+                "description": "A woman at a bus stop in Temple says she feels too weak to walk, has a terrible thirst and stomach pain. She admits skipping insulin because she could not afford it. She is pale and breathing heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

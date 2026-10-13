@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, very high BP",
-        "description": "A woman screaming at a broken vending machine is now leaning on a wall with chest pain and a pounding headache.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, very high BP",
+                "description": "A woman screaming at a broken vending machine is now leaning on a wall with chest pain and a pounding headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

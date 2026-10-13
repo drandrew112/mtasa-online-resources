@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chain collision in thick fog",
-        "description": "Thick fog rolled in from the bay and several cars ran into each other at a junction in Juniper Hollow. Four people are hurt, one woman is unconscious on the road.",
+        "locales": {
+            "en": {
+                "title": "Chain collision in thick fog",
+                "description": "Thick fog rolled in from the bay and several cars ran into each other at a junction in Juniper Hollow. Four people are hurt, one woman is unconscious on the road."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

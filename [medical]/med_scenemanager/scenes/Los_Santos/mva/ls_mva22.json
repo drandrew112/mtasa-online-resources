@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head-on collision",
-        "description": "A white car and a blue car collided head-on in Ocean Docks. The driver of the white car is still behind the wheel with a head injury and a broken arm, in severe pain.",
+        "locales": {
+            "en": {
+                "title": "Head-on collision",
+                "description": "A white car and a blue car collided head-on in Ocean Docks. The driver of the white car is still behind the wheel with a head injury and a broken arm, in severe pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

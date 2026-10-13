@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A yellow car turning left was hit by an oncoming black car at an intersection in Foster Valley. The driver of the black car got out and is sitting on the ground with a possible broken wrist.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A yellow car turning left was hit by an oncoming black car at an intersection in Foster Valley. The driver of the black car got out and is sitting on the ground with a possible broken wrist."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

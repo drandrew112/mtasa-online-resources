@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted, very fast pulse",
-        "description": "A young woman passed out on the sidewalk after a pool party. Her friends say her heart was racing before she dropped. She is breathing but will not wake up.",
+        "locales": {
+            "en": {
+                "title": "Fainted, very fast pulse",
+                "description": "A young woman passed out on the sidewalk after a pool party. Her friends say her heart was racing before she dropped. She is breathing but will not wake up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

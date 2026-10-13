@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "SUV rolled over, passengers out",
-        "description": "An SUV clipped another car and rolled over at a junction in Las Barrancas. Two passengers were thrown out, the other driver is sitting in shock with chest pain.",
+        "locales": {
+            "en": {
+                "title": "SUV rolled over, passengers out",
+                "description": "An SUV clipped another car and rolled over at a junction in Las Barrancas. Two passengers were thrown out, the other driver is sitting in shock with chest pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

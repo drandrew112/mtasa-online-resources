@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man fell into the bay",
-        "description": "A drunk man fell into the water and was pulled out by friends. He is now on the sidewalk by the waterfront in Calton Heights, coughing up water and shivering.",
+        "locales": {
+            "en": {
+                "title": "Drunk man fell into the bay",
+                "description": "A drunk man fell into the water and was pulled out by friends. He is now on the sidewalk by the waterfront in Calton Heights, coughing up water and shivering."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

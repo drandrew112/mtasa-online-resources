@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nausea, cold sweat",
-        "description": "An older woman who came to watch the planes sat down by the road feeling sick, sweaty and short of breath.",
+        "locales": {
+            "en": {
+                "title": "Nausea, cold sweat",
+                "description": "An older woman who came to watch the planes sat down by the road feeling sick, sweaty and short of breath."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

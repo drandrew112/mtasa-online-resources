@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain after cocaine",
-        "description": "A man at the side of the road in Prickle Pine says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side.",
+        "locales": {
+            "en": {
+                "title": "Chest pain after cocaine",
+                "description": "A man at the side of the road in Prickle Pine says his chest is tight and his heart is pounding after snorting cocaine. He is sweaty and holding his left side."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

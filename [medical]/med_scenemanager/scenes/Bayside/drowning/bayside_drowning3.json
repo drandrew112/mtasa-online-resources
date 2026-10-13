@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Throat swelling after a bee sting",
-        "description": "A beekeeper on open ground in Bayside was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before.",
+        "locales": {
+            "en": {
+                "title": "Throat swelling after a bee sting",
+                "description": "A beekeeper on open ground in Bayside was stung several times and his tongue and throat are swelling fast. He is wheezing and says he has never reacted like this before."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

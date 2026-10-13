@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger lost vision, one side numb",
-        "description": "A jogger on the pavement in East Los Santos stopped and sat down, saying he cannot see on the left side and his left hand is numb. He is speaking clearly but is scared. Symptoms began about fifteen minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Jogger lost vision, one side numb",
+                "description": "A jogger on the pavement in East Los Santos stopped and sat down, saying he cannot see on the left side and his left hand is numb. He is speaking clearly but is scared. Symptoms began about fifteen minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

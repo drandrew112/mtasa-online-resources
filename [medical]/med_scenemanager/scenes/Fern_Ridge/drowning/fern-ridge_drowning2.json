@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Choked on food, turning blue",
-        "description": "A man choking on a piece of steak on the road shoulder near Fern Ridge cannot breathe or speak and is grabbing his throat. His lips are turning blue.",
+        "locales": {
+            "en": {
+                "title": "Choked on food, turning blue",
+                "description": "A man choking on a piece of steak on the road shoulder near Fern Ridge cannot breathe or speak and is grabbing his throat. His lips are turning blue."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

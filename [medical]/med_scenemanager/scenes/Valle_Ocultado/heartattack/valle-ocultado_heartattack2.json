@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A hiker who got lost in the valley reached the road and collapsed with severe chest pain.",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A hiker who got lost in the valley reached the road and collapsed with severe chest pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

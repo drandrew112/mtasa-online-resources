@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A white car lost control and spun out on the Old Venturas Strip. The driver is lying on their back next to the car with a broken rib and a bleeding wound. The passenger was pulled out by bystanders and is lying on their back next to the car, unconscious, with a serious head injury and a broken arm.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A white car lost control and spun out on the Old Venturas Strip. The driver is lying on their back next to the car with a broken rib and a bleeding wound. The passenger was pulled out by bystanders and is lying on their back next to the car, unconscious, with a serious head injury and a broken arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Numb arm, slurred words",
-        "description": "An older man sitting on a bench says his left hand has gone numb and tingly. His speech is slightly slurred and he keeps losing his train of thought.",
+        "locales": {
+            "en": {
+                "title": "Numb arm, slurred words",
+                "description": "An older man sitting on a bench says his left hand has gone numb and tingly. His speech is slightly slurred and he keeps losing his train of thought."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

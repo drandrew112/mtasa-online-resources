@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, no pulse",
-        "description": "A local found his neighbour lying by the road in the dust. No pulse, gasping now and then.",
+        "locales": {
+            "en": {
+                "title": "Found down, no pulse",
+                "description": "A local found his neighbour lying by the road in the dust. No pulse, gasping now and then."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

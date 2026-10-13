@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache after lifting",
-        "description": "A warehouse worker developed a sudden headache after lifting heavy boxes in the heat. He feels sick and wants to go home, but his boss called for help.",
+        "locales": {
+            "en": {
+                "title": "Headache after lifting",
+                "description": "A warehouse worker developed a sudden headache after lifting heavy boxes in the heat. He feels sick and wants to go home, but his boss called for help."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

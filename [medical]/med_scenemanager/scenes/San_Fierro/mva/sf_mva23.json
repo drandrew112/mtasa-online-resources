@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A yellow car lost control and spun out in Calton Heights. The driver is lying on their back next to the car with a crushed leg and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A yellow car lost control and spun out in Calton Heights. The driver is lying on their back next to the car with a crushed leg and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

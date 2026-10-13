@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Truck jackknifed, cars crashed",
-        "description": "A box truck lost its brakes coming down the hill and jackknifed at the crossroads in The Farm. Two cars crashed into it. Three people are injured, one is bleeding heavily.",
+        "locales": {
+            "en": {
+                "title": "Truck jackknifed, cars crashed",
+                "description": "A box truck lost its brakes coming down the hill and jackknifed at the crossroads in The Farm. Two cars crashed into it. Three people are injured, one is bleeding heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

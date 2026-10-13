@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Short of breath, uneasy",
-        "description": "A retired man walking his groceries home had to sit on the sidewalk. Short of breath, heavy feeling in his chest, he \"just doesn't feel right\". His milk is getting warm.",
+        "locales": {
+            "en": {
+                "title": "Short of breath, uneasy",
+                "description": "A retired man walking his groceries home had to sit on the sidewalk. Short of breath, heavy feeling in his chest, he \"just doesn't feel right\". His milk is getting warm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

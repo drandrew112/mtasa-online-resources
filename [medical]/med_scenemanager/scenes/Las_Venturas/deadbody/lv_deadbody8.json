@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found by a night guard",
-        "description": "A night guard found a man lying by the roadside in Redsands East. He has a head wound and has been there for hours. The guard did not touch him.",
+        "locales": {
+            "en": {
+                "title": "Found by a night guard",
+                "description": "A night guard found a man lying by the roadside in Redsands East. He has a head wound and has been there for hours. The guard did not touch him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

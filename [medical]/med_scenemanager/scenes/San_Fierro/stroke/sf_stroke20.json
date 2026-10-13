@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot lift her arm",
-        "description": "An elderly woman on the airport access road dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "locales": {
+            "en": {
+                "title": "Cannot lift her arm",
+                "description": "An elderly woman on the airport access road dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

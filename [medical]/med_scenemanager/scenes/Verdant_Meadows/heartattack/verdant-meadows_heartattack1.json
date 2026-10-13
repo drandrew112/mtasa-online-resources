@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, no pulse",
-        "description": "A pilot climbed out of his plane at the old airstrip, walked to the road and collapsed. Not breathing, no pulse.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, no pulse",
+                "description": "A pilot climbed out of his plane at the old airstrip, walked to the road and collapsed. Not breathing, no pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pulled out, not breathing",
-        "description": "Lifeguards pulled a man out of the sea and brought him onto the beach at Santa Maria Beach. He is not breathing and has no pulse. A bystander is doing chest compressions.",
+        "locales": {
+            "en": {
+                "title": "Pulled out, not breathing",
+                "description": "Lifeguards pulled a man out of the sea and brought him onto the beach at Santa Maria Beach. He is not breathing and has no pulse. A bystander is doing chest compressions."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

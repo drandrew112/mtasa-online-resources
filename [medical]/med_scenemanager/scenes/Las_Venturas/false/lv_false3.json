@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man shouting, chest pain?",
-        "description": "A caller heard a man outside a souvenir shop near the Julius Thruway South shouting that he has chest pain. When asked, he says he was only joking with his friends.",
+        "locales": {
+            "en": {
+                "title": "Man shouting, chest pain?",
+                "description": "A caller heard a man outside a souvenir shop near the Julius Thruway South shouting that he has chest pain. When asked, he says he was only joking with his friends."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

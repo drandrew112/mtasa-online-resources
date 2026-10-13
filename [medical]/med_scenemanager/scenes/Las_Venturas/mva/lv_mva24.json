@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A black car ran into the back of a dark grey car near the Pilson Intersection. The driver of the dark grey car is still behind the wheel, unconscious, with multiple injuries and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A black car ran into the back of a dark grey car near the Pilson Intersection. The driver of the dark grey car is still behind the wheel, unconscious, with multiple injuries and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

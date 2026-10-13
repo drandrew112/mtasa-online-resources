@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Shots fired, two down",
-        "description": "Drive-by shooting on Grove Street. Witnesses report several shots from a passing car. Two young men are on the ground, one of them is not moving. Police are on the way.",
+        "locales": {
+            "en": {
+                "title": "Shots fired, two down",
+                "description": "Drive-by shooting on Grove Street. Witnesses report several shots from a passing car. Two young men are on the ground, one of them is not moving. Police are on the way."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

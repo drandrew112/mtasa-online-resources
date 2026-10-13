@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man fell into the sea",
-        "description": "A man fell off the rocks at Playa del Seville after a party. His friends pulled him out, he is coughing, shivering and smells of alcohol.",
+        "locales": {
+            "en": {
+                "title": "Drunk man fell into the sea",
+                "description": "A man fell off the rocks at Playa del Seville after a party. His friends pulled him out, he is coughing, shivering and smells of alcohol."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

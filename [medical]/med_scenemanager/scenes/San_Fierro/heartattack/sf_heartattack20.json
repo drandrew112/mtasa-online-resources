@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, gasping",
-        "description": "A homeless man known to the neighbourhood collapsed on the sidewalk and is gasping only every few seconds. A shop owner says she cannot feel a pulse.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, gasping",
+                "description": "A homeless man known to the neighbourhood collapsed on the sidewalk and is gasping only every few seconds. A shop owner says she cannot feel a pulse."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

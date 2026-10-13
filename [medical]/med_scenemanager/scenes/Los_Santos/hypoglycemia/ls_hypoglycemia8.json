@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Had a fit, now very confused",
-        "description": "Witnesses at the side of the road in Verona Beach say a man shook all over for about a minute. Now he is awake but confused and sweating heavily. A friend says he is on insulin.",
+        "locales": {
+            "en": {
+                "title": "Had a fit, now very confused",
+                "description": "Witnesses at the side of the road in Verona Beach say a man shook all over for about a minute. Now he is awake but confused and sweating heavily. A friend says he is on insulin."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

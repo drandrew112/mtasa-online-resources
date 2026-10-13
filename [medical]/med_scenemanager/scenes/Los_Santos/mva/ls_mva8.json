@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A blue car ran into the back of a brown car in East Beach. The driver of the brown car is still behind the wheel with a painful wrist and some cuts. The driver of the blue car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the brown car got out and is standing next to the car, bent over and holding their side, with a broken wrist and a bleeding wound.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A blue car ran into the back of a brown car in East Beach. The driver of the brown car is still behind the wheel with a painful wrist and some cuts. The driver of the blue car got out and is sitting on the ground with a bump on the head and a headache. The passenger of the brown car got out and is standing next to the car, bent over and holding their side, with a broken wrist and a bleeding wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

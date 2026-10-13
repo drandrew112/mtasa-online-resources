@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest tightness, blurred vision",
-        "description": "A man jogging through Marina sat down on the sidewalk with a crushing tightness in his chest and says everything has gone blurry. Bystanders say he is red in the face, short of breath and keeps asking for water.",
+        "locales": {
+            "en": {
+                "title": "Chest tightness, blurred vision",
+                "description": "A man jogging through Marina sat down on the sidewalk with a crushing tightness in his chest and says everything has gone blurry. Bystanders say he is red in the face, short of breath and keeps asking for water."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

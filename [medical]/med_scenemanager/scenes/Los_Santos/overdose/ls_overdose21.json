@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk, vomiting, will not wake",
-        "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. She is lying face down.",
+        "locales": {
+            "en": {
+                "title": "Drunk, vomiting, will not wake",
+                "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. She is lying face down."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

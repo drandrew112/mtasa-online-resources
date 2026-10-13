@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Asthma attack, inhaler empty",
-        "description": "A teenage girl on the pavement in Las Colinas is wheezing badly and can only say two words at a time. Her inhaler is empty. She is sitting forward with her hands on her knees.",
+        "locales": {
+            "en": {
+                "title": "Asthma attack, inhaler empty",
+                "description": "A teenage girl on the pavement in Las Colinas is wheezing badly and can only say two words at a time. Her inhaler is empty. She is sitting forward with her hands on her knees."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

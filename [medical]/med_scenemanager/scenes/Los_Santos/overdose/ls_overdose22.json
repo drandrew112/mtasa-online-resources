@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pills and alcohol, very sleepy",
-        "description": "A man at a bus stop in Rodeo mixed anxiety pills with whisky after an argument. He is slurring, falling asleep mid-sentence and breathing slowly.",
+        "locales": {
+            "en": {
+                "title": "Pills and alcohol, very sleepy",
+                "description": "A man at a bus stop in Rodeo mixed anxiety pills with whisky after an argument. He is slurring, falling asleep mid-sentence and breathing slowly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

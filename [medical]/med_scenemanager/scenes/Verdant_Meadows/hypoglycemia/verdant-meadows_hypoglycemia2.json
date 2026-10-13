@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Diabetic not waking up",
-        "description": "A man next to the country road near Verdant Meadows cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning.",
+        "locales": {
+            "en": {
+                "title": "Diabetic not waking up",
+                "description": "A man next to the country road near Verdant Meadows cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

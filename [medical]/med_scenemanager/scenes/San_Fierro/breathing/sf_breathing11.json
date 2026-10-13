@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot breathe lying down",
-        "description": "A woman on the sidewalk in Garcia says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly.",
+        "locales": {
+            "en": {
+                "title": "Cannot breathe lying down",
+                "description": "A woman on the sidewalk in Garcia says she has to sit up to breathe and woke up gasping last night. Now she is breathing fast and sounds bubbly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

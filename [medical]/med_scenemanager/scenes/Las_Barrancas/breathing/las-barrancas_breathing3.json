@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Asthma from hay dust",
-        "description": "A girl helping to stack hay on the dusty ground in Las Barrancas is wheezing badly from the dust. Her inhaler is at home.",
+        "locales": {
+            "en": {
+                "title": "Asthma from hay dust",
+                "description": "A girl helping to stack hay on the dusty ground in Las Barrancas is wheezing badly from the dust. Her inhaler is at home."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

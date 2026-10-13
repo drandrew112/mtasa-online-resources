@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man found collapsed, snoring",
-        "description": "A neighbour found a man lying in front of his house in Jefferson. He is breathing loudly, snoring, and does not wake up when they shake him. Unknown how long he has been there.",
+        "locales": {
+            "en": {
+                "title": "Man found collapsed, snoring",
+                "description": "A neighbour found a man lying in front of his house in Jefferson. He is breathing loudly, snoring, and does not wake up when they shake him. Unknown how long he has been there."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

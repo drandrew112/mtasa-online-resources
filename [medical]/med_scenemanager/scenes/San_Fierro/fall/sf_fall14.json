@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell out of a tree",
-        "description": "A man trimming a tree on the grass in Paradiso fell from about three metres. He is screaming in pain and both ankles are swollen and deformed.",
+        "locales": {
+            "en": {
+                "title": "Fell out of a tree",
+                "description": "A man trimming a tree on the grass in Paradiso fell from about three metres. He is screaming in pain and both ankles are swollen and deformed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

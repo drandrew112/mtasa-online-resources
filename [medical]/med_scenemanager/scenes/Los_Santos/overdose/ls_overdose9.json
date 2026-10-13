@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Agitated, chest pain, sweating",
-        "description": "A man on the sidewalk in Marina is pacing, sweating heavily and clutching his chest. He admits using cocaine at a party. His heart is racing and he is very paranoid.",
+        "locales": {
+            "en": {
+                "title": "Agitated, chest pain, sweating",
+                "description": "A man on the sidewalk in Marina is pacing, sweating heavily and clutching his chest. He admits using cocaine at a party. His heart is racing and he is very paranoid."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

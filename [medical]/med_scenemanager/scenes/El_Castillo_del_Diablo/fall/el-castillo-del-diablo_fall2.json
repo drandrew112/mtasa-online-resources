@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell off a water tower ladder",
-        "description": "A young man climbing an old water tower ladder by the dusty roadside in El Castillo del Diablo fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "locales": {
+            "en": {
+                "title": "Fell off a water tower ladder",
+                "description": "A young man climbing an old water tower ladder by the dusty roadside in El Castillo del Diablo fell head first. He is lying face down, groaning, with blood coming from his nose."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

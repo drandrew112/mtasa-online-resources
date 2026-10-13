@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An old man filling up his pickup at the gas station keeps fainting. His pulse is very slow and he does not remember paying.",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An old man filling up his pickup at the gas station keeps fainting. His pulse is very slow and he does not remember paying."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

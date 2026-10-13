@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jumped from the railing",
-        "description": "A young man jumped into the water from the railing and hit it badly. Friends dragged him out and he is now lying at the water's edge on The Strip, dazed and gasping.",
+        "locales": {
+            "en": {
+                "title": "Jumped from the railing",
+                "description": "A young man jumped into the water from the railing and hit it badly. Friends dragged him out and he is now lying at the water's edge on The Strip, dazed and gasping."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

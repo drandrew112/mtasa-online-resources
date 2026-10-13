@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fish bone stuck, gasping",
-        "description": "An elderly woman on a bench near the Visage has a fish bone stuck in her throat. She is gagging, drooling and breathing with difficulty.",
+        "locales": {
+            "en": {
+                "title": "Fish bone stuck, gasping",
+                "description": "An elderly woman on a bench near the Visage has a fish bone stuck in her throat. She is gagging, drooling and breathing with difficulty."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

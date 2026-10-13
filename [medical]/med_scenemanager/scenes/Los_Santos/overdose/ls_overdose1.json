@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Not breathing properly in an alley",
-        "description": "A man is lying in an alley behind the shops in Ganton, lips going blue, barely breathing. His friend says they \"took something\" a few minutes ago. There is a syringe on the ground.",
+        "locales": {
+            "en": {
+                "title": "Not breathing properly in an alley",
+                "description": "A man is lying in an alley behind the shops in Ganton, lips going blue, barely breathing. His friend says they \"took something\" a few minutes ago. There is a syringe on the ground."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Talking nonsense",
-        "description": "Passers-by on the grass in Foster Valley called because a man is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk.",
+        "locales": {
+            "en": {
+                "title": "Talking nonsense",
+                "description": "Passers-by on the grass in Foster Valley called because a man is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

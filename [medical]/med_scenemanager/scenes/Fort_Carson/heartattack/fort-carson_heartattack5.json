@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, dizzy",
-        "description": "A young waitress sat by the road with her heart racing after a double shift. Pale, dizzy and she nearly fell twice.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, dizzy",
+                "description": "A young waitress sat by the road with her heart racing after a double shift. Pale, dizzy and she nearly fell twice."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

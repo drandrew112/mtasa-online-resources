@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "The bank teller stepped out for fresh air and sat down by the road, grey and sweating, pressing on her chest. She says it feels like a sack of feed on her ribs.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "The bank teller stepped out for fresh air and sat down by the road, grey and sweating, pressing on her chest. She says it feels like a sack of feed on her ribs."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

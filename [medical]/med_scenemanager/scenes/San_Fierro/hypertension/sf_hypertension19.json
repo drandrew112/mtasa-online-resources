@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Throbbing headache",
-        "description": "A hairdresser on a cigarette break says a throbbing headache has been building for hours and now she can barely see straight.",
+        "locales": {
+            "en": {
+                "title": "Throbbing headache",
+                "description": "A hairdresser on a cigarette break says a throbbing headache has been building for hours and now she can barely see straight."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

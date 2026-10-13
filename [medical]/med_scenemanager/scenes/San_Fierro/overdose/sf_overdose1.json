@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Barely breathing, blue lips",
-        "description": "A man is lying by the roadside in Foster Valley with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived.",
+        "locales": {
+            "en": {
+                "title": "Barely breathing, blue lips",
+                "description": "A man is lying by the roadside in Foster Valley with blue lips, taking a breath only every now and then. There is a syringe next to him. His friend ran off when the caller arrived."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

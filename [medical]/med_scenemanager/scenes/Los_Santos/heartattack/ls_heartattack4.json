@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "Caller reports a man in his sixties sitting on the pavement at Pershing Square, pale and drenched in sweat, pressing a fist to his chest. The pain started on his lunch walk and is spreading into his left arm and jaw. He keeps insisting it is just the burrito.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "Caller reports a man in his sixties sitting on the pavement at Pershing Square, pale and drenched in sweat, pressing a fist to his chest. The pain started on his lunch walk and is spreading into his left arm and jaw. He keeps insisting it is just the burrito."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

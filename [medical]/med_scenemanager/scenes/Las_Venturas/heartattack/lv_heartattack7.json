@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A showgirl in full costume collapsed on the sidewalk on her way to work. Feathers everywhere. A bystander says she is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A showgirl in full costume collapsed on the sidewalk on her way to work. Feathers everywhere. A bystander says she is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

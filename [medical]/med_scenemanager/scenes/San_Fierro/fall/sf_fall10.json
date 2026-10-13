@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Skateboarder crashed",
-        "description": "A skateboarder lost control at a bus stop in Calton Heights and slid along the pavement. His wrist is deformed and he has deep grazes.",
+        "locales": {
+            "en": {
+                "title": "Skateboarder crashed",
+                "description": "A skateboarder lost control at a bus stop in Calton Heights and slid along the pavement. His wrist is deformed and he has deep grazes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

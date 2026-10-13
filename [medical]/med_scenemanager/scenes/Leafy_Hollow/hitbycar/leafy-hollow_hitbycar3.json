@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Hit by a delivery truck",
-        "description": "A truck driver did not see a woman crossing next to the country road near Leafy Hollow. She was dragged a few metres and is pale, drowsy and bleeding from her legs.",
+        "locales": {
+            "en": {
+                "title": "Hit by a delivery truck",
+                "description": "A truck driver did not see a woman crossing next to the country road near Leafy Hollow. She was dragged a few metres and is pale, drowsy and bleeding from her legs."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak, short of breath",
-        "description": "A woman delivering supplies to the farm sat down by the road, short of breath, nauseous and exhausted.",
+        "locales": {
+            "en": {
+                "title": "Weak, short of breath",
+                "description": "A woman delivering supplies to the farm sat down by the road, short of breath, nauseous and exhausted."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

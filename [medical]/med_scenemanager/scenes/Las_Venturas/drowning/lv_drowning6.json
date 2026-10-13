@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child pulled from the water",
-        "description": "A father pulled his young daughter out of the water after she wandered off. She is lying by the water near Pirates in Men's Pants, confused and with blue lips.",
+        "locales": {
+            "en": {
+                "title": "Child pulled from the water",
+                "description": "A father pulled his young daughter out of the water after she wandered off. She is lying by the water near Pirates in Men's Pants, confused and with blue lips."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

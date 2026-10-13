@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Road rash and broken leg",
-        "description": "A rider lost the back wheel in a bend at the crossroads near Fort Carson and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken.",
+        "locales": {
+            "en": {
+                "title": "Road rash and broken leg",
+                "description": "A rider lost the back wheel in a bend at the crossroads near Fort Carson and slid along the road. His jeans are torn open, his skin is shredded and his shin is broken."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

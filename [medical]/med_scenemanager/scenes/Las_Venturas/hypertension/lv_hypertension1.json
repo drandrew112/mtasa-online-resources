@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, running for train",
-        "description": "A man ran to catch his train and is now on the platform with chest pain and a racing heart. He is red in the face and sweating heavily.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, running for train",
+                "description": "A man ran to catch his train and is now on the platform with chest pain and a racing heart. He is red in the face and sweating heavily."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

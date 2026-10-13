@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Head-on collision",
-        "description": "A dark grey car and a green car collided head-on in Mulholland. The driver of the dark grey car was pulled out by bystanders and is lying on their back next to the car, unconscious, with a serious head injury and a broken arm.",
+        "locales": {
+            "en": {
+                "title": "Head-on collision",
+                "description": "A dark grey car and a green car collided head-on in Mulholland. The driver of the dark grey car was pulled out by bystanders and is lying on their back next to the car, unconscious, with a serious head injury and a broken arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

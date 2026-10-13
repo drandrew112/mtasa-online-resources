@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ran off the road",
-        "description": "A green car left the road and hit the curb on the Old Venturas Strip. The driver is still behind the wheel with a crushed leg and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Car ran off the road",
+                "description": "A green car left the road and hit the curb on the Old Venturas Strip. The driver is still behind the wheel with a crushed leg and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

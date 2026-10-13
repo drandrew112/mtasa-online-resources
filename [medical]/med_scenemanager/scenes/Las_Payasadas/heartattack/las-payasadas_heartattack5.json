@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted, very fast pulse",
-        "description": "A young woman said her heart was \"buzzing\" and then passed out by the road. Breathing but not waking up.",
+        "locales": {
+            "en": {
+                "title": "Fainted, very fast pulse",
+                "description": "A young woman said her heart was \"buzzing\" and then passed out by the road. Breathing but not waking up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

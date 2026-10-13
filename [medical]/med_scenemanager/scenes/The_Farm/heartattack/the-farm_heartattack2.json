@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe chest pain",
-        "description": "A grizzled old farmer is lying by the road with severe chest pain, insisting nobody come near \"the crops\".",
+        "locales": {
+            "en": {
+                "title": "Severe chest pain",
+                "description": "A grizzled old farmer is lying by the road with severe chest pain, insisting nobody come near \"the crops\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

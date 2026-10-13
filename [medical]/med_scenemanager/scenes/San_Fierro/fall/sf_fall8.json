@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Grandmother tripped on the curb",
-        "description": "An elderly woman tripped on the curb at the side of the road in Foster Valley and cannot get up. Her right leg looks shorter and turned outwards.",
+        "locales": {
+            "en": {
+                "title": "Grandmother tripped on the curb",
+                "description": "An elderly woman tripped on the curb at the side of the road in Foster Valley and cannot get up. Her right leg looks shorter and turned outwards."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

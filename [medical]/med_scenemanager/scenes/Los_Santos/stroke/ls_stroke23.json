@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jogger lost vision, one side numb",
-        "description": "A jogger on the pavement in El Corona stopped and sat down, saying she cannot see on the left side and her left hand is numb. She is speaking clearly but is scared. Symptoms began about fifteen minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Jogger lost vision, one side numb",
+                "description": "A jogger on the pavement in El Corona stopped and sat down, saying she cannot see on the left side and her left hand is numb. She is speaking clearly but is scared. Symptoms began about fifteen minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

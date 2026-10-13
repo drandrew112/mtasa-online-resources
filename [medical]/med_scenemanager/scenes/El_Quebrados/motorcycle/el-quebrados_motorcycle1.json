@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rider and passenger down",
-        "description": "A motorcycle carrying two people crashed at a junction in El Quebrados. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm.",
+        "locales": {
+            "en": {
+                "title": "Rider and passenger down",
+                "description": "A motorcycle carrying two people crashed at a junction in El Quebrados. The rider is unconscious on the road, his passenger is sitting up with a bleeding arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A white car lost control and spun out near the Julius Thruway. The driver got out and is sitting on the ground, unable to stand, with a broken ankle and a cut on the head.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A white car lost control and spun out near the Julius Thruway. The driver got out and is sitting on the ground, unable to stand, with a broken ankle and a cut on the head."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

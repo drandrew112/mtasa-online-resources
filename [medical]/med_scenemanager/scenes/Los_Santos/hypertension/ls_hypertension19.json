@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slurred speech in park",
-        "description": "A man playing chess in the park suddenly slurred his words and dropped a piece with his right hand. His opponent says he complained of a headache first.",
+        "locales": {
+            "en": {
+                "title": "Slurred speech in park",
+                "description": "A man playing chess in the park suddenly slurred his words and dropped a piece with his right hand. His opponent says he complained of a headache first."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

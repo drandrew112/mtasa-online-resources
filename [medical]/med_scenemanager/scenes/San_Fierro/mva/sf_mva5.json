@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "T-bone collision at intersection",
-        "description": "A grey Vincent ran into the side of a grey Elegant at an intersection in Juniper Hill. The driver of the grey Elegant is still behind the wheel with a crushed leg and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "T-bone collision at intersection",
+                "description": "A grey Vincent ran into the side of a grey Elegant at an intersection in Juniper Hill. The driver of the grey Elegant is still behind the wheel with a crushed leg and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell, one leg will not move",
-        "description": "An old man fell on the sidewalk in Blueberry and cannot get up because his right leg will not move. He is awake but his speech is thick and slow.",
+        "locales": {
+            "en": {
+                "title": "Fell, one leg will not move",
+                "description": "An old man fell on the sidewalk in Blueberry and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

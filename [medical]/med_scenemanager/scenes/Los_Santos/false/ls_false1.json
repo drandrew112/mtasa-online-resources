@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Person lying on the ground",
-        "description": "Caller saw a person lying on the ground at Pershing Square. Caller did not stop.",
+        "locales": {
+            "en": {
+                "title": "Person lying on the ground",
+                "description": "Caller saw a person lying on the ground at Pershing Square. Caller did not stop."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

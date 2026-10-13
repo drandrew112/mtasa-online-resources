@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak leg, confused",
-        "description": "A man dragged his right leg and then sat down heavily. He seems confused and his words come out jumbled.",
+        "locales": {
+            "en": {
+                "title": "Weak leg, confused",
+                "description": "A man dragged his right leg and then sat down heavily. He seems confused and his words come out jumbled."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

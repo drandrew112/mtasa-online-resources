@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, pounding head",
-        "description": "A woman who just lost her savings at the tables is leaning against a wall with chest pain and a pounding headache. She keeps saying she was \"so close\".",
+        "locales": {
+            "en": {
+                "title": "Chest pain, pounding head",
+                "description": "A woman who just lost her savings at the tables is leaning against a wall with chest pain and a pounding headache. She keeps saying she was \"so close\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

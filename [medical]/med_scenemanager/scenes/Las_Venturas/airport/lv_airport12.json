@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk passenger fell on the stairs",
-        "description": "A drunk passenger fell down the aircraft stairs on the apron at Las Venturas Airport and hit his head. He is confused, bleeding and aggressive with the crew.",
+        "locales": {
+            "en": {
+                "title": "Drunk passenger fell on the stairs",
+                "description": "A drunk passenger fell down the aircraft stairs on the apron at Las Venturas Airport and hit his head. He is confused, bleeding and aggressive with the crew."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

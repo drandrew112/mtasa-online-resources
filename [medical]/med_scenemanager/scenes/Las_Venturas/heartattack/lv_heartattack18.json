@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nausea, cold sweat",
-        "description": "An older woman sitting on the sidewalk says she has felt sick and exhausted all day, with a strange ache between her shoulder blades. She thought it was the hotel mattress.",
+        "locales": {
+            "en": {
+                "title": "Nausea, cold sweat",
+                "description": "An older woman sitting on the sidewalk says she has felt sick and exhausted all day, with a strange ache between her shoulder blades. She thought it was the hotel mattress."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

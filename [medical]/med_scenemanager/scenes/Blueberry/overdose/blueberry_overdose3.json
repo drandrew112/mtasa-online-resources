@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Moonshine, cannot stand",
-        "description": "A man on the grass just outside Blueberry drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry.",
+        "locales": {
+            "en": {
+                "title": "Moonshine, cannot stand",
+                "description": "A man on the grass just outside Blueberry drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

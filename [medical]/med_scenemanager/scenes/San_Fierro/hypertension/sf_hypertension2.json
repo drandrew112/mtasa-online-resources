@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Blurred vision, nausea",
-        "description": "A young mother at the playground says her vision has gone blurry and she feels very sick. Her children are being watched by another parent.",
+        "locales": {
+            "en": {
+                "title": "Blurred vision, nausea",
+                "description": "A young mother at the playground says her vision has gone blurry and she feels very sick. Her children are being watched by another parent."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

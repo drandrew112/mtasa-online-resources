@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rider hit an opening car door",
-        "description": "A driver opened his door without looking on the street in City Hall and a motorcyclist slammed into it. The rider is sitting on the road holding his shoulder.",
+        "locales": {
+            "en": {
+                "title": "Rider hit an opening car door",
+                "description": "A driver opened his door without looking on the street in City Hall and a motorcyclist slammed into it. The rider is sitting on the road holding his shoulder."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lips blue, too breathless to talk",
-        "description": "A man with lung disease in a parking lot in Las Colinas ran out of home oxygen on his way back from the pharmacy. He is blue around the lips, using all his neck muscles to breathe and cannot talk.",
+        "locales": {
+            "en": {
+                "title": "Lips blue, too breathless to talk",
+                "description": "A man with lung disease in a parking lot in Las Colinas ran out of home oxygen on his way back from the pharmacy. He is blue around the lips, using all his neck muscles to breathe and cannot talk."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

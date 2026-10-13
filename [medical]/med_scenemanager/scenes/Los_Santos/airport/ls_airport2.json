@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Passenger collapsed on the tarmac",
-        "description": "A passenger collapsed while walking from the plane to the bus. The cabin crew says he has no pulse and they are doing CPR. The plane has an AED but it was not used yet.",
+        "locales": {
+            "en": {
+                "title": "Passenger collapsed on the tarmac",
+                "description": "A passenger collapsed while walking from the plane to the bus. The cabin crew says he has no pulse and they are doing CPR. The plane has an AED but it was not used yet."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

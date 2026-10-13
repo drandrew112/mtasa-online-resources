@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man down, CPR needed",
-        "description": "A tourist in a Hawaiian shirt collapsed in the middle of taking a selfie. His wife is screaming for help. He is blue around the lips and not breathing.",
+        "locales": {
+            "en": {
+                "title": "Man down, CPR needed",
+                "description": "A tourist in a Hawaiian shirt collapsed in the middle of taking a selfie. His wife is screaming for help. He is blue around the lips and not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

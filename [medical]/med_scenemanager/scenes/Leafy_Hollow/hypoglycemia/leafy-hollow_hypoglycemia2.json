@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot be woken, snoring",
-        "description": "A woman is lying face down on the grass just outside Leafy Hollow and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag.",
+        "locales": {
+            "en": {
+                "title": "Cannot be woken, snoring",
+                "description": "A woman is lying face down on the grass just outside Leafy Hollow and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

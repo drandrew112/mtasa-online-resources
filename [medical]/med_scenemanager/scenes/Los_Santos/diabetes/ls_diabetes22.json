@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Glucose meter just says HIGH",
-        "description": "A man on the pavement in Verdant Bluffs called because his glucose meter only shows \"HIGH\". He feels dizzy, keeps urinating and his vision is blurry. He is sitting down and alert.",
+        "locales": {
+            "en": {
+                "title": "Glucose meter just says HIGH",
+                "description": "A man on the pavement in Verdant Bluffs called because his glucose meter only shows \"HIGH\". He feels dizzy, keeps urinating and his vision is blurry. He is sitting down and alert."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

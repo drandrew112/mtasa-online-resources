@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Truck crushed two cars",
-        "description": "A truck lost its brakes in Rodeo and ploughed into two cars. One car is crushed, its driver unconscious inside. The truck driver is walking around with a head wound. A passenger of the other car is lying on the road.",
+        "locales": {
+            "en": {
+                "title": "Truck crushed two cars",
+                "description": "A truck lost its brakes in Rodeo and ploughed into two cars. One car is crushed, its driver unconscious inside. The truck driver is walking around with a head wound. A passenger of the other car is lying on the road."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

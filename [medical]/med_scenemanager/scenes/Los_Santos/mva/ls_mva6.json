@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A white van turning left was hit by an oncoming black car at an intersection in Richman. The driver of the black car got out and is crouching next to the car with a deep cut that is bleeding. The driver of the white van is still behind the wheel, unconscious, with multiple injuries and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A white van turning left was hit by an oncoming black car at an intersection in Richman. The driver of the black car got out and is crouching next to the car with a deep cut that is bleeding. The driver of the white van is still behind the wheel, unconscious, with multiple injuries and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

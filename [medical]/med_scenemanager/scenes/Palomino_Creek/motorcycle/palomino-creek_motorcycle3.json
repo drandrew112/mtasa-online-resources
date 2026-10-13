@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Thrown off at a junction",
-        "description": "A woman riding a motorcycle was hit from the side on the road shoulder near Palomino Creek. She was thrown off, is drowsy and her thigh is swollen and deformed.",
+        "locales": {
+            "en": {
+                "title": "Thrown off at a junction",
+                "description": "A woman riding a motorcycle was hit from the side on the road shoulder near Palomino Creek. She was thrown off, is drowsy and her thigh is swollen and deformed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Aspirated vomit, snoring",
-        "description": "A very drunk man vomited on a bench in Come-A-Lot and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy.",
+        "locales": {
+            "en": {
+                "title": "Aspirated vomit, snoring",
+                "description": "A very drunk man vomited on a bench in Come-A-Lot and passed out on his back. He is making gurgling sounds and his breathing is wet and noisy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

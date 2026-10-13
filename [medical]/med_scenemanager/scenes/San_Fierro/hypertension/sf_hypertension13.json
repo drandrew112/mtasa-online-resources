@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Short of breath, frothy cough",
-        "description": "A woman is struggling to breathe and coughing up pink froth. She says she has felt her heart pounding since the morning and her legs are swollen.",
+        "locales": {
+            "en": {
+                "title": "Short of breath, frothy cough",
+                "description": "A woman is struggling to breathe and coughing up pink froth. She says she has felt her heart pounding since the morning and her legs are swollen."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

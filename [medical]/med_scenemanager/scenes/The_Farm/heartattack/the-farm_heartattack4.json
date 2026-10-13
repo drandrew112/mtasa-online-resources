@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Palpitations, near faint",
-        "description": "A young farmhand who \"tested the product\" sat by the road with his heart hammering. He is pale and terrified.",
+        "locales": {
+            "en": {
+                "title": "Palpitations, near faint",
+                "description": "A young farmhand who \"tested the product\" sat by the road with his heart hammering. He is pale and terrified."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

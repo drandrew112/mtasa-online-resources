@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot finish a sentence",
-        "description": "A man outside the Four Dragons Casino cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times.",
+        "locales": {
+            "en": {
+                "title": "Cannot finish a sentence",
+                "description": "A man outside the Four Dragons Casino cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

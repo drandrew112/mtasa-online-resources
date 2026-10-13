@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, no pulse",
-        "description": "A mechanic from the hangar found a man lying by the road. No pulse, occasional gasps.",
+        "locales": {
+            "en": {
+                "title": "Found down, no pulse",
+                "description": "A mechanic from the hangar found a man lying by the road. No pulse, occasional gasps."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drifter not waking",
-        "description": "A store clerk opening up by the dusty roadside near El Castillo del Diablo found a drifter lying under a blanket, cold and stiff. He does not respond at all.",
+        "locales": {
+            "en": {
+                "title": "Drifter not waking",
+                "description": "A store clerk opening up by the dusty roadside near El Castillo del Diablo found a drifter lying under a blanket, cold and stiff. He does not respond at all."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

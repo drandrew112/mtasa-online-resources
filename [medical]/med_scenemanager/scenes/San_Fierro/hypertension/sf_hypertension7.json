@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Nosebleed, dizzy",
-        "description": "A woman has a nosebleed that keeps restarting every time she lets go. She feels faint and a passer-by is holding her up.",
+        "locales": {
+            "en": {
+                "title": "Nosebleed, dizzy",
+                "description": "A woman has a nosebleed that keeps restarting every time she lets go. She feels faint and a passer-by is holding her up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

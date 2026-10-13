@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Not breathing",
-        "description": "A street vendor found his neighbour face down beside a shopping cart. Cold to the touch, not breathing. Nobody knows how long he has been there.",
+        "locales": {
+            "en": {
+                "title": "Not breathing",
+                "description": "A street vendor found his neighbour face down beside a shopping cart. Cold to the touch, not breathing. Nobody knows how long he has been there."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

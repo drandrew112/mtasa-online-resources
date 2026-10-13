@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell down concrete stairs",
-        "description": "A man fell down a long flight of concrete stairs by the roadside at Yellow Bell Station. He is dazed, has a bump on his head and his arm hurts badly.",
+        "locales": {
+            "en": {
+                "title": "Fell down concrete stairs",
+                "description": "A man fell down a long flight of concrete stairs by the roadside at Yellow Bell Station. He is dazed, has a bump on his head and his arm hurts badly."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

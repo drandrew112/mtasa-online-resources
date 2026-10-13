@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, arm pain",
-        "description": "A bus driver pulled over, stepped off and sat on the sidewalk gripping her chest. The pain runs into her jaw and arm. The passengers are still on the bus, very confused.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, arm pain",
+                "description": "A bus driver pulled over, stepped off and sat on the sidewalk gripping her chest. The pain runs into her jaw and arm. The passengers are still on the bus, very confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A green car turning left was hit by an oncoming blue car at an intersection in Jefferson. The driver of the blue car is still behind the wheel with a head injury and disorientation. The driver of the green car is still behind the wheel with a deep cut that is bleeding.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A green car turning left was hit by an oncoming blue car at an intersection in Jefferson. The driver of the blue car is still behind the wheel with a head injury and disorientation. The driver of the green car is still behind the wheel with a deep cut that is bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

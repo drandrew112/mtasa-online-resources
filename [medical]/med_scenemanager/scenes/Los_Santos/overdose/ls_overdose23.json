@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused, took double medication",
-        "description": "An elderly woman at the side of the road in Las Colinas accidentally took her sleeping tablets twice. Family says she is unusually drowsy, unsteady and confused.",
+        "locales": {
+            "en": {
+                "title": "Confused, took double medication",
+                "description": "An elderly woman at the side of the road in Las Colinas accidentally took her sleeping tablets twice. Family says she is unusually drowsy, unsteady and confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

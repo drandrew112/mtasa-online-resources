@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Young man vomiting, breathing fast",
-        "description": "A young man in Glen Park has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago. He is very thirsty and weak.",
+        "locales": {
+            "en": {
+                "title": "Young man vomiting, breathing fast",
+                "description": "A young man in Glen Park has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago. He is very thirsty and weak."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

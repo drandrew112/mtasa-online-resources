@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man not breathing, very cold",
-        "description": "A woman found a man lying by the roadside in San Fierro. He is cold, not breathing and his skin is grey and blotchy.",
+        "locales": {
+            "en": {
+                "title": "Man not breathing, very cold",
+                "description": "A woman found a man lying by the roadside in San Fierro. He is cold, not breathing and his skin is grey and blotchy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

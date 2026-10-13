@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man shouting",
-        "description": "A caller reports a drunk man shouting and falling over on the sidewalk in Market. He might be hurt.",
+        "locales": {
+            "en": {
+                "title": "Drunk man shouting",
+                "description": "A caller reports a drunk man shouting and falling over on the sidewalk in Market. He might be hurt."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

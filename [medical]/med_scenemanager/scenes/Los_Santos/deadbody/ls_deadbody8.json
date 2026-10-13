@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found with a needle, cold",
-        "description": "A dog walker found a man on the sidewalk in Ocean Docks with a needle still in his arm. His skin is cold and grey and he is not breathing.",
+        "locales": {
+            "en": {
+                "title": "Found with a needle, cold",
+                "description": "A dog walker found a man on the sidewalk in Ocean Docks with a needle still in his arm. His skin is cold and grey and he is not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

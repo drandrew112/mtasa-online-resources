@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, sweaty",
-        "description": "A woman feels her heart racing and her palms are sweaty. She just walked out of a stressful court hearing.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, sweaty",
+                "description": "A woman feels her heart racing and her palms are sweaty. She just walked out of a stressful court hearing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

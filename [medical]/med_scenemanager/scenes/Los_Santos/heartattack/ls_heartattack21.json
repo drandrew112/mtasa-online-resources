@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, arm numb",
-        "description": "A waitress on her smoke break is gripping her chest outside the diner. The pain shoots down her left arm and she is drenched in sweat. Her manager wants to know when she will be back.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, arm numb",
+                "description": "A waitress on her smoke break is gripping her chest outside the diner. The pain shoots down her left arm and she is drenched in sweat. Her manager wants to know when she will be back."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

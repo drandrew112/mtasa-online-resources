@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker fell from scaffolding",
-        "description": "A construction worker fell from the scaffolding of a barn he was repairing outside a house in Blueberry. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him.",
+        "locales": {
+            "en": {
+                "title": "Worker fell from scaffolding",
+                "description": "A construction worker fell from the scaffolding of a barn he was repairing outside a house in Blueberry. His leg is bent the wrong way and his head is bleeding. Coworkers did not move him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Mugging victim shot in the arm",
-        "description": "A man refused to hand over his wallet at a bus stop in Missionary Hill and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound.",
+        "locales": {
+            "en": {
+                "title": "Mugging victim shot in the arm",
+                "description": "A man refused to hand over his wallet at a bus stop in Missionary Hill and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A software engineer on a walking meeting is clutching his chest on the pavement. Crushing pain, numb left arm. His laptop is still open on the bench and the call is still connected.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A software engineer on a walking meeting is clutching his chest on the pavement. Crushing pain, numb left arm. His laptop is still open on the bench and the call is still connected."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

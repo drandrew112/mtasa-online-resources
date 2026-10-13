@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slipped in high heels",
-        "description": "A woman in high heels slipped on a spilled drink outside a souvenir shop near the Julius Thruway North after a night at the casino and landed on her outstretched hand. Her wrist is swollen and bent.",
+        "locales": {
+            "en": {
+                "title": "Slipped in high heels",
+                "description": "A woman in high heels slipped on a spilled drink outside a souvenir shop near the Julius Thruway North after a night at the casino and landed on her outstretched hand. Her wrist is swollen and bent."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

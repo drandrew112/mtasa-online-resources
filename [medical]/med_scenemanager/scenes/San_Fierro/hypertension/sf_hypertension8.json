@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, blurred vision",
-        "description": "A taxi driver got out of his cab because the road started to blur. He has a band-like headache and his neck feels stiff.",
+        "locales": {
+            "en": {
+                "title": "Headache, blurred vision",
+                "description": "A taxi driver got out of his cab because the road started to blur. He has a band-like headache and his neck feels stiff."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

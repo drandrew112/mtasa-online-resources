@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "A photographer chasing the sunset sat by the road with dizziness and a very slow pulse. Her water bottle is empty.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "A photographer chasing the sunset sat by the road with dizziness and a very slow pulse. Her water bottle is empty."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

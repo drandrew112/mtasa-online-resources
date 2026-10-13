@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car hit a parked car",
-        "description": "A brown car swerved into a black car parked at the curb in Ocean Flats. The owner of the parked car, who was sitting in it, got out and is crouching next to the car with a bump on the head and a headache. The driver of the brown car got out and is sitting on the ground, unable to stand, with a broken leg and a bleeding wound.",
+        "locales": {
+            "en": {
+                "title": "Car hit a parked car",
+                "description": "A brown car swerved into a black car parked at the curb in Ocean Flats. The owner of the parked car, who was sitting in it, got out and is crouching next to the car with a bump on the head and a headache. The driver of the brown car got out and is sitting on the ground, unable to stand, with a broken leg and a bleeding wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

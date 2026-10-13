@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A heavy-set man carrying a mattress up some steps had to stop with sharp chest pain and drenching sweat. He says he has had high blood pressure for years.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A heavy-set man carrying a mattress up some steps had to stop with sharp chest pain and drenching sweat. He says he has had high blood pressure for years."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found unresponsive",
-        "description": "A street cleaner found a woman lying on the sidewalk in her party dress. Cold, clammy, slow shallow breaths. She does not respond at all.",
+        "locales": {
+            "en": {
+                "title": "Found unresponsive",
+                "description": "A street cleaner found a woman lying on the sidewalk in her party dress. Cold, clammy, slow shallow breaths. She does not respond at all."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

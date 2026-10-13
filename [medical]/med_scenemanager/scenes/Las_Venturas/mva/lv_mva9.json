@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A black car lost control and spun out near the Julius Thruway. The driver got out and is standing next to the car, bent over and holding their side, with a broken collarbone and a cut on the head. The passenger is still in the passenger seat with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A black car lost control and spun out near the Julius Thruway. The driver got out and is standing next to the car, bent over and holding their side, with a broken collarbone and a cut on the head. The passenger is still in the passenger seat with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

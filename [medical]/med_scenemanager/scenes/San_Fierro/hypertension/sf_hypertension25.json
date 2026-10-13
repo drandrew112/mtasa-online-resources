@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slow to respond",
-        "description": "A man is slow to respond and keeps asking what day it is. A coworker says he complained of a terrible headache before lunch.",
+        "locales": {
+            "en": {
+                "title": "Slow to respond",
+                "description": "A man is slow to respond and keeps asking what day it is. A coworker says he complained of a terrible headache before lunch."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

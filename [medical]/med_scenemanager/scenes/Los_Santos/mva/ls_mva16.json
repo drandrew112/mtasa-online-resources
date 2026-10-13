@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A blue car ran into the back of an orange car in Temple. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the blue car is still behind the wheel with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A blue car ran into the back of an orange car in Temple. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the blue car is still behind the wheel with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

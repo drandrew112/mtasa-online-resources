@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted after workout",
-        "description": "A woman fainted in the park in Verdant Bluffs after an outdoor workout, came round, but is very pale and keeps repeating the same question. She uses insulin.",
+        "locales": {
+            "en": {
+                "title": "Fainted after workout",
+                "description": "A woman fainted in the park in Verdant Bluffs after an outdoor workout, came round, but is very pale and keeps repeating the same question. She uses insulin."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

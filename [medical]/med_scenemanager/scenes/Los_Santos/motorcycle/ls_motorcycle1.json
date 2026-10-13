@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Motorcyclist vs car",
-        "description": "A motorbike crashed into a car turning left at an intersection in Idlewood. The rider flew over the car and is lying on the road. His helmet is cracked.",
+        "locales": {
+            "en": {
+                "title": "Motorcyclist vs car",
+                "description": "A motorbike crashed into a car turning left at an intersection in Idlewood. The rider flew over the car and is lying on the road. His helmet is cracked."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

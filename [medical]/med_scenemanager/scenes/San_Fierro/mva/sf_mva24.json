@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ran off the road",
-        "description": "A brown car left the road and hit the curb in Paradiso. The driver is still behind the wheel with a head injury and disorientation.",
+        "locales": {
+            "en": {
+                "title": "Car ran off the road",
+                "description": "A brown car left the road and hit the curb in Paradiso. The driver is still behind the wheel with a head injury and disorientation."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

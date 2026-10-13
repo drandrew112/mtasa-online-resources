@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot be woken, snoring",
-        "description": "A man is lying on a paved square in Willowfield, breathing but impossible to wake. He has an insulin pump on his belt. Bystanders thought he was sleeping it off.",
+        "locales": {
+            "en": {
+                "title": "Cannot be woken, snoring",
+                "description": "A man is lying on a paved square in Willowfield, breathing but impossible to wake. He has an insulin pump on his belt. Bystanders thought he was sleeping it off."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

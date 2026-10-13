@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Diabetic woman, vomiting for hours",
-        "description": "A diabetic woman outside a shop at Los Santos International has been vomiting for six hours and cannot keep anything down, so she stopped her insulin. She is shaky, weak and her lips are dry.",
+        "locales": {
+            "en": {
+                "title": "Diabetic woman, vomiting for hours",
+                "description": "A diabetic woman outside a shop at Los Santos International has been vomiting for six hours and cannot keep anything down, so she stopped her insulin. She is shaky, weak and her lips are dry."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

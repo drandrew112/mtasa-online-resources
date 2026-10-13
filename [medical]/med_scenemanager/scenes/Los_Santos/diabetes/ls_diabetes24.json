@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker vomiting, confused",
-        "description": "A delivery worker on the sidewalk in Willowfield keeps throwing up and cannot remember the next address on his list. His colleague says he is diabetic and has been ill with the flu all week.",
+        "locales": {
+            "en": {
+                "title": "Worker vomiting, confused",
+                "description": "A delivery worker on the sidewalk in Willowfield keeps throwing up and cannot remember the next address on his list. His colleague says he is diabetic and has been ill with the flu all week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

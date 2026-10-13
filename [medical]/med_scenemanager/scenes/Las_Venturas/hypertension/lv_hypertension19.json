@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, palpitations",
-        "description": "A nurse coming off a night shift has a pounding headache and palpitations. She checked her own pressure and does not like the number.",
+        "locales": {
+            "en": {
+                "title": "Headache, palpitations",
+                "description": "A nurse coming off a night shift has a pounding headache and palpitations. She checked her own pressure and does not like the number."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

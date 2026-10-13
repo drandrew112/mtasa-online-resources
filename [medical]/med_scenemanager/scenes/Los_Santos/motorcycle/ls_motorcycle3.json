@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Scooter rider hit a car door",
-        "description": "A pizza delivery rider on a scooter hit a car door that opened in front of him in Marina. He is sitting on the pavement, his wrist is swollen and his leg is scraped.",
+        "locales": {
+            "en": {
+                "title": "Scooter rider hit a car door",
+                "description": "A pizza delivery rider on a scooter hit a car door that opened in front of him in Marina. He is sitting on the pavement, his wrist is swollen and his leg is scraped."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

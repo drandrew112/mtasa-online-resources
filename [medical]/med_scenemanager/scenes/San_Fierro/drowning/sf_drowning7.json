@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dived into shallow water",
-        "description": "A young man dived off the sea wall into shallow water and hit it badly. Friends dragged him out and he is now lying on the seafront road in San Fierro, dazed and gasping.",
+        "locales": {
+            "en": {
+                "title": "Dived into shallow water",
+                "description": "A young man dived off the sea wall into shallow water and hit it badly. Friends dragged him out and he is now lying on the seafront road in San Fierro, dazed and gasping."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

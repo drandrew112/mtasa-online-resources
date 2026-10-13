@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain on the climb",
-        "description": "A woman carrying two bags of groceries uphill had to sit on the sidewalk. Tight chest, sweating in the cold fog. She says the hill \"never felt this steep\".",
+        "locales": {
+            "en": {
+                "title": "Chest pain on the climb",
+                "description": "A woman carrying two bags of groceries uphill had to sit on the sidewalk. Tight chest, sweating in the cold fog. She says the hill \"never felt this steep\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

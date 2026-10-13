@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Grandmother slurring her words",
-        "description": "A grandmother at the side of the road near Fort Carson is slurring her words and trembling. Her family says she started a new diabetes medicine this week.",
+        "locales": {
+            "en": {
+                "title": "Grandmother slurring her words",
+                "description": "A grandmother at the side of the road near Fort Carson is slurring her words and trembling. Her family says she started a new diabetes medicine this week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

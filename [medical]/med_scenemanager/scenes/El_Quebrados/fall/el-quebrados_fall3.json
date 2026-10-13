@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Old man on blood thinners fell",
-        "description": "An old man slipped on the dusty ground in El Quebrados and hit his head. He takes blood thinners, is getting more confused and has vomited once.",
+        "locales": {
+            "en": {
+                "title": "Old man on blood thinners fell",
+                "description": "An old man slipped on the dusty ground in El Quebrados and hit his head. He takes blood thinners, is getting more confused and has vomited once."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

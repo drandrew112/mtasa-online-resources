@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Stopped breathing after a pill",
-        "description": "A man at a bus stop in Verona Beach took what was sold as a painkiller and went limp within minutes. His lips are blue. A bystander gave one dose of nasal naloxone with no change yet.",
+        "locales": {
+            "en": {
+                "title": "Stopped breathing after a pill",
+                "description": "A man at a bus stop in Verona Beach took what was sold as a painkiller and went limp within minutes. His lips are blue. A bystander gave one dose of nasal naloxone with no change yet."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Skateboarder hit by a car",
-        "description": "A teenager on a skateboard rolled out of a driveway on a main road in Esplanade North and into the side of a car. His leg is deformed and he has deep grazes.",
+        "locales": {
+            "en": {
+                "title": "Skateboarder hit by a car",
+                "description": "A teenager on a skateboard rolled out of a driveway on a main road in Esplanade North and into the side of a car. His leg is deformed and he has deep grazes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing headache, vomiting",
-        "description": "A woman in her fifties collapsed onto the pavement holding her head, describing the worst headache she has ever had. She vomited and now refuses to open her eyes.",
+        "locales": {
+            "en": {
+                "title": "Crushing headache, vomiting",
+                "description": "A woman in her fifties collapsed onto the pavement holding her head, describing the worst headache she has ever had. She vomited and now refuses to open her eyes."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

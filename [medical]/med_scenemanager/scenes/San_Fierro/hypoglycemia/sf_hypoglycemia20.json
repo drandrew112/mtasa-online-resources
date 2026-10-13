@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Driver staring at nothing",
-        "description": "A driver stopped his car at the side of the road in Easter Bay Airport and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat.",
+        "locales": {
+            "en": {
+                "title": "Driver staring at nothing",
+                "description": "A driver stopped his car at the side of the road in Easter Bay Airport and is staring straight ahead. He is sweating and does not answer properly. There is an insulin pen on the passenger seat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

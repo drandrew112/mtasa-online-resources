@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Pursuit ended in a crash",
-        "description": "A car fleeing the police crashed into traffic in Ganton. The fleeing driver is unconscious, a woman in another car has chest pain and a third driver has neck pain.",
+        "locales": {
+            "en": {
+                "title": "Pursuit ended in a crash",
+                "description": "A car fleeing the police crashed into traffic in Ganton. The fleeing driver is unconscious, a woman in another car has chest pain and a third driver has neck pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

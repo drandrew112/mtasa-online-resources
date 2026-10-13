@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Crushing chest pain",
-        "description": "A construction worker on his lunch break is doubled over on the sidewalk, clutching his chest and left arm. His coworkers say he \"never gets sick\" and blame the energy drinks.",
+        "locales": {
+            "en": {
+                "title": "Crushing chest pain",
+                "description": "A construction worker on his lunch break is doubled over on the sidewalk, clutching his chest and left arm. His coworkers say he \"never gets sick\" and blame the energy drinks."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

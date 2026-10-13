@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Aggressive, sweaty man",
-        "description": "The owner of the diner on open scrubland in Las Barrancas reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck.",
+        "locales": {
+            "en": {
+                "title": "Aggressive, sweaty man",
+                "description": "The owner of the diner on open scrubland in Las Barrancas reports a sweaty man swearing and swinging at people. He has a diabetes alert tag around his neck."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

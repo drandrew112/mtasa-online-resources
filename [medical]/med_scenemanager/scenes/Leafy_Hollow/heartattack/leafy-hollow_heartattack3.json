@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, dizzy",
-        "description": "A birdwatcher sat down by the road with her heart racing wildly. She is pale and dizzy, binoculars still around her neck.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, dizzy",
+                "description": "A birdwatcher sat down by the road with her heart racing wildly. She is pale and dizzy, binoculars still around her neck."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

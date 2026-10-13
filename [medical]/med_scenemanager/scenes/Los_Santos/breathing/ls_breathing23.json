@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe asthma, getting drowsy",
-        "description": "A known asthmatic man on a paved square in Willowfield has used his inhaler ten times. The wheeze has gone quiet, he is exhausted and getting sleepy. Friends are panicking.",
+        "locales": {
+            "en": {
+                "title": "Severe asthma, getting drowsy",
+                "description": "A known asthmatic man on a paved square in Willowfield has used his inhaler ten times. The wheeze has gone quiet, he is exhausted and getting sleepy. Friends are panicking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

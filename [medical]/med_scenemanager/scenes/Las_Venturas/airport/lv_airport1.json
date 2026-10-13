@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Overdose outside the terminal",
-        "description": "Security found a man lying outside the terminal at Las Venturas Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him.",
+        "locales": {
+            "en": {
+                "title": "Overdose outside the terminal",
+                "description": "Security found a man lying outside the terminal at Las Venturas Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

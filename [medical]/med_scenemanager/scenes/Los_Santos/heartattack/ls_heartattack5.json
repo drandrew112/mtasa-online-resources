@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A woman collapsed on the sidewalk on her way home from the corner store. She is breathing, but slowly, and will not respond. Her skin is grey and clammy. A neighbour says she complained of nausea and heartburn all morning.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A woman collapsed on the sidewalk on her way home from the corner store. She is breathing, but slowly, and will not respond. Her skin is grey and clammy. A neighbour says she complained of nausea and heartburn all morning."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

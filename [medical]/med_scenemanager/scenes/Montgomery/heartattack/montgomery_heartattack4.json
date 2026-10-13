@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, dizzy",
-        "description": "A young mechanic says his heart is \"revving like a V8\" after his fourth coffee. He is pale and cannot stand up without the world tilting.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, dizzy",
+                "description": "A young mechanic says his heart is \"revving like a V8\" after his fourth coffee. He is pale and cannot stand up without the world tilting."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

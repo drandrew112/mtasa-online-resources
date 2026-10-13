@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A hermit who lives in the valley walked to the road for help and collapsed. Not breathing.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A hermit who lives in the valley walked to the road for help and collapsed. Not breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worker acting drunk",
-        "description": "Coworkers outside a wedding chapel near the High Roller say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch.",
+        "locales": {
+            "en": {
+                "title": "Worker acting drunk",
+                "description": "Coworkers outside a wedding chapel near the High Roller say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Sweaty and confused",
-        "description": "A woman on the dusty ground at the Lil' Probe Inn is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense.",
+        "locales": {
+            "en": {
+                "title": "Sweaty and confused",
+                "description": "A woman on the dusty ground at the Lil' Probe Inn is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

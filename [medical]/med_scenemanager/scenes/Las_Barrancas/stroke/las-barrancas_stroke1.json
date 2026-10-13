@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Slumped over, drooling",
-        "description": "A man is slumped over on the road shoulder in Las Barrancas, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer.",
+        "locales": {
+            "en": {
+                "title": "Slumped over, drooling",
+                "description": "A man is slumped over on the road shoulder in Las Barrancas, drooling from one side of his mouth. He opens his eyes when spoken to but cannot answer."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

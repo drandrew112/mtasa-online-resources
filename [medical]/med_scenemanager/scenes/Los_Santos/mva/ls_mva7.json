@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A grey Bullet ran into the back of a grey Virgo in Rodeo. The driver of the grey Virgo is still behind the wheel, unconscious, with multiple injuries and heavy bleeding. The driver of the grey Bullet is still behind the wheel with a painful collarbone and some cuts.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A grey Bullet ran into the back of a grey Virgo in Rodeo. The driver of the grey Virgo is still behind the wheel, unconscious, with multiple injuries and heavy bleeding. The driver of the grey Bullet is still behind the wheel with a painful collarbone and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

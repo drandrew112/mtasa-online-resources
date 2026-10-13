@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk diabetic, unresponsive",
-        "description": "Friends say a diabetic man drank all night at the side of the road in Mulholland Intersection and did not eat. Now he is lying down, will not wake up properly and is cold and wet with sweat.",
+        "locales": {
+            "en": {
+                "title": "Drunk diabetic, unresponsive",
+                "description": "Friends say a diabetic man drank all night at the side of the road in Mulholland Intersection and did not eat. Now he is lying down, will not wake up properly and is cold and wet with sweat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

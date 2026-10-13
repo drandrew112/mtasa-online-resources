@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Not breathing, face down",
-        "description": "A woman collapsed face down on the sidewalk outside a souvenir shop. The shop owner says she is not breathing and her face is turning grey.",
+        "locales": {
+            "en": {
+                "title": "Not breathing, face down",
+                "description": "A woman collapsed face down on the sidewalk outside a souvenir shop. The shop owner says she is not breathing and her face is turning grey."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

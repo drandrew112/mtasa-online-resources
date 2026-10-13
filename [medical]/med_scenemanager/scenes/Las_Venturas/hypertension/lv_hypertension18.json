@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused, unsteady",
-        "description": "A man is unsteady on his feet and cannot answer simple questions. His brother says he was fine at breakfast but complained of a sore head.",
+        "locales": {
+            "en": {
+                "title": "Confused, unsteady",
+                "description": "A man is unsteady on his feet and cannot answer simple questions. His brother says he was fine at breakfast but complained of a sore head."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A woman was found slumped by the road outside the inn. Grey, cold, barely breathing.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A woman was found slumped by the road outside the inn. Grey, cold, barely breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

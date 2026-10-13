@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Racing heart, dizzy",
-        "description": "A trucker who drank too many energy drinks sat by the road with a racing heart, pale and dizzy.",
+        "locales": {
+            "en": {
+                "title": "Racing heart, dizzy",
+                "description": "A trucker who drank too many energy drinks sat by the road with a racing heart, pale and dizzy."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Faint and confused",
-        "description": "An older man keeps sitting down every few steps, confused and grey. His wife says his heart pills ran out last week and he \"did not want to bother anyone\".",
+        "locales": {
+            "en": {
+                "title": "Faint and confused",
+                "description": "An older man keeps sitting down every few steps, confused and grey. His wife says his heart pills ran out last week and he \"did not want to bother anyone\"."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

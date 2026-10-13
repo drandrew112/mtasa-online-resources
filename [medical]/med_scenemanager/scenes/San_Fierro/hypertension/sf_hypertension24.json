@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Severe headache, crying",
-        "description": "A woman is crying with a severe headache and says the pain is behind both eyes. She has vomited and cannot stand straight.",
+        "locales": {
+            "en": {
+                "title": "Severe headache, crying",
+                "description": "A woman is crying with a severe headache and says the pain is behind both eyes. She has vomited and cannot stand straight."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

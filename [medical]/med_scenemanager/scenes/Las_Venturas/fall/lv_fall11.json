@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fell out of a tree",
-        "description": "A young man climbing a tree in the desert dust near the Julius Thruway East fell head first. He is lying face down, groaning, with blood coming from his nose.",
+        "locales": {
+            "en": {
+                "title": "Fell out of a tree",
+                "description": "A young man climbing a tree in the desert dust near the Julius Thruway East fell head first. He is lying face down, groaning, with blood coming from his nose."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

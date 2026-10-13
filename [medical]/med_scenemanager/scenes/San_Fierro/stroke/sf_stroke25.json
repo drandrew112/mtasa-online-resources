@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Grandmother suddenly confused",
-        "description": "A grandmother out with her grandson in front of an apartment block in Garcia suddenly stopped making sense and her mouth looks crooked. The boy called from her phone.",
+        "locales": {
+            "en": {
+                "title": "Grandmother suddenly confused",
+                "description": "A grandmother out with her grandson in front of an apartment block in Garcia suddenly stopped making sense and her mouth looks crooked. The boy called from her phone."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

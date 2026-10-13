@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drowning in own lungs",
-        "description": "An elderly woman outside a shop in Ocean Docks is sitting bolt upright, bubbling breaths can be heard from a distance. She is sweaty, grey and confused. She skipped her water tablets.",
+        "locales": {
+            "en": {
+                "title": "Drowning in own lungs",
+                "description": "An elderly woman outside a shop in Ocean Docks is sitting bolt upright, bubbling breaths can be heard from a distance. She is sweaty, grey and confused. She skipped her water tablets."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

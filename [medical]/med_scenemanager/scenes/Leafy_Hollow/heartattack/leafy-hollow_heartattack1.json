@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found down, no pulse",
-        "description": "A forest ranger found a man lying by the road in the hollow. No pulse, gasping only once in a while.",
+        "locales": {
+            "en": {
+                "title": "Found down, no pulse",
+                "description": "A forest ranger found a man lying by the road in the hollow. No pulse, gasping only once in a while."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

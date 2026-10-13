@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body in the bushes",
-        "description": "A dog walker found a person lying in the bushes next to the road in Redsands West. The body is cold and there are flies around it.",
+        "locales": {
+            "en": {
+                "title": "Body in the bushes",
+                "description": "A dog walker found a person lying in the bushes next to the road in Redsands West. The body is cold and there are flies around it."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

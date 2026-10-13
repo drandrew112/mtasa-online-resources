@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Choking child, back blows failed",
-        "description": "A girl on the sidewalk near the Pink Swan swallowed a sweet the wrong way and cannot cough. Her mother tried back blows without success and she is going limp.",
+        "locales": {
+            "en": {
+                "title": "Choking child, back blows failed",
+                "description": "A girl on the sidewalk near the Pink Swan swallowed a sweet the wrong way and cannot cough. Her mother tried back blows without success and she is going limp."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

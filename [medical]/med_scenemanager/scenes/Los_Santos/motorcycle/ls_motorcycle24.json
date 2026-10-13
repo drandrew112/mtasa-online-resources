@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rider and passenger thrown off",
-        "description": "A motorcycle hit a pothole in East Los Santos and both the rider and the pillion passenger were thrown off. The woman is not moving, the man is sitting up with a broken arm.",
+        "locales": {
+            "en": {
+                "title": "Rider and passenger thrown off",
+                "description": "A motorcycle hit a pothole in East Los Santos and both the rider and the pillion passenger were thrown off. The woman is not moving, the man is sitting up with a broken arm."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

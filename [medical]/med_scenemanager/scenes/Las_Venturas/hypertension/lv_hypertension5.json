@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, numb fingers",
-        "description": "A woman has a bad headache and her fingers on one hand feel numb. She is worried because her mother had a stroke at the same age.",
+        "locales": {
+            "en": {
+                "title": "Headache, numb fingers",
+                "description": "A woman has a bad headache and her fingers on one hand feel numb. She is worried because her mother had a stroke at the same age."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

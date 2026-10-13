@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted, rapid pulse",
-        "description": "A young woman passed out by the road after complaining of a racing heart. She breathes fast and shallow and will not wake up.",
+        "locales": {
+            "en": {
+                "title": "Fainted, rapid pulse",
+                "description": "A young woman passed out by the road after complaining of a racing heart. She breathes fast and shallow and will not wake up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

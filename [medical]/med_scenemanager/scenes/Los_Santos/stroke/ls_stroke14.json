@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Grandmother suddenly confused",
-        "description": "A grandson called about his grandmother at the side of the road in Richman. During their walk she suddenly stopped talking sense, cannot find words and her smile is crooked. She was completely fine twenty minutes ago.",
+        "locales": {
+            "en": {
+                "title": "Grandmother suddenly confused",
+                "description": "A grandson called about his grandmother at the side of the road in Richman. During their walk she suddenly stopped talking sense, cannot find words and her smile is crooked. She was completely fine twenty minutes ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

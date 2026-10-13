@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "SUV crash, passengers thrown out",
-        "description": "An SUV swerved and crashed into another car at a busy crossroads in Paradiso. Two passengers were thrown out onto the road, the other driver is sitting in shock with chest pain.",
+        "locales": {
+            "en": {
+                "title": "SUV crash, passengers thrown out",
+                "description": "An SUV swerved and crashed into another car at a busy crossroads in Paradiso. Two passengers were thrown out onto the road, the other driver is sitting in shock with chest pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

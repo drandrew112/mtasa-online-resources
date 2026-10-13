@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collision while turning",
-        "description": "A dark grey car turning left was hit by an oncoming red car at an intersection in King's. The driver of the red car is still behind the wheel with a broken leg and a bleeding wound. The driver of the dark grey car is still behind the wheel with a broken rib and a cut on the head. The passenger of the red car is still in the passenger seat with a bump on the head and a headache.",
+        "locales": {
+            "en": {
+                "title": "Collision while turning",
+                "description": "A dark grey car turning left was hit by an oncoming red car at an intersection in King's. The driver of the red car is still behind the wheel with a broken leg and a bleeding wound. The driver of the dark grey car is still behind the wheel with a broken rib and a cut on the head. The passenger of the red car is still in the passenger seat with a bump on the head and a headache."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Wheelie gone wrong",
-        "description": "A teenager tried a wheelie on the road shoulder near Hampton Barns to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on.",
+        "locales": {
+            "en": {
+                "title": "Wheelie gone wrong",
+                "description": "A teenager tried a wheelie on the road shoulder near Hampton Barns to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

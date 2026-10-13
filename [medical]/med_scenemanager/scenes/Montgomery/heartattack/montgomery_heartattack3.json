@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak, nauseous, pale",
-        "description": "A motel housekeeper sat down by the road with nausea, cold sweat and an ache in her jaw. She thinks it is the cleaning chemicals.",
+        "locales": {
+            "en": {
+                "title": "Weak, nauseous, pale",
+                "description": "A motel housekeeper sat down by the road with nausea, cold sweat and an ache in her jaw. She thinks it is the cleaning chemicals."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

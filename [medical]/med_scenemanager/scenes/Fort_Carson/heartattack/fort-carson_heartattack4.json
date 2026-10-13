@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Unresponsive, grey skin",
-        "description": "A deputy found a man slumped by the road at dawn. Grey, clammy, barely breathing.",
+        "locales": {
+            "en": {
+                "title": "Unresponsive, grey skin",
+                "description": "A deputy found a man slumped by the road at dawn. Grey, clammy, barely breathing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

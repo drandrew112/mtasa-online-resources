@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dirt bike crash",
-        "description": "A dirt bike rider crashed at the side of the road near the docks after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well.",
+        "locales": {
+            "en": {
+                "title": "Dirt bike crash",
+                "description": "A dirt bike rider crashed at the side of the road near the docks after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

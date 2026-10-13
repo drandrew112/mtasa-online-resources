@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain in the heat",
-        "description": "A woman waiting for the bus in the desert sun sat down with tight chest pain and cold sweat despite the heat.",
+        "locales": {
+            "en": {
+                "title": "Chest pain in the heat",
+                "description": "A woman waiting for the bus in the desert sun sat down with tight chest pain and cold sweat despite the heat."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Fainted, rapid pulse",
-        "description": "A mountain biker said her heart was fluttering, then passed out by the road. She is breathing fast but will not wake up.",
+        "locales": {
+            "en": {
+                "title": "Fainted, rapid pulse",
+                "description": "A mountain biker said her heart was fluttering, then passed out by the road. She is breathing fast but will not wake up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

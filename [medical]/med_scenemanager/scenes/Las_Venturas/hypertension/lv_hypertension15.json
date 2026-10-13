@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Visual flashes, headache",
-        "description": "A young woman sees zig-zag flashes and has a pounding headache. She says this is not like her usual migraines and she feels very unwell.",
+        "locales": {
+            "en": {
+                "title": "Visual flashes, headache",
+                "description": "A young woman sees zig-zag flashes and has a pounding headache. She says this is not like her usual migraines and she feels very unwell."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

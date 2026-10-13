@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car spun out",
-        "description": "A black car lost control and spun out in Redsands West. The driver is still behind the wheel with a broken arm and a bleeding wound. The passenger got out and is crouching next to the car with a painful leg and some cuts.",
+        "locales": {
+            "en": {
+                "title": "Car spun out",
+                "description": "A black car lost control and spun out in Redsands West. The driver is still behind the wheel with a broken arm and a bleeding wound. The passenger got out and is crouching next to the car with a painful leg and some cuts."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man dropped his coffee, cannot talk",
-        "description": "An office worker on the pavement in Idlewood dropped his coffee mid-sentence and now only makes sounds. Colleagues say his right hand is weak and he looks confused. He leans to one side when sitting.",
+        "locales": {
+            "en": {
+                "title": "Man dropped his coffee, cannot talk",
+                "description": "An office worker on the pavement in Idlewood dropped his coffee mid-sentence and now only makes sounds. Colleagues say his right hand is weak and he looks confused. He leans to one side when sitting."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

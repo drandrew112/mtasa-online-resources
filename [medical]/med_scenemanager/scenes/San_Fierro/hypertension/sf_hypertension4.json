@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worst headache, vomiting",
-        "description": "A woman lying on a picnic blanket is holding her head and moaning. She has vomited twice and says it is the worst headache of her life.",
+        "locales": {
+            "en": {
+                "title": "Worst headache, vomiting",
+                "description": "A woman lying on a picnic blanket is holding her head and moaning. She has vomited twice and says it is the worst headache of her life."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

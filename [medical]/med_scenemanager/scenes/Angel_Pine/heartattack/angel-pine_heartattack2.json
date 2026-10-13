@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A woman from the trailer park sat down by the road with chest pressure and sweat pouring down her face.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A woman from the trailer park sat down by the road with chest pressure and sweat pouring down her face."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

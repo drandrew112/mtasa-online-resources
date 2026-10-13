@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Overdose in the parking area",
-        "description": "Security found a man lying outside the terminal at Easter Bay Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him.",
+        "locales": {
+            "en": {
+                "title": "Overdose in the parking area",
+                "description": "Security found a man lying outside the terminal at Easter Bay Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

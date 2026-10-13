@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Collapsed, not breathing",
-        "description": "A truck driver stopped at the diner, walked out and collapsed by the road. Not breathing. His coffee is still on the counter.",
+        "locales": {
+            "en": {
+                "title": "Collapsed, not breathing",
+                "description": "A truck driver stopped at the diner, walked out and collapsed by the road. Not breathing. His coffee is still on the counter."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

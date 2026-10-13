@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man fell, head bleeding",
-        "description": "A drunk man fell backwards by the roadside in Creek and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up.",
+        "locales": {
+            "en": {
+                "title": "Drunk man fell, head bleeding",
+                "description": "A drunk man fell backwards by the roadside in Creek and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

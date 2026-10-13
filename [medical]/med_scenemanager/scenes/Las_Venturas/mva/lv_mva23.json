@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "T-bone collision at intersection",
-        "description": "A brown car ran into the side of an orange car at an intersection near Las Venturas Airport. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the brown car got out and is crouching next to the car with a deep cut that is bleeding.",
+        "locales": {
+            "en": {
+                "title": "T-bone collision at intersection",
+                "description": "A brown car ran into the side of an orange car at an intersection near Las Venturas Airport. The driver of the orange car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the brown car got out and is crouching next to the car with a deep cut that is bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Cannot lift her arm",
-        "description": "An elderly woman next to the country road in Fort Carson dropped her groceries and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over.",
+        "locales": {
+            "en": {
+                "title": "Cannot lift her arm",
+                "description": "An elderly woman next to the country road in Fort Carson dropped her groceries and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

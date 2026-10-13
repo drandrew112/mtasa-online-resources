@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Lost control in the bend",
-        "description": "A motorcyclist came over the hill far too fast, lost control at the side of the road near Leafy Hollow and slid into the ditch. He is lying still, dazed, and does not know where he is.",
+        "locales": {
+            "en": {
+                "title": "Lost control in the bend",
+                "description": "A motorcyclist came over the hill far too fast, lost control at the side of the road near Leafy Hollow and slid into the ditch. He is lying still, dazed, and does not know where he is."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

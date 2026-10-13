@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Motorcycle went under a truck",
-        "description": "A truck changing lanes hit a motorcycle in East Beach. The rider is lying in the road with a crushed leg bleeding heavily. A bystander has put a belt around the thigh.",
+        "locales": {
+            "en": {
+                "title": "Motorcycle went under a truck",
+                "description": "A truck changing lanes hit a motorcycle in East Beach. The rider is lying in the road with a crushed leg bleeding heavily. A bystander has put a belt around the thigh."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

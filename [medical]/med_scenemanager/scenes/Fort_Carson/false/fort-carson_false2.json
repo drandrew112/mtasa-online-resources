@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Child not breathing",
-        "description": "A young-sounding caller says a child is not breathing at the crossroads in Fort Carson, then laughs and hangs up. The callback goes to voicemail.",
+        "locales": {
+            "en": {
+                "title": "Child not breathing",
+                "description": "A young-sounding caller says a child is not breathing at the crossroads in Fort Carson, then laughs and hangs up. The callback goes to voicemail."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

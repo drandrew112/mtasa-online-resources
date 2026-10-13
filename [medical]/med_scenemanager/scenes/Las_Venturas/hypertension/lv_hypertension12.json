@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, nosebleed",
-        "description": "A man stumbled out of a shop with blood pouring from his nose and a crushing headache. He says his doctor warned him about his blood pressure last month.",
+        "locales": {
+            "en": {
+                "title": "Headache, nosebleed",
+                "description": "A man stumbled out of a shop with blood pouring from his nose and a crushing headache. He says his doctor warned him about his blood pressure last month."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

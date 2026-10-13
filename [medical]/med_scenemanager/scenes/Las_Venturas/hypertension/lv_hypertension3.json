@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, breathless",
-        "description": "A heavy-set man is struggling to breathe and has a crushing headache. Park staff found him sitting by the path, grey and sweating.",
+        "locales": {
+            "en": {
+                "title": "Headache, breathless",
+                "description": "A heavy-set man is struggling to breathe and has a crushing headache. Park staff found him sitting by the path, grey and sweating."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

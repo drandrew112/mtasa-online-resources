@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Scooter slipped on spilled oil",
-        "description": "A woman on a scooter slipped on a patch of spilled oil outside the Blackfield Chapel and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed.",
+        "locales": {
+            "en": {
+                "title": "Scooter slipped on spilled oil",
+                "description": "A woman on a scooter slipped on a patch of spilled oil outside the Blackfield Chapel and fell hard on her shoulder. Her collarbone is deformed and her arm is grazed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

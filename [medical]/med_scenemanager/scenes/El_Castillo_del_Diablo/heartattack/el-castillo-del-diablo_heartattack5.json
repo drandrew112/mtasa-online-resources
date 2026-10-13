@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found unresponsive",
-        "description": "A camper found a woman by the road, unresponsive, barely breathing, grey and cold.",
+        "locales": {
+            "en": {
+                "title": "Found unresponsive",
+                "description": "A camper found a woman by the road, unresponsive, barely breathing, grey and cold."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

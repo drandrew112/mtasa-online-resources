@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teen vomiting, breathing deeply",
-        "description": "A teenager on the sidewalk in Marina has been vomiting and breathing fast and deep. A friend says she is a type 1 diabetic and ran out of insulin two days ago. Her breath smells sweet, like nail polish remover.",
+        "locales": {
+            "en": {
+                "title": "Teen vomiting, breathing deeply",
+                "description": "A teenager on the sidewalk in Marina has been vomiting and breathing fast and deep. A friend says she is a type 1 diabetic and ran out of insulin two days ago. Her breath smells sweet, like nail polish remover."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

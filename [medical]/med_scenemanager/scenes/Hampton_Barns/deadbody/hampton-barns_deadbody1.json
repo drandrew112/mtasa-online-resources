@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body found by a hunter",
-        "description": "A hunter found a man lying face down in a field near Hampton Barns. He has clearly been dead for some time.",
+        "locales": {
+            "en": {
+                "title": "Body found by a hunter",
+                "description": "A hunter found a man lying face down in a field near Hampton Barns. He has clearly been dead for some time."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Confused, headache",
-        "description": "An older lady is wandering slowly and repeating the same question. Her granddaughter says she complained of a terrible headache an hour ago.",
+        "locales": {
+            "en": {
+                "title": "Confused, headache",
+                "description": "An older lady is wandering slowly and repeating the same question. Her granddaughter says she complained of a terrible headache an hour ago."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

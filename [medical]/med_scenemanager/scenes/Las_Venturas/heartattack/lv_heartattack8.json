@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Weak and short of breath",
-        "description": "An older man walking back to his motel had to sit on the sidewalk. He is short of breath, sweating and has a \"heavy\" chest. He blames the all-you-can-eat steak.",
+        "locales": {
+            "en": {
+                "title": "Weak and short of breath",
+                "description": "An older man walking back to his motel had to sit on the sidewalk. He is short of breath, sweating and has a \"heavy\" chest. He blames the all-you-can-eat steak."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

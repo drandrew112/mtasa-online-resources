@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Young adult, sudden weakness",
-        "description": "A woman in her twenties at a bus stop at Los Santos International suddenly could not hold her phone and her words became mixed up. Her friend says she complained of neck pain after lifting weights earlier today.",
+        "locales": {
+            "en": {
+                "title": "Young adult, sudden weakness",
+                "description": "A woman in her twenties at a bus stop at Los Santos International suddenly could not hold her phone and her words became mixed up. Her friend says she complained of neck pain after lifting weights earlier today."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

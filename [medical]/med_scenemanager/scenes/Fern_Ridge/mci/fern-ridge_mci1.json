@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Four-car pileup, several injured",
-        "description": "Four cars crashed into each other at the crossroads near Fern Ridge after one braked suddenly for a deer. One driver is trapped behind the wheel, others are walking around dazed.",
+        "locales": {
+            "en": {
+                "title": "Four-car pileup, several injured",
+                "description": "Four cars crashed into each other at the crossroads near Fern Ridge after one braked suddenly for a deer. One driver is trapped behind the wheel, others are walking around dazed."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

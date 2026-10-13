@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Barely breathing",
-        "description": "A woman was found slumped on the pavement next to her stroller-full of laundry. Slow, shallow breaths and she does not react to her name. Her lips are bluish.",
+        "locales": {
+            "en": {
+                "title": "Barely breathing",
+                "description": "A woman was found slumped on the pavement next to her stroller-full of laundry. Slow, shallow breaths and she does not react to her name. Her lips are bluish."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

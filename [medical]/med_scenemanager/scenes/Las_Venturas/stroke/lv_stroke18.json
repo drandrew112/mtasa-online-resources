@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Numb side after jogging",
-        "description": "A jogger on the sand in Las Venturas stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened.",
+        "locales": {
+            "en": {
+                "title": "Numb side after jogging",
+                "description": "A jogger on the sand in Las Venturas stopped because his left arm and leg went numb. He is sitting down, his speech is slightly slurred and he is very frightened."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

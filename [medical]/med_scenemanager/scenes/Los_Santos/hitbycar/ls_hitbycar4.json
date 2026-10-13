@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman hit by a van",
-        "description": "A delivery van hit an elderly woman in Las Colinas as she stepped off the curb. She is lying in front of the van, conscious, with severe pain in her hip and pelvis.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman hit by a van",
+                "description": "A delivery van hit an elderly woman in Las Colinas as she stepped off the curb. She is lying in front of the van, conscious, with severe pain in her hip and pelvis."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

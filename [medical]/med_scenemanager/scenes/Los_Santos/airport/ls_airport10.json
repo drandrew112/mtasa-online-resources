@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Traveller with slurred speech",
-        "description": "A traveller at Los Santos International suddenly could not hold his passport and his speech became slurred. His companion says he was fine at check-in.",
+        "locales": {
+            "en": {
+                "title": "Traveller with slurred speech",
+                "description": "A traveller at Los Santos International suddenly could not hold his passport and his speech became slurred. His companion says he was fine at check-in."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

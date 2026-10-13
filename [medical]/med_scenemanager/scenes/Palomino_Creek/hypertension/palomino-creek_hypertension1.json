@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Worst headache, vomiting",
-        "description": "A woman outside a small store in Palomino Creek has the worst headache of her life and just vomited. She is very pale and her hands are shaking.",
+        "locales": {
+            "en": {
+                "title": "Worst headache, vomiting",
+                "description": "A woman outside a small store in Palomino Creek has the worst headache of her life and just vomited. She is very pale and her hands are shaking."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

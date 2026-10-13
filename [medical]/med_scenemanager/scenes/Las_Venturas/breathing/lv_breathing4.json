@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Choked on food, still wheezing",
-        "description": "A man by the roadside in Prickle Pine choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing.",
+        "locales": {
+            "en": {
+                "title": "Choked on food, still wheezing",
+                "description": "A man by the roadside in Prickle Pine choked on a hot dog. A passer-by did back blows and a piece came out, but he is still coughing hard and wheezing."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

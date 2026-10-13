@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Found unresponsive",
-        "description": "A jogger found a woman lying on the sidewalk next to her open umbrella. Very slow, weak breathing, clammy skin, no response to pain.",
+        "locales": {
+            "en": {
+                "title": "Found unresponsive",
+                "description": "A jogger found a woman lying on the sidewalk next to her open umbrella. Very slow, weak breathing, clammy skin, no response to pain."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

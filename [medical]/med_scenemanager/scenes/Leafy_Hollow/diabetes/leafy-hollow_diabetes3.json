@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Glucose meter just says HIGH",
-        "description": "A woman in a clearing in Leafy Hollow called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert.",
+        "locales": {
+            "en": {
+                "title": "Glucose meter just says HIGH",
+                "description": "A woman in a clearing in Leafy Hollow called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

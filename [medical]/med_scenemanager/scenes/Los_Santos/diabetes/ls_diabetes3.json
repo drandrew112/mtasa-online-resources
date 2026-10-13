@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teenager sick and confused",
-        "description": "A teenage girl on her way home from school sat down and started to throw up. Her friend says she has lost a lot of weight lately and drinks litres of soda. Now she seems a bit confused and her breath smells strange.",
+        "locales": {
+            "en": {
+                "title": "Teenager sick and confused",
+                "description": "A teenage girl on her way home from school sat down and started to throw up. Her friend says she has lost a lot of weight lately and drinks litres of soda. Now she seems a bit confused and her breath smells strange."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

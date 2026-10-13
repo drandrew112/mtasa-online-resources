@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Body found by night guard",
-        "description": "A night guard found a man lying on the sidewalk in King's. He has a head wound and has been there for hours. The guard did not touch him.",
+        "locales": {
+            "en": {
+                "title": "Body found by night guard",
+                "description": "A night guard found a man lying on the sidewalk in King's. He has a head wound and has been there for hours. The guard did not touch him."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

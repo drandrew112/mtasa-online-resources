@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A green car ran into the back of a blue car in downtown San Fierro. The driver of the blue car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the green car got out and is crouching next to the car with a deep cut that is bleeding. The passenger of the blue car is lying on their back next to the car with a head injury and a painful collarbone.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A green car ran into the back of a blue car in downtown San Fierro. The driver of the blue car is still behind the wheel, unconscious, with a serious head injury and a broken arm. The driver of the green car got out and is crouching next to the car with a deep cut that is bleeding. The passenger of the blue car is lying on their back next to the car with a head injury and a painful collarbone."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

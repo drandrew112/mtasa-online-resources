@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "No helmet, head injury",
-        "description": "A young rider without a helmet crashed on the road in Easter Bay Airport while doing a wheelie. He is lying on the road, unconscious, bleeding from the ear.",
+        "locales": {
+            "en": {
+                "title": "No helmet, head injury",
+                "description": "A young rider without a helmet crashed on the road in Easter Bay Airport while doing a wheelie. He is lying on the road, unconscious, bleeding from the ear."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

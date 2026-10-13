@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Student, fruity breath",
-        "description": "A student on the sidewalk in Ocean Flats has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week.",
+        "locales": {
+            "en": {
+                "title": "Student, fruity breath",
+                "description": "A student on the sidewalk in Ocean Flats has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin during exam week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

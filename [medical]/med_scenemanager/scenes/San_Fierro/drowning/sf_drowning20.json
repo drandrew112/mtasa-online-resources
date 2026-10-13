@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Swimmer pulled out, not breathing",
-        "description": "A swimmer was pulled out of the bay and is lying on the waterfront promenade in Esplanade North. He is not breathing and has no pulse. A bystander has started CPR.",
+        "locales": {
+            "en": {
+                "title": "Swimmer pulled out, not breathing",
+                "description": "A swimmer was pulled out of the bay and is lying on the waterfront promenade in Esplanade North. He is not breathing and has no pulse. A bystander has started CPR."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

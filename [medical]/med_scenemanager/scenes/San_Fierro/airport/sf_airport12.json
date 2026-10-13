@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Passenger short of breath",
-        "description": "A woman who just got off a long flight outside the terminal at Easter Bay Airport is short of breath and wheezing. She is asthmatic and her inhaler is in her checked luggage.",
+        "locales": {
+            "en": {
+                "title": "Passenger short of breath",
+                "description": "A woman who just got off a long flight outside the terminal at Easter Bay Airport is short of breath and wheezing. She is asthmatic and her inhaler is in her checked luggage."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

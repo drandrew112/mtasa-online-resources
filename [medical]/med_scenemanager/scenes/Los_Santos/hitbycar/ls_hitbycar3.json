@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Elderly woman hit by a van",
-        "description": "A delivery van reversing near Unity Station knocked down an elderly woman. She is sitting on the ground holding her hip and cannot stand up. The driver is very upset.",
+        "locales": {
+            "en": {
+                "title": "Elderly woman hit by a van",
+                "description": "A delivery van reversing near Unity Station knocked down an elderly woman. She is sitting on the ground holding her hip and cannot stand up. The driver is very upset."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

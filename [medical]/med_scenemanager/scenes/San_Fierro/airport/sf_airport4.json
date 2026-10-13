@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Jet blast knocked a worker over",
-        "description": "A ground worker was knocked over by jet blast on the apron at Easter Bay Airport and hit the concrete face first. He is lying face down, groaning.",
+        "locales": {
+            "en": {
+                "title": "Jet blast knocked a worker over",
+                "description": "A ground worker was knocked over by jet blast on the apron at Easter Bay Airport and hit the concrete face first. He is lying face down, groaning."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

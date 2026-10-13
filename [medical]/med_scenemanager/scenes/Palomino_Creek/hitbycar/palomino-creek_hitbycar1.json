@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Clipped by a car mirror",
-        "description": "A man outside a small store in Palomino Creek was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising.",
+        "locales": {
+            "en": {
+                "title": "Clipped by a car mirror",
+                "description": "A man outside a small store in Palomino Creek was clipped by a car's mirror. His forearm hurts badly and is bleeding a little. The driver stopped and is apologising."
+            }
+        },
         "caller": "SceneManager",
         "priority": 3
     },

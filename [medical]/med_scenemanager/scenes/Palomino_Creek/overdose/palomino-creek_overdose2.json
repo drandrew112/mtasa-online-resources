@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Meth, not sleeping for days",
-        "description": "A man from a nearby trailer at the side of the road near Palomino Creek has not slept for three days, is paranoid and soaked in sweat. He says his heart is going to explode.",
+        "locales": {
+            "en": {
+                "title": "Meth, not sleeping for days",
+                "description": "A man from a nearby trailer at the side of the road near Palomino Creek has not slept for three days, is paranoid and soaked in sweat. He says his heart is going to explode."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

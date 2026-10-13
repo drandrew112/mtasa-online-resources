@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Dizzy, slow pulse",
-        "description": "A retired farmer keeps sitting down by the road on his way to the diner. His pulse is slow, he is pale and keeps asking what day it is.",
+        "locales": {
+            "en": {
+                "title": "Dizzy, slow pulse",
+                "description": "A retired farmer keeps sitting down by the road on his way to the diner. His pulse is slow, he is pale and keeps asking what day it is."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

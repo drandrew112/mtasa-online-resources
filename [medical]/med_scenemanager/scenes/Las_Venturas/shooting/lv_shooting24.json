@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Gang fight, two wounded",
-        "description": "A fight between two groups ended in gunfire outside a souvenir shop in Rockshore West. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand.",
+        "locales": {
+            "en": {
+                "title": "Gang fight, two wounded",
+                "description": "A fight between two groups ended in gunfire outside a souvenir shop in Rockshore West. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

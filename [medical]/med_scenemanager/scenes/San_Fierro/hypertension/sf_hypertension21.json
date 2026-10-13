@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Headache, breathless",
-        "description": "A man is fighting for breath with a pounding headache. He says he has been coughing at night and sleeping sitting up for a week.",
+        "locales": {
+            "en": {
+                "title": "Headache, breathless",
+                "description": "A man is fighting for breath with a pounding headache. He says he has been coughing at night and sleeping sitting up for a week."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

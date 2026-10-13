@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Drunk man fell in the water",
-        "description": "A drunk man fell into a swimming pool and was pulled out by his friends and brought out to the driveway of a villa in Richman. He is coughing, shivering and confused.",
+        "locales": {
+            "en": {
+                "title": "Drunk man fell in the water",
+                "description": "A drunk man fell into a swimming pool and was pulled out by his friends and brought out to the driveway of a villa in Richman. He is coughing, shivering and confused."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Teen drank too much",
-        "description": "A teenager outside a souvenir shop near the Last Dime Motel keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own.",
+        "locales": {
+            "en": {
+                "title": "Teen drank too much",
+                "description": "A teenager outside a souvenir shop near the Last Dime Motel keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

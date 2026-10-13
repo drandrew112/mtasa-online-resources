@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Heart racing, dizzy",
-        "description": "A bachelor party guest is sitting on the sidewalk, chest pounding and the world spinning. His friends admit to \"a few\" energy drinks and \"maybe more than a few\" shots.",
+        "locales": {
+            "en": {
+                "title": "Heart racing, dizzy",
+                "description": "A bachelor party guest is sitting on the sidewalk, chest pounding and the world spinning. His friends admit to \"a few\" energy drinks and \"maybe more than a few\" shots."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

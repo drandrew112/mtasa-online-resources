@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Man choking in restaurant",
-        "description": "A man suddenly started choking while eating at a restaurant. He is struggling to breathe and appears unable to clear the obstruction. Staff members are calling for an ambulance.",
+        "locales": {
+            "en": {
+                "title": "Man choking in restaurant",
+                "description": "A man suddenly started choking while eating at a restaurant. He is struggling to breathe and appears unable to clear the obstruction. Staff members are calling for an ambulance."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

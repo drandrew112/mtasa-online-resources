@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Rear-end collision",
-        "description": "A yellow car ran into the back of a blue car in Richman. The driver of the blue car is still behind the wheel with a head injury and a broken leg, in severe pain. The driver of the yellow car got out and is standing next to the car, bent over and holding their side, with a possible broken arm. The passenger of the blue car is still in the passenger seat, unconscious, with multiple injuries and heavy bleeding.",
+        "locales": {
+            "en": {
+                "title": "Rear-end collision",
+                "description": "A yellow car ran into the back of a blue car in Richman. The driver of the blue car is still behind the wheel with a head injury and a broken leg, in severe pain. The driver of the yellow car got out and is standing next to the car, bent over and holding their side, with a possible broken arm. The passenger of the blue car is still in the passenger seat, unconscious, with multiple injuries and heavy bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 1
     },

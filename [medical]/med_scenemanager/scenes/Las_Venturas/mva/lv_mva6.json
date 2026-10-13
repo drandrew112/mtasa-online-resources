@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ran off the road",
-        "description": "A red car left the road and hit the curb by the LVA Freight Depot. The driver is still behind the wheel with a head injury and disorientation. The passenger got out and is crouching next to the car with a deep cut that is bleeding.",
+        "locales": {
+            "en": {
+                "title": "Car ran off the road",
+                "description": "A red car left the road and hit the curb by the LVA Freight Depot. The driver is still behind the wheel with a head injury and disorientation. The passenger got out and is crouching next to the car with a deep cut that is bleeding."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

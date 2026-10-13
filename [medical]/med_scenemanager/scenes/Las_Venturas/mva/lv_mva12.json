@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Car ran off the road",
-        "description": "An orange car left the road and hit the curb near the Julius Thruway. The driver got out and is sitting on the ground with a broken rib and a bleeding wound.",
+        "locales": {
+            "en": {
+                "title": "Car ran off the road",
+                "description": "An orange car left the road and hit the curb near the Julius Thruway. The driver got out and is sitting on the ground with a broken rib and a bleeding wound."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },

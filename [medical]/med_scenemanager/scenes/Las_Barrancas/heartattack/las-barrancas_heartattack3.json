@@ -9,8 +9,12 @@
     "interior": 0,
     "dimension": 0,
     "erm": {
-        "title": "Chest pain, sweating",
-        "description": "A road worker sat down by the road with chest pressure and drenched in sweat. He keeps saying it is just the sun.",
+        "locales": {
+            "en": {
+                "title": "Chest pain, sweating",
+                "description": "A road worker sat down by the road with chest pressure and drenched in sweat. He keeps saying it is just the sun."
+            }
+        },
         "caller": "SceneManager",
         "priority": 2
     },
