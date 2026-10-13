@@ -318,3 +318,27 @@ and messages. Server pushes are ignored. `setTabletTutorialCase(task)`,
 `setTabletTutorialUnit(fields)` and `addTabletTutorialMessage(text [, channel])` drive the demo.
 Each step is reported through `onClientErmTabletTutorial(action, ...)` (source = localPlayer).
 Server export `removePlayerFromUnit(player [, reason])`.
+
+## Web tablet (mode "Tablet")
+
+The login screen of the web page has a **Dispatcher | Tablet** switch. Tablet mode signs in with the
+game account (`exports.v_accounts:httpLogin(username, password)` - credential + ban check, no player
+needed; failed attempts throttled per account in v_accounts and per client in `server/webtablet.lua`).
+
+- Not a member of a unit (no online player on that account in a unit): "You are not a member of any
+  ambulance unit." The page follows the unit live (sign in / out in game).
+- Member: Home / Active Case / Messages like the in-game tablet (start / end response, leave, close with
+  reason, dispatch + case chat, end shift). A separate instance from the in-game tablet - both work at once.
+- Alerts: `Units.notify` also queues events (`WebTablet.push`); the page toasts them and plays
+  `sounds/tablet_alert.mp3` for alert events (the sign-in click unlocks browser audio).
+- HTTP exports: `ermTabletLogin / Logout / State / CaseAction / LeaveCase / CloseCase / SendMessage / EndShift`
+  (first argument = session token). Page: `web/js/tablet.js`. English only.
+
+## Web ERM Admin (mode "ERM Admin")
+
+Third mode of the login switch: the in-game `/ermadmin` panel in the browser - shift and task history
+(search, filters, paging), shift / task details with back navigation, and the auto dispatch (med_erm_auto)
+switch. Login with the game account (`v_accounts:httpLogin`); the admin level (`Config.ADMIN_LEVEL`, 1) is
+checked at login and re-checked every call (online player's account data, otherwise the `accounts` table).
+Server: `server/webadmin.lua` (queries are the `AdminHandlers` of `server/admin.lua`); page: `web/js/admin.js`.
+HTTP exports: `ermAdminLogin / Logout / Query / Auto / AutoSet`.

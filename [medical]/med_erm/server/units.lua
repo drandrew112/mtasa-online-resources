@@ -98,6 +98,7 @@ end
 -- alert = true plays the tablet alert sound instead of the ui_core one.
 -- text may be a function(player) -> string for per-player (per-language) content.
 function Units.notify(u, title, text, alert)
+    if WebTablet then WebTablet.push(u, title, text, alert) end
     for _, p in ipairs(u.members) do
         triggerClientEvent(p, "erm:notify", resourceRoot, title, type(text) == "function" and text(p) or text, alert)
     end

@@ -59,7 +59,8 @@ local function paged(countSql, selectSql, where, args, page)
     return rows, total, page, pages
 end
 
-local handlers = {}
+AdminHandlers = {}   -- also used by the web admin (server/webadmin.lua)
+local handlers = AdminHandlers
 
 ---------------------------------------------------------------- shifts
 

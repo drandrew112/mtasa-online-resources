@@ -20,6 +20,8 @@
     <script src="server/dispatchers.lua" type="server" />
     <script src="server/http.lua"    type="server" />
     <script src="server/webapp.lua" type="server" />
+    <script src="server/webtablet.lua" type="server" />
+    <script src="server/webadmin.lua" type="server" />
     <script src="server/autodispatch.lua" type="server" />
     <script src="server/hospitalroute.lua" type="server" />
     <script src="server/admin.lua"   type="server" />
@@ -56,6 +58,8 @@
     <file src="web/js/map.js"     type="client" />
     <file src="web/js/chat.js"    type="client" />
     <file src="web/js/app.js"     type="client" />
+    <file src="web/js/tablet.js"  type="client" />
+    <file src="web/js/admin.js"   type="client" />
 
     <!-- ================= EXPORTS ================= -->
     <!-- automation API (server/exports.lua), events: server/events.lua -->
@@ -97,6 +101,23 @@
     <export function="ermCloseTask"   type="server" http="true" />
     <export function="ermCreateTask"  type="server" http="true" />
     <export function="ermSendMessage" type="server" http="true" />
+
+    <!-- web tablet (server/webtablet.lua): v_accounts login, unit crew only -->
+    <export function="ermTabletLogin"       type="server" http="true" />
+    <export function="ermTabletLogout"      type="server" http="true" />
+    <export function="ermTabletState"       type="server" http="true" />
+    <export function="ermTabletCaseAction"  type="server" http="true" />
+    <export function="ermTabletLeaveCase"   type="server" http="true" />
+    <export function="ermTabletCloseCase"   type="server" http="true" />
+    <export function="ermTabletSendMessage" type="server" http="true" />
+    <export function="ermTabletEndShift"    type="server" http="true" />
+
+    <!-- web ERM Admin (server/webadmin.lua): v_accounts login, admin level >= Config.ADMIN_LEVEL -->
+    <export function="ermAdminLogin"   type="server" http="true" />
+    <export function="ermAdminLogout"  type="server" http="true" />
+    <export function="ermAdminQuery"   type="server" http="true" />
+    <export function="ermAdminAuto"    type="server" http="true" />
+    <export function="ermAdminAutoSet" type="server" http="true" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="v_accounts" />

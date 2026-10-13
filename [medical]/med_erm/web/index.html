@@ -9,14 +9,42 @@
 </head>
 <body class="locked">
     <div class="osa-login" id="login">
-        <form class="osa-login-box" id="loginForm" autocomplete="off">
-            <span class="logo big"><i></i><i></i></span>
-            <h1>EMS Dispatch</h1>
-            <p>Sign in with your dispatcher code</p>
-            <input id="loginCode" type="password" placeholder="Dispatcher code" maxlength="32" autofocus>
-            <div class="osa-login-error" id="loginError"></div>
-            <button class="osa-btn primary" type="submit" id="loginBtn">Sign in</button>
-        </form>
+        <div class="osa-login-stack">
+            <div class="mode-switch" id="modeSwitch" role="tablist" aria-label="Mode">
+                <button type="button" class="mode-btn active" data-mode="dispatcher" role="tab">Dispatcher</button>
+                <button type="button" class="mode-btn" data-mode="tablet" role="tab">Tablet</button>
+                <button type="button" class="mode-btn" data-mode="admin" role="tab">ERM Admin</button>
+            </div>
+
+            <form class="osa-login-box" id="loginForm" autocomplete="off">
+                <span class="logo big"><i></i><i></i></span>
+                <h1>EMS Dispatch</h1>
+                <p>Sign in with your dispatcher code</p>
+                <input id="loginCode" type="password" placeholder="Dispatcher code" maxlength="32" autofocus>
+                <div class="osa-login-error" id="loginError"></div>
+                <button class="osa-btn primary" type="submit" id="loginBtn">Sign in</button>
+            </form>
+
+            <form class="osa-login-box" id="tabletLoginForm" autocomplete="off" hidden>
+                <span class="logo big"><i></i><i></i></span>
+                <h1>EMS Unit Tablet</h1>
+                <p>Sign in with your game account</p>
+                <input id="tabletUser" class="plain" type="text" placeholder="Username" maxlength="64" autocomplete="username">
+                <input id="tabletPass" class="plain" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+                <div class="osa-login-error" id="tabletLoginError"></div>
+                <button class="osa-btn primary" type="submit" id="tabletLoginBtn">Sign in</button>
+            </form>
+
+            <form class="osa-login-box" id="adminLoginForm" autocomplete="off" hidden>
+                <span class="logo big"><i></i><i></i></span>
+                <h1>ERM Admin</h1>
+                <p>Sign in with your game account (admin)</p>
+                <input id="adminUser" class="plain" type="text" placeholder="Username" maxlength="64" autocomplete="username">
+                <input id="adminPass" class="plain" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+                <div class="osa-login-error" id="adminLoginError"></div>
+                <button class="osa-btn primary" type="submit" id="adminLoginBtn">Sign in</button>
+            </form>
+        </div>
     </div>
 
     <header class="osa-topbar">
@@ -87,10 +115,107 @@
         </aside>
     </main>
 
+    <!-- ================= web tablet (mode "tablet", js/tablet.js) ================= -->
+    <div id="tabletApp" class="tablet-app">
+        <header class="osa-topbar">
+            <div class="osa-brand">
+                <span class="logo"><i></i><i></i></span>
+                <div>
+                    <strong id="tbTitle">EMS Unit Tablet</strong>
+                    <small id="tbSub">Emergency Response Manager</small>
+                </div>
+            </div>
+            <nav class="osa-tabs tb-nav" id="tbNav">
+                <button class="osa-tab active" data-page="home">Home</button>
+                <button class="osa-tab" data-page="case">Active Case</button>
+                <button class="osa-tab" data-page="messages">Messages <b id="tbUnread" hidden>0</b></button>
+            </nav>
+            <div class="osa-top-right">
+                <span class="who" id="tbWho"></span>
+                <button class="osa-btn small" id="tbEndShift" hidden>End shift</button>
+                <button class="osa-btn small" id="tbLogout">Sign out</button>
+                <span class="osa-conn" id="tbConn" title="Connection"></span>
+                <span class="osa-clock" id="tbClock">--:--:--</span>
+            </div>
+        </header>
+        <main class="tb-main">
+            <section class="tb-page" id="tbNoUnit" hidden>
+                <div class="tb-empty">
+                    <h2>You are not a member of any ambulance unit.</h2>
+                    <p>Sign in to a unit on the tablet inside an ambulance. This page follows your unit automatically.</p>
+                </div>
+            </section>
+            <section class="tb-page" id="tbHome" hidden></section>
+            <section class="tb-page" id="tbCase" hidden></section>
+            <section class="tb-page" id="tbMessages" hidden>
+                <div class="osa-panel tb-chat">
+                    <div class="osa-panel-head">
+                        <div class="osa-tabs" id="tbChanTabs">
+                            <button class="osa-tab active" data-chan="dispatch">Dispatch <b hidden>0</b></button>
+                            <button class="osa-tab" data-chan="case">Case chat <b hidden>0</b></button>
+                        </div>
+                        <small class="osa-muted" id="tbChanInfo"></small>
+                    </div>
+                    <div class="chat-log" id="tbChatLog"></div>
+                    <form class="chat-input" id="tbChatForm" autocomplete="off">
+                        <input class="osa-input" id="tbChatText" maxlength="200" placeholder="Write a message to dispatch...">
+                        <button class="osa-btn primary" type="submit">Send</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ================= ERM Admin (mode "admin", js/admin.js) ================= -->
+    <div id="adminApp" class="admin-app">
+        <header class="osa-topbar">
+            <div class="osa-brand">
+                <span class="logo"><i></i><i></i></span>
+                <div>
+                    <strong>ERM Admin</strong>
+                    <small>Shift &amp; task history</small>
+                </div>
+            </div>
+            <nav class="osa-tabs tb-nav" id="adNav">
+                <button class="osa-tab active" data-tab="shifts">Shifts</button>
+                <button class="osa-tab" data-tab="tasks">Tasks</button>
+            </nav>
+            <div class="osa-top-right">
+                <button class="auto-btn" id="adAuto" disabled>Auto dispatch</button>
+                <span class="who" id="adWho"></span>
+                <button class="osa-btn small" id="adLogout">Sign out</button>
+                <span class="osa-conn" id="adConn" title="Connection"></span>
+            </div>
+        </header>
+        <main class="ad-main">
+            <section class="osa-panel ad-list">
+                <div class="ad-toolbar">
+                    <input class="osa-input" id="adSearch" maxlength="40">
+                    <select class="osa-select" id="adFilter"></select>
+                </div>
+                <div class="ad-table" id="adTable"></div>
+                <div class="ad-pager">
+                    <button class="osa-btn small" id="adPrev">Prev</button>
+                    <span class="osa-muted" id="adPageInfo"></span>
+                    <button class="osa-btn small" id="adNext">Next</button>
+                </div>
+            </section>
+            <section class="osa-panel ad-detail">
+                <div class="ad-detail-bar">
+                    <button class="osa-btn small" id="adBack" hidden>&lsaquo; Back</button>
+                    <span class="osa-muted" id="adDetailKind"></span>
+                </div>
+                <div class="ad-detail-body" id="adDetail"><div class="osa-empty">Select a shift or task to see its details.</div></div>
+            </section>
+        </main>
+    </div>
+
     <script src="/web_api/osa.js"></script>
     <script src="js/api.js"></script>
     <script src="js/map.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/tablet.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
