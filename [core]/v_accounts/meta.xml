@@ -57,6 +57,9 @@
     <export function="isLoggedIn"         type="server" />
     <export function="accountNameExists"  type="server" />
     <export function="getAllAccountNames" type="server" />
+    <!-- httpLogin(username, password) -> true, accountName | false, error. Credential check
+         without a player (web logins); does not log anyone in. -->
+    <export function="httpLogin"          type="server" />
 
     <!-- Kept for the loading gate (external providers report a step done). -->
     <export function="loadingComplete" type="server" />

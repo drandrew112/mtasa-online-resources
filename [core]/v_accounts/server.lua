@@ -244,6 +244,38 @@ function isLoggedIn(player)
     return nameOf(player) ~= nil
 end
 
+-- Credential check without a player, for logins over HTTP (web consoles such as med_erm's
+-- web tablet). Verifies the bcrypt password and the account ban, but does NOT log anyone
+-- in on the server. Returns true, <canonical account name> | false, <english error>.
+-- Failed attempts are throttled per account (the caller should throttle per client too).
+local httpFails = {}   -- [lower account name] = { timestamps }
+local HTTP_MAX_FAILS, HTTP_FAIL_WINDOW = 5, 60
+
+function httpLogin(username, password)
+    if type(username) ~= "string" or type(password) ~= "string"
+    or username == "" or password == "" or #username > 64 or #password > 128 then
+        return false, "Username or password missing."
+    end
+
+    local key, t, keep = username:lower(), getRealTime().timestamp, {}
+    for _, ts in ipairs(httpFails[key] or {}) do
+        if t - ts < HTTP_FAIL_WINDOW then keep[#keep + 1] = ts end
+    end
+    httpFails[key] = keep
+    if #keep >= HTTP_MAX_FAILS then return false, "Too many failed attempts. Try again in a minute." end
+
+    local canonical = accountNameExists(username)
+    local auth = canonical and fetchAccountAuth(canonical) or nil
+    if not auth or type(auth.password) ~= "string" or not passwordVerify(password, auth.password) then
+        keep[#keep + 1] = t
+        return false, "Wrong username or password."
+    end
+    if getActiveBan(nil, canonical) then return false, "This account is banned." end
+
+    httpFails[key] = nil
+    return true, canonical
+end
+
 --------------------------------------------------------------------------------
 -- Panel routing
 --------------------------------------------------------------------------------
