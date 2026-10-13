@@ -230,6 +230,7 @@
   "med_erm.units.start_response_first": "Start the response first.",
   "med_erm.units.unit_disbanded": "Unit disbanded.",
   "med_erm.units.unknown_status": "Unknown status",
+  "med_erm.units.vehicle_destroyed": "The ambulance was destroyed - shift ended.",
   "med_erm.units.you_are_already_signed_in": "You are already signed in.",
   "med_erm.units.you_are_not_logged_in": "You are not logged in.",
   "med_erm.units.you_left_unit": "You left the unit.",
