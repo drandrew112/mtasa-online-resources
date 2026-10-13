@@ -66,6 +66,12 @@ function LoginPanel:create()
     addEventHandler("onDgsMouseEnter", self.login, function() uiSound("audio/ui_btn_hover.mp3") end)
     addEventHandler("onDgsMouseEnter", self.reg, function() uiSound("audio/ui_btn_hover.mp3") end)
 
+    function self:refreshTexts()
+        DGS:dgsSetText(self.login, L("v_accounts.login.login"))
+        DGS:dgsSetText(self.reg, L("v_accounts.login.register"))
+        DGS:dgsSetText(self.remember, L("v_accounts.login.remember_me"))
+    end
+
     function self:setVisible(state)
         for _, e in pairs(self) do
             if isElement(e) then

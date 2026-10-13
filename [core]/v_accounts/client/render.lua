@@ -19,4 +19,7 @@ addEventHandler("onClientRender", root, function()
     if Music then
         Music.drawToggle()
     end
+    if Lang then
+        Lang.draw()
+    end
 end)

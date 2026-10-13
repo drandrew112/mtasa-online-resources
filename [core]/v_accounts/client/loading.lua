@@ -45,14 +45,23 @@ end)
 -- exports.v_accounts:resourceReady() once it is fully set up; the name comes
 -- from sourceResource. When the server asks (acc:checkReady) and every required
 -- resource has reported, the client answers acc:clientReady and loading goes on.
-local REQUIRED = { "ui_inac" }
+-- A listed resource that is not running on this client is not waited for.
+local REQUIRED = {
+    "ui_inac", "ui_pause", "ui_phone", "v_admin", "v_introduce", "v_weekly",
+    "v_socialpanel", "v_jobmanager", "v_jobcreator", "v_arenawar",
+    "med_erm", "work_ems", "rw_loco", "shader_colors",
+    "world_clothes-shop", "world_ferriswheel",
+}
 local ready = {}
 local checking = false
 
 local function tryReport()
     if not checking then return end
     for _, name in ipairs(REQUIRED) do
-        if not ready[name] then return end
+        if not ready[name] then
+            local res = getResourceFromName(name)
+            if res and getResourceState(res) == "running" then return end
+        end
     end
     checking = false
     triggerServerEvent("acc:clientReady", localPlayer)

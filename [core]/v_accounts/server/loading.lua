@@ -22,7 +22,7 @@
 -- stopped meanwhile is dropped from the list.
 --
 -- Then it waits for the player's client to report the required resources
--- (today: ui_inac) ready through the client export resourceReady(); also
+-- (see REQUIRED in client/loading.lua) ready through the client export resourceReady(); also
 -- without a timeout.
 
 addEvent("onPlayerLoaded")
