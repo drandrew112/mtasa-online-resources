@@ -1,13 +1,28 @@
 -- Non-traffic obstacles (server): players, their vehicles, other vehicles and peds near players.
 -- Rebuilt a few times a second into a spatial hash the simulation queries.
 --
--- obstacle = { el, x, y, z, vx, vy (m/s), hw, hl (half width / length), player (bool), els (bool) }
+-- obstacle = { el, x, y, z, vx, vy (m/s), hw, hl (half width / length), fx, fy (heading, vehicles), player (bool), els (bool) }
 
 Obstacles = { hash = {}, CELL = 40 }
 
 local O = Obstacles
 local floor = math.floor
+local sin, cos, rad = math.sin, math.cos, math.rad
 local RANGE = 250
+local sizeByModel = {}
+
+-- half width / half length from the model's bounding box (default when the server cannot tell)
+local function vehicleSize(veh)
+    local model = getElementModel(veh)
+    local sz = sizeByModel[model]
+    if not sz then
+        sz = { 1.25, 2.7 }
+        local ok, x1, y1, _, x2, y2 = pcall(getElementBoundingBox, veh)
+        if ok and x1 then sz = { math.max(1, (x2 - x1) / 2), math.max(2, (y2 - y1) / 2) } end
+        sizeByModel[model] = sz
+    end
+    return sz[1], sz[2]
+end
 
 local function add(hash, seen, el, isPlayerish)
     if seen[el] then return end
@@ -16,7 +31,9 @@ local function add(hash, seen, el, isPlayerish)
     local vx, vy = getElementVelocity(el)
     local o = { el = el, x = x, y = y, z = z, vx = (vx or 0) * 50, vy = (vy or 0) * 50, player = isPlayerish }
     if getElementType(el) == "vehicle" then
-        o.hw, o.hl = 1.25, 2.7
+        o.hw, o.hl = vehicleSize(el)
+        local _, _, rz = getElementRotation(el)
+        o.fx, o.fy = -sin(rad(rz)), cos(rad(rz))
         o.els = getElementData(el, TRAFFIC.ELS_DATA) == true
     else
         o.hw, o.hl = 0.45, 0.45

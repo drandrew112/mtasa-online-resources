@@ -64,6 +64,10 @@ end
 local function gate(ag, c, dStop, now)
     local v = ag.v
     if dStop < -0.5 then return nil end
+    -- giving way to an emergency vehicle behind: rolling on (even into the junction, red light or full
+    -- exit lane) until the car has pulled aside
+    local pe = ag.els
+    local clearing = pe and pe.clear and pe.expires > now and abs(ag.lat - pe.lat) > 0.3
     if dStop > max(35, v * v / (2 * T.IDM_DECEL) + 12) then return nil end
 
     -- traffic light (only the first signalled node of a multi-node intersection counts)
@@ -71,7 +75,7 @@ local function gate(ag, c, dStop, now)
     if phase and phase > 0 then
         local g = Net.cgroup[c]
         local inside = g > 0 and ag.passedGroup == g and now - (ag.passedAt or 0) < 20000
-        if not inside then
+        if not inside and not clearing then
             local light = Signals.light(phase)
             if light == "red" and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.8) then return "signal" end
             if light == "yellow" and dStop > v * v / (2 * T.IDM_DECEL) then return "signal" end
@@ -81,7 +85,7 @@ local function gate(ag, c, dStop, now)
     -- emergency vehicle about to cross
     local hx, hy = ag.hx, ag.hy
     local jx, jy = Geo.pose(-c, 0)
-    if jx and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, jx, jy, hx, hy) then
+    if jx and not clearing and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, jx, jy, hx, hy) then
         return "els"
     end
 
@@ -144,13 +148,57 @@ local function gate(ag, c, dStop, now)
     end
 
     local boxed = laneEntryBlocked(Net.cto[c], ag)
-    if boxed then return "box", boxed end
+    if boxed and not clearing then return "box", boxed end
     return nil
 end
 
 ------------------------------------------------------------------------ obstacles
 
-local nearBuf = {}
+local nearBuf, corrBuf, corrAgents = {}, {}, {}
+
+-- half extents of obstacle o along / across the heading of agent ag (vehicles may stand crosswise)
+local function extents(o, ag)
+    if not o.fx then return o.hl, o.hw end
+    local c = abs(o.fx * ag.hx + o.fy * ag.hy)
+    local s = sqrt(max(0, 1 - c * c))
+    return c * o.hl + s * o.hw, s * o.hl + c * o.hw
+end
+
+-- is the way around obstacle o (driving at lateral offset lat) blocked by anything else
+-- (other obstacles, oncoming or crossing traffic)?
+local function bypassBlocked(ag, o, lat, gap)
+    if gap < 0 then gap = 0 end
+    local ea = extents(o, ag)
+    local reach = gap + 2 * ea + T.BYPASS_AHEAD
+    local cx, cy = ag.x + ag.hx * reach * 0.5, ag.y + ag.hy * reach * 0.5
+    for i = #corrBuf, 1, -1 do corrBuf[i] = nil end
+    Obstacles.near(cx, cy, reach * 0.5 + 6, corrBuf)
+    for i = 1, #corrBuf do
+        local p = corrBuf[i]
+        if p.el ~= o.el and abs(p.z - ag.z) < 4 then
+            local rx, ry = p.x - ag.x, p.y - ag.y
+            local along = rx * ag.hx + ry * ag.hy
+            local pa, pw = extents(p, ag)
+            if along > -pa - ag.half and along < reach + pa
+                and abs(rx * ag.hy - ry * ag.hx - lat) < 1.05 + pw + T.BYPASS_MARGIN then
+                return true
+            end
+        end
+    end
+    for i = #corrAgents, 1, -1 do corrAgents[i] = nil end
+    Agents.near(cx, cy, reach * 0.5 + 6, corrAgents)
+    for i = 1, #corrAgents do
+        local b = corrAgents[i]
+        if b ~= ag and abs(b.z - ag.z) < 4 and b.hx * ag.hx + b.hy * ag.hy < 0.5 then   -- oncoming / crossing
+            local rx, ry = b.x - ag.x, b.y - ag.y
+            local along = rx * ag.hx + ry * ag.hy
+            if along > -b.half and along < reach + b.half + 12 and abs(rx * ag.hy - ry * ag.hx - lat) < 2.4 + T.BYPASS_MARGIN then
+                return true
+            end
+        end
+    end
+    return false
+end
 
 local function obstacleAccel(ag, v, v0, n, now)
     local L = min(T.OBSTACLE_RANGE, max(25, v * 3 + 15))
@@ -162,20 +210,25 @@ local function obstacleAccel(ag, v, v0, n, now)
         if abs(o.z - ag.z) < 4 then
             local rx, ry = o.x - ag.x, o.y - ag.y
             local along = rx * ag.hx + ry * ag.hy
-            if along > 0 and along < L and abs(rx * ag.hy - ry * ag.hx) < 8 then
+            if along > -6 and along < L + 6 and abs(rx * ag.hy - ry * ag.hx) < 9 then
                 -- lateral distance from the route at that point (curves)
-                local px, py, _, fx, fy = Geo.poseOnChain(chain, n, ag.s + along, 0)
+                local px, py, _, fx, fy = Geo.poseOnChain(chain, n, ag.s + max(along, 0), 0)
                 if px then
                     local h = sqrt(fx * fx + fy * fy)
                     fx, fy = fx / h, fy / h
                     local side = (o.x - px) * fy - (o.y - py) * fx
-                    local gap = along - ag.half - o.hl
+                    local ea, ew = extents(o, ag)
+                    local gap = along - ag.half - ea
                     -- where the agent will be laterally when its front reaches the obstacle
                     local latThere = Geo.latAfter(ag.lat, ag.latTarget, ag.latSlope, gap > 0 and gap or 0)
                     local skip = ag.overtake and ag.overtake.el == o.el
-                    if not skip and abs(side - latThere) < 1.05 + o.hw then
+                    if skip and gap > 1.5 and bypassBlocked(ag, o, ag.overtake.lat, gap) then
+                        -- the way around got blocked: give up passing, wait behind it
+                        ag.overtake, skip = nil, false
+                    end
+                    if not skip and gap > -ag.half and along > 0 and abs(side - latThere) < 1.05 + ew + T.OBSTACLE_MARGIN then
                         local vl = max(0, o.vx * ag.hx + o.vy * ag.hy)
-                        local a = idm(v, v0, gap, vl)
+                        local a = idm(v, v0, gap - T.OBSTACLE_GAP, vl)
                         if not bestA or a < bestA then best, bestA, bestGap, bestSide = o, a, gap, side end
                     end
                 end
@@ -183,13 +236,19 @@ local function obstacleAccel(ag, v, v0, n, now)
         end
     end
 
-    if best and bestGap < 12 and v < 0.5 and sqrt(best.vx * best.vx + best.vy * best.vy) < 0.5 then
+    if best and bestGap < 12 + T.OBSTACLE_GAP and v < 0.5 and sqrt(best.vx * best.vx + best.vy * best.vy) < 0.5 then
         if ag.blockedBy ~= best.el then ag.blockedBy, ag.blockedSince = best.el, now end
         local waited = now - ag.blockedSince
-        if waited > T.OVERTAKE_AFTER and not ag.overtake then
-            local lat = bestSide - (best.hw + 1.0 + 1.3)
+        if waited > T.OVERTAKE_AFTER and not ag.overtake and now >= (ag.bypassAt or 0) then
+            ag.bypassAt = now + T.BYPASS_RECHECK
+            local _, ew = extents(best, ag)
+            local lat = bestSide - (ew + 1.0 + 1.3)
             if lat < -4.5 then lat = -4.5 end
-            ag.overtake = { el = best.el, lat = lat, x = best.x, y = best.y, at = now }
+            -- only go around when the whole way is free; otherwise wait patiently
+            if not bypassBlocked(ag, best, lat, bestGap) then
+                ag.overtake = { el = best.el, lat = lat, x = best.x, y = best.y, at = now,
+                                reach = extents(best, ag) + ag.half + 2.5 }
+            end
         end
         if best.player and waited > T.HORN_AFTER and (not ag.lastHorn or now - ag.lastHorn > 6000) then
             ag.lastHorn, ag.horn = now, true
@@ -221,7 +280,7 @@ local function accelOf(ag, now)
     end
     local ov = ag.overtake
     if ov then
-        local passed = (ov.x - ag.x) * ag.hx + (ov.y - ag.y) * ag.hy < -8
+        local passed = (ov.x - ag.x) * ag.hx + (ov.y - ag.y) * ag.hy < -(ov.reach or 8)
         if passed or now - ov.at > 25000 or not isElement(ov.el) then
             ag.overtake = nil
         elseif T.OVERTAKE_SPEED < v0 then

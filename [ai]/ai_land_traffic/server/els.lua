@@ -70,15 +70,16 @@ end
 
 local cycle = 0
 
-local function setYield(ag, vcap, lat, now)
+local function setYield(ag, vcap, lat, now, clear)
     local e = ag.els
     if e and e.expires > now and e.cycle == cycle then
+        if clear then e.clear = true end
         -- several emergency vehicles in this update: keep the strongest reaction
         if vcap < e.vcap then e.vcap = vcap end
         if math.abs(lat) > math.abs(e.lat) then e.lat = lat end
         e.expires = now + TRAFFIC.ELS_HOLD
     else
-        ag.els = { vcap = vcap, lat = lat, expires = now + TRAFFIC.ELS_HOLD, cycle = cycle }
+        ag.els = { vcap = vcap, lat = lat, expires = now + TRAFFIC.ELS_HOLD, cycle = cycle, clear = clear }
     end
 end
 
@@ -129,10 +130,11 @@ function Els.update(now)
                     local same = ag.hx * e.fx + ag.hy * e.fy
                     local inRange = along < T.ELS_RANGE
                     if e.moving then
-                        if along > 2 and inRange and same > 0.5 and math.abs(side) < 14 then
+                        -- stays pulled over until the emergency vehicle has passed (ELS_PASS_MARGIN ahead)
+                        if along > -T.ELS_PASS_MARGIN and inRange and same > 0.5 and math.abs(side) < 14 then
                             if level == 2 then
                                 local vcap = along < T.ELS_STOP_DIST and 0 or T.ELS_CRAWL_SPEED * 2
-                                setYield(ag, vcap, pullLat(ag), now)
+                                setYield(ag, vcap, pullLat(ag), now, true)
                             else
                                 setYield(ag, T.ELS_LIGHTS_SPEED, pullLat(ag) * T.ELS_LIGHTS_PULL, now)
                             end
@@ -153,13 +155,13 @@ end
 function Els.approachingJunction(ag, x, y, hx, hy)
     local nt = ag.notice
     if not nt then return false end
-    local r2 = TRAFFIC.ELS_JUNCTION_RANGE ^ 2
     local now = getTickCount()
     for _, e in ipairs(E.list) do
         local m = nt[e.el]
         if e.moving and m and m.level > 0 and now - m.at < 1000 then
             local dx, dy = x - e.x, y - e.y
-            if dx * dx + dy * dy < r2 and dx * e.fx + dy * e.fy > -6 and hx * e.fx + hy * e.fy < 0.7 then
+            local r = math.max(TRAFFIC.ELS_JUNCTION_RANGE, e.speed * TRAFFIC.ELS_JUNCTION_TIME + 20)
+            if dx * dx + dy * dy < r * r and dx * e.fx + dy * e.fy > -6 and hx * e.fx + hy * e.fy < 0.7 then
                 return true
             end
         end
