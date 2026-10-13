@@ -1,0 +1,19 @@
+<*
+-- HTTP entry of the dispatcher console (http://<server>:<httpport>/erm/): web_api sends
+-- web/index.html with the css / js it links inlined (in game the same files load as a local
+-- CEF page, and MTA serves client files with a content type browsers refuse for css).
+local PAGE = "web/index.html"
+
+local function read(path)
+    local f = fileExists(path) and fileOpen(path, true)
+    if not f then return nil end
+    local content = fileRead(f, fileGetSize(f))
+    fileClose(f)
+    return content
+end
+
+local html = read(PAGE)
+local files = {}
+for _, path in ipairs(exports.web_api:getAssetRefs(html, PAGE)) do files[path] = read(path) end
+httpWrite(exports.web_api:renderPage(html, files, PAGE))
+*>

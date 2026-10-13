@@ -10,9 +10,42 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --  exports.ui_core:setAlert(text [, r, g, b, duration])
 -- ------------------------------------------------------------
 
+-- ------------------------------------------------------------
+--  Web actors (server/web.lua): an admin acting from the web panel is not a
+--  player element. Every admin* function accepts either; the helpers below hide
+--  the difference. A web actor = { web = true, account, name, level,
+--  player = online player of that account or nil, out = {} } - alerts sent to it
+--  are collected in `out` and returned to the page.
+-- ------------------------------------------------------------
+
+function isWebActor(actor)
+    return type(actor) == "table" and actor.web == true
+end
+
+--- Name shown to others for an admin (player or web actor).
+function actorName(actor)
+    if isWebActor(actor) then return actor.name end
+    return getPlayerName(actor)
+end
+
+--- The in-game player behind an admin (web actor: the one logged in on its account), or nil.
+function actorPlayer(actor)
+    if isWebActor(actor) then
+        return isElement(actor.player) and actor.player or nil
+    end
+    return actor
+end
+
 --- Send an alert to a player / table / the root element.
 --- Colour/duration are optional (a #RRGGBB code may be used in the text).
 function adminAlert(target, text, r, g, b, duration)
+    if isWebActor(target) then
+        target.out[#target.out + 1] = {
+            text = (tostring(L.resolveFor("en", text)):gsub("#%x%x%x%x%x%x", "")),
+            bad  = (r == 255 and g == 90 and b == 90),
+        }
+        return
+    end
     -- message objects stay messages: resolved per receiving player (v_locals)
     triggerClientEvent(target or root, ADMIN.events.alert, resourceRoot, L.isMsg(text) and text or tostring(text), r, g, b, duration)
 end
@@ -40,6 +73,7 @@ end
 
 --- The player's admin level as a number (not logged in / unknown = 0).
 function getAdminLevel(player)
+    if isWebActor(player) then return player.level end
     if not isElement(player) or getElementType(player) ~= "player" then return 0 end
     if getElementData(player, "isLogged") ~= true then return 0 end
     return tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0
@@ -96,7 +130,8 @@ end
 --- One line per admin action in the server log.
 function adminLog(player, text)
     outputServerLog(("[v_admin] %s (lvl %d): %s"):format(
-        isElement(player) and getPlayerName(player) or "Console", getAdminLevel(player), text))
+        isWebActor(player) and (player.account .. " (web)") or isElement(player) and getPlayerName(player) or "Console",
+        getAdminLevel(player), text))
 end
 
 -- ------------------------------------------------------------

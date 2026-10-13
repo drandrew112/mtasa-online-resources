@@ -12,6 +12,8 @@
     <include resource="v_chat" />
     <!-- admin_level + admin jail data live in the shared accounts table -->
     <include resource="v_mysql" />
+    <!-- web admin panel (http://<server>:<httpport>/v_admin/) -->
+    <include resource="web_api" />
 
     <!-- Shared configuration (both sides) -->
     <script src="locals.lua" type="shared" />
@@ -30,6 +32,7 @@
     <script src="server/mute.lua"         type="server" />
     <script src="server/misc.lua"         type="server" />
     <script src="server/panel.lua"        type="server" />
+    <script src="server/web.lua"          type="server" />
 
     <!-- Client side -->
     <script src="client/hud.lua"    type="client" />
@@ -43,4 +46,20 @@
     <script src="client/panel/commands.lua" type="client" />
 
     <file src="pmalert.mp3" type="client" />
+
+    <!-- ================= WEB ADMIN PANEL =================
+         built on web_api: web/http.html sends web/index.html with the css / js inlined.
+         HTTP only (not a ui_browser site), so the files are not sent to clients. -->
+    <html src="web/http.html" default="true" />
+    <file src="web/index.html"    download="false" />
+    <file src="web/css/style.css" download="false" />
+    <file src="web/js/app.js"     download="false" />
+
+    <!-- web panel API (server/web.lua, first argument = session token) -->
+    <export function="adminWebLogin"  type="server" http="true" />
+    <export function="adminWebLogout" type="server" http="true" />
+    <export function="adminWebState"  type="server" http="true" />
+    <export function="adminWebAction" type="server" http="true" />
+    <export function="adminWebReport" type="server" http="true" />
+    <export function="adminWebLogs"   type="server" http="true" />
 </meta>

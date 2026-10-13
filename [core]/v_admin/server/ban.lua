@@ -28,7 +28,7 @@ function adminBan(player, accName, reason)
     local online = playerOnAccount(accName)
     if online and not canPunish(player, online) then return end
 
-    local ok, err = exports.v_accounts:banAccount(accName, reason, getPlayerName(player))
+    local ok, err = exports.v_accounts:banAccount(accName, reason, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.ban_failed_v_accounts_not_reachable")), 255, 90, 90)
     end
@@ -61,14 +61,14 @@ function adminKick(player, target, reason)
     if not isElement(target) or type(reason) ~= "string" or reason == "" then
         return adminAlert(player, L.msg("v_admin.ban.usage_kick_id_reason"), 255, 90, 90)
     end
-    if target == player then
+    if target == actorPlayer(player) then
         return adminAlert(player, L.msg("v_admin.ban.you_can_t_kick_yourself"), 255, 90, 90)
     end
     if not canPunish(player, target) then return end
 
     local name = getPlayerName(target)
     -- Needs function.kickPlayer: resource.v_admin is in the Admin ACL group.
-    if not kickPlayer(target, player, reason) then
+    if not kickPlayer(target, actorName(player), reason) then
         return adminAlert(player, L.msg("v_admin.ban.kick_failed_v_admin_needs_function"), 255, 90, 90)
     end
 

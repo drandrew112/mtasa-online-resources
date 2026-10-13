@@ -297,3 +297,17 @@ recorded with `sender = "SYSTEM"`.
 | `banned` | server (`v_accounts`) | whether banned (bool) |
 | `banned_date` / `banned_admin` / `banned_reason` / `banned_account` | server (`v_accounts`) | ban details |
 | `mute_until` | server (`v_chat`) | mute end (epoch); `mute_reason` / `mute_admin` |
+
+## Web admin panel
+
+`http://<server>:<httpport>/v_admin/` - the O-key panel in the browser (Players, Reports incl. saved
+logs, Server, Commands). Built on `web_api`; English only; signs in with the game account through
+`exports.v_accounts:httpLogin` (needs admin level >= `ADMIN.perms.panel`, re-checked on every call).
+
+* `server/web.lua` - sessions + the `http="true"` exports (`adminWebLogin/Logout/State/Action/Report/Logs`).
+* Every action runs through the same `admin*` functions as the commands and the in-game panel
+  (`adminRunAction`, `adminReportClaim/Message/Close/TP`), with a *web actor* (`isWebActor`,
+  `actorName`, `actorPlayer` in `server/core.lua`) instead of a player element: levels and
+  `canPunish` apply unchanged, alerts are collected and returned to the page as toasts.
+* `/goto`, `/gethere` and the report teleport need the admin to be online in game on the same account.
+* A report claimed from the web stays claimed while that account has a live web session.

@@ -17,7 +17,7 @@ function adminMute(player, target, minutes, reason)
     if not canPunish(player, target) then return end
     minutes = math.max(1, math.floor(minutes))
 
-    local ok, err = exports.v_chat:mutePlayer(target, minutes, reason, getPlayerName(player))
+    local ok, err = exports.v_chat:mutePlayer(target, minutes, reason, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.mute.mute_failed")), 255, 90, 90)
     end
@@ -33,7 +33,7 @@ function adminUnmute(player, target)
     end
     if not isElement(target) then return end
 
-    local ok, err = exports.v_chat:unmutePlayer(target, getPlayerName(player))
+    local ok, err = exports.v_chat:unmutePlayer(target, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.mute.unmute_failed")), 255, 90, 90)
     end

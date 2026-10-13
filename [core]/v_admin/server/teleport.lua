@@ -12,16 +12,20 @@ function adminGoto(player, target)
     if not hasAdminLevel(player, ADMIN.perms.teleport) then
         return denyAccess(player, ADMIN.perms.teleport)
     end
-    if not isElement(target) or target == player then return end
+    local me = actorPlayer(player)
+    if not me then
+        return adminAlert(player, "You need to be online in game (on this account) to teleport.", 255, 90, 90)
+    end
+    if not isElement(target) or target == me then return end
 
     local x, y, z = getElementPosition(target)
     local int, dim = getElementInterior(target), getElementDimension(target)
 
-    setElementPosition(player, x + 1.5, y, z)
-    setElementInterior(player, int)
-    setElementDimension(player, dim)
+    setElementPosition(me, x + 1.5, y, z)
+    setElementInterior(me, int)
+    setElementDimension(me, dim)
 
-    adminAlert(target, L.msg("v_admin.report.teleported_to_you", { player = getPlayerName(player) }))
+    adminAlert(target, L.msg("v_admin.report.teleported_to_you", { player = actorName(player) }))
     adminAlert(player, L.msg("v_admin.teleport.you_teleported_to", { player = getPlayerName(target) }))
 end
 
@@ -40,10 +44,14 @@ function adminGethere(player, target)
     if not hasAdminLevel(player, ADMIN.perms.teleport) then
         return denyAccess(player, ADMIN.perms.teleport)
     end
-    if not isElement(target) or target == player then return end
+    local me = actorPlayer(player)
+    if not me then
+        return adminAlert(player, "You need to be online in game (on this account) to bring a player.", 255, 90, 90)
+    end
+    if not isElement(target) or target == me then return end
 
-    local x, y, z = getElementPosition(player)
-    local int, dim = getElementInterior(player), getElementDimension(player)
+    local x, y, z = getElementPosition(me)
+    local int, dim = getElementInterior(me), getElementDimension(me)
 
     local veh = getPedOccupiedVehicle(target)
     if veh then
@@ -57,7 +65,7 @@ function adminGethere(player, target)
     setElementInterior(target, int)
     setElementDimension(target, dim)
 
-    adminAlert(target, L.msg("v_admin.teleport.teleported_you_to_them", { player = getPlayerName(player) }))
+    adminAlert(target, L.msg("v_admin.teleport.teleported_you_to_them", { player = actorName(player) }))
     adminAlert(player, L.msg("v_admin.teleport.you_brought_to_you", { player = getPlayerName(target) }))
 end
 

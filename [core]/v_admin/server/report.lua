@@ -44,6 +44,32 @@ local function isReportAdmin(player)
     return hasAdminLevel(player, ADMIN.perms.reports)
 end
 
+-- Account of an admin (player element or web actor) - the identity of a claim.
+local function actorAccount(admin)
+    if isWebActor(admin) then return admin.account end
+    return exports.v_accounts:getName(admin) or false
+end
+
+-- Someone holds the claim right now: the claiming player is online, or (web claim)
+-- the admin's web session is alive (WebAdmin.accountActive, server/web.lua).
+local function claimActive(r)
+    if not r.claimedByName then return false end
+    if r.claimedBy and isElement(r.claimedBy) then return true end
+    return r.claimedAcc and WebAdmin and WebAdmin.accountActive(r.claimedAcc) or false
+end
+
+-- The report is claimed by an admin other than `admin`.
+local function claimedByOther(r, admin)
+    return claimActive(r) and r.claimedAcc ~= actorAccount(admin)
+end
+
+local function setClaim(r, admin)
+    r.claimedBy     = actorPlayer(admin)
+    r.claimedAcc    = actorAccount(admin)
+    r.claimedByName = actorName(admin)
+    r.status        = "claimed"
+end
+
 local function onlineReportAdmins()
     local list = {}
     for _, p in ipairs(getElementsByType("player")) do
@@ -254,63 +280,57 @@ end)
 -- ------------------------------------------------------------
 --  Player / admin -> chat message in a report
 -- ------------------------------------------------------------
+--- Admin (player or web actor) writes into a report; an unclaimed report is claimed.
+function adminReportMessage(sender, id, text)
+    local r = reports[tonumber(id) or 0]
+    if not r then return false end
+
+    text = trim(text)
+    if text == "" then return false end
+
+    if not claimActive(r) then
+        setClaim(r, sender)
+        if isElement(r.player) then
+            adminAlert(r.player, L.msg("v_admin.report.has_claimed_your_report", { claimed_by_name = r.claimedByName }))
+        end
+    end
+
+    addMessage(r, "admin", actorName(sender), text)
+    ping(r.player)
+    syncAll(r)
+    return true
+end
+
 addEvent(ADMIN.events.reportMsg, true)
 addEventHandler(ADMIN.events.reportMsg, root, function(id, text)
     local sender = client
     local r = reports[tonumber(id) or 0]
     if not r then return end
 
-    local who
     if sender == r.player then
-        who = "player"
-    elseif isReportAdmin(sender) then
-        who = "admin"
-    else
-        return
-    end
-
-    text = trim(text)
-    if text == "" then return end
-
-    -- An admin writing into an unclaimed report claims it.
-    if who == "admin" and not (r.claimedBy and isElement(r.claimedBy)) then
-        r.claimedBy     = sender
-        r.claimedByName = getPlayerName(sender)
-        r.status        = "claimed"
-        if isElement(r.player) then
-            adminAlert(r.player, L.msg("v_admin.report.has_claimed_your_report", { claimed_by_name = r.claimedByName }))
-        end
-    end
-
-    addMessage(r, who, getPlayerName(sender), text)
-
-    if who == "player" then
+        text = trim(text)
+        if text == "" then return end
+        addMessage(r, "player", getPlayerName(sender), text)
         ping(r.claimedBy)
-    else
-        ping(r.player)
+        syncAll(r)
+    elseif isReportAdmin(sender) then
+        adminReportMessage(sender, id, text)
     end
-
-    syncAll(r)
 end)
 
 -- ------------------------------------------------------------
 --  Admin -> claim a report
 -- ------------------------------------------------------------
-addEvent(ADMIN.events.reportClaim, true)
-addEventHandler(ADMIN.events.reportClaim, root, function(id)
-    local admin = client
-    if not isReportAdmin(admin) then return end
-
+function adminReportClaim(admin, id)
     local r = reports[tonumber(id) or 0]
-    if not r then return end
+    if not r then return false end
 
-    if r.claimedBy and isElement(r.claimedBy) and r.claimedBy ~= admin then
-        return adminAlert(admin, L.msg("v_admin.report.this_report_is_already_claimed_by", { claimed_by_name = r.claimedByName }), 255, 90, 90)
+    if claimedByOther(r, admin) then
+        adminAlert(admin, L.msg("v_admin.report.this_report_is_already_claimed_by", { claimed_by_name = r.claimedByName }), 255, 90, 90)
+        return false
     end
 
-    r.claimedBy     = admin
-    r.claimedByName = getPlayerName(admin)
-    r.status        = "claimed"
+    setClaim(r, admin)
     addMessage(r, "system", "", L.msg("v_admin.report.claimed_this_report", { claimed_by_name = r.claimedByName }))
 
     if isElement(r.player) then
@@ -318,6 +338,13 @@ addEventHandler(ADMIN.events.reportClaim, root, function(id)
     end
 
     syncAll(r)
+    return true
+end
+
+addEvent(ADMIN.events.reportClaim, true)
+addEventHandler(ADMIN.events.reportClaim, root, function(id)
+    if not isReportAdmin(client) then return end
+    adminReportClaim(client, id)
 end)
 
 -- ------------------------------------------------------------
@@ -355,31 +382,47 @@ addEventHandler(ADMIN.events.reportClose, root, function(id)
         end
         closeReport(r)  -- no alert: the player did it themselves
     elseif isReportAdmin(sender) then
-        closeReport(r, L.msg("v_admin.report.your_report_was_closed_by", { player = getPlayerName(sender) }))
+        adminReportClose(sender, id)
     end
 end)
+
+function adminReportClose(admin, id)
+    local r = reports[tonumber(id) or 0]
+    if not r then return false end
+    closeReport(r, L.msg("v_admin.report.your_report_was_closed_by", { player = actorName(admin) }))
+    return true
+end
 
 -- ------------------------------------------------------------
 --  Admin -> teleport to the reporting player
 -- ------------------------------------------------------------
-addEvent(ADMIN.events.reportTP, true)
-addEventHandler(ADMIN.events.reportTP, root, function(id)
-    local admin = client
-    if not isReportAdmin(admin) then return end
-
+function adminReportTP(admin, id)
     local r = reports[tonumber(id) or 0]
-    if not r then return end
+    if not r then return false end
     if not isElement(r.player) then
-        return adminAlert(admin, L.msg("v_admin.report.that_player_is_offline"), 255, 90, 90)
+        adminAlert(admin, L.msg("v_admin.report.that_player_is_offline"), 255, 90, 90)
+        return false
+    end
+    local me = actorPlayer(admin)
+    if not me then
+        adminAlert(admin, "You need to be online in game (on this account) to teleport.", 255, 90, 90)
+        return false
     end
 
     local x, y, z = getElementPosition(r.player)
-    setElementPosition(admin, x + 1.5, y, z)
-    setElementInterior(admin, getElementInterior(r.player))
-    setElementDimension(admin, getElementDimension(r.player))
+    setElementPosition(me, x + 1.5, y, z)
+    setElementInterior(me, getElementInterior(r.player))
+    setElementDimension(me, getElementDimension(r.player))
 
-    adminAlert(r.player, L.msg("v_admin.report.teleported_to_you", { player = getPlayerName(admin) }))
+    adminAlert(r.player, L.msg("v_admin.report.teleported_to_you", { player = actorName(admin) }))
     adminAlert(admin, L.msg("v_admin.report.you_teleported_to", { player_name = r.playerName }))
+    return true
+end
+
+addEvent(ADMIN.events.reportTP, true)
+addEventHandler(ADMIN.events.reportTP, root, function(id)
+    if not isReportAdmin(client) then return end
+    adminReportTP(client, id)
 end)
 
 -- ------------------------------------------------------------
@@ -409,6 +452,38 @@ end)
 -- ------------------------------------------------------------
 --  Admin panel: refresh active list / browse saved logs
 -- ------------------------------------------------------------
+
+--- Active reports with every text resolved to English (web panel).
+function adminReportListEnglish()
+    local list = reportList()
+    for _, r in ipairs(list) do
+        local msgs = {}
+        for i, m in ipairs(r.messages) do
+            msgs[i] = { who = m.who, name = m.name, time = m.time, text = L.resolveFor("en", m.text) }
+        end
+        r.messages = msgs
+    end
+    table.sort(list, function(a, b) return a.id < b.id end)
+    return list
+end
+
+--- Saved report logs, newest first (last 200).
+function adminReportLogList()
+    local idx = logIndex()
+    local out = {}
+    for i = #idx, math.max(1, #idx - 200 + 1), -1 do out[#out + 1] = idx[i] end
+    return out
+end
+
+--- One saved log file, or nil for an invalid name / unreadable file.
+function adminReportLogRead(fileName)
+    if type(fileName) ~= "string" or fileName:find("[/\]") or fileName:find("%.%.")
+        or not fileName:find("%.json$") then
+        return nil
+    end
+    local data = readJSONFile(LOG_DIR .. fileName)
+    return type(data) == "table" and data or nil
+end
 
 addEvent(ADMIN.events.reportWantActive, true)
 addEventHandler(ADMIN.events.reportWantActive, root, function()

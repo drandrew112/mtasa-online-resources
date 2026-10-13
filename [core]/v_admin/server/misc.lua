@@ -33,7 +33,7 @@ function adminHeal(player, target)
     setPedArmor(target, 100)
 
     if target ~= player then
-        adminAlert(target, L.msg("v_admin.misc.healed_you", { player = getPlayerName(player) }))
+        adminAlert(target, L.msg("v_admin.misc.healed_you", { player = actorName(player) }))
         adminAlert(player, L.msg("v_admin.misc.you_healed", { player = getPlayerName(target) }))
     else
         adminAlert(player, L.msg("v_admin.misc.you_healed_yourself"))

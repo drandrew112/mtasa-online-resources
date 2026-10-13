@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="osa-flex locked">
+    <div class="osa-login" id="login">
+        <form class="osa-login-box" id="loginForm" autocomplete="off">
+            <h1>Admin Panel</h1>
+            <p>Sign in with your game account</p>
+            <input id="loginUser" type="text" placeholder="Username" maxlength="64" autocomplete="username" autofocus>
+            <input id="loginPass" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+            <div class="osa-login-error" id="loginError"></div>
+            <button class="osa-btn primary" type="submit" id="loginBtn">Sign in</button>
+        </form>
+    </div>
+
+    <header class="osa-topbar">
+        <div class="osa-brand">
+            <div>
+                <strong>Admin Panel</strong>
+                <small>Server administration</small>
+            </div>
+        </div>
+        <nav class="osa-tabs" id="nav">
+            <button class="osa-tab active" data-tab="players">Players <b id="cntPlayers">0</b></button>
+            <button class="osa-tab" data-tab="reports">Reports <b id="cntReports" class="alert-count">0</b></button>
+            <button class="osa-tab" data-tab="server">Server</button>
+            <button class="osa-tab" data-tab="commands">Commands</button>
+        </nav>
+        <div class="osa-top-right" style="margin-left:auto">
+            <span class="who" id="who"></span>
+            <button class="osa-btn small" id="logoutBtn">Sign out</button>
+            <span class="osa-conn" id="conn" title="Connection"></span>
+            <span class="osa-clock" id="clock">--:--:--</span>
+        </div>
+    </header>
+
+    <main class="osa-main" id="main">
+        <!-- ============ players ============ -->
+        <section class="tab-page" id="page-players">
+            <aside class="osa-panel pl-list">
+                <div class="osa-panel-head">
+                    <input class="osa-input grow" id="plFilter" type="search" placeholder="Filter: ID / name / account" autocomplete="off">
+                </div>
+                <div class="osa-scroll grow" id="plRows"></div>
+                <div class="osa-panel-foot" id="plFoot"></div>
+            </aside>
+            <div class="osa-panel pl-detail osa-scroll" id="plDetail"></div>
+            <aside class="osa-panel pl-actions osa-scroll" id="plActions"></aside>
+        </section>
+
+        <!-- ============ reports ============ -->
+        <section class="tab-page" id="page-reports" hidden>
+            <aside class="osa-panel rp-list">
+                <div class="osa-panel-head">
+                    <div class="osa-tabs" id="rpMode">
+                        <button class="osa-tab active" data-mode="active">Active</button>
+                        <button class="osa-tab" data-mode="logs">Logs</button>
+                    </div>
+                </div>
+                <div class="osa-scroll grow" id="rpRows"></div>
+            </aside>
+            <div class="osa-panel rp-chat" id="rpChat"></div>
+        </section>
+
+        <!-- ============ server ============ -->
+        <section class="tab-page" id="page-server" hidden>
+            <div class="osa-panel sv-card">
+                <div class="osa-panel-head"><strong>Admin announcement</strong><span class="osa-muted" id="svAnnLevel"></span></div>
+                <div class="card-body">
+                    <p class="osa-muted">Sent to every player on the server.</p>
+                    <textarea class="osa-textarea" id="svAnnounce" maxlength="200" placeholder="Announcement text"></textarea>
+                    <div class="row"><span class="osa-muted" id="svAnnCount">0 / 200</span><button class="osa-btn primary" id="svAnnBtn">Send announcement</button></div>
+                </div>
+            </div>
+            <div class="osa-panel sv-card">
+                <div class="osa-panel-head"><strong>Unban account</strong><span class="osa-muted" id="svBanLevel"></span></div>
+                <div class="card-body">
+                    <p class="osa-muted">Lifts the v_accounts ban of an account.</p>
+                    <div class="row"><input class="osa-input grow" id="svUnban" type="text" maxlength="32" placeholder="Account name" autocomplete="off"><button class="osa-btn" id="svUnbanBtn">Unban</button></div>
+                </div>
+            </div>
+            <div class="osa-panel sv-card" id="svOverview"></div>
+        </section>
+
+        <!-- ============ commands ============ -->
+        <section class="tab-page" id="page-commands" hidden>
+            <div class="osa-panel osa-scroll" id="cmdList"></div>
+        </section>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

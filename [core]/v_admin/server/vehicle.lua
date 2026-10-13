@@ -37,7 +37,7 @@ function adminFixVeh(player, target)
     fixVehicle(veh)
 
     if target and target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.repaired_your_vehicle", { player = getPlayerName(player) }))
+        adminAlert(target, L.msg("v_admin.vehicle.repaired_your_vehicle", { player = actorName(player) }))
         adminAlert(player, L.msg("v_admin.vehicle.you_repaired_s_vehicle", { player = getPlayerName(target) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.vehicle_repaired"))
@@ -72,7 +72,7 @@ function adminFlipVeh(player, target)
     setElementRotation(veh, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
 
     if target and target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.flipped_your_vehicle_back", { player = getPlayerName(player) }))
+        adminAlert(target, L.msg("v_admin.vehicle.flipped_your_vehicle_back", { player = actorName(player) }))
         adminAlert(player, L.msg("v_admin.vehicle.you_flipped_s_vehicle_back", { player = getPlayerName(target) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.vehicle_flipped_back"))
@@ -105,7 +105,7 @@ function adminGetOut(player, target)
     removePedFromVehicle(target)
 
     if target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.pulled_you_out_of_your_vehicle", { player = getPlayerName(player) }))
+        adminAlert(target, L.msg("v_admin.vehicle.pulled_you_out_of_your_vehicle", { player = actorName(player) }))
         adminAlert(player, L.msg("v_admin.vehicle.you_pulled_out_of_their_vehicle", { player = getPlayerName(target) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.you_left_your_vehicle"))

@@ -122,6 +122,19 @@ local function collectPlayer(player)
     return d
 end
 
+--- Data of every online player (panel + web panel). Texts are resolved to English when
+--- `english` is set (the web page cannot resolve message objects).
+function adminPlayerList(english)
+    local list = {}
+    for _, player in ipairs(getElementsByType("player")) do
+        local d = collectPlayer(player)
+        if english then d.rank = L.resolveFor("en", d.rank) end
+        list[#list + 1] = d
+    end
+    table.sort(list, function(a, b) return a.id < b.id end)
+    return list
+end
+
 local function sendPanel(admin, isRefresh, tab)
     if not isElement(admin) then return end
     if not hasAdminLevel(admin, ADMIN.perms.panel) then
@@ -129,11 +142,7 @@ local function sendPanel(admin, isRefresh, tab)
         return
     end
 
-    local list = {}
-    for _, player in ipairs(getElementsByType("player")) do
-        list[#list + 1] = collectPlayer(player)
-    end
-    table.sort(list, function(a, b) return a.id < b.id end)
+    local list = adminPlayerList()
 
     triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false)
 end
@@ -206,14 +215,9 @@ local GLOBAL_ACTIONS = {
     ["announce"]     = function(admin, a) adminAnnounce(admin, text(a)) end,
 }
 
-addEvent(E.panelAction, true)
-addEventHandler(E.panelAction, resourceRoot, function(action, targetId, a, b)
-    if not client then return end
-    if not hasAdminLevel(client, ADMIN.perms.panel) then
-        return denyAccess(client, ADMIN.perms.panel)
-    end
-
-    local admin = client
+--- Run a panel action for an admin (player element or web actor). Returns false for an
+--- unknown action. Level checks happen inside the admin* functions.
+function adminRunAction(admin, action, targetId, a, b)
     if GLOBAL_ACTIONS[action] then
         GLOBAL_ACTIONS[action](admin, a)
     elseif ACTIONS[action] then
@@ -224,8 +228,20 @@ addEventHandler(E.panelAction, resourceRoot, function(action, targetId, a, b)
             ACTIONS[action](admin, target, a, b)
         end
     else
-        return
+        return false
     end
+    return true
+end
+
+addEvent(E.panelAction, true)
+addEventHandler(E.panelAction, resourceRoot, function(action, targetId, a, b)
+    if not client then return end
+    if not hasAdminLevel(client, ADMIN.perms.panel) then
+        return denyAccess(client, ADMIN.perms.panel)
+    end
+
+    local admin = client
+    if not adminRunAction(admin, action, targetId, a, b) then return end
 
     -- Fresh data right away (kick removes the player a frame later).
     setTimer(sendPanel, 200, 1, admin, true)

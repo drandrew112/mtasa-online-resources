@@ -125,7 +125,7 @@ function adminJail(player, target, minutes, reason)
     end
     if not canPunish(player, target) then return end
 
-    local adminName = getPlayerName(player)
+    local adminName = actorName(player)
     setPlayerInAJ(target, true, minutes)
 
     setData(target, "adminjail_admin", adminName)
@@ -149,7 +149,7 @@ function adminUnjail(player, target)
     end
 
     setPlayerInAJ(target, false)
-    adminAlert(target, L.msg("v_admin.jail.released_from_admin_jail_by", { player = getPlayerName(player) }), 85, 255, 85)
+    adminAlert(target, L.msg("v_admin.jail.released_from_admin_jail_by", { player = actorName(player) }), 85, 255, 85)
     adminAlert(player, L.msg("v_admin.jail.you_released_from_admin_jail", { player = getPlayerName(target) }))
     adminLog(player, "released " .. getPlayerName(target) .. " from admin jail")
 end

@@ -13,7 +13,7 @@ function adminAnnounce(player, message)
         return adminAlert(player, L.msg("v_admin.announce.usage_af_message"), 255, 90, 90)
     end
 
-    adminBroadcast(L.msg("v_admin.announce.announcement", { player = getPlayerName(player), message = message }), nil, nil, nil, 8000)
+    adminBroadcast(L.msg("v_admin.announce.announcement", { player = actorName(player), message = message }), nil, nil, nil, 8000)
     adminLog(player, "announcement: " .. message)
 end
 
