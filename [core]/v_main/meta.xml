@@ -9,7 +9,6 @@
 
     <!-- admin_level lookups for the privileged console commands
          (/restartallresource, /updateresources) -->
-    <include resource="v_locals" />
     <include resource="v_mysql" />
 
     <settings>
