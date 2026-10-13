@@ -2,7 +2,11 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Editing sessions: entering / leaving the creator, permissions, locks, loading
 -- and saving through v_jobmanager's community storage, test runs.
 
-local jm = exports.v_jobmanager
+-- v_jobmanager is a soft dependency: it may start after this resource, and it can restart on its own,
+-- so every call resolves the export at use time (a cached exports.v_jobmanager would throw at load).
+local jm = setmetatable({}, { __index = function(_, name)
+    return function(_, ...) return exports.v_jobmanager[name](exports.v_jobmanager, ...) end
+end })
 
 -- player -> session
 --   { slot, dimension, back = {...}, gameId, type, storedMarker, image, test }

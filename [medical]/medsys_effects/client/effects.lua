@@ -74,7 +74,7 @@ local function updateShake()
     if hitTick and getTickCount() - hitTick < hit.shakeTime then level = math.max(level, hit.shake) end
     if level ~= shakeLevel then
         shakeLevel = level
-        setCameraShakeLevel(level)
+        setCameraDrunkLevel(level)
     end
 end
 
@@ -278,5 +278,5 @@ end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     applyControls({})
-    setCameraShakeLevel(0)
+    setCameraDrunkLevel(0)
 end)

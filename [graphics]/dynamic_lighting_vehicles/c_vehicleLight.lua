@@ -195,7 +195,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement( getThisResource
 		for index,thisVeh in ipairs(getElementsByType("vehicle")) do
 			if isElementStreamedIn(thisVeh) then
 				local vehType = getVehicleType(thisVeh)
-				local vehID = getVehicleID(thisVeh)
+				local vehID = getElementModel(thisVeh)
 				local isMatch = true
 				for index,name in ipairs(excludeVehicleId) do
 					if vehID==name then isMatch = false end

@@ -14,6 +14,15 @@ v_jobmanager (`core/community.lua`) under `games/community/`.
 You cannot enter from a lobby or a match, and you cannot join a lobby while in
 the creator. v_jobmanager checks the `jobCreator` element data for this.
 
+## Dependency on v_jobmanager
+
+v_jobmanager is a soft dependency: there is deliberately no `<include>` for it (an include
+would restart the creator, and kick every editor out, whenever v_jobmanager restarts). The
+start order therefore does not guarantee v_jobmanager is running when this resource loads, so
+`server/main.lua` never caches `exports.v_jobmanager`: `jm` is a lazy proxy that resolves the
+export on every call. Keep it that way; a top-level `exports.v_jobmanager` throws at load time
+and leaves the whole server script unloaded.
+
 Every session gets its own dimension (`45000 + slot`). Position, dimension,
 health, armour and weapons are saved on entry and restored on exit.
 

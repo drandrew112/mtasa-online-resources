@@ -24,7 +24,7 @@ local function hit(el, mx, my, speed)
     local push = (speed * 1.1 + 2) / 50
     if getElementType(el) == "vehicle" then
         setElementVelocity(el, mx * push, my * push, 0.12)
-        setVehicleTurnVelocity(el, 0, 0, (math.random() - 0.5) * 0.05)
+        setElementAngularVelocity(el, 0, 0, (math.random() - 0.5) * 0.05)
         setElementHealth(el, math.max(0, getElementHealth(el) - speed * 20))
     else
         if isPedInVehicle(el) then return end
