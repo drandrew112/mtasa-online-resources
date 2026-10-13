@@ -26,9 +26,11 @@ MSM = {
     CMD_VARIETY = "medscenevariety", -- /medscenevariety [sim [n] | clear]
 
     -- Defaults of a new scene's ERM task
+    -- Title / description live per language in locales[code] = { title, description };
+    -- English is required, every other language is optional (falls back to English)
+    DEFAULT_LANG = "en",
     DEFAULT_ERM = {
-        title = "Medical emergency",
-        description = "",
+        locales = { en = { title = "Medical emergency", description = "" } },
         caller = "SceneManager",
         priority = 2,
     },

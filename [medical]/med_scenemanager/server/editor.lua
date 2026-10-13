@@ -116,6 +116,23 @@ end
 
 ---------------------------------------------------------------- client state
 
+-- Languages offered by the ERM Locales menu: { { value = "en", label = "English" }, ... }
+-- (v_locals when it runs, English + Hungarian otherwise). English is always first.
+local function localeLanguages()
+    local list
+    local res = getResourceFromName("v_locals")
+    if res and getResourceState(res) == "running" then
+        local ok, result = pcall(function() return exports.v_locals:getLanguages() end)
+        if ok and type(result) == "table" then list = result end
+    end
+    list = list or { { value = "en", label = "English" }, { value = "hu", label = "Magyar" } }
+    table.sort(list, function(a, b)
+        if (a.value == "en") ~= (b.value == "en") then return a.value == "en" end
+        return tostring(a.value) < tostring(b.value)
+    end)
+    return list
+end
+
 -- Everything the R menu needs
 function Editor.sync(session)
     local player = session.player
@@ -136,7 +153,7 @@ function Editor.sync(session)
             target = MSM.SCENE_DIR .. Storage.pathFor(scene.file or "<name>", d) .. ".json",
             category = d.category,
             location = d.location, suggestedLocation = msmSuggestedLocation(d.center, d.interior), locations = state.locations,
-            erm = d.erm, enabled = d.enabled, weight = d.weight,
+            erm = d.erm, languages = localeLanguages(), enabled = d.enabled, weight = d.weight,
             center = d.center, interior = d.interior,
             vehicles = {}, peds = {},
         }
@@ -422,6 +439,31 @@ end
 
 local SCENE_ACTIONS -- actions that need a loaded scene
 
+-- Asks for one ERM text of one language. English may not be emptied; an empty answer
+-- clears the field of another language (both fields empty = language removed on save).
+local function askLocale(session, lang, field, prompt, maxLen)
+    if type(lang) ~= "string" or not lang:match("^%l%l") then return end
+    local locales = session.scene.data.erm.locales
+    local current = locales[lang] and locales[lang][field] or ""
+    Editor.askText(session.player, prompt .. " [" .. lang .. "]", maxLen, current, function(text)
+        if not session.scene then return end
+        local isDefault = lang == MSM.DEFAULT_LANG
+        if text == "" and isDefault and field == "title" then
+            msmNotify(session.player, "Scene editor", "The English title is required.")
+            return
+        end
+        local entry = locales[lang] or { title = "", description = "" }
+        entry[field] = text
+        if entry.title == "" and entry.description == "" and not isDefault then
+            locales[lang] = nil
+        else
+            locales[lang] = entry
+        end
+        Editor.markDirty(session)
+    end)
+    return true
+end
+
 local ACTIONS = {
     new = function(session) newScene(session) end,
     load = function(session, name)
@@ -469,17 +511,16 @@ SCENE_ACTIONS = {
         session.scene.data.interior = getElementInterior(session.player)
         msmNotify(session.player, "Scene editor", "ERM task centre set to your position.")
     end,
-    title = function(session)
-        Editor.askText(session.player, "ERM task title", 80, session.scene.data.erm.title, function(text)
-            if session.scene and text ~= "" then session.scene.data.erm.title = text; Editor.markDirty(session) end
-        end)
-        return true
+    title = function(session, lang)
+        return askLocale(session, lang, "title", "ERM task title", 80)
     end,
-    description = function(session)
-        Editor.askText(session.player, "ERM task description", 250, session.scene.data.erm.description, function(text)
-            if session.scene then session.scene.data.erm.description = text; Editor.markDirty(session) end
-        end)
-        return true
+    description = function(session, lang)
+        return askLocale(session, lang, "description", "ERM task description", 250)
+    end,
+    removelocale = function(session, lang)
+        if lang ~= MSM.DEFAULT_LANG and type(lang) == "string" then
+            session.scene.data.erm.locales[lang] = nil
+        end
     end,
     caller = function(session)
         Editor.askText(session.player, "ERM caller", 40, session.scene.data.erm.caller, function(text)

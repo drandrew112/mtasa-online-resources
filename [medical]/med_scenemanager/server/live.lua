@@ -101,7 +101,7 @@ local function createTask(scene, data)
         priority = erm.priority,
         patients = scene.patients,
     }
-    local id, err = exports[MSM.ERM]:createTask(erm.title, erm.description, c[1], c[2], c[3], erm.caller, nil, meta)
+    local id, err = exports[MSM.ERM]:createTask(erm.locales.en.title, erm.locales.en.description, c[1], c[2], c[3], erm.caller, nil, meta)
     return id, err
 end
 

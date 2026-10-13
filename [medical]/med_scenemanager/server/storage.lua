@@ -71,8 +71,7 @@ function Storage.normalize(data, name)
         interior = interior,
         dimension = math.floor(num(data.dimension, 0)),
         erm = {
-            title = tostring(erm.title or MSM.DEFAULT_ERM.title),
-            description = tostring(erm.description or MSM.DEFAULT_ERM.description),
+            locales = msmNormalizeLocales(erm),
             caller = tostring(erm.caller or MSM.DEFAULT_ERM.caller),
             priority = math.max(1, math.min(4, math.floor(num(erm.priority, MSM.DEFAULT_ERM.priority)))),
         },
@@ -133,7 +132,7 @@ local function makeSummary(name, scene)
         path = Storage.paths[name],
         category = scene.category,
         location = scene.location,
-        title = scene.erm.title,
+        title = scene.erm.locales.en.title,
         priority = scene.erm.priority,
         center = { scene.center[1], scene.center[2], scene.center[3] },
         interior = scene.interior,
