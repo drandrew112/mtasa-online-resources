@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2144.352,
-        -2244.553,
-        30.617
-    ],
+    "center": [-2144.352, -2244.553, 30.617],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [
-                -2144.352,
-                -2244.553,
-                30.617
-            ],
+            "pos": [-2144.352, -2244.553, 30.617],
             "rot": 221,
             "anim": "ko_front",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PULSELESS_VT"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
         }
     ]
 }

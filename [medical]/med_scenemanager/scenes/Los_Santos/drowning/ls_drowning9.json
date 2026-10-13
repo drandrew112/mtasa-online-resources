@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        134,
-        -1762,
-        5.19
-    ],
+    "center": [134, -1762, 5.19],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 45,
-            "pos": [
-                134,
-                -1762,
-                5.19
-            ],
+            "pos": [134, -1762, 5.19],
             "rot": 72,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 90
-            }
+            "state": { "spo2": 90 }
         }
     ]
 }

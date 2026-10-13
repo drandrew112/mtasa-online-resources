@@ -5,11 +5,7 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [
-        111.69,
-        2283.9,
-        20.36
-    ],
+    "center": [111.69, 2283.9, 20.36],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 217,
-            "pos": [
-                111.69,
-                2283.9,
-                20.36
-            ],
+            "pos": [111.69, 2283.9, 20.36],
             "rot": 303,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "stimulant",
-                    "severity": 2
-                }
+                { "type": "stimulant", "severity": 2 }
             ],
-            "state": {
-                "systolic": 197,
-                "heartRate": 139
-            }
+            "state": { "systolic": 197, "heartRate": 139 }
         }
     ]
 }

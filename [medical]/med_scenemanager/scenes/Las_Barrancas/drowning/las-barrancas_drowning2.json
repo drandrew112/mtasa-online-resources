@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -883.7,
-        1641.48,
-        25.47
-    ],
+    "center": [-883.7, 1641.48, 25.47],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [
-                -883.7,
-                1641.48,
-                25.47
-            ],
+            "pos": [-883.7, 1641.48, 25.47],
             "rot": 283,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 90
-            }
+            "state": { "spo2": 90 }
         }
     ]
 }

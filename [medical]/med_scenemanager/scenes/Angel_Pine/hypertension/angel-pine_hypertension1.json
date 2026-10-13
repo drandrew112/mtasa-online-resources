@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1980.82,
-        -2616.45,
-        61.65
-    ],
+    "center": [-1980.82, -2616.45, 61.65],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [
-                -1980.82,
-                -2616.45,
-                61.65
-            ],
+            "pos": [-1980.82, -2616.45, 61.65],
             "rot": 39,
             "anim": "sit",
             "injuries": [],

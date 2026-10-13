@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -881.5,
-        -1761,
-        80.75
-    ],
+    "center": [-881.5, -1761, 80.75],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 142,
-            "pos": [
-                -881.5,
-                -1761,
-                80.75
-            ],
+            "pos": [-881.5, -1761, 80.75],
             "rot": 62,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

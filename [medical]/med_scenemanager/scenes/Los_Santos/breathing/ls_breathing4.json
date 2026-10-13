@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1946,
-        -1253.87,
-        20.48
-    ],
+    "center": [1946, -1253.87, 20.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,25 +27,13 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [
-                1946,
-                -1253.87,
-                20.48
-            ],
+            "pos": [1946, -1253.87, 20.48],
             "rot": 158,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 3
-                }
+                { "type": "pulmonary_edema", "severity": 3 }
             ],
-            "state": {
-                "spo2": 76,
-                "systolic": 206,
-                "heartRate": 134,
-                "consciousness": "confused"
-            }
+            "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
         }
     ]
 }

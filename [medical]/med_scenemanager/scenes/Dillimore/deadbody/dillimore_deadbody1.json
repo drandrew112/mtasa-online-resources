@@ -5,11 +5,7 @@
     "location": "Richman",
     "enabled": true,
     "weight": 1,
-    "center": [
-        611.73,
-        -683.33,
-        11.75
-    ],
+    "center": [611.73, -683.33, 11.75],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [
-                611.73,
-                -683.33,
-                11.75
-            ],
+            "pos": [611.73, -683.33, 11.75],
             "rot": 92,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

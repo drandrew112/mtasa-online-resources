@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -54.49,
-        866.19,
-        17.97
-    ],
+    "center": [-54.49, 866.19, 17.97],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 107,
-            "pos": [
-                -54.49,
-                866.19,
-                17.97
-            ],
+            "pos": [-54.49, 866.19, 17.97],
             "rot": 238,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 76,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 76, "consciousness": "unconscious" }
         }
     ]
 }

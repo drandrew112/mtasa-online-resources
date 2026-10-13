@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1352.99,
-        250.61,
-        19.56
-    ],
+    "center": [1352.99, 250.61, 19.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                1352.99,
-                250.61,
-                19.56
-            ],
+            "pos": [1352.99, 250.61, 19.56],
             "rot": 72,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 615,
-                "heartRate": 130,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 615, "heartRate": 130, "consciousness": "unconscious" }
         }
     ]
 }

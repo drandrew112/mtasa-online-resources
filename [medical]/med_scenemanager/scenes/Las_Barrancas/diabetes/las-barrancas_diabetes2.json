@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -780,
-        1610,
-        27.12
-    ],
+    "center": [-780, 1610, 27.12],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [
-                -780,
-                1610,
-                27.12
-            ],
+            "pos": [-780, 1610, 27.12],
             "rot": 233,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4073,
-                "glucose": 539
-            }
+            "state": { "bloodVolume": 4073, "glucose": 539 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1971.62,
-        940.75,
-        45.44
-    ],
+    "center": [-1971.62, 940.75, 45.44],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [
-                -1971.62,
-                940.75,
-                45.44
-            ],
+            "pos": [-1971.62, 940.75, 45.44],
             "rot": 208,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 573,
-                "consciousness": "confused"
-            }
+            "state": { "glucose": 573, "consciousness": "confused" }
         }
     ]
 }

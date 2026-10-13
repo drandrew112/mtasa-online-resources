@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -173.75,
-        2764.14,
-        62.23
-    ],
+    "center": [-173.75, 2764.14, 62.23],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 78,
-            "pos": [
-                -173.75,
-                2764.14,
-                62.23
-            ],
+            "pos": [-173.75, 2764.14, 62.23],
             "rot": 46,
             "anim": "sit",
             "injuries": [],

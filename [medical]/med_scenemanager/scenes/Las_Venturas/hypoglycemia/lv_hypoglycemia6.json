@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1698.4,
-        2819.95,
-        10.84
-    ],
+    "center": [1698.4, 2819.95, 10.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [
-                1698.4,
-                2819.95,
-                10.84
-            ],
+            "pos": [1698.4, 2819.95, 10.84],
             "rot": 125,
             "anim": "drunk",
             "injuries": [],
-            "state": {
-                "glucose": 38
-            }
+            "state": { "glucose": 38 }
         }
     ]
 }

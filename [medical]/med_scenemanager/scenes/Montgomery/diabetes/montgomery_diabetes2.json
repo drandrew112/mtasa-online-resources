@@ -5,11 +5,7 @@
     "location": "Montgomery Intersection",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1650,
-        350,
-        19.4
-    ],
+    "center": [1650, 350, 19.4],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 213,
-            "pos": [
-                1650,
-                350,
-                19.4
-            ],
+            "pos": [1650, 350, 19.4],
             "rot": 96,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3984,
-                "glucose": 640,
-                "consciousness": "confused"
-            }
+            "state": { "bloodVolume": 3984, "glucose": 640, "consciousness": "confused" }
         }
     ]
 }

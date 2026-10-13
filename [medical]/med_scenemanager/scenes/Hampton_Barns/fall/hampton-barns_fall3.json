@@ -5,11 +5,7 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [
-        624.97,
-        336,
-        19.82
-    ],
+    "center": [624.97, 336, 19.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,30 +27,15 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [
-                624.97,
-                336,
-                19.82
-            ],
+            "pos": [624.97, 336, 19.82],
             "rot": 89,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4520
-            }
+            "state": { "bloodVolume": 4520 }
         }
     ]
 }

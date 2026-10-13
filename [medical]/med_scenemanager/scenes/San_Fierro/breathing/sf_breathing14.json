@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2327.37,
-        1154.35,
-        51.83
-    ],
+    "center": [-2327.37, 1154.35, 51.83],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 93,
-            "pos": [
-                -2327.37,
-                1154.35,
-                51.83
-            ],
+            "pos": [-2327.37, 1154.35, 51.83],
             "rot": 326,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 89
-            }
+            "state": { "spo2": 89 }
         }
     ]
 }

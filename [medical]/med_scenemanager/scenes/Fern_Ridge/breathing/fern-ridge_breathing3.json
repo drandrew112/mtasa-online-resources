@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        483.75,
-        -133.07,
-        31.59
-    ],
+    "center": [483.75, -133.07, 31.59],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 229,
-            "pos": [
-                483.75,
-                -133.07,
-                31.59
-            ],
+            "pos": [483.75, -133.07, 31.59],
             "rot": 210,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 93
-            }
+            "state": { "spo2": 93 }
         }
     ]
 }

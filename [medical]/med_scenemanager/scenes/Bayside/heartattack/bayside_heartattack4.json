@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2654.653,
-        2478.295,
-        35.33
-    ],
+    "center": [-2654.653, 2478.295, 35.33],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [
-                -2654.653,
-                2478.295,
-                35.33
-            ],
+            "pos": [-2654.653, 2478.295, 35.33],
             "rot": 133,
             "anim": "ko_front",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PULSELESS_VT"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
         }
     ]
 }

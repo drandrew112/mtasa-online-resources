@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        790,
-        300,
-        21.82
-    ],
+    "center": [790, 300, 21.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [
-                790,
-                300,
-                21.82
-            ],
+            "pos": [790, 300, 21.82],
             "rot": 228,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3866,
-                "glucose": 788
-            }
+            "state": { "bloodVolume": 3866, "glucose": 788 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2306.5,
-        -1223.87,
-        23.91
-    ],
+    "center": [2306.5, -1223.87, 23.91],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,280 +26,100 @@
         {
             "id": "v1",
             "model": 403,
-            "pos": [
-                2302.5,
-                -1230.87,
-                24.21
-            ],
-            "rot": [
-                0,
-                0,
-                341
-            ],
+            "pos": [2302.5, -1230.87, 24.21],
+            "rot": [0, 0, 341],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                20,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS91 206",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",
             "model": 458,
-            "pos": [
-                2306.5,
-                -1223.87,
-                23.66
-            ],
-            "rot": [
-                0,
-                0,
-                60
-            ],
+            "pos": [2306.5, -1223.87, 23.66],
+            "rot": [0, 0, 60],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [
-                25,
-                60,
-                150,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS90 207",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                3,
-                2,
-                4,
-                4,
-                2,
-                3
-            ],
-            "panels": [
-                3,
-                3,
-                3,
-                3,
-                3,
-                3,
-                3
-            ],
-            "lights": [
-                1,
-                1,
-                1,
-                1
-            ],
-            "wheels": [
-                1,
-                0,
-                0,
-                0
-            ]
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         },
         {
             "id": "v3",
             "model": 516,
-            "pos": [
-                2306.5,
-                -1236.87,
-                23.66
-            ],
-            "rot": [
-                0,
-                0,
-                3
-            ],
+            "pos": [2306.5, -1236.87, 23.66],
+            "rot": [0, 0, 3],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                245,
-                245,
-                245,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS20 208",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 72,
-            "pos": [
-                2306.5,
-                -1223.87,
-                23.91
-            ],
+            "pos": [2306.5, -1223.87, 23.91],
             "rot": 23,
             "anim": "none",
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3800,
-                "consciousness": "unconscious"
-            }
+            "state": { "bloodVolume": 3800, "consciousness": "unconscious" }
         },
         {
             "id": "p2",
             "skin": 148,
-            "pos": [
-                2310.75,
-                -1235.87,
-                24
-            ],
+            "pos": [2310.75, -1235.87, 24],
             "rot": 123,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         },
         {
             "id": "p3",
             "skin": 16,
-            "pos": [
-                2310.75,
-                -1228.87,
-                24
-            ],
+            "pos": [2310.75, -1228.87, 24],
             "rot": 115,
             "anim": "none",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "head_injury", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

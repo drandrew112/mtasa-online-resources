@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        70,
-        -230,
-        1.58
-    ],
+    "center": [70, -230, 1.58],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 175,
-            "pos": [
-                70,
-                -230,
-                1.58
-            ],
+            "pos": [70, -230, 1.58],
             "rot": 353,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 75,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 75, "consciousness": "unconscious" }
         }
     ]
 }

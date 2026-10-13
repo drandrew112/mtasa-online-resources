@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        674.63,
-        -628.75,
-        16.34
-    ],
+    "center": [674.63, -628.75, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                674.63,
-                -628.75,
-                16.34
-            ],
+            "pos": [674.63, -628.75, 16.34],
             "rot": 249,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2146.65,
-        1224.17,
-        47.98
-    ],
+    "center": [-2146.65, 1224.17, 47.98],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [
-                -2146.65,
-                1224.17,
-                47.98
-            ],
+            "pos": [-2146.65, 1224.17, 47.98],
             "rot": 186,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

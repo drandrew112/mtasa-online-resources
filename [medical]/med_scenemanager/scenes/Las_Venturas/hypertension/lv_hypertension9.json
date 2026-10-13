@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2419.838,
-        1764.143,
-        10.813
-    ],
+    "center": [2419.838, 1764.143, 10.813],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [
-                2419.838,
-                1764.143,
-                10.813
-            ],
+            "pos": [2419.838, 1764.143, 10.813],
             "rot": 22.3,
             "anim": "crouch",
             "injuries": [],

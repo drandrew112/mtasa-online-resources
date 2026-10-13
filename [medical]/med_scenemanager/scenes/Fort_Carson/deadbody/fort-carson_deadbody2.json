@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -10.5,
-        1205.38,
-        19.36
-    ],
+    "center": [-10.5, 1205.38, 19.36],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -10.5,
-                1205.38,
-                19.36
-            ],
+            "pos": [-10.5, 1205.38, 19.36],
             "rot": 212,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -860,
-        -1780,
-        87.06
-    ],
+    "center": [-860, -1780, 87.06],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -860,
-                -1780,
-                87.06
-            ],
+            "pos": [-860, -1780, 87.06],
             "rot": 350,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 2
-                }
+                { "type": "opioid", "severity": 2 }
             ],
-            "state": {
-                "spo2": 87,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 87, "consciousness": "dazed" }
         }
     ]
 }

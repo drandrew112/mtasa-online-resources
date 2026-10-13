@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1850.661,
-        -1462.587,
-        13.398
-    ],
+    "center": [1850.661, -1462.587, 13.398],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,162 +26,55 @@
         {
             "id": "v1",
             "model": 412,
-            "pos": [
-                1848.88,
-                -1466.635,
-                13.225
-            ],
-            "rot": [
-                0.23,
-                0.15,
-                48.21
-            ],
+            "pos": [1848.88, -1466.635, 13.225],
+            "rot": [0.23, 0.15, 48.21],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                101,
-                106,
-                121,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [101, 106, 121, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "7664 8HO",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",
             "model": 413,
-            "pos": [
-                1851.711,
-                -1463.412,
-                13.482
-            ],
-            "rot": [
-                358.93,
-                359.99,
-                94.92
-            ],
+            "pos": [1851.711, -1463.412, 13.482],
+            "rot": [358.93, 359.99, 94.92],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                63,
-                62,
-                69,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [63, 62, 69, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "989X HZ9",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                1,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [1, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 29,
-            "pos": [
-                1847.915,
-                -1468.522,
-                13.398
-            ],
+            "pos": [1847.915, -1468.522, 13.398],
             "rot": -134.8,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1594.25,
-        2530,
-        69.81
-    ],
+    "center": [-1594.25, 2530, 69.81],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 85,
-            "pos": [
-                -1594.25,
-                2530,
-                69.81
-            ],
+            "pos": [-1594.25, 2530, 69.81],
             "rot": 175,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4370,
-                "glucose": 564
-            }
+            "state": { "bloodVolume": 4370, "glucose": 564 }
         }
     ]
 }

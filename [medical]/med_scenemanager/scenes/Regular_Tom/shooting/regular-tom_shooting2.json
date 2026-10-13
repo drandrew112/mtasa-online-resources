@@ -5,11 +5,7 @@
     "location": "'The Big Ear'",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -390,
-        1670,
-        35.85
-    ],
+    "center": [-390, 1670, 35.85],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [
-                -390,
-                1670,
-                35.85
-            ],
+            "pos": [-390, 1670, 35.85],
             "rot": 257,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4187,
-                "spo2": 91
-            }
+            "state": { "bloodVolume": 4187, "spo2": 91 }
         }
     ]
 }

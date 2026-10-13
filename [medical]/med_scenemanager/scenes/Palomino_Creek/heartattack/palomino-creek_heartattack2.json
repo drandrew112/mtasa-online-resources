@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2227.242,
-        -22.566,
-        26.484
-    ],
+    "center": [2227.242, -22.566, 26.484],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 69,
-            "pos": [
-                2227.242,
-                -22.566,
-                26.484
-            ],
+            "pos": [2227.242, -22.566, 26.484],
             "rot": 201,
             "anim": "sit",
             "injuries": [],

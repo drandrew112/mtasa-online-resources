@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1756.375,
-        1093.75,
-        45.445
-    ],
+    "center": [-1756.375, 1093.75, 45.445],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [
-                -1756.375,
-                1093.75,
-                45.445
-            ],
+            "pos": [-1756.375, 1093.75, 45.445],
             "rot": 96,
             "anim": "ko_front",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PULSELESS_VT"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
         }
     ]
 }

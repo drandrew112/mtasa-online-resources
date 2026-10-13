@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1440,
-        2610,
-        55.84
-    ],
+    "center": [-1440, 2610, 55.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 160,
-            "pos": [
-                -1440,
-                2610,
-                55.84
-            ],
+            "pos": [-1440, 2610, 55.84],
             "rot": 128,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4201,
-                "spo2": 90
-            }
+            "state": { "bloodVolume": 4201, "spo2": 90 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2511.13,
-        2451.62,
-        17.82
-    ],
+    "center": [-2511.13, 2451.62, 17.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,42 +27,23 @@
         {
             "id": "p1",
             "skin": 114,
-            "pos": [
-                -2511.13,
-                2451.62,
-                17.82
-            ],
+            "pos": [-2511.13, 2451.62, 17.82],
             "rot": 132,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 3924
-            }
+            "state": { "bloodVolume": 3924 }
         },
         {
             "id": "p2",
             "skin": 142,
-            "pos": [
-                -2509.57,
-                2450.06,
-                17.92
-            ],
+            "pos": [-2509.57, 2450.06, 17.92],
             "rot": 355,
             "anim": "crouch",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

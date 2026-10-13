@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2902.242,
-        -1605.821,
-        11.047
-    ],
+    "center": [2902.242, -1605.821, 11.047],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [
-                2902.242,
-                -1605.821,
-                11.047
-            ],
+            "pos": [2902.242, -1605.821, 11.047],
             "rot": 20,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "sedative",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 1
-                }
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
             ],
             "state": {}
         }

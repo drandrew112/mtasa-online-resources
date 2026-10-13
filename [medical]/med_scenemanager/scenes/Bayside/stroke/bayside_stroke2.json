@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2700.75,
-        2300,
-        63.88
-    ],
+    "center": [-2700.75, 2300, 63.88],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [
-                -2700.75,
-                2300,
-                63.88
-            ],
+            "pos": [-2700.75, 2300, 63.88],
             "rot": 279,
             "anim": "none",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 177
-            }
+            "state": { "systolic": 177 }
         }
     ]
 }

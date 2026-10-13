@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        973.81,
-        -174.09,
-        14.95
-    ],
+    "center": [973.81, -174.09, 14.95],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 16,
-            "pos": [
-                973.81,
-                -174.09,
-                14.95
-            ],
+            "pos": [973.81, -174.09, 14.95],
             "rot": 159,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4183,
-                "pain": 57
-            }
+            "state": { "bloodVolume": 4183, "pain": 57 }
         }
     ]
 }

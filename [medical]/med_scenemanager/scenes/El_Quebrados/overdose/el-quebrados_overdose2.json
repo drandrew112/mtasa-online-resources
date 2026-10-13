@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1398.5,
-        2672.6,
-        55.08
-    ],
+    "center": [-1398.5, 2672.6, 55.08],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                -1398.5,
-                2672.6,
-                55.08
-            ],
+            "pos": [-1398.5, 2672.6, 55.08],
             "rot": 181,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "sedative",
-                    "severity": 2
-                }
+                { "type": "sedative", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

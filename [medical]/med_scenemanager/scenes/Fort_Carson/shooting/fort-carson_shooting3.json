@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -55.12,
-        1030.74,
-        19.74
-    ],
+    "center": [-55.12, 1030.74, 19.74],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,38 +27,22 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                -55.12,
-                1030.74,
-                19.74
-            ],
+            "pos": [-55.12, 1030.74, 19.74],
             "rot": 195,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3885
-            }
+            "state": { "bloodVolume": 3885 }
         },
         {
             "id": "p2",
             "skin": 198,
-            "pos": [
-                -52.92,
-                1030.63,
-                19.84
-            ],
+            "pos": [-52.92, 1030.63, 19.84],
             "rot": 115,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

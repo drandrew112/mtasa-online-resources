@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1477.7,
-        2531.93,
-        55.84
-    ],
+    "center": [-1477.7, 2531.93, 55.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [
-                -1477.7,
-                2531.93,
-                55.84
-            ],
+            "pos": [-1477.7, 2531.93, 55.84],
             "rot": 143,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

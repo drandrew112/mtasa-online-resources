@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        905.69,
-        -538,
-        27.24
-    ],
+    "center": [905.69, -538, 27.24],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,31 +27,15 @@
         {
             "id": "p1",
             "skin": 212,
-            "pos": [
-                905.69,
-                -538,
-                27.24
-            ],
+            "pos": [905.69, -538, 27.24],
             "rot": 203,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 3868,
-                "consciousness": "unconscious"
-            }
+            "state": { "bloodVolume": 3868, "consciousness": "unconscious" }
         }
     ]
 }

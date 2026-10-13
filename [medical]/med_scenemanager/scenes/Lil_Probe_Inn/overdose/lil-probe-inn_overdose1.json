@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        90.26,
-        1271.48,
-        21.12
-    ],
+    "center": [90.26, 1271.48, 21.12],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                90.26,
-                1271.48,
-                21.12
-            ],
+            "pos": [90.26, 1271.48, 21.12],
             "rot": 50,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 3
-                }
+                { "type": "alcohol", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

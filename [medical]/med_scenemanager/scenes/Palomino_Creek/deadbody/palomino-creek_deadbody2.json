@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2140,
-        60,
-        26.58
-    ],
+    "center": [2140, 60, 26.58],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 91,
-            "pos": [
-                2140,
-                60,
-                26.58
-            ],
+            "pos": [2140, 60, 26.58],
             "rot": 158,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 3
-                }
+                { "type": "opioid", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

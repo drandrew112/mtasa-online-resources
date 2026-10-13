@@ -5,11 +5,7 @@
     "location": "Mount Chiliad",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2326,
-        -2174.87,
-        36.75
-    ],
+    "center": [-2326, -2174.87, 36.75],
     "interior": 0,
     "dimension": 0,
     "erm": {

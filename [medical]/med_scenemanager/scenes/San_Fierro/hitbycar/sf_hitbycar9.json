@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2139.71,
-        -1055.7,
-        31.2
-    ],
+    "center": [-2139.71, -1055.7, 31.2],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,97 +26,36 @@
         {
             "id": "v1",
             "model": 567,
-            "pos": [
-                -2133.02,
-                -1057.91,
-                32.01
-            ],
-            "rot": [
-                0,
-                0,
-                211.3
-            ],
+            "pos": [-2133.02, -1057.91, 32.01],
+            "rot": [0, 0, 211.3],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                220,
-                190,
-                30,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "SF53 411",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 150,
-            "pos": [
-                -2139.71,
-                -1055.7,
-                31.2
-            ],
+            "pos": [-2139.71, -1055.7, 31.2],
             "rot": 335,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "pain": 27
-            }
+            "state": { "pain": 27 }
         }
     ]
 }

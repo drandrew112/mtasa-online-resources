@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2309,
-        -20.875,
-        26.484
-    ],
+    "center": [2309, -20.875, 26.484],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 231,
-            "pos": [
-                2309,
-                -20.875,
-                26.484
-            ],
+            "pos": [2309, -20.875, 26.484],
             "rot": 181,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PEA"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
         }
     ]
 }

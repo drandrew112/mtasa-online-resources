@@ -5,11 +5,7 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -74.26,
-        2330.4,
-        21.62
-    ],
+    "center": [-74.26, 2330.4, 21.62],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 215,
-            "pos": [
-                -74.26,
-                2330.4,
-                21.62
-            ],
+            "pos": [-74.26, 2330.4, 21.62],
             "rot": 332,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "pain": 45
-            }
+            "state": { "pain": 45 }
         }
     ]
 }

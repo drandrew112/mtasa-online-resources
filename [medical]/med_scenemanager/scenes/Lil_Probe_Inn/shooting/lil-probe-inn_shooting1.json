@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -130,
-        1590,
-        18.95
-    ],
+    "center": [-130, 1590, 18.95],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 201,
-            "pos": [
-                -130,
-                1590,
-                18.95
-            ],
+            "pos": [-130, 1590, 18.95],
             "rot": 210,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3742
-            }
+            "state": { "bloodVolume": 3742 }
         }
     ]
 }

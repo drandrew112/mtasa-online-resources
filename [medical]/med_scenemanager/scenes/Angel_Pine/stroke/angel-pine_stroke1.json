@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2130,
-        -2450,
-        30.63
-    ],
+    "center": [-2130, -2450, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [
-                -2130,
-                -2450,
-                30.63
-            ],
+            "pos": [-2130, -2450, 30.63],
             "rot": 258,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 1
-                }
+                { "type": "stroke", "severity": 1 }
             ],
-            "state": {
-                "systolic": 165
-            }
+            "state": { "systolic": 165 }
         }
     ]
 }

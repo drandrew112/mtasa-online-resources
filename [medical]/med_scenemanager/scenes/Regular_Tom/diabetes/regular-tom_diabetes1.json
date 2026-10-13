@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -390,
-        1750,
-        43.28
-    ],
+    "center": [-390, 1750, 43.28],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -390,
-                1750,
-                43.28
-            ],
+            "pos": [-390, 1750, 43.28],
             "rot": 145,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 420
-            }
+            "state": { "glucose": 420 }
         }
     ]
 }

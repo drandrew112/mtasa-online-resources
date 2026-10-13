@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1678.875,
-        -1290.875,
-        14.039
-    ],
+    "center": [1678.875, -1290.875, 14.039],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [
-                1678.875,
-                -1290.875,
-                14.039
-            ],
+            "pos": [1678.875, -1290.875, 14.039],
             "rot": 1,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "VF"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
         }
     ]
 }

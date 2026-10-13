@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -935.62,
-        1408.97,
-        29.82
-    ],
+    "center": [-935.62, 1408.97, 29.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [
-                -935.62,
-                1408.97,
-                29.82
-            ],
+            "pos": [-935.62, 1408.97, 29.82],
             "rot": 20,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4369
-            }
+            "state": { "bloodVolume": 4369 }
         }
     ]
 }

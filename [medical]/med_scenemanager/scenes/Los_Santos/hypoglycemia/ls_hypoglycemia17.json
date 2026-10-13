@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1754.8,
-        -1288.34,
-        13.63
-    ],
+    "center": [1754.8, -1288.34, 13.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 49,
-            "pos": [
-                1754.8,
-                -1288.34,
-                13.63
-            ],
+            "pos": [1754.8, -1288.34, 13.63],
             "rot": 182,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 46,
-                "consciousness": "confused"
-            }
+            "state": { "glucose": 46, "consciousness": "confused" }
         }
     ]
 }

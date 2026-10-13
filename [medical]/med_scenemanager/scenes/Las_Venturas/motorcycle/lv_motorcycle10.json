@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1408.82,
-        660.25,
-        10.82
-    ],
+    "center": [1408.82, 660.25, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,93 +26,34 @@
         {
             "id": "v1",
             "model": 462,
-            "pos": [
-                1406.04,
-                655.09,
-                10.32
-            ],
-            "rot": [
-                0,
-                0,
-                187.8
-            ],
+            "pos": [1406.04, 655.09, 10.32],
+            "rot": [0, 0, 187.8],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                20,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LV18 381",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 190,
-            "pos": [
-                1408.82,
-                660.25,
-                10.82
-            ],
+            "pos": [1408.82, 660.25, 10.82],
             "rot": 238,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

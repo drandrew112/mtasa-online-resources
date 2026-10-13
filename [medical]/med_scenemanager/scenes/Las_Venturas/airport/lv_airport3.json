@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1799.75,
-        1786,
-        6.73
-    ],
+    "center": [1799.75, 1786, 6.73],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 216,
-            "pos": [
-                1799.75,
-                1786,
-                6.73
-            ],
+            "pos": [1799.75, 1786, 6.73],
             "rot": 188,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "systolic": 90,
-                "heartRate": 48
-            }
+            "state": { "systolic": 90, "heartRate": 48 }
         }
     ]
 }

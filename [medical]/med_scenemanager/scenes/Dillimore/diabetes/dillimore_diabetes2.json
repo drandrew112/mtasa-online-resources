@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        854.55,
-        -558.27,
-        17.28
-    ],
+    "center": [854.55, -558.27, 17.28],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 27,
-            "pos": [
-                854.55,
-                -558.27,
-                17.28
-            ],
+            "pos": [854.55, -558.27, 17.28],
             "rot": 170,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 421
-            }
+            "state": { "glucose": 421 }
         }
     ]
 }

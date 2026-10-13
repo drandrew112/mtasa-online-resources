@@ -5,11 +5,7 @@
     "location": "Blueberry Acres",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -12.49,
-        -212.4,
-        1.64
-    ],
+    "center": [-12.49, -212.4, 1.64],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [
-                -12.49,
-                -212.4,
-                1.64
-            ],
+            "pos": [-12.49, -212.4, 1.64],
             "rot": 6,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3786,
-                "spo2": 83
-            }
+            "state": { "bloodVolume": 3786, "spo2": 83 }
         }
     ]
 }

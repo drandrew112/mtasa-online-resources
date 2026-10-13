@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -740,
-        1570,
-        26.96
-    ],
+    "center": [-740, 1570, 26.96],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [
-                -740,
-                1570,
-                26.96
-            ],
+            "pos": [-740, 1570, 26.96],
             "rot": 140,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

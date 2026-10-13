@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2230.65,
-        2519.31,
-        10.82
-    ],
+    "center": [2230.65, 2519.31, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [
-                2230.65,
-                2519.31,
-                10.82
-            ],
+            "pos": [2230.65, 2519.31, 10.82],
             "rot": 183,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4301,
-                "spo2": 92
-            }
+            "state": { "bloodVolume": 4301, "spo2": 92 }
         }
     ]
 }

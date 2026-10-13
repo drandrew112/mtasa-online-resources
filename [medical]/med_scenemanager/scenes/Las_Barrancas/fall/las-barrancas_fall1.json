@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -940,
-        1450,
-        33.64
-    ],
+    "center": [-940, 1450, 33.64],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -940,
-                1450,
-                33.64
-            ],
+            "pos": [-940, 1450, 33.64],
             "rot": 291,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "pain": 28
-            }
+            "state": { "pain": 28 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1066.21,
-        -1651.76,
-        76.56
-    ],
+    "center": [-1066.21, -1651.76, 76.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,30 +27,15 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [
-                -1066.21,
-                -1651.76,
-                76.56
-            ],
+            "pos": [-1066.21, -1651.76, 76.56],
             "rot": 269,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

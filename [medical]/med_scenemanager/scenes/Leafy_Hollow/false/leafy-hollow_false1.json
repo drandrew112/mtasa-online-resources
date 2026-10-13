@@ -5,11 +5,7 @@
     "location": "Back o Beyond",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1140,
-        -1860,
-        85.68
-    ],
+    "center": [-1140, -1860, 85.68],
     "interior": 0,
     "dimension": 0,
     "erm": {

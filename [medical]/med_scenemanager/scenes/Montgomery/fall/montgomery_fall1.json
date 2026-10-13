@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1223.95,
-        286.22,
-        19.56
-    ],
+    "center": [1223.95, 286.22, 19.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                1223.95,
-                286.22,
-                19.56
-            ],
+            "pos": [1223.95, 286.22, 19.56],
             "rot": 127,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": {
-                "pain": 43
-            }
+            "state": { "pain": 43 }
         }
     ]
 }

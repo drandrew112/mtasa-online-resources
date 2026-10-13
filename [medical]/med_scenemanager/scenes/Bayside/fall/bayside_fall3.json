@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2420,
-        2220,
-        5.49
-    ],
+    "center": [-2420, 2220, 5.49],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 108,
-            "pos": [
-                -2420,
-                2220,
-                5.49
-            ],
+            "pos": [-2420, 2220, 5.49],
             "rot": 279,
             "anim": "injured",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
             ],
             "state": {}
         }

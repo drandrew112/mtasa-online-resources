@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2557.38,
-        700.63,
-        10.82
-    ],
+    "center": [2557.38, 700.63, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 66,
-            "pos": [
-                2557.38,
-                700.63,
-                10.82
-            ],
+            "pos": [2557.38, 700.63, 10.82],
             "rot": 168,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 3
-                }
+                { "type": "stroke", "severity": 3 }
             ],
-            "state": {
-                "systolic": 211,
-                "diastolic": 117,
-                "consciousness": "unconscious"
-            }
+            "state": { "systolic": 211, "diastolic": 117, "consciousness": "unconscious" }
         }
     ]
 }

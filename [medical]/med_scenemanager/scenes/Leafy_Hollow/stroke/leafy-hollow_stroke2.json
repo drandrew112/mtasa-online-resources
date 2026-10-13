@@ -5,11 +5,7 @@
     "location": "Back o Beyond",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1040,
-        -1880,
-        78.6
-    ],
+    "center": [-1040, -1880, 78.6],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [
-                -1040,
-                -1880,
-                78.6
-            ],
+            "pos": [-1040, -1880, 78.6],
             "rot": 93,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
             "state": {}
         }

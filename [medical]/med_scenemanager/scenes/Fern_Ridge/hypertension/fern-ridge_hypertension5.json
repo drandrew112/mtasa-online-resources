@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        506.29,
-        99.49,
-        27.57
-    ],
+    "center": [506.29, 99.49, 27.57],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,20 +27,11 @@
         {
             "id": "p1",
             "skin": 157,
-            "pos": [
-                506.29,
-                99.49,
-                27.57
-            ],
+            "pos": [506.29, 99.49, 27.57],
             "rot": 96,
             "anim": "crouch",
             "injuries": [],
-            "state": {
-                "systolic": 164,
-                "diastolic": 97,
-                "heartRate": 87,
-                "consciousness": "stable"
-            }
+            "state": { "systolic": 164, "diastolic": 97, "heartRate": 87, "consciousness": "stable" }
         }
     ]
 }

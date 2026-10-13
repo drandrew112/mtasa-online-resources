@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2817.257,
-        -1842.195,
-        11.133
-    ],
+    "center": [2817.257, -1842.195, 11.133],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [
-                2817.257,
-                -1842.195,
-                11.133
-            ],
+            "pos": [2817.257, -1842.195, 11.133],
             "rot": 120,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 1 }
             ],
-            "state": {
-                "spo2": 88
-            }
+            "state": { "spo2": 88 }
         }
     ]
 }

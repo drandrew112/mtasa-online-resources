@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1396.41,
-        323.26,
-        19.05
-    ],
+    "center": [1396.41, 323.26, 19.05],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 236,
-            "pos": [
-                1396.41,
-                323.26,
-                19.05
-            ],
+            "pos": [1396.41, 323.26, 19.05],
             "rot": 309,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 93
-            }
+            "state": { "spo2": 93 }
         }
     ]
 }

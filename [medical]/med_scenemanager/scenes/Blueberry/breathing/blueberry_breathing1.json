@@ -5,11 +5,7 @@
     "location": "Blueberry Acres",
     "enabled": true,
     "weight": 1,
-    "center": [
-        70,
-        -110,
-        0.65
-    ],
+    "center": [70, -110, 0.65],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 184,
-            "pos": [
-                70,
-                -110,
-                0.65
-            ],
+            "pos": [70, -110, 0.65],
             "rot": 277,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 85,
-                "heartRate": 54
-            }
+            "state": { "spo2": 85, "heartRate": 54 }
         }
     ]
 }

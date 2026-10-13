@@ -5,11 +5,7 @@
     "location": "Flint County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -750.44,
-        -1607.62,
-        96.14
-    ],
+    "center": [-750.44, -1607.62, 96.14],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [
-                -750.44,
-                -1607.62,
-                96.14
-            ],
+            "pos": [-750.44, -1607.62, 96.14],
             "rot": 83,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

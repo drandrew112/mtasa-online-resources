@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -337.79,
-        1106.44,
-        19.74
-    ],
+    "center": [-337.79, 1106.44, 19.74],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 192,
-            "pos": [
-                -337.79,
-                1106.44,
-                19.74
-            ],
+            "pos": [-337.79, 1106.44, 19.74],
             "rot": 137,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "glucose": 511,
-                "heartRate": 113
-            }
+            "state": { "glucose": 511, "heartRate": 113 }
         }
     ]
 }

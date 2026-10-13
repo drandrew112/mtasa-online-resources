@@ -5,11 +5,7 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1907.88,
-        -2628.53,
-        48.03
-    ],
+    "center": [-1907.88, -2628.53, 48.03],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,97 +26,36 @@
         {
             "id": "v1",
             "model": 527,
-            "pos": [
-                -1914.78,
-                -2624.35,
-                47.31
-            ],
-            "rot": [
-                0,
-                0,
-                28.6
-            ],
+            "pos": [-1914.78, -2624.35, 47.31],
+            "rot": [0, 0, 28.6],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                220,
-                190,
-                30,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "WS54 132",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 201,
-            "pos": [
-                -1907.88,
-                -2628.53,
-                48.03
-            ],
+            "pos": [-1907.88, -2628.53, 48.03],
             "rot": 104,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "pain": 22
-            }
+            "state": { "pain": 22 }
         }
     ]
 }

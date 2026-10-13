@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2163.27,
-        2446,
-        10.82
-    ],
+    "center": [2163.27, 2446, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {

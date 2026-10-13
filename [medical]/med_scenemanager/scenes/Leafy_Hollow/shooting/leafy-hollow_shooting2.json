@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -895.95,
-        -1698.05,
-        80.84
-    ],
+    "center": [-895.95, -1698.05, 80.84],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [
-                -895.95,
-                -1698.05,
-                80.84
-            ],
+            "pos": [-895.95, -1698.05, 80.84],
             "rot": 51,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4217
-            }
+            "state": { "bloodVolume": 4217 }
         }
     ]
 }

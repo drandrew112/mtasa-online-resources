@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2137.09,
-        -2283.3,
-        30.63
-    ],
+    "center": [-2137.09, -2283.3, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -2137.09,
-                -2283.3,
-                30.63
-            ],
+            "pos": [-2137.09, -2283.3, 30.63],
             "rot": 265,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "sedative",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 1
-                }
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
             ],
-            "state": {
-                "spo2": 92,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 92, "consciousness": "dazed" }
         }
     ]
 }

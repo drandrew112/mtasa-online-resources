@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2680,
-        2640,
-        87.7
-    ],
+    "center": [-2680, 2640, 87.7],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                -2680,
-                2640,
-                87.7
-            ],
+            "pos": [-2680, 2640, 87.7],
             "rot": 49,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

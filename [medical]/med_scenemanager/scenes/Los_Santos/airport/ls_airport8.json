@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2094,
-        -2282,
-        13.55
-    ],
+    "center": [2094, -2282, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 152,
-            "pos": [
-                2094,
-                -2282,
-                13.55
-            ],
+            "pos": [2094, -2282, 13.55],
             "rot": 60,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 88
-            }
+            "state": { "spo2": 88 }
         }
     ]
 }

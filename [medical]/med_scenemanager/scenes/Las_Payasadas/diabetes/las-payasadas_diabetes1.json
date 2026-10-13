@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -180,
-        2690,
-        62.69
-    ],
+    "center": [-180, 2690, 62.69],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 93,
-            "pos": [
-                -180,
-                2690,
-                62.69
-            ],
+            "pos": [-180, 2690, 62.69],
             "rot": 142,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "glucose": 442,
-                "heartRate": 116
-            }
+            "state": { "glucose": 442, "heartRate": 116 }
         }
     ]
 }

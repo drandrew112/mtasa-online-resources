@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1440.52,
-        2492.95,
-        63.25
-    ],
+    "center": [-1440.52, 2492.95, 63.25],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 240,
-            "pos": [
-                -1440.52,
-                2492.95,
-                63.25
-            ],
+            "pos": [-1440.52, 2492.95, 63.25],
             "rot": 44,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 3
-                }
+                { "type": "stroke", "severity": 3 }
             ],
-            "state": {
-                "systolic": 211,
-                "diastolic": 122,
-                "consciousness": "unconscious"
-            }
+            "state": { "systolic": 211, "diastolic": 122, "consciousness": "unconscious" }
         }
     ]
 }

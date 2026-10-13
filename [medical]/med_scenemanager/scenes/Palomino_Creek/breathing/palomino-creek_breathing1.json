@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2300,
-        60,
-        26.48
-    ],
+    "center": [2300, 60, 26.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [
-                2300,
-                60,
-                26.48
-            ],
+            "pos": [2300, 60, 26.48],
             "rot": 159,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 90
-            }
+            "state": { "spo2": 90 }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        325.57,
-        -202.74,
-        1.41
-    ],
+    "center": [325.57, -202.74, 1.41],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,30 +27,15 @@
         {
             "id": "p1",
             "skin": 50,
-            "pos": [
-                325.57,
-                -202.74,
-                1.41
-            ],
+            "pos": [325.57, -202.74, 1.41],
             "rot": 279,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 4459
-            }
+            "state": { "bloodVolume": 4459 }
         }
     ]
 }

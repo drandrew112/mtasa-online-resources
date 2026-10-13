@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1906.53,
-        1445.75,
-        10.82
-    ],
+    "center": [1906.53, 1445.75, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 228,
-            "pos": [
-                1906.53,
-                1445.75,
-                10.82
-            ],
+            "pos": [1906.53, 1445.75, 10.82],
             "rot": 354,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 3
-                }
+                { "type": "alcohol", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

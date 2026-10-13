@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -825.86,
-        1366.48,
-        13.5
-    ],
+    "center": [-825.86, 1366.48, 13.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,97 +26,36 @@
         {
             "id": "v1",
             "model": 554,
-            "pos": [
-                -820.93,
-                1364.18,
-                13.46
-            ],
-            "rot": [
-                0,
-                0,
-                210.4
-            ],
+            "pos": [-820.93, 1364.18, 13.46],
+            "rot": [0, 0, 210.4],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                25,
-                60,
-                150,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "TR29 302",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 190,
-            "pos": [
-                -825.86,
-                1366.48,
-                13.5
-            ],
+            "pos": [-825.86, 1366.48, 13.5],
             "rot": 356,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "pain": 26
-            }
+            "state": { "pain": 26 }
         }
     ]
 }

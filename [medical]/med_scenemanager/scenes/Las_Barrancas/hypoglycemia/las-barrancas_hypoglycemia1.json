@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -859,
-        1514.39,
-        22.59
-    ],
+    "center": [-859, 1514.39, 22.59],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 101,
-            "pos": [
-                -859,
-                1514.39,
-                22.59
-            ],
+            "pos": [-859, 1514.39, 22.59],
             "rot": 242,
             "anim": "drunk",
             "injuries": [],
-            "state": {
-                "glucose": 36,
-                "consciousness": "confused"
-            }
+            "state": { "glucose": 36, "consciousness": "confused" }
         }
     ]
 }

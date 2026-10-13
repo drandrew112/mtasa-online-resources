@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -838.03,
-        1455.4,
-        15.02
-    ],
+    "center": [-838.03, 1455.4, 15.02],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                -838.03,
-                1455.4,
-                15.02
-            ],
+            "pos": [-838.03, 1455.4, 15.02],
             "rot": 150,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "spo2": 86,
-                "consciousness": "confused"
-            }
+            "state": { "spo2": 86, "consciousness": "confused" }
         }
     ]
 }

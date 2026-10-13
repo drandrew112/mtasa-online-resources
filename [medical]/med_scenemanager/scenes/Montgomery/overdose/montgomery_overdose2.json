@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1145.07,
-        286.07,
-        20.3
-    ],
+    "center": [1145.07, 286.07, 20.3],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [
-                1145.07,
-                286.07,
-                20.3
-            ],
+            "pos": [1145.07, 286.07, 20.3],
             "rot": 227,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                }
+                { "type": "alcohol", "severity": 2 }
             ],
             "state": {}
         }

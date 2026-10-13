@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -297.95,
-        2743.44,
-        61.92
-    ],
+    "center": [-297.95, 2743.44, 61.92],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,102 +26,37 @@
         {
             "id": "v1",
             "model": 534,
-            "pos": [
-                -300.77,
-                2747.81,
-                61.6
-            ],
-            "rot": [
-                0,
-                0,
-                9.3
-            ],
+            "pos": [-300.77, 2747.81, 61.6],
+            "rot": [0, 0, 9.3],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                120,
-                120,
-                125,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [120, 120, 125, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "BC89 335",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                -297.95,
-                2743.44,
-                61.92
-            ],
+            "pos": [-297.95, 2743.44, 61.92],
             "rot": 98,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 3558,
-                "consciousness": "unconscious"
-            }
+            "state": { "bloodVolume": 3558, "consciousness": "unconscious" }
         }
     ]
 }

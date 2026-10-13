@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        296,
-        -64.75,
-        1.578
-    ],
+    "center": [296, -64.75, 1.578],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 21,
-            "pos": [
-                296,
-                -64.75,
-                1.578
-            ],
+            "pos": [296, -64.75, 1.578],
             "rot": 61,
             "anim": "ko_back",
             "injuries": [],

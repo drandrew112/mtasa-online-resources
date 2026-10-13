@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2050.27,
-        -366.8,
-        35.22
-    ],
+    "center": [-2050.27, -366.8, 35.22],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,93 +26,34 @@
         {
             "id": "v1",
             "model": 492,
-            "pos": [
-                -2045.02,
-                -362.92,
-                35.44
-            ],
-            "rot": [
-                0,
-                0,
-                265.3
-            ],
+            "pos": [-2045.02, -362.92, 35.44],
+            "rot": [0, 0, 265.3],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                180,
-                90,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [180, 90, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "SF98 406",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 93,
-            "pos": [
-                -2050.27,
-                -366.8,
-                35.22
-            ],
+            "pos": [-2050.27, -366.8, 35.22],
             "rot": 353,
             "anim": "injured",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
             "state": {}
         }

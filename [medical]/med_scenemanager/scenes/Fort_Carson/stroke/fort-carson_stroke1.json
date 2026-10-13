@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -235.32,
-        1190.88,
-        19.74
-    ],
+    "center": [-235.32, 1190.88, 19.74],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                -235.32,
-                1190.88,
-                19.74
-            ],
+            "pos": [-235.32, 1190.88, 19.74],
             "rot": 12,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 188
-            }
+            "state": { "systolic": 188 }
         }
     ]
 }

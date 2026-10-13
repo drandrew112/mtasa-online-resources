@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -953.91,
-        -1716,
-        77.586
-    ],
+    "center": [-953.91, -1716, 77.586],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 187,
-            "pos": [
-                -953.91,
-                -1716,
-                77.586
-            ],
+            "pos": [-953.91, -1716, 77.586],
             "rot": 333,
             "anim": "sit",
             "injuries": [],

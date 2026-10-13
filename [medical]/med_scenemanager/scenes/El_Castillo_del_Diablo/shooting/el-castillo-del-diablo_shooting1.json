@@ -5,11 +5,7 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -371.17,
-        2341.14,
-        30.41
-    ],
+    "center": [-371.17, 2341.14, 30.41],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 47,
-            "pos": [
-                -371.17,
-                2341.14,
-                30.41
-            ],
+            "pos": [-371.17, 2341.14, 30.41],
             "rot": 247,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4181
-            }
+            "state": { "bloodVolume": 4181 }
         }
     ]
 }

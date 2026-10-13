@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2702.87,
-        2504.98,
-        79.56
-    ],
+    "center": [-2702.87, 2504.98, 79.56],
     "interior": 0,
     "dimension": 0,
     "erm": {

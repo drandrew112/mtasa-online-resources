@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2680.37,
-        2540.65,
-        79.44
-    ],
+    "center": [-2680.37, 2540.65, 79.44],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 56,
-            "pos": [
-                -2680.37,
-                2540.65,
-                79.44
-            ],
+            "pos": [-2680.37, 2540.65, 79.44],
             "rot": 307,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                }
+                { "type": "alcohol", "severity": 2 }
             ],
             "state": {}
         }

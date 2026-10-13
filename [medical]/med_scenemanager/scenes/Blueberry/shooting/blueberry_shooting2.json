@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        190.44,
-        -30.85,
-        1.58
-    ],
+    "center": [190.44, -30.85, 1.58],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 259,
-            "pos": [
-                190.44,
-                -30.85,
-                1.58
-            ],
+            "pos": [190.44, -30.85, 1.58],
             "rot": 67,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

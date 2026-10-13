@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2086.84,
-        -2520.15,
-        30.63
-    ],
+    "center": [-2086.84, -2520.15, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 293,
-            "pos": [
-                -2086.84,
-                -2520.15,
-                30.63
-            ],
+            "pos": [-2086.84, -2520.15, 30.63],
             "rot": 163,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 75,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 75, "consciousness": "unconscious" }
         }
     ]
 }

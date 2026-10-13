@@ -5,11 +5,7 @@
     "location": "Bayside Marina",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2240,
-        2340,
-        4.98
-    ],
+    "center": [-2240, 2340, 4.98],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 54,
-            "pos": [
-                -2240,
-                2340,
-                4.98
-            ],
+            "pos": [-2240, 2340, 4.98],
             "rot": 292,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 82,
-                "systolic": 185,
-                "heartRate": 122
-            }
+            "state": { "spo2": 82, "systolic": 185, "heartRate": 122 }
         }
     ]
 }

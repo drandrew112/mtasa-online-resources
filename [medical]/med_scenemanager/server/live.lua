@@ -101,6 +101,13 @@ local function createTask(scene, data)
         priority = erm.priority,
         patients = scene.patients,
     }
+    -- med_erm shows each unit member the text in the language they play in (English = title / description)
+    for code, entry in pairs(erm.locales) do
+        if code ~= MSM.DEFAULT_LANG then
+            meta.locales = meta.locales or {}
+            meta.locales[code] = { title = entry.title, description = entry.description }
+        end
+    end
     local id, err = exports[MSM.ERM]:createTask(erm.locales.en.title, erm.locales.en.description, c[1], c[2], c[3], erm.caller, nil, meta)
     return id, err
 end

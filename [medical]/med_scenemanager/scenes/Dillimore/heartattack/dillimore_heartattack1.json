@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        805.5,
-        -602.125,
-        16.336
-    ],
+    "center": [805.5, -602.125, 16.336],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 58,
-            "pos": [
-                805.5,
-                -602.125,
-                16.336
-            ],
+            "pos": [805.5, -602.125, 16.336],
             "rot": 324,
             "anim": "ko_front",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PULSELESS_VT"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
         }
     ]
 }

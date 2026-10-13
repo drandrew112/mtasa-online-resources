@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        521.96,
-        30.355,
-        22.594
-    ],
+    "center": [521.96, 30.355, 22.594],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [
-                521.96,
-                30.355,
-                22.594
-            ],
+            "pos": [521.96, 30.355, 22.594],
             "rot": 13,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PEA"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
         }
     ]
 }

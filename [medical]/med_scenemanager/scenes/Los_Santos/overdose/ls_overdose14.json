@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1052.1,
-        -2004.66,
-        13.15
-    ],
+    "center": [1052.1, -2004.66, 13.15],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 174,
-            "pos": [
-                1052.1,
-                -2004.66,
-                13.15
-            ],
+            "pos": [1052.1, -2004.66, 13.15],
             "rot": 299,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 3
-                }
+                { "type": "opioid", "severity": 3 }
             ],
-            "state": {
-                "spo2": 64,
-                "heartRate": 52,
-                "consciousness": "unconscious"
-            }
+            "state": { "spo2": 64, "heartRate": 52, "consciousness": "unconscious" }
         }
     ]
 }

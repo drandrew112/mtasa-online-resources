@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2227,
-        -245,
-        35.367
-    ],
+    "center": [-2227, -245, 35.367],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 41,
-            "pos": [
-                -2227,
-                -245,
-                35.367
-            ],
+            "pos": [-2227, -245, 35.367],
             "rot": 160,
             "anim": "sit",
             "injuries": [],

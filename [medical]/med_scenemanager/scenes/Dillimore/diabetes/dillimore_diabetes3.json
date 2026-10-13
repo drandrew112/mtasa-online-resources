@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        704.75,
-        -607.5,
-        16.34
-    ],
+    "center": [704.75, -607.5, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                704.75,
-                -607.5,
-                16.34
-            ],
+            "pos": [704.75, -607.5, 16.34],
             "rot": 23,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3866,
-                "glucose": 728
-            }
+            "state": { "bloodVolume": 3866, "glucose": 728 }
         }
     ]
 }

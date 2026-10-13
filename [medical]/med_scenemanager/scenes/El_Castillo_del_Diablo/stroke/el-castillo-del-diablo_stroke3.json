@@ -5,11 +5,7 @@
     "location": "Restricted Area",
     "enabled": true,
     "weight": 1,
-    "center": [
-        63.4,
-        2078.04,
-        17.62
-    ],
+    "center": [63.4, 2078.04, 17.62],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [
-                63.4,
-                2078.04,
-                17.62
-            ],
+            "pos": [63.4, 2078.04, 17.62],
             "rot": 172,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 1
-                }
+                { "type": "stroke", "severity": 1 }
             ],
-            "state": {
-                "systolic": 182,
-                "consciousness": "confused"
-            }
+            "state": { "systolic": 182, "consciousness": "confused" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -330,
-        1750,
-        42.81
-    ],
+    "center": [-330, 1750, 42.81],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 96,
-            "pos": [
-                -330,
-                1750,
-                42.81
-            ],
+            "pos": [-330, 1750, 42.81],
             "rot": 217,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 89
-            }
+            "state": { "spo2": 89 }
         }
     ]
 }

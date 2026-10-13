@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1434.053,
-        2662.822,
-        55.836
-    ],
+    "center": [-1434.053, 2662.822, 55.836],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 141,
-            "pos": [
-                -1434.053,
-                2662.822,
-                55.836
-            ],
+            "pos": [-1434.053, 2662.822, 55.836],
             "rot": 131,
             "anim": "sit",
             "injuries": [],

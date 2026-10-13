@@ -5,11 +5,7 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2311.74,
-        -2626.25,
-        59.67
-    ],
+    "center": [-2311.74, -2626.25, 59.67],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 88,
-            "pos": [
-                -2311.74,
-                -2626.25,
-                59.67
-            ],
+            "pos": [-2311.74, -2626.25, 59.67],
             "rot": 122,
             "anim": "hold_side",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3810
-            }
+            "state": { "bloodVolume": 3810 }
         }
     ]
 }

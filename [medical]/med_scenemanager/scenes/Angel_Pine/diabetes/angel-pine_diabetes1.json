@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2181.12,
-        -2443.33,
-        30.63
-    ],
+    "center": [-2181.12, -2443.33, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                -2181.12,
-                -2443.33,
-                30.63
-            ],
+            "pos": [-2181.12, -2443.33, 30.63],
             "rot": 232,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4113,
-                "glucose": 438
-            }
+            "state": { "bloodVolume": 4113, "glucose": 438 }
         }
     ]
 }

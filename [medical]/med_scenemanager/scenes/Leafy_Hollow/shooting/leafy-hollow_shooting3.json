@@ -5,11 +5,7 @@
     "location": "Back o Beyond",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -980,
-        -1880,
-        80.79
-    ],
+    "center": [-980, -1880, 80.79],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 72,
-            "pos": [
-                -980,
-                -1880,
-                80.79
-            ],
+            "pos": [-980, -1880, 80.79],
             "rot": 230,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3904,
-                "spo2": 83
-            }
+            "state": { "bloodVolume": 3904, "spo2": 83 }
         }
     ]
 }

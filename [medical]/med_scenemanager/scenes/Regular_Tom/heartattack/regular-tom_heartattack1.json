@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -368.736,
-        1796.388,
-        48.473
-    ],
+    "center": [-368.736, 1796.388, 48.473],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [
-                -368.736,
-                1796.388,
-                48.473
-            ],
+            "pos": [-368.736, 1796.388, 48.473],
             "rot": 298,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "PEA"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -76.42,
-        1247.79,
-        14.99
-    ],
+    "center": [-76.42, 1247.79, 14.99],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,31 +27,15 @@
         {
             "id": "p1",
             "skin": 230,
-            "pos": [
-                -76.42,
-                1247.79,
-                14.99
-            ],
+            "pos": [-76.42, 1247.79, 14.99],
             "rot": 156,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 },
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 3853,
-                "consciousness": "unconscious"
-            }
+            "state": { "bloodVolume": 3853, "consciousness": "unconscious" }
         }
     ]
 }

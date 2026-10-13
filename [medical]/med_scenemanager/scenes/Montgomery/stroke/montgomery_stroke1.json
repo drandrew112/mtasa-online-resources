@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1434.51,
-        397.57,
-        19.09
-    ],
+    "center": [1434.51, 397.57, 19.09],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                1434.51,
-                397.57,
-                19.09
-            ],
+            "pos": [1434.51, 397.57, 19.09],
             "rot": 186,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 1
-                }
+                { "type": "stroke", "severity": 1 }
             ],
-            "state": {
-                "systolic": 185,
-                "consciousness": "confused"
-            }
+            "state": { "systolic": 185, "consciousness": "confused" }
         }
     ]
 }

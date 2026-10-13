@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        827.55,
-        -1392.32,
-        13.38
-    ],
+    "center": [827.55, -1392.32, 13.38],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,168 +26,56 @@
         {
             "id": "v1",
             "model": 499,
-            "pos": [
-                819.54,
-                -1396.39,
-                13.68
-            ],
-            "rot": [
-                0,
-                0,
-                265.8
-            ],
+            "pos": [819.54, -1396.39, 13.68],
+            "rot": [0, 0, 265.8],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [
-                170,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS15 307",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "lights": [
-                0,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",
             "model": 522,
-            "pos": [
-                823.55,
-                -1392.31,
-                12.93
-            ],
-            "rot": [
-                0,
-                0,
-                12.8
-            ],
+            "pos": [823.55, -1392.31, 12.93],
+            "rot": [0, 0, 12.8],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [
-                20,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS27 308",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                3,
-                2,
-                4,
-                4,
-                2,
-                3
-            ],
-            "panels": [
-                3,
-                3,
-                3,
-                3,
-                3,
-                3,
-                3
-            ],
-            "lights": [
-                1,
-                1,
-                1,
-                1
-            ],
-            "wheels": [
-                1,
-                0,
-                0,
-                0
-            ]
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 247,
-            "pos": [
-                827.55,
-                -1392.32,
-                13.38
-            ],
+            "pos": [827.55, -1392.32, 13.38],
             "rot": 115,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3400,
-                "bleeding": 2,
-                "consciousness": "dazed"
-            }
+            "state": { "bloodVolume": 3400, "bleeding": 2, "consciousness": "dazed" }
         }
     ]
 }

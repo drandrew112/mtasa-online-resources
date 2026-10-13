@@ -5,11 +5,7 @@
     "location": "El Quebrados",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1541.41,
-        2509.49,
-        56
-    ],
+    "center": [-1541.41, 2509.49, 56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                -1541.41,
-                2509.49,
-                56
-            ],
+            "pos": [-1541.41, 2509.49, 56],
             "rot": 181,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 85
-            }
+            "state": { "spo2": 85 }
         }
     ]
 }

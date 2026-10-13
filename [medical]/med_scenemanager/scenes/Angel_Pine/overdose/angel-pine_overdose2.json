@@ -5,11 +5,7 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2064.17,
-        -2641.83,
-        55.99
-    ],
+    "center": [-2064.17, -2641.83, 55.99],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 136,
-            "pos": [
-                -2064.17,
-                -2641.83,
-                55.99
-            ],
+            "pos": [-2064.17, -2641.83, 55.99],
             "rot": 40,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "stimulant",
-                    "severity": 2
-                }
+                { "type": "stimulant", "severity": 2 }
             ],
-            "state": {
-                "systolic": 165,
-                "heartRate": 148
-            }
+            "state": { "systolic": 165, "heartRate": 148 }
         }
     ]
 }

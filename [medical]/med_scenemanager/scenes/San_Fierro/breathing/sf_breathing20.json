@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1549.77,
-        -481.43,
-        14.15
-    ],
+    "center": [-1549.77, -481.43, 14.15],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 54,
-            "pos": [
-                -1549.77,
-                -481.43,
-                14.15
-            ],
+            "pos": [-1549.77, -481.43, 14.15],
             "rot": 295,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 84,
-                "systolic": 193
-            }
+            "state": { "spo2": 84, "systolic": 193 }
         }
     ]
 }

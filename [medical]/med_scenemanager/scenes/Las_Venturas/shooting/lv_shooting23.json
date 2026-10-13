@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1697.25,
-        1126.13,
-        10.82
-    ],
+    "center": [1697.25, 1126.13, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [
-                1697.25,
-                1126.13,
-                10.82
-            ],
+            "pos": [1697.25, 1126.13, 10.82],
             "rot": 35,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

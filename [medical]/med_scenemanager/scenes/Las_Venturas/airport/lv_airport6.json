@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1719,
-        1526,
-        10.78
-    ],
+    "center": [1719, 1526, 10.78],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 158,
-            "pos": [
-                1719,
-                1526,
-                10.78
-            ],
+            "pos": [1719, 1526, 10.78],
             "rot": 222,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": {
-                "pain": 41
-            }
+            "state": { "pain": 41 }
         }
     ]
 }

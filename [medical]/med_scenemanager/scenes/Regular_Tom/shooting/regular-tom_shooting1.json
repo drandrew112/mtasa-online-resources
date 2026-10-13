@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -392.33,
-        1847.51,
-        52.38
-    ],
+    "center": [-392.33, 1847.51, 52.38],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 128,
-            "pos": [
-                -392.33,
-                1847.51,
-                52.38
-            ],
+            "pos": [-392.33, 1847.51, 52.38],
             "rot": 309,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

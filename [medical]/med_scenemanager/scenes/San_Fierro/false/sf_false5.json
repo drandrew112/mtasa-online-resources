@@ -5,11 +5,7 @@
     "location": "San Fierro",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2159.37,
-        -748.87,
-        32.02
-    ],
+    "center": [-2159.37, -748.87, 32.02],
     "interior": 0,
     "dimension": 0,
     "erm": {

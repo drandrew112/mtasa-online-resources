@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        319.19,
-        -1044.35,
-        91.75
-    ],
+    "center": [319.19, -1044.35, 91.75],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,93 +26,34 @@
         {
             "id": "v1",
             "model": 566,
-            "pos": [
-                315.72,
-                -1042.9,
-                91.42
-            ],
-            "rot": [
-                0,
-                0,
-                305.2
-            ],
+            "pos": [315.72, -1042.9, 91.42],
+            "rot": [0, 0, 305.2],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [
-                170,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS24 266",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "lights": [
-                0,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 140,
-            "pos": [
-                319.19,
-                -1044.35,
-                91.75
-            ],
+            "pos": [319.19, -1044.35, 91.75],
             "rot": 26,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

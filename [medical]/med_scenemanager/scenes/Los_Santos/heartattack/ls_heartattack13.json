@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1906,
-        -1253.875,
-        13.559
-    ],
+    "center": [1906, -1253.875, 13.559],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [
-                1906,
-                -1253.875,
-                13.559
-            ],
+            "pos": [1906, -1253.875, 13.559],
             "rot": 31,
             "anim": "sit",
             "injuries": [],

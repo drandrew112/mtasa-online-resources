@@ -5,11 +5,7 @@
     "location": "Blueberry Acres",
     "enabled": true,
     "weight": 1,
-    "center": [
-        18.34,
-        -201.47,
-        1.55
-    ],
+    "center": [18.34, -201.47, 1.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 225,
-            "pos": [
-                18.34,
-                -201.47,
-                1.55
-            ],
+            "pos": [18.34, -201.47, 1.55],
             "rot": 196,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "pain": 34
-            }
+            "state": { "pain": 34 }
         }
     ]
 }

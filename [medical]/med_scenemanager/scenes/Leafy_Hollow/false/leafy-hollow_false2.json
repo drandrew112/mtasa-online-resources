@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -840,
-        -1760,
-        84.2
-    ],
+    "center": [-840, -1760, 84.2],
     "interior": 0,
     "dimension": 0,
     "erm": {

@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1875.853,
-        -1372.854,
-        13.556
-    ],
+    "center": [1875.853, -1372.854, 13.556],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,98 +26,36 @@
         {
             "id": "v1",
             "model": 481,
-            "pos": [
-                1880.513,
-                -1356.633,
-                12.869
-            ],
-            "rot": [
-                2.91,
-                88.24,
-                123.45
-            ],
+            "pos": [1880.513, -1356.633, 12.869],
+            "rot": [2.91, 88.24, 123.45],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [
-                245,
-                245,
-                245,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [245, 245, 245, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "27CQ JXK",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "lights": [
-                0,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 27,
-            "pos": [
-                1880.553,
-                -1354.823,
-                13.505
-            ],
+            "pos": [1880.553, -1354.823, 13.505],
             "rot": 185.1,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": {
-                "pain": 60,
-                "consciousness": "dazed"
-            }
+            "state": { "pain": 60, "consciousness": "dazed" }
         }
     ]
 }

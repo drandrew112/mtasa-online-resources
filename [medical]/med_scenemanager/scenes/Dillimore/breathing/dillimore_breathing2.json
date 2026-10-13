@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        818.63,
-        -588.12,
-        16.34
-    ],
+    "center": [818.63, -588.12, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [
-                818.63,
-                -588.12,
-                16.34
-            ],
+            "pos": [818.63, -588.12, 16.34],
             "rot": 156,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 89
-            }
+            "state": { "spo2": 89 }
         }
     ]
 }

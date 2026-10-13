@@ -5,11 +5,7 @@
     "location": "Whetstone",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1927.24,
-        -2549.94,
-        39.48
-    ],
+    "center": [-1927.24, -2549.94, 39.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 107,
-            "pos": [
-                -1927.24,
-                -2549.94,
-                39.48
-            ],
+            "pos": [-1927.24, -2549.94, 39.48],
             "rot": 58,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

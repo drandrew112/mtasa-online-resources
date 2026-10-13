@@ -5,11 +5,7 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [
-        713.49,
-        325.22,
-        20.23
-    ],
+    "center": [713.49, 325.22, 20.23],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                713.49,
-                325.22,
-                20.23
-            ],
+            "pos": [713.49, 325.22, 20.23],
             "rot": 166,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 191
-            }
+            "state": { "systolic": 191 }
         }
     ]
 }

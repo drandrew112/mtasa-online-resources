@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1999.38,
-        1606.65,
-        12.33
-    ],
+    "center": [1999.38, 1606.65, 12.33],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 138,
-            "pos": [
-                1999.38,
-                1606.65,
-                12.33
-            ],
+            "pos": [1999.38, 1606.65, 12.33],
             "rot": 58,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "spo2": 86,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 86, "consciousness": "dazed" }
         }
     ]
 }

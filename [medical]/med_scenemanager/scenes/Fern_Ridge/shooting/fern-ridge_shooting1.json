@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1074.52,
-        -194.04,
-        37.7
-    ],
+    "center": [1074.52, -194.04, 37.7],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 233,
-            "pos": [
-                1074.52,
-                -194.04,
-                37.7
-            ],
+            "pos": [1074.52, -194.04, 37.7],
             "rot": 11,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4312
-            }
+            "state": { "bloodVolume": 4312 }
         }
     ]
 }

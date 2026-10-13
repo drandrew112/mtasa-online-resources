@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2152.26,
-        246.58,
-        14.75
-    ],
+    "center": [2152.26, 246.58, 14.75],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [
-                2152.26,
-                246.58,
-                14.75
-            ],
+            "pos": [2152.26, 246.58, 14.75],
             "rot": 200,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "stimulant",
-                    "severity": 3
-                }
+                { "type": "stimulant", "severity": 3 }
             ],
-            "state": {
-                "systolic": 198,
-                "heartRate": 172,
-                "consciousness": "confused"
-            }
+            "state": { "systolic": 198, "heartRate": 172, "consciousness": "confused" }
         }
     ]
 }

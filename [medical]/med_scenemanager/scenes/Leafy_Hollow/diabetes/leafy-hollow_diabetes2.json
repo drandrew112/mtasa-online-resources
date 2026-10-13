@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -872.49,
-        -1829.4,
-        92.47
-    ],
+    "center": [-872.49, -1829.4, 92.47],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 153,
-            "pos": [
-                -872.49,
-                -1829.4,
-                92.47
-            ],
+            "pos": [-872.49, -1829.4, 92.47],
             "rot": 325,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 409
-            }
+            "state": { "glucose": 409 }
         }
     ]
 }

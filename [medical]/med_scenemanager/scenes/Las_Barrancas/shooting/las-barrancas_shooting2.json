@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -720.75,
-        1428.7,
-        18.48
-    ],
+    "center": [-720.75, 1428.7, 18.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [
-                -720.75,
-                1428.7,
-                18.48
-            ],
+            "pos": [-720.75, 1428.7, 18.48],
             "rot": 342,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3985,
-                "spo2": 84
-            }
+            "state": { "bloodVolume": 3985, "spo2": 84 }
         }
     ]
 }

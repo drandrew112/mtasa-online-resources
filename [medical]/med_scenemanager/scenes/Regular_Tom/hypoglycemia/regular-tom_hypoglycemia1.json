@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -350,
-        1790,
-        42.71
-    ],
+    "center": [-350, 1790, 42.71],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 43,
-            "pos": [
-                -350,
-                1790,
-                42.71
-            ],
+            "pos": [-350, 1790, 42.71],
             "rot": 60,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 18,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 18, "consciousness": "unconscious" }
         }
     ]
 }

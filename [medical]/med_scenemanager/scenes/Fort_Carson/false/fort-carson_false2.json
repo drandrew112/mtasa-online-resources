@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -317.12,
-        1098.25,
-        19.59
-    ],
+    "center": [-317.12, 1098.25, 19.59],
     "interior": 0,
     "dimension": 0,
     "erm": {

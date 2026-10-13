@@ -5,11 +5,7 @@
     "location": "Blueberry Acres",
     "enabled": true,
     "weight": 1,
-    "center": [
-        30,
-        -170,
-        0.61
-    ],
+    "center": [30, -170, 0.61],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                30,
-                -170,
-                0.61
-            ],
+            "pos": [30, -170, 0.61],
             "rot": 71,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 3
-                }
+                { "type": "alcohol", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dazed"
-            }
+            "state": { "consciousness": "dazed" }
         }
     ]
 }

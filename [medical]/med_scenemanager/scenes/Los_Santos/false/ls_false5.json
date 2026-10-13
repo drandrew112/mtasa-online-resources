@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 0.3,
-    "center": [
-        502.35,
-        -1314.92,
-        15.87
-    ],
+    "center": [502.35, -1314.92, 15.87],
     "interior": 0,
     "dimension": 0,
     "erm": {

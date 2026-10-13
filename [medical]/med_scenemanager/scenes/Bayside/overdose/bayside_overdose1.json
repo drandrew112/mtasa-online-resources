@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2370.81,
-        2433.44,
-        8.8
-    ],
+    "center": [-2370.81, 2433.44, 8.8],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 44,
-            "pos": [
-                -2370.81,
-                2433.44,
-                8.8
-            ],
+            "pos": [-2370.81, 2433.44, 8.8],
             "rot": 164,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "sedative",
-                    "severity": 2
-                }
+                { "type": "sedative", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -65.641,
-        1401.186,
-        9.662
-    ],
+    "center": [-65.641, 1401.186, 9.662],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 26,
-            "pos": [
-                -65.641,
-                1401.186,
-                9.662
-            ],
+            "pos": [-65.641, 1401.186, 9.662],
             "rot": 247,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "VF"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
         }
     ]
 }

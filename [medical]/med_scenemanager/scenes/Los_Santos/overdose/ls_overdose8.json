@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1494,
-        -1602,
-        13.55
-    ],
+    "center": [1494, -1602, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 97,
-            "pos": [
-                1494,
-                -1602,
-                13.55
-            ],
+            "pos": [1494, -1602, 13.55],
             "rot": 359,
             "anim": "vomit",
             "injuries": [
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                }
+                { "type": "alcohol", "severity": 2 }
             ],
             "state": {}
         }

@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -30,
-        -430,
-        2.48
-    ],
+    "center": [-30, -430, 2.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,20 +27,11 @@
         {
             "id": "p1",
             "skin": 219,
-            "pos": [
-                -30,
-                -430,
-                2.48
-            ],
+            "pos": [-30, -430, 2.48],
             "rot": 5,
             "anim": "crouch",
             "injuries": [],
-            "state": {
-                "systolic": 163,
-                "diastolic": 96,
-                "heartRate": 82,
-                "consciousness": "stable"
-            }
+            "state": { "systolic": 163, "diastolic": 96, "heartRate": 82, "consciousness": "stable" }
         }
     ]
 }

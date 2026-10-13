@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1204.192,
-        279.078,
-        19.555
-    ],
+    "center": [1204.192, 279.078, 19.555],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 15,
-            "pos": [
-                1204.192,
-                279.078,
-                19.555
-            ],
+            "pos": [1204.192, 279.078, 19.555],
             "rot": 52,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "VF"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
         }
     ]
 }

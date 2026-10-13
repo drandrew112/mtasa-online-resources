@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1915.7,
-        2223.13,
-        11.12
-    ],
+    "center": [1915.7, 2223.13, 11.12],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 17,
-            "pos": [
-                1915.7,
-                2223.13,
-                11.12
-            ],
+            "pos": [1915.7, 2223.13, 11.12],
             "rot": 265,
             "anim": "injured",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
             ],
             "state": {}
         }

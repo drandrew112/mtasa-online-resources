@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2760,
-        2400,
-        86.62
-    ],
+    "center": [-2760, 2400, 86.62],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -2760,
-                2400,
-                86.62
-            ],
+            "pos": [-2760, 2400, 86.62],
             "rot": 6,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "pain": 46
-            }
+            "state": { "pain": 46 }
         }
     ]
 }

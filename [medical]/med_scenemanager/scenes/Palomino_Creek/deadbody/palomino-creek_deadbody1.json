@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2439.25,
-        58.7,
-        27.56
-    ],
+    "center": [2439.25, 58.7, 27.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [
-                2439.25,
-                58.7,
-                27.56
-            ],
+            "pos": [2439.25, 58.7, 27.56],
             "rot": 8,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                }
+                { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

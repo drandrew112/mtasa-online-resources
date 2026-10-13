@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        651.7,
-        -147.85,
-        26.19
-    ],
+    "center": [651.7, -147.85, 26.19],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 171,
-            "pos": [
-                651.7,
-                -147.85,
-                26.19
-            ],
+            "pos": [651.7, -147.85, 26.19],
             "rot": 173,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 3
-                }
+                { "type": "suffocation", "severity": 3 }
             ],
-            "state": {
-                "spo2": 71,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 71, "consciousness": "dazed" }
         }
     ]
 }

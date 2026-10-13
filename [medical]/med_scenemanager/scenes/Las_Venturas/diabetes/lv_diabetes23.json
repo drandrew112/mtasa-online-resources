@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2401.63,
-        2420.5,
-        10.82
-    ],
+    "center": [2401.63, 2420.5, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 79,
-            "pos": [
-                2401.63,
-                2420.5,
-                10.82
-            ],
+            "pos": [2401.63, 2420.5, 10.82],
             "rot": 205,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3831,
-                "glucose": 653,
-                "consciousness": "confused"
-            }
+            "state": { "bloodVolume": 3831, "glucose": 653, "consciousness": "confused" }
         }
     ]
 }

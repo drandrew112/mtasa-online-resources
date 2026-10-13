@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -275.6,
-        2786.3,
-        62.69
-    ],
+    "center": [-275.6, 2786.3, 62.69],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [
-                -275.6,
-                2786.3,
-                62.69
-            ],
+            "pos": [-275.6, 2786.3, 62.69],
             "rot": 137,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "head_injury", "severity": 3 }
             ],
-            "state": {
-                "consciousness": "unconscious"
-            }
+            "state": { "consciousness": "unconscious" }
         }
     ]
 }

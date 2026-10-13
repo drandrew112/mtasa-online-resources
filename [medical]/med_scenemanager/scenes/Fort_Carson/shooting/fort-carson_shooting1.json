@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -290,
-        1140,
-        19.74
-    ],
+    "center": [-290, 1140, 19.74],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 261,
-            "pos": [
-                -290,
-                1140,
-                19.74
-            ],
+            "pos": [-290, 1140, 19.74],
             "rot": 168,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

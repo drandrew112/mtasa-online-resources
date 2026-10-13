@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1282.794,
-        -68.215,
-        35.395
-    ],
+    "center": [1282.794, -68.215, 35.395],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 57,
-            "pos": [
-                1282.794,
-                -68.215,
-                35.395
-            ],
+            "pos": [1282.794, -68.215, 35.395],
             "rot": 110,
             "anim": "sit",
             "injuries": [],

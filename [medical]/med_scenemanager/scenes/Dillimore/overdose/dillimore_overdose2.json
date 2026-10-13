@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        830,
-        -500,
-        17.33
-    ],
+    "center": [830, -500, 17.33],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,25 +27,13 @@
         {
             "id": "p1",
             "skin": 7,
-            "pos": [
-                830,
-                -500,
-                17.33
-            ],
+            "pos": [830, -500, 17.33],
             "rot": 99,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "stimulant",
-                    "severity": 3
-                }
+                { "type": "stimulant", "severity": 3 }
             ],
-            "state": {
-                "systolic": 210,
-                "diastolic": 118,
-                "heartRate": 173,
-                "consciousness": "confused"
-            }
+            "state": { "systolic": 210, "diastolic": 118, "heartRate": 173, "consciousness": "confused" }
         }
     ]
 }

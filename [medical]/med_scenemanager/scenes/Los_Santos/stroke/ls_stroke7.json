@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1503.22,
-        -2255.19,
-        13.55
-    ],
+    "center": [1503.22, -2255.19, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [
-                1503.22,
-                -2255.19,
-                13.55
-            ],
+            "pos": [1503.22, -2255.19, 13.55],
             "rot": 289,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 188,
-                "diastolic": 104
-            }
+            "state": { "systolic": 188, "diastolic": 104 }
         }
     ]
 }

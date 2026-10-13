@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2102.66,
-        -2367.61,
-        30.63
-    ],
+    "center": [-2102.66, -2367.61, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 23,
-            "pos": [
-                -2102.66,
-                -2367.61,
-                30.63
-            ],
+            "pos": [-2102.66, -2367.61, 30.63],
             "rot": 35,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4162,
-                "pain": 35
-            }
+            "state": { "bloodVolume": 4162, "pain": 35 }
         }
     ]
 }

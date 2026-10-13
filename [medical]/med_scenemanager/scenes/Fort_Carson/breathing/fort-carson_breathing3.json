@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -220.37,
-        1011.38,
-        19.65
-    ],
+    "center": [-220.37, 1011.38, 19.65],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 92,
-            "pos": [
-                -220.37,
-                1011.38,
-                19.65
-            ],
+            "pos": [-220.37, 1011.38, 19.65],
             "rot": 21,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 2
-                }
+                { "type": "asthma", "severity": 2 }
             ],
-            "state": {
-                "spo2": 91
-            }
+            "state": { "spo2": 91 }
         }
     ]
 }

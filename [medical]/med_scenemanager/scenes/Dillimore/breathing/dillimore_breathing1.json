@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        670,
-        -440,
-        16.34
-    ],
+    "center": [670, -440, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 132,
-            "pos": [
-                670,
-                -440,
-                16.34
-            ],
+            "pos": [670, -440, 16.34],
             "rot": 86,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "copd",
-                    "severity": 2
-                }
+                { "type": "copd", "severity": 2 }
             ],
-            "state": {
-                "spo2": 83
-            }
+            "state": { "spo2": 83 }
         }
     ]
 }

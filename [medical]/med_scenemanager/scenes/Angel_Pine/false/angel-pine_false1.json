@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2058.64,
-        -2488.62,
-        30.63
-    ],
+    "center": [-2058.64, -2488.62, 30.63],
     "interior": 0,
     "dimension": 0,
     "erm": {

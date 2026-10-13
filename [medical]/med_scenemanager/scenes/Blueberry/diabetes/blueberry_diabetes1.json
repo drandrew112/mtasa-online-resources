@@ -5,11 +5,7 @@
     "location": "Blueberry",
     "enabled": true,
     "weight": 1,
-    "center": [
-        257.79,
-        -204.62,
-        1.58
-    ],
+    "center": [257.79, -204.62, 1.58],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 92,
-            "pos": [
-                257.79,
-                -204.62,
-                1.58
-            ],
+            "pos": [257.79, -204.62, 1.58],
             "rot": 187,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "glucose": 460,
-                "heartRate": 120
-            }
+            "state": { "glucose": 460, "heartRate": 120 }
         }
     ]
 }

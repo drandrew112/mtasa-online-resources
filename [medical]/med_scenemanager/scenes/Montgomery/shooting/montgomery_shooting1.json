@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1288.52,
-        482.36,
-        20.23
-    ],
+    "center": [1288.52, 482.36, 20.23],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,42 +27,23 @@
         {
             "id": "p1",
             "skin": 293,
-            "pos": [
-                1288.52,
-                482.36,
-                20.23
-            ],
+            "pos": [1288.52, 482.36, 20.23],
             "rot": 329,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 3965
-            }
+            "state": { "bloodVolume": 3965 }
         },
         {
             "id": "p2",
             "skin": 174,
-            "pos": [
-                1286.57,
-                483.37,
-                20.33
-            ],
+            "pos": [1286.57, 483.37, 20.33],
             "rot": 20,
             "anim": "crouch",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

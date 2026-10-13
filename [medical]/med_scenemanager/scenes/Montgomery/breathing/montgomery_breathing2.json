@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1570,
-        370,
-        20.1
-    ],
+    "center": [1570, 370, 20.1],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 202,
-            "pos": [
-                1570,
-                370,
-                20.1
-            ],
+            "pos": [1570, 370, 20.1],
             "rot": 155,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 86
-            }
+            "state": { "spo2": 86 }
         }
     ]
 }

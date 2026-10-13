@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2675.61,
-        2241,
-        58.56
-    ],
+    "center": [-2675.61, 2241, 58.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                -2675.61,
-                2241,
-                58.56
-            ],
+            "pos": [-2675.61, 2241, 58.56],
             "rot": 176,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3754,
-                "glucose": 672,
-                "consciousness": "dazed"
-            }
+            "state": { "bloodVolume": 3754, "glucose": 672, "consciousness": "dazed" }
         }
     ]
 }

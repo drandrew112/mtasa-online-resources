@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2360,
-        2340,
-        4.98
-    ],
+    "center": [-2360, 2340, 4.98],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 206,
-            "pos": [
-                -2360,
-                2340,
-                4.98
-            ],
+            "pos": [-2360, 2340, 4.98],
             "rot": 271,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 81,
-                "systolic": 87,
-                "heartRate": 127
-            }
+            "state": { "spo2": 81, "systolic": 87, "heartRate": 127 }
         }
     ]
 }

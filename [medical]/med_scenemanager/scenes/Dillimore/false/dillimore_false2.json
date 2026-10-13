@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        810,
-        -360,
-        23.67
-    ],
+    "center": [810, -360, 23.67],
     "interior": 0,
     "dimension": 0,
     "erm": {

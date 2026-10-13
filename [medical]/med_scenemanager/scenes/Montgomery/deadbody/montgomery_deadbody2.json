@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1490,
-        210,
-        20.88
-    ],
+    "center": [1490, 210, 20.88],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [
-                1490,
-                210,
-                20.88
-            ],
+            "pos": [1490, 210, 20.88],
             "rot": 86,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

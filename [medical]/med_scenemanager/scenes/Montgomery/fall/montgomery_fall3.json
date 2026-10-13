@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1450,
-        450,
-        19.83
-    ],
+    "center": [1450, 450, 19.83],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 40,
-            "pos": [
-                1450,
-                450,
-                19.83
-            ],
+            "pos": [1450, 450, 19.83],
             "rot": 190,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "pain": 46
-            }
+            "state": { "pain": 46 }
         }
     ]
 }

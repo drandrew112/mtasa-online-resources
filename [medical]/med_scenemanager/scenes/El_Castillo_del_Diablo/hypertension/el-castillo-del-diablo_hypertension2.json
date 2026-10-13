@@ -5,11 +5,7 @@
     "location": "El Castillo del Diablo",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -448,
-        2241.52,
-        42.43
-    ],
+    "center": [-448, 2241.52, 42.43],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 168,
-            "pos": [
-                -448,
-                2241.52,
-                42.43
-            ],
+            "pos": [-448, 2241.52, 42.43],
             "rot": 301,
             "anim": "sit",
             "injuries": [],

@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        707.4,
-        -2.09,
-        32.82
-    ],
+    "center": [707.4, -2.09, 32.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [
-                707.4,
-                -2.09,
-                32.82
-            ],
+            "pos": [707.4, -2.09, 32.82],
             "rot": 199,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 17,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 17, "consciousness": "unconscious" }
         }
     ]
 }

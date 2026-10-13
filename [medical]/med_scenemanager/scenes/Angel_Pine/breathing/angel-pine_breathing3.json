@@ -5,11 +5,7 @@
     "location": "Angel Pine",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2320.7,
-        -2291.22,
-        21.79
-    ],
+    "center": [-2320.7, -2291.22, 21.79],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                -2320.7,
-                -2291.22,
-                21.79
-            ],
+            "pos": [-2320.7, -2291.22, 21.79],
             "rot": 329,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 84,
-                "systolic": 190
-            }
+            "state": { "spo2": 84, "systolic": 190 }
         }
     ]
 }

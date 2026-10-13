@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1020,
-        -1640,
-        76.37
-    ],
+    "center": [-1020, -1640, 76.37],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [
-                -1020,
-                -1640,
-                76.37
-            ],
+            "pos": [-1020, -1640, 76.37],
             "rot": 303,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 24,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 24, "consciousness": "unconscious" }
         }
     ]
 }

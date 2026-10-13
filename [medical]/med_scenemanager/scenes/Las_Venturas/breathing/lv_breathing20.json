@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1315.75,
-        844.91,
-        7.59
-    ],
+    "center": [1315.75, 844.91, 7.59],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [
-                1315.75,
-                844.91,
-                7.59
-            ],
+            "pos": [1315.75, 844.91, 7.59],
             "rot": 219,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 87,
-                "systolic": 203
-            }
+            "state": { "spo2": 87, "systolic": 203 }
         }
     ]
 }

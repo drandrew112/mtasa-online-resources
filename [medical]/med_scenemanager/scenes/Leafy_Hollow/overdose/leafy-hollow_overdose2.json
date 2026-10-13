@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1018.72,
-        -1669.99,
-        78.09
-    ],
+    "center": [-1018.72, -1669.99, 78.09],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                -1018.72,
-                -1669.99,
-                78.09
-            ],
+            "pos": [-1018.72, -1669.99, 78.09],
             "rot": 136,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "sedative",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 1
-                }
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
             ],
-            "state": {
-                "spo2": 89,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 89, "consciousness": "dazed" }
         }
     ]
 }

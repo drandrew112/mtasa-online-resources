@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2159.75,
-        2097.05,
-        10.82
-    ],
+    "center": [2159.75, 2097.05, 10.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [
-                2159.75,
-                2097.05,
-                10.82
-            ],
+            "pos": [2159.75, 2097.05, 10.82],
             "rot": 94,
             "anim": "tired",
             "injuries": [
-                {
-                    "type": "asthma",
-                    "severity": 1
-                }
+                { "type": "asthma", "severity": 1 }
             ],
-            "state": {
-                "spo2": 94
-            }
+            "state": { "spo2": 94 }
         }
     ]
 }

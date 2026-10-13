@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -390,
-        1790,
-        47.61
-    ],
+    "center": [-390, 1790, 47.61],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 14,
-            "pos": [
-                -390,
-                1790,
-                47.61
-            ],
+            "pos": [-390, 1790, 47.61],
             "rot": 9,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "stroke",
-                    "severity": 2
-                }
+                { "type": "stroke", "severity": 2 }
             ],
-            "state": {
-                "systolic": 185
-            }
+            "state": { "systolic": 185 }
         }
     ]
 }

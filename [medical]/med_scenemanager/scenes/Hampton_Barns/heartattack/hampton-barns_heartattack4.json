@@ -5,11 +5,7 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [
-        624.969,
-        336.003,
-        19.817
-    ],
+    "center": [624.969, 336.003, 19.817],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 29,
-            "pos": [
-                624.969,
-                336.003,
-                19.817
-            ],
+            "pos": [624.969, 336.003, 19.817],
             "rot": 283,
             "anim": "ko_back",
             "injuries": [],

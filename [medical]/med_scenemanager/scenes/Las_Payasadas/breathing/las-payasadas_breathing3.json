@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -174.06,
-        2695.8,
-        62.56
-    ],
+    "center": [-174.06, 2695.8, 62.56],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 229,
-            "pos": [
-                -174.06,
-                2695.8,
-                62.56
-            ],
+            "pos": [-174.06, 2695.8, 62.56],
             "rot": 169,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 93
-            }
+            "state": { "spo2": 93 }
         }
     ]
 }

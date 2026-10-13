@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1954.63,
-        -2017.62,
-        13.55
-    ],
+    "center": [1954.63, -2017.62, 13.55],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [
-                1954.63,
-                -2017.62,
-                13.55
-            ],
+            "pos": [1954.63, -2017.62, 13.55],
             "rot": 96,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3500,
-                "bleeding": 2,
-                "consciousness": "dazed"
-            }
+            "state": { "bloodVolume": 3500, "bleeding": 2, "consciousness": "dazed" }
         }
     ]
 }

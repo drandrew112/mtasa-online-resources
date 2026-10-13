@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2852,
-        1290,
-        11.2
-    ],
+    "center": [2852, 1290, 11.2],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,17 +27,11 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [
-                2852,
-                1290,
-                11.2
-            ],
+            "pos": [2852, 1290, 11.2],
             "rot": 23,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "consciousness": "dead"
-            }
+            "state": { "consciousness": "dead" }
         }
     ]
 }

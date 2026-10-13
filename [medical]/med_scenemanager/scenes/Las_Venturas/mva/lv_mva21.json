@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2254.75,
-        1443.13,
-        9.82
-    ],
+    "center": [2254.75, 1443.13, 9.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,168 +26,56 @@
         {
             "id": "v1",
             "model": 529,
-            "pos": [
-                2250,
-                1443.21,
-                10.44
-            ],
-            "rot": [
-                0,
-                0,
-                345.2
-            ],
+            "pos": [2250, 1443.21, 10.44],
+            "rot": [0, 0, 345.2],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                20,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [20, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LV38 729",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",
             "model": 445,
-            "pos": [
-                2247.095,
-                1443.309,
-                10.692
-            ],
-            "rot": [
-                0,
-                0,
-                353.52
-            ],
+            "pos": [2247.095, 1443.309, 10.692],
+            "rot": [0, 0, 353.52],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                30,
-                110,
-                50,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LV13 402",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 94,
-            "pos": [
-                2254.75,
-                1443.13,
-                10.82
-            ],
+            "pos": [2254.75, 1443.13, 10.82],
             "rot": 90,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 3
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 3750,
-                "bleeding": 2,
-                "consciousness": "unconscious"
-            }
+            "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
         }
     ]
 }

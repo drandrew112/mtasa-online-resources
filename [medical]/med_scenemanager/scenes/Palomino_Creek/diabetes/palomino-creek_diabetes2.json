@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2520,
-        120,
-        26.48
-    ],
+    "center": [2520, 120, 26.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 116,
-            "pos": [
-                2520,
-                120,
-                26.48
-            ],
+            "pos": [2520, 120, 26.48],
             "rot": 1,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4074,
-                "glucose": 535
-            }
+            "state": { "bloodVolume": 4074, "glucose": 535 }
         }
     ]
 }

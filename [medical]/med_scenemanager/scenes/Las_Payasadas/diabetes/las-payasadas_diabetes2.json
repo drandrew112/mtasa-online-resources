@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -297.97,
-        2670.98,
-        64.5
-    ],
+    "center": [-297.97, 2670.98, 64.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 43,
-            "pos": [
-                -297.97,
-                2670.98,
-                64.5
-            ],
+            "pos": [-297.97, 2670.98, 64.5],
             "rot": 195,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3837,
-                "glucose": 695,
-                "consciousness": "dazed"
-            }
+            "state": { "bloodVolume": 3837, "glucose": 695, "consciousness": "dazed" }
         }
     ]
 }

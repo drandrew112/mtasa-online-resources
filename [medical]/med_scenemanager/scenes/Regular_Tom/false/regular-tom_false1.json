@@ -5,11 +5,7 @@
     "location": "Bone County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -347.7,
-        1911.93,
-        51.53
-    ],
+    "center": [-347.7, 1911.93, 51.53],
     "interior": 0,
     "dimension": 0,
     "erm": {

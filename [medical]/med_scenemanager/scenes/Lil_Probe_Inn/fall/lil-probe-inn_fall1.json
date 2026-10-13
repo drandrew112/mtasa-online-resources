@@ -5,11 +5,7 @@
     "location": "Lil' Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -90,
-        1330,
-        10.95
-    ],
+    "center": [-90, 1330, 10.95],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,26 +27,14 @@
         {
             "id": "p1",
             "skin": 219,
-            "pos": [
-                -90,
-                1330,
-                10.95
-            ],
+            "pos": [-90, 1330, 10.95],
             "rot": 35,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "pain": 57
-            }
+            "state": { "pain": 57 }
         }
     ]
 }

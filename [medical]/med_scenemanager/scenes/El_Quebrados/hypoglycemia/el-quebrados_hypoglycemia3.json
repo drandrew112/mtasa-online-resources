@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1680,
-        2690,
-        57.79
-    ],
+    "center": [-1680, 2690, 57.79],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 162,
-            "pos": [
-                -1680,
-                2690,
-                57.79
-            ],
+            "pos": [-1680, 2690, 57.79],
             "rot": 274,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 22,
-                "heartRate": 107,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 22, "heartRate": 107, "consciousness": "unconscious" }
         }
     ]
 }

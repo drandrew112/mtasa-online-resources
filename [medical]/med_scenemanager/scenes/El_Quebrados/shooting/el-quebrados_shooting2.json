@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1680,
-        2610,
-        79.8
-    ],
+    "center": [-1680, 2610, 79.8],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,38 +27,22 @@
         {
             "id": "p1",
             "skin": 160,
-            "pos": [
-                -1680,
-                2610,
-                79.8
-            ],
+            "pos": [-1680, 2610, 79.8],
             "rot": 271,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 3
-                }
+                { "type": "gunshot", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 3684
-            }
+            "state": { "bloodVolume": 3684 }
         },
         {
             "id": "p2",
             "skin": 142,
-            "pos": [
-                -1679.08,
-                2612,
-                79.9
-            ],
+            "pos": [-1679.08, 2612, 79.9],
             "rot": 296,
             "anim": "injured",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
             "state": {}
         }

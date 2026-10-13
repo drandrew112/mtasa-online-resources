@@ -5,11 +5,7 @@
     "location": "Fort Carson",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -334.86,
-        1141.27,
-        19.74
-    ],
+    "center": [-334.86, 1141.27, 19.74],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,12 @@
         {
             "id": "p1",
             "skin": 133,
-            "pos": [
-                -334.86,
-                1141.27,
-                19.74
-            ],
+            "pos": [-334.86, 1141.27, 19.74],
             "rot": 332,
             "anim": "injured",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 2 },
+                { "type": "fracture", "severity": 2 }
             ],
             "state": {}
         }

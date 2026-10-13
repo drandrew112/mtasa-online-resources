@@ -5,11 +5,7 @@
     "location": "Tierra Robada",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1660,
-        2710,
-        60.12
-    ],
+    "center": [-1660, 2710, 60.12],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 260,
-            "pos": [
-                -1660,
-                2710,
-                60.12
-            ],
+            "pos": [-1660, 2710, 60.12],
             "rot": 66,
             "anim": "tired",
             "injuries": [],
-            "state": {
-                "bloodVolume": 4216,
-                "glucose": 433
-            }
+            "state": { "bloodVolume": 4216, "glucose": 433 }
         }
     ]
 }

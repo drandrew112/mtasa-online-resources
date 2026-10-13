@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        539.55,
-        -64.22,
-        34.03
-    ],
+    "center": [539.55, -64.22, 34.03],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,42 +27,23 @@
         {
             "id": "p1",
             "skin": 106,
-            "pos": [
-                539.55,
-                -64.22,
-                34.03
-            ],
+            "pos": [539.55, -64.22, 34.03],
             "rot": 55,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
             ],
-            "state": {
-                "bloodVolume": 3962
-            }
+            "state": { "bloodVolume": 3962 }
         },
         {
             "id": "p2",
             "skin": 174,
-            "pos": [
-                539.52,
-                -66.42,
-                34.13
-            ],
+            "pos": [539.52, -66.42, 34.13],
             "rot": 322,
             "anim": "crouch",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
             "state": {}
         }

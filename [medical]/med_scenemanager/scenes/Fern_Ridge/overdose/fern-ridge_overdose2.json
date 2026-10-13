@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        518.47,
-        88.9,
-        22.5
-    ],
+    "center": [518.47, 88.9, 22.5],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 160,
-            "pos": [
-                518.47,
-                88.9,
-                22.5
-            ],
+            "pos": [518.47, 88.9, 22.5],
             "rot": 279,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 2
-                }
+                { "type": "opioid", "severity": 2 }
             ],
-            "state": {
-                "spo2": 88,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 88, "consciousness": "dazed" }
         }
     ]
 }

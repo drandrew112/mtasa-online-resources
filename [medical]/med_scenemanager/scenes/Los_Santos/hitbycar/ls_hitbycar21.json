@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1992.16,
-        -1029.59,
-        34.82
-    ],
+    "center": [1992.16, -1029.59, 34.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,101 +26,37 @@
         {
             "id": "v1",
             "model": 420,
-            "pos": [
-                1986.16,
-                -1029.41,
-                34.57
-            ],
-            "rot": [
-                0,
-                0,
-                262.2
-            ],
+            "pos": [1986.16, -1029.41, 34.57],
+            "rot": [0, 0, 262.2],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                25,
-                60,
-                150,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS42 228",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 67,
-            "pos": [
-                1992.16,
-                -1029.59,
-                34.82
-            ],
+            "pos": [1992.16, -1029.59, 34.82],
             "rot": 160,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                },
-                {
-                    "type": "fracture",
-                    "severity": 2
-                },
-                {
-                    "type": "alcohol",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
             ],
-            "state": {
-                "consciousness": "confused"
-            }
+            "state": { "consciousness": "confused" }
         }
     ]
 }

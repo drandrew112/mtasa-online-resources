@@ -5,11 +5,7 @@
     "location": "Palomino Creek",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2350,
-        -94.7,
-        26.48
-    ],
+    "center": [2350, -94.7, 26.48],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,20 +27,11 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                2350,
-                -94.7,
-                26.48
-            ],
+            "pos": [2350, -94.7, 26.48],
             "rot": 96,
             "anim": "crouch",
             "injuries": [],
-            "state": {
-                "systolic": 166,
-                "diastolic": 100,
-                "heartRate": 87,
-                "consciousness": "stable"
-            }
+            "state": { "systolic": 166, "diastolic": 100, "heartRate": 87, "consciousness": "stable" }
         }
     ]
 }

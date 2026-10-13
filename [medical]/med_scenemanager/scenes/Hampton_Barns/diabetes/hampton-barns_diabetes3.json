@@ -5,11 +5,7 @@
     "location": "Hampton Barns",
     "enabled": true,
     "weight": 1,
-    "center": [
-        670,
-        300,
-        20.23
-    ],
+    "center": [670, 300, 20.23],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,19 +27,11 @@
         {
             "id": "p1",
             "skin": 200,
-            "pos": [
-                670,
-                300,
-                20.23
-            ],
+            "pos": [670, 300, 20.23],
             "rot": 101,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "glucose": 629,
-                "heartRate": 124,
-                "consciousness": "unconscious"
-            }
+            "state": { "glucose": 629, "heartRate": 124, "consciousness": "unconscious" }
         }
     ]
 }

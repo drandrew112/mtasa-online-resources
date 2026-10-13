@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2772.65,
-        -1649.95,
-        11.716
-    ],
+    "center": [2772.65, -1649.95, 11.716],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                2772.65,
-                -1649.95,
-                11.716
-            ],
+            "pos": [2772.65, -1649.95, 11.716],
             "rot": 270,
             "anim": "ko_back",
             "injuries": [],
-            "state": {
-                "bloodVolume": 3900,
-                "glucose": 760
-            }
+            "state": { "bloodVolume": 3900, "glucose": 760 }
         }
     ]
 }

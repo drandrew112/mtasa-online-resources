@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2300,
-        2660,
-        57.59
-    ],
+    "center": [-2300, 2660, 57.59],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 92,
-            "pos": [
-                -2300,
-                2660,
-                57.59
-            ],
+            "pos": [-2300, 2660, 57.59],
             "rot": 92,
             "anim": "sit",
             "injuries": [],

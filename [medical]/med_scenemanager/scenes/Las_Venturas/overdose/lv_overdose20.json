@@ -5,11 +5,7 @@
     "location": "Las Venturas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1259,
-        1826,
-        10.78
-    ],
+    "center": [1259, 1826, 10.78],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 222,
-            "pos": [
-                1259,
-                1826,
-                10.78
-            ],
+            "pos": [1259, 1826, 10.78],
             "rot": 70,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "opioid",
-                    "severity": 2
-                }
+                { "type": "opioid", "severity": 2 }
             ],
-            "state": {
-                "spo2": 85,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 85, "consciousness": "dazed" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Las Payasadas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -320,
-        2650,
-        71.44
-    ],
+    "center": [-320, 2650, 71.44],
     "interior": 0,
     "dimension": 0,
     "erm": {

@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -740,
-        1610,
-        27.12
-    ],
+    "center": [-740, 1610, 27.12],
     "interior": 0,
     "dimension": 0,
     "erm": {

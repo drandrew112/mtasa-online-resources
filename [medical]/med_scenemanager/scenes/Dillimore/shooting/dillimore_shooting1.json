@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        750,
-        -520,
-        16.34
-    ],
+    "center": [750, -520, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 198,
-            "pos": [
-                750,
-                -520,
-                16.34
-            ],
+            "pos": [750, -520, 16.34],
             "rot": 175,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 2
-                }
+                { "type": "gunshot", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4526
-            }
+            "state": { "bloodVolume": 4526 }
         }
     ]
 }

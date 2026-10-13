@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2926.69,
-        -1352.65,
-        10.97
-    ],
+    "center": [2926.69, -1352.65, 10.97],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,43 +27,24 @@
         {
             "id": "p1",
             "skin": 19,
-            "pos": [
-                2926.69,
-                -1352.65,
-                10.97
-            ],
+            "pos": [2926.69, -1352.65, 10.97],
             "rot": 88,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                }
+                { "type": "suffocation", "severity": 2 }
             ],
-            "state": {
-                "spo2": 80,
-                "consciousness": "dazed"
-            }
+            "state": { "spo2": 80, "consciousness": "dazed" }
         },
         {
             "id": "p2",
             "skin": 69,
-            "pos": [
-                2927.31,
-                -1355.09,
-                10.97
-            ],
+            "pos": [2927.31, -1355.09, 10.97],
             "rot": 309,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 1 }
             ],
-            "state": {
-                "spo2": 91
-            }
+            "state": { "spo2": 91 }
         }
     ]
 }

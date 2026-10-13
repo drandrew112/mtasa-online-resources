@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        879.86,
-        -95.32,
-        25.58
-    ],
+    "center": [879.86, -95.32, 25.58],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,24 +27,13 @@
         {
             "id": "p1",
             "skin": 39,
-            "pos": [
-                879.86,
-                -95.32,
-                25.58
-            ],
+            "pos": [879.86, -95.32, 25.58],
             "rot": 47,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 82,
-                "systolic": 191,
-                "heartRate": 119
-            }
+            "state": { "spo2": 82, "systolic": 191, "heartRate": 119 }
         }
     ]
 }

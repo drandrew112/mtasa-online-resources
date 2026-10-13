@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1315.42,
-        -1785.87,
-        13.41
-    ],
+    "center": [1315.42, -1785.87, 13.41],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,365 +26,131 @@
         {
             "id": "v1",
             "model": 540,
-            "pos": [
-                1315.42,
-                -1792.87,
-                13.16
-            ],
-            "rot": [
-                0,
-                0,
-                356
-            ],
+            "pos": [1315.42, -1792.87, 13.16],
+            "rot": [0, 0, 356],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                170,
-                20,
-                20,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS20 213",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",
             "model": 420,
-            "pos": [
-                1311.25,
-                -1790.87,
-                13.16
-            ],
-            "rot": [
-                0,
-                0,
-                356
-            ],
+            "pos": [1311.25, -1790.87, 13.16],
+            "rot": [0, 0, 356],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 420,
-            "colors": [
-                95,
-                60,
-                35,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS31 214",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                2,
-                0,
-                2,
-                3,
-                0,
-                0
-            ],
-            "panels": [
-                3,
-                2,
-                2,
-                1,
-                2,
-                3,
-                1
-            ],
-            "lights": [
-                1,
-                1,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v3",
             "model": 401,
-            "pos": [
-                1315.42,
-                -1785.87,
-                13.16
-            ],
-            "rot": [
-                0,
-                0,
-                30
-            ],
+            "pos": [1315.42, -1785.87, 13.16],
+            "rot": [0, 0, 30],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 300,
-            "colors": [
-                95,
-                60,
-                35,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS32 215",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                3,
-                2,
-                4,
-                4,
-                2,
-                3
-            ],
-            "panels": [
-                3,
-                3,
-                3,
-                3,
-                3,
-                3,
-                3
-            ],
-            "lights": [
-                1,
-                1,
-                1,
-                1
-            ],
-            "wheels": [
-                1,
-                0,
-                0,
-                0
-            ]
+            "doors": [3, 2, 4, 4, 2, 3],
+            "panels": [3, 3, 3, 3, 3, 3, 3],
+            "lights": [1, 1, 1, 1],
+            "wheels": [1, 0, 0, 0]
         },
         {
             "id": "v4",
             "model": 479,
-            "pos": [
-                1311.25,
-                -1783.87,
-                13.41
-            ],
-            "rot": [
-                0,
-                0,
-                10
-            ],
+            "pos": [1311.25, -1783.87, 13.41],
+            "rot": [0, 0, 10],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 750,
-            "colors": [
-                25,
-                60,
-                150,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [25, 60, 150, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS36 216",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                1,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0
-            ],
-            "lights": [
-                1,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [1, 0, 0, 0, 0, 1, 0],
+            "lights": [1, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 159,
-            "pos": [
-                1315.42,
-                -1785.87,
-                13.41
-            ],
+            "pos": [1315.42, -1785.87, 13.41],
             "rot": 240,
             "anim": "none",
             "vehicle": "v3",
             "seat": 0,
             "injuries": [
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "systolic": 92,
-                "consciousness": "unconscious"
-            }
+            "state": { "systolic": 92, "consciousness": "unconscious" }
         },
         {
             "id": "p2",
             "skin": 138,
-            "pos": [
-                1315.42,
-                -1779.87,
-                13.41
-            ],
+            "pos": [1315.42, -1779.87, 13.41],
             "rot": 20,
             "anim": "ko_front",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 2
-                }
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 2 }
             ],
-            "state": {
-                "bloodVolume": 4000
-            }
+            "state": { "bloodVolume": 4000 }
         },
         {
             "id": "p3",
             "skin": 67,
-            "pos": [
-                1319.75,
-                -1792.87,
-                13.55
-            ],
+            "pos": [1319.75, -1792.87, 13.55],
             "rot": 66,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 1
-                }
+                { "type": "fracture", "severity": 1 }
             ],
             "state": {}
         },
         {
             "id": "p4",
             "skin": 195,
-            "pos": [
-                1319.75,
-                -1788.87,
-                13.55
-            ],
+            "pos": [1319.75, -1788.87, 13.55],
             "rot": 6,
             "anim": "crouch",
             "injuries": [
-                {
-                    "type": "gunshot",
-                    "severity": 1
-                }
+                { "type": "gunshot", "severity": 1 }
             ],
-            "state": {
-                "pain": 30
-            }
+            "state": { "pain": 30 }
         }
     ]
 }

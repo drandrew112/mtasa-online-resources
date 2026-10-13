@@ -5,11 +5,7 @@
     "location": "Regular Tom",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -397.36,
-        1714.901,
-        40.558
-    ],
+    "center": [-397.36, 1714.901, 40.558],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 68,
-            "pos": [
-                -397.36,
-                1714.901,
-                40.558
-            ],
+            "pos": [-397.36, 1714.901, 40.558],
             "rot": 223,
             "anim": "lean",
             "injuries": [],

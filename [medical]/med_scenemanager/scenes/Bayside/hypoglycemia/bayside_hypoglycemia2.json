@@ -5,11 +5,7 @@
     "location": "Bayside",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -2500,
-        2640,
-        61.77
-    ],
+    "center": [-2500, 2640, 61.77],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 130,
-            "pos": [
-                -2500,
-                2640,
-                61.77
-            ],
+            "pos": [-2500, 2640, 61.77],
             "rot": 228,
             "anim": "sit",
             "injuries": [],
-            "state": {
-                "glucose": 33,
-                "consciousness": "confused"
-            }
+            "state": { "glucose": 33, "consciousness": "confused" }
         }
     ]
 }

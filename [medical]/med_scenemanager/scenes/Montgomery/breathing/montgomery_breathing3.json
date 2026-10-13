@@ -5,11 +5,7 @@
     "location": "Red County",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1150,
-        530,
-        19.86
-    ],
+    "center": [1150, 530, 19.86],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 196,
-            "pos": [
-                1150,
-                530,
-                19.86
-            ],
+            "pos": [1150, 530, 19.86],
             "rot": 68,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 83,
-                "systolic": 198
-            }
+            "state": { "spo2": 83, "systolic": 198 }
         }
     ]
 }

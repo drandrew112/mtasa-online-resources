@@ -5,11 +5,7 @@
     "location": "Fern Ridge",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1052.81,
-        7.67,
-        81.31
-    ],
+    "center": [1052.81, 7.67, 81.31],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,27 +27,14 @@
         {
             "id": "p1",
             "skin": 234,
-            "pos": [
-                1052.81,
-                7.67,
-                81.31
-            ],
+            "pos": [1052.81, 7.67, 81.31],
             "rot": 161,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "suffocation",
-                    "severity": 2
-                },
-                {
-                    "type": "head_injury",
-                    "severity": 1
-                }
+                { "type": "suffocation", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
             ],
-            "state": {
-                "spo2": 85,
-                "consciousness": "confused"
-            }
+            "state": { "spo2": 85, "consciousness": "confused" }
         }
     ]
 }

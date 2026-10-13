@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1236.65,
-        137.28,
-        20.05
-    ],
+    "center": [1236.65, 137.28, 20.05],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,23 +27,13 @@
         {
             "id": "p1",
             "skin": 10,
-            "pos": [
-                1236.65,
-                137.28,
-                20.05
-            ],
+            "pos": [1236.65, 137.28, 20.05],
             "rot": 283,
             "anim": "sit",
             "injuries": [
-                {
-                    "type": "pulmonary_edema",
-                    "severity": 2
-                }
+                { "type": "pulmonary_edema", "severity": 2 }
             ],
-            "state": {
-                "spo2": 85,
-                "systolic": 202
-            }
+            "state": { "spo2": 85, "systolic": 202 }
         }
     ]
 }

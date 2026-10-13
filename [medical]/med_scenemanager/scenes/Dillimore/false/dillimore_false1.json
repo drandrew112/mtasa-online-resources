@@ -5,11 +5,7 @@
     "location": "Dillimore",
     "enabled": true,
     "weight": 1,
-    "center": [
-        714.63,
-        -552.5,
-        16.34
-    ],
+    "center": [714.63, -552.5, 16.34],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 263,
-            "pos": [
-                714.63,
-                -552.5,
-                16.34
-            ],
+            "pos": [714.63, -552.5, 16.34],
             "rot": 298,
             "anim": "none",
             "injuries": [],

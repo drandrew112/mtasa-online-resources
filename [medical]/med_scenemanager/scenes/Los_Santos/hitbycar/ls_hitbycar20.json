@@ -5,11 +5,7 @@
     "location": "Los Santos",
     "enabled": true,
     "weight": 1,
-    "center": [
-        2453.75,
-        -1411.75,
-        23.82
-    ],
+    "center": [2453.75, -1411.75, 23.82],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -30,94 +26,35 @@
         {
             "id": "v1",
             "model": 482,
-            "pos": [
-                2453.75,
-                -1417.25,
-                23.82
-            ],
-            "rot": [
-                0,
-                0,
-                357
-            ],
+            "pos": [2453.75, -1417.25, 23.82],
+            "rot": [0, 0, 357],
             "frozen": false,
             "locked": false,
             "engine": false,
             "lightsOn": false,
             "health": 1000,
-            "colors": [
-                95,
-                60,
-                35,
-                245,
-                245,
-                245,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
             "paintjob": 3,
             "plate": "LS73 279",
-            "variant": [
-                255,
-                255
-            ],
+            "variant": [255, 255],
             "upgrades": [],
-            "doors": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "panels": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "lights": [
-                0,
-                0,
-                0,
-                0
-            ],
-            "wheels": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [
         {
             "id": "p1",
             "skin": 218,
-            "pos": [
-                2453.75,
-                -1411.75,
-                23.82
-            ],
+            "pos": [2453.75, -1411.75, 23.82],
             "rot": 187,
             "anim": "ko_back",
             "injuries": [
-                {
-                    "type": "fracture",
-                    "severity": 3
-                }
+                { "type": "fracture", "severity": 3 }
             ],
-            "state": {
-                "bloodVolume": 4300,
-                "pain": 30
-            }
+            "state": { "bloodVolume": 4300, "pain": 30 }
         }
     ]
 }

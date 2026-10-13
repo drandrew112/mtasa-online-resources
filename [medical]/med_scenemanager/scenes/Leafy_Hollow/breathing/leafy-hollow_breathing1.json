@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -876.64,
-        -1824.67,
-        92.49
-    ],
+    "center": [-876.64, -1824.67, 92.49],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,22 +27,13 @@
         {
             "id": "p1",
             "skin": 161,
-            "pos": [
-                -876.64,
-                -1824.67,
-                92.49
-            ],
+            "pos": [-876.64, -1824.67, 92.49],
             "rot": 255,
             "anim": "cough",
             "injuries": [
-                {
-                    "type": "copd",
-                    "severity": 2
-                }
+                { "type": "copd", "severity": 2 }
             ],
-            "state": {
-                "spo2": 87
-            }
+            "state": { "spo2": 87 }
         }
     ]
 }

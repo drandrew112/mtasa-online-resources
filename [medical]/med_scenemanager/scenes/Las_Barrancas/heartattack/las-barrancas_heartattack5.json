@@ -5,11 +5,7 @@
     "location": "Las Barrancas",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -765.875,
-        1508.935,
-        25.375
-    ],
+    "center": [-765.875, 1508.935, 25.375],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 129,
-            "pos": [
-                -765.875,
-                1508.935,
-                25.375
-            ],
+            "pos": [-765.875, 1508.935, 25.375],
             "rot": 332,
             "anim": "sit",
             "injuries": [],

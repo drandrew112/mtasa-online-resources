@@ -5,11 +5,7 @@
     "location": "Leafy Hollow",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -1021.036,
-        -1671.625,
-        77.626
-    ],
+    "center": [-1021.036, -1671.625, 77.626],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,18 +27,11 @@
         {
             "id": "p1",
             "skin": 186,
-            "pos": [
-                -1021.036,
-                -1671.625,
-                77.626
-            ],
+            "pos": [-1021.036, -1671.625, 77.626],
             "rot": 285,
             "anim": "ko_front",
             "injuries": [],
-            "state": {
-                "consciousness": "clinical_death",
-                "rhythm": "ASYSTOLE"
-            }
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
         }
     ]
 }

@@ -5,11 +5,7 @@
     "location": "Montgomery",
     "enabled": true,
     "weight": 1,
-    "center": [
-        1409.054,
-        255.319,
-        19.547
-    ],
+    "center": [1409.054, 255.319, 19.547],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 147,
-            "pos": [
-                1409.054,
-                255.319,
-                19.547
-            ],
+            "pos": [1409.054, 255.319, 19.547],
             "rot": 21,
             "anim": "sit",
             "injuries": [],

@@ -5,11 +5,7 @@
     "location": "Lil Probe Inn",
     "enabled": true,
     "weight": 1,
-    "center": [
-        -60.522,
-        1300.462,
-        11.714
-    ],
+    "center": [-60.522, 1300.462, 11.714],
     "interior": 0,
     "dimension": 0,
     "erm": {
@@ -31,11 +27,7 @@
         {
             "id": "p1",
             "skin": 89,
-            "pos": [
-                -60.522,
-                1300.462,
-                11.714
-            ],
+            "pos": [-60.522, 1300.462, 11.714],
             "rot": 155,
             "anim": "hold_side",
             "injuries": [],
