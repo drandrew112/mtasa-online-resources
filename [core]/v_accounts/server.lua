@@ -305,7 +305,32 @@ local function setAccountName(player, name)
     scriptedRename[player] = nil
 end
 
+addEvent("v_mapcam:onFinish", true)
+addEvent("acc:clientWorldLoaded", true)
 -- Restores the player's saved state and drops the black loading screen.
+addEventHandler("acc:clientWorldLoaded", root, function()
+    -- client az a játékos, aki küldte az eseményt
+    local player = client 
+    if not isElement(player) then return end
+
+    -- Itt fut le a spawn animáció és a betöltőképernyő levétele
+    triggerClientEvent(player, "acc:loadingScreen", player, false)
+    triggerClientEvent(player, "acc:setPanel", player, nil)
+
+    exports.v_mapcam:playSpawn(player)
+
+    -- Ezt levesszük a root-ról, és közvetlenül a playerhez kötjük, ahogy az eredetiben is volt
+    addEventHandler("v_mapcam:onFinish", player, function()
+        if not isElement(player) then return end
+        
+        setElementData(player, "loaded", true)
+        local accName = getElementData(player, "accName")
+        
+        triggerEvent("onPlayerLoaded", player, accName)
+        triggerClientEvent(player, "acc:playerLoaded", player, accName)
+    end)
+end)
+
 local function spawnLoggedInPlayer(player)
     loadPosition(player)
     loadHealth(player)
@@ -314,14 +339,10 @@ local function spawnLoggedInPlayer(player)
     loadStats(player)
     loadWeapons(player)
 
-    triggerClientEvent(player, "acc:loadingScreen", player, false)
-    triggerClientEvent(player, "acc:setPanel", player, nil)
+    exports.v_mapcam:preSpawn(player)
 
-    -- The player is fully loaded. Other resources hook this (arg 1 = account
-    -- name string) instead of the old onPlayerLogin.
-    setElementData(player, "loaded", true)
-    triggerEvent("onPlayerLoaded", player, getElementData(player, "accName"))
-    triggerClientEvent(player, "acc:playerLoaded", player, getElementData(player, "accName"))
+    -- A fix Timer HELYETT értesítjük a klienst, hogy kezdje el ellenőrizni a világot
+    triggerClientEvent(player, "acc:startWorldCheck", player)
 end
 
 local function markLoggedIn(player, username, accId)

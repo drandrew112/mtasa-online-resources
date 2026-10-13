@@ -13,6 +13,7 @@
     <script src="client/language.lua" type="client" />
     <script src="client/render.lua" type="client" />
     <script src="client/loading.lua" type="client" />
+    <script src="client/loadWorld.lua" type="client" />
 
     <script src="client/panels/login.lua" type="client" />
     <script src="client/panels/register.lua" type="client" />
