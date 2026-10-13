@@ -441,3 +441,20 @@ setTimer(function()
         end
     end
 end, 1000, 0)
+
+---------------------------------------------------------------- vehicle loss
+
+-- The unit's ambulance exploded or was destroyed: the shift ends.
+local function vehicleLost(vehicle)
+    for _, u in pairs(Units.list) do
+        if u.vehicle == vehicle then
+            Units.signOut(u, L.msg("med_erm.units.vehicle_destroyed"))
+            return
+        end
+    end
+end
+
+addEventHandler("onVehicleExplode", root, function() vehicleLost(source) end)
+addEventHandler("onElementDestroy", root, function()
+    if getElementType(source) == "vehicle" then vehicleLost(source) end
+end)

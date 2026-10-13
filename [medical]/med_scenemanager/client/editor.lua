@@ -49,9 +49,30 @@ local function sceneMenu(scene)
     for p = 1, 4 do
         priorities[p] = item("P" .. p, "priority", p, nil, { checked = erm.priority == p })
     end
+    local localeItems = {}
+    local localeCount = 0
+    for _, lang in ipairs(scene.languages or { { value = "en", label = "English" } }) do
+        local entry = erm.locales[lang.value]
+        local isDefault = lang.value == "en"
+        local filled = entry and (entry.title ~= "" or entry.description ~= "")
+        if filled then localeCount = localeCount + 1 end
+        local subItems = {
+            item("Title: " .. short(entry and entry.title or "", 28), "title", lang.value,
+                entry and entry.title ~= "" and entry.title or "(empty)"),
+            item("Description ...", "description", lang.value,
+                entry and entry.description ~= "" and entry.description or "(empty)"),
+        }
+        if not isDefault and filled then
+            subItems[#subItems + 1] = item("Remove this language", "removelocale", lang.value, "Falls back to English")
+        end
+        local mark = isDefault and " (required)" or (filled and "" or " - not set")
+        localeItems[#localeItems + 1] = { label = lang.label .. " [" .. lang.value .. "]" .. mark,
+            title = lang.label, items = subItems,
+            desc = filled and short(entry.title, 60) or "Not translated, English is used" }
+    end
     local ermItems = {
-        item("Title: " .. short(erm.title, 28), "title", nil, erm.title),
-        item("Description ...", "description", nil, erm.description ~= "" and erm.description or "(empty)"),
+        { label = "Locales (" .. localeCount .. ")", title = "Locales", items = localeItems,
+          desc = "Title / description per language. English is required, missing languages fall back to it." },
         item("Caller: " .. short(erm.caller, 24), "caller", nil, erm.caller),
         { label = "Priority: P" .. erm.priority, title = "Priority", items = priorities,
           desc = "Sent as meta.priority (med_erm_auto uses it)" },
