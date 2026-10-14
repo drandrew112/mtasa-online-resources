@@ -15,6 +15,7 @@ sirenVehicles = {
     [599] = "rumbler",    -- Police Ranger
     [490] = "code3_z3",   -- FBI Rancher (Mercedes B-Class)
     [407] = "premier_hazard_6009",   -- Fire Truck
+    [415] = "soundoff"    -- Skoda Octavia Blood Transporter
 }
 
 DEFAULT_SIREN_TYPE = "fsvas320"
