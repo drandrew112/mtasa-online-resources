@@ -15,7 +15,10 @@ Server-simulated AI road traffic on the lane network in `data/`.
   the nearest road both ways), plus their oncoming lanes and the lanes feeding into them at junctions.
   Density follows that lane length (`LANE_PER_VEHICLE`, `MAX_PER_PLAYER`) and drops to `STILL_FACTOR`
   while the player stands. Spawns stay 120 m from players (60 m while nearly empty) and 200 m from
-  any camera that looks at the spot.
+  any camera that looks at the spot. Players share one budget: a spawn point must be under the cap of
+  every player within 300 m (their own target, `MAX_PER_PLAYER` for the others), so two players in
+  one place do not get twice the traffic. A regional limit (`AREA_MAX` vehicles within `AREA_RADIUS`,
+  released vehicles included) keeps any one spot from filling up.
 - **Camera culling** (`server/views.lua`, `client/views.lua`): clients report their camera every
   300 ms. A vehicle that no player's camera sees (`VIEW_HALF_ANGLE` from the look direction) for
   `CULL_AFTER` and is farther than `CULL_MIN_DIST` from every player is removed; a player without a

@@ -156,6 +156,14 @@ function Agents.rebuildHash()
     A.hash = hash
 end
 
+-- put a new agent into the hash right away, so spawn counts in the same tick already see it
+local function hashAdd(ag)
+    local key = floor(ag.x / A.HASH_CELL) * 10000 + floor(ag.y / A.HASH_CELL)
+    local b = A.hash[key]
+    if not b then b = {}; A.hash[key] = b end
+    b[#b + 1] = ag
+end
+
 -- agents within r of a point (2D)
 function Agents.near(x, y, r, out)
     out = out or {}
@@ -174,6 +182,18 @@ function Agents.near(x, y, r, out)
         end
     end
     return out
+end
+
+-- released vehicles (now ordinary physics vehicles) within r: they cost the clients just the same
+function Agents.releasedNear(x, y, r)
+    local n, r2 = 0, r * r
+    for veh in pairs(A.released) do
+        if isElement(veh) then
+            local vx, vy = getElementPosition(veh)
+            if (vx - x) ^ 2 + (vy - y) ^ 2 <= r2 then n = n + 1 end
+        end
+    end
+    return n
 end
 
 ------------------------------------------------------------------------ lifecycle
@@ -220,6 +240,7 @@ function Agents.spawn(lane, s, v)
     Agents.updatePose(ag)
     A.list[id], A.byVeh[veh], A.byPed[ped] = ag, ag, ag
     A.count = A.count + 1
+    hashAdd(ag)
     occAdd(lane, ag)
     Agents.extendPlan(ag)
     return ag

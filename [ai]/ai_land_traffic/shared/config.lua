@@ -9,7 +9,10 @@ TRAFFIC = {
     DESPAWN_RADIUS = 330,
     TICK = 100,                 -- server simulation step
     MAX_AGENTS = 140,           -- whole server
-    MAX_PER_PLAYER = 26,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED)
+    MAX_PER_PLAYER = 20,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED); hard cap
+                                -- for EVERY player near a spawn point, so players together share one budget
+    AREA_RADIUS = 100,          -- regional limit: no new vehicle where this circle around the spawn point...
+    AREA_MAX = 9,               -- ...already holds this many (traffic + released vehicles)
     LANE_PER_VEHICLE = 90,      -- metres of spawnable route lane per vehicle (density) before the cap
     SPAWN_INTERVAL = 500,
     SPAWN_PER_PLAYER = 2,       -- spawn attempts per player per SPAWN_INTERVAL
