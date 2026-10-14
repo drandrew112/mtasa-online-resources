@@ -20,6 +20,8 @@
     <script src="client/select.lua" type="client" />
     <script src="client/zone.lua" type="client" />
 
+    <file src="assets/stretcher.dff" />
+
     <!-- for the EMS job script -->
     <export function="getVehicleStretcher" type="server" />
     <export function="getStretcherVehicle" type="server" />

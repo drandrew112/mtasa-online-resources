@@ -138,3 +138,13 @@ addEventHandler("stretcher:snap", resourceRoot, function(obj)
     end
     triggerServerEvent("stretcher:snapResult", resourceRoot, obj, groundZ + STRETCHER.GROUND_Z)
 end)
+
+local model = 2146
+local dff = engineLoadDFF("assets/stretcher.dff")
+
+if dff then
+    engineReplaceModel(dff, model)
+    outputDebugString("Stretcher model betöltve: " .. model)
+else
+    outputDebugString("Hiba: Nem sikerült betölteni a stretcher.dff fájlt!", 1)
+end
