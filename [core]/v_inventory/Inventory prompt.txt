@@ -1,0 +1,84 @@
+-# Claude prompt
+
+# Inventory rendszer
+Ez a rendszer fogja kiváltani a med_bag és a bt_items tárgy kezelésének egy részét.
+A bt_items a vérszállítók item managere. Egyenlőre még NEM létezik, de a v_inventory exportjait fogja használni.
+
+Egységes UIt kapnak az itemek.
+A med_bag-ből nézd meg a UI-t és ahhoz hasonlót kell tervezned.
+
+Minden játékosnak több slotja van:
+- jobb/bal kéz
+- hát (csak bizonyos itemek vehetők hátra)
+
+A fegyverek nem ide tartoznak. Azt egy külön v_weaponselector fogja kezelni később.
+Majd annak a fejlesztése során megcsináljuk, hogy ne lehessen összeférhetetlenség. (ne lehessen fegyver és item is egyszerre a kézben)
+
+### v_locals
+Minden itemhez tartoznia kell egy id-nek ami angol nyelvű és független a megjelenített szövegtől. Ezzel elkerüljük a nyelvi hibákat.
+Minden létrehozható itemet a v_inventory előre ismer. Ez biztosítja, hogy mindegyikhez legyen elérhető fordítás a v_locals-ban v_inventory namespace-en belül.
+A UI nyelvi szövegeket a kliens oldal a v_accounts által küldött onClientLoadingStarted event során töltheti csak be. Ezután exports.v_accounts:resourceReady()-t küld. Egyenlőre nem vesszük fel a várólistára a v_inventory-t.
+
+## Item tipusok
+
+- Egyszerű itemek: Olyan item amit kézben vagy tárolóban lehet tartani, de önmagában nem képes tárolni semmit. Minden itemnek van egy meta eleme ami tartalmazhat: oxigén szintje, vérszállító csomaghoz tartozó információkat.
+- Tároló: Mint a vérszállítók doboza vagy egy hátizsák. Ebben tárolni lehet egyszerű itemeket. Véges a kapacitásuk. A kapacitást súlyban mérjük. A tárolók csak egyszerű itemeket tárolhatnak.
+
+Kézbe vehetők és táoló-only
+- Kézbe vehető itemek: Mint a monitor/defibrillátor, a mentős táska és a doboz is. Minden kézbe vehető itemnek kell offsetet adni a kéz csonthoz képest.
+- Nem kézbe vehető itemek: Például a vérszállítók szállítmánya. Ezeket csak tárolók között lehet mozgatni.
+
+### Porták
+A vérszállító rendszernek szüksége lesz portákra. Ezek tároló markerek. Ezeket a vérszállító script fogja kezelni. Exportokkal lehet létrehozni ilyen tároló markereket és exportokkal lehet itemeket hozzáadni és törölni, valamint lekérdezni.
+Ha van a játékosnál egy tároló akkor meg tud nyitni egy UIt amin tud cserélni itemeket. Exportokkal engedjük meg külső scripteknek, hogy javaslatot tegyenek a játékosnak vagy éppen csak bizonyos tárgyak bizonyos irányú mozgatását engedélyezzék. Ezek az exportok csak az adott játékosnak szólnak. Tehát egy porta markerre több játékosnak is lehet korlátozása.
+
+Marker UI: Kötelező a portákhoz.
+Javaslat: nézd meg a work_core marker UI-okat.
+
+### Csomagtartó
+Exporttal lehet csomagtartót létrehozni és kezelni egy járműnél. Állítható, hogy ki férhet hozzá.
+Az exportokkal legyen meghatározható hogy mely itemek/tárolók legyenek benne. Legyen lehetőség hozzáadni és törölni is.
+A csomagtartók interact objecttel működnek.
+
+Ez szintén fontos lesz, mert a vérszállító script csomagtartót fog használni a doboz tárolására.
+
+A med_bag marad a saját interact object-es megoldásánál. Ezt támogatni kell az export APIval.
+
+### Meglévő itemek integrációja
+
+A két medsys-hez szükséges item amit jelenleg a med_bag kezel.
+- medical bag: mentős táska: kézbe vehető tároló egység ami tartalmaz IV kiteket, gyógyszereket és egyéb itemeket. Minden olyan itemet létre kell hozni amit egy medical bag tárolhat jelenleg a script szerint. Ide tartozik az oxigén palack is.
+- monitor/defibrilátor egység azaz Lifepak 15: önálló item. Kézbe vehető.
+
+### Attach item to...
+Offsetek megadásával rögzíteni lehet itemeket egy objektumhoz.
+Ez a hordágyhoz rögzítésnél lesz hasznos.
+
+### Store item in...
+Itemek járműhöz kötése. Ezzel megkerüljük a csomagtartó rendszert.
+Van olyan resource (med_bag) ami saját maga kezeli a járműből kivételt/elrakást.
+A medical rendszernek külön fontos, hogy ha egy itemet korábban a hordágyra tettek fel akkor az az oldalsó ajtónál is kivehető, de a hordágy kivételével is kijön.
+
+### Item meta adatok
+Mint azt említettem tartoznak meta adatok az itemekhez.
+A vérszállítók item managere meg fog adni minden itemhez olyan adatokat mint:
+- honnan kell vinni
+- hova kell vinni
+Ezeket meg kell jeleníteni a UI-on. (amikor a dobozt kézben tartjuk például)
+
+### Hosszútávú tárolás
+Az inventory rendszer nem tárolja újraindítás után az itemeket. Nincs saját adatbázisa.
+Minden itemet külső resourceök hoznak létre exportokon keresztül.
+
+## med_bag
+A med_bag resource-t teljesen át kell írni, hogy kövesse az új v_inventory rendszert.
+Minden exportot biztosítani kell ami ezt a két scriptet összeköti.
+A med_bag nem használ csomagtartót. Saját maga kezeli az autóban tárolást.
+
+### Egyéb utasítások
+
+Ez az üzenet nem jogosít fel a végrehajtásra!
+Előszőr mérd fel a jelenlegi állapotokat és a megvalósítás lépéseit.
+A grafikus felületeket tervezd meg és mutasd be nekem kép formában.
+
+A végrehajtáshoz külön engedélyt fogok adni amint a terv minden részletét tisztáztuk és válaszoltam az általad feltett kérdésekre.
