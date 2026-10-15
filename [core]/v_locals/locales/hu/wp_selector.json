@@ -1,0 +1,12 @@
+{
+  "wp_selector.category.grenades": "Gránátok",
+  "wp_selector.category.heavy": "Nehézfegyverek",
+  "wp_selector.category.long": "Távolsági",
+  "wp_selector.category.melee": "Kézi",
+  "wp_selector.category.mg": "MG",
+  "wp_selector.category.pistols": "Pisztolyok",
+  "wp_selector.category.shotguns": "Puskák",
+  "wp_selector.category.smg": "SMG",
+  "wp_selector.empty": "Üres",
+  "wp_selector.out_of_ammo": "Nincs lőszer"
+}

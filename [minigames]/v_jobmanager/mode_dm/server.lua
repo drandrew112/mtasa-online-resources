@@ -19,7 +19,11 @@ JobModes[JOB_TYPE_DM] = {
         for index, player in ipairs(match.players) do
             local spawn = match.job.deathmatch.spawnpoints[spawnOrder[index]]
             spawnPlayer(player, spawn[1], spawn[2], spawn[3], spawn[4] or 0, getElementModel(player), 0, match.dimension)
-            giveWeapon(player, dm.weapon, dm.ammo, true)
+            if weaponManagerRunning() then
+                exports.wp_manager:setPlayerTempLoadout(player, { { id = dm.weapon, ammo = dm.ammo } }, dm.weapon)
+            else
+                giveWeapon(player, dm.weapon, dm.ammo, true)
+            end
             setPedArmor(player, dm.armour or 0)
             match.eliminated[player] = false
         end

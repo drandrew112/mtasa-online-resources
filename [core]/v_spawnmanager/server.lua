@@ -38,7 +38,14 @@ end
 
 local savedWeapons = {} -- Halálkor eltárolt fegyverek játékosonként.
 
+-- A wp_manager futása alatt a fegyvereket az kezeli (spawnkor magától visszaadja), itt nincs teendő.
+local function weaponManagerRunning()
+    local res = getResourceFromName("wp_manager")
+    return res and getResourceState(res) == "running"
+end
+
 function saveWeapons(player)
+    if weaponManagerRunning() then return end
     local weapons = {}
     for slot = 0, 12 do
         local weapon = getPedWeapon(player, slot)
@@ -52,7 +59,7 @@ end
 
 function restoreWeapons(player)
     local weapons = savedWeapons[player]
-    if not weapons then return end
+    if not weapons or weaponManagerRunning() then return end
     for _, data in ipairs(weapons) do
         giveWeapon(player, data.weapon, data.ammo, false)
     end

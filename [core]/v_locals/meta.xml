@@ -117,6 +117,8 @@
     <file src="locales/en/work_bloodtransport.json" />
     <file src="locales/en/bt_items.json" />
     <file src="locales/en/bt_dispatch.json" />
+    <file src="locales/en/wp_manager.json" />
+    <file src="locales/en/wp_selector.json" />
     <file src="locales/en/files/v_introduce/rules.txt" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/avi_core.json" />
@@ -191,6 +193,8 @@
     <file src="locales/hu/work_bloodtransport.json" />
     <file src="locales/hu/bt_items.json" />
     <file src="locales/hu/bt_dispatch.json" />
+    <file src="locales/hu/wp_manager.json" />
+    <file src="locales/hu/wp_selector.json" />
     <file src="locales/hu/files/v_introduce/rules.txt" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->

@@ -78,17 +78,35 @@ function loadStats(player)
     end
 end
 
-function loadWeapons(player)
-    local weapons, ammo = {}, {}
-    for slot = 0, 12 do
-        weapons[slot] = getData(player, "weapon" .. slot)
-        ammo[slot]    = getData(player, "ammo" .. slot)
-        if weapons[slot] == nil or ammo[slot] == nil then return end
-    end
-    for slot = 0, 12 do
-        giveWeapon(player, weapons[slot], ammo[slot])
-    end
+-- Weapons live in [weapon]/wp_manager. Stored as "weapons" = JSON { {id=, ammo=, clip=}, ... };
+-- accounts saved before it still have the old weaponN / ammoN keys, read once as a fallback.
+local function weaponManagerRunning()
+    local res = getResourceFromName("wp_manager")
+    return res and getResourceState(res) == "running"
 end
+
+function loadWeapons(player)
+    if not weaponManagerRunning() then return end
+    local list = fromJSON(tostring(getData(player, "weapons") or ""))
+    if type(list) ~= "table" then
+        list = {}
+        for slot = 0, 12 do
+            local weapon, ammo = tonumber(getData(player, "weapon" .. slot)), tonumber(getData(player, "ammo" .. slot))
+            if weapon and weapon > 0 and ammo and ammo > 0 then list[#list + 1] = { id = weapon, ammo = ammo } end
+        end
+    end
+    exports.wp_manager:setPlayerWeapons(player, list)
+end
+
+-- wp_manager (re)started without a parked state (e.g. it was not running at login): load from the DB
+addEventHandler("onResourceStart", root, function(res)
+    if getResourceName(res) ~= "wp_manager" then return end
+    for _, player in ipairs(getElementsByType("player")) do
+        if getElementData(player, "isLogged") == true and not exports.wp_manager:isPlayerWeaponsLoaded(player) then
+            loadWeapons(player)
+        end
+    end
+end)
 
 --------------------------------------------------------------------------------
 -- Weapon skill stats - always maxed on spawn
@@ -139,9 +157,10 @@ function save_all(player)
         d["stat" .. i] = getPedStat(player, statId)
     end
 
-    for slot = 0, 12 do
-        d["weapon" .. slot] = getPedWeapon(player, slot)
-        d["ammo" .. slot]   = getPedTotalAmmo(player, slot)
+    -- false = wp_manager has not loaded this player's weapons: keep the stored copy
+    if weaponManagerRunning() then
+        local weapons = exports.wp_manager:getPlayerWeapons(player)
+        if type(weapons) == "table" then d.weapons = toJSON(weapons, true) end
     end
 
     exports.v_mysql:setAccData(player, d)

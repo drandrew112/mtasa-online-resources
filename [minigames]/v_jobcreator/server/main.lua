@@ -49,10 +49,27 @@ end
 -- player state
 --------------------------------------------------------------------------------
 
+-- [weapon]/wp_manager (soft dependency): the creator uses a temporary loadout, so the player's own
+-- weapons are neither taken nor snapshotted; without it the GTA weapons are taken and given back.
+local function weaponManagerRunning()
+    local res = getResourceFromName("wp_manager")
+    return res and getResourceState(res) == "running"
+end
+
+-- weapon = nil: no weapon
+local function setLoadout(player, weapon, ammo)
+    if weaponManagerRunning() then
+        exports.wp_manager:setPlayerTempLoadout(player, weapon and { { id = weapon, ammo = ammo } } or {}, weapon)
+    else
+        takeAllWeapons(player)
+        if weapon then giveWeapon(player, weapon, ammo, true) end
+    end
+end
+
 local function snapshot(player)
     local x, y, z = getElementPosition(player)
     local weapons = {}
-    for slot = 0, 12 do
+    for slot = 0, weaponManagerRunning() and -1 or 12 do
         local weapon, ammo = getPedWeapon(player, slot), getPedTotalAmmo(player, slot)
         if weapon and weapon > 0 and ammo > 0 then weapons[#weapons + 1] = { weapon, ammo } end
     end
@@ -64,7 +81,7 @@ local function snapshot(player)
 end
 
 local function restore(player, back)
-    takeAllWeapons(player)
+    if weaponManagerRunning() then exports.wp_manager:clearPlayerTempLoadout(player) else takeAllWeapons(player) end
     removePedFromVehicle(player)
     setElementFrozen(player, false)
     setElementAlpha(player, 255)
@@ -102,7 +119,7 @@ local function stopTest(player, session, silent)
     if not test then return end
     session.test = nil
     if isElement(test.vehicle) then destroyElement(test.vehicle) end
-    takeAllWeapons(player)
+    setLoadout(player)
     setPedArmor(player, 0)
     if isPedDead(player) then
         spawnPlayer(player, test.x, test.y, test.z, 0, getElementModel(player), 0, session.dimension)
@@ -169,7 +186,7 @@ local function openCreator(player, gameId)
     setElementData(player, "jobCreator", true)
 
     removePedFromVehicle(player)
-    takeAllWeapons(player)
+    setLoadout(player)
     setPedArmor(player, 0)
     setElementHealth(player, 100)
     setElementDimension(player, session.dimension)
@@ -414,7 +431,7 @@ addEventHandler("jobcreator:testStart", resourceRoot, function(data)
         if not CATALOG.weaponAllowed[weapon] then session.test = nil return end
         setElementPosition(player, x, y, z)
         setElementRotation(player, 0, 0, rot)
-        giveWeapon(player, weapon, math.min(tonumber(data.ammo) or 100, 9999), true)
+        setLoadout(player, weapon, math.min(tonumber(data.ammo) or 100, 9999))
         setPedArmor(player, math.min(tonumber(data.armour) or 0, 100))
     end
     triggerClientEvent(player, "jobcreator:testStarted", resourceRoot)

@@ -1,0 +1,12 @@
+{
+  "wp_selector.category.grenades": "Grenades",
+  "wp_selector.category.heavy": "Heavy",
+  "wp_selector.category.long": "Long range",
+  "wp_selector.category.melee": "Melee",
+  "wp_selector.category.mg": "MG",
+  "wp_selector.category.pistols": "Pistols",
+  "wp_selector.category.shotguns": "Shotguns",
+  "wp_selector.category.smg": "SMG",
+  "wp_selector.empty": "Empty",
+  "wp_selector.out_of_ammo": "Out of ammo"
+}

@@ -1,0 +1,40 @@
+<meta>
+    <info author="DrAndrew112" name="wp_manager" version="1.0" type="script"
+          description="Weapon handling: owned weapons and ammo per player, only the equipped one is given to GTA, 0-ammo weapons stay usable, manual reload (R), temporary loadouts for minigames." />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/weapons.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/core.lua" type="server" />
+    <script src="server/inventory.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/main.lua" type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="getPlayerWeapons" type="server" />
+    <export function="setPlayerWeapons" type="server" />
+    <export function="isPlayerWeaponsLoaded" type="server" />
+    <export function="givePlayerWeapon" type="server" />
+    <export function="takePlayerWeapon" type="server" />
+    <export function="clearPlayerWeapons" type="server" />
+    <export function="getPlayerWeaponAmmo" type="server" />
+    <export function="setPlayerWeaponAmmo" type="server" />
+    <export function="getPlayerCurrentWeapon" type="server" />
+    <export function="setPlayerCurrentWeapon" type="server" />
+    <export function="setPlayerTempLoadout" type="server" />
+    <export function="clearPlayerTempLoadout" type="server" />
+    <export function="hasPlayerTempLoadout" type="server" />
+    <export function="getWeaponCategory" type="server" />
+
+    <export function="getWeapons" type="client" />
+    <export function="getCurrentWeapon" type="client" />
+    <export function="isCurrentWeaponEmpty" type="client" />
+    <export function="hasTempLoadout" type="client" />
+    <export function="equipWeapon" type="client" />
+    <export function="getWeaponDefs" type="client" />
+</meta>

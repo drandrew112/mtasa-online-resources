@@ -290,7 +290,13 @@ function giveMeWeapon(weapon, amount)
 	if table.find(getOption('weapons.disallowed'), weapon) then
 		errMsg((getWeaponNameFromID(weapon) or tostring(weapon)) .. 's are not allowed', source)
 	else
-		giveWeapon(source, weapon, amount, true)
+		-- [weapon]/wp_manager owns the weapons when it runs
+		local wpm = getResourceFromName("wp_manager")
+		if wpm and getResourceState(wpm) == "running" then
+			exports.wp_manager:givePlayerWeapon(source, weapon, amount, true)
+		else
+			giveWeapon(source, weapon, amount, true)
+		end
 	end
 end
 

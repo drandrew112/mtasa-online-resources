@@ -12,9 +12,20 @@ local function snapshotPlayer(player)
     return { x = x, y = y, z = z, dimension = getElementDimension(player), interior = getElementInterior(player) }
 end
 
+-- [weapon]/wp_manager (soft dependency): a match gives a temporary loadout that hides the
+-- player's own weapons; clearing it gives them back.
+function weaponManagerRunning()
+    local res = getResourceFromName("wp_manager")
+    return res and getResourceState(res) == "running"
+end
+
 local function restorePlayer(player, state)
     if not isElement(player) then return end
-    takeAllWeapons(player)
+    if weaponManagerRunning() then
+        exports.wp_manager:clearPlayerTempLoadout(player)
+    else
+        takeAllWeapons(player)
+    end
     setElementFrozen(player, false)
     removePedFromVehicle(player)
     setElementInterior(player, state.interior)
@@ -297,6 +308,7 @@ local function startMatch(lobby)
         match.crewColors[player] = getElementData(player, "crewColor")
         local state = playerState[player]
         if state then state.kind, state.matchId, state.lobbyId = "match", match.id, nil end
+        if weaponManagerRunning() then exports.wp_manager:setPlayerTempLoadout(player, {}) end
         triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, match.job.name)
     end
     local mode = JobModes[match.job.type]

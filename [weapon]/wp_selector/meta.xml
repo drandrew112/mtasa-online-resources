@@ -1,0 +1,12 @@
+<meta>
+    <info author="DrAndrew112" name="wp_selector" version="1.0" type="script"
+          description="Weapon wheel: hold TAB, steer with the mouse (no cursor, the camera stops), mouse wheel steps the weapons of a category, release to equip." />
+    <min_mta_version client="1.5.8" />
+
+    <include resource="v_locals" />
+    <include resource="wp_manager" />
+    <script src="locals.lua" type="client" />
+    <script src="client/selector.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf" type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+</meta>
