@@ -174,12 +174,12 @@ def hud_card(c, x, y, w, on_duty, tasks, big=False):
     else:
         c.t((x + 18, y + 46), "Off duty", 20, True, MUTED)
     kx = x + w - 18
-    wk = c.tw("F6", 12, True) + 14
-    c.key(kx - wk - c.tw("Expand", 12) - 8, y + 24, "F6")
+    wk = c.tw("J", 12, True) + 14
+    c.key(kx - wk - c.tw("Expand", 12) - 8, y + 24, "J")
     c.t((kx, y + 24 + 10), "Expand", 12, False, MUTED, "rm")
     yy = y + 84
     if not on_duty:
-        c.t((x + 18, yy + 6), "Press F6, get in your BT- ambulance and sign on.", 13, False, MUTED)
+        c.t((x + 18, yy + 6), "Press J, get in your BT- ambulance and sign on.", 13, False, MUTED)
         return h
     c.t((x + 18, yy), "IN TRANSIT", 11, True, MUTED)
     c.t((x + w - 18, yy), str(rows), 11, True, MUTED, "ra")
@@ -213,7 +213,7 @@ def m01():
     c.t((W - 420, 395), "Off duty", 14, True, TEXT)
     hud_card(c, W - 30 - 390, 420, 390, False, [])
     c.t((W - 420, 560), "Waiting-for-pickup tasks are not in the small view,", 12, False, TEXT)
-    c.t((W - 420, 578), "only in the F6 view; you get a notification instead.", 12, False, TEXT)
+    c.t((W - 420, 578), "only in the J view; you get a notification instead.", 12, False, TEXT)
     # ui_core notification (top right)
     nx, ny = W - 30 - 400, 30
     c.rr((nx, ny, nx + 400, ny + 86), 8, fill=BG, alpha=235)
@@ -227,7 +227,7 @@ def m01():
 # ------------------------------------------------------------------------------------------ 02 big
 def m02():
     c = Canvas(scene())
-    c.label("02 · Panel – big view (F6, cursor appears)")
+    c.label("02 · Panel – big view (J, cursor appears)")
     x, y, w, h = W - 30 - 860, 1080 - 30 - 760, 860, 760
     c.rr((x, y, x + w, y + h), 10, fill=BG, alpha=238)
     c.rr((x, y, x + w, y + 4), 2, fill=ACC)
@@ -238,7 +238,7 @@ def m02():
     c.t((x + 22 + c.tw("BT-4821", 24, True) + 100, y + 52), "Marcus_Hale · 01:12:40", 13, False, MUTED)
     c.btn(x + w - 330, y + 26, 148, 34, "Wind down  ○ OFF", "n", 13)
     c.btn(x + w - 172, y + 26, 120, 34, "End service", "p", 13)
-    c.key(x + w - 40, y + 4 + 6, "F6", 11)
+    c.key(x + w - 40, y + 4 + 6, "J", 11)
     # stats strip
     sy = y + 96
     stats = [("DELIVERED", "3", GOOD), ("IN TRANSIT", "2", WARN), ("WAITING", "3", BLUE), ("PAY SO FAR", "€9,500", TEXT)]
@@ -506,7 +506,7 @@ def m05():
     hy = wy + 236
     c.t((60, hy), "How do I become a blood transporter?", 22, True, WTEXT)
     wpanel(c, (60, hy + 40, W - 60, hy + 150))
-    steps = ["Go to a blood transport duty marker (marked on your map) and go on duty.", "Take a BT- ambulance from the vehicle point.", "Sit in it and sign on in the panel (F6).", "Tasks arrive automatically – good luck!"]
+    steps = ["Go to a blood transport duty marker (marked on your map) and go on duty.", "Take a BT- ambulance from the vehicle point.", "Sit in it and sign on in the panel (J).", "Tasks arrive automatically – good luck!"]
     for i, s in enumerate(steps):
         bx = 90 + i * 456
         c.t((bx, hy + 66), f"STEP {i + 1}", 11, True, WACC);

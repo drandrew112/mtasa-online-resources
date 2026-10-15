@@ -1,10 +1,10 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The panel in the bottom right corner (only for players with the blood transporter right):
 --   small view: service state + the tasks in transit
---   big view (F6, cursor): sign on / off, wind down, tasks (route, order, hand over), incoming offer
+--   big view (J, cursor): sign on / off, wind down, tasks (route, order, hand over), incoming offer
 
 PanelBig = false
-local KEY = "F6"
+local KEY = "j"
 local scroll = 0
 local offerIn            -- { id, till, ... } incoming handover offer
 
@@ -62,10 +62,10 @@ local function drawSmall()
     dxDrawRectangle(x, y + S(4), w, S(66), RGB(COL.head))
     Text(L("bt_dispatch.panel.title"), x + S(18), y + S(12), w, S(16), RGB(COL.muted), 9, true)
     local expandW = TextWidth(L("bt_dispatch.panel.expand"), 10)
-    local keyW = TextWidth(KEY, 10, true) + S(14)
+    local keyW = TextWidth(KEY:upper(), 10, true) + S(14)
     local kx = x + w - S(18) - expandW - S(8) - keyW
     Round(kx, y + S(10), keyW, S(20), S(4), RGB(COL.key))
-    Text(KEY, kx, y + S(10), keyW, S(20), tocolor(30, 24, 10), 10, true, "center")
+    Text(KEY:upper(), kx, y + S(10), keyW, S(20), tocolor(30, 24, 10), 10, true, "center")
     Text(L("bt_dispatch.panel.expand"), x, y + S(10), w - S(18), S(20), RGB(COL.muted), 10, false, "right")
     if State.onDuty then
         Text(State.unit or "", x + S(18), y + S(34), w, S(28), RGB(COL.text), 15, true)
@@ -181,9 +181,9 @@ local function drawBig()
         Text(L("bt_dispatch.panel.sign_on_hint"), x + S(22), y + S(92), w - S(44), S(40), RGB(COL.muted), 10)
         return
     end
-    local keyW = TextWidth(KEY, 9, true) + S(12)
+    local keyW = TextWidth(KEY:upper(), 9, true) + S(12)
     Round(x + w - keyW - S(8), y + S(8), keyW, S(18), S(4), RGB(COL.key))
-    Text(KEY, x + w - keyW - S(8), y + S(8), keyW, S(18), tocolor(30, 24, 10), 9, true, "center")
+    Text(KEY:upper(), x + w - keyW - S(8), y + S(8), keyW, S(18), tocolor(30, 24, 10), 9, true, "center")
 
     -- stats
     local c = counts()

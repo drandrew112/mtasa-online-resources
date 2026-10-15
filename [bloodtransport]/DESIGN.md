@@ -20,7 +20,7 @@ A képernyőtervek: `docs/mockups/01..07_*.png` (újragenerálás: `python docs/
 | D9 | Visszatétel a forrásportára | **Tiltott.** (A 3. fejezet 6. pontja és a porta-szabályok ennek megfelelően: forrásportán `allowIn` mindig üres.) |
 | D10 | Szolgálatba lépés | Csak a saját munkajárműben. |
 | D11 | Skinek | Javaslat: 70, 17, 98, 150 (a work_core választóban ellenőrizzük). |
-| D12 | F6 | Marad (az rw_loco-val nem használja senki egyszerre). |
+| D12 | J | F6 helyett J (kézre áll). A med_erm tabletje is J, de az csak szolgálatban lévő mentősnek nyílik. |
 | D13 | Becsült kereset a panelen | Marad (a végső válasz szerint). |
 
 ---
@@ -39,7 +39,7 @@ A képernyőtervek: `docs/mockups/01..07_*.png` (újragenerálás: `python docs/
 | **web_api / ui_browser** | `registerApp({ site, category = "services" })` ugyanazt az oldalt adja HTTP-n és játékbeli oldalként. Csak a `meta.xml`-ben `http="true"` exportok hívhatók. Térkép: `OSA.Map` a v_radar bigmap-jével. A „Provided by OpenSanAndreas” felirat automatikus. | `bt_web` egy oldal, 3 nézet (Home / Map / Admin), cím: `blood-transport.eu`. |
 | **v_radar** | Szerver export: `addObjective(player, x, y, z, label)`, `removeObjective`, `clearObjectives`. | Az „Útvonal” gomb ezt használja, játékosonként egyetlen aktív célponttal. |
 | **ui_core** | `addNotification` elfogad üzenetobjektumot. | Új feladat értesítés. |
-| **F6** | Az `rw_loco` vasúti menetrendje és a `v_jobcreator` tesztleállítása használja. | Ütközés csak akkor, ha ugyanaz a játékos mindkettőt használja; a billentyű a configban állítható. Jelzem, hogy mást válasszunk-e. |
+| **J** | A `med_erm` EMS tabletje használja. | Nem ütközik: a tablet csak szolgálatban lévő mentősnek nyílik, és a 415-ös vérszállító autóban hint sem jön; a billentyű a `panel.lua` elején állítható. |
 
 ---
 
@@ -100,7 +100,7 @@ Státusz: `WAITING` → `TRANSIT` → `DELIVERED` / `CANCELLED` (automatikus: po
 
 **Adatbázis** `data/bloodtransport.db` (SQLite, gitignore): `tasks`, `shifts`, `shift_tasks` (kinek jutott, mikor, átadva-e → az admin a kiadott ID-ket látja), `task_log` (státusztörténet). Minden elemnek `id`-ja van, a státuszok folyamatosan frissülnek.
 
-**Kliens panel** (jobb alsó sarok): kis nézet (01. kép) és nagy nézet F6-ra (02. kép) kurzorral; csak a joggal rendelkezőknek.
+**Kliens panel** (jobb alsó sarok): kis nézet (01. kép) és nagy nézet J-re (02. kép) kurzorral; csak a joggal rendelkezőknek.
 **Admin**: `/btadmin` (dx panel a `/ermadmin` mintájára, 04. kép), szint: `BT.ADMIN_LEVEL = 2`; a lekérdezések közösek a webes adminnal.
 
 ### 2.5 bt_web (angol, nincs v_locals)
@@ -118,7 +118,7 @@ Státusz: `WAITING` → `TRANSIT` → `DELIVERED` / `CANCELLED` (automatikus: po
 ## 3. Játékmenet
 
 1. Duty marker → work duty (jog megkapva) → járműpont: `BT-xxxx` mentőautó.
-2. Beszállás, F6 → **Sign on** → szolgálatban. Új feladatok értesítésként és a panelen érkeznek.
+2. Beszállás, J → **Sign on** → szolgálatban. Új feladatok értesítésként és a panelen érkeznek.
 3. Kiszállás, csomagtartó (interact menü) → doboz kézbe → a forrásporta markerében `E` → a **TAKE** jelölt tételek a dobozba (→ `TRANSIT`).
 4. Doboz vissza a csomagtartóba, beszállás, az útvonal gombbal célpont.
 5. A célportán **DELIVER** jelölt tételek a portára (→ `DELIVERED`, 5 mp múlva eltűnik). Utánpótlásnál a kórház készlete nő; másnál az item eltűnik.

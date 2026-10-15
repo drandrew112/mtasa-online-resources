@@ -9,7 +9,7 @@ Request: `Blood transporter prompt.txt`.
 | `bt_core` | the transporter right (`bt.right`), the 7 institutions and their v_inventory ports, `getConfig()` |
 | `bt_items` | cargo items, the blood box of the ambulances (take / put back through an interact menu at the rear, no trunk panel), per-player port rules, pickup / delivery detection |
 | `bt_stock` | stock of centers and hospitals (`data/stock.json`), hospital consumption, hourly refill, resupply requests |
-| `bt_dispatch` | services (shifts), tasks, assignment, handover, pay, the panel (F6), `/btadmin`, SQLite `data/bloodtransport.db` |
+| `bt_dispatch` | services (shifts), tasks, assignment, handover, pay, the panel (J), `/btadmin`, SQLite `data/bloodtransport.db` |
 | `bt_web` | web page: home, live map with the stock, admin. HTTP `/bt_web/` and ui_browser `blood-transport.eu` |
 | `[work]/work_bloodtransport` | the work on work_core: duty marker, `BT-` ambulances (model 415), gives the right |
 
@@ -18,14 +18,14 @@ Start order follows the `<include>`s: v_locals, v_inventory, work_core → bt_co
 ## Playing it
 
 1. Duty marker (blip 14) → work duty (gives the right) → vehicle marker → `BT-xxxx` ambulance.
-2. In the vehicle press `F6` → **Sign on**. The unit id is the plate.
+2. In the vehicle press `J` → **Sign on**. The unit id is the plate.
 3. Tasks arrive as notifications and in the panel. Get out, use the interact menu at the rear of the ambulance to take the blood box into a hand.
 4. Stand in the port marker of the pickup institution, `E`: move the TAKE items into the box (task becomes *transit*).
    Put the box back into the trunk before getting in (v_inventory rule).
 5. At the destination port put the DELIVER items on the port (task becomes *delivered*).
 6. End the service from the panel (anywhere). Pay: €2000 base (needs ≥1 delivery) + €2500 per delivery − €1500 per cargo still on the way.
 
-Panel (bottom right, only with the right): small view = state + tasks in transit; `F6` = big view with sign on/off,
+Panel (bottom right, only with the right): small view = state + tasks in transit; `J` = big view with sign on/off,
 *wind down* (no new tasks), route button (one v_radar objective), ▲▼ order, hand over (waiting tasks, a unit ≤ 6 m away accepts within 20 s).
 
 The service ends (all tasks cancelled, cargo and box contents deleted, pay calculated) when: the player ends it, the work duty ends,
