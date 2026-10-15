@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="work_bloodtransport" version="1.0.0" type="script"
+          description="Blood transporter work on work_core: duty gives the transporter right, ambulances with BT- plates" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="isPlayerBloodTransporter" type="server" />
+    <export function="getBloodTransportPlayers" type="server" />
+    <export function="getBloodTransportWorkId" type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="work_core" />
+    <include resource="bt_core" />
+</meta>

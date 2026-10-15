@@ -1,0 +1,47 @@
+<meta>
+    <info author="DrAndrew112" name="bt_dispatch" version="1.0.0" type="script"
+          description="Blood transport dispatch: services, tasks, assignment, handover, pay, the transporter panel and /btadmin" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="v_locals" />
+    <include resource="work_core" />
+    <include resource="bt_core" />
+    <include resource="bt_items" />
+    <include resource="bt_stock" />
+    <include resource="ui_core" />
+
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="config.lua" type="server" />
+    <script src="server/logic.lua" type="server" />
+    <script src="server/db.lua" type="server" />
+    <script src="server/core.lua" type="server" />
+    <script src="server/offers.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+    <script src="server/generator.lua" type="server" />
+    <script src="server/admin.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/main.lua" type="client" />
+    <script src="client/panel.lua" type="client" />
+    <script src="client/admin.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf" type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="createTask" type="server" />
+    <export function="requestSupply" type="server" />
+    <export function="getTask" type="server" />
+    <export function="getPlayerTasks" type="server" />
+    <export function="getDutyCount" type="server" />
+    <export function="isPlayerInService" type="server" />
+    <export function="onPickedUp" type="server" />
+    <export function="onDelivered" type="server" />
+    <export function="getPublicState" type="server" />
+    <export function="getCompletedCount" type="server" />
+    <export function="adminQuery" type="server" />
+    <export function="generateTask" type="server" />
+</meta>

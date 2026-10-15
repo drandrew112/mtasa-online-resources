@@ -1,0 +1,29 @@
+<meta>
+    <info author="DrAndrew112" name="bt_web" version="1.0.0" type="script"
+          description="Blood transport web page: home, live map with the stock, admin. HTTP and ui_browser (blood-transport.eu)" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <include resource="web_api" />
+    <include resource="bt_core" />
+    <include resource="bt_stock" />
+    <include resource="bt_dispatch" />
+
+    <script src="server/http.lua" type="server" />
+    <script src="server/webapp.lua" type="server" />
+
+    <!-- built on web_api: web/http.html sends web/index.html with the css / js inlined (in game the
+         same files load as a local CEF page inside ui_browser) -->
+    <html src="web/http.html" default="true" />
+    <file src="web/index.html" type="client" />
+    <file src="web/css/style.css" type="client" />
+    <file src="web/js/app.js" type="client" />
+    <file src="web/js/home.js" type="client" />
+    <file src="web/js/map.js" type="client" />
+    <file src="web/js/admin.js" type="client" />
+
+    <export function="btPublic" type="server" http="true" />
+    <export function="btStock" type="server" http="true" />
+    <export function="btAdminLogin" type="server" http="true" />
+    <export function="btAdminLogout" type="server" http="true" />
+    <export function="btAdminQuery" type="server" http="true" />
+</meta>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blood Transport</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="osa-topbar">
+        <div class="osa-brand">
+            <span class="logo"><i></i></span>
+            <div>
+                <strong>Blood Transport</strong>
+                <small>Los Santos &middot; Las Venturas &middot; San Fierro</small>
+            </div>
+        </div>
+        <nav class="osa-tabs tb-nav" id="nav">
+            <button class="osa-tab active" data-view="home">Home</button>
+            <button class="osa-tab" data-view="map">Map</button>
+            <button class="osa-tab" data-view="admin">Admin</button>
+        </nav>
+        <div class="osa-top-right">
+            <span class="who" id="adWho"></span>
+            <button class="osa-btn small" id="adLogout" hidden>Sign out</button>
+            <span class="osa-conn" id="conn" title="Connection"></span>
+            <span class="osa-clock" id="clock">--:--:--</span>
+        </div>
+    </header>
+
+    <!-- ================= Home ================= -->
+    <main class="view" id="vHome">
+        <div class="home">
+            <section class="hero">
+                <h1>Be the link between the blood bank and the ward.</h1>
+                <p>Blood transporters carry blood products, lab samples and urgent medicine between the blood supply
+                    centers and the hospitals of San Andreas. Every unit counts &ndash; and every minute on the road matters.</p>
+                <div class="hero-btns">
+                    <a class="osa-btn primary" href="#start">How do I start?</a>
+                    <a class="osa-btn" href="#map" data-go="map">Live map &rarr;</a>
+                </div>
+            </section>
+
+            <section class="stats">
+                <div class="osa-panel stat"><label>On duty now</label><div><b id="stOnDuty" class="good">-</b><span>transporters</span></div></div>
+                <div class="osa-panel stat"><label>Active tasks</label><div><b id="stActive" class="warn">-</b><span>waiting for pickup + in transit</span></div></div>
+                <div class="osa-panel stat"><label>Completed, all time</label><div><b id="stDone">-</b><span>deliveries</span></div></div>
+            </section>
+
+            <h2>What does a blood transporter do?</h2>
+            <section class="cards">
+                <div class="osa-panel card"><span class="num">1</span><h3>Pick up</h3><p>Collect the prepared shipment at the counter of a blood bank or a hospital and put it in the transport box of your ambulance.</p></div>
+                <div class="osa-panel card"><span class="num">2</span><h3>Plan</h3><p>Several tasks can run at once and new ones arrive on the way. You choose the order and the route &ndash; urgent ones first, planned surgery blood in between.</p></div>
+                <div class="osa-panel card"><span class="num">3</span><h3>Deliver</h3><p>Hand the shipment over at the counter of the destination before it is too late. Lab samples travel the other way, from the hospital to the blood bank.</p></div>
+                <div class="osa-panel card"><span class="num">4</span><h3>Cooperate</h3><p>Overloaded? Hand a task that is still waiting for pickup over to a colleague who stands next to you.</p></div>
+            </section>
+
+            <h2 id="start">How do I become a blood transporter?</h2>
+            <section class="osa-panel steps">
+                <div><b>STEP 1</b><p>Go to a blood transport duty marker (marked on your map) and go on duty. Duty gives you the transporter right.</p></div>
+                <div><b>STEP 2</b><p>Take a <code>BT-</code> ambulance at the vehicle point next to the duty marker.</p></div>
+                <div><b>STEP 3</b><p>Sit in it, press <code>F6</code> and sign on. Leaving the service is possible anywhere.</p></div>
+                <div><b>STEP 4</b><p>Tasks arrive automatically. Take the box from the trunk, load it at the pickup counter, deliver it at the destination. Your pay is calculated when the service ends.</p></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ================= Map ================= -->
+    <div class="view map-view" id="vMap" hidden>
+        <aside class="osa-panel side-left">
+            <div class="osa-panel-head"><h2>Units on duty <b id="countUnits">0</b></h2></div>
+            <ul class="osa-list" id="unitList"></ul>
+            <div class="note">Read-only list. Hover a unit on the map to see its tasks.</div>
+        </aside>
+        <section class="osa-map-wrap">
+            <div id="map"></div>
+            <div class="osa-legend">
+                <span><i style="background:#e03c31"></i>Blood bank</span>
+                <span><i style="background:#2ea043"></i>Hospital</span>
+                <span><i style="background:#e6be28"></i>Unit</span>
+            </div>
+        </section>
+        <aside class="osa-panel side-right">
+            <div class="osa-panel-head">
+                <h2>Stock</h2>
+                <div class="osa-tabs" id="stockTabs">
+                    <button class="osa-tab active" data-kind="bank">Centers</button>
+                    <button class="osa-tab" data-kind="hospital">Hospitals</button>
+                </div>
+            </div>
+            <div class="stock" id="stockList"></div>
+        </aside>
+    </div>
+
+    <!-- ================= Admin ================= -->
+    <div class="view" id="vAdmin" hidden>
+        <div class="osa-login" id="adLogin" style="position:static;min-height:60vh">
+            <div class="osa-login-stack">
+                <form class="osa-login-box" id="adLoginForm" autocomplete="off">
+                    <span class="logo big"><i></i></span>
+                    <h1>Blood Transport Admin</h1>
+                    <p>Sign in with your game account (admin)</p>
+                    <input id="adUser" class="plain" type="text" placeholder="Username" maxlength="64" autocomplete="username">
+                    <input id="adPass" class="plain" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+                    <div class="osa-login-error" id="adLoginError"></div>
+                    <button class="osa-btn primary" type="submit" id="adLoginBtn">Sign in</button>
+                </form>
+            </div>
+        </div>
+        <div class="admin-app" id="adApp" hidden>
+            <div class="ad-tabs">
+                <nav class="osa-tabs" id="adNav">
+                    <button class="osa-tab active" data-tab="shifts">Shifts</button>
+                    <button class="osa-tab" data-tab="tasks">Tasks</button>
+                </nav>
+            </div>
+            <main class="ad-main">
+                <section class="osa-panel ad-list">
+                    <div class="ad-toolbar">
+                        <input class="osa-input" id="adSearch" maxlength="40">
+                        <select class="osa-select" id="adFilter"></select>
+                    </div>
+                    <div class="ad-table" id="adTable"></div>
+                    <div class="ad-pager">
+                        <button class="osa-btn small" id="adPrev">Prev</button>
+                        <span class="osa-muted" id="adPageInfo"></span>
+                        <button class="osa-btn small" id="adNext">Next</button>
+                    </div>
+                </section>
+                <section class="osa-panel ad-detail">
+                    <div class="ad-detail-bar">
+                        <button class="osa-btn small" id="adBack" hidden>&lsaquo; Back</button>
+                        <span class="osa-muted" id="adDetailKind"></span>
+                    </div>
+                    <div class="ad-detail-body" id="adDetail"><div class="osa-empty">Select a shift or a task to see its details.</div></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

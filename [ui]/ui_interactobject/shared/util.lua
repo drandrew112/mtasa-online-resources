@@ -11,21 +11,30 @@ local function cleanValue(value)
     return value
 end
 
+-- Texts may be plain strings or v_locals message objects. On the server a message object is kept
+-- as it is, so triggerClientEvent resolves it in the language of each receiving player; on the
+-- client (L.resolve exists) it becomes text in the player's language right away.
+local function text(value)
+    if value == nil then return nil end
+    if L.isMsg(value) then return L.resolve and L.resolve(value) or value end
+    return tostring(value)
+end
+
 local function sanitizeItems(items, depth)
     if type(items) ~= "table" then return nil end
     local out = {}
     for _, item in ipairs(items) do
         if type(item) == "table" and item.label ~= nil then
             local clean = {
-                label = tostring(item.label),
-                desc = item.desc ~= nil and tostring(item.desc) or nil,
+                label = text(item.label),
+                desc = text(item.desc),
                 value = cleanValue(item.value),
                 disabled = item.disabled == true or nil,
                 closeOnSelect = item.closeOnSelect ~= false,
             }
             if item.items ~= nil and depth < IO.MAX_SUBMENU_DEPTH then
                 clean.items = sanitizeItems(item.items, depth + 1) or {}
-                clean.title = item.title ~= nil and tostring(item.title) or clean.label
+                clean.title = text(item.title) or clean.label
             end
             out[#out + 1] = clean
         end
@@ -45,7 +54,7 @@ function ioSanitizeDef(def)
     end
 
     return {
-        title = def.title ~= nil and tostring(def.title) or L.text("ui_interactobject.util.interact"),
+        title = text(def.title) or L.text("ui_interactobject.util.interact"),
         items = items,
         range = math.max(0.5, math.min(tonumber(def.range) or IO.DEFAULT_RANGE, IO.MAX_RANGE)),
         priority = tonumber(def.priority) or 0,

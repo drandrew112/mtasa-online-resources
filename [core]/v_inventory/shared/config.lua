@@ -34,7 +34,7 @@ INV = {
 
     -- Trunks
     TRUNK_ANCHOR_MODEL = 1598,     -- invisible prop the trunk menu hangs on
-    TRUNK_OFFSET = { 0, -2.9, 0.1 },  -- vehicle-local default (the rear); per trunk: opts.offset
+    TRUNK_OFFSET = { 0, -2.5, -0.2 },  -- vehicle-local default (the rear); per trunk: opts.offset
     TRUNK_MENU_RANGE = 2.0,
 }
 

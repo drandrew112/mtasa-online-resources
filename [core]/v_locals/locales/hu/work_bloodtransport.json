@@ -1,0 +1,13 @@
+{
+  "work_bloodtransport.config.description": "Vérkészítmények, laborminták és sürgős gyógyszerek szállítása a vérellátó központok és a kórházak között.",
+  "work_bloodtransport.config.level_chief_courier": "Főfutár",
+  "work_bloodtransport.config.level_courier": "Futár",
+  "work_bloodtransport.config.level_senior_courier": "Senior futár",
+  "work_bloodtransport.config.level_trainee": "Gyakornok",
+  "work_bloodtransport.config.name": "Vérszállítás",
+  "work_bloodtransport.config.skin_business": "Üzleti",
+  "work_bloodtransport.config.skin_business_woman": "Üzleti (nő)",
+  "work_bloodtransport.config.skin_lab_coat": "Laborköpeny",
+  "work_bloodtransport.config.skin_suit": "Öltöny",
+  "work_bloodtransport.config.vehicle": "Vérszállító autó"
+}

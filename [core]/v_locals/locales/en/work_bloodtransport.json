@@ -1,0 +1,13 @@
+{
+  "work_bloodtransport.config.description": "Carry blood products, lab samples and urgent medicine between blood supply centers and hospitals.",
+  "work_bloodtransport.config.level_chief_courier": "Chief courier",
+  "work_bloodtransport.config.level_courier": "Courier",
+  "work_bloodtransport.config.level_senior_courier": "Senior courier",
+  "work_bloodtransport.config.level_trainee": "Trainee",
+  "work_bloodtransport.config.name": "Blood Transport",
+  "work_bloodtransport.config.skin_business": "Business",
+  "work_bloodtransport.config.skin_business_woman": "Business (woman)",
+  "work_bloodtransport.config.skin_lab_coat": "Lab coat",
+  "work_bloodtransport.config.skin_suit": "Suit",
+  "work_bloodtransport.config.vehicle": "Blood transport vehicle"
+}

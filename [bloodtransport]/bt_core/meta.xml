@@ -1,0 +1,20 @@
+<meta>
+    <info author="DrAndrew112" name="bt_core" version="1.0.0" type="script"
+          description="Blood transport core: the right, the institutions and their v_inventory ports" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <include resource="v_locals" />
+    <include resource="v_inventory" />
+
+    <script src="locals.lua" type="server" />
+    <script src="config.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <export function="getConfig" type="server" />
+    <export function="hasRight" type="server" />
+    <export function="setRight" type="server" />
+    <export function="getInstitutions" type="server" />
+    <export function="getInstitution" type="server" />
+    <export function="getPortId" type="server" />
+    <export function="getInstitutionByPort" type="server" />
+</meta>

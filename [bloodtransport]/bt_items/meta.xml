@@ -1,0 +1,20 @@
+<meta>
+    <info author="DrAndrew112" name="bt_items" version="1.0.0" type="script"
+          description="Blood transport cargo on v_inventory: transporter box (interact menu take / put), port rules, pickup / delivery detection" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <include resource="v_locals" />
+    <include resource="v_inventory" />
+    <include resource="ui_interactobject" />
+    <include resource="bt_core" />
+
+    <script src="locals.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <export function="spawnCargo" type="server" />
+    <export function="destroyCargo" type="server" />
+    <export function="refreshPlayer" type="server" />
+    <export function="clearBox" type="server" />
+    <export function="getBox" type="server" />
+    <export function="getCargoItem" type="server" />
+</meta>

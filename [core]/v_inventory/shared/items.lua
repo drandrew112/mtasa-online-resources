@@ -69,6 +69,13 @@ ITEMS = {
         icon = "icons/bt_blood_box.png", glyph = "BX",
     },
 
+    -- Cargo of the blood transport (bt_items): one item per task, amount = units, meta = { task, group, ... }
+    bt_ffp = { category = "blood", weight = 0.5, stackable = true, glyph = "FF" },
+    bt_rbc = { category = "blood", weight = 0.5, stackable = true, glyph = "RB" },
+    bt_platelets = { category = "blood", weight = 0.5, stackable = true, glyph = "PL" },
+    bt_lab_sample = { category = "sample", weight = 0.05, stackable = true, glyph = "LB" },
+    bt_urgent_medicine = { category = "sample", weight = 0.3, stackable = true, icon = "icons/drug.png", glyph = "MD" },
+
     -- ----------------------------------------------------------------------- general
     backpack = {
         category = "container", weight = 1.2, back = true,

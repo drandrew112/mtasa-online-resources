@@ -1,0 +1,20 @@
+{
+  "bt_items.box.unit": "Egység",
+  "bt_items.menu.put": "Vérdoboz betétele",
+  "bt_items.menu.take": "Vérdoboz kivétele",
+  "bt_items.meta.from": "Honnan",
+  "bt_items.meta.group": "Vércsoport",
+  "bt_items.meta.task": "Feladat",
+  "bt_items.meta.to": "Hová",
+  "bt_items.msg.cannot_take": "Most nem veheted ki a dobozt.",
+  "bt_items.msg.no_box_in_hand": "Nincs a kezedben a vérdoboz.",
+  "bt_items.msg.not_allowed": "A szállítmány csak a dobozodba és a célállomására mehet.",
+  "bt_items.msg.not_yours": "Ez a szállítmány nem a tiéd.",
+  "bt_items.msg.own_box": "Csak a saját egységed szállítódobozát használhatod.",
+  "bt_items.msg.whole_only": "A szállítmány nem osztható.",
+  "bt_items.msg.wrong_port": "Ez nem a szállítmány célállomása.",
+  "bt_items.port.banner_deliver": "Vérszállítás: tedd ide a BETESZ jelölésű szállítmányokat.",
+  "bt_items.port.banner_none": "Vérszállítás: itt nincs számodra szállítmány.",
+  "bt_items.port.banner_take": "Vérszállítás: vidd el a ELVESZ jelölésű szállítmányokat.",
+  "bt_items.trunk.title": "Szállítódoboz ({plate})"
+}

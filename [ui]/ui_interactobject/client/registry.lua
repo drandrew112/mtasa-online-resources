@@ -201,6 +201,19 @@ addEventHandler("io:forceClose", resourceRoot, function()
     closeMenu()
 end)
 
+-- Language change: local menus are rebuilt from their raw definitions, server menus arrive as
+-- text in the old language, so they are requested again (the server resolves them per player).
+L.onChange(function()
+    for _, menu in pairs(Menus) do
+        if menu.raw then
+            local clean = ioSanitizeDef(menu.raw)
+            if clean then menu.def = clean end
+        end
+    end
+    requestScan()
+    setTimer(function() triggerServerEvent("io:ready", resourceRoot) end, 500, 1)
+end)
+
 -- ---------------------------------------------------------------------------------------------
 -- Cleanup
 -- ---------------------------------------------------------------------------------------------

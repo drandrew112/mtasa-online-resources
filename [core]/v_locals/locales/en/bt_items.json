@@ -1,0 +1,20 @@
+{
+  "bt_items.box.unit": "Unit",
+  "bt_items.menu.put": "Put the blood box back",
+  "bt_items.menu.take": "Take the blood box",
+  "bt_items.meta.from": "From",
+  "bt_items.meta.group": "Blood group",
+  "bt_items.meta.task": "Task",
+  "bt_items.meta.to": "To",
+  "bt_items.msg.cannot_take": "You cannot take the box now.",
+  "bt_items.msg.no_box_in_hand": "You are not holding the blood box.",
+  "bt_items.msg.not_allowed": "This shipment can only go to your box and to its destination.",
+  "bt_items.msg.not_yours": "This shipment does not belong to you.",
+  "bt_items.msg.own_box": "Use the transport box of your own unit.",
+  "bt_items.msg.whole_only": "A shipment cannot be split.",
+  "bt_items.msg.wrong_port": "This is not the destination of the shipment.",
+  "bt_items.port.banner_deliver": "Blood Transport: put the shipments marked DELIVER here.",
+  "bt_items.port.banner_none": "Blood Transport: nothing for you here.",
+  "bt_items.port.banner_take": "Blood Transport: take the shipments marked TAKE.",
+  "bt_items.trunk.title": "Transport box ({plate})"
+}
