@@ -31,6 +31,10 @@ function adminHeal(player, target)
 
     setElementHealth(target, 100)
     setPedArmor(target, 100)
+    local medsys = getResourceFromName("medsys")
+    if medsys and getResourceState(medsys) == "running" then
+        exports.medsys:healCompletely(target) -- injuries, bleeding, vitals back to baseline
+    end
 
     if target ~= player then
         adminAlert(target, L.msg("v_admin.misc.healed_you", { player = actorName(player) }))
