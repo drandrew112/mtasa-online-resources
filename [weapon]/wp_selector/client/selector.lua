@@ -151,10 +151,19 @@ end
 -- Open / close
 --------------------------------------------------------------------------------
 
+-- true when the exported check of a (possibly not running) resource reports open
+local function uiOpen(resName, fn)
+    local res = getResourceFromName(resName)
+    if not res or getResourceState(res) ~= "running" then return false end
+    local ok, result = pcall(function() return exports[resName][fn]() end)
+    return ok and result == true
+end
+
 local function canOpen()
     if isOpen or not managerRunning() or isCursorShowing() or isConsoleActive() or isMainMenuActive() then return false end
-    if isPedDead(localPlayer) then return false end
-    for _, key in ipairs({ "showChatInput", "inventoryOpen", "textInputOpen" }) do
+    if isPedDead(localPlayer) or isChatBoxInputActive() then return false end
+    if uiOpen("ui_interactobject", "isInteractMenuOpen") or uiOpen("ui_inac", "isTempMenuOpen") then return false end
+    for _, key in ipairs({ "showChatInput", "inventoryOpen", "textInputOpen", "paused", "socialPanelOpen" }) do
         if getElementData(localPlayer, key) == true then return false end
     end
     return true
