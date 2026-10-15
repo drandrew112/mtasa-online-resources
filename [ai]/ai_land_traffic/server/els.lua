@@ -3,7 +3,7 @@
 --   level 1, lights only: small chance (ELS_NOTICE_LIGHTS) -> slows down, makes some room
 --   level 2, siren (sirenState / sirenHorn): high chance (ELS_NOTICE_SIREN) -> pulls over, stops when close
 -- Reactions of a driver who noticed it:
---   same direction, ahead of it: steer aside (rescue lane on multi-lane roads), slow down / stop
+--   same direction, ahead of it: back into the outer lane (multi-lane roads) / aside, slow down / stop
 --   oncoming: slow down and keep right
 --   cross traffic: do not enter a junction it is approaching (sim.lua gate)
 --   standing emergency vehicle: pass slowly (overtaking is handled by the obstacle logic)
@@ -70,16 +70,17 @@ end
 
 local cycle = 0
 
-local function setYield(ag, vcap, lat, now, clear)
+local function setYield(ag, vcap, lat, now, clear, right)
     local e = ag.els
     if e and e.expires > now and e.cycle == cycle then
         if clear then e.clear = true end
+        if right then e.right = true end
         -- several emergency vehicles in this update: keep the strongest reaction
         if vcap < e.vcap then e.vcap = vcap end
         if math.abs(lat) > math.abs(e.lat) then e.lat = lat end
         e.expires = now + TRAFFIC.ELS_HOLD
     else
-        ag.els = { vcap = vcap, lat = lat, expires = now + TRAFFIC.ELS_HOLD, cycle = cycle, clear = clear }
+        ag.els = { vcap = vcap, lat = lat, expires = now + TRAFFIC.ELS_HOLD, cycle = cycle, clear = clear, right = right }
     end
 end
 
@@ -103,13 +104,13 @@ local function noticed(ag, e, dist, now)
     return have > e.level and e.level or have
 end
 
--- pull-over side: innermost lane of a multi-lane carriageway goes left, the others right
+-- pulling over always means going right: a car in the inner lane of a multi-lane carriageway first
+-- changes into the outer lane (second result true, lanes.lua), a car in the outer lane or on a single
+-- lane road moves to the right edge of its lane
 local function pullLat(ag)
     local code = ag.plan[1].code
-    if code > 0 and (Net.lcount[code] or 1) >= 2 and Net.lindex[code] == 0 then
-        return -TRAFFIC.ELS_PULL_LEFT
-    end
-    return TRAFFIC.ELS_PULL_RIGHT
+    if code > 0 and Net.lright[code] then return 0, true end
+    return TRAFFIC.ELS_PULL_RIGHT, false
 end
 
 function Els.update(now)
@@ -134,9 +135,11 @@ function Els.update(now)
                         if along > -T.ELS_PASS_MARGIN and inRange and same > 0.5 and math.abs(side) < 14 then
                             if level == 2 then
                                 local vcap = along < T.ELS_STOP_DIST and 0 or T.ELS_CRAWL_SPEED * 2
-                                setYield(ag, vcap, pullLat(ag), now, true)
+                                local lat, right = pullLat(ag)
+                                setYield(ag, vcap, lat, now, true, right)
                             else
-                                setYield(ag, T.ELS_LIGHTS_SPEED, pullLat(ag) * T.ELS_LIGHTS_PULL, now)
+                                local lat, right = pullLat(ag)
+                                setYield(ag, T.ELS_LIGHTS_SPEED, lat * T.ELS_LIGHTS_PULL, now, false, right)
                             end
                         elseif along > 0 and same < -0.5 and along < T.ELS_ONCOMING_RANGE and math.abs(side) < 14 then
                             setYield(ag, T.ELS_ONCOMING_SPEED * (level == 2 and 1 or 1.5), level == 2 and 1.0 or 0.6, now)

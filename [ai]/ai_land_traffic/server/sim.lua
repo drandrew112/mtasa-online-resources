@@ -67,7 +67,7 @@ local function gate(ag, c, dStop, now)
     -- giving way to an emergency vehicle behind: rolling on (even into the junction, red light or full
     -- exit lane) until the car has pulled aside
     local pe = ag.els
-    local clearing = pe and pe.clear and pe.expires > now and abs(ag.lat - pe.lat) > 0.3
+    local clearing = pe and pe.clear and pe.expires > now and (abs(ag.lat - pe.lat) > 0.3 or Lanes.wantsRight(ag))
     if dStop > max(35, v * v / (2 * T.IDM_DECEL) + 12) then return nil end
 
     -- traffic light (only the first signalled node of a multi-node intersection counts)
@@ -274,7 +274,9 @@ local function accelOf(ag, now)
         else
             local cap = e.vcap
             -- pull over first (steering needs forward motion), stop only when aside
-            if cap < T.ELS_MANEUVER_SPEED and abs(ag.lat - e.lat) > 0.3 then cap = T.ELS_MANEUVER_SPEED end
+            if cap < T.ELS_MANEUVER_SPEED and (abs(ag.lat - e.lat) > 0.3 or Lanes.wantsRight(ag)) then
+                cap = T.ELS_MANEUVER_SPEED
+            end
             if cap < v0 then v0 = cap end
         end
     end
@@ -394,11 +396,12 @@ local function accelOf(ag, now)
 end
 
 -- lateral offset target + steering slope; the offset itself only changes with distance driven
-local function moveLateral(ag, ds)
+local function moveLateral(ag, ds, now)
     local target, slope = 0, T.RETURN_SLOPE
+    if ag.lcUntil and ag.lcUntil > now then slope = T.LANE_CHANGE_SLOPE end
     if ag.els and ag.els.lat ~= 0 then target, slope = ag.els.lat, T.ELS_SLOPE
     elseif ag.overtake then target, slope = ag.overtake.lat, T.OVERTAKE_SLOPE end
-    if target ~= ag.latTarget then
+    if target ~= ag.latTarget or slope ~= ag.latSlope then
         ag.latTarget = target
         ag.latSlope = slope
     end
@@ -412,6 +415,7 @@ function Sim.step(dt, now)
     approachPrev, approachNext = approachNext, {}
     for _, ag in pairs(Agents.list) do
         ag.a = accelOf(ag, now)
+        Lanes.update(ag, now)
     end
     for _, ag in pairs(Agents.list) do
         local v0 = ag.v
@@ -421,7 +425,7 @@ function Sim.step(dt, now)
         local ds = (v0 + v1) * 0.5 * dt
         ag.s = ag.s + ds
         if not Agents.advance(ag) then ag.v = 0 end
-        moveLateral(ag, ds)
+        moveLateral(ag, ds, now)
         Agents.updatePose(ag)
         if ag.v < 0.3 then ag.stopSince = ag.stopSince or now else ag.stopSince = nil end
     end

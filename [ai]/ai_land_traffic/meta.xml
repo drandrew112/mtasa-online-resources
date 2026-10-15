@@ -18,6 +18,7 @@
     <script src="server/signals.lua"   type="server" />
     <script src="server/agents.lua"    type="server" />
     <script src="server/obstacles.lua" type="server" />
+    <script src="server/lanes.lua"     type="server" />
     <script src="server/els.lua"       type="server" />
     <script src="server/views.lua"     type="server" />
     <script src="server/route.lua"     type="server" />

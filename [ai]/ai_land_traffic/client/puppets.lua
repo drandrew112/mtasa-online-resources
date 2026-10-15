@@ -137,7 +137,7 @@ local function place(veh, st, now, dt, full)
     local chain, n, base = chainOf(st)
     s = s + base
     local latAfter, lat0, rate0, latT, slope = Geo.latAfter, st.lat, st.latRate, st.latTarget, st.latSlope
-    local lat = latAfter(lat0, rate0, latT, slope, dx)
+    local lat, rate = latAfter(lat0, rate0, latT, slope, dx)
 
     local x, y, z = Geo.poseOnChain(chain, n, s, lat)
     if not x then return end
@@ -145,8 +145,10 @@ local function place(veh, st, now, dt, full)
         setElementPosition(veh, x, y, z + 1, false)
         return
     end
-    local ax, ay, az = Geo.poseOnChain(chain, n, s - HEAD_SPAN, (latAfter(lat0, rate0, latT, slope, dx - HEAD_SPAN)))
-    local bx, by, bz = Geo.poseOnChain(chain, n, s + HEAD_SPAN, (latAfter(lat0, rate0, latT, slope, dx + HEAD_SPAN)))
+    -- heading from the lateral rate reached so far (not from the curve ahead): a standing car whose
+    -- target just changed must not yaw on the spot, it only turns once it rolls
+    local ax, ay, az = Geo.poseOnChain(chain, n, s - HEAD_SPAN, lat - rate * HEAD_SPAN)
+    local bx, by, bz = Geo.poseOnChain(chain, n, s + HEAD_SPAN, lat + rate * HEAD_SPAN)
     local fx, fy, fz = bx - ax, by - ay, bz - az
     local l = sqrt(fx * fx + fy * fy + fz * fz)
     if l < 0.05 then

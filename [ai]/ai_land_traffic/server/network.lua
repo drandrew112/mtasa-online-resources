@@ -3,6 +3,7 @@
 Net = {
     -- lanes
     llink = {}, lflags = {}, lcount = {}, lindex = {}, lnext = {}, lspeed = {},
+    lleft = {}, lright = {},   -- [lane] = neighbouring lane of the same carriageway (nil = none)
     -- connections
     cfrom = {}, cto = {}, cnode = {}, cturn = {}, cvmax = {}, cphase = {}, cgroup = {}, cconf = {}, cyield = {},
     lprev = {},      -- [lane] = { conn, ... } entering it
@@ -37,8 +38,9 @@ local function buildGrid()
     local cell = N.CELL
     for id, len in pairs(Geo.llen) do
         local fl = N.lflags[id] or 0
+        -- traffic keeps to the outer (rightmost) lane of a multi-lane carriageway; the inner lane is for passing
         local spawnable = len >= 6 and bitAnd(fl, LF_PARKING + LF_ROADBLOCK + LF_TRAP) == 0
-            and bitAnd(fl, LF_EMERGENCY) == 0
+            and bitAnd(fl, LF_EMERGENCY) == 0 and not N.lright[id]
         if spawnable then
             local mx, my = (Geo.lx1[id] + Geo.lx2[id]) / 2, (Geo.ly1[id] + Geo.ly2[id]) / 2
             local key = floor(mx / cell) * 10000 + floor(my / cell)
@@ -64,13 +66,16 @@ function Net.load()
     for line in sim:gmatch("[^\n]+") do
         local kind = line:sub(1, 1)
         if kind == "L" then
-            local id, link, fl, count, index, nxt = line:match("^L (%d+) (%d+) (%d+) (%d+) (%d+) (%S+)")
+            local id, link, fl, count, index, nxt, left, right = line:match("^L (%d+) (%d+) (%d+) (%d+) (%d+) (%S+) (%d+) (%d+)")
             id = tonumber(id)
             if id then
                 fl = tonumber(fl)
                 N.llink[id], N.lflags[id] = tonumber(link), fl
                 N.lcount[id], N.lindex[id] = tonumber(count), tonumber(index)
                 N.lnext[id] = list(nxt)
+                left, right = tonumber(left), tonumber(right)
+                if left and left > 0 then N.lleft[id] = left end
+                if right and right > 0 then N.lright[id] = right end
                 N.lspeed[id] = laneSpeed(fl)
             end
         elseif kind == "C" then

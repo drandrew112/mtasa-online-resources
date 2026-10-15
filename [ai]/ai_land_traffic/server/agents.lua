@@ -128,6 +128,29 @@ function Agents.advance(ag)
     end
 end
 
+-- move the agent onto the neighbouring lane `to` (same carriageway). The pose is kept: the lateral offset
+-- becomes the old lane's distance, and eases back to the lane centre while the car drives on.
+function Agents.changeLane(ag, to, now)
+    local cur = ag.plan[1].code
+    local s2 = ag.s * Geo.length(to) / Geo.length(cur)
+    local x1, y1, _, fx, fy = Geo.pose(cur, ag.s, 0)
+    local x2, y2 = Geo.pose(to, s2, 0)
+    if not x1 or not x2 then return false end
+    local h = math.sqrt(fx * fx + fy * fy)
+    if h < 1e-6 then return false end
+    local d = ((x2 - x1) * fy - (y2 - y1) * fx) / h   -- how far right of the old centre line the new one is
+    for _, p in ipairs(ag.plan) do occRemove(p.code, ag) end
+    ag.plan = { { code = to } }
+    occAdd(to, ag)
+    ag.s = s2
+    ag.lat = ag.lat - d
+    ag.committed = nil
+    ag.lcUntil = now + 3500
+    Agents.extendPlan(ag)
+    Agents.updatePose(ag)
+    return true
+end
+
 -- next segment code after the current one (for the clients' extrapolation)
 function Agents.nextCode(ag)
     local n = ag.plan[2]

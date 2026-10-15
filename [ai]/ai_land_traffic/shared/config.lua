@@ -101,10 +101,23 @@ TRAFFIC = {
     ELS_JUNCTION_RANGE = 60,    -- cross traffic does not enter a junction it is approaching (at least this far)
     ELS_JUNCTION_TIME = 5,      -- ... or this many seconds of the emergency vehicle's travel, whichever is more
     ELS_PASS_MARGIN = 8,        -- stay pulled over until the emergency vehicle is this far ahead of the car
-    ELS_PULL_RIGHT = 2.4,       -- lateral shift (right) on the outer lanes / single lane roads
-    ELS_PULL_LEFT = 1.6,        -- innermost lane of a multi-lane carriageway goes left (rescue lane)
+    ELS_PULL_RIGHT = 2.4,       -- lateral shift (right) in the outer lane / on single lane roads
     ELS_HOLD = 2500,            -- keep the yield this long after the emergency vehicle passed
     RETURN_SLOPE = 0.15,        -- steering back to the lane centre
+
+    -- lanes on multi-lane carriageways: traffic keeps to the outer (rightmost) lane, the inner lane is for passing
+    LANE_CHANGE_SLOPE = 0.1,    -- steering of a lane change (lateral m per m, eased)
+    LANE_CHANGE_COOLDOWN = 6000,-- min time between two lane changes of a vehicle
+    LANE_MIN_SPEED = 3,         -- no lane changes below this speed
+    LANE_GAP = 6,               -- free space (besides the car lengths) needed ahead / behind in the target lane...
+    LANE_GAP_TIME = 0.7,        -- ...plus this many seconds of travel...
+    LANE_GAP_CLOSING = 2.0,     -- ...plus this many seconds of closing speed (gap closes by the speed difference)
+    LANE_GAP_RELAXED = 0.5,     -- gap factor for a driver giving way to an emergency vehicle
+    LANE_JUNCTION_DIST = 50,    -- no lane change when a junction (signal / conflicts) is this close ahead
+    LANE_PASS_LEADER = 0.8,     -- passing: the leader drives below this fraction of the wanted speed...
+    LANE_PASS_AFTER = 1500,     -- ...for this long
+    LANE_PASS_HOLD = 3000,      -- stay in the inner lane at least this long after passing started
+    LANE_TURN_LOOK = 130,       -- left / u-turn (stay inner) or right turn (stay outer) planned within this distance
 
     -- obstacles (players, their vehicles, other non-traffic vehicles and peds)
     OBSTACLE_RANGE = 55,

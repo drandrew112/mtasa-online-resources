@@ -36,12 +36,19 @@ Server-simulated AI road traffic on the lane network in `data/`.
 - **Emergency vehicles** (v_els): every driver in range rolls a chance to notice it each update.
   Lights only (`mkjState`) are rarely noticed (`ELS_NOTICE_LIGHTS`): the driver slows down and makes
   some room. The siren (`sirenState` / `sirenHorn`) is mostly noticed (`ELS_NOTICE_SIREN`): traffic
-  ahead in the same direction pulls over (rescue lane: innermost lane of multi-lane roads goes left,
-  others right) and stops when it is close; oncoming traffic slows and keeps right. Cross traffic that
+  ahead in the same direction pulls over (always to the right: a car in the inner lane of a multi-lane
+  road first changes into the outer lane, then moves to the edge of it) and stops when it is close; oncoming traffic slows and keeps right. Cross traffic that
   noticed it does not enter a junction it approaches; a standing one is passed slowly.
+- **Lanes** (`server/lanes.lua`): on multi-lane carriageways traffic keeps to the outer (rightmost) lane,
+  and only spawns there. The inner lane is for passing: a car held up by a clearly slower leader changes
+  into it when the gaps allow, and returns to the outer lane as soon as there is room (not while a left /
+  u-turn is planned or a junction is near). A lane change re-places the agent on the neighbouring lane at
+  once (`Agents.changeLane`, old position kept as lateral offset), then the offset eases out. `sim.dat`
+  lists each lane's left / right neighbour.
 - **Lateral moves are steered**: lane offset changes (pulling over, passing a standing obstacle) are a
   function of the distance driven (`Geo.latAfter`, max lateral metres per metre), so cars turn out
-  while rolling forward and only stop once they are aside. Clients compute the same curve.
+  while rolling forward and only stop once they are aside. Clients compute the same curve; the car heading comes from the lateral rate reached so far, so a
+  standing car never yaws on the spot when its target changes.
 - **Obstacles**: players, their vehicles, other vehicles and peds near players. Traffic stops behind
   them, honks at players, and passes a standing obstacle after 4 s.
 - **Release**: crashes (`CRASH_FORCE`), shots, a player entering, explosion or the export turn the
