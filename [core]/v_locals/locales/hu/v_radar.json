@@ -46,5 +46,6 @@
   "v_radar.sourcec.time_trial": "Időfutam",
   "v_radar.sourcec.train_station": "Vasútállomás",
   "v_radar.sourcec.up_down_type_left_right_step": "Fel/Le: típus     Balra/Jobbra: lépés",
-  "v_radar.sourcec.weaponshop": "Fegyverbolt"
+  "v_radar.sourcec.weaponshop": "Fegyverbolt",
+  "v_radar.sourcec.bloodbank": "Vérellátó"
 }

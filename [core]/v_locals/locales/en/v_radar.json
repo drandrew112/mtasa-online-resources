@@ -46,5 +46,6 @@
   "v_radar.sourcec.time_trial": "Time Trial",
   "v_radar.sourcec.train_station": "Train station",
   "v_radar.sourcec.up_down_type_left_right_step": "Up/Down: type     Left/Right: step",
-  "v_radar.sourcec.weaponshop": "Weaponshop"
+  "v_radar.sourcec.weaponshop": "Weaponshop",
+  "v_radar.sourcec.bloodbank": "Blood Bank"
 }
