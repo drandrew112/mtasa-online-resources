@@ -108,6 +108,14 @@ function Lanes.update(ag, now)
         return
     end
 
+    -- scripted route: change lanes where the route needs it (before the lane discipline below)
+    local want = ag.script and Scripted.laneWish(ag, cur)
+    if want then
+        local s2 = ag.s * Geo.length(want) / len
+        if gapOK(ag, want, s2, false) then change(ag, want, now) end
+        return
+    end
+
     local e = ag.els
     local giving = e and e.expires > now
     if giving then

@@ -143,6 +143,16 @@ TRAFFIC = {
     RELEASED_CLEANUP_DIST = 300,
     RELEASED_MIN_LIFE = 30000,
 
+    -- scripted vehicles (exports of other resources, server/scripted.lua)
+    SCRIPTED_END_LIFE = 180000, -- removed this long after the last target is done (unless a new one comes)
+    SCRIPTED_SNAP_RADIUS = 60,  -- a vehicle / target must be this close to a lane
+    SCRIPTED_SNAP_Z = 10,       -- ...and at most this far above / below it (bridges)
+    SCRIPTED_STOP_END = 8,      -- a stop stays this far from the end of its lane (stop line)
+    SCRIPTED_ARRIVE_GAP = 2.5,  -- stopped with the front this close to the stop point = arrived
+    SCRIPTED_LANE_CHANGE = 25,  -- route search cost (m) of a lane change
+    SCRIPTED_TURN_COST = { U = 150, L = 6, R = 6 },
+    SCRIPTED_MAX_NODES = 40000, -- route search guard
+
     DRIVER_THROTTLE = 0.02,     -- tiny analog throttle on the drivers (client): stops GTA locking the wheels
     ADMIN_LEVEL = 4,            -- /traffic commands (elementData admin_level)
     DEBUG = false,
@@ -165,7 +175,8 @@ TRAFFIC_MODELS = {
     { 579, 2, 5.4 }, { 582, 1, 5.8 },
     -- work / heavy
     { 413, 1, 5.4 }, { 414, 1, 6.5 }, { 455, 1, 9.0 }, { 498, 1, 7.0 }, { 499, 1, 7.0 },
-    { 609, 1, 7.0 }, { 431, 1, 11.5 }, { 437, 1, 11.5 }, { 420, 2, 5.2 }, { 438, 1, 5.2 },
+    { 609, 1, 7.0 }, { 420, 2, 5.2 }, { 438, 1, 5.2 },
+    -- no buses (431 Bus, 437 Coach): those only exist as scripted vehicles (server/scripted.lua)
 }
 
 -- civilian driver skins

@@ -56,10 +56,15 @@ local function connWeight(c)
     return w
 end
 
--- pick the connection leaving a lane (nil at a dead end without u-turn)
-function Agents.chooseExit(lane)
+-- pick the connection leaving a lane (nil at a dead end without u-turn). Scripted vehicles with a
+-- target follow their route (server/scripted.lua), everything else (and a lost route) is random.
+function Agents.chooseExit(lane, ag)
     local nexts = Net.lnext[lane]
     if not nexts then return nil end
+    if ag and ag.script then
+        local c = Scripted.exit(ag, lane)
+        if c then return c end
+    end
     if #nexts == 1 then return nexts[1] end
     local total, ws = 0, {}
     for i, c in ipairs(nexts) do
@@ -86,7 +91,7 @@ function Agents.extendPlan(ag)
         local last = plan[#plan]
         local nextCode
         if last.code > 0 then
-            if not last.conn then last.conn = Agents.chooseExit(last.code) end
+            if not last.conn then last.conn = Agents.chooseExit(last.code, ag) end
             local c = last.conn
             if not c then break end
             if Geo.isCurve(c) then
@@ -102,6 +107,25 @@ function Agents.extendPlan(ag)
         end
         ahead = ahead + Geo.length(nextCode)
     end
+end
+
+-- the route ahead changed (new target): drop the planned exits and choose them again (a vehicle in a
+-- junction, or committed to one, keeps that junction path).
+function Agents.replan(ag)
+    local plan = ag.plan
+    local keep = 1
+    if plan[1].code < 0 then
+        keep = plan[2] and 2 or 1
+    elseif ag.committed and plan[1].conn then
+        keep = Geo.isCurve(plan[1].conn) and 3 or 2   -- the junction path it is about to enter stays
+    end
+    if keep > #plan then keep = #plan end
+    for i = #plan, keep + 1, -1 do
+        occRemove(plan[i].code, ag)
+        plan[i] = nil
+    end
+    if plan[keep].code > 0 then plan[keep].conn = nil end
+    Agents.extendPlan(ag)
 end
 
 -- move s forward over segment ends; returns false when the route ends (sink / dead end)
@@ -234,14 +258,26 @@ local function pickModel()
     return m[1], m[3]
 end
 
-function Agents.spawn(lane, s, v)
+-- vehicle length from its bounding box (scripted vehicles can be any model)
+local function vehicleLength(veh)
+    if getElementBoundingBox then
+        local ok, _, miny, _, _, maxy = pcall(getElementBoundingBox, veh)
+        if ok and miny and maxy and maxy - miny > 2 then return maxy - miny end
+    end
+    return 5
+end
+
+-- opts (scripted vehicles): { model, skin }
+function Agents.spawn(lane, s, v, opts)
     local model, len = pickModel()
+    if opts and opts.model then model = opts.model end
     local x, y, z, fx, fy, fz = Geo.pose(lane, s, 0)
     if not x then return nil end
     local rx, ry, rz = Geo.rotation(fx, fy, fz)
     local veh = createVehicle(model, x, y, z + 1.0, rx, ry, rz)
     if not veh then return nil end
-    local ped = createPed(TRAFFIC_SKINS[random(#TRAFFIC_SKINS)], x, y, z + 2)
+    if opts and opts.model then len = vehicleLength(veh) end
+    local ped = createPed(opts and opts.skin or TRAFFIC_SKINS[random(#TRAFFIC_SKINS)], x, y, z + 2)
     if not ped then destroyElement(veh); return nil end
     setElementSyncer(veh, false)
     setElementSyncer(ped, false)
@@ -269,8 +305,9 @@ function Agents.spawn(lane, s, v)
     return ag
 end
 
-local function forget(ag)
+local function forget(ag, reason)
     for _, p in ipairs(ag.plan) do occRemove(p.code, ag) end
+    if ag.script then Scripted.forget(ag, reason) end
     A.list[ag.id] = nil
     A.byVeh[ag.veh] = nil
     A.byPed[ag.ped] = nil
@@ -278,15 +315,16 @@ local function forget(ag)
     Sync.forget(ag)
 end
 
-function Agents.destroy(ag)
-    forget(ag)
+-- reason: only reported for scripted vehicles ("destroyed" by default, "timeout", ...)
+function Agents.destroy(ag, reason)
+    forget(ag, reason)
     if isElement(ag.ped) then destroyElement(ag.ped) end
     if isElement(ag.veh) then destroyElement(ag.veh) end
 end
 
 -- the vehicle was destroyed by someone else
 function Agents.vehicleDestroyed(ag)
-    forget(ag)
+    forget(ag, "vehicle_destroyed")
     if isElement(ag.ped) then destroyElement(ag.ped) end
 end
 
@@ -294,7 +332,7 @@ end
 -- reason: "crash" | "damage" | "enter" | "export"
 function Agents.release(ag, reason)
     if not A.list[ag.id] then return false end
-    forget(ag)
+    forget(ag, reason)
     local veh, ped = ag.veh, ag.ped
     if not isElement(veh) then return false end
     local rx, ry, rz = Geo.rotation(ag.fx, ag.fy, ag.fz)
@@ -323,8 +361,11 @@ function Agents.release(ag, reason)
     return true
 end
 
-function Agents.clear()
-    for _, ag in pairs(A.list) do Agents.destroy(ag) end
+-- scripted vehicles stay unless force is set (resource stop)
+function Agents.clear(force)
+    for _, ag in pairs(A.list) do
+        if force or not ag.script then Agents.destroy(ag, "cleared") end
+    end
 end
 
 function Agents.hasPlayerInside(veh)

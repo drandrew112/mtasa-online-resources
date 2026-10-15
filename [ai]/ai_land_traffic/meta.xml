@@ -25,6 +25,7 @@
     <script src="server/sim.lua"       type="server" />
     <script src="server/sync.lua"      type="server" />
     <script src="server/spawner.lua"   type="server" />
+    <script src="server/scripted.lua"  type="server" />
     <script src="server/main.lua"      type="server" />
 
     <!-- ================= CLIENT ================= -->
@@ -42,4 +43,17 @@
     <export function="isTrafficEnabled"      type="server" />
     <export function="getTrafficStats"       type="server" />
     <export function="getTrafficLight"       type="server" />
+
+    <!-- scripted vehicles (server/scripted.lua) -->
+    <export function="createScriptedVehicle"   type="server" />
+    <export function="addScriptedStop"         type="server" />
+    <export function="addScriptedTurnPoint"    type="server" />
+    <export function="removeScriptedTarget"    type="server" />
+    <export function="clearScriptedTargets"    type="server" />
+    <export function="continueScriptedVehicle" type="server" />
+    <export function="destroyScriptedVehicle"  type="server" />
+    <export function="isScriptedVehicle"       type="server" />
+    <export function="getScriptedVehicles"     type="server" />
+    <export function="getScriptedTargets"      type="server" />
+    <export function="getScriptedVehicleState" type="server" />
 </meta>

@@ -72,4 +72,30 @@ Server exports: `isTrafficVehicle(veh)` (true / "released" / false), `getTraffic
 `releaseTrafficVehicle(veh)`, `setTrafficEnabled(bool)`, `isTrafficEnabled()`, `getTrafficStats()`,
 `getTrafficLight(phase)`.
 
+### Scripted vehicles (`server/scripted.lua`)
+
+Other resources (the bus system) create vehicles that drive to targets inside the traffic: same lanes,
+lights, right of way and car following; they react to emergency vehicles like any other traffic. The random
+traffic never spawns buses (431 / 437); a scripted vehicle can be any model.
+
+- `createScriptedVehicle(model, x, y, z, {heading, skin, speedFactor})` -> `veh, driverPed` | `false, reason`;
+  placed on the nearest road (outer lane, `heading` picks the direction), standing.
+- `addScriptedStop(veh, x, y, z, {wait = ms, hold = bool, tag, heading, radius})` -> target id: the front stops
+  at the nearest road point (outer lane), waits `wait` ms (`hold = true`: until `continueScriptedVehicle`).
+- `addScriptedTurnPoint(veh, x, y, z, {tag, ...})`: the route passes that road point, no stop. Place it on the
+  lane behind a turn to force the turn.
+- `removeScriptedTarget(veh, id)`, `clearScriptedTargets(veh)`, `continueScriptedVehicle(veh)`,
+  `destroyScriptedVehicle(veh)`, `isScriptedVehicle`, `getScriptedVehicles`, `getScriptedTargets(veh)`,
+  `getScriptedVehicleState(veh)`.
+- Targets are done in order; the route between them is an A* search on the lane graph (lane changes where the
+  route needs them, a missed stop is driven round again, an unreachable target is dropped with an event).
+- Scripted vehicles are never culled (no camera / distance / standing-time removal), are not cleared by
+  `/traffic clear|off`, and keep driving while nobody is online. They go when: `destroyScriptedVehicle`,
+  `SCRIPTED_END_LIFE` (3 min) after the last target is done or removed (a new target cancels it; without any
+  target they drive on as random traffic), or when they leave the simulation (crash, shot, driver seat taken,
+  explosion: then an ordinary released vehicle). A player entering a passenger seat does not release it.
+- Events (server, on `root`, first argument the vehicle): `onTrafficVehicleTargetReached(veh, id, kind, tag, x, y, z)`,
+  `onTrafficVehicleTargetDeparted(...)`, `onTrafficVehicleTargetFailed(veh, id, kind, tag, reason)`,
+  `onTrafficVehicleRouteFinished(veh, removeInMs)`, `onTrafficVehicleRemoved(veh, reason)`.
+
 Element data: `ai_traffic` = true on simulated vehicles and drivers, `"released"` after release.

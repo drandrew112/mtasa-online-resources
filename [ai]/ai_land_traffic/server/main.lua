@@ -41,15 +41,20 @@ local function tick()
     local players = activePlayers()
     Traffic.players = players
     if #players == 0 then
+        -- plain traffic needs players; scripted vehicles keep driving (nobody is near, nothing else to do)
         if Agents.count > 0 then Agents.clear() end
-        Signals.update(now)
-        return
+        if Scripted.count == 0 then
+            Signals.update(now)
+            return
+        end
     end
 
     if now >= nextObstacles then nextObstacles = now + 200; Obstacles.rebuild(players) end
     if now >= nextEls then nextEls = now + 250; Els.update(now) end
 
+    Scripted.step(now, dt)
     Sim.step(dt, now)
+    Scripted.flush()
 
     if now >= nextSpawn then nextSpawn = now + T.SPAWN_INTERVAL; Spawner.update(players, now) end
     if now >= nextCleanup then nextCleanup = now + 1000; Spawner.cleanup(players, now) end
@@ -69,7 +74,7 @@ end)
 
 addEventHandler("onResourceStop", resourceRoot, function()
     Signals.stop()
-    Agents.clear()
+    Agents.clear(true)
     for veh, r in pairs(Agents.released) do
         local keep = isElement(veh) and Agents.hasPlayerInside(veh)
         if isElement(r.ped) and getElementType(r.ped) == "ped" then destroyElement(r.ped) end
@@ -79,9 +84,12 @@ end)
 
 ------------------------------------------------------------------------ release triggers
 
-addEventHandler("onVehicleStartEnter", root, function(player)
+addEventHandler("onVehicleStartEnter", root, function(player, seat, jacked)
     local ag = Agents.byVeh[source]
-    if ag and getElementType(player) == "player" then Agents.release(ag, "enter") end
+    if not ag or getElementType(player) ~= "player" then return end
+    -- a passenger seat of a scripted vehicle (bus) does not take it out of the simulation
+    if ag.script and seat and seat > 0 and not jacked then return end
+    Agents.release(ag, "enter")
 end)
 
 addEventHandler("onVehicleExplode", root, function()

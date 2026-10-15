@@ -268,6 +268,17 @@ local function accelOf(ag, now)
     ag.hold = nil
     ag.blocker = nil
 
+    local sc = ag.script
+    if sc then
+        ag.stopGap = nil
+        if sc.speedFactor then v0 = v0 * sc.speedFactor end
+        -- waiting at a scripted stop
+        if sc.dwell then
+            ag.hold, ag.limit = "stop", "stop"
+            return v > 0.05 and -T.IDM_DECEL or 0
+        end
+    end
+
     local e = ag.els
     if e then
         if e.expires < now then ag.els = nil
@@ -353,6 +364,16 @@ local function accelOf(ag, now)
                     if a < aMin then aMin, limit = a, "gate" end
                     break
                 end
+            end
+        end
+
+        -- scripted stop point on this segment: the front bumper stops there
+        if sc and sc.stopLane == code then
+            local d = dist + sc.stopS - ag.half
+            ag.stopGap = d
+            if d > -T.SCRIPTED_ARRIVE_GAP then
+                local a = idm(v, v0, max(d + T.IDM_GAP - 0.4, 0.05), 0)
+                if a < aMin then aMin, limit = a, "stop" end
             end
         end
 

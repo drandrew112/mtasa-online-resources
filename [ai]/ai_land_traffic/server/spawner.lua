@@ -100,6 +100,8 @@ function Spawner.cleanup(players, now)
     local d2 = T.DESPAWN_RADIUS * T.DESPAWN_RADIUS
     local cull2 = T.CULL_MIN_DIST * T.CULL_MIN_DIST
     for _, ag in pairs(Agents.list) do
+      -- scripted vehicles belong to the resource that made them: never culled here
+      if not ag.script then
         local best = math.huge
         for _, p in ipairs(players) do
             local d = (ag.x - p.x) ^ 2 + (ag.y - p.y) ^ 2
@@ -118,6 +120,7 @@ function Spawner.cleanup(players, now)
             ag.hiddenSince = ag.hiddenSince or now
             if best > cull2 and now - ag.hiddenSince >= T.CULL_AFTER then Agents.destroy(ag) end
         end
+      end
     end
     Route.cleanup()
 end
