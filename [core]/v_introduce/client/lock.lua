@@ -36,8 +36,18 @@ end
 
 local controlTimer
 
+-- controls a scene gives back (the weapon scene: aim and fire), name -> true
+local permitted = {}
+
 local function applyControls()
-    for _, c in ipairs(CONTROLS) do toggleControl(c, false) end
+    for _, c in ipairs(CONTROLS) do toggleControl(c, permitted[c] == true) end
+end
+
+-- names = { "fire", "aim_weapon" } | nil (everything locked again)
+function Lock.permit(names)
+    permitted = {}
+    for _, c in ipairs(names or {}) do permitted[c] = true end
+    if Lock.active then applyControls() end
 end
 
 function Lock.enable()
@@ -52,6 +62,7 @@ end
 function Lock.disable()
     if not Lock.active then return end
     Lock.active = false
+    permitted = {}
     if isTimer(controlTimer) then killTimer(controlTimer) end
     controlTimer = nil
     for _, c in ipairs(CONTROLS) do toggleControl(c, true) end

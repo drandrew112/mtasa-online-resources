@@ -2,6 +2,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Chapter 2: the HUD - minimap, money and level.
 Intro.module {
     id = "hud", order = 20, version = 1, xp = 200,
+    essential = true,
     title = L.msg("v_introduce.02_hud.your_hud"),
     requires = { "v_radar" },
     scenes = {

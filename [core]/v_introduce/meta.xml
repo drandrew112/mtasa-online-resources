@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="v_introduce" version="1.0.0" type="script"
-          description="Mandatory, modular server introduction for new players (chapters in modules/)" />
+          description="Modular server introduction for new players (chapters in modules/, skippable per chapter)" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
     <!-- ================= SHARED ================= -->
@@ -28,6 +28,9 @@
     <script src="modules/11_settings.lua"    type="server" />
     <script src="modules/12_rules.lua"       type="server" />
     <script src="modules/13_finish.lua"      type="server" />
+    <script src="modules/14_weapons.lua"     type="server" />
+    <script src="modules/15_aviation.lua"    type="server" />
+    <script src="modules/16_internet.lua"    type="server" />
 
     <!-- update modules: news for players who already finished the introduction
          (copy updates/_TEMPLATE.lua, then list the new file here) -->
@@ -38,6 +41,7 @@
     <script src="client/mirror.lua" type="client" />
     <script src="client/scenes.lua" type="client" />
     <script src="client/rules.lua"  type="client" />
+    <script src="client/choice.lua" type="client" />
     <script src="client/runner.lua" type="client" />
 
     <file src="rules.txt" type="client" />

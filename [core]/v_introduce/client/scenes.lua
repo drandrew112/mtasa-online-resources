@@ -7,10 +7,14 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --              bigTitle = { "small line", "BIG LINE" }  - the subtitle shows `text`
 --   card       the card on the left
 --   task       card with tasks the player must do. allow = { panelId, ... } may open meanwhile.
+--              weapon = true (with camera = "player"): the server gives a practice pistol (a
+--              temporary wp_manager loadout) and a target stands in front of the player.
 --              tasks = { { text, check = { data = "phoneOpen", equals = true } },
 --                        { text, check = { key = "y" } },
 --                        { text, check = { phoneApp = "myveh" } },
---                        { text, check = { vehicleData = "headlights:on", changed = true } } }
+--                        { text, check = { vehicleData = "headlights:on", changed = true } },
+--                        { text, check = { weapon = 22 } },        -- this weapon is in the hand
+--                        { text, check = { targetHit = true } } }  -- the weapon scene's target was hit
 --
 -- camera of every scene: a table as above, "vehicle" (looks at the practice vehicle from
 -- INTRO.VEHICLE.camera) or nothing (the fixed INTRO.BACKDROP). The player is never shown.
@@ -20,6 +24,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --   world      camera + a ring and label on a place: point = { x, y, z }, label, radius,
 --              blip = radar icon id (v_radar image), mapText
 --   accept     the rules (client/rules.lua)
+--   choice     the player picks one of options = { { id, label }, ... } with the mouse or 1-9.
+--              kind = "language" (options are the enabled languages) | "tour" (options:
+--              full / essential / none: decides which later modules are skipped automatically)
 --
 -- Handler: start(sc, R), render(sc, R), stop(sc, R), complete(sc, R) -> bool,
 --          message(sc, R) -> text shown instead of Continue while not complete
@@ -29,7 +36,8 @@ Scenes = {}
 -- {key:phone} -> "B"
 function Scenes.resolve(str)
     if not str then return nil end
-    return (str:gsub("{key:([%w_]+)}", function(name) return INTRO.KEYS[name] or name end))
+    str = str:gsub("{key:([%w_]+)}", function(name) return INTRO.KEYS[name] or name end)
+    return (str:gsub("{web}", function() return INTRO.WEB_URL end))
 end
 
 ---------------------------------------------------------------- camera helpers
@@ -89,7 +97,9 @@ end
 function Scenes.cameraStart(sc)
     if sc.vehicle then triggerServerEvent("intro:vehicle", resourceRoot, true) end
     mirrorFor(sc)
-    if sc.camera == "vehicle" then
+    if sc.camera == "player" then
+        setCameraTarget(localPlayer)
+    elseif sc.camera == "vehicle" then
         vehicleCamera()
     elseif type(sc.camera) == "table" then
         cameraAt(sc.camera, 0, sc.duration)
@@ -160,6 +170,10 @@ local function taskDone(task, R)
         if c.equals == false then return not v end
         if c.equals == nil or c.equals == true then return v and true or false end
         return v == c.equals
+    elseif c.weapon then
+        return getPedWeapon(localPlayer) == c.weapon
+    elseif c.targetHit then
+        return Scenes.targetHit == true
     elseif c.phoneApp then
         return getElementData(localPlayer, "phoneOpen") and getElementData(localPlayer, "phoneApp") == c.phoneApp
     elseif c.data then
@@ -171,10 +185,46 @@ local function taskDone(task, R)
     return true
 end
 
+-- the weapon scene's target: a barrel in front of the stage, only in the introduction's dimension
+local target
+
+local function weaponStart(sc)
+    Scenes.targetHit = false
+    local st = INTRO.STAGE
+    local rad = math.rad(st[4] or 0)
+    local tx, ty = st[1] - math.sin(rad) * 12, st[2] + math.cos(rad) * 12
+    local gz = getGroundPosition(tx, ty, st[3] + 3)
+    local tz = ((gz and gz ~= 0) and gz or st[3] - 1) + 0.55
+    target = createObject(1225, tx, ty, tz)
+    if isElement(target) then
+        setElementDimension(target, Mirror.dimension or 0)
+        setElementFrozen(target, true)
+    end
+    Lock.permit({ "fire", "aim_weapon" })
+    triggerServerEvent("intro:weapon", resourceRoot, true)
+    addEventHandler("onClientPlayerWeaponFire", localPlayer, Scenes.onWeaponFire)
+end
+
+function Scenes.onWeaponFire(_, _, _, hx, hy, hz, hitElement)
+    if not isElement(target) then return end
+    if hitElement == target then Scenes.targetHit = true return end
+    local x, y, z = getElementPosition(target)
+    if hx and getDistanceBetweenPoints3D(hx, hy, hz, x, y, z) < 1.2 then Scenes.targetHit = true end
+end
+
+local function weaponStop()
+    removeEventHandler("onClientPlayerWeaponFire", localPlayer, Scenes.onWeaponFire)
+    if isElement(target) then destroyElement(target) end
+    target = nil
+    Lock.permit(nil)
+    triggerServerEvent("intro:weapon", resourceRoot, false)
+end
+
 Scenes.task = {
     hud = true,
     start = function(sc, R)
         cameraStart(sc)
+        if sc.weapon then weaponStart(sc) end
         R.tasks = {}
         for i, t in ipairs(sc.tasks or {}) do
             R.tasks[i] = { text = Scenes.resolve(t.text), check = t.check, done = false }
@@ -182,8 +232,9 @@ Scenes.task = {
         if R.tasks[1] then R.tasks[1].since = getTickCount() end
         Lock.allow(sc.allow)
     end,
-    stop = function()
+    stop = function(sc)
         Lock.allow(nil)
+        if sc and sc.weapon then weaponStop() end
     end,
     render = function(sc, R)
         cameraRender(sc, R)

@@ -11,6 +11,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --   title     shown in the chapter bar
 --   xp        reward for finishing it the first time
 --   requires  { "resource", ... }  - the module is left out while one of them is not running
+--   skippable false: the player can never skip this module (default true)
+--   essential true: kept by the "essentials only" choice of the welcome chapter (default false)
 --   final     true: the last chapter, gets the XP top-up (INTRO.REWARD_TOTAL_XP)
 --   rules     true: finishing it stores INTRO.RULES_VERSION as accepted
 --   update    true: an update module (updates/*.lua). It is NOT part of the main line: only
@@ -31,7 +33,7 @@ local function isRunning(name)
     return res and getResourceState(res) == "running"
 end
 
-local SCENE_TYPES = { camera = true, card = true, task = true, highlight = true, world = true, accept = true }
+local SCENE_TYPES = { camera = true, card = true, task = true, highlight = true, world = true, accept = true, choice = true }
 
 -- module texts are strings or v_locals message objects
 local function isText(x) return type(x) == "string" or L.isMsg(x) end
@@ -81,6 +83,8 @@ function Intro.register(def, ownerName)
     def.version = math.max(1, math.floor(tonumber(def.version) or 1))
     def.xp = math.max(0, math.floor(tonumber(def.xp) or 0))
     def.requires = def.requires or {}
+    if def.skippable == nil then def.skippable = true end
+    def.essential = def.essential == true
     modules[def.id] = def
     owners[def.id] = ownerName
     return true
@@ -129,7 +133,8 @@ function Intro.clientCopy(def)
         end
         if ok then scenes[#scenes + 1] = scene end
     end
-    return { id = def.id, title = def.title, xp = def.xp, final = def.final, update = def.update, scenes = scenes }
+    return { id = def.id, title = def.title, xp = def.xp, final = def.final, update = def.update,
+             skippable = def.skippable ~= false, essential = def.essential, scenes = scenes }
 end
 
 -- Minimum seconds the module takes (server-side check against finishing it too fast)

@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 13: the end. Gives the XP top-up (INTRO.REWARD_TOTAL_XP), then the player is free.
 Intro.module {
-    id = "finish", order = 1000, version = 1, xp = 0,
+    id = "finish", order = 1000, version = 1, xp = 150,
+    essential = true,
     title = L.msg("v_introduce.13_finish.ready"),
     final = true,
     scenes = {

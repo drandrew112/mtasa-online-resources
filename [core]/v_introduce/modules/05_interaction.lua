@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 5: the interaction menu (M) and the 3D menus (X).
 Intro.module {
-    id = "interaction", order = 50, version = 1, xp = 200,
+    id = "interaction", order = 50, version = 1, xp = 150,
+    essential = true,
     title = L.msg("v_introduce.05_interaction.interaction"),
     requires = { "ui_inac" },
     scenes = {

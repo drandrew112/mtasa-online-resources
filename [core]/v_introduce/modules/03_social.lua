@@ -1,7 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 3: chat and the social panel.
 Intro.module {
-    id = "social", order = 30, version = 1, xp = 200,
+    id = "social", order = 30, version = 1, xp = 150,
     title = L.msg("v_introduce.03_social.talk_friends"),
     requires = { "v_chat" },
     scenes = {

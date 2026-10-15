@@ -1,7 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 10: the medical system, hospitals, death.
 Intro.module {
-    id = "health", order = 100, version = 1, xp = 200,
+    id = "health", order = 100, version = 1, xp = 150,
     title = L.msg("v_introduce.10_health.health"),
     requires = { "medsys" },
     scenes = {

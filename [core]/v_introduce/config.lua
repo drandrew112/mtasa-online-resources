@@ -16,6 +16,7 @@ INTRO = {
     ACC_REWARDED = "intro.rewarded",   -- JSON { moduleId = xp }
     ACC_DONE = "intro.done",           -- true once the full introduction was finished
     ACC_RULES = "intro.rules",         -- the accepted RULES_VERSION
+    ACC_SKIPPED = "intro.skipped",     -- JSON { moduleId = version } the player skipped (no XP given)
 
     -- Raise it when rules.txt changes: everybody has to accept the new rules on the next login.
     RULES_VERSION = 1,
@@ -23,6 +24,8 @@ INTRO = {
     -- Reward: the XP of each module (modules/*.lua, field xp) is given when the module is
     -- finished the first time. The last chapter tops it up to REWARD_TOTAL_XP, so a new
     -- player (level 1, 0 XP) reaches level 3 with v_levelsys' curve (level 3 = 2800 XP).
+    -- Skipped modules give nothing; the last chapter only makes up for modules that cannot run
+    -- (a required resource is stopped), never for skipped ones.
     REWARD_TOTAL_XP = 2800,
 
     -- New players are spawned here at the end (LS airport, terminal). Players who already had
@@ -62,6 +65,16 @@ INTRO = {
                                        -- share of the sum of its scenes' minimum times
 
     CONTINUE_KEY = "space",            -- Continue (only once the scene allows it)
+
+    -- Skip: hold the key for SKIP_HOLD seconds. Skipping a module gives no XP; a module with
+    -- skippable = false (the rules, the welcome with its choices) can never be skipped.
+    SKIP_MODULE_KEY = "pgdn",
+    SKIP_ALL_KEY = "end",
+    SKIP_HOLD = 1.0,
+
+    -- The address of the server's web interfaces (web_manager's landing page), shown in the
+    -- "internet" chapter. Empty: that scene is left out.
+    WEB_URL = "",
     ADMIN_LEVEL = 3,                   -- /intro, /introcam
 
     -- Key labels used in the texts as {key:name}. Keep them in sync with the resources.
@@ -80,6 +93,13 @@ INTRO = {
         elsPattern = "5",
         work = "E",
         continue = "SPACE",
+        skipModule = "PAGE DOWN",
+        skipAll = "END",
+        weapons = "TAB",
+        aim = "RIGHT MOUSE BUTTON",
+        fire = "LEFT MOUSE BUTTON",
+        inventory = "I",
+        atc = "E",
         back = "BACKSPACE",
     },
 }

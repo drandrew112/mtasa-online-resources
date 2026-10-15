@@ -2,6 +2,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Chapter 6: cash, bank, the in-game internet, store robberies.
 Intro.module {
     id = "money", order = 60, version = 1, xp = 200,
+    essential = true,
     title = L.msg("v_introduce.06_money.money"),
     requires = { "v_bank" },
     scenes = {

@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Chapter 4: the phone and its apps.
 Intro.module {
-    id = "phone", order = 40, version = 1, xp = 250,
+    id = "phone", order = 40, version = 1, xp = 200,
+    essential = true,
     title = L.msg("v_introduce.04_phone.phone"),
     requires = { "ui_phone" },
     scenes = {

@@ -1,7 +1,7 @@
 # v_introduce – server introduction
 
-A mandatory introduction that shows new players what they can do on the server. It cannot be
-skipped. It is built from modules (chapters): a new feature gets a new module file, the core does
+An introduction that shows new players what they can do on the server. Chapters can be skipped
+(see "Skipping"), only the welcome choices and the rules are mandatory. It is built from modules (chapters): a new feature gets a new module file, the core does
 not change. `v_modmenu` never appears in it (`INTRO.BLOCKED_RESOURCES`).
 
 ## When it runs
@@ -33,12 +33,30 @@ not change. `v_modmenu` never appears in it (`INTRO.BLOCKED_RESOURCES`).
   `{ panelId = true }`; the panels check it before opening: `phone` (ui_phone), `social`
   (v_socialpanel), `interaction` (ui_inac), `pause` (ui_pause), `browser` (ui_browser), `chat`
   (v_chat).
-- **No skip.** Continue (`SPACE`) unlocks after a short lock (`READ_CHARS_PER_SEC`,
-  `CAMERA_LOCK_SHARE` of a camera ride, between `MIN_SCENE_TIME` and `MAX_SCENE_TIME` = 3 s) once
-  no panel is open. Task and accept scenes have no lock: Continue unlocks as soon as they are done. The server refuses a module that finished faster than `MIN_MODULE_SHARE` of
-  that time, and plays the refused modules again at the end.
+- Continue (`SPACE`) unlocks after a short lock (`READ_CHARS_PER_SEC`, `CAMERA_LOCK_SHARE` of a
+  camera ride, between `MIN_SCENE_TIME` and `MAX_SCENE_TIME` = 3 s) once no panel is open. Task
+  and accept scenes have no lock: Continue unlocks as soon as they are done. The server refuses
+  a module that finished faster than `MIN_MODULE_SHARE` of that time, and plays the refused
+  modules again at the end.
 - Every finished module is saved right away. After a quit the player continues with the first
   unfinished module.
+
+## Skipping
+
+- **Skip Module**: hold `INTRO.SKIP_MODULE_KEY` (`PAGE DOWN`) for `SKIP_HOLD` (1 s). **Skip All**:
+  hold `INTRO.SKIP_ALL_KEY` (`END`): the current module and every following one are skipped.
+  The hints (with a progress bar) are bottom left. Works in "What's new" too.
+- Not while a panel is open. A module with `skippable = false` is never skipped (the welcome
+  chapter, which holds the choices, and the rules): Skip All stops at them.
+- **Skipped = seen but no XP.** The module is stored in `intro.skipped` as well and is not
+  shown again. The last chapter only makes up for modules that cannot run (their resource is
+  stopped), never for skipped ones. An admin can play a skipped module again:
+  `/intro start <player> <moduleId>` (the XP is then given once).
+- The welcome chapter asks for the **language** (v_locals, switches at once) and for the **tour**:
+  everything / only the essentials (modules with `essential = true`) / skip everything. The tour
+  choice skips the later modules in advance (client `R.autoSkip`).
+- The server checks a skip: the module must be the current one and `skippable`; skipped modules
+  have no time check.
 
 ## The end
 
@@ -49,26 +67,34 @@ not change. `v_modmenu` never appears in it (`INTRO.BLOCKED_RESOURCES`).
 ## Reward
 
 Each module gives its `xp` the first time it is finished (`intro.rewarded`, so DEBUG runs or
-"What's new" re-runs do not pay twice). The final module tops the total up to
+"What's new" re-runs do not pay twice). Skipped modules give nothing. The module XP adds up to
 `INTRO.REWARD_TOTAL_XP` = 2800, which takes a new player from level 1 to level 3 (v_levelsys).
 
 ## Chapters (modules/)
 
 | # | id | requires | XP |
 |---|---|---|---|
-| 1 | welcome | – | 150 |
+| 1 | welcome (language, tour choice) | – | 100 |
 | 2 | hud | v_radar | 200 |
-| 3 | social | v_chat (+ v_socialpanel) | 200 |
-| 4 | phone | ui_phone | 250 |
-| 5 | interaction | ui_inac | 200 |
+| 3 | social | v_chat (+ v_socialpanel) | 150 |
+| 4 | phone | ui_phone | 200 |
+| 5 | interaction | ui_inac | 150 |
 | 6 | money | v_bank | 200 |
+| 6.5 | internet (browser, Services sites, web page) | ui_browser | 200 |
 | 7 | vehicles | v_ownveh | 250 |
-| 8 | work | work_core | 200 |
+| 8 | work (overview: EMS, blood transport, ATC, train driver) | work_core | 150 |
 | 9 | activities | v_jobmanager | 250 |
-| 10 | health | medsys | 200 |
-| 11 | settings | ui_pause | 150 |
-| 12 | rules | – (version = `RULES_VERSION`) | 200 |
-| 13 | finish | – | top-up |
+| 9.5 | weapons (target practice, temporary pistol) | wp_manager, wp_selector | 200 |
+| 10 | health | medsys | 150 |
+| 10.5 | aviation (very short) | avi_core | 100 |
+| 11 | settings (+ language) | ui_pause | 150 |
+| 12 | rules (not skippable, version = `RULES_VERSION`) | – | 200 |
+| 13 | finish | – | 150 + makes up for modules that cannot run |
+
+The work chapter only shows that each work job exists: each one has its own tutorial on the first
+duty. The weapons chapter gives a practice pistol as a temporary wp_manager loadout
+(`setPlayerTempLoadout`, never saved on the account) and takes it back when the chapter ends,
+is skipped, or the player quits. The internet chapter's web page scene needs `INTRO.WEB_URL`.
 
 A module whose required resource is not running is left out and does not count. A scene can
 have its own `requires` too.
@@ -77,7 +103,7 @@ have its own `requires` too.
 
 A module is plain data (no functions). Field list: `server/registry.lua`; scene types and their
 fields: `client/scenes.lua` (`camera`, `card`, `task`, `highlight`, `world`) and `client/rules.lua`
-(`accept`). Text can use key labels: `{key:phone}` → `INTRO.KEYS.phone`.
+(`accept`, `choice`). Optional module fields `skippable = false` and `essential = true`. Text can use key labels: `{key:phone}` → `INTRO.KEYS.phone`.
 
 ```lua
 Intro.module {
@@ -120,7 +146,7 @@ News for players who already know the server. Template: `updates/_TEMPLATE.lua` 
 
 ## Account data (v_mysql)
 
-`intro.seen` (JSON `{ id = version }`), `intro.rewarded` (JSON `{ id = xp }`), `intro.done`,
+`intro.seen` (JSON `{ id = version }`), `intro.skipped` (JSON `{ id = version }`), `intro.rewarded` (JSON `{ id = xp }`), `intro.done`,
 `intro.rules` (accepted rules version).
 
 ## Exports and events
@@ -128,7 +154,7 @@ News for players who already know the server. Template: `updates/_TEMPLATE.lua` 
 - server: `isInIntro(player)`, `startIntro(player, "full" | "new")`, `resetIntro(player | account)`,
   `registerModule(def)`, `unregisterModule(id)`
 - client: `isIntroActive()`, `getIntroAllow()`
-- server events (source = player): `onIntroStart(mode)`, `onIntroModuleDone(id)`, `onIntroFinish(mode)`;
+- server events (source = player): `onIntroStart(mode)`, `onIntroModuleDone(id)`, `onIntroModuleSkip(id)`, `onIntroFinish(mode)`;
   `onIntroduceStart` on resource start
 
 ## Admin commands (`admin_level` >= `INTRO.ADMIN_LEVEL`)

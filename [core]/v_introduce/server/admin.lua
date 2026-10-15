@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Admin / test commands. Players cannot skip the introduction; these are for testing and support.
+-- Admin / test commands (players skip with the keys, see client/runner.lua).
 --   /intro start <player> [full | updates | <moduleId>]
 --                                    pending modules / the main line / every update / one module
 --   /intro stop <player>                          ends it without marking anything as seen

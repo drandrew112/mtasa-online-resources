@@ -128,6 +128,26 @@ function Draw.continue(state)
     end
 end
 
+-- Skip hints, bottom left. items = { { key, label, fraction } }: hold the key until the bar is full
+function Draw.skipHints(items)
+    local f = Draw.fonts()
+    local x, bottom = s(36), sh - s(30)
+    for i = #items, 1, -1 do
+        local it = items[i]
+        local keyW = L.width(it.key, 1, f.small) + s(14)
+        local labelW = L.width(it.label, 1, f.small)
+        local h = s(24)
+        local active = it.fraction > 0
+        frame(x, bottom - h, keyW, h, math.max(1, s(1.5)), active and C.accent or C.edge)
+        text(it.key, x, bottom - h, x + keyW, bottom, active and C.text or C.muted, f.small, "center", "center")
+        text(it.label, x + keyW + s(8), bottom - h, x + keyW + s(8) + labelW, bottom, active and C.text or C.muted, f.small, "left", "center")
+        local total = keyW + s(8) + labelW
+        dxDrawRectangle(x, bottom + s(3), total, s(3), C.segment, true)
+        dxDrawRectangle(x, bottom + s(3), total * math.min(1, it.fraction), s(3), C.accent, true)
+        bottom = bottom - h - s(12)
+    end
+end
+
 function Draw.subtitle(str, bottomOffset)
     local f = Draw.fonts()
     local w = math.min(sw * 0.62, s(1150))

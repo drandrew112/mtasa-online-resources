@@ -23,6 +23,7 @@ end
 
 function Progress.getSeen(who) return readMap(who, INTRO.ACC_SEEN) end
 function Progress.getRewarded(who) return readMap(who, INTRO.ACC_REWARDED) end
+function Progress.getSkipped(who) return readMap(who, INTRO.ACC_SKIPPED) end
 function Progress.isDone(who) return getData(who, INTRO.ACC_DONE) == true end
 
 function Progress.markSeen(who, id, version)
@@ -38,19 +39,25 @@ function Progress.markSeenMany(who, defs)
     writeMap(who, INTRO.ACC_SEEN, seen)
 end
 
+-- A skipped module counts as seen (it is not shown again) but gives no XP
+function Progress.markSkipped(who, id, version)
+    local skipped = Progress.getSkipped(who)
+    skipped[id] = version
+    writeMap(who, INTRO.ACC_SKIPPED, skipped)
+    Progress.markSeen(who, id, version)
+end
+
 -- -> XP to give now (0 when this module was rewarded before)
 function Progress.reward(who, def)
     local rewarded = Progress.getRewarded(who)
     if rewarded[def.id] then return 0 end
     local xp = def.xp
     if def.final then
-        -- the top-up is for the main line: XP of update modules does not count
-        local given = 0
-        for id, v in pairs(rewarded) do
-            local other = Intro.get(id)
-            if not (other and other.update) then given = given + (tonumber(v) or 0) end
-        end
-        xp = math.max(xp, INTRO.REWARD_TOTAL_XP - given)
+        -- makes up for main-line modules that cannot run now (their resource is stopped), so
+        -- the total stays INTRO.REWARD_TOTAL_XP; modules the player skipped are not made up
+        local available = 0
+        for _, other in ipairs(Intro.available("main")) do available = available + other.xp end
+        xp = def.xp + math.max(0, INTRO.REWARD_TOTAL_XP - available)
     end
     rewarded[def.id] = xp
     writeMap(who, INTRO.ACC_REWARDED, rewarded)
@@ -63,7 +70,7 @@ function Progress.setRules(who, version) setData(who, INTRO.ACC_RULES, version) 
 -- Forget everything (the XP already given stays with the player and is not given again,
 -- unless `rewards` is true)
 function Progress.reset(who, rewards)
-    local d = { [INTRO.ACC_SEEN] = "{}", [INTRO.ACC_DONE] = false, [INTRO.ACC_RULES] = 0 }
+    local d = { [INTRO.ACC_SEEN] = "{}", [INTRO.ACC_SKIPPED] = "{}", [INTRO.ACC_DONE] = false, [INTRO.ACC_RULES] = 0 }
     if rewards then d[INTRO.ACC_REWARDED] = "{}" end
     setData(who, d)
 end

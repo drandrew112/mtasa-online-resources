@@ -3,6 +3,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- again on their next login.
 Intro.module {
     id = "rules", order = 120, version = INTRO.RULES_VERSION, xp = 200,
+    skippable = false, essential = true,
     title = L.msg("v_introduce.12_rules.rules"),
     rules = true,
     scenes = {

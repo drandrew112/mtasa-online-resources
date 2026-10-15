@@ -46,7 +46,19 @@ local function destroyVehicle(s)
     s.vehicle = nil
 end
 
+-- The practice pistol of a scene with weapon = true: a temporary loadout of wp_manager (never
+-- saved on the account), taken away again as soon as the scene is left.
+local function stopWeapon(s, freeze)
+    if not s.weapon then return end
+    s.weapon = false
+    if isRunning("wp_manager") and isElement(s.player) then
+        exports.wp_manager:clearPlayerTempLoadout(s.player)
+    end
+    if freeze and isElement(s.player) and not s.vehicle then setElementFrozen(s.player, true) end
+end
+
 local function placeOnStage(s)
+    stopWeapon(s)
     local p, st = s.player, INTRO.STAGE
     if getPedOccupiedVehicle(p) then removePedFromVehicle(p) end
     destroyVehicle(s)
@@ -210,6 +222,7 @@ local function cleanup(s)
         if isTimer(t) then killTimer(t) end
     end
     s.timers = {}
+    stopWeapon(s)
     if isElement(s.player) and s.vehicle and getPedOccupiedVehicle(s.player) == s.vehicle then
         removePedFromVehicle(s.player)
     end
@@ -248,30 +261,42 @@ end
 ---------------------------------------------------------------- client reports
 
 addEvent("intro:moduleDone", true)
-addEventHandler("intro:moduleDone", resourceRoot, function(id)
+addEventHandler("intro:moduleDone", resourceRoot, function(id, skipped)
     local player = client
     local s = sessions[player]
     if not s or not s.ready then return end
     local def, copy = s.defs[s.index], s.copies[s.index]
     if not def or def.id ~= id then return end
 
-    -- not faster than the scenes allow (the client locks Continue for the same time)
-    local elapsed = (getTickCount() - s.moduleStart) / 1000
-    if elapsed < Intro.minDuration(copy) * INTRO.MIN_MODULE_SHARE then
-        outputDebugString(("[v_introduce] %s finished '%s' too fast (%.1fs)"):format(getPlayerName(player), id, elapsed), 2)
-        return
+    if skipped then
+        -- Skip Module / Skip All: no time check and no XP, but never the modules that cannot be skipped
+        if def.skippable == false then
+            outputDebugString(("[v_introduce] %s tried to skip '%s'"):format(getPlayerName(player), id), 2)
+            return
+        end
+        s.recorded[id] = true
+        Progress.markSkipped(player, id, def.version)
+        triggerEvent("onIntroModuleSkip", player, id)
+    else
+        -- not faster than the scenes allow (the client locks Continue for the same time)
+        local elapsed = (getTickCount() - s.moduleStart) / 1000
+        if elapsed < Intro.minDuration(copy) * INTRO.MIN_MODULE_SHARE then
+            outputDebugString(("[v_introduce] %s finished '%s' too fast (%.1fs)"):format(getPlayerName(player), id, elapsed), 2)
+            return
+        end
+
+        s.recorded[id] = true
+        Progress.markSeen(player, id, def.version)
+        if def.rules then Progress.setRules(player, INTRO.RULES_VERSION) end
+        local xp = Progress.reward(player, def)
+        if xp > 0 and isRunning("v_levelsys") then
+            exports.v_levelsys:giveXp(player, xp)
+            send(player, "intro:reward", id, xp)
+        end
+        triggerEvent("onIntroModuleDone", player, id)
     end
 
-    s.recorded[id] = true
-    Progress.markSeen(player, id, def.version)
-    if def.rules then Progress.setRules(player, INTRO.RULES_VERSION) end
-    local xp = Progress.reward(player, def)
-    if xp > 0 and isRunning("v_levelsys") then
-        exports.v_levelsys:giveXp(player, xp)
-        send(player, "intro:reward", id, xp)
-    end
-    triggerEvent("onIntroModuleDone", player, id)
-
+    stopWeapon(s, true)
     if s.vehicle then placeOnStage(s) end
     s.index = s.index + 1
     s.moduleStart = getTickCount()
@@ -331,6 +356,26 @@ addEventHandler("intro:vehicle", resourceRoot, function(want)
     setVehicleEngineState(vehicle, true)
 end)
 
+-- The practice pistol of a scene with weapon = true (see stopWeapon): the player can aim and
+-- shoot at the target the client placed; the movement controls stay locked on the client.
+addEvent("intro:weapon", true)
+addEventHandler("intro:weapon", resourceRoot, function(want)
+    local player = client
+    local s = sessions[player]
+    if not s or not s.ready then return end
+    if not want then return stopWeapon(s, true) end
+    if s.weapon or not isRunning("wp_manager") then return end
+    local copy = s.copies[s.index]
+    local allowed = false
+    for _, scene in ipairs(copy and copy.scenes or {}) do
+        if scene.weapon then allowed = true end
+    end
+    if not allowed then return end
+    s.weapon = true
+    setElementFrozen(player, false)
+    exports.wp_manager:setPlayerTempLoadout(player, { { id = 22, ammo = 51 } })
+end)
+
 ---------------------------------------------------------------- world events
 
 -- killed anyway (admin, script): back to the stage, the client keeps playing
@@ -344,7 +389,7 @@ end)
 addEventHandler("onPlayerQuit", root, function()
     clientReady[source] = nil
     local s = sessions[source]
-    if s then cleanup(s) end   -- save.position stays: v_accounts saves the original position
+    if s then cleanup(s) end   -- the temporary loadout is gone with it; save.position stays: v_accounts saves the original position
 end)
 
 ---------------------------------------------------------------- automatic start
@@ -369,6 +414,7 @@ end)
 
 addEvent("onIntroStart")
 addEvent("onIntroModuleDone")
+addEvent("onIntroModuleSkip")
 addEvent("onIntroFinish")
 addEvent("onIntroduceStart")
 

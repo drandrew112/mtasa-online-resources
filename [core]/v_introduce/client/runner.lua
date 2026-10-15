@@ -1,7 +1,12 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Plays the modules the server sent, scene by scene. There is no skip: Continue
--- (INTRO.CONTINUE_KEY) works only when the scene's minimum time has passed, its tasks are done
--- and no panel is open. Every finished module is reported to the server right away.
+-- Plays the modules the server sent, scene by scene. Continue (INTRO.CONTINUE_KEY) works only
+-- when the scene's minimum time has passed, its tasks are done and no panel is open. Every
+-- finished module is reported to the server right away.
+--
+-- Skipping: holding INTRO.SKIP_MODULE_KEY skips the current module, INTRO.SKIP_ALL_KEY it and
+-- all the following ones (a module with skippable = false is never skipped). The welcome
+-- chapter's "tour" choice does the same in advance (R.autoSkip = "all" | "nonessential").
+-- Skipped modules are reported to the server as skipped: no XP.
 
 local R = {
     active = false,
@@ -11,6 +16,8 @@ local R = {
     keyTicks = {},
     transition = false, waiting = false,
     toast = nil,
+    autoSkip = nil,   -- "all" | "nonessential": later modules go by without being shown
+    holds = {},       -- key -> { start, fired } of the skip keys
 }
 
 local function handlerOf(scene) return Scenes[scene.type] end
@@ -58,8 +65,21 @@ local function finishAll()
     triggerServerEvent("intro:finished", resourceRoot)
 end
 
-local function nextModule()
-    triggerServerEvent("intro:moduleDone", resourceRoot, R.module.id)
+local function skippable(m) return m ~= nil and m.skippable ~= false end
+
+-- the choice / Skip All leaves this module out
+local function autoSkips(m)
+    if not R.autoSkip or not skippable(m) then return false end
+    return R.autoSkip == "all" or not m.essential
+end
+
+local function nextModule(skipped)
+    triggerServerEvent("intro:moduleDone", resourceRoot, R.module.id, skipped or nil)
+    -- the modules that are left out go by without being shown (the server counts them as skipped)
+    while R.mIndex < #R.modules and autoSkips(R.modules[R.mIndex + 1]) do
+        R.mIndex = R.mIndex + 1
+        triggerServerEvent("intro:moduleDone", resourceRoot, R.modules[R.mIndex].id, true)
+    end
     if R.mIndex >= #R.modules then return finishAll() end
     stopScene()
     R.transition = true
@@ -122,6 +142,55 @@ local function onKey(key, press)
     if press and R.active then R.keyTicks[key:lower()] = getTickCount() end
 end
 
+---------------------------------------------------------------- skip
+
+-- Holds a key for INTRO.SKIP_HOLD seconds -> progress 0..1, true once (when it is full)
+local function holdKey(key)
+    local usable = not isChatBoxInputActive() and not isConsoleActive() and not Lock.openPanel()
+    if not (usable and getKeyState(key)) then
+        R.holds[key] = nil
+        return 0
+    end
+    local h = R.holds[key]
+    if not h then
+        R.holds[key] = { start = getTickCount() }
+        return 0
+    end
+    if h.fired then return 1 end   -- wait until the key is released
+    local f = (getTickCount() - h.start) / (INTRO.SKIP_HOLD * 1000)
+    if f >= 1 then
+        h.fired = true
+        return 1, true
+    end
+    return f
+end
+
+local function skipHints()
+    if not skippable(R.module) then return end
+    local items = {}
+    local moduleF, moduleDone = holdKey(INTRO.SKIP_MODULE_KEY)
+    items[#items + 1] = { key = INTRO.KEYS.skipModule, label = L("v_introduce.runner.hold_to_skip_module"), fraction = moduleF }
+    local more = false
+    for i = R.mIndex + 1, #R.modules do
+        if skippable(R.modules[i]) then more = true break end
+    end
+    local allDone = false
+    if more then
+        local allF
+        allF, allDone = holdKey(INTRO.SKIP_ALL_KEY)
+        items[#items + 1] = { key = INTRO.KEYS.skipAll, label = L("v_introduce.runner.hold_to_skip_all"), fraction = allF }
+    end
+    Draw.skipHints(items)
+    if allDone then
+        R.autoSkip = "all"
+        playSoundFrontEnd(41)
+        nextModule(true)
+    elseif moduleDone then
+        playSoundFrontEnd(41)
+        nextModule(true)
+    end
+end
+
 ---------------------------------------------------------------- render
 
 local function render()
@@ -137,6 +206,9 @@ local function render()
     if h.letterbox then Draw.letterbox() end
     if h.render then h.render(sc, R) end
     Draw.progress(chapter(), R.total, R.stepLabel)
+
+    skipHints()
+    if R.transition or R.waiting then return end
 
     local ready, state = continueState()
     if h.autoNext then
@@ -183,6 +255,7 @@ addEventHandler("intro:start", resourceRoot, function(payload)
     R.offset = tonumber(payload.offset) or 0
     R.total = tonumber(payload.total) or #R.modules
     R.keyTicks = {}
+    R.autoSkip, R.holds = nil, {}
     R.waiting, R.transition, R.toast = false, false, nil
     Mirror.dimension = payload.dimension
     Lock.enable()
