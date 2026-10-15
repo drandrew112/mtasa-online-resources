@@ -131,6 +131,8 @@ end)
 
 function save_all(player)
     if not isElement(player) or getElementData(player, "isLogged") ~= true then return end
+    -- nothing is saved until the saved state has been restored (else defaults overwrite the account)
+    if getElementData(player, "loaded") ~= true then return end
 
     local d = {}
     d.health        = getElementHealth(player)
