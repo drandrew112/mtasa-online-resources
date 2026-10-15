@@ -7,7 +7,7 @@ BTD = {
     -- Pay at the end of a service (work_core payWork, itemised receipt)
     PAY = {
         BASE = 2000,            -- only when at least one task was delivered
-        DELIVERED = 2500,       -- per delivered task
+        DELIVERED = 4000,       -- per delivered task
         IN_TRANSIT = -1500,     -- per task still on its way (picked up, not delivered) at the end
     },
     XP_PER_DELIVERY = 40,       -- work_core XP of the work
@@ -42,5 +42,5 @@ BTD = {
     OFFER_TIMEOUT = 20,         -- s the other one has to accept
     NEARBY_INTERVAL = 2000,     -- ms, how often the nearby transporter is looked up
     VEHICLE_CHECK = 1000,       -- ms
-    ADMIN_PAGE = 14,            -- rows per page of the admin lists
+    ADMIN_PAGE = 13,            -- rows per page of the admin lists
 }
