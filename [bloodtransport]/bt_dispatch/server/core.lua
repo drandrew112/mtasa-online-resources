@@ -8,6 +8,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 addEvent("onBtShiftStart")
 addEvent("onBtShiftEnd")
+addEvent("onBtTutorialShiftStart")
+addEvent("onBtTutorialShiftEnd")
 addEvent("onBtTaskChanged")
 addEvent("onBtCoreStart")
 addEvent("onBtItemsStart")
@@ -18,6 +20,9 @@ Shifts = {}          -- player -> shift
 ShiftById = {}       -- shift id -> shift
 Recent = {}          -- player -> { { task, till } } closed tasks still shown for DONE_VISIBLE s
 TotalDelivered = 0   -- since the resource started (the web page adds the database count)
+-- Tutorial (work_bloodtransport tutorial, server/tutorial.lua): player -> { vehicle, ports }. Its shift
+-- and task are flagged `tutorial`: memory only (no database, stock, pay, XP), never counted as a unit.
+TutorialOf = {}
 
 local C                         -- bt_core config (+ byId)
 
@@ -71,7 +76,9 @@ end
 
 function shiftList()
     local list = {}
-    for _, s in pairs(Shifts) do list[#list + 1] = s end
+    for _, s in pairs(Shifts) do
+        if not s.tutorial then list[#list + 1] = s end
+    end
     table.sort(list, function(a, b) return a.id < b.id end)
     return list
 end
@@ -79,19 +86,21 @@ end
 -- Units that may get a new task (not winding down)
 function activeUnitCount()
     local n = 0
-    for _, s in pairs(Shifts) do if not s.windDown then n = n + 1 end end
+    for _, s in pairs(Shifts) do if not s.windDown and not s.tutorial then n = n + 1 end end
     return n
 end
 
 function dutyCount()
     local n = 0
-    for _ in pairs(Shifts) do n = n + 1 end
+    for _, s in pairs(Shifts) do if not s.tutorial then n = n + 1 end end
     return n
 end
 
 function openTaskTotal()
     local n = 0
-    for _, t in pairs(Tasks) do if t.status == "waiting" or t.status == "transit" then n = n + 1 end end
+    for _, t in pairs(Tasks) do
+        if not t.tutorial and (t.status == "waiting" or t.status == "transit") then n = n + 1 end
+    end
     return n
 end
 
@@ -122,10 +131,10 @@ end
 -- Tasks
 -- ---------------------------------------------------------------------------------------------
 
-local function newTaskDescription(task)
+function newTaskDescription(task)
     return {
         id = task.id, type = task.type, product = task.product, group = task.group, units = task.units,
-        from = task.from, to = task.to,
+        from = task.from, to = task.to, fromPort = task.fromPort, toPort = task.toPort,
     }
 end
 
@@ -225,23 +234,24 @@ function closeTask(task, status, reason)
     local pickedUp = task.pickedAt ~= nil
     task.status = status
     local at = DB.nowText()
+    local db = not task.tutorial
     if status == "delivered" then
         task.deliveredAt = getRealTime().timestamp
-        DB.setTask(task.id, { status = status, delivered_at = at })
+        if db then DB.setTask(task.id, { status = status, delivered_at = at }) end
     else
         task.cancelReason = reason
-        DB.setTask(task.id, { status = status, cancelled_at = at, cancel_reason = reason })
+        if db then DB.setTask(task.id, { status = status, cancelled_at = at, cancel_reason = reason }) end
     end
-    DB.log(task.id, status, reason)
+    if db then DB.log(task.id, status, reason) end
     if shift then
-        DB.releaseShiftTask(shift.id, task.id, status)
+        if db then DB.releaseShiftTask(shift.id, task.id, status) end
         for i, id in ipairs(shift.order) do
             if id == task.id then table.remove(shift.order, i) break end
         end
         if shift.route == task.id then updateRoute(shift) end
     end
     if isRunning("bt_items") then exports.bt_items:destroyCargo(task.id) end
-    if isRunning("bt_stock") then
+    if db and isRunning("bt_stock") then
         exports.bt_stock:taskClosed({ type = task.type, status = status, from = task.from, to = task.to,
             product = task.product, group = task.group, units = task.units, source = task.source,
             pickedUp = pickedUp })
@@ -266,8 +276,10 @@ function onPickedUp(taskId, player)
     for i, id in ipairs(task.shift.order) do
         if id == task.id then table.remove(task.shift.order, i) break end
     end
-    DB.setTask(task.id, { status = "transit", picked_at = DB.nowText() })
-    DB.log(task.id, "picked_up", task.shift.unit)
+    if not task.tutorial then
+        DB.setTask(task.id, { status = "transit", picked_at = DB.nowText() })
+        DB.log(task.id, "picked_up", task.shift.unit)
+    end
     updateRoute(task.shift)
     refreshItems(player)
     SyncPlayer(player)
@@ -281,9 +293,9 @@ function onDelivered(taskId, player)
     if not task or task.status ~= "transit" or task.player ~= player then return false end
     local shift = task.shift
     shift.delivered = shift.delivered + 1
-    TotalDelivered = TotalDelivered + 1
+    if not task.tutorial then TotalDelivered = TotalDelivered + 1 end
     closeTask(task, "delivered")
-    if isRunning("work_core") then exports.work_core:giveWorkXp(player, BTD.WORK_ID, BTD.XP_PER_DELIVERY) end
+    if not task.tutorial and isRunning("work_core") then exports.work_core:giveWorkXp(player, BTD.WORK_ID, BTD.XP_PER_DELIVERY) end
     notify(player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.delivered", { id = task.id, to = instName(task.to) }))
     return true
 end
@@ -292,13 +304,21 @@ end
 -- Service (shift)
 -- ---------------------------------------------------------------------------------------------
 
+local nextTutorialShift = 0
+
 function signOn(player)
     if Shifts[player] then return false, "already" end
     if not isRunning("bt_core") or not exports.bt_core:hasRight(player) then return false, "no_right" end
-    if not isRunning("work_core") or not exports.work_core:isPlayerOnDuty(player, BTD.WORK_ID) then return false, "no_duty" end
+    local tutorial = TutorialOf[player]
     local vehicle = getPedOccupiedVehicle(player)
-    if not vehicle or vehicle ~= exports.work_core:getPlayerWorkVehicle(player) or getElementModel(vehicle) ~= 415 then
-        return false, "no_vehicle"
+    if tutorial then
+        -- the tutorial vehicle instead of the work duty and the work vehicle
+        if not vehicle or vehicle ~= tutorial.vehicle then return false, "no_vehicle" end
+    else
+        if not isRunning("work_core") or not exports.work_core:isPlayerOnDuty(player, BTD.WORK_ID) then return false, "no_duty" end
+        if not vehicle or vehicle ~= exports.work_core:getPlayerWorkVehicle(player) or getElementModel(vehicle) ~= 415 then
+            return false, "no_vehicle"
+        end
     end
     if isPedDead(player) then return false, "dead" end
     local unit = (getVehiclePlateText(vehicle) or ""):gsub("^%s+", ""):gsub("%s+$", "")
@@ -306,14 +326,23 @@ function signOn(player)
     local shift = {
         player = player, vehicle = vehicle, unit = unit, name = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""),
         account = account or getPlayerName(player), windDown = false, order = {}, delivered = 0, startedTick = getTickCount(),
-        startedAt = getRealTime().timestamp,
+        startedAt = getRealTime().timestamp, tutorial = tutorial and true or nil,
     }
-    shift.id = DB.insertShift(shift)
+    if tutorial then
+        nextTutorialShift = nextTutorialShift - 1
+        shift.id = nextTutorialShift
+    else
+        shift.id = DB.insertShift(shift)
+    end
     if not shift.id then return false, "database" end
     Shifts[player], ShiftById[shift.id] = shift, shift
     refreshItems(player)
     SyncPlayer(player)
-    triggerEvent("onBtShiftStart", player, shift.id)
+    if tutorial then
+        triggerEvent("onBtTutorialShiftStart", player)
+    else
+        triggerEvent("onBtShiftStart", player, shift.id)
+    end
     return true
 end
 
@@ -354,15 +383,22 @@ function endShift(player, reason)
     if isElement(shift.vehicle) and isRunning("bt_items") then exports.bt_items:clearBox(shift.vehicle) end
     if isRunning("v_radar") and isElement(player) then pcall(exports.v_radar.clearObjectives, exports.v_radar, player) end
 
-    DB.endShift(shift.id, { reason = reason, delivered = shift.delivered, inTransit = inTransit, cancelled = #open,
-        pay = total, items = items })
+    if not shift.tutorial then
+        DB.endShift(shift.id, { reason = reason, delivered = shift.delivered, inTransit = inTransit, cancelled = #open,
+            pay = total, items = items })
+    end
 
-    if isElement(player) and reason ~= "quit" and #items > 0 and isRunning("work_core") then
-        local list = {}
+    local list = {}
+    if isElement(player) then
         for _, it in ipairs(items) do
             -- plain texts: message objects lose their metatable across the export
             list[#list + 1] = { label = L.forPlayer(player, PAY_LABEL[it.key], { count = it.count }), amount = it.amount }
         end
+    end
+    if shift.tutorial then
+        -- no money: the tutorial shows the receipt it would have been
+        triggerEvent("onBtTutorialShiftEnd", player, reason, total, list)
+    elseif isElement(player) and reason ~= "quit" and #items > 0 and isRunning("work_core") then
         exports.work_core:payWork(player, BTD.WORK_ID, list, L.forPlayer(player, PAY_REASON[reason] or PAY_REASON.off))
     end
     if isElement(player) then
@@ -370,7 +406,7 @@ function endShift(player, reason)
         SyncPlayer(player)
     end
     Recent[player] = nil
-    triggerEvent("onBtShiftEnd", resourceRoot, shift.id, reason)
+    if not shift.tutorial then triggerEvent("onBtShiftEnd", resourceRoot, shift.id, reason) end
     return true
 end
 
@@ -381,7 +417,8 @@ end
 addEventHandler("onPlayerWasted", root, function() endShift(source, "died") end)
 addEventHandler("onPlayerQuit", root, function() endShift(source, "quit") end)
 addEventHandler("onPlayerWorkDutyEnd", root, function(workId)
-    if workId == BTD.WORK_ID then endShift(source, "duty_end") end
+    -- the tutorial shift does not need the work duty
+    if workId == BTD.WORK_ID and Shifts[source] and not Shifts[source].tutorial then endShift(source, "duty_end") end
 end)
 addEventHandler("onVehicleExplode", root, function()
     for player, shift in pairs(Shifts) do
@@ -419,7 +456,8 @@ function getTask(id)
     local t = Tasks[id]
     if not t then return false end
     return { id = t.id, type = t.type, status = t.status, from = t.from, to = t.to, player = t.player,
-        product = t.product, group = t.group, units = t.units }
+        product = t.product, group = t.group, units = t.units, fromPort = t.fromPort, toPort = t.toPort,
+        tutorial = t.tutorial == true }
 end
 
 function getPlayerTasks(player)
@@ -427,10 +465,11 @@ function getPlayerTasks(player)
     local out = {}
     if not shift then return out end
     for _, t in ipairs(openTasksOf(shift)) do
-        out[#out + 1] = { id = t.id, status = t.status, from = t.from, to = t.to, type = t.type }
+        out[#out + 1] = { id = t.id, status = t.status, from = t.from, to = t.to, type = t.type,
+            fromPort = t.fromPort, toPort = t.toPort }
     end
     return out
 end
 
 function getDutyCount() return dutyCount() end
-function isPlayerInService(player) return Shifts[player] ~= nil end
+function isPlayerInService(player) return Shifts[player] ~= nil and not Shifts[player].tutorial end

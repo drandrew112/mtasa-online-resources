@@ -3,6 +3,7 @@
 -- The server sends the data (inv:hud) whenever any of it changes.
 
 Hud = {}  -- slot -> item view
+HudRect = false   -- where the last frame drew it (getUiLayout)
 
 addEvent("inv:hud", true)
 addEventHandler("inv:hud", resourceRoot, function(slots)
@@ -49,6 +50,7 @@ local function draw()
     for _, r in ipairs(rows) do h = h + rowH + #r.lines * lineH end
     h = h + S(38) + pad * 0.5
     local x, y = SW - w - S(30), SH - h - S(230)
+    HudRect = { x, y, w, h }
 
     Round(x, y, w, h, S(7), C.bg)
     dxDrawRectangle(x, y + S(4), S(4), h - S(8), C.accent)
@@ -88,6 +90,7 @@ local function draw()
 end
 
 addEventHandler("onClientRender", root, function()
+    HudRect = false
     if not TextsLoaded or WindowOpen or isPedInVehicle(localPlayer) then return end
     if getElementData(localPlayer, "hideHUD") or isPlayerMapVisible() then return end
     draw()

@@ -17,4 +17,6 @@
     <export function="getInstitution" type="server" />
     <export function="getPortId" type="server" />
     <export function="getInstitutionByPort" type="server" />
+    <export function="createTutorialPorts" type="server" />
+    <export function="destroyTutorialPorts" type="server" />
 </meta>

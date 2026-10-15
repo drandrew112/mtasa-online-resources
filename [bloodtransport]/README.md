@@ -11,9 +11,9 @@ Request: `Blood transporter prompt.txt`.
 | `bt_stock` | stock of centers and hospitals (`data/stock.json`), hospital consumption, hourly refill, resupply requests |
 | `bt_dispatch` | services (shifts), tasks, assignment, handover, pay, the panel (J), `/btadmin`, SQLite `data/bloodtransport.db` |
 | `bt_web` | web page: home, live map with the stock, admin. HTTP `/bt_web/` and ui_browser `blood-transport.eu` |
-| `[work]/work_bloodtransport` | the work on work_core: duty marker, `BT-` ambulances (model 415), gives the right |
+| `[work]/work_bloodtransport` | the work on work_core: duty marker, `BT-` blood transport vehicles (model 415), gives the right; the optional tutorial (`tutorial/`) |
 
-Start order follows the `<include>`s: v_locals, v_inventory, work_core → bt_core → bt_items → bt_stock → bt_dispatch → bt_web.
+Start order follows the `<include>`s: v_locals, v_inventory, work_core → bt_core → bt_items → bt_stock → bt_dispatch → bt_web, work_bloodtransport.
 
 ## Playing it
 
@@ -31,6 +31,12 @@ Panel (bottom right, only with the right): small view = state + tasks in transit
 The service ends (all tasks cancelled, cargo and box contents deleted, pay calculated) when: the player ends it, the work duty ends,
 the vehicle is destroyed / deleted, the player dies. (Quitting the server ends it without pay.)
 
+## Tutorial
+
+`[work]/work_bloodtransport/tutorial/` (see its README): offered on the first work duty, `/tutorial_bt` any time. One task from the
+LS Blood Bank to All Saints in a private dimension, with the real panel, box and ports (tutorial copies) and a real drive. It also
+teaches the inventory basics. The tutorial shift and task are memory only: no database, stock, pay or XP, not counted as a unit.
+
 ## Config
 
 * `bt_core/config.lua`: `REQUIRE_RIGHT` (`false` = everybody is a transporter, for testing), `ADMIN_LEVEL`, blood groups and their weights,
@@ -46,14 +52,17 @@ The same in the browser: `http://<server>:<httpport>/bt_web/` → Admin (v_accou
 
 ## Exports (server)
 
-* `bt_core`: `getConfig`, `hasRight`, `setRight`, `getInstitutions`, `getInstitution`, `getPortId`, `getInstitutionByPort`
+* `bt_core`: `getConfig`, `hasRight`, `setRight`, `getInstitutions`, `getInstitution`, `getPortId`, `getInstitutionByPort`,
+  `createTutorialPorts`, `destroyTutorialPorts` (tutorial)
 * `bt_stock`: `getStock`, `getAllStock`, `allocate`, `release`, `canFulfill`, `taskClosed`
 * `bt_dispatch`: `createTask` (resupply only from bt_stock), `requestSupply`, `getTask`, `getPlayerTasks`, `getDutyCount`,
-  `isPlayerInService`, `getPublicState`, `getCompletedCount`, `adminQuery`, `generateTask` (test helper)
-* `bt_items`: `spawnCargo`, `destroyCargo`, `refreshPlayer`, `clearBox`, `getBox`, `getCargoItem`
+  `isPlayerInService`, `getPublicState`, `getCompletedCount`, `adminQuery`, `generateTask` (test helper),
+  `setTutorialVehicle`, `createTutorialTask`, `getPayRules` (tutorial); client `getPanelLayout`
+* `bt_items`: `spawnCargo`, `destroyCargo`, `refreshPlayer`, `clearBox`, `getBox`, `getCargoItem`, `addVehicleBox` (tutorial)
 * `work_bloodtransport`: `isPlayerBloodTransporter`, `getBloodTransportPlayers`, `getBloodTransportWorkId`
 
-Events: `onBtCoreStart`, `onBtPortsReady`, `onBtItemsStart`, `onBtStockStart`, `onBtShiftStart` / `onBtShiftEnd` (shift id, reason), `onBtTaskChanged` (task id, status).
+Events: `onBtCoreStart`, `onBtPortsReady`, `onBtItemsStart`, `onBtStockStart`, `onBtShiftStart` / `onBtShiftEnd` (shift id, reason), `onBtTaskChanged` (task id, status),
+`onBtTutorialShiftStart` / `onBtTutorialShiftEnd` (reason, total, receipt items; source = player).
 
 ## Texts
 

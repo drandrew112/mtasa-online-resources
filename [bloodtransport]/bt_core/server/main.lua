@@ -47,18 +47,23 @@ end)
 -- Ports
 -- ---------------------------------------------------------------------------------------------
 
+-- The v_inventory port of an institution (dimension / visibleTo: the tutorial copies)
+local function makePort(inst, dimension, visibleTo)
+    return exports.v_inventory:createPort({
+        x = inst.x, y = inst.y, z = inst.z, name = inst.name,
+        title = L.msg(inst.kind == "bank" and "bt_core.port.bank_title" or "bt_core.port.hospital_title"),
+        icon = BT.PORT_ICONS[inst.kind], color = BT.PORT_COLORS[inst.kind],
+        dataKey = BT.RIGHT_KEY, dataValue = true, dimension = dimension, visibleTo = visibleTo,
+    })
+end
+
 local function createPorts()
     if not isRunning("v_inventory") then return end
     local inv = exports.v_inventory
     for instId, portId in pairs(PortOf) do pcall(inv.destroyPort, inv, portId) end
     PortOf, InstOf = {}, {}
     for _, inst in ipairs(BT.INSTITUTIONS) do
-        local id, err = inv:createPort({
-            x = inst.x, y = inst.y, z = inst.z, name = inst.name,
-            title = L.msg(inst.kind == "bank" and "bt_core.port.bank_title" or "bt_core.port.hospital_title"),
-            icon = BT.PORT_ICONS[inst.kind], color = BT.PORT_COLORS[inst.kind],
-            dataKey = BT.RIGHT_KEY, dataValue = true,
-        })
+        local id, err = makePort(inst)
         if id then
             PortOf[inst.id], InstOf[id] = id, inst.id
         else
@@ -69,6 +74,40 @@ local function createPorts()
 end
 
 addEventHandler("onInventoryReady", root, createPorts)
+
+-- ---------------------------------------------------------------------------------------------
+-- Tutorial ports: copies of some institutions' ports in a private dimension (work_bloodtransport
+-- tutorial). They are not in PortOf / InstOf; the tutorial tasks carry their port ids.
+-- ---------------------------------------------------------------------------------------------
+
+local TutorialPorts = {}   -- port id -> true
+
+-- instIds: { "ls_bank", ... }, player: the only one who sees them -> { [instId] = portId } | false, reason
+function createTutorialPorts(dimension, instIds, player)
+    if not isRunning("v_inventory") then return false, "v_inventory" end
+    local out = {}
+    for _, instId in ipairs(type(instIds) == "table" and instIds or {}) do
+        local inst = ById[instId]
+        local id = inst and makePort(inst, tonumber(dimension) or 0, isElement(player) and { player } or nil)
+        if not id then
+            destroyTutorialPorts(out)
+            return false, "port of " .. tostring(instId)
+        end
+        out[instId], TutorialPorts[id] = id, true
+    end
+    return out
+end
+
+function destroyTutorialPorts(ports)
+    if type(ports) ~= "table" then return false end
+    for _, id in pairs(ports) do
+        if TutorialPorts[id] then
+            TutorialPorts[id] = nil
+            if isRunning("v_inventory") then pcall(exports.v_inventory.destroyPort, exports.v_inventory, id) end
+        end
+    end
+    return true
+end
 
 addEventHandler("onResourceStart", resourceRoot, function()
     grantAllIfTesting()

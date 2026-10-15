@@ -12,9 +12,10 @@ end
 
 -- The closest other unit that may take a task -> shift | nil, distance
 function nearestUnit(shift)
+    if shift.tutorial then return nil end
     local best, bestD
     for _, other in pairs(Shifts) do
-        if other ~= shift and not other.windDown and openCount(other) < BTD.MAX_OPEN_PER_UNIT
+        if other ~= shift and not other.windDown and not other.tutorial and openCount(other) < BTD.MAX_OPEN_PER_UNIT
             and isElement(other.player) and isElement(shift.player) then
             local d = playerDistance(shift.player, other.player)
             if d <= BTD.OFFER_RANGE and (not bestD or d < bestD) then best, bestD = other, d end

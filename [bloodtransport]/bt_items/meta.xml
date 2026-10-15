@@ -17,4 +17,5 @@
     <export function="clearBox" type="server" />
     <export function="getBox" type="server" />
     <export function="getCargoItem" type="server" />
+    <export function="addVehicleBox" type="server" />
 </meta>

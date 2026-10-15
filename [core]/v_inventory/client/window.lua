@@ -9,6 +9,7 @@ local View            -- the last view
 local byUid = {}      -- uid -> { v, side = "slot" | "left" | "right", slot }
 local st = { openSlot = nil, sel = nil, press = nil, drag = nil, scroll = { left = 0, right = 0 }, regions = {} }
 local cursorX, cursorY = 0, 0
+local WindowLayout = false   -- the last drawn frame's rectangles (getUiLayout)
 
 addEvent("inv:open", true)
 addEvent("inv:view", true)
@@ -349,8 +350,10 @@ local function drawWindow()
     region(cx, Y + S(21), S(110), S(24), "close")
 
     local y = Y + S(84)
+    local bannerRect
     if View.banner then
         local bw = W - S(48)
+        bannerRect = { X + S(24), y, bw, S(36) }
         Round(X + S(24), y, bw, S(36), S(6), tocolor(255, 185, 60, 40))
         Outline(X + S(24), y, bw, S(36), 1, C.warn)
         Text(Fit(L.resolve(View.banner), bw - S(32), 11, true), X + S(40), y, bw, S(36), C.warn, 11, true)
@@ -451,6 +454,23 @@ local function drawWindow()
         KeyChip(kx, fy, L("v_inventory.ui.key_drag_out"), L("v_inventory.ui.hint_put_down"))
     end
 
+    -- layout for other resources (tutorials): the regions of this frame
+    local layout = { rect = { X, Y, W, H }, kind = other and other.kind or "own", banner = bannerRect or false,
+        slots = {}, rows = {} }
+    for _, r in ipairs(st.regions) do
+        local rect = { r.x, r.y, r.w, r.h }
+        if r.kind == "slot" then
+            local v = View.slots[r.slot]
+            layout.slots[r.slot] = { rect = rect, d = v and v.d or false, cap = v and v.cap and true or false }
+        elseif r.kind == "row" then
+            local info = byUid[r.uid]
+            layout.rows[#layout.rows + 1] = { rect = rect, side = r.side, d = info and info.v.d or false }
+        elseif r.kind == "leftArea" or r.kind == "rightArea" or r.kind == "btnRight" or r.kind == "btnLeft" then
+            layout[r.kind] = rect
+        end
+    end
+    WindowLayout = layout
+
     -- dragged item / tooltip
     if st.drag then
         local info = byUid[st.drag.uid]
@@ -468,6 +488,7 @@ local function drawWindow()
 end
 
 addEventHandler("onClientRender", root, function()
+    WindowLayout = false
     if not WindowOpen or not View then return end
     if isPedDead(localPlayer) or isPedInVehicle(localPlayer) then return close(true) end
     local o = View.origin
@@ -588,3 +609,15 @@ bindKey(INV.KEY_INVENTORY, "down", function()
     if isCursorShowing() or OtherPanelOpen() or isPedDead(localPlayer) or isPedInVehicle(localPlayer) then return end
     triggerServerEvent("inv:openOwn", resourceRoot)
 end)
+
+-- ---------------------------------------------------------------------------------------------
+-- Layout export (e.g. the blood transport tutorial highlights parts of the window and the HUD)
+-- ---------------------------------------------------------------------------------------------
+
+-- -> { window = false | { rect, kind = "own" | "port" | "trunk" | "container", banner = rect | false,
+--        slots = { left/right/back = { rect, d, cap } }, rows = { { rect, side = "left" | "right", d } },
+--        leftArea, rightArea, btnRight, btnLeft = rect },
+--      hud = rect | false }      rect = { x, y, w, h }, d = item definition id
+function getUiLayout()
+    return { window = WindowOpen and WindowLayout or false, hud = HudRect or false }
+end

@@ -22,6 +22,7 @@
     <script src="server/panel.lua" type="server" />
     <script src="server/generator.lua" type="server" />
     <script src="server/admin.lua" type="server" />
+    <script src="server/tutorial.lua" type="server" />
     <script src="server/main.lua" type="server" />
 
     <!-- ================= CLIENT ================= -->
@@ -44,4 +45,11 @@
     <export function="getCompletedCount" type="server" />
     <export function="adminQuery" type="server" />
     <export function="generateTask" type="server" />
+    <!-- work_bloodtransport tutorial -->
+    <export function="setTutorialVehicle" type="server" />
+    <export function="createTutorialTask" type="server" />
+    <export function="getPayRules" type="server" />
+
+    <!-- ================= CLIENT EXPORTS ================= -->
+    <export function="getPanelLayout" type="client" />
 </meta>

@@ -5,6 +5,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 PanelBig = false
 local KEY = "j"
+-- Screen rectangles of the last drawn frame, for the work_bloodtransport tutorial (getPanelLayout)
+local Layout = { visible = false }
 local scroll = 0
 local offerIn            -- { id, till, ... } incoming handover offer
 
@@ -57,6 +59,7 @@ local function drawSmall()
     local rows = math.min(#transit, MAX_SMALL)
     local h = S(72) + (State.onDuty and (S(26) + rows * S(52) + (#transit > MAX_SMALL and S(20) or 0) + S(8)) or S(44))
     local x, y = SW - w - S(30), SH - h - S(24)
+    Layout.small = { x, y, w, h }
     Round(x, y, w, h, S(8), RGB(COL.bg))
     dxDrawRectangle(x, y, w, S(4), RGB(COL.acc))
     dxDrawRectangle(x, y + S(4), w, S(66), RGB(COL.head))
@@ -111,6 +114,8 @@ end
 local function drawRow(x, y, w, t, mode)
     local rh = S(66)
     local transit = mode == "transit"
+    local rect = { row = { x, y, w, rh }, status = t.status, routeOn = t.route == true }
+    Layout.tasks[tostring(t.id)] = rect
     Round(x, y, w, rh, S(6), RGB(COL.tile))
     if transit then
         for _, r in ipairs({ { x, y, w, S(1) }, { x, y + rh - S(1), w, S(1) }, { x, y, S(1), rh }, { x + w - S(1), y, S(1), rh } }) do
@@ -140,12 +145,15 @@ local function drawRow(x, y, w, t, mode)
     Chip(bx, y + S(8), L("bt_dispatch.status." .. t.status), STATUS_COLOR[t.status] or COL.muted, 8, true)
     local routeLabel = L(t.route and "bt_dispatch.panel.route_on" or "bt_dispatch.panel.route")
     local rw = math.max(S(124), TextWidth(routeLabel, 9, true) + S(24))
+    rect.route = { bx - rw, y + S(33), rw, S(24) }
     Button(bx - rw, y + S(33), rw, S(24), routeLabel,
         t.route and "good" or "normal", function() send("btd:route", t.id) end, 9)
     if mode == "wait" then
         local canHand = State.nearby and not State.offered
         local handLabel = canHand and L("bt_dispatch.panel.hand_over_to", { unit = State.nearby.unit }) or L("bt_dispatch.panel.hand_over")
         local hw = math.max(S(104), TextWidth(handLabel, 9, true) + S(24))
+        rect.hand = { bx - rw - S(6) - hw, y + S(33), hw, S(24) }
+        rect.order = { x + S(4), y + S(4), S(26), rh - S(8) }
         Button(bx - rw - S(6) - hw, y + S(33), hw, S(24),
             handLabel,
             canHand and "blue" or "off", function() send("btd:offer", t.id) end, 9)
@@ -158,6 +166,7 @@ local function drawBig()
     local w = S(860)
     local h = math.min(S(760), SH - S(60))
     local x, y = SW - w - S(30), SH - h - S(30)
+    Layout.box = { x, y, w, h }
     Round(x, y, w, h, S(10), RGB(COL.bg))
     dxDrawRectangle(x, y, w, S(4), RGB(COL.acc))
     dxDrawRectangle(x, y + S(4), w, S(80), RGB(COL.head))
@@ -172,11 +181,14 @@ local function drawBig()
         local soLabel = L("bt_dispatch.panel.sign_off")
         local soW = math.max(S(130), TextWidth(soLabel, 10, true) + S(32))
         local wdW = math.max(S(158), TextWidth(wdLabel, 10, true) + S(32))
+        Layout.windDown = { x + w - soW - S(34) - wdW - S(8), y + S(24), wdW, S(34) }
+        Layout.signOff = { x + w - soW - S(34), y + S(24), soW, S(34) }
         Button(x + w - soW - S(34) - wdW - S(8), y + S(24), wdW, S(34),
             wdLabel,
             State.windDown and "warn" or "normal", function() send("btd:windDown", not State.windDown) end, 10)
         Button(x + w - soW - S(34), y + S(24), soW, S(34), soLabel, "primary", function() send("btd:signOff") end, 10)
     else
+        Layout.signOn = { x + w - S(164), y + S(24), S(130), S(34) }
         Button(x + w - S(164), y + S(24), S(130), S(34), L("bt_dispatch.panel.sign_on"), "primary", function() send("btd:signOn") end, 10)
         Text(L("bt_dispatch.panel.sign_on_hint"), x + S(22), y + S(92), w - S(44), S(40), RGB(COL.muted), 10)
         return
@@ -195,6 +207,7 @@ local function drawBig()
         { L("bt_dispatch.panel.stat_pay"), Money(State.pay or 0), COL.text },
     }
     local sw2 = (w - S(44) - S(30)) / 4
+    Layout.stats = { x + S(22), sy, w - S(44), S(52) }
     for i, s in ipairs(stats) do
         local sx = x + S(22) + (i - 1) * (sw2 + S(10))
         Round(sx, sy, sw2, S(52), S(6), RGB(COL.tile))
@@ -264,6 +277,7 @@ addEventHandler("onClientKey", root, function(key, press)
 end)
 
 addEventHandler("onClientRender", root, function()
+    Layout = { visible = false, big = false, tasks = {} }
     if not (TextsLoaded and HasRight()) then
         if PanelBig then setBig(false) end
         return
@@ -274,5 +288,12 @@ addEventHandler("onClientRender", root, function()
     end
     if AdminOpen then return end
     Hits = {}
+    Layout.visible, Layout.big = true, PanelBig
     if PanelBig then drawBig() else drawSmall() end
 end)
+
+-- { visible, big, small, box, signOn, signOff, windDown, stats = rect, tasks = { [id] = { row, route,
+-- hand, order = rect, status, routeOn } } } (task ids as strings), rect = { x, y, w, h }; only what the last frame drew
+function getPanelLayout()
+    return Layout
+end

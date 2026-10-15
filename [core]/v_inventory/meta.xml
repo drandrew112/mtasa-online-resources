@@ -92,4 +92,7 @@
     <!-- windows -->
     <export function="openInventory" type="server" />
     <export function="closeInventory" type="server" />
+
+    <!-- client: screen rectangles of the window and the HUD (tutorial highlights) -->
+    <export function="getUiLayout" type="client" />
 </meta>

@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="work_bloodtransport" version="1.0.0" type="script"
-          description="Blood transporter work on work_core: duty gives the transporter right, ambulances with BT- plates" />
+          description="Blood transporter work on work_core: duty gives the transporter right, blood transport vehicles with BT- plates, optional tutorial" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
     <!-- ================= SHARED ================= -->
@@ -11,6 +11,14 @@
     <!-- ================= SERVER ================= -->
     <script src="server/main.lua" type="server" />
 
+    <!-- ================= TUTORIAL MODULE (tutorial/, see tutorial/README.md) ================= -->
+    <script src="tutorial/config.lua"         type="shared" />
+    <script src="tutorial/server/session.lua" type="server" />
+    <script src="tutorial/client/card.lua"    type="client" />
+    <script src="tutorial/client/steps.lua"   type="client" />
+    <file src="tutorial/client/fonts/Roboto.ttf"  type="client" />
+    <file src="tutorial/client/fonts/RobotoB.ttf" type="client" />
+
     <!-- ================= SERVER EXPORTS ================= -->
     <export function="isPlayerBloodTransporter" type="server" />
     <export function="getBloodTransportPlayers" type="server" />
@@ -19,4 +27,9 @@
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="work_core" />
     <include resource="bt_core" />
+    <!-- tutorial: panel, tutorial shift / task, blood box, ports, notifications -->
+    <include resource="bt_items" />
+    <include resource="bt_dispatch" />
+    <include resource="v_inventory" />
+    <include resource="ui_core" />
 </meta>

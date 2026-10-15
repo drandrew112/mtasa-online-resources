@@ -5,6 +5,8 @@
 --   * per-player port rules: only the own cargo, only from the pickup port into the own box, only into
 --     the destination port out of it (no putting back)
 --   * pickup / delivery detection -> bt_dispatch
+--   * tutorial (work_bloodtransport): addVehicleBox for its vehicle; its tasks carry their own port
+--     ids (fromPort / toPort, the tutorial copies of the ports) instead of the institutions' ports
 
 addEvent("onBtItemsStart")
 addEvent("onBtPortsReady")
@@ -41,7 +43,8 @@ end
 -- Cargo
 -- ---------------------------------------------------------------------------------------------
 
--- task: { id, type, product, group, units, from, to } (institution ids) -> uid | false
+-- task: { id, type, product, group, units, from, to (institution ids), fromPort, toPort (optional
+-- port ids overriding the institutions' ports) } -> uid | false
 function spawnCargo(task)
     if type(task) ~= "table" or not task.id then return false end
     if Cargo[task.id] then return Cargo[task.id] end
@@ -51,7 +54,7 @@ function spawnCargo(task)
     elseif task.type == "urgent_medicine" then defId = "bt_urgent_medicine"
     else defId = c.PRODUCTS[task.product] and c.PRODUCTS[task.product].item end
     if not defId then return false end
-    local portId = core():getPortId(task.from)
+    local portId = task.fromPort or core():getPortId(task.from)
     if not portId then return false end
     local from, to = core():getInstitution(task.from), core():getInstitution(task.to)
     local display = {
@@ -165,6 +168,14 @@ addEventHandler("onWorkVehicleSpawn", root, function(player, workId)
     createBox(source, player)
 end)
 
+-- A box for a vehicle that is not a work_core vehicle (the tutorial vehicle). Set the vehicle's
+-- dimension first: the take / put menu is created in it. -> uid | false
+function addVehicleBox(vehicle, owner)
+    if not isElement(vehicle) or getElementType(vehicle) ~= "vehicle" or not isElement(owner) then return false end
+    if not BoxOfVehicle[vehicle] then createBox(vehicle, owner) end
+    return BoxOfVehicle[vehicle] or false
+end
+
 addEventHandler("onElementDestroy", root, function()
     if getElementType(source) == "vehicle" and BoxOfVehicle[source] then dropBox(source) end
 end)
@@ -229,32 +240,52 @@ end
 -- Port rules (per player, recomputed from bt_dispatch's view of the player's tasks)
 -- ---------------------------------------------------------------------------------------------
 
+-- The pickup / destination port of a task (bt_dispatch task view)
+local function fromPortOf(t) return t.fromPort or core():getPortId(t.from) end
+local function toPortOf(t) return t.toPort or core():getPortId(t.to) end
+
 function refreshPlayer(player)
     if not isElement(player) or not isRunning("v_inventory") then return end
     local c = cfg()
     local tasks = isRunning("bt_dispatch") and exports.bt_dispatch:getPlayerTasks(player) or {}
-    for _, inst in ipairs(c.INSTITUTIONS) do
-        local port = core():getPortId(inst.id)
-        if port then
-            local out, into, suggest = {}, {}, {}
-            for _, t in ipairs(tasks) do
-                local uid = Cargo[t.id]
-                if uid then
-                    if t.status == "waiting" and t.from == inst.id then
-                        out[#out + 1] = uid; suggest[uid] = "out"
-                    elseif t.status == "transit" and t.to == inst.id then
-                        into[#into + 1] = uid; suggest[uid] = "in"
-                    end
+    -- every institution port, plus the ports of the tasks (tutorial copies)
+    local ports, list = {}, {}
+    local function addPort(id)
+        if id and not ports[id] then
+            ports[id] = { out = {}, into = {}, suggest = {} }
+            list[#list + 1] = id
+        end
+    end
+    for _, inst in ipairs(c.INSTITUTIONS) do addPort(core():getPortId(inst.id)) end
+    for _, t in ipairs(tasks) do
+        local uid = Cargo[t.id]
+        if uid then
+            if t.status == "waiting" then
+                local id = fromPortOf(t)
+                addPort(id)
+                if id then
+                    local r = ports[id]
+                    r.out[#r.out + 1] = uid; r.suggest[uid] = "out"
+                end
+            elseif t.status == "transit" then
+                local id = toPortOf(t)
+                addPort(id)
+                if id then
+                    local r = ports[id]
+                    r.into[#r.into + 1] = uid; r.suggest[uid] = "in"
                 end
             end
-            inv():setPortRules(port, player, {
-                allowIn = #into > 0 and into or false, allowOut = #out > 0 and out or false })
-            local banner
-            if #out > 0 then banner = L.msg("bt_items.port.banner_take")
-            elseif #into > 0 then banner = L.msg("bt_items.port.banner_deliver")
-            else banner = L.msg("bt_items.port.banner_none") end
-            inv():setPortSuggestions(port, player, suggest, banner)
         end
+    end
+    for _, id in ipairs(list) do
+        local r = ports[id]
+        inv():setPortRules(id, player, {
+            allowIn = #r.into > 0 and r.into or false, allowOut = #r.out > 0 and r.out or false })
+        local banner
+        if #r.out > 0 then banner = L.msg("bt_items.port.banner_take")
+        elseif #r.into > 0 then banner = L.msg("bt_items.port.banner_deliver")
+        else banner = L.msg("bt_items.port.banner_none") end
+        inv():setPortSuggestions(id, player, r.suggest, banner)
     end
 end
 
@@ -295,11 +326,11 @@ addEventHandler("onInventoryItemMove", root, function(uid, defId, from, to, play
     if from.type == "port" and to.type == "container" then
         local box = Boxes[to.container]
         if not box or box.owner ~= player then return deny("bt_items.msg.own_box") end
-        if task.status ~= "waiting" or from.port ~= core():getPortId(task.from) then return deny("bt_items.msg.not_yours") end
+        if task.status ~= "waiting" or from.port ~= fromPortOf(task) then return deny("bt_items.msg.not_yours") end
     elseif from.type == "container" and to.type == "port" then
         local box = Boxes[from.container]
         if not box or box.owner ~= player then return deny("bt_items.msg.own_box") end
-        if task.status ~= "transit" or to.port ~= core():getPortId(task.to) then return deny("bt_items.msg.wrong_port") end
+        if task.status ~= "transit" or to.port ~= toPortOf(task) then return deny("bt_items.msg.wrong_port") end
     else
         return deny("bt_items.msg.not_allowed")
     end

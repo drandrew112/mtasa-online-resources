@@ -249,5 +249,36 @@ before = #paid
 endShift(C2, "died")
 eq(paid[#paid].total, BTD.PAY.IN_TRANSIT * 1, "no delivery, one cargo lost: only the penalty (receipt shown, nothing paid)")
 
+-- ------------------------------------------------------------------ tutorial (work_bloodtransport)
+load("bt_dispatch/server/tutorial.lua")
+local tut = player("Tina", 0, 0)
+local tutVehicle = { el = "vehicle", model = 415, plate = "BT-9999", x = 0, y = 0 }
+tut.vehicle, tut.inVehicle = nil, tutVehicle          -- not on work duty with a work vehicle
+local tutStart, tutEnd, realStarts = nil, nil, 0
+addEventHandler("onBtTutorialShiftStart", nil, function() tutStart = source end)
+addEventHandler("onBtTutorialShiftEnd", nil, function(reason, total, items) tutEnd = { reason = reason, total = total, items = items } end)
+addEventHandler("onBtShiftStart", nil, function() realStarts = realStarts + 1 end)
+
+check(setTutorialVehicle(tut, tutVehicle, { ls_bank = "pT1", ls_allsaints = "pT2" }), "tutorial vehicle set")
+check(signOn(tut), "tutorial sign on in the tutorial vehicle")
+check(Shifts[tut].tutorial == true and Shifts[tut].id < 0, "tutorial shift: flagged, no database id")
+eq(tutStart, tut, "tutorial shift start event"); eq(realStarts, 0, "no real shift start event")
+eq(dutyCount(), 0, "the tutorial shift is not a unit"); eq(isPlayerInService(tut), false, "not in (real) service")
+ok, why = makeTask(lab, "bt_dispatch"); eq(why, "no_unit", "real tasks never go to a tutorial shift")
+local tid = createTutorialTask(tut, { type = "urgent_blood", product = "rbc", group = "0-", units = 4, from = "ls_bank", to = "ls_allsaints" })
+check(tid and tid > BTD.TUTORIAL_TASK_BASE, "tutorial task created")
+eq(cargo[tid] and cargo[tid].fromPort, "pT1", "cargo on the tutorial port"); eq(getTask(tid).toPort, "pT2", "task view carries the ports")
+eq(openTaskTotal(), 0, "the tutorial task is not counted")
+local closedBefore, xpBefore, paidBefore = #closed, #xp, #paid
+check(onPickedUp(tid, tut), "tutorial pickup"); check(onDelivered(tid, tut), "tutorial delivery")
+eq(#closed, closedBefore, "stock not told"); eq(#xp, xpBefore, "no XP")
+calls.endShift = nil
+check(endShift(tut, "off"), "tutorial sign off")
+eq(#paid, paidBefore, "no money"); eq(calls.endShift, nil, "no database row")
+eq(tutEnd and tutEnd.total, BTD.PAY.BASE + BTD.PAY.DELIVERED, "tutorial receipt total")
+check(tutEnd and #tutEnd.items > 0, "tutorial receipt items")
+check(setTutorialVehicle(tut, nil), "tutorial cleared")
+ok, why = signOn(tut); eq(why, "no_vehicle", "after the tutorial the vehicle is not a sign-on vehicle")
+
 print(failures == 0 and "all dispatch tests passed" or (failures .. " dispatch test(s) failed"))
 return failures

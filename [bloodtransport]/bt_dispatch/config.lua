@@ -43,4 +43,5 @@ BTD = {
     NEARBY_INTERVAL = 2000,     -- ms, how often the nearby transporter is looked up
     VEHICLE_CHECK = 1000,       -- ms
     ADMIN_PAGE = 13,            -- rows per page of the admin lists
+    TUTORIAL_TASK_BASE = 900000,  -- ids of the tutorial tasks (memory only) start above this
 }
