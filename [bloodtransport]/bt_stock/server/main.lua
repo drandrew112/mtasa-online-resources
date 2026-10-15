@@ -117,6 +117,20 @@ local function requestLine(inst, need)
     return true
 end
 
+-- Activity 0..1 at the game time (piecewise linear over BTS.NIGHT_ACTIVITY)
+local function activity()
+    local h, m = 12, 0
+    if getTime then h, m = getTime() end
+    local t, pts = h + (m or 0) / 60, BTS.NIGHT_ACTIVITY
+    for i = 2, #pts do
+        if t <= pts[i][1] then
+            local a, b = pts[i - 1], pts[i]
+            return a[2] + (b[2] - a[2]) * (t - a[1]) / (b[1] - a[1])
+        end
+    end
+    return pts[#pts][2]
+end
+
 local function tick()
     if not State or not Cfg then return end
     local now = getTickCount()
@@ -137,7 +151,8 @@ local function tick()
             if not nextConsume[inst.id] then nextConsume[inst.id] = now + rnd(BTS.CONSUME_INTERVAL[1], BTS.CONSUME_INTERVAL[2]) * 1000 end
             if now >= nextConsume[inst.id] then
                 nextConsume[inst.id] = now + rnd(BTS.CONSUME_INTERVAL[1], BTS.CONSUME_INTERVAL[2]) * 1000
-                if StockModel.consume(Cfg, BTS, State, inst, rnd) then markDirty() end
+                -- at night most consumption events are skipped
+                if rnd(0, 1) < activity() and StockModel.consume(Cfg, BTS, State, inst, rnd) then markDirty() end
             end
         end
     end

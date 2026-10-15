@@ -21,6 +21,10 @@ BTS = {
     -- random product / group (weighted by the group frequency) is used up.
     CONSUME_INTERVAL = { 90, 240 },
 
+    -- Night: the consumption interval is divided by the activity (hour -> 0..1, linear in between),
+    -- so at night the hospitals use up far less. Lowest between 00:00 and 04:00.
+    NIGHT_ACTIVITY = { {0, 0.10}, {4, 0.10}, {7, 1.0}, {21, 1.0}, {24, 0.10} },
+
     -- Resupply: a hospital line below LOW asks for a delivery up to FILL_TO. When the serving
     -- center line is below URGENT_LEVEL the delivery is urgent and comes in small batches.
     LOW = 0.40,

@@ -1,7 +1,7 @@
 -- Random task generator: urgent / planned blood, lab samples and urgent medicine. The resupply of the
 -- hospitals is asked by bt_stock. Nothing is generated without a transporter that can take a task.
 
-local nextGen = 0
+local nextGen, lastGen = 0, 0   -- required (activity-weighted) wait in ms, tick of the last task
 
 local function rndInt(a, b) return math.floor(BTRandom(a, b + 1)) end
 
@@ -48,12 +48,31 @@ local function generate()
     return false
 end
 
+-- Activity 0..1 at the game time (piecewise linear over BTD.NIGHT_ACTIVITY)
+local function activity()
+    local h, m = 12, 0
+    if getTime then h, m = getTime() end
+    local t, pts = h + (m or 0) / 60, BTD.NIGHT_ACTIVITY
+    for i = 2, #pts do
+        if t <= pts[i][1] then
+            local a, b = pts[i - 1], pts[i]
+            return a[2] + (b[2] - a[2]) * (t - a[1]) / (b[1] - a[1])
+        end
+    end
+    return pts[#pts][2]
+end
+
 setTimer(function()
     local n = activeUnitCount()
-    if n == 0 or getTickCount() < nextGen then return end
-    if openTaskTotal() >= BTLogic.targetOpen(BTD.OPEN_PER_UNIT, n) then return end
+    local act = activity()
+    -- elapsed time counts weighted by the activity, so a night wait does not run into the morning
+    if n == 0 or (getTickCount() - lastGen) * act < nextGen then return end
+    -- at night the open-task target shrinks too (at least 1 while some activity is left)
+    local target = math.max(1, math.floor(BTLogic.targetOpen(BTD.OPEN_PER_UNIT, n) * act + 0.5))
+    if openTaskTotal() >= target then return end
     if generate() then
-        nextGen = getTickCount() + BTRandom(BTD.GEN_INTERVAL[1], BTD.GEN_INTERVAL[2]) * 1000
+        lastGen = getTickCount()
+        nextGen = BTRandom(BTD.GEN_INTERVAL[1], BTD.GEN_INTERVAL[2]) * 1000
     end
 end, BTD.GEN_CHECK * 1000, 0)
 

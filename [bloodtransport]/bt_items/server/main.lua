@@ -169,6 +169,11 @@ addEventHandler("onElementDestroy", root, function()
     if getElementType(source) == "vehicle" and BoxOfVehicle[source] then dropBox(source) end
 end)
 
+-- A blown-up wreck stays for a while before work_core removes it: the menu must go right away
+addEventHandler("onVehicleExplode", root, function()
+    if BoxOfVehicle[source] then dropBox(source) end
+end)
+
 -- Menu: take the box out of the vehicle / put it back
 addEvent("onInteractMenuSelect")
 addEventHandler("onInteractMenuSelect", root, function(menuId, value)

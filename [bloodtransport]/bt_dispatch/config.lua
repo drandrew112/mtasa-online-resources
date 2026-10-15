@@ -21,6 +21,9 @@ BTD = {
     -- Random task generator (bt_stock asks for the resupply on its own)
     GEN_CHECK = 15,                         -- s
     GEN_INTERVAL = { 60, 150 },             -- s between two generated tasks
+    -- Night: hour -> activity 0..1 (linear in between). The generation interval is divided by it and
+    -- the open-task target is multiplied by it; fewest alerts between 00:00 and 04:00.
+    NIGHT_ACTIVITY = { {0, 0.10}, {4, 0.10}, {7, 1.0}, {21, 1.0}, {24, 0.10} },
     GEN_WEIGHTS = { urgent_blood = 30, planned_blood = 25, lab_sample = 25, urgent_medicine = 5 },
     PRODUCT_WEIGHTS = { rbc = 50, ffp = 30, platelets = 20 },
     GEN_UNITS = { urgent_blood = { 2, 6 }, planned_blood = { 3, 8 } },
