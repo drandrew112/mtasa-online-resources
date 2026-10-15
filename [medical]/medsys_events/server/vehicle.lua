@@ -61,7 +61,8 @@ addEventHandler("medev:crash", resourceRoot, function(vehicle, speedChange)
     end
 
     for _, occupant in pairs(getVehicleOccupants(vehicle) or {}) do
-        if isMedsysTarget(occupant) and not isPedDead(occupant) then
+        -- players get no medical status / bleeding from crashes (peds still do)
+        if isMedsysTarget(occupant) and not isPedDead(occupant) and getElementType(occupant) ~= "player" then
             -- every occupant rolls separately
             applyTier(occupant, pickTier(MEDEV_RULES.crash, speedChange), "crash")
         end

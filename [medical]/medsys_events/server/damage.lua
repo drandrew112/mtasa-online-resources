@@ -56,6 +56,8 @@ local function onDamage(attacker, weapon, bodypart, loss)
     if not isMedsysTarget(element) or not loss or loss <= 0 then return end
     local cause = MEDEV_WEAPONS[weapon]
     if not cause then return end
+    -- players hit by a vehicle get no medical status / bleeding (peds still do)
+    if cause == "vehicle_hit" and getElementType(element) == "player" then return end
 
     if MEDEV_EPISODES[cause] then
         addToEpisode(element, cause, loss)
