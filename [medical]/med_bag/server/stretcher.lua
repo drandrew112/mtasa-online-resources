@@ -1,11 +1,13 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- The equipment on the stretcher (med_stretcher). Every stretcher belongs to one ambulance and only
--- that ambulance's bag / monitor can go on it (no mixing between ambulances).
---   push start           the pusher's carried items go onto the stretcher's side
+-- that ambulance's bag / Lifepak can go on it (no mixing between ambulances). The items are
+-- attached to the stretcher through v_inventory (attachItem) and stored in the ambulance with the
+-- tag "aboard" (storeItemInVehicle) when they went in with a patient.
+--   push start           the pusher's carried kit items go onto the stretcher's side
 --   stretcher menu       "Equipment" group: take off / put on (merged into the stretcher's menu)
---   loading              the items on it go into the ambulance (stowed, `aboard`)
---   take out + patient   the `aboard` items come out on it again (they follow the patient's bed)
---   take out, empty      `aboard` is cleared, the items stay in the ambulance
+--   loading              the items on it go into the ambulance (stowed, "aboard" with a patient)
+--   take out + patient   the "aboard" items come out on it again (they follow the patient's bed)
+--   take out, empty      "aboard" is cleared, the items stay in the ambulance
 -- After a hospital handover the items stay on the stretcher until it is loaded.
 
 addEvent("onStretcherPushStart")
@@ -62,10 +64,9 @@ local function menuItems(kit, obj)
     for _, kind in ipairs(BAG.KINDS) do
         local item = kit.items[kind]
         local name = bagItemName(kind)
-        if item.state == "stretcher" and item.stretcher == obj then
-            list[#list + 1] = { label = L.msg("med_bag.stretcher.take", { name = name:lower() }), value = "off_" .. kind,
-                desc = kind == "bag" and L.msg("med_bag.interaction.left_hand") or L.msg("med_bag.interaction.right_hand") }
-        else
+        if item and item.state == "stretcher" and item.stretcher == obj then
+            list[#list + 1] = { label = L.msg("med_bag.stretcher.take", { name = name:lower() }), value = "off_" .. kind }
+        elseif item then
             local can = item.state == "carried" or item.state == "ground"
             list[#list + 1] = { label = L.msg("med_bag.stretcher.put_on_stretcher", { name = name:lower() }), value = "on_" .. kind,
                 disabled = not can, desc = can and L.msg("med_bag.stretcher.carried_or_lying_next_to_stretcher")
@@ -169,17 +170,15 @@ addEventHandler("onInteractMenuSelect", root, function(menuId, value)
 
     if action == "off" then
         if item.state ~= "stretcher" or item.stretcher ~= obj then return end
-        if getCarried(player, kind) then
-            return notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(kind):lower() }))
-        end
-        pickUpItem(item, player)
+        local done, why = pickUpItem(item, player)
+        if not done and why then notify(player, why) end
     elseif action == "on" then
         if item.state == "carried" and item.carrier == player then
             putOnStretcher(item, obj)
-        elseif item.state == "ground" and isElement(item.object) then
-            local x, y, z = getElementPosition(item.object)
+        elseif item.state == "ground" then
+            local x, y, z = itemPosition(item)
             local sx, sy, sz = getElementPosition(obj)
-            if getDistanceBetweenPoints3D(x, y, z, sx, sy, sz) > 3 then
+            if not x or getDistanceBetweenPoints3D(x, y, z, sx, sy, sz) > 3 then
                 return notify(player, L.msg("med_bag.stretcher.is_too_far_from_stretcher", { kind = bagItemName(kind):lower() }))
             end
             putOnStretcher(item, obj)
@@ -219,19 +218,19 @@ addEventHandler("onStretcherPushStart", root, function(player)
     end
 end)
 
--- The stretcher slides out: with a patient the `aboard` items come out on it
+-- The stretcher slides out: with a patient the "aboard" items come out on it
 addEventHandler("onStretcherTakeOut", root, function(player, vehicle, patient)
     local stretcher = source
     local kit = Kits[vehicle]
     if not kit then return end
     for _, item in pairs(kit.items) do
         if item.state == "stowed" and item.aboard then
-            if patient then putOnStretcher(item, stretcher) else item.aboard = nil end
+            if patient then putOnStretcher(item, stretcher) else stowItem(item, false) end
         end
     end
 end)
 
--- The stretcher is in: its items go into the ambulance, `aboard` only with a patient
+-- The stretcher is in: its items go into the ambulance, "aboard" only with a patient
 addEventHandler("onStretcherLoaded", root, function(player, vehicle, patient)
     local stretcher = source
     local kit = Kits[vehicle]
@@ -239,7 +238,7 @@ addEventHandler("onStretcherLoaded", root, function(player, vehicle, patient)
     local stowed = false
     for _, item in pairs(kit.items) do
         if item.state == "stretcher" and item.stretcher == stretcher then
-            stowItem(item, patient and stretcher or nil)
+            stowItem(item, patient and true or false)
             stowed = true
         end
     end
@@ -247,11 +246,9 @@ addEventHandler("onStretcherLoaded", root, function(player, vehicle, patient)
 end)
 
 -- Hook of server/interaction.lua (every item change)
-function onItemStretcherChanged(item, oldState)
-    if item.state == "stretcher" or oldState == "stretcher" then
-        syncStretcherData(item.stretcher or item.lastStretcher)
-    end
-    item.lastStretcher = item.stretcher or item.lastStretcher
+function onItemStretcherChanged(item, oldState, oldStretcher)
+    if item.state == "stretcher" then syncStretcherData(item.stretcher) end
+    if oldState == "stretcher" and oldStretcher and oldStretcher ~= item.stretcher then syncStretcherData(oldStretcher) end
     local kit = item.kit
     if kit.stretcherMenu then refreshStretcherMenu(kit) end
 end

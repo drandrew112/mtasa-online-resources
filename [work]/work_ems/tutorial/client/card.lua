@@ -294,13 +294,14 @@ function Card.highlight(rect)
 end
 
 -- No punching / aiming while the cursor is out over the card: a click on a button would also hit.
--- Only the controls this file switched off are switched back on (med_bag keeps "fire" and
--- "aim_weapon" off while the player carries equipment).
+-- Only the controls this file switched off are switched back on (v_inventory keeps "fire" and
+-- "aim_weapon" off while the player holds an item).
 local BLOCKED_CONTROLS = { "fire", "action", "aim_weapon" }
 local blocked = {}
 
 local function carryingEquipment()
-    return type(getElementData(localPlayer, "medbag.hands")) == "table"
+    local slots = getElementData(localPlayer, "inv.slots")
+    return type(slots) == "table" and (slots.left ~= nil or slots.right ~= nil)
 end
 
 local function setBlocked(state)
@@ -310,7 +311,7 @@ local function setBlocked(state)
             blocked[control] = true
         elseif not state and blocked[control] then
             blocked[control] = nil
-            -- the carry lock of med_bag owns these while equipment is in the hands
+            -- the carry lock of v_inventory owns these while something is in the hands
             if control == "action" or not carryingEquipment() then toggleControl(control, true) end
         end
     end

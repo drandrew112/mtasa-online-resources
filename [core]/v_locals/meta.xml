@@ -89,6 +89,7 @@
     <file src="locales/en/v_customs.json" />
     <file src="locales/en/v_els.json" />
     <file src="locales/en/v_introduce.json" />
+    <file src="locales/en/v_inventory.json" />
     <file src="locales/en/v_jobcreator.json" />
     <file src="locales/en/v_jobmanager.json" />
     <file src="locales/en/v_joinquit.json" />
@@ -158,6 +159,7 @@
     <file src="locales/hu/v_customs.json" />
     <file src="locales/hu/v_els.json" />
     <file src="locales/hu/v_introduce.json" />
+    <file src="locales/hu/v_inventory.json" />
     <file src="locales/hu/v_jobcreator.json" />
     <file src="locales/hu/v_jobmanager.json" />
     <file src="locales/hu/v_joinquit.json" />

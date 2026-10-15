@@ -1,17 +1,16 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Notifications (ui_core if running, else chat), the carry HUD (what is in the hands + the
--- put-down key), the bag contents window, the restock progress bar and the "Equipment missing"
--- label over the side door of an ambulance standing in a hospital bay.
+-- Notifications (ui_core), the restock progress bar, the "Equipment missing" label over the side
+-- door of an ambulance standing in a hospital bay and the "On the stretcher" line of the pusher.
+-- What the medic holds and the bag's contents are shown by v_inventory (HUD and window).
 
 local sw, sh = guiGetScreenSize()
 local function s(v) return v * math.max(0.65, sh / 1080) end
 
 function showBagNotification(title, text, alert)
+    title, text = L.resolve(title), L.resolve(text)
     local res = getResourceFromName("ui_core")
     if res and getResourceState(res) == "running" then
         exports.ui_core:addNotification(title, text, alert == true)
-    else
-        outputChatBox("#e0474c[" .. tostring(title) .. "] #ffffff" .. tostring(text), 255, 255, 255, true)
     end
     if alert then playSoundFrontEnd(5) end
 end
@@ -28,7 +27,7 @@ local progress -- { start, duration, text }
 addEvent("bag:progress", true)
 addEventHandler("bag:progress", resourceRoot, function(duration, text)
     if not duration then progress = nil return end
-    progress = { start = getTickCount(), duration = duration, text = tostring(text or "") }
+    progress = { start = getTickCount(), duration = duration, text = L.resolve(text or "") }
 end)
 
 local function drawProgress()
@@ -72,60 +71,16 @@ local function drawMissing()
 end
 
 -- ---------------------------------------------------------------------------------------------
--- Carry HUD (BAG_DATA.HANDS of the local player)
+-- What rides on the stretcher the local player pushes (BAG_DATA.ON_STRETCHER on the stretcher)
 -- ---------------------------------------------------------------------------------------------
 
 local C = {
     bg = tocolor(16, 18, 24, 225),
-    tile = tocolor(28, 31, 40, 255),
     accent = tocolor(215, 55, 65, 255),
     text = tocolor(235, 238, 245, 255),
     muted = tocolor(140, 146, 160, 255),
-    good = tocolor(80, 210, 120, 255),
-    warn = tocolor(255, 185, 60, 255),
-    bad = tocolor(235, 70, 70, 255),
-    key = tocolor(240, 184, 74, 255),
 }
 
-local function stockColor(left, full)
-    if left <= 0 then return C.bad end
-    if left <= full * BAG.LOW_STOCK_FRACTION then return C.warn end
-    return C.text
-end
-
-local function drawCarryHud(hands)
-    local rows = {}
-    if hands.bag then
-        local info = L("med_bag.hud.iv_o2", { iv_kits = hands.ivKits or 0, oxygen = hands.oxygen or 0 })
-        rows[#rows + 1] = { "L", bagItemName("bag"), info,
-            ((hands.oxygen or 0) <= BAG.OXYGEN_LOW or (hands.ivKits or 0) <= 0) and C.warn or C.muted }
-    end
-    if hands.monitor then rows[#rows + 1] = { "R", bagItemName("monitor") } end
-    if #rows == 0 then return end
-    local w, rowH, pad = s(320), s(26), s(12)
-    local h = pad + s(18) + #rows * rowH + s(30) + pad * 0.5
-    local x, y = sw - w - s(30), sh - h - s(260)
-    dxDrawRectangle(x, y, w, h, C.bg)
-    dxDrawRectangle(x, y, s(4), h, C.accent)
-    dxDrawText(L("med_bag.hud.carrying"), x + pad, y + pad * 0.6, x + w, y + pad + s(16), C.muted, 1, "default-bold", "left", "top")
-    local ry = y + pad + s(18)
-    for _, row in ipairs(rows) do
-        dxDrawRectangle(x + pad, ry + s(3), s(20), rowH - s(6), C.tile)
-        dxDrawText(row[1], x + pad, ry, x + pad + s(20), ry + rowH, C.text, 1, "default-bold", "center", "center")
-        dxDrawText(row[2], x + pad + s(28), ry, x + w - pad, ry + rowH, C.text, 1, "default-bold", "left", "center")
-        if row[3] then
-            dxDrawText(row[3], x + pad, ry, x + w - pad, ry + rowH, row[4], 1, "default", "right", "center")
-        end
-        ry = ry + rowH
-    end
-    local key = BAG.DROP_KEY:upper()
-    local kw = s(24)
-    dxDrawRectangle(x + pad, ry + s(6), kw, s(20), C.key)
-    dxDrawText(key, x + pad, ry + s(6), x + pad + kw, ry + s(26), tocolor(20, 20, 20), 1, "default-bold", "center", "center")
-    dxDrawText(L("med_bag.hud.put_down"), x + pad + kw + s(8), ry + s(6), x + w, ry + s(26), C.muted, 1, "default", "left", "center")
-end
-
--- What rides on the stretcher the local player pushes (BAG_DATA.ON_STRETCHER on the stretcher)
 local function drawStretcherHud(on)
     local names = {}
     for _, kind in ipairs(BAG.KINDS) do
@@ -141,71 +96,10 @@ local function drawStretcherHud(on)
         "default-bold", "left", "center", true)
 end
 
--- ---------------------------------------------------------------------------------------------
--- Bag contents window ("Check contents")
--- ---------------------------------------------------------------------------------------------
-
-local CONTENTS_TIME = 15000
-local contents -- { data, tick, x, y, z }
-
-addEvent("bag:contents", true)
-addEventHandler("bag:contents", resourceRoot, function(data)
-    local x, y, z = getElementPosition(localPlayer)
-    contents = { data = data, tick = getTickCount(), x = x, y = y, z = z }
-end)
-
-local function drawContents()
-    local px, py, pz = getElementPosition(localPlayer)
-    if getTickCount() - contents.tick > CONTENTS_TIME
-        or getDistanceBetweenPoints3D(px, py, pz, contents.x, contents.y, contents.z) > 6 then
-        contents = nil
-        return
-    end
-    local d = contents.data
-    local w, pad, rowH = s(380), s(14), s(21)
-    local drugRows = math.ceil(#d.drugs / 2)
-    local h = pad + s(50) + s(56) + s(22) + drugRows * rowH + pad
-    local x, y = sw - w - s(30), (sh - h) / 2
-    dxDrawRectangle(x, y, w, h, C.bg)
-    dxDrawRectangle(x, y, w, s(4), C.accent)
-    dxDrawText(d.title, x + pad, y + pad, x + w - pad, y + pad + s(20), C.text, 1.15, "default-bold", "left", "top")
-    dxDrawText(L("med_bag.hud.bag_monitor", { where = d.where or "?", monitor = d.monitor or "?" }), x + pad, y + pad + s(24),
-        x + w - pad, y + pad + s(44), C.muted, 1, "default", "left", "top", true)
-    local ty = y + pad + s(50)
-    local half = (w - pad * 3) / 2
-    local tiles = {
-        { L("med_bag.hud.iv_kits"), ("%d / %d"):format(d.ivKits[1], d.ivKits[2]), stockColor(d.ivKits[1], d.ivKits[2]) },
-        { L("med_bag.hud.oxygen"), d.oxygen .. "%", d.oxygen <= 0 and C.bad or (d.oxygen <= BAG.OXYGEN_LOW and C.warn or C.text) },
-    }
-    for i, tile in ipairs(tiles) do
-        local tx = x + pad + (i - 1) * (half + pad)
-        dxDrawRectangle(tx, ty, half, s(46), C.tile)
-        dxDrawText(tile[1], tx + s(10), ty + s(4), tx + half, ty + s(20), C.muted, 1, "default", "left", "top")
-        dxDrawText(tile[2], tx + s(10), ty + s(18), tx + half, ty + s(44), tile[3], 1.3, "default-bold", "left", "center")
-    end
-    ty = ty + s(56)
-    dxDrawText(L("med_bag.hud.medicines"), x + pad, ty, x + w, ty + s(18), C.muted, 1, "default", "left", "top")
-    ty = ty + s(22)
-    for i, drug in ipairs(d.drugs) do
-        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
-        local dx, dy = x + pad + col * (half + pad), ty + row * rowH
-        local name = drug[1]:gsub("%s*%b()", "")
-        dxDrawText(name, dx, dy, dx + half - s(44), dy + rowH, C.text, 1, "default", "left", "center", true)
-        dxDrawText(("%d/%d"):format(drug[2], drug[3]), dx, dy, dx + half, dy + rowH, stockColor(drug[2], drug[3]), 1,
-            "default-bold", "right", "center")
-    end
-end
-
 addEventHandler("onClientRender", root, function()
     if progress then drawProgress() end
     drawMissing()
-    if contents then drawContents() end
     if isPedInVehicle(localPlayer) then return end
-    local hands = getElementData(localPlayer, BAG_DATA.HANDS)
-    if type(hands) == "table" then
-        drawCarryHud(hands)
-        return
-    end
     local stretcher = getElementData(localPlayer, "stretcher.pushing")
     local on = isElement(stretcher) and getElementData(stretcher, BAG_DATA.ON_STRETCHER)
     if type(on) == "table" then drawStretcherHud(on) end

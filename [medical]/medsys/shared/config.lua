@@ -507,17 +507,18 @@ MEDIC_ACTION_GROUPS = {
     { tag = "D", label = L.text("medsys.config.disability"), actions = { "neuro", "glucometer" } },
     { label = L.text("medsys.config.transport"), actions = { "transport" } },
 }
--- Equipment each action needs (server/equipment.lua): item = "bag" | "monitor", stock = the bag
--- consumable it uses ("ivKits" per attempt, "oxygen" while the mask is on; medication: per drug).
+-- Equipment each action needs (server/equipment.lua): item = "bag" | "monitor", stock = what must be
+-- in the bag ("ivKits" per attempt, "oxygen" while the mask is on; medication: per drug),
+-- consume = "done": one piece is used up by a successful action (the IV kit goes at the start).
 -- Actions not listed (neuro exam, CPR, transport) need nothing.
 MEDIC_EQUIPMENT = {
-    bandage = { item = "bag" },
-    splint = { item = "bag" },
+    bandage = { item = "bag", stock = "bandages", consume = "done" },
+    splint = { item = "bag", stock = "splints", consume = "done" },
     iv = { item = "bag", stock = "ivKits" },
-    airway = { item = "bag" },
+    airway = { item = "bag", stock = "airwayKits" },
     oxygen = { item = "bag", stock = "oxygen" },
     medication = { item = "bag" },
-    glucometer = { item = "bag" },
+    glucometer = { item = "bag", stock = "glucometers" },
     monitor = { item = "monitor" },
 }
 MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead

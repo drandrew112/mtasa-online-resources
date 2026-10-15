@@ -78,10 +78,15 @@ local function drugRect(id)
     return actionRect("medication")
 end
 
--- med_bag: what the player carries ({ bag = model, monitor = model } or nil)
+-- med_bag: does the player hold the item (v_inventory slots: { left = { d = itemId }, ... })
+local KIT_ITEMS = { bag = "medical_bag", monitor = "lifepak15" }
 local function carrying(kind)
-    local hands = getElementData(localPlayer, "medbag.hands")
-    return type(hands) == "table" and hands[kind] ~= nil
+    local slots = getElementData(localPlayer, "inv.slots")
+    if type(slots) ~= "table" then return false end
+    for _, slot in ipairs({ "left", "right" }) do
+        if type(slots[slot]) == "table" and slots[slot].d == KIT_ITEMS[kind] then return true end
+    end
+    return false
 end
 
 local function itemState(kind)

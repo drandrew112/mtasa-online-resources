@@ -22,7 +22,7 @@ IO = {
     -- Element data flags of other panels (same list as ui_inac); while any is set, no menu shows.
     BLOCKING_DATA = {
         "paused", "socialPanelOpen", "phoneOpen", "browserOpen", "showChatInput",
-        "reportPanelOpen", "adminPanelOpen", "textInputOpen", "interactionMenuOpen",
+        "reportPanelOpen", "adminPanelOpen", "textInputOpen", "interactionMenuOpen", "inventoryOpen",
     },
 
     SOUNDS = true,

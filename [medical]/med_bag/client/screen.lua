@@ -55,8 +55,7 @@ end
 
 local function isMonitorObject(obj)
     local model = getElementModel(obj)
-    local def = BAG.MODELS.monitor
-    return model == def.id or model == def.fallback
+    return model == BAG.MONITOR_MODEL
 end
 
 local function applyTo(obj)
@@ -73,11 +72,12 @@ local function scan()
     for obj in pairs(applied) do
         if not isElement(obj) then applied[obj] = nil end
     end
-    -- server objects of this resource (on the ground) and the local hand objects (client/carry.lua)
-    for _, obj in ipairs(getElementsByType("object", resourceRoot, true)) do
-        if not applied[obj] and isMonitorObject(obj) and getElementData(obj, BAG_DATA.KIND) ~= "anchor" then
-            applyTo(obj)
-        end
+    -- the Lifepak objects of v_inventory: on the ground / the stretcher (server) and in the hands (local)
+    local res = getResourceFromName("v_inventory")
+    local invRoot = res and getResourceState(res) == "running" and getResourceRootElement(res)
+    if not invRoot then return end
+    for _, obj in ipairs(getElementsByType("object", invRoot, true)) do
+        if not applied[obj] and isMonitorObject(obj) then applyTo(obj) end
     end
 end
 
@@ -99,7 +99,7 @@ local cycleNames, cycleIndex
 
 addCommandHandler("bagscreen", function()
     if not shader then return end
-    local model = BAG.MODELS.monitor.id
+    local model = BAG.MONITOR_MODEL
     for obj in pairs(applied) do
         if isElement(obj) then model = getElementModel(obj) break end
     end

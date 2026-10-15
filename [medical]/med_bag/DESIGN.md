@@ -10,6 +10,9 @@ back at the side door, and can be carried together (bag in the left hand, monito
 Status: implemented 2026-10-09 (phases 1-7); offsets and the side points need in-game tuning.
 The work_ems tutorial teaches the equipment (phase 7, see work_ems/tutorial/README.md). Author in meta.xml: `DrAndrew112`.
 
+**2026-10-15: rewritten on top of v_inventory (section 17).** The item handling of sections 2, 4.2-4.5,
+5.1, 7.1-7.2b and the stock table below is replaced by v_inventory items; where they differ, section 17 wins.
+
 ---
 
 ## 1. Rules (from the request)
@@ -612,3 +615,52 @@ Implementation: `server/stretcher.lua` (events, stretcher menu group, `medbag.on
 the pusher's "On the stretcher" HUD in `client/hud.lua`. med_stretcher only fires
 `onStretcherPushStart/Stop`, `onStretcherTakeOut`, `onStretcherLoadStart`, `onStretcherLoaded`.
 `BAG.STRETCHER_OFFSETS` are guesses: tune them in-game.
+
+---
+
+## 17. v3: the items are v_inventory items (2026-10-15)
+
+The user's request (v_inventory/`Inventory prompt.txt`, decisions in v_inventory/DESIGN.md section 0):
+med_bag is rewritten to follow v_inventory and keeps its own side-door / in-vehicle handling (no trunk).
+
+### 17.1 What moved to v_inventory
+
+| Before (med_bag) | Now (v_inventory) |
+|---|---|
+| `medbag.hands`, client/carry.lua, hand objects | `inv.slots`, v_inventory client/hands.lua (item offsets in v_inventory/shared/items.lua) |
+| Carry HUD, Check contents window | v_inventory HUD and window (Check contents opens the window view only) |
+| Ground objects + "Pick up" menu, H key, ground snap | v_inventory (`dropPlayerItems`, ground menu, H) |
+| Stretcher objects | `attachItem(uid, stretcher, BAG.STRETCHER_OFFSETS[kind])` |
+| `stowed` / `aboard` | `storeItemInVehicle(uid, ambulance, "aboard" or nil)` |
+| Stock counters in the bag | real items in the bag (container): `drug_<id>` stacks, `iv_kit`, `bandage`, `splint`, `glucometer`, `airway_kit`, `medical_oxygen_cylinder` (meta.oxygen %) |
+| Auto-stow when entering the own ambulance | removed: nobody may enter a vehicle holding anything (K7); the side door or the stretcher puts the items in (K9) |
+
+### 17.2 What stays in med_bag
+
+Ambulance discovery, the kit (one `medical_bag` + one `lifepak15` per ambulance, created stored in the
+vehicle, the bag filled up to `BAG.STOCK`), the side-door menu, the stretcher menu group and the
+med_stretcher events, the serving rules, consumption, the oxygen drain and the monitor links, restocking,
+the left-behind watch (blips now at the item position), "EQUIPMENT MISSING", the static monitor screen
+(now applied to the v_inventory Lifepak objects of model `BAG.MONITOR_MODEL`).
+
+The item state is read from the v_inventory location (`onInventoryItemMoved`): slot = carried, ground,
+attached = stretcher, vehicle = stowed (tag `aboard`). An item destroyed in v_inventory drops the kit; the
+next scan builds a new, full one. v_inventory restarting (`onInventoryReady`) rebuilds every kit.
+While medsys requires the medic role, the kit items get the v_inventory access `medic.role` (only medics
+pick them up / open the bag).
+
+### 17.3 Stock
+
+A bag's stock is what is in it, so a medic can move things between bags in the window. Categories:
+`drugs[id]`, `ivKits`, `bandages`, `splints`, `glucometers`, `airwayKits`, `oxygen` (the fullest cylinder).
+medsys: `MEDIC_EQUIPMENT` bandage / splint use one piece on success (`consume = "done"`), the glucometer and
+the airway kit must be in the bag (not used up). Restock = the bag is cleared and filled again. An abandoned
+bag loses its drugs, IV kits, bandages and splints and its cylinder is emptied (the tools stay).
+The bag's `meta.display` shows IV kits and oxygen on the HUD; the cylinder's `meta.bar` its level
+(written on whole-percent changes, the exact level lives in med_bag).
+
+### 17.4 Exports
+
+Unchanged names and arguments (medsys and the work_ems tutorial use them); item ids are v_inventory uids.
+`getItemStock` also returns `bandages`, `splints`, `glucometers`, `airwayKits`.
+

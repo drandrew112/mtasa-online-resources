@@ -1,0 +1,95 @@
+<meta>
+    <info author="DrAndrew112" name="v_inventory" version="1.0" type="script"
+          description="Item system: hands / back slots, containers by weight, ports, trunks, attach and store-in-vehicle, unified item UI. No database: other resources create every item." />
+    <!-- onClientPedsProcessed -->
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <include resource="ui_interactobject" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/items.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/core.lua" type="server" />
+    <script src="server/slots.lua" type="server" />
+    <script src="server/world.lua" type="server" />
+    <script src="server/ports.lua" type="server" />
+    <script src="server/trunks.lua" type="server" />
+    <script src="server/ui.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/main.lua" type="client" />
+    <script src="client/hands.lua" type="client" />
+    <script src="client/hud.lua" type="client" />
+    <script src="client/window.lua" type="client" />
+    <script src="client/ports.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf" type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+    <file src="icons/medical_bag.png" type="client" />
+    <file src="icons/lifepak15.png" type="client" />
+    <file src="icons/oxygen.png" type="client" />
+    <file src="icons/iv_kit.png" type="client" />
+    <file src="icons/airway_kit.png" type="client" />
+    <file src="icons/glucometer.png" type="client" />
+    <file src="icons/bandage.png" type="client" />
+    <file src="icons/splint.png" type="client" />
+    <file src="icons/drug.png" type="client" />
+    <file src="icons/bt_blood_box.png" type="client" />
+    <file src="icons/backpack.png" type="client" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <!-- items -->
+    <export function="createItem" type="server" />
+    <export function="destroyInventoryItem" type="server" />
+    <export function="getItem" type="server" />
+    <export function="getItemDef" type="server" />
+    <export function="isItem" type="server" />
+    <export function="setItemMeta" type="server" />
+    <export function="getItemMeta" type="server" />
+    <export function="setItemAmount" type="server" />
+    <export function="takeItemAmount" type="server" />
+    <export function="setItemAccess" type="server" />
+    <export function="moveInventoryItem" type="server" />
+    <export function="getItemPosition" type="server" />
+    <export function="findItems" type="server" />
+    <export function="getContainerItems" type="server" />
+    <export function="getContainerContents" type="server" />
+    <export function="getContainerWeight" type="server" />
+    <export function="clearContainer" type="server" />
+    <!-- players -->
+    <export function="getPlayerSlots" type="server" />
+    <export function="giveItemToPlayer" type="server" />
+    <export function="isPlayerHandsFree" type="server" />
+    <export function="dropPlayerItems" type="server" />
+    <export function="dropItem" type="server" />
+    <!-- attach / vehicle -->
+    <export function="attachItem" type="server" />
+    <export function="getItemAttachedTo" type="server" />
+    <export function="storeItemInVehicle" type="server" />
+    <export function="getVehicleStoredItems" type="server" />
+    <!-- ports -->
+    <export function="createPort" type="server" />
+    <export function="destroyPort" type="server" />
+    <export function="setPortVisibleTo" type="server" />
+    <export function="addPortItem" type="server" />
+    <export function="removePortItem" type="server" />
+    <export function="getPortItems" type="server" />
+    <export function="setPortRules" type="server" />
+    <export function="clearPortRules" type="server" />
+    <export function="setPortSuggestions" type="server" />
+    <export function="isPlayerInPort" type="server" />
+    <!-- trunks -->
+    <export function="createTrunk" type="server" />
+    <export function="destroyTrunk" type="server" />
+    <export function="hasTrunk" type="server" />
+    <export function="setTrunkAccess" type="server" />
+    <export function="addTrunkItem" type="server" />
+    <export function="removeTrunkItem" type="server" />
+    <export function="getTrunkItems" type="server" />
+    <!-- windows -->
+    <export function="openInventory" type="server" />
+    <export function="closeInventory" type="server" />
+</meta>

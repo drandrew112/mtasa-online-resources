@@ -1,10 +1,11 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 -- med_bag tunables. Offsets are { x, y, z, rx, ry, rz } in the parent's local space
--- (x = right, y = forward, z = up). See DESIGN.md.
+-- (x = right, y = forward, z = up). See DESIGN.md. The items themselves (models, hand / ground
+-- offsets, weights) are v_inventory items: medical_bag and lifepak15 (v_inventory/shared/items.lua).
 
 BAG = {
-    -- Ambulances that carry a kit (one medical bag + one monitor each)
+    -- Ambulances that carry a kit (one medical bag + one Lifepak 15 each)
     VEHICLE_MODELS = {
         [416] = true,              -- Mercedes Sprinter (HU)
         [456] = true,              -- Mission Row Ambulance
@@ -23,50 +24,28 @@ BAG = {
     MENU_RANGE = 1.8,              -- metres from the side point
     PUT_BACK_RANGE = 2.5,          -- a ground item this close to the side point can be put back
 
-    -- Item models (placeholders until the custom models arrive; the SA-MP ids the user suggested,
-    -- 11738 MedicCase / 19787 LCD, do not exist in MTA). If `id` cannot be created, `fallback` is used.
-    --   hand    { x, y, z, rx, ry, rz }: from the hand bone, in the CARRIER's frame (x = right,
-    --           y = forward, z = up, rz added to the carrier's heading): the item hangs from the hand
-    --   ground  the same from the ground point (z = origin height above the ground)
-    -- Both models have their origin off-centre, the offsets compensate for it (measured bboxes).
-    MODELS = {
-        bag = {
-            id = 1210, fallback = nil, scale = 1.0,       -- briefcase, 0.50 x 0.07 x 0.37 m
-            hand = { 0.126, 0.0, -0.25, 0, 0, -90 },      -- long side along the leg, handle in the hand
-            ground = { 0, 0, 0.112, 0, 0, -90 },
-        },
-        monitor = {
-            id = 2190, fallback = nil, scale = 0.55,      -- PC_1 monitor, ~0.30 x 0.25 x 0.30 m scaled
-            hand = { -0.227, 0.241, -0.39, 0, 0, 90 },
-            ground = { 0, 0, -0.153, 0, 0, 0 },
-        },
-    },
+    -- The kit: kind -> v_inventory item id
+    ITEM_DEFS = { bag = "medical_bag", monitor = "lifepak15" },
+    KINDS = { "bag", "monitor" },
+    ITEM_NAMES = { bag = L.text("med_bag.config.medical_bag"), monitor = L.text("med_bag.config.monitor_defibrillator") },
+
     -- On the side of the stretcher (med_stretcher object 2146, local space: y = its long axis).
     -- The stretcher is scaled on the clients, these offsets are not: tune them in-game.
     STRETCHER_OFFSETS = {
         bag = { 0.0, -0.55, -0.30, 0, 0, 90 },      -- lower shelf, foot end
         monitor = { 0.30, 0.55, 0.20, 0, 0, 90 },   -- side rail, head end, screen outwards
     },
-    BONES = { bag = 35, monitor = 25 },   -- left hand / right hand
-    ITEM_NAMES = { bag = L.text("med_bag.config.medical_bag"), monitor = L.text("med_bag.config.monitor_defibrillator") },
-    KINDS = { "bag", "monitor" },
 
-    -- Putting down
-    DROP_KEY = "h",              -- not G: that is "enter as passenger" in GTA
-    DROP_OFFSETS = { bag = { -0.35, 0.6 }, monitor = { 0.35, 0.6 } },  -- player-local x, y
-    DROP_PATIENT_DISTANCE = 0.9,    -- auto drop: this far from the patient, towards the medic
     AUTO_DROP_ON_TREAT = true,      -- a medsys procedure starts: carried items go down by the patient
     TAKE_ANIM = { "CARRY", "liftup", 600 },
     PUT_ANIM = { "CARRY", "putdwn", 600 },
-    CARRY_LOCKED_CONTROLS = { "jump", "fire", "aim_weapon", "next_weapon", "previous_weapon" },
-    GROUND_MENU_RANGE = 2.0,
 
     -- Use (medsys)
     USE_RANGE = 4.0,               -- an item serves a patient within this (3D, same dim / int)
     CONNECT_RANGE = 6.0,           -- a connected item (the bag feeding the oxygen, the linked monitor)
                                    -- keeps working up to this; starting an action needs USE_RANGE
 
-    -- Consumables of a full bag. A medsys drug that is not listed is unlimited.
+    -- A full bag (v_inventory items in it). A medsys drug without an item is unlimited.
     STOCK = {
         drugs = {
             ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
@@ -74,8 +53,21 @@ BAG = {
             salbutamol = 2, midazolam = 2,
         },
         ivKits = 6,                -- one per IV attempt
+        bandages = 6,              -- one per dressing
+        splints = 2,               -- one per fracture
+        glucometers = 1,           -- not used up
+        airwayKits = 1,            -- not used up
         oxygen = 100,              -- percent of the cylinder
     },
+    -- stock category -> v_inventory item id (drugs: DRUG_PREFIX .. id, oxygen: the cylinder's meta)
+    STOCK_ITEMS = {
+        ivKits = "iv_kit", bandages = "bandage", splints = "splint",
+        glucometers = "glucometer", airwayKits = "airway_kit",
+    },
+    OXYGEN_ITEM = "medical_oxygen_cylinder",
+    DRUG_PREFIX = "drug_",
+    -- emptied when an abandoned bag is recovered (with the drugs; the tools stay, the cylinder is emptied)
+    CONSUMABLES = { "ivKits", "bandages", "splints" },
     OXYGEN_DRAIN = 100 / 900,      -- % per second per mask: a full cylinder lasts 15 min of mask time
     OXYGEN_LOW = 20,               -- % warning
     LOW_STOCK_FRACTION = 0.25,     -- warn once when a counted item drops to this share
@@ -93,6 +85,7 @@ BAG = {
 
     SCAN_INTERVAL = 3000,          -- ms, fallback scan for ambulances the debug hook missed
     STATIC_SCREEN = true,          -- static picture on the monitor model (client/screen.lua)
+    MONITOR_MODEL = 2190,          -- the lifepak15 model (v_inventory) that gets the static screen
     MONITOR_SCREEN_TEXTURE = "CJ_TV_SCREEN", -- nil = guess from the model's texture names;
                                    -- /bagscreen cycles through the model's textures to find the right one
 
@@ -101,9 +94,7 @@ BAG = {
 
 -- Element data
 BAG_DATA = {
-    HANDS = "medbag.hands",        -- on a player: { bag = model|nil, monitor = model|nil } (carried items)
-    KIND = "medbag.kind",          -- on an item object / anchor: "bag" | "monitor" | "anchor"
-    ITEM = "medbag.item",          -- on an item object: item id
+    KIND = "medbag.kind",          -- on the anchor: "anchor"
     MISSING = "medbag.missing",    -- on an anchor: "Medical bag, Monitor" while in a hospital bay with items out
     ON_STRETCHER = "medbag.onStretcher", -- on a stretcher object: { bag = true, monitor = true } riding on it
 }

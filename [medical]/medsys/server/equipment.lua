@@ -25,7 +25,11 @@ local function isExempt(target)
 end
 
 local ITEM_MISSING = { bag = L.msg("medsys.equipment.needs_medical_bag"), monitor = L.msg("medsys.equipment.needs_monitor") }
-local STOCK_EMPTY = { ivKits = L.msg("medsys.equipment.out_of_iv_kits_restock_at"), oxygen = L.msg("medsys.equipment.oxygen_cylinder_empty") }
+local STOCK_EMPTY = {
+    ivKits = L.msg("medsys.equipment.out_of_iv_kits_restock_at"), oxygen = L.msg("medsys.equipment.oxygen_cylinder_empty"),
+    bandages = L.msg("medsys.equipment.out_of_bandages"), splints = L.msg("medsys.equipment.out_of_splints"),
+    glucometers = L.msg("medsys.equipment.no_glucometer"), airwayKits = L.msg("medsys.equipment.no_airway_kit"),
+}
 
 -- What reaches the patient (med_bag getEquipmentNear) or nil when the equipment is not checked.
 -- One call per panel snapshot / treatment start.
@@ -120,6 +124,12 @@ function onEquipmentTreatmentDone(medic, target, action, option, state)
         call("startPatientOxygen", target, medic)
     elseif action == "monitor" then
         call("linkPatientMonitor", target, medic)
+    end
+    -- bandages / splints: one piece per successful action
+    local need = MEDIC_EQUIPMENT[action]
+    if need and need.consume == "done" and need.stock then
+        local item = call("findStockItem", target, medic, need.stock)
+        if item then call("consumeStock", item, need.stock) end
     end
 end
 

@@ -678,6 +678,9 @@ addEventHandler("onClientKey", root, function(key, press)
     if getElementData(localPlayer, "reportPanelOpen") then return end
     if getElementData(localPlayer, "adminPanelOpen") then return end
 
+    -- Same while the v_inventory window is open (it closes on ESC itself).
+    if getElementData(localPlayer, "inventoryOpen") then return end
+
     -- Same while the virtual browser (ui_browser) is open.
     if getElementData(localPlayer, "browserOpen") then return end
 

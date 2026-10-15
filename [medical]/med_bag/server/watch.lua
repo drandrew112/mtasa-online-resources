@@ -1,9 +1,10 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Left-behind watch. Every BAG.WATCH_INTERVAL an item lying on the ground is "left behind" when
--- no medic is near it and its ambulance is far away (or driving away). The crew is warned (repeated
--- every BAG.WARN_REPEAT s) and sees a blip on the item; after BAG.ABANDON_TIME s it is returned to
--- the ambulance with an empty stock. An ambulance in a hospital bay with an item out shows
--- "Equipment missing" over its side door (BAG_DATA.MISSING on the anchor, client/hud.lua).
+-- Left-behind watch. Every BAG.WATCH_INTERVAL an item lying on the ground (or riding on a stretcher
+-- that is out) is "left behind" when no medic is near it and its ambulance is far away (or driving
+-- away). The crew is warned (repeated every BAG.WARN_REPEAT s) and sees a blip on the item; after
+-- BAG.ABANDON_TIME s it is returned to the ambulance with an empty stock. An ambulance in a
+-- hospital bay with an item out shows "Equipment missing" over its side door (BAG_DATA.MISSING on
+-- the anchor, client/hud.lua).
 
 local Blips = {} -- item -> blip
 
@@ -47,7 +48,7 @@ function notifyCrew(kit, text, alert)
 end
 
 -- ---------------------------------------------------------------------------------------------
--- Blips
+-- Blips (at the item's position, moved every watch tick)
 -- ---------------------------------------------------------------------------------------------
 
 local function removeBlip(item)
@@ -56,17 +57,19 @@ local function removeBlip(item)
     if isElement(blip) then destroyElement(blip) end
 end
 
-local function showBlip(item, crew)
-    if not isElement(item.object) then return end
+local function showBlip(item, crew, x, y, z, dim, int)
     local blip = Blips[item]
     if not isElement(blip) then
         local b = BAG.BLIP
-        blip = createBlipAttachedTo(item.object, b.icon, b.size, b.color[1], b.color[2], b.color[3], 255, 0, 99999.0,
-            getRootElement())
+        blip = createBlip(x, y, z, b.icon, b.size, b.color[1], b.color[2], b.color[3], 255, 0, 99999.0, root)
         if not blip then return end
         Blips[item] = blip
         setElementVisibleTo(blip, root, false)
+    else
+        setElementPosition(blip, x, y, z)
     end
+    setElementDimension(blip, dim or 0)
+    setElementInterior(blip, int or 0)
     for _, player in ipairs(crew) do setElementVisibleTo(blip, player, true) end
 end
 
@@ -74,10 +77,8 @@ end
 -- Detection
 -- ---------------------------------------------------------------------------------------------
 
-local function medicNear(item)
-    local x, y, z = itemPosition(item)
-    local players = getElementsWithinRange(x, y, z, BAG.LEFT_GUARD_RADIUS, "player",
-        getElementInterior(item.object), getElementDimension(item.object))
+local function medicNear(x, y, z, dim, int)
+    local players = getElementsWithinRange(x, y, z, BAG.LEFT_GUARD_RADIUS, "player", int, dim)
     for _, player in ipairs(players) do
         if not isPedDead(player) and hasEquipmentAccess(player) then return true end
     end
@@ -89,23 +90,19 @@ local function vehicleSpeed(vehicle)
     return math.sqrt(vx * vx + vy * vy + vz * vz) * 180 -- km/h
 end
 
--- On the ground or on a stretcher that is out of the ambulance
+-- On the ground or on a stretcher that is out of the ambulance -> left, x, y, z, dim, int
 local function isLeftBehind(item)
-    if (item.state ~= "ground" and item.state ~= "stretcher") or not isElement(item.object) then return false end
+    if item.state ~= "ground" and item.state ~= "stretcher" then return false end
     local vehicle = item.kit.vehicle
     if not isElement(vehicle) then return false end
-    if medicNear(item) then return false end
-    if not bagSameWorld(vehicle, item.object) then return true end
-    local x, y, z = itemPosition(item)
+    local x, y, z, dim, int = itemPosition(item)
+    if not x then return false end
+    if medicNear(x, y, z, dim, int) then return false end
+    if dim ~= getElementDimension(vehicle) or int ~= getElementInterior(vehicle) then return true, x, y, z, dim, int end
     local vx, vy, vz = getElementPosition(vehicle)
     local d = getDistanceBetweenPoints3D(x, y, z, vx, vy, vz)
-    if d > BAG.LEFT_DISTANCE then return true end
-    return d > BAG.LEFT_MOVING_DISTANCE and vehicleSpeed(vehicle) > BAG.LEFT_MOVING_SPEED
-end
-
-local function zoneOf(item)
-    local x, y, z = itemPosition(item)
-    return getZoneName(x, y, z)
+    if d > BAG.LEFT_DISTANCE then return true, x, y, z, dim, int end
+    return d > BAG.LEFT_MOVING_DISTANCE and vehicleSpeed(vehicle) > BAG.LEFT_MOVING_SPEED, x, y, z, dim, int
 end
 
 local function watch()
@@ -114,7 +111,9 @@ local function watch()
         local leftNames, crew = {}, nil
         for _, kind in ipairs(BAG.KINDS) do
             local item = kit.items[kind]
-            if isLeftBehind(item) then
+            local left, x, y, z, dim, int = false
+            if item then left, x, y, z, dim, int = isLeftBehind(item) end
+            if left then
                 crew = crew or getKitCrew(kit)
                 if not item.leftTick then
                     item.leftTick, item.warnTick = now, nil
@@ -125,13 +124,13 @@ local function watch()
                     returnItemToVehicle(item, true)
                     notifyCrew(kit, L.msg("med_bag.watch.was_recovered_by_dispatch_and_returned", { kind = bagItemName(kind), kit = kitLabel(kit), kind2 = kind == "bag" and L.msg("med_bag.watch.empty_restock_it_at_hospital") or "" }), true)
                 else
-                    showBlip(item, crew)
+                    showBlip(item, crew, x, y, z, dim, int)
                     if not item.warnTick or now - item.warnTick >= BAG.WARN_REPEAT * 1000 then
                         item.warnTick = now
-                        leftNames[#leftNames + 1] = bagItemName(kind):lower() .. " (" .. zoneOf(item) .. ")"
+                        leftNames[#leftNames + 1] = bagItemName(kind):lower() .. " (" .. getZoneName(x, y, z) .. ")"
                     end
                 end
-            elseif item.leftTick then
+            elseif item and item.leftTick then
                 item.leftTick, item.warnTick = nil, nil
                 removeBlip(item)
             end
@@ -149,7 +148,8 @@ function updateMissing(kit)
     local missing = {}
     if isKitInHospitalBay(kit) then
         for _, kind in ipairs(BAG.KINDS) do
-            if kit.items[kind].state ~= "stowed" then missing[#missing + 1] = bagItemName(kind) end
+            local item = kit.items[kind]
+            if item and item.state ~= "stowed" then missing[#missing + 1] = bagItemName(kind) end
         end
     end
     local text = #missing > 0 and table.concat(missing, ", ") or nil

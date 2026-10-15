@@ -1,12 +1,13 @@
 -- Exports. medsys (server/equipment.lua there) uses the first block; the rest is for other scripts
--- and admins. Items are referred to by their id ("bag:3", "monitor:4").
+-- and admins. Items are referred to by their v_inventory uid.
 
 -- ---------------------------------------------------------------------------------------------
 -- medsys
 -- ---------------------------------------------------------------------------------------------
 
--- What reaches the patient: { bag = id|false, monitor = id|false, stock = { drugs, ivKits, oxygen } | nil }
--- stock is the sum of every serving bag; a drug missing from stock.drugs is not counted (unlimited).
+-- What reaches the patient: { bag = id|false, monitor = id|false, stock = { drugs, ivKits, bandages,
+-- splints, glucometers, airwayKits, oxygen } | nil }. stock is the sum of every serving bag; a drug
+-- missing from stock.drugs is not counted (unlimited).
 function getEquipmentNear(target, medic)
     if not isElement(target) then return false end
     local bag = getServingItems(target, "bag", medic)[1]
@@ -18,7 +19,8 @@ function getEquipmentNear(target, medic)
     }
 end
 
--- A serving bag with stock of category ("drugs" + key, "ivKits", "oxygen"): id | false
+-- A serving bag with stock of category ("drugs" + key, "ivKits", "bandages", "splints",
+-- "glucometers", "airwayKits", "oxygen"): id | false
 function findStockItem(target, medic, category, key)
     local bag = findStockBag(target, medic, category, key)
     return bag and bag.id or false
@@ -52,7 +54,7 @@ function unlinkPatientMonitor(target)
     return true
 end
 
--- A procedure starts: the medic's carried items go down next to the patient
+-- A procedure starts: the medic's carried kit items go down next to the patient
 function onTreatmentStart(medic, target)
     if not BAG.AUTO_DROP_ON_TREAT or not isElement(medic) or not getHands(medic) then return false end
     if not isElement(target) or isPedInVehicle(medic) then return false end
@@ -67,7 +69,7 @@ end
 -- { bag = id, monitor = id } | false
 function getVehicleKit(vehicle)
     local kit = Kits[vehicle]
-    if not kit then return false end
+    if not kit or not kit.items.bag or not kit.items.monitor then return false end
     return { bag = kit.items.bag.id, monitor = kit.items.monitor.id }
 end
 
@@ -78,7 +80,7 @@ function getItemInfo(itemId)
     local x, y, z = itemPosition(item)
     return {
         kind = item.kind, state = item.state, vehicle = item.kit.vehicle, carrier = item.carrier or false,
-        x = x, y = y, z = z, linkedTo = getLinkedPatient(item.id) or false,
+        x = x or false, y = y, z = z, linkedTo = getLinkedPatient(item.id) or false,
     }
 end
 
@@ -91,18 +93,20 @@ function getPlayerItems(player)
     }
 end
 
--- Copy of a bag's stock | false
+-- The bag's stock { drugs = { id = n }, ivKits, bandages, splints, glucometers, airwayKits, oxygen } | false
 function getItemStock(itemId)
     local item = Items[itemId]
-    if not item or not item.stock then return false end
-    local copy = { drugs = {}, ivKits = item.stock.ivKits, oxygen = item.stock.oxygen }
-    for id, count in pairs(item.stock.drugs) do copy.drugs[id] = count end
-    return copy
+    if not item or item.kind ~= "bag" then return false end
+    local stock = { drugs = {} }
+    for id in pairs(BAG.STOCK.drugs) do stock.drugs[id] = stockAmount(item, "drugs", id) end
+    for category in pairs(BAG.STOCK_ITEMS) do stock[category] = stockAmount(item, category) or 0 end
+    stock.oxygen = stockAmount(item, "oxygen") or 0
+    return stock
 end
 
 function restockItem(itemId)
     local item = Items[itemId]
-    return item and restock(item) or false
+    return item and item.kind == "bag" and restock(item) or false
 end
 
 -- Forces the item back into its ambulance (stock kept)

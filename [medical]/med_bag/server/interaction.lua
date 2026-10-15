@@ -1,16 +1,16 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- ui_interactobject menus: one side-door menu per ambulance (on the invisible anchor) and a pick-up
--- menu on every item lying on the ground. Every selection is re-checked here before
--- server/kits.lua acts. Also: the put-down key, restocking in a hospital bay, admin commands.
+-- The side-door menu (ui_interactobject, one per ambulance on the invisible anchor): take / put back
+-- the bag and the Lifepak, restock in a hospital bay, check the contents (the v_inventory window,
+-- view only). Every selection is re-checked here before server/kits.lua acts. Picking up an item
+-- from the ground, the put-down key and the carrying itself belong to v_inventory.
+-- Also: admin commands.
 
 addEvent("onInteractMenuSelect")
-addEvent("bag:drop", true)
 
 local IO_RESOURCE = "ui_interactobject"
 local MEDSYS = "medsys"
 local menuKit = {}   -- menu id -> kit
-local menuItem = {}  -- menu id -> item (ground)
-local Restocking = {} -- player -> { timer, kit, x, y, z }
+local Restocking = {} -- player -> { timer, kit }
 
 local function isRunning(name)
     local res = getResourceFromName(name)
@@ -18,12 +18,12 @@ local function isRunning(name)
 end
 
 -- ---------------------------------------------------------------------------------------------
--- Medic role (medsys). With the role required, only medics see and use the menus.
+-- Medic role (medsys). With the role required, only medics see and use the menus and the items.
 -- ---------------------------------------------------------------------------------------------
 
 local roleRequired -- nil = not asked yet
 
-local function isRoleRequired()
+function isMedicRoleRequired()
     if roleRequired == nil and isRunning(MEDSYS) then
         roleRequired = exports[MEDSYS]:isMedicRoleRequired() == true
     end
@@ -31,12 +31,12 @@ local function isRoleRequired()
 end
 
 function hasEquipmentAccess(player)
-    if not isRoleRequired() then return true end
+    if not isMedicRoleRequired() then return true end
     return isRunning(MEDSYS) and exports[MEDSYS]:isPlayerMedic(player) == true
 end
 
 function getMenuVisibility()
-    if not isRoleRequired() then return nil end
+    if not isMedicRoleRequired() then return nil end
     return isRunning(MEDSYS) and exports[MEDSYS]:getMedicPlayers() or {}
 end
 
@@ -54,10 +54,11 @@ end
 -- ---------------------------------------------------------------------------------------------
 
 local STATE_TEXT = { carried = L.msg("med_bag.interaction.carried_by_someone"), ground = L.msg("med_bag.interaction.on_ground"), stowed = L.msg("med_bag.interaction.in_vehicle"),
-    stretcher = L.msg("med_bag.interaction.on_stretcher") }
+    stretcher = L.msg("med_bag.interaction.on_stretcher"), other = L.msg("med_bag.interaction.on_ground") }
 
 local function kitItems(kit)
     local bag, monitor = kit.items.bag, kit.items.monitor
+    if not bag or not monitor then return {} end
     local bagIn, monIn = bag.state == "stowed", monitor.state == "stowed"
     local inBay = isKitInHospitalBay(kit)
     return {
@@ -88,16 +89,6 @@ local function kitDef(kit)
     }
 end
 
-local function groundDef(item)
-    return {
-        title = bagItemName(item.kind) .. " (" .. kitLabel(item.kit) .. ")",
-        range = BAG.GROUND_MENU_RANGE,
-        priority = 12,
-        lineOfSight = false,   -- the model origins sit off-centre / under the ground (would hide the menu)
-        items = { { label = L.msg("med_bag.interaction.pick_up"), value = "pickup", desc = item.kind == "bag" and L.msg("med_bag.interaction.left_hand") or L.msg("med_bag.interaction.right_hand") } },
-    }
-end
-
 -- ---------------------------------------------------------------------------------------------
 -- Registration
 -- ---------------------------------------------------------------------------------------------
@@ -106,19 +97,6 @@ local function registerKit(kit)
     if not isRunning(IO_RESOURCE) or not isElement(kit.anchor) then return end
     kit.menuId = exports[IO_RESOURCE]:addInteractMenu(kit.anchor, kitDef(kit), getMenuVisibility())
     if kit.menuId then menuKit[kit.menuId] = kit end
-end
-
-local function registerGround(item)
-    if not isRunning(IO_RESOURCE) or not isElement(item.object) then return end
-    item.menuId = exports[IO_RESOURCE]:addInteractMenu(item.object, groundDef(item), getMenuVisibility())
-    if item.menuId then menuItem[item.menuId] = item end
-end
-
-local function removeGroundMenu(item)
-    if not item.menuId then return end
-    menuItem[item.menuId] = nil
-    if isRunning(IO_RESOURCE) then exports[IO_RESOURCE]:removeInteractMenu(item.menuId) end
-    item.menuId = nil
 end
 
 function refreshKitMenu(kit)
@@ -141,59 +119,50 @@ function onKitDestroyed(kit)
     onKitStretcherGone(kit)
 end
 
-function onItemObjectGone(item)
-    removeGroundMenu(item)
-end
-
 -- Hook of server/kits.lua after every state change
-function onItemChanged(item, oldState)
-    if item.state == "ground" and not item.menuId then registerGround(item) end
+function onItemChanged(item, oldState, oldStretcher)
     refreshKitMenu(item.kit)
     onItemWatchChanged(item, oldState)
-    onItemStretcherChanged(item, oldState)
-end
-
-function onStockChanged(item)
-    refreshCarriedStock(item)
+    onItemStretcherChanged(item, oldState, oldStretcher)
 end
 
 -- ui_interactobject (re)started: register everything again
 addEventHandler("onResourceStart", root, function(started)
     local name = getResourceName(started)
     if name == IO_RESOURCE then
-        menuKit, menuItem = {}, {}
-        for _, kit in eachKit() do
-            registerKit(kit)
-            for _, item in pairs(kit.items) do
-                item.menuId = nil
-                if item.state == "ground" then registerGround(item) end
-            end
-        end
+        menuKit = {}
+        for _, kit in eachKit() do registerKit(kit) end
     elseif name == MEDSYS then
         roleRequired = nil
         updateMenuVisibility()
+        updateItemAccess()
     end
 end)
 
 addEventHandler("onResourceStop", root, function(stopped)
     if getResourceName(stopped) ~= IO_RESOURCE then return end
-    menuKit, menuItem = {}, {}
-    for _, kit in eachKit() do
-        kit.menuId = nil
-        for _, item in pairs(kit.items) do item.menuId = nil end
-    end
+    menuKit = {}
+    for _, kit in eachKit() do kit.menuId = nil end
 end)
 
 function updateMenuVisibility()
     if not isRunning(IO_RESOURCE) then return end
     local visible = getMenuVisibility()
     for id in pairs(menuKit) do exports[IO_RESOURCE]:setInteractMenuVisibleTo(id, visible) end
-    for id in pairs(menuItem) do exports[IO_RESOURCE]:setInteractMenuVisibleTo(id, visible) end
     setStretcherMenusVisibleTo(visible)
 end
 
+-- The items' v_inventory access follows medsys' role rule
+function updateItemAccess()
+    if not isInventoryRunning() then return end
+    local key = isMedicRoleRequired() and "medic.role" or false
+    for _, kit in eachKit() do
+        for _, item in pairs(kit.items) do inv():setItemAccess(item.id, key) end
+    end
+end
+
 addEventHandler("onPlayerMedicChange", root, function()
-    if isRoleRequired() then updateMenuVisibility() end
+    if isMedicRoleRequired() then updateMenuVisibility() end
 end)
 
 -- The bay state changes the Restock line: refresh the menus now and then (cheap, few ambulances)
@@ -218,56 +187,49 @@ function canHandleEquipment(player)
     return true
 end
 
-local function nearSidePoint(kit, element, range)
-    if not isElement(element) or not bagSameWorld(element, kit.vehicle) then return false end
+local function nearSidePoint(kit, item, range)
+    local x, y, z, dim, int = itemPosition(item)
+    if not x or not isElement(kit.vehicle) then return false end
+    if dim ~= getElementDimension(kit.vehicle) or int ~= getElementInterior(kit.vehicle) then return false end
     local sx, sy, sz = bagSideWorld(kit.vehicle)
-    local x, y, z = getElementPosition(element)
     return getDistanceBetweenPoints3D(sx, sy, sz, x, y, z) <= range
 end
 
 local function take(kit, player, kinds)
-    local taken = {}
+    local taken = 0
     for _, kind in ipairs(kinds) do
         local item = kit.items[kind]
-        if item.state ~= "stowed" then
+        if not item or item.state ~= "stowed" then
             notify(player, L.msg("med_bag.interaction.is_not_in_vehicle", { kind = bagItemName(kind) }))
-        elseif getCarried(player, kind) then
-            notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(kind):lower() }))
         else
-            takeItem(item, player)
-            taken[#taken + 1] = bagItemName(kind)
+            local ok, reason = takeItem(item, player)
+            if ok then taken = taken + 1 elseif reason then notify(player, reason) end
         end
     end
-    if #taken > 0 then
-        local a = BAG.TAKE_ANIM
-        setPedAnimation(player, a[1], a[2], a[3], false, false, false, false)
+    if taken > 0 then
+        playAnim(player, BAG.TAKE_ANIM)
         openSideDoor(kit)
     end
 end
 
 local function putBack(kit, player, kinds)
-    local done, foreign = 0, nil
+    local done = 0
+    local hands = getHands(player)
     for _, kind in ipairs(kinds) do
         local own = kit.items[kind]
-        local carried = getCarried(player, kind)
+        local carried = hands and hands[kind]
         if carried and carried.kit ~= kit then
-            foreign = carried
-        elseif own.state == "carried" and own.carrier == player then
-            stowItem(own)
-            done = done + 1
-        elseif own.state == "ground" and nearSidePoint(kit, own.object, BAG.PUT_BACK_RANGE) then
-            stowItem(own)
-            done = done + 1
-        elseif own.state ~= "stowed" and #kinds == 1 then
+            notify(player, L.msg("med_bag.interaction.this_belongs_to", { kind = bagItemName(kind):lower(), kit = kitLabel(carried.kit) }))
+        elseif own and own.state == "carried" and own.carrier == player then
+            if stowItem(own) then done = done + 1 end
+        elseif own and own.state == "ground" and nearSidePoint(kit, own, BAG.PUT_BACK_RANGE) then
+            if stowItem(own) then done = done + 1 end
+        elseif own and own.state ~= "stowed" and #kinds == 1 then
             notify(player, L.msg("med_bag.interaction.bring_here_first", { kind = bagItemName(kind):lower() }))
         end
     end
-    if foreign then
-        notify(player, L.msg("med_bag.interaction.this_belongs_to", { kind = bagItemName(foreign.kind):lower(), kit = kitLabel(foreign.kit) }))
-    end
     if done > 0 then
-        local a = BAG.PUT_ANIM
-        setPedAnimation(player, a[1], a[2], a[3], false, false, false, false)
+        playAnim(player, BAG.PUT_ANIM)
         openSideDoor(kit)
     end
 end
@@ -290,7 +252,7 @@ local function endRestock(player, finished)
     end
     if finished then
         local bag = r.kit.items.bag
-        if Items[bag.id] and bag.state == "stowed" and isKitInHospitalBay(r.kit) then
+        if bag and Items[bag.id] and bag.state == "stowed" and isKitInHospitalBay(r.kit) then
             restock(bag)
             notify(player, L.msg("med_bag.interaction.medical_bag_restocked"))
         else
@@ -301,7 +263,7 @@ end
 
 local function startRestock(kit, player)
     if not isKitInHospitalBay(kit) then return notify(player, L.msg("med_bag.interaction.park_ambulance_in_hospital_bay_first")) end
-    if kit.items.bag.state ~= "stowed" then return notify(player, L.msg("med_bag.interaction.put_bag_back_into_vehicle_first")) end
+    if not kit.items.bag or kit.items.bag.state ~= "stowed" then return notify(player, L.msg("med_bag.interaction.put_bag_back_into_vehicle_first")) end
     if Restocking[player] then return end
     for _, control in ipairs(MOVE_CONTROLS) do toggleControl(player, control, false) end
     setPedAnimation(player, "INT_SHOP", "shop_loop", -1, true, false, false, false)
@@ -309,36 +271,21 @@ local function startRestock(kit, player)
         kit = kit,
         timer = setTimer(function() endRestock(player, true) end, BAG.RESTOCK_TIME * 1000, 1),
     }
-    triggerClientEvent(player, "bag:progress", resourceRoot, BAG.RESTOCK_TIME * 1000, "Restocking the medical bag...")
+    triggerClientEvent(player, "bag:progress", resourceRoot, BAG.RESTOCK_TIME * 1000, L.msg("med_bag.interaction.restocking_progress"))
 end
 
 addEventHandler("onPlayerQuit", root, function() endRestock(source, false) end)
 addEventHandler("onPlayerWasted", root, function() endRestock(source, false) end)
 
 -- ---------------------------------------------------------------------------------------------
--- Contents
+-- Contents: the v_inventory window, view only (the bag stays where it is)
 -- ---------------------------------------------------------------------------------------------
 
--- The bag's stock in a window on the player's screen (client/hud.lua; the chat is not shown on
--- this server)
 local function showContents(kit, player)
     local bag = kit.items.bag
-    local stock = bag.stock
-    local ids = {}
-    for id in pairs(BAG.STOCK.drugs) do ids[#ids + 1] = id end
-    local drugs = {}
-    for _, id in ipairs(ids) do
-        drugs[#drugs + 1] = { drugName(id), stock.drugs[id] or 0, BAG.STOCK.drugs[id] }
-    end
-    table.sort(drugs, function(a, b) return a[1] < b[1] end)
-    triggerClientEvent(player, "bag:contents", resourceRoot, {
-        title = L.msg("med_bag.interaction.medical_bag", { kit = kitLabel(kit) }),
-        where = STATE_TEXT[bag.state],
-        ivKits = { stock.ivKits, BAG.STOCK.ivKits },
-        oxygen = math.floor(stock.oxygen + 0.5),
-        drugs = drugs,
-        monitor = STATE_TEXT[kit.items.monitor.state],
-    })
+    if not bag or not isInventoryRunning() then return end
+    inv():openInventory(player, { container = bag.id, readOnly = true })
+    triggerClientEvent(player, "bag:contents", resourceRoot) -- the work_ems tutorial waits for it
 end
 
 -- ---------------------------------------------------------------------------------------------
@@ -359,31 +306,12 @@ local KIT_ACTIONS = {
 addEventHandler("onInteractMenuSelect", root, function(menuId, value)
     local player = source
     local kit = menuKit[menuId]
-    if kit then
-        local action = KIT_ACTIONS[value]
-        if not action or Kits[kit.vehicle] ~= kit then return end
-        if value ~= "contents" then
-            local ok, reason = canHandleEquipment(player)
-            if not ok then return notify(player, reason) end
-        end
-        return action(kit, player)
-    end
-    local item = menuItem[menuId]
-    if item and value == "pickup" and item.state == "ground" then
-        local ok, reason = canHandleEquipment(player)
-        if not ok then return notify(player, reason) end
-        if getCarried(player, item.kind) then
-            return notify(player, L.msg("med_bag.interaction.you_already_carry", { kind = bagItemName(item.kind):lower() }))
-        end
-        pickUpItem(item, player)
-    end
-end)
-
--- Put-down key (client/carry.lua)
-addEventHandler("bag:drop", resourceRoot, function()
-    local player = client
-    if not getHands(player) or isPedInVehicle(player) then return end
-    dropCarried(player)
+    if not kit then return end
+    local action = KIT_ACTIONS[value]
+    if not action or Kits[kit.vehicle] ~= kit then return end
+    local ok, reason = canHandleEquipment(player)
+    if not ok then return notify(player, reason) end
+    action(kit, player)
 end)
 
 -- ---------------------------------------------------------------------------------------------

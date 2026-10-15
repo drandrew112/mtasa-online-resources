@@ -34,6 +34,7 @@ local function otherPanelOpen()
         or getElementData(localPlayer, "reportPanelOpen")
         or getElementData(localPlayer, "adminPanelOpen")
         or getElementData(localPlayer, "textInputOpen")
+        or getElementData(localPlayer, "inventoryOpen")
         or inJobLobby()
 end
 
