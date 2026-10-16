@@ -75,11 +75,20 @@ TR = {
     -- sector chains of avi_airspace `centre`
     CENTER_POSITION = "SACC_CTR",
 
-    -- work_atc tutorial (server/tutorial.lua): the tutorial arrival appears in the CTR / TMA of the
+    -- work_atc training (server/tutorial.lua): the tower training arrival appears in the CTR / TMA of the
     -- airport, this far (m) from the final fix of the runway in use, flying to it, cleared for the
     -- approach (as the closed approach would hand it to the tower). The farthest distance that fits,
     -- straight in on the extended centre line or from the side: ANGLES = deg off the extended centre line.
     TUTORIAL_FINAL_DIST = { 2600, 2200, 1800, 1400, 1000 },
     TUTORIAL_FINAL_ANGLES = { 0, 30, -30, 45, -45, 60, -60 },
     TUTORIAL_MAX_SCALE = 8,   -- setTutorialTimeScale: at most this many simulation steps per tick
+    -- approach training (kind tma_arr): an arrival in the CTA this far (m) before its TMA entry fix (the
+    -- farthest one still outside the TMA), at this level (LOA: at most 4000 ft at the entry fix)
+    TUTORIAL_TMA_DIST = { 3200, 2600, 2000, 1500, 1000 },
+    TUTORIAL_TMA_ALT = 4000,
+    -- radar training: external entries (kinds inbound / overflight) appear this far (m) before the CTA
+    -- border; the conflict pair starts this far (m) each side of the middle of a leg, at least this high
+    TUTORIAL_ENTRY_LEAD = 1500,
+    TUTORIAL_CONFLICT_DIST = 3500,
+    TUTORIAL_CONFLICT_MIN_ALT = 12000,
 }

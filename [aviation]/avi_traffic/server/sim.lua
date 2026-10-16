@@ -172,13 +172,21 @@ end
 -- returns aircraft or nil, reason
 -- opts (tutorial.lua): tut = owner player, gateWait = s at the stand,
 --   final = { x, y, hdg, alt, rwy = runway end } (airborne on the extended centre line of rwy)
+--   place = { x, y, hdg, alt } (airborne there, flying the route of fl from its first fix)
+--   lead  = m before the CTA border for an external entry (default TR.ENTRY_LEAD_NM)
 function spawnFlight(fl, opts)
     opts = opts or {}
     if not opts.tut and isCallsignActive(fl.callsign) then return nil, "already active" end
     local ac = newAircraft(fl)
     ac.tut = opts.tut
-    local depApt = not opts.final and airport(fl.dep)
-    if opts.final then
+    local depApt = not opts.final and not opts.place and airport(fl.dep)
+    if opts.place then
+        local f = opts.place
+        ac.phase = "air"
+        ac.x, ac.y, ac.hdg = f.x, f.y, f.hdg
+        ac.alt, ac.cfl = f.alt, f.alt
+        ac.spd = f.alt < TR.SPEED_LIMIT_ALT and math.min(250, ac.perf.cruise) or ac.perf.cruise
+    elseif opts.final then
         local f = opts.final
         ac.phase = "air"
         ac.x, ac.y, ac.hdg = f.x, f.y, f.hdg
@@ -200,7 +208,7 @@ function spawnFlight(fl, opts)
         ac.phase = "air"
         -- on the radar well before the border: TR.ENTRY_LEAD_NM out on the extended first leg, flying to the entry fix
         ac.hdg = nxt and bearing(first.x, first.y, nxt.x, nxt.y) or 0
-        local lead, h = TR.ENTRY_LEAD_NM * TR.M_PER_NM, math.rad(ac.hdg)
+        local lead, h = tonumber(opts.lead) or TR.ENTRY_LEAD_NM * TR.M_PER_NM, math.rad(ac.hdg)
         ac.x, ac.y = first.x - math.sin(h) * lead, first.y - math.cos(h) * lead
         ac.ri = 1
         ac.inbound = true      -- outside the CTA until it crosses the border (not removed meanwhile)
@@ -1075,6 +1083,8 @@ end
 
 local function tickAir(ac, dt)
     local elev = fieldElev(ac)
+    -- ac.keepLevel (tutorial aircraft): the spawn level is kept until a controller has it
+    if ac.keepLevel and controllerOf(ac) then ac.keepLevel = nil end
     if ac.climbOut and ac.alt - elev >= TR.CLIMB_OUT_AGL then
         ac.climbOut = nil
         ac.gndApt = nil
@@ -1124,7 +1134,7 @@ local function tickAir(ac, dt)
     moveForward(ac, dt)
 
     -- vertical
-    if not controllerOf(ac) and not ac.climbOut and not ac.missed then ac.cfl = trafficAutoLevel(ac) end
+    if not controllerOf(ac) and not ac.climbOut and not ac.missed and not ac.keepLevel then ac.cfl = trafficAutoLevel(ac) end
     verticalTowards(ac, ac.cfl or ac.alt, dt)
 
     -- fix passage: close enough, or close and already behind (would orbit it inside the turn radius)

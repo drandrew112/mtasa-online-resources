@@ -27,9 +27,14 @@ Rights are cumulative (a higher rank keeps the lower positions); change the `rig
 
 Exports: `isPlayerATC`, `getATCPlayers`, `getATCWorkId`, `getATCLevelRights(level)`.
 
-## Tutorial
+## Training modules
 
-`tutorial/` (see [tutorial/README.md](tutorial/README.md)): an optional tower tutorial on SASF_TWR in
-the SA Control room, offered on the first duty start, `/tutorial_atc` any time. It uses the tutorial
-hooks of avi_core (console marker copy), avi_controller (tutorial login: no pay, no XP, the live
-position stays free) and avi_traffic (tutorial aircraft in a world of their own).
+`training/` (see [training/README.md](training/README.md)): a short scope tour and three training
+modules, one per controller position, which replace the old tower tutorial. They start at the
+**training marker** in the SA Control operations room (int 3, on duty, `E`): **SCOPE** the radar scope
+(SASF_TWR), **ADC** Aerodrome Controller (SASF_TWR), **APC**
+Approach Controller (SASF_APP) and **ACC** Area Control Centre (SACC_CTR). A module is unlocked by
+the ATC right of its position (avi_core `hasATCRight`: TWR / APP / RADAR, i.e. the work level). The
+first duty start offers SCOPE. They use the tutorial hooks of avi_core (console marker copy),
+avi_controller (tutorial login: no pay, no XP, the live position stays free) and avi_traffic
+(training aircraft in a world of their own).

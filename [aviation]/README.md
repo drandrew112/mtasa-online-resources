@@ -216,16 +216,21 @@ SID / STAR / GA per airport from avi_nav) and Airspace map ("Map" on a procedure
   navigation, SACC-SW-1 ATC software manual. Wording: "San Andreas FIR" = the whole airspace, "CTA" =
   the radar (centre) airspace only.
 
-## Tutorial hooks (work_atc tutorial)
+## Training hooks (work_atc training modules)
 
-The tower tutorial of `[work]/work_atc/tutorial` runs on the real resources:
-- **avi_traffic** `server/tutorial.lua`: `spawnTutorialFlight(owner, { kind = "dep" | "arr", icao,
-  callsign })` makes an aircraft with `ac.tut = owner`. Tutorial aircraft live in a world of their own
-  (stands, taxi queues, runway use, alerts only among themselves) and are left out of
-  `getTrafficSnapshot`, the traffic limits, the workload keeper, the callsign lookups and `/avitraffic
-  clear`. Their controller is the owner's tutorial position (`setTutorialController`), by the sector
-  rule plus the approach sector of their airport (`ac.tutCover`). Separation losses fire
+The training modules ADC / APC / ACC of `[work]/work_atc/training` run on the real resources:
+- **avi_traffic** `server/tutorial.lua`: `spawnTutorialFlight(owner, { kind, icao, callsign, ... })`
+  makes an aircraft with `ac.tut = owner`. Kinds: `dep` (at a stand), `arr` (on the final, cleared for
+  the approach), `tma_arr` (in the CTA before its TMA entry fix, keeping its level until a controller
+  has it; `star = true` lets the pilots pick the STAR), `inbound` (an arrival entering the CTA) and
+  `overflight`. `spawnTutorialConflict(owner, { callsigns })` = two overflights head-on on one leg at
+  the same level. Tutorial aircraft live in a world of their own (stands, taxi queues, runway use,
+  alerts only among themselves) and are left out of `getTrafficSnapshot`, the traffic limits, the
+  workload keeper, the callsign lookups and `/avitraffic clear`. Their controller is the owner's
+  tutorial position (`setTutorialController`) by the normal sector rule; in the CTA that position is
+  the only open one of the centre chains (`sectorPosition(ac, open)`). Separation losses fire
   `onAviTutorialSeparationLoss` (no fine). Parked tutorial aircraft are not removed.
+  `setTutorialTimeScale` makes them fly faster (whole simulation steps per tick).
 - **avi_controller**: `useTutorialConsole(player, posId)` opens a login with that one position; the
   tutorial login is not in `staff` (the live position stays free), sees only the own tutorial
   aircraft (`getTutorialSnapshot`), gets no pay / XP, and fires `onATCTutorialLogin`,

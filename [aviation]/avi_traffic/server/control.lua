@@ -21,17 +21,20 @@ function staffedPositions() return staffed end
 
 -- the centre position of the sector at the aircraft: the first staffed one of the chain, else the
 -- last one of the chain (SACC_CTR, not staffed = nobody controls it)
-local function centrePosition(ac)
+-- open: the staffed set to use (default: the live staffing; a tutorial passes its own position)
+local function centrePosition(ac, open)
+    open = open or staffed
     local sec = centreSectorAt(ac.x, ac.y, ac.alt)
     if not sec or not sec.chain or #sec.chain == 0 then return TR.CENTER_POSITION end
     for _, pos in ipairs(sec.chain) do
-        if staffed[pos] then return pos end
+        if open[pos] then return pos end
     end
     return sec.chain[#sec.chain]
 end
 
 -- the position responsible for the aircraft where it is now (nil = outside every sector)
-function sectorPosition(ac)
+-- open: see centrePosition
+function sectorPosition(ac, open)
     if ac.phase ~= "air" and ac.phase ~= "final" then
         local icao = ac.gndApt or ac.arr
         return airport(icao) and icao .. "_TWR" or nil
@@ -42,17 +45,18 @@ function sectorPosition(ac)
     if not a then return nil end
     if a.type == "CTR" and a.airport then return a.airport .. "_TWR" end
     if a.type == "TMA" and a.airport then return a.airport .. "_APP" end
-    if a.type == "CTA" then return centrePosition(ac) end
+    if a.type == "CTA" then return centrePosition(ac, open) end
     return nil
 end
 
 function controllerOf(ac)
-    local own = sectorPosition(ac)
-    -- tutorial aircraft: only the tutorial position of their owner, by the same sector rule
+    -- tutorial aircraft: only the tutorial position of their owner, by the same sector rule (in the
+    -- CTA its position is the only staffed one of the centre chains)
     if ac.tut then
         local pos = tutorialPosition(ac.tut)
-        return (pos and own == pos) and pos or nil
+        return (pos and sectorPosition(ac, { [pos] = true }) == pos) and pos or nil
     end
+    local own = sectorPosition(ac)
     -- early transfer: valid while the aircraft is still in the sector it was handed over from
     if ac.ctl and ac.xferFrom and ac.ctl ~= own and ac.xferFrom == own and staffed[ac.ctl] then return ac.ctl end
     if own and staffed[own] then return own end

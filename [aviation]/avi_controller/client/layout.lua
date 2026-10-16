@@ -73,7 +73,7 @@ function getScopeLayout()
         local items = {}
         for _, b in ipairs(MENU.items or {}) do
             items[#items + 1] = { label = b.item.label, rect = copy(b.rect), disabled = b.item.disabled == true,
-                request = b.item.request == true, header = b.item.header == true }
+                request = b.item.request == true, header = b.item.header == true, current = b.item.current == true }
         end
         out.menu = { ac = csOf(MENU.ac), mode = MENU.mode, rect = copy(MENU.rect), items = items }
     end

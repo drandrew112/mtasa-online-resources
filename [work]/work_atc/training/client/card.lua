@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- The tutorial card (DX): a panel on the left side of the screen with the current instruction,
--- optional rows (the pay receipt), buttons and a "Skip tutorial" link, plus a pulsing highlight
+-- The training card (DX): a panel on the left side of the screen with the current instruction,
+-- optional rows (the pay receipt, the module list), buttons and a "Quit training" link, plus a pulsing highlight
 -- around a screen rectangle (e.g. a label or a menu item of the ATC scope).
 -- Same card as the work_bloodtransport tutorial. The radar scope (avi_controller) covers the whole
 -- screen: the card tells it where it is (setScopeBlockedRect), so a click on the card does not
@@ -12,7 +12,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --   modal   = true: the card shows the cursor itself
 --   side    = "bottom": wide, at the bottom centre (the inventory window covers the middle)
 -- Card.hide(), Card.setHidden(bool), Card.highlight(rect | nil)
--- Buttons work whenever the cursor is visible; TUTORIAL.CURSOR_KEY toggles it.
+-- Buttons work whenever the cursor is visible; TRAINING.CURSOR_KEY toggles it.
 
 Card = { spec = nil, hidden = false, rect = nil }
 
@@ -50,10 +50,10 @@ local function ensureFonts()
         return dxCreateFont(file, s(size), false, "antialiased") or fallback
     end
     fonts = {
-        small = make("tutorial/client/fonts/RobotoB.ttf", 9, "default-bold"),
-        body = make("tutorial/client/fonts/Roboto.ttf", 11, "default"),
-        bold = make("tutorial/client/fonts/RobotoB.ttf", 11, "default-bold"),
-        title = make("tutorial/client/fonts/RobotoB.ttf", 16, "default-bold"),
+        small = make("training/client/fonts/RobotoB.ttf", 9, "default-bold"),
+        body = make("training/client/fonts/Roboto.ttf", 11, "default"),
+        bold = make("training/client/fonts/RobotoB.ttf", 11, "default-bold"),
+        title = make("training/client/fonts/RobotoB.ttf", 16, "default-bold"),
     }
 end
 
@@ -184,7 +184,7 @@ local function render()
             "left", "top", false, false, true)
         cy0 = cy0 + s(18)
     end
-    dxDrawText(spec.title or L("work_atc.tut.card.title"), x + PAD, cy0, x + W - PAD, cy0 + s(28), C.text, 1, fonts.title,
+    dxDrawText(spec.title or L("work_atc.trn.card.title"), x + PAD, cy0, x + W - PAD, cy0 + s(28), C.text, 1, fonts.title,
         "left", "top", true, false, true)
     cy0 = cy0 + s(30)
     if spec.text then
@@ -201,12 +201,16 @@ local function render()
     for i, row in ipairs(spec.rows or {}) do
         local rh = rowHeights[i]
         dxDrawRectangle(x + PAD, cy0, iw, rh, C.row, true)
-        dxDrawText(row.title, x + PAD + s(12), cy0 + s(8), x + PAD + iw - s(120), cy0 + s(30), C.text, 1, fonts.bold,
-            "left", "top", true, false, true)
+        -- the status sits at the right edge (left of the row button, if any); the title stops before it
+        local right = x + PAD + iw - (row.button and s(120) or s(12))
+        local titleRight = right
         if row.status then
-            dxDrawText(row.status, x + PAD + s(12), cy0 + s(8), x + PAD + iw - s(120), cy0 + s(30),
+            titleRight = right - L.width(row.status, 1, fonts.small) - s(10)
+            dxDrawText(row.status, x + PAD + s(12), cy0 + s(8), right, cy0 + s(30),
                 row.statusColor or C.muted, 1, fonts.small, "right", "top", true, false, true)
         end
+        dxDrawText(row.title, x + PAD + s(12), cy0 + s(8), titleRight, cy0 + s(30), C.text, 1, fonts.bold,
+            "left", "top", true, false, true)
         if row.desc then
             dxDrawText(row.desc, x + PAD + s(12), cy0 + s(32), x + PAD + iw - s(118), cy0 + rh - s(6), C.muted, 1,
                 fonts.body, "left", "top", false, true, true)
@@ -235,7 +239,7 @@ local function render()
         -- nothing
     elseif cursorOn then
         local armed = getTickCount() - skipArmed < 3000
-        local label = armed and L("work_atc.tut.card.click_again_to_skip") or L("work_atc.tut.card.skip")
+        local label = armed and L("work_atc.trn.card.click_again_to_skip") or L("work_atc.trn.card.skip")
         local lw = L.width(label, 1, fonts.small)
         local hov = inside(x + PAD, fy, lw, s(24), cx, cy)
         dxDrawText(label, x + PAD, fy, x + W, fy + s(24), (hov or armed) and C.bad or C.faint, 1, fonts.small,
@@ -249,7 +253,7 @@ local function render()
             end
         end }
     else
-        dxDrawText(L("work_atc.tut.card.press_for_cursor", { cursor_key = TUTORIAL.CURSOR_KEY:upper(), command = TUTORIAL.COMMAND }),
+        dxDrawText(L("work_atc.trn.card.press_for_cursor", { cursor_key = TRAINING.CURSOR_KEY:upper(), command = TRAINING.COMMAND }),
             x + PAD, fy, x + W - PAD, fy + s(24), C.faint, 1, fonts.small, "left", "center", false, false, true)
     end
 
