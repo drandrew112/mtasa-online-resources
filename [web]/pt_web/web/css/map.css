@@ -104,7 +104,7 @@ body.pt-app { display: flex; flex-direction: column; line-height: 1.4; }
 }
 .board-head h3 { margin: 0; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .board-head .osa-muted { margin: 0; font-size: 12px; }
-.board-head select { font-size: 13px; max-width: 160px; padding: 5px 6px; }
+.board-head select, .board-head .osa-dd { font-size: 13px; max-width: 160px; padding: 5px 22px 5px 6px; }
 .board-sec {
     flex: 1 1 0;
     min-height: 0;
