@@ -63,8 +63,8 @@ ITEMS = {
         container = { capacity = 10, accepts = { blood = true, sample = true, tool = true } },
         model = 2969, fallback = 1210, scale = 1.0,         -- small ammo box placeholder (untested)
         offsets = {
-            right = { -0.05, 0.10, -0.30, 0, 0, 0 },
-            ground = { 0, 0, 0.12, 0, 0, 0 },
+            right = { 0.12, -0.04, -0.35, 0, 0, 0 },        -- tuned in game from { 0.10, 0.15, -0.10 }
+            ground = { 0, 0, 0, 0, 0, 0 },
         },
         icon = "icons/bt_blood_box.png", glyph = "BX",
     },
