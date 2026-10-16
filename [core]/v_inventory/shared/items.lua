@@ -36,17 +36,17 @@ ITEMS = {
         container = { capacity = 10, accepts = { drug = true, iv = true, o2 = true, tool = true } },
         model = 1210, scale = 1.0,                          -- briefcase placeholder, 0.50 x 0.07 x 0.37 m
         offsets = {
-            left = { 0.126, 0.0, -0.25, 0, 0, -90 },        -- long side along the leg, handle in the hand
-            ground = { 0, 0, 0.112, 0, 0, -90 },
+            left = { 0.02, 0.0, -0.35, 0, 0, -90 },        -- long side along the leg, handle in the hand
+            ground = { 0, 0, 0, 0, 0, -90 },
         },
         icon = "icons/medical_bag.png", glyph = "MB",
     },
     lifepak15 = {
         category = "device", weight = 5.5, holdable = true, hand = "right", storable = false,
-        model = 2190, scale = 0.55,                         -- PC_1 monitor placeholder
+        model = 1581, scale = 1.0,                         -- PC_1 monitor placeholder
         offsets = {
-            right = { -0.227, 0.241, -0.39, 0, 0, 90 },
-            ground = { 0, 0, -0.153, 0, 0, 0 },
+            right = { 0, 0, -0.3, 0, 0, 90 },
+            ground = { 0, 0, 0, 0, 0, 0 },
         },
         icon = "icons/lifepak15.png", glyph = "LP",
     },

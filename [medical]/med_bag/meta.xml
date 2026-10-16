@@ -18,6 +18,12 @@
     <script src="server/stretcher.lua" type="server" />
     <script src="server/exports.lua" type="server" />
 
+    <script src="client/assets.lua" type="client" />
+    <file src="assets/medical_bag.txd" type="client" />
+    <file src="assets/medic_bag.dff" type="client" />
+    <file src="assets/lifepak15.txd" type="client" />
+    <file src="assets/lifepak15.dff" type="client" />
+
     <script src="client/hud.lua" type="client" />
     <!-- static monitor screen: remove these two lines when the custom monitor model arrives -->
     <script src="client/screen.lua" type="client" />
