@@ -137,6 +137,18 @@ local function drawHighlight()
     end
 end
 
+-- a row's status (the amount) sits at its right edge, left of the row button if any; the title
+-- gets the width left of the status and wraps there
+local function rowRight(row, iw)
+    return iw - (row.button and s(120) or s(12))
+end
+
+local function rowTitleW(row, iw)
+    local w = rowRight(row, iw) - s(12)
+    if row.status then w = w - L.width(row.status, 1, fonts.small) - s(10) end
+    return w
+end
+
 local function render()
     local spec = Card.spec
     if not spec or Card.hidden then return end
@@ -156,9 +168,11 @@ local function render()
     h = h + textH + s(10)
     local noteH = spec.note and (textHeight(spec.note, iw, fonts.bold) + s(10)) or 0
     h = h + noteH
-    local rowHeights = {}
+    local rowHeights, titleHeights = {}, {}
     for i, row in ipairs(spec.rows or {}) do
-        local rh = s(34) + (row.desc and textHeight(row.desc, iw - s(130), fonts.body) or 0) + s(12)
+        local th = math.max(s(22), textHeight(row.title, rowTitleW(row, iw), fonts.bold))
+        titleHeights[i] = th
+        local rh = s(12) + th + (row.desc and textHeight(row.desc, iw - s(130), fonts.body) or 0) + s(12)
         rowHeights[i] = rh
         h = h + rh + s(8)
     end
@@ -201,18 +215,14 @@ local function render()
     for i, row in ipairs(spec.rows or {}) do
         local rh = rowHeights[i]
         dxDrawRectangle(x + PAD, cy0, iw, rh, C.row, true)
-        -- the status sits at the right edge (left of the row button, if any); the title stops before it
-        local right = x + PAD + iw - (row.button and s(120) or s(12))
-        local titleRight = right
         if row.status then
-            titleRight = right - L.width(row.status, 1, fonts.small) - s(10)
-            dxDrawText(row.status, x + PAD + s(12), cy0 + s(8), right, cy0 + s(30),
-                row.statusColor or C.muted, 1, fonts.small, "right", "top", true, false, true)
+            dxDrawText(row.status, x + PAD + s(12), cy0 + s(8), x + PAD + rowRight(row, iw), cy0 + s(30),
+                row.statusColor or C.muted, 1, fonts.small, "right", "top", false, false, true)
         end
-        dxDrawText(row.title, x + PAD + s(12), cy0 + s(8), titleRight, cy0 + s(30), C.text, 1, fonts.bold,
-            "left", "top", true, false, true)
+        dxDrawText(row.title, x + PAD + s(12), cy0 + s(8), x + PAD + s(12) + rowTitleW(row, iw),
+            cy0 + s(8) + titleHeights[i], C.text, 1, fonts.bold, "left", "top", true, true, true)
         if row.desc then
-            dxDrawText(row.desc, x + PAD + s(12), cy0 + s(32), x + PAD + iw - s(118), cy0 + rh - s(6), C.muted, 1,
+            dxDrawText(row.desc, x + PAD + s(12), cy0 + titleHeights[i] + s(10), x + PAD + iw - s(118), cy0 + rh - s(6), C.muted, 1,
                 fonts.body, "left", "top", false, true, true)
         end
         if row.button then
