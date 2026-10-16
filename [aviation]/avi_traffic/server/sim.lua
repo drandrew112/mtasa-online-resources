@@ -1213,15 +1213,23 @@ local function tick()
     lastTick = now
     refreshStaffing()
     for _, ac in pairs(AIRCRAFT) do
-        ac.age = ac.age + dt
-        local f = TICK[ac.phase]
-        local ok, err = pcall(f, ac, dt)
-        if not ok then
-            outputDebugString(("[avi_traffic] %s (%s): %s"):format(ac.cs, tostring(ac.phase), tostring(err)), 1)
-            removeAircraft(ac, "error")
-        elseif AIRCRAFT[ac.id] then
+        -- tutorial aircraft may fly faster: several whole steps per tick (tutorial.lua)
+        for _ = 1, ac.tut and tutorialTimeScale(ac.tut) or 1 do
+            ac.age = ac.age + dt
+            local f = TICK[ac.phase]
+            local ok, err = pcall(f, ac, dt)
+            if not ok then
+                outputDebugString(("[avi_traffic] %s (%s): %s"):format(ac.cs, tostring(ac.phase), tostring(err)), 1)
+                removeAircraft(ac, "error")
+                break
+            elseif not AIRCRAFT[ac.id] then
+                break
+            end
             updateController(ac)
-            if ac.age > TR.MAX_AGE then removeAircraft(ac, "timeout") end
+            if ac.age > TR.MAX_AGE then
+                removeAircraft(ac, "timeout")
+                break
+            end
         end
     end
     updateAlerts(dt)

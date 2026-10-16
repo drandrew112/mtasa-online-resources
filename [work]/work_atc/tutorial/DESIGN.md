@@ -96,12 +96,14 @@ kurzort, ezért a kártya gombjai a scope alatt is működnek.
 
 1. Elválasztott tutorial gépek az élő szimban (a javaslat szerint).
 2. Csak a torony. Az APP / RADAR később külön modulokba kerül.
-3. Nincs gyorsítás.
+3. Automatikus gyorsítás (`TUTORIAL.FAST_SCALE`, 4x), amíg a gépek mozognak és egyik sem kér semmit
+   (2026-10-16, eredetileg nem volt).
 4. A dimenzió maradhat (a tutorial 44000-től indul, a játékos végig a 3-as interiorban van).
 
 Eltérés a vázlattól, a megvalósítás közben derült ki: a SASF CTR csak egy sáv a pálya mentén
 (2000 ft magas, a 22-es final fix a szélén van). Ebben nincs hely a megközelítésre, a felszállás után
-pedig kb. 40 s alatt kirepül belőle a gép. Ezért a tutorial torony a saját két gépénél a zárt SASF APP-ot
-(a TMA-t) is lefedi (`ac.tutCover`). Az indulás akkor ér véget, amikor a gép elhagyja a TMA-t (a
-stubos tesztben 148 s), az érkező gép pedig a TMA-ban jelenik meg (1400 m-re a final fixtől). A kártya
-szövege ezt el is mondja.
+pedig kb. 40 s alatt kirepül belőle a gép. Először a tutorial torony a zárt SASF APP-ot (a TMA-t) is
+lefedte, de 2026-10-16-tól újra csak a torony: induló gépnek a torony nem ad szintet / irányt (a kezdeti
+szintet az IFR engedélyben kapta, tovább csak az APP emeli), ezért az indulás a CTR elhagyásával ér
+véget. Az érkező a TMA-ban jelenik meg megközelítési engedéllyel (ahogy az APP átadná), a torony csak
+leszállási engedélyt ad. A gyorsítás miatt a várakozás nem unalmas.

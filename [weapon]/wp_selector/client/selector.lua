@@ -159,9 +159,17 @@ local function uiOpen(resName, fn)
     return ok and result == true
 end
 
+-- the wheel is on-foot only: not in a vehicle, nor while getting in or out of one
+local function onFoot()
+    if getPedOccupiedVehicle(localPlayer) then return false end
+    local task = getPedSimplestTask(localPlayer)
+    return not (task and (task:find("CAR") or task:find("BIKE")))
+end
+
 local function canOpen()
     if isOpen or not managerRunning() or isCursorShowing() or isConsoleActive() or isMainMenuActive() then return false end
     if isPedDead(localPlayer) or isChatBoxInputActive() then return false end
+    if not onFoot() then return false end
     if uiOpen("ui_interactobject", "isInteractMenuOpen") or uiOpen("ui_inac", "isTempMenuOpen") then return false end
     for _, key in ipairs({ "showChatInput", "inventoryOpen", "textInputOpen", "paused", "socialPanelOpen" }) do
         if getElementData(localPlayer, key) == true then return false end
@@ -232,6 +240,7 @@ addEventHandler("onClientWeaponsChanged", root, function()
 end)
 
 addEventHandler("onClientPlayerWasted", localPlayer, function() close(false) end)
+addEventHandler("onClientVehicleStartEnter", root, function(player) if player == localPlayer then close(false) end end)
 addEventHandler("onClientResourceStop", resourceRoot, function() close(false) end)
 addEventHandler("onClientMinimize", root, function() close(false) end)
 
@@ -270,7 +279,7 @@ end
 
 render = function()
     if not getKeyState(KEY) then close(true) return end
-    if isPedDead(localPlayer) then close(false) return end
+    if isPedDead(localPlayer) or not onFoot() then close(false) return end
     updatePointer()
 
     local fCat, fSub = font(15, true), font(12, false)

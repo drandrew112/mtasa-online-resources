@@ -78,10 +78,13 @@ end)
 
 addEventHandler("onClientRender", root, function()
     local int, dim = getElementInterior(localPlayer), getElementDimension(localPlayer)
+    -- a copy of the interior in this dimension (server/copies.lua) shows the dimension 0 signs too
+    local copies = getElementData(resourceRoot, "sac.copies")
+    local copyDim = type(copies) == "table" and copies[dim] == true
     local cx, cy, cz = getCameraMatrix()
     local white = tocolor(255, 255, 255, 255)
     for _, s in ipairs(signs) do
-        if s.int == int and s.dim == dim and isElement(s.rt)
+        if s.int == int and (s.dim == dim or (copyDim and s.dim == 0)) and isElement(s.rt)
             and ((cx - s.cx) * s.def.nx + (cy - s.cy) * s.def.ny) > 0
             and getDistanceBetweenPoints3D(cx, cy, cz, s.cx, s.cy, s.cz) < WS.DRAW_DIST then
             if s.dirty then renderSign(s) end

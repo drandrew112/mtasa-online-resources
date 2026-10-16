@@ -3,14 +3,31 @@
 -- traffic, they are left out of getTrafficSnapshot / the traffic limits / the workload keeper, and
 -- their separation losses fire onAviTutorialSeparationLoss (no fine) instead of onAviSeparationLoss.
 -- Their controller is the tutorial position of the owner (avi_controller tutorial login, which calls
--- setTutorialController), by the normal sector rule, also in the approach sector of its airport
--- (ac.tutCover). Parked tutorial aircraft stay until removed.
+-- setTutorialController), by the normal sector rule: the tutorial tower has its CTR only, the closed
+-- approach around it is nobody's (the pilots fly on their own there). The arrival comes as approach
+-- would hand it over: cleared for the approach. Parked tutorial aircraft stay until removed.
+-- setTutorialTimeScale makes the owner's aircraft fly faster (sim.lua runs that many steps per tick).
 
 local positions = {}     -- [owner] = position id of the owner's tutorial login
+local scales = {}        -- [owner] = whole number of simulation steps per tick (nil = 1)
 
 -- the tutorial position of the owner (nil = not logged in), used by controllerOf
 function tutorialPosition(owner)
     return positions[owner]
+end
+
+-- the time scale of the owner's tutorial aircraft (sim.lua tick)
+function tutorialTimeScale(owner)
+    return scales[owner] or 1
+end
+
+-- the work_atc tutorial: scale = 1..TR.TUTORIAL_MAX_SCALE (whole steps), 1 = real time
+function setTutorialTimeScale(owner, scale)
+    if not isElement(owner) then return false end
+    scale = math.floor(tonumber(scale) or 1)
+    scale = math.max(1, math.min(TR.TUTORIAL_MAX_SCALE, scale))
+    scales[owner] = scale > 1 and scale or nil
+    return true
 end
 
 -- avi_controller: the owner logged in to (posId) / out of (nil) the tutorial position
@@ -90,10 +107,9 @@ function spawnTutorialFlight(owner, def)
     local ac, err = spawnFlight(fl, opts)
     if not ac then return false, err end
     ac.tutSqk = ac.sqk
-    -- the tutorial tower covers the closed approach position of the airport for its aircraft: the
-    -- tower CTR is often only a strip along the runway (SASF: 2000 ft high), too small to practise
-    -- levels / headings after take-off or an approach
-    ac.tutCover = icao .. "_APP"
+    -- handed over by the (closed) approach: already cleared for the approach, the tower gives the
+    -- landing clearance
+    if def.kind == "arr" then ac.appClr = true end
     return ac.id
 end
 
@@ -140,4 +156,5 @@ end
 addEventHandler("onPlayerQuit", root, function()
     removeTutorialFlights(source)
     positions[source] = nil
+    scales[source] = nil
 end)

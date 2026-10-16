@@ -11,6 +11,9 @@ TUTORIAL = {
     FADE_TIME = 1.2,                   -- seconds of a camera fade
     CURSOR_KEY = "F2",                 -- shows / hides the cursor for the tutorial card buttons
     POLL = 500,                        -- ms, server check of the tutorial aircraft
+    -- the tutorial aircraft fly this many times faster while they are on the move (pushback, taxi,
+    -- take-off, climb-out, approach, landing, taxi in) and none of them asks the player for something
+    FAST_SCALE = 4,
 
     -- The tower position of the tutorial (avi_controller tutorial login) and its airport. The SA
     -- Control building is next to San Fierro airport.
@@ -21,6 +24,9 @@ TUTORIAL = {
     -- the arrival point of the SA Control entrance (avi_core AVI.INTERIOR.entrance), a few metres from
     -- the San Fierro consoles. The tutorial console marker stands where the live San Fierro one does.
     START = { 215.20518, 199.86151, 1058.15942, 0, interior = 3 },
+    -- the map of the room: its interior objects are copied into the session's dimension
+    -- (createDimensionCopy / destroyDimensionCopy), the tutorial does not start without it
+    MAP_RESOURCE = "map_int_sacontrol",
 
     -- The two tutorial aircraft of avi_traffic (spawnTutorialFlight); type and route are copied from
     -- a flight of the database. The departure waits gateWait s at the stand before it calls.

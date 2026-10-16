@@ -170,10 +170,34 @@ function enterStep(s, step)
     if fn then fn(s) end
 end
 
+-- the phases nobody has to act in (pushback, taxi, take-off, climb-out, approach, landing roll, taxi in)
+local BUSY = { pushback = true, pushed = true, taxi_out = true, lined = true, takeoff = true, air = true, final = true,
+    landing = true, vacate = true, vacated = true, taxi_in = true }
+
+-- the time scale of the tutorial aircraft: TUTORIAL.FAST_SCALE while one of them is on the move and
+-- none of them asks the player for something, else 1
+local function timeScale(s, ac)
+    if s.step == "alerts" or s.step == "done" then return 1 end
+    local moving = false
+    for _, a in pairs(ac) do
+        if a.req and a.ready then return 1 end
+        if BUSY[a.phase] then moving = true end
+    end
+    return moving and TUTORIAL.FAST_SCALE or 1
+end
+
+local function setScale(s, scale)
+    if s.scale == scale then return end
+    s.scale = scale
+    call("avi_traffic", "setTutorialTimeScale", s.player, scale)
+end
+
 -- every POLL: the aircraft state to the client; a lost aircraft comes again
 local function poll(s)
     local ac = aircraftOf(s)
-    send(s.player, "atc:tut:info", "aircraft", { dep = compact(ac.dep), arr = compact(ac.arr) })
+    setScale(s, timeScale(s, ac))
+    send(s.player, "atc:tut:info", "aircraft", { dep = compact(ac.dep), arr = compact(ac.arr) },
+        s.scale > 1 and s.scale or nil)
     local st = s.step
     if s.depId and not ac.dep and (st == "label" or st == "delivery" or st == "ground") then
         -- the departure was removed (an admin, a sim error): a new one, from its first step
@@ -190,7 +214,8 @@ end
 ---------------------------------------------------------------- start / finish
 
 local function requiredRunning()
-    for _, name in ipairs({ "avi_core", "avi_controller", "avi_traffic", "avi_airports", "avi_nav", "avi_airspace" }) do
+    for _, name in ipairs({ "avi_core", "avi_controller", "avi_traffic", "avi_airports", "avi_nav", "avi_airspace",
+            TUTORIAL.MAP_RESOURCE }) do
         if not isRunning(name) then return false end
     end
     return true
@@ -232,6 +257,9 @@ function Tutorial.start(player)
     fadeCamera(player, false, TUTORIAL.FADE_TIME)
     later(s, fadeMs() + 200, function()
         if getPedOccupiedVehicle(player) then removePedFromVehicle(player) end
+        -- the SA Control room itself (map_int_sacontrol objects) in the session's dimension
+        s.mapCopy = call(TUTORIAL.MAP_RESOURCE, "createDimensionCopy", s.dimension) == true
+        if not s.mapCopy then outputDebugString("[work_atc] tutorial: " .. TUTORIAL.MAP_RESOURCE .. " copy failed", 2) end
         s.marker = call("avi_core", "createTutorialMarker", player, s.dimension, TUTORIAL.POSITION)
         if not s.marker then
             Tutorial.finish(player, "error")
@@ -268,8 +296,12 @@ local function destroySessionWorld(s)
     -- the console
     if isElement(player) then call("avi_controller", "endATCTutorial", player, true) end
     call("avi_traffic", "removeTutorialFlights", player)
+    call("avi_traffic", "setTutorialTimeScale", player, 1)
+    s.scale = nil
     if s.marker then call("avi_core", "destroyTutorialMarker", s.marker) end
     s.marker = nil
+    if s.mapCopy then call(TUTORIAL.MAP_RESOURCE, "destroyDimensionCopy", s.dimension) end
+    s.mapCopy = nil
 end
 
 -- reason: "completed" | "skipped" | "died" | "quit" | "error" | "stopped"

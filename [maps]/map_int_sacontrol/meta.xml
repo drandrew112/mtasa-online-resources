@@ -19,6 +19,10 @@
     <script src="mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>
     <script src="shared/wallsigns.lua" type="shared"></script>
     <script src="client/wallsigns.lua" type="client"></script>
+    <!-- copies of the interior in other dimensions (work_atc tutorial) -->
+    <script src="server/copies.lua" type="server"></script>
+    <export function="createDimensionCopy" type="server"></export>
+    <export function="destroyDimensionCopy" type="server"></export>
     <file src="fonts/Roboto.ttf" type="client"></file>
     <file src="fonts/RobotoB.ttf" type="client"></file>
 </meta>

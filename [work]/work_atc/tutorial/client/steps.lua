@@ -12,6 +12,7 @@ local T = {
     cmds = { dep = {}, arr = {} },   -- accepted commands per aircraft
     receipt = nil,
     note = nil, noteColor = nil,
+    fast = nil,          -- the time scale of the tutorial aircraft while nobody waits for the player (server)
 }
 
 local K = TUTORIAL.KEYS
@@ -93,11 +94,6 @@ local function requestItem(role)
     end
 end
 
-local function pickerRect()
-    local p = scope().picker
-    return p and p.rect or nil
-end
-
 local function phaseOf(role)
     local a = acOf(role)
     return a and a.phase or nil
@@ -140,15 +136,15 @@ end
 local STEP_LABELS = {}
 local function buildLabels()
 STEP_LABELS = {
-    console = L("work_atc.tut.steps.label_console"),
-    scope = L("work_atc.tut.steps.label_scope"),
-    label = L("work_atc.tut.steps.label_label"),
-    delivery = L("work_atc.tut.steps.label_delivery"),
-    ground = L("work_atc.tut.steps.label_ground"),
-    air = L("work_atc.tut.steps.label_air"),
-    arrival = L("work_atc.tut.steps.label_arrival"),
-    alerts = L("work_atc.tut.steps.label_alerts"),
-    done = L("work_atc.tut.steps.label_done"),
+    console = L("work_atc.tut.steps.step_console"),
+    scope = L("work_atc.tut.steps.step_scope"),
+    label = L("work_atc.tut.steps.step_label"),
+    delivery = L("work_atc.tut.steps.step_delivery"),
+    ground = L("work_atc.tut.steps.step_ground"),
+    air = L("work_atc.tut.steps.step_air"),
+    arrival = L("work_atc.tut.steps.step_arrival"),
+    alerts = L("work_atc.tut.steps.step_alerts"),
+    done = L("work_atc.tut.steps.step_done"),
 }
 end
 
@@ -272,23 +268,12 @@ STEP_SUBS = {
     air = {
         { text = S("air_wait", base), needScope = true, rect = labelRect("dep"),
           check = function() return phaseOf("dep") == "air" or depLost() end },
-        { text = S("air_cfl"), needScope = true, rect = menuItem("dep", "Cleared altitude"),
-          check = function() return cmd("dep", "cfl") or depLost() end },
-        { text = S("air_hdg"), needScope = true,
-          rect = function() return pickerRect() or menuItem("dep", "Fly heading", "Turn left heading", "Turn right heading")() end,
-          check = function() return cmd("dep", "hdg") or depLost() end },
-        { text = S("air_more"), next = true, needScope = true, rect = labelRect("dep") },
         { text = S("air_leave", base), needScope = true, rect = labelRect("dep"), check = depLost, leave = serverNext },
     },
     arrival = {
         { text = S("arr_wait", base), needScope = true, check = function() return acOf("arr") ~= nil end },
-        { text = S("arr_approach", base), needScope = true, rect = menuItem("arr", "Cleared approach"),
-          enter = function() focus("arr", 0.8) end, note = goAroundNote,
-          check = function()
-              local a = acOf("arr")
-              return cmd("arr", "approach", "land") or (a ~= nil and (a.appClr or a.landClr or a.phase == "final"))
-          end },
-        { text = S("arr_land"), needScope = true, rect = menuItem("arr", "Cleared to land"), note = goAroundNote,
+        { text = S("arr_land", base), needScope = true, rect = menuItem("arr", "Cleared to land"), note = goAroundNote,
+          enter = function() focus("arr", 0.8) end,
           check = function()
               local a = acOf("arr")
               return cmd("arr", "land") or (a ~= nil and (a.landClr or LANDED[a.phase] == true))
@@ -329,6 +314,11 @@ local function subCard(list, step)
         spec.note, spec.noteColor = missing, Card.colors.bad
     elseif not spec.note and def.note then
         spec.note, spec.noteColor = def.note(), Card.colors.muted
+    end
+    if T.fast and not missing then
+        local fast = L("work_atc.tut.steps.note_fast", { scale = T.fast })
+        spec.note = spec.note and (spec.note .. "\n" .. fast) or fast
+        spec.noteColor = spec.noteColor or Card.colors.muted
     end
 
     if def.next then
@@ -427,7 +417,7 @@ local function toggleCursor() Card.toggleCursor() end
 handle("atc:tut:begin", function(info)
     T.active, T.step, T.sub = true, nil, 1
     T.info = type(info) == "table" and info or {}
-    T.ac, T.cmds, T.receipt, T.note = {}, { dep = {}, arr = {} }, nil, nil
+    T.ac, T.cmds, T.receipt, T.note, T.fast = {}, { dep = {}, arr = {} }, nil, nil, nil
     bindKey(TUTORIAL.CURSOR_KEY, "down", toggleCursor)
     Card.onSkip = function() triggerServerEvent("atc:tut:skip", resourceRoot) end
 end)
@@ -446,6 +436,7 @@ end)
 handle("atc:tut:info", function(kind, a, b)
     if kind == "aircraft" then
         T.ac = type(a) == "table" and a or {}
+        T.fast = tonumber(b)
     elseif kind == "spawn" then
         T.ac[a] = b
         T.cmds[a] = {}

@@ -18,6 +18,8 @@ dimension of their own, starting at `TUTORIAL.DIMENSION_BASE`, and controls two 
 
 The tutorial does not fake anything: the console marker, the login window, the scope, the menu and
 the simulation are the real ones.
+- map_int_sacontrol **copies the SA Control room** (its interior objects and wall signs) into the
+  session's dimension (`createDimensionCopy`, reference counted); the tutorial does not start without it.
 - avi_core makes a **tutorial copy of the San Fierro console marker** in the session's dimension,
   visible only to the player. It opens the tutorial login of avi_controller.
 - avi_controller runs a **tutorial login**: the player is logged in to SASF_TWR, but the live
@@ -27,9 +29,12 @@ the simulation are the real ones.
 - avi_traffic flies **two tutorial aircraft** (`TUT101` departure, `TUT202` arrival, type and route
   copied from a flight of the database) in a world of their own: they do not meet the live traffic
   (stands, taxi queues, runways, alerts), and the live exports (snapshot, monitors, web, traffic
-  limits, workload keeper) leave them out. The tutorial tower also covers the closed approach (the
-  SASF TMA) for them: the SASF CTR is only a strip along the runway, 2000 ft high, too small to
-  practise levels, headings or an approach.
+  limits, workload keeper) leave them out. The tutorial tower controls its CTR only, like the live
+  one: the departure is out of its hands once it leaves the CTR (the closed approach is nobody's),
+  and the arrival comes cleared for the approach, as approach would hand it over.
+- **Fast forward:** while a tutorial aircraft is on the move (pushback, taxi, take-off, climb-out,
+  approach, landing, taxi in) and none of them asks the player for something, they fly
+  `TUTORIAL.FAST_SCALE` times faster (avi_traffic `setTutorialTimeScale`); the card says so.
 
 ## Steps
 
@@ -40,11 +45,12 @@ the simulation are the real ones.
    yellow request frame, the command menu.
 4. **Delivery.** IFR clearance (SID, initial level), Pushback approved.
 5. **Taxi.** Taxi to the runway in use, holding short, CROSS / BKTRK / T/O, take-off clearance.
-6. **Take-off and climb.** Cleared altitude, the heading picker, Direct to / Transfer to; the step
-   ends when the departure leaves the TMA (nobody controls it any more).
+6. **Take-off.** The departure climbs on its SID to the initial level of the IFR clearance; the tower
+   gives no levels or headings (only approach climbs it further). The step ends when it leaves the CTR.
 7. **Arrival.** The arrival appears in the TMA flying to the final fix of the runway in use (the
-   farthest point of `TR.TUTORIAL_FINAL_DIST` x `TR.TUTORIAL_FINAL_ANGLES`): Cleared approach,
-   Cleared to land (a go-around is explained when it happens), the landing, Taxi to stand, parked.
+   farthest point of `TR.TUTORIAL_FINAL_DIST` x `TR.TUTORIAL_FINAL_ANGLES`), already cleared for the
+   approach: Cleared to land once it is in the CTR / on final (a go-around is explained when it
+   happens), the landing, Taxi to stand, parked.
 8. **Alerts and pay.** The arrival squawks 7700 (EMRG), the other alerts, the fines and the pay
    rules (from `getATCPayRules`), the ranks (APP / RADAR levels from `ATC.LEVELS`); Logout shows the
    receipt (not paid).
@@ -76,7 +82,8 @@ Texts: v_locals `work_atc.tut.*` (en + hu), written by `[aviation]/tools/loc_tut
   (player, position, total, receipt items) and `onATCTutorialCommand` (player, action, aircraft id,
   value). Client `getScopeLayout`, `setScopeBlockedRect`, `focusScope`.
 - **avi_traffic:** `spawnTutorialFlight`, `getTutorialSnapshot`, `setTutorialSquawk`,
-  `removeTutorialFlight(s)`; avi_controller calls `setTutorialController` at the tutorial
+  `removeTutorialFlight(s)`, `setTutorialTimeScale`; avi_controller calls `setTutorialController` at the tutorial
   login / logout.
 - **avi_airports:** `getActiveRunways`.
+- **map_int_sacontrol:** `createDimensionCopy(dimension)`, `destroyDimensionCopy(dimension)`.
 - **v_accounts:** the server-only element data `save.position`.

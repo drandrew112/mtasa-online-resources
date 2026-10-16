@@ -40,4 +40,5 @@
     <export function="setTutorialSquawk"     type="server" />
     <export function="removeTutorialFlight"  type="server" />
     <export function="removeTutorialFlights" type="server" />
+    <export function="setTutorialTimeScale"  type="server" />
 </meta>

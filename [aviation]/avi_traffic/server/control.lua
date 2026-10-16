@@ -48,11 +48,10 @@ end
 
 function controllerOf(ac)
     local own = sectorPosition(ac)
-    -- tutorial aircraft: only the tutorial position of their owner, by the same sector rule (also in
-    -- the approach sector of their airport, ac.tutCover)
+    -- tutorial aircraft: only the tutorial position of their owner, by the same sector rule
     if ac.tut then
         local pos = tutorialPosition(ac.tut)
-        return (pos and (own == pos or (ac.tutCover and own == ac.tutCover))) and pos or nil
+        return (pos and own == pos) and pos or nil
     end
     -- early transfer: valid while the aircraft is still in the sector it was handed over from
     if ac.ctl and ac.xferFrom and ac.ctl ~= own and ac.xferFrom == own and staffed[ac.ctl] then return ac.ctl end

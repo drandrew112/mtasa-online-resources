@@ -76,9 +76,10 @@ TR = {
     CENTER_POSITION = "SACC_CTR",
 
     -- work_atc tutorial (server/tutorial.lua): the tutorial arrival appears in the CTR / TMA of the
-    -- airport, this far (m) from the final fix of the runway in use, flying to it (the tutorial tower
-    -- covers the closed approach for this one aircraft). The farthest distance that fits, straight in
-    -- on the extended centre line or from the side: ANGLES = deg off the extended centre line.
+    -- airport, this far (m) from the final fix of the runway in use, flying to it, cleared for the
+    -- approach (as the closed approach would hand it to the tower). The farthest distance that fits,
+    -- straight in on the extended centre line or from the side: ANGLES = deg off the extended centre line.
     TUTORIAL_FINAL_DIST = { 2600, 2200, 1800, 1400, 1000 },
     TUTORIAL_FINAL_ANGLES = { 0, 30, -30, 45, -45, 60, -60 },
+    TUTORIAL_MAX_SCALE = 8,   -- setTutorialTimeScale: at most this many simulation steps per tick
 }
