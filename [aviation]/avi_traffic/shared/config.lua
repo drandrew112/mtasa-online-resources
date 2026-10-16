@@ -74,4 +74,11 @@ TR = {
     -- base centre position (CTA) in avi_controller; the split ones (SACC_N_CTR, SACC_U_CTR ...) come from the
     -- sector chains of avi_airspace `centre`
     CENTER_POSITION = "SACC_CTR",
+
+    -- work_atc tutorial (server/tutorial.lua): the tutorial arrival appears in the CTR / TMA of the
+    -- airport, this far (m) from the final fix of the runway in use, flying to it (the tutorial tower
+    -- covers the closed approach for this one aircraft). The farthest distance that fits, straight in
+    -- on the extended centre line or from the side: ANGLES = deg off the extended centre line.
+    TUTORIAL_FINAL_DIST = { 2600, 2200, 1800, 1400, 1000 },
+    TUTORIAL_FINAL_ANGLES = { 0, 30, -30, 45, -45, 60, -60 },
 }

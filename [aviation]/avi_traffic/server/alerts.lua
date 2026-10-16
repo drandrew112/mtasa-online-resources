@@ -14,6 +14,7 @@
 -- A pair counts as separated again TR.SEP_RESET s after the conflict ended (no flicker re-fines).
 
 addEvent("onAviSeparationLoss")   -- source: resourceRoot, args: kind, { posId, ... }, callsign1, callsign2
+addEvent("onAviTutorialSeparationLoss")   -- source: resourceRoot, args: owner player, kind, callsign1, callsign2
 
 local conflicts = {}    -- ["id1:id2"] = { kind = , last = tick }
 
@@ -73,7 +74,9 @@ function updateAlerts(dt)
             local b = list[j]
             local gb = isAircraftOnGround(b)
             local kind
-            if ga and gb then
+            if a.tut ~= b.tut then
+                -- the live traffic and the tutorial worlds never conflict
+            elseif ga and gb then
                 if GND_ACTIVE[a.phase] and GND_ACTIVE[b.phase] and headOn(a, b) then kind = "GND" end
             elseif not ga and not gb then
                 kind = airConflict(a, b)
@@ -82,7 +85,12 @@ function updateAlerts(dt)
                 stca[a.id], stca[b.id] = true, true
                 local key = a.id .. ":" .. b.id
                 local c = conflicts[key]
-                if not c then
+                if not c and a.tut then
+                    -- tutorial: no fine, the tutorial explains it
+                    triggerEvent("onAviTutorialSeparationLoss", resourceRoot, a.tut, kind, a.cs, b.cs)
+                    c = { kind = kind }
+                    conflicts[key] = c
+                elseif not c then
                     local pos, seen = {}, {}
                     for _, ac in ipairs({ a, b }) do
                         if ac.ctl and not seen[ac.ctl] and sectorPosition(ac) == ac.ctl then
@@ -108,16 +116,18 @@ function updateAlerts(dt)
         end
     end
 
+    -- duplicate squawks within one world (live / each tutorial)
+    local function sqkKey(ac) return (ac.tut and tostring(ac.tut) or "") .. ":" .. ac.sqk end
     local sqkCount = {}
     for _, ac in ipairs(list) do
-        if ac.sqk then sqkCount[ac.sqk] = (sqkCount[ac.sqk] or 0) + 1 end
+        if ac.sqk then sqkCount[sqkKey(ac)] = (sqkCount[sqkKey(ac)] or 0) + 1 end
     end
 
     for _, ac in ipairs(list) do
         local al = {}
         if ac.sqk == "7700" then al[#al + 1] = "EMRG" end
         if ac.sqk == "7600" then al[#al + 1] = "COMS" end
-        if ac.sqk and sqkCount[ac.sqk] > 1 then al[#al + 1] = "DUPE" end
+        if ac.sqk and sqkCount[sqkKey(ac)] > 1 then al[#al + 1] = "DUPE" end
         if stca[ac.id] then al[#al + 1] = "STCA" end
         if routeDeviation(ac, dt) then al[#al + 1] = "RAM" end
         ac.alert = #al > 0 and table.concat(al, " ") or nil
@@ -129,7 +139,7 @@ function setSquawk(cs, code)
     code = tostring(code or "")
     if not code:match("^[0-7][0-7][0-7][0-7]$") then return false, "bad squawk" end
     for _, ac in pairs(AIRCRAFT) do
-        if ac.cs == tostring(cs or ""):upper() then
+        if ac.cs == tostring(cs or ""):upper() and not ac.tut then
             ac.sqk = code
             return true
         end

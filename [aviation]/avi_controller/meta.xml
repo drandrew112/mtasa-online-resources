@@ -14,6 +14,7 @@
     <script src="client/hdgpicker.lua" type="client" />
     <script src="client/login.lua"   type="client" />
     <script src="client/scope.lua"   type="client" />
+    <script src="client/layout.lua"  type="client" />
 
     <file src="fonts/EuroScope.ttf" type="client" />
 
@@ -25,4 +26,12 @@
     <export function="useATCConsole"        type="server" />
     <export function="logoutATC"            type="server" />
     <export function="getPositionViews"     type="server" />
+    <!-- work_atc tutorial -->
+    <export function="useTutorialConsole"   type="server" />
+    <export function="isATCTutorialSession" type="server" />
+    <export function="endATCTutorial"       type="server" />
+    <export function="getATCPayRules"       type="server" />
+    <export function="getScopeLayout"       type="client" />
+    <export function="setScopeBlockedRect"  type="client" />
+    <export function="focusScope"           type="client" />
 </meta>

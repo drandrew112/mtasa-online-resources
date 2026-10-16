@@ -11,6 +11,10 @@
 --   final           : on the glide path to the threshold -> landing -> taxi_in -> parked -> removed
 --   go-around       : final fix too high / no landing clearance -> the go-around procedure of the runway
 --                     (avi_nav <ICAO>GA: opposite half final, circuit, final fix) at TR.GO_AROUND_ALT
+--
+-- Tutorial aircraft (server/tutorial.lua, ac.tut = the player): they fly in this simulation, but in a
+-- world of their own. They never meet the live traffic (stands, taxi queues, runways, alerts), and
+-- the live exports (snapshot, counts, callsigns) leave them out.
 
 AIRCRAFT = {}          -- [id] = aircraft
 local nextId = 1
@@ -55,9 +59,16 @@ local function controlled(ac)
     return controllerOf(ac) ~= nil
 end
 
+-- the live traffic and every tutorial session are separate worlds
+local function sameWorld(a, b)
+    return a.tut == b.tut
+end
+
+-- except: the aircraft asking (its world counts; nil = the live traffic)
 local function gateOccupied(icao, gateId, except)
+    local world = except and except.tut
     for _, ac in pairs(AIRCRAFT) do
-        if ac ~= except and ac.gndApt == icao and ac.gate == gateId and isGround(ac) then return true end
+        if ac ~= except and ac.tut == world and ac.gndApt == icao and ac.gate == gateId and isGround(ac) then return true end
     end
     return false
 end
@@ -143,30 +154,45 @@ function removeAircraft(ac, reason)
     triggerEvent("onAviTrafficRemove", resourceRoot, ac.id, ac.cs, reason or "removed")
 end
 
+-- live traffic only (tutorial aircraft have callsigns of their own world)
 function isCallsignActive(cs)
-    for _, ac in pairs(AIRCRAFT) do if ac.cs == cs then return true end end
+    for _, ac in pairs(AIRCRAFT) do if ac.cs == cs and not ac.tut then return true end end
     return false
 end
 
+-- live traffic only (the traffic limits do not count tutorial aircraft)
 function countActive()
     local n = 0
-    for _ in pairs(AIRCRAFT) do n = n + 1 end
+    for _, ac in pairs(AIRCRAFT) do
+        if not ac.tut then n = n + 1 end
+    end
     return n
 end
 
 -- returns aircraft or nil, reason
-function spawnFlight(fl)
-    if isCallsignActive(fl.callsign) then return nil, "already active" end
+-- opts (tutorial.lua): tut = owner player, gateWait = s at the stand,
+--   final = { x, y, hdg, alt, rwy = runway end } (airborne on the extended centre line of rwy)
+function spawnFlight(fl, opts)
+    opts = opts or {}
+    if not opts.tut and isCallsignActive(fl.callsign) then return nil, "already active" end
     local ac = newAircraft(fl)
-    local depApt = airport(fl.dep)
-    if depApt then
-        local g = freeGate(depApt)
+    ac.tut = opts.tut
+    local depApt = not opts.final and airport(fl.dep)
+    if opts.final then
+        local f = opts.final
+        ac.phase = "air"
+        ac.x, ac.y, ac.hdg = f.x, f.y, f.hdg
+        ac.alt, ac.cfl = f.alt, f.alt
+        ac.arrRwy = f.rwy.ident
+        ac.spd = math.min(250, (ac.perf.approach or 140) + 30)
+    elseif depApt then
+        local g = freeGate(depApt, ac)
         if not g then return nil, "no free gate at " .. fl.dep end
         ac.phase = "gate"
         ac.gndApt, ac.gate = depApt.icao, g.id
         ac.x, ac.y, ac.hdg = g.x, g.y, tonumber(g.hdg) or 0
         ac.alt = depApt.elevation
-        ac.timer = math.random(TR.GATE_WAIT[1], TR.GATE_WAIT[2])
+        ac.timer = opts.gateWait or math.random(TR.GATE_WAIT[1], TR.GATE_WAIT[2])
     else
         local first = navPoint(ac.route[1])
         if not first then return nil, "unknown entry fix " .. tostring(ac.route[1]) end
@@ -392,7 +418,7 @@ end
 local function taxiBlocker(ac)
     if ac.onRwy then return nil end
     for _, o in pairs(AIRCRAFT) do
-        if o ~= ac and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
+        if o ~= ac and sameWorld(o, ac) and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
                 and dist(ac.x, ac.y, o.x, o.y) < TR.TAXI_SEP + 10 and onPathAhead(ac, o.x, o.y, TR.TAXI_SEP) then
             local mutual = TAXI_MOVING[o.phase] and onPathAhead(o, ac.x, ac.y, TR.TAXI_SEP)
             if not (mutual and ac.id < o.id) and not (TAXI_MOVING[o.phase] and waitsFor(o, ac)) then return o end
@@ -443,7 +469,7 @@ end
 -- someone on the runway (rolling, lined up, taxiing on it), or on short final to it
 local function runwayBusy(ac, icao, runwayId)
     for _, o in pairs(AIRCRAFT) do
-        if o ~= ac then
+        if o ~= ac and sameWorld(o, ac) then
             if o.onRwy == runwayId and o.gndApt == icao then return true end
             if o.phase == "final" and o.rwy and o.rwy.icao == icao and o.rwy.runway == runwayId
                     and dist(o.x, o.y, o.rwy.x, o.rwy.y) < 1500 then return true end
@@ -520,7 +546,7 @@ local function pushbackBlocked(ac)
     local p2 = ac.push.p2
     ac.phase, ac.push = saved[1], saved[2]
     for _, o in pairs(AIRCRAFT) do
-        if o ~= ac and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
+        if o ~= ac and sameWorld(o, ac) and o.gndApt == ac.gndApt and TAXI_OBSTACLE[o.phase] and not o.onRwy
                 and dist(o.x, o.y, p2[1], p2[2]) < TR.TAXI_SEP then return true end
     end
     return false
@@ -717,6 +743,7 @@ local function tickTaxiIn(ac, dt)
 end
 
 local function tickParked(ac, dt)
+    if ac.tut then return end      -- the tutorial removes its own aircraft
     ac.timer = ac.timer - dt
     if ac.timer <= 0 then removeAircraft(ac, "parked") end
 end

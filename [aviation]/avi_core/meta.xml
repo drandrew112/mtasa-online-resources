@@ -25,6 +25,8 @@
     <export function="hasATCAccess"        type="server" />
     <export function="getAdminLevel"       type="server" />
     <export function="isAviationAdmin"     type="server" />
+    <export function="createTutorialMarker"  type="server" />
+    <export function="destroyTutorialMarker" type="server" />
 
     <export function="hasATCRight"         type="client" />
     <export function="hasATCAccess"        type="client" />

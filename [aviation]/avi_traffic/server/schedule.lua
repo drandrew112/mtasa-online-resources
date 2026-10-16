@@ -54,8 +54,10 @@ local function positionLoad(pos)
     if not isCenter and not icao then return math.huge end
     local load = 0
     for _, ac in pairs(AIRCRAFT) do
-        local sec = sectorPosition(ac)
-        if sec == pos then
+        local sec = not ac.tut and sectorPosition(ac)
+        if ac.tut then
+            -- tutorial aircraft are no work for anybody
+        elseif sec == pos then
             load = load + 1
         else
             local coming
@@ -154,7 +156,7 @@ end
 function removeFlight(cs)
     cs = tostring(cs or ""):upper()
     for _, ac in pairs(AIRCRAFT) do
-        if ac.cs == cs then removeAircraft(ac, "removed") return true end
+        if ac.cs == cs and not ac.tut then removeAircraft(ac, "removed") return true end
     end
     return false
 end
@@ -176,8 +178,8 @@ addCommandHandler("avitraffic", function(player, _, action, arg, arg2)
     if action == "list" then
         local lines = {}
         for _, ac in pairs(AIRCRAFT) do
-            lines[#lines + 1] = ("%s %s %s-%s %s %dft %dkt %s"):format(ac.cs, ac.type, ac.dep, ac.arr, ac.phase,
-                ac.alt, ac.spd, ac.ctl or "-")
+            lines[#lines + 1] = ("%s%s %s %s-%s %s %dft %dkt %s"):format(ac.tut and "[tutorial] " or "", ac.cs, ac.type,
+                ac.dep, ac.arr, ac.phase, ac.alt, ac.spd, ac.ctl or "-")
         end
         table.sort(lines)
         say(player, #lines .. " active flights (details in F8)")
@@ -190,7 +192,10 @@ addCommandHandler("avitraffic", function(player, _, action, arg, arg2)
     elseif action == "remove" then
         say(player, removeFlight(arg) and "Removed" or "Not active")
     elseif action == "clear" then
-        for _, ac in pairs(AIRCRAFT) do removeAircraft(ac, "cleared") end
+        -- the tutorial sessions keep their aircraft
+        for _, ac in pairs(AIRCRAFT) do
+            if not ac.tut then removeAircraft(ac, "cleared") end
+        end
         say(player, "All traffic removed")
     elseif action == "sqk" then
         local ok, err = setSquawk(arg, arg2)

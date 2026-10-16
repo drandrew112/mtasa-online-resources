@@ -8,6 +8,10 @@ local playerPos = {}    -- [player] = posId
 local sessions = {}     -- [player] = { start = tick, actions = n } (one per logged-in position)
 local lastSent = {}     -- [player] = tick of the last traffic update (radar refresh)
 local loginFilter = {}  -- [player] = { [posId] = true } positions of the last opened login (ATC marker), nil = all
+-- Tutorial logins (work_atc tutorial, useTutorialConsole): the player is in playerPos / sessions like
+-- anyone else, but NOT in staff (the live position stays free for others), sees only the own tutorial
+-- aircraft of avi_traffic, gets no pay and no XP. Logging out fires onATCTutorialLogout with the receipt.
+local tutorialLogin = {} -- [player] = posId offered by the last tutorial console
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -89,6 +93,7 @@ addEvent("avi:ctlView", true)
 addEventHandler("avi:ctlView", resourceRoot, function(v)
     local pos = playerPos[client]
     if not pos or type(v) ~= "table" then return end
+    if sessions[client] and sessions[client].tutorial then return end     -- the wall screens show live positions only
     views[pos] = {
         x = tonumber(v.x) or 0, y = tonumber(v.y) or 0, scale = tonumber(v.scale) or 0.1,
         sx = tonumber(v.sx) or 1920, sy = tonumber(v.sy) or 1080,
@@ -149,10 +154,9 @@ local function broadcastStatic()
     for player in pairs(playerPos) do sendStatic(player) end
 end
 
--- pay for the finished position session: actions * rate, multiplied by the time spent, minus the
--- mistakes (separation losses). Mistakes are always paid for: a negative total comes from the bank.
-local function paySession(player, sess)
-    if not sess then return end
+-- receipt of a finished position session: actions * rate, multiplied by the time spent, minus the
+-- mistakes (separation losses)
+local function sessionItems(sess)
     local items = {}
     if sess.actions >= CTL.PAY_MIN_ACTIONS then
         local minutes = (getTickCount() - sess.start) / 60000
@@ -171,6 +175,13 @@ local function paySession(player, sess)
     if sess.mistakes > 0 then
         items[#items + 1] = { label = ("Mistakes (%d)"):format(sess.mistakeCount), amount = -sess.mistakes }
     end
+    return items
+end
+
+-- pay for the finished position session. Mistakes are always paid for: a negative total comes from the bank.
+local function paySession(player, sess)
+    if not sess then return end
+    local items = sessionItems(sess)
     if #items == 0 then return end
     local ok, total = call("work_core", "payWork", player, CTL.WORK_ID, items, "Position closed")
     -- payWork pays only a positive total; the rest of the fines is taken here (may go into debt)
@@ -183,6 +194,18 @@ function logoutATC(player, silent)
     playerPos[player] = nil
     local sess = sessions[player]
     sessions[player] = nil
+    if sess and sess.tutorial then
+        -- tutorial: nothing is paid, the receipt only goes to the tutorial
+        call("avi_traffic", "setTutorialController", player, nil)
+        local items, total = sessionItems(sess), 0
+        for _, it in ipairs(items) do total = total + it.amount end
+        if isElement(player) then
+            triggerClientEvent(player, "avi:ctlClosed", resourceRoot)
+            if not silent then notify(player, "Logged out from " .. pos .. " (tutorial)") end
+        end
+        triggerEvent("onATCTutorialLogout", resourceRoot, player, pos, total, items)
+        return true
+    end
     paySession(player, sess)
     if staff[pos] == player then staff[pos] = nil; views[pos] = nil end
     if isElement(player) then
@@ -190,6 +213,29 @@ function logoutATC(player, silent)
         if not silent then notify(player, "Logged out from " .. pos) end
     end
     triggerEvent("onATCPositionChange", resourceRoot, pos, nil, player)
+    return true
+end
+
+local function newSession(tutorial)
+    return { start = getTickCount(), actions = 0, mistakes = 0, mistakeCount = 0, aircraft = {}, aircraftCount = 0,
+        tutorial = tutorial or nil }
+end
+
+-- tutorial login: no rights / marker / occupant checks, the live position is not taken
+local function loginTutorial(player, posId)
+    local pos = positionById(posId)
+    if not pos then
+        notify(player, "Unknown position " .. tostring(posId))
+        return false
+    end
+    if playerPos[player] then logoutATC(player, true) end
+    playerPos[player] = pos.id
+    sessions[player] = newSession(true)
+    lastSent[player] = nil
+    call("avi_traffic", "setTutorialController", player, pos.id)
+    sendStatic(player)
+    notify(player, "Logged in as " .. pos.id .. " (tutorial)")
+    triggerEvent("onATCTutorialLogin", resourceRoot, player, pos.id)
     return true
 end
 
@@ -216,11 +262,11 @@ local function login(player, posId)
         notify(player, pos.id .. " is staffed by " .. playerName(who))
         return false
     end
-    if playerPos[player] and playerPos[player] ~= pos.id then logoutATC(player, true) end
+    local cur = sessions[player]
+    if playerPos[player] and (playerPos[player] ~= pos.id or (cur and cur.tutorial)) then logoutATC(player, true) end
     staff[pos.id] = player
     playerPos[player] = pos.id
-    sessions[player] = { start = getTickCount(), actions = 0, mistakes = 0, mistakeCount = 0,
-        aircraft = {}, aircraftCount = 0 }
+    sessions[player] = newSession(false)
     lastSent[player] = nil     -- the first traffic update goes out at the next check
     sendStatic(player)
     notify(player, "Logged in as " .. pos.id .. " (" .. pos.name .. ")")
@@ -249,6 +295,9 @@ function openATCLogin(player, positions)
 end
 
 addEvent("onATCPositionChange")     -- source: resourceRoot, args: posId, player|nil, oldPlayer|nil
+addEvent("onATCTutorialLogin")      -- source: resourceRoot, args: player, posId
+addEvent("onATCTutorialLogout")     -- source: resourceRoot, args: player, posId, total, { { label, amount }, ... }
+addEvent("onATCTutorialCommand")    -- source: resourceRoot, args: player, action, aircraft id, value
 
 addEvent("avi:ctlOpen", true)
 addEventHandler("avi:ctlOpen", resourceRoot, function()
@@ -262,6 +311,10 @@ end)
 
 addEvent("avi:ctlLogin", true)
 addEventHandler("avi:ctlLogin", resourceRoot, function(posId)
+    if tutorialLogin[client] and tutorialLogin[client] == posId then
+        loginTutorial(client, posId)
+        return
+    end
     login(client, posId)
 end)
 
@@ -276,8 +329,16 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
     local pos = playerPos[player]
     if not pos then return end
     local cur = positionById(pos)
-    if not hasAccess(player) or not cur or not canStaff(player, cur) then
+    local sess = sessions[player]
+    local tutorial = (sess and sess.tutorial) == true      -- the tutorial needs no rights
+    if not cur or (not tutorial and (not hasAccess(player) or not canStaff(player, cur))) then
         logoutATC(player)
+        return
+    end
+    -- tutorial sessions command only their own tutorial aircraft, everybody else only live traffic
+    local owner = call("avi_traffic", "getTutorialOwner", id)
+    if tutorial ~= (owner ~= nil) or (owner and owner ~= player) then
+        notify(player, "That aircraft is not under your control")
         return
     end
     local ctl = call("avi_traffic", "getAircraftController", id)
@@ -326,7 +387,6 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
         notify(player, "Not accepted: " .. tostring(err or "no answer"))
         return
     end
-    local sess = sessions[player]
     if sess then
         sess.actions = sess.actions + 1
         -- every aircraft counts once per session ("Controlled traffic" pay item)
@@ -334,6 +394,10 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
             sess.aircraft[id] = true
             sess.aircraftCount = sess.aircraftCount + 1
         end
+    end
+    if sess and sess.tutorial then
+        triggerEvent("onATCTutorialCommand", resourceRoot, player, action, id, value)
+        return
     end
     call("work_core", "giveWorkXp", player, CTL.WORK_ID, CTL.XP_ACTIONS[action] or CTL.XP_DEFAULT)
 end)
@@ -356,16 +420,29 @@ addEventHandler("onAviSeparationLoss", root, function(kind, positions, cs1, cs2)
     end
 end)
 
+-- tutorial aircraft (avi_traffic): no fine, the receipt of the tutorial shows it
+addEvent("onAviTutorialSeparationLoss")
+addEventHandler("onAviTutorialSeparationLoss", root, function(owner, kind, cs1, cs2)
+    local sess = isElement(owner) and sessions[owner]
+    local amount = CTL.PENALTY[kind]
+    if not (sess and sess.tutorial and amount) then return end
+    sess.mistakes = sess.mistakes + amount
+    sess.mistakeCount = sess.mistakeCount + 1
+    notify(owner, ("STCA %s / %s: %s (tutorial, not charged: -€%d)"):format(tostring(cs1), tostring(cs2), SEP_TEXT[kind] or kind, amount))
+end)
+
 addEventHandler("onPlayerQuit", root, function()
     logoutATC(source, true)
     lastSent[source] = nil
     loginFilter[source] = nil
+    tutorialLogin[source] = nil
 end)
 
 -- a right was taken away: log out when it was the one of the current position
 addEvent("onPlayerATCChange")
 addEventHandler("onPlayerATCChange", root, function(right, enabled)
     if enabled then return end
+    if sessions[source] and sessions[source].tutorial then return end
     local cur = playerPos[source] and positionById(playerPos[source])
     if cur and not canStaff(source, cur) then logoutATC(source) end
 end)
@@ -382,6 +459,44 @@ function useATCConsole(player, positions)
         return true
     end
     return openATCLogin(player, positions)
+end
+
+-- The tutorial ATC marker of avi_core (work_atc tutorial): a login window with the one tutorial
+-- position (no rights needed, the live position may be staffed meanwhile), or the scope toggle when
+-- the player is logged in there already.
+function useTutorialConsole(player, posId)
+    if not isElement(player) then return false end
+    local pos = positionById(posId)
+    if not pos then return false end
+    local sess = sessions[player]
+    if sess and sess.tutorial and playerPos[player] == pos.id then
+        triggerClientEvent(player, "avi:ctlToggle", resourceRoot)
+        return true
+    end
+    tutorialLogin[player] = pos.id
+    triggerClientEvent(player, "avi:ctlPositions", resourceRoot, {
+        { id = pos.id, type = pos.type, name = pos.name .. " (tutorial)", airport = pos.airport, allowed = true },
+    }, playerPos[player])
+    return true
+end
+
+-- the pay and fine rules (CTL.PAY_*, CTL.PENALTY, CTL.XP_*) for texts that explain them
+function getATCPayRules()
+    return { perAction = CTL.PAY_PER_ACTION, minuteBonus = CTL.PAY_MINUTE_BONUS, maxMult = CTL.PAY_MAX_MULT,
+        perAircraft = CTL.PAY_PER_AIRCRAFT, minActions = CTL.PAY_MIN_ACTIONS, xp = CTL.XP_DEFAULT,
+        penalty = { GND = CTL.PENALTY.GND, TMA = CTL.PENALTY.TMA, CTA = CTL.PENALTY.CTA } }
+end
+
+-- tutorial session of the player (logged in through useTutorialConsole)
+function isATCTutorialSession(player)
+    return sessions[player] ~= nil and sessions[player].tutorial == true
+end
+
+-- end of the tutorial: log out of the tutorial position, forget the console
+function endATCTutorial(player, silent)
+    tutorialLogin[player] = nil
+    if isATCTutorialSession(player) then return logoutATC(player, silent) end
+    return false
 end
 
 -- ---------------------------------------------------------------- updates
@@ -531,12 +646,19 @@ local function sendTraffic()
         if d.pos.type == "CTR" then upper = upperData(); break end
     end
     for _, d in ipairs(due) do
-        local list = {}
-        for _, s in ipairs(all) do
-            if visibleTo(d.pos, s, sectors, nav, upper) then list[#list + 1] = s end
+        local list, st = {}, staffed
+        local sess = sessions[d.p]
+        if sess and sess.tutorial then
+            -- tutorial: only the own tutorial aircraft, and only the own position is open
+            list = call("avi_traffic", "getTutorialSnapshot", d.p) or {}
+            st = { [d.pos.id] = playerName(d.p) }
+        else
+            for _, s in ipairs(all) do
+                if visibleTo(d.pos, s, sectors, nav, upper) then list[#list + 1] = s end
+            end
         end
         lastSent[d.p] = now
-        triggerClientEvent(d.p, "avi:ctlTraffic", resourceRoot, list, staffed)
+        triggerClientEvent(d.p, "avi:ctlTraffic", resourceRoot, list, st)
     end
 end
 

@@ -108,6 +108,7 @@ function drawHdgPicker(mx, my)
     local s = e.s
     local cx, cy = w2s(trafficPos(e))
     local R = 150 * U
+    PICK.rect = { cx - R, cy - R, R * 2, R * 2 }
 
     -- the mouse picks the heading (only when it moved, so wheel steps stay until the next move)
     if mx and (mx ~= PICK.lmx or my ~= PICK.lmy) then

@@ -48,6 +48,12 @@ end
 
 function controllerOf(ac)
     local own = sectorPosition(ac)
+    -- tutorial aircraft: only the tutorial position of their owner, by the same sector rule (also in
+    -- the approach sector of their airport, ac.tutCover)
+    if ac.tut then
+        local pos = tutorialPosition(ac.tut)
+        return (pos and (own == pos or (ac.tutCover and own == ac.tutCover))) and pos or nil
+    end
     -- early transfer: valid while the aircraft is still in the sector it was handed over from
     if ac.ctl and ac.xferFrom and ac.ctl ~= own and ac.xferFrom == own and staffed[ac.ctl] then return ac.ctl end
     if own and staffed[own] then return own end
@@ -67,9 +73,12 @@ function updateController(ac)
 end
 
 -- ---------------------------------------------------------------- exports
+-- the live traffic (tutorial aircraft: getTutorialSnapshot)
 function getTrafficSnapshot()
     local list = {}
-    for _, ac in pairs(AIRCRAFT) do list[#list + 1] = snapshot(ac) end
+    for _, ac in pairs(AIRCRAFT) do
+        if not ac.tut then list[#list + 1] = snapshot(ac) end
+    end
     table.sort(list, function(a, b) return a.id < b.id end)
     return list
 end
@@ -82,7 +91,7 @@ end
 function getAircraftByCallsign(cs)
     cs = tostring(cs or ""):upper()
     for _, ac in pairs(AIRCRAFT) do
-        if ac.cs == cs then return snapshot(ac) end
+        if ac.cs == cs and not ac.tut then return snapshot(ac) end
     end
 end
 
@@ -162,7 +171,8 @@ end
 function transferAircraft(id, pos)
     local ac = AIRCRAFT[tonumber(id)]
     if not ac then return false, "unknown aircraft" end
-    if not pos or not staffed[pos] then return false, tostring(pos) .. " is not staffed" end
+    -- a tutorial aircraft never goes to a live controller
+    if ac.tut or not pos or not staffed[pos] then return false, tostring(pos) .. " is not staffed" end
     if ac.ctl == pos then return false, "already there" end
     local own = sectorPosition(ac)
     if not own then return false, "outside every sector" end

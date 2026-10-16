@@ -215,3 +215,21 @@ SID / STAR / GA per airport from avi_nav) and Airspace map ("Map" on a procedure
   (general, aerodrome, approach with the STAR entry level annex, area), SACC-NAV-1 Airspace and
   navigation, SACC-SW-1 ATC software manual. Wording: "San Andreas FIR" = the whole airspace, "CTA" =
   the radar (centre) airspace only.
+
+## Tutorial hooks (work_atc tutorial)
+
+The tower tutorial of `[work]/work_atc/tutorial` runs on the real resources:
+- **avi_traffic** `server/tutorial.lua`: `spawnTutorialFlight(owner, { kind = "dep" | "arr", icao,
+  callsign })` makes an aircraft with `ac.tut = owner`. Tutorial aircraft live in a world of their own
+  (stands, taxi queues, runway use, alerts only among themselves) and are left out of
+  `getTrafficSnapshot`, the traffic limits, the workload keeper, the callsign lookups and `/avitraffic
+  clear`. Their controller is the owner's tutorial position (`setTutorialController`), by the sector
+  rule plus the approach sector of their airport (`ac.tutCover`). Separation losses fire
+  `onAviTutorialSeparationLoss` (no fine). Parked tutorial aircraft are not removed.
+- **avi_controller**: `useTutorialConsole(player, posId)` opens a login with that one position; the
+  tutorial login is not in `staff` (the live position stays free), sees only the own tutorial
+  aircraft (`getTutorialSnapshot`), gets no pay / XP, and fires `onATCTutorialLogin`,
+  `onATCTutorialCommand`, `onATCTutorialLogout` (with the receipt). Client exports for guides:
+  `getScopeLayout`, `setScopeBlockedRect`, `focusScope`.
+- **avi_core**: `createTutorialMarker(player, dimension, posId)` = a console marker copy in that
+  dimension, visible only to the player.

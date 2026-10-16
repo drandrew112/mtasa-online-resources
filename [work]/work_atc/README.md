@@ -26,3 +26,10 @@ Rights are cumulative (a higher rank keeps the lower positions); change the `rig
 `/setworklevel <player> atc <level>` (work_core, admin) for testing.
 
 Exports: `isPlayerATC`, `getATCPlayers`, `getATCWorkId`, `getATCLevelRights(level)`.
+
+## Tutorial
+
+`tutorial/` (see [tutorial/README.md](tutorial/README.md)): an optional tower tutorial on SASF_TWR in
+the SA Control room, offered on the first duty start, `/tutorial_atc` any time. It uses the tutorial
+hooks of avi_core (console marker copy), avi_controller (tutorial login: no pay, no XP, the live
+position stays free) and avi_traffic (tutorial aircraft in a world of their own).

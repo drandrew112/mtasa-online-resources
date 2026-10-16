@@ -56,6 +56,7 @@ local function drawLogin()
     local headH = 46 * U
     local h = headH + #rows * rh + 56 * U
     local x, y = (SC.sx - w) / 2, (SC.sy - h) / 2
+    LOGIN.rect, LOGIN.rows = { x, y, w, h }, {}
     if not SC.visible then dxDrawRectangle(0, 0, SC.sx, SC.sy, C.dim) end
     dxDrawRectangle(x, y, w, h, C.bg)
     dxDrawRectangle(x, y, w, headH, C.head)
@@ -68,6 +69,7 @@ local function drawLogin()
         dxDrawText(p.id, x + 14 * U, ry, x + 150 * U, ry + rh, C.text, 1, F.uiB, "left", "center")
         dxDrawText(p.name, x + 150 * U, ry, x + 380 * U, ry + rh, C.dim2, 1, F.ui, "left", "center", true)
         local br = { x + w - 140 * U, ry + 5 * U, 126 * U, rh - 10 * U }
+        LOGIN.rows[p.id] = br
         if p.mine then
             dxDrawRectangle(br[1], br[2], br[3], br[4], C.mine)
             dxDrawText("Logged in", br[1], br[2], br[1] + br[3], br[2] + br[4], C.text, 1, F.uiB, "center", "center")

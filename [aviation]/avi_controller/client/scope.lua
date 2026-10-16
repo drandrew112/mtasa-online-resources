@@ -118,6 +118,7 @@ local function drawToolButtons(mx, my)
     local total = -gap
     for _, d in ipairs(defs) do total = total + d[3] + gap end
     local left = SC.sx / 2 - total / 2
+    SCOPE_RECTS.tools = { left, by, total, bh }
     local x, tip, tipRect = left, nil, nil
     for _, d in ipairs(defs) do
         local r = { x, by, d[3], bh }
@@ -161,7 +162,10 @@ local function drawTopBar(mx, my)
     end
     local w = SC.data.wind or { dir = 0, speed = 0 }
     parts[#parts + 1] = ("WIND %03d/%02d"):format(w.dir, w.speed)
-    dxDrawText(table.concat(parts, "     "), x, 0, toolsLeft - 12 * U, h, C.text, 1, F.ui, "left", "center", true)
+    local rwText = table.concat(parts, "     ")
+    dxDrawText(rwText, x, 0, toolsLeft - 12 * U, h, C.text, 1, F.ui, "left", "center", true)
+    SCOPE_RECTS.position = { 0, 0, x, h }
+    SCOPE_RECTS.runways = { x, 0, math.min(dxGetTextWidth(rwText, 1, F.ui), toolsLeft - 12 * U - x), h }
 
     local t = getRealTime(getRealTime().timestamp, false)   -- UTC
     dxDrawText(("%02d:%02d:%02dZ"):format(t.hour, t.minute, t.second), SC.sx - 520 * U, 0, SC.sx - 430 * U, h,
@@ -169,12 +173,16 @@ local function drawTopBar(mx, my)
 
     local bw, bh, by = 74 * U, 24 * U, 5 * U
     local bx = SC.sx - 4 * (bw + 6 * U) - 4 * U
+    SCOPE_RECTS.listButton = { bx, by, bw, bh }
     button({ bx, by, bw, bh }, SC.showList and "List: on" or "List: off", mx, my, function() SC.showList = not SC.showList end)
     bx = bx + bw + 6 * U
+    SCOPE_RECTS.reset = { bx, by, bw, bh }
     button({ bx, by, bw, bh }, "Reset view", mx, my, resetView)
     bx = bx + bw + 6 * U
+    SCOPE_RECTS.hide = { bx, by, bw, bh }
     button({ bx, by, bw, bh }, "Hide", mx, my, scopeHide)
     bx = bx + bw + 6 * U
+    SCOPE_RECTS.logout = { bx, by, bw, bh }
     button({ bx, by, bw, bh }, "Logout", mx, my, function() triggerServerEvent("avi:ctlLogout", resourceRoot) end, true)
 
     if tip then drawTooltip(tip, tipRect) end
@@ -259,6 +267,7 @@ local function drawList(mx, my)
     end
     local w = LIST_W
     local x, top = SC.sx - w, 34 * U + 1
+    SCOPE_RECTS.list = { x, top, w, SC.sy - top }
     local share = (SC.sy - top) / #kinds
     local rh = dxGetFontHeight(1, F.ui) + 5 * U
     dxDrawRectangle(x, top, w, SC.sy - top, C.list)
@@ -306,6 +315,7 @@ local function drawScaleBar()
     local nm = scaleBarLength()
     local len = nm * M_PER_NM * VIEW.scale
     local x, y = 16 * U, SC.sy - 22 * U
+    SCOPE_RECTS.scaleBar = { x, y - 8 * U, len + 60 * U, 14 * U }
     line(x, y, x + len, y, C.scale, 2)
     line(x, y - 5 * U, x, y + 1, C.scale, 2)
     line(x + len, y - 5 * U, x + len, y + 1, C.scale, 2)
@@ -328,8 +338,9 @@ end
 addEventHandler("onClientRender", root, function()
     if not SC.visible or not SC.data or not F.ui then return end
     local mx, my = cursor()
-    if LOGIN.open then mx, my = nil, nil end
+    if LOGIN.open or (mx and scopeBlocked(mx, my)) then mx, my = nil, nil end
     buttons = {}
+    SCOPE_RECTS = { topBar = { 0, 0, SC.sx, 34 * U } }
     dxDrawRectangle(0, 0, SC.sx, SC.sy, COL.bg)
     drawAirspaces()
     drawAirports()
@@ -349,6 +360,8 @@ end)
 
 -- ---------------------------------------------------------------- input
 addEventHandler("onClientClick", root, function(btn, state, ax, ay)
+    -- another resource's window over the scope (the work_atc tutorial card)
+    if scopeBlocked(ax, ay) and not (drag and state == "up") then return end
     if LOGIN.open then
         if btn == "left" and state == "down" then loginClick(ax, ay) end
         return
@@ -432,6 +445,7 @@ addEventHandler("onClientKey", root, function(key, press)
     if key == "mouse_wheel_up" or key == "mouse_wheel_down" then
         local dir = key == "mouse_wheel_up" and -1 or 1
         local mx, my = cursor()
+        if mx and scopeBlocked(mx, my) then return end
         if PICK.open then
             hdgPickerScroll(-dir)
         elseif MENU.open and MENU.rect and mx and inside(MENU.rect, mx, my) then
