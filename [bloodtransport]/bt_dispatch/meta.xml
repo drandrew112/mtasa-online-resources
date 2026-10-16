@@ -31,6 +31,7 @@
     <script src="client/admin.lua" type="client" />
     <file src="client/fonts/Roboto.ttf" type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />
+    <file src="assets/new.wav" type="client" />
 
     <!-- ================= SERVER EXPORTS ================= -->
     <export function="createTask" type="server" />

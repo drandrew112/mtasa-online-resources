@@ -57,7 +57,7 @@ function createTutorialTask(player, def)
     end
     notify(player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.new_task", {
         id = task.id, what = L.msg(taskWhatKey(task)), group = task.group or "", units = task.units,
-        from = instName(task.from), to = instName(task.to) }))
+        from = instName(task.from), to = instName(task.to) }), true)
     refreshItems(player)
     SyncPlayer(player)
     triggerEvent("onBtTaskChanged", resourceRoot, task.id, "waiting")

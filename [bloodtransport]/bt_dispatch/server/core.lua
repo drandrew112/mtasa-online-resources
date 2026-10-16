@@ -47,8 +47,9 @@ function instName(id)
     return inst and inst.name or tostring(id)
 end
 
-function notify(player, title, text)
-    if isElement(player) then triggerClientEvent(player, "btd:notify", resourceRoot, title, text) end
+-- sound = true: silent ui_core notification + the dispatch tone (assets/new.wav) instead
+function notify(player, title, text, sound)
+    if isElement(player) then triggerClientEvent(player, "btd:notify", resourceRoot, title, text, sound == true) end
 end
 
 local function rnd(a, b) return a + math.random() * (b - a) end
@@ -191,7 +192,7 @@ function makeTask(def, callerName)
 
     notify(shift.player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.new_task", {
         id = task.id, what = L.msg(taskWhatKey(task)), group = task.group or "", units = task.units,
-        from = instName(task.from), to = instName(task.to) }))
+        from = instName(task.from), to = instName(task.to) }), true)
     refreshItems(shift.player)
     SyncPlayer(shift.player)
     triggerEvent("onBtTaskChanged", resourceRoot, task.id, "waiting")

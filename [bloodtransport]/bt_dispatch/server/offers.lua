@@ -102,7 +102,7 @@ function answerOffer(player, offerId, accept)
     if isTimer(offer.timer) then killTimer(offer.timer) end
     triggerClientEvent(to.player, "btd:offerEnd", resourceRoot, offer.id)
     notify(from.player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.handed_over", { id = task.id, unit = to.unit, name = to.name }))
-    notify(to.player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.received", { id = task.id, unit = from.unit, name = from.name }))
+    notify(to.player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.received", { id = task.id, unit = from.unit, name = from.name }), true)
     refreshItems(from.player)
     refreshItems(to.player)
     SyncPlayer(from.player)

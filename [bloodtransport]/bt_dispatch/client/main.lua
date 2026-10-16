@@ -121,8 +121,9 @@ end)
 -- ---------------------------------------------------------------------------------------------
 
 addEvent("btd:notify", true)
-addEventHandler("btd:notify", resourceRoot, function(title, text)
-    pcall(function() exports.ui_core:addNotification(title, text) end)
+addEventHandler("btd:notify", resourceRoot, function(title, text, sound)
+    pcall(function() exports.ui_core:addNotification(title, text, sound == true) end)
+    if sound then playSound("assets/new.wav") end
 end)
 
 State = { onDuty = false, tasks = {} }
