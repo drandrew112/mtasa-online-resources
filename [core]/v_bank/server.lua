@@ -27,7 +27,14 @@ end
 
 -- Current bank balance of a player (an integer; negative = debt from forceTakeMoney,
 -- paid off by the next deposits).
+-- [player] = true once the stored balance was read into element data. Nothing is
+-- written to the account before that, else the not-yet-loaded 0 would overwrite it.
+local loaded = {}
+
+local loadBankMoney
+
 local function getBankMoney(player)
+    if not loaded[player] and getSaveAccount(player) then loadBankMoney(player) end
     local money = tonumber(getElementData(player, DATA_KEY)) or 0
     return math.floor(money)
 end
@@ -38,7 +45,7 @@ local function setBankMoney(player, amount)
     setElementData(player, DATA_KEY, amount)
 
     local account = getSaveAccount(player)
-    if account then
+    if account and loaded[player] then
         exports.v_mysql:setAccData(account, DATA_KEY, amount)
     end
     return amount
@@ -47,18 +54,20 @@ end
 -- Persists the current runtime balance into the account.
 local function saveBankMoney(player)
     local account = getSaveAccount(player)
-    if not account then return end
+    if not account or not loaded[player] then return end
     exports.v_mysql:setAccData(account, DATA_KEY, getBankMoney(player))
 end
 
 -- Loads the balance from the account into element data. Seeds 0 on first login.
-local function loadBankMoney(player)
+function loadBankMoney(player)
     local account = getSaveAccount(player)
     if not account then
+        loaded[player] = nil
         setElementData(player, DATA_KEY, 0)
         return
     end
 
+    loaded[player] = true
     local stored = tonumber(exports.v_mysql:getAccData(account, DATA_KEY))
     if stored then
         setElementData(player, DATA_KEY, math.floor(stored))
@@ -103,6 +112,14 @@ end)
 
 addEventHandler("onPlayerQuit", root, function()
     saveBankMoney(source)
+    loaded[source] = nil
+end)
+
+-- bank_money is synced element data: a client must not be able to change its own balance
+addEventHandler("onElementDataChange", root, function(key, old)
+    if key == DATA_KEY and client then
+        if old == nil then removeElementData(source, key) else setElementData(source, key, old) end
+    end
 end)
 
 addEventHandler("onResourceStop", resourceRoot, function()

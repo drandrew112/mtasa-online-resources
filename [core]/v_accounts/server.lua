@@ -306,12 +306,17 @@ local function setAccountName(player, name)
 end
 
 addEvent("v_mapcam:onFinish", true)
+local spawnPending = {} -- [player] = true while the spawn camera of the login runs
 addEvent("acc:clientWorldLoaded", true)
 -- Restores the player's saved state and drops the black loading screen.
 addEventHandler("acc:clientWorldLoaded", root, function()
     -- client az a játékos, aki küldte az eseményt
     local player = client 
     if not isElement(player) then return end
+    -- only once per login: a repeated event must not replay the spawn / onPlayerLoaded
+    if getElementData(player, "isLogged") ~= true or getElementData(player, "loaded") == true then return end
+    if spawnPending[player] then return end
+    spawnPending[player] = true
 
     -- Itt fut le a spawn animáció és a betöltőképernyő levétele
     triggerClientEvent(player, "acc:loadingScreen", player, false)
@@ -320,15 +325,20 @@ addEventHandler("acc:clientWorldLoaded", root, function()
     exports.v_mapcam:playSpawn(player)
 
     -- Ezt levesszük a root-ról, és közvetlenül a playerhez kötjük, ahogy az eredetiben is volt
-    addEventHandler("v_mapcam:onFinish", player, function()
+    -- one-shot: the handler must not stay on the player, else every later
+    -- v_mapcam teleport would fire onPlayerLoaded again
+    local function onFinish()
+        removeEventHandler("v_mapcam:onFinish", player, onFinish)
+        spawnPending[player] = nil
         if not isElement(player) then return end
-        
+
         setElementData(player, "loaded", true)
         local accName = getElementData(player, "accName")
         
         triggerEvent("onPlayerLoaded", player, accName)
         triggerClientEvent(player, "acc:playerLoaded", player, accName)
-    end)
+    end
+    addEventHandler("v_mapcam:onFinish", player, onFinish)
 end)
 
 local function spawnLoggedInPlayer(player)
@@ -491,6 +501,7 @@ addEventHandler("onPlayerQuit", root, function()
         save_all(source)
     end
     scriptedRename[source] = nil
+    spawnPending[source] = nil
 end)
 
 -- Block manual nick changes, but let the script's own renames through.
