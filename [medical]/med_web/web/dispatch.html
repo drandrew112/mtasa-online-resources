@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMS Dispatch</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/erm.css">
+</head>
+<body class="locked">
+    <div class="osa-login" id="login">
+        <div class="osa-login-stack">
+            <form class="osa-login-box" id="loginForm" autocomplete="off">
+                <span class="logo big"><i></i><i></i></span>
+                <h1>EMS Dispatch</h1>
+                <p>Sign in with your dispatcher code</p>
+                <input id="loginCode" type="password" placeholder="Dispatcher code" maxlength="32" autofocus>
+                <div class="osa-login-error" id="loginError"></div>
+                <button class="osa-btn primary" type="submit" id="loginBtn">Sign in</button>
+            </form>
+
+            <a class="home-link" data-goto="index" href="/med_web/">&lsaquo; San Andreas EMS</a>
+        </div>
+    </div>
+
+    <header class="osa-topbar">
+        <a class="osa-brand" data-goto="index" href="/med_web/" title="San Andreas EMS home">
+            <span class="logo"><i></i><i></i></span>
+            <div>
+                <strong>EMS Dispatch</strong>
+                <small>Emergency Response Manager</small>
+            </div>
+        </a>
+        <div class="osa-stats" id="stats"></div>
+        <div class="osa-top-right">
+            <span class="auto-badge" id="autoBadge" hidden title="Automatic dispatch (med_erm_auto) is prioritizing tasks and assigning the nearest free unit">
+                <i></i>AUTO DISPATCH
+            </span>
+            <span class="who" id="who"></span>
+            <button class="osa-btn small" id="logoutBtn">Sign out</button>
+            <span class="osa-conn" id="conn" title="Connection"></span>
+            <span class="osa-clock" id="clock">--:--:--</span>
+        </div>
+    </header>
+
+    <main class="layout">
+        <!-- tasks -->
+        <aside class="osa-panel tasks-panel">
+            <div class="osa-panel-head">
+                <div class="osa-tabs">
+                    <button class="osa-tab active" data-tab="active">Active <b id="countActive">0</b></button>
+                    <button class="osa-tab" data-tab="closed">Closed <b id="countClosed">0</b></button>
+                </div>
+                <button class="osa-btn small" id="newTaskBtn" title="Create a task (or right-click the map)">+ New</button>
+            </div>
+            <div class="priority-bar" id="priorityBar">
+                <div class="sel" id="selInfo">Select a task to set its priority</div>
+                <div class="prio-buttons">
+                    <button class="prio p1" data-prio="1" disabled>P1</button>
+                    <button class="prio p2" data-prio="2" disabled>P2</button>
+                    <button class="prio p3" data-prio="3" disabled>P3</button>
+                    <button class="prio p4" data-prio="4" disabled>P4</button>
+                </div>
+            </div>
+            <ul class="osa-list" id="taskList"></ul>
+        </aside>
+
+        <!-- map -->
+        <section class="osa-map-wrap">
+            <div id="map"></div>        </section>
+
+        <!-- units + chat -->
+        <aside class="side">
+            <div class="osa-panel units-panel">
+                <div class="osa-panel-head">
+                    <h2>Units <b id="countUnits">0</b></h2>
+                </div>
+                <ul class="osa-list" id="unitList"></ul>
+            </div>
+            <div class="osa-panel chat-panel">
+                <div class="osa-panel-head">
+                    <h2>Messages</h2>
+                    <select class="osa-select" id="chatChannel"></select>
+                </div>
+                <div class="chat-log" id="chatLog"></div>
+                <form class="chat-input" id="chatForm" autocomplete="off">
+                    <input class="osa-input" id="chatText" maxlength="300" placeholder="Type a message…">
+                    <button class="osa-btn primary" type="submit">Send</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/dispatch.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERM Admin</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/erm.css">
+</head>
+<body class="locked mode-admin">
+    <div class="osa-login" id="login">
+        <div class="osa-login-stack">
+            <form class="osa-login-box" id="adminLoginForm" autocomplete="off">
+                <span class="logo big"><i></i><i></i></span>
+                <h1>ERM Admin</h1>
+                <p>Sign in with your game account (admin)</p>
+                <input id="adminUser" class="plain" type="text" placeholder="Username" maxlength="64" autocomplete="username">
+                <input id="adminPass" class="plain" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+                <div class="osa-login-error" id="adminLoginError"></div>
+                <button class="osa-btn primary" type="submit" id="adminLoginBtn">Sign in</button>
+            </form>
+            <a class="home-link" data-goto="index" href="/med_web/">&lsaquo; San Andreas EMS</a>
+        </div>
+    </div>
+
+    <div id="adminApp" class="admin-app">
+        <header class="osa-topbar">
+            <a class="osa-brand" data-goto="index" href="/med_web/" title="San Andreas EMS home">
+                <span class="logo"><i></i><i></i></span>
+                <div>
+                    <strong>ERM Admin</strong>
+                    <small>Shift &amp; task history</small>
+                </div>
+            </a>
+            <nav class="osa-tabs tb-nav" id="adNav">
+                <button class="osa-tab active" data-tab="shifts">Shifts</button>
+                <button class="osa-tab" data-tab="tasks">Tasks</button>
+            </nav>
+            <div class="osa-top-right">
+                <button class="auto-btn" id="adAuto" disabled>Auto dispatch</button>
+                <span class="who" id="adWho"></span>
+                <button class="osa-btn small" id="adLogout">Sign out</button>
+                <span class="osa-conn" id="adConn" title="Connection"></span>
+            </div>
+        </header>
+        <main class="ad-main">
+            <section class="osa-panel ad-list">
+                <div class="ad-toolbar">
+                    <input class="osa-input" id="adSearch" maxlength="40">
+                    <select class="osa-select" id="adFilter"></select>
+                </div>
+                <div class="ad-table" id="adTable"></div>
+                <div class="ad-pager">
+                    <button class="osa-btn small" id="adPrev">Prev</button>
+                    <span class="osa-muted" id="adPageInfo"></span>
+                    <button class="osa-btn small" id="adNext">Next</button>
+                </div>
+            </section>
+            <section class="osa-panel ad-detail">
+                <div class="ad-detail-bar">
+                    <button class="osa-btn small" id="adBack" hidden>&lsaquo; Back</button>
+                    <span class="osa-muted" id="adDetailKind"></span>
+                </div>
+                <div class="ad-detail-body" id="adDetail"><div class="osa-empty">Select a shift or task to see its details.</div></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,10 +1,42 @@
--- Dispatcher web console API.
+-- Web API (dispatcher console here, unit tablet in server/webtablet.lua, ERM admin in
+-- server/webadmin.lua).
 --
--- These functions are exported with http="true" and are called by the page at
--- http://<server>:<httpport>/erm/call/<function> (POST body = JSON argument
--- array, response = JSON array of return values). No MTA account is involved:
--- the first argument is always the session token from ermLogin
+-- The pages live in med_web, which exposes these functions over HTTP / in game and forwards
+-- every call to the webCall export below. No MTA account is involved in the dispatcher
+-- console: the first argument is always the session token from ermLogin
 -- (see server/dispatchers.lua).
+
+-- caller id of the running web call ("player:<serial>" in game, the HTTP address otherwise),
+-- for the login throttles; set by webCall only
+local webCaller = nil
+
+Web = {}
+
+function Web.callerId()
+    return webCaller or "web"
+end
+
+local WEB_FUNCTIONS = {}
+for _, fn in ipairs({
+    "ermLogin", "ermLogout", "ermGetState", "ermSetPriority", "ermAssign", "ermUnassign",
+    "ermCloseTask", "ermCreateTask", "ermSendMessage",
+    "ermTabletLogin", "ermTabletLogout", "ermTabletState", "ermTabletCaseAction",
+    "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
+    "ermAdminLogin", "ermAdminLogout", "ermAdminQuery", "ermAdminAuto", "ermAdminAutoSet",
+}) do WEB_FUNCTIONS[fn] = true end
+
+-- webCall(callerId, fn, ...) -> the result of one web API function (med_web/server/api.lua)
+function webCall(callerId, fn, ...)
+    if not WEB_FUNCTIONS[fn] or type(_G[fn]) ~= "function" then return { ok = false, error = "Unknown function" } end
+    webCaller = type(callerId) == "string" and callerId ~= "" and callerId:sub(1, 80) or nil
+    local ok, res = pcall(_G[fn], ...)
+    webCaller = nil
+    if not ok then
+        outputDebugString("[med_erm] web " .. fn .. ": " .. tostring(res), 1)
+        return { ok = false, error = "Server error" }
+    end
+    return res
+end
 
 local function result(ok, err)
     if ok then return { ok = true } end

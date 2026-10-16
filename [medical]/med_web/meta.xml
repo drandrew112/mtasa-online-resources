@@ -1,0 +1,71 @@
+<meta>
+    <info author="DrAndrew112" name="Medical Web" version="1.0.0" type="script"
+          description="Website of the ambulance service: landing page, dispatcher console, unit tablet, ERM admin" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/pages.lua" type="server" />
+    <script src="server/api.lua"   type="server" />
+
+    <!-- ================= HTTP PAGES =================
+         http://<server>:<httpport>/med_web/ - each entry renders its web/*.html source with the
+         css / js inlined (server/pages.lua, web_api page builder) -->
+    <html src="index.html"    default="true" />
+    <html src="dispatch.html" />
+    <html src="tablet.html" />
+    <html src="admin.html" />
+
+    <!-- the same pages in game (ui_browser site ems-dispatch.eu, through web_api's loader) -->
+    <file src="web/index.html"    type="client" />
+    <file src="web/dispatch.html" type="client" />
+    <file src="web/tablet.html"   type="client" />
+    <file src="web/admin.html"    type="client" />
+    <file src="web/css/home.css"  type="client" />
+    <file src="web/css/erm.css"   type="client" />
+    <file src="web/js/common.js"  type="client" />
+    <file src="web/js/home.js"    type="client" />
+    <file src="web/js/api.js"     type="client" />
+    <file src="web/js/map.js"     type="client" />
+    <file src="web/js/chat.js"    type="client" />
+    <file src="web/js/dispatch.js" type="client" />
+    <file src="web/js/tablet.js"  type="client" />
+    <file src="web/js/admin.js"   type="client" />
+    <file src="web/sounds/tablet_alert.mp3" type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- landing page (anonymous figures only) -->
+    <export function="medWebPublic"   type="server" http="true" />
+
+    <!-- dispatcher console - forwarded to med_erm (server/api.lua), first arg = session token -->
+    <export function="ermLogin"       type="server" http="true" />
+    <export function="ermLogout"      type="server" http="true" />
+    <export function="ermGetState"    type="server" http="true" />
+    <export function="ermSetPriority" type="server" http="true" />
+    <export function="ermAssign"      type="server" http="true" />
+    <export function="ermUnassign"    type="server" http="true" />
+    <export function="ermCloseTask"   type="server" http="true" />
+    <export function="ermCreateTask"  type="server" http="true" />
+    <export function="ermSendMessage" type="server" http="true" />
+
+    <!-- unit tablet -->
+    <export function="ermTabletLogin"       type="server" http="true" />
+    <export function="ermTabletLogout"      type="server" http="true" />
+    <export function="ermTabletState"       type="server" http="true" />
+    <export function="ermTabletCaseAction"  type="server" http="true" />
+    <export function="ermTabletLeaveCase"   type="server" http="true" />
+    <export function="ermTabletCloseCase"   type="server" http="true" />
+    <export function="ermTabletSendMessage" type="server" http="true" />
+    <export function="ermTabletEndShift"    type="server" http="true" />
+
+    <!-- ERM admin -->
+    <export function="ermAdminLogin"   type="server" http="true" />
+    <export function="ermAdminLogout"  type="server" http="true" />
+    <export function="ermAdminQuery"   type="server" http="true" />
+    <export function="ermAdminAuto"    type="server" http="true" />
+    <export function="ermAdminAutoSet" type="server" http="true" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="web_api" />
+    <include resource="ui_browser" />
+    <include resource="med_erm" />
+</meta>

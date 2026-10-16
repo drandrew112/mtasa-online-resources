@@ -1,5 +1,5 @@
 // Web tablet: the in-game unit tablet (Home / Active Case / Messages) for unit crew members,
-// signed in with the game account. Also owns the Dispatcher | Tablet switch of the login screen.
+// signed in with the game account (web/tablet.html).
 (function () {
     'use strict';
 
@@ -11,24 +11,7 @@
     const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28' };
     const STATUS_LABEL = ERM.STATUS;
 
-    /* ============================================================ mode switch */
-
-    function setMode(mode) {
-        if (mode !== 'tablet' && mode !== 'admin') mode = 'dispatcher';
-        document.body.classList.toggle('mode-tablet', mode === 'tablet');
-        document.body.classList.toggle('mode-admin', mode === 'admin');
-        $('loginForm').hidden = mode !== 'dispatcher';
-        $('tabletLoginForm').hidden = mode !== 'tablet';
-        $('adminLoginForm').hidden = mode !== 'admin';
-        document.querySelectorAll('#modeSwitch .mode-btn')
-            .forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
-        OSA.store.set('erm.mode', mode);
-        ({ dispatcher: $('loginCode'), tablet: $('tabletUser'), admin: $('adminUser') })[mode].focus();
-    }
-
-    document.querySelectorAll('#modeSwitch .mode-btn')
-        .forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
-    setMode(OSA.store.get('erm.mode', 'dispatcher'));
+    $('tabletUser').focus();
 
     /* ============================================================ state */
 

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>San Andreas EMS</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <header class="site-nav">
+        <a class="site-brand" data-goto="index" href="/med_web/">
+            <span class="logo"><i></i><i></i></span>
+            <span><strong>San Andreas EMS</strong><small>Emergency Medical Services</small></span>
+        </a>
+        <nav class="site-links">
+            <a href="#services">Services</a>
+            <a href="#hospitals">Hospitals</a>
+            <a href="#join">Join us</a>
+            <a href="#staff" class="osa-btn small primary">Staff portal</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- hero + live status -->
+        <section class="hero">
+            <div class="hero-text">
+                <span class="eyebrow"><i class="pulse"></i>On duty around the clock</span>
+                <h1>Every second counts.</h1>
+                <p>
+                    San Andreas Emergency Medical Services brings pre-hospital care to every corner of the
+                    state - from a twisted ankle on Grove Street to a multi-vehicle pile-up on the
+                    interstate. Our crews assess, treat and stabilise patients on scene and take them
+                    to the nearest hospital, coordinated by our dispatch centre.
+                </p>
+                <div class="hero-call">
+                    <span class="call-num">&#x260E;</span>
+                    <span>In an emergency open the <b>Emergency Services</b> contact on your phone,
+                    choose <b>EMS</b> and tell us what happened. Stay with the patient until the
+                    ambulance arrives.</span>
+                </div>
+            </div>
+
+            <aside class="status-card" aria-live="polite">
+                <div class="status-head">
+                    <h2>Live service status</h2>
+                    <span class="osa-conn" id="conn" title="Connection"></span>
+                </div>
+                <div class="status-grid">
+                    <div class="stat"><b id="stUnits">-</b><span>Units on duty</span></div>
+                    <div class="stat"><b id="stAvail">-</b><span>Available now</span></div>
+                    <div class="stat"><b id="stTasks">-</b><span>Active calls</span></div>
+                    <div class="stat"><b id="stHosp">-</b><span>Hospitals</span></div>
+                </div>
+                <div class="status-bar" id="stBar" title="Units by status"></div>
+                <ul class="status-legend">
+                    <li><i class="available"></i>Available</li>
+                    <li><i class="enroute"></i>En route</li>
+                    <li><i class="onscene"></i>On scene</li>
+                    <li><i class="handover"></i>Handover</li>
+                </ul>
+                <p class="status-note" id="stNote">Connecting...</p>
+            </aside>
+        </section>
+
+        <!-- services -->
+        <section class="block" id="services">
+            <h2 class="block-title">What we do</h2>
+            <p class="block-lead">One service, four parts working together from the first call to the hospital bed.</p>
+            <div class="cards">
+                <article class="card">
+                    <span class="card-icon">&#x1F691;</span>
+                    <h3>Emergency response</h3>
+                    <p>Ambulance crews at BLS and ALS level, doctor units, solo responders and an air
+                    ambulance. Each crew carries its own bag and monitor and is trained for CPR,
+                    airway management, IV access and splinting.</p>
+                </article>
+                <article class="card">
+                    <span class="card-icon">&#x1F4E1;</span>
+                    <h3>Dispatch centre</h3>
+                    <p>Every call becomes a task in the Emergency Response Manager. Dispatchers set its
+                    priority from P1 to P4 and send the nearest free unit, which receives the case on
+                    its in-vehicle tablet.</p>
+                </article>
+                <article class="card">
+                    <span class="card-icon">&#x1F3E5;</span>
+                    <h3>Hospital network</h3>
+                    <p>Our crews hand their patients over in the ambulance bays of the state's
+                    hospitals. The route to the nearest one is set automatically when a crew leaves
+                    the scene.</p>
+                </article>
+                <article class="card">
+                    <span class="card-icon">&#x1F393;</span>
+                    <h3>Training</h3>
+                    <p>New paramedics start with a guided tutorial on the tablet, the equipment and the
+                    procedures, and learn on real calls next to experienced colleagues.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- priorities -->
+        <section class="block">
+            <h2 class="block-title">How we prioritise</h2>
+            <div class="prio-row">
+                <div class="prio p1"><b>P1</b><span>Life-threatening</span><small>cardiac arrest, no breathing, major trauma</small></div>
+                <div class="prio p2"><b>P2</b><span>Serious</span><small>heavy bleeding, chest pain, unconsciousness</small></div>
+                <div class="prio p3"><b>P3</b><span>Urgent</span><small>fractures, moderate injuries</small></div>
+                <div class="prio p4"><b>P4</b><span>Non-urgent</span><small>minor injuries, transfers</small></div>
+            </div>
+        </section>
+
+        <!-- hospitals -->
+        <section class="block" id="hospitals">
+            <h2 class="block-title">Hospitals</h2>
+            <p class="block-lead">The receiving hospitals of the service.</p>
+            <div class="hosp-wrap">
+                <section class="osa-map-wrap hosp-map"><div id="map"></div></section>
+                <ul class="hosp-list" id="hospList"><li class="osa-empty">Loading...</li></ul>
+            </div>
+        </section>
+
+        <!-- join -->
+        <section class="block join" id="join">
+            <div>
+                <h2 class="block-title">Join us</h2>
+                <p>We are always looking for paramedics, doctors and dispatchers. Take the EMS work in
+                game, finish the tutorial and sign in to an ambulance unit on its tablet - your first
+                call will not be long in coming. Dispatchers receive their personal dispatcher code
+                from the service management.</p>
+            </div>
+        </section>
+
+        <!-- staff portal -->
+        <section class="block" id="staff">
+            <h2 class="block-title">Staff portal</h2>
+            <p class="block-lead">For members of the service. Sign-in required.</p>
+            <div class="cards portal">
+                <a class="card link" data-goto="dispatch" href="/med_web/dispatch.html">
+                    <span class="card-icon">&#x1F5FA;&#xFE0F;</span>
+                    <h3>Dispatcher console</h3>
+                    <p>Live map, tasks, units and messages. Sign in with your dispatcher code.</p>
+                    <span class="go">Open &rsaquo;</span>
+                </a>
+                <a class="card link" data-goto="tablet" href="/med_web/tablet.html">
+                    <span class="card-icon">&#x1F4F1;</span>
+                    <h3>Unit tablet</h3>
+                    <p>Your unit's tablet in the browser: active case, messages, end of shift. Game account.</p>
+                    <span class="go">Open &rsaquo;</span>
+                </a>
+                <a class="card link" data-goto="admin" href="/med_web/admin.html">
+                    <span class="card-icon">&#x1F6E1;&#xFE0F;</span>
+                    <h3>ERM Admin</h3>
+                    <p>Shift and task history, automatic dispatch. Game account with admin rights.</p>
+                    <span class="go">Open &rsaquo;</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-foot">
+        <span class="logo small"><i></i><i></i></span>
+        <span>San Andreas Emergency Medical Services</span>
+        <span class="osa-muted">Emergency? Phone &rsaquo; Emergency Services &rsaquo; EMS</span>
+    </footer>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

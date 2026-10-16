@@ -1,5 +1,5 @@
-// ERM Admin (web): the /ermadmin panel - shift and task history, details, auto dispatch switch.
-// Sign-in with the game account, admin level checked by the server (server/webadmin.lua).
+// ERM Admin (web/admin.html): the /ermadmin panel - shift and task history, details, auto dispatch switch.
+// Sign-in with the game account, admin level checked by med_erm (server/webadmin.lua).
 (function () {
     'use strict';
 
@@ -35,6 +35,7 @@
     };
 
     const call = (fn, ...args) => api.call(fn, A.token, ...args);
+    $('adminUser').focus();
     const shortDate = s => (s ? String(s).slice(5, 16) : '-');
     const val = v => (v === '' || v === undefined || v === null ? '-' : esc(v));
     const prio = p => `<span class="osa-badge${p ? ' p' + p : ''}">${p ? 'P' + p : '--'}</span>`;

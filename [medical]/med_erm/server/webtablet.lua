@@ -4,7 +4,7 @@
 --
 -- The session only proves WHO the account is; the unit is looked up on every call from the
 -- online player on that account (Units.byPlayer), so signing in / out in game is followed
--- live. Exports are http="true" (see meta.xml), first argument = session token.
+-- live. Called through med_web (webCall in server/http.lua), first argument = session token.
 
 WebTablet = {
     sessions  = {},   -- [token] = { account, lastSeen }
@@ -134,7 +134,7 @@ local function state(s, lastMessageId, lastEventId)
     return out
 end
 
----------------------------------------------------------------- http exports
+---------------------------------------------------------------- web API (called through med_web)
 
 local function result(ok, err)
     if ok then return { ok = true } end
@@ -142,7 +142,7 @@ local function result(ok, err)
 end
 
 function ermTabletLogin(_, username, password)
-    local id = exports.web_api:getCallerId(hostname)
+    local id = Web.callerId()
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
     if not accountsRunning() then return { ok = false, error = "Account system is not available." } end
 

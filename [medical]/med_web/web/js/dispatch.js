@@ -1,4 +1,4 @@
-// Dispatcher console: polling, task / unit lists, drag & drop, context menus.
+// Dispatcher console (web/dispatch.html): polling, task / unit lists, drag & drop, context menus.
 (function () {
     'use strict';
 

@@ -76,10 +76,10 @@ setTimer(function()
     end
 end, 60000, 0)
 
----------------------------------------------------------------- http exports
+---------------------------------------------------------------- web API (called through med_web)
 
 function ermAdminLogin(_, username, password)
-    local id = exports.web_api:getCallerId(hostname)
+    local id = Web.callerId()
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
     if not accountsRunning() then return { ok = false, error = "Account system is not available." } end
 

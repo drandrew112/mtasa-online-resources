@@ -1,7 +1,8 @@
 # erm – Emergency Response Manager
 
-EMS dispatch system: a **web dispatcher console** served by the MTA HTTP
-server and a **dx tablet** for ambulance crews in game. All UI is English.
+EMS dispatch system: tasks, units, dispatcher sessions and a **dx tablet** for ambulance crews
+in game. Its web pages (dispatcher console, web tablet, ERM admin) are in **med_web**, which calls
+the web API of this resource. All UI is English.
 
 ## Layout
 
@@ -17,8 +18,9 @@ erm/
 │  ├─ chat.lua             broadcast / unit / task messages (memory only)
 │  ├─ tablet.lua           client -> server events of the tablet
 │  ├─ dispatchers.lua      dispatcher codes (data/dispatchers.json) + sessions
-│  ├─ http.lua             web console API (http="true" exports)
-│  ├─ webapp.lua           registers the in-game console (ui_browser site) with web_api
+│  ├─ http.lua             web API entry (webCall) + dispatcher console functions
+│  ├─ webtablet.lua        web tablet functions
+│  ├─ webadmin.lua         web ERM admin functions
 │  ├─ admin.lua            /ermadmin permission + history queries
 │  ├─ events.lua           server events for other resources (onErm...)
 │  ├─ exports.lua          automation API (exports for other resources)
@@ -30,40 +32,30 @@ erm/
 │  ├─ pages/               login, home, case (Active Case), messages
 │  ├─ admin/               /ermadmin panel (panel.lua lists, detail.lua views)
 │  └─ fonts/               Roboto (copied from v_radar)
-├─ web/                    dispatcher console on web_api (index.html, http.html, css/, js/)
 └─ data/                   dispatchers.json (codes); erm.db is created here
 ```
 
-## Web dispatcher console
+## Web pages (med_web)
 
-`http://<server-ip>:<httpport>/erm/` (default port 22005). No MTA login is
-used, but MTA only serves guests when the **Default** ACL allows HTTP at all
-(`general.http` is `false` there by default -> 401 / login prompt). In
-`acl.xml`, `<acl name="Default">`:
+The dispatcher console, the web tablet and the ERM admin are pages of the **med_web** resource
+(`http://<server>:<httpport>/med_web/`, in game `ems-dispatch.eu`) - see its README for the pages,
+the HTTP ACL and the in-game site. They reach this resource through one export:
 
-```xml
-<right name="general.http" access="true"></right>
-<right name="resource.erm.http" access="true"></right>
+```lua
+exports.med_erm:webCall(callerId, fn, ...)   -- fn = one of the erm* web functions below
 ```
 
-then `reloadacl` in the server console (or restart). This opens HTTP for
-guests on every resource that has `<html>` files or `http="true"` exports –
-currently only erm; add `resource.<name>.http = false` for any future one that
-must stay private.
+`callerId` (HTTP address or `player:<serial>`, from `web_api:getCallerId`) is what the login
+throttles count (`Web.callerId()`). The functions take the session token as their first argument:
 
-The page is built on the shared **web_api** toolkit (components, map, HTTP + in-game transport,
-"Provided by OpenSanAndreas" credit; see `web_api/README.md`). It is served by `web/http.html`
-(default page, server-side template): it reads `web/index.html` and the css / js it links and
-web_api sends them as one document with everything inlined (those files are client files too, for
-the in-game version, and MTA serves client files as `application/octet-stream`, which browsers
-refuse as a stylesheet). The map is v_radar's bigmap (`/v_radar/radar/files/radar.png`), whatever
-its pixel size.
+- dispatcher (`server/http.lua`): `ermLogin / Logout / GetState / SetPriority / Assign / Unassign /
+  CloseTask / CreateTask / SendMessage`
+- web tablet (`server/webtablet.lua`): `ermTabletLogin / Logout / State / CaseAction / LeaveCase /
+  CloseCase / SendMessage / EndShift`
+- ERM admin (`server/webadmin.lua`): `ermAdminLogin / Logout / Query / Auto / AutoSet`
 
-**Dispatcher login**: the page shows only a login panel until a valid
-dispatcher code is entered, and asks again after every reload (the session
-token lives in page memory only; sessions expire after 10 min without
-requests). Codes are in `data/dispatchers.json` (re-read on every login, no
-restart needed):
+**Dispatcher login**: codes are in `data/dispatchers.json` (re-read on every login, no restart
+needed); sessions expire after 10 min without requests:
 
 ```json
 { "dispatchers": [ { "code": "DRA112", "name": "DrAndres" } ] }
@@ -72,32 +64,6 @@ restart needed):
 Codes are case-insensitive. The dispatcher appears as `Dispatcher <name>`
 everywhere (chat sender, web-created task caller, close reason). 5 wrong codes
 within a minute lock that client out for a minute.
-
-- **Tasks**: `Not assigned` → `Prioritized` (select a task and press **P1–P4**,
-  or right-click → Priority) → `Assigned` (drag the task onto a unit in the
-  list or on the map, or right-click → Assign unit). A unit can hold one task,
-  a task can hold several units; the assigned units are shown on the task.
-  **+ New** / right-click on the map creates a task. Closed tab = recent history.
-- **Map**: v_radar bigmap. Tasks = red dots, units = callsign labels in their
-  status colour. Hover = details, right-click = the same actions as the lists.
-  Wheel zoom, drag to pan, double-click a list entry to centre it.
-- **Chat**: Broadcast (all units), per unit, per task (every unit assigned to
-  the task gets it). Crew replies arrive in the unit's thread.
-
-### In game: `ems-dispatch.eu` (ui_browser)
-
-The same console is a website in the in-game virtual browser (`ui_browser`,
-category **Services**, address `ems-dispatch.eu`) and behaves exactly like the
-HTTP page (same login, map, drag & drop, right-click menus, chat). It is the
-same `web/` page, opened through web_api's `loader.html` as a local CEF page. There is no HTTP in
-game, so web_api relays the page's API calls to the same `http.lua` functions (only the
-`http="true"` exports of `meta.xml`; `server/webapp.lua` registers the site). `http.lua` asks
-`exports.web_api:getCallerId(hostname)` who is calling (HTTP address or `player:<serial>`) for
-the login rate limit. The map image is v_radar's, so only the small html/css/js files are
-downloaded by players.
-
-Task -> unit dragging is mouse-event based (not HTML5 drag & drop), because
-the offscreen CEF of MTA does not support native DnD.
 
 ## Admin panel (/ermadmin)
 
@@ -307,8 +273,7 @@ and sends the nearest free unit automatically – see its README.
 `server/autodispatch.lua` is the bridge: `/ermadmin` has an
 **Auto dispatch: ON/OFF** switch in the header (N/A when med_erm_auto is not
 running) and `ermGetState` returns `auto = { available, enabled }`, shown as
-the **AUTO DISPATCH** badge in the web console's top bar (HTTP page and
-in-game site – http.html inlines index.html, so both get it).
+the **AUTO DISPATCH** badge in the web console's top bar (med_web, HTTP and in game).
 
 ## Tablet tutorial mode (client, for the work_ems tutorial)
 
@@ -319,9 +284,9 @@ and messages. Server pushes are ignored. `setTabletTutorialCase(task)`,
 Each step is reported through `onClientErmTabletTutorial(action, ...)` (source = localPlayer).
 Server export `removePlayerFromUnit(player [, reason])`.
 
-## Web tablet (mode "Tablet")
+## Web tablet (med_web `tablet.html`)
 
-The login screen of the web page has a **Dispatcher | Tablet** switch. Tablet mode signs in with the
+The web tablet signs in with the
 game account (`exports.v_accounts:httpLogin(username, password)` - credential + ban check, no player
 needed; failed attempts throttled per account in v_accounts and per client in `server/webtablet.lua`).
 
@@ -330,15 +295,13 @@ needed; failed attempts throttled per account in v_accounts and per client in `s
 - Member: Home / Active Case / Messages like the in-game tablet (start / end response, leave, close with
   reason, dispatch + case chat, end shift). A separate instance from the in-game tablet - both work at once.
 - Alerts: `Units.notify` also queues events (`WebTablet.push`); the page toasts them and plays
-  `sounds/tablet_alert.mp3` for alert events (the sign-in click unlocks browser audio).
-- HTTP exports: `ermTabletLogin / Logout / State / CaseAction / LeaveCase / CloseCase / SendMessage / EndShift`
-  (first argument = session token). Page: `web/js/tablet.js`. English only.
+  the tablet alert sound for alert events (the sign-in click unlocks browser audio).
+- Page: med_web `web/js/tablet.js`. English only.
 
-## Web ERM Admin (mode "ERM Admin")
+## Web ERM Admin (med_web `admin.html`)
 
-Third mode of the login switch: the in-game `/ermadmin` panel in the browser - shift and task history
+The in-game `/ermadmin` panel in the browser - shift and task history
 (search, filters, paging), shift / task details with back navigation, and the auto dispatch (med_erm_auto)
 switch. Login with the game account (`v_accounts:httpLogin`); the admin level (`Config.ADMIN_LEVEL`, 1) is
 checked at login and re-checked every call (online player's account data, otherwise the `accounts` table).
-Server: `server/webadmin.lua` (queries are the `AdminHandlers` of `server/admin.lua`); page: `web/js/admin.js`.
-HTTP exports: `ermAdminLogin / Logout / Query / Auto / AutoSet`.
+Server: `server/webadmin.lua` (queries are the `AdminHandlers` of `server/admin.lua`); page: med_web `web/js/admin.js`.

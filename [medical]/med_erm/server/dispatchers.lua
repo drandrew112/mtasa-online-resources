@@ -41,9 +41,8 @@ local function loadCodes()
 end
 
 local function clientId()
-    -- web_api: "player:<serial>" for the in-game console, otherwise the fallback - MTA exposes
-    -- the caller's address to HTTP handlers as "hostname"
-    return exports.web_api:getCallerId(hostname)
+    -- "player:<serial>" for the in-game console, otherwise the HTTP address (passed by med_web)
+    return Web.callerId()
 end
 
 local function tooManyFails(id)
