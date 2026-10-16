@@ -11,6 +11,10 @@
     <script src="locals.lua" type="server" />
     <script src="server/main.lua" type="server" />
 
+    <script src="client/assets.lua" type="client" />
+    <file src="assets/case.dff" />
+    <file src="assets/case.txd" />
+
     <export function="spawnCargo" type="server" />
     <export function="destroyCargo" type="server" />
     <export function="refreshPlayer" type="server" />
