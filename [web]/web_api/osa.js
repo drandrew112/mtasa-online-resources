@@ -632,21 +632,16 @@
 
     /* ====================================================================== credit */
 
-    // "Provided by OpenSanAndreas" sits in the bottom-left corner of the map; a page without a
-    // map gets a strip at the bottom-left of the page instead
+    // "Provided by OpenSanAndreas" sits in the bottom-left corner of the map (the map tiles come
+    // from OpenSanAndreas); a page without a map gets no credit
     function credit() {
         if (document.querySelector('.osa-credit')) return;
+        const wrap = document.querySelector('.osa-map-wrap');
+        if (!wrap) return;
         const d = create('div', 'osa-credit');
         d.append('Provided by ');
         d.appendChild(create('b', '', 'OpenSanAndreas'));
-        const wrap = document.querySelector('.osa-map-wrap');
-        if (wrap) {
-            wrap.appendChild(d);
-        } else {
-            d.classList.add('page');
-            document.body.classList.add('osa-credit-page');
-            document.body.appendChild(d);
-        }
+        wrap.appendChild(d);
     }
     OSA.ready(credit);
 })();

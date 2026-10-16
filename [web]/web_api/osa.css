@@ -69,9 +69,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
     pointer-events: none;
 }
 .osa-credit b { color: var(--osa-text); font-weight: 700; }
-/* page without a map: a strip at the bottom-left of the page */
-.osa-credit.page { position: fixed; z-index: 1000; pointer-events: auto; }
-body.osa-credit-page { padding-bottom: var(--osa-footer-h); }
 
 /* ---------------------------------------------------------------- top bar */
 
@@ -259,6 +256,7 @@ body.osa-flex { display: flex; flex-direction: column; }
 .osa-login {
     position: fixed;
     inset: 0;
+    z-index: 100;
     display: grid;
     place-items: center;
     background: radial-gradient(circle at 50% 30%, var(--osa-panel-2), var(--osa-bg) 70%);

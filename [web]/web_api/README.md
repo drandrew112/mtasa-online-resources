@@ -1,8 +1,8 @@
 # web_api
 
-Shared web UI toolkit of the server - *Provided by OpenSanAndreas* (the credit is added to every
-page automatically, in the bottom-left corner of the `.osa-map-wrap` map; a page without a map
-gets a strip at the bottom-left of the page).
+Shared web UI toolkit of the server. Pages with a map get the *Provided by OpenSanAndreas* credit
+automatically, in the bottom-left corner of the `.osa-map-wrap` map; a page without a map gets
+no credit.
 
 A resource builds its web interface once; it then runs in two places:
 
