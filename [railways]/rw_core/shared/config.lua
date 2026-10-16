@@ -3,10 +3,9 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- rw_core settings (server + client)
 
 RW = {
-    -- the railway company running the network (web map, ui_browser site, UI texts)
+    -- the railway company running the network (UI texts, pt_web website)
     COMPANY       = "Sunline Rail",
     COMPANY_SHORT = "SLR",
-    SITE_URL      = "sunline-rail.sa",          -- ui_browser address (services category)
 
     -- Railway role ("vasutas jog"): with REQUIRE_RAILWAY_ROLE, only role holders may assemble /
     -- spawn trains and throw switches. Driving is open to everyone either way. The role is

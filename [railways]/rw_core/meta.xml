@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="Railway core" version="1.0.0" type="script"
-          description="Sunline Rail network core: tracks, consists (every railway vehicle spawns here), switches, railway role, network web map" />
+          description="Sunline Rail network core: tracks, consists (every railway vehicle spawns here), switches, railway role, network data for the pt_web website" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
     <!-- ================= SHARED ================= -->
@@ -14,7 +14,7 @@
     <script src="server/consist.lua"  type="server" />
     <script src="server/switches.lua" type="server" />
     <script src="server/depot.lua"    type="server" />
-    <script src="server/web.lua"      type="server" />
+    <script src="server/netdata.lua"  type="server" />
     <script src="server/log.lua"      type="server" />
 
     <!-- ================= CLIENT ================= -->
@@ -23,15 +23,6 @@
     <script src="client/trainlabel.lua" type="client" />
     <file src="fonts/Roboto.ttf"  type="client" />
     <file src="fonts/RobotoB.ttf" type="client" />
-
-    <!-- ================= WEB (network map) =================
-         Built on web_api. http://<server>:<httpport>/rw_core/ ; in game: ui_browser
-         "sunline-rail.sa" (services), registered in server/web.lua. web/http.html asks
-         web_api to send web/index.html with css / js inlined. The map image is v_radar's. -->
-    <html src="web/http.html"     default="true" />
-    <file src="web/index.html"    type="client" />
-    <file src="web/css/style.css" type="client" />
-    <file src="web/js/app.js"     type="client" />
 
     <!-- ================= EXPORTS ================= -->
     <!-- consists: every railway vehicle is spawned through these -->
@@ -73,17 +64,13 @@
     <export function="railLog"      type="server" />
     <export function="getRailLog"   type="server" />
     <export function="railTrainTag" type="server" />
-    <!-- network map web API -->
-    <export function="rwGetNetwork" type="server" http="true" />
-    <export function="rwGetState"   type="server" http="true" />
-    <export function="rwGetBoards"  type="server" http="true" />
+    <!-- network data (server/netdata.lua) - the website is [web]/pt_web -->
+    <export function="getNetworkGeometry" type="server" />
+    <export function="getNetworkTrains"   type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />
     <include resource="rw_customtracks" />
     <include resource="ui_inac" />
     <include resource="ui_interactobject" />
-    <include resource="ui_browser" />
-    <include resource="web_api" />
-    <include resource="v_radar" />
 </meta>

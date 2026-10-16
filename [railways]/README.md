@@ -182,8 +182,6 @@ right column keeps the notifications free.
 
 ## Web map
 
-`http://<server>:22005/rw_core/` and in game in `ui_browser` → Services →
-**sunline-rail.sa**. `web/http.html` serves the HTTP page with css/js inlined;
-`web/index.html` is the in-game CEF page (calls go through `mta.triggerEvent`). Trains are
-grey without a timetable and green in service; click a train for its data, driver and
-timetable; hover / click a station dot for its board and the trains related to it.
+The website is `[web]/pt_web` (San Andreas Transit): journey planner, departure boards and the live
+network map at `http://<server>:22005/pt_web/map.html`, in game `ui_browser` -> Services ->
+**sa-transit.sa**. rw_core only provides the data (`getNetworkGeometry`, `getNetworkTrains`).

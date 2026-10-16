@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>San Andreas Transit - Journey planner</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/pt.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="pt-home">
+    <header class="osa-topbar pt-top">
+        <a class="pt-brand" data-goto="index" data-hash="plan">
+            <svg class="pt-logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="var(--pt-accent)"/><path d="M11 13h18M20 13v14" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="29.5" r="3.6" fill="var(--sun)"/></svg>
+            <span><b>San Andreas Transit</b><small>Trains and buses across the state</small></span>
+        </a>
+        <nav class="pt-nav">
+            <a data-goto="index" data-hash="plan" class="on">Journey planner</a>
+            <a data-goto="index" data-hash="departures">Departures</a>
+            <a data-goto="index" data-hash="network">Network</a>
+            <a data-goto="map">Live map</a>
+            <a data-goto="index" data-hash="careers">Work with us</a>
+        </nav>
+        <div class="pt-clock" id="clock">--:--</div>
+    </header>
+
+    <!-- ============================================================ planner + map -->
+    <section class="pt-section pt-hero" id="plan">
+        <div class="pt-wrap pt-hero-grid">
+            <div class="pt-card pt-planner">
+                <div class="pt-kicker">Journey planner</div>
+                <h1>Where are you going?</h1>
+                <div class="osa-muted">Live times, changes between lines included.</div>
+
+                <form class="pt-form" id="planForm" autocomplete="off">
+                    <div>
+                        <label for="from">From</label>
+                        <select class="osa-select" id="from"></select>
+                    </div>
+                    <button type="button" class="osa-btn icon pt-swap" id="swap" title="Swap">&#x21C5;</button>
+                    <div>
+                        <label for="to">To</label>
+                        <select class="osa-select" id="to"></select>
+                    </div>
+                    <div class="full">
+                        <label>When</label>
+                        <div class="pt-when">
+                            <div class="osa-tabs" id="whenTabs">
+                                <button type="button" class="osa-tab active" data-when="now">Now</button>
+                                <button type="button" class="osa-tab" data-when="at">Depart at</button>
+                            </div>
+                            <input class="osa-input" type="time" id="whenTime" disabled>
+                        </div>
+                    </div>
+                    <button type="submit" class="osa-btn primary go full" id="go">Search journeys</button>
+                </form>
+
+                <div class="pt-results" id="results">
+                    <p class="osa-muted">Pick two stops - or click a stop on the map.</p>
+                </div>
+            </div>
+
+            <div class="pt-map">
+                <section class="osa-map-wrap">
+                    <div id="map"></div>
+                    <div class="pt-map-hint" id="mapHint">Click a stop: from here / to here / departures</div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ departures -->
+    <section class="pt-section" id="departures">
+        <div class="pt-wrap">
+            <h2>Departures and arrivals</h2>
+            <p class="pt-lead">Live boards of every stop - the same as on the station displays.</p>
+            <div class="pt-dep-grid">
+                <div class="pt-card"><div class="pt-stoplist" id="stopList"></div></div>
+                <div class="pt-card">
+                    <div class="pt-board-head">
+                        <h3 id="boardName">-</h3>
+                        <span class="osa-muted" id="boardCity"></span>
+                        <div class="osa-tabs" id="boardTabs">
+                            <button type="button" class="osa-tab active" data-kind="dep">Departures</button>
+                            <button type="button" class="osa-tab" data-kind="arr">Arrivals</button>
+                        </div>
+                    </div>
+                    <div id="board"><p class="osa-muted">Loading...</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ network -->
+    <section class="pt-section" id="network">
+        <div class="pt-wrap">
+            <h2>Our network</h2>
+            <p class="pt-lead">One network, one planner. Follow every train live on the
+                <a data-goto="map">network map</a>.</p>
+            <div class="pt-ops" id="operators"><p class="osa-muted">Loading...</p></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ careers -->
+    <section class="pt-section" id="careers">
+        <div class="pt-wrap">
+            <h2>Become a railway worker</h2>
+            <p class="pt-lead">Sunline Rail is looking for train drivers. Drive regional and intercity
+                services between Los Santos, San Fierro and Las Venturas, get paid for every service
+                and climb the ranks.</p>
+            <div class="pt-careers">
+                <div class="pt-card">
+                    <h3>How to start</h3>
+                    <ol class="pt-steps" id="steps"></ol>
+                </div>
+                <div class="pt-card" id="careerInfo"><p class="osa-muted">Loading...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="pt-foot">
+        <div class="pt-wrap">
+            <span>San Andreas Transit &middot; Sunline Rail &middot; buses coming soon</span>
+            <span id="footTime"></span>
+        </div>
+    </footer>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

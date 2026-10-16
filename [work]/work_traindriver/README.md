@@ -7,7 +7,8 @@ It is re-granted after an rw_core restart.
 - No vehicle marker: trains come from the rw_core depot menu.
 - Duty markers and outfits are in `shared/config.lua` (`STATIONS`, `SKINS`). Currently one marker at
   the Unity Station depot (placeholder position, tune with `/workpos`).
-- Exports: `isPlayerTrainDriver`, `getTrainDriverPlayers`, `getTrainDriverWorkId`.
+- Exports: `isPlayerTrainDriver`, `getTrainDriverPlayers`, `getTrainDriverWorkId`, `getTrainDriverInfo` (public work description for the pt_web
+  "become a railway worker" section).
 - A role given by `/rwrole` is separate: duty end also removes it.
 
 ## Pay

@@ -88,3 +88,25 @@ end
 function getTrainDriverWorkId()
     return TRAINDRIVER.WORK_ID
 end
+
+-- public description of the work for the pt_web website ("become a railway worker"): names,
+-- duty points, pay and levels. Texts may be v_locals message objects (the caller resolves them).
+function getTrainDriverInfo()
+    local stations = {}
+    for _, st in ipairs(TRAINDRIVER.STATIONS) do
+        stations[#stations + 1] = { name = st.name, x = st.duty[1], y = st.duty[2], z = st.duty[3] }
+    end
+    local levels = {}
+    for lvl = 1, TRAINDRIVER.MAX_LEVEL do
+        if TRAINDRIVER.LEVEL_NAMES[lvl] then levels[#levels + 1] = { level = lvl, name = TRAINDRIVER.LEVEL_NAMES[lvl] } end
+    end
+    local pay = TRAINDRIVER.PAY
+    local punctual = {}
+    for _, p in ipairs(pay.PUNCTUAL) do punctual[#punctual + 1] = { max = p.max, amount = p.amount } end
+    return {
+        name = TRAINDRIVER.NAME, description = TRAINDRIVER.DESCRIPTION,
+        onDuty = #getTrainDriverPlayers(),
+        stations = stations, levels = levels, maxLevel = TRAINDRIVER.MAX_LEVEL,
+        pay = { base = pay.BASE, perStop = pay.PER_STOP, punctual = punctual, skipFine = pay.SKIP_FINE, earlyFine = pay.EARLY_FINE },
+    }
+end

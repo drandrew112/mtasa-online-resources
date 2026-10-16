@@ -1,0 +1,43 @@
+<meta>
+    <info author="DrAndrew112" name="Public Transport Web" version="1.0.0" type="script"
+          description="San Andreas Transit website: journey planner with changes over every operator (rail now, buses later), departures, live railway map, railway careers" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/config.lua"        type="server" />
+    <script src="server/util.lua"          type="server" />
+    <script src="server/providers.lua"     type="server" />
+    <script src="server/provider_rail.lua" type="server" />
+    <script src="server/planner.lua"       type="server" />
+    <script src="server/api.lua"           type="server" />
+
+    <!-- ================= HTTP PAGES =================
+         http://<server>:<httpport>/pt_web/ - each entry renders its web/*.html source with the
+         css / js inlined (web_api page builder) -->
+    <html src="index.html" default="true" />
+    <html src="map.html" />
+
+    <!-- the same pages in game (ui_browser site sa-transit.sa, through web_api's loader) -->
+    <file src="web/index.html"   type="client" />
+    <file src="web/map.html"     type="client" />
+    <file src="web/css/pt.css"   type="client" />
+    <file src="web/css/map.css"  type="client" />
+    <file src="web/js/common.js" type="client" />
+    <file src="web/js/home.js"   type="client" />
+    <file src="web/js/map.js"    type="client" />
+
+    <!-- ================= EXPORTS (web API) ================= -->
+    <export function="ptGetSite"     type="server" http="true" />
+    <export function="ptPlan"        type="server" http="true" />
+    <export function="ptGetBoard"    type="server" http="true" />
+    <export function="ptGetCareers"  type="server" http="true" />
+    <export function="ptRailNetwork" type="server" http="true" />
+    <export function="ptRailState"   type="server" http="true" />
+    <export function="ptRailBoards"  type="server" http="true" />
+
+    <!-- ================= DEPENDENCIES =================
+         operators (rw_*, later the bus system) are used through exports when they run -->
+    <include resource="web_api" />
+    <include resource="ui_browser" />
+    <include resource="v_radar" />
+</meta>

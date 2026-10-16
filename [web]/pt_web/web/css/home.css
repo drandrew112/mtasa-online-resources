@@ -1,0 +1,3 @@
+/* home page only: the page scrolls (osa.css locks html / body for full-screen apps) */
+html, body { height: auto; min-height: 100%; overflow: auto; }
+html { scroll-behavior: smooth; }

@@ -15,8 +15,8 @@ The page code is identical: `OSA.api().call('fn', ...)` works in both. Only serv
 `http="true"` in the app's `meta.xml` can be called, in both modes (the in-game bridge reads the
 list from `meta.xml`, so it is exactly the HTTP surface).
 
-Used by `med_web` (EMS website + dispatch console, `ems-dispatch.eu`) and `rw_core` (Sunline Rail network
-map, `sunline-rail.sa`). A live demo of the components: `http://<server>:<httpport>/web_api/`.
+Used by `med_web` (EMS website + dispatch console, `ems-dispatch.eu`) and `pt_web` (San Andreas Transit: journey
+planner + live railway map, `sa-transit.sa`). A live demo of the components: `http://<server>:<httpport>/web_api/`.
 
 ## Using it in a resource
 

@@ -1,4 +1,4 @@
-// Network map application: polls the state, draws trains / stations / signals, shows the
+// Live railway map (map.html, moved here from rw_core): polls the state, draws trains / stations / signals, shows the
 // selected train (left panel) and the station departure / arrival boards (right panel).
 (function () {
     'use strict';
@@ -74,8 +74,7 @@
     function drawNetwork() {
         tracks = arr(net.tracks).map(t => ({ id: t.id, closed: t.closed, points: arr(t.points) }));
         map.redraw();
-        $('companyName').textContent = net.company || 'Sunline Rail';
-        document.title = (net.company || 'Sunline Rail') + ' - Network map';
+        document.title = (net.company || 'Sunline Rail') + ' live map - San Andreas Transit';
 
         const keep = new Set();
         for (const s of arr(net.stations)) {
@@ -107,7 +106,8 @@
 
         const list = arr(net.stations);
 
-        // station picker of the board panel
+        // station picker of the board panel (map.html?station=<id> opens that one)
+        if (boardStation === null) boardStation = new URLSearchParams(location.search).get('station');
         if (!list.some(s => s.id === boardStation)) boardStation = list.length ? list[0].id : null;
         $('boardPick').innerHTML = list.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
         $('boardPick').value = boardStation || '';
@@ -337,14 +337,14 @@
 
     async function loadNetwork() {
         try {
-            const n = await api.call('rwGetNetwork');
+            const n = await api.call('ptRailNetwork');
             if (n && n.tracks) { net = n; drawNetwork(); }
         } catch (e) { /* retried by poll */ }
     }
 
     async function pollBoards() {
         try {
-            const b = await api.call('rwGetBoards');
+            const b = await api.call('ptRailBoards');
             if (b && b.ok) { boards = b.boards || {}; renderBoard(); }
         } catch (e) { /* the state poll shows the offline banner */ }
         setTimeout(pollBoards, BOARD_POLL_MS);
@@ -352,7 +352,7 @@
 
     async function poll() {
         try {
-            const s = await api.call('rwGetState');
+            const s = await api.call('ptRailState');
             if (s && s.ok) {
                 state = s;
                 const d = new Date();

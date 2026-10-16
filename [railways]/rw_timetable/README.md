@@ -18,7 +18,7 @@ Server exports:
 | `getTripsOverview()` | trips -30 / +60 min for station boards |
 | `isConsistAtStation(consistId)`, `canOpenDoors(consistId)` | |
 | `getStationBoard(stationId[, rows])` | the passenger board of a station: `departures` / `arrivals` (time, train, destination / origin, via, track, state, delay); `rows` per column, default `TT.BOARD.ROWS` |
-| `getStationBoards([rows])` | every station's board, `{ [stationId] = board }` (rw_core web map) |
+| `getStationBoards([rows])` | every station's board, `{ [stationId] = board }` (pt_web live map) |
 
 Events (source: lead): `onRailServiceStart(consistId, tripId, player)`,
 `onRailServiceStop(consistId, tripId, stopIndex, record)`,

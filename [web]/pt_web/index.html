@@ -1,7 +1,6 @@
 <*
--- HTTP entry of the network map (http://<server>:<httpport>/rw_core/): web_api sends
--- web/index.html with the css / js it links inlined (in game the same files load as a local
--- CEF page, and MTA serves client files with a content type browsers refuse for css).
+-- HTTP entry of web/index.html. <html> pages do not see the globals of the
+-- server scripts, so the page reads its files here and web_api inlines the css / js.
 local PAGE = "web/index.html"
 
 local function read(path)

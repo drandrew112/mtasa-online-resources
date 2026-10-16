@@ -12,6 +12,7 @@
     <export function="isPlayerTrainDriver"  type="server" />
     <export function="getTrainDriverPlayers" type="server" />
     <export function="getTrainDriverWorkId" type="server" />
+    <export function="getTrainDriverInfo"   type="server" />
 
     <!-- rw_core is used through exports when running (not included, so a rw_core restart does not stop this work) -->
     <include resource="work_core" />
