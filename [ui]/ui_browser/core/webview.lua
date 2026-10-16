@@ -119,8 +119,16 @@ function BR.webWheel(delta)
     local mx, my = getCursorPosition()
     if not mx then return false end
     local sw, sh = guiGetScreenSize()
-    if not BR.webContains(mx * sw, my * sh) then return false end
-    injectBrowserMouseWheel(v.browser, delta * 40, 0)
+    local ax, ay = mx * sw, my * sh
+    if not BR.webContains(ax, ay) then return false end
+    -- CEF scrolls the element under ITS last known pointer and ignores wheel input on an
+    -- unfocused browser, so re-sync the pointer and focus before every tick
+    if not v.focused then
+        focusBrowser(v.browser)
+        v.focused = true
+    end
+    injectBrowserMouseMove(v.browser, ax - v.rect.x, ay - v.rect.y)
+    injectBrowserMouseWheel(v.browser, delta * 120, 0)
     return true
 end
 

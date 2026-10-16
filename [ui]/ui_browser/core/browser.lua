@@ -369,7 +369,7 @@ addEventHandler("onClientKey", root, function(key, press)
     if not BR.state.open then return end
 
     if (key == "mouse_wheel_up" or key == "mouse_wheel_down") and BR.webActive() then
-        BR.webWheel(key == "mouse_wheel_up" and 1 or -1)
+        if press then BR.webWheel(key == "mouse_wheel_up" and 1 or -1) end
         cancelEvent()
         return
     end
