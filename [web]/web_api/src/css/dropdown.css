@@ -1,0 +1,12 @@
+/* custom dropdown (replaces the native select popup, which offscreen pages never show) */
+.osa-dd { display: block; text-align: left; cursor: pointer; color: var(--osa-text); font: inherit;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 26px; position: relative; }
+.osa-dd::after { content: "BE"; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); color: var(--osa-dim); }
+.osa-dd.open { border-color: var(--osa-accent); }
+.osa-dd-list { position: fixed; z-index: 100000; overflow-y: auto; background: var(--osa-panel-2);
+    border: 1px solid var(--osa-line); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.5); padding: 4px 0; }
+.osa-dd-item { padding: 7px 12px; cursor: pointer; white-space: nowrap; color: var(--osa-text); font-size: 14px; }
+.osa-dd-item:hover { background: var(--osa-panel-3); }
+.osa-dd-item.sel { background: var(--osa-accent); color: var(--osa-on-accent); }
+.osa-dd-item.off { color: var(--osa-faint); cursor: default; }
+.osa-dd-group { padding: 6px 12px 3px; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--osa-dim); }

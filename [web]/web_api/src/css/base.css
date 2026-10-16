@@ -1,0 +1,47 @@
+/* ==========================================================================
+   OSA web toolkit - shared styles (web_api/osa.css)
+   Provided by OpenSanAndreas
+
+   Theme it by overriding the --osa-* variables in the app's own css. Every class is
+   prefixed osa- so it never collides with the app's classes.
+   ========================================================================== */
+
+:root {
+    --osa-bg: #0f1216;
+    --osa-panel: #161b21;
+    --osa-panel-2: #1d232b;
+    --osa-panel-3: #252d37;
+    --osa-line: #2a323c;
+    --osa-text: #e8ecf1;
+    --osa-dim: #98a2ae;
+    --osa-faint: #626c78;
+    --osa-accent: #e03c31;
+    --osa-on-accent: #fff;
+    --osa-ok: #2ea043;
+    --osa-bad: #da3633;
+    --osa-warn: #e6be28;
+    --osa-info: #3884f4;
+    --osa-danger-text: #ff7b72;
+
+    --osa-topbar-bg: #0b0e11;
+    --osa-topbar-h: 56px;
+    --osa-footer-h: 22px;
+    --osa-map-bg: #0a2a3d;
+    --osa-radius: 8px;
+    --osa-font: "Segoe UI", Roboto, system-ui, sans-serif;
+
+    font-size: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--osa-bg);
+    color: var(--osa-text);
+    font-family: var(--osa-font);
+    overflow: hidden;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }

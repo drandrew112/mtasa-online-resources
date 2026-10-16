@@ -13,7 +13,7 @@
     <script src="client/sites.lua"  type="client" />
     <script src="client/bridge.lua" type="client" />
 
-    <!-- Shared page assets. In game they are local CEF files (http://mta/web_api/osa.css);
+    <!-- Shared page assets (generated from src/ by tools/build.py - do not edit osa.js / osa.css). In game they are local CEF files (http://mta/web_api/osa.css);
          over HTTP the page builder inlines them (client files are served as octet-stream). -->
     <file src="osa.css"     type="client" />
     <file src="osa.js"      type="client" />

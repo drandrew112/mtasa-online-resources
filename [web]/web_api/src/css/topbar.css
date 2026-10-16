@@ -1,0 +1,38 @@
+/* ---------------------------------------------------------------- top bar */
+
+.osa-topbar {
+    flex: none;
+    height: var(--osa-topbar-h);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+    background: var(--osa-topbar-bg);
+    border-bottom: 1px solid var(--osa-line);
+}
+.osa-brand { display: flex; align-items: center; gap: 12px; }
+.osa-brand strong, .osa-brand .osa-title { display: block; font-size: 16px; letter-spacing: .3px; }
+.osa-brand small, .osa-brand .osa-sub { display: block; color: var(--osa-faint); font-size: 11px; }
+
+.osa-stats { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+.osa-stat {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--osa-panel-2);
+    color: var(--osa-dim);
+    font-size: 12px;
+}
+.osa-stat b { color: var(--osa-text); }
+
+/* value above a small caption, right aligned */
+.osa-kpis { display: flex; gap: 22px; margin-left: auto; }
+.osa-kpi { display: flex; flex-direction: column; align-items: flex-end; }
+.osa-kpi span { font-size: 18px; font-weight: 700; }
+.osa-kpi label { font-size: 11px; color: var(--osa-dim); text-transform: uppercase; letter-spacing: .6px; }
+
+.osa-top-right { display: flex; align-items: center; gap: 14px; }
+.osa-conn { width: 10px; height: 10px; border-radius: 50%; background: var(--osa-faint); }
+.osa-conn.ok { background: var(--osa-ok); box-shadow: 0 0 8px var(--osa-ok); }
+.osa-conn.bad { background: var(--osa-bad); }
+.osa-clock { font-variant-numeric: tabular-nums; color: var(--osa-dim); font-weight: 600; }

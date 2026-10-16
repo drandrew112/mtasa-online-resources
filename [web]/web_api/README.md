@@ -152,6 +152,10 @@ bottom-left corner of the map free.
 ```
 web_api/
   osa.css  osa.js  loader.html      shared page files (client files, in-game: http://mta/web_api/...)
+                                    osa.css / osa.js are GENERATED - never edit them directly
+  src/js/                           osa.js modules: core time transport poll toast overlays dropdown map
+  src/css/                          osa.css modules: base topbar layout controls login map overlays dropdown
+  tools/build.py                    joins src/ into osa.css + osa.js:  python tools/build.py
   server/main.lua                   app registry, ui_browser site list
   server/bridge.lua                 in-game call bridge (meta.xml http exports, caller id, flood guard)
   server/page.lua                   HTTP page builder
@@ -159,3 +163,10 @@ web_api/
   client/sites.lua                  registers the ui_browser sites
   client/bridge.lua                 page <-> server relay
 ```
+
+## Editing the toolkit
+
+Change the module in `src/js/` or `src/css/`, then run `python tools/build.py` and restart `web_api`
+(pages keep loading the single `/web_api/osa.js` + `osa.css`, so apps need no change). The js modules are
+fragments of one closure and share `OSA` / `create`; a new module is added to the lists at the top of
+`tools/build.py`.

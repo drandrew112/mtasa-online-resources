@@ -1,0 +1,75 @@
+/* ---------------------------------------------------------------- map */
+
+.osa-map-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid var(--osa-line);
+    border-radius: var(--osa-radius);
+    background: var(--osa-map-bg);
+}
+.osa-map { position: absolute; inset: 0; overflow: hidden; cursor: grab; }
+.osa-map.panning { cursor: grabbing; }
+.osa-map-img {
+    position: absolute;
+    left: 0; top: 0;
+    max-width: none;
+    transform-origin: 0 0;
+    user-select: none;
+    pointer-events: none;
+}
+.osa-map-canvas { position: absolute; left: 0; top: 0; pointer-events: none; }
+.osa-map-markers { position: absolute; inset: 0; pointer-events: none; }
+.osa-marker { position: absolute; pointer-events: auto; }
+
+.osa-map-tools { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; }
+.osa-map-tools .osa-btn { background: var(--osa-panel); }
+
+.osa-legend {
+    position: absolute;
+    left: 10px; bottom: calc(var(--osa-footer-h) + 10px);
+    display: flex;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #0b0e11dd;
+    font-size: 12px;
+}
+.osa-legend span { display: flex; align-items: center; gap: 5px; color: var(--osa-dim); }
+.osa-legend i { width: 10px; height: 10px; border-radius: 50%; }
+
+.osa-offline {
+    position: absolute; left: 50%; top: 12px;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--osa-bad);
+    color: #fff;
+    font-weight: 600;
+}
+.osa-offline[hidden] { display: none; }
+
+/* ---------------------------------------------------------------- credit */
+
+/* bottom-left corner of the map (osa.js puts it into the first .osa-map-wrap) */
+.osa-credit {
+    position: absolute;
+    left: 0; bottom: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    height: var(--osa-footer-h);
+    padding: 0 12px;
+    background: var(--osa-topbar-bg);
+    border-top: 1px solid var(--osa-line);
+    border-right: 1px solid var(--osa-line);
+    border-radius: 0 var(--osa-radius) 0 0;
+    color: var(--osa-dim);
+    font-size: 11px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+}
+.osa-credit b { color: var(--osa-text); font-weight: 700; }

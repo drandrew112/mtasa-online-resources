@@ -1,0 +1,38 @@
+/* ---------------------------------------------------------------- login screen */
+
+.osa-login {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 50% 30%, var(--osa-panel-2), var(--osa-bg) 70%);
+}
+.osa-login[hidden] { display: none; }
+.osa-login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: min(340px, calc(100vw - 32px));
+    padding: 30px 26px;
+    border: 1px solid var(--osa-line);
+    border-radius: 12px;
+    background: var(--osa-panel);
+    box-shadow: 0 20px 60px #0009;
+}
+.osa-login-box h1 { margin: 6px 0 0; font-size: 20px; }
+.osa-login-box p { margin: 0 0 8px; color: var(--osa-dim); font-size: 13px; }
+.osa-login-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--osa-line);
+    border-radius: 7px;
+    background: var(--osa-panel-2);
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+.osa-login-box input:focus { outline: 2px solid var(--osa-accent); border-color: transparent; }
+.osa-login-box .osa-btn { width: 100%; padding: 10px; font-weight: 600; }
+.osa-login-error { min-height: 18px; color: var(--osa-danger-text); font-size: 13px; }
