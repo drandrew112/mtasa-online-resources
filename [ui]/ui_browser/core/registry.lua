@@ -86,6 +86,7 @@ local function site(url, folder, category, title, desc, extra)
     BR.registerSite(url, def)
 end
 
+--[[
 site("lvcars.eu", "lvcars", "vehicles", "Las Venturas Cars",
     "Certified used cars with warranty, ready to drive away today.")
 
@@ -103,6 +104,7 @@ site("bizmarket.eu", "bizmarket", "business", "BizMarket",
 
 site("fiero.eu", "fiero", "business", "Fiero Markets",
     "Private stakes in the city's bars, clubs and late-night venues.")
+]]
 
 site("diamond.eu", "diamond", "entertainment", "Diamond Casino",
     "The Diamond: slots, tables and high-limit rooms. Opening soon.")
