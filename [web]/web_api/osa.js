@@ -54,6 +54,21 @@
         set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } },
     };
 
+    // Pages carry a <base href> (app folder), which turns every href="#section" into a link to the
+    // base url instead of the current page - handle in-page anchors here.
+    document.addEventListener('click', ev => {
+        if (ev.defaultPrevented || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+        const a = ev.target.closest && ev.target.closest('a[href^="#"]');
+        if (!a || a.target === '_blank') return;
+        const id = decodeURIComponent(a.getAttribute('href').slice(1));
+        ev.preventDefault();
+        const el = id ? document.getElementById(id) : null;
+        try { history.replaceState(null, '', id ? '#' + id : location.pathname + location.search); } catch (e) { /* ignore */ }
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        else if (!id) window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
     const two = n => String(n).padStart(2, '0');
 
     // seconds of the day -> "HH:MM"
