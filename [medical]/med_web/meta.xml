@@ -9,7 +9,7 @@
 
     <!-- ================= HTTP PAGES =================
          http://<server>:<httpport>/med_web/ - each entry renders its web/*.html source with the
-         css / js inlined (server/pages.lua, web_api page builder) -->
+         css / js inlined (web_api page builder) -->
     <html src="index.html"    default="true" />
     <html src="dispatch.html" />
     <html src="tablet.html" />

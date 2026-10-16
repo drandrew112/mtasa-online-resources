@@ -18,9 +18,9 @@ its links lead to the other pages through web_api's loader (`web/js/common.js`: 
 ```
 med_web/
 ├─ meta.xml
-├─ index.html dispatch.html tablet.html admin.html   HTTP entries: MedWeb.render("<page>")
+├─ index.html dispatch.html tablet.html admin.html   HTTP entries: read web/<page>.html, web_api renderPage
 ├─ server/
-│  ├─ pages.lua            page builder (web_api renderPage) + in-game site registration
+│  ├─ pages.lua            in-game site registration (ui_browser via web_api)
 │  └─ api.lua              http="true" exports: medWebPublic + the erm* calls forwarded to med_erm
 └─ web/
    ├─ *.html               page sources (also the in-game pages)
