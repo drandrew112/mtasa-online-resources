@@ -1,4 +1,6 @@
 <meta>
+    <download_priority_group>-10</download_priority_group>
+    
     <info author="DrAndrew112" name="map_ls_busstation" type="script" version="1.0.0" description="LS bus station model replacement (object 14802)" />
 
     <script src="client.lua" type="client" />

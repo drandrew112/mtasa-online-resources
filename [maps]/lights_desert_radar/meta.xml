@@ -1,4 +1,6 @@
 <meta>
+    <download_priority_group>-10</download_priority_group>
+    
     <oop>true</oop>
     <info type="map" version="1.0.0"></info>
     <map src="Lighted-by-Nebla.map" dimension="0"></map>

@@ -1,4 +1,6 @@
 <meta>
+    <download_priority_group>-10</download_priority_group>
+
 	<script src="client.lua" type="client" />
 	
     <file src="files/k.col" />

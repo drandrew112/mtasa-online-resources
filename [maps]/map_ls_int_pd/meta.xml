@@ -1,4 +1,6 @@
 <meta>
+    <download_priority_group>-10</download_priority_group>
+    
     <info type="map" version="1.0.1"></info>
     <script src="mapeditor/mapEditorScriptingExtension_s.lua" type="server"></script>
     <script src="mapeditor/mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>

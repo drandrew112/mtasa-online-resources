@@ -1,4 +1,6 @@
 <meta>
+    <download_priority_group>-10</download_priority_group>
+    
     <info type="map" version="1.1.0" />
     <map src="Market.map" dimension="0" />
     <settings>
