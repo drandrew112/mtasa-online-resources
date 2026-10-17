@@ -50,5 +50,5 @@ addEventHandler("acc:setPanel", root, setPanel)
 
 addEvent("acc:error", true)
 addEventHandler("acc:error", root, function(text)
-    uicore:setInfobox(text)
+    uicore:setInfobox(text, 255,255,255)
 end)
