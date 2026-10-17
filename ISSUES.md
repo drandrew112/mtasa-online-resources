@@ -647,11 +647,24 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   rw_customtracks debug draw, rw_passengers (7, via `Ride.onFrame`), tiktok-live HUDs,
   ui_download, ui_inac (render + temp hover merged), ui_interactobject, ui_pause, ui_phone,
   v_socialpanel, v_customs scissor doors, v_els siren intro, work tutorial cards (3),
-  work_core payment, world_elevators. Not tested in-game yet. Still open: event-gated (parachute,
-  medsys_events, arenawar HUD, rw_customtracks trains/sweeper, shop robbery, SA Control signs,
-  dynamic_lighting_vehicles), distance-gated world labels, per-frame non-render work
-  (arenawar `setInteriorSoundsEnabled`, wp_manager controls, rw_customtracks ride camera,
-  v_inventory ports).
+  work_core payment, world_elevators.
+  2026-10-17 (second pass): arenawar `setInteriorSoundsEnabled` once (no handler);
+  dynamic_lighting_vehicles walks only lit vehicles; rw_crossings (streamed arms of closed
+  crossings); shop robbery uses `onClientPlayerTarget` instead of per-frame LOS;
+  rw_customtracks placement + sweeper + sounds via `TrainsClient.onFrame`, driver HUD only in a
+  vehicle, ride camera on data change. work_atc training label only on duty, v_timetrial countdown
+  HUD only during a run, rw_timetable boards (hysteresis + one request in flight). med_bag HUD, rw_customtracks drawn
+  switches (500 ms near check), world_cablecars (distance from the cable line). parachute open +
+  parachute render, medsys_events crash sampling, arenawar HUD, SA Control signs, ai_land_traffic
+  puppets + debug, engine_3dsounds, dynamic_lighting (idle detach), bt_dispatch panel.
+  A ui_core server-side proximity watch (colsphere per marker + client `Proximity` lib) was tried
+  for the marker labels and **removed the same day: it dropped FPS a lot** (user report); those
+  label handlers are always attached again.
+  Not tested in-game yet. Still open: the marker labels (avi_core, med_hospitals, work_core,
+  world_interiors, clothes shop, rw_core depots, v_jobmanager, v_timetrial, rw_timetable),
+  wp_manager controls (D4) and parachute skydiving (they need
+  the control-lock API: `[ui]/ui_core/ControlLockAPI_DESIGN.MD`), v_inventory ports, the cable map
+  line (move to v_radar, separate task).
 - **Location:** Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[core]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[minigames]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
 - **Problem:** Every handler is called every frame, even when it returns early. The cost of the
   calls between VMs adds up. On low-end PCs this is several FPS.
