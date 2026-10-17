@@ -22,7 +22,7 @@ addEventHandler("onPlayerQuit", root, function() broadcast(true) end)
 
 local MAX_LENGTH = 2000
 local MAX_QUEUE = 50
-local SEND_INTERVAL = 600 -- ms between posts, keeps us under Discord's rate limit
+local SEND_INTERVAL = 2100 -- ms between posts: the queue lets exactly one message through per interval
 
 local webhooks = {}
 local queue = {}

@@ -59,6 +59,10 @@ function sendMessageToAll(sender, text)
     end
 end
 
+-- Fired (server side only) after a chat message has been accepted and sent.
+-- source = the sender, argument: the cleaned message text.
+addEvent("onPlayerChatMessage")
+
 addEvent("sendMessageToAll", true)
 addEventHandler("sendMessageToAll", getRootElement(), function(_, text)
     -- The sender is always the real caller: the first argument from the client is ignored.
@@ -82,6 +86,7 @@ addEventHandler("sendMessageToAll", getRootElement(), function(_, text)
 
     sendMessageToAll(player, text)
     exports.v_discordmanager:sendWebhook("chat", "**"..getPlayerName(player).."**: "..text)
+    triggerEvent("onPlayerChatMessage", player, text)
 end)
 
 addEventHandler("onPlayerQuit", root, function()

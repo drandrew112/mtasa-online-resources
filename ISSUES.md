@@ -79,7 +79,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | FIXED 2026-10-18 |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
-| [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | OPEN |
+| [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN (cables distance-gated) |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | OPEN |
 | [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
@@ -604,7 +604,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-07"></a>
 ### BUG-07 — v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits
 - **Severity:** LOW
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18
+- **Resolution:** v_chat fires the server event `onPlayerChatMessage` (source = sender, argument =
+  cleaned text) after each accepted message. Webhooks moved to `v_discordmanager`, whose queue now
+  lets one message through per 2100 ms.
 - **Location:** `[player_interaction]/v_chat/s_chat.lua`, `s_webhook.lua`
 - **Problem:** Custom chat never fires `onPlayerChat`, so admin chat logs or other listeners do
   not see it. Every message is its own `fetchRemote`. A Discord webhook allows ~30 requests per
