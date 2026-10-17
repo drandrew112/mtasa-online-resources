@@ -78,7 +78,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | FIXED 2026-10-18 |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
-| [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | OPEN |
+| [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | OPEN |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN (cables distance-gated) |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | OPEN |
@@ -588,13 +588,18 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-06"></a>
 ### BUG-06 — v_playedtime keeps a timer in synced element data
 - **Severity:** LOW
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18
 - **Location:** `[core]/v_playedtime/*.lua:38-40` (`setElementData(player, "Online.timer", setTimer(...))`)
 - **Problem:** A timer userdata stored in synced element data is sent to every client (useless
   and noisy), and a client can overwrite it, which breaks `killTimer`. It also makes two
   `setAccData` calls per player per minute (PERF-02).
 - **Suggested fix:** Keep the timers in a local `timers[player]` table, or better, use one
   global 60 s timer that walks the logged-in players and saves both values in one write.
+- **Fix:** `tiempo_S.lua` rewritten: one global 60 s timer (alive only while someone is tracked)
+  walks a local `tracked` set; `Online.hours` + `Online.minutes` are saved in one
+  `setAccData` table write. No `Online.timer` element data any more. The storage keys and the
+  `Játékidő` HUD string format are unchanged (read by ui_inac, ui_pause, v_socialpanel,
+  v_admin), so played time is preserved. `giveXp` is now called via `exports.v_levelsys`.
 
 <a id="bug-07"></a>
 ### BUG-07 — v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits
