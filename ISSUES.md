@@ -357,11 +357,15 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** HIGH
 - **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** The server (`ui_inac/server/spawn.lua`) now checks every request.
+  - Spawning is refused in admin jail (`adminjail` accData) and in a job (`jobmanagerGetState`).
   - Spawning only works in interior 0 / dimension 0. Elsewhere the player gets an error notification.
   - A player riding in a vehicle driven by another player cannot spawn a vehicle.
   - Rail vehicles (`getVehicleType == "Train"`) are rejected. They were also removed from `vehicles.xml`.
-  - Not covered by this fix: model allow-list or admin level for military/air vehicles, cooldown,
-    the jail/job checks, and keeping the old vehicle when other players are still inside it.
+  - Admin level 0 (`admin_level` accData): one spawn per 60 s, keyed by serial so a reconnect does
+    not reset it.
+  - The old vehicle is no longer destroyed with players in it: its riders are moved to the same
+    seat of the new vehicle; who does not fit (or sat on the driver seat) is left on foot.
+  - Not covered by this fix: model allow-list or admin level for military/air vehicles.
 - **Location:** `[ui]/ui_inac/server/spawn.lua:16`
 - **Problem:** Any model ID (Rhino, Hydra, Hunter…), anywhere, in any dimension or interior
   (arena, jail, job lobbies), with no cooldown. The old vehicle is destroyed even when other

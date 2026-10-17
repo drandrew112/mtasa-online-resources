@@ -19,7 +19,9 @@ local isEffectForcedOn = false -- set true to force the effects to stay on despi
 								-- (useful if changed shaderSettings.gBrightness)
 local effectTimeOut = 4 -- how much time does the effect turn off after 0 lights synced (in seconds)
 local shaderSettings = {
-				gIsLayered = {false, false, false}, -- set world, vehicle and ped effect layered
+				gIsLayered = {true, false, false}, -- set world, vehicle and ped effect layered
+									-- world stays layered so it never replaces other non-layered world shaders
+									-- (shader_detail, same priority) regardless of which one is created later
 				gNormalShading = {false, true, true}, -- enables world,vehicle,ped self shadowing ( may be bugged for rotated objects on a custom map)
 				gGenerateBumpNormals = false, -- generate bump normals from color texture (hogs few fps)
 				gTextureSize = 512.0, -- generated normat texture size (256 or 512 recomended)
