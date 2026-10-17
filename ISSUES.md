@@ -93,7 +93,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-10](#perf-10) | LOW | accData `isOnline()` scans all players on every load | OPEN |
 | [PERF-11](#perf-11) | LOW | v_socialpanel loads every message ever sent into memory | OPEN |
 | [PERF-12](#perf-12) | LOW | v_radar walks all blips every frame | OPEN |
-| [SCALE-01](#scale-01) | HIGH | Two-server setup: lots of state lives in local files / SQLite | OPEN (med_erm + bt_dispatch on MySQL) |
+| [SCALE-01](#scale-01) | HIGH | Data storage in local files (two-server setup) | OPEN (bans, med_erm, bt_dispatch on MySQL; 4 global items left) |
 | [SCALE-02](#scale-02) | MEDIUM | v_main autostarts everything (devtools, freeroam, editors) | OPEN |
 | [SCALE-03](#scale-03) | MEDIUM | Global caps sized for few players (AI traffic, maxplayers 32) | OPEN |
 | [SCALE-04](#scale-04) | MEDIUM | Client memory pressure from oversized TXD/DFF mods | OPEN |
@@ -763,18 +763,44 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ## 4. Scalability (many players / two servers)
 
 <a id="scale-01"></a>
-### SCALE-01 — Two-server setup: lots of state lives in local files or SQLite
+### SCALE-01 — Data storage in local files (two-server setup)
 - **Severity:** HIGH
-- **Status:** OPEN — partly done 2026-10-17: no SQLite left. `med_erm` (MySQL `med_tasks` /
-  `med_shifts`, callsigns checked across servers) and `bt_dispatch` (MySQL `bt_tasks` /
-  `bt_shifts`) are FIXED 2026-10-17, both untested against the live MySQL. Still open: the
-  file-based items below and the BT stock (`bt_stock/server/main.lua`, local file).
-- **Location:** ~~`v_accounts` `bans.xml` (BUG-05, fixed)~~; `v_jobmanager/core/community.lua` (`index.json`, `<id>.json`); `v_admin/server/report.lua` (report logs); `rw_core/server/log.lua`; ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ (FIXED 2026-10-17, MySQL med_tasks/med_shifts); ~~`bt_dispatch/server/db.lua` (SQLite)~~ (FIXED 2026-10-17, MySQL bt_tasks/bt_shifts); `bt_stock/server/main.lua` (stock file); `med_scenemanager/server/variety.lua`; `v_ownveh` `vehiclespawnpoints.txt`; `v_els/server/layouts.lua` (`lights.json`); `v_radar/savepositions.lua`
-- **Problem:** v_mysql's comments say a second server shares the accounts. Everything above
-  differs per server: community jobs, bans, reports, ERM history, stock.
-- **Suggested fix:** Decide for each item: **global** (→ MySQL tables: bans, reports, community
-  jobs, BT stock) or **per server** (fine as a file). Write the decision into each resource's
-  DESIGN.md.
+- **Status:** OPEN — partly done 2026-10-17: no SQLite left, bans on MySQL. Re-audited
+  2026-10-17 (every server-side `fileCreate` / `fileWrite` / `xmlSaveFile`); the list below is
+  complete as of that date.
+- **Problem:** v_mysql's comments say a second server shares the accounts. Anything a server
+  writes to its own resource folder differs per server: a player's community job, a report or
+  the BT stock exists only on the server where it was made.
+- **Done (MySQL):**
+  - ~~`v_accounts` `bans.xml`~~ → `bans` table (BUG-05, FIXED 2026-10-17)
+  - ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ → `med_tasks` / `med_shifts` (FIXED 2026-10-17, untested on live MySQL)
+  - ~~`bt_dispatch/server/db.lua` (SQLite)~~ → `bt_tasks` / `bt_shifts` (FIXED 2026-10-17, untested on live MySQL)
+- **Global — still local files, should move to MySQL:**
+
+  | Resource | File(s) | What | Priority |
+  |---|---|---|---|
+  | `v_jobmanager` | `core/community.lua` → `index.json`, `<id>.json`, `private/<id>.json` | Player-made community jobs (published + pending) | HIGH |
+  | `bt_stock` | `server/main.lua` → `BTS.FILE` (JSON) | Blood stock (economy state) | HIGH |
+  | `v_admin` | `server/report.lua` → `report_logs/index.json` + one JSON per closed report | Closed report logs (staff work on both servers) | MEDIUM |
+  | `med_scenemanager` | `server/variety.lua` → `MSM.VARIETY.FILE` | Scene history, also per account (which scenes a player already got) | LOW |
+
+- **Content — edited in-game editors, written into the resource (keep as files, sync via git):**
+  `v_jobmanager/core/official.lua` (`games/`, drafts), `avi_nav/server/nav.lua`
+  (`data/nav.json`), `rw_customtracks/server/network.lua` (`custom.json`), `v_els/server/layouts.lua`
+  (`lights.json`, /elseditor), `med_scenemanager` scene JSONs (`server/util.lua` writer). An edit
+  made on one server only reaches the other after a commit + pull; edit on one server only.
+- **Per server — fine as files:** `rw_core/server/log.lua` (daily `rail_<day>.log`),
+  `v_modloader/loader_s.lua` (rewrites its own `meta.xml`), dev outputs
+  `v_spawnmanager` `positions.txt` (/pos) and `v_ownveh` `vehiclespawnpoints.txt` (/savepos;
+  not read at runtime).
+- **Client side — per player, fine:** `v_accounts/client/userdata.lua`, `v_locals/client/state.lua`,
+  `v_radar/client.lua` + `radar/sourceC.lua`, `v_jobmanager/core/client/images.lua`,
+  `dynamic_lighting` helper cache.
+- **Dead code:** `v_radar/savepositions.lua` (`saved_tags/positions.xml`) is not in `meta.xml`;
+  delete it.
+- **Suggested fix:** Move the four global items to MySQL tables through v_mysql (create the
+  table on start + add it to `main.sql`, like `bans`). Write the per-item decision into each
+  resource's DESIGN.md.
 
 <a id="scale-02"></a>
 ### SCALE-02 — v_main autostarts everything
