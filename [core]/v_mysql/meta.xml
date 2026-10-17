@@ -17,6 +17,9 @@
          mysqlQuery are only reliable from inside this resource; the *Sync
          helpers block for the round trip and are safe to call anywhere. -->
     <export function="mysqlQuery"       type="server" />
+    <!-- mysqlQueryAsync(eventName, requestId, sql, ...): non-blocking, the
+         result comes back as an event on the caller's resource root -->
+    <export function="mysqlQueryAsync"  type="server" />
     <export function="mysqlQuerySync"   type="server" />
     <export function="mysqlInsert"      type="server" />
     <export function="mysqlExec"        type="server" />

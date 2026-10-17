@@ -34,7 +34,6 @@ local function resetRun()
     if timer and isTimer(timer) then killTimer(timer) end
     active = false
     timeLeft = 0
-    setElementData(localPlayer, "tt:active", false)
 end
 
 addEvent("tt:notice", true)
@@ -149,40 +148,45 @@ addEventHandler("onClientRender", root, function()
 end)
 
 -- === INDÍTÁS ===
+-- E only asks the server; the run starts when the server answers with tt:started.
+local requested = 0
 bindKey("e", "down", function()
     if not getElementData(localPlayer, "tt:canStart") then return end
     if active then return end
     if not isLandDriver(localPlayer) then return end
+    if getTickCount() - requested < 1000 then return end
+    requested = getTickCount()
+    triggerServerEvent("tt:start", resourceRoot)
+end)
 
+addEvent("tt:started", true)
+addEventHandler("tt:started", resourceRoot, function(duration)
+    if timer and isTimer(timer) then killTimer(timer) end
     active = true
     local tr = currentTrial()
-    timeLeft = tr.time
+    timeLeft = tonumber(duration) or tr.time
 
     local endM = endMarkerElement()
     if endM then setElementAlpha(endM, 160) end
     clearObjective()
     objectiveId = exports.v_radar:addObjective(tr.finish.x, tr.finish.y, tr.finish.z, tr.name) or nil
-    setElementData(localPlayer, "tt:active", true)
     uicore:setBanner(L("v_timetrial.timetrial.time_trial_started"), L("v_timetrial.timetrial.good_luck"))
 
+    -- countdown display only: the server decides success / timeout and sends tt:finish
     timer = setTimer(function()
-        timeLeft = timeLeft - 1
-        if timeLeft <= 0 then
-            triggerEvent("tt:finish", localPlayer, false)
-        end
-    end, 1000, tr.time)
+        timeLeft = math.max(0, timeLeft - 1)
+    end, 1000, timeLeft)
 end)
 
 -- === BEFEJEZÉS ===
 addEvent("tt:finish", true)
-addEventHandler("tt:finish", root, function(success)
+addEventHandler("tt:finish", localPlayer, function(success)
     if timer and isTimer(timer) then killTimer(timer) end
 
     active = false
     clearObjective()
     local endM = endMarkerElement()
     if endM then setElementAlpha(endM, 0) end
-    setElementData(localPlayer, "tt:active", false)
 
     if success then
         uicore:setBanner(L("v_timetrial.timetrial.time_trial_completed"), test and L("v_timetrial.timetrial.test_run_no_reward") or (L("v_timetrial.timetrial.reward", { reward = trial.reward })))

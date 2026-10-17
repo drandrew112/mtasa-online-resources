@@ -28,6 +28,7 @@
   "v_accounts.server.registration_failed": "Registration failed",
   "v_accounts.server.this_account_is_already_in_use": "This account is already in use",
   "v_accounts.server.this_account_is_banned": "This account is banned",
+  "v_accounts.server.too_many_login_attempts": "Too many failed logins. Try again in {seconds|int} seconds.",
   "v_accounts.server.username_must_be_3_30_chars": "Username must be 3-30 chars (letters, digits, _ - .)",
   "v_accounts.server.username_or_password_missing": "Username or password missing",
   "v_accounts.server.wrong_username_or_password": "Wrong username or password"

@@ -1,4 +1,5 @@
 {
+  "v_chat.chat.slow_down": "Túl gyorsan küldesz üzeneteket. Várj pár másodpercet.",
   "v_chat.chat.text": "#FFFFFF{sender}: #dcdcdc{text}",
   "v_chat.mute.invalid_duration": "Érvénytelen időtartam",
   "v_chat.mute.invalid_player": "Érvénytelen játékos",

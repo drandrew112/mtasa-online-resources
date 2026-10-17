@@ -55,6 +55,15 @@ function fetchAccountAuth(name)
     return nil
 end
 
+-- Non-blocking variant for the login: one query for the canonical name, id and
+-- hash. The row arrives as triggerEvent(eventName, resourceRoot, requestId, rows|false).
+-- -> true if the query was queued
+function fetchAccountAuthAsync(name, eventName, requestId)
+    if not mysqlReady() or type(name) ~= "string" then return false end
+    return exports.v_mysql:mysqlQueryAsync(eventName, requestId,
+        "SELECT id, account_name, password FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name) == true
+end
+
 --------------------------------------------------------------------------------
 -- Writes
 --------------------------------------------------------------------------------

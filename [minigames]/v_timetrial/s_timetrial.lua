@@ -5,6 +5,28 @@ local startMarker, endMarker, startBlip
 local BLIP_ICON = 61
 
 addEvent("tt:requestActive", true)
+addEvent("tt:start", true)
+
+-- Every run is tracked here; the client only shows it. The reward is paid only for a run that
+-- the server started in the start marker and that reached the finish within the trial time.
+local FINISH_GRACE = 1500 -- ms of network / timer slack after the trial time
+local MAX_SPEED = 85      -- m/s; a run faster than the straight line at this speed is rejected
+local runs = {} -- [player] = { trial, test, startTick, deadline, timer }
+
+local function endRun(player, success)
+    local run = runs[player]
+    if not run then return end
+    runs[player] = nil
+    if isTimer(run.timer) then killTimer(run.timer) end
+    if isElement(player) then
+        triggerClientEvent(player, "tt:finish", player, success)
+    end
+end
+
+-- shortest possible time for a trial in ms (straight line at MAX_SPEED)
+local function minimumTime(tr)
+    return (tr.finish - tr.start).length / MAX_SPEED * 1000
+end
 
 local function createMarkers()
     if isElement(startMarker) then destroyElement(startMarker) end
@@ -42,9 +64,11 @@ function setActiveTimetrial(index)
 
     activeIndex = index
     trial = Timetrials[index]
+    for p, run in pairs(runs) do
+        if not run.test then endRun(p, false) end
+    end
     for _, p in ipairs(getElementsByType("player")) do
         setElementData(p, "tt:canStart", false)
-        setElementData(p, "tt:active", false)
     end
     createMarkers()
     triggerClientEvent(root, "tt:setActive", resourceRoot, index)
@@ -81,12 +105,16 @@ local function stopTest(player, silent)
     local t = tests[player]
     if not t then return end
     tests[player] = nil
+    if runs[player] and runs[player].test then
+        local run = runs[player]
+        runs[player] = nil
+        if isTimer(run.timer) then killTimer(run.timer) end
+    end
     if isElement(t.start) then destroyElement(t.start) end
     if isElement(t.finish) then destroyElement(t.finish) end
     if isElement(t.blip) then destroyElement(t.blip) end
     if isElement(player) then
         setElementData(player, "tt:canStart", false)
-        setElementData(player, "tt:active", false)
         triggerClientEvent(player, "tt:test", resourceRoot, false)
         if not silent then notice(player, L.msg("v_timetrial.timetrial.time_trial_test_stopped")) end
     end
@@ -104,7 +132,6 @@ local function startTest(player, index)
     local blip = createBlipAttachedTo(sm, BLIP_ICON, 2, 255, 255, 255, 255, 0, 99999)
     setElementVisibleTo(blip, root, false)
     setElementVisibleTo(blip, player, true)
-    setElementData(player, "tt:active", false)
     tests[player] = { index = index, start = sm, finish = fm, blip = blip }
 
     local veh = getPedOccupiedVehicle(player)
@@ -132,32 +159,68 @@ addCommandHandler("tttest", function(player, _, arg)
     notice(player, "Testing: " .. Timetrials[index].name .. " (no reward)")
 end)
 
-addEventHandler("onPlayerQuit", root, function() stopTest(source, true) end)
+addEventHandler("onPlayerQuit", root, function()
+    stopTest(source, true)
+    local run = runs[source]
+    if run and isTimer(run.timer) then killTimer(run.timer) end
+    runs[source] = nil
+end)
 addEventHandler("onResourceStop", resourceRoot, function()
     for p in pairs(tests) do stopTest(p, true) end
 end)
 
+-- The player pressed E in the start marker (c_timetrial.lua). Everything is checked here.
+addEventHandler("tt:start", resourceRoot, function()
+    local player = client
+    if not isElement(player) or runs[player] then return end
+    if getElementData(player, "isLogged") ~= true or isPedDead(player) then return end
+    if not isLandDriver(player) then return end
+
+    local t = tests[player]
+    local tr = t and Timetrials[t.index] or trial
+    local start = t and t.start or startMarker
+    if not isElement(start) or not isElementWithinMarker(player, start) then return end
+
+    local now = getTickCount()
+    local run = { trial = tr, test = t ~= nil, startTick = now, deadline = now + tr.time * 1000 + FINISH_GRACE }
+    run.timer = setTimer(endRun, run.deadline - now, 1, player, false)
+    runs[player] = run
+    setElementData(player, "tt:canStart", false)
+    triggerClientEvent(player, "tt:started", resourceRoot, tr.time)
+end)
+
+local function tryFinish(player, marker)
+    local run = runs[player]
+    if not run then return end
+    local t = tests[player]
+    local finish = run.test and (t and t.finish) or endMarker
+    if marker ~= finish then return end
+    if not isLandDriver(player) then return end
+
+    local elapsed = getTickCount() - run.startTick
+    if elapsed > run.trial.time * 1000 + FINISH_GRACE then return endRun(player, false) end
+    if elapsed < minimumTime(run.trial) then
+        outputServerLog(("[v_timetrial] rejected run of %s: %d ms on %s (minimum %d ms)")
+            :format(getPlayerName(player), elapsed, run.trial.name, math.floor(minimumTime(run.trial))))
+        return endRun(player, false)
+    end
+
+    if not run.test then givePlayerMoney(player, run.trial.reward) end
+    endRun(player, true)
+end
+
 addEventHandler("onPlayerMarkerHit", root, function(marker)
     local t = tests[source]
-    if t then
-        if marker == t.start then
-            setElementData(source, "tt:canStart", true)
-        elseif marker == t.finish and getElementData(source, "tt:active") and isLandDriver(source) then
-            triggerClientEvent(source, "tt:finish", source, true)
-        end
+    if t and marker == t.start or (not t and marker == startMarker) then
+        if not runs[source] then setElementData(source, "tt:canStart", true) end
         return
     end
-
-    if marker == startMarker then
-        setElementData(source, "tt:canStart", true)
-        return
-    end
-
-    if marker == endMarker and getElementData(source, "tt:active") and isLandDriver(source) then
-        givePlayerMoney(source, trial.reward)
-        triggerClientEvent(source, "tt:finish", source, true)
-    end
+    tryFinish(source, marker)
 end)
+
+-- leaving the vehicle or dying ends the run
+addEventHandler("onPlayerVehicleExit", root, function() endRun(source, false) end)
+addEventHandler("onPlayerWasted", root, function() endRun(source, false) end)
 
 addEventHandler("onPlayerMarkerLeave", root, function(marker)
     local t = tests[source]

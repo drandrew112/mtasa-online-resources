@@ -44,6 +44,7 @@ RepoSync.RAW_HEADERS = {
 local IGNORE_PREFIX = {
     "[tiktok]/",
     "[core]/v_modloader/",
+    "v_modmenu/",              -- local/dev only, git-ignored (ISSUES.md SEC-04)
     -- MTA's database-credentials protection blocks other resources from
     -- reading/writing v_mysql's files, so we cannot touch them from here.
     "[core]/v_mysql/",

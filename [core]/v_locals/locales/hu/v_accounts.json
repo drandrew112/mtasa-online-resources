@@ -28,6 +28,7 @@
   "v_accounts.server.registration_failed": "A regisztráció sikertelen",
   "v_accounts.server.this_account_is_already_in_use": "Ez a fiók már használatban van",
   "v_accounts.server.this_account_is_banned": "Ez a fiók ki van tiltva",
+  "v_accounts.server.too_many_login_attempts": "Túl sok sikertelen bejelentkezés. Próbáld újra {seconds|int} másodperc múlva.",
   "v_accounts.server.username_must_be_3_30_chars": "A felhasználónév 3-30 karakter lehet (betű, számjegy, _ - .)",
   "v_accounts.server.username_or_password_missing": "Hiányzik a felhasználónév vagy a jelszó",
   "v_accounts.server.wrong_username_or_password": "Hibás felhasználónév vagy jelszó"

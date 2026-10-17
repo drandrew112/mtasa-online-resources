@@ -365,65 +365,198 @@ local function markLoggedIn(player, username, accId)
     setAccountName(player, username)
 end
 
-function login_player(username, password)
-    local player = client
-    if not isElement(player) then return end
-    if getElementData(player, "banned") == true then return end
-    if getElementData(player, "isLogged") == true then return end
+--------------------------------------------------------------------------------
+-- Login throttle
+--------------------------------------------------------------------------------
+-- Failed logins are counted per serial and per IP. Too many inside the window
+-- locks that key out; every further lockout doubles, up to LOGIN_LOCK_MAX.
+-- One player can also have only one attempt in flight, at most one per
+-- LOGIN_MIN_INTERVAL.
 
-    if type(username) ~= "string" or type(password) ~= "string"
-    or username == "" or password == "" then
-        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.username_or_password_missing"))
-        return
+local LOGIN_MIN_INTERVAL = 1000     -- ms between two attempts of one player
+local LOGIN_FAIL_WINDOW  = 60       -- s
+local LOGIN_MAX_FAILS    = { serial = 5, ip = 15 } -- ip is higher: shared/NAT addresses
+local LOGIN_LOCK         = 60       -- s, first lockout
+local LOGIN_LOCK_MAX     = 15 * 60  -- s
+local LOGIN_TIMEOUT      = 15000    -- ms, give up on a lost DB answer
+local REGISTER_MIN_INTERVAL = 3000  -- ms between two registration attempts of one player
+
+local loginFails   = {} -- ["serial:..." | "ip:..."] = { times = {}, lockUntil = ts, locks = n }
+local lastAttempt  = {} -- [player] = tick
+local loginPending = {} -- [player] = { id, username, password, timer }
+local pendingById  = {} -- [id] = player
+local loginSeq     = 0
+
+local function nowSec() return getRealTime().timestamp end
+
+local function throttleKeys(player)
+    return { serial = "serial:" .. tostring(getPlayerSerial(player)), ip = "ip:" .. tostring(getPlayerIP(player)) }
+end
+
+-- seconds until the player may try again (0 = now)
+local function lockRemaining(player)
+    local t, wait = nowSec(), 0
+    for _, key in pairs(throttleKeys(player)) do
+        local f = loginFails[key]
+        if f and f.lockUntil and f.lockUntil > t then wait = math.max(wait, f.lockUntil - t) end
     end
+    return wait
+end
 
-    local canonical = accountNameExists(username)
-    local auth = canonical and fetchAccountAuth(canonical) or nil
-    if not auth or type(auth.password) ~= "string" then
-        triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.wrong_username_or_password"))
-        return
+local function recordLoginFail(player)
+    local t = nowSec()
+    for kind, key in pairs(throttleKeys(player)) do
+        local f = loginFails[key] or { times = {}, locks = 0 }
+        loginFails[key] = f
+        local keep = {}
+        for _, ts in ipairs(f.times) do
+            if t - ts < LOGIN_FAIL_WINDOW then keep[#keep + 1] = ts end
+        end
+        keep[#keep + 1] = t
+        f.times = keep
+        if #keep >= LOGIN_MAX_FAILS[kind] then
+            f.locks = f.locks + 1
+            f.lockUntil = t + math.min(LOGIN_LOCK * 2 ^ (f.locks - 1), LOGIN_LOCK_MAX)
+            f.times = {}
+            outputServerLog(("[v_accounts] login locked for %s (%d s)"):format(key, f.lockUntil - t))
+        end
     end
+end
 
-    passwordVerify(password, auth.password, {}, function(matches)
+local function clearLoginFails(player)
+    loginFails[throttleKeys(player).serial] = nil
+end
+
+local function clearPending(player)
+    local p = loginPending[player]
+    if not p then return end
+    loginPending[player] = nil
+    pendingById[p.id] = nil
+    if isTimer(p.timer) then killTimer(p.timer) end
+end
+
+-- forget old, unlocked entries now and then
+setTimer(function()
+    local t = nowSec()
+    for key, f in pairs(loginFails) do
+        local last = f.times[#f.times] or 0
+        if (not f.lockUntil or f.lockUntil <= t) and t - last > LOGIN_LOCK_MAX then loginFails[key] = nil end
+    end
+end, 10 * 60 * 1000, 0)
+
+local function loginError(player, key, params)
+    triggerClientEvent(player, "acc:error", player, L.msg(key, params))
+end
+
+-- Step 2: the account row arrived (server/db.lua fetchAccountAuthAsync).
+addEvent("acc:loginRow")
+addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
+    local player = pendingById[id]
+    if not player then return end
+    local pending = loginPending[player]
+    if not isElement(player) or getElementData(player, "isLogged") == true then return clearPending(player) end
+
+    local row = type(rows) == "table" and rows[1] or nil
+    if not row or type(row.password) ~= "string" or type(row.account_name) ~= "string" then
+        clearPending(player)
+        if rows ~= false then recordLoginFail(player) end -- a DB error is not the player's fault
+        return loginError(player, "v_accounts.server.wrong_username_or_password")
+    end
+    local canonical, accId = row.account_name, tonumber(row.id) or 0
+
+    passwordVerify(pending.password, row.password, {}, function(matches)
+        clearPending(player)
         if not isElement(player) or getElementData(player, "isLogged") == true then return end
         if not matches then
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.wrong_username_or_password"))
-            return
+            recordLoginFail(player)
+            return loginError(player, "v_accounts.server.wrong_username_or_password")
         end
+        clearLoginFails(player)
 
         if isElement(playerOnAccount(canonical)) then
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.this_account_is_already_in_use"))
-            return
+            return loginError(player, "v_accounts.server.this_account_is_already_in_use")
         end
 
         local ban = getActiveBan(getPlayerSerial(player), canonical)
         if ban then
             applyBanState(player, ban)
             triggerClientEvent(player, "acc:setPanel", player, "banned")
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.this_account_is_banned"))
-            return
+            return loginError(player, "v_accounts.server.this_account_is_banned")
         end
 
-        markLoggedIn(player, canonical, auth.id)
+        markLoggedIn(player, canonical, accId)
         triggerClientEvent(player, "acc:setPanel", player, nil)
         triggerClientEvent(player, "acc:loadingScreen", player, true)
         beginLoading(player, {}, spawnLoggedInPlayer)
     end)
+end)
+
+-- Step 1: the client asks to log in.
+function login_player(username, password)
+    local player = client
+    if not isElement(player) then return end
+    if getElementData(player, "banned") == true then return end
+    if getElementData(player, "isLogged") == true then return end
+    if loginPending[player] then return end
+
+    local tick = getTickCount()
+    if lastAttempt[player] and tick - lastAttempt[player] < LOGIN_MIN_INTERVAL then return end
+    lastAttempt[player] = tick
+
+    local wait = lockRemaining(player)
+    if wait > 0 then
+        return loginError(player, "v_accounts.server.too_many_login_attempts", { seconds = wait })
+    end
+
+    if type(username) ~= "string" or type(password) ~= "string"
+    or username == "" or password == "" then
+        return loginError(player, "v_accounts.server.username_or_password_missing")
+    end
+    if #username > 64 or #password > 128 then
+        recordLoginFail(player)
+        return loginError(player, "v_accounts.server.wrong_username_or_password")
+    end
+
+    loginSeq = loginSeq + 1
+    local id = loginSeq
+    loginPending[player] = {
+        id = id, password = password,
+        timer = setTimer(function()
+            if loginPending[player] and loginPending[player].id == id then clearPending(player) end
+        end, LOGIN_TIMEOUT, 1),
+    }
+    pendingById[id] = player
+
+    if not fetchAccountAuthAsync(username, "acc:loginRow", id) then
+        -- without a DB connection acc:loginRow may already have answered
+        if loginPending[player] and loginPending[player].id == id then
+            clearPending(player)
+            loginError(player, "v_accounts.server.wrong_username_or_password")
+        end
+    end
 end
 addEvent("login_player", true)
 addEventHandler("login_player", root, login_player)
+
+local registerPending = {} -- [player] = true while the bcrypt hash is being made
 
 function register_player(username, password)
     local player = client
     if not isElement(player) then return end
     if getElementData(player, "banned") == true then return end
     if getElementData(player, "isLogged") == true then return end
+    if registerPending[player] or loginPending[player] then return end
+
+    local tick = getTickCount()
+    if lastAttempt[player] and tick - lastAttempt[player] < REGISTER_MIN_INTERVAL then return end
+    lastAttempt[player] = tick
 
     if type(username) ~= "string" or type(password) ~= "string" then return end
     if not username:find("^[%w_%-%.]+$") or #username < 3 or #username > 30 then
         triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.username_must_be_3_30_chars"))
         return
     end
+    if #password > 128 then return end
     if #password < 5 then
         triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.register.password_too_short"))
         return
@@ -433,7 +566,9 @@ function register_player(username, password)
         return
     end
 
+    registerPending[player] = true
     passwordHash(password, "bcrypt", {}, function(hash)
+        registerPending[player] = nil
         if not isElement(player) or getElementData(player, "isLogged") == true then return end
         if type(hash) ~= "string" then
             triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.registration_failed"))
@@ -502,6 +637,9 @@ addEventHandler("onPlayerQuit", root, function()
     end
     scriptedRename[source] = nil
     spawnPending[source] = nil
+    clearPending(source)
+    lastAttempt[source] = nil
+    registerPending[source] = nil
 end)
 
 -- Block manual nick changes, but let the script's own renames through.

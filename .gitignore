@@ -36,6 +36,9 @@
 # --- railway logs ---
 /\[railways\]/rw_core/logs/
 
+# --- v_modmenu: freeroam-based mod menu, local/dev only (never on the public server, ISSUES.md SEC-04) ---
+/v_modmenu/
+
 # --- Editor / backup junk ---
 *.old
 *.bak

@@ -102,18 +102,41 @@ addCommandHandler("fixme",
 	end
 )
 
-addEvent("pos:saveToFile", true)
-addEventHandler("pos:saveToFile", resourceRoot, function(text)
-    local filePath = "positions.txt"
-    local file = fileOpen(filePath)
-    if not file then
-        file = fileCreate(filePath)
-    else
-        fileSetPos(file, fileGetSize(file)) -- a végére írunk
-    end
+-- /pos (client.lua): saves the caller's position to positions.txt. Admin level 5+ only;
+-- the position is read here, the client sends nothing but the request.
+local POS_ADMIN_LEVEL = 5
+local POS_FILE = "positions.txt"
+local POS_COOLDOWN = 1000
+local lastPos = {}
 
+local function adminLevel(player)
+    local res = getResourceFromName("v_mysql")
+    if not res or getResourceState(res) ~= "running" then return 0 end
+    local ok, level = pcall(function() return exports.v_mysql:getAccData(player, "admin_level") end)
+    return ok and tonumber(level) or 0
+end
+
+addEvent("pos:request", true)
+addEventHandler("pos:request", resourceRoot, function()
+    local player = client
+    if not isElement(player) then return end
+    if adminLevel(player) < POS_ADMIN_LEVEL then return end
+    local now = getTickCount()
+    if lastPos[player] and now - lastPos[player] < POS_COOLDOWN then return end
+    lastPos[player] = now
+
+    local x, y, z = getElementPosition(player)
+    local text = ("{ %.4f, %.4f, %.4f },"):format(x, y, z)
+
+    local file = fileExists(POS_FILE) and fileOpen(POS_FILE) or fileCreate(POS_FILE)
     if file then
-        fileWrite(file, text.."\n")
+        fileSetPos(file, fileGetSize(file)) -- append
+        fileWrite(file, text .. "\n")
         fileClose(file)
     end
+    triggerClientEvent(player, "pos:saved", resourceRoot, text, x, y, z)
+end)
+
+addEventHandler("onPlayerQuit", root, function()
+    lastPos[source] = nil
 end)

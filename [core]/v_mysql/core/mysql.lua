@@ -148,6 +148,21 @@ function mysqlQuery(callback, queryStr, ...)
     return dbQuery(handler, connection, queryStr, ...) ~= false
 end
 
+-- Non-blocking SELECT for OTHER resources (a callback function cannot cross an
+-- export call). The answer is delivered as an event on the caller's resource
+-- root:  triggerEvent(eventName, <caller resourceRoot>, requestId, result, info)
+-- with result = rows table (info = numRows) or false (info = error text).
+-- The caller must addEvent(eventName) itself. Without a connection the event
+-- fires right away, before this returns.
+function mysqlQueryAsync(eventName, requestId, queryStr, ...)
+    local caller = sourceResource
+    if type(eventName) ~= "string" or type(queryStr) ~= "string" or not caller then return false end
+    local target = getResourceRootElement(caller)
+    return mysqlQuery(function(result, info)
+        if isElement(target) then triggerEvent(eventName, target, requestId, result, info) end
+    end, queryStr, ...)
+end
+
 -- Runs a SELECT and BLOCKS until the result is in (dbPoll with no timeout).
 -- Returns the result table (possibly empty), or false when there is no
 -- connection or the query failed. Use only for small, latency-tolerant

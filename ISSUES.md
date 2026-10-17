@@ -53,15 +53,15 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 
 | ID | Severity | Title | Status |
 |---|---|---|---|
-| [SEC-01](#sec-01) | CRITICAL | Remote Lua execution: any player → web_api bridge → claude-mcp `dev/exec` | OPEN |
+| [SEC-01](#sec-01) | CRITICAL | Remote Lua execution: any player → web_api bridge → claude-mcp `dev/exec` | WONTFIX (not on the public server) |
 | [SEC-02](#sec-02) | CRITICAL | Client-writable element data used as identity/authority (`accName`, `admin_level`, `adminjail`, `xp`…) | OPEN |
 | [SEC-03](#sec-03) | CRITICAL | Discord webhook URL committed to the public repo + open relay event | OPEN |
-| [SEC-04](#sec-04) | CRITICAL | v_modmenu (freeroam) `onServerCall` acts on arbitrary elements | OPEN |
-| [SEC-05](#sec-05) | HIGH | Chat sender spoofing, no length or flood limit (v_chat) | OPEN |
+| [SEC-04](#sec-04) | CRITICAL | v_modmenu (freeroam) `onServerCall` acts on arbitrary elements | FIXED 2026-10-17 (not committed yet) |
+| [SEC-05](#sec-05) | HIGH | Chat sender spoofing, no length or flood limit (v_chat) | FIXED 2026-10-17 (not committed yet) |
 | [SEC-06](#sec-06) | HIGH | Remote events act on a player passed by the client (arena, respawn, pause menu) | OPEN |
-| [SEC-07](#sec-07) | HIGH | Any client can append unlimited text to a server file (`pos:saveToFile`) | OPEN |
-| [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | OPEN |
-| [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | OPEN |
+| [SEC-07](#sec-07) | HIGH | Any client can append unlimited text to a server file (`pos:saveToFile`) | FIXED 2026-10-17 (not committed yet) |
+| [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | FIXED 2026-10-17 (not committed yet) |
+| [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | FIXED 2026-10-17 (not committed yet) |
 | [SEC-10](#sec-10) | HIGH | Social panel events trigger blocking DB work with no rate limit (DoS) | OPEN |
 | [SEC-11](#sec-11) | HIGH | Unrestricted vehicle spawner (`ui_inac:spawnVehicle`) | OPEN |
 | [SEC-12](#sec-12) | HIGH | Debug/dev commands open to every player (`spawnfix`, `fixme`, `pos`, `fadetrue`…) | OPEN |
@@ -110,7 +110,11 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-01"></a>
 ### SEC-01 — Remote Lua execution: any player → web_api bridge → claude-mcp `dev/exec`
 - **Severity:** CRITICAL
-- **Status:** OPEN
+- **Status:** WONTFIX (not on the public server)
+- **Resolution (2026-10-17):** claude-mcp does not run on the public server. It is git-ignored
+  (`/[devtools]/claude-mcp/` in `.gitignore`), so the v_main updater never deploys it. The hole
+  only exists on a dev server that runs claude-mcp **and** web_api. If claude-mcp is ever deployed
+  somewhere players can join, do fixes 2 and 3 below first.
 - **Location:**
   - `[web]/web_api/server/bridge.lua:88` (`invoke`), `:107` (`osa:web:call` remote event)
   - `[devtools]/claude-mcp/server/router.lua:10` (`allowedCaller`)
@@ -135,6 +139,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
      bt_web, avi_web, v_admin, web_api), configurable as a setting. Everything else gets
      "Unknown function".
 - **Verify:** From a test client, `triggerServerEvent("osa:web:call", <web_api root>, 1, "claude-mcp", "status", "[]")` must fail.
+- **Note:** The web_api bridge still lets players call **every** `http="true"` export of every
+  running resource. That is fine for the web apps (they check their own tokens), but an app
+  allow-list (fix 3) is still worth adding later.
 
 <a id="sec-02"></a>
 ### SEC-02 — Client-writable element data used as identity and authority
@@ -194,7 +201,12 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-04"></a>
 ### SEC-04 — v_modmenu (freeroam) `onServerCall` acts on arbitrary elements
 - **Severity:** CRITICAL
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Resolution (2026-10-17):** v_modmenu is not available on the public server. It is now
+  git-ignored (`/v_modmenu/` in `.gitignore`), removed from the index with
+  `git rm -r --cached v_modmenu` (the local files stay for dev use), and added to the v_main
+  updater's `IGNORE_PREFIX` (`[core]/v_main/lib/repoSync.lua`) so `updateresources` never touches
+  it. The code itself is unchanged: it must not be deployed where players can join.
 - **Location:** `v_modmenu/fr_server.lua:30` (`g_RPCFunctions`), `:536` (`onServerCall` handler)
 - **Problem:** This is the old freeroam RPC. The client names a whitelisted server function and
   passes **all** of its arguments, including the target element. `setElementPosition`,
@@ -212,7 +224,17 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-05"></a>
 ### SEC-05 — Chat sender spoofing, no length or flood limit
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Resolution (2026-10-17):** `[player_interaction]/v_chat/s_chat.lua`:
+  - The sender is always `client`. The client's first argument is ignored, and the player must be logged in.
+  - The text is type-checked, invalid UTF-8 is dropped, `#RRGGBB` codes are stripped (repeatedly,
+    so nesting does not get around it), control characters are removed, it is trimmed and capped
+    at 45 characters, the same as the input box.
+  - Flood limit: 3 messages / 5 s, then a 5 s cooldown with an alert
+    (`v_chat.chat.slow_down`, en + hu in v_locals).
+  - The Discord forward uses the real sender's name and the cleaned text.
+  - **Restart needed:** v_locals (new string), v_chat. Not tested in-game yet.
+  - Still open: the webhook itself (SEC-03).
 - **Location:** `[player_interaction]/v_chat/s_chat.lua:1-15`, client side `c_chat.lua:106`
 - **Problem:** The server broadcasts `sendMessageToAll(sender, text)` with the **client-supplied**
   `sender`. The mute check uses `client`, but the message is sent as `sender`. There is no
@@ -242,7 +264,14 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-07"></a>
 ### SEC-07 — Any client can append unlimited text to a server file
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Resolution (2026-10-17):** The `pos:saveToFile` event is gone. `/pos` now only sends
+  `pos:request`. The server (`[core]/v_spawnmanager/server.lua`) checks admin level ≥ 5 (from
+  v_mysql accData), applies a 1 s cooldown, reads the position **itself**, appends it to
+  `positions.txt`, and answers with `pos:saved`. The client then prints it, copies it to the
+  clipboard and places the marker and blip. This also fixes the old typo `local marker createMarker(...)`
+  that left the blip without a marker. Players below level 5 get no reaction.
+  Not tested in-game yet. Note: the admin level check still goes through `accName` (SEC-02).
 - **Location:** `[core]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:69` (`/pos` for everyone)
 - **Problem:** A remote event appends `text` to `positions.txt` with no permission check, no
   type/length check and no rate limit.
@@ -253,7 +282,19 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-08"></a>
 ### SEC-08 — Time trial reward farm
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Resolution (2026-10-17):** The run is now tracked on the server only (`runs[player]` in `s_timetrial.lua`). The `tt:active` element data is not used anywhere any more.
+  - E sends `tt:start`. The server starts a run only if the player is logged in, alive, driving
+    a land vehicle **and inside the start marker** (`isElementWithinMarker`). It records the
+    start tick and arms a timeout (trial time + 1.5 s grace), then answers with `tt:started`. The
+    client then shows the countdown, which is display only.
+  - At the finish marker the server pays only if a run exists, the time is not over, and the run
+    is not faster than the straight-line distance at 85 m/s (≈306 km/h). Too-fast runs are
+    rejected and logged. The reward is paid once, then the run is cleared.
+  - Leaving the vehicle, dying, quitting, or the trial being switched (v_weekly) ends the run.
+    The timeout sends `tt:finish false`.
+  - `/tttest` uses the same path and still pays nothing.
+  - Not tested in-game yet. A daily reward cap could still be added if farming by honest driving is a concern.
 - **Location:** `[minigames]/v_timetrial/s_timetrial.lua:156` (pays `trial.reward`), `c_timetrial.lua:165` (client sets `tt:active`)
 - **Problem:** The payout only checks `getElementData(source, "tt:active")`, which the **client**
   sets. There is no recorded start time, no minimum duration and no cooldown.
@@ -265,7 +306,28 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-09"></a>
 ### SEC-09 — Pre-login DoS: login/register not rate limited
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Resolution (2026-10-17):**
+  - **v_mysql:** new export `mysqlQueryAsync(eventName, requestId, sql, ...)` (`core/mysql.lua`,
+    `meta.xml`). It is a non-blocking query for other resources, and the result comes back as an
+    event on the caller's resource root (functions cannot be passed through exports). PERF-01 can reuse it.
+  - **v_accounts `login_player`:** one async query (`fetchAccountAuthAsync` in `server/db.lua`:
+    `SELECT id, account_name, password … LIMIT 1`) replaces the 2 blocking ones, then the async
+    bcrypt verify runs as before.
+  - Throttle: one attempt in flight per player, at least 1 s between attempts. Failed logins are
+    counted per **serial** (5 in 60 s) and per **IP** (15 in 60 s, higher because of shared
+    addresses). Hitting the limit locks the key for 60 s, and each further lockout doubles it
+    (max 15 min). The message is `v_accounts.server.too_many_login_attempts` (en + hu). A
+    successful login clears the serial counter, and a DB error does not count as a fail. A lost
+    DB answer is dropped after 15 s.
+  - Over-long username/password (> 64 / > 128) is rejected before any DB work.
+  - **`register_player`:** one registration in flight per player (while bcrypt runs), at least
+    3 s between attempts, password capped at 128. Its `accountNameExists` check is still a sync
+    query (PERF-01).
+  - **Deploy note:** the v_main updater skips `[core]/v_mysql/` (`IGNORE_PREFIX`), so copy
+    v_mysql to the live server **by hand**, then restart v_mysql → v_accounts → v_locals.
+    v_accounts needs the new v_mysql export.
+  - Not tested in-game yet. `httpLogin` (web panels) is unchanged, see SEC-17.
 - **Location:** `[core]/v_accounts/server.lua:368` (`login_player`), `:416` (`register_player`); `server/db.lua:25,48` (sync queries)
 - **Problem:** Before logging in, a client can fire `login_player` as fast as it likes. Each call
   runs `accountNameExists` + `fetchAccountAuth` (2 blocking round trips to the remote MySQL)
@@ -309,7 +371,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** HIGH
 - **Status:** OPEN
 - **Location:** `[core]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:69` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
-- **Problem:** No permission checks.
+- **Problem:** No permission checks. (`/pos` was fixed in SEC-07, the rest is still open.)
 - **Impact:** Instant full-health respawn and escape from arena/interiors/jobs. Together with
   SEC-02 also a jail escape. Free healing in fights.
 - **Suggested fix:** Remove these, or gate them behind the admin level check. If players need a
@@ -727,6 +789,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** LOW
 - **Status:** OPEN
 - **Location:** `v_modmenu/*.old` (3 files), `[core]/v_accounts/client.lua.old`, `[vehicles]/v_customs/old/` (11 Lua files with their own `meta.xml`), `[core]/v_spawnmanager/positions.txt` (runtime output)
+- **Correction (2026-10-17):** `*.old` and `v_customs/old/` are already git-ignored, so this is only local clutter, not repo content.
 - **Suggested fix:** Delete them, or move them to an `archive/` folder outside `resources/`.
   Git history keeps the old versions.
 
@@ -759,3 +822,4 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | Date | Change |
 |---|---|
 | 2026-10-17 | Initial audit (this document) |
+| 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed (uncommitted, not tested in-game) |

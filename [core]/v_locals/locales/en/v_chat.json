@@ -1,4 +1,5 @@
 {
+  "v_chat.chat.slow_down": "You are sending messages too fast. Wait a few seconds.",
   "v_chat.chat.text": "#FFFFFF{sender}: #dcdcdc{text}",
   "v_chat.mute.invalid_duration": "Invalid duration",
   "v_chat.mute.invalid_player": "Invalid player",

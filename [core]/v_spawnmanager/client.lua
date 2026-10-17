@@ -65,15 +65,15 @@ function dxHalal()
 end
 addEventHandler("onClientRender", getRootElement(), dxHalal)
 
-local filePath = "positions.txt"
-addCommandHandler("pos",
-    function ( )
-        local x,y,z = getElementPosition(localPlayer)
-        local text = "{ "..x..", "..y..", "..z.." },"
-        outputChatBox(text)
-        setClipboard(text)
-        local marker createMarker(x,y,z, "checkpoint", 4, 100,100,255,150)
-        createBlipAttachedTo(marker, 0, 1, 255,255,0, 255, 1, 3000)
-        triggerServerEvent("pos:saveToFile", resourceRoot, text)
-    end
-)
+-- /pos: the server checks the admin level (5+), saves the position and answers with pos:saved
+addCommandHandler("pos", function()
+    triggerServerEvent("pos:request", resourceRoot)
+end)
+
+addEvent("pos:saved", true)
+addEventHandler("pos:saved", resourceRoot, function(text, x, y, z)
+    outputChatBox(text)
+    setClipboard(text)
+    local marker = createMarker(x, y, z, "checkpoint", 4, 100, 100, 255, 150)
+    createBlipAttachedTo(marker, 0, 1, 255, 255, 0, 255, 1, 3000)
+end)
