@@ -15,8 +15,6 @@
     <file src="rounded.fx" type="client" />
   
 	<file src="bgs/1.png" type="client" />
-	<file src="bgs/2.png" type="client" />
-	<file src="bgs/3.png" type="client" />
 
 	<export function="isDownloadingActive" type="client" />
 </meta>
