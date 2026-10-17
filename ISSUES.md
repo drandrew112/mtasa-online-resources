@@ -80,7 +80,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
-| [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN (cables distance-gated) |
+| [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | FIXED 2026-10-18 |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | OPEN |
 | [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
@@ -618,10 +618,14 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-08"></a>
 ### BUG-08 — world_cablecars draws its cables always; map line uses hard-coded pixels
 - **Severity:** LOW
-- **Status:** OPEN — partly done 2026-10-17 (PERF-05): the cables are drawn only in dimension 0 /
-  interior 0 within 500 m of the cable line (1 s check of the distance from the line). Still open:
-  the F11 map line (hard-coded pixels, separate task). Not tested in-game.
-- **Location:** `[world]/world_cablecars/client.lua:22-61`
+- **Status:** FIXED 2026-10-18
+- **Resolution:** The cables are drawn only in dimension 0 / interior 0 within 500 m of the cable
+  line (1 s check of the distance from the line). The F11 map line was removed. The server script
+  was rewritten data-driven: one repeating timer moves both cabins (no drifting chained timers),
+  no globals, invalid `attachElements` easing arguments dropped. Unused files removed
+  (`radar_cable_car.png`, the map-editor extension scripts); meta.xml cleaned up (map-editor
+  `<settings>` block dropped) and authors set to Emanuel, DrAndrew112, Claude.
+- **Location:** `[world]/world_cablecars/client.lua`, `server.lua`
 - **Problem:** Two `dxDrawLine3D` calls every frame in any dimension or interior at any distance.
   The F11 map line is at fixed pixel coordinates (`225, 617`), so it is wrong on every
   resolution except one.
