@@ -3,6 +3,9 @@
 	<script src="c_discordmanager.lua" type="client"/>
 	<script src="s_discordmanager.lua" type="server"/>
 
+	<!-- server sendWebhook(id, message): id is a key in webhooks.json -->
+	<export function="sendWebhook" type="server"/>
+
 	<export function="setDiscordDetails" type="client"/>
 	<export function="setDiscordState" type="client"/>
 	<export function="setDiscordAsset" type="client"/>

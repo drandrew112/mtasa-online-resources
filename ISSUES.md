@@ -55,7 +55,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 |---|---|---|---|
 | [SEC-01](#sec-01) | CRITICAL | Remote Lua execution: any player → web_api bridge → claude-mcp `dev/exec` | WONTFIX (not on the public server) |
 | [SEC-02](#sec-02) | CRITICAL | Client-writable element data used as identity/authority (`accName`, `admin_level`, `adminjail`, `xp`…) | OPEN |
-| [SEC-03](#sec-03) | CRITICAL | Discord webhook URL committed to the public repo + open relay event | OPEN |
+| [SEC-03](#sec-03) | CRITICAL | Discord webhook URL committed to the public repo + open relay event | FIXED 2026-10-17 |
 | [SEC-04](#sec-04) | CRITICAL | v_modmenu (freeroam) `onServerCall` acts on arbitrary elements | FIXED 2026-10-17 |
 | [SEC-05](#sec-05) | HIGH | Chat sender spoofing, no length or flood limit (v_chat) | FIXED 2026-10-17 |
 | [SEC-06](#sec-06) | HIGH | Remote events act on a player passed by the client (arena, respawn, pause menu) | OPEN |
@@ -184,7 +184,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-03"></a>
 ### SEC-03 — Discord webhook URL committed to the public repo, and an open relay event
 - **Severity:** CRITICAL
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17
+- **Resolution (2026-10-17):** Webhook handling moved to `[core]/v_discordmanager`:
+  - URLs are in `webhooks.json` (git-ignored; `webhooks.example.json` is versioned). Only the `chat` id exists for now.
+  - The only way in is the server-side export `sendWebhook(id, message)`; the remote event and `v_chat/s_webhook.lua` are gone.
+  - Messages are capped at 2000 chars, sent with `allowed_mentions = { parse = {} }`, queued (max 50, one post per 600 ms), and the URL is never logged.
+  - `v_chat` calls `exports.v_discordmanager:sendWebhook("chat", ...)`.
+  - **Manual step:** the old URL is still in git history, so rotate/delete that webhook in Discord and put the new URL in `webhooks.json`.
 - **Location:** `[player_interaction]/v_chat/s_webhook.lua:1` (URL), `:3` (`chat:discord:sendWebhook` registered as a remote event)
 - **Problem:** The full webhook URL (ID + token) is in git (commit `e79ed3e`). The repo is public:
   v_main's updater reads it anonymously from `raw.githubusercontent.com`. The event is also
@@ -234,7 +240,6 @@ remote events well wherever they were spot-checked. Most problems are in shared 
     (`v_chat.chat.slow_down`, en + hu in v_locals).
   - The Discord forward uses the real sender's name and the cleaned text.
   - **Restart needed:** v_locals (new string), v_chat. Not tested in-game yet.
-  - Still open: the webhook itself (SEC-03).
 - **Location:** `[player_interaction]/v_chat/s_chat.lua:1-15`, client side `c_chat.lua:106`
 - **Problem:** The server broadcasts `sendMessageToAll(sender, text)` with the **client-supplied**
   `sender`. The mute check uses `client`, but the message is sent as `sender`. There is no

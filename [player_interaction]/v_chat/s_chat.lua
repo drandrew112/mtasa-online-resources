@@ -81,7 +81,7 @@ addEventHandler("sendMessageToAll", getRootElement(), function(_, text)
     end
 
     sendMessageToAll(player, text)
-    triggerEvent("chat:discord:sendWebhook", player, "**"..getPlayerName(player).."**: "..text)
+    exports.v_discordmanager:sendWebhook("chat", "**"..getPlayerName(player).."**: "..text)
 end)
 
 addEventHandler("onPlayerQuit", root, function()
