@@ -67,6 +67,19 @@ end
 -- ---------------------------------------------------------------------------------------------
 
 local patients = {} -- ped -> stretcher
+local turnPatients
+-- the heading update is attached only while somebody lies on a stretcher
+local patientRendering = false
+local function syncPatientRender()
+    local on = next(patients) ~= nil
+    if on == patientRendering then return end
+    patientRendering = on
+    if on then
+        addEventHandler("onClientPreRender", root, turnPatients)
+    else
+        removeEventHandler("onClientPreRender", root, turnPatients)
+    end
+end
 
 -- The patient lying on a stretcher must not collide with it or with the pusher
 local function applyPatient(ped)
@@ -74,12 +87,12 @@ local function applyPatient(ped)
     local stretcher = getElementData(ped, D.ON)
     setElementCollisionsEnabled(ped, not stretcher)
     patients[ped] = isElement(stretcher) and stretcher or nil
+    syncPatientRender()
 end
 
 -- attachElements moves an attached ped with its parent but never turns it, so the heading is set
 -- here every frame: stretcher yaw + PATIENT_OFFSET rz
-addEventHandler("onClientPreRender", root, function()
-    if not next(patients) then return end
+turnPatients = function()
     local offset = STRETCHER.PATIENT_OFFSET[6]
     for ped, stretcher in pairs(patients) do
         if not isElement(ped) or not isElement(stretcher) then
@@ -89,7 +102,8 @@ addEventHandler("onClientPreRender", root, function()
             setElementRotation(ped, 0, 0, (rz + offset) % 360, "default", true)
         end
     end
-end)
+    syncPatientRender()
+end
 
 addEventHandler("onClientElementStreamIn", root, function()
     local elementType = getElementType(source)

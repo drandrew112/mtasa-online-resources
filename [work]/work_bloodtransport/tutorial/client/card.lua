@@ -281,12 +281,15 @@ local function onClick(btn, state)
 end
 
 local attached = false
+local checkBlocked -- the control lock below, attached together with the card
 local function attach(state)
     if attached == state then return end
     attached = state
     local fn = state and addEventHandler or removeEventHandler
     fn("onClientRender", root, render)
     fn("onClientClick", root, onClick)
+    fn("onClientRender", root, checkBlocked)
+    if not state then checkBlocked() end
 end
 
 -- Called again and again with fresh specs: the cursor is only touched when the card appears or
@@ -341,9 +344,9 @@ local function setBlocked(state)
     end
 end
 
-addEventHandler("onClientRender", root, function()
+checkBlocked = function()
     setBlocked(Card.spec ~= nil and not Card.hidden and isCursorShowing())
-end)
+end
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     setOwnCursor(false)

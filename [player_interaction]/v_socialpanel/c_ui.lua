@@ -285,8 +285,7 @@ end
 
 -- "low" prioritas: minden mas onClientRender utan fut le, igy a social panel
 -- mindig a legfelso reteg (pl. a nyitva hagyott pause menu folott).
-addEventHandler("onClientRender", root, function()
-    if not show_socialpanel then return end
+local function renderSocialPanel()
     UI.beginFrame()
 
     dxDrawRectangle(0, 0, sw, sh, C.shade)
@@ -324,7 +323,20 @@ addEventHandler("onClientRender", root, function()
     elseif content_id == 5 then renderProfile() end
 
     dxDrawText(L("v_socialpanel.ui.esc_close"), X, Y + H + 6, X + W, Y + H + 26, C.white, 1.3, "default-bold", "right", "top")
-end, false, "low")
+end
+
+-- attached only while the panel is open (setSocialPanel in c_controls.lua calls this)
+local panelRendering = false
+function syncSocialPanelRender()
+    local on = show_socialpanel and true or false
+    if on == panelRendering then return end
+    panelRendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderSocialPanel, false, "low")
+    else
+        removeEventHandler("onClientRender", root, renderSocialPanel)
+    end
+end
 
 --------------------------------------------------------------------------------
 -- HOME

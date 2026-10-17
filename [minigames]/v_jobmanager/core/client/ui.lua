@@ -17,6 +17,21 @@ local panel, lobby, selected = nil, nil, 1
 local inviteMenu = nil
 local cachedJobs = {}
 local cachedLobbies = {}
+local countdownText, countdownUntil = nil, 0
+
+-- the render handler is attached only while the lobby panel or the race countdown is shown
+local renderUi
+local uiRendering = false
+local function syncUiRender()
+    local on = ((panel == "lobby" and lobby) or (countdownText and getTickCount() < countdownUntil)) and true or false
+    if on == uiRendering then return end
+    uiRendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderUi)
+    else
+        removeEventHandler("onClientRender", root, renderUi)
+    end
+end
 
 local FONT = { row = "default", rowB = "default-bold", head = "default-bold", title = "default-bold" }
 
@@ -38,6 +53,7 @@ local C = {
 local function click(name) playSound("assets/sounds/" .. name .. ".wav") end
 local function close()
     panel, lobby, inviteMenu = nil, nil, nil
+    syncUiRender()
     -- Ha a lobby-belepes fekete fade-je meg tart, ne ragadjon benne a jatekos.
     fadeCamera(true, 0.4)
     showCursor(false)
@@ -70,6 +86,7 @@ addEventHandler("jobmanager:lobby", resourceRoot, function(data)
 
     if not justEntered then
         panel = "lobby"
+        syncUiRender()
         return
     end
 
@@ -80,6 +97,7 @@ addEventHandler("jobmanager:lobby", resourceRoot, function(data)
     setTimer(function()
         if not lobby then return end
         panel = "lobby"
+        syncUiRender()
         fadeCamera(true, 0.6)
     end, FADE_OUT * 1000, 1)
 end)
@@ -104,12 +122,11 @@ addEventHandler("jobmanager:matchStarted", resourceRoot, close)
 -- race countdown (3, 2, 1, GO)
 --------------------------------------------------------------------------------
 
-local countdownText, countdownUntil = nil, 0
-
 addEvent("jobmanager:raceCountdown", true)
 addEventHandler("jobmanager:raceCountdown", resourceRoot, function(value)
     countdownText = tostring(value)
     countdownUntil = getTickCount() + 900
+    syncUiRender()
 end)
 
 -- setPedCanBeKnockedOffBike only exists client-side, so the server asks us
@@ -285,13 +302,13 @@ local function drawRows(x, y, w, rowH, rows, sel, active)
     end
 end
 
-addEventHandler("onClientRender", root, function()
+renderUi = function()
     if countdownText and getTickCount() < countdownUntil then
         dxDrawText(countdownText, 0, screenH * 0.32, screenW, screenH * 0.32 + S(140),
             tocolor(255, 255, 255, 235), S(6), "pricedown", "center", "center")
     end
 
-    if panel ~= "lobby" or not lobby then return end
+    if panel ~= "lobby" or not lobby then return syncUiRender() end
 
     dxDrawRectangle(0, 0, screenW, screenH, C.wash)
 
@@ -411,4 +428,4 @@ addEventHandler("onClientRender", root, function()
         dxDrawText(L("v_jobmanager.ui.arrows_navigate_enter_invite_backspace_back"),
             mx + S(12), mInfoY, mx + mw - S(12), mInfoY + INFO_H, C.txt, S(0.9), FONT.rowB, "center", "center")
     end
-end)
+end

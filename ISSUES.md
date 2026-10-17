@@ -85,7 +85,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
 | [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | OPEN |
-| [PERF-05](#perf-05) | MEDIUM | ~100 always-attached `onClientRender`/`PreRender` handlers | OPEN |
+| [PERF-05](#perf-05) | MEDIUM | ~100 always-attached `onClientRender`/`PreRender` handlers | IN PROGRESS |
 | [PERF-06](#perf-06) | MEDIUM | Nametags do all-player loops, LOS rays and `setPlayerNametagShowing` every frame | OPEN |
 | [PERF-07](#perf-07) | MEDIUM | Synced element data used for local UI state (`hideHUD`, `showChat`, …) | OPEN |
 | [PERF-08](#perf-08) | MEDIUM | Shop robbery progress broadcast every 80 ms to all players | OPEN |
@@ -638,7 +638,20 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-05"></a>
 ### PERF-05 — ~100 always-attached `onClientRender`/`PreRender` handlers
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** IN PROGRESS — 2026-10-17: group A (flag-gated UI, ~55 handlers) now attach/detach
+  with their state: v_accounts, v_admin jail HUD, v_mysql guard, v_spawnmanager, v_weekly,
+  v_inventory window, realdriveby textlib, avi_controller login/scope (+ `avi.uiOpen` flag),
+  avi_monitors, bt_dispatch admin, claude-mcp overlay, shader_dynamic_sky, med_scenemanager,
+  med_stretcher (4), med_erm unit labels, v_arenawar elimination panel, v_jobcreator (6, via
+  `Editor.onFrame`), v_jobmanager scoreboard + lobby/countdown, rw_core train labels,
+  rw_customtracks debug draw, rw_passengers (7, via `Ride.onFrame`), tiktok-live HUDs,
+  ui_download, ui_inac (render + temp hover merged), ui_interactobject, ui_pause, ui_phone,
+  v_socialpanel, v_customs scissor doors, v_els siren intro, work tutorial cards (3),
+  work_core payment, world_elevators. Not tested in-game yet. Still open: event-gated (parachute,
+  medsys_events, arenawar HUD, rw_customtracks trains/sweeper, shop robbery, SA Control signs,
+  dynamic_lighting_vehicles), distance-gated world labels, per-frame non-render work
+  (arenawar `setInteriorSoundsEnabled`, wp_manager controls, rw_customtracks ride camera,
+  v_inventory ports).
 - **Location:** Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[core]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[minigames]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
 - **Problem:** Every handler is called every frame, even when it returns early. The cost of the
   calls between VMs adds up. On low-end PCs this is several FPS.

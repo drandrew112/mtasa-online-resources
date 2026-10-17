@@ -196,6 +196,7 @@ function View.clear()
     end
     View.groups, View.byElement = {}, {}
     Editor.selected = nil
+    View.clearMarkerPreview()
 end
 
 -- Spawn vehicles change model when the race vehicle changes.
@@ -307,7 +308,7 @@ local C = {
 
 View.hovered = nil
 
-addEventHandler("onClientRender", root, function()
+Editor.onFrame("onClientRender", function()
     if not Editor.active or not Editor.doc or Editor.photo then return end
     local doc = Editor.doc
 
@@ -350,7 +351,11 @@ end)
 
 -- cylinder marker preview for the world marker (createMarker is not an item)
 local markerPreview
-addEventHandler("onClientPreRender", root, function()
+function View.clearMarkerPreview()
+    if isElement(markerPreview) then destroyElement(markerPreview) end
+    markerPreview = nil
+end
+Editor.onFrame("onClientPreRender", function()
     local m = Editor.active and Editor.doc and Editor.doc.marker
     if m and View.helpersVisible and not Editor.photo then
         if not isElement(markerPreview) then

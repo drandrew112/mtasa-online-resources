@@ -407,19 +407,30 @@ local function build(id)
     }
 end
 
+-- builds one queued class per frame; attached only while the queue is not empty
+local building = false
+local function buildNext()
+    local id = next(queue)
+    if id then
+        queue[id] = nil
+        if not cache[id] then build(id) end      -- one class per frame
+    end
+    if not next(queue) then
+        building = false
+        removeEventHandler("onClientRender", root, buildNext)
+    end
+end
+
 -- the textures of a class, or nil while it is still being painted (next frame)
 function Scenery.get(id)
     if cache[id] then return cache[id] end
     queue[id] = true
+    if not building then
+        building = true
+        addEventHandler("onClientRender", root, buildNext, true, "high")
+    end
     return nil
 end
-
-addEventHandler("onClientRender", root, function()
-    local id = next(queue)
-    if not id then return end
-    queue[id] = nil
-    if not cache[id] then build(id) end      -- one class per frame
-end, true, "high")
 
 function Scenery.clear()
     for _, c in pairs(cache) do

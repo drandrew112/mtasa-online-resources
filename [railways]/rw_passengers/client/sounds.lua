@@ -31,7 +31,7 @@ function rwpChime()
     if s then setSoundVolume(s, 0.7) end
 end
 
-addEventHandler("onClientRender", root, function()
+Ride.onFrame("onClientRender", function()
     if not Ride.active then
         if run or squeal then stopAll() end
         return

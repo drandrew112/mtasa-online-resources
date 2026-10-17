@@ -70,7 +70,7 @@ function Keys.unbind()
 end
 
 -- hover box under the cursor (freecam)
-addEventHandler("onClientPreRender", root, function()
+Editor.onFrame("onClientPreRender", function()
     if not Editor.active or not Editor.doc or Editor.camMode ~= "free" or Tools.current or not isCursorShowing() or Menus.isOpen() then
         View.hovered = nil
         return

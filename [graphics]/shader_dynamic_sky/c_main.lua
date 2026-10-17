@@ -130,6 +130,7 @@ function startDynamicSky()
 	addEventHandler ( "onClientPreRender", getRootElement (), renderTime ) -- time
 	shaderTable.isSwitched = false
 	addEventHandler ( "onClientPreRender", getRootElement (), switchShaders ) -- change shaders
+	addEventHandler ( "onClientPreRender", getRootElement (), updateTimeHMS ) -- seconds of the game time
 	dsEffectEnabled = true
 end
 
@@ -138,6 +139,7 @@ function stopDynamicSky()
 	removeEventHandler ( "onClientPreRender", getRootElement (), renderSphere ) -- sphere
 	removeEventHandler ( "onClientPreRender", getRootElement (), renderTime ) -- time
 	removeEventHandler ( "onClientPreRender", getRootElement (), switchShaders ) -- change shaders
+	removeEventHandler ( "onClientPreRender", getRootElement (), updateTimeHMS ) -- seconds of the game time
 	
 	if isElement(shaderTable.skyboxBottom) then
 		engineRemoveShaderFromWorldTexture( shaderTable.skyboxBottom, "skybox_tex_bottom" )
@@ -310,9 +312,8 @@ function getTimeHMS()
 	return unpack(timeHMS)
 end
 
-addEventHandler( "onClientPreRender", root,
-	function ()
-		if not dsEffectEnabled then return end
+-- attached by startDynamicSky / removed by stopDynamicSky
+function updateTimeHMS()
 		local h, m = getTime ()
 		local s = 0
 		if m ~= timeHMS[2] then
@@ -325,8 +326,7 @@ addEventHandler( "onClientPreRender", root,
 			s = math.min ( 59, math.floor ( minFraction * 60 ) )
 		end
 		timeHMS = {h, m, s}
-	end
-)
+end
 
 ----------------------------------------------------------------
 -- Math helper functions

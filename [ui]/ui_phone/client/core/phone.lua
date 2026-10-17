@@ -80,10 +80,17 @@ local function setAppData(id)
     if getElementData(localPlayer, "phoneApp") ~= id then setElementData(localPlayer, "phoneApp", id, false) end
 end
 
+local renderPhone -- onClientRender handler, attached only while the phone is open
+
 local function setOpen(open)
     open = open and true or false
     if open == state.open then return end
     state.open = open
+    if open then
+        addEventHandler("onClientRender", root, renderPhone, false, "low")
+    else
+        removeEventHandler("onClientRender", root, renderPhone)
+    end
     setElementData(localPlayer, "phoneOpen", open, false)
     freezeControls(open)
     if open then
@@ -321,8 +328,7 @@ end
 -- Render
 --------------------------------------------------------------------------------
 
-addEventHandler("onClientRender", root, function()
-    if not state.open then return end
+renderPhone = function()
     if blocked() then setOpen(false) return end
 
     local ph, C = PhoneUI.phone, PhoneUI.C
@@ -350,7 +356,7 @@ addEventHandler("onClientRender", root, function()
             if app.render then app:render(scr) end
         end
     end
-end, false, "low")
+end
 
 --------------------------------------------------------------------------------
 -- Lifecycle

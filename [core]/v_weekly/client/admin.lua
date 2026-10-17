@@ -246,11 +246,17 @@ local function weekLabel(w)
     return L("v_weekly.admin.in_weeks", { offset = w.offset })
 end
 
+-- publish the finished frame's buttons as click targets
+local function publishHits()
+    hitList = buttons
+end
+
 local function closePanel()
     if not adm then return end
     adm = nil
     pending, textToken = nil, nil
     removeEventHandler("onClientRender", root, drawAdmin)
+    removeEventHandler("onClientRender", root, publishHits)
     showCursor(false)
     toggleAllControls(true, true, false)
 end
@@ -319,6 +325,7 @@ addEventHandler("weekly:openAdmin", localPlayer, function(data, refresh)
     showCursor(true)
     toggleAllControls(false, true, false)
     addEventHandler("onClientRender", root, drawAdmin)
+    addEventHandler("onClientRender", root, publishHits, false, "low-10")
 end)
 
 addEventHandler("onClientClick", root, function(btn, state)
@@ -332,11 +339,6 @@ addEventHandler("onClientClick", root, function(btn, state)
         end
     end
 end)
-
--- publish the finished frame's buttons as click targets
-addEventHandler("onClientRender", root, function()
-    if adm then hitList = buttons end
-end, false, "low-10")
 
 local function wheel(dir)
     if not adm or adm.tab ~= "jobs" or textToken then return end

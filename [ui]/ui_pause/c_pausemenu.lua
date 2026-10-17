@@ -345,9 +345,16 @@ local function openBigmap()
     pauseMapOpen = true
 end
 
+local renderPause -- onClientRender handler, attached only while the pause menu is open
+
 local function setPauseMenuOpen(open)
     if open ~= pauseMenuOpen then
         playUI(open and "open" or "close")
+        if open then
+            addEventHandler("onClientRender", root, renderPause)
+        else
+            removeEventHandler("onClientRender", root, renderPause)
+        end
     end
     pauseMenuOpen = open
 
@@ -1170,8 +1177,8 @@ local function drawPanel()
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end
 
-addEventHandler("onClientRender", root, function()
-    if not pauseMenuOpen or pauseMapOpen then return end
+renderPause = function()
+    if pauseMapOpen then return end
 
     if TABS[selectedTab] == "ONLINE" and jobsAvailable() then
         local now = getTickCount()
@@ -1193,7 +1200,7 @@ addEventHandler("onClientRender", root, function()
     end
 
     drawPanel()
-end)
+end
 
 --------------------------------------------------------------------------------
 -- lifecycle

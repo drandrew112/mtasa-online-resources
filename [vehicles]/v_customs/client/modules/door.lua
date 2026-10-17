@@ -14,17 +14,37 @@ local function isVehicle(v)
     return v and isElement(v) and getElementType(v) == "vehicle"
 end
 
+local animateDoors
+-- the door animation is attached only while a streamed-in vehicle has scissor doors
+local animating = false
+local function syncDoorRender()
+    local on = next(scissor) ~= nil
+    if on == animating then return end
+    animating = on
+    if on then
+        addEventHandler("onClientPreRender", root, animateDoors)
+    else
+        removeEventHandler("onClientPreRender", root, animateDoors)
+    end
+end
+
+local function markScissor(veh)
+    scissor[veh] = true
+    syncDoorRender()
+end
+
 local function forget(veh)
     oldDoorRatios[veh] = nil
     doorStatus[veh]    = nil
     doorTimers[veh]    = nil
     scissor[veh]       = nil
+    syncDoorRender()
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
     for _, veh in ipairs(getElementsByType("vehicle")) do
         if isElementStreamedIn(veh) and getElementData(veh, "tuning.lsdDoor") then
-            scissor[veh] = true
+            markScissor(veh)
         end
     end
 end)
@@ -43,7 +63,7 @@ end)
 
 addEventHandler("onClientElementStreamIn", root, function()
     if isVehicle(source) and getElementData(source, "tuning.lsdDoor") then
-        scissor[source] = true
+        markScissor(source)
     end
 end)
 
@@ -51,7 +71,7 @@ addEventHandler("onClientElementDataChange", root, function(data)
     if not isVehicle(source) or data ~= "tuning.lsdDoor" then return end
     if isElementStreamedIn(source) then
         if getElementData(source, "tuning.lsdDoor") then
-            scissor[source] = true
+            markScissor(source)
         else
             forget(source)
             resetVehicleComponentRotation(source, "door_lf_dummy")
@@ -60,7 +80,7 @@ addEventHandler("onClientElementDataChange", root, function(data)
     end
 end)
 
-addEventHandler("onClientPreRender", root, function()
+animateDoors = function()
     for veh in pairs(scissor) do
         if not isElement(veh) then
             forget(veh)
@@ -118,7 +138,7 @@ addEventHandler("onClientPreRender", root, function()
             end
         end
     end
-end)
+end
 
 addEventHandler("onClientVehicleDamage", root, function()
     if getVehicleDoorState(source, 2) == 1 then setVehicleDoorOpenRatio(source, 2, 0, 500) end

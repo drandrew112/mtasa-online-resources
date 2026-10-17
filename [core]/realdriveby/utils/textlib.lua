@@ -3,6 +3,19 @@ dxText_mt = { __index = dxText }
 local idAssign,idPrefix = 0,"c"
 local g_screenX,g_screenY = guiGetScreenSize()
 local visibleText = {}
+local renderText
+-- the render handler is attached only while some text is visible
+local textRendering = false
+local function updateTextRender()
+	local on = next(visibleText) ~= nil
+	if on == textRendering then return end
+	textRendering = on
+	if on then
+		addEventHandler ( "onClientRender", getRootElement(), renderText )
+	else
+		removeEventHandler ( "onClientRender", getRootElement(), renderText )
+	end
+end
 ------
 local defaults = {
 	fX							= 0.5,
@@ -69,6 +82,7 @@ function dxText:create( text, x, y, relative )
 		new.bRelativePosition = relative
 	end
 	visibleText[new] = true
+	updateTextRender()
 	return new
 end
 
@@ -113,6 +127,7 @@ function dxText:visible(bool)
 	else
 		visibleText[self] = nil
 	end
+	updateTextRender()
 	return true
 end
 
@@ -196,8 +211,7 @@ function dxText:boundingBox(left,top,right,bottom,relative)
 	return true
 end
 
-addEventHandler ( "onClientRender", getRootElement(),
-	function()
+renderText = function()
 		for self,_ in pairs(visibleText) do
 			while true do
 				if self.bDestroyed then
@@ -273,5 +287,5 @@ addEventHandler ( "onClientRender", getRootElement(),
 				break
 			end
 		end
+		updateTextRender()
 	end
-)

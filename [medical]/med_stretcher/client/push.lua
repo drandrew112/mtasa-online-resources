@@ -84,7 +84,21 @@ local function isMoving(ped, p)
     return p.moving
 end
 
-local function updatePushers()
+local updatePushers
+-- the per-frame update is attached only while somebody pushes a stretcher
+local pushRendering = false
+local function syncPushRender()
+    local on = next(pushers) ~= nil
+    if on == pushRendering then return end
+    pushRendering = on
+    if on then
+        addEventHandler("onClientPreRender", root, updatePushers)
+    else
+        removeEventHandler("onClientPreRender", root, updatePushers)
+    end
+end
+
+updatePushers = function()
     for ped, p in pairs(pushers) do
         if not isElement(ped) then
             pushers[ped] = nil
@@ -101,6 +115,7 @@ local function updatePushers()
             end
         end
     end
+    syncPushRender()
 end
 
 -- ---------------------------------------------------------------------------------------------
@@ -120,6 +135,7 @@ local function setPusher(ped, stretcher)
         if hadAnim and isElement(ped) and not isPedDead(ped) then setPedAnimation(ped) end
         if ped == localPlayer then stopLocal() end
     end
+    syncPushRender()
 end
 
 addEventHandler("onClientElementDataChange", root, function(key)
@@ -133,10 +149,7 @@ end)
 
 addEventHandler("onClientPlayerQuit", root, function()
     pushers[source] = nil
-end)
-
-addEventHandler("onClientPreRender", root, function()
-    if next(pushers) then updatePushers() end
+    syncPushRender()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function()

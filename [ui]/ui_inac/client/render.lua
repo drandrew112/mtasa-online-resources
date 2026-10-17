@@ -47,8 +47,24 @@ end
 sw, sh = uicore:getScreenWH()
 sx, sy = uicore:getSafeZone()
 
-addEventHandler("onClientRender", root, function()
-    if not MenuState.open then return end
+local renderMenu
+
+-- The menu render is attached only while MenuState.open; call this after every change of it.
+local menuRendering = false
+function syncMenuRender()
+    local on = MenuState.open and true or false
+    if on == menuRendering then return end
+    menuRendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderMenu)
+    else
+        removeEventHandler("onClientRender", root, renderMenu)
+        if checkTempHover then checkTempHover() end -- resets the hover state
+    end
+end
+
+renderMenu = function()
+    if checkTempHover then checkTempHover() end
 
     local menu = MenuState:getMenu()
     if not menu then return end
@@ -242,4 +258,4 @@ addEventHandler("onClientRender", root, function()
         "left",
         "center"
     )
-end)
+end

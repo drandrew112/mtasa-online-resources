@@ -267,7 +267,7 @@ function Tools.key(key)
     return false
 end
 
-addEventHandler("onClientPreRender", root, function()
+Editor.onFrame("onClientPreRender", function()
     local tool = Tools.current
     if not tool or not Editor.active then return end
     if tool.type == "place" then

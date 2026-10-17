@@ -46,7 +46,20 @@ end
 -- open / close
 --------------------------------------------------------------------------------
 
+local renderScoreboard -- onClientRender handler, attached only while the scoreboard is open
+local scoreboardRendering = false
+local function setScoreboardRendering(on)
+    if on == scoreboardRendering then return end
+    scoreboardRendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderScoreboard)
+    else
+        removeEventHandler("onClientRender", root, renderScoreboard)
+    end
+end
+
 local function openScoreboard(data)
+    setScoreboardRendering(true)
     payload = data
     view = "stats"
     if data.reward then
@@ -70,6 +83,7 @@ end
 
 local function closeScoreboard()
     view, payload = nil, nil
+    setScoreboardRendering(false)
     Results.stop()
     setCameraTarget(localPlayer)
     if isElement(localPlayer) then setElementFrozen(localPlayer, false) end
@@ -284,7 +298,7 @@ local function drawPicker()
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end
 
-addEventHandler("onClientRender", root, function()
+renderScoreboard = function()
     if view == "results" then
         if Results.isOver() then
             Results.stop()
@@ -298,4 +312,4 @@ addEventHandler("onClientRender", root, function()
     elseif view == "picker" then
         drawPicker()
     end
-end)
+end

@@ -19,24 +19,27 @@ end)
 -- in first (we come from the interior), so the ground is searched for a short while; the
 -- player is frozen meanwhile so it does not fall.
 local placing
+local placeOnGround -- onClientRender handler, attached only while a placement is pending
 addEvent("rwp:placed", true)
 addEventHandler("rwp:placed", resourceRoot, function(x, y, z, rz)
+    local was = placing
     placing = { x = x, y = y, z = z, rz = rz, untilT = getTickCount() + 2500 }
     setElementFrozen(localPlayer, true)
+    if not was then addEventHandler("onClientRender", root, placeOnGround) end
 end)
 
-addEventHandler("onClientRender", root, function()
-    if not placing then return end
+placeOnGround = function()
     local p = placing
     local gz = getGroundPosition(p.x, p.y, p.z + 3)
     local found = gz and gz ~= 0 and gz > p.z - 4
     if found or getTickCount() > p.untilT then
         placing = nil
+        removeEventHandler("onClientRender", root, placeOnGround)
         setElementPosition(localPlayer, p.x, p.y, found and gz + 1 or p.z)
         if p.rz then setElementRotation(localPlayer, 0, 0, p.rz, "default", true) end
         setElementFrozen(localPlayer, false)
     end
-end)
+end
 
 ------------------------------------------------------------------ cabin dressing
 

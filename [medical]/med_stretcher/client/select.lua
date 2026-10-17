@@ -78,9 +78,12 @@ local function cancel()
     stopSelection()
 end
 
+local renderSelection -- onClientRender handler, attached only while selecting
+
 local function startSelection(stretcher)
     if sel then stopSelection() end
     sel = { stretcher = stretcher, buttons = {}, lockedControls = {} }
+    addEventHandler("onClientRender", root, renderSelection)
     for _, control in ipairs(LOCKED_CONTROLS) do
         if isControlEnabled(control) then
             toggleControl(control, false)
@@ -97,6 +100,7 @@ function stopSelection()
     if not sel then return end
     for _, control in ipairs(sel.lockedControls) do toggleControl(control, true) end
     sel = nil
+    removeEventHandler("onClientRender", root, renderSelection)
     unbindKey("mouse2", "down", toggleCursor)
     unbindKey("backspace", "down", cancel)
     showCursor(false)
@@ -126,8 +130,7 @@ local function drawText(text, y, color, textScale, font)
     dxDrawText(text, 0, y, screenW, y, color, textScale, font, "center", "top")
 end
 
-addEventHandler("onClientRender", root, function()
-    if not sel then return end
+renderSelection = function()
     if not stillValid() then return stopSelection() end
 
     sel.buttons = collectButtons()
@@ -156,7 +159,7 @@ addEventHandler("onClientRender", root, function()
     local top = screenH * 0.12
     drawText(L("med_stretcher.select.select_patient"), top, tocolor(255, 255, 255, 245), 2 * scale, "default-bold")
     drawText(L("med_stretcher.select.rmb_to_toggle_mouse"), top + 34 * scale, tocolor(200, 205, 215, 220), 1 * scale, "default")
-end)
+end
 
 -- ---------------------------------------------------------------------------------------------
 -- Picking

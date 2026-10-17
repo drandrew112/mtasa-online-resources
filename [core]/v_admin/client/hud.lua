@@ -20,7 +20,7 @@ end)
 -- ------------------------------------------------------------
 local sx, sy = guiGetScreenSize()
 
-addEventHandler("onClientRender", root, function()
+local function drawJail()
     local remaining = getElementData(localPlayer, "adminjail_remTime")
     if not remaining then return end
 
@@ -37,4 +37,21 @@ addEventHandler("onClientRender", root, function()
         0, sy / 2 - 10, sx, sy / 2 - 10,
         tocolor(255, 255, 255, 255), 1.3, "default",
         "center", "top", false, false, false, true)
-end)
+end
+
+-- the HUD is attached only while the player is jailed
+local jailHud = false
+local function updateJailHud()
+    local on = getElementData(localPlayer, "adminjail_remTime") and true or false
+    if on == jailHud then return end
+    jailHud = on
+    if on then
+        addEventHandler("onClientRender", root, drawJail)
+    else
+        removeEventHandler("onClientRender", root, drawJail)
+    end
+end
+addEventHandler("onClientElementDataChange", localPlayer, function(key)
+    if key == "adminjail_remTime" then updateJailHud() end
+end, false)
+updateJailHud()

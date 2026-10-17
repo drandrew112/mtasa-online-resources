@@ -186,6 +186,7 @@ function toggleEliminationPanel()
         showCursor(true)
     end
     isEliminationPanelVisible = not isEliminationPanelVisible
+    syncEliminationRender()
 end
 
 function renderEliminationPanel()
@@ -206,7 +207,23 @@ function renderEliminationPanel()
         dxDrawText(text, tx, ty, tx+tw, ty+th, col(THEME.text), 1.2, "default-bold", "center", "center")
     end
 end
-addEventHandler("onClientRender", root, renderEliminationPanel)
+
+-- attached only while the panel is open or the revive countdown runs
+local eliminationRendering = false
+function syncEliminationRender()
+    local on = (isEliminationPanelVisible or getElementData(localPlayer, "arenawar_died")) and true or false
+    if on == eliminationRendering then return end
+    eliminationRendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderEliminationPanel)
+    else
+        removeEventHandler("onClientRender", root, renderEliminationPanel)
+    end
+end
+addEventHandler("onClientElementDataChange", localPlayer, function(key)
+    if key == "arenawar_died" then syncEliminationRender() end
+end, false)
+syncEliminationRender()
 
 function onClientClickEliminationPanel(button, state)
     if isEliminationPanelVisible then

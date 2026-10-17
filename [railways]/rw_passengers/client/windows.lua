@@ -67,7 +67,7 @@ local function daylight()
     return day
 end
 
-addEventHandler("onClientPreRender", root, function(dt)
+Ride.onFrame("onClientPreRender", function(dt)
     if not Ride.active then
         if shader then stop() end
         return

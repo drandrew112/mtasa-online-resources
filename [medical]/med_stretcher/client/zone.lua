@@ -22,7 +22,7 @@ local function color(rgb, alpha)
     return tocolor(rgb[1], rgb[2], rgb[3], alpha)
 end
 
-addEventHandler("onClientRender", root, function()
+local function drawZone()
     local stretcher = getElementData(localPlayer, D.PUSHING)
     if not isElement(stretcher) then return end
     local vehicle = getElementData(stretcher, D.VEHICLE)
@@ -62,4 +62,21 @@ addEventHandler("onClientRender", root, function()
         local a, b = c[i], c[i % 4 + 1]
         dxDrawLine3D(a[1], a[2], a[3], b[1], b[2], b[3], line, LINE_WIDTH)
     end
-end)
+end
+
+-- drawn only while the local player pushes a stretcher
+local zoneRendering = false
+local function syncZoneRender()
+    local on = getElementData(localPlayer, D.PUSHING) and true or false
+    if on == zoneRendering then return end
+    zoneRendering = on
+    if on then
+        addEventHandler("onClientRender", root, drawZone)
+    else
+        removeEventHandler("onClientRender", root, drawZone)
+    end
+end
+addEventHandler("onClientElementDataChange", localPlayer, function(key)
+    if key == D.PUSHING then syncZoneRender() end
+end, false)
+syncZoneRender()

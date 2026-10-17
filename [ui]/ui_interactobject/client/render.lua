@@ -188,9 +188,8 @@ local function drawPanel(candidate, ax, ay)
     drawText(table.concat(hints, "  ·  "), x + padX, cy, x + w - padX, cy + footerH, C.textDim, fonts.small, "left", true)
 end
 
-addEventHandler("onClientRender", root, function()
+local function renderCandidates()
     local candidates = State.candidates
-    if #candidates == 0 then return end
     if not fonts then loadFonts() end
 
     local focused = getFocusCandidate()
@@ -213,4 +212,18 @@ addEventHandler("onClientRender", root, function()
     elseif fx then
         drawPrompt(focused, fx, fy)
     end
-end)
+end
+
+-- attached only while there are candidates (scan() calls this after every scan)
+local rendering = false
+function syncCandidateRender()
+    local on = #State.candidates > 0
+    if on == rendering then return end
+    rendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderCandidates)
+    else
+        removeEventHandler("onClientRender", root, renderCandidates)
+    end
+end
+syncCandidateRender()

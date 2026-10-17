@@ -45,14 +45,20 @@ local current = nil                -- the one on screen, plus .start (tick)
 local bound = false
 
 local skip
+local renderPayment -- onClientRender, attached together with the enter bind while a receipt is shown
 
 local function showNext()
     current = table.remove(queue, 1)
     if current then
         current.start = getTickCount()
-        if not bound then bindKey("enter", "down", skip); bound = true end
+        if not bound then
+            bindKey("enter", "down", skip)
+            addEventHandler("onClientRender", root, renderPayment)
+            bound = true
+        end
     elseif bound then
         unbindKey("enter", "down", skip)
+        removeEventHandler("onClientRender", root, renderPayment)
         bound = false
     end
 end
@@ -161,7 +167,7 @@ local function draw(d, alpha)
     dxDrawRectangle(x, y + h, w * frac, s(2), rgb(d.color, 200 * a))
 end
 
-addEventHandler("onClientRender", root, function()
+renderPayment = function()
     if not current then return end
     local elapsed = getTickCount() - current.start
     local duration, fade = WORK.PAYMENT_DURATION, WORK.PAYMENT_FADE
@@ -176,4 +182,4 @@ addEventHandler("onClientRender", root, function()
     elseif elapsed > duration - fade then alpha = 255 * (duration - elapsed) / fade end
 
     draw(current, alpha)
-end)
+end

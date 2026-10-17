@@ -6,14 +6,7 @@
 
 local visible = false
 
-addEvent("mysql:guardNotice", true)
-addEventHandler("mysql:guardNotice", root, function(show)
-    visible = show and true or false
-end)
-
 local function draw()
-    if not visible then return end
-
     local sx = guiGetScreenSize()
     local w, h = 460, 64
     local x = (sx - w) / 2
@@ -27,4 +20,14 @@ local function draw()
         tocolor(255, 255, 255, 255), 1.1, "default-bold", "center", "center")
 end
 
-addEventHandler("onClientRender", root, draw)
+addEvent("mysql:guardNotice", true)
+addEventHandler("mysql:guardNotice", root, function(show)
+    show = show and true or false
+    if show == visible then return end
+    visible = show
+    if show then
+        addEventHandler("onClientRender", root, draw)
+    else
+        removeEventHandler("onClientRender", root, draw)
+    end
+end)

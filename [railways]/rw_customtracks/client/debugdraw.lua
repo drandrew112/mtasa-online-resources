@@ -108,8 +108,8 @@ local function rebuildCache(cx, cy)
     end
 end
 
-addEventHandler("onClientRender", root, function()
-    if not enabled or not NetClient.ready then return end
+local function drawDebug()
+    if not NetClient.ready then return end
     local cx, cy, cz = getCameraMatrix()
     local now = getTickCount()
     if now - lastBuild > 400 or getDistanceBetweenPoints2D(cx, cy, lastCam[1], lastCam[2]) > 20 then
@@ -142,14 +142,21 @@ addEventHandler("onClientRender", root, function()
     end
     dxDrawText(text, 21, sy - 61, 0, 0, tocolor(0, 0, 0, 220), 1.1, "default-bold")
     dxDrawText(text, 20, sy - 62, 0, 0, tocolor(120, 200, 255), 1.1, "default-bold")
-end)
+end
 
 addCommandHandler(D.CMD, function(_, arg)
+    local was = enabled
     if arg == "pts" then
         showPts = not showPts
         enabled = true
     else
         enabled = not enabled
+    end
+    -- the debug drawing is attached only while it is on
+    if enabled and not was then
+        addEventHandler("onClientRender", root, drawDebug)
+    elseif was and not enabled then
+        removeEventHandler("onClientRender", root, drawDebug)
     end
     lastBuild = 0
     outputChatBox(L("rw_customtracks.debugdraw.track_debug", { state = enabled and L("rw_customtracks.debugdraw.on") or L("rw_customtracks.debugdraw.off"), points = showPts and L("rw_customtracks.debugdraw.points") or "" }), 120, 200, 255)

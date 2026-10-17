@@ -10,6 +10,7 @@ function setPanel(name)
     for panelName, panel in pairs(Panels) do
         panel:setVisible(UIState.panel == panelName)
     end
+    if setPanelRendering then setPanelRendering(UIState.active) end
 
     setElementData(localPlayer, "hideHUD", UIState.active)
     showCursor(UIState.active)

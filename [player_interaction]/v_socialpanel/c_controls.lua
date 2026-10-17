@@ -262,6 +262,7 @@ end)
 -- pl. az ui_pause, ebbol tudjak, hogy a social panel aktiv).
 local function setSocialPanel(open)
     show_socialpanel = open
+    syncSocialPanelRender()
     setElementData(localPlayer, "socialPanelOpen", open, false)
 end
 

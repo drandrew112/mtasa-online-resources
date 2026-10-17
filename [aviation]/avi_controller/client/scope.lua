@@ -26,11 +26,14 @@ local buttons = {}
 local listRows = {}
 local drag      -- { kind = "pan" | "label", id, sx, sy, moved }
 local prevHide
+local drawScope -- onClientRender handler, attached only while the scope is visible
 
 -- ---------------------------------------------------------------- open / close
 function scopeShow()
     if SC.visible then return end
     SC.visible = true
+    addEventHandler("onClientRender", root, drawScope)
+    ctlUiChanged()
     showCursor(true)
     toggleAllControls(false, true, false)
     prevHide = getElementData(localPlayer, "hideHUD")
@@ -40,6 +43,8 @@ end
 function scopeHide()
     if not SC.visible then return end
     SC.visible = false
+    removeEventHandler("onClientRender", root, drawScope)
+    ctlUiChanged()
     drag = nil
     menuClose()
     hdgPickerClose()
@@ -335,8 +340,8 @@ local function cursor()
     return cx * SC.sx, cy * SC.sy
 end
 
-addEventHandler("onClientRender", root, function()
-    if not SC.visible or not SC.data or not F.ui then return end
+drawScope = function()
+    if not SC.data or not F.ui then return end
     local mx, my = cursor()
     if LOGIN.open or (mx and scopeBlocked(mx, my)) then mx, my = nil, nil end
     buttons = {}
@@ -356,7 +361,7 @@ addEventHandler("onClientRender", root, function()
     drawTopBar(mx, my)
     drawMenu(mx, my)
     drawHdgPicker(mx, my)
-end)
+end
 
 -- ---------------------------------------------------------------- input
 addEventHandler("onClientClick", root, function(btn, state, ax, ay)

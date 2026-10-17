@@ -30,12 +30,27 @@ local PREFIX = { RB = { 40, 150, 90 }, IC = { 190, 45, 60 } }
 
 local function col(c, a, k) return tocolor(c[1], c[2], c[3], (a or c[4] or 255) * (k or 1)) end
 
+local renderLabels
+-- the render handler is attached only while the boards are on and a lead vehicle is streamed in
+local rendering = false
+local function syncRender()
+    local on = enabled and next(leads) ~= nil
+    if on == rendering then return end
+    rendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderLabels)
+    else
+        removeEventHandler("onClientRender", root, renderLabels)
+    end
+end
+
 local function refresh(veh)
     if getElementData(veh, "rw.number") and isElementStreamedIn(veh) then
         leads[veh] = leads[veh] or { speed = 0 }
     else
         leads[veh] = nil
     end
+    syncRender()
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
@@ -47,11 +62,16 @@ end)
 addEventHandler("onClientElementStreamIn", root, function()
     if getElementType(source) == "vehicle" then refresh(source) end
 end)
-addEventHandler("onClientElementStreamOut", root, function() leads[source] = nil end)
-addEventHandler("onClientElementDestroy", root, function() leads[source] = nil end)
+addEventHandler("onClientElementStreamOut", root, function()
+    if leads[source] then leads[source] = nil syncRender() end
+end)
+addEventHandler("onClientElementDestroy", root, function()
+    if leads[source] then leads[source] = nil syncRender() end
+end)
 
 addCommandHandler(LBL.TOGGLE_CMD, function()
     enabled = not enabled
+    syncRender()
     rwNotify(enabled and L("rw_core.trainlabel.train_info_boards_on") or L("rw_core.trainlabel.train_info_boards_off"), true)
 end)
 
@@ -156,8 +176,8 @@ local function drawBoard(veh, info, sx, sy, k)
     end
 end
 
-addEventHandler("onClientRender", root, function()
-    if not enabled or not next(leads) or isPlayerMapVisible() then return end
+renderLabels = function()
+    if isPlayerMapVisible() then return end
     local cx, cy, cz = getCameraMatrix()
     local dim, int = getElementDimension(localPlayer), getElementInterior(localPlayer)
     local mine = getPedOccupiedVehicle(localPlayer)
@@ -201,4 +221,5 @@ addEventHandler("onClientRender", root, function()
             end
         end
     end
-end)
+    syncRender()
+end

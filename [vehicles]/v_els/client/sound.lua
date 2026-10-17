@@ -15,6 +15,8 @@ local secondarySound = {}
 -- a start mp után átúszik a vele szinkronban, némán futó loop hangba (activeSound)
 local introSound = {}
 local INTRO_FADE = 0.15 -- átúszás hossza (mp)
+local fadeIntros        -- onClientRender, csak amíg van futó intro (üres táblánál leveszi magát)
+local fading = false
 
 local function createVehicleSound(veh, path, volume, once)
     local s = playSound3D(path, 0, 0, 0, not once)
@@ -100,9 +102,13 @@ local function playVehicleSound(veh)
     setSoundPosition(s, (-start) % loopLen)
     setSoundVolume(s, 0)
     introSound[veh] = { sound = intro, start = start, volume = volume }
+    if not fading then
+        fading = true
+        addEventHandler("onClientRender", root, fadeIntros)
+    end
 end
 
-addEventHandler("onClientRender", root, function()
+fadeIntros = function()
     for veh, intro in pairs(introSound) do
         local s = activeSound[veh]
         local k = isElement(intro.sound) and ((getSoundPosition(intro.sound) or 0) - intro.start) / INTRO_FADE or 1
@@ -115,7 +121,11 @@ addEventHandler("onClientRender", root, function()
             setSoundVolume(s, intro.volume * k)
         end
     end
-end)
+    if not next(introSound) then
+        fading = false
+        removeEventHandler("onClientRender", root, fadeIntros)
+    end
+end
 
 local function getSecondaryPath(veh)
     if getElementData(veh, "sirenHorn") then return end

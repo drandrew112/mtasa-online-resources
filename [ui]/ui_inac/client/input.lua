@@ -43,6 +43,7 @@ function bindAllKeys()
         if isTempMenuOpen() then return end
         if not MenuState.open and otherPanelOpen() then return end
         MenuState.open = not MenuState.open
+        syncMenuRender()
         setElementData(localPlayer, "interactionMenuOpen", MenuState.open)
         uicore:toggleMoveControls(not MenuState.open)
         playSelect()
@@ -127,6 +128,7 @@ function bindAllKeys()
             MenuState:resetSelection()
         else
             MenuState.open = false
+            syncMenuRender()
             setElementData(localPlayer, "interactionMenuOpen", false)
             uicore:toggleMoveControls(not MenuState.open)
         end

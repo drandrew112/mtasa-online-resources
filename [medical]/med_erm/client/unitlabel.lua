@@ -10,6 +10,20 @@ local MIN_SCALE  = 0.55
 local HEIGHT     = 0.1     -- metres above the vehicle's roof
 
 local tagged = {}          -- [vehicle] = true
+local renderLabels
+
+-- the render handler is attached only while a tagged vehicle is streamed in
+local rendering = false
+local function syncRender()
+    local on = next(tagged) ~= nil
+    if on == rendering then return end
+    rendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderLabels)
+    else
+        removeEventHandler("onClientRender", root, renderLabels)
+    end
+end
 
 local function refresh(veh)
     if getElementData(veh, LABEL_KEY) and isElementStreamedIn(veh) then
@@ -17,6 +31,7 @@ local function refresh(veh)
     else
         tagged[veh] = nil
     end
+    syncRender()
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
@@ -32,11 +47,11 @@ addEventHandler("onClientElementStreamIn", root, function()
 end)
 
 addEventHandler("onClientElementStreamOut", root, function()
-    tagged[source] = nil
+    if tagged[source] then tagged[source] = nil syncRender() end
 end)
 
 addEventHandler("onClientElementDestroy", root, function()
-    tagged[source] = nil
+    if tagged[source] then tagged[source] = nil syncRender() end
 end)
 
 local function drawLabel(sx, sy, k, data)
@@ -73,8 +88,8 @@ local function drawLabel(sx, sy, k, data)
     dxDrawRectangle(px - s(1) * k, y + h, s(2) * k, s(8) * k, tocolor(14, 17, 21, 215))
 end
 
-addEventHandler("onClientRender", root, function()
-    if not next(tagged) or isPlayerMapVisible() then return end
+renderLabels = function()
+    if isPlayerMapVisible() then return end
     local cx, cy, cz = getCameraMatrix()
     local dim, int = getElementDimension(localPlayer), getElementInterior(localPlayer)
 
@@ -100,4 +115,5 @@ addEventHandler("onClientRender", root, function()
             tagged[veh] = nil
         end
     end
-end)
+    syncRender()
+end

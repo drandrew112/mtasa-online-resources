@@ -1,5 +1,4 @@
-addEventHandler("onClientRender", root, function()
-    if not UIState.active then return end
+local function renderPanels()
 
     -- Keep the HUD/minimap hidden for as long as a panel is up, even if another
     -- resource (e.g. ui_download after a mid-session file transfer) flips the
@@ -22,4 +21,18 @@ addEventHandler("onClientRender", root, function()
     if Lang then
         Lang.draw()
     end
-end)
+end
+
+-- attached only while a panel is up (setPanel calls this)
+local rendering = false
+function setPanelRendering(on)
+    on = on and true or false
+    if on == rendering then return end
+    rendering = on
+    if on then
+        addEventHandler("onClientRender", root, renderPanels)
+    else
+        removeEventHandler("onClientRender", root, renderPanels)
+    end
+end
+setPanelRendering(UIState.active)

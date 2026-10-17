@@ -17,7 +17,7 @@ local function hint()
     return L("v_jobcreator.hud.menu_f5_free_camera_x_on", { key = KEY })
 end
 
-addEventHandler("onClientRender", root, function()
+Editor.onFrame("onClientRender", function()
     if not Editor.active or Editor.photo or Editor.testing then return end
     if not Editor.doc then
         if not Menus.isOpen() then

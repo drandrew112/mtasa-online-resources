@@ -56,10 +56,13 @@ local function setView(view)
 end
 
 local closedTick = 0
+local renderWindow -- onClientRender handler, attached only while the window is open
 
 local function close(tellServer)
     if not WindowOpen then return end
     WindowOpen = false
+    WindowLayout = false
+    removeEventHandler("onClientRender", root, renderWindow)
     closedTick = getTickCount()
     View, st.press, st.drag, st.sel = nil, nil, nil, nil
     showCursor(false)
@@ -74,6 +77,7 @@ addEventHandler("inv:open", resourceRoot, function(view)
     setView(view)
     if not WindowOpen then
         WindowOpen = true
+        addEventHandler("onClientRender", root, renderWindow, true, "low-5")
         showCursor(true)
         setElementData(localPlayer, INV_DATA.OPEN, true, false)
     end
@@ -487,7 +491,7 @@ local function drawWindow()
     end
 end
 
-addEventHandler("onClientRender", root, function()
+renderWindow = function()
     WindowLayout = false
     if not WindowOpen or not View then return end
     if isPedDead(localPlayer) or isPedInVehicle(localPlayer) then return close(true) end
@@ -500,7 +504,7 @@ addEventHandler("onClientRender", root, function()
     local cx, cy = getCursorPosition()
     if cx then cursorX, cursorY = cx * SW, cy * SH end
     drawWindow()
-end, true, "low-5")
+end
 
 -- ---------------------------------------------------------------------------------------------
 -- Input

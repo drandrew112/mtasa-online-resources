@@ -120,7 +120,22 @@ function render()
         if MG.isPlaying() then MG.stop() end
     end
 end
-addEventHandler("onClientRender", root, render)
+
+-- the render handler is attached only during a download (or /downloadtest); after removing it,
+-- render() runs once more for the cleanup branch
+local rendering = false
+local function syncRender()
+    local on = (isTransferBoxActive() or debug_ds) and true or false
+    if on == rendering then return end
+    rendering = on
+    if on then
+        addEventHandler("onClientRender", root, render)
+    else
+        removeEventHandler("onClientRender", root, render)
+        render()
+    end
+end
+syncRender()
 
 function on_fileDownload (res, file, size, state)
     --if state=="failed" then 
@@ -139,6 +154,7 @@ addEventHandler ("onClientTransferBoxProgressChange", root, function (downloaded
 end)
 
 function on_TransferBoxVisibilityChange (state)
+    syncRender()
     if state==true then
         isDownloading = true
     elseif state==false then
@@ -166,6 +182,7 @@ addCommandHandler("downloadtest", function()
     end
 
     debug_ds = not debug_ds
+    syncRender()
 
     if debug_ds then
         outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #00ff00BEKAPCSOLVA#ffffff.", 255, 255, 255, true)

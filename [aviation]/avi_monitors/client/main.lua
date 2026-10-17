@@ -137,9 +137,16 @@ local function inRange()
     return false
 end
 
+local renderMonitors -- onClientRender handler, attached only while watching
+
 local function setWatching(on)
     if on == watching then return end
     watching = on
+    if on then
+        addEventHandler("onClientRender", root, renderMonitors)
+    else
+        removeEventHandler("onClientRender", root, renderMonitors)
+    end
     triggerServerEvent("vmon:watch", resourceRoot, on)
     if not on then
         for _, m in ipairs(mons) do
@@ -205,8 +212,8 @@ local function ensureRT(m)
     return isElement(m.rt)
 end
 
-addEventHandler("onClientRender", root, function()
-    if not watching or #mons == 0 or not MonRender then return end
+renderMonitors = function()
+    if #mons == 0 or not MonRender then return end
     -- re-render at most two screens per frame (a refresh is spread over a few frames)
     local budget = 2
     for _, m in ipairs(mons) do
@@ -227,7 +234,7 @@ addEventHandler("onClientRender", root, function()
                 MON.FLIP_UV, m.rt, m.w, white, m.cx + m.nx * 10, m.cy + m.ny * 10, m.cz)
         end
     end
-end)
+end
 
 addEventHandler("onClientRestore", root, function(cleared)
     if cleared then for _, m in ipairs(mons) do m.dirty = true end end

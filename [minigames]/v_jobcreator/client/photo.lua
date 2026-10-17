@@ -120,7 +120,7 @@ addEventHandler("jobcreator:thumbnailData", resourceRoot, function(bytes)
     Editor.hasThumb = true
 end)
 
-addEventHandler("onClientRender", root, function()
+Editor.onFrame("onClientRender", function()
     if Editor.photo and state then
         if state.shootIn then
             state.shootIn = state.shootIn - 1

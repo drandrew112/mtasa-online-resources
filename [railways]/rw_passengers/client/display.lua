@@ -94,7 +94,7 @@ end
 
 addEventHandler("onClientRestore", root, function() dirty = true end)
 
-addEventHandler("onClientRender", root, function()
+Ride.onFrame("onClientRender", function()
     if not Ride.active then return end
     local now = getTickCount()
     if dirty or now - lastDraw > 500 then
@@ -144,7 +144,7 @@ local function watch()
 end
 setTimer(watch, 250, 0)
 
-addEventHandler("onClientRender", root, function()
+Ride.onFrame("onClientRender", function()
     if not banner then return end
     local now = getTickCount()
     if now > banner.untilT or not Ride.active then banner = nil return end

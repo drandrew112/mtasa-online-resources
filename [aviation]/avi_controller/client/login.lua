@@ -25,11 +25,13 @@ addEvent("avi:ctlPositions", true)
 addEventHandler("avi:ctlPositions", resourceRoot, function(list, current)
     LOGIN = { open = true, list = list, current = current }
     showCursor(true)
+    ctlUiChanged()
 end)
 
 function loginClose()
     LOGIN.open = false
     if not SC.visible then showCursor(false) end
+    ctlUiChanged()
 end
 
 local function inside(r, x, y)
@@ -43,7 +45,6 @@ local function button(r, label, base, hover, mx, my, act)
 end
 
 local function drawLogin()
-    if not LOGIN.open then return end
     buttons = {}
     local mx, my
     if isCursorShowing() then
@@ -97,7 +98,6 @@ local function drawLogin()
     dxDrawText("Altitudes in feet, speeds in knots, vertical speed in ft/min.", x, y + h - 44 * U, x + w - 14 * U,
         y + h - 12 * U, C.dim2, 1, F.ui, "right", "center")
 end
-addEventHandler("onClientRender", root, drawLogin, true, "low-1")
 
 -- true when the click belonged to the login window
 function loginClick(mx, my)
@@ -111,15 +111,26 @@ function loginClick(mx, my)
     return true     -- modal: swallow every click while open
 end
 
--- tell avi_core (ATC marker label) that the controller UI covers the screen
+-- called whenever the login window or the scope opens/closes: attaches the login render only
+-- while it is open and tells avi_core (ATC marker label) that the controller UI covers the screen
 local uiFlag
-addEventHandler("onClientRender", root, function()
+local loginRendering = false
+function ctlUiChanged()
+    local login = LOGIN.open and true or false
+    if login ~= loginRendering then
+        loginRendering = login
+        if login then
+            addEventHandler("onClientRender", root, drawLogin, true, "low-1")
+        else
+            removeEventHandler("onClientRender", root, drawLogin)
+        end
+    end
     local open = (LOGIN.open or SC.visible) and true or false
     if open ~= uiFlag then
         uiFlag = open
         setElementData(localPlayer, "avi.uiOpen", open, false)
     end
-end)
+end
 addEventHandler("onClientResourceStop", resourceRoot, function()
     setElementData(localPlayer, "avi.uiOpen", false, false)
 end)

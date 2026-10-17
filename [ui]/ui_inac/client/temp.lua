@@ -49,6 +49,7 @@ local function teardown(fireOnClose)
         MenuState.open = false
         MenuState.current = "main"
         MenuState:resetSelection()
+        syncMenuRender()
         setElementData(localPlayer, "interactionMenuOpen", false)
         uicore:toggleMoveControls(true)
     end
@@ -163,6 +164,7 @@ function createTempMenu(config)
     MenuState.open = true
     MenuState.current = rootId
     MenuState:resetSelection()
+    syncMenuRender()
     setElementData(localPlayer, "interactionMenuOpen", true)
     uicore:toggleMoveControls(false)
 
@@ -204,8 +206,9 @@ function updateTempMenuItem(path, meta)
 end
 
 -- Fire "ui_inac:tempMenuHover" whenever the highlighted item changes.
+-- Called every frame by the menu render (client/render.lua) while the menu is open.
 local lastHoverKey = nil
-addEventHandler("onClientRender", root, function()
+function checkTempHover()
     if not isTempMenuOpen() then
         lastHoverKey = nil
         return
@@ -220,4 +223,4 @@ addEventHandler("onClientRender", root, function()
     lastHoverKey = key
 
     triggerEvent("ui_inac:tempMenuHover", localPlayer, rootId, item.value, item.path)
-end)
+end

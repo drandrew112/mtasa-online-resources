@@ -175,6 +175,7 @@ function scan()
     -- left -> right on screen, so Q/E move the focus in the direction you would expect
     table.sort(candidates, function(a, b) return a.sx < b.sx end)
     State.candidates = candidates
+    syncCandidateRender()
 
     if not getFocusCandidate() then
         closeMenu()

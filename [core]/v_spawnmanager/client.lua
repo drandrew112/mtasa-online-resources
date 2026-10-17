@@ -20,7 +20,20 @@ function updateDeathCamera()
         0, 70
     )
 end
-addEventHandler("onClientPreRender", root, updateDeathCamera)
+
+-- the death camera and the WASTED screen are attached only between death and respawn
+local deathRender = false
+local function setDeathRender(on)
+    if on == deathRender then return end
+    deathRender = on
+    if on then
+        addEventHandler("onClientPreRender", root, updateDeathCamera)
+        addEventHandler("onClientRender", root, dxHalal)
+    else
+        removeEventHandler("onClientPreRender", root, updateDeathCamera)
+        removeEventHandler("onClientRender", root, dxHalal)
+    end
+end
 
 function drawWasted()
     setElementData(localPlayer, "hideHUD", true)
@@ -32,6 +45,7 @@ function drawWasted()
 	updateDeathCamera()
 
     isDead = true
+    setDeathRender(true)
     setTimer(function()
         bgA = bgA+3
     end, 20, 50)
@@ -45,6 +59,7 @@ function drawWasted()
                 showText = false
                 bgA = 0
                 deathCam = nil
+                setDeathRender(false)
                 triggerServerEvent("respawnAfterWasted", localPlayer)
                 fadeCamera(true)
                 setElementData(localPlayer, "hideHUD", false)
@@ -63,7 +78,6 @@ function dxHalal()
         end
     end
 end
-addEventHandler("onClientRender", getRootElement(), dxHalal)
 
 -- /pos: the server checks the admin level (5+), saves the position and answers with pos:saved
 addCommandHandler("pos", function()

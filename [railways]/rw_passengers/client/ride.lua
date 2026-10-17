@@ -15,9 +15,33 @@ Ride = {
     serverSec = nil, secAt = 0,   -- server clock (seconds of day) and when it arrived
 }
 
+-- Per-frame handlers of the ride (here, sounds, display, windows): attached only while
+-- Ride.active. Every one of them cleans up when it runs with Ride.active false, so each is
+-- called once more after it was removed.
+local frames, framesOn = {}, false
+
+function Ride.onFrame(eventName, fn)
+    frames[#frames + 1] = { eventName, fn }
+    if framesOn then addEventHandler(eventName, root, fn) end
+end
+
+local function setFrames(on)
+    if on == framesOn then return end
+    framesOn = on
+    for _, h in ipairs(frames) do
+        if on then
+            addEventHandler(h[1], root, h[2])
+        else
+            removeEventHandler(h[1], root, h[2])
+            h[2](0)
+        end
+    end
+end
+
 local function reset()
     Ride.active, Ride.v, Ride.vNow, Ride.accel, Ride.dist = false, 0, 0, 0, 0
     Ride.doors, Ride.service = "closed", false
+    setFrames(false)
 end
 
 addEvent("rwp:state", true)
@@ -27,6 +51,7 @@ addEventHandler("rwp:state", resourceRoot, function(st)
         reset()
         Ride.active = true
         Ride.vNow = st.v or 0
+        setFrames(true)
     end
     Ride.v = st.v or 0
     Ride.x, Ride.y, Ride.z = st.x or 0, st.y or 0, st.z or 0
@@ -47,7 +72,7 @@ function Ride.clock()
     return t.hour * 3600 + t.minute * 60 + t.second
 end
 
-addEventHandler("onClientPreRender", root, function(dt)
+Ride.onFrame("onClientPreRender", function(dt)
     if not Ride.active then return end
     if not rwpMyCoach() then reset() return end
     local before = Ride.vNow

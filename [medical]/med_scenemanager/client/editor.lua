@@ -239,13 +239,17 @@ end)
 
 ---------------------------------------------------------------- server events
 
+local renderEditor -- onClientRender handler, attached only while the editor is on
+
 addEventHandler("msm:editorState", resourceRoot, function(newState)
     local wasOn = state ~= false
     state = newState or false
     if state and not wasOn then
         bindKey(MSM.KEY_MENU, "down", onMenuKey)
+        addEventHandler("onClientRender", root, renderEditor)
     elseif not state and wasOn then
         unbindKey(MSM.KEY_MENU, "down", onMenuKey)
+        removeEventHandler("onClientRender", root, renderEditor)
         if menuId and exports.ui_inac:isTempMenuOpen() then exports.ui_inac:closeTempMenu() end
         menuId = nil
     end
@@ -312,8 +316,7 @@ local function drawLabels()
     end
 end
 
-addEventHandler("onClientRender", root, function()
-    if not state then return end
+renderEditor = function()
     drawLabels()
     drawBanner()
-end)
+end

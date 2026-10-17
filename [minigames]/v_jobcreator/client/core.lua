@@ -25,6 +25,28 @@ Editor = {
 
 local MAX_UNDO = 50
 
+-- Per-frame handlers of the editor (view, tools, keys, photo, hud): attached only while a
+-- creator session is open.
+local frameHandlers = {}
+local framesOn = false
+
+function Editor.onFrame(eventName, fn)
+    frameHandlers[#frameHandlers + 1] = { eventName, fn }
+    if framesOn then addEventHandler(eventName, root, fn) end
+end
+
+local function setFrames(on)
+    if on == framesOn then return end
+    framesOn = on
+    for _, h in ipairs(frameHandlers) do
+        if on then
+            addEventHandler(h[1], root, h[2])
+        else
+            removeEventHandler(h[1], root, h[2])
+        end
+    end
+end
+
 function notify(text)
     uicore:addNotification(L("v_jobcreator.core.job_creator"), text)
 end
@@ -128,6 +150,7 @@ addEvent("jobcreator:opened", true)
 addEventHandler("jobcreator:opened", resourceRoot, function(info)
     Editor.active, Editor.info = true, info
     Editor.doc, Editor.meta, Editor.dirty = nil, nil, false
+    setFrames(true)
     setElementData(localPlayer, "jobCreator", true, false)
     Keys.bind()
     Interact.register()
@@ -207,6 +230,7 @@ addEventHandler("jobcreator:closed", resourceRoot, function()
     Interact.unregister()
     Keys.unbind()
     Editor.active, Editor.doc, Editor.meta, Editor.info = false, nil, nil, nil
+    setFrames(false)
     setElementData(localPlayer, "jobCreator", false, false)
 end)
 

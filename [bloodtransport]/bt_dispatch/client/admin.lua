@@ -20,14 +20,18 @@ local function loadList(t)
     request(t, { page = l.page, search = l.search, filter = l.filter })
 end
 
+local renderAdmin -- onClientRender handler, attached only while the window is open
+
 local function open()
     AdminOpen = true
+    addEventHandler("onClientRender", root, renderAdmin)
     showCursor(true)
     loadList(tab)
 end
 
 local function close()
     AdminOpen = false
+    removeEventHandler("onClientRender", root, renderAdmin)
     detail, history = nil, {}
     showCursor(false)
 end
@@ -246,9 +250,9 @@ local function drawAdmin()
     end
 end
 
-addEventHandler("onClientRender", root, function()
-    if AdminOpen and TextsLoaded then drawAdmin() end
-end)
+renderAdmin = function()
+    if TextsLoaded then drawAdmin() end
+end
 
 addEventHandler("onClientClick", root, function(button, state)
     if not AdminOpen or button ~= "left" or state ~= "down" then return end

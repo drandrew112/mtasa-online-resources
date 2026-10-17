@@ -15,8 +15,21 @@ addEventHandler("acc:playerLoaded", root, function(accName)
     triggerEvent("onClientPlayerLoaded", localPlayer, accName)
 end)
 addEvent("onClientLoadingStarted") -- local; fired when the loading screen appears
+local function drawLoading()
+    dxDrawRectangle(0, 0, screenW, screenH, tocolor(0, 0, 0, 255))
+    exports.ui_core:drawLoadingText(L("v_accounts.loading.loading"))
+end
+
 addEventHandler("acc:loadingScreen", root, function(show)
-    active = show and true or false
+    show = show and true or false
+    if show ~= active then
+        if show then
+            addEventHandler("onClientRender", root, drawLoading)
+        else
+            removeEventHandler("onClientRender", root, drawLoading)
+        end
+    end
+    active = show
 
     if active then
         triggerEvent("onClientLoadingStarted", localPlayer)
@@ -29,11 +42,6 @@ addEventHandler("acc:loadingScreen", root, function(show)
     -- controls / HUD, so there is nothing to undo here.
 end)
 
-addEventHandler("onClientRender", root, function()
-    if not active then return end
-    dxDrawRectangle(0, 0, screenW, screenH, tocolor(0, 0, 0, 255))
-    exports.ui_core:drawLoadingText(L("v_accounts.loading.loading"))
-end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     if active then
