@@ -8,7 +8,6 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- setAccData. Passwords are bcrypt hashes (passwordHash / passwordVerify).
 
 local SAVE_INTERVAL = 120000 -- periodic autosave interval, in ms
-local BANS_FILE = "bans.xml"
 
 -- Players currently being renamed by the script on purpose, so the
 -- onPlayerChangeNick handler can allow those while still blocking manual ones.
@@ -40,50 +39,69 @@ end
 -- Bans
 --------------------------------------------------------------------------------
 
--- Bans are keyed by ACCOUNT NAME. When the banned player is online at ban time
--- their SERIAL is stored too, so a fresh account on the same machine is caught
--- on join as well. There are no temporary bans: "felold" is "Never" while
--- active and "1" once lifted.
+-- Bans live in the shared MySQL `bans` table (through v_mysql), so a ban made
+-- on one server applies on every server using the same database. They are
+-- keyed by ACCOUNT NAME. When the banned player is online at ban time their
+-- SERIAL (and IP, for the record) is stored too, so a fresh account on the same
+-- machine is caught on join as well. There are no temporary bans: a row is
+-- active while lifted_at = 0.
+--
+-- The active rows are cached here and re-read every BAN_REFRESH ms (async), so
+-- join/login checks never wait on the database. After each refresh the online
+-- players are re-checked, which picks up bans / unbans made on another server.
 
-local function currentDateString()
-    local t = getRealTime()
+local BAN_TABLE   = "bans"
+local BAN_REFRESH = 30000
+
+local activeBans = {}   -- { { id, account, serial, date, admin, reason }, ... }
+
+local function banDbReady()
+    local res = getResourceFromName("v_mysql")
+    if not res or getResourceState(res) ~= "running" then return false end
+    return exports.v_mysql:mysqlIsConnected() == true
+end
+
+local function dateString(timestamp)
+    local ts = tonumber(timestamp)
+    local t = ts and getRealTime(ts) or getRealTime()
     return ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday)
 end
 
-local function loadBansXml(createIfMissing)
-    local xml = xmlLoadFile(BANS_FILE)
-    if not xml and createIfMissing then
-        xml = xmlCreateFile(BANS_FILE, "bans")
-    end
-    return xml
+local function nonEmpty(v)
+    return (type(v) == "string" and v ~= "") and v or nil
+end
+
+local function rowToBan(row)
+    return {
+        id      = tonumber(row.id),
+        account = nonEmpty(row.account_name),
+        serial  = nonEmpty(row.serial),
+        date    = dateString(row.created_at),
+        admin   = nonEmpty(row.admin)  or "n/a",
+        reason  = nonEmpty(row.reason) or "n/a",
+    }
+end
+
+local BAN_SELECT = "SELECT id, account_name, serial, admin, reason, created_at FROM `"
+    .. BAN_TABLE .. "` WHERE lifted_at = 0"
+
+local function setActiveBans(rows)
+    local list = {}
+    for _, row in ipairs(rows) do list[#list + 1] = rowToBan(row) end
+    activeBans = list
 end
 
 -- {date, admin, reason, account} for the active ban matching this serial or
 -- account name, or nil when neither is banned.
 local function getActiveBan(serial, accountName)
-    local xml = xmlLoadFile(BANS_FILE)
-    if not xml then return nil end
-
-    local result
-    for _, ban in ipairs(xmlNodeGetChildren(xml)) do
-        if xmlNodeGetAttribute(ban, "felold") ~= "1" then
-            local banSerial  = xmlNodeGetAttribute(ban, "serial")
-            local banAccount = xmlNodeGetAttribute(ban, "account")
-            if (serial and banSerial and banSerial == serial)
-            or (accountName and banAccount and banAccount == accountName) then
-                result = {
-                    date    = xmlNodeGetAttribute(ban, "date")  or "n/a",
-                    admin   = xmlNodeGetAttribute(ban, "admin") or "n/a",
-                    reason  = xmlNodeGetAttribute(ban, "indok") or "n/a",
-                    account = banAccount,
-                }
-                break
-            end
+    local needle = type(accountName) == "string" and accountName:lower() or nil
+    for _, ban in ipairs(activeBans) do
+        if (serial and ban.serial == serial)
+        or (needle and ban.account and ban.account:lower() == needle) then
+            return ban
         end
     end
-
-    xmlUnloadFile(xml)
-    return result
+    return nil
 end
 
 -- A banned player stays connected but is frozen and stripped of GTA controls,
@@ -129,14 +147,60 @@ local function evaluateBan(player)
     return false
 end
 
+-- Re-checks every online player against the cache (after a refresh). The
+-- account is the logged-in one, or the one a rejected login was banned on.
+local function syncBanStates()
+    for _, player in ipairs(getElementsByType("player")) do
+        local wasBanned = getElementData(player, "banned") == true
+        local account = nameOf(player) or (wasBanned and getElementData(player, "banned_account")) or nil
+        local ban = getActiveBan(getPlayerSerial(player), account)
+        if ban and not wasBanned then
+            applyBanState(player, ban)
+            triggerClientEvent(player, "acc:setPanel", player, "banned")
+        elseif not ban and wasBanned then
+            clearBanState(player)
+        end
+    end
+end
+
+addEvent("acc:banRows")
+addEventHandler("acc:banRows", resourceRoot, function(_, rows)
+    if type(rows) ~= "table" then return end -- DB error: keep the last known list
+    setActiveBans(rows)
+    syncBanStates()
+end)
+
+local function refreshBans()
+    if not banDbReady() then return end
+    exports.v_mysql:mysqlQueryAsync("acc:banRows", 0, BAN_SELECT)
+end
+
 addEventHandler("onPlayerJoin", root, function()
     evaluateBan(source)
 end)
 
 addEventHandler("onResourceStart", resourceRoot, function()
+    if banDbReady() then
+        exports.v_mysql:mysqlExec([[CREATE TABLE IF NOT EXISTS `]] .. BAN_TABLE .. [[` (
+            `id`           INT AUTO_INCREMENT PRIMARY KEY,
+            `account_name` VARCHAR(50)  DEFAULT NULL,
+            `serial`       VARCHAR(32)  DEFAULT NULL,
+            `ip`           VARCHAR(45)  DEFAULT NULL,
+            `reason`       TEXT         NOT NULL,
+            `admin`        VARCHAR(64)  NOT NULL DEFAULT '',
+            `created_at`   INT          NOT NULL DEFAULT 0,
+            `lifted_at`    INT          NOT NULL DEFAULT 0,
+            `lifted_by`    VARCHAR(64)  DEFAULT NULL,
+            KEY `idx_account` (`account_name`),
+            KEY `idx_serial`  (`serial`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
+        local rows = exports.v_mysql:mysqlQuerySync(BAN_SELECT)
+        if type(rows) == "table" then setActiveBans(rows) end
+    end
     for _, player in ipairs(getElementsByType("player")) do
         evaluateBan(player)
     end
+    setTimer(refreshBans, BAN_REFRESH, 0)
 end)
 
 --------------------------------------------------------------------------------
@@ -148,6 +212,9 @@ end)
 function banAccount(accountName, reason, adminName)
     if type(accountName) ~= "string" or accountName == "" then
         return false, L.msg("v_accounts.server.invalid_account_name")
+    end
+    if not banDbReady() then
+        return false, L.msg("v_accounts.server.ban_database_unavailable")
     end
 
     local canonical = accountNameExists(accountName)
@@ -161,32 +228,43 @@ function banAccount(accountName, reason, adminName)
 
     local target = playerOnAccount(accountName)
     local serial = isElement(target) and getPlayerSerial(target) or nil
+    local ip     = isElement(target) and getPlayerIP(target) or nil
+    local now    = getRealTime().timestamp
 
-    local xml = loadBansXml(true)
-    if not xml then return false, L.msg("v_accounts.server.could_not_open_ban_file") end
+    -- Re-banning an already banned account updates its active row.
+    local existing = exports.v_mysql:mysqlQuerySync(
+        "SELECT id, serial FROM `" .. BAN_TABLE .. "` WHERE account_name = ? AND lifted_at = 0 ORDER BY id DESC LIMIT 1",
+        accountName)
+    if existing == false then
+        return false, L.msg("v_accounts.server.ban_database_unavailable")
+    end
 
-    local node
-    for _, child in ipairs(xmlNodeGetChildren(xml)) do
-        if xmlNodeGetAttribute(child, "account") == accountName
-        and xmlNodeGetAttribute(child, "felold") ~= "1" then
-            node = child
-            break
+    local id
+    if existing[1] then
+        id = tonumber(existing[1].id)
+        serial = serial or nonEmpty(existing[1].serial)
+        if not exports.v_mysql:mysqlExec(
+            "UPDATE `" .. BAN_TABLE .. "` SET serial = ?, ip = COALESCE(?, ip), reason = ?, admin = ?, created_at = ? WHERE id = ?",
+            serial, ip, reason, adminName, now, id) then
+            return false, L.msg("v_accounts.server.ban_database_unavailable")
+        end
+    else
+        id = exports.v_mysql:mysqlInsert(
+            "INSERT INTO `" .. BAN_TABLE .. "` (account_name, serial, ip, reason, admin, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            accountName, serial, ip, reason, adminName, now)
+        if type(id) ~= "number" then
+            return false, L.msg("v_accounts.server.ban_database_unavailable")
         end
     end
-    node = node or xmlCreateChild(xml, "ban")
 
-    xmlNodeSetAttribute(node, "account", accountName)
-    if serial then xmlNodeSetAttribute(node, "serial", serial) end
-    xmlNodeSetAttribute(node, "admin", adminName)
-    xmlNodeSetAttribute(node, "indok", reason)
-    xmlNodeSetAttribute(node, "date", currentDateString())
-    xmlNodeSetAttribute(node, "felold", "Never")
-
-    xmlSaveFile(xml)
-    xmlUnloadFile(xml)
+    local ban = { id = id, account = accountName, serial = serial, date = dateString(now), admin = adminName, reason = reason }
+    for i = #activeBans, 1, -1 do
+        if activeBans[i].id == id then table.remove(activeBans, i) end
+    end
+    activeBans[#activeBans + 1] = ban
 
     if isElement(target) then
-        applyBanState(target, { date = currentDateString(), admin = adminName, reason = reason, account = accountName })
+        applyBanState(target, ban)
         triggerClientEvent(target, "acc:setPanel", target, "banned")
     end
 
@@ -194,40 +272,44 @@ function banAccount(accountName, reason, adminName)
     return true
 end
 
-function unbanAccount(accountName)
+function unbanAccount(accountName, adminName)
     if type(accountName) ~= "string" or accountName == "" then
         return false, L.msg("v_accounts.server.invalid_account_name")
+    end
+    if not banDbReady() then
+        return false, L.msg("v_accounts.server.ban_database_unavailable")
     end
 
     local canonical = accountNameExists(accountName)
     if canonical then accountName = canonical end
+    adminName = (type(adminName) == "string" and adminName ~= "") and adminName or "Console"
 
-    local xml = xmlLoadFile(BANS_FILE)
-    if not xml then return false, L.msg("v_accounts.server.no_bans_on_record") end
-
-    local found = false
-    for _, child in ipairs(xmlNodeGetChildren(xml)) do
-        if xmlNodeGetAttribute(child, "account") == accountName
-        and xmlNodeGetAttribute(child, "felold") ~= "1" then
-            xmlNodeSetAttribute(child, "felold", "1")
-            found = true
-        end
+    local rows = exports.v_mysql:mysqlQuerySync(
+        "SELECT id FROM `" .. BAN_TABLE .. "` WHERE account_name = ? AND lifted_at = 0", accountName)
+    if rows == false then
+        return false, L.msg("v_accounts.server.ban_database_unavailable")
     end
-    if found then xmlSaveFile(xml) end
-    xmlUnloadFile(xml)
-
-    if not found then
+    if not rows[1] then
         return false, L.msg("v_accounts.server.no_active_ban_for_account", { account_name = accountName })
     end
 
-    for _, player in ipairs(getElementsByType("player")) do
-        if getElementData(player, "banned") == true
-        and getElementData(player, "banned_account") == accountName then
-            clearBanState(player)
-        end
+    if not exports.v_mysql:mysqlExec(
+        "UPDATE `" .. BAN_TABLE .. "` SET lifted_at = ?, lifted_by = ? WHERE account_name = ? AND lifted_at = 0",
+        getRealTime().timestamp, adminName, accountName) then
+        return false, L.msg("v_accounts.server.ban_database_unavailable")
     end
 
-    outputServerLog(("[v_accounts] account '%s' unbanned"):format(accountName))
+    local needle = accountName:lower()
+    for i = #activeBans, 1, -1 do
+        local acc = activeBans[i].account
+        if acc and acc:lower() == needle then table.remove(activeBans, i) end
+    end
+
+    -- Lift the panel for anyone held by this ban (by account, or by the serial
+    -- it carried) unless another active ban still matches them.
+    syncBanStates()
+
+    outputServerLog(("[v_accounts] %s unbanned account '%s'"):format(adminName, accountName))
     return true
 end
 

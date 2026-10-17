@@ -69,7 +69,7 @@ By convention most resource names start with the `v_` prefix. The UI resources
   reports** – it never downloads or modifies anything. Runs automatically ~5 s
   after start unless the `enableUpdateChecker` setting in `meta.xml` is `false`;
   the `checkupdates` console command runs it on demand. Runtime data and
-  credentials (`[tiktok]`, `v_modloader`, `v_mysql`, `bans.xml`, crews/messages)
+  credentials (`[tiktok]`, `v_modloader`, `v_mysql`, crews/messages)
   are on its ignore list. Library:
   [fresholia/mtasa-git-resource-updater](https://github.com/fresholia/mtasa-git-resource-updater).
 

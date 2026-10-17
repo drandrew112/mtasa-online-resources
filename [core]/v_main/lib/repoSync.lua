@@ -50,7 +50,6 @@ local IGNORE_PREFIX = {
     "[core]/v_mysql/",
 }
 local IGNORE_EXACT = {
-    ["[core]/v_accounts/bans.xml"]                      = true,
     -- v_socialpanel data lives in MySQL now; ignore any leftover legacy files.
     ["[player_interaction]/v_socialpanel/crews.xml"]    = true,
     ["[player_interaction]/v_socialpanel/messages.xml"] = true,

@@ -264,14 +264,15 @@ recorded with `sender = "SYSTEM"`.
 
 * **`/ban` / `/unban`** → the `v_accounts` exports:
   `banAccount(account_name, reason, admin_name)` and
-  `unbanAccount(account_name)` (**not** `banPlayer` / `unbanPlayer` — those are
+  `unbanAccount(account_name, admin_name)` (**not** `banPlayer` / `unbanPlayer` — those are
   MTA built-in function names and can't be used as export names).
   The ban is **account-based** (no account, no login), and if the player is
-  online their **serial is also saved** to `bans.xml` (so they can't return from
-  the same machine with a new account). There is **no temporary ban** — the
-  release attribute is `Never` for an active ban, `1` after it is lifted. A
-  banned player stays connected but frozen behind the ban panel (login is
-  rejected too).
+  online their **serial is also saved** (so they can't return from the same
+  machine with a new account). Bans are rows of the shared MySQL `bans` table
+  (through v_mysql), so they apply on every server; each server re-reads the
+  active bans every 30 s. There is **no temporary ban** — a row is active while
+  `lifted_at = 0`; unbanning sets `lifted_at` / `lifted_by`. A banned player
+  stays connected but frozen behind the ban panel (login is rejected too).
 * **`/kick`** → MTA `kickPlayer` (needs `function.kickPlayer`: `resource.v_admin`
   is in the `Admin` ACL group).
 * **`/mute`** → the `v_chat` export: `mutePlayer(player, minutes, reason, admin_name)`;

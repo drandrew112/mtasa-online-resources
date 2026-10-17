@@ -45,7 +45,7 @@ function adminUnban(player, accName)
         return adminAlert(player, L.msg("v_admin.ban.usage_unban_account"), 255, 90, 90)
     end
 
-    local ok, err = exports.v_accounts:unbanAccount(accName)
+    local ok, err = exports.v_accounts:unbanAccount(accName, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.unban_failed")), 255, 90, 90)
     end

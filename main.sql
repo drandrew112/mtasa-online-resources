@@ -48,6 +48,36 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 
 
 -- ============================================================================
+-- bans  (owner: v_accounts, via v_mysql)
+-- ----------------------------------------------------------------------------
+-- Account bans, shared by every server on this database. v_accounts also
+-- creates the table on start (CREATE TABLE IF NOT EXISTS).
+--
+--   account_name  banned account.
+--   serial / ip   the player's serial / IP if they were online at ban time;
+--                 the serial is checked on join too.
+--   reason/admin  why and by whom.
+--   created_at    unix timestamp of the ban.
+--   lifted_at     0 while active; unix timestamp once unbanned.
+--   lifted_by     who lifted it.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `bans` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `account_name` VARCHAR(50)  DEFAULT NULL,
+    `serial`       VARCHAR(32)  DEFAULT NULL,
+    `ip`           VARCHAR(45)  DEFAULT NULL,
+    `reason`       TEXT         NOT NULL,
+    `admin`        VARCHAR(64)  NOT NULL DEFAULT '',
+    `created_at`   INT          NOT NULL DEFAULT 0,
+    `lifted_at`    INT          NOT NULL DEFAULT 0,
+    `lifted_by`    VARCHAR(64)  DEFAULT NULL,
+    KEY `idx_account` (`account_name`),
+    KEY `idx_serial`  (`serial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
 -- vehicles  (owner: [vehicles]/v_ownveh)
 -- ----------------------------------------------------------------------------
 -- One row per player-owned personal vehicle. `id` is the vehicle's permanent

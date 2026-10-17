@@ -13,7 +13,7 @@ or finish an item, update the status in **both** the index table and the entry i
 |---|---|
 | `OPEN` | Not started |
 | `IN PROGRESS` | Someone is working on it |
-| `FIXED` | Fixed. Add the date and commit, e.g. `FIXED 2026-10-20 (abc1234)` |
+| `FIXED` | Fixed. Add the date, e.g. `FIXED 2026-10-20` (a commit hash is optional) |
 | `VERIFIED` | Fixed **and** tested in-game / on the live server |
 | `WONTFIX` | Deliberately left as is. Add the reason |
 
@@ -56,12 +56,12 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-01](#sec-01) | CRITICAL | Remote Lua execution: any player → web_api bridge → claude-mcp `dev/exec` | WONTFIX (not on the public server) |
 | [SEC-02](#sec-02) | CRITICAL | Client-writable element data used as identity/authority (`accName`, `admin_level`, `adminjail`, `xp`…) | OPEN |
 | [SEC-03](#sec-03) | CRITICAL | Discord webhook URL committed to the public repo + open relay event | OPEN |
-| [SEC-04](#sec-04) | CRITICAL | v_modmenu (freeroam) `onServerCall` acts on arbitrary elements | FIXED 2026-10-17 (not committed yet) |
-| [SEC-05](#sec-05) | HIGH | Chat sender spoofing, no length or flood limit (v_chat) | FIXED 2026-10-17 (not committed yet) |
+| [SEC-04](#sec-04) | CRITICAL | v_modmenu (freeroam) `onServerCall` acts on arbitrary elements | FIXED 2026-10-17 |
+| [SEC-05](#sec-05) | HIGH | Chat sender spoofing, no length or flood limit (v_chat) | FIXED 2026-10-17 |
 | [SEC-06](#sec-06) | HIGH | Remote events act on a player passed by the client (arena, respawn, pause menu) | OPEN |
-| [SEC-07](#sec-07) | HIGH | Any client can append unlimited text to a server file (`pos:saveToFile`) | FIXED 2026-10-17 (not committed yet) |
-| [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | FIXED 2026-10-17 (not committed yet) |
-| [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | FIXED 2026-10-17 (not committed yet) |
+| [SEC-07](#sec-07) | HIGH | Any client can append unlimited text to a server file (`pos:saveToFile`) | FIXED 2026-10-17 |
+| [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | FIXED 2026-10-17 |
+| [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | FIXED 2026-10-17 |
 | [SEC-10](#sec-10) | HIGH | Social panel events trigger blocking DB work with no rate limit (DoS) | OPEN |
 | [SEC-11](#sec-11) | HIGH | Unrestricted vehicle spawner (`ui_inac:spawnVehicle`) | OPEN |
 | [SEC-12](#sec-12) | HIGH | Debug/dev commands open to every player (`spawnfix`, `fixme`, `pos`, `fadetrue`…) | OPEN |
@@ -77,7 +77,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID` | OPEN |
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | OPEN |
-| [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | OPEN |
+| [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | OPEN |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | OPEN |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN |
@@ -201,7 +201,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-04"></a>
 ### SEC-04 — v_modmenu (freeroam) `onServerCall` acts on arbitrary elements
 - **Severity:** CRITICAL
-- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** v_modmenu is not available on the public server. It is now
   git-ignored (`/v_modmenu/` in `.gitignore`), removed from the index with
   `git rm -r --cached v_modmenu` (the local files stay for dev use), and added to the v_main
@@ -224,7 +224,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-05"></a>
 ### SEC-05 — Chat sender spoofing, no length or flood limit
 - **Severity:** HIGH
-- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** `[player_interaction]/v_chat/s_chat.lua`:
   - The sender is always `client`. The client's first argument is ignored, and the player must be logged in.
   - The text is type-checked, invalid UTF-8 is dropped, `#RRGGBB` codes are stripped (repeatedly,
@@ -264,7 +264,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-07"></a>
 ### SEC-07 — Any client can append unlimited text to a server file
 - **Severity:** HIGH
-- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** The `pos:saveToFile` event is gone. `/pos` now only sends
   `pos:request`. The server (`[core]/v_spawnmanager/server.lua`) checks admin level ≥ 5 (from
   v_mysql accData), applies a 1 s cooldown, reads the position **itself**, appends it to
@@ -282,7 +282,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-08"></a>
 ### SEC-08 — Time trial reward farm
 - **Severity:** HIGH
-- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** The run is now tracked on the server only (`runs[player]` in `s_timetrial.lua`). The `tt:active` element data is not used anywhere any more.
   - E sends `tt:start`. The server starts a run only if the player is logged in, alive, driving
     a land vehicle **and inside the start marker** (`isElementWithinMarker`). It records the
@@ -306,7 +306,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-09"></a>
 ### SEC-09 — Pre-login DoS: login/register not rate limited
 - **Severity:** HIGH
-- **Status:** FIXED 2026-10-17 (not committed yet)
+- **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):**
   - **v_mysql:** new export `mysqlQueryAsync(eventName, requestId, sql, ...)` (`core/mysql.lua`,
     `meta.xml`). It is a non-blocking query for other resources, and the result comes back as an
@@ -525,12 +525,17 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-05"></a>
 ### BUG-05 — Bans are stored per server in `bans.xml`
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** FIXED
 - **Location:** `[core]/v_accounts/server.lua:11` (`BANS_FILE = "bans.xml"`), `:54`
 - **Problem:** The account system is shared through MySQL, but bans are a local XML file. A ban
   on server 1 does not apply on server 2.
 - **Suggested fix:** Move bans into a `bans` table (account, serial, ip, until, reason, admin) and
   cache it with a short TTL.
+- **Fix (2026-10-17):** Bans are rows of the shared MySQL `bans` table (via v_mysql; created on
+  start, also in `main.sql`): account_name, serial, ip, reason, admin, created_at, lifted_at,
+  lifted_by. Active rows are cached and re-read async every 30 s; online players are re-checked
+  after each refresh, so bans/unbans from another server apply within 30 s. `bans.xml` deleted;
+  `unbanAccount(account, admin)` now records who lifted it.
 
 <a id="bug-06"></a>
 ### BUG-06 — v_playedtime keeps a timer in synced element data
@@ -721,7 +726,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SCALE-01 — Two-server setup: lots of state lives in local files or SQLite
 - **Severity:** HIGH
 - **Status:** OPEN
-- **Location:** `v_accounts` `bans.xml` (BUG-05); `v_jobmanager/core/community.lua` (`index.json`, `<id>.json`); `v_admin/server/report.lua` (report logs); `rw_core/server/log.lua`; `med_erm/server/db.lua` (`data/erm.db` SQLite); `bt_dispatch/server/db.lua` (SQLite); `med_scenemanager/server/variety.lua`; `v_ownveh` `vehiclespawnpoints.txt`; `v_els/server/layouts.lua` (`lights.json`); `v_radar/savepositions.lua`
+- **Location:** ~~`v_accounts` `bans.xml` (BUG-05, fixed)~~; `v_jobmanager/core/community.lua` (`index.json`, `<id>.json`); `v_admin/server/report.lua` (report logs); `rw_core/server/log.lua`; `med_erm/server/db.lua` (`data/erm.db` SQLite); `bt_dispatch/server/db.lua` (SQLite); `med_scenemanager/server/variety.lua`; `v_ownveh` `vehiclespawnpoints.txt`; `v_els/server/layouts.lua` (`lights.json`); `v_radar/savepositions.lua`
 - **Problem:** v_mysql's comments say a second server shares the accounts. Everything above
   differs per server: community jobs, bans, reports, ERM history, stock.
 - **Suggested fix:** Decide for each item: **global** (→ MySQL tables: bans, reports, community
@@ -822,4 +827,4 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | Date | Change |
 |---|---|
 | 2026-10-17 | Initial audit (this document) |
-| 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed (uncommitted, not tested in-game) |
+| 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed (not tested in-game) |
