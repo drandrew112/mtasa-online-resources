@@ -4,7 +4,7 @@
 function giveArenaVehicle(player)
     local spawn = table.random(spawnpoints)
 
-    local veh = createVehicle(table.random(vehicles), spawn.x, spawn.y, spawn.z+1.5, 0,0,spawn.rot, "ARENA-"..tostring(random(10, 99)))
+    local veh = createVehicle(table.random(vehicles), spawn.x, spawn.y, spawn.z+1.5, 0,0,spawn.rot, "ARENA-"..tostring(math.random(10, 99)))
     setElementInterior(veh, 15)
     setElementDimension(veh, arena_dim)
     setElementPosition(veh, spawn.x, spawn.y, spawn.z)

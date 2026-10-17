@@ -76,7 +76,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | FIXED 2026-10-18 (partly: reads can still be stale) |
 | [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps | FIXED 2026-10-18 (untested live) |
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
-| [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | OPEN |
+| [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | FIXED 2026-10-18 |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | OPEN |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | OPEN |
@@ -560,7 +560,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-04"></a>
 ### BUG-04 — v_arenawar `random()` reseeds every call and returns the wrong range
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18 — the custom `random` (and the unused, recursive `mathRandom`
+  debug helper) is removed; `table.random` and the vehicle plate use `math.random`. The custom
+  version was an old workaround for poorly seeded Lua randoms; MTA seeds `math.random` itself.
+  The plate bug was real: `random(10, 99)` returned 10–108, so plates could be 9 characters.
 - **Location:** `[minigames]/v_arenawar/shared.lua:28-38` (a global `random`, `table.random`)
 - **Problem:** `math.randomseed(os.time()+u)` on every call gives poor, correlated values.
   `x + (math.random()*999999 % y)` returns `[x, x+y)`, not `[x, y]`. It is also a **global** in
