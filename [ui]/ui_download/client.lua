@@ -13,7 +13,7 @@ local total = "96"
 
 local discord = "https://discord.gg/pGagxbRkS4"
 
-local bg_img = "bgs/"..tostring(math.random(1,11))..".png"
+local bg_img = "bgs/"..tostring(math.random(1,3))..".png"
 
 local roundedShader = dxCreateShader("rounded.fx")
 local logoTex = dxCreateTexture("freev.png")
