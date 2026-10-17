@@ -400,7 +400,18 @@ end
 -- SINGLE RENDER LOOP
 -- ============================================================
 
-addEventHandler("onClientRender", root, function()
+-- attached while a 3D sound is registered (ensureSoundLoop, called by registry.lua); removes
+-- itself when the last one is gone (unless DEBUG keeps the header on screen)
+local loopOn = false
+local soundLoop
+
+function ensureSoundLoop()
+    if loopOn then return end
+    loopOn = true
+    addEventHandler("onClientRender", root, soundLoop)
+end
+
+soundLoop = function()
     local cx, cy, cz = getCameraMatrix()
     local registeredCount = 0
     local now = getTickCount()
@@ -473,7 +484,12 @@ addEventHandler("onClientRender", root, function()
     end
 
     drawDebugHeader(registeredCount)
-end)
+    if registeredCount == 0 and not DEBUG then
+        loopOn = false
+        removeEventHandler("onClientRender", root, soundLoop)
+    end
+end
+if next(active3DSounds) or DEBUG then ensureSoundLoop() end
 
 addEventHandler("onClientElementDestroy", root, function()
     if soundStates[source] then

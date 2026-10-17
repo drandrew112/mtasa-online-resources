@@ -28,26 +28,71 @@ local function lampWorld(m, l)
            l[1] * m[1][3] + l[2] * m[2][3] + l[3] * m[3][3] + m[4][3]
 end
 
-addEventHandler("onClientRender", root, function()
+-- streamed-in barrier arms of closed crossings; the render is attached only while there is one
+local lit = {}
+local drawLights
+local drawing = false
+
+local function isArm(el)
+    return isElement(el) and getElementType(el) == "object" and getElementModel(el) == 1374
+        and getElementType(getElementParent(el)) == "rwcrossing"
+end
+
+local function syncDraw()
+    local on = next(lit) ~= nil
+    if on == drawing then return end
+    drawing = on
+    if on then
+        addEventHandler("onClientRender", root, drawLights)
+    else
+        removeEventHandler("onClientRender", root, drawLights)
+    end
+end
+
+local function refreshArm(arm)
+    local on = isArm(arm) and isElementStreamedIn(arm) and getElementData(getElementParent(arm), "rw.crossing") and true or nil
+    lit[arm] = on
+end
+
+local function refreshCrossing(cr)
+    for _, arm in ipairs(getElementChildren(cr)) do
+        if getElementType(arm) == "object" and getElementModel(arm) == 1374 then refreshArm(arm) end
+    end
+    syncDraw()
+end
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for _, cr in ipairs(getElementsByType("rwcrossing")) do refreshCrossing(cr) end
+end)
+addEventHandler("onClientElementDataChange", root, function(key)
+    if key == "rw.crossing" and getElementType(source) == "rwcrossing" then refreshCrossing(source) end
+end)
+addEventHandler("onClientElementStreamIn", root, function()
+    if isArm(source) then refreshArm(source) syncDraw() end
+end)
+addEventHandler("onClientElementStreamOut", root, function()
+    if lit[source] then lit[source] = nil syncDraw() end
+end)
+addEventHandler("onClientElementDestroy", root, function()
+    if lit[source] then lit[source] = nil syncDraw() end
+end)
+
+drawLights = function()
     local cx, cy, cz = getCameraMatrix()
     local maxD = CROSS.LIGHT_DISTANCE
     local phase = math.floor(getTickCount() / 500) % 2
-    for _, cr in ipairs(getElementsByType("rwcrossing")) do
-        if getElementData(cr, "rw.crossing") then
-            for _, arm in ipairs(getElementChildren(cr)) do
-                if getElementType(arm) == "object" and getElementModel(arm) == 1374 and isElementStreamedIn(arm) then
-                    local px, py, pz = getElementPosition(arm)
-                    local d = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
-                    if d < maxD then
-                        local m = getElementMatrix(arm)
-                        local size = 0.45 + d / 180
-                        for _, l in ipairs(LAMPS[phase + 1]) do
-                            local x, y, z = lampWorld(m, l)
-                            dxDrawMaterialLine3D(x, y, z + size / 2, x, y, z - size / 2, glow, size, tocolor(255, 40, 30, 230), cx, cy, cz)
-                        end
-                    end
+    for arm in pairs(lit) do
+        if isElement(arm) then
+            local px, py, pz = getElementPosition(arm)
+            local d = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
+            if d < maxD then
+                local m = getElementMatrix(arm)
+                local size = 0.45 + d / 180
+                for _, l in ipairs(LAMPS[phase + 1]) do
+                    local x, y, z = lampWorld(m, l)
+                    dxDrawMaterialLine3D(x, y, z + size / 2, x, y, z - size / 2, glow, size, tocolor(255, 40, 30, 230), cx, cy, cz)
                 end
             end
         end
     end
-end)
+end

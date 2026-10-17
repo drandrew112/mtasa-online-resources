@@ -20,11 +20,32 @@ local function checkDuty()
     return ok and r == true
 end
 
+-- The label render is attached only on duty. Going off duty removes it at once (work change
+-- event); the timer only finds the marker and catches a work_core restart.
+local renderLabel
+local fade = 0
+
+local function updateDuty()
+    local d = checkDuty()
+    if d == onDuty then return end
+    onDuty = d
+    if d then
+        addEventHandler("onClientRender", root, renderLabel)
+    else
+        removeEventHandler("onClientRender", root, renderLabel)
+        fade = 0
+    end
+end
+
+addEvent("onClientPlayerWorkChange")
+addEventHandler("onClientPlayerWorkChange", localPlayer, updateDuty)
+
 addEventHandler("onClientResourceStart", resourceRoot, function()
     marker = findMarker()
+    updateDuty()
     setTimer(function()
         if not isElement(marker) then marker = findMarker() end
-        onDuty = checkDuty()
+        updateDuty()
     end, 1000, 0)
 end)
 
@@ -44,15 +65,14 @@ bindKey(M.key, "down", function()
 end)
 
 local U = select(2, guiGetScreenSize()) / 1080
-local fade = 0
 
 local function inSight(cx, cy, cz, x, y, z)
     return isLineOfSightClear(cx, cy, cz, x, y, z + 1.5, true, false, false, true, false, false, false, localPlayer)
         or isLineOfSightClear(cx, cy, cz, x, y, z + 0.3, true, false, false, true, false, false, false, localPlayer)
 end
 
-addEventHandler("onClientRender", root, function()
-    if not onDuty or not isElement(marker) or isPlayerMapVisible() or getElementData(localPlayer, "avi.uiOpen") then return end
+renderLabel = function()
+    if not isElement(marker) or isPlayerMapVisible() or getElementData(localPlayer, "avi.uiOpen") then return end
     if getElementDimension(marker) ~= getElementDimension(localPlayer)
         or getElementInterior(marker) ~= getElementInterior(localPlayer) then return end
     local px, py, pz = getElementPosition(localPlayer)
@@ -78,4 +98,4 @@ addEventHandler("onClientRender", root, function()
         tocolor(255, 255, 255, a), k, "default-bold", "center", "center")
     dxDrawText(L("work_atc.trn.menu.marker_press", { key = M.key:upper() }), sx - w / 2, sy - h * 0.5,
         sx + w / 2, sy - bar, tocolor(200, 205, 212, a), k * 0.9, "default", "center", "center")
-end)
+end

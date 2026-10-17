@@ -179,7 +179,20 @@ local function onRender ( )
 		end
 	end
 end
-addEventHandler ( "onClientRender", root, onRender )
+
+-- attached only while the local player or a remote player parachutes
+local rendering = false
+local function syncRender()
+	local on = ( getElementData ( localPlayer, "parachuting" ) or next(g_parachuters) ) and true or false
+	if on == rendering then return end
+	rendering = on
+	if on then
+		lastTick = nil -- no tick jump from the time it was off
+		addEventHandler ( "onClientRender", root, onRender )
+	else
+		removeEventHandler ( "onClientRender", root, onRender )
+	end
+end
 
 function onFire ( key, keyState )
 	if ( not getElementData ( localPlayer, "parachuting" ) ) and getElementData(localPlayer,"skydiving") then
@@ -213,6 +226,7 @@ function addLocalParachute()
 	parachutes[localPlayer] = chute
 	openChute ( chute, localPlayer, opentime )
 	setElementData ( localPlayer, "parachuting", true )
+	syncRender()
 	triggerServerEvent ( "requestAddParachute", resourceRoot )
 end
 
@@ -322,13 +336,15 @@ function isPlayerParachuting(player)
 end
 
 function updateParachuting ( data, oldval )
-	if ( source ~= localPlayer and data == "parachuting" ) then
+	if data ~= "parachuting" then return end
+	if source ~= localPlayer then
 		if ( getElementData ( source, "parachuting" ) == true ) then
 			g_parachuters[source] = true
 		else
 			g_parachuters[source] = nil
 		end
 	end
+	syncRender()
 end
 addEventHandler ( "onClientElementDataChange", root, updateParachuting )
 
@@ -337,6 +353,7 @@ function playerQuitWhenParachuting()
 		destroyElement(getPlayerParachute(source))
 		parachutes[source] = nil
 		g_parachuters[source] = nil
+		syncRender()
 	end
 end
 addEventHandler("onClientPlayerQuit", root, playerQuitWhenParachuting)

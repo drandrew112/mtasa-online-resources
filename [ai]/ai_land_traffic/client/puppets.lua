@@ -91,6 +91,16 @@ local function apply(veh, code, s, v, a, lat, latTarget, latSlope, nxt, flags, l
     end
 end
 
+-- the per-frame placement is attached while there are puppets and removes itself when the last
+-- one is gone (released, destroyed or stale)
+local placing = false
+local placePuppets
+local function startPlacing()
+    if placing or not next(P) then return end
+    placing = true
+    addEventHandler("onClientPreRender", root, placePuppets)
+end
+
 addEvent(EV_STATE, true)
 addEventHandler(EV_STATE, resourceRoot, function(data)
     local t0 = getTickCount() - getPlayerPing(localPlayer) / 2
@@ -101,6 +111,7 @@ addEventHandler(EV_STATE, resourceRoot, function(data)
                 data[i + 8], data[i + 9], data[i + 10], t0)
         end
     end
+    startPlacing()
 end)
 
 addEvent(EV_RELEASE, true)
@@ -186,10 +197,10 @@ local function place(veh, st, now, dt, full)
     end
 end
 
-local lastFrame = getTickCount()
-addEventHandler("onClientPreRender", root, function()
+local lastFrame
+placePuppets = function()
     local now = getTickCount()
-    local dt = (now - lastFrame) / 1000
+    local dt = (now - (lastFrame or now)) / 1000
     lastFrame = now
     if dt > 0.2 then dt = 0.2 end
     for veh, st in pairs(P) do
@@ -202,7 +213,11 @@ addEventHandler("onClientPreRender", root, function()
             place(veh, st, now, FAR_UPDATE / 1000, false)
         end
     end
-end)
+    if not next(P) then
+        placing, lastFrame = false, nil
+        removeEventHandler("onClientPreRender", root, placePuppets)
+    end
+end
 
 -- headlights at night
 setTimer(function()

@@ -39,4 +39,21 @@ function renderHud()
         end
     end
 end
-addEventHandler("onClientRender", getRootElement(), renderHud)
+
+-- attached only while the local player is in the arena (interior 15, arena_dim); the state is
+-- checked at start too, and on every interior / dimension change and spawn
+local hudOn = false
+local function syncArenaHud()
+    local on = getElementInterior(localPlayer) == 15 and getElementDimension(localPlayer) == arena_dim
+    if on == hudOn then return end
+    hudOn = on
+    if on then
+        addEventHandler("onClientRender", root, renderHud)
+    else
+        removeEventHandler("onClientRender", root, renderHud)
+    end
+end
+addEventHandler("onClientElementInteriorChange", localPlayer, syncArenaHud, false)
+addEventHandler("onClientElementDimensionChange", localPlayer, syncArenaHud, false)
+addEventHandler("onClientPlayerSpawn", localPlayer, syncArenaHud, false)
+addEventHandler("onClientResourceStart", resourceRoot, syncArenaHud)

@@ -24,7 +24,7 @@ end
 
 local function clamp(v, a, b) return v < a and a or (v > b and b or v) end
 
-addEventHandler("onClientRender", root, function()
+TrainsClient.onFrame("onClientRender", function()
     if not NetClient.ready then return end
     local cx, cy, cz = getCameraMatrix()
     local clacks = 0

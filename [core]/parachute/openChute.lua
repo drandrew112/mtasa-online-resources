@@ -4,6 +4,8 @@ offset = { 0, 0, 0 }
 overboardScale = 1.05
 overboardTime = 400
 openingChutes = {}
+-- the opening animation is attached while a chute opens and removes itself once none is left
+local animating = false
 
 function openChute ( object, player, time )
 	local playerX, playerY, playerZ = getElementPosition(player)
@@ -20,10 +22,19 @@ function openChute ( object, player, time )
 	openingChutes[object].player = player
 	openingChutes[object].originalTick = getTickCount()
 	attachElements ( object, player, unpack(offset) )
+	if not animating then
+		animating = true
+		addEventHandler ( "onClientRender", root, animateParachuteOpen )
+	end
 	return true
 end
 
 function animateParachuteOpen()
+	if not next(openingChutes) then
+		animating = false
+		removeEventHandler ( "onClientRender", root, animateParachuteOpen )
+		return
+	end
 	for object, infoTable in pairs(openingChutes) do
 		if getElementData ( infoTable.player, "parachuting" ) then
 			local time = t(infoTable.time)
@@ -61,4 +72,3 @@ function animateParachuteOpen()
 		end
 	end
 end
-addEventHandler ( "onClientRender", root, animateParachuteOpen )

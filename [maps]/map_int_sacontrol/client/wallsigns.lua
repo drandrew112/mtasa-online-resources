@@ -68,7 +68,37 @@ local function buildSigns()
     end
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, buildSigns)
+local drawSigns
+-- the signs are drawn only while the local player is in an interior / dimension that has signs
+-- (checked at start and on every interior, dimension or "sac.copies" change)
+local drawing = false
+local function syncSigns()
+    local int, dim = getElementInterior(localPlayer), getElementDimension(localPlayer)
+    local copies = getElementData(resourceRoot, "sac.copies")
+    local copyDim = type(copies) == "table" and copies[dim] == true
+    local on = false
+    for _, s in ipairs(signs) do
+        if s.int == int and (s.dim == dim or (copyDim and s.dim == 0)) then on = true break end
+    end
+    if on == drawing then return end
+    drawing = on
+    if on then
+        addEventHandler("onClientRender", root, drawSigns)
+    else
+        removeEventHandler("onClientRender", root, drawSigns)
+    end
+end
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    buildSigns()
+    syncSigns()
+end)
+addEventHandler("onClientElementInteriorChange", localPlayer, syncSigns, false)
+addEventHandler("onClientElementDimensionChange", localPlayer, syncSigns, false)
+addEventHandler("onClientPlayerSpawn", localPlayer, syncSigns, false)
+addEventHandler("onClientElementDataChange", resourceRoot, function(key)
+    if key == "sac.copies" then syncSigns() end
+end, false)
 
 addEventHandler("onClientRestore", root, function(cleared)
     if cleared then
@@ -76,7 +106,7 @@ addEventHandler("onClientRestore", root, function(cleared)
     end
 end)
 
-addEventHandler("onClientRender", root, function()
+drawSigns = function()
     local int, dim = getElementInterior(localPlayer), getElementDimension(localPlayer)
     -- a copy of the interior in this dimension (server/copies.lua) shows the dimension 0 signs too
     local copies = getElementData(resourceRoot, "sac.copies")
@@ -93,4 +123,4 @@ addEventHandler("onClientRender", root, function()
                 false, s.rt, d.w, white, s.cx + d.nx * 10, s.cy + d.ny * 10, s.cz)
         end
     end
-end)
+end

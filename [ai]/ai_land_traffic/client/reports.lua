@@ -41,12 +41,17 @@ end)
 ------------------------------------------------------------------------ debug view (/traffic debug)
 
 addEvent("ai_traffic:debug", true)
+local drawDebug -- attached only while the debug view is on
 addEventHandler("ai_traffic:debug", resourceRoot, function()
     Puppets.debug = not Puppets.debug
+    if Puppets.debug then
+        addEventHandler("onClientRender", root, drawDebug)
+    else
+        removeEventHandler("onClientRender", root, drawDebug)
+    end
 end)
 
-addEventHandler("onClientRender", root, function()
-    if not Puppets.debug then return end
+drawDebug = function()
     local cx, cy, cz = getCameraMatrix()
     for _, veh in ipairs(getElementsByType("vehicle", root, true)) do
         local st = Puppets.state(veh)
@@ -69,4 +74,4 @@ addEventHandler("onClientRender", root, function()
             end
         end
     end
-end)
+end

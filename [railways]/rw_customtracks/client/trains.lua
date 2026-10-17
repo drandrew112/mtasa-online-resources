@@ -14,6 +14,32 @@ local sx, sy = guiGetScreenSize()
 
 function TrainsClient.list() return trains end
 
+-- Per-frame train handlers (placement here, sweeper, sounds): attached only while the network is
+-- ready and there is a train. Each one runs once more after removal, with the empty list, to clean
+-- up (sounds stop their loops).
+local frames, framesOn = {}, false
+
+function TrainsClient.onFrame(eventName, fn)
+    frames[#frames + 1] = { eventName, fn }
+    if framesOn then addEventHandler(eventName, root, fn) end
+end
+
+local function syncFrames()
+    local on = NetClient.ready and next(trains) ~= nil
+    if on == framesOn then return end
+    framesOn = on
+    for _, h in ipairs(frames) do
+        if on then
+            addEventHandler(h[1], root, h[2])
+        else
+            removeEventHandler(h[1], root, h[2])
+            h[2]()
+        end
+    end
+end
+
+local updateRideCamera
+
 local function serverNow(now) return now - (offset or 0) end
 
 -- head u of a train at local tick `now`
@@ -56,7 +82,11 @@ addEventHandler("rw:net:trains", resourceRoot, function(list)
         trains[s.id] = s
     end
     for id in pairs(trains) do if not seen[id] then trains[id] = nil end end
+    syncFrames()
+    updateRideCamera()
 end)
+
+addEventHandler("rw:net:onClientNetworkReady", resourceRoot, function() syncFrames() end)
 
 -- read every frame, not cached per model: a mod loader (v_modloader streak.dff) can replace the
 -- model after the train streamed in, and a stale value from the original model left the
@@ -69,8 +99,7 @@ end
 
 -- ------------------------------------------------------------------ placement
 
-addEventHandler("onClientPreRender", root, function()
-    if not NetClient.ready then return end
+TrainsClient.onFrame("onClientPreRender", function()
     local now = getTickCount()
     for _, t in pairs(trains) do
         local u, v = headU(t, now)
@@ -115,7 +144,8 @@ local function send(extra)
     triggerServerEvent("rw:net:input", resourceRoot, msg)
 end
 
-addEventHandler("onClientRender", root, function()
+-- input + HUD, attached only while the local player sits in a vehicle (myTrain() decides the rest)
+local function driverFrame()
     local t = myTrain()
     local w, s = false, false
     if t and not isCursorShowing() and not isChatBoxInputActive() and not isMainMenuActive() then
@@ -159,6 +189,27 @@ addEventHandler("onClientRender", root, function()
     if t.atp then
         dxDrawText(L("rw_customtracks.trains.atp_braking"), x + bw - 14, y + 34, x + bw - 14, 0, tocolor(255, 80, 60), 1.2, "default-bold", "right")
     end
+end
+
+local driverOn = false
+local function setDriverFrame(on)
+    if on == driverOn then return end
+    driverOn = on
+    if on then
+        addEventHandler("onClientRender", root, driverFrame)
+    else
+        removeEventHandler("onClientRender", root, driverFrame)
+        if input.w or input.s then
+            input.w, input.s = false, false
+            send()
+        end
+    end
+end
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, function() setDriverFrame(true) end, false)
+addEventHandler("onClientPlayerVehicleExit", localPlayer, function() setDriverFrame(false) end, false)
+addEventHandler("onClientPlayerWasted", localPlayer, function() setDriverFrame(false) end, false)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    setDriverFrame(isElement(getPedOccupiedVehicle(localPlayer)))
 end)
 
 bindKey("x", "down", function() if myTrain() then send({ x = true }) end end)
@@ -175,8 +226,9 @@ end)
 
 -- ------------------------------------------------------------------ passengers: camera on the car
 
+-- re-checked when "rwn.ride" changes and on every train snapshot (the car may arrive later)
 local riding
-addEventHandler("onClientRender", root, function()
+updateRideCamera = function()
     local r = getElementData(localPlayer, "rwn.ride")
     local t = r and trains[r[1]]
     local car = t and t.cars[r[2]]
@@ -185,7 +237,10 @@ addEventHandler("onClientRender", root, function()
         riding = el
         if isElement(el) then setCameraTarget(el) else setCameraTarget(localPlayer) end
     end
-end)
+end
+addEventHandler("onClientElementDataChange", localPlayer, function(key)
+    if key == "rwn.ride" then updateRideCamera() end
+end, false)
 
 addEvent("rw:net:left", true)
 addEventHandler("rw:net:left", resourceRoot, function()

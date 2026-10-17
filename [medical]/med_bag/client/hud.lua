@@ -23,16 +23,18 @@ addEventHandler("bag:notify", resourceRoot, showBagNotification)
 -- ---------------------------------------------------------------------------------------------
 
 local progress -- { start, duration, text }
+local syncHud  -- below: attaches the HUD render only while it has something to draw
 
 addEvent("bag:progress", true)
 addEventHandler("bag:progress", resourceRoot, function(duration, text)
-    if not duration then progress = nil return end
+    if not duration then progress = nil return syncHud() end
     progress = { start = getTickCount(), duration = duration, text = L.resolve(text or "") }
+    syncHud()
 end)
 
 local function drawProgress()
     local f = math.min(1, (getTickCount() - progress.start) / progress.duration)
-    if f >= 1 then progress = nil return end
+    if f >= 1 then progress = nil return syncHud() end
     local w, h = s(360), s(14)
     local x, y = (sw - w) / 2, sh * 0.78
     dxDrawText(progress.text, x, y - s(28), x + w, y - s(4), tocolor(235, 238, 245), 1, "default-bold", "center", "bottom")
@@ -46,10 +48,13 @@ end
 
 local LABEL_RANGE = 25
 
+-- streamed-in anchors that carry BAG_DATA.MISSING (kept by the events at the end of the file)
+local missingAnchors = {}
+
 local function drawMissing()
     local px, py, pz = getElementPosition(localPlayer)
-    for _, anchor in ipairs(getElementsByType("object", resourceRoot, true)) do
-        local missing = getElementData(anchor, BAG_DATA.MISSING)
+    for anchor in pairs(missingAnchors) do
+        local missing = isElement(anchor) and getElementData(anchor, BAG_DATA.MISSING)
         if missing then
             local x, y, z = getElementPosition(anchor)
             local d = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
@@ -96,11 +101,52 @@ local function drawStretcherHud(on)
         "default-bold", "left", "center", true)
 end
 
-addEventHandler("onClientRender", root, function()
+local function renderHud()
     if progress then drawProgress() end
     drawMissing()
     if isPedInVehicle(localPlayer) then return end
     local stretcher = getElementData(localPlayer, "stretcher.pushing")
     local on = isElement(stretcher) and getElementData(stretcher, BAG_DATA.ON_STRETCHER)
     if type(on) == "table" then drawStretcherHud(on) end
+end
+
+-- attached only while there is a progress bar, a streamed-in anchor with missing equipment or the
+-- local player pushes a stretcher
+local hudOn = false
+syncHud = function()
+    local on = (progress or next(missingAnchors) or getElementData(localPlayer, "stretcher.pushing")) and true or false
+    if on == hudOn then return end
+    hudOn = on
+    if on then
+        addEventHandler("onClientRender", root, renderHud)
+    else
+        removeEventHandler("onClientRender", root, renderHud)
+    end
+end
+
+local function refreshAnchor(el)
+    local was = missingAnchors[el]
+    local now = (isElement(el) and getElementType(el) == "object" and isElementStreamedIn(el)
+        and getElementData(el, BAG_DATA.MISSING)) and true or nil
+    if was == now then return end
+    missingAnchors[el] = now
+    syncHud()
+end
+
+-- anchors already streamed in when the resource starts count too
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for _, el in ipairs(getElementsByType("object", resourceRoot, true)) do refreshAnchor(el) end
+    syncHud()
+end)
+addEventHandler("onClientElementStreamIn", resourceRoot, function() refreshAnchor(source) end)
+addEventHandler("onClientElementStreamOut", resourceRoot, function() refreshAnchor(source) end)
+addEventHandler("onClientElementDestroy", resourceRoot, function()
+    if missingAnchors[source] then missingAnchors[source] = nil syncHud() end
+end)
+addEventHandler("onClientElementDataChange", root, function(key)
+    if key == BAG_DATA.MISSING then
+        if getElementType(source) == "object" then refreshAnchor(source) end
+    elseif key == "stretcher.pushing" and source == localPlayer then
+        syncHud()
+    end
 end)

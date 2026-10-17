@@ -19,9 +19,14 @@ function table.random ( theTable )
     return theTable[ random ( 1, #theTable ) ]
 end
 
-addEventHandler("onClientPreRender", getRootElement(), function()
+-- client only (localPlayer is nil on the server): a persistent game setting, set once at start
+-- and again after a spawn instead of every frame
+if localPlayer then
     setInteriorSoundsEnabled(false)
-end)
+    addEventHandler("onClientPlayerSpawn", localPlayer, function()
+        setInteriorSoundsEnabled(false)
+    end)
+end
 
 -- better random
 local u = 0 -- don't delete

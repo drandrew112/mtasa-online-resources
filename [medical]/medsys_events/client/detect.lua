@@ -44,13 +44,32 @@ local lastVelocity       -- velocity of the local vehicle in the previous frame
 local measuring = false  -- a crash is being measured
 local lastCrash = 0
 
-addEventHandler("onClientPreRender", root, function()
+local function trackVelocity()
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if vehicle and not measuring then
         lastVelocity = { getElementVelocity(vehicle) }
     elseif not vehicle then
         lastVelocity = nil
     end
+end
+
+-- the velocity is sampled only while the local player sits in a vehicle
+local tracking = false
+local function setTracking(on)
+    if on == tracking then return end
+    tracking = on
+    if on then
+        addEventHandler("onClientPreRender", root, trackVelocity)
+    else
+        removeEventHandler("onClientPreRender", root, trackVelocity)
+        lastVelocity = nil
+    end
+end
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, function() setTracking(true) end, false)
+addEventHandler("onClientPlayerVehicleExit", localPlayer, function() setTracking(false) end, false)
+addEventHandler("onClientPlayerWasted", localPlayer, function() setTracking(false) end, false)
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    setTracking(isElement(getPedOccupiedVehicle(localPlayer)))
 end)
 
 addEventHandler("onClientVehicleCollision", root, function()

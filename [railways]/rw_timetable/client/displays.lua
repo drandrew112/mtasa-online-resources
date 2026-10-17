@@ -15,6 +15,10 @@ local lastDraw = {}                 -- [stationId] = tick of the last redraw
 local near = {}                     -- [stationId] = true: within KEEP_DIST
 local clockBase, clockTick = nil, 0 -- server seconds of the day at clockTick
 local lastAsk = 0
+local askPending = 0                -- tick until which a board request is in flight
+local ASK_TIMEOUT = 3000            -- ms: an unanswered request (server throttle) may be repeated
+local LEAVE_MARGIN = 20             -- m: a near station is released only beyond KEEP_DIST + this
+local askFresh = false              -- a new station became near: ask as soon as nothing is in flight
 
 local C = {
     bg     = tocolor(9, 20, 44, 255),
@@ -179,11 +183,14 @@ addEventHandler("onClientRender", root, function()
     local cx, cy, cz = getCameraMatrix()
     local want = {}
 
-    -- which stations are near, which displays to draw
+    -- which stations are near, which displays to draw; a station already near stays until
+    -- KEEP_DIST + LEAVE_MARGIN, so walking along the edge does not release / re-ask it again and again
     local draw = {}
     for _, d in ipairs(TT.DISPLAYS) do
         local dist = getDistanceBetweenPoints3D(cx, cy, cz, d.x, d.y, d.z)
-        if dist <= B.KEEP_DIST then want[d.station] = true end
+        if dist <= B.KEEP_DIST or (near[d.station] and dist <= B.KEEP_DIST + LEAVE_MARGIN) then
+            want[d.station] = true
+        end
         if dist <= B.DRAW_DIST then draw[#draw + 1] = d end
     end
     for id in pairs(near) do
@@ -200,9 +207,11 @@ addEventHandler("onClientRender", root, function()
         end
     end
 
-    -- board data
-    if #ask > 0 and (fresh or getTickCount() - lastAsk > B.REFRESH * 1000) then
-        lastAsk = getTickCount()
+    -- board data: one request in flight at a time (the server drops requests within 1 s)
+    local tick = getTickCount()
+    if fresh then askFresh = true end
+    if #ask > 0 and tick >= askPending and (askFresh or tick - lastAsk > B.REFRESH * 1000) then
+        lastAsk, askPending, askFresh = tick, tick + ASK_TIMEOUT, false
         triggerServerEvent("rw:tt:boards", resourceRoot, ask)
     end
 
@@ -224,6 +233,7 @@ end)
 
 addEvent("rw:tt:boardsResult", true)
 addEventHandler("rw:tt:boardsResult", resourceRoot, function(list)
+    askPending = 0
     for id, b in pairs(list or {}) do
         if b then
             boards[id] = b

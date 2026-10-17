@@ -28,9 +28,28 @@ function getPositionFromElementOffset(element,offX,offY,offZ)
 	return x, y, z                               -- Return the transformed point
 end
 
-addEventHandler("onClientPreRender", root, function()
-	for index,this in ipairs(getElementsByType("vehicle")) do
-		if vehLiTable.leftEN[this] or vehLiTable.rightEN[this] then
+-- vehicles with a light on; the per-frame update walks only these and is attached only while
+-- there is one (rebuilt by the update timer and lightEffectStop)
+local lit = {}
+local updateLights
+local updating = false
+local function rebuildLit()
+	lit = {}
+	for veh, on in pairs(vehLiTable.leftEN) do if on then lit[veh] = true end end
+	for veh, on in pairs(vehLiTable.rightEN) do if on then lit[veh] = true end end
+	local on = next(lit) ~= nil
+	if on == updating then return end
+	updating = on
+	if on then
+		addEventHandler("onClientPreRender", root, updateLights)
+	else
+		removeEventHandler("onClientPreRender", root, updateLights)
+	end
+end
+
+updateLights = function()
+	for this in pairs(lit) do
+		if isElement(this) and (vehLiTable.leftEN[this] or vehLiTable.rightEN[this]) then
 			local rx, ry, rz = getElementRotation(this, "ZXY")
 			rx = rx - 4
 			local x1,y1,z1,x2,y2,z2
@@ -59,7 +78,6 @@ addEventHandler("onClientPreRender", root, function()
 		end
 	end
 end
-)
 
 function createWorldLight()
 	return exports.dynamic_lighting:createSpotLight(0,0,3,0,0,0,0,0,0,0,true,gLightFalloff,gLightTheta,gLightPhi,gLightAttenuation,gWorldSelfShadow)
@@ -83,6 +101,7 @@ function lightEffectStop(thisVeh)
 		destroyWorldLight(vehLiTable.right[thisVeh])
 		vehLiTable.rightEN[thisVeh]=false
 	end
+	rebuildLit()
 end
 
 function lightEffectManage(thisVeh,vehType)
@@ -211,6 +230,7 @@ addEventHandler("onClientResourceStart", getResourceRootElement( getThisResource
 				end
 			end
 		end
+		rebuildLit()
 	end
 	,flTimerUpdate,0 )
 end

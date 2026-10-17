@@ -35,7 +35,7 @@ local function hit(el, mx, my, speed)
     end
 end
 
-addEventHandler("onClientRender", root, function()
+TrainsClient.onFrame("onClientRender", function()
     if not NET.CLIENT.SWEEP or not NetClient.ready then return end
     for _, t in pairs(TrainsClient.list()) do
         local v = t.vNow or t.v

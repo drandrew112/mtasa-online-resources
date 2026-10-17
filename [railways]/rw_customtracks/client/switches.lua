@@ -66,20 +66,54 @@ local function lightFactor()
     return 1 - (t - 19) / 2 * 0.55
 end
 
-addEventHandler("onClientRender", root, function()
+-- A 500 ms timer picks the drawn segments near the camera; the render is attached only while
+-- there is one and walks only those. NEAR_MARGIN covers the timer delay at speed (~80 m/s for
+-- 0.5 s): a segment is picked well before it reaches DRAW_DIST (test fast vehicles / planes).
+local NEAR_MARGIN = 40
+local CHECK_MS = 500
+local bounds = {}          -- [segId] = { cx, cy, r } of every drawn segment (per network version)
+local nearIds = {}         -- segments the render walks
+local drawRails
+local drawing = false
+
+local function refreshNear()
     if not NetClient.ready then return end
     if version ~= NetClient.version then
         version = NetClient.version
-        built = {}
+        built, bounds = {}, {}
         for _, id in ipairs(Net.segmentIds()) do
-            if hasTag(Net.segment(id), "drawn") then built[id] = false end
+            local g = Net.segment(id)
+            if hasTag(g, "drawn") then
+                built[id] = false
+                local x, y = Net.pointAt(id, g.len / 2)
+                bounds[id] = { x, y, g.len / 2 }
+            end
         end
     end
     local cx, cy = getCameraMatrix()
+    local list = {}
+    for id, b in pairs(bounds) do
+        if getDistanceBetweenPoints2D(cx, cy, b[1], b[2]) - b[3] < DRAW_DIST + NEAR_MARGIN then list[#list + 1] = id end
+    end
+    nearIds = list
+    local on = #list > 0
+    if on == drawing then return end
+    drawing = on
+    if on then
+        addEventHandler("onClientRender", root, drawRails)
+    else
+        removeEventHandler("onClientRender", root, drawRails)
+    end
+end
+setTimer(refreshNear, CHECK_MS, 0)
+
+drawRails = function()
+    local cx, cy = getCameraMatrix()
     local lf
-    for id, b in pairs(built) do
+    for _, id in ipairs(nearIds) do
+        local b = built[id]
         local g = Net.segment(id)
-        if g then
+        if g and b ~= nil then
             if not b then b = build(id) built[id] = b end
             local d = getDistanceBetweenPoints2D(cx, cy, b.cx, b.cy) - b.r
             if d < DRAW_DIST then
@@ -97,4 +131,4 @@ addEventHandler("onClientRender", root, function()
             end
         end
     end
-end)
+end

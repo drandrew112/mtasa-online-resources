@@ -13,6 +13,7 @@ TextsLoaded = false
 local function loadTexts()
     if TextsLoaded then return end
     TextsLoaded = true
+    if syncPanelRender then syncPanelRender() end -- client/panel.lua
     pcall(function() exports.v_accounts:resourceReady() end)
     triggerServerEvent("btd:requestState", resourceRoot)
 end
@@ -139,7 +140,9 @@ function StateAge() return (getTickCount() - stateAt) / 1000 end
 function HasRight() return getElementData(localPlayer, "bt.right") == true end
 
 addEventHandler("onClientElementDataChange", localPlayer, function(key)
-    if key == "bt.right" and TextsLoaded then triggerServerEvent("btd:requestState", resourceRoot) end
+    if key ~= "bt.right" then return end
+    if TextsLoaded then triggerServerEvent("btd:requestState", resourceRoot) end
+    if syncPanelRender then syncPanelRender() end -- client/panel.lua
 end)
 
 -- Names of what is carried ("RBC 0+  x4") and the tags / tiles

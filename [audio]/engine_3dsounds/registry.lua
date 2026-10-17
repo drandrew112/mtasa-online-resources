@@ -9,6 +9,7 @@ local function register3DSound(sound)
 
     if minDistance and minDistance > 0 then
         active3DSounds[sound] = true
+        if ensureSoundLoop then ensureSoundLoop() end -- effects.lua
 
         outputDebugString(
             "[Better3DSounds] Registered sound: " .. tostring(sound)

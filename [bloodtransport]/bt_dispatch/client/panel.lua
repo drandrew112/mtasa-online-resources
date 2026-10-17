@@ -276,12 +276,8 @@ addEventHandler("onClientKey", root, function(key, press)
     elseif key == "mouse_wheel_up" then scroll = math.max(0, scroll - 1) end
 end)
 
-addEventHandler("onClientRender", root, function()
+local function renderPanel()
     Layout = { visible = false, big = false, tasks = {} }
-    if not (TextsLoaded and HasRight()) then
-        if PanelBig then setBig(false) end
-        return
-    end
     if getElementData(localPlayer, "inventoryOpen") or getElementData(localPlayer, "browserOpen") then
         if PanelBig then setBig(false) end
         return
@@ -290,7 +286,24 @@ addEventHandler("onClientRender", root, function()
     Hits = {}
     Layout.visible, Layout.big = true, PanelBig
     if PanelBig then drawBig() else drawSmall() end
-end)
+end
+
+-- The panel render is attached only for players with the dispatcher right ("bt.right") once the
+-- texts are loaded; losing the right removes it and closes the big view.
+local panelOn = false
+function syncPanelRender()
+    local on = (TextsLoaded and HasRight()) and true or false
+    if on == panelOn then return end
+    panelOn = on
+    if on then
+        addEventHandler("onClientRender", root, renderPanel)
+    else
+        removeEventHandler("onClientRender", root, renderPanel)
+        Layout = { visible = false, big = false, tasks = {} }
+        if PanelBig then setBig(false) end
+    end
+end
+addEventHandler("onClientResourceStart", resourceRoot, syncPanelRender)
 
 -- { visible, big, small, box, signOn, signOff, windDown, stats = rect, tasks = { [id] = { row, route,
 -- hand, order = rect, status, routeOn } } } (task ids as strings), rect = { x, y, w, h }; only what the last frame drew

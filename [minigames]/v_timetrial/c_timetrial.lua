@@ -29,10 +29,31 @@ local function clearObjective()
     end
 end
 
+-- the countdown HUD is attached from tt:started until the run ends (tt:finish, reset, stop)
+local function drawCountdown()
+    if isPlayerMapVisible() or getElementData(localPlayer, "paused") then return end
+    uicore:drawTimer(timeLeft)
+end
+
+local function setActive(on)
+    if on == active then return end
+    active = on
+    if on then
+        addEventHandler("onClientRender", root, drawCountdown)
+    else
+        removeEventHandler("onClientRender", root, drawCountdown)
+    end
+end
+
+local function stopRun()
+    if timer and isTimer(timer) then killTimer(timer) end
+    timer = nil
+    setActive(false)
+end
+
 local function resetRun()
     clearObjective()
-    if timer and isTimer(timer) then killTimer(timer) end
-    active = false
+    stopRun()
     timeLeft = 0
 end
 
@@ -142,9 +163,6 @@ addEventHandler("onClientRender", root, function()
     else
         labelAt(trial, false)
     end
-    if active then
-        uicore:drawTimer(timeLeft)
-    end
 end)
 
 -- === INDÍTÁS ===
@@ -161,8 +179,8 @@ end)
 
 addEvent("tt:started", true)
 addEventHandler("tt:started", resourceRoot, function(duration)
-    if timer and isTimer(timer) then killTimer(timer) end
-    active = true
+    stopRun()
+    setActive(true)
     local tr = currentTrial()
     timeLeft = tonumber(duration) or tr.time
 
@@ -181,9 +199,7 @@ end)
 -- === BEFEJEZÉS ===
 addEvent("tt:finish", true)
 addEventHandler("tt:finish", localPlayer, function(success)
-    if timer and isTimer(timer) then killTimer(timer) end
-
-    active = false
+    stopRun()
     clearObjective()
     local endM = endMarkerElement()
     if endM then setElementAlpha(endM, 0) end
@@ -195,4 +211,7 @@ addEventHandler("tt:finish", localPlayer, function(success)
     end
 end)
 
-addEventHandler("onClientResourceStop", resourceRoot, clearObjective)
+addEventHandler("onClientResourceStop", resourceRoot, function()
+    stopRun()
+    clearObjective()
+end)

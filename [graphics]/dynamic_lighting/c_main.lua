@@ -106,6 +106,7 @@ function funcTable.create(lType,posX,posY,posZ,colorR,colorG,colorB,colorA,dirX,
 	end
 	outputDebugString('Created Light TYPE: '..lType..' ID:'..w)
 	lightTable.isInNrChanged = true
+	if funcTable.wake then funcTable.wake() end
 	return w
 end
 
@@ -246,6 +247,7 @@ end
 function funcTable.setShadersForcedOn(w)
 	if type(w)=="boolean" then
 		isEffectForcedOn = w
+		if w and funcTable.wake then funcTable.wake() end
 		outputDebugString('Pixel Lighting: shaders forced '..tostring(isEffectForcedOn) )
 		if isEffectForcedOn then
 			return funcTable.forceStart()
@@ -434,8 +436,26 @@ end
 ---------------------------------------------------------------------------------------------------
 -- creating and sorting a table of active lights
 ---------------------------------------------------------------------------------------------------
+-- The three frame handlers below (sort, shader values, start/stop) are attached only while the
+-- effect has work: an enabled light, running shaders or the forced-on flag. funcTable.wake() attaches
+-- them (new light, forced on); a 1 s timer removes them once everything is idle and stopped.
+local frameHandlers = {}
+local framesOn = false
+local function setFrames(on)
+	if on == framesOn then return end
+	framesOn = on
+	for _, h in ipairs(frameHandlers) do
+		if on then
+			addEventHandler(h[1], root, h[2], h[3], h[4])
+		else
+			removeEventHandler(h[1], root, h[2])
+		end
+	end
+end
+function funcTable.wake() setFrames(true) end
+
 local tickCount = getTickCount()
-addEventHandler("onClientPreRender",root, function()
+frameHandlers[#frameHandlers + 1] = { "onClientPreRender", function()
 	if (#lightTable.inputLights == 0) then
 		return 
 	end
@@ -455,12 +475,12 @@ addEventHandler("onClientPreRender",root, function()
 			tickCount = getTickCount()
 		end
 end
-,true ,"low-1")
+,true ,"low-1" }
 
 ---------------------------------------------------------------------------------------------------
 -- set shader values of active lights
 ---------------------------------------------------------------------------------------------------
-addEventHandler("onClientPreRender", root, function()
+frameHandlers[#frameHandlers + 1] = { "onClientPreRender", function()
 	if ((#lightTable.outputLights == 0) and not isEffectForcedOn and not shaderTable.isTimeOut) then
 		return
 	end 
@@ -530,7 +550,7 @@ addEventHandler("onClientPreRender", root, function()
 		end
 	end
 end
-,true ,"low-2")
+,true ,"low-2" }
 
 ---------------------------------------------------------------------------------------------------
 -- add or remove shader settings 
@@ -702,7 +722,7 @@ end
 ---------------------------------------------------------------------------------------------------
 local currentCount = getTickCount ()
 
-addEventHandler("onClientRender", root, function()
+frameHandlers[#frameHandlers + 1] = { "onClientRender", function()
 	if shaderTable.isError or isEffectForcedOn then 
 		return 
 	end
@@ -718,7 +738,20 @@ addEventHandler("onClientRender", root, function()
 		currentCount = getTickCount ()
 	end
 end		
-,true ,"low-3")	
+,true ,"low-3" }
+
+local function hasEnabledLight()
+	for _, l in ipairs(lightTable.inputLights) do
+		if l.enabled then return true end
+	end
+	return false
+end
+
+setTimer(function()
+	if not framesOn then return end
+	if hasEnabledLight() or shaderTable.isStarted or isEffectForcedOn or #lightTable.outputLights > 0 then return end
+	setFrames(false)
+end, 1000, 0)
 
 
 function funcTable.forceStart()
