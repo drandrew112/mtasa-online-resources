@@ -93,7 +93,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-10](#perf-10) | LOW | accData `isOnline()` scans all players on every load | OPEN |
 | [PERF-11](#perf-11) | LOW | v_socialpanel loads every message ever sent into memory | OPEN |
 | [PERF-12](#perf-12) | LOW | v_radar walks all blips every frame | OPEN |
-| [SCALE-01](#scale-01) | HIGH | Two-server setup: lots of state lives in local files / SQLite | OPEN |
+| [SCALE-01](#scale-01) | HIGH | Two-server setup: lots of state lives in local files / SQLite | OPEN (med_erm + bt_dispatch on MySQL) |
 | [SCALE-02](#scale-02) | MEDIUM | v_main autostarts everything (devtools, freeroam, editors) | OPEN |
 | [SCALE-03](#scale-03) | MEDIUM | Global caps sized for few players (AI traffic, maxplayers 32) | OPEN |
 | [SCALE-04](#scale-04) | MEDIUM | Client memory pressure from oversized TXD/DFF mods | OPEN |
@@ -592,7 +592,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### PERF-01 — Blocking `dbPoll(-1)` queries to a remote MySQL host on the main thread
 - **Severity:** HIGH
 - **Status:** OPEN
-- **Location:** `[core]/v_mysql/core/mysql.lua:156` (`mysqlQuerySync`), `:177` (`mysqlInsert`). Callers: `v_accounts/server/db.lua`, `v_mysql/scripts/accdata.lua:118` (every read of an offline account), `v_socialpanel/db.lua`, `v_ownveh/db.lua`, `v_admin/server/panel.lua` and `web.lua`, `v_weekly/server/storage.lua`, `med_erm/server/webadmin.lua`, `bt_web/server/http.lua`
+- **Location:** `[core]/v_mysql/core/mysql.lua:156` (`mysqlQuerySync`), `:177` (`mysqlInsert`). Callers: `v_accounts/server/db.lua`, `v_mysql/scripts/accdata.lua:118` (every read of an offline account), `v_socialpanel/db.lua`, `v_ownveh/db.lua`, `v_admin/server/panel.lua` and `web.lua`, `v_weekly/server/storage.lua`, `med_erm/server/webadmin.lua`, `med_erm/server/db.lua` (since the 2026-10-17 MySQL move: task/shift INSERTs, start-up load, callsign check on sign-in, /ermadmin queries), `bt_dispatch/server/db.lua` (INSERTs, admin queries), `bt_web/server/http.lua`
 - **Problem:** The DB is on another host (`mysql8.srkhost.eu`). Every sync call freezes the
   **whole server**, all resources and all players, for a full network round trip (typically
   10–60 ms, much more under load). The connection guard (`connguard.lua`) exists precisely
@@ -765,8 +765,11 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="scale-01"></a>
 ### SCALE-01 — Two-server setup: lots of state lives in local files or SQLite
 - **Severity:** HIGH
-- **Status:** OPEN
-- **Location:** ~~`v_accounts` `bans.xml` (BUG-05, fixed)~~; `v_jobmanager/core/community.lua` (`index.json`, `<id>.json`); `v_admin/server/report.lua` (report logs); `rw_core/server/log.lua`; `med_erm/server/db.lua` (`data/erm.db` SQLite); `bt_dispatch/server/db.lua` (SQLite); `med_scenemanager/server/variety.lua`; `v_ownveh` `vehiclespawnpoints.txt`; `v_els/server/layouts.lua` (`lights.json`); `v_radar/savepositions.lua`
+- **Status:** OPEN — partly done 2026-10-17: no SQLite left. `med_erm` (MySQL `med_tasks` /
+  `med_shifts`, callsigns checked across servers) and `bt_dispatch` (MySQL `bt_tasks` /
+  `bt_shifts`) are FIXED 2026-10-17, both untested against the live MySQL. Still open: the
+  file-based items below and the BT stock (`bt_stock/server/main.lua`, local file).
+- **Location:** ~~`v_accounts` `bans.xml` (BUG-05, fixed)~~; `v_jobmanager/core/community.lua` (`index.json`, `<id>.json`); `v_admin/server/report.lua` (report logs); `rw_core/server/log.lua`; ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ (FIXED 2026-10-17, MySQL med_tasks/med_shifts); ~~`bt_dispatch/server/db.lua` (SQLite)~~ (FIXED 2026-10-17, MySQL bt_tasks/bt_shifts); `bt_stock/server/main.lua` (stock file); `med_scenemanager/server/variety.lua`; `v_ownveh` `vehiclespawnpoints.txt`; `v_els/server/layouts.lua` (`lights.json`); `v_radar/savepositions.lua`
 - **Problem:** v_mysql's comments say a second server shares the accounts. Everything above
   differs per server: community jobs, bans, reports, ERM history, stock.
 - **Suggested fix:** Decide for each item: **global** (→ MySQL tables: bans, reports, community

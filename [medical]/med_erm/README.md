@@ -12,7 +12,7 @@ erm/
 ├─ shared/config.lua        keys, vehicles, unit types, statuses, timings
 ├─ server/
 │  ├─ util.lua             time/text helpers, v_accounts wrappers
-│  ├─ db.lua               SQLite (data/erm.db): tasks + shifts
+│  ├─ db.lua               MySQL via v_mysql: med_tasks + med_shifts
 │  ├─ tasks.lua            task lifecycle, priority, assignment, response log
 │  ├─ units.lua            sign-in/out, crew, status + case flow, handover timer
 │  ├─ chat.lua             broadcast / unit / task messages (memory only)
@@ -32,7 +32,7 @@ erm/
 │  ├─ pages/               login, home, case (Active Case), messages
 │  ├─ admin/               /ermadmin panel (panel.lua lists, detail.lua views)
 │  └─ fonts/               Roboto (copied from v_radar)
-└─ data/                   dispatchers.json (codes); erm.db is created here
+└─ data/                   dispatchers.json (codes)
 ```
 
 ## Web pages (med_web)
@@ -152,16 +152,25 @@ tablet's Home page counts): one itemised line per task, via `work_core`'s
 - Needs `work_core` running (soft dependency, same as every other optional
   integration here); without it nothing is paid, nothing else changes.
 
-## Database (data/erm.db)
+## Database (v_mysql: med_tasks, med_shifts)
 
-- `tasks`: id, title, description, caller, position, zone, priority, status,
+Schema + JSON-line formats: `database.sql` (also in the repo-root `main.sql`); the
+resource creates both tables on start. SQLite (`data/erm.db`) is no longer used.
+If v_mysql is not connected yet, the start waits for `mysql:connected`.
+
+- `med_tasks`: id, title, description, caller, position, zone, priority, status,
   units (callsigns ever assigned), response_log (unit + start/stop),
-  created/prioritized/assigned/closed date-times, close_reason.
-- `shifts`: id, callsign, unit_type, plate, members (account names),
-  closed_tasks (task ids), started_at, ended_at.
-- `shift_tasks`: shift_id, task_id, callsign, assigned_at, released_at,
-  outcome – which shift worked which task and how it ended.
-- `tasks` also has `source` (creating resource) and `meta` (JSON).
+  created/prioritized/assigned/closed date-times, close_reason, source
+  (creating resource), meta (JSON), shifts (JSON lines: shifts it was given to).
+- `med_shifts`: id, server, callsign, unit_type, plate, members (account names),
+  closed_tasks (task ids), started_at, ended_at, end_reason, task_count,
+  tasks (JSON lines: which task, when, how it ended).
+- **Callsign check on sign-in:** a shift with `ended_at IS NULL` holds its
+  callsign on every server sharing the database. A number typed on the tablet
+  that is taken -> the player gets "already on duty"; the automatic number
+  counts up from 1 until it finds a free one. Without the database only the
+  local units count.
+- On start the server closes its own open shifts (`end_reason = 'restart'`).
 
 ## Automation API (server exports)
 

@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- /ermadmin: shift & task history panel (client/admin/*.lua) for admins.
--- Every query re-checks the admin level; the data comes straight from erm.db.
+-- Every query re-checks the admin level; the data comes straight from MySQL (med_shifts / med_tasks).
 
 local PAGE = 14
 
@@ -59,6 +59,23 @@ local function paged(countSql, selectSql, where, args, page)
     return rows, total, page, pages
 end
 
+-- "<select> WHERE id IN (...)" for the ids of DB.assignments() links -> [id] = row
+local function rowsByIds(selectSql, links)
+    local ids, marks, byId = {}, {}, {}
+    for _, l in ipairs(links) do
+        if not byId[l.id] then
+            byId[l.id] = true
+            ids[#ids + 1], marks[#marks + 1] = l.id, "?"
+        end
+    end
+    byId = {}
+    if #ids == 0 then return byId end
+    for _, row in ipairs(DB.query(selectSql .. " WHERE id IN (" .. table.concat(marks, ",") .. ")", unpack(ids)) or {}) do
+        byId[tonumber(row.id)] = row
+    end
+    return byId
+end
+
 AdminHandlers = {}   -- also used by the web admin (server/webadmin.lua)
 local handlers = AdminHandlers
 
@@ -78,14 +95,14 @@ function handlers.shifts(p)
         where[#where + 1] = "ended_at IS NOT NULL"
     end
 
-    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM shifts",
-        "SELECT *, (SELECT COUNT(*) FROM shift_tasks st WHERE st.shift_id = shifts.id) AS task_count FROM shifts",
+    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM med_shifts",
+        "SELECT id, callsign, unit_type, plate, members, closed_tasks, started_at, ended_at, task_count FROM med_shifts",
         where, args, tonumber(p.page) or 1)
 
     local list = {}
     for _, r in ipairs(rows) do
         local closed = DB.unjson(r.closed_tasks)
-        local live = liveUnitOfShift(r.id)
+        local live = liveUnitOfShift(tonumber(r.id))
         list[#list + 1] = {
             id        = r.id,
             callsign  = r.callsign or "?",
@@ -105,36 +122,25 @@ end
 
 function handlers.shift(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM shifts WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM med_shifts WHERE id = ?", id) or {})[1]
     if not r then return { error = L.msg("med_erm.admin.shift_not_found") } end
 
-    local tasks, linked = {}, {}
-    for _, l in ipairs(DB.query([[SELECT st.*, t.title, t.priority, t.status, t.zone FROM shift_tasks st
-        LEFT JOIN tasks t ON t.id = st.task_id WHERE st.shift_id = ? ORDER BY st.id]], id) or {}) do
-        linked[l.task_id] = true
+    local links = DB.assignments(r.tasks, "task")
+    local rowsById = rowsByIds("SELECT id, title, priority, status, zone FROM med_tasks", links)
+    local tasks = {}
+    for _, l in ipairs(links) do
+        local t = rowsById[l.id] or {}
         tasks[#tasks + 1] = {
-            id = l.task_id, title = l.title or "?", priority = tonumber(l.priority) or 0,
-            status = l.status or "?", zone = l.zone or "",
-            assignedAt = l.assigned_at or "", releasedAt = l.released_at or "",
-            outcome = l.outcome or (l.released_at and "" or "active"),
+            id = l.id, title = t.title or "?", priority = tonumber(t.priority) or 0,
+            status = t.status or "?", zone = t.zone or "",
+            assignedAt = l.assignedAt or "", releasedAt = l.releasedAt or "",
+            outcome = l.outcome or (l.releasedAt and "" or "active"),
         }
-    end
-    -- shifts from before the link table existed only know their closed task ids
-    for _, taskId in ipairs(DB.unjson(r.closed_tasks)) do
-        if not linked[taskId] then
-            local t = (DB.query("SELECT id, title, priority, status, zone, closed_at FROM tasks WHERE id = ?", taskId) or {})[1]
-            if t then
-                tasks[#tasks + 1] = {
-                    id = t.id, title = t.title, priority = tonumber(t.priority) or 0, status = t.status,
-                    zone = t.zone or "", assignedAt = "", releasedAt = t.closed_at or "", outcome = "closed",
-                }
-            end
-        end
     end
 
     local live = liveUnitOfShift(id)
     return {
-        id        = r.id,
+        id        = tonumber(r.id),
         callsign  = r.callsign or "?",
         type      = r.unit_type or "",
         plate     = r.plate or "",
@@ -155,7 +161,7 @@ function handlers.tasks(p)
     local search = trim(p.search)
     if search ~= "" then
         local l = like(search)
-        where[#where + 1] = "(title LIKE ? OR zone LIKE ? OR caller LIKE ? OR units LIKE ? OR source LIKE ? OR CAST(id AS TEXT) = ?)"
+        where[#where + 1] = "(title LIKE ? OR zone LIKE ? OR caller LIKE ? OR units LIKE ? OR source LIKE ? OR CAST(id AS CHAR) = ?)"
         args = { l, l, l, l, l, (search:gsub("^#", "")) }
     end
     if p.filter == "open" then
@@ -164,14 +170,14 @@ function handlers.tasks(p)
         where[#where + 1] = "status = 'closed'"
     end
 
-    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM tasks",
-        "SELECT id, title, priority, status, zone, created_at, closed_at, source, units FROM tasks",
+    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM med_tasks",
+        "SELECT id, title, priority, status, zone, created_at, closed_at, source, units FROM med_tasks",
         where, args, tonumber(p.page) or 1)
 
     local list = {}
     for _, r in ipairs(rows) do
         list[#list + 1] = {
-            id = r.id, title = r.title or "", priority = tonumber(r.priority) or 0, status = r.status or "",
+            id = tonumber(r.id), title = r.title or "", priority = tonumber(r.priority) or 0, status = r.status or "",
             zone = r.zone or "", createdAt = r.created_at or "", closedAt = r.closed_at or "",
             source = r.source or "", units = DB.unjson(r.units),
         }
@@ -181,7 +187,7 @@ end
 
 function handlers.task(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM tasks WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM med_tasks WHERE id = ?", id) or {})[1]
     if not r then return { error = L.msg("med_erm.admin.task_not_found") } end
 
     local log, total = {}, 0
@@ -191,23 +197,25 @@ function handlers.task(p)
         log[#log + 1] = { unit = e.unit or "?", start = e.start or "", stop = e.stop or "", duration = d }
     end
 
+    local shiftLinks = DB.assignments(r.shifts, "shift")
+    local shiftsById = rowsByIds("SELECT id, callsign, unit_type FROM med_shifts", shiftLinks)
     local links = {}
-    for _, l in ipairs(DB.query([[SELECT st.*, s.unit_type FROM shift_tasks st
-        LEFT JOIN shifts s ON s.id = st.shift_id WHERE st.task_id = ? ORDER BY st.id]], id) or {}) do
+    for _, l in ipairs(shiftLinks) do
+        local s = shiftsById[l.id] or {}
         links[#links + 1] = {
-            shift = l.shift_id, callsign = l.callsign or "?", type = l.unit_type or "",
-            assignedAt = l.assigned_at or "", releasedAt = l.released_at or "",
-            outcome = l.outcome or (l.released_at and "" or "active"),
+            shift = l.id, callsign = s.callsign or "?", type = s.unit_type or "",
+            assignedAt = l.assignedAt or "", releasedAt = l.releasedAt or "",
+            outcome = l.outcome or (l.releasedAt and "" or "active"),
         }
     end
 
     local meta = DB.unjson(r.meta)
     return {
-        id            = r.id,
+        id            = tonumber(r.id),
         title         = r.title or "",
         description   = r.description or "",
         caller        = r.caller or "",
-        x = r.pos_x or 0, y = r.pos_y or 0, z = r.pos_z or 0,
+        x = tonumber(r.pos_x) or 0, y = tonumber(r.pos_y) or 0, z = tonumber(r.pos_z) or 0,
         zone          = r.zone or "",
         priority      = tonumber(r.priority) or 0,
         status        = r.status or "",

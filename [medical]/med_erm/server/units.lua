@@ -15,14 +15,21 @@ function Units.ofPlayer(player)
     return Units.byPlayer[player]
 end
 
-local function callsignUsed()
-    local used = {}
+-- Callsigns on duty: the units of this server + the open shifts in the database (every server
+-- sharing it). Without the database only the local units count.
+local function callsignUsed(unitType)
+    local used = DB.openCallsigns(unitType)
+    if not used then
+        outputDebugString("[erm] callsign check without the database (local units only)", 2)
+        used = {}
+    end
     for _, u in pairs(Units.list) do used[u.callsign] = true end
     return used
 end
 
+-- Automatic number: the first free one, counting up from 1.
 local function freeCallsign(unitType)
-    local used = callsignUsed()
+    local used = callsignUsed(unitType)
     local n = 1
     while used[string.format("%s-%02d", unitType, n)] do n = n + 1 end
     return string.format("%s-%02d", unitType, n)
@@ -132,7 +139,7 @@ function Units.signIn(player, unitType, candidates, unitNumber)
         local n = tonumber(unitNumber:match("^%d%d?%d?$"))
         if not n or n < 1 then return false, L.msg("med_erm.units.invalid_unit_number_1_999") end
         callsign = string.format("%s-%02d", unitType, n)
-        if callsignUsed()[callsign] then return false, L.msg("med_erm.units.is_already_on_duty", { callsign = callsign }) end
+        if callsignUsed(unitType)[callsign] then return false, L.msg("med_erm.units.is_already_on_duty", { callsign = callsign }) end
     else
         callsign = freeCallsign(unitType)
     end
@@ -193,7 +200,7 @@ function Units.signOut(u, reason)
     if u.task then Tasks.unassign(u.task, u.id, true, "shift ended") end
     if isTimer(u.handoverTimer) then killTimer(u.handoverTimer) end
 
-    DB.endShift(u)
+    DB.endShift(u, "signed out")
     Payment.payUnit(u)
     Units.untagVehicle(u)
     for _, p in ipairs(u.members) do
