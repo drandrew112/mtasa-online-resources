@@ -64,6 +64,6 @@ function UI.infobox:draw()
         s.x + 5, s.y + 5,
         _,_,
         tocolor(self.r, self.g, self.b, alpha),
-        ui(1.7), "default-bold", "left", "top", false, false, false, true
+        ui(1.7), "default-bold", "left", "top", false, false, true, true
     )
 end
