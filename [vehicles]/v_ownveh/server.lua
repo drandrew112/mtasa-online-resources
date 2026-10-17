@@ -44,15 +44,17 @@ local function accountSpawnedId(accountName)
 end
 
 -- Rebuilds the owner's "owned_vehicle_ids" account data ("1,2,3"). Works for
--- offline owners too (setAccData takes an account-name string).
+-- offline owners too (setAccData takes an account-name string). Async: the id
+-- list is read after the caller's insert / delete went out on the same
+-- connection, so it already contains that change. A refresh that fails keeps
+-- the old value (it is only a convenience copy of the `vehicles` table).
 local function refreshOwnedIds(accountName)
     if type(accountName) ~= "string" or accountName == "" then return end
 
-    local ids = {}
-    for _, row in ipairs(OwnVeh.dbGetByAccount(accountName)) do
-        ids[#ids + 1] = tonumber(row.id)
-    end
-    exports.v_mysql:setAccData(accountName, "owned_vehicle_ids", table.concat(ids, ","))
+    OwnVeh.dbGetIdsByAccountAsync(function(ids)
+        if not ids then return end
+        exports.v_mysql:setAccData(accountName, "owned_vehicle_ids", table.concat(ids, ","))
+    end, accountName)
 end
 
 --------------------------------------------------------------------------------
@@ -90,11 +92,9 @@ end
 --------------------------------------------------------------------------------
 
 -- Saves a spawned vehicle's live state back to the database (if it is alive and
--- not flagged destroyed).
+-- not flagged destroyed - the UPDATE itself skips a destroyed row, PERF-01).
 local function persistEntry(id, entry)
     if not isElement(entry.veh) then return end
-    local row = OwnVeh.dbGetById(id)
-    if row and tonumber(row.isDestroyed) == 1 then return end
     OwnVeh.dbUpdateState(id, OwnVeh.captureState(entry.veh))
 end
 

@@ -12,6 +12,10 @@
 --   med_shifts.server = "<server name>:<port>"; a restart closes only its own
 --                     open shifts. Open shift (ended_at IS NULL) = callsign on
 --                     duty, checked on sign-in across every server.
+--   Pool rows: placeholders inserted ahead of time so a new task / shift gets
+--                     its id without a blocking INSERT (PERF-01). med_tasks:
+--                     status = 'pool', source = 'pool:<server md5>';
+--                     med_shifts: end_reason = 'pool'. Readers skip them.
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `med_tasks` (

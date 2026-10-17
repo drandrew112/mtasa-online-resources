@@ -3133,5 +3133,6 @@
   "world_interiors|int {interior|int} | {entrances|int} entrance(s)": "world_interiors.admin.int_entrance_s",
   "world_interiors|{desc} | also: {aliases}": "world_interiors.admin.also",
   "world_interiors|{id} | dim {dimension|int} | int {interior|int} | by {resource}": "world_interiors.admin.dim_int_by",
-  "world_interiors|{x|1f}, {y|1f}, {z|1f} (int {interior|int}, dim {dimension|int})": "world_interiors.admin.int_dim"
+  "world_interiors|{x|1f}, {y|1f}, {z|1f} (int {interior|int}, dim {dimension|int})": "world_interiors.admin.int_dim",
+  "v_socialpanel|You are doing that too fast. Wait a moment.": "v_socialpanel.server.slow_down"
 }

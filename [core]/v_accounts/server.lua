@@ -554,6 +554,7 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
             return loginError(player, "v_accounts.server.wrong_username_or_password")
         end
         clearLoginFails(player)
+        rememberAccountName(canonical)
 
         if isElement(playerOnAccount(canonical)) then
             return loginError(player, "v_accounts.server.this_account_is_already_in_use")
@@ -620,8 +621,113 @@ end
 addEvent("login_player", true)
 addEventHandler("login_player", root, login_player)
 
-local registerPending = {} -- [player] = true while the bcrypt hash is being made
+-- Registration runs without blocking the server (PERF-01):
+--   1. register_player       name check (async query)
+--   2. acc:registerName      bcrypt hash (async)
+--   3. createAccountRowAsync insert; the UNIQUE account_name decides a name
+--                            race, so no second check is needed
+--   4. acc:registerRow       log in as the new account
+local REGISTER_TIMEOUT = 15000 -- ms, give up on a lost DB answer
+local registerPending = {} -- [player] = { id, username, password, timer } until step 4 or an error
+local registerById    = {} -- [id] = player
+local registerSeq     = 0
 
+local function clearRegister(player)
+    local p = registerPending[player]
+    if not p then return end
+    registerPending[player] = nil
+    registerById[p.id] = nil
+    if isTimer(p.timer) then killTimer(p.timer) end
+end
+
+local function registerError(player, key)
+    clearRegister(player)
+    if isElement(player) then
+        triggerClientEvent(player, "acc:error", player, L.msg(key))
+    end
+end
+
+-- the pending registration of a request id, if the player can still use it
+local function registerOf(id)
+    local player = registerById[id]
+    if not player then return nil end
+    local p = registerPending[player]
+    if not p or p.id ~= id then return nil end
+    if not isElement(player) or getElementData(player, "isLogged") == true then
+        clearRegister(player)
+        return nil
+    end
+    return player, p
+end
+
+local function finishRegister(player, username, id)
+    clearRegister(player)
+    markLoggedIn(player, username, id)
+    triggerClientEvent(player, "acc:setPanel", player, nil)
+    triggerClientEvent(player, "acc:loadingScreen", player, true)
+    beginLoading(player, {}, function(p)
+        -- server-only: a brand-new account (v_introduce ends its first introduction at the spawn)
+        setElementData(p, "acc.registered", true, false)
+        loadPosition(p)
+        setElementData(p, "loaded", true)
+        save_all(p)
+        triggerClientEvent(p, "acc:loadingScreen", p, false)
+        triggerClientEvent(p, "acc:setPanel", p, nil)
+        triggerEvent("onPlayerLoaded", p, getElementData(p, "accName"))
+        triggerClientEvent(p, "acc:playerLoaded", p, getElementData(p, "accName"))
+    end)
+end
+
+-- Step 4: the row was inserted (or not).
+addEvent("acc:registerRow")
+addEventHandler("acc:registerRow", resourceRoot, function(id, newId, err)
+    local player, p = registerOf(id)
+    if not player then return end
+    if type(newId) ~= "number" then
+        if tostring(err):lower():find("duplicate", 1, true) then
+            return registerError(player, "v_accounts.server.account_already_exists")
+        end
+        return registerError(player, "v_accounts.server.registration_failed")
+    end
+    accountRowCreated(p.username)
+    finishRegister(player, p.username, newId)
+end)
+
+-- Step 2: the name check answered -> hash the password -> step 3.
+addEvent("acc:registerName")
+addEventHandler("acc:registerName", resourceRoot, function(id, rows)
+    local player, p = registerOf(id)
+    if not player then return end
+    if type(rows) ~= "table" then
+        return registerError(player, "v_accounts.server.registration_failed")
+    end
+    if rows[1] then
+        rememberAccountName(rows[1].account_name)
+        return registerError(player, "v_accounts.server.account_already_exists")
+    end
+
+    local password = p.password
+    p.password = nil
+    passwordHash(password, "bcrypt", {}, function(hash)
+        if registerOf(id) ~= player then return end -- timed out, quit or logged in meanwhile
+        if type(hash) ~= "string" then
+            return registerError(player, "v_accounts.server.registration_failed")
+        end
+        if not createAccountRowAsync(p.username, hash, nil, "acc:registerRow", id) then
+            -- No answer is coming (v_mysql stopped, or an older v_mysql without
+            -- mysqlInsertAsync): the blocking insert. Without a database
+            -- connection the answer already came and cleared the request.
+            if registerOf(id) ~= player then return end
+            local newId = createAccountRow(p.username, hash, nil)
+            if not newId then
+                return registerError(player, "v_accounts.server.registration_failed")
+            end
+            finishRegister(player, p.username, newId)
+        end
+    end)
+end)
+
+-- Step 1: the client asks to register.
 function register_player(username, password)
     local player = client
     if not isElement(player) then return end
@@ -643,45 +749,29 @@ function register_player(username, password)
         triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.register.password_too_short"))
         return
     end
-    if accountNameExists(username) then
+    if knownAccountName(username) then
         triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.account_already_exists"))
         return
     end
 
-    registerPending[player] = true
-    passwordHash(password, "bcrypt", {}, function(hash)
-        registerPending[player] = nil
-        if not isElement(player) or getElementData(player, "isLogged") == true then return end
-        if type(hash) ~= "string" then
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.registration_failed"))
-            return
-        end
-        if accountNameExists(username) then
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.account_already_exists"))
-            return
-        end
+    registerSeq = registerSeq + 1
+    local id = registerSeq
+    registerPending[player] = {
+        id = id, username = username, password = password,
+        timer = setTimer(function()
+            if registerOf(id) == player then
+                registerError(player, "v_accounts.server.registration_failed")
+            end
+        end, REGISTER_TIMEOUT, 1),
+    }
+    registerById[id] = player
 
-        local id = createAccountRow(username, hash, nil)
-        if not id then
-            triggerClientEvent(player, "acc:error", player, L.msg("v_accounts.server.registration_failed"))
-            return
+    if not fetchAccountNameAsync(username, "acc:registerName", id) then
+        -- without a DB connection acc:registerName may already have answered
+        if registerOf(id) == player then
+            registerError(player, "v_accounts.server.registration_failed")
         end
-
-        markLoggedIn(player, username, id)
-        triggerClientEvent(player, "acc:setPanel", player, nil)
-        triggerClientEvent(player, "acc:loadingScreen", player, true)
-        beginLoading(player, {}, function(p)
-            -- server-only: a brand-new account (v_introduce ends its first introduction at the spawn)
-            setElementData(p, "acc.registered", true, false)
-            loadPosition(p)
-            setElementData(p, "loaded", true)
-            save_all(p)
-            triggerClientEvent(p, "acc:loadingScreen", p, false)
-            triggerClientEvent(p, "acc:setPanel", p, nil)
-            triggerEvent("onPlayerLoaded", p, getElementData(p, "accName"))
-            triggerClientEvent(p, "acc:playerLoaded", p, getElementData(p, "accName"))
-        end)
-    end)
+    end
 end
 addEvent("register_player", true)
 addEventHandler("register_player", root, register_player)
@@ -721,7 +811,7 @@ addEventHandler("onPlayerQuit", root, function()
     spawnPending[source] = nil
     clearPending(source)
     lastAttempt[source] = nil
-    registerPending[source] = nil
+    clearRegister(source)
 end)
 
 -- Block manual nick changes, but let the script's own renames through.

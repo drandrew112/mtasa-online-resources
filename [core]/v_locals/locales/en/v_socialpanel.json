@@ -20,6 +20,7 @@
   "v_socialpanel.server.removed_you_from_their_friend_list": "{my_name} removed you from their friend list.",
   "v_socialpanel.server.request_declined": "Request declined.",
   "v_socialpanel.server.sent_you_friend_request": "{my_name} sent you a friend request.",
+  "v_socialpanel.server.slow_down": "You are doing that too fast. Wait a moment.",
   "v_socialpanel.server.that_account_no_longer_exists": "That account no longer exists.",
   "v_socialpanel.server.that_crew_is_full": "That crew is full.",
   "v_socialpanel.server.type_at_least_characters": "Type at least {search_min} characters.",

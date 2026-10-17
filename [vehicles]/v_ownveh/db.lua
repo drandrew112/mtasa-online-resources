@@ -14,9 +14,13 @@
 --                                 tyres, LSD doors). Empty "{}" when v_customs
 --                                 is not installed / nothing applied.
 --
--- All helpers are synchronous (exports.v_mysql:mysqlQuerySync blocks for the
--- round trip); the data set is tiny and only touched on summon / store / give /
--- delete, never per frame.
+-- The read helpers are synchronous (exports.v_mysql:mysqlQuerySync blocks for
+-- the round trip): the exports built on them return their answer at once, and
+-- they only run on summon / give / delete / the phone list, never per frame.
+-- The autosave and the owned-id refresh do not block (PERF-01); writes
+-- (mysqlExec) never do.
+
+if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql async lib (PERF-01)
 
 OwnVeh = OwnVeh or {}
 
@@ -85,6 +89,8 @@ end
 
 -- Overwrites the mutable state columns. `state` = { colors, paintjob, upgrades,
 -- handling, customs, plate } (all serialised). Missing keys are left untouched.
+-- A vehicle flagged destroyed is never overwritten (the WHERE checks it, so
+-- the autosave needs no blocking SELECT first - PERF-01).
 function OwnVeh.dbUpdateState(id, state)
     if not state then return end
     exec(
@@ -96,9 +102,20 @@ function OwnVeh.dbUpdateState(id, state)
         "customs = COALESCE(?, customs), " ..
         "plate = COALESCE(?, plate), " ..
         "updated_at = ? " ..
-        "WHERE id = ?",
+        "WHERE id = ? AND isDestroyed = 0",
         state.colors, tonumber(state.paintjob), state.upgrades, state.handling, state.customs, state.plate,
         now(), tonumber(id))
+end
+
+-- Non-blocking list of the ids an account owns (ascending): cb(ids), or
+-- cb(false) when the database fails.
+function OwnVeh.dbGetIdsByAccountAsync(cb, accountName)
+    MYSQL.query(function(rows)
+        if type(rows) ~= "table" then return cb(false) end
+        local ids = {}
+        for _, row in ipairs(rows) do ids[#ids + 1] = tonumber(row.id) end
+        cb(ids)
+    end, "SELECT id FROM `" .. TABLE .. "` WHERE account_name = ? ORDER BY id ASC", accountName)
 end
 
 function OwnVeh.dbSetDestroyed(id, destroyed)

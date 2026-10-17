@@ -62,7 +62,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-07](#sec-07) | HIGH | Any client can append unlimited text to a server file (`pos:saveToFile`) | FIXED 2026-10-17 |
 | [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | FIXED 2026-10-17 |
 | [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | FIXED 2026-10-17 |
-| [SEC-10](#sec-10) | HIGH | Social panel events trigger blocking DB work with no rate limit (DoS) | OPEN |
+| [SEC-10](#sec-10) | HIGH | Social panel events trigger blocking DB work with no rate limit (DoS) | FIXED 2026-10-18 |
 | [SEC-11](#sec-11) | HIGH | Unrestricted vehicle spawner (`ui_inac:spawnVehicle`) | FIXED 2026-10-17 |
 | [SEC-12](#sec-12) | HIGH | Debug/dev commands open to every player (`spawnfix`, `fixme`, `pos`, `fadetrue`…) | OPEN |
 | [SEC-13](#sec-13) | MEDIUM | Shop robbery: no distance check, parallel robberies, orphaned 80 ms timers | OPEN |
@@ -81,7 +81,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | FIXED 2026-10-18 |
-| [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | OPEN |
+| [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | IN PROGRESS |
 | [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
 | [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | OPEN |
@@ -346,7 +346,14 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-10"></a>
 ### SEC-10 — Social panel events trigger blocking DB work with no rate limit
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18
+- **Resolution:** Done together with PERF-01 (see there).
+  - Per-player rate limits in `server.lua` (`allow`): search 1 / 1 s (and one in flight),
+    messages 8 / 10 s, friend / profile / crew actions 12 / 10 s. A refused action gets
+    `v_socialpanel.server.slow_down` (en + hu).
+  - The search runs in SQL (`account_name LIKE ? … LIMIT n`, `SPDB.searchAccountsAsync`), then
+    loads the offline matches with one async prefetch. `getAllAccountNames` is no longer used here.
+  - DM and crew message inserts are async; the row id is stored on the message when it arrives.
 - **Location:** `[player_interaction]/v_socialpanel/server.lua:510` (`sp:search`), `:614` (`sp:msg:send`); `[core]/v_accounts/server/db.lua:36` (`getAllAccountNames`)
 - **Problem:** `sp:search` runs `SELECT account_name FROM accounts` (every row) and then 2
   blocking `getAccData` queries per offline match. Every DM or crew message is a blocking
@@ -639,8 +646,44 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-01"></a>
 ### PERF-01 — Blocking `dbPoll(-1)` queries to a remote MySQL host on the main thread
 - **Severity:** HIGH
-- **Status:** OPEN
-- **Location:** `[core]/v_mysql/core/mysql.lua:156` (`mysqlQuerySync`), `:177` (`mysqlInsert`). Callers: `v_accounts/server/db.lua`, `v_mysql/scripts/accdata.lua:118` (every read of an offline account), `v_socialpanel/db.lua`, `v_ownveh/db.lua`, `v_admin/server/panel.lua` and `web.lua`, `v_weekly/server/storage.lua`, `med_erm/server/webadmin.lua`, `med_erm/server/db.lua` (since the 2026-10-17 MySQL move: task/shift INSERTs, start-up load, callsign check on sign-in, /ermadmin queries), `bt_dispatch/server/db.lua` (INSERTs, admin queries), `bt_web/server/http.lua`
+- **Status:** IN PROGRESS — 2026-10-18: the player-triggered hot paths are async (list below).
+- **Resolution so far (2026-10-18):**
+  - **v_mysql:** `mysqlInsertAsync` export (non-blocking INSERT, answer by event, not retried).
+    `importAsync()` returns a callback lib (`scripts/asynclib.lua`): `MYSQL.query`,
+    `MYSQL.insert`, `MYSQL.prefetch`. Each callback runs exactly once, also with `false` on a
+    15 s timeout, when v_mysql is not running or when it stops. `prefetchAccDataAsync` loads a
+    list of offline accounts with one query into a 1 s memo, so the `getAccData` calls right
+    after it do not block. A plain offline read stays a fresh blocking query (no new staleness).
+    A write made during a prefetch wins over its older answer. Blocking calls ≥ 50 ms are logged
+    as `Slow blocking query/insert … (from <resource>)`, max 10 lines / min.
+  - **v_socialpanel:** the snapshot (`pushSnapshot`) fetches the friend requests and every
+    offline friend / crew member asynchronously (before: 1 query + 3 per offline friend, all
+    blocking, on every message and refresh). Pushes asked for while one is in flight fold into
+    one re-run. Search, profile view and message inserts are async (see SEC-10). An online
+    player's name is resolved without the DB.
+  - **v_accounts:** registration is async (name check → bcrypt → insert; the UNIQUE
+    `account_name` settles a name race, 15 s timeout, falls back to the blocking insert with an
+    older v_mysql). `accountNameExists` remembers found names (accounts are never deleted or
+    renamed), so repeated lookups do not query.
+  - **v_ownveh:** the autosave no longer runs a blocking `SELECT` per vehicle before its
+    `UPDATE` (the `UPDATE` skips destroyed rows itself). `refreshOwnedIds` is async.
+  - **med_erm / bt_dispatch:** new tasks and shifts take their id from a small pool of
+    placeholder rows that are inserted ahead of time without blocking (`status` /
+    `end_reason` = `'pool'`, tagged with the server, hidden from loads and the admin pages, reused
+    after a restart); the row is filled with an `UPDATE` that goes out before every later write
+    of the task. The id stays synchronous, so the `createTask` exports, cargo, offers, events and
+    links work as before. An empty pool or a lost connection falls back to the blocking INSERT.
+    The `med_erm` callsign check is async: sign-in checks, asks the database, then re-checks and
+    signs in (a second click meanwhile is ignored, a quit cancels it).
+  - **Still blocking (kept on purpose for now):** start-up loads (bans, crews, messages,
+    weekly, med_erm / bt_dispatch); admin tools (ban/unban, `/ermadmin`, bt admin, v_admin panel);
+    HTTP handlers, which must answer synchronously (`httpLogin`, web `admin_level` lookups);
+    inserts whose id is used at once (`v_ownveh:giveVehicle`); exports that return rows (`v_ownveh` spawn / list / data); the
+    friend actions' request check (now rate limited); plain offline `getAccData` reads of other
+    resources. The slow-query log shows which of these matter on the live server.
+  - **Deploy:** copy `[core]/v_mysql` by hand (the updater skips it), then restart v_mysql →
+    v_locals → v_accounts → v_ownveh → v_socialpanel → med_erm → bt_dispatch.
+- **Location:** `[core]/v_mysql/core/mysql.lua:156` (`mysqlQuerySync`), `:177` (`mysqlInsert`). Callers: `v_accounts/server/db.lua`, `v_mysql/scripts/accdata.lua:118` (every read of an offline account), `v_socialpanel/db.lua`, `v_ownveh/db.lua`, `v_admin/server/panel.lua` and `web.lua`, `v_weekly/server/storage.lua`, `med_erm/server/webadmin.lua`, `med_erm/server/db.lua` (start-up load, /ermadmin queries; task/shift INSERTs only when the id pool is empty), `bt_dispatch/server/db.lua` (start-up load, admin queries; INSERTs only when the id pool is empty), `bt_web/server/http.lua`
 - **Problem:** The DB is on another host (`mysql8.srkhost.eu`). Every sync call freezes the
   **whole server**, all resources and all players, for a full network round trip (typically
   10–60 ms, much more under load). The connection guard (`connguard.lua`) exists precisely

@@ -60,8 +60,9 @@ end
 local H = {}
 AdminHandlers = H
 
+-- pool rows (placeholders for new tasks / shifts, server/db.lua) are never listed
 function H.shifts(p)
-    local where, args = {}, {}
+    local where, args = { "COALESCE(end_reason, '') != 'pool'" }, {}
     local search = tostring(p.search or ""):gsub("^%s+", ""):gsub("%s+$", "")
     if search ~= "" then
         local l = like(search)
@@ -87,7 +88,7 @@ end
 
 function H.shift(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM bt_shifts WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_shifts WHERE id = ? AND COALESCE(end_reason, '') != 'pool'", id) or {})[1]
     if not r then return { error = "not_found" } end
     local given, ids, byId = DB.assignments(r.tasks, "task"), {}, {}
     for _, a in ipairs(given) do
@@ -117,7 +118,7 @@ function H.shift(p)
 end
 
 function H.tasks(p)
-    local where, args = {}, {}
+    local where, args = { "status != 'pool'" }, {}
     local search = tostring(p.search or ""):gsub("^%s+", ""):gsub("%s+$", "")
     if search ~= "" then
         local l = like(search)
@@ -142,7 +143,7 @@ end
 
 function H.task(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM bt_tasks WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_tasks WHERE id = ? AND status != 'pool'", id) or {})[1]
     if not r then return { error = "not_found" } end
     local t = taskRow(r)
     t.log = {}

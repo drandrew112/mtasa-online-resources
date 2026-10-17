@@ -20,16 +20,50 @@ end
 -- Reads
 --------------------------------------------------------------------------------
 
+-- Accounts are never deleted or renamed, so a name once found stays valid:
+-- known[name:lower()] = canonical name (PERF-01). Only hits are remembered - an
+-- account the other server registers must be found on the next lookup.
+local KNOWN_MAX = 20000
+local known, knownCount = {}, 0
+
+function rememberAccountName(canonical)
+    if type(canonical) ~= "string" or canonical == "" then return end
+    local key = canonical:lower()
+    if known[key] then return end
+    if knownCount >= KNOWN_MAX then known, knownCount = {}, 0 end
+    known[key] = canonical
+    knownCount = knownCount + 1
+end
+
 -- Canonical account_name for `name` if the account exists, else false.
 -- (MySQL string compare is case-insensitive, so this also fixes up casing.)
+-- Blocks only for a name not seen before.
 function accountNameExists(name)
-    if not mysqlReady() or type(name) ~= "string" or name == "" then return false end
+    if type(name) ~= "string" or name == "" then return false end
+    local hit = known[name:lower()]
+    if hit then return hit end
+    if not mysqlReady() then return false end
     local res = exports.v_mysql:mysqlQuerySync(
         "SELECT account_name FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
     if res and res[1] and type(res[1].account_name) == "string" then
+        rememberAccountName(res[1].account_name)
         return res[1].account_name
     end
     return false
+end
+
+-- The canonical name when it was already seen, else nil. Never blocks.
+function knownAccountName(name)
+    return type(name) == "string" and known[name:lower()] or nil
+end
+
+-- Non-blocking name lookup: the row arrives as
+-- triggerEvent(eventName, resourceRoot, requestId, rows | false).
+-- -> true if the query was queued
+function fetchAccountNameAsync(name, eventName, requestId)
+    if not mysqlReady() or type(name) ~= "string" or name == "" then return false end
+    return exports.v_mysql:mysqlQueryAsync(eventName, requestId,
+        "SELECT account_name FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name) == true
 end
 
 -- { account_name, ... } for every registered account (ascending).
@@ -80,9 +114,30 @@ function createAccountRow(name, pwHash, email)
         name, pwHash, email, name, ts, ts)
     if type(id) ~= "number" then return false end
 
+    accountRowCreated(name)
+    return id
+end
+
+-- Non-blocking createAccountRow (PERF-01). The answer is
+--   triggerEvent(eventName, resourceRoot, requestId, id | false, err)
+-- err names a duplicate key when the name is already taken (account_name is
+-- UNIQUE). Call accountRowCreated(name) once it succeeded.
+-- -> true if the insert was sent (false: no answer event will come, unless
+--    the database is down, in which case it already came)
+function createAccountRowAsync(name, pwHash, email, eventName, requestId)
+    if not mysqlReady() then return false end
+    local ts = getRealTime().timestamp
+    return exports.v_mysql:mysqlInsertAsync(eventName, requestId,
+        "INSERT INTO `" .. TABLE .. "` " ..
+        "(account_name, password, email, display_name, admin_level, account_data, created_at, updated_at) " ..
+        "VALUES (?, ?, ?, ?, 0, '{}', ?, ?)",
+        name, pwHash, email, name, ts, ts) == true
+end
+
+function accountRowCreated(name)
+    rememberAccountName(name)
     -- Drop any "does not exist" view v_mysql may have cached before this row.
     exports.v_mysql:flushAccData(name)
-    return id
 end
 
 -- Replaces an account's password hash. Returns whether the write was queued.

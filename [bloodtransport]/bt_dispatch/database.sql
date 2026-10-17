@@ -12,6 +12,11 @@
 --   bt_shifts.tasks  {"task","at"} / {"task","released","outcome"}  the same
 --                    from the shift's side; task_count = number of assignments
 --   bt_shifts.pay_items  JSON list of the pay receipt lines
+--   Pool rows: placeholders inserted ahead of time so a new task / shift gets
+--                    its id without a blocking INSERT (PERF-01). bt_tasks:
+--                    status = 'pool', source = 'pool:<server md5>'; bt_shifts:
+--                    end_reason = 'pool', account = 'pool:<server md5>'.
+--                    Readers skip them.
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `bt_tasks` (

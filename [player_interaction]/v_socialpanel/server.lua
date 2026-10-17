@@ -35,13 +35,6 @@ local function accName(player)
     return (type(n) == "string" and n ~= "") and n or nil
 end
 
--- Canonical account name for an input string if the account exists, else nil.
-local function accountByName(name)
-    if type(name) ~= "string" or name == "" then return nil end
-    local canonical = exports.v_accounts:accountNameExists(name)
-    return canonical or nil
-end
-
 local function onlinePlayerByAccount(name)
     if not name then return nil end
     local needle = name:lower()
@@ -52,13 +45,25 @@ local function onlinePlayerByAccount(name)
     return nil
 end
 
+-- Canonical account name for an input string if the account exists, else nil.
+-- An online player's name needs no database lookup.
+local function accountByName(name)
+    if type(name) ~= "string" or name == "" then return nil end
+    local online = onlinePlayerByAccount(name)
+    if online then return accName(online) end
+    local canonical = exports.v_accounts:accountNameExists(name)
+    return canonical or nil
+end
+
 -- level + played time: prefer live element data, fall back to account data.
-local function getProgress(name, onlinePlayer)
+-- offlineOK = false skips the account-data read of an offline account (its
+-- prefetch failed, so a read would block on the database): "n/a" then.
+local function getProgress(name, onlinePlayer, offlineOK)
     local level, playtime = "n/a", "n/a"
     if onlinePlayer then
         level = getElementData(onlinePlayer, "level") or level
         playtime = getElementData(onlinePlayer, "Játékidő") or playtime
-    elseif name then
+    elseif name and offlineOK ~= false then
         level = getData(name, "level") or level
         local h = getData(name, "Online.hours")
         local m = getData(name, "Online.minutes")
@@ -79,6 +84,32 @@ local function notify(player, msg, r, g, b)
     if isElement(player) then
         outputChatBox("#f0c800[Social] #ffffff" .. L.resolveFor(player, msg), player, r or 255, g or 255, b or 255, true)
     end
+end
+
+-- Per-player rate limit (PERF-01 / SEC-10): at most `max` actions of a kind in
+-- `window` ms. -> true when the action may run.
+local RATE = {
+    search = { max = 1,  window = 1000 },
+    msg    = { max = 8,  window = 10000 },
+    action = { max = 12, window = 10000 },   -- friend / profile / crew actions
+}
+local rateLog = {}   -- rateLog[player][kind] = { tick, ... }
+
+local function allow(player, kind)
+    local cfg, now = RATE[kind], getTickCount()
+    rateLog[player] = rateLog[player] or {}
+    local keep = {}
+    for _, t in ipairs(rateLog[player][kind] or {}) do
+        if now - t < cfg.window then keep[#keep + 1] = t end
+    end
+    rateLog[player][kind] = keep
+    if #keep >= cfg.max then return false end
+    keep[#keep + 1] = now
+    return true
+end
+
+local function slowDown(player)
+    notify(player, L.msg("v_socialpanel.server.slow_down"), 255, 120, 120)
 end
 
 --------------------------------------------------------------------------------
@@ -143,7 +174,10 @@ end
 local function trimHistory(list)
     while #list > SP.MSG_HISTORY do
         local removed = table.remove(list, 1)
-        if removed and removed.id then SPDB.deleteMessage(removed.id) end
+        if removed then
+            removed.dropped = true   -- a row still being inserted is deleted once its id arrives
+            if removed.id then SPDB.deleteMessage(removed.id) end
+        end
     end
 end
 
@@ -151,9 +185,9 @@ end
 -- Snapshot to the client
 --------------------------------------------------------------------------------
 
-local function friendEntry(name)
+local function friendEntry(name, offlineOK)
     local online = onlinePlayerByAccount(name)
-    local level, playtime = getProgress(name, online)
+    local level, playtime = getProgress(name, online, offlineOK)
     local crew = crewOf(name)
     return {
         name = name, online = online ~= nil, level = level, playtime = playtime,
@@ -205,13 +239,15 @@ local function buildConversations(player, myName)
     return convos
 end
 
-local function buildSnapshot(player)
+-- requests = the incoming friend requests, offlineOK = the offline accounts'
+-- data was prefetched (see pushSnapshot).
+local function buildSnapshot(player, requests, offlineOK)
     local myName = accName(player)
     if not myName then return nil end
 
     local friends = {}
     for _, fn in ipairs(getListFor(myName, SP.KEY_FRIENDS)) do
-        friends[#friends + 1] = friendEntry(fn)
+        friends[#friends + 1] = friendEntry(fn, offlineOK)
     end
     table.sort(friends, function(a, b)
         if a.online ~= b.online then return a.online end
@@ -224,7 +260,7 @@ local function buildSnapshot(player)
         local members = {}
         for _, mn in ipairs(myCrew.members) do
             local online = onlinePlayerByAccount(mn)
-            local level, playtime = getProgress(mn, online)
+            local level, playtime = getProgress(mn, online, offlineOK)
             members[#members + 1] = {
                 name = mn, online = online ~= nil, level = level, playtime = playtime,
                 isFounder = mn:lower() == myCrew.founder:lower(),
@@ -253,18 +289,59 @@ local function buildSnapshot(player)
     return {
         account       = myName,
         friends       = friends,
-        requests      = SPDB.getRequestsFor(myName),
+        requests      = requests or {},
         crew          = crewData,
         crews         = dir,
         conversations = buildConversations(player, myName),
     }
 end
 
+-- The snapshot needs the friend requests and the data of every offline friend
+-- / crew member. Both are fetched without blocking (PERF-01): the requests with
+-- one async query, the offline accounts with one v_mysql prefetch, after which
+-- their getData reads are served from memory. A push asked for while one is in
+-- flight is folded into a single re-run when it completes.
+local snapState = {}   -- [player] = "busy" | "again"
+
 local function pushSnapshot(player)
     if not isElement(player) then return end
-    applyCrewIdentity(player) -- keep crew name/tag/colour data in sync on every refresh
-    local snap = buildSnapshot(player)
-    if snap then triggerClientEvent(player, "sp:push", player, snap) end
+    if snapState[player] then
+        snapState[player] = "again"
+        return
+    end
+    local myName = accName(player)
+    if not myName then return end
+    snapState[player] = "busy"
+
+    local names = {}
+    for _, fn in ipairs(getListFor(myName, SP.KEY_FRIENDS)) do names[#names + 1] = fn end
+    local myCrew = crewOf(myName)
+    if myCrew then
+        for _, mn in ipairs(myCrew.members) do names[#names + 1] = mn end
+    end
+
+    local waiting, requests, offlineOK = 2, {}, false
+    local function done()
+        waiting = waiting - 1
+        if waiting > 0 then return end
+        local again = snapState[player] == "again"
+        snapState[player] = nil
+        if not isElement(player) then return end
+
+        applyCrewIdentity(player) -- keep crew name/tag/colour data in sync on every refresh
+        local snap = buildSnapshot(player, requests, offlineOK)
+        if snap then triggerClientEvent(player, "sp:push", player, snap) end
+        if again then pushSnapshot(player) end
+    end
+
+    SPDB.getRequestsForAsync(function(list)
+        requests = list
+        done()
+    end, myName)
+    MYSQL.prefetch(function(ok)
+        offlineOK = ok == true
+        done()
+    end, names)
 end
 
 local function pushBoth(a, b)
@@ -349,6 +426,7 @@ addEventHandler("sp:friend:add", root, function(targetName)
     local myName = accName(player)
     if not myName then return end
     if type(targetName) ~= "string" or targetName == "" then return end
+    if not allow(player, "action") then return slowDown(player) end
     if targetName:lower() == myName:lower() then
         return notify(player, L.msg("v_socialpanel.server.you_can_t_add_yourself"), 255, 120, 120)
     end
@@ -404,6 +482,7 @@ addEventHandler("sp:friend:accept", root, function(senderName)
     local player = client
     local myName = accName(player)
     if not myName or type(senderName) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
 
     local myAcc = myName
     local incoming = SPDB.getRequestsFor(myAcc)
@@ -438,6 +517,7 @@ addEventHandler("sp:friend:decline", root, function(senderName)
     local player = client
     local myName = accName(player)
     if not myName or type(senderName) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
     local myAcc = myName
     local ok, exact = SP.contains(SPDB.getRequestsFor(myAcc), senderName)
     if not ok then return end
@@ -451,6 +531,7 @@ addEventHandler("sp:friend:remove", root, function(friendName)
     local player = client
     local myName = accName(player)
     if not myName or type(friendName) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
 
     local myAcc = myName
     local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
@@ -478,28 +559,34 @@ addEventHandler("sp:profile:view", root, function(name)
     local player = client
     local myName = accName(player)
     if not myName or type(name) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
 
     local acc = accountByName(name)
     if not acc then
         return triggerClientEvent(player, "sp:profile:show", player, false, name)
     end
     name = acc
-    local online = onlinePlayerByAccount(name)
-    local level, playtime = getProgress(name, online)
-    local crew = crewOf(name)
-    local myFriends = getListFor(myName, SP.KEY_FRIENDS)
 
-    triggerClientEvent(player, "sp:profile:show", player, {
-        name      = name,
-        online    = online ~= nil,
-        level     = level,
-        playtime  = playtime,
-        crew      = crew and crew.name or nil,
-        crewTag   = crew and crew.tag or nil,
-        crewColor = crew and crew.color or nil,
-        isFriend  = (SP.contains(myFriends, name)),
-        isSelf    = name:lower() == myName:lower(),
-    })
+    -- an offline account's level / played time come from one prefetch (PERF-01)
+    MYSQL.prefetch(function(ok)
+        if not isElement(player) or accName(player) ~= myName then return end
+        local online = onlinePlayerByAccount(name)
+        local level, playtime = getProgress(name, online, ok == true)
+        local crew = crewOf(name)
+        local myFriends = getListFor(myName, SP.KEY_FRIENDS)
+
+        triggerClientEvent(player, "sp:profile:show", player, {
+            name      = name,
+            online    = online ~= nil,
+            level     = level,
+            playtime  = playtime,
+            crew      = crew and crew.name or nil,
+            crewTag   = crew and crew.tag or nil,
+            crewColor = crew and crew.color or nil,
+            isFriend  = (SP.contains(myFriends, name)),
+            isSelf    = name:lower() == myName:lower(),
+        })
+    end, { name })
 end)
 
 --------------------------------------------------------------------------------
@@ -507,16 +594,28 @@ end)
 --------------------------------------------------------------------------------
 
 addEvent("sp:search", true)
+local searchBusy = {}   -- [player] = true while the account query / prefetch runs
+
 addEventHandler("sp:search", root, function(query)
     local player = client
     if not accName(player) or type(query) ~= "string" then return end
+    if searchBusy[player] then return end
     query = query:gsub("^%s+", ""):gsub("%s+$", "")
     if #query < SP.SEARCH_MIN then
         return triggerClientEvent(player, "sp:search:results", player, {}, L.msg("v_socialpanel.server.type_at_least_characters", { search_min = SP.SEARCH_MIN }))
     end
+    if not allow(player, "search") then return slowDown(player) end
 
     local needle = query:lower()
     local seen, results = {}, {}
+
+    local function finish()
+        table.sort(results, function(a, b)
+            if a.online ~= b.online then return a.online end
+            return a.name:lower() < b.name:lower()
+        end)
+        triggerClientEvent(player, "sp:search:results", player, results)
+    end
 
     -- Online players first (live data).
     for _, p in ipairs(getElementsByType("player")) do
@@ -531,25 +630,42 @@ addEventHandler("sp:search", root, function(query)
         end
     end
 
-    -- Then registered accounts (offline).
-    for _, nm in ipairs(exports.v_accounts:getAllAccountNames() or {}) do
-        if #results >= SP.SEARCH_LIMIT then break end
-        if nm and not seen[nm:lower()] and not nm:find("^#") and nm:lower():find(needle, 1, true) then
-            seen[nm:lower()] = true
-            local h, m = getData(nm, "Online.hours"), getData(nm, "Online.minutes")
-            results[#results + 1] = {
-                name = nm, online = false,
-                level = tostring(getData(nm, "level") or "n/a"),
-                playtime = (h or m) and SP.formatPlaytime(h, m) or "n/a",
-            }
-        end
-    end
+    if #results >= SP.SEARCH_LIMIT then return finish() end
 
-    table.sort(results, function(a, b)
-        if a.online ~= b.online then return a.online end
-        return a.name:lower() < b.name:lower()
-    end)
-    triggerClientEvent(player, "sp:search:results", player, results)
+    -- Then registered accounts (offline): the matching names come from SQL,
+    -- their data from one prefetch, so nothing here blocks (PERF-01). The online
+    -- matches can come back from the query too, so it asks for that many more.
+    searchBusy[player] = true
+    SPDB.searchAccountsAsync(function(names)
+        if not isElement(player) then searchBusy[player] = nil return end
+        local offline = {}
+        for _, nm in ipairs(names or {}) do
+            if #results + #offline >= SP.SEARCH_LIMIT then break end
+            if not seen[nm:lower()] and not nm:find("^#") then
+                seen[nm:lower()] = true
+                offline[#offline + 1] = nm
+            end
+        end
+        if #offline == 0 then
+            searchBusy[player] = nil
+            return finish()
+        end
+
+        MYSQL.prefetch(function(ok)
+            searchBusy[player] = nil
+            if not isElement(player) then return end
+            for _, nm in ipairs(offline) do
+                local level, playtime = "n/a", "n/a"
+                if ok == true then
+                    local h, m = getData(nm, "Online.hours"), getData(nm, "Online.minutes")
+                    level = tostring(getData(nm, "level") or "n/a")
+                    playtime = (h or m) and SP.formatPlaytime(h, m) or "n/a"
+                end
+                results[#results + 1] = { name = nm, online = false, level = level, playtime = playtime }
+            end
+            finish()
+        end, offline)
+    end, needle, SP.SEARCH_LIMIT + #results)
 end)
 
 --------------------------------------------------------------------------------
@@ -579,7 +695,7 @@ local function markRead(player, myName, kind, target)
         local changedIds = {}
         for _, m in ipairs(dms[SP.pairKey(myName, target)] or {}) do
             if m.to:lower() == myName:lower() and not m.read then
-                m.read = true
+                m.read = true   -- a row still being inserted is flagged once its id arrives
                 if m.id then changedIds[#changedIds + 1] = m.id end
             end
         end
@@ -617,6 +733,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
     if not myName then return end
     text = SP.cleanMessage(text)
     if not text or type(target) ~= "string" then return end
+    if not allow(player, "msg") then return slowDown(player) end
     local now = getRealTime().timestamp
 
     if kind == "dm" then
@@ -627,8 +744,9 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
 
         local key = SP.pairKey(myName, target)
         dms[key] = dms[key] or {}
-        local id = SPDB.insertDm(myName, target, text, now, false)
-        table.insert(dms[key], { id = id, from = myName, to = target, text = text, time = now, read = false })
+        local msg = { id = nil, from = myName, to = target, text = text, time = now, read = false }
+        table.insert(dms[key], msg)
+        SPDB.insertDm(msg)   -- async: msg.id is filled in once the row is written
         trimHistory(dms[key])
 
         triggerClientEvent(player, "sp:msg:data", player, "dm", target, collectThread(myName, "dm", target))
@@ -645,8 +763,9 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
         local crew = crewOf(myName)
         if not crew then return notify(player, L.msg("v_socialpanel.server.you_are_not_in_crew"), 255, 120, 120) end
         crewMsgs[crew.name:lower()] = crewMsgs[crew.name:lower()] or {}
-        local id = SPDB.insertCrewMsg(myName, crew.name, text, now)
-        table.insert(crewMsgs[crew.name:lower()], { id = id, from = myName, text = text, time = now, crew = crew.name })
+        local msg = { id = nil, from = myName, text = text, time = now, crew = crew.name }
+        table.insert(crewMsgs[crew.name:lower()], msg)
+        SPDB.insertCrewMsg(msg)   -- async: msg.id is filled in once the row is written
         trimHistory(crewMsgs[crew.name:lower()])
 
         for _, mn in ipairs(crew.members) do
@@ -671,6 +790,7 @@ addEventHandler("sp:crew:create", root, function(name, tag, r, g, b)
     local player = client
     local myName = accName(player)
     if not myName then return end
+    if not allow(player, "action") then return slowDown(player) end
     if crewOf(myName) then return notify(player, L.msg("v_socialpanel.server.you_already_have_crew_leave_it"), 255, 120, 120) end
 
     local okN, cleanName = SP.validateCrewName(name)
@@ -699,6 +819,7 @@ addEventHandler("sp:crew:join", root, function(crewName)
     local player = client
     local myName = accName(player)
     if not myName or type(crewName) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
     if crewOf(myName) then return notify(player, L.msg("v_socialpanel.server.you_already_have_crew_leave_it"), 255, 120, 120) end
     local crew = crews[crewName:lower()]
     if not crew then return notify(player, L.msg("v_socialpanel.server.no_such_crew"), 255, 120, 120) end
@@ -763,6 +884,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
     local player = client
     local myName = accName(player)
     if not myName or type(memberName) ~= "string" then return end
+    if not allow(player, "action") then return slowDown(player) end
     local crew = crewOf(myName)
     if not crew or myName:lower() ~= crew.founder:lower() then
         return notify(player, L.msg("v_socialpanel.server.only_founder_can_kick_members"), 255, 120, 120)
@@ -837,4 +959,10 @@ end)
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
     setTimer(pushSnapshot, 500, 1, source)
+end)
+
+addEventHandler("onPlayerQuit", root, function()
+    rateLog[source] = nil
+    searchBusy[source] = nil
+    snapState[source] = nil
 end)

@@ -16,8 +16,9 @@ local function handle(name, fn)
 end
 
 handle("erm:signIn", function(player, unitType, candidates, unitNumber)
-    local u, err = Units.signIn(player, unitType, candidates, unitNumber)
-    return u and true, err
+    return Units.signIn(player, unitType, candidates, unitNumber, function(u, err)
+        if isElement(player) then reply(player, u and true, err) end
+    end)
 end)
 
 handle("erm:signOut", function(player)

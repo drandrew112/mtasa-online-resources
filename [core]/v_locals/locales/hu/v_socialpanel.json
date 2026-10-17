@@ -20,6 +20,7 @@
   "v_socialpanel.server.removed_you_from_their_friend_list": "{my_name} eltávolított a barátlistájáról.",
   "v_socialpanel.server.request_declined": "Kérés elutasítva.",
   "v_socialpanel.server.sent_you_friend_request": "{my_name} barátkérést küldött neked.",
+  "v_socialpanel.server.slow_down": "Túl gyorsan csinálod. Várj egy kicsit.",
   "v_socialpanel.server.that_account_no_longer_exists": "Ez a fiók már nem létezik.",
   "v_socialpanel.server.that_crew_is_full": "Ez a crew megtelt.",
   "v_socialpanel.server.type_at_least_characters": "Írj be legalább {search_min} karaktert.",

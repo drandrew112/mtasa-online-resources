@@ -7,6 +7,9 @@
 -- epoch of creation so their age survives a restart.
 -- med_shifts.server = the server that runs the shift (two servers may share the database): a
 -- restart only closes its own leftovers, the callsign check sees every server.
+-- New rows come from id pools (see below), so creating a task / shift does not block (PERF-01).
+
+if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
 
 DB = {}
 
@@ -44,6 +47,9 @@ local function insert(q, ...)
     local id = m and m:mysqlInsert(q, ...)
     return type(id) == "number" and id or false
 end
+
+-- md5 tag of this server on the pool rows of med_tasks (it has no server column)
+local POOL_TAG = "pool:" .. md5(serverId()):sub(1, 16)
 
 local function json(t)
     return toJSON(t or {}, true)
@@ -86,6 +92,54 @@ function DB.assignments(s, key)
         end
     end
     return list
+end
+
+---------------------------------------------------------------- id pools (PERF-01)
+-- A blocking INSERT stalls the whole server for a round trip to the remote database, but a new
+-- task / shift needs its id at once (it is its identity everywhere). So a few placeholder rows
+-- are inserted ahead of time without blocking (status / end_reason = 'pool', tagged with this
+-- server, hidden from every reader); a new task / shift takes one and fills it with an UPDATE.
+-- An empty pool (or no connection) falls back to the blocking INSERT. Rows left in a pool at a
+-- stop are taken back at the next start.
+
+local pools = {
+    task = {
+        size = 3, ids = {}, inflight = 0,
+        adopt = "SELECT id FROM med_tasks WHERE status = 'pool' AND source = ? ORDER BY id",
+        adoptArg = function() return POOL_TAG end,
+        insert = function(cb)
+            MYSQL.insert(cb, "INSERT INTO med_tasks (title, status, source, shifts) VALUES ('', 'pool', ?, '')", POOL_TAG)
+        end,
+    },
+    shift = {
+        size = 2, ids = {}, inflight = 0,
+        adopt = "SELECT id FROM med_shifts WHERE server = ? AND end_reason = 'pool' ORDER BY id",
+        adoptArg = serverId,
+        insert = function(cb)
+            local stamp = formatDateTime(now())
+            MYSQL.insert(cb, [[INSERT INTO med_shifts (server, started_at, ended_at, end_reason, tasks)
+                VALUES (?, ?, ?, 'pool', '')]], serverId(), stamp, stamp)
+        end,
+    },
+}
+
+-- Tops the pool up with non-blocking INSERTs; a failed one is retried at the next take.
+local function poolRefill(p)
+    if not DB.ready or not DB.isConnected() then return end
+    for _ = 1, p.size - #p.ids - p.inflight do
+        p.inflight = p.inflight + 1
+        p.insert(function(id)
+            p.inflight = p.inflight - 1
+            if type(id) == "number" then p.ids[#p.ids + 1] = id end
+        end)
+    end
+end
+
+-- -> pooled id | nil (empty pool or no connection: the caller inserts blocking)
+local function poolTake(p)
+    local id = DB.isConnected() and table.remove(p.ids, 1) or nil
+    poolRefill(p)
+    return id
 end
 
 ---------------------------------------------------------------- start-up
@@ -147,7 +201,15 @@ function DB.init()
         end
     end
     exec("UPDATE med_shifts SET ended_at = ?, end_reason = 'restart' WHERE server = ? AND ended_at IS NULL", stamp, serverId())
+
+    -- pool rows of the last run are reused
+    for _, p in pairs(pools) do
+        for _, r in ipairs(query(p.adopt, p.adoptArg()) or {}) do
+            p.ids[#p.ids + 1] = tonumber(r.id)
+        end
+    end
     DB.ready = true
+    for _, p in pairs(pools) do poolRefill(p) end
     return true
 end
 
@@ -157,16 +219,18 @@ DB.unjson = unjson
 
 ---------------------------------------------------------------- callsigns
 
--- Callsigns of the open shifts in the database (every server) -> set | false (database unreachable)
-function DB.openCallsigns(unitType)
-    if not DB.ready then return false end
-    local rows = query("SELECT callsign FROM med_shifts WHERE ended_at IS NULL AND unit_type = ?", unitType)
-    if not rows then return false end
-    local used = {}
-    for _, r in ipairs(rows) do
-        if r.callsign then used[r.callsign] = true end
-    end
-    return used
+-- Callsigns of the open shifts in the database (every server), non-blocking:
+-- cb(set | false)  (false = database unreachable; cb may run before this returns)
+function DB.openCallsigns(unitType, cb)
+    if not DB.ready then return cb(false) end
+    MYSQL.query(function(rows)
+        if not rows then return cb(false) end
+        local used = {}
+        for _, r in ipairs(rows) do
+            if r.callsign then used[r.callsign] = true end
+        end
+        cb(used)
+    end, "SELECT callsign FROM med_shifts WHERE ended_at IS NULL AND unit_type = ?", unitType)
 end
 
 ---------------------------------------------------------------- shift <-> task links
@@ -200,8 +264,18 @@ local function responseLogRows(task)
     return rows
 end
 
+-- -> id | false. A pooled row is filled in the background (writes keep their order).
 function DB.insertTask(t)
     if not DB.ready then return false end
+    local id = poolTake(pools.task)
+    if id then
+        exec([[UPDATE med_tasks SET title = ?, description = ?, caller = ?, pos_x = ?, pos_y = ?, pos_z = ?,
+            zone = ?, status = ?, units = ?, response_log = ?, created_ts = ?, created_at = ?, source = ?,
+            meta = ?, shifts = '' WHERE id = ?]],
+            t.title, t.description, t.caller, t.x, t.y, t.z, t.zone, t.status,
+            json(t.unitLog), json({}), t.createdAt, formatDateTime(t.createdAt), t.source, json(t.meta), id)
+        return id
+    end
     return insert([[INSERT INTO med_tasks
         (title, description, caller, pos_x, pos_y, pos_z, zone, status, units, response_log, created_ts, created_at, source, meta, shifts)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')]],
@@ -244,7 +318,7 @@ end
 -- Open tasks (reloaded on start) and the most recent closed ones.
 function DB.loadTasks(recentClosed)
     local open, closed = {}, {}
-    for _, r in ipairs(query("SELECT * FROM med_tasks WHERE status != 'closed' ORDER BY id") or {}) do
+    for _, r in ipairs(query("SELECT * FROM med_tasks WHERE status NOT IN ('closed', 'pool') ORDER BY id") or {}) do
         open[#open + 1] = rowToTask(r)
     end
     for _, r in ipairs(query("SELECT * FROM med_tasks WHERE status = 'closed' ORDER BY id DESC LIMIT ?", recentClosed) or {}) do
@@ -257,8 +331,17 @@ end
 
 ---------------------------------------------------------------- shifts
 
+-- -> id | false (pooled like DB.insertTask)
 function DB.startShift(unit)
     if not DB.ready then return false end
+    local id = poolTake(pools.shift)
+    if id then
+        exec([[UPDATE med_shifts SET server = ?, callsign = ?, unit_type = ?, plate = ?, members = ?, closed_tasks = ?,
+            started_at = ?, ended_at = NULL, end_reason = NULL, task_count = 0, tasks = '' WHERE id = ?]],
+            serverId(), unit.callsign, unit.type, unit.plate, json(unit.accounts), json({}),
+            formatDateTime(unit.startedAt), id)
+        return id
+    end
     return insert([[INSERT INTO med_shifts (server, callsign, unit_type, plate, members, closed_tasks, started_at, tasks)
         VALUES (?, ?, ?, ?, ?, ?, ?, '')]],
         serverId(), unit.callsign, unit.type, unit.plate, json(unit.accounts), json({}), formatDateTime(unit.startedAt))

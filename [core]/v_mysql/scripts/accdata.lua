@@ -24,7 +24,9 @@
 -- filled on first access (only for accounts logged in on this server), updated
 -- on every setAccData, flushed on login and dropped after onPlayerQuit (two
 -- servers share this table and do not sync live, so a cached value could
--- otherwise go stale after the player leaves).
+-- otherwise go stale after the player leaves). prefetchAccDataAsync loads a
+-- list of offline accounts in one non-blocking query for the reads right after
+-- it (PERF-01, MEMO_TTL).
 --
 -- Writes are per key (JSON_MERGE_PATCH), never the whole blob, so one server
 -- cannot overwrite keys another server changed (BUG-01). Needs MySQL >= 5.7.22
@@ -117,27 +119,81 @@ local function isOnline(name)
     return false
 end
 
+-- Offline accounts are not cached, but prefetchAccDataAsync can load a list of
+-- them in one non-blocking query into a short-lived memo (PERF-01): the reads
+-- right after it (same callback) are then served from memory. Only the
+-- prefetch fills the memo, so a plain read of an offline account is as fresh
+-- as before; MEMO_TTL bounds how old a prefetched value can get. Writes made on
+-- THIS server update the memo entry in place, so they are always seen here.
+--   memo[name] = { c = <entry like cache[name]>, expires = tick }
+local MEMO_TTL      = 1000
+local MEMO_MAX_LIST = 500     -- names per prefetch query
+local memo    = {}
+local dirtyAt = {}            -- dirtyAt[name] = tick of the last setAccData here (prefetch race guard)
+
+local SELECT_COLS = "account_name, account_data, email, display_name, admin_level, created_at"
+
+local function rowToEntry(row)
+    local c = { data = {}, exists = false }
+    if row then
+        c.exists = true
+        c.data = decodeBlob(row.account_data)
+        c.data.email        = (row.email ~= false) and row.email or nil
+        c.data.display_name  = (row.display_name ~= false) and row.display_name or nil
+        c.data.admin_level   = tonumber(row.admin_level) or 0
+        c.data.created_at    = tonumber(row.created_at) or 0
+    end
+    return c
+end
+
+-- set of the account names logged in on this server
+local function onlineNames()
+    local set = {}
+    for _, p in ipairs(getElementsByType("player")) do
+        local n = getElementData(p, "accName")
+        if type(n) == "string" then set[n] = true end
+    end
+    return set
+end
+
+local function memoGet(name)
+    local m = memo[name]
+    if m and m.expires > getTickCount() then return m.c end
+    return nil
+end
+
 -- Only accounts logged in here are cached: an offline account may be played on
--- the other server meanwhile, so name-based reads/writes for it always hit the DB.
+-- the other server meanwhile, so it is read fresh (unless just prefetched).
 local function load(name)
     local c = cache[name]
     if c then return c end
 
-    c = { data = {}, exists = false }
-    local res = mysqlQuerySync(
-        "SELECT account_data, email, display_name, admin_level, created_at " ..
-        "FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
-    if res and res[1] then
-        c.exists = true
-        c.data = decodeBlob(res[1].account_data)
-        c.data.email        = (res[1].email ~= false) and res[1].email or nil
-        c.data.display_name  = (res[1].display_name ~= false) and res[1].display_name or nil
-        c.data.admin_level   = tonumber(res[1].admin_level) or 0
-        c.data.created_at    = tonumber(res[1].created_at) or 0
+    local online = isOnline(name)
+    if not online then
+        c = memoGet(name)
+        if c then return c end
     end
-    if isOnline(name) then cache[name] = c end
+
+    local res = mysqlQuerySync(
+        "SELECT " .. SELECT_COLS .. " FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
+    c = rowToEntry(res and res[1])
+    if online then
+        cache[name] = c
+        memo[name] = nil
+    end
     return c
 end
+
+-- Drop expired memo entries and old write marks now and then.
+setTimer(function()
+    local now = getTickCount()
+    for name, m in pairs(memo) do
+        if m.expires <= now then memo[name] = nil end
+    end
+    for name, t in pairs(dirtyAt) do
+        if now - t > 60000 then dirtyAt[name] = nil end
+    end
+end, 30000, 0)
 
 -- JSON string literal for a key (control chars, quotes and backslashes escaped).
 local function jsonStr(str)
@@ -260,6 +316,7 @@ function setAccData(who, key, value)
     if not name then return false end
 
     local c = load(name)
+    dirtyAt[name] = getTickCount()
 
     local changed = {}
     if type(key) == "table" then
@@ -283,5 +340,62 @@ end
 -- Internal: called by v_accounts right after it creates a row, so the cache
 -- does not keep a stale "account does not exist" view.
 function flushAccData(name)
-    if type(name) == "string" then cache[name] = nil end
+    if type(name) == "string" then
+        cache[name] = nil
+        memo[name] = nil
+    end
+end
+
+-- Non-blocking warm-up for reads of OFFLINE accounts (PERF-01): loads every
+-- listed account that is neither cached nor memoised with ONE query, memoises
+-- them for MEMO_TTL, then answers with an event on the caller's resource root:
+--   triggerEvent(eventName, <caller resourceRoot>, requestId, ok)
+-- After ok = true, getAccData(name, ...) for those names is served from memory
+-- (until MEMO_TTL runs out). ok = false: the query failed, nothing was memoised.
+-- Online accounts are skipped (their cache is always fresh). At most
+-- MEMO_MAX_LIST names per call; the rest simply load on demand.
+function prefetchAccDataAsync(eventName, requestId, names)
+    local caller = sourceResource
+    if type(eventName) ~= "string" or type(names) ~= "table" or not caller then return false end
+    local target = getResourceRootElement(caller)
+    local function reply(ok)
+        if isElement(target) then triggerEvent(eventName, target, requestId, ok) end
+    end
+
+    local onlineSet = onlineNames()
+    local want, marks, seen = {}, {}, {}
+    for _, n in ipairs(names) do
+        if #want >= MEMO_MAX_LIST then break end
+        if type(n) == "string" and n ~= "" and not seen[n] then
+            seen[n] = true
+            if not cache[n] and not onlineSet[n] and not memoGet(n) then
+                want[#want + 1], marks[#marks + 1] = n, "?"
+            end
+        end
+    end
+    if #want == 0 then
+        reply(true)
+        return true
+    end
+
+    local sentAt = getTickCount()
+    return mysqlQuery(function(rows)
+        if type(rows) ~= "table" then return reply(false) end
+        local byLower = {}
+        for _, row in ipairs(rows) do
+            if type(row.account_name) == "string" then byLower[row.account_name:lower()] = row end
+        end
+        local expires = getTickCount() + MEMO_TTL
+        local nowOnline = onlineNames()
+        for _, n in ipairs(want) do
+            -- Skip names that were loaded, written or logged in meanwhile: the
+            -- answer was read before that and would be older.
+            if not cache[n] and not memoGet(n) and not nowOnline[n]
+                and (dirtyAt[n] or -1) < sentAt then
+                memo[n] = { c = rowToEntry(byLower[n:lower()]), expires = expires }
+            end
+        end
+        reply(true)
+    end, "SELECT " .. SELECT_COLS .. " FROM `" .. TABLE .. "` WHERE account_name IN (" ..
+        table.concat(marks, ",") .. ")", unpack(want))
 end

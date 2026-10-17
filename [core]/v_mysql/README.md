@@ -43,9 +43,37 @@ Exports (server):
 | `mysqlQuerySync(sql, ...)` | **Blocking** SELECT. Returns the result table (maybe empty) or `false`. Safe cross-resource. Use for small, latency-tolerant lookups only — it stalls the server thread for the round trip. |
 | `mysqlInsert(sql, ...)` | **Blocking** INSERT. Returns the new `AUTO_INCREMENT` id (id from the same round trip) or `false`. |
 | `mysqlExec(sql, ...)` | INSERT/UPDATE/DELETE, fire-and-forget; retried after reconnect if the connection breaks mid-write. Returns `false` with no connection. |
+| `mysqlQueryAsync(event, requestId, sql, ...)` | Non-blocking SELECT for other resources: the answer is `triggerEvent(event, <caller resourceRoot>, requestId, rows \| false, numRows \| err)`. |
+| `mysqlInsertAsync(event, requestId, sql, ...)` | Non-blocking INSERT: the event carries `(requestId, id \| false, err)`. Not retried (fails at once without a connection). |
+| `importAsync()` | Source of the async lib, see below. |
 | `mysqlEscape(value)` | Quote/escape one value. Prefer `?` placeholders. |
 
 `?` placeholders in every helper are substituted and escaped from the varargs.
+
+Blocking calls slower than 50 ms are logged as `Slow blocking query/insert: N ms
+(from <resource>)` (at most 10 lines a minute), so the callers that still stall
+the server show up in the server log (PERF-01).
+
+#### Async lib (`scripts/asynclib.lua`)
+
+The non-blocking way for other resources. Load it once in a server script of a
+resource that has `<include resource="v_mysql" />`:
+
+```lua
+if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
+
+MYSQL.query(function(rows, info)          -- rows = false on error, info = err
+    if not rows or not isElement(player) then return end
+    ...
+end, "SELECT ... WHERE x = ?", x)
+MYSQL.insert(function(id, err) ... end, "INSERT ...", ...)
+MYSQL.prefetch(function(ok) ... end, { "name1", "name2" })  -- see prefetchAccDataAsync
+```
+
+Each callback runs exactly once: with the answer, or with `false` when v_mysql
+is not running, stops meanwhile, or does not answer within 15 s. `client` /
+`source` of the event that started the query are not valid any more inside the
+callback.
 Custom event: `mysql:connected` (at `resourceRoot`) when the link comes up.
 
 ### `scripts/accdata.lua` — account data store
@@ -61,6 +89,12 @@ or an **account-name string** (both work, online or offline).
 | `setAccData(who, key, value)` | Upsert one key. `value = nil` removes it. → `true` when queued. |
 | `setAccData(who, { key = value, ... })` | Merge several keys in **one** DB write — use this on bulk saves (e.g. v_accounts' `save_all`). |
 | `flushAccData(name)` | Drop the cache entry for an account (v_accounts calls it right after creating a row). |
+| `prefetchAccDataAsync(event, requestId, names)` | Loads the listed **offline** accounts in one non-blocking query and memoises them; answers with `(requestId, ok)`. Use before reading many offline accounts (`MYSQL.prefetch` in the async lib). |
+
+A plain read of an offline account (by name) is always a fresh blocking query.
+After `prefetchAccDataAsync` the listed accounts are memoised for 1 s, so the
+reads right after it (in its callback) cost nothing. Writes made on this server
+update that memo in place.
 
 ```lua
 local money = exports.v_mysql:getAccData(player, "bank_money") or 0

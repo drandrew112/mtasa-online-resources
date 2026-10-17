@@ -5,8 +5,11 @@
 -- mysqlQuerySync / mysqlInsert / mysqlExec / mysqlEscape / mysqlIsConnected).
 --
 -- The async mysqlQuery callback style is only fully supported for callers
--- inside this resource. Cross-resource callers should use mysqlQuerySync /
--- mysqlInsert (they block for the round trip) or fire-and-forget mysqlExec.
+-- inside this resource. Cross-resource callers get the same with the async lib
+-- (exports.v_mysql:importAsync, scripts/asynclib.lua), built on the event-based
+-- mysqlQueryAsync / mysqlInsertAsync / prefetchAccDataAsync. mysqlQuerySync /
+-- mysqlInsert block the whole server for the round trip (PERF-01): keep them
+-- for start-up, admin tools and callers that must return a value at once.
 
 local connection = nil
 local connected  = false
@@ -166,21 +169,43 @@ function mysqlQueryAsync(eventName, requestId, queryStr, ...)
     end, queryStr, ...)
 end
 
+-- Blocking calls that took at least SLOW_SYNC_MS are logged with the calling
+-- resource (PERF-01), at most SLOW_LOG_MAX lines per SLOW_LOG_WINDOW ms so a slow
+-- database does not flood the log.
+local SLOW_SYNC_MS    = 50
+local SLOW_LOG_MAX    = 10
+local SLOW_LOG_WINDOW = 60000
+local slowLogStart, slowLogCount = 0, 0
+
+local function noteSync(kind, started, queryStr)
+    local ms = getTickCount() - started
+    if ms < SLOW_SYNC_MS then return end
+    local now = getTickCount()
+    if now - slowLogStart > SLOW_LOG_WINDOW then slowLogStart, slowLogCount = now, 0 end
+    slowLogCount = slowLogCount + 1
+    if slowLogCount > SLOW_LOG_MAX then return end
+    mysqlLog("Slow blocking %s: %d ms (from %s) | SQL: %s", kind, ms,
+        sourceResource and getResourceName(sourceResource) or "v_mysql", queryStr:sub(1, 160))
+end
+
 -- Runs a SELECT and BLOCKS until the result is in (dbPoll with no timeout).
 -- Returns the result table (possibly empty), or false when there is no
 -- connection or the query failed. Use only for small, latency-tolerant
 -- lookups - it stalls the server thread for the whole round trip. Safe to call
--- from other resources (unlike mysqlQuery's callback style).
+-- from other resources (unlike mysqlQuery's callback style). Player actions
+-- should use the async lib instead (exports.v_mysql:importAsync, PERF-01).
 function mysqlQuerySync(queryStr, ...)
     if not isElement(connection) then
         debugLog("mysqlQuerySync skipped (no connection): %s", queryStr)
         return false
     end
     debugLog("query(sync): %s", queryStr)
+    local started = getTickCount()
     local qh = dbQuery(connection, queryStr, ...)
     if not qh then return false end
     local result = dbPoll(qh, -1)
     dbFree(qh)
+    noteSync("query", started, queryStr)
     if type(result) ~= "table" then
         mysqlLog("Query error: %s | SQL: %s", tostring(result), queryStr)
         return false
@@ -198,6 +223,7 @@ function mysqlInsert(queryStr, ...)
         return false
     end
     debugLog("insert(sync): %s", queryStr)
+    local started = getTickCount()
     local qh = dbQuery(connection, queryStr, ...)
     if not qh then return false end
     -- dbPoll returns (result, numAffectedRows, lastInsertId) for a statement,
@@ -205,6 +231,7 @@ function mysqlInsert(queryStr, ...)
     -- reconnect in between could answer with 0 or someone else's id.
     local res, affected, lastId = dbPoll(qh, -1)
     dbFree(qh)
+    noteSync("insert", started, queryStr)
     if res == false then
         mysqlLog("Insert error: %s | SQL: %s", tostring(lastId or affected), queryStr)
         return false
@@ -301,6 +328,46 @@ function mysqlExec(queryStr, ...)
     end
     debugLog("exec: %s", queryStr)
     sendWrite({ sql = queryStr, args = { ... }, n = select("#", ...), tries = 0 })
+    return true
+end
+
+-- Non-blocking INSERT for OTHER resources, the counterpart of mysqlInsert. The
+-- answer is an event on the caller's resource root:
+--   triggerEvent(eventName, <caller resourceRoot>, requestId, id, err)
+-- id = the AUTO_INCREMENT id (or true when the table has none), or false with
+-- err = error text. Not queued for a retry: the caller is waiting for the
+-- answer, so without a connection it fails right away (the event fires before
+-- this returns, and this returns false).
+function mysqlInsertAsync(eventName, requestId, queryStr, ...)
+    local caller = sourceResource
+    if type(eventName) ~= "string" or type(queryStr) ~= "string" or not caller then return false end
+    local target = getResourceRootElement(caller)
+    local function reply(id, err)
+        if isElement(target) then triggerEvent(eventName, target, requestId, id, err) end
+    end
+
+    if not isElement(connection) then
+        debugLog("mysqlInsertAsync skipped (no connection): %s", queryStr)
+        reply(false, "no connection")
+        return false
+    end
+    debugLog("insert(async): %s", queryStr)
+    local qh = dbQuery(function(qh)
+        local res, affected, lastId = dbPoll(qh, 0)
+        dbFree(qh)
+        if res == false then
+            local err = tostring(lastId or affected)
+            mysqlLog("Insert error: %s | SQL: %s", err, queryStr)
+            if isConnectionError(err) and isElement(connection) then verifyConnection() end
+            return reply(false, err)
+        end
+        lastId = tonumber(lastId)
+        reply((lastId and lastId > 0) and lastId or true)
+    end, connection, queryStr, ...)
+    if not qh then
+        reply(false, "query failed")
+        return false
+    end
     return true
 end
 

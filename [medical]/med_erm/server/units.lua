@@ -16,20 +16,16 @@ function Units.ofPlayer(player)
 end
 
 -- Callsigns on duty: the units of this server + the open shifts in the database (every server
--- sharing it). Without the database only the local units count.
-local function callsignUsed(unitType)
-    local used = DB.openCallsigns(unitType)
-    if not used then
-        outputDebugString("[erm] callsign check without the database (local units only)", 2)
-        used = {}
-    end
+-- sharing it, `dbUsed` = DB.openCallsigns). Without the database only the local units count.
+local function callsignUsed(dbUsed)
+    local used = {}
+    for callsign in pairs(dbUsed or {}) do used[callsign] = true end
     for _, u in pairs(Units.list) do used[u.callsign] = true end
     return used
 end
 
 -- Automatic number: the first free one, counting up from 1.
-local function freeCallsign(unitType)
-    local used = callsignUsed(unitType)
+local function freeCallsign(unitType, used)
     local n = 1
     while used[string.format("%s-%02d", unitType, n)] do n = n + 1 end
     return string.format("%s-%02d", unitType, n)
@@ -122,7 +118,13 @@ local function hasMedicAccess(player)
     return exports.medsys:hasMedicAccess(player) == true
 end
 
-function Units.signIn(player, unitType, candidates, unitNumber)
+local signingIn = {}   -- [player] = true while the callsign check of their sign-in runs
+
+addEventHandler("onPlayerQuit", root, function() signingIn[source] = nil end)
+
+-- Everything a sign-in needs except the callsign check -> members | false, error.
+-- Runs again when the database answers: the world may have changed meanwhile.
+local function signInCheck(player, unitType, candidates, unitNumber)
     if Units.byPlayer[player] then return false, L.msg("med_erm.units.you_are_already_signed_in") end
     if not isAccountLoggedIn(player) then return false, L.msg("med_erm.units.you_are_not_logged_in") end
     if not hasMedicAccess(player) then return false, L.msg("med_erm.units.only_on_duty_medics_can_sign") end
@@ -132,16 +134,10 @@ function Units.signIn(player, unitType, candidates, unitNumber)
         return false, L.msg("med_erm.units.you_must_be_inside_ambulance_to")
     end
     if not hasValue(Config.UNIT_TYPES, unitType) then return false, L.msg("med_erm.units.select_unit_type") end
-
-    local callsign
     unitNumber = tostring(unitNumber or ""):gsub("%s", "")
     if unitNumber ~= "" then
         local n = tonumber(unitNumber:match("^%d%d?%d?$"))
         if not n or n < 1 then return false, L.msg("med_erm.units.invalid_unit_number_1_999") end
-        callsign = string.format("%s-%02d", unitType, n)
-        if callsignUsed(unitType)[callsign] then return false, L.msg("med_erm.units.is_already_on_duty", { callsign = callsign }) end
-    else
-        callsign = freeCallsign(unitType)
     end
 
     local members = { player }
@@ -160,6 +156,20 @@ function Units.signIn(player, unitType, candidates, unitNumber)
             end
             members[#members + 1] = p
         end
+    end
+    return members, veh
+end
+
+-- Creates the unit (the checks have passed) -> unit | false, error
+local function signInFinish(player, unitType, members, veh, unitNumber, dbUsed)
+    local used = callsignUsed(dbUsed)
+    local callsign
+    unitNumber = tostring(unitNumber or ""):gsub("%s", "")
+    if unitNumber ~= "" then
+        callsign = string.format("%s-%02d", unitType, tonumber(unitNumber))
+        if used[callsign] then return false, L.msg("med_erm.units.is_already_on_duty", { callsign = callsign }) end
+    else
+        callsign = freeCallsign(unitType, used)
     end
 
     local u = {
@@ -193,6 +203,28 @@ function Units.signIn(player, unitType, candidates, unitNumber)
     Units.notify(u, L.msg("med_erm.tutorial.shift_started"), L.msg("med_erm.tutorial.signed_in_as", { callsign = u.callsign }))
     Events.fire("onErmUnitSignIn", u.id)
     return u
+end
+
+-- Checks, asks the database for the callsigns on duty without blocking, then signs in.
+-- -> true (done(unit | false, error) runs later, maybe before this returns) | false, error
+-- false without an error: a sign-in of this player is already running.
+function Units.signIn(player, unitType, candidates, unitNumber, done)
+    done = done or function() end
+    if signingIn[player] then return false end
+    local ok, err = signInCheck(player, unitType, candidates, unitNumber)
+    if not ok then return false, err end
+
+    signingIn[player] = true
+    DB.openCallsigns(unitType, function(dbUsed)
+        if not signingIn[player] then return end   -- the player left meanwhile
+        signingIn[player] = nil
+        if not isElement(player) then return end
+        if not dbUsed then outputDebugString("[erm] callsign check without the database (local units only)", 2) end
+        local members, veh = signInCheck(player, unitType, candidates, unitNumber)
+        if not members then return done(false, veh) end
+        done(signInFinish(player, unitType, members, veh, unitNumber, dbUsed))
+    end)
+    return true
 end
 
 function Units.signOut(u, reason)

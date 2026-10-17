@@ -7,6 +7,7 @@
     <script src="core/mysql.lua"        type="server" />
     <script src="scripts/connguard.lua" type="server" />
     <script src="scripts/accdata.lua"   type="server" />
+    <script src="scripts/asynclib.lua"  type="server" />
 
     <!-- Freezes everyone with a "database issues" banner instead of letting a
          lost connection stall the server and time every client out. -->
@@ -15,11 +16,18 @@
     <!-- ================= EXPORTS ================= -->
     <!-- Generic MySQL helpers for other resources. Callbacks passed to
          mysqlQuery are only reliable from inside this resource; the *Sync
-         helpers block for the round trip and are safe to call anywhere. -->
+         helpers block the whole server for the round trip (PERF-01); other
+         resources should prefer the async lib (importAsync). -->
     <export function="mysqlQuery"       type="server" />
     <!-- mysqlQueryAsync(eventName, requestId, sql, ...): non-blocking, the
          result comes back as an event on the caller's resource root -->
     <export function="mysqlQueryAsync"  type="server" />
+    <!-- mysqlInsertAsync(eventName, requestId, sql, ...): non-blocking INSERT,
+         the event carries (requestId, id | false, err) -->
+    <export function="mysqlInsertAsync" type="server" />
+    <!-- importAsync(): source of the callback-style async lib (MYSQL.query /
+         MYSQL.insert / MYSQL.prefetch), see scripts/asynclib.lua -->
+    <export function="importAsync"      type="server" />
     <export function="mysqlQuerySync"   type="server" />
     <export function="mysqlInsert"      type="server" />
     <export function="mysqlExec"        type="server" />
@@ -32,4 +40,7 @@
     <export function="getAccData"   type="server" />
     <export function="setAccData"   type="server" />
     <export function="flushAccData" type="server" />
+    <!-- prefetchAccDataAsync(eventName, requestId, names): loads offline
+         accounts in one query so the following getAccData calls do not block -->
+    <export function="prefetchAccDataAsync" type="server" />
 </meta>

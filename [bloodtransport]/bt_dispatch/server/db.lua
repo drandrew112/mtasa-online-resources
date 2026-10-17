@@ -5,10 +5,17 @@
 -- `log` / `shifts` / `tasks` are append-only JSON lines (one toJSON entry per line, CONCAT on the
 -- server, no read-modify-write); a release line closes the latest open assignment of the same id.
 -- Date-times are DATETIME columns, read back as "YYYY-MM-DD HH:MM:SS" text.
+-- New rows come from id pools (see below), so creating a task / shift does not block (PERF-01).
+
+if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
 
 DB = {}
 
 DB.completed = 0   -- delivered tasks in the database when the resource (or the connection) started
+DB.ready = false   -- DB.init done
+
+-- md5 tag of this server on its pool rows (two servers may share the database)
+local POOL_TAG = "pool:" .. md5(string.format("%s:%d", getServerName(), getServerPort())):sub(1, 16)
 
 local function sql()
     local res = getResourceFromName("v_mysql")
@@ -83,6 +90,52 @@ function DB.assignments(s, key)
     return list
 end
 
+---------------------------------------------------------------- id pools (PERF-01)
+-- A blocking INSERT stalls the whole server for a round trip to the remote database, but a new
+-- task / shift needs its id at once (cargo, offers, events, the stock use it). So a few
+-- placeholder rows are inserted ahead of time without blocking (status / end_reason = 'pool',
+-- tagged with this server, hidden from every reader); a new task / shift takes one and fills it
+-- with an UPDATE. An empty pool (or no connection) falls back to the blocking INSERT. Rows left
+-- in a pool at a stop are taken back at the next start.
+
+local pools = {
+    task = {
+        size = 4, ids = {}, inflight = 0,
+        adopt = "SELECT id FROM bt_tasks WHERE status = 'pool' AND source = ? ORDER BY id",
+        insert = function(cb)
+            MYSQL.insert(cb, "INSERT INTO bt_tasks (type, status, source, log, shifts) VALUES ('', 'pool', ?, '', '')", POOL_TAG)
+        end,
+    },
+    shift = {
+        size = 2, ids = {}, inflight = 0,
+        adopt = "SELECT id FROM bt_shifts WHERE end_reason = 'pool' AND account = ? ORDER BY id",
+        insert = function(cb)
+            local stamp = DB.nowText()
+            MYSQL.insert(cb, "INSERT INTO bt_shifts (account, started_at, ended_at, end_reason, tasks) VALUES (?, ?, ?, 'pool', '')",
+                POOL_TAG, stamp, stamp)
+        end,
+    },
+}
+
+-- Tops the pool up with non-blocking INSERTs; a failed one is retried at the next take.
+local function poolRefill(p)
+    if not DB.ready or not DB.isConnected() then return end
+    for _ = 1, p.size - #p.ids - p.inflight do
+        p.inflight = p.inflight + 1
+        p.insert(function(id)
+            p.inflight = p.inflight - 1
+            if type(id) == "number" then p.ids[#p.ids + 1] = id end
+        end)
+    end
+end
+
+-- -> pooled id | nil (empty pool or no connection: the caller inserts blocking)
+local function poolTake(p)
+    local id = DB.isConnected() and table.remove(p.ids, 1) or nil
+    poolRefill(p)
+    return id
+end
+
 ---------------------------------------------------------------- start-up
 
 -- false while the database is not reachable (main.lua retries on mysql:connected)
@@ -131,6 +184,17 @@ function DB.init()
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
     local rows = DB.query("SELECT COUNT(*) AS n FROM bt_tasks WHERE status = 'delivered'")
     DB.completed = rows and rows[1] and tonumber(rows[1].n) or 0
+
+    if not DB.ready then
+        -- pool rows of the last run are reused
+        for _, p in pairs(pools) do
+            for _, r in ipairs(DB.query(p.adopt, POOL_TAG) or {}) do
+                p.ids[#p.ids + 1] = tonumber(r.id)
+            end
+        end
+        DB.ready = true
+    end
+    for _, p in pairs(pools) do poolRefill(p) end
     return true
 end
 
@@ -155,7 +219,15 @@ end
 
 ---------------------------------------------------------------- tasks
 
+-- -> id | false. A pooled row is filled in the background (writes keep their order).
 function DB.insertTask(t)
+    local id = poolTake(pools.task)
+    if id then
+        exec([[UPDATE bt_tasks SET type=?, urgency=?, source=?, product=?, grp=?, units=?, from_inst=?, to_inst=?,
+            status=?, reserved=?, created_at=?, log='', shifts='' WHERE id=?]],
+            t.type, t.urgency, t.source, t.product, t.group, t.units, t.from, t.to, "waiting", t.reserved and 1 or 0, DB.nowText(), id)
+        return id
+    end
     return insert([[INSERT INTO bt_tasks (type, urgency, source, product, grp, units, from_inst, to_inst,
         status, reserved, created_at, log, shifts) VALUES (?,?,?,?,?,?,?,?,?,?,?,'','')]],
         t.type, t.urgency, t.source, t.product, t.group, t.units, t.from, t.to, "waiting", t.reserved and 1 or 0, DB.nowText())
@@ -178,7 +250,14 @@ end
 
 ---------------------------------------------------------------- shifts
 
+-- -> id | false (pooled like DB.insertTask)
 function DB.insertShift(s)
+    local id = poolTake(pools.shift)
+    if id then
+        exec("UPDATE bt_shifts SET account=?, player=?, unit=?, started_at=?, ended_at=NULL, end_reason=NULL, tasks='' WHERE id=?",
+            s.account, s.name, s.unit, DB.nowText(), id)
+        return id
+    end
     return insert("INSERT INTO bt_shifts (account, player, unit, started_at, tasks) VALUES (?,?,?,?,'')",
         s.account, s.name, s.unit, DB.nowText())
 end

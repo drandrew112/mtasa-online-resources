@@ -14,10 +14,13 @@
     Friends themselves stay in account data (exports.v_mysql:getAccData /
     setAccData, key SP.KEY_FRIENDS) - only friend *requests* moved to a table.
 
-    All helpers are synchronous (mysqlQuerySync / mysqlInsert / mysqlExec block
-    for the round trip). The data set is small and only touched on social
-    actions, never per frame.
+    The start-up loads and the friend-request checks of the friend actions are
+    synchronous (mysqlQuerySync blocks for the round trip). Everything a player
+    can trigger often - the snapshot's request list, message inserts - is async
+    through v_mysql's async lib (PERF-01). Writes (mysqlExec) never block.
 ]]
+
+if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql async lib (PERF-01)
 
 SPDB = SPDB or {}
 
@@ -40,10 +43,11 @@ local function exec(sql, ...)
     return exports.v_mysql:mysqlExec(sql, ...) ~= false
 end
 
-local function insert(sql, ...)
-    if not mysqlReady() then return nil end
-    local id = exports.v_mysql:mysqlInsert(sql, ...)
-    return (type(id) == "number") and id or nil
+-- Async INSERT; cb(id) with the new row id, or cb(nil) on failure.
+local function insertAsync(cb, sql, ...)
+    MYSQL.insert(function(id)
+        cb((type(id) == "number") and id or nil)
+    end, sql, ...)
 end
 
 local function now()
@@ -137,19 +141,37 @@ function SPDB.loadMessages()
     return dms, crewMsgs
 end
 
--- Insert helpers return the new row id (or nil when the DB is unavailable).
-function SPDB.insertDm(from, to, text, time, read)
-    return insert(
-        "INSERT INTO `messages` (kind, sender, recipient, body, is_read, created_at) " ..
-        "VALUES ('dm', ?, ?, ?, ?, ?)",
-        from, to, text, read and 1 or 0, tonumber(time) or now())
+-- The message is already in the in-memory list; its row id arrives later and
+-- is stored on it (msg.id). What happened to the message meanwhile is applied
+-- then: msg.dropped (trimmed from the history) deletes the new row, msg.read
+-- (DM opened) flags it read. On failure the message stays memory-only, as it
+-- did when the database was unavailable.
+local function onInserted(msg)
+    return function(id)
+        if not id then return end
+        msg.id = id
+        if msg.dropped then
+            SPDB.deleteMessage(id)
+        elseif msg.read then
+            SPDB.markMessagesRead({ id })
+        end
+    end
 end
 
-function SPDB.insertCrewMsg(from, crew, text, time)
-    return insert(
+-- msg = { from, to, text, time, read }
+function SPDB.insertDm(msg)
+    insertAsync(onInserted(msg),
+        "INSERT INTO `messages` (kind, sender, recipient, body, is_read, created_at) " ..
+        "VALUES ('dm', ?, ?, ?, ?, ?)",
+        msg.from, msg.to, msg.text, msg.read and 1 or 0, tonumber(msg.time) or now())
+end
+
+-- msg = { from, crew, text, time }
+function SPDB.insertCrewMsg(msg)
+    insertAsync(onInserted(msg),
         "INSERT INTO `messages` (kind, sender, recipient, body, is_read, created_at) " ..
         "VALUES ('crew', ?, ?, ?, 0, ?)",
-        from, crew, text, tonumber(time) or now())
+        msg.from, msg.crew, msg.text, tonumber(msg.time) or now())
 end
 
 function SPDB.deleteMessage(id)
@@ -180,15 +202,45 @@ end
 -- Friend requests
 --------------------------------------------------------------------------------
 
--- Sender account names of the requests addressed to `recipient` (newest first).
-function SPDB.getRequestsFor(recipient)
+local REQUESTS_SQL = "SELECT sender FROM `friendRequests` WHERE recipient = ? ORDER BY id DESC"
+
+local function senders(rows)
     local out = {}
-    if type(recipient) ~= "string" or recipient == "" then return out end
-    for _, row in ipairs(query(
-        "SELECT sender FROM `friendRequests` WHERE recipient = ? ORDER BY id DESC", recipient)) do
+    for _, row in ipairs(rows) do
         if row.sender then out[#out + 1] = row.sender end
     end
     return out
+end
+
+-- Sender account names of the requests addressed to `recipient` (newest first).
+-- Blocking: only for the friend actions, which must check before they write.
+function SPDB.getRequestsFor(recipient)
+    if type(recipient) ~= "string" or recipient == "" then return {} end
+    return senders(query(REQUESTS_SQL, recipient))
+end
+
+-- Non-blocking variant: cb(list); an empty list when the database fails.
+function SPDB.getRequestsForAsync(cb, recipient)
+    if type(recipient) ~= "string" or recipient == "" then return cb({}) end
+    MYSQL.query(function(rows)
+        cb(type(rows) == "table" and senders(rows) or {})
+    end, REQUESTS_SQL, recipient)
+end
+
+-- Non-blocking account search for the player search: cb(names) with up to
+-- `limit` account names containing `needle` (case-insensitive, ascending), or
+-- cb(false) when the database fails. `#`-prefixed (system) accounts are left out.
+function SPDB.searchAccountsAsync(cb, needle, limit)
+    local pattern = "%" .. needle:gsub("[\\%%_]", "\\%0") .. "%"
+    MYSQL.query(function(rows)
+        if type(rows) ~= "table" then return cb(false) end
+        local out = {}
+        for _, row in ipairs(rows) do
+            if type(row.account_name) == "string" then out[#out + 1] = row.account_name end
+        end
+        cb(out)
+    end, "SELECT account_name FROM `accounts` WHERE account_name LIKE ? AND account_name NOT LIKE '#%' " ..
+         "ORDER BY account_name ASC LIMIT ?", pattern, limit)
 end
 
 function SPDB.addRequest(sender, recipient)
