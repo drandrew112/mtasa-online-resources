@@ -1,0 +1,4 @@
+<meta>
+    <info author="DrAndrew112" version="1.0" name="v_fps" description="FPS counter, toggled with /fps" type="script" />
+    <script src="fps_c.lua" type="client" cache="false" />
+</meta>
