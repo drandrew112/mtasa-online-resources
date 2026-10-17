@@ -4,6 +4,10 @@
 
 	<include resource="v_locals" />
 	<script src="locals.lua" type="client" />
+	<script src="minigames/core.lua" type="client" />
+	<script src="minigames/pacman.lua" type="client" />
+	<script src="minigames/snake.lua" type="client" />
+	<script src="minigames/g2048.lua" type="client" />
 	<script src="client.lua" type="client" />
 	<script src="server.lua" type="server" />
 
@@ -21,8 +25,6 @@
 	<file src="bgs/9.png" type="client" />
 	<file src="bgs/10.png" type="client" />
 	<file src="bgs/11.png" type="client" />
-
-	<file src="sounds/music.mp3" type="client" />
 
 	<export function="isDownloadingActive" type="client" />
 </meta>

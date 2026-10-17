@@ -14,9 +14,6 @@ local total = "96"
 local discord = "https://discord.gg/pGagxbRkS4"
 
 local bg_img = "bgs/"..tostring(math.random(1,11))..".png"
-local allow_music = false
-local music = false
-local musicPath = "sounds/music.mp3"
 
 local roundedShader = dxCreateShader("rounded.fx")
 local logoTex = dxCreateTexture("freev.png")
@@ -37,6 +34,34 @@ local TEST_ADMIN_LEVEL = 5
 -- HUD/minimap. A HUD-ot elrejteni akaro resource-ok (login panel, pause menu)
 -- ugyis minden kepkockaban / minden allapotvaltasnal ujra beallitjak.
 local hudHiddenByUs = false
+
+-- Letoltes kozben latszik az egermutato (minijatekok / menu). Csak akkor
+-- kapcsoljuk ki, ha mi kapcsoltuk be, es a download:finished elott, hogy a
+-- login panel mar a sajat kurzorallapotat allitsa be.
+local cursorOn, cursorOwned = false, false
+
+local function setCursor(on)
+    if on then
+        if not cursorOn then
+            cursorOn = true
+            cursorOwned = not isCursorShowing()
+        end
+        if not isCursorShowing() then
+            showCursor(true)
+            cursorOwned = true
+        end
+    elseif cursorOn then
+        cursorOn = false
+        if cursorOwned then showCursor(false) end
+        cursorOwned = false
+    end
+end
+
+-- minijatekok: csak letoltes kozben (vagy /downloadtest alatt) jatszhatok
+MG.allowed = function() return isTransferBoxActive() or debug_ds end
+-- a teljes tartalom (logo + menu + kartyak, ~545 ui) a kepernyo kozepere kerul
+local logoY = math.max(uicore:ui(20), (sh - uicore:ui(545)) / 2)
+local gameAreaBottom = sh - safe_y - uicore:ui(120)
 
 local function restoreHud()
     if not hudHiddenByUs then return end
@@ -61,20 +86,27 @@ function render()
         setElementData(localPlayer, "download_screen", true)
         showChat(false)
 
+        setCursor(true)
+
         dxDrawImage(0,0, sw,sh, bg_img)
 
-        --dxDrawText("Free V", sw/2, sh*0.4, _,_, tocolor(30,170,255), uicore:ui(3), "pricedown", "center", "bottom", false,false,false,true)
-        dxDrawImage(
-            sw/2-logosize-10,
-            sh/2-logosize/2,
-            logosize,
-            logosize,
-            roundedShader
-        )
-        dxDrawText(L("ui_download.client.welcome_to_freev_while_you_wait"), sw/2+10, sh/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
-        
+        -- a jatek kozben a fejlec (logo + szoveg) helyet ad a jateknak
+        local playing = MG.isPlaying()
+        if not playing then
+            dxDrawImage(
+                sw/2-logosize-10,
+                logoY,
+                logosize,
+                logosize,
+                roundedShader
+            )
+            dxDrawText(L("ui_download.client.welcome_to_freev_while_you_wait"), sw/2+10, logoY+logosize/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
+        end
+
+        MG.draw(logoY + logosize + uicore:ui(95), gameAreaBottom)
+
         dxDrawText( L("ui_download.client.join_our_discord_community_press_c", { discord = discord }), sw/2, sh-safe_y, _,_, tocolor(255,255,255), uicore:ui(1.1), "default", "center", "bottom", false,false,false,true)
-        
+
         local downloadtext = L("ui_download.client.downloading_mb", { downloaded = downloaded, total = total, progresz = (progresz or "0") })
         uicore:drawLoadingText(downloadtext)
 
@@ -84,16 +116,13 @@ function render()
     else
         -- nincs aktiv letoltes: visszaadjuk a HUD-ot, ha mi rejtettuk el
         restoreHud()
+        setCursor(false)
+        if MG.isPlaying() then MG.stop() end
     end
 end
 addEventHandler("onClientRender", root, render)
 
 function on_fileDownload (res, file, size, state)
-    if not music then
-        if allow_music then
-            music = playSound(musicPath, true)
-        end
-    end
     --if state=="failed" then 
         res_name = getResourceName( res )
         file_name = file
@@ -115,8 +144,10 @@ function on_TransferBoxVisibilityChange (state)
     elseif state==false then
         isDownloading = false
 
-        stopSound(music)
-        music = false
+        if not debug_ds then
+            setCursor(false)
+            MG.stop()
+        end
         fadeCamera(true)
         setElementData(localPlayer, "download_screen", false)
         restoreHud()
@@ -140,11 +171,9 @@ addCommandHandler("downloadtest", function()
         outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #00ff00BEKAPCSOLVA#ffffff.", 255, 255, 255, true)
     else
         outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #ff4444KIKAPCSOLVA#ffffff.", 255, 255, 255, true)
-        -- kikapcsolaskor visszaallitjuk az eredeti allapotot
-        if isElement(music) then
-            stopSound(music)
-        end
-        music = false
+
+        setCursor(false)
+        MG.stop()
         fadeCamera(true)
         showChat(true)
         hudHiddenByUs = false

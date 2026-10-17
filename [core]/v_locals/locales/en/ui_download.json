@@ -1,5 +1,27 @@
 {
   "ui_download.client.downloading_mb": "Downloading... ({downloaded}/{total} MB) {progresz}%",
   "ui_download.client.join_our_discord_community_press_c": "Join our Discord community!\n#7289DA{discord}\n#ffffff(Press C to copy link)",
-  "ui_download.client.welcome_to_freev_while_you_wait": "Welcome to FreeV!\nWhile you wait, check out our Discord for the latest updates!\n\nFreeV — experience San Andreas like never before."
+  "ui_download.client.welcome_to_freev_while_you_wait": "Welcome to FreeV!\nWhile you wait, check out our Discord for the latest updates!\n\nFreeV — experience San Andreas like never before.",
+  "ui_download.mg.title": "Mini-games",
+  "ui_download.mg.subtitle": "Play while you wait for the download!",
+  "ui_download.mg.pacman_name": "Pac-Man",
+  "ui_download.mg.pacman_desc": "Eat all the dots and stay away from the ghosts.",
+  "ui_download.mg.snake_name": "Snake",
+  "ui_download.mg.snake_desc": "Collect the food, but don't hit the walls or yourself.",
+  "ui_download.mg.g2048_name": "2048",
+  "ui_download.mg.g2048_desc": "Slide the tiles and merge the numbers to reach 2048.",
+  "ui_download.mg.back": "Back",
+  "ui_download.mg.score": "Score: {score}",
+  "ui_download.mg.best": "Best: {best}",
+  "ui_download.mg.level": "Level {level}",
+  "ui_download.mg.lives": "Lives: {lives}",
+  "ui_download.mg.ready": "Ready!",
+  "ui_download.mg.level_clear": "Level cleared!",
+  "ui_download.mg.game_over": "Game over",
+  "ui_download.mg.you_win": "You win!",
+  "ui_download.mg.restart": "Press Enter or Space to play again",
+  "ui_download.mg.win_continue": "Press Enter to keep playing",
+  "ui_download.mg.snake_start": "Press any arrow key to start",
+  "ui_download.mg.controls_move": "Arrow keys / WASD: move",
+  "ui_download.mg.controls_back": "Backspace: back to menu"
 }
