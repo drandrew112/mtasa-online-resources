@@ -2,7 +2,6 @@
 
 BTD = {
     WORK_ID = "bloodtransport",
-    DB_FILE = "data/bloodtransport.db",
 
     -- Pay at the end of a service (work_core payWork, itemised receipt)
     PAY = {

@@ -12,21 +12,30 @@ local function isRunning(name)
     return res and getResourceState(res) == "running"
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
-    DB.init()
+addEvent("mysql:connected")
+
+local dbReady = false
+
+local function startDb()
+    if dbReady or not DB.init() then return end
+    dbReady = true
     -- leftovers of the last run lost their cargo: close them, the stock takes the reserved units back
     local rows = DB.closeLeftovers() or {}
-    local function giveBack()
-        if not isRunning("bt_stock") then return end
-        for _, r in ipairs(rows) do
-            if r.reserved == 1 and r.status == "waiting" and r.product and r.from_inst then
-                exports.bt_stock:release(r.from_inst, r.product, r.grp, tonumber(r.units) or 0)
-            end
+    if not isRunning("bt_stock") then return end
+    for _, r in ipairs(rows) do
+        if tonumber(r.reserved) == 1 and r.status == "waiting" and r.product and r.from_inst then
+            exports.bt_stock:release(r.from_inst, r.product, r.grp, tonumber(r.units) or 0)
         end
-        rows = {}
     end
-    giveBack()
+end
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    startDb()
+    if not dbReady then outputDebugString("[bt_dispatch] v_mysql not connected yet, waiting for mysql:connected", 2) end
 end)
+
+-- v_mysql (re)connected: the first time it also creates the tables and closes the leftovers
+addEventHandler("mysql:connected", root, startDb)
 
 ---------------------------------------------------------------- exports
 
@@ -61,16 +70,12 @@ function getPublicState()
         units[#units + 1] = { unit = shift.unit, driver = shift.name, x = x, y = y, delivered = shift.delivered,
             since = math.floor((getTickCount() - shift.startedTick) / 1000), windDown = shift.windDown, tasks = tasks }
     end
-    local total = TotalDelivered
-    local rows = DB.query("SELECT COUNT(*) AS n FROM tasks WHERE status = 'delivered'")
-    if rows and rows[1] then total = tonumber(rows[1].n) or total end
-    return { onDuty = #units, active = active, completed = total, units = units }
+    return { onDuty = #units, active = active, completed = getCompletedCount(), units = units }
 end
 
--- Total delivered tasks since the beginning (database)
+-- Total delivered tasks since the beginning (database count at start + delivered since then)
 function getCompletedCount()
-    local rows = DB.query("SELECT COUNT(*) AS n FROM tasks WHERE status = 'delivered'")
-    return rows and rows[1] and tonumber(rows[1].n) or TotalDelivered
+    return DB.completed + TotalDelivered
 end
 
 -- Test / admin helper: generate one random task now

@@ -9,7 +9,7 @@ Request: `Blood transporter prompt.txt`.
 | `bt_core` | the transporter right (`bt.right`), the 7 institutions and their v_inventory ports, `getConfig()` |
 | `bt_items` | cargo items, the blood box of the ambulances (take / put back through an interact menu at the rear, no trunk panel), per-player port rules, pickup / delivery detection |
 | `bt_stock` | stock of centers and hospitals (`data/stock.json`), hospital consumption, hourly refill, resupply requests |
-| `bt_dispatch` | services (shifts), tasks, assignment, handover, pay, the panel (J), `/btadmin`, SQLite `data/bloodtransport.db` |
+| `bt_dispatch` | services (shifts), tasks, assignment, handover, pay, the panel (J), `/btadmin`, MySQL via v_mysql: `bt_tasks`, `bt_shifts` (`bt_dispatch/database.sql`) |
 | `bt_web` | web page: home, live map with the stock, admin. HTTP `/bt_web/` and ui_browser `blood-transport.eu` |
 | `[work]/work_bloodtransport` | the work on work_core: duty marker, `BT-` blood transport vehicles (model 415), gives the right; the optional tutorial (`tutorial/`) |
 

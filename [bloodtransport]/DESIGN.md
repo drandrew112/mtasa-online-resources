@@ -50,7 +50,7 @@ A képernyőtervek: `docs/mockups/01..07_*.png` (újragenerálás: `python docs/
   bt_core       intézmények (7 db), jog, portamarkerek (v_inventory), közös config, exportok
   bt_items      itemek, csomagtartó + doboz, porta-szabályok, felvétel/leadás észlelése
   bt_stock      készlet (data/stock.json), fogyasztás, feltöltés, kórházi utánpótlás kérése
-  bt_dispatch   szolgálat, feladatok, kiosztás, átadás, fizetés, panel, /btadmin, SQLite
+  bt_dispatch   szolgálat, feladatok, kiosztás, átadás, fizetés, panel, /btadmin, MySQL (v_mysql)
   bt_web        weboldal (Home / Map / Admin), web_api app
 [work]/work_bloodtransport   work duty, járműpontok, jog adása
 ```
@@ -92,13 +92,13 @@ Típusok: kórházi utánpótlás (csak bt_stock kérheti), sürgős vér, előr
 Státusz: `WAITING` → `TRANSIT` → `DELIVERED` / `CANCELLED` (automatikus: porta → doboz = felvétel, doboz → célporta = átadás). A leadott feladat 5 mp-en belül eltűnik a panelről.
 
 **Kiosztás**: ha nincs szolgálatban senki → nincs feladat, a külső kérést elutasítja. Az új feladat a legkevésbé terhelt (a legkevesebb nyitott feladatú) vérszállítóé. A nyitott feladatok célszáma a szolgálatban lévők számával arányos (config: 2 × létszám, egyénenként max. 4). A beépített típusokat egy generátor hozza létre (config-ban hangolható gyakorisággal), az utánpótlást a bt_stock.
-**Átadás két játékos között**: csak `WAITING`, csak ha a két egység ≤ 5 m-re van; a másik 20 mp-ig fogadhatja; elfogadáskor a feladat átkerül a másik listájára (a porta-szabályok újraszámolódnak, az útvonal törlődik), a `shift_tasks` naplózza.
+**Átadás két játékos között**: csak `WAITING`, csak ha a két egység ≤ 5 m-re van; a másik 20 mp-ig fogadhatja; elfogadáskor a feladat átkerül a másik listájára (a porta-szabályok újraszámolódnak, az útvonal törlődik), a `bt_tasks.shifts` / `bt_shifts.tasks` naplózza.
 **Sorrend**: a játékos mozgathatja a `WAITING` feladatokat; a `TRANSIT` mindig legfelül. A sorrend szerveren tárolt, a szerver érvényesíti.
 **Útvonal**: egyszerre egy v_radar objective játékosonként; státusz szerint a felvételi vagy a leadási pont; státuszváltáskor automatikusan frissül/törlődik.
 
 **Fizetés** (a szolgálat végén, `work_core:payWork`, tételes nyugta, `workId = "bloodtransport"`): alapbér €2000 (csak ha ≥1 `DELIVERED`), +€2500 / átadott, −€1500 / szállítás közben (TRANSIT) lévő, fel nem vett: nulla. A végösszeg ≤ 0 → nem fizet, de a nyugta látszik (work_core szabály).
 
-**Adatbázis** `data/bloodtransport.db` (SQLite, gitignore): `tasks`, `shifts`, `shift_tasks` (kinek jutott, mikor, átadva-e → az admin a kiadott ID-ket látja), `task_log` (státusztörténet). Minden elemnek `id`-ja van, a státuszok folyamatosan frissülnek.
+**Adatbázis** a közös MySQL (v_mysql exportok, séma: `bt_dispatch/database.sql`, `main.sql`), két tábla: `bt_tasks` (feladatok; `log` = státusztörténet, `shifts` = kinek jutott, mikor, átadva-e) és `bt_shifts` (szolgálatok; `tasks` = a kiadott feladat-ID-k, `task_count`). A naplóoszlopok hozzáfűzős JSON-sorok. Az SQLite-ot (2026-10-17) teljesen elvetettük, a régi adatot nem vittük át. Minden elemnek `id`-ja van, a státuszok folyamatosan frissülnek.
 
 **Kliens panel** (jobb alsó sarok): kis nézet (01. kép) és nagy nézet J-re (02. kép) kurzorral; csak a joggal rendelkezőknek.
 **Admin**: `/btadmin` (dx panel a `/ermadmin` mintájára, 04. kép), szint: `BT.ADMIN_LEVEL = 2`; a lekérdezések közösek a webes adminnal.

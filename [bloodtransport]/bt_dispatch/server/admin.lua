@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- /btadmin queries (shift and task history from bloodtransport.db). Used by the in-game panel
+-- /btadmin queries (shift and task history from bt_shifts / bt_tasks, v_mysql). Used by the in-game panel
 -- (client/admin.lua, every call re-checks the admin level) and by the web admin of bt_web
 -- (exports.bt_dispatch:adminQuery, the web side checks the level).
 
@@ -39,6 +39,15 @@ local function paged(countSql, selectSql, where, args, page)
     return rows, total, page, pages
 end
 
+local SHIFT_COLS = "id, account, player, unit, started_at, ended_at, end_reason, delivered, in_transit, cancelled, pay, task_count"
+local TASK_COLS = [[id, type, urgency, source, product, grp, units, from_inst, to_inst, status, shift_id, created_at, assigned_at,
+    picked_at, delivered_at, cancelled_at, cancel_reason]]
+
+-- "?,?,?" for n values
+local function marks(n)
+    return string.rep("?,", n - 1) .. "?"
+end
+
 local function taskRow(r)
     return {
         id = r.id, type = r.type, urgency = r.urgency or "", status = r.status, product = r.product or "", group = r.grp or "",
@@ -61,8 +70,8 @@ function H.shifts(p)
     end
     if p.filter == "active" then where[#where + 1] = "ended_at IS NULL"
     elseif p.filter == "ended" then where[#where + 1] = "ended_at IS NOT NULL" end
-    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM shifts",
-        "SELECT *, (SELECT COUNT(*) FROM shift_tasks st WHERE st.shift_id = shifts.id) AS task_count FROM shifts",
+    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM bt_shifts",
+        "SELECT " .. SHIFT_COLS .. " FROM bt_shifts",
         where, args, tonumber(p.page) or 1)
     local list = {}
     for _, r in ipairs(rows) do
@@ -78,15 +87,25 @@ end
 
 function H.shift(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM shifts WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_shifts WHERE id = ?", id) or {})[1]
     if not r then return { error = "not_found" } end
+    local given, ids, byId = DB.assignments(r.tasks, "task"), {}, {}
+    for _, a in ipairs(given) do
+        if not byId[a.id] then ids[#ids + 1], byId[a.id] = a.id, {} end
+    end
+    if #ids > 0 then
+        for _, t in ipairs(DB.query("SELECT id, type, urgency, status, product, grp, units, from_inst, to_inst FROM bt_tasks WHERE id IN ("
+            .. marks(#ids) .. ")", unpack(ids)) or {}) do
+            byId[tonumber(t.id)] = t
+        end
+    end
     local tasks = {}
-    for _, l in ipairs(DB.query([[SELECT st.*, t.type, t.urgency, t.status, t.product, t.grp, t.units, t.from_inst, t.to_inst
-        FROM shift_tasks st LEFT JOIN tasks t ON t.id = st.task_id WHERE st.shift_id = ? ORDER BY st.id]], id) or {}) do
+    for _, a in ipairs(given) do
+        local l = byId[a.id]
         tasks[#tasks + 1] = {
-            id = l.task_id, type = l.type or "?", urgency = l.urgency or "", status = l.status or "?", product = l.product or "",
+            id = a.id, type = l.type or "?", urgency = l.urgency or "", status = l.status or "?", product = l.product or "",
             group = l.grp or "", units = tonumber(l.units) or 0, fromName = instName(l.from_inst), toName = instName(l.to_inst),
-            assignedAt = l.assigned_at or "", releasedAt = l.released_at or "", outcome = l.outcome or "",
+            assignedAt = a.assignedAt or "", releasedAt = a.releasedAt or "", outcome = a.outcome or "",
         }
     end
     return {
@@ -103,13 +122,14 @@ function H.tasks(p)
     if search ~= "" then
         local l = like(search)
         local num = tonumber((search:gsub("^[Tt]%-", "")))
-        where[#where + 1] = "(id = ? OR type LIKE ? OR product LIKE ? OR grp LIKE ? OR from_inst LIKE ? OR to_inst LIKE ? OR shift_id IN (SELECT id FROM shifts WHERE unit LIKE ? OR player LIKE ?))"
+        where[#where + 1] = "(id = ? OR type LIKE ? OR product LIKE ? OR grp LIKE ? OR from_inst LIKE ? OR to_inst LIKE ? OR shift_id IN (SELECT id FROM bt_shifts WHERE unit LIKE ? OR player LIKE ?))"
         args = { num or -1, l, l, l, l, l, l, l }
     end
     if p.filter == "open" then where[#where + 1] = "status IN ('waiting','transit')"
     elseif p.filter == "closed" then where[#where + 1] = "status IN ('delivered','cancelled')" end
-    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM tasks",
-        "SELECT *, (SELECT unit FROM shifts s WHERE s.id = tasks.shift_id) AS unit, (SELECT player FROM shifts s WHERE s.id = tasks.shift_id) AS driver FROM tasks",
+    local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM bt_tasks",
+        "SELECT " .. TASK_COLS .. ", (SELECT unit FROM bt_shifts s WHERE s.id = bt_tasks.shift_id) AS unit, "
+            .. "(SELECT player FROM bt_shifts s WHERE s.id = bt_tasks.shift_id) AS driver FROM bt_tasks",
         where, args, tonumber(p.page) or 1)
     local list = {}
     for _, r in ipairs(rows) do
@@ -122,18 +142,27 @@ end
 
 function H.task(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM tasks WHERE id = ?", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_tasks WHERE id = ?", id) or {})[1]
     if not r then return { error = "not_found" } end
     local t = taskRow(r)
     t.log = {}
-    for _, l in ipairs(DB.query("SELECT * FROM task_log WHERE task_id = ? ORDER BY id", id) or {}) do
+    for _, l in ipairs(DB.lines(r.log)) do
         t.log[#t.log + 1] = { at = l.at or "", event = l.event or "", info = l.info or "" }
     end
+    local given, ids, byId = DB.assignments(r.shifts, "shift"), {}, {}
+    for _, a in ipairs(given) do
+        if not byId[a.id] then ids[#ids + 1], byId[a.id] = a.id, {} end
+    end
+    if #ids > 0 then
+        for _, s in ipairs(DB.query("SELECT id, unit, player FROM bt_shifts WHERE id IN (" .. marks(#ids) .. ")", unpack(ids)) or {}) do
+            byId[tonumber(s.id)] = s
+        end
+    end
     t.shifts = {}
-    for _, l in ipairs(DB.query([[SELECT st.*, s.unit, s.player FROM shift_tasks st LEFT JOIN shifts s ON s.id = st.shift_id
-        WHERE st.task_id = ? ORDER BY st.id]], id) or {}) do
-        t.shifts[#t.shifts + 1] = { shiftId = l.shift_id, unit = l.unit or "?", player = l.player or "?",
-            assignedAt = l.assigned_at or "", releasedAt = l.released_at or "", outcome = l.outcome or "" }
+    for _, a in ipairs(given) do
+        local s = byId[a.id]
+        t.shifts[#t.shifts + 1] = { shiftId = a.id, unit = s.unit or "?", player = s.player or "?",
+            assignedAt = a.assignedAt or "", releasedAt = a.releasedAt or "", outcome = a.outcome or "" }
     end
     return t
 end
