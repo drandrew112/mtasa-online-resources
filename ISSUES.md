@@ -63,7 +63,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-08](#sec-08) | HIGH | Time trial reward farm (gated by client-set `tt:active`) | FIXED 2026-10-17 |
 | [SEC-09](#sec-09) | HIGH | Pre-login DoS: login/register not rate limited, each try = 2 blocking remote queries + bcrypt | FIXED 2026-10-17 |
 | [SEC-10](#sec-10) | HIGH | Social panel events trigger blocking DB work with no rate limit (DoS) | OPEN |
-| [SEC-11](#sec-11) | HIGH | Unrestricted vehicle spawner (`ui_inac:spawnVehicle`) | OPEN |
+| [SEC-11](#sec-11) | HIGH | Unrestricted vehicle spawner (`ui_inac:spawnVehicle`) | FIXED 2026-10-17 |
 | [SEC-12](#sec-12) | HIGH | Debug/dev commands open to every player (`spawnfix`, `fixme`, `pos`, `fadetrue`…) | OPEN |
 | [SEC-13](#sec-13) | MEDIUM | Shop robbery: no distance check, parallel robberies, orphaned 80 ms timers | OPEN |
 | [SEC-14](#sec-14) | MEDIUM | Vehicle element data set directly by clients (sirens, radio, tuning, GPS) | OPEN |
@@ -355,7 +355,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-11"></a>
 ### SEC-11 — Unrestricted vehicle spawner
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17
+- **Resolution (2026-10-17):** The server (`ui_inac/server/spawn.lua`) now checks every request.
+  - Spawning only works in interior 0 / dimension 0. Elsewhere the player gets an error notification.
+  - A player riding in a vehicle driven by another player cannot spawn a vehicle.
+  - Rail vehicles (`getVehicleType == "Train"`) are rejected. They were also removed from `vehicles.xml`.
+  - Not covered by this fix: model allow-list or admin level for military/air vehicles, cooldown,
+    the jail/job checks, and keeping the old vehicle when other players are still inside it.
 - **Location:** `[ui]/ui_inac/server/spawn.lua:16`
 - **Problem:** Any model ID (Rhino, Hydra, Hunter…), anywhere, in any dimension or interior
   (arena, jail, job lobbies), with no cooldown. The old vehicle is destroyed even when other

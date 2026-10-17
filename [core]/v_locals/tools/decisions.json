@@ -307,6 +307,8 @@
     "common.time_left_s": "{time_left|1f} s"
   },
   "add": {
+    "ui_inac.main.spawn_only_outside": "You can only spawn a vehicle outside, not in an interior or another dimension.",
+    "ui_inac.main.spawn_not_as_passenger": "You can't spawn a vehicle while riding in a vehicle driven by another player.",
     "ui_pause.settings.language": "Language",
     "ui_pause.settings.language_desc": "The language of the game texts.",
     "ui_pause.settings.unavailable": "unavailable",

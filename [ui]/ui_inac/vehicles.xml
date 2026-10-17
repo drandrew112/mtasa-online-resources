@@ -167,9 +167,6 @@
 			<vehicle id="606" name="Baggage trailer (covered)" />
 			<vehicle id="607" name="Baggage trailer (Uncovered)" />
 			<vehicle id="610" name="Farm trailer" />
-			<vehicle id="537" name="Freight train" />
-			<vehicle id="590" name="Freight train boxcar" />
-			<vehicle id="569" name="Freight train flatbed" />
 			<vehicle id="611" name="Street Clean trailer" />
 			<vehicle id="584" name="Gas trailer" />
 			<vehicle id="608" name="Trailer 1" />
@@ -207,8 +204,6 @@
 			<vehicle id="568" name="Bandito" />
 			<vehicle id="424" name="BF Injection" />
 			<vehicle id="504" name="Bloodring Banger" />
-			<vehicle id="538" name="Brownstreak Engine" />
-			<vehicle id="570" name="Brownstreak Carriage" />
 			<vehicle id="431" name="Bus" />
 			<vehicle id="457" name="Caddy" />
 			<vehicle id="437" name="Coach" />
@@ -225,7 +220,6 @@
 			<vehicle id="423" name="Mr. Whoopee" />
 			<vehicle id="571" name="Kart" />
 			<vehicle id="531" name="Tractor" />
-			<vehicle id="449" name="Trolly" />
 			<vehicle id="583" name="Tug" />
 			<vehicle id="539" name="Vortex" />
 		</group>
