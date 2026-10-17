@@ -21,5 +21,6 @@
 	<file src="media/detail58.png" type="client" />
 	<file src="media/detail63.png" type="client" />
 	<file src="media/detail68.png" type="client" />
-
+	<export function="setDetailEnabled" type="client" />
+	<export function="isDetailEnabled" type="client" />
 </meta>

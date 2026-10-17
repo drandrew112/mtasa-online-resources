@@ -52,3 +52,12 @@ addEventHandler( "switchDynamicSky", resourceRoot, switchDynamicSky )
 -- Stop the resource
 --------------------------------
 addEventHandler( "onClientResourceStop", getResourceRootElement( getThisResource()),stopDynamicSky)
+
+--------------------------------
+-- Export (ui_pause graphics settings)
+--		On by default (auto switch on above); isDynamicSkyEnabled is in c_main.lua
+--------------------------------
+function setDynamicSkyEnabled( dsOn )
+	switchDynamicSky( dsOn and true or false )
+	return true
+end

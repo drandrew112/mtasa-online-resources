@@ -20,6 +20,9 @@ PAUSE_SETTINGS = {
     { id = "gfx_vehiclelod",     type = "number" },
     { id = "gfx_colorpreset",    type = "string" },
     { id = "gfx_colorintensity", type = "number" },
+    { id = "gfx_detail",         type = "boolean" },
+    { id = "gfx_dynamicsky",     type = "boolean" },
+    { id = "gfx_vehiclelights",  type = "boolean" },
 }
 
 -- Strings come from the client, so only short identifiers are accepted.

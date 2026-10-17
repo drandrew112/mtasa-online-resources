@@ -120,6 +120,21 @@ local function colorsAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function detailAvailable()
+    local res = getResourceFromName("shader_detail")
+    return res and getResourceState(res) == "running"
+end
+
+local function skyAvailable()
+    local res = getResourceFromName("shader_dynamic_sky")
+    return res and getResourceState(res) == "running"
+end
+
+local function vehLightsAvailable()
+    local res = getResourceFromName("dynamic_lighting_vehicles")
+    return res and getResourceState(res) == "running"
+end
+
 local function localsAvailable()
     local res = getResourceFromName("v_locals")
     return res and getResourceState(res) == "running"
@@ -260,6 +275,30 @@ SETTINGS_TREE = {
                 available = colorsAvailable,
                 get = function() return colorsAvailable() and exports.shader_colors:getColorIntensity() end,
                 set = function(v) if colorsAvailable() then exports.shader_colors:setColorIntensity(v) end end,
+            },
+            {
+                -- off by default (shader_detail does not switch itself on)
+                id = "gfx_detail", label = L("ui_pause.pausemenu.detail_textures"), type = "toggle",
+                desc = L("ui_pause.pausemenu.detail_textures_desc"),
+                available = detailAvailable,
+                get = function() return detailAvailable() and exports.shader_detail:isDetailEnabled() end,
+                set = function(v) if detailAvailable() then exports.shader_detail:setDetailEnabled(v) end end,
+            },
+            {
+                -- on by default (shader_dynamic_sky switches itself on at start)
+                id = "gfx_dynamicsky", label = L("ui_pause.pausemenu.dynamic_sky"), type = "toggle",
+                desc = L("ui_pause.pausemenu.dynamic_sky_desc"),
+                available = skyAvailable,
+                get = function() return skyAvailable() and exports.shader_dynamic_sky:isDynamicSkyEnabled() end,
+                set = function(v) if skyAvailable() then exports.shader_dynamic_sky:setDynamicSkyEnabled(v) end end,
+            },
+            {
+                -- off by default (dynamic_lighting_vehicles starts disabled)
+                id = "gfx_vehiclelights", label = L("ui_pause.pausemenu.dynamic_vehicle_lights"), type = "toggle",
+                desc = L("ui_pause.pausemenu.dynamic_vehicle_lights_desc"),
+                available = vehLightsAvailable,
+                get = function() return vehLightsAvailable() and exports.dynamic_lighting_vehicles:isVehicleLightsEnabled() end,
+                set = function(v) if vehLightsAvailable() then exports.dynamic_lighting_vehicles:setVehicleLightsEnabled(v) end end,
             },
         },
     },

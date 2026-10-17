@@ -202,10 +202,13 @@ addEventHandler( "onClientElementStreamIn", getRootElement( ),function ()
 end
 )
 
-addEventHandler("onClientResourceStart", getResourceRootElement( getThisResource()), function()
+-- Off by default; ui_pause's graphics settings switch it per player (setVehicleLightsEnabled)
+local shTeNul = nil
+
+local function startVehicleLights()
 	if FLenTimer then return end
-	local shTeNul = dxCreateShader ( "shaders/shader_null.fx",0,0,false )
-	engineApplyShaderToWorldTexture(shTeNul, "headlight*" )
+	shTeNul = dxCreateShader ( "shaders/shader_null.fx",0,0,false )
+	if shTeNul then engineApplyShaderToWorldTexture(shTeNul, "headlight*" ) end
 	for index,thisVeh in ipairs(getElementsByType("vehicle")) do
 		vehLiTable.isBlown[thisVeh] = isVehicleBlown(thisVeh)
 		vehLiTable.strOut[thisVeh] = not isElementStreamedIn(thisVeh)
@@ -234,16 +237,28 @@ addEventHandler("onClientResourceStart", getResourceRootElement( getThisResource
 	end
 	,flTimerUpdate,0 )
 end
-)
 
-addEventHandler("onClientResourceStop", getResourceRootElement( getThisResource()), function()
+local function stopVehicleLights()
 	if not FLenTimer then return end
 	killTimer(FLenTimer)
-	for index,thisVeh in ipairs(getElementsByType("vehicle")) do
-		lightEffectStop(thisVeh)
-	end	
+	FLenTimer = nil
+	for thisVeh in pairs(vehLiTable.leftEN) do lightEffectStop(thisVeh) end
+	for thisVeh in pairs(vehLiTable.rightEN) do lightEffectStop(thisVeh) end
+	rebuildLit()
+	if isElement(shTeNul) then destroyElement(shTeNul) end
+	shTeNul = nil
 end
-)
+
+function setVehicleLightsEnabled(on)
+	if on then startVehicleLights() else stopVehicleLights() end
+	return true
+end
+
+function isVehicleLightsEnabled()
+	return FLenTimer and true or false
+end
+
+addEventHandler("onClientResourceStop", getResourceRootElement( getThisResource()), stopVehicleLights)
 
 addEventHandler("onClientVehicleExplode", getRootElement(), function()
 	if getElementType(source) == "vehicle"  then

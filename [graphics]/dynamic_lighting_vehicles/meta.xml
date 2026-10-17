@@ -3,4 +3,6 @@
 	<script src="c_vehicleLight.lua" type="client" />
 	<file src="shaders/shader_null.fx" type="client" />
 	<include resource="dynamic_lighting" />
+	<export function="setVehicleLightsEnabled" type="client" />
+	<export function="isVehicleLightsEnabled" type="client" />
 </meta>

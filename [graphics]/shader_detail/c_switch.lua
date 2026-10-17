@@ -51,3 +51,16 @@ end
 
 addEvent( "onClientSwitchDetail", true )
 addEventHandler( "onClientSwitchDetail", resourceRoot, handleOnClientSwitchDetail )
+
+--------------------------------
+-- Exports (ui_pause graphics settings)
+--		Off by default; the pause menu switches it per player
+--------------------------------
+function setDetailEnabled( bOn )
+	handleOnClientSwitchDetail( bOn and true or false )
+	return true
+end
+
+function isDetailEnabled()
+	return bEffectEnabled and true or false
+end

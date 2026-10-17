@@ -42,4 +42,5 @@
 	<export function="getDynamicMoonVector" type="client" />
 	<export function="getMoonPhaseValue" type="client" />
 	<export function="isDynamicSkyEnabled" type="client" />
+	<export function="setDynamicSkyEnabled" type="client" />
 </meta>
