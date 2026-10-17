@@ -86,7 +86,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
 | [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | OPEN |
 | [PERF-05](#perf-05) | MEDIUM | ~100 always-attached `onClientRender`/`PreRender` handlers | IN PROGRESS |
-| [PERF-06](#perf-06) | MEDIUM | Nametags do all-player loops, LOS rays and `setPlayerNametagShowing` every frame | OPEN |
+| [PERF-06](#perf-06) | MEDIUM | Nametags do all-player loops, LOS rays and `setPlayerNametagShowing` every frame | FIXED 2026-10-17 |
 | [PERF-07](#perf-07) | MEDIUM | Synced element data used for local UI state (`hideHUD`, `showChat`, …) | OPEN |
 | [PERF-08](#perf-08) | MEDIUM | Shop robbery progress broadcast every 80 ms to all players | OPEN |
 | [PERF-09](#perf-09) | MEDIUM | Many fast server ticks (100–250 ms) running even with nobody around | OPEN |
@@ -690,7 +690,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-06"></a>
 ### PERF-06 — Nametags do all-player loops, LOS rays and `setPlayerNametagShowing` every frame
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-17
+- **Fix:** Peds removed from nametags. Nearby-player cache (`nearby[player]`) refreshed every
+  500 ms (streamed-in only, same int/dim, alpha, ≤50 units, LOS). Each entry holds the prebuilt
+  display data (name, level, admin title, widths, voice) and is rebuilt only on
+  `onClientElementDataChange` for the watched keys (`admin_level`, `accName`, `adminDuty`,
+  `admin_name`, `level`, `isChat`, `voice`). `setPlayerNametagShowing(false)` runs at resource
+  start and when a player first enters the cache. Only position and health are read per frame.
 - **Location:** `[player_interaction]/v_nametags/sourceC.lua:55-160`
 - **Problem:** Every frame: `getElementsByType("player")` (all players, not just streamed ones),
   `setPlayerNametagShowing(p, false)` for each, a line-of-sight check for each nearby one,
