@@ -41,8 +41,8 @@ Exports (server):
 | `mysqlIsConnected()` | `true` once the round-trip check has passed |
 | `mysqlQuery(callback, sql, ...)` | Async SELECT; `callback(result, numRows)` or `callback(false, err)`. Callback style is only reliable **inside this resource**. |
 | `mysqlQuerySync(sql, ...)` | **Blocking** SELECT. Returns the result table (maybe empty) or `false`. Safe cross-resource. Use for small, latency-tolerant lookups only — it stalls the server thread for the round trip. |
-| `mysqlInsert(sql, ...)` | **Blocking** INSERT. Returns the new `AUTO_INCREMENT` id (`LAST_INSERT_ID()`) or `false`. |
-| `mysqlExec(sql, ...)` | INSERT/UPDATE/DELETE, fire-and-forget. |
+| `mysqlInsert(sql, ...)` | **Blocking** INSERT. Returns the new `AUTO_INCREMENT` id (id from the same round trip) or `false`. |
+| `mysqlExec(sql, ...)` | INSERT/UPDATE/DELETE, fire-and-forget; retried after reconnect if the connection breaks mid-write. Returns `false` with no connection. |
 | `mysqlEscape(value)` | Quote/escape one value. Prefer `?` placeholders. |
 
 `?` placeholders in every helper are substituted and escaped from the varargs.

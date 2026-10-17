@@ -25,6 +25,10 @@
 -- on every setAccData, flushed on login and dropped after onPlayerQuit (two
 -- servers share this table and do not sync live, so a cached value could
 -- otherwise go stale after the player leaves).
+--
+-- Writes are per key (JSON_MERGE_PATCH), never the whole blob, so one server
+-- cannot overwrite keys another server changed (BUG-01). Needs MySQL >= 5.7.22
+-- or MariaDB >= 10.2.25.
 
 local TABLE = "accounts"
 
@@ -135,23 +139,91 @@ local function load(name)
     return c
 end
 
-local function persist(name, c)
+-- JSON string literal for a key (control chars, quotes and backslashes escaped).
+local function jsonStr(str)
+    return '"' .. (str:gsub('[%c"\\]', function(ch) return ("\\u%04x"):format(ch:byte()) end)) .. '"'
+end
+
+-- Writes ONLY the keys in `changed` (set of key -> true) so a write never
+-- overwrites keys another server changed meanwhile (BUG-01). Blob keys go
+-- through JSON_MERGE_PATCH on the stored document: `"k": {...}` sets, `"k": null`
+-- removes. Promoted columns are updated individually. The row is created when
+-- missing: UPDATE first, guarded INSERT only if nothing matched (no upsert, see below).
+local function persist(name, c, changed)
     local ts = getRealTime().timestamp
-    return mysqlExec(
+
+    local setParts, patchParts = {}, {}
+    for key in pairs(changed) do
+        if not COLUMN[key] then
+            local value = c.data[key]
+            if value == nil then
+                patchParts[#patchParts + 1] = jsonStr(key) .. ":null"
+            else
+                local packed, valueType = packValue(value)
+                patchParts[#patchParts + 1] = jsonStr(key) .. ":" .. toJSON({ v = packed, t = valueType }, true)
+            end
+        end
+    end
+    local patch = "{" .. table.concat(patchParts, ",") .. "}"
+
+    -- UPDATE of the existing row: only what changed (nil columns become literal NULL).
+    local uArgs = {}
+    if #patchParts > 0 then
+        setParts[#setParts + 1] = "account_data = JSON_MERGE_PATCH(IF(JSON_VALID(account_data), account_data, '{}'), ?)"
+        uArgs[#uArgs + 1] = patch
+    end
+    for _, col in ipairs({ "email", "display_name", "admin_level" }) do
+        if changed[col] then
+            local v = c.data[col]
+            if v == nil then
+                setParts[#setParts + 1] = col .. " = NULL"
+            else
+                setParts[#setParts + 1] = col .. " = ?"
+                uArgs[#uArgs + 1] = (col == "admin_level") and (tonumber(v) or 0) or v
+            end
+        end
+    end
+    setParts[#setParts + 1] = "updated_at = ?"
+    uArgs[#uArgs + 1] = ts
+    uArgs[#uArgs + 1] = name
+
+    -- INSERT of a brand-new row, only when the UPDATE matched nothing. It is
+    -- INSERT ... SELECT ... WHERE NOT EXISTS, not ON DUPLICATE KEY UPDATE: that
+    -- form reserves an AUTO_INCREMENT id before it notices the duplicate, so
+    -- every save of an existing account used up one `accounts.id`.
+    local iArgs = { name }
+    local insertBlob = {}
+    for key in pairs(changed) do
+        if not COLUMN[key] and c.data[key] ~= nil then insertBlob[key] = c.data[key] end
+    end
+    iArgs[#iArgs + 1] = encodeBlob(insertBlob)
+    local function colSql(col)
+        local v = c.data[col]
+        if v == nil then return "NULL" end
+        iArgs[#iArgs + 1] = v
+        return "?"
+    end
+    local emailSql   = colSql("email")
+    local displaySql = colSql("display_name")
+    iArgs[#iArgs + 1] = tonumber(c.data.admin_level) or 0
+    iArgs[#iArgs + 1] = tonumber(c.data.created_at) or ts
+    iArgs[#iArgs + 1] = ts
+    iArgs[#iArgs + 1] = name
+    local insertSql =
         "INSERT INTO `" .. TABLE .. "` " ..
         "(account_name, account_data, email, display_name, admin_level, created_at, updated_at) " ..
-        "VALUES (?, ?, ?, ?, ?, ?, ?) " ..
-        "ON DUPLICATE KEY UPDATE " ..
-        "account_data = VALUES(account_data), email = VALUES(email), " ..
-        "display_name = VALUES(display_name), admin_level = VALUES(admin_level), " ..
-        "updated_at = VALUES(updated_at)",
-        name,
-        encodeBlob(c.data),
-        c.data.email,
-        c.data.display_name,
-        tonumber(c.data.admin_level) or 0,
-        tonumber(c.data.created_at) or ts,
-        ts)
+        "SELECT ?, ?, " .. emailSql .. ", " .. displaySql .. ", ?, ?, ? FROM DUAL " ..
+        "WHERE NOT EXISTS (SELECT 1 FROM `" .. TABLE .. "` WHERE account_name = ?)"
+    local updateSql =
+        "UPDATE `" .. TABLE .. "` SET " .. table.concat(setParts, ", ") .. " WHERE account_name = ?"
+
+    return mysqlExecCb(function(ok, affected)
+        if not ok or affected > 0 then return end
+        -- No row was changed: either it does not exist yet, or MySQL reported 0
+        -- because every value was identical. The guarded INSERT is a no-op in the
+        -- second case.
+        mysqlExecCb(nil, insertSql, unpack(iArgs))
+    end, updateSql, unpack(uArgs))
 end
 
 -- Forget an account on quit so a later login reads fresh from the DB. Deferred
@@ -189,20 +261,23 @@ function setAccData(who, key, value)
 
     local c = load(name)
 
+    local changed = {}
     if type(key) == "table" then
         for k, v in pairs(key) do
             k = tostring(k)
             if COLUMN_NUM[k] then v = tonumber(v) or 0 end
             c.data[k] = v
+            changed[k] = true
         end
     elseif type(key) == "string" and key ~= "" then
         if COLUMN_NUM[key] then value = tonumber(value) or 0 end
         c.data[key] = value
+        changed[key] = true
     else
         return false
     end
 
-    return persist(name, c)
+    return persist(name, c, changed)
 end
 
 -- Internal: called by v_accounts right after it creates a row, so the cache

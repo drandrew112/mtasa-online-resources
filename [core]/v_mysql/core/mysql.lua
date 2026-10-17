@@ -36,6 +36,8 @@ local function hostString()
 end
 
 local reconnectPending = false
+local flushRetryQueue   -- defined with the write helpers below
+local verifyConnection  -- defined below
 
 local function scheduleReconnect()
     if reconnectPending then return end
@@ -66,12 +68,13 @@ end
 -- Verifies a fresh connection with a trivial query. dbConnect() returns an
 -- element immediately even when the server is unreachable, so the real check
 -- has to be a round trip.
-local function verifyConnection()
+verifyConnection = function()
     dbQuery(function(qh)
         local result = dbPoll(qh, 0)
         dbFree(qh)
         if type(result) == "table" then
             setConnected(true)
+            flushRetryQueue()
         else
             setConnected(false)
             mysqlLog("Connection check failed, reconnecting in %ds", MYSQL_RECONNECT_INTERVAL / 1000)
@@ -197,30 +200,108 @@ function mysqlInsert(queryStr, ...)
     debugLog("insert(sync): %s", queryStr)
     local qh = dbQuery(connection, queryStr, ...)
     if not qh then return false end
-    local ok = dbPoll(qh, -1)
+    -- dbPoll returns (result, numAffectedRows, lastInsertId) for a statement,
+    -- so the id comes from the very same round trip - no second query that a
+    -- reconnect in between could answer with 0 or someone else's id.
+    local res, affected, lastId = dbPoll(qh, -1)
     dbFree(qh)
-    if ok == false then
-        mysqlLog("Insert error | SQL: %s", queryStr)
+    if res == false then
+        mysqlLog("Insert error: %s | SQL: %s", tostring(lastId or affected), queryStr)
         return false
     end
-    local idqh = dbQuery(connection, "SELECT LAST_INSERT_ID() AS id")
-    local res  = dbPoll(idqh, -1)
-    dbFree(idqh)
-    if type(res) == "table" and res[1] then
-        return tonumber(res[1].id)
+    lastId = tonumber(lastId)
+    if lastId and lastId > 0 then return lastId end
+    return true
+end
+
+--------------------------------------------------------------------------------
+-- Writes (async, with retry queue)
+--------------------------------------------------------------------------------
+
+-- Writes that failed because the connection dropped wait here and are resent
+-- once a ping succeeds again (BUG-02). Only connection errors are retried; an
+-- SQL error (syntax, duplicate key, ...) is final.
+local RETRY_QUEUE_MAX = 500
+local RETRY_MAX_TRIES = 5
+local retryQueue = {}
+
+local function isConnectionError(err)
+    err = tostring(err or ""):lower()
+    return err:find("connect", 1, true) or err:find("gone away", 1, true)
+        or err:find("timed out", 1, true) or err:find("broken pipe", 1, true) or false
+end
+
+local sendWrite
+
+local function queueWrite(job)
+    if #retryQueue >= RETRY_QUEUE_MAX or job.tries >= RETRY_MAX_TRIES then
+        mysqlLog("Write dropped (retry queue full or too many tries) | SQL: %s", job.sql)
+        if job.cb then job.cb(false, 0, "dropped") end
+        return false
     end
+    retryQueue[#retryQueue + 1] = job
+    return true
+end
+
+sendWrite = function(job)
+    job.tries = job.tries + 1
+    local qh = dbQuery(function(qh)
+        local res, affected, extra = dbPoll(qh, 0)
+        dbFree(qh)
+        if type(res) == "table" then
+            if job.cb then job.cb(true, tonumber(affected) or 0, tonumber(extra) or 0) end
+            return
+        end
+        local err = tostring(extra or affected)
+        if isConnectionError(err) then
+            mysqlLog("Write failed (%s), queued for retry | SQL: %s", err, job.sql)
+            queueWrite(job)
+            if isElement(connection) then verifyConnection() end
+            return
+        end
+        mysqlLog("Write error: %s | SQL: %s", err, job.sql)
+        if job.cb then job.cb(false, 0, err) end
+    end, connection, job.sql, unpack(job.args, 1, job.n))
+    if not qh then
+        queueWrite(job)
+    end
+end
+
+flushRetryQueue = function()
+    if #retryQueue == 0 or not isElement(connection) then return end
+    local jobs = retryQueue
+    retryQueue = {}
+    mysqlLog("Resending %d queued write(s)", #jobs)
+    for _, job in ipairs(jobs) do sendWrite(job) end
+end
+
+-- INSERT / UPDATE / DELETE with a result: cb(ok, affectedRows, lastInsertId).
+-- Unlike mysqlExec it never loses the write to an outage - with no connection
+-- the statement is queued and resent after the reconnect. For use inside
+-- v_mysql (a callback cannot cross an export call).
+function mysqlExecCb(cb, queryStr, ...)
+    local job = { sql = queryStr, args = { ... }, n = select("#", ...), cb = cb, tries = 0 }
+    if not isElement(connection) then
+        debugLog("mysqlExecCb queued (no connection): %s", queryStr)
+        return queueWrite(job)
+    end
+    debugLog("exec(cb): %s", queryStr)
+    sendWrite(job)
     return true
 end
 
 -- Runs an INSERT / UPDATE / DELETE. Fire and forget; returns whether the
--- statement was queued. Placeholders (?) are escaped from the varargs.
+-- statement was sent (false without a connection, so callers can report it).
+-- If the connection breaks while it is in flight it is retried after reconnect.
+-- Placeholders (?) are escaped from the varargs.
 function mysqlExec(queryStr, ...)
     if not isElement(connection) then
         debugLog("mysqlExec skipped (no connection): %s", queryStr)
         return false
     end
     debugLog("exec: %s", queryStr)
-    return dbExec(connection, queryStr, ...) ~= false
+    sendWrite({ sql = queryStr, args = { ... }, n = select("#", ...), tries = 0 })
+    return true
 end
 
 -- Escapes/quotes a single value for manual query building. Prefer ? placeholders.

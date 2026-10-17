@@ -73,8 +73,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-18](#sec-18) | LOW | Nametags show account login names to everyone | OPEN |
 | [SEC-19](#sec-19) | LOW | Report log filename filter misses `\` (Lua 5.1 escape) | OPEN |
 | [SEC-20](#sec-20) | LOW | Self-updater pulls code from GitHub `main` without pinning | OPEN |
-| [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | OPEN |
-| [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID` | OPEN |
+| [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | FIXED 2026-10-18 (partly: reads can still be stale) |
+| [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps | FIXED 2026-10-18 (untested live) |
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | OPEN |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
@@ -490,7 +490,17 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-01"></a>
 ### BUG-01 — Cross-server lost updates in account data
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18 (`persist` writes per key). Not tested against a live DB.
+  - `persist(name, c, changed)` now sends only the keys passed to `setAccData`:
+    `account_data = JSON_MERGE_PATCH(IF(JSON_VALID(account_data), account_data, '{}'), ?)` with a
+    patch like `{"key":{"v":"1","t":"int"}}`; deleting a key sends `"key":null`. Promoted columns
+    (`email`, `display_name`, `admin_level`) are updated only when they changed. The upsert still
+    creates a missing row.
+  - Needs MySQL >= 5.7.22 or MariaDB >= 10.2.25 (`account_data` stays MEDIUMTEXT).
+  - **Still open (residual):** the per-server cache is not refreshed, so a read-modify-write of the
+    *same key* on two servers at once (e.g. both editing one friend list) can still lose one edit,
+    and the cache can serve a stale value until the player re-logs. Routing writes to the owner
+    server or a TTL/refresh would be needed. Hot-value columns (money/xp) were not added.
 - **Location:** `[core]/v_mysql/scripts/accdata.lua:118` (`load`), `:138` (`persist`), `:186` (`setAccData`)
 - **Problem:** Account data is one JSON blob per account, and each write sends the **whole** blob
   from the local cache. Accounts online on this server are cached. When server A writes to an
@@ -504,9 +514,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   xp, level, playtime) should get their own columns.
 
 <a id="bug-02"></a>
-### BUG-02 — v_mysql: writes silently lost during an outage; fragile `LAST_INSERT_ID`
+### BUG-02 — v_mysql: writes silently lost during an outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** FIXED 2026-10-18 (offline-tested only)
 - **Location:** `[core]/v_mysql/core/mysql.lua:202` (`mysqlExec`), `:177-200` (`mysqlInsert`), `:69` (`verifyConnection` only every `MYSQL_PING_INTERVAL` = 30 s)
 - **Problem:** `dbExec` returns `true` while the connection element exists, even when the server
   is unreachable, so up to 30 s of saves can be lost without an error. `mysqlInsert` runs a
@@ -515,6 +525,24 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Suggested fix:** Use `local res, affected, lastId = dbPoll(qh, -1)`. Detect failure through
   `dbExec`'s callback form (`dbQuery` + callback), and keep a small retry queue for failed
   writes so they are flushed on reconnect.
+- **Second symptom — `accounts.id` jumps** (observed ids 1, 4110, 4136, 6560, 8912, 22896, 27027,
+  54064): `persist` in `v_mysql/scripts/accdata.lua` used `INSERT ... ON DUPLICATE KEY UPDATE`.
+  InnoDB reserves an AUTO_INCREMENT value *before* it detects the duplicate, so every save of an
+  existing account burned one id (a failed insert on the unique `account_name` does too). The gaps
+  are the number of saves between two registrations. No data was lost; the risk is `INT` overflow
+  (~2.1 billion) and large ids.
+- **Fix (2026-10-18):**
+  - `mysqlInsert` takes the id from `dbPoll`'s 3rd value, no second `SELECT LAST_INSERT_ID()`.
+  - New `mysqlExecCb(cb, sql, ...)` (inside v_mysql) gives `cb(ok, affected, lastId)`. Writes that
+    fail on a **connection** error (or are issued with no connection through `mysqlExecCb`) go into
+    a retry queue (max 500, 5 tries) that is flushed when a ping succeeds. `mysqlExec` uses the same
+    path; it still returns `false` when there is no connection. SQL errors are not retried.
+  - `persist` now runs `UPDATE ... WHERE account_name = ?` first and, only if no row changed, a
+    guarded `INSERT ... SELECT ... WHERE NOT EXISTS`. No more ids burned per save.
+  - Existing gaps stay (ids are referenced elsewhere, never renumber). Optional, to stop wasting
+    the counter: `ALTER TABLE accounts AUTO_INCREMENT = <MAX(id)+1>;` (run only when the id column
+    is not exhausted; MySQL clamps it to MAX(id)+1 anyway).
+  - Caveat: a write that was executed but whose reply was lost in the outage could run twice on retry.
 
 <a id="bug-03"></a>
 ### BUG-03 — v_arenawar disables interior sounds for everyone, every frame
