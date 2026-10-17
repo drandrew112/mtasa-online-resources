@@ -75,12 +75,12 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-20](#sec-20) | LOW | Self-updater pulls code from GitHub `main` without pinning | OPEN |
 | [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | OPEN |
 | [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID` | OPEN |
-| [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN |
+| [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | OPEN |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | OPEN |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | OPEN |
-| [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN |
+| [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | OPEN (cables distance-gated) |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | OPEN |
 | [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
@@ -272,7 +272,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   clipboard and places the marker and blip. This also fixes the old typo `local marker createMarker(...)`
   that left the blip without a marker. Players below level 5 get no reaction.
   Not tested in-game yet. Note: the admin level check still goes through `accName` (SEC-02).
-- **Location:** `[core]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:69` (`/pos` for everyone)
+- **Location:** `[core]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:83` (`/pos` for everyone)
 - **Problem:** A remote event appends `text` to `positions.txt` with no permission check, no
   type/length check and no rate limit.
 - **Impact:** Disk exhaustion on the host (the event can be fired in a loop with megabyte strings).
@@ -370,7 +370,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-12 — Debug/dev commands open to every player
 - **Severity:** HIGH
 - **Status:** OPEN
-- **Location:** `[core]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:69` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
+- **Location:** `[core]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:83` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
 - **Problem:** No permission checks. (`/pos` was fixed in SEC-07, the rest is still open.)
 - **Impact:** Instant full-health respawn and escape from arena/interiors/jobs. Together with
   SEC-02 also a jail escape. Free healing in fights.
@@ -504,8 +504,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-03"></a>
 ### BUG-03 — v_arenawar disables interior sounds for everyone, every frame
 - **Severity:** MEDIUM
-- **Status:** OPEN
-- **Location:** `[minigames]/v_arenawar/shared.lua:22-24`
+- **Status:** OPEN — partly done 2026-10-17 (PERF-05): the per-frame call is gone, it now runs once
+  at client start and on every spawn. Still open: it is still off for everyone, not only inside
+  the arena. Not tested in-game.
+- **Location:** `[minigames]/v_arenawar/shared.lua:22-29`
 - **Problem:** `setInteriorSoundsEnabled(false)` runs in an always-on `onClientPreRender` for
   every player on the server, not only inside the arena.
 - **Impact:** All interior ambient sounds (clubs, shops, casinos) are gone server-wide, plus a
@@ -562,8 +564,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-08"></a>
 ### BUG-08 — world_cablecars draws its cables always; map line uses hard-coded pixels
 - **Severity:** LOW
-- **Status:** OPEN
-- **Location:** `[world]/world_cablecars/client.lua:23-34`
+- **Status:** OPEN — partly done 2026-10-17 (PERF-05): the cables are drawn only in dimension 0 /
+  interior 0 within 500 m of the cable line (1 s check of the distance from the line). Still open:
+  the F11 map line (hard-coded pixels, separate task). Not tested in-game.
+- **Location:** `[world]/world_cablecars/client.lua:22-61`
 - **Problem:** Two `dxDrawLine3D` calls every frame in any dimension or interior at any distance.
   The F11 map line is at fixed pixel coordinates (`225, 617`), so it is wrong on every
   resolution except one.
@@ -665,7 +669,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   wp_manager controls (D4) and parachute skydiving (they need
   the control-lock API: `[ui]/ui_core/ControlLockAPI_DESIGN.MD`), v_inventory ports, the cable map
   line (move to v_radar, separate task).
-- **Location:** Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[core]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[minigames]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
+- **Location:** (line numbers from the 2026-10-17 audit, before the fixes above) Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[core]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[minigames]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
 - **Problem:** Every handler is called every frame, even when it returns early. The cost of the
   calls between VMs adds up. On low-end PCs this is several FPS.
 - **Suggested fix:** Attach handlers only while they are needed (UI open, player nearby, minigame
@@ -691,7 +695,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### PERF-07 — Synced element data used for local UI state
 - **Severity:** MEDIUM
 - **Status:** OPEN
-- **Location:** `hideHUD` (`v_accounts/client/state.lua:14`, `render.lua:7`, `loading.lua:23`, `v_introduce/client/lock.lua:81`, `v_spawnmanager/client.lua:26`, `v_jobmanager/core/client/ui.lua:69`, `scoreboard.lua:61`, `ui_download/client.lua:83`, `ui_pause/c_pausemenu.lua:339,360`, `v_radar/radar/sourceC.lua:1049,1060`), `showChat`, `paused`, `scoreboardOpen`, `interactionMenuOpen` (`ui_inac/client/input.lua:46`, `temp.lua:166`), `download_screen`, `toggleOwnNametag`, `valaszto`, `enableall`, `tt:active`, `parachuting`, `skydiving`, `isStream`…
+- **Location:** `hideHUD` (`v_accounts/client/state.lua:15`, `render.lua:6`, `loading.lua:36`, `v_introduce/client/lock.lua:81`, `v_spawnmanager/client.lua:39`, `v_jobmanager/core/client/ui.lua:85`, `scoreboard.lua:74`, `ui_download/client.lua:83`, `ui_pause/c_pausemenu.lua:339,367`, `v_radar/radar/sourceC.lua:1049,1060`), `showChat`, `paused`, `scoreboardOpen`, `interactionMenuOpen` (`ui_inac/client/input.lua:47`, `temp.lua:168`), `download_screen`, `toggleOwnNametag`, `valaszto`, `enableall`, `tt:active`, `parachuting`, `skydiving`, `isStream`…
 - **Problem:** `setElementData` without `false` as the 4th argument sends the value to the server
   and then to **every** client. These keys only matter to the local client.
 - **Impact:** Pointless traffic for each player × each UI toggle × every other player. Also
