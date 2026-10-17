@@ -88,6 +88,7 @@ end
 
 -- ---------------------------------------------------------------- menu
 local cardW, cardH, gap = U(250), U(250), U(30)
+local descScale, descPad = U(1.0), U(14)
 local hover
 
 local function cardRect(i)
@@ -106,8 +107,21 @@ end
 
 local backRect = { U(30), U(30), U(130), U(42) }
 
+-- Tordelt (sortoresos) szoveg; a magassagot a hivo adja meg.
+function MG.textWrap(str, x, y, w, h, color, scale, font)
+    text(str, x, y, x + w, y + h, color or tocolor(255, 255, 255), scale or 1, font or "default",
+        "center", "top", false, true, false, false)
+end
+
 function MG.drawMenu(y)
     MG.menuY = y
+    -- a kartya magassaga a leghosszabb leiras tordelt magassagahoz igazodik
+    local maxH = 0
+    for _, g in ipairs(MG.games) do
+        local _, th = dxGetTextSize(L(g.descKey), cardW - descPad * 2, descScale, "default", true)
+        maxH = math.max(maxH, th)
+    end
+    cardH = math.max(U(250), U(168) + maxH + U(24))
     local mx, my = cursorPx()
     hover = nil
     local titleY = y - U(70)
@@ -123,7 +137,7 @@ function MG.drawMenu(y)
         local ix, iy, is = x + cardW / 2, cy + U(78), U(46)
         g.icon(ix, iy, is)
         MG.text(L(g.nameKey), x, cy + U(135), cardW, U(30), g.color, U(1.5), "default-bold")
-        MG.text(L(g.descKey), x + U(14), cy + U(168), cardW - U(28), U(70), tocolor(215, 215, 215), U(1.0), "default")
+        MG.textWrap(L(g.descKey), x + descPad, cy + U(168), cardW - descPad * 2, cardH - U(168), tocolor(215, 215, 215), descScale, "default")
         if over then
             MG.rect(x + U(14), cy + cardH - U(5), cardW - U(28), U(3), g.color)
         end
