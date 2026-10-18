@@ -60,14 +60,15 @@ end
 local H = {}
 AdminHandlers = H
 
--- pool rows (placeholders for new tasks / shifts, server/db.lua) are never listed
+-- Only rows of this server instance are read (`server` column), pool rows (placeholders for new
+-- tasks / shifts, server/db.lua) are never listed. Every result carries the instance name.
 function H.shifts(p)
-    local where, args = { "COALESCE(end_reason, '') != 'pool'" }, {}
+    local where, args = { "isPool = 0", "server = ?" }, { DB.serverId() }
     local search = tostring(p.search or ""):gsub("^%s+", ""):gsub("%s+$", "")
     if search ~= "" then
         local l = like(search)
         where[#where + 1] = "(unit LIKE ? OR player LIKE ? OR account LIKE ?)"
-        args = { l, l, l }
+        args[#args + 1], args[#args + 2], args[#args + 3] = l, l, l
     end
     if p.filter == "active" then where[#where + 1] = "ended_at IS NULL"
     elseif p.filter == "ended" then where[#where + 1] = "ended_at IS NOT NULL" end
@@ -83,20 +84,21 @@ function H.shifts(p)
             pay = tonumber(r.pay) or 0, reason = r.end_reason or "", live = r.ended_at == nil,
         }
     end
-    return { list = list, total = total, page = page, pages = pages }
+    return { list = list, total = total, page = page, pages = pages, instance = DB.instanceName() }
 end
 
 function H.shift(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM bt_shifts WHERE id = ? AND COALESCE(end_reason, '') != 'pool'", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_shifts WHERE id = ? AND isPool = 0 AND server = ?", id, DB.serverId()) or {})[1]
     if not r then return { error = "not_found" } end
     local given, ids, byId = DB.assignments(r.tasks, "task"), {}, {}
     for _, a in ipairs(given) do
         if not byId[a.id] then ids[#ids + 1], byId[a.id] = a.id, {} end
     end
     if #ids > 0 then
+        ids[#ids + 1] = DB.serverId()
         for _, t in ipairs(DB.query("SELECT id, type, urgency, status, product, grp, units, from_inst, to_inst FROM bt_tasks WHERE id IN ("
-            .. marks(#ids) .. ")", unpack(ids)) or {}) do
+            .. marks(#ids - 1) .. ") AND server = ?", unpack(ids)) or {}) do
             byId[tonumber(t.id)] = t
         end
     end
@@ -113,18 +115,18 @@ function H.shift(p)
         id = r.id, unit = r.unit or "?", player = r.player or "?", account = r.account or "", startedAt = r.started_at or "",
         endedAt = r.ended_at or "", duration = duration(r.started_at, r.ended_at), delivered = tonumber(r.delivered) or 0,
         inTransit = tonumber(r.in_transit) or 0, cancelled = tonumber(r.cancelled) or 0, pay = tonumber(r.pay) or 0,
-        reason = r.end_reason or "", payItems = DB.unjson(r.pay_items), live = r.ended_at == nil, tasks = tasks,
+        reason = r.end_reason or "", payItems = DB.unjson(r.pay_items), live = r.ended_at == nil, tasks = tasks, instance = DB.instanceName(),
     }
 end
 
 function H.tasks(p)
-    local where, args = { "status != 'pool'" }, {}
+    local where, args = { "isPool = 0", "server = ?" }, { DB.serverId() }
     local search = tostring(p.search or ""):gsub("^%s+", ""):gsub("%s+$", "")
     if search ~= "" then
         local l = like(search)
         local num = tonumber((search:gsub("^[Tt]%-", "")))
-        where[#where + 1] = "(id = ? OR type LIKE ? OR product LIKE ? OR grp LIKE ? OR from_inst LIKE ? OR to_inst LIKE ? OR shift_id IN (SELECT id FROM bt_shifts WHERE unit LIKE ? OR player LIKE ?))"
-        args = { num or -1, l, l, l, l, l, l, l }
+        where[#where + 1] = "(id = ? OR type LIKE ? OR product LIKE ? OR grp LIKE ? OR from_inst LIKE ? OR to_inst LIKE ? OR shift_id IN (SELECT id FROM bt_shifts WHERE server = bt_tasks.server AND (unit LIKE ? OR player LIKE ?)))"
+        for _, v in ipairs({ num or -1, l, l, l, l, l, l, l }) do args[#args + 1] = v end
     end
     if p.filter == "open" then where[#where + 1] = "status IN ('waiting','transit')"
     elseif p.filter == "closed" then where[#where + 1] = "status IN ('delivered','cancelled')" end
@@ -138,14 +140,15 @@ function H.tasks(p)
         t.unit, t.driver = r.unit or "", r.driver or ""
         list[#list + 1] = t
     end
-    return { list = list, total = total, page = page, pages = pages }
+    return { list = list, total = total, page = page, pages = pages, instance = DB.instanceName() }
 end
 
 function H.task(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM bt_tasks WHERE id = ? AND status != 'pool'", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM bt_tasks WHERE id = ? AND isPool = 0 AND server = ?", id, DB.serverId()) or {})[1]
     if not r then return { error = "not_found" } end
     local t = taskRow(r)
+    t.instance = DB.instanceName()
     t.log = {}
     for _, l in ipairs(DB.lines(r.log)) do
         t.log[#t.log + 1] = { at = l.at or "", event = l.event or "", info = l.info or "" }
@@ -155,7 +158,8 @@ function H.task(p)
         if not byId[a.id] then ids[#ids + 1], byId[a.id] = a.id, {} end
     end
     if #ids > 0 then
-        for _, s in ipairs(DB.query("SELECT id, unit, player FROM bt_shifts WHERE id IN (" .. marks(#ids) .. ")", unpack(ids)) or {}) do
+        ids[#ids + 1] = DB.serverId()
+        for _, s in ipairs(DB.query("SELECT id, unit, player FROM bt_shifts WHERE id IN (" .. marks(#ids - 1) .. ") AND server = ?", unpack(ids)) or {}) do
             byId[tonumber(s.id)] = s
         end
     end

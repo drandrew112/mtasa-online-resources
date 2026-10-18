@@ -308,6 +308,8 @@ local function render()
     Gfx.cross(x + s(16) + s(7), y + (hh - ls) / 2 + s(7), ls - s(14), tocolor(255, 255, 255))
     Gfx.text(L("med_erm.panel.erm_admin"), x + s(58), y + s(9), s(200), s(22), Theme.text, Gfx.font(14, true))
     Gfx.text(L("med_erm.panel.shift_task_history"), x + s(58), y + s(30), s(200), s(18), Theme.dim, Gfx.font(9))
+    local inst = Admin.lists.shifts.data and Admin.lists.shifts.data.instance or Admin.lists.tasks.data and Admin.lists.tasks.data.instance
+    if inst then Gfx.text(Gfx.fit(inst, s(190), Gfx.font(9)), x + s(58), y + s(44), s(200), s(14), Theme.accent, Gfx.font(9)) end
 
     local tabs = { { "shifts", L("med_erm.panel.shifts") }, { "tasks", L("med_erm.panel.tasks_2") } }
     for i, t in ipairs(tabs) do

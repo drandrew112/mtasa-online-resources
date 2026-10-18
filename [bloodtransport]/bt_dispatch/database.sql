@@ -12,15 +12,17 @@
 --   bt_shifts.tasks  {"task","at"} / {"task","released","outcome"}  the same
 --                    from the shift's side; task_count = number of assignments
 --   bt_shifts.pay_items  JSON list of the pay receipt lines
---   Pool rows: placeholders inserted ahead of time so a new task / shift gets
---                    its id without a blocking INSERT (PERF-01). bt_tasks:
---                    status = 'pool', source = 'pool:<server md5>'; bt_shifts:
---                    end_reason = 'pool', account = 'pool:<server md5>'.
---                    Readers skip them.
+--   server           instance id of the server that wrote the row (v_main
+--                    getServerInstanceId), right after id in both tables.
+--   isPool           1 = placeholder row inserted ahead of time so a new task /
+--                    shift gets its id without a blocking INSERT (PERF-01),
+--                    0 = real row. Readers skip isPool = 1.
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `bt_tasks` (
     `id`            INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `server`        INT          NOT NULL DEFAULT 0,
+    `isPool`        TINYINT      NOT NULL DEFAULT 0,
     `type`          VARCHAR(32)  NOT NULL,
     `urgency`       VARCHAR(32)  DEFAULT NULL,
     `source`        VARCHAR(64)  DEFAULT NULL,
@@ -46,6 +48,8 @@ CREATE TABLE IF NOT EXISTS `bt_tasks` (
 
 CREATE TABLE IF NOT EXISTS `bt_shifts` (
     `id`          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `server`      INT          NOT NULL DEFAULT 0,
+    `isPool`      TINYINT      NOT NULL DEFAULT 0,
     `account`     VARCHAR(64)  DEFAULT NULL,
     `player`      VARCHAR(64)  DEFAULT NULL,
     `unit`        VARCHAR(32)  DEFAULT NULL,

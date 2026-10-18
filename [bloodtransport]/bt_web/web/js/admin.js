@@ -135,7 +135,7 @@
         $('adTable').querySelectorAll('tbody tr').forEach(tr =>
             tr.addEventListener('click', () => { A.history = []; openDetail(selKind, Number(tr.dataset.id), false); }));
         const page = d ? d.page : 1, pages = d ? d.pages : 1;
-        $('adPageInfo').textContent = `Page ${page} / ${pages} - ${d ? d.total : 0} results`;
+        $('adPageInfo').textContent = `${d && d.instance ? d.instance + ' - ' : ''}Page ${page} / ${pages} - ${d ? d.total : 0} results`;
         $('adPrev').disabled = page <= 1;
         $('adNext').disabled = page >= pages;
     }

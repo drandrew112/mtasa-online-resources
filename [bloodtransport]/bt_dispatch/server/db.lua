@@ -14,8 +14,18 @@ DB = {}
 DB.completed = 0   -- delivered tasks in the database when the resource (or the connection) started
 DB.ready = false   -- DB.init done
 
--- md5 tag of this server on its pool rows (two servers may share the database)
-local POOL_TAG = "pool:" .. md5(string.format("%s:%d", getServerName(), getServerPort())):sub(1, 16)
+-- instance id of this server (v_main), the `server` column of every row (servers share the database)
+local function serverId()
+    local ok, id = pcall(function() return exports.v_main:getServerInstanceId() end)
+    return ok and tonumber(id) or 1
+end
+DB.serverId = serverId
+
+-- name of this instance (v_main), shown in /btadmin
+function DB.instanceName()
+    local ok, name = pcall(function() return exports.v_main:getServerInstanceName() end)
+    return ok and type(name) == "string" and name or ("#" .. serverId())
+end
 
 local function sql()
     local res = getResourceFromName("v_mysql")
@@ -93,26 +103,26 @@ end
 ---------------------------------------------------------------- id pools (PERF-01)
 -- A blocking INSERT stalls the whole server for a round trip to the remote database, but a new
 -- task / shift needs its id at once (cargo, offers, events, the stock use it). So a few
--- placeholder rows are inserted ahead of time without blocking (status / end_reason = 'pool',
--- tagged with this server, hidden from every reader); a new task / shift takes one and fills it
+-- placeholder rows are inserted ahead of time without blocking (isPool = 1, `server` = this
+-- instance, hidden from every reader); a new task / shift takes one and fills it (isPool = 0)
 -- with an UPDATE. An empty pool (or no connection) falls back to the blocking INSERT. Rows left
 -- in a pool at a stop are taken back at the next start.
 
 local pools = {
     task = {
         size = 4, ids = {}, inflight = 0,
-        adopt = "SELECT id FROM bt_tasks WHERE status = 'pool' AND source = ? ORDER BY id",
+        adopt = "SELECT id FROM bt_tasks WHERE isPool = 1 AND server = ? ORDER BY id",
         insert = function(cb)
-            MYSQL.insert(cb, "INSERT INTO bt_tasks (type, status, source, log, shifts) VALUES ('', 'pool', ?, '', '')", POOL_TAG)
+            MYSQL.insert(cb, "INSERT INTO bt_tasks (server, isPool, type, status, log, shifts) VALUES (?, 1, '', 'pool', '', '')", serverId())
         end,
     },
     shift = {
         size = 2, ids = {}, inflight = 0,
-        adopt = "SELECT id FROM bt_shifts WHERE end_reason = 'pool' AND account = ? ORDER BY id",
+        adopt = "SELECT id FROM bt_shifts WHERE isPool = 1 AND server = ? ORDER BY id",
         insert = function(cb)
             local stamp = DB.nowText()
-            MYSQL.insert(cb, "INSERT INTO bt_shifts (account, started_at, ended_at, end_reason, tasks) VALUES (?, ?, ?, 'pool', '')",
-                POOL_TAG, stamp, stamp)
+            MYSQL.insert(cb, "INSERT INTO bt_shifts (server, isPool, started_at, ended_at, tasks) VALUES (?, 1, ?, ?, '')",
+                serverId(), stamp, stamp)
         end,
     },
 }
@@ -143,6 +153,8 @@ function DB.init()
     if not DB.isConnected() then return false end
     exec([[CREATE TABLE IF NOT EXISTS bt_tasks (
         id            INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        server        INT          NOT NULL DEFAULT 0,
+        isPool        TINYINT      NOT NULL DEFAULT 0,
         type          VARCHAR(32)  NOT NULL,
         urgency       VARCHAR(32)  DEFAULT NULL,
         source        VARCHAR(64)  DEFAULT NULL,
@@ -167,6 +179,8 @@ function DB.init()
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
     exec([[CREATE TABLE IF NOT EXISTS bt_shifts (
         id          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        server      INT          NOT NULL DEFAULT 0,
+        isPool      TINYINT      NOT NULL DEFAULT 0,
         account     VARCHAR(64)  DEFAULT NULL,
         player      VARCHAR(64)  DEFAULT NULL,
         unit        VARCHAR(32)  DEFAULT NULL,
@@ -182,7 +196,17 @@ function DB.init()
         tasks       MEDIUMTEXT,
         KEY idx_ended (ended_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
-    local rows = DB.query("SELECT COUNT(*) AS n FROM bt_tasks WHERE status = 'delivered'")
+    -- tables created before the server / isPool columns: add them right after id; old pool
+    -- placeholders (status / end_reason = 'pool') become isPool rows of this server
+    for _, tbl in ipairs({ "bt_tasks", "bt_shifts" }) do
+        local c = DB.query("SELECT COUNT(*) AS n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = 'isPool'", tbl)
+        if c and c[1] and tonumber(c[1].n) == 0 then
+            DB.query("ALTER TABLE " .. tbl .. " ADD COLUMN server INT NOT NULL DEFAULT 0 AFTER id, ADD COLUMN isPool TINYINT NOT NULL DEFAULT 0 AFTER server")
+            DB.query("UPDATE " .. tbl .. " SET server = ?", serverId())
+            DB.query("UPDATE " .. tbl .. " SET isPool = 1 WHERE " .. (tbl == "bt_tasks" and "status" or "end_reason") .. " = 'pool'")
+        end
+    end
+    local rows = DB.query("SELECT COUNT(*) AS n FROM bt_tasks WHERE isPool = 0 AND status = 'delivered'")
     DB.completed = rows and rows[1] and tonumber(rows[1].n) or 0
 
     if not DB.ready then
@@ -223,14 +247,14 @@ end
 function DB.insertTask(t)
     local id = poolTake(pools.task)
     if id then
-        exec([[UPDATE bt_tasks SET type=?, urgency=?, source=?, product=?, grp=?, units=?, from_inst=?, to_inst=?,
+        exec([[UPDATE bt_tasks SET isPool=0, type=?, urgency=?, source=?, product=?, grp=?, units=?, from_inst=?, to_inst=?,
             status=?, reserved=?, created_at=?, log='', shifts='' WHERE id=?]],
             t.type, t.urgency, t.source, t.product, t.group, t.units, t.from, t.to, "waiting", t.reserved and 1 or 0, DB.nowText(), id)
         return id
     end
-    return insert([[INSERT INTO bt_tasks (type, urgency, source, product, grp, units, from_inst, to_inst,
-        status, reserved, created_at, log, shifts) VALUES (?,?,?,?,?,?,?,?,?,?,?,'','')]],
-        t.type, t.urgency, t.source, t.product, t.group, t.units, t.from, t.to, "waiting", t.reserved and 1 or 0, DB.nowText())
+    return insert([[INSERT INTO bt_tasks (server, isPool, type, urgency, source, product, grp, units, from_inst, to_inst,
+        status, reserved, created_at, log, shifts) VALUES (?,0,?,?,?,?,?,?,?,?,?,?,?,'','')]],
+        serverId(), t.type, t.urgency, t.source, t.product, t.group, t.units, t.from, t.to, "waiting", t.reserved and 1 or 0, DB.nowText())
 end
 
 function DB.setTask(id, fields)
@@ -254,12 +278,12 @@ end
 function DB.insertShift(s)
     local id = poolTake(pools.shift)
     if id then
-        exec("UPDATE bt_shifts SET account=?, player=?, unit=?, started_at=?, ended_at=NULL, end_reason=NULL, tasks='' WHERE id=?",
+        exec("UPDATE bt_shifts SET isPool=0, account=?, player=?, unit=?, started_at=?, ended_at=NULL, end_reason=NULL, tasks='' WHERE id=?",
             s.account, s.name, s.unit, DB.nowText(), id)
         return id
     end
-    return insert("INSERT INTO bt_shifts (account, player, unit, started_at, tasks) VALUES (?,?,?,?,'')",
-        s.account, s.name, s.unit, DB.nowText())
+    return insert("INSERT INTO bt_shifts (server, isPool, account, player, unit, started_at, tasks) VALUES (?,0,?,?,?,?,'')",
+        serverId(), s.account, s.name, s.unit, DB.nowText())
 end
 
 function DB.endShift(id, f)

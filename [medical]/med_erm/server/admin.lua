@@ -118,7 +118,7 @@ function handlers.shifts(p)
             live      = live and live.status or false,
         }
     end
-    return { list = list, total = total, page = page, pages = pages }
+    return { list = list, total = total, page = page, pages = pages, instance = DB.instanceName() }
 end
 
 function handlers.shift(p)
@@ -183,7 +183,7 @@ function handlers.tasks(p)
             source = r.source or "", units = DB.unjson(r.units),
         }
     end
-    return { list = list, total = total, page = page, pages = pages }
+    return { list = list, total = total, page = page, pages = pages, instance = DB.instanceName() }
 end
 
 function handlers.task(p)

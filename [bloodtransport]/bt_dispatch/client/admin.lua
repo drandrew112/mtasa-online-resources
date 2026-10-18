@@ -184,6 +184,8 @@ local function drawAdmin()
     Button(x + S(440), y + S(16), S(100), S(30), L("bt_dispatch.admin.tab_tasks"), tab == "tasks" and "primary" or "normal",
         function() tab, detail, history = "tasks", nil, {} loadList(tab) end, 10)
     Button(x + W - S(70), y + S(16), S(54), S(30), "ESC", "normal", close, 9)
+    local inst = lists[tab].data and lists[tab].data.instance
+    if inst then Text(FitText(inst, S(300), 10), x + W - S(390), y + S(5), S(310), S(55), RGB(COL.muted), 10, true, "right") end
 
     local l = lists[tab]
     local lw = S(580)

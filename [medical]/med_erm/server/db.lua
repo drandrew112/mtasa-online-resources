@@ -24,6 +24,12 @@ local function serverId()
     return tostring(exports.v_main:getServerInstanceId())
 end
 
+-- name of this instance (v_main), shown in /ermadmin
+function DB.instanceName()
+    local ok, name = pcall(function() return exports.v_main:getServerInstanceName() end)
+    return ok and type(name) == "string" and name ~= "" and name or ("#" .. serverId())
+end
+
 function DB.isConnected()
     local m = sql()
     return m and m:mysqlIsConnected() or false
