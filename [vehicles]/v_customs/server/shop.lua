@@ -1,32 +1,25 @@
 -- v_customs :: workshop sessions (server)
 --
--- A session starts when a vehicle is driven onto a workshop marker: the car is
--- snapped onto the lift, frozen, made damage-proof and pushed (with its driver)
--- into a private dimension so nobody else is in the shot. It ends when the temp
--- menu closes, the player quits, or the vehicle dies.
+-- A session starts when a vehicle is driven far enough into a workshop
+-- (server/workshop.lua): the car is frozen, made damage-proof and pushed (with
+-- its driver) into a private dimension; the client plays the drive-in, then
+-- opens the menu. Leaving: the client plays the turn + drive-out, then asks to
+-- close; only then do car and driver go back to the normal dimension. Quit,
+-- explosion or leaving the car ends it at once (car put outside the door).
 
 Customs = Customs or {}
 
-local sessions = {}   -- [player] = { veh, marker, dim, prevDim, origPlate }
-local cooldown = {}   -- [player] = tick until which marker hits are ignored
+local sessions = {}   -- [player] = { veh, ws, dim, prevDim, origPlate, exiting }
+local cooldown = {}   -- [player] = tick until which the workshop ignores them
 local nextDim  = 30001
 
+-- Max distance between the reported drive-out end point and the configured one.
+local EXIT_TOLERANCE = 8
+-- Speed the car leaves the door with (MTA units, 0.1 = 5 m/s).
+local EXIT_SPEED = 0.1
+
+addEvent("v_customs:exitBegin", true)
 addEvent("v_customs:closeSession", true)
-
---------------------------------------------------------------------------------
--- Helpers
---------------------------------------------------------------------------------
-
-local function nearestMarker(x, y, z)
-    local best, bestDist
-    for _, m in ipairs(Customs.MARKERS or {}) do
-        local d = getDistanceBetweenPoints3D(x, y, z, m[1], m[2], m[3])
-        if not bestDist or d < bestDist then
-            best, bestDist = m, d
-        end
-    end
-    return best, bestDist
-end
 
 function Customs.sessionVehicle(player)
     local s = sessions[player]
@@ -41,13 +34,11 @@ end
 -- Session lifecycle
 --------------------------------------------------------------------------------
 
-local function startSession(player, veh)
+function Customs.startSession(player, veh, wsIdx)
     if sessions[player] then return end
     if cooldown[player] and cooldown[player] > getTickCount() then return end
-
-    local vx, vy, vz = getElementPosition(veh)
-    local marker = nearestMarker(vx, vy, vz)
-    if not marker then return end
+    local ws = Customs.WORKSHOPS[wsIdx]
+    if not ws then return end
 
     local dim = nextDim
     nextDim = nextDim + 1
@@ -55,14 +46,12 @@ local function startSession(player, veh)
 
     sessions[player] = {
         veh       = veh,
-        marker    = marker,
+        ws        = wsIdx,
         dim       = dim,
         prevDim   = getElementDimension(player),
         origPlate = getVehiclePlateText(veh),
     }
 
-    setElementPosition(veh, marker[1], marker[2], marker[3])
-    setElementRotation(veh, 0, 0, marker[4] or 0)
     setElementVelocity(veh, 0, 0, 0)
     setElementFrozen(veh, true)
     setVehicleDamageProof(veh, true)
@@ -70,19 +59,37 @@ local function startSession(player, veh)
     setElementDimension(player, dim)
     setElementData(player, "customs:inShop", true)
 
-    triggerClientEvent(player, "v_customs:sessionStarted", player, veh)
+    triggerClientEvent(player, "v_customs:sessionStarted", player, veh, wsIdx, dim)
 end
 
-local function endSession(player, playerGone)
+-- pos = { x, y, z, rz } where the client's drive-out ended (nil = forced end)
+local function endSession(player, playerGone, pos)
     local s = sessions[player]
     if not s then return end
     sessions[player] = nil
-    cooldown[player] = getTickCount() + 2000
+    cooldown[player] = getTickCount() + 3000
+
+    local ws = Customs.WORKSHOPS[s.ws]
+    if s.exiting then Customs.holdDoor(s.ws, false) end
 
     if isElement(s.veh) then
+        -- always come out in front of the door, never stuck behind it
+        local e = ws.exit
+        local x, y, z, rz = e[1], e[2], e[3] + 1.0, e[4]
+        if pos and tonumber(pos[1]) and tonumber(pos[2]) and tonumber(pos[3])
+           and getDistanceBetweenPoints2D(pos[1], pos[2], e[1], e[2]) <= EXIT_TOLERANCE then
+            x, y, z, rz = pos[1], pos[2], pos[3], tonumber(pos[4]) or e[4]
+        end
+
+        setElementDimension(s.veh, s.prevDim or 0)
+        setElementPosition(s.veh, x, y, z)
+        setElementRotation(s.veh, 0, 0, rz)
         setElementFrozen(s.veh, false)
         setVehicleDamageProof(s.veh, false)
-        setElementDimension(s.veh, s.prevDim or 0)
+        if pos then
+            local r = math.rad(rz)
+            setElementVelocity(s.veh, -math.sin(r) * EXIT_SPEED, math.cos(r) * EXIT_SPEED, 0)
+        end
 
         -- personal vehicle -> persist the tuning to v_ownveh straight away
         local ownId = tonumber(getElementData(s.veh, "ownveh:id"))
@@ -92,6 +99,12 @@ local function endSession(player, playerGone)
         end
     end
     if isElement(player) and not playerGone then
+        -- on foot (got out mid-session): the real door is shut, put them outside
+        if getPedOccupiedVehicle(player) ~= s.veh then
+            local e = ws.exit
+            local r = math.rad(e[4] + 90)
+            setElementPosition(player, e[1] - math.sin(r) * 3, e[2] + math.cos(r) * 3, e[3] + 1.0)
+        end
         setElementDimension(player, s.prevDim or 0)
         setElementData(player, "customs:inShop", false)
         triggerClientEvent(player, "v_customs:sessionEnded", player)
@@ -100,40 +113,25 @@ end
 Customs.endSession = endSession
 
 --------------------------------------------------------------------------------
--- Markers
+-- Client-driven exit
 --------------------------------------------------------------------------------
 
-addEventHandler("onResourceStart", resourceRoot, function()
-    for _, m in ipairs(Customs.MARKERS or {}) do
-        local marker = createMarker(m[1], m[2], m[3] - 1, "cylinder", Customs.MARKER_SIZE, 0, 120, 200, 90)
-        setElementData(marker, "customs:marker", true)
+-- Menu closed, drive-out animation starting: open the real door so it is
+-- already up when the car reappears in the normal dimension.
+addEventHandler("v_customs:exitBegin", root, function()
+    local s = sessions[client]
+    if not s or s.exiting then return end
+    s.exiting = true
+    Customs.holdDoor(s.ws, true)
+end)
 
-        addEventHandler("onMarkerHit", marker, function(hit, matchingDim)
-            if not matchingDim then return end
-
-            local veh
-            if getElementType(hit) == "vehicle" then
-                veh = hit
-            elseif getElementType(hit) == "player" then
-                veh = getPedOccupiedVehicle(hit)
-            end
-            if not veh or getElementDimension(veh) ~= 0 then return end
-
-            local driver = getVehicleController(veh)
-            if driver and getElementType(driver) == "player" then
-                startSession(driver, veh)
-            end
-        end)
-    end
+addEventHandler("v_customs:closeSession", root, function(x, y, z, rz)
+    endSession(client, false, x and { x, y, z, rz } or nil)
 end)
 
 --------------------------------------------------------------------------------
 -- Teardown triggers
 --------------------------------------------------------------------------------
-
-addEventHandler("v_customs:closeSession", root, function()
-    endSession(client)
-end)
 
 addEventHandler("onPlayerQuit", root, function()
     endSession(source, true)

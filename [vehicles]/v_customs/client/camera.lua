@@ -63,7 +63,8 @@ function CustomsCam.start(veh)
     showCursor(true)
 end
 
-function CustomsCam.stop()
+-- keepCamera: leave the camera where it is (the drive-out animation takes over)
+function CustomsCam.stop(keepCamera)
     if CustomsCam.running then
         CustomsCam.running = false
         removeEventHandler("onClientPreRender", root, render)
@@ -73,5 +74,5 @@ function CustomsCam.stop()
     end
     showCursor(false)
     CustomsCam.veh = nil
-    setCameraTarget(localPlayer)
+    if not keepCamera then setCameraTarget(localPlayer) end
 end

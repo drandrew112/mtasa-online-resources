@@ -14,12 +14,14 @@
 
     <!-- server -->
     <script src="server/shop.lua"    type="server" />
+    <script src="server/workshop.lua" type="server" />
     <script src="server/tuning.lua"  type="server" />
     <script src="server/persist.lua" type="server" />
 
     <!-- client -->
     <script src="client/camera.lua"        type="client" />
     <script src="client/preview.lua"       type="client" />
+    <script src="client/garage.lua"        type="client" />
     <script src="client/menu.lua"          type="client" />
     <script src="client/shop.lua"          type="client" />
     <script src="client/modules/door.lua"  type="client" />
