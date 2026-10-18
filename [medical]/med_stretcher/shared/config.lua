@@ -1,4 +1,6 @@
--- Stretcher tunables. Offsets are { x, y, z, rx, ry, rz } in the parent's local space
+-- Stretcher tunables. The offsets are set for the custom model: the game ignores the dff's root
+-- frame, so its origin sits at the mattress top (wheels -0.82, mattress ~+0.09, 1.97 m long, 0.75 m wide).
+-- Offsets are { x, y, z, rx, ry, rz } in the parent's local space
 -- (x = right, y = forward, z = up). Model 2146's long side lies along its own y axis, so an rz of
 -- 0 keeps it lengthwise to the ambulance / the medic.
 
@@ -8,21 +10,24 @@ STRETCHER = {
         [456] = true,              -- Mission Row Ambulance
     },
     OBJECT_MODEL = 2146,           -- hospital trolley
+    enable_stretcher_model = true, -- load assets/stretcher.dff/.txd over OBJECT_MODEL (false = stock trolley)
 
-    -- Size: every client scales the model so its longest side is TARGET_LENGTH metres
-    -- (a lying adult + a bit). FALLBACK_SCALE is used if the bounding box cannot be read.
+    -- Size: SCALE is used as is (the custom model is modelled to size). Set SCALE = nil to fit
+    -- the model instead: every client scales it so its longest side is TARGET_LENGTH metres.
+    -- FALLBACK_SCALE is used if the bounding box cannot be read.
+    SCALE = 1.0,
     TARGET_LENGTH = 2.1,
     FALLBACK_SCALE = 1.0,
 
     -- Path in / out of the ambulance (vehicle-local offsets). Taking out runs
     -- STOW -> EDGE (slide to the rear doors) -> OUT (down, behind the vehicle); loading runs it backwards.
-    STOW_OFFSET = { 0, -1.6, 0.0, 0, 0, 0 },   -- inside the cargo area: the take-out slide starts here
+    STOW_OFFSET = { 0, -1.6, 0.3, 0, 0, 0 },   -- inside the cargo area: the take-out slide starts here
     -- While stowed the (invisible) object is parked at the rear doors so its menu is there. Every
     -- client moves it onto the model's real rear doors (door dummies / bounding box, client/stretcher.lua);
     -- this y is only the server-side estimate (used for its range check) and the fallback.
-    STOWED_MENU_POINT = { 0, -3.7, 0.0, 0, 0, 0 },
-    EDGE_OFFSET = { 0, -3.7, 0.0 },            -- at the rear doors, still at floor height
-    OUT_OFFSET = { 0, -4.7, -0.55 },           -- on the ground behind the vehicle
+    STOWED_MENU_POINT = { 0, -3.7, 0.3, 0, 0, 0 },
+    EDGE_OFFSET = { 0, -3.7, 0.3 },            -- at the rear doors, still at floor height
+    OUT_OFFSET = { 0, -4.7, -0.18 },           -- on the ground behind the vehicle
     -- Per-model shift along the vehicle's y axis (negative = further back), applied to
     -- STOW / EDGE / OUT_OFFSET, STOWED_MENU_POINT, REAR_POINT and LOAD_ZONE_CENTER
     MODEL_Y_SHIFT = {
@@ -58,7 +63,7 @@ STRETCHER = {
     -- movement (forced to walk speed unless sprinting, synced natively). A looped setPedAnimation walk cannot be used:
     -- its root motion is drawn forward and snaps back on every loop. PUSH_IDLE_ANIM is played locally
     -- on every client while the pusher stands still.
-    PUSH_OFFSET = { 0, 1.5, -0.55, 0, 0, 0 },
+    PUSH_OFFSET = { 0, 1.5, -0.18, 0, 0, 0 },
     PED_HEIGHT = 1.0,              -- a standing ped's origin above its feet
     PUSH_IDLE_ANIM = { "CARRY", "crry_prtial" },  -- standing, arms forward
     PUSH_LOCKED_CONTROLS = { "jump", "crouch", "fire", "aim_weapon", "enter_exit",
@@ -66,7 +71,7 @@ STRETCHER = {
 
     -- On the ground (after releasing)
     DROP_DISTANCE = 1.4,           -- metres in front of the medic
-    GROUND_Z = 0.45,               -- object origin above the ground
+    GROUND_Z = 0.82,               -- object origin above the ground
     GROUND_ROT_Z = 0,              -- yaw relative to the medic's heading (= PUSH_OFFSET[6])
 
     -- Patient
@@ -74,7 +79,7 @@ STRETCHER = {
     -- rz turns the body lengthwise on the stretcher (use 180 to swap the head and feet end).
     -- MTA does not rotate attached peds with their parent: every client keeps the patient's
     -- heading at stretcher yaw + rz (client/stretcher.lua).
-    PATIENT_OFFSET = { 0, 0, 1.5, 0, 0, 180 },
+    PATIENT_OFFSET = { 0, 0, 1.1, 0, 0, 180 },
     -- { block, name, loop }: lying on the back. A non-looped one keeps its last frame.
     PATIENT_ANIM = { "BEACH", "Lay_Bac_Loop", true },
     DOWN_ANIM = { "PED", "KO_shot_front" },   -- after unloading an unconscious patient (= medical_system)

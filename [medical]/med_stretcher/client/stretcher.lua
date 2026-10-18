@@ -7,12 +7,13 @@ addEvent("stretcher:snap", true)
 local D = STRETCHER_DATA
 
 -- ---------------------------------------------------------------------------------------------
--- Scale: the model is fitted so its longest side is STRETCHER.TARGET_LENGTH metres
+-- Scale: STRETCHER.SCALE, or (if nil) fitted so the longest side is STRETCHER.TARGET_LENGTH metres
 -- ---------------------------------------------------------------------------------------------
 
 local fitScale -- computed once from the first stretcher's unscaled bounding box
 
 local function getFitScale(obj)
+    if STRETCHER.SCALE then return STRETCHER.SCALE end
     if fitScale then return fitScale end
     local x0, y0, _, x1, y1 = getElementBoundingBox(obj)
     local length = x0 and math.max(x1 - x0, y1 - y0)
@@ -54,7 +55,8 @@ local function applyStretcher(obj)
     local state = getElementData(obj, D.STATE)
     if not state then return end
 
-    setObjectScale(obj, getFitScale(obj))
+    -- stowed: alpha 0 does not hide the custom model, so it is shrunk to nothing as well
+    setObjectScale(obj, state == "stowed" and 0.001 or getFitScale(obj))
     if state == "stowed" then placeStowed(obj) end
     -- stowed: invisible and without collisions, so it cannot push the ambulance around;
     -- moving / pushing: no collisions with the vehicle, the pusher, the patient or anybody on the way

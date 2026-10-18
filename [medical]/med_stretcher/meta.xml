@@ -15,10 +15,14 @@
     <script src="server/stretcher.lua" type="server" />
     <script src="server/interaction.lua" type="server" />
 
+    <script src="client/assets.lua" type="client" />
     <script src="client/stretcher.lua" type="client" />
     <script src="client/push.lua" type="client" />
     <script src="client/select.lua" type="client" />
     <script src="client/zone.lua" type="client" />
+
+    <file src="assets/stretcher.dff" />
+    <file src="assets/stretcher.txd" />
 
     <!-- for the EMS job script -->
     <export function="getVehicleStretcher" type="server" />
