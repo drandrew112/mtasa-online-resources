@@ -45,7 +45,8 @@ local function liveUnitOfShift(shiftId)
 end
 
 -- Runs "SELECT COUNT(*)" + the paged select with the same WHERE.
-local function paged(countSql, selectSql, where, args, page)
+-- newest first by the date column (pool rows are reused, so the id no longer follows the date)
+local function paged(countSql, selectSql, where, args, page, dateCol)
     local w = #where > 0 and (" WHERE " .. table.concat(where, " AND ")) or ""
     local countRows = DB.query(countSql .. w, unpack(args)) or {}
     local total = countRows[1] and tonumber(countRows[1].n) or 0
@@ -55,7 +56,7 @@ local function paged(countSql, selectSql, where, args, page)
     local qa = { unpack(args) }
     qa[#qa + 1] = PAGE
     qa[#qa + 1] = (page - 1) * PAGE
-    local rows = DB.query(selectSql .. w .. " ORDER BY id DESC LIMIT ? OFFSET ?", unpack(qa)) or {}
+    local rows = DB.query(selectSql .. w .. " ORDER BY " .. dateCol .. " DESC, id DESC LIMIT ? OFFSET ?", unpack(qa)) or {}
     return rows, total, page, pages
 end
 
@@ -98,7 +99,7 @@ function handlers.shifts(p)
 
     local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM med_shifts",
         "SELECT id, callsign, unit_type, plate, members, closed_tasks, started_at, ended_at, task_count FROM med_shifts",
-        where, args, tonumber(p.page) or 1)
+        where, args, tonumber(p.page) or 1, "started_at")
 
     local list = {}
     for _, r in ipairs(rows) do
@@ -173,7 +174,7 @@ function handlers.tasks(p)
 
     local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM med_tasks",
         "SELECT id, title, priority, status, zone, created_at, closed_at, source, units FROM med_tasks",
-        where, args, tonumber(p.page) or 1)
+        where, args, tonumber(p.page) or 1, "created_at")
 
     local list = {}
     for _, r in ipairs(rows) do

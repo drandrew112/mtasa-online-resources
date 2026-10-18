@@ -105,12 +105,12 @@ end
 -- task / shift needs its id at once (cargo, offers, events, the stock use it). So a few
 -- placeholder rows are inserted ahead of time without blocking (isPool = 1, `server` = this
 -- instance, hidden from every reader); a new task / shift takes one and fills it (isPool = 0)
--- with an UPDATE. An empty pool (or no connection) falls back to the blocking INSERT. Rows left
+-- with an UPDATE (always the lowest free id). An empty pool (or no connection) falls back to the blocking INSERT. Rows left
 -- in a pool at a stop are taken back at the next start.
 
 local pools = {
     task = {
-        size = 4, ids = {}, inflight = 0,
+        size = 2, ids = {}, inflight = 0,
         adopt = "SELECT id FROM bt_tasks WHERE isPool = 1 AND server = ? ORDER BY id",
         insert = function(cb)
             MYSQL.insert(cb, "INSERT INTO bt_tasks (server, isPool, type, status, log, shifts) VALUES (?, 1, '', 'pool', '', '')", serverId())
@@ -127,19 +127,39 @@ local pools = {
     },
 }
 
--- Tops the pool up with non-blocking INSERTs; a failed one is retried at the next take.
+-- ids stay ascending: a take and a fill always use the lowest id
+local function poolAdd(p, id)
+    p.ids[#p.ids + 1] = id
+    table.sort(p.ids)
+end
+
+-- Rows already in the table are reused, never abandoned: new placeholders are inserted only while
+-- fewer than `size` (2) exist, so there is always at least one free pool, and a table that holds
+-- 2 or more does not get new ones. A failed INSERT is retried at the next take.
 local function poolRefill(p)
     if not DB.ready or not DB.isConnected() then return end
     for _ = 1, p.size - #p.ids - p.inflight do
         p.inflight = p.inflight + 1
         p.insert(function(id)
             p.inflight = p.inflight - 1
-            if type(id) == "number" then p.ids[#p.ids + 1] = id end
+            if type(id) == "number" then poolAdd(p, id) end
         end)
     end
 end
 
--- -> pooled id | nil (empty pool or no connection: the caller inserts blocking)
+-- Reads the free pool rows of this instance from the table (the load check) -> list of ids
+local function poolLoad(p)
+    local rows = DB.query(p.adopt, serverId())
+    if not rows then return p.ids end   -- query failed: keep what is known
+    local ids = {}
+    for _, r in ipairs(rows) do
+        ids[#ids + 1] = tonumber(r.id)
+    end
+    table.sort(ids)
+    return ids
+end
+
+-- -> lowest free pooled id | nil (empty pool or no connection: the caller inserts blocking)
 local function poolTake(p)
     local id = DB.isConnected() and table.remove(p.ids, 1) or nil
     poolRefill(p)
@@ -209,13 +229,10 @@ function DB.init()
     local rows = DB.query("SELECT COUNT(*) AS n FROM bt_tasks WHERE isPool = 0 AND status = 'delivered'")
     DB.completed = rows and rows[1] and tonumber(rows[1].n) or 0
 
+    -- load check: the free pool rows of the table are taken over as they are (a reconnect keeps
+    -- the list, a row just taken may not be filled yet)
     if not DB.ready then
-        -- pool rows of the last run are reused
-        for _, p in pairs(pools) do
-            for _, r in ipairs(DB.query(p.adopt, POOL_TAG) or {}) do
-                p.ids[#p.ids + 1] = tonumber(r.id)
-            end
-        end
+        for _, p in pairs(pools) do p.ids = poolLoad(p) end
         DB.ready = true
     end
     for _, p in pairs(pools) do poolRefill(p) end

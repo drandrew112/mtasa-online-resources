@@ -26,7 +26,8 @@ local function duration(from, to)
     return (a and b) and math.max(0, b - a) or 0
 end
 
-local function paged(countSql, selectSql, where, args, page)
+-- newest first by the date column (pool rows are reused, so the id no longer follows the date)
+local function paged(countSql, selectSql, where, args, page, dateCol)
     local w = #where > 0 and (" WHERE " .. table.concat(where, " AND ")) or ""
     local countRows = DB.query(countSql .. w, unpack(args)) or {}
     local total = countRows[1] and tonumber(countRows[1].n) or 0
@@ -35,7 +36,7 @@ local function paged(countSql, selectSql, where, args, page)
     local qa = { unpack(args) }
     qa[#qa + 1] = PAGE
     qa[#qa + 1] = (page - 1) * PAGE
-    local rows = DB.query(selectSql .. w .. " ORDER BY id DESC LIMIT ? OFFSET ?", unpack(qa)) or {}
+    local rows = DB.query(selectSql .. w .. " ORDER BY " .. dateCol .. " DESC, id DESC LIMIT ? OFFSET ?", unpack(qa)) or {}
     return rows, total, page, pages
 end
 
@@ -74,7 +75,7 @@ function H.shifts(p)
     elseif p.filter == "ended" then where[#where + 1] = "ended_at IS NOT NULL" end
     local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM bt_shifts",
         "SELECT " .. SHIFT_COLS .. " FROM bt_shifts",
-        where, args, tonumber(p.page) or 1)
+        where, args, tonumber(p.page) or 1, "started_at")
     local list = {}
     for _, r in ipairs(rows) do
         list[#list + 1] = {
@@ -133,7 +134,7 @@ function H.tasks(p)
     local rows, total, page, pages = paged("SELECT COUNT(*) AS n FROM bt_tasks",
         "SELECT " .. TASK_COLS .. ", (SELECT unit FROM bt_shifts s WHERE s.id = bt_tasks.shift_id) AS unit, "
             .. "(SELECT player FROM bt_shifts s WHERE s.id = bt_tasks.shift_id) AS driver FROM bt_tasks",
-        where, args, tonumber(p.page) or 1)
+        where, args, tonumber(p.page) or 1, "created_at")
     local list = {}
     for _, r in ipairs(rows) do
         local t = taskRow(r)

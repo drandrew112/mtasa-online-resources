@@ -106,11 +106,13 @@ end
 -- are inserted ahead of time without blocking (is_pool = 1, tagged with this
 -- server, hidden from every reader); a new task / shift takes one and fills it with an UPDATE.
 -- An empty pool (or no connection) falls back to the blocking INSERT. Rows left in a pool at a
--- stop are taken back at the next start.
+-- stop are taken back at the next start: the pool rows already in the table are the pool, nothing
+-- is inserted while there are `size` (2) or more of them. A new task / shift always takes the
+-- smallest pool id, and the pool is topped up to `size` again so one free row is always left.
 
 local pools = {
     task = {
-        size = 3, ids = {}, inflight = 0,
+        size = 2, ids = {}, inflight = 0,
         adopt = "SELECT id FROM med_tasks WHERE is_pool = 1 AND (server = ? OR (server IS NULL AND source = ?)) ORDER BY id",
         adoptArg = function() return serverId(), POOL_TAG end,
         insert = function(cb)
@@ -129,21 +131,37 @@ local pools = {
     },
 }
 
--- Tops the pool up with non-blocking INSERTs; a failed one is retried at the next take.
+-- Loads the pool rows already in the table (smallest id first). false = query failed.
+local function poolLoad(p)
+    local rows = query(p.adopt, p.adoptArg())
+    if not rows then return false end
+    p.ids = {}
+    for _, r in ipairs(rows) do p.ids[#p.ids + 1] = tonumber(r.id) end
+    table.sort(p.ids)
+    p.loaded = true
+    return true
+end
+
+-- Tops the pool up with non-blocking INSERTs, only when fewer than `size` rows exist (existing
+-- pool rows are never replaced); a failed one is retried at the next take.
 local function poolRefill(p)
     if not DB.ready or not DB.isConnected() then return end
+    if not p.loaded and not poolLoad(p) then return end
     for _ = 1, p.size - #p.ids - p.inflight do
         p.inflight = p.inflight + 1
         p.insert(function(id)
             p.inflight = p.inflight - 1
-            if type(id) == "number" then p.ids[#p.ids + 1] = id end
+            if type(id) == "number" then
+                p.ids[#p.ids + 1] = id
+                table.sort(p.ids)
+            end
         end)
     end
 end
 
 -- -> pooled id | nil (empty pool or no connection: the caller inserts blocking)
 local function poolTake(p)
-    local id = DB.isConnected() and table.remove(p.ids, 1) or nil
+    local id = DB.isConnected() and table.remove(p.ids, 1) or nil   -- ids are sorted: the smallest
     poolRefill(p)
     return id
 end
@@ -224,12 +242,8 @@ function DB.init()
     end
     exec("UPDATE med_shifts SET ended_at = ?, end_reason = 'restart' WHERE server = ? AND ended_at IS NULL", stamp, serverId())
 
-    -- pool rows of the last run are reused
-    for _, p in pairs(pools) do
-        for _, r in ipairs(query(p.adopt, p.adoptArg()) or {}) do
-            p.ids[#p.ids + 1] = tonumber(r.id)
-        end
-    end
+    -- pool rows of the last run are reused (poolRefill only adds what is missing)
+    for _, p in pairs(pools) do poolLoad(p) end
     DB.ready = true
     for _, p in pairs(pools) do poolRefill(p) end
     return true
