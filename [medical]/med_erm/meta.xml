@@ -79,6 +79,7 @@
     <export function="webCall" type="server" />
 
     <!-- ================= DEPENDENCIES ================= -->
+    <include resource="v_main" />
     <include resource="v_mysql" />
     <include resource="v_accounts" />
     <include resource="ui_core" />

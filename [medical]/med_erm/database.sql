@@ -9,7 +9,7 @@
 --                     {"shift","released","outcome"}  left it
 --   med_shifts.tasks  {"task","at"} / {"task","released","outcome"}  the same
 --                     from the shift's side; task_count = number of assignments
---   med_shifts.server = "<server name>:<port>"; a restart closes only its own
+--   med_shifts.server = server instance id (v_main server.json); a restart closes only its own
 --                     open shifts. Open shift (ended_at IS NULL) = callsign on
 --                     duty, checked on sign-in across every server.
 --   Pool rows: placeholders inserted ahead of time so a new task / shift gets

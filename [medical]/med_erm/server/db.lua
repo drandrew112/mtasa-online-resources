@@ -5,7 +5,7 @@
 -- no read-modify-write); a release line closes the latest open assignment of the same id.
 -- Date-times are DATETIME columns, read back as "YYYY-MM-DD HH:MM:SS" text; tasks also keep the
 -- epoch of creation so their age survives a restart.
--- med_shifts.server = the server that runs the shift (two servers may share the database): a
+-- med_shifts.server / med_tasks.server = the server that runs the shift (two servers may share the database): a
 -- restart only closes its own leftovers, the callsign check sees every server.
 -- New rows come from id pools (see below), so creating a task / shift does not block (PERF-01).
 
@@ -21,7 +21,7 @@ local function sql()
 end
 
 local function serverId()
-    return string.format("%s:%d", getServerName(), getServerPort())
+    return tostring(exports.v_main:getServerInstanceId())
 end
 
 function DB.isConnected()
@@ -48,8 +48,8 @@ local function insert(q, ...)
     return type(id) == "number" and id or false
 end
 
--- md5 tag of this server on the pool rows of med_tasks (it has no server column)
-local POOL_TAG = "pool:" .. md5(serverId()):sub(1, 16)
+-- md5 tag the pool rows (old "name:port" server identity) of med_tasks carried before the `server` column existed (still adopted)
+local POOL_TAG = "pool:" .. md5(getServerName() .. ":" .. getServerPort()):sub(1, 16)
 
 local function json(t)
     return toJSON(t or {}, true)
@@ -97,7 +97,7 @@ end
 ---------------------------------------------------------------- id pools (PERF-01)
 -- A blocking INSERT stalls the whole server for a round trip to the remote database, but a new
 -- task / shift needs its id at once (it is its identity everywhere). So a few placeholder rows
--- are inserted ahead of time without blocking (status / end_reason = 'pool', tagged with this
+-- are inserted ahead of time without blocking (is_pool = 1, tagged with this
 -- server, hidden from every reader); a new task / shift takes one and fills it with an UPDATE.
 -- An empty pool (or no connection) falls back to the blocking INSERT. Rows left in a pool at a
 -- stop are taken back at the next start.
@@ -105,20 +105,20 @@ end
 local pools = {
     task = {
         size = 3, ids = {}, inflight = 0,
-        adopt = "SELECT id FROM med_tasks WHERE status = 'pool' AND source = ? ORDER BY id",
-        adoptArg = function() return POOL_TAG end,
+        adopt = "SELECT id FROM med_tasks WHERE is_pool = 1 AND (server = ? OR (server IS NULL AND source = ?)) ORDER BY id",
+        adoptArg = function() return serverId(), POOL_TAG end,
         insert = function(cb)
-            MYSQL.insert(cb, "INSERT INTO med_tasks (title, status, source, shifts) VALUES ('', 'pool', ?, '')", POOL_TAG)
+            MYSQL.insert(cb, "INSERT INTO med_tasks (title, status, server, is_pool, shifts) VALUES ('', '', ?, 1, '')", serverId())
         end,
     },
     shift = {
         size = 2, ids = {}, inflight = 0,
-        adopt = "SELECT id FROM med_shifts WHERE server = ? AND end_reason = 'pool' ORDER BY id",
+        adopt = "SELECT id FROM med_shifts WHERE server = ? AND is_pool = 1 ORDER BY id",
         adoptArg = serverId,
         insert = function(cb)
             local stamp = formatDateTime(now())
-            MYSQL.insert(cb, [[INSERT INTO med_shifts (server, started_at, ended_at, end_reason, tasks)
-                VALUES (?, ?, ?, 'pool', '')]], serverId(), stamp, stamp)
+            MYSQL.insert(cb, [[INSERT INTO med_shifts (server, is_pool, started_at, ended_at, tasks)
+                VALUES (?, 1, ?, ?, '')]], serverId(), stamp, stamp)
         end,
     },
 }
@@ -151,6 +151,8 @@ function DB.init()
 
     exec([[CREATE TABLE IF NOT EXISTS med_tasks (
         id             INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        server         VARCHAR(96)  DEFAULT NULL,
+        is_pool        TINYINT(1)   NOT NULL DEFAULT 0,
         title          VARCHAR(255) NOT NULL,
         description    TEXT,
         caller         VARCHAR(128) DEFAULT NULL,
@@ -173,9 +175,14 @@ function DB.init()
         shifts         TEXT,
         KEY idx_status (status)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
+    -- tables created before the server column existed
+    if #(query("SHOW COLUMNS FROM med_tasks LIKE 'server'") or {}) == 0 then
+        exec("ALTER TABLE med_tasks ADD COLUMN server VARCHAR(96) DEFAULT NULL AFTER id")
+    end
     exec([[CREATE TABLE IF NOT EXISTS med_shifts (
         id           INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
         server       VARCHAR(96)  DEFAULT NULL,
+        is_pool      TINYINT(1)   NOT NULL DEFAULT 0,
         callsign     VARCHAR(16)  DEFAULT NULL,
         unit_type    VARCHAR(16)  DEFAULT NULL,
         plate        VARCHAR(16)  DEFAULT NULL,
@@ -189,6 +196,15 @@ function DB.init()
         KEY idx_open (ended_at, callsign),
         KEY idx_server (server, ended_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
+
+    -- is_pool replaces the old 'pool' markers (med_tasks.status / med_shifts.end_reason)
+    for _, tbl in ipairs({ "med_tasks", "med_shifts" }) do
+        if #(query("SHOW COLUMNS FROM " .. tbl .. " LIKE 'is_pool'") or {}) == 0 then
+            exec("ALTER TABLE " .. tbl .. " ADD COLUMN is_pool TINYINT(1) NOT NULL DEFAULT 0 AFTER server")
+            exec(tbl == "med_tasks" and "UPDATE med_tasks SET is_pool = 1, status = '' WHERE status = 'pool'"
+                or "UPDATE med_shifts SET is_pool = 1, end_reason = NULL WHERE end_reason = 'pool'")
+        end
+    end
 
     -- Shifts of this server left open by a crash / restart are closed now, with their task links.
     local stamp = formatDateTime(now())
@@ -269,17 +285,17 @@ function DB.insertTask(t)
     if not DB.ready then return false end
     local id = poolTake(pools.task)
     if id then
-        exec([[UPDATE med_tasks SET title = ?, description = ?, caller = ?, pos_x = ?, pos_y = ?, pos_z = ?,
+        exec([[UPDATE med_tasks SET server = ?, is_pool = 0, title = ?, description = ?, caller = ?, pos_x = ?, pos_y = ?, pos_z = ?,
             zone = ?, status = ?, units = ?, response_log = ?, created_ts = ?, created_at = ?, source = ?,
             meta = ?, shifts = '' WHERE id = ?]],
-            t.title, t.description, t.caller, t.x, t.y, t.z, t.zone, t.status,
+            serverId(), t.title, t.description, t.caller, t.x, t.y, t.z, t.zone, t.status,
             json(t.unitLog), json({}), t.createdAt, formatDateTime(t.createdAt), t.source, json(t.meta), id)
         return id
     end
     return insert([[INSERT INTO med_tasks
-        (title, description, caller, pos_x, pos_y, pos_z, zone, status, units, response_log, created_ts, created_at, source, meta, shifts)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')]],
-        t.title, t.description, t.caller, t.x, t.y, t.z, t.zone, t.status,
+        (server, title, description, caller, pos_x, pos_y, pos_z, zone, status, units, response_log, created_ts, created_at, source, meta, shifts)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')]],
+        serverId(), t.title, t.description, t.caller, t.x, t.y, t.z, t.zone, t.status,
         json(t.unitLog), json({}), t.createdAt, formatDateTime(t.createdAt), t.source, json(t.meta))
 end
 
@@ -318,7 +334,7 @@ end
 -- Open tasks (reloaded on start) and the most recent closed ones.
 function DB.loadTasks(recentClosed)
     local open, closed = {}, {}
-    for _, r in ipairs(query("SELECT * FROM med_tasks WHERE status NOT IN ('closed', 'pool') ORDER BY id") or {}) do
+    for _, r in ipairs(query("SELECT * FROM med_tasks WHERE is_pool = 0 AND status != 'closed' ORDER BY id") or {}) do
         open[#open + 1] = rowToTask(r)
     end
     for _, r in ipairs(query("SELECT * FROM med_tasks WHERE status = 'closed' ORDER BY id DESC LIMIT ?", recentClosed) or {}) do
@@ -336,7 +352,7 @@ function DB.startShift(unit)
     if not DB.ready then return false end
     local id = poolTake(pools.shift)
     if id then
-        exec([[UPDATE med_shifts SET server = ?, callsign = ?, unit_type = ?, plate = ?, members = ?, closed_tasks = ?,
+        exec([[UPDATE med_shifts SET server = ?, is_pool = 0, callsign = ?, unit_type = ?, plate = ?, members = ?, closed_tasks = ?,
             started_at = ?, ended_at = NULL, end_reason = NULL, task_count = 0, tasks = '' WHERE id = ?]],
             serverId(), unit.callsign, unit.type, unit.plate, json(unit.accounts), json({}),
             formatDateTime(unit.startedAt), id)

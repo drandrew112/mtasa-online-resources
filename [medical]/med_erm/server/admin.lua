@@ -83,7 +83,7 @@ local handlers = AdminHandlers
 
 -- pool rows (placeholders for new tasks / shifts, server/db.lua) are never listed
 function handlers.shifts(p)
-    local where, args = { "COALESCE(end_reason, '') != 'pool'" }, {}
+    local where, args = { "is_pool = 0" }, {}
     local search = trim(p.search)
     if search ~= "" then
         local l = like(search)
@@ -123,7 +123,7 @@ end
 
 function handlers.shift(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM med_shifts WHERE id = ? AND COALESCE(end_reason, '') != 'pool'", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM med_shifts WHERE id = ? AND is_pool = 0", id) or {})[1]
     if not r then return { error = L.msg("med_erm.admin.shift_not_found") } end
 
     local links = DB.assignments(r.tasks, "task")
@@ -158,7 +158,7 @@ end
 ---------------------------------------------------------------- tasks
 
 function handlers.tasks(p)
-    local where, args = { "status != 'pool'" }, {}
+    local where, args = { "is_pool = 0" }, {}
     local search = trim(p.search)
     if search ~= "" then
         local l = like(search)
@@ -188,7 +188,7 @@ end
 
 function handlers.task(p)
     local id = tonumber(p.id)
-    local r = id and (DB.query("SELECT * FROM med_tasks WHERE id = ? AND status != 'pool'", id) or {})[1]
+    local r = id and (DB.query("SELECT * FROM med_tasks WHERE id = ? AND is_pool = 0", id) or {})[1]
     if not r then return { error = L.msg("med_erm.admin.task_not_found") } end
 
     local log, total = {}, 0
