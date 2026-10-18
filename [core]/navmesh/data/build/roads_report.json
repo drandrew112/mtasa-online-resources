@@ -1,0 +1,173 @@
+{
+ "counts": {
+  "nodes": 28991,
+  "links": 29810,
+  "lanes": 54408,
+  "connections": 59405,
+  "signalGroups": 552,
+  "boatNodes": 1596,
+  "boatEdges": 1658,
+  "trapLanes": 2942,
+  "sourceLanes": 3746,
+  "missingNavi": 14,
+  "inherited": 14
+ },
+ "classes": {
+  "highway": {
+   "links": 1170,
+   "km": 24.7
+  },
+  "road": {
+   "links": 27253,
+   "km": 349.4
+  },
+  "ramp": {
+   "links": 1172,
+   "km": 19.3
+  },
+  "service": {
+   "links": 215,
+   "km": 3.4
+  }
+ },
+ "rampChains": 79,
+ "rampsTwoWay": 0,
+ "rampsForcedOneway": [
+  {
+   "junction": 245788,
+   "x": 708.38,
+   "y": 2580.62,
+   "links": 41,
+   "dir": "on",
+   "reason": "oneway part",
+   "km": 0.54
+  }
+ ],
+ "mixedChainsFixed": [
+  {
+   "x": -1679.5,
+   "y": -2708.12,
+   "links": 154,
+   "oneway": 153,
+   "km": 3.4
+  },
+  {
+   "x": -2099.62,
+   "y": -2680.5,
+   "links": 17,
+   "oneway": 15,
+   "km": 0.47
+  },
+  {
+   "x": 1358.0,
+   "y": -2449.0,
+   "links": 26,
+   "oneway": 24,
+   "km": 0.37
+  },
+  {
+   "x": 1637.5,
+   "y": 247.62,
+   "links": 23,
+   "oneway": 20,
+   "km": 0.34
+  },
+  {
+   "x": -452.75,
+   "y": 2031.12,
+   "links": 24,
+   "oneway": 22,
+   "km": 0.31
+  },
+  {
+   "x": -393.0,
+   "y": 2284.75,
+   "links": 18,
+   "oneway": 17,
+   "km": 0.19
+  }
+ ],
+ "mixedChainsKept": [
+  {
+   "x": 1358.0,
+   "y": -2449.0,
+   "links": 2,
+   "oneway": 1,
+   "km": 0.01
+  },
+  {
+   "x": 2474.12,
+   "y": -2009.5,
+   "links": 3,
+   "oneway": 1,
+   "km": 0.03
+  },
+  {
+   "x": -1172.12,
+   "y": -968.0,
+   "links": 7,
+   "oneway": 5,
+   "km": 0.1
+  },
+  {
+   "x": -1172.12,
+   "y": -968.0,
+   "links": 6,
+   "oneway": 4,
+   "km": 0.12
+  },
+  {
+   "x": -2706.25,
+   "y": -4.75,
+   "links": 9,
+   "oneway": 2,
+   "km": 0.05
+  },
+  {
+   "x": -1602.25,
+   "y": -382.12,
+   "links": 21,
+   "oneway": 11,
+   "km": 0.17
+  },
+  {
+   "x": -1378.62,
+   "y": -238.88,
+   "links": 5,
+   "oneway": 2,
+   "km": 0.04
+  },
+  {
+   "x": -2593.0,
+   "y": 1134.88,
+   "links": 2,
+   "oneway": 1,
+   "km": 0.02
+  },
+  {
+   "x": -2405.38,
+   "y": 958.12,
+   "links": 30,
+   "oneway": 21,
+   "km": 0.17
+  },
+  {
+   "x": 1920.88,
+   "y": 1759.88,
+   "links": 3,
+   "oneway": 1,
+   "km": 0.02
+  },
+  {
+   "x": 708.38,
+   "y": 2580.62,
+   "links": 41,
+   "oneway": 10,
+   "km": 0.54
+  }
+ ],
+ "connections": {
+  "deadend_no_exit": 223,
+  "uturn": 134
+ }
+}

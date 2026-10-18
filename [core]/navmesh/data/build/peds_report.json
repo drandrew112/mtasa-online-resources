@@ -1,0 +1,31 @@
+{
+ "nodes": 37650,
+ "edges": 40341,
+ "kinds": {
+  "sidewalk": 22279,
+  "path": 16440,
+  "lit": 1250,
+  "crossing": 372
+ },
+ "km": {
+  "sidewalk": 240.4,
+  "path": 110.8,
+  "lit": 11.8,
+  "crossing": 3.5
+ },
+ "litWithoutSignalGroup": 623,
+ "components": 179,
+ "largestComponents": [
+  8880,
+  8332,
+  7567,
+  1879,
+  572,
+  541,
+  508,
+  372,
+  349,
+  347
+ ],
+ "isolatedNodes": 0
+}

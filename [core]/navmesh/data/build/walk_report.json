@@ -1,0 +1,19 @@
+{
+ "chunks": 2201,
+ "floors": 31295718,
+ "water": 6842508,
+ "shallow": 32849,
+ "multi": 3114922,
+ "regions": 303500,
+ "islandCells": 731224,
+ "tiles": 28636,
+ "bytes": 12232984,
+ "rawBytes": 149767132,
+ "roadCells": 4094442,
+ "pedCells": 879235,
+ "crossCells": 57563,
+ "seconds": 44,
+ "instances": 44984,
+ "usedInstances": 34564,
+ "noCollision": 397
+}

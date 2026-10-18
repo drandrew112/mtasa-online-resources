@@ -1,0 +1,44 @@
+<meta>
+    <info author="DrAndrew112" name="navmesh" version="1.0.0" type="script"
+          description="San Andreas navigation data: lane-level road network, ped paths + crossings, open-terrain walk grid, boat paths; route exports for AI traffic, AI peds and v_radar; /navmesh debug view" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- data/runtime/*.nav are built by tools/ (README.md) and read by the server only (not downloaded).
+         walk.nav needs decodeString zlib (MTA server 1.6.1 r23219+). source/ holds the old npchlc traffic
+         resources for reference only (not loaded). -->
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/heap.lua"   type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/roads.lua"  type="server" />
+    <script src="server/peds.lua"   type="server" />
+    <script src="server/boats.lua"  type="server" />
+    <script src="server/walk.lua"   type="server" />
+    <script src="server/router.lua" type="server" />
+    <script src="server/main.lua"   type="server" />
+    <script src="server/debug.lua"  type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/debug.lua" type="client" />
+
+    <!-- ================= EXPORTS (server) ================= -->
+    <export function="findVehicleRoute"   type="server" />
+    <export function="findPedRoute"       type="server" />
+    <export function="findBoatRoute"      type="server" />
+    <export function="findGpsRoute"       type="server" />
+    <export function="requestRoute"       type="server" />
+    <export function="getNearestLane"     type="server" />
+    <export function="getNearestLanes"    type="server" />
+    <export function="getLaneInfo"        type="server" />
+    <export function="getLanePoint"       type="server" />
+    <export function="getConnectionPoints" type="server" />
+    <export function="getSignalGroup"     type="server" />
+    <export function="getWalkableGround"  type="server" />
+    <export function="isWalkable"         type="server" />
+    <export function="getNearestPedPath"  type="server" />
+    <export function="getPedRandomWalk"   type="server" />
+    <export function="isCrossingOpen"     type="server" />
+    <export function="getNavmeshStats"    type="server" />
+</meta>
