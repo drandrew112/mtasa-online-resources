@@ -71,6 +71,9 @@ local function decodeBlob(jsonStr)
     local out = {}
     if type(obj) == "table" then
         for key, rec in pairs(obj) do
+            -- Older writes stored a key's record as toJSON() made it, wrapped in an
+            -- array: "k": [ {"v":..,"t":..} ]. Read both shapes.
+            if type(rec) == "table" and rec.v == nil and type(rec[1]) == "table" then rec = rec[1] end
             if type(rec) == "table" and rec.v ~= nil then
                 out[key] = unpackValue(rec.v, rec.t)
             end
@@ -224,7 +227,7 @@ local function persist(name, c, changed)
                 patchParts[#patchParts + 1] = jsonStr(key) .. ":null"
             else
                 local packed, valueType = packValue(value)
-                patchParts[#patchParts + 1] = jsonStr(key) .. ":" .. toJSON({ v = packed, t = valueType }, true)
+                patchParts[#patchParts + 1] = jsonStr(key) .. ":{\"v\":" .. jsonStr(packed) .. ",\"t\":\"" .. valueType .. "\"}"
             end
         end
     end
