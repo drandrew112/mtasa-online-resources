@@ -18,6 +18,10 @@
         <setting name="*enableUpdateChecker" value="[true]" friendlyname="Enable update checker" group="Updater" accept="true,false" />
     </settings>
 
+    <script src="serverInfo.lua" type="server" />
+    <export function="getServerInstanceId" type="server" />
+    <export function="getServerInstanceName" type="server" />
+
     <script src="locals.lua" type="server" />
     <script src="server.lua" type="server" />
     <script src="loadResources.lua" type="server" />

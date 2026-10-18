@@ -53,3 +53,6 @@ desktop.ini
 
 # --- v_discordmanager: webhook URLs (secrets); webhooks.example.json is versioned ---
 /\[core\]/v_discordmanager/webhooks.json
+
+# --- v_main: per-instance server identity (copy server.example.json) ---
+/\[core\]/v_main/server.json
