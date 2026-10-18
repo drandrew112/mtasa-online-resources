@@ -153,22 +153,36 @@ addEventHandler ("onClientTransferBoxProgressChange", root, function (downloaded
     total = tonumber(string.format("%.2f", tostring(totalSize/1024/1024) ))
 end)
 
+-- MTA sometimes splits a download into several small chunks: the transfer box hides and shows again
+-- right away. Wait 100ms after it hides and re-check before announcing the end of the download.
+local FINISH_RECHECK_MS = 100
+local finishTimer
+
+local function finishDownload()
+    finishTimer = nil
+    if isTransferBoxActive() then return end -- still downloading, the next hide will retry
+    isDownloading = false
+
+    if not debug_ds then
+        setCursor(false)
+        MG.stop()
+    end
+    fadeCamera(true)
+    setElementData(localPlayer, "download_screen", false)
+    restoreHud()
+
+    triggerEvent("download:finished", root)
+end
+
 function on_TransferBoxVisibilityChange (state)
     syncRender()
     if state==true then
         isDownloading = true
+        if isTimer(finishTimer) then killTimer(finishTimer) end
+        finishTimer = nil
     elseif state==false then
-        isDownloading = false
-
-        if not debug_ds then
-            setCursor(false)
-            MG.stop()
-        end
-        fadeCamera(true)
-        setElementData(localPlayer, "download_screen", false)
-        restoreHud()
-
-        triggerEvent("download:finished", root)
+        if isTimer(finishTimer) then killTimer(finishTimer) end
+        finishTimer = setTimer(finishDownload, FINISH_RECHECK_MS, 1)
     end
 end
 addEventHandler ("onClientTransferBoxVisibilityChange", root, on_TransferBoxVisibilityChange)
