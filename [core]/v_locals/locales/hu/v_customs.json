@@ -1,7 +1,9 @@
 {
   "v_customs.menu.custom_license_plate": "Egyedi rendszám",
   "v_customs.menu.default": "Alapértelmezett",
+  "v_customs.menu.exit": "Kilépés",
   "v_customs.menu.not_available_for_this_vehicle": "(ennél a járműnél nem elérhető)",
+  "v_customs.menu.repair_vehicle": "Jármű javítása",
   "v_customs.menu.sa_customs": "SA CUSTOMS",
   "v_customs.tuning.all_wheel_drive": "Összkerékhajtás",
   "v_customs.tuning.beige": "Bézs",
@@ -67,6 +69,7 @@
   "v_customs.tuning.upgrade_2": "Fejlesztés 2",
   "v_customs.tuning.upgrade_3": "Fejlesztés 3",
   "v_customs.tuning.upgrade_4": "Fejlesztés 4",
+  "v_customs.tuning.vehicle_repaired": "Jármű megjavítva.",
   "v_customs.tuning.very_narrow": "Nagyon keskeny",
   "v_customs.tuning.very_wide": "Nagyon széles",
   "v_customs.tuning.weight_reduction": "Súlycsökkentés",

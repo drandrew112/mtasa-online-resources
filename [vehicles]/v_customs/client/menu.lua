@@ -9,6 +9,7 @@ Menu   = Menu or {}
 uicore = exports.ui_core
 
 local menuId          = nil
+local menuMode        = nil  -- "main" | "repair" (damaged car) | "confirm" (exit prompt)
 local curVeh          = nil
 local previewByPath   = {}   -- option path -> Preview.onHover info
 local basePriceByPath = {}   -- option path -> catalogue price
@@ -22,6 +23,7 @@ addEvent("ui_inac:tempMenuClose")
 addEvent("ui_core:textInputResult")
 addEvent("v_customs:notify", true)
 addEvent("v_customs:buyResult", true)
+addEvent("v_customs:repairResult", true)
 addEvent("v_customs:promptPlate", true)
 
 --------------------------------------------------------------------------------
@@ -190,14 +192,14 @@ end
 
 --------------------------------------------------------------------------------
 
-function Menu.open(veh)
-    curVeh          = veh
+local function openMain()
     previewByPath   = {}
     basePriceByPath = {}
     partOfPath      = {}
     partPaths       = {}
-    Preview.init(veh)
+    Preview.init(curVeh)
 
+    menuMode = "main"
     menuId = exports.ui_inac:createTempMenu({
         title = L("v_customs.menu.sa_customs"),
         items = buildLevel(Customs.parts, ""),
@@ -205,11 +207,53 @@ function Menu.open(veh)
     return menuId ~= nil
 end
 
+-- Damaged car: only Repair / Exit until it is fixed.
+local function openRepair()
+    menuMode = "repair"
+    menuId = exports.ui_inac:createTempMenu({
+        title = L("v_customs.menu.sa_customs"),
+        items = {
+            { label = L("v_customs.menu.repair_vehicle"), value = "repair",
+              price = Customs.repairPrice(curVeh), closeOnSelect = false },
+            { label = L("v_customs.menu.exit"), value = "exit", closeOnSelect = false },
+        },
+    }) or nil
+    return menuId ~= nil
+end
+
+-- Backspace at the main menu's root: Back / Exit. Closing this one = Back.
+local function openConfirm()
+    menuMode = "confirm"
+    menuId = exports.ui_inac:createTempMenu({
+        title = L("v_customs.menu.sa_customs"),
+        items = {
+            { label = L("common.back"),         value = "back", closeOnSelect = false },
+            { label = L("v_customs.menu.exit"), value = "exit", closeOnSelect = false },
+        },
+    }) or nil
+    return menuId ~= nil
+end
+
+-- Leave the workshop (drive-out). menuId is cleared first so the close event
+-- of our own closeTempMenu is ignored.
+local function leave()
+    menuId, menuMode = nil, nil
+    exports.ui_inac:closeTempMenu()
+    if Shop and Shop.onMenuClosed then Shop.onMenuClosed() end
+end
+
+function Menu.open(veh)
+    curVeh = veh
+    if Customs.repairPrice(veh) > 0 then return openRepair() end
+    return openMain()
+end
+
 function Menu.close()
-    if menuId and exports.ui_inac:isTempMenuOpen() then
+    local open = menuId
+    menuId, menuMode = nil, nil
+    if open and exports.ui_inac:isTempMenuOpen() then
         exports.ui_inac:closeTempMenu()
     end
-    menuId = nil
 end
 
 --------------------------------------------------------------------------------
@@ -217,19 +261,50 @@ end
 --------------------------------------------------------------------------------
 
 addEventHandler("ui_inac:tempMenuHover", root, function(id, value, path)
-    if id ~= menuId then return end
+    if id ~= menuId or menuMode ~= "main" then return end
     Preview.onHover(previewByPath[path])
 end)
 
 addEventHandler("ui_inac:tempMenuSelect", root, function(id, value)
     if id ~= menuId or type(value) ~= "string" or not isElement(curVeh) then return end
-    triggerServerEvent("v_customs:buy", localPlayer, curVeh, value)
+
+    if menuMode == "repair" then
+        if value == "repair" then
+            triggerServerEvent("v_customs:repair", localPlayer)
+        elseif value == "exit" then
+            leave()
+        end
+    elseif menuMode == "confirm" then
+        if value == "back" then
+            if not openMain() then leave() end
+        elseif value == "exit" then
+            leave()
+        end
+    else
+        triggerServerEvent("v_customs:buy", localPlayer, curVeh, value)
+    end
 end)
 
 addEventHandler("ui_inac:tempMenuClose", root, function(id)
     if id ~= menuId then return end
-    menuId = nil
+    local mode = menuMode
+    menuId, menuMode = nil, nil
+
+    if mode == "main" then
+        Preview.restore()
+        if openConfirm() then return end
+    elseif mode == "confirm" then
+        if openMain() then return end
+    end
     if Shop and Shop.onMenuClosed then Shop.onMenuClosed() end
+end)
+
+addEventHandler("v_customs:repairResult", root, function(ok, charged)
+    if not ok or menuMode ~= "repair" then return end
+    if tonumber(charged) and tonumber(charged) > 0 then
+        uicore:showMoney("take", tonumber(charged), "cash")
+    end
+    if not openMain() then leave() end
 end)
 
 addEventHandler("v_customs:notify", root, function(title, text)

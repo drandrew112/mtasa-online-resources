@@ -8,6 +8,7 @@ Customs = Customs or {}
 
 addEvent("v_customs:buy", true)
 addEvent("v_customs:setCustomPlate", true)
+addEvent("v_customs:repair", true)
 
 local function notify(player, title, text)
     triggerClientEvent(player, "v_customs:notify", player, title, text)
@@ -134,6 +135,9 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     if not isElement(player) then return end
     if Customs.sessionVehicle(player) ~= veh or not isElement(veh) then return end
 
+    -- a damaged car has to be repaired first (client shows the repair menu)
+    if Customs.repairPrice(veh) > 0 then return end
+
     local node, optIdx = Customs.resolve(path)
     if not node then return end
     if not node.group and not node.kind then return end
@@ -184,4 +188,26 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
     takePlayerMoney(player, price)
     triggerClientEvent(player, "v_customs:buyResult", player, true, nil, price)
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.custom_plate_installed"))
+end)
+
+--------------------------------------------------------------------------------
+-- Repair (gate before tuning)
+--------------------------------------------------------------------------------
+
+addEventHandler("v_customs:repair", root, function()
+    local player = client
+    local veh = Customs.sessionVehicle(player)
+    if not veh then return end
+
+    local price = Customs.repairPrice(veh)
+    if price > 0 and getPlayerMoney(player) < price then
+        notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
+        triggerClientEvent(player, "v_customs:repairResult", player, false)
+        return
+    end
+
+    fixVehicle(veh)
+    if price > 0 then takePlayerMoney(player, price) end
+    notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.vehicle_repaired"))
+    triggerClientEvent(player, "v_customs:repairResult", player, true, price)
 end)

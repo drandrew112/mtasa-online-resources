@@ -1,7 +1,9 @@
 {
   "v_customs.menu.custom_license_plate": "Custom license plate",
   "v_customs.menu.default": "Default",
+  "v_customs.menu.exit": "Exit",
   "v_customs.menu.not_available_for_this_vehicle": "(not available for this vehicle)",
+  "v_customs.menu.repair_vehicle": "Repair vehicle",
   "v_customs.menu.sa_customs": "SA CUSTOMS",
   "v_customs.tuning.all_wheel_drive": "All Wheel Drive",
   "v_customs.tuning.beige": "Beige",
@@ -67,6 +69,7 @@
   "v_customs.tuning.upgrade_2": "Upgrade 2",
   "v_customs.tuning.upgrade_3": "Upgrade 3",
   "v_customs.tuning.upgrade_4": "Upgrade 4",
+  "v_customs.tuning.vehicle_repaired": "Vehicle repaired.",
   "v_customs.tuning.very_narrow": "Very Narrow",
   "v_customs.tuning.very_wide": "Very Wide",
   "v_customs.tuning.weight_reduction": "Weight Reduction",

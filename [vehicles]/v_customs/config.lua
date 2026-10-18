@@ -5,6 +5,17 @@ Customs = Customs or {}
 -- Multiplies every price in shared/tuning.lua. 1.0 = the stock SA Customs prices.
 Customs.PRICE_MULT = 1.0
 
+-- A damaged car (health < 1000) must be repaired before tuning:
+-- price = REPAIR_PRICE_PER_HP * lost health.
+Customs.REPAIR_PRICE_PER_HP = 2
+
+function Customs.repairPrice(veh)
+    if not isElement(veh) then return 0 end
+    local lost = 1000 - getElementHealth(veh)
+    if lost < 1 then return 0 end
+    return math.ceil(lost * Customs.REPAIR_PRICE_PER_HP)
+end
+
 -- Map blip of every workshop.
 Customs.BLIP_ICON = 27
 
