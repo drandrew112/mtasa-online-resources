@@ -15,6 +15,7 @@ local previewByPath   = {}   -- option path -> Preview.onHover info
 local basePriceByPath = {}   -- option path -> catalogue price
 local partOfPath      = {}   -- option path -> owning part's path prefix
 local partPaths       = {}   -- part path prefix -> { option path, ... }
+local uiPrefixOf      = {}   -- part path prefix -> its positional ui_inac path (differs once parts are hidden)
 local plateToken      = nil
 
 addEvent("ui_inac:tempMenuSelect")
@@ -127,10 +128,6 @@ local function opticalOptions(part, prefix)
         items[k + 1] = makeOption(p, part.name .. " " .. k, part.price, cur == up,
             { kind = "optical", slot = part.slot, upgrade = up })
     end
-
-    if #ups == 0 then
-        return { { label = L("v_customs.menu.not_available_for_this_vehicle"), closeOnSelect = false } }, {}
-    end
     return items, paths
 end
 
@@ -161,7 +158,7 @@ end
 -- tree build
 --------------------------------------------------------------------------------
 
-local function buildPart(part, prefix)
+local function buildPart(part, prefix, uiPrefix)
     local opts, paths
     if part.group == "optical" then
         opts, paths = opticalOptions(part, prefix)
@@ -171,20 +168,28 @@ local function buildPart(part, prefix)
         opts, paths = staticOptions(part, prefix)
     end
 
-    partPaths[prefix] = paths
+    partPaths[prefix]  = paths
+    uiPrefixOf[prefix] = uiPrefix
     for _, p in ipairs(paths) do partOfPath[p] = prefix end
 
     return { label = part.name, title = part.name, items = opts }
 end
 
-local function buildLevel(nodes, prefix)
+-- Parts the vehicle can't use are left out (and folders left empty by that);
+-- paths keep the catalogue indices so the server resolves them unchanged.
+local function buildLevel(nodes, prefix, uiPrefix)
     local items = {}
     for i, node in ipairs(nodes) do
-        local p = prefix == "" and tostring(i) or (prefix .. "/" .. i)
+        local p  = prefix == "" and tostring(i) or (prefix .. "/" .. i)
+        local n  = #items + 1
+        local up = uiPrefix == "" and tostring(n) or (uiPrefix .. "/" .. n)
         if node.folder then
-            items[i] = { label = node.name, title = node.name, items = buildLevel(node.items, p) }
-        else
-            items[i] = buildPart(node, p)
+            local sub = buildLevel(node.items, p, up)
+            if #sub > 0 then
+                items[n] = { label = node.name, title = node.name, items = sub }
+            end
+        elseif Customs.isPartAvailable(curVeh, node) then
+            items[n] = buildPart(node, p, up)
         end
     end
     return items
@@ -197,12 +202,13 @@ local function openMain()
     basePriceByPath = {}
     partOfPath      = {}
     partPaths       = {}
+    uiPrefixOf      = {}
     Preview.init(curVeh)
 
     menuMode = "main"
     menuId = exports.ui_inac:createTempMenu({
         title = L("v_customs.menu.sa_customs"),
-        items = buildLevel(Customs.parts, ""),
+        items = buildLevel(Customs.parts, "", ""),
     }) or nil
     return menuId ~= nil
 end
@@ -260,9 +266,9 @@ end
 -- events
 --------------------------------------------------------------------------------
 
-addEventHandler("ui_inac:tempMenuHover", root, function(id, value, path)
+addEventHandler("ui_inac:tempMenuHover", root, function(id, value)
     if id ~= menuId or menuMode ~= "main" then return end
-    Preview.onHover(previewByPath[path])
+    Preview.onHover(value and previewByPath[value])
 end)
 
 addEventHandler("ui_inac:tempMenuSelect", root, function(id, value)
@@ -322,8 +328,9 @@ addEventHandler("v_customs:buyResult", root, function(ok, path, charged)
     local oneShot = node and (node.kind == "plate" or node.kind == "horn")
     local prefix  = (path and not oneShot) and partOfPath[path]
     if prefix and partPaths[prefix] then
+        local uiPrefix = uiPrefixOf[prefix]
         for _, p in ipairs(partPaths[prefix]) do
-            exports.ui_inac:updateTempMenuItem(p, {
+            exports.ui_inac:updateTempMenuItem(uiPrefix .. p:sub(#prefix + 1), {
                 checked = (p == path),
                 price   = (p == path) and false or basePriceByPath[p],
             })

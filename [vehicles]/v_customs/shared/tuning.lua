@@ -9,6 +9,10 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 --
 -- Option leaf : { name, price, kind, data, ... }
 --
+-- A part may carry `types` (set of getVehicleType values it applies to) and
+-- `needs` (a vehicle component it needs); Customs.isPartAvailable hides it
+-- otherwise. Optical groups are hidden when the slot has no compatible upgrade.
+--
 -- Paths are "/"-joined 1-based indices down to the option ("wheels/2/3"). The
 -- server (server/tuning.lua) is authoritative for price and every effect.
 --
@@ -16,6 +20,10 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- original SA Customs resource (see old/sourceG.lua).
 
 Customs = Customs or {}
+
+-- getVehicleType sets used by a part's `types`
+local CARS  = { Automobile = true, ["Monster Truck"] = true }
+local MOTOR = { Automobile = true, ["Monster Truck"] = true, Quad = true, Bike = true }
 
 --------------------------------------------------------------------------------
 -- Respray palette
@@ -46,17 +54,17 @@ Customs.PALETTE = {
 -- Performance packs helper (Default + Upgrade 1..4)
 --------------------------------------------------------------------------------
 
-local function pack(name, deltaSets, prices)
+local function pack(name, deltaSets, prices, types)
     local labels = { L.text("v_customs.menu.default"), L.text("v_customs.tuning.upgrade_1"), L.text("v_customs.tuning.upgrade_2"), L.text("v_customs.tuning.upgrade_3"), L.text("v_customs.tuning.upgrade_4") }
     local opts = {}
     for i = 1, 5 do
         opts[i] = { name = labels[i], price = prices[i], kind = "performance", data = deltaSets[i] }
     end
-    return { name = name, options = opts }
+    return { name = name, options = opts, types = types }
 end
 
 local function wheelSize(name, side)
-    return { name = name, options = {
+    return { name = name, types = CARS, options = {
         { name = L.text("v_customs.tuning.very_narrow"), price = 20000, kind = "wheelWidth", side = side, data = "verynarrow" },
         { name = L.text("v_customs.tuning.narrow"),      price = 10000, kind = "wheelWidth", side = side, data = "narrow" },
         { name = L.text("v_customs.menu.default"),     price = 5000,  kind = "wheelWidth", side = side, data = "default" },
@@ -76,7 +84,7 @@ Customs.parts = {
         { {"engineAcceleration", 4}, {"maxVelocity", 16} },
         { {"engineAcceleration", 6}, {"maxVelocity", 23} },
         { {"engineAcceleration", 8}, {"maxVelocity", 30} },
-    }, { 0, 1500, 3000, 4500, 6000 }),
+    }, { 0, 1500, 3000, 4500, 6000 }, MOTOR),
 
     pack(L.text("v_customs.tuning.turbo"), {
         { {"engineInertia"} },
@@ -84,7 +92,7 @@ Customs.parts = {
         { {"engineInertia", -16} },
         { {"engineInertia", -24} },
         { {"engineInertia", -32} },
-    }, { 0, 6000, 12000, 18000, 24000 }),
+    }, { 0, 6000, 12000, 18000, 24000 }, MOTOR),
 
     pack(L.text("v_customs.tuning.brakes"), {
         { {"brakeDeceleration"},       {"brakeBias"} },
@@ -128,7 +136,7 @@ Customs.parts = {
         wheelSize(L.text("v_customs.tuning.front_wheel_size"), "front"),
         wheelSize(L.text("v_customs.tuning.rear_wheel_size"), "rear"),
         { name = L.text("v_customs.tuning.wheel_types"), group = "optical", slot = 12, price = 5000 },
-        { name = L.text("v_customs.tuning.drive_type"), options = {
+        { name = L.text("v_customs.tuning.drive_type"), types = CARS, options = {
             { name = L.text("v_customs.tuning.front_wheel_drive"), price = 10000, kind = "handlingProp", prop = "driveType", data = "fwd" },
             { name = L.text("v_customs.tuning.all_wheel_drive"),   price = 10000, kind = "handlingProp", prop = "driveType", data = "awd" },
             { name = L.text("v_customs.tuning.rear_wheel_drive"),  price = 10000, kind = "handlingProp", prop = "driveType", data = "rwd" },
@@ -142,7 +150,7 @@ Customs.parts = {
     { name = L.text("v_customs.tuning.respray"), folder = true, items = {
         { name = L.text("v_customs.tuning.primary_color"),   group = "color", slot = "primary",   price = 10000 },
         { name = L.text("v_customs.tuning.secondary_color"), group = "color", slot = "secondary", price = 10000 },
-        { name = L.text("v_customs.tuning.headlight_color"), group = "color", slot = "headlight", price = 8000 },
+        { name = L.text("v_customs.tuning.headlight_color"), group = "color", slot = "headlight", price = 8000, types = MOTOR },
     }},
 
     -- Extras (flat) ------------------------------------------------
@@ -153,11 +161,11 @@ Customs.parts = {
         { name = "50 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 50 },
         { name = "60 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 60 },
     }},
-    { name = L.text("v_customs.tuning.lsd_doors"), options = {
+    { name = L.text("v_customs.tuning.lsd_doors"), types = CARS, needs = "door_lf_dummy", options = {
         { name = L.text("v_customs.tuning.off"), price = 0,     kind = "flagToggle", flag = "lsdDoor", data = false },
         { name = L.text("v_customs.tuning.on"),  price = 35000, kind = "flagToggle", flag = "lsdDoor", data = true },
     }},
-    { name = L.text("v_customs.tuning.license_plate"), options = {
+    { name = L.text("v_customs.tuning.license_plate"), types = MOTOR, options = {
         { name = L.text("v_customs.tuning.random_plate"),     price = 5000,  kind = "plate", data = "random" },
         { name = L.text("v_customs.tuning.custom_plate"),  price = 15000, kind = "plate", data = "custom" },
         { name = L.text("v_customs.tuning.reset_to_default"), price = 0,     kind = "plate", data = "default" },
@@ -195,6 +203,21 @@ function Customs.resolve(path)
         end
     end
     return node
+end
+
+-- false when the part can't be used on `veh` at all (the menu hides it).
+-- `needs` is only checked where getVehicleComponents exists (client).
+function Customs.isPartAvailable(veh, part)
+    if part.types and not part.types[getVehicleType(veh)] then return false end
+    if part.needs and getVehicleComponents then
+        local comps = getVehicleComponents(veh)
+        if type(comps) ~= "table" or comps[part.needs] == nil then return false end
+    end
+    if part.group == "optical" then
+        local ups = getVehicleCompatibleUpgrades(veh, part.slot)
+        if not ups or #ups == 0 then return false end
+    end
+    return true
 end
 
 -- Applies Customs.PRICE_MULT (rounded to whole euros).
