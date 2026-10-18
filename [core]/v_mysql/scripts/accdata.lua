@@ -233,7 +233,7 @@ local function persist(name, c, changed)
     -- UPDATE of the existing row: only what changed (nil columns become literal NULL).
     local uArgs = {}
     if #patchParts > 0 then
-        setParts[#setParts + 1] = "account_data = JSON_MERGE_PATCH(IF(JSON_VALID(account_data), account_data, '{}'), ?)"
+        setParts[#setParts + 1] = "account_data = JSON_MERGE_PATCH(IF(account_data IS NULL OR account_data = '', '{}', account_data), ?)"
         uArgs[#uArgs + 1] = patch
     end
     for _, col in ipairs({ "email", "display_name", "admin_level" }) do
@@ -376,9 +376,33 @@ function loadAccDataAsync(eventName, requestId, name)
             return reply(false)
         end
         if (dirtyAt[name] or -1) >= sentAt then return reply(false) end -- written meanwhile: retry
-        cache[name] = rowToEntry(rows[1])
+        local row = rows[1]
+        -- The caller authenticated this account a moment ago, so the row MUST exist.
+        if not row then
+            mysqlLog("loadAccDataAsync: '%s' has no row, refusing the data (login would start empty)", name)
+            return reply(false)
+        end
+        local entry = rowToEntry(row)
+        local raw = tostring(row.account_data or "")
+        local parsed = (raw ~= "") and fromJSON(raw) or nil
+        local keys = 0
+        for k in pairs(entry.data) do if not COLUMN[k] then keys = keys + 1 end end
+        local created, updated = tonumber(row.created_at) or 0, tonumber(row.updated_at) or 0
+        if raw ~= "" and raw ~= "{}" and type(parsed) ~= "table" then
+            mysqlLog("loadAccDataAsync: account_data of '%s' is not readable JSON (%d bytes), refusing", name, #raw)
+            return reply(false)
+        end
+        -- A saved account always has keys (save_all runs at register). Zero keys on an
+        -- account that was written to after creation means the data was lost or not read.
+        if keys == 0 and updated > created + 5 then
+            mysqlLog("loadAccDataAsync: '%s' has NO data keys although it was saved before (created %d, updated %d, %d bytes), refusing",
+                name, created, updated, #raw)
+            return reply(false)
+        end
+        mysqlLog("loadAccDataAsync: '%s' loaded, %d data keys, %d bytes", name, keys, #raw)
+        cache[name] = entry
         reply(true)
-    end, "SELECT " .. SELECT_COLS .. " FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
+    end, "SELECT " .. SELECT_COLS .. ", updated_at FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
     return queued
 end
 
