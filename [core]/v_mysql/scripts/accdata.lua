@@ -69,6 +69,8 @@ end
 local function decodeBlob(jsonStr)
     local obj = fromJSON(jsonStr or "")
     local out = {}
+    -- whole document wrapped in an array ("[ {...} ]", written by the old whole-blob save)
+    if type(obj) == "table" and type(obj[1]) == "table" and obj[1].v == nil and #obj == 1 then obj = obj[1] end
     if type(obj) == "table" then
         for key, rec in pairs(obj) do
             -- Older writes stored a key's record as toJSON() made it, wrapped in an
@@ -82,15 +84,22 @@ local function decodeBlob(jsonStr)
     return out
 end
 
+-- JSON string literal (control chars, quotes and backslashes escaped).
+local function jsonLit(str)
+    return '"' .. (str:gsub('[%c"\\]', function(ch) return ("\\u%04x"):format(ch:byte()) end)) .. '"'
+end
+
+-- Plain JSON object text, built by hand: MTA's toJSON() wraps tables in an array
+-- ("[ {...} ]"), which JSON_MERGE_PATCH then treats as "not an object" and discards.
 local function encodeBlob(tbl)
-    local obj = {}
+    local parts = {}
     for key, value in pairs(tbl) do
         if not COLUMN[key] and value ~= nil then
             local packed, valueType = packValue(value)
-            obj[key] = { v = packed, t = valueType }
+            parts[#parts + 1] = jsonLit(tostring(key)) .. ":{\"v\":" .. jsonLit(packed) .. ",\"t\":\"" .. valueType .. "\"}"
         end
     end
-    return next(obj) and toJSON(obj) or "{}"
+    return "{" .. table.concat(parts, ",") .. "}"
 end
 
 --------------------------------------------------------------------------------
@@ -236,7 +245,7 @@ local function persist(name, c, changed)
     -- UPDATE of the existing row: only what changed (nil columns become literal NULL).
     local uArgs = {}
     if #patchParts > 0 then
-        setParts[#setParts + 1] = "account_data = JSON_MERGE_PATCH(IF(account_data IS NULL OR account_data = '', '{}', account_data), ?)"
+        setParts[#setParts + 1] = "account_data = JSON_MERGE_PATCH(IF(account_data IS NULL OR account_data = '', '{}', IF(JSON_TYPE(account_data) = 'ARRAY', COALESCE(JSON_EXTRACT(account_data, '$[0]'), '{}'), account_data)), ?)"
         uArgs[#uArgs + 1] = patch
     end
     for _, col in ipairs({ "email", "display_name", "admin_level" }) do
