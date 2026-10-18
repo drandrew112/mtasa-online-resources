@@ -81,6 +81,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | FIXED 2026-10-18 |
+| [BUG-09](#bug-09) | MEDIUM | rw_core railway log: a "still standing" hold line is written every tick (1 GB file in one day) | OPEN |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | IN PROGRESS |
 | [PERF-02](#perf-02) | HIGH | `setAccData` writes straight to MySQL on every call (no write-behind) | OPEN (per-key patch since BUG-01) |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
@@ -102,6 +103,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [MAINT-02](#maint-02) | LOW | Leftover files (`*.old`, `v_customs/old/`) | OPEN |
 | [MAINT-03](#maint-03) | LOW | Legacy code style: globals, mixed-language names, no `client` checks | OPEN |
 | [MAINT-04](#maint-04) | LOW | No central list of protected element-data keys / server-owned state | OPEN |
+| [MAINT-05](#maint-05) | LOW | Log files have no size cap or rotation (`rw_core/logs`) | OPEN |
 
 ---
 
@@ -444,7 +446,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-16"></a>
 ### SEC-16 — Over-privileged ACL
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** OPEN (re-checked 2026-10-18: `claude-mcp`, `ui_pause`, `v_chat`, `web_api` are still in the Admin group, `claude-mcp` also in runcode)
 - **Location:** `mods/deathmatch/acl.xml` (not in this repo): group `Admin` contains `resource.claude-mcp`, `resource.v_chat`, `resource.ui_pause`, `resource.web_api`…; group `runcode` contains `resource.claude-mcp`
 - **Problem:** Resources get full Admin rights when they only need one or two (v_chat only needs
   `function.fetchRemote`, ui_pause needs `kickPlayer`). Any bug in them becomes an admin-level bug.
@@ -641,6 +643,22 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Suggested fix:** Draw only in dimension 0, interior 0, within ~1 km. Calculate the map line
   from world coordinates, or drop it.
 
+<a id="bug-09"></a>
+### BUG-09 — rw_core railway log: hold line written every tick
+- **Severity:** MEDIUM
+- **Status:** OPEN (found 2026-10-18)
+- **Location:** `[railways]/rw_core/server/log.lua:233-241` (`if h.reason ~= reason`), `holdReason` at `:148`
+- **Problem:** `logs/rail_2026-10-17.log` is **1.02 GB** (a normal day is 1.5–4 MB; 12 Oct was 54 MB).
+  In the first 60 MB, 565,000 of ~600,000 lines are `INFO hold [..] still standing, now held by
+  table: 0x…`. The authority `reason` is a table there (the text is its `tostring`), and a new
+  table is built every tick, so `h.reason ~= reason` is always true and a line is logged each time.
+  The ring buffer in memory is capped (`LOGC.KEEP`), the file is not.
+- **Impact:** Disk fills up (the day file grew by ~1 GB), I/O on every flush, and the real events
+  are buried. `/rwlog` shows the same spam.
+- **Suggested fix:** Compare the **text** (`holdReason(reason)`) or a stable key, not the table
+  identity, and log only when it really changes. Normalise `A.reason` to a string where the
+  authority is built. See MAINT-05 for the size cap.
+
 ---
 
 ## 3. Optimization
@@ -720,8 +738,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-03"></a>
 ### PERF-03 — ~400 MB mandatory client download
 - **Severity:** HIGH
-- **Status:** OPEN
-- **Location:** `[core]/v_modloader` (313 MB: `vehicles/police_vg.txd` 63 MB, `skins/ballas3.txd` 56 MB, `streak.txd` 16 MB, `ambulan.txd` 15 MB, `streak.dff` 14 MB, `cheetah.dff` 13.6 MB, …), `[ui]/v_radar` 21.6 MB (`radar.png` 10.7 MB **and** `radar.jpg` 3.7 MB), `[core]/v_accounts` 10.8 MB (`audio/main_menu.mp3` 5.5 MB), `[vehicles]/v_els` 7.7 MB (WAV sirens), `[maps]/map_ls_busstation` 5.7 MB
+- **Status:** OPEN — re-measured 2026-10-18: `v_modloader` is now 129 MB (the 63 MB `police_vg.txd`
+  and 56 MB `ballas3.txd` are gone), `v_radar` 27 MB (`radar.png` 10.8 MB + `radar_3072.png`
+  6.3 MB). None of the 28 `<file>` entries in v_modloader has `download="false"`.
+- **Location:** `[core]/v_modloader` (was 313 MB in the audit: `vehicles/police_vg.txd` 63 MB, `skins/ballas3.txd` 56 MB, `streak.txd` 16 MB, `ambulan.txd` 15 MB, `streak.dff` 14 MB, `cheetah.dff` 13.6 MB, …), `[ui]/v_radar` 21.6 MB (`radar.png` 10.7 MB **and** `radar.jpg` 3.7 MB), `[core]/v_accounts` 10.8 MB (`audio/main_menu.mp3` 5.5 MB), `[vehicles]/v_els` 7.7 MB (WAV sirens), `[maps]/map_ls_busstation` 5.7 MB
 - **Problem:** Every file in `<file>` without `download="false"` must be downloaded before the
   player can play. The TXDs are very likely uncompressed or 4K. A GTA vehicle needs around
   2–8 MB.
@@ -738,7 +758,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-04"></a>
 ### PERF-04 — 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as a client script
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** OPEN (re-checked 2026-10-18: still 4 identical copies of 4,747,048 bytes)
 - **Location:** `[ui]/v_radar/radar/gps/vehiclenodes.lua` (client script), `[tiktok]/ai_autoplayer/shared/vehicle_nodes.lua` (client, `cache="false"` → downloaded again on **every** join), `[ai]/ai_land_traffic/data/source/vehiclenodes.lua`, `[devtools]/claude-mcp/assets/vehiclenodes.lua`
 - **Problem:** A 307,772-line Lua table is downloaded, compiled and kept in memory per resource on
   each client (compiling a table that size costs a noticeable hitch at start).
@@ -807,7 +827,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-07"></a>
 ### PERF-07 — Synced element data used for local UI state
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** OPEN — partly: avi_controller scope, v_jobcreator photo and claude-mcp already pass
+  `false`. Still synced to everyone: v_accounts (`loading`, `render`, `state`), v_introduce,
+  v_spawnmanager, v_jobmanager (`scoreboard`, `ui`), ui_download, ui_pause, v_radar.
 - **Location:** `hideHUD` (`v_accounts/client/state.lua:15`, `render.lua:6`, `loading.lua:36`, `v_introduce/client/lock.lua:81`, `v_spawnmanager/client.lua:39`, `v_jobmanager/core/client/ui.lua:85`, `scoreboard.lua:74`, `ui_download/client.lua:83`, `ui_pause/c_pausemenu.lua:339,367`, `v_radar/radar/sourceC.lua:1049,1060`), `showChat`, `paused`, `scoreboardOpen`, `interactionMenuOpen` (`ui_inac/client/input.lua:47`, `temp.lua:168`), `download_screen`, `toggleOwnNametag`, `valaszto`, `enableall`, `tt:active`, `parachuting`, `skydiving`, `isStream`…
 - **Problem:** `setElementData` without `false` as the 4th argument sends the value to the server
   and then to **every** client. These keys only matter to the local client.
@@ -994,6 +1016,16 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   N). Document the rule in a CONTRIBUTING note: *the server never trusts element data a client
   could write.*
 
+<a id="maint-05"></a>
+### MAINT-05 — Log files have no size cap or rotation
+- **Severity:** LOW
+- **Status:** OPEN (found 2026-10-18)
+- **Location:** `[railways]/rw_core/server/log.lua` (daily file, buffered flush); `[railways]/rw_core/logs/` (git-ignored)
+- **Problem:** The daily log file grows without limit and old days are never deleted. One bug (BUG-09)
+  produced 1 GB in a day.
+- **Suggested fix:** A per-day size cap (stop at e.g. 50 MB with one "log full" line), a delete of
+  files older than N days on start, and a rate limit per category.
+
 ---
 
 ## Change log
@@ -1001,5 +1033,6 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | Date | Change |
 |---|---|
 | 2026-10-17 | Initial audit (this document) |
+| 2026-10-18 | Second pass: PERF-03, PERF-04, PERF-07, SEC-16 re-measured; new BUG-09 and MAINT-05 (rail log 1 GB) |
 | 2026-10-18 | Review of all open items against the code: PERF-02, SEC-13, SEC-14, SCALE-02 annotated |
 | 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed |
