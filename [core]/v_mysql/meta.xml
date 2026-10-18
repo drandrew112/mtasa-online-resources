@@ -40,6 +40,10 @@
     <export function="getAccData"   type="server" />
     <export function="setAccData"   type="server" />
     <export function="flushAccData" type="server" />
+    <!-- loadAccDataAsync(eventName, requestId, name): v_accounts login - reads the
+         row fresh into the session cache; the answer event carries ok=false when
+         the data could not be read (the login is then refused). -->
+    <export function="loadAccDataAsync" type="server" />
     <!-- prefetchAccDataAsync(eventName, requestId, names): loads offline
          accounts in one query so the following getAccData calls do not block -->
     <export function="prefetchAccDataAsync" type="server" />

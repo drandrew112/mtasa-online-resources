@@ -437,10 +437,11 @@ local function spawnLoggedInPlayer(player)
     triggerClientEvent(player, "acc:startWorldCheck", player)
 end
 
-local function markLoggedIn(player, username, accId)
+-- keepCache: the login already loaded the row fresh (acc:loginData) - keep that cache
+local function markLoggedIn(player, username, accId, keepCache)
     -- always start a session from the DB, not a copy cached on this server earlier
     -- (the other server may have changed the account since)
-    exports.v_mysql:flushAccData(username)
+    if not keepCache then exports.v_mysql:flushAccData(username) end
     setElementData(player, "accName", username)
     setElementData(player, "accID", accId or 0)
     setElementData(player, "isLogged", true)
@@ -541,15 +542,19 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
     local row = type(rows) == "table" and rows[1] or nil
     if not row or type(row.password) ~= "string" or type(row.account_name) ~= "string" then
         clearPending(player)
-        if rows ~= false then recordLoginFail(player) end -- a DB error is not the player's fault
+        if rows == false then return loginError(player, "v_accounts.server.database_query_error") end -- a DB error is not the player's fault
+        recordLoginFail(player)
         return loginError(player, "v_accounts.server.wrong_username_or_password")
     end
     local canonical, accId = row.account_name, tonumber(row.id) or 0
 
     passwordVerify(pending.password, row.password, {}, function(matches)
-        clearPending(player)
-        if not isElement(player) or getElementData(player, "isLogged") == true then return end
+        -- the pending login stays registered (until the data load answers, step 3)
+        if loginPending[player] ~= pending then return end
+        if not isElement(player) or getElementData(player, "isLogged") == true then return clearPending(player) end
+        pending.password = nil
         if not matches then
+            clearPending(player)
             recordLoginFail(player)
             return loginError(player, "v_accounts.server.wrong_username_or_password")
         end
@@ -557,21 +562,84 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
         rememberAccountName(canonical)
 
         if isElement(playerOnAccount(canonical)) then
+            clearPending(player)
             return loginError(player, "v_accounts.server.this_account_is_already_in_use")
         end
 
         local ban = getActiveBan(getPlayerSerial(player), canonical)
         if ban then
+            clearPending(player)
             applyBanState(player, ban)
             triggerClientEvent(player, "acc:setPanel", player, "banned")
             return loginError(player, "v_accounts.server.this_account_is_banned")
         end
 
-        markLoggedIn(player, canonical, accId)
-        triggerClientEvent(player, "acc:setPanel", player, nil)
-        triggerClientEvent(player, "acc:loadingScreen", player, true)
-        beginLoading(player, {}, spawnLoggedInPlayer)
+        -- Step 3: read the account data BEFORE the player counts as logged in. If it
+        -- cannot be read the login is refused: a login on empty data would restart
+        -- the intro and the autosave would overwrite the real data with defaults.
+        pending.canonical, pending.accId = canonical, accId
+        pending.dataTries = 0
+        requestLoginData(player)
     end)
+end)
+
+local DATA_TRIES = 3
+
+-- Step 3 (also the retry): fresh load of the account row into the v_mysql cache.
+function requestLoginData(player)
+    local p = loginPending[player]
+    if not p then return end
+    p.dataTries = (p.dataTries or 0) + 1
+    p.timer = isTimer(p.timer) and p.timer or setTimer(function()
+        if loginPending[player] and loginPending[player].id == p.id then
+            exports.v_mysql:flushAccData(p.canonical)
+            clearPending(player)
+            if isElement(player) then loginError(player, "v_accounts.server.database_query_error") end
+        end
+    end, LOGIN_TIMEOUT, 1)
+    local mysql = getResourceFromName("v_mysql")
+    if not mysql or getResourceState(mysql) ~= "running"
+    or not exports.v_mysql:loadAccDataAsync("acc:loginData", p.id, p.canonical) then
+        -- no answer event is coming unless the DB is down, in which case it already came
+        if loginPending[player] and loginPending[player].id == p.id and p.dataTries >= DATA_TRIES then
+            clearPending(player)
+            loginError(player, "v_accounts.server.database_query_error")
+        end
+    end
+end
+
+addEvent("acc:loginData")
+addEventHandler("acc:loginData", resourceRoot, function(id, ok)
+    local player = pendingById[id]
+    if not player then
+        return
+    end
+    local p = loginPending[player]
+    if not p or not p.canonical then return end
+    if not isElement(player) or getElementData(player, "isLogged") == true then
+        exports.v_mysql:flushAccData(p.canonical)
+        return clearPending(player)
+    end
+    if not ok then
+        if p.dataTries < DATA_TRIES then
+            return setTimer(requestLoginData, 1000, 1, player)
+        end
+        exports.v_mysql:flushAccData(p.canonical)
+        clearPending(player)
+        outputServerLog(("[v_accounts] login of '%s' refused: account data could not be loaded"):format(p.canonical))
+        return loginError(player, "v_accounts.server.database_query_error")
+    end
+    local canonical, accId = p.canonical, p.accId
+    clearPending(player)
+    if isElement(playerOnAccount(canonical)) then
+        exports.v_mysql:flushAccData(canonical)
+        return loginError(player, "v_accounts.server.this_account_is_already_in_use")
+    end
+
+    markLoggedIn(player, canonical, accId, true)
+    triggerClientEvent(player, "acc:setPanel", player, nil)
+    triggerClientEvent(player, "acc:loadingScreen", player, true)
+    beginLoading(player, {}, spawnLoggedInPlayer)
 end)
 
 -- Step 1: the client asks to log in.
@@ -605,7 +673,11 @@ function login_player(username, password)
     loginPending[player] = {
         id = id, password = password,
         timer = setTimer(function()
-            if loginPending[player] and loginPending[player].id == id then clearPending(player) end
+            local p = loginPending[player]
+            if p and p.id == id then
+                if p.canonical then exports.v_mysql:flushAccData(p.canonical) end
+                clearPending(player)
+            end
         end, LOGIN_TIMEOUT, 1),
     }
     pendingById[id] = player
@@ -614,7 +686,7 @@ function login_player(username, password)
         -- without a DB connection acc:loginRow may already have answered
         if loginPending[player] and loginPending[player].id == id then
             clearPending(player)
-            loginError(player, "v_accounts.server.wrong_username_or_password")
+            loginError(player, "v_accounts.server.database_query_error")
         end
     end
 end
@@ -809,6 +881,10 @@ addEventHandler("onPlayerQuit", root, function()
     end
     scriptedRename[source] = nil
     spawnPending[source] = nil
+    local pendingLogin = loginPending[source]
+    if pendingLogin and pendingLogin.canonical and getElementData(source, "isLogged") ~= true then
+        exports.v_mysql:flushAccData(pendingLogin.canonical) -- data was loaded for a login that never finished
+    end
     clearPending(source)
     lastAttempt[source] = nil
     clearRegister(source)

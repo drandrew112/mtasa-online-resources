@@ -176,7 +176,15 @@ local function load(name)
 
     local res = mysqlQuerySync(
         "SELECT " .. SELECT_COLS .. " FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
-    c = rowToEntry(res and res[1])
+    if res == false then
+        -- The query FAILED (no connection, timeout, ...): this is not "the account is
+        -- empty". Never cache it and never let it be written back (setAccData refuses
+        -- a failed entry), else the player is treated as brand new and the defaults
+        -- overwrite the real data.
+        mysqlLog("getAccData: load of '%s' failed, data unavailable", name)
+        return { data = {}, exists = false, failed = true }
+    end
+    c = rowToEntry(res[1])
     if online then
         cache[name] = c
         memo[name] = nil
@@ -316,6 +324,7 @@ function setAccData(who, key, value)
     if not name then return false end
 
     local c = load(name)
+    if c.failed then return false end -- the stored data could not be read: do not write over it
     dirtyAt[name] = getTickCount()
 
     local changed = {}
@@ -344,6 +353,33 @@ function flushAccData(name)
         cache[name] = nil
         memo[name] = nil
     end
+end
+
+-- Non-blocking load of an account that is ABOUT to log in (v_accounts): reads the
+-- row fresh, puts it into the session cache and answers
+--   triggerEvent(eventName, <caller resourceRoot>, requestId, ok)
+-- ok = false: the data could not be read, the login must be refused (a login on
+-- empty data would reset the player). The cache entry stays until the player
+-- quits; call flushAccData(name) if the login is abandoned.
+function loadAccDataAsync(eventName, requestId, name)
+    local caller = sourceResource
+    if type(eventName) ~= "string" or type(name) ~= "string" or name == "" or not caller then return false end
+    local target = getResourceRootElement(caller)
+    local function reply(ok)
+        if isElement(target) then triggerEvent(eventName, target, requestId, ok) end
+    end
+    cache[name], memo[name] = nil, nil
+    local sentAt = getTickCount()
+    local queued = mysqlQuery(function(rows)
+        if type(rows) ~= "table" then
+            mysqlLog("loadAccDataAsync: load of '%s' failed", name)
+            return reply(false)
+        end
+        if (dirtyAt[name] or -1) >= sentAt then return reply(false) end -- written meanwhile: retry
+        cache[name] = rowToEntry(rows[1])
+        reply(true)
+    end, "SELECT " .. SELECT_COLS .. " FROM `" .. TABLE .. "` WHERE account_name = ? LIMIT 1", name)
+    return queued
 end
 
 -- Non-blocking warm-up for reads of OFFLINE accounts (PERF-01): loads every

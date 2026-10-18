@@ -20,6 +20,7 @@
   "v_accounts.register.title": "REGISZTRÁCIÓ",
   "v_accounts.server.account_already_exists": "Ez a fiók már létezik",
   "v_accounts.server.account_not_found": "A fiók nem található: {account_name}",
+  "v_accounts.server.database_query_error": "Adatbázis lekérdezési hiba. Prbóáld újra!",
   "v_accounts.server.ban_database_unavailable": "A tiltási adatbázis nem érhető el",
   "v_accounts.server.invalid_account_name": "Érvénytelen fióknév",
   "v_accounts.server.no_active_ban_for_account": "Nincs aktív tiltás ehhez a fiókhoz: {account_name}",

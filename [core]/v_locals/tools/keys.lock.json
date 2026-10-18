@@ -1443,6 +1443,7 @@
   "v_accounts|Account already exists": "v_accounts.server.account_already_exists",
   "v_accounts|Account not found: {account_name}": "v_accounts.server.account_not_found",
   "v_accounts|CONFIRM PASSWORD": "v_accounts.register.confirm_password",
+  "v_accounts|Database query error": "v_accounts.server.database_query_error",
   "v_accounts|Ban database unavailable": "v_accounts.server.ban_database_unavailable",
   "v_accounts|Invalid account name": "v_accounts.server.invalid_account_name",
   "v_accounts|Loading": "v_accounts.loading.loading",
