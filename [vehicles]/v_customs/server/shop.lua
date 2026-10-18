@@ -59,7 +59,10 @@ function Customs.startSession(player, veh, wsIdx)
     setElementDimension(player, dim)
     setElementData(player, "customs:inShop", true)
 
-    triggerClientEvent(player, "v_customs:sessionStarted", player, veh, wsIdx, dim)
+    local model = getElementModel(veh)
+    local name = getResourceFromName("veh_manager") and exports.veh_manager:getModelName(model)
+    triggerClientEvent(player, "v_customs:sessionStarted", player, veh, wsIdx, dim,
+        name or getVehicleNameFromModel(model))
 end
 
 -- pos = { x, y, z, rz } where the client's drive-out ended (nil = forced end)

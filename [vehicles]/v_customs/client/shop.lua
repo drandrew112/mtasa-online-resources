@@ -22,14 +22,14 @@ local function setShopMode(on)
     uicore:toggleMoveControls(not on)
 end
 
-addEventHandler("v_customs:sessionStarted", root, function(veh, wsIdx, dim)
+addEventHandler("v_customs:sessionStarted", root, function(veh, wsIdx, dim, vehName)
     local ws = Customs.WORKSHOPS[wsIdx]
     if active or not isElement(veh) or not ws then return end
     active, leaving = true, false
     curVeh, curWs, curDim = veh, ws, dim
 
     setShopMode(true)
-    Garage.enter(veh, ws, dim, function()
+    Garage.enter(veh, ws, dim, vehName, function()
         if not active or leaving then return end
         CustomsCam.start(veh)
         if not Menu.open(veh) then

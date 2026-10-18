@@ -7,7 +7,9 @@
 
 Garage = Garage or {}
 
-local anim   -- { veh, cam, door, start, update(elapsed) -> finished, done }
+local anim   -- { veh, cam, door, start, update(elapsed) -> finished, done, label }
+
+local screenW, screenH = guiGetScreenSize()
 
 local function lerp(a, b, t) return a + (b - a) * t end
 
@@ -62,6 +64,13 @@ local function render()
     local c = a.cam
     setCameraMatrix(c[1], c[2], c[3], vx, vy, vz + 0.3)
 
+    if a.label then
+        dxDrawText("San Andreas Customs", screenW * 0.8, screenH * 0.8 +5, _, _,
+            tocolor(182, 205, 227), 2.5, "default", "right", "bottom")
+        dxDrawText(a.label, screenW * 0.8, screenH * 0.8, _, _,
+            tocolor(255, 255, 255), 3, "default-bold", "right", "top")
+    end
+
     if finished then
         local done = a.done
         local _, _, rz = getElementRotation(a.veh)
@@ -70,9 +79,9 @@ local function render()
     end
 end
 
-local function begin(veh, cam, door, update, done)
+local function begin(veh, cam, door, update, done, label)
     Garage.stop()
-    anim = { veh = veh, cam = cam, door = door, start = getTickCount(), update = update, done = done }
+    anim = { veh = veh, cam = cam, door = door, start = getTickCount(), update = update, done = done, label = label }
     setElementFrozen(veh, true)
     addEventHandler("onClientPreRender", root, render)
 end
@@ -100,8 +109,8 @@ end
 
 -- Car is snapped to the workshop's start pose (however it came in), then rolls
 -- to the park spot while the door shuts behind it. done() fires when it stands
--- still.
-function Garage.enter(veh, ws, dim, done)
+-- still. label (the vehicle's display name) is drawn on screen meanwhile.
+function Garage.enter(veh, ws, dim, label, done)
     Garage.cleanup()
     local dur = Customs.ANIM.enter
     local s = ws.enter
@@ -126,7 +135,7 @@ function Garage.enter(veh, ws, dim, done)
         setElementPosition(veh, lerp(sx, p[1], t), lerp(sy, p[2], t), lerp(sz, ez, t))
         setElementRotation(veh, 0, 0, lerpAngle(srz, p[4], t))
         return el >= dur and el >= doorAt + ws.door.time
-    end, done)
+    end, done, label)
 end
 
 -- The camera cuts outside, facing the door; behind the shut door the car is
