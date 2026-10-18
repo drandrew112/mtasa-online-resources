@@ -73,8 +73,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [SEC-18](#sec-18) | LOW | Nametags show account login names to everyone | OPEN |
 | [SEC-19](#sec-19) | LOW | Report log filename filter misses `\` (Lua 5.1 escape) | OPEN |
 | [SEC-20](#sec-20) | LOW | Self-updater pulls code from GitHub `main` without pinning | OPEN |
-| [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | FIXED 2026-10-18 (partly: reads can still be stale) |
-| [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps | FIXED 2026-10-18 (untested live) |
+| [BUG-01](#bug-01) | HIGH | Cross-server lost updates in account data (whole-blob writes) | FIXED 2026-10-18 (reads can still be stale) |
+| [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps | FIXED 2026-10-18 |
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | FIXED 2026-10-18 |
 | [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
@@ -82,7 +82,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | FIXED 2026-10-18 |
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | IN PROGRESS |
-| [PERF-02](#perf-02) | HIGH | `setAccData` rewrites the whole account JSON blob on every key | OPEN |
+| [PERF-02](#perf-02) | HIGH | `setAccData` writes straight to MySQL on every call (no write-behind) | OPEN (per-key patch since BUG-01) |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
 | [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | OPEN |
 | [PERF-05](#perf-05) | MEDIUM | ~100 always-attached `onClientRender`/`PreRender` handlers | IN PROGRESS |
@@ -94,7 +94,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-11](#perf-11) | LOW | v_socialpanel loads every message ever sent into memory | OPEN |
 | [PERF-12](#perf-12) | LOW | v_radar walks all blips every frame | OPEN |
 | [SCALE-01](#scale-01) | HIGH | Data storage in local files (two-server setup) | OPEN (bans, med_erm, bt_dispatch on MySQL; 4 global items left) |
-| [SCALE-02](#scale-02) | MEDIUM | v_main autostarts everything (devtools, freeroam, editors) | OPEN |
+| [SCALE-02](#scale-02) | MEDIUM | v_main autostarts everything (devtools, freeroam, editors) | OPEN (claude-mcp, v_modmenu no longer deployed) |
 | [SCALE-03](#scale-03) | MEDIUM | Global caps sized for few players (AI traffic, maxplayers 32) | OPEN |
 | [SCALE-04](#scale-04) | MEDIUM | Client memory pressure from oversized TXD/DFF mods | OPEN |
 | [SCALE-05](#scale-05) | LOW | Vehicle/player element data synced to the whole server, not just nearby players | OPEN |
@@ -239,7 +239,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - Flood limit: 3 messages / 5 s, then a 5 s cooldown with an alert
     (`v_chat.chat.slow_down`, en + hu in v_locals).
   - The Discord forward uses the real sender's name and the cleaned text.
-  - **Restart needed:** v_locals (new string), v_chat. Not tested in-game yet.
+  - **Restart needed:** v_locals (new string), v_chat.
 - **Location:** `[player_interaction]/v_chat/s_chat.lua:1-15`, client side `c_chat.lua:106`
 - **Problem:** The server broadcasts `sendMessageToAll(sender, text)` with the **client-supplied**
   `sender`. The mute check uses `client`, but the message is sent as `sender`. There is no
@@ -276,7 +276,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   `positions.txt`, and answers with `pos:saved`. The client then prints it, copies it to the
   clipboard and places the marker and blip. This also fixes the old typo `local marker createMarker(...)`
   that left the blip without a marker. Players below level 5 get no reaction.
-  Not tested in-game yet. Note: the admin level check still goes through `accName` (SEC-02).
+  Note: the admin level check still goes through `accName` (SEC-02).
 - **Location:** `[core]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:83` (`/pos` for everyone)
 - **Problem:** A remote event appends `text` to `positions.txt` with no permission check, no
   type/length check and no rate limit.
@@ -299,7 +299,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - Leaving the vehicle, dying, quitting, or the trial being switched (v_weekly) ends the run.
     The timeout sends `tt:finish false`.
   - `/tttest` uses the same path and still pays nothing.
-  - Not tested in-game yet. A daily reward cap could still be added if farming by honest driving is a concern.
+  - A daily reward cap could still be added if farming by honest driving is a concern.
 - **Location:** `[minigames]/v_timetrial/s_timetrial.lua:156` (pays `trial.reward`), `c_timetrial.lua:165` (client sets `tt:active`)
 - **Problem:** The payout only checks `getElementData(source, "tt:active")`, which the **client**
   sets. There is no recorded start time, no minimum duration and no cooldown.
@@ -332,7 +332,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - **Deploy note:** the v_main updater skips `[core]/v_mysql/` (`IGNORE_PREFIX`), so copy
     v_mysql to the live server **by hand**, then restart v_mysql → v_accounts → v_locals.
     v_accounts needs the new v_mysql export.
-  - Not tested in-game yet. `httpLogin` (web panels) is unchanged, see SEC-17.
+  - `httpLogin` (web panels) is unchanged, see SEC-17.
 - **Location:** `[core]/v_accounts/server.lua:368` (`login_player`), `:416` (`register_player`); `server/db.lua:25,48` (sync queries)
 - **Problem:** Before logging in, a client can fire `login_player` as fast as it likes. Each call
   runs `accountNameExists` + `fetchAccountAuth` (2 blocking round trips to the remote MySQL)
@@ -405,6 +405,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** MEDIUM
 - **Status:** OPEN
 - **Location:** `[world]/v_shop_robbery/s.lua:25` (`startRobbing`), `:44` (80 ms infinite timer), `:51`
+- **Update (2026-10-18):** `startRobbing` already uses `client` (not the event argument), and the
+  client-side per-frame LOS check is gone (PERF-05). Still open: everything below.
 - **Problem:** `startRobbing` does not check the distance to the NPC, whether the player is
   aiming or armed, the dimension, or whether the player is alive. `isRobbing` is client-writable
   (SEC-02): reset it and start again, and `robberies[player]` is overwritten while the old
@@ -418,7 +420,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-14 — Vehicle element data set directly by clients
 - **Severity:** MEDIUM
 - **Status:** OPEN
-- **Location:** `[ui]/ui_inac/client/main.lua:104-194` (`sirenType`, bypasses the validated `siren:setData` in v_els), `[vehicles]/v_customs/client/preview.lua:99` (`tuning.lsdDoor`), `[ui]/v_radar/radar/sourceC.lua:1142` (`gpsDestination`), `[vehicles]/v_radio/s_radio.lua:1` (`radio:setStation` for **any** vehicle, any value, no `client` check)
+- **Location:** `[ui]/ui_inac/client/main.lua:104-194` (`sirenType`, bypasses the validated `siren:setData` in v_els), `[vehicles]/v_customs/client/preview.lua:99` (`tuning.lsdDoor`), `[ui]/v_radar/radar/sourceC.lua:1142` (`gpsDestination`), `[vehicles]/v_radio/s_radio.lua:1` (`radio:setStation`: the element is now checked to be a vehicle, but still **any** vehicle, any value, no `client` check)
 - **Impact:** Players change other players' vehicle state (siren, radio stream, preview tuning
   that sticks). Values are not validated (e.g. an arbitrary radio "station" value).
 - **Suggested fix:** Route every change through a validated server event (driver = `client`,
@@ -497,7 +499,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-01"></a>
 ### BUG-01 — Cross-server lost updates in account data
 - **Severity:** HIGH
-- **Status:** FIXED 2026-10-18 (`persist` writes per key). Not tested against a live DB.
+- **Status:** FIXED 2026-10-18 (`persist` writes per key)
   - `persist(name, c, changed)` now sends only the keys passed to `setAccData`:
     `account_data = JSON_MERGE_PATCH(IF(JSON_VALID(account_data), account_data, '{}'), ?)` with a
     patch like `{"key":{"v":"1","t":"int"}}`; deleting a key sends `"key":null`. Promoted columns
@@ -523,7 +525,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-02"></a>
 ### BUG-02 — v_mysql: writes silently lost during an outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps
 - **Severity:** MEDIUM
-- **Status:** FIXED 2026-10-18 (offline-tested only)
+- **Status:** FIXED 2026-10-18
 - **Location:** `[core]/v_mysql/core/mysql.lua:202` (`mysqlExec`), `:177-200` (`mysqlInsert`), `:69` (`verifyConnection` only every `MYSQL_PING_INTERVAL` = 30 s)
 - **Problem:** `dbExec` returns `true` while the connection element exists, even when the server
   is unreachable, so up to 30 s of saves can be lost without an error. `mysqlInsert` runs a
@@ -556,7 +558,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** MEDIUM
 - **Status:** OPEN — partly done 2026-10-17 (PERF-05): the per-frame call is gone, it now runs once
   at client start and on every spawn. Still open: it is still off for everyone, not only inside
-  the arena. Not tested in-game.
+  the arena.
 - **Location:** `[minigames]/v_arenawar/shared.lua:22-29`
 - **Problem:** `setInteriorSoundsEnabled(false)` runs in an always-on `onClientPreRender` for
   every player on the server, not only inside the arena.
@@ -700,7 +702,11 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-02"></a>
 ### PERF-02 — `setAccData` rewrites the whole account JSON blob on every key
 - **Severity:** HIGH
-- **Status:** OPEN
+- **Status:** OPEN — partly solved by BUG-01: `persist` sends only the changed keys
+  (`JSON_MERGE_PATCH`), no longer the whole blob. `v_playedtime` writes both values in one call
+  (BUG-06) and `save_all` in `savesys.lua` uses one table write. Still open: no write-behind
+  cache (every `setAccData` is a DB write), and `saveLvl` in `v_levelsys/server.lua:82` still
+  does 3 separate writes.
 - **Location:** `[core]/v_mysql/scripts/accdata.lua:138` (`persist`), `:186` (`setAccData`). Heavy callers: `v_levelsys/server.lua:82` (`saveLvl`, 3 writes), `v_playedtime` (2 writes/min/player), `v_accounts/savesys.lua` (periodic `save_all`), v_achievements, v_stats, v_socialpanel
 - **Problem:** Each `setAccData(player, key, value)` re-encodes the full blob (inventory-sized
   JSON) and sends a full `INSERT … ON DUPLICATE KEY UPDATE` row. Callers write key by key.
@@ -765,7 +771,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   A ui_core server-side proximity watch (colsphere per marker + client `Proximity` lib) was tried
   for the marker labels and **removed the same day: it dropped FPS a lot** (user report); those
   label handlers are always attached again.
-  Not tested in-game yet. Still open: the marker labels (avi_core, med_hospitals, work_core,
+  Still open: the marker labels (avi_core, med_hospitals, work_core,
   world_interiors, clothes shop, rw_core depots, v_jobmanager, v_timetrial, rw_timetable),
   wp_manager controls (D4) and parachute skydiving (they need
   the control-lock API: `[ui]/ui_core/ControlLockAPI_DESIGN.MD`), v_inventory ports, the cable map
@@ -870,8 +876,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   the BT stock exists only on the server where it was made.
 - **Done (MySQL):**
   - ~~`v_accounts` `bans.xml`~~ → `bans` table (BUG-05, FIXED 2026-10-17)
-  - ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ → `med_tasks` / `med_shifts` (FIXED 2026-10-17, untested on live MySQL)
-  - ~~`bt_dispatch/server/db.lua` (SQLite)~~ → `bt_tasks` / `bt_shifts` (FIXED 2026-10-17, untested on live MySQL)
+  - ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ → `med_tasks` / `med_shifts` (FIXED 2026-10-17)
+  - ~~`bt_dispatch/server/db.lua` (SQLite)~~ → `bt_tasks` / `bt_shifts` (FIXED 2026-10-17)
 - **Global — still local files, should move to MySQL:**
 
   | Resource | File(s) | What | Priority |
@@ -902,7 +908,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="scale-02"></a>
 ### SCALE-02 — v_main autostarts everything
 - **Severity:** MEDIUM
-- **Status:** OPEN
+- **Status:** OPEN — partly: `claude-mcp` is git-ignored and `v_modmenu` is in the updater's
+  `IGNORE_PREFIX`, so neither is deployed by `updateresources` (SEC-01, SEC-04). The loader still
+  starts every resource it finds (no manifest / dev-mode switch).
 - **Location:** `[core]/v_main/loadResources.lua:16` (IGNORE only covers tiktok + web_manager)
 - **Problem:** All 126 resources start, including `claude-mcp` (devtools), `v_modmenu`
   (freeroam), editors (`v_jobcreator`, `med_scenemanager` editor) and test-only code. Each one
@@ -993,4 +1001,5 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | Date | Change |
 |---|---|
 | 2026-10-17 | Initial audit (this document) |
-| 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed (not tested in-game) |
+| 2026-10-18 | Review of all open items against the code: PERF-02, SEC-13, SEC-14, SCALE-02 annotated |
+| 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed |
