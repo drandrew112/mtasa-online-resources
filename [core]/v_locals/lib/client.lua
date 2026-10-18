@@ -309,6 +309,10 @@ do
         end
         addEvent("onClientLoadingStarted", true)
         addEventHandler("onClientLoadingStarted", root, ready)
+        -- v_accounts asks for the ready reports (also covers a resource that
+        -- started after the loading screen was already shown)
+        addEvent("onClientReadyCheck", false)
+        addEventHandler("onClientReadyCheck", root, ready)
         addEventHandler("onClientResourceStart", getResourceRootElement(getThisResource()), function()
             if getElementData(localPlayer, "loaded") then ready() end
         end)

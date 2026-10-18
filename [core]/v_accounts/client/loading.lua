@@ -96,8 +96,12 @@ function resourceReady()
 end
 
 addEvent("acc:checkReady", true)
+addEvent("onClientReadyCheck") -- local; every resource has started on this client, loading screen is active - report ready now
 addEventHandler("acc:checkReady", root, function()
     checking = true
+    -- resources that started after the loading screen appeared missed
+    -- onClientLoadingStarted and "loaded" is not set yet: let them report now
+    triggerEvent("onClientReadyCheck", localPlayer)
     if isTimer(warnTimer) then killTimer(warnTimer) end
     warnTimer = setTimer(function()
         local missing = missingResources()
