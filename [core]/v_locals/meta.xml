@@ -45,6 +45,7 @@
          build keeps this list in sync from phase 2 on). -->
     <file src="locales/languages.json" />
     <file src="locales/en/ai_land_traffic.json" />
+    <file src="locales/en/ai_peds.json" />
     <file src="locales/en/avi_core.json" />
     <file src="locales/en/common.json" />
     <file src="locales/en/dynamic_lighting.json" />
@@ -121,6 +122,7 @@
     <file src="locales/en/wp_selector.json" />
     <file src="locales/en/files/v_introduce/rules.txt" />
     <file src="locales/hu/ai_land_traffic.json" />
+    <file src="locales/hu/ai_peds.json" />
     <file src="locales/hu/avi_core.json" />
     <file src="locales/hu/common.json" />
     <file src="locales/hu/dynamic_lighting.json" />

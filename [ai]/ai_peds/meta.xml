@@ -1,0 +1,62 @@
+<meta>
+    <info author="DrAndrew112" name="ai_peds" version="1.0.0" type="script"
+          description="AI peds on the navmesh: sidewalk ped traffic in built-up areas, civilian / scared / enemy behaviours, drivers taken over from ai_land_traffic, scripted peds via exports (gang war)" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- Server = brain (behaviours, tasks, navmesh routes), the ped's syncer client = motor (control states).
+         navmesh is optional at runtime (pcall): without it no ped traffic, straight-line moves only. -->
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <include resource="navmesh" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/nav.lua"        type="server" />
+    <script src="server/peds.lua"       type="server" />
+    <script src="server/groups.lua"     type="server" />
+    <script src="server/views.lua"      type="server" />
+    <script src="server/route.lua"      type="server" />
+    <script src="server/tasks.lua"      type="server" />
+    <script src="server/behaviours/civilian.lua" type="server" />
+    <script src="server/behaviours/scared.lua"   type="server" />
+    <script src="server/behaviours/enemy.lua"    type="server" />
+    <script src="server/behaviours/exiting.lua"  type="server" />
+    <script src="server/perception.lua" type="server" />
+    <script src="server/traffic.lua"    type="server" />
+    <script src="server/drivers.lua"    type="server" />
+    <script src="server/scripted.lua"   type="server" />
+    <script src="server/main.lua"       type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/motor.lua"   type="client" />
+    <script src="client/reports.lua" type="client" />
+    <script src="client/debug.lua"   type="client" />
+
+    <!-- ================= EXPORTS (server) ================= -->
+    <export function="createAIPed"        type="server" />
+    <export function="destroyAIPed"       type="server" />
+    <export function="isAIPed"            type="server" />
+    <export function="getAIPeds"          type="server" />
+    <export function="setAIPedBehaviour"  type="server" />
+    <export function="getAIPedBehaviour"  type="server" />
+    <export function="setAIPedTask"       type="server" />
+    <export function="getAIPedTask"       type="server" />
+    <export function="aiPedGoTo"          type="server" />
+    <export function="setAIPedTarget"     type="server" />
+    <export function="getAIPedTarget"     type="server" />
+    <export function="setAIPedGroup"      type="server" />
+    <export function="getAIPedGroup"      type="server" />
+    <export function="setAIGroupRelation" type="server" />
+    <export function="getAIGroupRelation" type="server" />
+    <export function="setPlayerAIGroup"   type="server" />
+    <export function="getPlayerAIGroup"   type="server" />
+    <export function="giveAIPedWeapon"    type="server" />
+    <export function="setAIPedCombat"     type="server" />
+    <export function="getAIPedState"      type="server" />
+    <export function="adoptTrafficDriver" type="server" />
+    <export function="setAIPedTrafficEnabled" type="server" />
+    <export function="isAIPedTrafficEnabled"  type="server" />
+    <export function="getAIPedStats"      type="server" />
+</meta>

@@ -147,21 +147,69 @@ function getNearestPedPath(x, y, z, radius)
         width = math.min(Peds.nw[Peds.ea[e]], Peds.nw[Peds.eb[e]]), group = Peds.egroup[e], phase = Peds.ephase[e] }
 end
 
--- wandering: points of a random walk of about `length` metres from the nearest ped node
-function getPedRandomWalk(x, y, z, length, role)
+-- edge kind filter from a list of kind names / ids: { [kind] = true } (nil = all)
+local function kindSet(kinds)
+    if type(kinds) ~= "table" then return nil end
+    local set = {}
+    for _, k in ipairs(kinds) do
+        if type(k) == "string" then
+            for id, name in ipairs(NAV_PED_KIND_NAME) do if name == k then set[id] = true end end
+        elseif tonumber(k) then
+            set[tonumber(k)] = true
+        end
+    end
+    return set
+end
+
+-- wandering: points of a random walk of about `length` metres from the nearest ped node.
+-- opts: node (start node id instead of the nearest), prev (node id not to step back to first), kinds (edge kinds to
+-- use, names or ids, e.g. { "sidewalk", "crossing", "crossing_light" }). Result: points, nodes, widths (path width
+-- per point), crossings ({index, light, group, phase}: the edge from points[index] to points[index + 1]), length.
+function getPedRandomWalk(x, y, z, length, role, opts)
     if not Peds.ready then return false end
-    local near = Peds.nearestNodes(x, y, z, 60, 1, 6)
-    if not near[1] then return false end
-    local nodes, edges, dist = Peds.randomWalk(near[1][1], length or 100, NAV.PED[role or "civilian"])
-    local pts, crossings = {}, {}
+    opts = type(opts) == "table" and opts or {}
+    local start = tonumber(opts.node)
+    if not start or not Peds.adj[start] then
+        local near = Peds.nearestNodes(x, y, z, 60, 1, 6)
+        if not near[1] then return false end
+        start = near[1][1]
+    end
+    local prev = tonumber(opts.prev)
+    local nodes, edges, dist = Peds.randomWalk(start, length or 100, NAV.PED[role or "civilian"], prev, kindSet(opts.kinds))
+    local pts, widths, crossings = {}, {}, {}
     for i, n in ipairs(nodes) do
         pts[#pts + 1] = { Peds.nx[n], Peds.ny[n], Peds.nz[n] }
+        widths[#widths + 1] = Peds.nw[n]
         local e = edges[i - 1]
         if e and Peds.ekind[e] >= NAV_PED_KIND.CROSSING then
             crossings[#crossings + 1] = { index = i - 1, light = Peds.ekind[e] == NAV_PED_KIND.LIT, group = Peds.egroup[e], phase = Peds.ephase[e] }
         end
     end
-    return { points = pts, crossings = crossings, length = dist }
+    return { points = pts, nodes = nodes, widths = widths, crossings = crossings, length = dist }
+end
+
+-- ped graph edges within `radius` (2D) of a point, for spawning walkers and judging how built-up an area is.
+-- kinds: edge kinds to keep (names or ids; all when nil); maxDz: height window (default 8); max: result cap.
+-- Result: { {edge, kind, a, b, length, width, x1, y1, z1, x2, y2, z2, distance}, ... }
+function getPedEdgesNear(x, y, z, radius, kinds, maxDz, max)
+    if not Peds.ready then return false end
+    local P = Peds
+    local set, seen, out = kindSet(kinds), {}, {}
+    radius, maxDz, max = radius or 50, maxDz or 8, max or 400
+    P.index:each(x, y, radius, function(e)
+        if seen[e] or #out >= max then return end
+        seen[e] = true
+        local k = P.ekind[e]
+        if set and not set[k] then return end
+        local a, b = P.ea[e], P.eb[e]
+        local d, u = segDist2D(x, y, P.nx[a], P.ny[a], P.nx[b], P.ny[b])
+        if d > radius then return end
+        if z and math.abs(P.nz[a] + (P.nz[b] - P.nz[a]) * u - z) > maxDz then return end
+        out[#out + 1] = { edge = e, kind = NAV_PED_KIND_NAME[k], a = a, b = b, length = P.elen[e],
+            width = math.min(P.nw[a], P.nw[b]), x1 = P.nx[a], y1 = P.ny[a], z1 = P.nz[a],
+            x2 = P.nx[b], y2 = P.ny[b], z2 = P.nz[b], distance = d }
+    end)
+    return out
 end
 
 function isCrossingOpen(phase)

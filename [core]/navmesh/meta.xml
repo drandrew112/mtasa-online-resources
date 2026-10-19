@@ -39,6 +39,7 @@
     <export function="isWalkable"         type="server" />
     <export function="getNearestPedPath"  type="server" />
     <export function="getPedRandomWalk"   type="server" />
+    <export function="getPedEdgesNear"    type="server" />
     <export function="isCrossingOpen"     type="server" />
     <export function="getNavmeshStats"    type="server" />
 </meta>

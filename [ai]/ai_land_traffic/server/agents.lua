@@ -341,9 +341,21 @@ function Agents.vehicleDestroyed(ag)
     if isElement(ag.ped) then destroyElement(ag.ped) end
 end
 
+-- the driver goes to ai_peds (gets out properly, then flees or attacks the culprit); never teleported out.
+-- Without ai_peds the driver stays in the vehicle. Returns true when ai_peds took it.
+local function handOverDriver(ped, veh, reason, culprit)
+    if not isElement(ped) or isPedDead(ped) then return false end
+    local res = getResourceFromName("ai_peds")
+    if not res or getResourceState(res) ~= "running" then return false end
+    local ok, taken = pcall(function()
+        return exports.ai_peds:adoptTrafficDriver(ped, veh, { reason = reason, culprit = culprit })
+    end)
+    return ok and taken == true
+end
+
 -- the vehicle leaves the simulation and becomes an ordinary physics vehicle
--- reason: "crash" | "damage" | "enter" | "export"
-function Agents.release(ag, reason)
+-- reason: "crash" | "damage" | "enter" | "jacked" | "export"; culprit: the player (or element) that caused it
+function Agents.release(ag, reason, culprit)
     if not A.list[ag.id] then return false end
     forget(ag, reason)
     local veh, ped = ag.veh, ag.ped
@@ -357,19 +369,10 @@ function Agents.release(ag, reason)
     local crashed = reason == "crash" or reason == "damage"
     A.released[veh] = { ped = ped, at = getTickCount(), crashed = crashed }
     Sync.release(ag, reason)
-    if crashed then
-        setVehicleEngineState(veh, false)
-        -- the driver gets out after the crash (an empty vehicle syncs reliably)
-        setTimer(function()
-            if isElement(ped) and isElement(veh) and getPedOccupiedVehicle(ped) == veh then
-                local x, y, z = getElementPosition(veh)
-                local _, _, r = getElementRotation(veh)
-                local a = math.rad(r)
-                removePedFromVehicle(ped)
-                setElementPosition(ped, x - math.cos(a) * 2.2, y - math.sin(a) * 2.2, z + 0.3)
-                setElementRotation(ped, 0, 0, r + 90)
-            end
-        end, 2000, 1)
+    if crashed then setVehicleEngineState(veh, false) end
+    -- crash / damage / jacked / a player got in: the driver gets out (ai_peds owns it from now on)
+    if reason ~= "export" and handOverDriver(ped, veh, reason, culprit) then
+        A.released[veh].ped = nil
     end
     return true
 end

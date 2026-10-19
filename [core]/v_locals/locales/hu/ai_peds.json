@@ -1,0 +1,7 @@
+{
+  "ai_peds.main.stats": "Gyalogosforgalom {enabled}: {total|int} ped ({traffic|int} gyalogos, {drivers|int} sofőr, {scripted|int} scriptelt), {synced|int} szinkronizált | {b} | járda itt {sidewalk|int} m, cél {target|int}",
+  "ai_peds.main.title": "AI pedek",
+  "ai_peds.main.traffic_cleared": "Gyalogosforgalom törölve",
+  "ai_peds.main.traffic_off": "Gyalogosforgalom kikapcsolva és törölve",
+  "ai_peds.main.traffic_on": "Gyalogosforgalom bekapcsolva"
+}

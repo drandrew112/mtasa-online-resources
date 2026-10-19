@@ -90,7 +90,7 @@ addEventHandler("onVehicleStartEnter", root, function(player, seat, jacked)
     if not ag or getElementType(player) ~= "player" then return end
     -- a passenger seat of a scripted vehicle (bus) does not take it out of the simulation
     if ag.script and seat and seat > 0 and not jacked then return end
-    Agents.release(ag, "enter")
+    Agents.release(ag, jacked and "jacked" or "enter", player)
 end)
 
 addEventHandler("onVehicleExplode", root, function()
@@ -125,7 +125,7 @@ addEventHandler(EV_REPORT, resourceRoot, function(veh, kind)
     if not ag then return end
     local x, y, z = getElementPosition(client)
     if (x - ag.x) ^ 2 + (y - ag.y) ^ 2 + (z - ag.z) ^ 2 > 45 * 45 then return end
-    Agents.release(ag, kind == "damage" and "damage" or "crash")
+    Agents.release(ag, kind == "damage" and "damage" or "crash", client)
 end)
 
 addEventHandler("onPlayerQuit", root, function() lastReport[source] = nil end)

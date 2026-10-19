@@ -1,0 +1,7 @@
+{
+  "ai_peds.main.stats": "Ped traffic {enabled}: {total|int} peds ({traffic|int} walkers, {drivers|int} drivers, {scripted|int} scripted), {synced|int} synced | {b} | sidewalk here {sidewalk|int} m, target {target|int}",
+  "ai_peds.main.title": "AI peds",
+  "ai_peds.main.traffic_cleared": "Ped traffic cleared",
+  "ai_peds.main.traffic_off": "Ped traffic disabled and cleared",
+  "ai_peds.main.traffic_on": "Ped traffic enabled"
+}

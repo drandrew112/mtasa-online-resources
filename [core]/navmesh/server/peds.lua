@@ -143,23 +143,27 @@ function Peds.search(starts, goals, role, maxNodes)
     return nodes, edges, bestCost, n
 end
 
--- random walk along the graph (wandering peds): nodes list of about `length` metres, never straight back
-function Peds.randomWalk(startNode, length, role)
+-- random walk along the graph (wandering peds): nodes list of about `length` metres, never straight back.
+-- prevNode: the node the ped came from (not stepped back to first); allowed: { [kind] = true } edge kinds to use (all when nil)
+function Peds.randomWalk(startNode, length, role, prevNode, allowed)
     local nodes, edges = { startNode }, {}
-    local cur, prev, dist = startNode, nil, 0
+    local cur, prev, dist = startNode, prevNode, 0
     local kinds = role and role.kind
     while dist < length do
         local opts = {}
         for _, e in ipairs(P.adj[cur]) do
             local o = Peds.other(e, cur)
-            if o ~= prev then
+            if o ~= prev and (not allowed or allowed[P.ekind[e]]) then
                 local w = kinds and 1 / (kinds[P.ekind[e]] or 1) or 1
                 opts[#opts + 1] = { e, o, w }
             end
         end
         if #opts == 0 then
             if not prev then break end
-            for _, e in ipairs(P.adj[cur]) do opts[#opts + 1] = { e, Peds.other(e, cur), 1 } end
+            for _, e in ipairs(P.adj[cur]) do
+                if not allowed or allowed[P.ekind[e]] then opts[#opts + 1] = { e, Peds.other(e, cur), 1 } end
+            end
+            if #opts == 0 then break end
         end
         local sum = 0
         for _, o in ipairs(opts) do sum = sum + o[3] end

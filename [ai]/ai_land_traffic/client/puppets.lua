@@ -118,6 +118,9 @@ addEvent(EV_RELEASE, true)
 addEventHandler(EV_RELEASE, resourceRoot, function(veh, reason, vx, vy, vz)
     if not P[veh] then return end
     P[veh] = nil
+    -- the driver's tiny throttle (DRIVER_THROTTLE) must not stay on: it gets out / sits still now
+    local driver = isElement(veh) and getVehicleOccupant(veh, 0)
+    if driver and getElementType(driver) == "ped" then setPedAnalogControlState(driver, "accelerate", 0) end
     if isElement(veh) and isElementStreamedIn(veh) then
         setElementVelocity(veh, vx / 50, vy / 50, vz / 50)
     end

@@ -68,8 +68,12 @@ Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, 
 - **Obstacles**: players, their vehicles, other vehicles and peds near players. Traffic stops behind
   them, honks at players, and passes a standing obstacle after 4 s.
 - **Release**: crashes (`CRASH_FORCE`), shots, a player entering, explosion or the export turn the
-  vehicle into a normal physics vehicle (automatic syncer again). After a crash the driver gets out.
-  Released vehicles are removed when nobody is within 300 m.
+  vehicle into a normal physics vehicle (automatic syncer again). Released vehicles are removed when nobody is
+  within 300 m.
+- **Drivers** of released vehicles (crash, damage, jacked, a player got in; not `releaseTrafficVehicle`) are handed
+  over to `ai_peds` (`adoptTrafficDriver`, with the culprit player): the driver gets out with the GTA exit animation
+  (a jacked one is pulled out by the player) and then flees or attacks the culprit. Drivers are never teleported out:
+  without ai_peds running they stay in the vehicle.
 
 ## Data (navmesh)
 

@@ -3,8 +3,8 @@
 Navigation data of San Andreas for scripts that move vehicles and peds: a lane-level road network, the ped
 path graph (sidewalks, paths, crossings, ped lights), an open-terrain walk grid built from the map collision,
 and the boat paths. Other resources ask for routes and road / ground facts through server exports; nothing
-drives anything here. Users: ai_land_traffic (its lane network is a copy of roads.nav with the same ids: rerun its
-`tools/build_runtime.py` after `build_roads.py`). Planned: v_radar navigation, AI peds.
+drives anything here. Users: ai_land_traffic, ai_peds (sidewalk walkers, flee / combat routes). ai_land_traffic (its lane network is a copy of roads.nav with the same ids: rerun its
+`tools/build_runtime.py` after `build_roads.py`). Planned: v_radar navigation.
 
 ## Modules
 
@@ -84,7 +84,9 @@ Queries:
   count), `getLaneInfo(id)` (class, one-way, neighbours, speed, next connections...), `getLanePoint(id, u)`,
   `getConnectionPoints(id)`, `getSignalGroup(id)`.
 - `getWalkableGround(x,y,z, maxDz)` -> z, {surface, road, crossing, pedPath, edge, steep, layer};
-  `isWalkable(x,y,z)`; `getNearestPedPath(x,y,z, radius)`; `getPedRandomWalk(x,y,z, length, role)`;
+  `isWalkable(x,y,z)`; `getNearestPedPath(x,y,z, radius)`; `getPedRandomWalk(x,y,z, length, role, opts)` (opts `node`,
+  `prev`, `kinds`: start node, node not to step back to, allowed edge kinds; result `points`, `nodes`, `widths`, `crossings`);
+  `getPedEdgesNear(x,y,z, radius, kinds, maxDz, max)` (ped edges around a point: spawning walkers, how built-up an area is);
   `isCrossingOpen(phase)` (ai_land_traffic signal cycle when it runs, else GTA's lights);
   `getNavmeshStats()` (`roads.signature` = md5 of roads.nav, for copies of the lane ids).
 

@@ -17,7 +17,7 @@
 --   onTrafficVehicleTargetFailed   (veh, id, kind, tag, reason)    no route to it, target dropped
 --   onTrafficVehicleRouteFinished  (veh, removeInMs)               last target done, removal timer started
 --   onTrafficVehicleRemoved        (veh, reason)                   vehicle left the scripted list: "timeout",
---                                  "vehicle_destroyed", "crash" / "damage" / "enter" (released, now a physics
+--                                  "vehicle_destroyed", "crash" / "damage" / "enter" / "jacked" (released, now a physics
 --                                  vehicle) - not sent for destroyScriptedVehicle; veh may already be gone
 
 Scripted = { count = 0, list = {} }   -- list: [agent] = true
