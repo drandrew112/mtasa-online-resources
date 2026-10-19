@@ -95,6 +95,9 @@ Peds:
 - Groups: `setAIPedGroup(ped, group)`, `getAIPedGroup(ped)`, `setAIGroupRelation(a, b, "hostile" | "neutral" | "friendly",
   mutual = true)`, `getAIGroupRelation(a, b)`, `setPlayerAIGroup(player, group | false)`, `getPlayerAIGroup(player)`.
 
+Views: `isPointSeenByPlayers(x, y, z, maxDist, dimension)` -> does any player camera (within maxDist, in that
+dimension) look towards the point (view cone, no line of sight; no fresh camera report = sees). For removing peds unseen.
+
 Traffic: `setAIPedTrafficEnabled(bool)`, `isAIPedTrafficEnabled()`, `getAIPedStats()`. ai_land_traffic:
 `adoptTrafficDriver(ped, veh, {reason, culprit, behaviour})`.
 

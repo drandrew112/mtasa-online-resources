@@ -209,3 +209,24 @@ end
 function isAIPedTrafficEnabled() return PedTraffic.enabled end
 
 function getAIPedStats() return AIPedsMain.stats() end
+
+-- isPointSeenByPlayers(x, y, z [, maxDist [, dimension]]) -> bool: does the camera of any player (in that dimension,
+-- within maxDist of the point) look towards it? Same test as the walker culling (Views.playerSees: view cone, no line
+-- of sight; a player without a fresh camera report counts as seeing). Used by the gang war to remove peds unseen.
+function isPointSeenByPlayers(x, y, z, maxDist, dimension)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    if not x or not y or not z then return false end
+    maxDist = tonumber(maxDist)
+    local now = getTickCount()
+    for _, pl in ipairs(getElementsByType("player")) do
+        if not dimension or getElementDimension(pl) == dimension then
+            local px, py = getElementPosition(pl)
+            local v = Views.list[pl]
+            local cx, cy = v and v.x or px, v and v.y or py
+            if not maxDist or (cx - x) ^ 2 + (cy - y) ^ 2 < maxDist * maxDist then
+                if Views.playerSees(pl, x, y, z, now) then return true end
+            end
+        end
+    end
+    return false
+end

@@ -1,0 +1,24 @@
+<meta>
+    <info author="DrAndrew112" name="v_gangwar" type="script" version="1.0.0"
+          description="Gang wars: armed players reserve a gang territory, ai_peds gang members defend it; /gangwareditor" />
+
+    <!-- soft dependencies (resolved at use time): v_radar (zone circle), wp_manager (armed check), v_levelsys (XP),
+         v_accounts (editor name) -->
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="ai_peds" />
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/sanitize.lua" type="server" />
+    <script src="server/db.lua" type="server" />
+    <script src="server/runtime.lua" type="server" />
+    <script src="server/editor.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <script src="client/hud.lua" type="client" />
+    <script src="client/editor.lua" type="client" />
+</meta>

@@ -59,4 +59,5 @@
     <export function="setAIPedTrafficEnabled" type="server" />
     <export function="isAIPedTrafficEnabled"  type="server" />
     <export function="getAIPedStats"      type="server" />
+    <export function="isPointSeenByPlayers" type="server" />
 </meta>
