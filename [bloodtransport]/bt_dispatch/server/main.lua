@@ -31,6 +31,8 @@ end
 
 addEventHandler("onResourceStart", resourceRoot, function()
     startDb()
+    -- the deliveries of the other servers reach the all-time counter from the database
+    setTimer(DB.refreshCompleted, 60000, 0)
     if not dbReady then outputDebugString("[bt_dispatch] v_mysql not connected yet, waiting for mysql:connected", 2) end
 end)
 
@@ -73,7 +75,7 @@ function getPublicState()
     return { onDuty = #units, active = active, completed = getCompletedCount(), units = units }
 end
 
--- Total delivered tasks since the beginning (database count at start + delivered since then)
+-- Total delivered tasks of all servers since the beginning (last database count + delivered here since then)
 function getCompletedCount()
     return DB.completed + TotalDelivered
 end

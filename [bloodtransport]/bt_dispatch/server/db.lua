@@ -11,7 +11,7 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
 
 DB = {}
 
-DB.completed = 0   -- delivered tasks in the database when the resource (or the connection) started
+DB.completed = 0   -- delivered tasks in the database (all servers) at the last count, see DB.refreshCompleted
 DB.ready = false   -- DB.init done
 
 -- instance id of this server (v_main), the `server` column of every row (servers share the database)
@@ -228,6 +228,7 @@ function DB.init()
     end
     local rows = DB.query("SELECT COUNT(*) AS n FROM bt_tasks WHERE isPool = 0 AND status = 'delivered'")
     DB.completed = rows and rows[1] and tonumber(rows[1].n) or 0
+    TotalDelivered = 0
 
     -- load check: the free pool rows of the table are taken over as they are (a reconnect keeps
     -- the list, a row just taken may not be filled yet)
@@ -237,6 +238,23 @@ function DB.init()
     end
     for _, p in pairs(pools) do poolRefill(p) end
     return true
+end
+
+-- Re-counts the delivered tasks of every server (the servers share the database) without blocking.
+-- TotalDelivered keeps only the local deliveries made since this count was sent, so the total
+-- does not jump back while the answer is on its way.
+local counting = false
+function DB.refreshCompleted()
+    if counting or not DB.ready or not DB.isConnected() then return end
+    counting = true
+    local sentAt = TotalDelivered
+    MYSQL.query(function(rows)
+        counting = false
+        local n = rows and rows[1] and tonumber(rows[1].n)
+        if not n then return end
+        DB.completed = n
+        TotalDelivered = math.max(0, TotalDelivered - sentAt)
+    end, "SELECT COUNT(*) AS n FROM bt_tasks WHERE isPool = 0 AND status = 'delivered'")
 end
 
 -- Leftovers of a previous run: open tasks and shifts were lost with the volatile cargo.
