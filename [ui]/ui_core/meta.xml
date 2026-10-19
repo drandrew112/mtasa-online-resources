@@ -14,6 +14,7 @@
     <script src="client/alert.lua" type="client" />
     <script src="client/notifications.lua" type="client" />
     <script src="client/timer.lua" type="client" />
+    <script src="client/stats.lua" type="client" />
     <script src="client/yoverlay.lua" type="client" />
     <script src="client/crewTagBox.lua" type="client" />
     <script src="client/textInput.lua" type="client" />
@@ -37,6 +38,10 @@
     <export function="addNotification" type="client" />
     <export function="drawLoadingText" type="client" />
     <export function="drawTimer" type="client" />
+    <export function="addStatTracker" type="client" />
+    <export function="updateStatTracker" type="client" />
+    <export function="removeStatTracker" type="client" />
+    <export function="clearStatTrackers" type="client" />
     <export function="drawCrewTagBox" type="client" />
     <export function="showLevelOverlay" type="client" />
     <export function="showMoney" type="client" />

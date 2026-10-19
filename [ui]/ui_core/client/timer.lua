@@ -4,6 +4,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 local sx, sy = guiGetScreenSize()
 
 function UI:drawTimer(time_left)
+    UI.stats.timerTick = getTickCount() -- stat trackers sit above the timer
     -- calc
     local text = L("ui_core.timer.time_left", { time_left = time_left })
     -- calc ui

@@ -18,6 +18,7 @@ addEventHandler("onClientRender", root, function()
     UI.subtitle:draw()
     UI.alert:draw()
     UI:drawNotifications()
+    UI.stats:draw()
 
     if UI.yOverlay.active then
         UI.yOverlay:draw()

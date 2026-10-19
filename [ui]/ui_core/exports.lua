@@ -75,6 +75,31 @@ function showLevelOverlay()
     UI.yOverlay:showLevelOnly()
 end
 
+-- Stat trackers in the bottom-right corner, above the timer (client/stats.lua).
+--   addStatTracker(id, label, value [, { order = n, color = {r,g,b} }])  - adds or replaces a row
+--   updateStatTracker(id, value [, label])
+--   removeStatTracker(id)
+--   clearStatTrackers()  - every row of the calling resource
+-- The rows of a resource are removed when it stops.
+function addStatTracker(id, label, value, opts)
+    if id == nil then return false end
+    return UI.stats:set(tostring(id), txt(label), txt(value), opts, sourceResource or resource)
+end
+
+function updateStatTracker(id, value, label)
+    if id == nil then return false end
+    return UI.stats:update(tostring(id), txt(value), txt(label))
+end
+
+function removeStatTracker(id)
+    if id == nil then return false end
+    return UI.stats:remove(tostring(id))
+end
+
+function clearStatTrackers()
+    return UI.stats:clearOwner(sourceResource or resource)
+end
+
 -- Rovid ideig megmutatja az egyenleget es alatta a valtozast:
 --   kind      = "add"  -> + € <change>  (zold)
 --               "take" -> - € <change>  (piros)
