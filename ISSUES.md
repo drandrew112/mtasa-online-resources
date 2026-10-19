@@ -758,8 +758,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-04"></a>
 ### PERF-04 — 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as a client script
 - **Severity:** MEDIUM
-- **Status:** OPEN (re-checked 2026-10-18: still 4 identical copies of 4,747,048 bytes)
-- **Location:** `[ui]/v_radar/radar/gps/vehiclenodes.lua` (client script), `[tiktok]/ai_autoplayer/shared/vehicle_nodes.lua` (client, `cache="false"` → downloaded again on **every** join), `[ai]/ai_land_traffic/data/source/vehiclenodes.lua`, `[devtools]/claude-mcp/assets/vehiclenodes.lua`
+- **Status:** OPEN (re-checked 2026-10-18: still 4 identical copies of 4,747,048 bytes; 2026-10-19: the ai_land_traffic copy is deleted, 3 left)
+- **Location:** `[ui]/v_radar/radar/gps/vehiclenodes.lua` (client script), `[tiktok]/ai_autoplayer/shared/vehicle_nodes.lua` (client, `cache="false"` → downloaded again on **every** join), `[devtools]/claude-mcp/assets/vehiclenodes.lua`
 - **Problem:** A 307,772-line Lua table is downloaded, compiled and kept in memory per resource on
   each client (compiling a table that size costs a noticeable hitch at start).
 - **Suggested fix:** Build it once into a compact binary/JSON data file (as ai_land_traffic

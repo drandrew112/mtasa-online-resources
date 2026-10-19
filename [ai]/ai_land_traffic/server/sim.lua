@@ -85,7 +85,7 @@ local function gate(ag, c, dStop, now)
     -- emergency vehicle about to cross
     local hx, hy = ag.hx, ag.hy
     local jx, jy = Geo.pose(-c, 0)
-    if jx and not clearing and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, jx, jy, hx, hy) then
+    if jx and not clearing and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, c, jx, jy, hx, hy) then
         return "els"
     end
 

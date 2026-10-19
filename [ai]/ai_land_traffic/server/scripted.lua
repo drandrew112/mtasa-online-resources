@@ -3,14 +3,14 @@
 -- A scripted vehicle is an ordinary traffic agent (same lanes, lights, right of way, car following,
 -- emergency vehicle reactions) with two differences:
 --   * it follows a list of targets: stops (drive there, stand, wait) and turn points (just pass the spot),
---     the route between them is searched on the lane graph (A*); lane changes are made where it needs them
+--     the route between them is a navmesh lane route (profile option); lane changes are made where it needs them
 --   * it only goes away when its owner says so (destroyScriptedVehicle), SCRIPTED_END_LIFE after the last
 --     target is done / removed, or when it leaves the simulation (crash, driver seat taken, explosion)
 -- Without a target it drives on like any other traffic vehicle (random exits).
 --
 -- ag.script = { targets = { { id, kind, lane, s, x, y, z, wait, hold, tag }, ... }, exits, wish, noPath (route
 --               cache of the current head target), dwell = { left } (standing at a stop), stopLane / stopS (head
---               target when it is a stop), endLeft (ms until removal), speedFactor, owner }
+--               target when it is a stop), endLeft (ms until removal), speedFactor, profile (navmesh), owner }
 -- Events (triggered on root after the simulation step, args start with the vehicle):
 --   onTrafficVehicleTargetReached  (veh, id, kind, tag, x, y, z)   stop: standing at it; turn point: passed
 --   onTrafficVehicleTargetDeparted (veh, id, kind, tag, x, y, z)   stop: wait over, driving on
@@ -85,109 +85,28 @@ local function snap(x, y, z, heading, radius)
     return bestLane, bestS
 end
 
------------------------------------------------------------------------- route search (A*)
+------------------------------------------------------------------------ route search (navmesh)
 
--- lane graph: node = lane, g = cost to reach the START of the lane (metres, penalties added).
--- Edges: connection to the next lane (lane + curve length, turn penalty, surface weight) and a lane change
--- to the neighbouring lane of the same carriageway. Returns { { lane, conn = id | lc = laneId }, ... } from
--- `start` on to goalLane (empty when start is the goal), or nil. needEdge: start == goalLane but the way
--- round to it is wanted (the vehicle passed it).
-local GOAL = 0
-
-local function findPath(start, goalLane, gx, gy, needEdge)
-    if start == goalLane and not needEdge then return {} end
-    local trapOK = bitAnd(Net.lflags[start] or 0, LF_TRAP) ~= 0
-    local g, parent, viaConn, viaLC, closed = { [start] = 0 }, {}, {}, {}, {}
-    local hf, hv, hn = {}, {}, 0
-
-    local function push(f, v)
-        hn = hn + 1
-        local i = hn
-        while i > 1 do
-            local p = math.floor(i / 2)
-            if hf[p] <= f then break end
-            hf[i], hv[i] = hf[p], hv[p]
-            i = p
-        end
-        hf[i], hv[i] = f, v
+-- lane route from `start` to the goal target (navmesh lane A*, the vehicle's profile). Returns
+-- { { lane, conn = id | lc = laneId }, ... } from `start` on to the goal lane, or nil. startS: position on the
+-- start lane (nil = its start). needEdge: start == goal lane but the way round to it is wanted (the vehicle
+-- passed it): the search starts at the lane end.
+local function findPath(ag, start, goal, startS, needEdge)
+    if start == goal.lane and not needEdge then return {} end
+    local len = Geo.length(start)
+    local u0 = needEdge and 1 or (startS and len > 0 and startS / len or 0)
+    local glen = Geo.length(goal.lane)
+    local gu = glen > 0 and goal.s / glen or 0
+    if needEdge and gu > 0.999 then gu = 0.999 end
+    local lanes, conns = Navmesh.laneRoute(start, u0, goal.lane, gu, { profile = ag.script.profile })
+    if not lanes or #lanes < 2 then return nil end
+    local steps = {}
+    for i = 1, #lanes - 1 do
+        local c = conns[i + 1]
+        if c then steps[#steps + 1] = { lane = lanes[i], conn = c }
+        else steps[#steps + 1] = { lane = lanes[i], lc = lanes[i + 1] } end
     end
-
-    local function pop()
-        local f, v = hf[1], hv[1]
-        local lf, lv = hf[hn], hv[hn]
-        hf[hn], hv[hn] = nil, nil
-        hn = hn - 1
-        if hn > 0 then
-            local i = 1
-            while true do
-                local c = i * 2
-                if c > hn then break end
-                if c < hn and hf[c + 1] < hf[c] then c = c + 1 end
-                if hf[c] >= lf then break end
-                hf[i], hv[i] = hf[c], hv[c]
-                i = c
-            end
-            hf[i], hv[i] = lf, lv
-        end
-        return f, v
-    end
-
-    local function h(lane)
-        local dx, dy = Geo.lx1[lane] - gx, Geo.ly1[lane] - gy
-        return sqrt(dx * dx + dy * dy)
-    end
-
-    local function relax(from, to, cost, conn, lc)
-        local key = (to == goalLane) and GOAL or to
-        if key ~= GOAL and closed[to] then return end
-        local ng = g[from] + cost
-        if not g[key] or ng < g[key] then
-            g[key], parent[key], viaConn[key], viaLC[key] = ng, from, conn, lc
-            push(ng + (key == GOAL and 0 or h(to)), key)
-        end
-    end
-
-    push(h(start), start)
-    local pops = 0
-    while hn > 0 do
-        local _, L = pop()
-        if L == GOAL then
-            local steps, cur = {}, GOAL
-            repeat
-                local p = parent[cur]
-                local step = { lane = p }
-                if viaLC[cur] then step.lc = (cur == GOAL) and goalLane or cur else step.conn = viaConn[cur] end
-                table.insert(steps, 1, step)
-                cur = p
-            until cur == start
-            return steps
-        end
-        if not closed[L] then
-            closed[L] = true
-            pops = pops + 1
-            if pops > T.SCRIPTED_MAX_NODES then return nil end
-            local len = Geo.length(L)
-            for _, c in ipairs(Net.lnext[L] or {}) do
-                local to = Net.cto[c]
-                local fl = Net.lflags[to] or 0
-                local blocked = bitAnd(fl, LF_ROADBLOCK + LF_PARKING) ~= 0
-                    or (not trapOK and bitAnd(fl, LF_TRAP) ~= 0)
-                if to == goalLane or not blocked then
-                    local mult = 1
-                    if bitAnd(fl, LF_EMERGENCY) ~= 0 then mult = 3
-                    elseif bitAnd(fl, LF_UNPAVED) ~= 0 then mult = 1.4 end
-                    if bitAnd(fl, LF_SINK) ~= 0 then mult = mult * 4 end
-                    local curve = Geo.isCurve(c) and Geo.length(-c) or 0
-                    local cost = (len + curve) * mult + (T.SCRIPTED_TURN_COST[Net.cturn[c]] or 0)
-                    relax(L, to, cost, c, nil)
-                end
-            end
-            for _, n in ipairs({ Net.lleft[L] or 0, Net.lright[L] or 0 }) do
-                if n > 0 and Net.lnext[n] then relax(L, n, T.SCRIPTED_LANE_CHANGE, nil, true) end
-            end
-        end
-    end
-    return nil
+    return steps
 end
 
 ------------------------------------------------------------------------ route following (hooks used by agents / lanes)
@@ -225,7 +144,7 @@ function Scripted.exit(ag, lane)
     local c = sc.exits[lane]
     if c then return c end
     if sc.noPath[lane] then return nil end
-    local steps = findPath(lane, goal.lane, goal.x, goal.y, needEdge)
+    local steps = findPath(ag, lane, goal, lane == ag.plan[1].code and ag.s or nil, needEdge)
     if not steps or #steps == 0 then
         sc.noPath[lane] = true
         if lane == ag.plan[1].code and goal == tgt then sc.failId = tgt.id end
@@ -349,7 +268,8 @@ end
 
 -- create a vehicle (with a driver) on the road nearest to x, y, z, standing; returns the vehicle and the
 -- driver ped, or false and a reason. options: heading (degrees, picks the lane direction), skin (driver),
--- speedFactor (0.3 - 1.5, multiplies the wanted speed)
+-- speedFactor (0.3 - 1.5, multiplies the wanted speed), profile (navmesh vehicle profile for the routes: "car"
+-- (default), "bus", "truck", "emergency"...)
 function createScriptedVehicle(model, x, y, z, options)
     options = type(options) == "table" and options or {}
     model, x, y, z = tonumber(model), tonumber(x), tonumber(y), tonumber(z)
@@ -363,6 +283,7 @@ function createScriptedVehicle(model, x, y, z, options)
     ag.script = {
         targets = {}, exits = {}, wish = {}, noPath = {},
         speedFactor = tonumber(options.speedFactor) and clamp(tonumber(options.speedFactor), 0.3, 1.5) or nil,
+        profile = type(options.profile) == "string" and options.profile or "car",
         owner = sourceResource and getResourceName(sourceResource) or nil,
     }
     S.list[ag] = true

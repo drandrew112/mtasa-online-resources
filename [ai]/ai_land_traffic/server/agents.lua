@@ -128,6 +128,19 @@ function Agents.replan(ag)
     Agents.extendPlan(ag)
 end
 
+-- leave the lane of plan entry i through connection c instead (the plan behind it is chosen again)
+function Agents.setExit(ag, i, c)
+    local plan = ag.plan
+    if not plan[i] or plan[i].code <= 0 then return false end
+    for k = #plan, i + 1, -1 do
+        occRemove(plan[k].code, ag)
+        plan[k] = nil
+    end
+    plan[i].conn = c
+    Agents.extendPlan(ag)
+    return true
+end
+
 -- move s forward over segment ends; returns false when the route ends (sink / dead end)
 function Agents.advance(ag)
     local plan = ag.plan

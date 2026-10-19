@@ -66,6 +66,7 @@ end
 
 addEventHandler("onResourceStart", resourceRoot, function()
     if not Net.load() then return end
+    Navmesh.check()
     Signals.start()
     Els.init()
     lastTick = getTickCount()

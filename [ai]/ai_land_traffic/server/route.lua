@@ -1,7 +1,8 @@
 -- The player's expected route (server): spawn candidates for the spawner. Starting from the lanes
 -- under the player that run along their heading, the road graph is followed forward for ROUTE_LENGTH
 -- metres (every branch). Spawnable lanes on it, their oncoming lanes and the lanes feeding into them
--- at junctions form the spawn area, so new traffic only appears where the player is going.
+-- at junctions form the spawn area, so new traffic only appears where the player is going. With a v_radar GPS
+-- destination on the player's vehicle the navmesh route to it is followed instead of every branch.
 --
 -- area = { lanes = { lane, ... }, weights = { w, ... }, total, target, x, y, hx, hy, at, speed }
 
@@ -146,8 +147,60 @@ local function walk(starts)
     return dist
 end
 
+------------------------------------------------------------------------ GPS destination (navmesh route)
+
+-- A player whose vehicle has a v_radar destination (elementData gpsDestination = { x, y }) goes along its navmesh
+-- route: the spawn area follows that route instead of every branch ahead.
+-- gps[player] = { dx, dy, lanes, conns, at, pending, retry } (Navmesh.track state)
+local gps = {}
+
+local function gpsDestination(p)
+    local veh = getPedOccupiedVehicle(p.el)
+    if not veh or getPedOccupiedVehicleSeat(p.el) ~= 0 then return nil end
+    local d = getElementData(veh, "gpsDestination")
+    if type(d) ~= "table" or not tonumber(d[1]) or not tonumber(d[2]) then return nil end
+    return tonumber(d[1]), tonumber(d[2]), veh
+end
+
+-- { [lane] = distance of its start } along the GPS route ahead of the player, or nil (no destination / off route)
+local function gpsDist(p, now)
+    local dx, dy, veh = gpsDestination(p)
+    if not dx then
+        gps[p.el] = nil
+        return nil
+    end
+    local g = gps[p.el]
+    if not g or g.dx ~= dx or g.dy ~= dy then
+        g = { dx = dx, dy = dy }
+        gps[p.el] = g
+    end
+    local _, _, rz = getElementRotation(veh)
+    local found, foundS = Navmesh.track(g, p.x, p.y, p.z, rz, dx, dy, nil, "car", now, T.GPS_RETRY)
+    if not found then return nil end
+    local lanes, dist = g.lanes, {}
+    local d = -foundS
+    for i = found, #lanes do
+        local id = lanes[i]
+        if d >= T.ROUTE_LENGTH then break end
+        if not dist[id] then dist[id] = d end
+        -- the other lanes of the carriageway
+        for _, side in ipairs({ "lleft", "lright" }) do
+            local n, guard = Net[side][id], 0
+            while n and guard < 6 do
+                if not dist[n] then dist[n] = d end
+                n, guard = Net[side][n], guard + 1
+            end
+        end
+        local c = g.conns[i + 1]
+        if c then
+            d = d + (Geo.llen[id] or 0) + (Geo.isCurve(c) and Geo.length(-c) or 0)
+        end
+    end
+    return dist
+end
+
 local function build(p, hx, hy, speed, now)
-    local dist = walk(startLanes(p.x, p.y, p.z, hx, hy))
+    local dist = gpsDist(p, now) or walk(startLanes(p.x, p.y, p.z, hx, hy))
     local area = { lanes = {}, weights = {}, total = 0, x = p.x, y = p.y, hx = hx, hy = hy, speed = speed,
                    at = now + T.ROUTE_REFRESH }
     local added = {}
@@ -213,6 +266,9 @@ function Route.cleanup()
     for pl in pairs(areas) do
         if not isElement(pl) then areas[pl] = nil end
     end
+    for pl in pairs(gps) do
+        if not isElement(pl) then gps[pl] = nil end
+    end
 end
 
-addEventHandler("onPlayerQuit", root, function() areas[source] = nil end)
+addEventHandler("onPlayerQuit", root, function() areas[source] = nil; gps[source] = nil end)

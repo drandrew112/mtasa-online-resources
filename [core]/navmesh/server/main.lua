@@ -19,7 +19,8 @@ end)
 ------------------------------------------------------------------------ routes
 
 -- vehicle route on the lane network. opts: profile ("car" | "truck" | "bike" | "bus" | "emergency" | "offroad" | "gps"),
--- heading, destHeading, radius, gpsNodes (true: add v_radar node ids)
+-- heading, destHeading, radius, gpsNodes (true: add v_radar node ids), startLane / startU, goalLane / goalU (lane ids
+-- instead of the nearest lanes; u = 0..1 along the lane), lanesOnly (lanes + connections only, no geometry)
 function findVehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     local r, why = Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     if not r then return false, why end
@@ -169,7 +170,7 @@ end
 
 function getNavmeshStats()
     return {
-        roads = { ready = Roads.ready, nodes = Roads.nodeCount, links = Roads.linkCount, lanes = Roads.laneCount,
+        roads = { ready = Roads.ready, signature = Roads.signature, nodes = Roads.nodeCount, links = Roads.linkCount, lanes = Roads.laneCount,
                   connections = Roads.connCount, signalGroups = Roads.groupCount },
         peds = { ready = Peds.ready, nodes = Peds.nodeCount, edges = Peds.edgeCount },
         boats = { ready = Boats.ready, nodes = Boats.nodeCount, edges = #Boats.edges },

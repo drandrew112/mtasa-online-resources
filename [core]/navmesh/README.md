@@ -3,7 +3,8 @@
 Navigation data of San Andreas for scripts that move vehicles and peds: a lane-level road network, the ped
 path graph (sidewalks, paths, crossings, ped lights), an open-terrain walk grid built from the map collision,
 and the boat paths. Other resources ask for routes and road / ground facts through server exports; nothing
-drives anything here. Planned users: v_radar navigation, AI traffic, AI peds (not integrated yet).
+drives anything here. Users: ai_land_traffic (its lane network is a copy of roads.nav with the same ids: rerun its
+`tools/build_runtime.py` after `build_roads.py`). Planned: v_radar navigation, AI peds.
 
 ## Modules
 
@@ -61,7 +62,10 @@ needs `decodeString("zlib")` (MTA 1.6.1 r23219+).
 
 Routes (result tables; `false, reason` when there is none):
 - `findVehicleRoute(x1,y1,z1, x2,y2,z2, opts)` - opts `profile` (`car` `truck` `bike` `bus` `emergency`
-  `offroad` `gps`), `heading` / `destHeading` (start / end facing, rotZ), `radius`, `gpsNodes`.
+  `offroad` `gps`), `heading` / `destHeading` (start / end facing, rotZ), `radius`, `gpsNodes`, `maxNodes`;
+  `startLane` / `startU`, `goalLane` / `goalU` (exact lane ids and 0..1 positions instead of the nearest lanes; a goal
+  behind the start on the start lane is reached round a loop, `loop = true`), `lanesOnly` (only `lanes`,
+  `connections`, `startU`, `goalU`, `cost`: no geometry, cheap across resources).
   Result: `points` {{x,y,z}...}, `lanes`, `connections` (false = lane change), `instructions`
   ({type = left|right|uturn|exit|merge|arrive, distance, x, y, z, node, gps}), `length`, `time`.
 - `findGpsRoute(...)` - `gps` profile + `gpsNodes` (v_radar vehiclenodes ids, area*65536+index).
@@ -82,7 +86,7 @@ Queries:
 - `getWalkableGround(x,y,z, maxDz)` -> z, {surface, road, crossing, pedPath, edge, steep, layer};
   `isWalkable(x,y,z)`; `getNearestPedPath(x,y,z, radius)`; `getPedRandomWalk(x,y,z, length, role)`;
   `isCrossingOpen(phase)` (ai_land_traffic signal cycle when it runs, else GTA's lights);
-  `getNavmeshStats()`.
+  `getNavmeshStats()` (`roads.signature` = md5 of roads.nav, for copies of the lane ids).
 
 Measured offline (lupa, Lua 5.1): load ~1.7 s; car route across LS 1.1 km ~30 ms, SF -> LV 5.9 km ~90 ms;
 ped grid route 125-225 m 35-170 ms; walk tile decode on demand.

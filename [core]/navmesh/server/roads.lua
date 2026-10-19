@@ -33,6 +33,8 @@ function Roads.load()
         outputDebugString("[navmesh] missing " .. NAV.ROADS_FILE .. ", run tools/build_roads.py", 1)
         return false
     end
+    -- users that keep a copy of the lane ids (ai_land_traffic runtime data) compare this signature
+    R.signature = md5(src)
     local num = tonumber
     for line in src:gmatch("[^\n]+") do
         local k = line:byte(1)
@@ -237,6 +239,7 @@ function Roads.search(starts, goals, prof, maxNodes)
         end
     end
     local best, bestCost = nil, huge
+    local loopFrom, loopVia            -- goal behind the start on a start lane: reached again round a loop
     -- a goal on a start lane ahead of the start point
     for id, u in pairs(startU) do
         local gu = goalU[id]
@@ -259,13 +262,20 @@ function Roads.search(starts, goals, prof, maxNodes)
             local gu = goalU[id]
             if gu and came[id] ~= nil then   -- entered at its start (a start lane itself is handled above)
                 local c = gid - laneTime(id, prof, gu, 1)
-                if c < bestCost then best, bestCost = id, c end
+                if c < bestCost then best, bestCost, loopFrom = id, c, nil end
             end
             local nx = R.anext[id]
             for i = 1, #nx do
                 local c = nx[i]
                 local b = R.cto[c]
-                if not closed[b] then
+                if closed[b] then
+                    -- back on a start lane whose goal lies behind the start point (a passed stop): the way round
+                    local bu = goalU[b]
+                    if bu and startU[b] and bu < startU[b] then
+                        local cost = gid + connTime(c, prof) + laneTime(b, prof, 0, bu)
+                        if cost < bestCost then best, bestCost, loopFrom, loopVia = b, cost, id, c end
+                    end
+                else
                     local ng = gid + connTime(c, prof) + laneTime(b, prof, 0, 1)
                     if not g[b] or ng < g[b] then
                         g[b], came[b], via[b] = ng, id, c
@@ -289,12 +299,17 @@ function Roads.search(starts, goals, prof, maxNodes)
     -- unwind
     local lanes, conns = {}, {}
     local cur = best
+    if loopFrom then
+        lanes[1], conns[1] = best, loopVia
+        cur = loopFrom
+    end
     while cur do
         table.insert(lanes, 1, cur)
         table.insert(conns, 1, via[cur] or false)
         cur = came[cur]
     end
-    return { lanes = lanes, conns = conns, startU = startU[lanes[1]] or 0, goalU = goalU[best], cost = bestCost, expanded = n }
+    return { lanes = lanes, conns = conns, startU = startU[lanes[1]] or 0, goalU = goalU[best], cost = bestCost, expanded = n,
+             loop = loopFrom ~= nil }
 end
 
 -- route geometry + instructions

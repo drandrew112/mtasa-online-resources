@@ -1,4 +1,5 @@
--- Road topology for the simulation (server): data/runtime/sim.dat + the shared geometry.
+-- Road topology for the simulation (server): data/runtime/sim.dat + the shared geometry, both built from the
+-- navmesh road network (tools/build_runtime.py): lane and connection ids are navmesh's.
 
 Net = {
     -- lanes
@@ -8,6 +9,7 @@ Net = {
     cfrom = {}, cto = {}, cnode = {}, cturn = {}, cvmax = {}, cphase = {}, cgroup = {}, cconf = {}, cyield = {},
     lprev = {},      -- [lane] = { conn, ... } entering it
     spawnable = {},  -- [lane] = spawn weight (length * surface weight), nil = no spawns
+    navSignature = nil,  -- md5 of the navmesh roads.nav sim.dat was built from (server/navmesh.lua compares it)
     -- spawn grid: [cell] = { lanes = {id...}, length = total }
     grid = {}, CELL = 100,
     ready = false,
@@ -65,7 +67,10 @@ function Net.load()
     Geo.parse(geo)
     for line in sim:gmatch("[^\n]+") do
         local kind = line:sub(1, 1)
-        if kind == "L" then
+        if kind == "#" then
+            local sig = line:match("^# navmesh (%x+)")
+            if sig then N.navSignature = sig:upper() end
+        elseif kind == "L" then
             local id, link, fl, count, index, nxt, left, right = line:match("^L (%d+) (%d+) (%d+) (%d+) (%d+) (%S+) (%d+) (%d+)")
             id = tonumber(id)
             if id then

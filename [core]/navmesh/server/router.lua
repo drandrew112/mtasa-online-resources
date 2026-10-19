@@ -15,22 +15,45 @@ end
 
 ------------------------------------------------------------------------ vehicles
 
--- opts: profile (NAV.VEHICLE key, "car"), heading (start facing, GTA rotZ), destHeading, radius (40), maxNodes
+-- a given lane as the only start / goal: { {lane, 0, u} } (nil = no such lane)
+local function laneEnd(id, u)
+    id = tonumber(id)
+    if not id or not Roads.alink[id] then return nil end
+    return { { id, 0, math.max(0, math.min(1, tonumber(u) or 0)) } }
+end
+
+-- opts: profile (NAV.VEHICLE key, "car"), heading (start facing, GTA rotZ), destHeading, radius (40), maxNodes,
+-- startLane / startU, goalLane / goalU (exact lanes, the coordinates are then only used for the result), lanesOnly
 function Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     if not Roads.ready then return nil, "not_loaded" end
     opts = opts or {}
     local prof = NAV.VEHICLE[opts.profile or "car"]
     if not prof then return nil, "unknown_profile" end
     local radius = opts.radius or 40
-    local starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, heading = opts.heading, maxZ = 8 })
-    if #starts == 0 and opts.heading then starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, maxZ = 8 }) end
-    local goals = Roads.nearestLanes(x2, y2, z2, { radius = radius, heading = opts.destHeading, maxZ = 8 })
+    local starts, goals
+    if opts.startLane then
+        starts = laneEnd(opts.startLane, opts.startU)
+        if not starts then return nil, "bad_start_lane" end
+    else
+        starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, heading = opts.heading, maxZ = 8 })
+        if #starts == 0 and opts.heading then starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, maxZ = 8 }) end
+    end
+    if opts.goalLane then
+        goals = laneEnd(opts.goalLane, opts.goalU)
+        if not goals then return nil, "bad_goal_lane" end
+    else
+        goals = Roads.nearestLanes(x2, y2, z2, { radius = radius, heading = opts.destHeading, maxZ = 8 })
+    end
     if #starts == 0 then return nil, "no_start_lane" end
     if #goals == 0 then return nil, "no_goal_lane" end
     for i = #starts, 7, -1 do starts[i] = nil end
     for i = #goals, 7, -1 do goals[i] = nil end
     local r, why = Roads.search(starts, goals, prof, opts.maxNodes)
     if not r then return nil, why end
+    if opts.lanesOnly then
+        return { kind = "vehicle", profile = opts.profile or "car", lanes = r.lanes, connections = r.conns,
+                 startU = r.startU, goalU = r.goalU, loop = r.loop, cost = r.cost, expanded = r.expanded }
+    end
     local res = Roads.buildResult(r, x1, y1, z1, x2, y2, z2)
     res.kind = "vehicle"
     res.profile = opts.profile or "car"

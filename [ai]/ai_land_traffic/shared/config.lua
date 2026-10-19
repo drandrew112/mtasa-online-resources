@@ -1,7 +1,7 @@
 -- ai_land_traffic settings (shared). Distances in metres, speeds in m/s, times in ms unless noted.
 
 TRAFFIC = {
-    GEO_FILE = "data/runtime/geo.dat",   -- geometry, server + client (tools/build_runtime.py)
+    GEO_FILE = "data/runtime/geo.dat",   -- geometry, server + client (tools/build_runtime.py from navmesh roads.nav)
     SIM_FILE = "data/runtime/sim.dat",   -- topology, server only
 
     -- simulation area: traffic only exists within SIM_RADIUS of online players (dimension 0, interior 0)
@@ -30,6 +30,7 @@ TRAFFIC = {
     ROUTE_REFRESH = 1000,       -- recompute at most this often...
     ROUTE_REFRESH_MOVE = 25,    -- ...when the player moved this far or turned
     ROUTE_MAX_LANES = 1500,     -- search guard
+    GPS_RETRY = 4000,           -- GPS destination (v_radar): a new navmesh route at most this often
     STILL_SPEED = 2,            -- m/s: below this the player counts as standing (heading from vehicle/camera)
     FULL_SPEED = 14,            -- m/s: full density from this speed
     STILL_FACTOR = 0.35,        -- density factor while standing (linear up to FULL_SPEED)
@@ -101,7 +102,18 @@ TRAFFIC = {
     ELS_JUNCTION_RANGE = 60,    -- cross traffic does not enter a junction it is approaching (at least this far)
     ELS_JUNCTION_TIME = 5,      -- ... or this many seconds of the emergency vehicle's travel, whichever is more
     ELS_PASS_MARGIN = 8,        -- stay pulled over until the emergency vehicle is this far ahead of the car
-    ELS_PULL_RIGHT = 2.4,       -- lateral shift (right) in the outer lane / on single lane roads
+    ELS_PULL_RIGHT = 2.4,       -- lateral shift (right) in the outer lane / on single lane roads without navmesh
+    -- with navmesh: the route ahead of the emergency vehicle and the room next to the lane (walk grid)
+    ELS_PATH_LENGTH = 160,      -- its route / predicted road this far ahead decides who gives way
+    ELS_GPS_RETRY = 3000,       -- a new navmesh route (destination set, left the route) at most this often
+    ELS_PULL_STEPS = { 3.2, 2.4, 1.6, 1.0 },  -- lateral shifts tried, largest first: car centre and right side...
+    ELS_PROBE_AHEAD = { 2, 7, 12 },           -- ...these many metres ahead must stand on flat ground
+    ELS_CAR_HALF_WIDTH = 1.1,
+    ELS_GROUND_DZ = 0.5,        -- ground higher / lower than the road by more than this: no room (kerbs are fine)
+    ELS_PULL_MIN = 1.0,         -- less room than this: drive on to a wider spot (or turn off)...
+    ELS_SEEK_SPEED = 6,         -- ...at least this fast
+    ELS_TURNOFF_DIST = 45,      -- no room: a right turn off the emergency route within this distance is taken...
+    ELS_TURNOFF_MIN = 8,        -- ...if it is at least this far (time to brake for it)
     ELS_HOLD = 2500,            -- keep the yield this long after the emergency vehicle passed
     RETURN_SLOPE = 0.15,        -- steering back to the lane centre
 
@@ -149,9 +161,7 @@ TRAFFIC = {
     SCRIPTED_SNAP_Z = 10,       -- ...and at most this far above / below it (bridges)
     SCRIPTED_STOP_END = 8,      -- a stop stays this far from the end of its lane (stop line)
     SCRIPTED_ARRIVE_GAP = 2.5,  -- stopped with the front this close to the stop point = arrived
-    SCRIPTED_LANE_CHANGE = 25,  -- route search cost (m) of a lane change
-    SCRIPTED_TURN_COST = { U = 150, L = 6, R = 6 },
-    SCRIPTED_MAX_NODES = 40000, -- route search guard
+    SCRIPTED_MAX_NODES = 40000, -- navmesh route search guard (routes are navmesh lane routes, profile option)
 
     DRIVER_THROTTLE = 0.02,     -- tiny analog throttle on the drivers (client): stops GTA locking the wheels
     ADMIN_LEVEL = 4,            -- /traffic commands (elementData admin_level)
