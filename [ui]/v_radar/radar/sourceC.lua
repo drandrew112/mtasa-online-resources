@@ -499,20 +499,13 @@ addEventHandler("onClientElementDataChange", getRootElement(),
 					end
 				end
 
-				if not carCanGPSVal then
-					if getElementData(source, "gpsDestination") then
-						endRoute()
-					end
-				end
-			elseif dataName == "gpsDestination" then
-				local dataValue = getElementData(source, dataName) or false
-
-				if type(dataValue) == "table" then
-					makeRoute(dataValue[1], dataValue[2])
-				else
-					endRoute()
-				end
+				refreshWaypoint()
 			end
+		end
+
+		-- the waypoint belongs to the player, not to the vehicle
+		if source == localPlayer and dataName == "gpsDestination" then
+			refreshWaypoint()
 		end
 
 		if getElementType(source) == "blip" and dataName == "tooltipText" then
@@ -1139,17 +1132,8 @@ addEventHandler("onClientClick", getRootElement(),
 		local gpsRouteProcess = false
 
 		if button == "left" and state == "up" then
-			if occupiedVehicle and carCanGPS() then
-				if getElementData(occupiedVehicle, "gpsDestination") then
-					setElementData(occupiedVehicle, "gpsDestination", false)
-				else
-					setElementData(occupiedVehicle, "gpsDestination", {
-						reMap((cursorX - bigmapPosX) / bigmapZoom + (remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2), 0, mapTextureSize, -3000, 3000),
-						reMap((cursorY - bigmapPosY) / bigmapZoom + (remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2), 0, mapTextureSize, 3000, -3000)
-					})
-				end
-				gpsRouteProcess = true
-			end
+			toggleWaypointAt(cursorX, cursorY)
+			gpsRouteProcess = true
 		end
 
 		--[[
@@ -1184,17 +1168,8 @@ bindKey("enter", "down", function()
 
 	local cursorX,cursorY = screenW/2,screenH/2
 
-	if occupiedVehicle and carCanGPS() then
-		if getElementData(occupiedVehicle, "gpsDestination") then
-			setElementData(occupiedVehicle, "gpsDestination", false)
-		else
-			setElementData(occupiedVehicle, "gpsDestination", {
-				reMap((cursorX - bigmapPosX) / bigmapZoom + (remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2), 0, mapTextureSize, -3000, 3000),
-				reMap((cursorY - bigmapPosY) / bigmapZoom + (remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2), 0, mapTextureSize, 3000, -3000)
-			})
-		end
-		gpsRouteProcess = true
-	end
+	toggleWaypointAt(cursorX, cursorY)
+	gpsRouteProcess = true
 
 	if not gpsRouteProcess then
 		if state == "up" then
@@ -1454,6 +1429,19 @@ end
 
 function remapTheSecondWay(coord)
 	return (coord + 3000) / mapRatio
+end
+
+-- Sets the waypoint (player element data gpsDestination = {x, y}) at the bigmap screen position, or clears it
+-- when one is set. Works on foot and in any vehicle; the route itself is drawn where canShowWaypointRoute allows.
+function toggleWaypointAt(cursorX, cursorY)
+	if getElementData(localPlayer, "gpsDestination") then
+		setElementData(localPlayer, "gpsDestination", false)
+	else
+		setElementData(localPlayer, "gpsDestination", {
+			reMap((cursorX - bigmapPosX) / bigmapZoom + (remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2), 0, mapTextureSize, -3000, 3000),
+			reMap((cursorY - bigmapPosY) / bigmapZoom + (remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2), 0, mapTextureSize, 3000, -3000)
+		})
+	end
 end
 
 function carCanGPS()

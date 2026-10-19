@@ -136,16 +136,14 @@ function getSpecialBlips()
 		}
 	end
 
-	if occupiedVehicle and isElement(occupiedVehicle) then
-		local destination = getElementData(occupiedVehicle, "gpsDestination")
-		if type(destination) == "table" and destination[1] and destination[2] then
-			list[#list + 1] = {
-				key = "waypoint",
-				icon = "blips/waypoint.png",
-				x = destination[1], y = destination[2], z = getWaypointZ(destination[1], destination[2]),
-				label = L("v_radar.objectives.waypoint"),
-			}
-		end
+	local destination = getElementData(localPlayer, "gpsDestination")
+	if type(destination) == "table" and destination[1] and destination[2] then
+		list[#list + 1] = {
+			key = "waypoint",
+			icon = "blips/waypoint.png",
+			x = destination[1], y = destination[2], z = getWaypointZ(destination[1], destination[2]),
+			label = L("v_radar.objectives.waypoint"),
+		}
 	end
 
 	return list

@@ -6,7 +6,7 @@
 -- leaves the route (drove off, missed a turn) or drives against it, a new route is requested from the current
 -- position and heading.
 --
--- Two trackers use it: the waypoint (purple, vehicle element data gpsDestination, only in a vehicle; this file)
+-- Two trackers use it: the waypoint (purple, player element data gpsDestination, on foot or in a vehicle; this file)
 -- and the objective route (yellow, on foot or in a vehicle; radar/objectives.lua).
 
 GPS = {
@@ -254,17 +254,36 @@ local waypoint = createRouteTracker("waypoint", {
 	end,
 	arrived = function (t)
 		t:stop()
-		if occupiedVehicle and isElement(occupiedVehicle) then
-			setElementData(occupiedVehicle, "gpsDestination", false)
-		end
+		setElementData(localPlayer, "gpsDestination", false)
 	end,
 })
 
-function makeRoute(destinationX, destinationY)
-	if not occupiedVehicle or not tonumber(destinationX) or not tonumber(destinationY) then
+-- the waypoint route is drawn on foot, and in a vehicle that has GPS (carCanGPS: owned cars need the seeGO tuning)
+local function canShowWaypointRoute(vehicle)
+	if vehicle == nil then
+		vehicle = getPedOccupiedVehicle(localPlayer)
+	end
+	if not vehicle then
+		return true
+	end
+	return occupiedVehicle == vehicle and carCanGPS() and true or false
+end
+
+-- starts / stops the waypoint route from the player's gpsDestination. vehicle: the vehicle the player is in
+-- (false: on foot), when getPedOccupiedVehicle is not up to date yet (enter / exit events)
+function refreshWaypoint(vehicle)
+	local destination = getElementData(localPlayer, "gpsDestination")
+	local x = type(destination) == "table" and tonumber(destination[1])
+	local y = type(destination) == "table" and tonumber(destination[2])
+
+	if not x or not y or not canShowWaypointRoute(vehicle) then
+		waypoint:stop()
 		return false
 	end
-	waypoint:setDestination(tonumber(destinationX), tonumber(destinationY), false)
+	if waypoint.active and waypoint.destX == x and waypoint.destY == y then
+		return true
+	end
+	waypoint:setDestination(x, y, false)
 	return true
 end
 
@@ -276,31 +295,21 @@ addEventHandler("onClientResourceStart", resourceRoot,
 	function ()
 		setTimer(function ()
 			local now = getTickCount()
-			-- the waypoint lives on the vehicle: left it / it was destroyed
-			if waypoint.active and not getPedOccupiedVehicle(localPlayer) then
-				endRoute()
-			end
 			for _, t in pairs(trackers) do
 				t:update(now)
 			end
 		end, GPS.UPDATE_INTERVAL, 0)
 
-		if occupiedVehicle then
-			local destination = getElementData(occupiedVehicle, "gpsDestination")
-			if type(destination) == "table" then
-				makeRoute(destination[1], destination[2])
-			end
-		end
+		refreshWaypoint()
 	end
 )
 
+-- the waypoint stays with the player; only whether the route is drawn depends on the vehicle (GPS tuning)
 addEventHandler("onClientVehicleEnter", root,
 	function (player)
 		if player == localPlayer then
-			local destination = getElementData(source, "gpsDestination")
-			if type(destination) == "table" then
-				makeRoute(destination[1], destination[2])
-			end
+			occupiedVehicle = source
+			refreshWaypoint(source)
 		end
 	end
 )
@@ -308,7 +317,7 @@ addEventHandler("onClientVehicleEnter", root,
 addEventHandler("onClientVehicleExit", root,
 	function (player)
 		if player == localPlayer then
-			endRoute()
+			refreshWaypoint(false)
 		end
 	end
 )

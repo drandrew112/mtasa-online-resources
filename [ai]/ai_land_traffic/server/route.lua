@@ -149,7 +149,7 @@ end
 
 ------------------------------------------------------------------------ GPS destination (navmesh route)
 
--- A player whose vehicle has a v_radar destination (elementData gpsDestination = { x, y }) goes along its navmesh
+-- A player driving with a v_radar waypoint (player elementData gpsDestination = { x, y }) goes along its navmesh
 -- route: the spawn area follows that route instead of every branch ahead.
 -- gps[player] = { dx, dy, lanes, conns, at, pending, retry } (Navmesh.track state)
 local gps = {}
@@ -157,7 +157,7 @@ local gps = {}
 local function gpsDestination(p)
     local veh = getPedOccupiedVehicle(p.el)
     if not veh or getPedOccupiedVehicleSeat(p.el) ~= 0 then return nil end
-    local d = getElementData(veh, "gpsDestination")
+    local d = getElementData(p.el, "gpsDestination")
     if type(d) ~= "table" or not tonumber(d[1]) or not tonumber(d[2]) then return nil end
     return tonumber(d[1]), tonumber(d[2]), veh
 end
