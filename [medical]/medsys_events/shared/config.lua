@@ -16,7 +16,8 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 
 MEDEV = {
     MEDSYS = "medsys",          -- resource name of the medical system (its exports are used)
-    APPLY_TO_PEDS = false,      -- true: peds get injured the same way (players always do)
+    APPLY_TO_PLAYERS = false,   -- false: players get no injuries / medical state at all
+    APPLY_TO_PEDS = false,      -- true: peds get injured the same way
     DEFER = 50,                 -- ms after the damage event before the rules run (the death check)
 
     -- Players have no clinical death: their death is final, so there is nothing to resuscitate.

@@ -1,8 +1,10 @@
 -- /gangwareditor client: ui_inac temp menus (one menu per page), positions from your own ped, preview peds,
 -- 3D circles and patrol lines, the zone on the radar. The server re-checks everything on save (server/sanitize.lua).
+-- Preview peds carry a local ui_interactobject menu (drag, duplicate, skin, delete).
 
 local uicore = exports.ui_core
 local inac = exports.ui_inac
+local iobj = exports.ui_interactobject
 
 Editor = {
     active = false,
@@ -13,6 +15,7 @@ Editor = {
     page = nil,         -- current menu page
     menuId = nil,
     recording = false,  -- patrol recording of attacker `sel`
+    drag = nil,         -- { index, ped, x, y, z, rot, copy } while an attacker follows your aim
 }
 
 local E = Editor
@@ -51,13 +54,69 @@ end
 --------------------------------------------------------------------------------
 
 local previews = {}     -- index -> ped
+local previewIndex = {} -- ped -> index
+local previewMenus = {} -- index -> ui_interactobject menu id
 local radarCircle = nil
+
+local function iobjRunning()
+    local res = getResourceFromName("ui_interactobject")
+    return res and getResourceState(res) == "running"
+end
+
+local function skinItems()
+    local items = {
+        { label = L("v_gangwar.editor.io_skin_prev"), value = { "skinstep", -1 }, closeOnSelect = false },
+        { label = L("v_gangwar.editor.io_skin_next"), value = { "skinstep", 1 }, closeOnSelect = false },
+    }
+    for _, preset in ipairs(GW.SKIN_PRESETS) do
+        local sub = {}
+        for _, id in ipairs(preset[2]) do
+            sub[#sub + 1] = { label = L("v_gangwar.editor.io_skin_id", { id = id }), value = { "skin", id }, closeOnSelect = false }
+        end
+        local name = L("v_gangwar.editor.skin_" .. preset[1])
+        items[#items + 1] = { label = name, title = L.upper(name), items = sub }
+    end
+    items[#items + 1] = { label = L("v_gangwar.editor.io_skin_custom"), value = { "skincustom" } }
+    return items
+end
+
+local function attackerMenuTitle(i)
+    local a = E.doc.attackers[i]
+    return L("v_gangwar.editor.io_title", { i = i, skin = a.skin, weapon = weaponName(a.weapon) })
+end
+
+local function addPreviewMenu(i, ped)
+    if not iobjRunning() then return end
+    previewMenus[i] = iobj:addInteractMenu(ped, {
+        title = attackerMenuTitle(i),
+        range = GW.ATTACKER_MENU_RANGE,
+        lineOfSight = false,
+        priority = 50,
+        items = {
+            { label = L("v_gangwar.editor.io_drag"), value = { "drag" }, desc = L("v_gangwar.editor.io_drag_desc") },
+            { label = L("v_gangwar.editor.io_duplicate"), value = { "dup" }, desc = L("v_gangwar.editor.io_duplicate_desc") },
+            { label = L("v_gangwar.editor.io_skin"), title = L("v_gangwar.editor.io_skin_title"), items = skinItems() },
+            { label = L("v_gangwar.editor.io_edit"), value = { "edit" } },
+            { label = L("v_gangwar.editor.delete"), title = L.upper(L("v_gangwar.editor.delete")), items = {
+                { label = L("v_gangwar.editor.a_delete_confirm", { i = i }), value = { "delete" } },
+            } },
+        },
+    })
+end
+
+-- skin / weapon change of one attacker without rebuilding (keeps its interact menu open)
+local function refreshPreview(i)
+    local ped, a = previews[i], E.doc and E.doc.attackers[i]
+    if not isElement(ped) or not a then return end
+    setElementModel(ped, a.skin)
+    if previewMenus[i] and iobjRunning() then iobj:updateInteractMenu(previewMenus[i], { title = attackerMenuTitle(i) }) end
+end
 
 local function clearPreviews()
     for _, ped in pairs(previews) do
-        if isElement(ped) then destroyElement(ped) end
+        if isElement(ped) then destroyElement(ped) end -- its interact menu goes with it
     end
-    previews = {}
+    previews, previewIndex, previewMenus = {}, {}, {}
 end
 
 local function rebuildPreviews()
@@ -72,7 +131,8 @@ local function rebuildPreviews()
             setElementCollisionsEnabled(ped, false)
             setElementAlpha(ped, 170)
             if a.weapon and a.weapon > 0 then givePedWeapon(ped, a.weapon, 1, true) end
-            previews[i] = ped
+            previews[i], previewIndex[ped] = ped, i
+            addPreviewMenu(i, ped)
         end
     end
 end
@@ -120,9 +180,11 @@ local function sub(label, items, desc)
 end
 
 local function open(page, title, items)
+    -- the page is kept even if the menu cannot open (e.g. another ui_inac menu is up), so the menu key
+    -- comes back to it instead of the gang war list
     E.page = page
-    E.menuId = inac:createTempMenu({ title = title, items = items })
-    if not E.menuId then E.page = nil end
+    if iobjRunning() and iobj:isInteractMenuOpen() then iobj:closeInteractMenu() end
+    E.menuId = inac:createTempMenu({ title = title, items = items }) or nil
 end
 
 local function closeMenu()
@@ -248,8 +310,11 @@ function Pages.attacker()
 end
 
 local function reopen()
-    local fn = E.page and Pages[E.page]
-    if fn and (E.page == "root" or E.doc) then fn() else Pages.root() end
+    if E.doc then
+        local fn = E.page ~= "root" and Pages[E.page]
+        return (fn or Pages.doc)()
+    end
+    Pages.root()
 end
 
 --------------------------------------------------------------------------------
@@ -346,6 +411,7 @@ function stopRecording()
     unbindKey(GW.KEY_POINT, "down", addPoint)
     unbindKey(GW.KEY_UNDO, "down", undoPoint)
     unbindKey(GW.KEY_DONE, "down", stopRecording)
+    if iobjRunning() then iobj:setInteractionDisabled(false) end
     local a = E.doc and E.doc.attackers[E.sel]
     if a and #a.patrol >= 2 then a.task = "patrol" end
     if E.active then Pages.attacker() end
@@ -354,6 +420,8 @@ end
 local function startRecording()
     closeMenu()
     E.recording = true
+    E.page = "attacker"
+    if iobjRunning() then iobj:setInteractionDisabled(true) end
     bindKey(GW.KEY_POINT, "down", addPoint)
     bindKey(GW.KEY_UNDO, "down", undoPoint)
     bindKey(GW.KEY_DONE, "down", stopRecording)
@@ -371,7 +439,10 @@ local function newAttacker()
     return a
 end
 
+local cancelDrag
+
 local function setDoc(gw)
+    if cancelDrag then cancelDrag() end
     E.doc = gw and deepcopy(gw) or nil
     E.dirty, E.sel = false, nil
     rebuildPreviews()
@@ -555,6 +626,205 @@ addEventHandler("ui_inac:tempMenuClose", root, function(rootId)
 end)
 
 --------------------------------------------------------------------------------
+-- dragging an attacker: the preview ped follows your aim until you put it down
+--------------------------------------------------------------------------------
+
+local DRAG_CONTROLS = { "fire", "aim_weapon", "next_weapon", "previous_weapon" }
+local dragControls = {}
+
+local function dragTarget()
+    local cx, cy, cz, lx, ly, lz = getCameraMatrix()
+    local dx, dy, dz = lx - cx, ly - cy, lz - cz
+    local len = math.sqrt(dx * dx + dy * dy + dz * dz)
+    if len < 0.001 then return end
+    dx, dy, dz = dx / len, dy / len, dz / len
+    local px, py, pz = getElementPosition(localPlayer)
+    local reach = GW.DRAG_MAX_DIST + getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
+    local hit, hx, hy, hz = processLineOfSight(cx, cy, cz, cx + dx * reach, cy + dy * reach, cz + dz * reach,
+        true, true, false, true, false, false, false, false, localPlayer)
+    if not hit then
+        hx, hy = cx + dx * reach, cy + dy * reach
+        local gz = getGroundPosition(hx, hy, pz + 50)
+        hz = (gz and gz ~= 0) and gz or pz - 1
+    end
+    -- keep it within DRAG_MAX_DIST of you (horizontally)
+    local ox, oy = hx - px, hy - py
+    local dist = math.sqrt(ox * ox + oy * oy)
+    if dist > GW.DRAG_MAX_DIST then
+        hx, hy = px + ox / dist * GW.DRAG_MAX_DIST, py + oy / dist * GW.DRAG_MAX_DIST
+        local gz = getGroundPosition(hx, hy, hz + 3)
+        if gz and gz ~= 0 then hz = gz end
+    end
+    return hx, hy, hz + 1.0 -- ped position is ~1 m above its feet, like a player's
+end
+
+local function dragFrame()
+    local d = E.drag
+    if not d or not isElement(d.ped) then return cancelDrag() end
+    local x, y, z = dragTarget()
+    if x then d.x, d.y, d.z = x, y, z end
+    setElementPosition(d.ped, d.x, d.y, d.z)
+    setElementRotation(d.ped, 0, 0, d.rot, "default", true)
+end
+
+local placeDrag, dragRotate
+
+local function endDrag()
+    removeEventHandler("onClientPreRender", root, dragFrame)
+    unbindKey(GW.KEY_DRAG_PLACE, "down", placeDrag)
+    unbindKey("mouse1", "down", placeDrag)
+    unbindKey(GW.KEY_DRAG_CANCEL, "down", cancelDrag)
+    unbindKey("mouse2", "down", cancelDrag)
+    unbindKey("mouse_wheel_up", "down", dragRotate)
+    unbindKey("mouse_wheel_down", "down", dragRotate)
+    for control, was in pairs(dragControls) do toggleControl(control, was) end
+    dragControls = {}
+    if iobjRunning() then iobj:setInteractionDisabled(false) end
+    E.drag = nil
+end
+
+function dragRotate(key)
+    local d = E.drag
+    if d then d.rot = (d.rot + (key == "mouse_wheel_up" and GW.DRAG_ROTATE_STEP or -GW.DRAG_ROTATE_STEP)) % 360 end
+end
+
+-- the number key that picked "Drag" / "Duplicate" must not put it down / cancel it at once
+local function dragFresh(d) return getTickCount() - d.started < 250 end
+
+function placeDrag()
+    local d = E.drag
+    if not d or dragFresh(d) then return end
+    local a = E.doc and E.doc.attackers[d.index]
+    endDrag()
+    if not a then return end
+    a.x, a.y, a.z, a.rot = d.x, d.y, d.z, d.rot
+    E.sel = d.index
+    changed(false)
+    notify("v_gangwar.editor.drag_placed", { i = d.index })
+end
+
+function cancelDrag(key)
+    local d = E.drag
+    if not d or (key and dragFresh(d)) then return end
+    endDrag()
+    if not E.doc then return end
+    if d.copy then -- the copy was made for this drag only
+        table.remove(E.doc.attackers, d.index)
+        E.sel = nil
+        changed()
+    else
+        local a = E.doc.attackers[d.index]
+        if a and isElement(d.ped) then
+            setElementPosition(d.ped, a.x, a.y, a.z)
+            setElementRotation(d.ped, 0, 0, a.rot, "default", true)
+        end
+    end
+end
+
+local function startDrag(index, copy)
+    local a = E.doc and E.doc.attackers[index]
+    local ped = previews[index]
+    if not a or not isElement(ped) or E.drag or E.recording then return end
+    closeMenu()
+    if iobjRunning() then
+        iobj:closeInteractMenu()
+        iobj:setInteractionDisabled(true)
+    end
+    E.sel = index
+    E.drag = { index = index, ped = ped, x = a.x, y = a.y, z = a.z, rot = a.rot or 0, copy = copy, started = getTickCount() }
+    for _, control in ipairs(DRAG_CONTROLS) do
+        dragControls[control] = isControlEnabled(control)
+        toggleControl(control, false)
+    end
+    addEventHandler("onClientPreRender", root, dragFrame)
+    bindKey(GW.KEY_DRAG_PLACE, "down", placeDrag)
+    bindKey("mouse1", "down", placeDrag)
+    bindKey(GW.KEY_DRAG_CANCEL, "down", cancelDrag)
+    bindKey("mouse2", "down", cancelDrag)
+    bindKey("mouse_wheel_up", "down", dragRotate)
+    bindKey("mouse_wheel_down", "down", dragRotate)
+end
+
+--------------------------------------------------------------------------------
+-- attacker interact menu (ui_interactobject on the preview peds)
+--------------------------------------------------------------------------------
+
+local function stepSkin(skin, dir)
+    local models = getValidPedModels and getValidPedModels(false)
+    if type(models) ~= "table" or #models == 0 then
+        return (skin + dir) % 313
+    end
+    table.sort(models)
+    local pos = #models
+    for n, id in ipairs(models) do
+        if id >= skin then pos = n break end
+    end
+    if models[pos] ~= skin and dir < 0 then dir = 0 end -- an unlisted skin steps to the next listed one
+    return models[(pos - 1 + dir) % #models + 1]
+end
+
+local ioActions = {}
+
+function ioActions.drag(i) startDrag(i, false) end
+
+function ioActions.dup(i)
+    if #E.doc.attackers >= LIM.attackers then return notify("v_gangwar.editor.too_many", { max = LIM.attackers }) end
+    local a = deepcopy(E.doc.attackers[i])
+    a.patrol, a.task = {}, "guard"
+    E.doc.attackers[#E.doc.attackers + 1] = a
+    changed() -- the new preview ped appears on top of the original
+    startDrag(#E.doc.attackers, true)
+end
+
+function ioActions.skin(i, v)
+    E.doc.attackers[i].skin = v[2]
+    E.sel = i
+    changed(false)
+    refreshPreview(i)
+end
+
+function ioActions.skinstep(i, v)
+    local a = E.doc.attackers[i]
+    a.skin = stepSkin(a.skin, v[2])
+    E.sel = i
+    changed(false)
+    refreshPreview(i)
+end
+
+function ioActions.skincustom(i)
+    E.sel, E.page = i, "attacker"
+    askText("attacker", "skin", L("v_gangwar.editor.input_a_skin"), 24, E.doc.attackers[i].skin)
+end
+
+function ioActions.edit(i)
+    E.sel = i
+    Pages.attacker()
+end
+
+function ioActions.delete(i)
+    table.remove(E.doc.attackers, i)
+    E.sel = nil
+    changed()
+    if E.menuId and E.page == "attackers" then Pages.attackers() end
+end
+
+addEvent("onClientInteractMenuSelect")
+addEventHandler("onClientInteractMenuSelect", root, function(menuId, value, target)
+    if not E.active or not E.doc or E.drag or E.recording or type(value) ~= "table" then return end
+    local i = previewIndex[target]
+    if not i or previewMenus[i] ~= menuId or not E.doc.attackers[i] then return end
+    local fn = ioActions[value[1]]
+    if fn then fn(i, value) end
+end)
+
+-- ui_interactobject restarted: its menus are gone, register them again
+addEventHandler("onClientResourceStart", root, function(res)
+    if getResourceName(res) == "ui_interactobject" and E.active and E.doc and not E.drag then
+        setTimer(rebuildPreviews, 500, 1)
+    end
+end)
+
+--------------------------------------------------------------------------------
 -- 3D view: circles, attacker labels, patrol routes
 --------------------------------------------------------------------------------
 
@@ -592,7 +862,12 @@ local function render()
         for i, a in ipairs(d.attackers) do
             local sel = i == E.sel
             local col = sel and tocolor(80, 220, 255) or tocolor(255, 255, 255)
-            label(a.x, a.y, a.z + 1.3, ("#%d %s"):format(i, weaponName(a.weapon)), col)
+            local ax, ay, az = a.x, a.y, a.z
+            if E.drag and E.drag.index == i then
+                ax, ay, az = E.drag.x, E.drag.y, E.drag.z
+                circle3D(ax, ay, az - 0.95, 0.6, tocolor(80, 220, 255, 220))
+            end
+            label(ax, ay, az + 1.3, ("#%d %s"):format(i, weaponName(a.weapon)), col)
             local last = { a.x, a.y, a.z - 0.9 }
             for n, p in ipairs(a.patrol) do
                 dxDrawLine3D(last[1], last[2], last[3], p[1], p[2], p[3] - 0.9, sel and tocolor(80, 220, 255) or tocolor(255, 255, 255, 140), sel and 4 or 2)
@@ -606,8 +881,16 @@ local function render()
         end
     end
     local sw, sh = guiGetScreenSize()
-    local hint = E.recording and L("v_gangwar.editor.recording_hint", { add = GW.KEY_POINT:upper(), undo = GW.KEY_UNDO:upper(), done = GW.KEY_DONE:upper() })
-        or L("v_gangwar.editor.hint", { key = GW.KEY_MENU })
+    local hint
+    if E.recording then
+        hint = L("v_gangwar.editor.recording_hint", { add = GW.KEY_POINT:upper(), undo = GW.KEY_UNDO:upper(), done = GW.KEY_DONE:upper() })
+    elseif E.drag then
+        hint = L("v_gangwar.editor.drag_hint", { place = GW.KEY_DRAG_PLACE:upper(), cancel = GW.KEY_DRAG_CANCEL:upper() })
+    elseif E.doc then
+        hint = L("v_gangwar.editor.hint_doc", { key = GW.KEY_MENU:upper(), open = "X" })
+    else
+        hint = L("v_gangwar.editor.hint", { key = GW.KEY_MENU:upper() })
+    end
     dxDrawText(hint, 0, sh - 40, sw, sh - 10, tocolor(255, 255, 255, 220), 1.2, "default-bold", "center", "center")
 end
 
@@ -616,30 +899,32 @@ end
 --------------------------------------------------------------------------------
 
 local function menuKey()
-    if not E.active or E.recording or textToken or inac:isTempMenuOpen() then return end
+    if not E.active or E.recording or E.drag or textToken or inac:isTempMenuOpen() then return end
     reopen()
 end
 
 function Editor.stop()
     if not E.active then return end
-    E.active = false
     stopRecording()
+    if cancelDrag then cancelDrag() end
+    E.active = false
     closeMenu()
     unbindKey(GW.KEY_MENU, "down", menuKey)
     removeEventHandler("onClientRender", root, render)
     setDoc(nil)
     E.page = nil
+    if iobjRunning() then iobj:setInteractionDisabled(false) end
     notify("v_gangwar.editor.closed")
 end
 
 addEvent("gangwar:editorStart", true)
 addEventHandler("gangwar:editorStart", resourceRoot, function(list)
     E.list = list or {}
-    if E.active then return Pages.root() end
+    if E.active then return reopen() end
     E.active = true
     bindKey(GW.KEY_MENU, "down", menuKey)
     addEventHandler("onClientRender", root, render)
-    notify("v_gangwar.editor.opened", { key = GW.KEY_MENU })
+    notify("v_gangwar.editor.opened", { key = GW.KEY_MENU:upper() })
     Pages.root()
 end)
 
@@ -666,5 +951,6 @@ addEventHandler("gangwar:editorSaved", resourceRoot, function(id, err, gw)
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
+    if cancelDrag then cancelDrag() end
     clearPreviews()
 end)

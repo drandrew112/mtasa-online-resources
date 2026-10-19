@@ -47,7 +47,7 @@ them anywhere inside the release radius. Other players see them within `zone_rad
 
 ## Editor: `/gangwareditor` (admin_level >= 5)
 
-You edit on foot, and every position is taken from your own ped. **F6** opens the menu. The menu is built from
+You edit on foot, and every position is taken from your own ped. **R** opens the menu (it returns to the page you left). The menu is built from
 ui_inac temp menus, one menu per page.
 
 - **List.** For each gang war you can edit, teleport, start a test run, stop the current run, reset the cooldown or
@@ -57,9 +57,15 @@ ui_inac temp menus, one menu per page.
 - **Attacker page.**
   - Skin, weapon (id or name; 0 = fists), ammo, health, armour, accuracy, aggro radius.
   - Task: guard or patrol.
-  - Patrol route recording. Walk the route and press **B** to add a point, **N** to undo, **M** to finish.
+  - Patrol route recording. Walk the route and press **1** to add a point, **2** to undo, **3** to finish.
   - Wait time, speed.
   - Move here, duplicate, delete.
+- **Attacker interact menu** (ui_interactobject, **X** next to a ghost ped, within 6 m):
+  - Drag: the ped follows your aim (max 30 m). **1** or left click puts it down, **2** or right click cancels,
+    the mouse wheel rotates it.
+  - Duplicate: the copy (no patrol route) is dragged at once. Cancelling removes it.
+  - Skin: previous / next, gang presets, or a typed ID.
+  - Edit (opens the attacker page), delete.
 - **Preview.**
   - Ghost peds stand at the attacker spots.
   - Circles: zone in red, trigger in yellow, release in grey.
@@ -74,6 +80,6 @@ Settings: `shared/config.lua`. Texts: v_locals `v_gangwar.json` (en + hu).
 
 ## Dependencies
 
-- Included: v_locals, v_mysql, ai_peds, ui_core, ui_inac.
+- Included: v_locals, v_mysql, ai_peds, ui_core, ui_inac, ui_interactobject.
 - Soft, called at use time: v_radar (zone circle), wp_manager (armed check; without it the GTA weapon slots are
   checked), v_levelsys (XP), v_accounts (editor name).

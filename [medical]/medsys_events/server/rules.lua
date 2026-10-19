@@ -34,7 +34,7 @@ end
 
 -- Applies one tier. hitPart: the body part that was hit (for part = "hit"), may be nil
 function applyTier(element, tier, cause, hitPart)
-    if not tier or not isElement(element) or isPedDead(element) then return end
+    if not tier or not isMedsysTarget(element) or isPedDead(element) then return end
 
     local used = {}
     for _, rule in ipairs(tier.injuries or {}) do

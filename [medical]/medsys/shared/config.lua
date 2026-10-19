@@ -52,6 +52,7 @@ MEDIC = {
     DAZED_SPO2 = 88,
     DAZED_SYSTOLIC = 90,
     DAZED_PAIN = 70,
+    PLAYER_PATIENTS = false,    -- false: players never get a medical state (only peds are patients)
     KNOCKOUT_TIME = 60,         -- seconds a forced "unconscious" / "dazed" state lasts
 
     -- A patient with nothing left to simulate is dropped from the registry (discharged)

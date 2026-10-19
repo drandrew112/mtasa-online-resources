@@ -17,7 +17,7 @@ end
 function isMedsysTarget(element)
     if not isElement(element) then return false end
     local elementType = getElementType(element)
-    if elementType == "player" then return true end
+    if elementType == "player" then return MEDEV.APPLY_TO_PLAYERS end
     return elementType == "ped" and MEDEV.APPLY_TO_PEDS
 end
 
@@ -155,6 +155,7 @@ end)
 -- Every player has a medical status (medsys keeps them registered even while healthy), so a
 -- medic can always examine them. A dead / not yet spawned player gets it at its spawn.
 local function setPersistent(player, persistent)
+    if persistent and not MEDEV.APPLY_TO_PLAYERS then return end
     local ms = medsys()
     if ms then ms:setPatientPersistent(player, persistent) end
 end

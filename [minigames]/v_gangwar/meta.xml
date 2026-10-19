@@ -9,6 +9,7 @@
     <include resource="ai_peds" />
     <include resource="ui_core" />
     <include resource="ui_inac" />
+    <include resource="ui_interactobject" />
 
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />

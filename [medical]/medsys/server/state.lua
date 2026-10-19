@@ -56,7 +56,7 @@ local patientCount = 0
 function isValidPatient(element)
     if not isElement(element) then return false end
     local elementType = getElementType(element)
-    return elementType == "ped" or elementType == "player"
+    return elementType == "ped" or (elementType == "player" and MEDIC.PLAYER_PATIENTS)
 end
 
 local function newState(element)

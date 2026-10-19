@@ -40,10 +40,22 @@ GW = {
     },
 
     -- editor keys (client)
-    KEY_MENU = "F6",                -- open the editor menu
-    KEY_POINT = "b",                -- patrol recording: add a point at your position
-    KEY_UNDO = "n",                 -- patrol recording: remove the last point
-    KEY_DONE = "m",                 -- patrol recording: finish
+    KEY_MENU = "r",                 -- open the editor menu
+    KEY_POINT = "1",                -- patrol recording: add a point at your position
+    KEY_UNDO = "2",                 -- patrol recording: remove the last point
+    KEY_DONE = "3",                 -- patrol recording: finish
+    KEY_DRAG_PLACE = "1",           -- dragging an attacker: put it down (left click works too)
+    KEY_DRAG_CANCEL = "2",          -- dragging an attacker: cancel (right click works too)
+    DRAG_ROTATE_STEP = 15,          -- degrees per mouse wheel tick while dragging
+    DRAG_MAX_DIST = 30,             -- m: farthest an attacker can be dragged from you
+    ATTACKER_MENU_RANGE = 6,        -- m: ui_interactobject menu on the preview peds
+
+    -- skin presets in the attacker interact menu (label = locale key suffix)
+    SKIN_PRESETS = {
+        { "grove", { 105, 106, 107 } }, { "ballas", { 102, 103, 104 } }, { "vagos", { 108, 109, 110 } },
+        { "aztecas", { 114, 115, 116 } }, { "rifa", { 173, 174, 175 } }, { "danang", { 121, 122, 123 } },
+        { "triads", { 117, 118, 120 } }, { "mafia", { 111, 112, 113 } }, { "bikers", { 247, 248, 254 } },
+    },
 }
 
 -- firearms count as "armed" (melee, thrown weapons and tools do not)
