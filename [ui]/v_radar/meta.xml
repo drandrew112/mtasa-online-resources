@@ -90,6 +90,7 @@
     <file src="radar/files/blips/objective.png" type="client" />
 
     <file src="radar/files/cross.png" type="client" />
+    <file src="radar/files/route_ribbon.png" type="client" />
     <include resource="v_locals" />
     <script src="locals.lua" type="client" />
     <script src="radar/sourceC.lua" type="client" />
@@ -97,10 +98,13 @@
     <file src="radar/gps/images/dot.png" type="client" />
 
     <script src="radar/gps/sourceC.lua" type="client" />
-    <script src="radar/gps/vehiclenodes.lua" type="client" />
     <script src="radar/objectives.lua" type="client" />
+    <script src="radar/areas.lua" type="client" />
+    <script src="radar/route3d.lua" type="client" />
     <script src="client.lua" type="client" />
     <script src="server.lua" type="server" />
+    <script src="radar/gps/server.lua" type="server" />
+    <script src="radar/areas_server.lua" type="server" />
     <export function="createCustomBlip" type="client" />
     <export function="getNode" type="client" />
 	<export function="openPauseBigmap" type="client" />
@@ -121,5 +125,16 @@
 	<export function="updateObjective" type="server" />
 	<export function="removeObjective" type="server" />
 	<export function="clearObjectives" type="server" />
+	<export function="addCircleArea" type="client" />
+	<export function="updateCircleArea" type="client" />
+	<export function="removeCircleArea" type="client" />
+	<export function="clearCircleAreas" type="client" />
+	<export function="getCircleAreas" type="client" />
+	<export function="addCircleArea" type="server" />
+	<export function="updateCircleArea" type="server" />
+	<export function="setCircleAreaVisibleTo" type="server" />
+	<export function="removeCircleArea" type="server" />
+	<export function="clearCircleAreas" type="server" />
+	<export function="getCircleAreas" type="server" />
     <min_mta_version client="1.5.6" server="1.5.6" />
 </meta>

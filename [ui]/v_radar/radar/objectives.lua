@@ -4,7 +4,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Every objective shows as a yellow circle on the minimap, the bigmap, the pause
 -- preview and (if enabled) as a 3D blip, at any distance. While exactly one
 -- objective exists, a yellow route to it is kept up to date continuously (on
--- foot or in any vehicle). With two or more there is no automatic route.
+-- foot or in any vehicle). With two or more there is no automatic route. The
+-- route is a navmesh road route (radar/gps/sourceC.lua), searched again from
+-- the player's position when they leave it or drive against it.
 --
 -- The objective route is independent of the waypoint route (gpsRoute, purple,
 -- radar/gps/sourceC.lua): both can be active at the same time.
@@ -21,6 +23,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 objective_color = tocolor(255, 205, 40)
 
 objectives = {}
+-- route points {x, y, z} and the segment the player is on
 objectiveRoute = false
 objectiveRouteNode = 1
 objectiveRouteImage = false
@@ -29,13 +32,11 @@ objectiveRouteImageData = {}
 local objectiveNextId = 0
 local routeTarget = false -- objective the current route leads to
 local routeTargetX, routeTargetY = 0, 0
-local lastRouteTick = 0
+local lastTargetRoute = 0
 
 local ROUTE_UPDATE_INTERVAL = 300
-local NODE_PASS_DISTANCE = 15
-local REROUTE_DISTANCE = 100
-local REROUTE_COOLDOWN = 2000
 local TARGET_MOVED_DISTANCE = 5
+local TARGET_REROUTE_COOLDOWN = 1500 -- a moving objective gets a new route at most this often
 
 local function findObjective(id)
 	for i, obj in ipairs(objectives) do
@@ -46,9 +47,8 @@ local function findObjective(id)
 	return false
 end
 
-local function getRouteOrigin()
-	return getElementPosition(getPedOccupiedVehicle(localPlayer) or localPlayer)
-end
+-- The route itself is a navmesh route tracker (radar/gps/sourceC.lua): rerouted when the player leaves it.
+local objectiveTracker
 
 function rebuildObjectiveRouteImage()
 	if isElement(objectiveRouteImage) then
@@ -57,41 +57,34 @@ function rebuildObjectiveRouteImage()
 	objectiveRouteImage = false
 	objectiveRouteImageData = {}
 
-	if not objectiveRoute then
+	if not objectiveRoute or not objectiveTracker then
 		return
 	end
 
-	local lines = {}
-	for i = objectiveRouteNode, #objectiveRoute do
-		local node = objectiveRoute[i]
-		lines[#lines + 1] = {remapTheFirstWay(node.x), remapTheFirstWay(node.y)}
-	end
-
+	local lines = objectiveTracker:getMapLines()
 	if #lines >= 2 then
 		objectiveRouteImage, objectiveRouteImageData = buildRouteImage(lines)
 	end
 end
 
+objectiveTracker = createRouteTracker("objective", {
+	changed = function (t)
+		objectiveRoute = t.points
+		objectiveRouteNode = t.index
+		rebuildObjectiveRouteImage()
+	end,
+})
+
 local function clearObjectiveRoute()
-	objectiveRoute = false
-	objectiveRouteNode = 1
 	routeTarget = false
-	rebuildObjectiveRouteImage()
+	objectiveTracker:stop()
 end
 
 local function makeObjectiveRoute(obj)
-	local originX, originY = getRouteOrigin()
-
-	lastRouteTick = getTickCount()
 	routeTarget = obj
 	routeTargetX, routeTargetY = obj.x, obj.y
-
-	-- calculateRoute can error on areas without road nodes, treat that as "no route".
-	local ok, route = pcall(calculateRoute, originX, originY, obj.x, obj.y)
-	objectiveRoute = (ok and type(route) == "table" and #route >= 2) and route or false
-	objectiveRouteNode = 1
-
-	rebuildObjectiveRouteImage()
+	lastTargetRoute = getTickCount()
+	objectiveTracker:setDestination(obj.x, obj.y, obj.z)
 end
 
 function updateObjectiveRoute()
@@ -103,49 +96,13 @@ function updateObjectiveRoute()
 	end
 
 	local obj = objectives[1]
-	local now = getTickCount()
-
-	if routeTarget ~= obj or getDistanceBetweenPoints2D(routeTargetX, routeTargetY, obj.x, obj.y) > TARGET_MOVED_DISTANCE then
+	if routeTarget ~= obj then
 		makeObjectiveRoute(obj)
-		return
-	end
-
-	local originX, originY = getRouteOrigin()
-	local canReroute = now - lastRouteTick > REROUTE_COOLDOWN
-
-	if not objectiveRoute then
-		-- No road route found (yet): retry now and then, the player may have moved.
-		if canReroute then
-			makeObjectiveRoute(obj)
-		end
-		return
-	end
-
-	-- Advance past every upcoming node the player got close to.
-	local passed = false
-	for i = objectiveRouteNode, min(#objectiveRoute, objectiveRouteNode + 8) do
-		local node = objectiveRoute[i]
-		if getDistanceBetweenPoints2D(originX, originY, node.x, node.y) < NODE_PASS_DISTANCE then
-			objectiveRouteNode = i + 1
-			passed = true
-		end
-	end
-
-	local nextNode = objectiveRoute[objectiveRouteNode]
-	if nextNode then
-		if canReroute and getDistanceBetweenPoints2D(originX, originY, nextNode.x, nextNode.y) > REROUTE_DISTANCE then
-			makeObjectiveRoute(obj)
-			return
-		end
-	elseif canReroute and getDistanceBetweenPoints2D(originX, originY, obj.x, obj.y) > REROUTE_DISTANCE then
-		-- Route finished but the player drove away from the objective again.
+	elseif getDistanceBetweenPoints2D(routeTargetX, routeTargetY, obj.x, obj.y) > TARGET_MOVED_DISTANCE
+		and getTickCount() - lastTargetRoute > TARGET_REROUTE_COOLDOWN then
 		makeObjectiveRoute(obj)
-		return
 	end
-
-	if passed then
-		rebuildObjectiveRouteImage()
-	end
+	-- following the route, leaving it, rerouting: the tracker's own timer
 end
 
 -- Waypoint + objective blips, consumed by the renderers in radar/sourceC.lua.

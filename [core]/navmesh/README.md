@@ -4,7 +4,7 @@ Navigation data of San Andreas for scripts that move vehicles and peds: a lane-l
 path graph (sidewalks, paths, crossings, ped lights), an open-terrain walk grid built from the map collision,
 and the boat paths. Other resources ask for routes and road / ground facts through server exports; nothing
 drives anything here. Users: ai_land_traffic, ai_peds (sidewalk walkers, flee / combat routes). ai_land_traffic (its lane network is a copy of roads.nav with the same ids: rerun its
-`tools/build_runtime.py` after `build_roads.py`). Planned: v_radar navigation.
+`tools/build_runtime.py` after `build_roads.py`), v_radar (GPS waypoint + objective routes through `requestRoute("gps")`, rerouted from the current position and heading when the player leaves the route).
 
 ## Modules
 
@@ -62,13 +62,15 @@ needs `decodeString("zlib")` (MTA 1.6.1 r23219+).
 
 Routes (result tables; `false, reason` when there is none):
 - `findVehicleRoute(x1,y1,z1, x2,y2,z2, opts)` - opts `profile` (`car` `truck` `bike` `bus` `emergency`
-  `offroad` `gps`), `heading` / `destHeading` (start / end facing, rotZ), `radius`, `gpsNodes`, `maxNodes`;
+  `offroad` `gps`), `heading` / `destHeading` (start / end facing, rotZ), `radius` (both ends, 40) or `startRadius` /
+  `goalRadius`, `startFallback` / `goalFallback` (wider radius without height filter when no lane is in the normal one), `simplify` (metres: Douglas-Peucker on
+  `points`, for map drawing), `gpsNodes`, `maxNodes`; `z1` / `z2` may be `false` (no height filter, e.g. a map click);
   `startLane` / `startU`, `goalLane` / `goalU` (exact lane ids and 0..1 positions instead of the nearest lanes; a goal
   behind the start on the start lane is reached round a loop, `loop = true`), `lanesOnly` (only `lanes`,
   `connections`, `startU`, `goalU`, `cost`: no geometry, cheap across resources).
   Result: `points` {{x,y,z}...}, `lanes`, `connections` (false = lane change), `instructions`
   ({type = left|right|uturn|exit|merge|arrive, distance, x, y, z, node, gps}), `length`, `time`.
-- `findGpsRoute(...)` - `gps` profile + `gpsNodes` (v_radar vehiclenodes ids, area*65536+index).
+- `findGpsRoute(...)` - `gps` profile + `gpsNodes` (GTA path node ids, area*65536+index).
 - `findPedRoute(x1,y1,z1, x2,y2,z2, opts)` - opts `role` (`civilian` `emergency` `police` `hiker` `free`),
   `gridOnly`, `graphOnly`. Result: `points`, `pointKinds` (walk / sidewalk / path / crossing / crossing_light),
   `crossings` ({index, light, group, phase, x1..z2}: wait for `isCrossingOpen(phase)` before `index`),

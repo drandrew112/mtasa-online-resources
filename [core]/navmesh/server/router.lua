@@ -22,27 +22,71 @@ local function laneEnd(id, u)
     return { { id, 0, math.max(0, math.min(1, tonumber(u) or 0)) } }
 end
 
+-- Douglas-Peucker on {x, y, z} points (2D distance): drops points closer than `tol` metres to the simplified line
+local function simplifyPoints(pts, tol)
+    local n = #pts
+    if n < 3 or not tol or tol <= 0 then return pts end
+    local keep = { [1] = true, [n] = true }
+    local stack = { { 1, n } }
+    local tol2 = tol * tol
+    while #stack > 0 do
+        local seg = table.remove(stack)
+        local a, b = seg[1], seg[2]
+        local ax, ay, bx, by = pts[a][1], pts[a][2], pts[b][1], pts[b][2]
+        local dx, dy = bx - ax, by - ay
+        local l2 = dx * dx + dy * dy
+        local best, bi = -1, nil
+        for i = a + 1, b - 1 do
+            local px, py = pts[i][1] - ax, pts[i][2] - ay
+            local t = l2 > 0 and (px * dx + py * dy) / l2 or 0
+            if t < 0 then t = 0 elseif t > 1 then t = 1 end
+            local qx, qy = px - dx * t, py - dy * t
+            local d2 = qx * qx + qy * qy
+            if d2 > best then best, bi = d2, i end
+        end
+        if bi and best > tol2 then
+            keep[bi] = true
+            stack[#stack + 1] = { a, bi }
+            stack[#stack + 1] = { bi, b }
+        end
+    end
+    local out = {}
+    for i = 1, n do if keep[i] then out[#out + 1] = pts[i] end end
+    return out
+end
+
 -- opts: profile (NAV.VEHICLE key, "car"), heading (start facing, GTA rotZ), destHeading, radius (40), maxNodes,
--- startLane / startU, goalLane / goalU (exact lanes, the coordinates are then only used for the result), lanesOnly
+-- startRadius / goalRadius (instead of radius per end), startFallback / goalFallback (wider radius, no height filter,
+-- when nothing is in the normal radius: a map click off the roads, a player out in the hills), startLane / startU, goalLane / goalU (exact lanes, the coordinates are then only
+-- used for the result), lanesOnly, simplify (metres: Douglas-Peucker on the result points, for drawing).
+-- z1 / z2 may be false: no height filter for that end (a map click has no height).
 function Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     if not Roads.ready then return nil, "not_loaded" end
     opts = opts or {}
     local prof = NAV.VEHICLE[opts.profile or "car"]
     if not prof then return nil, "unknown_profile" end
     local radius = opts.radius or 40
+    local startRadius, goalRadius = opts.startRadius or radius, opts.goalRadius or radius
+    z1, z2 = tonumber(z1) or false, tonumber(z2) or false
     local starts, goals
     if opts.startLane then
         starts = laneEnd(opts.startLane, opts.startU)
         if not starts then return nil, "bad_start_lane" end
     else
-        starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, heading = opts.heading, maxZ = 8 })
-        if #starts == 0 and opts.heading then starts = Roads.nearestLanes(x1, y1, z1, { radius = radius, maxZ = 8 }) end
+        starts = Roads.nearestLanes(x1, y1, z1, { radius = startRadius, heading = opts.heading, maxZ = 8 })
+        if #starts == 0 and opts.heading then starts = Roads.nearestLanes(x1, y1, z1, { radius = startRadius, maxZ = 8 }) end
+        if #starts == 0 and opts.startFallback then
+            starts = Roads.nearestLanes(x1, y1, false, { radius = opts.startFallback })
+        end
     end
     if opts.goalLane then
         goals = laneEnd(opts.goalLane, opts.goalU)
         if not goals then return nil, "bad_goal_lane" end
     else
-        goals = Roads.nearestLanes(x2, y2, z2, { radius = radius, heading = opts.destHeading, maxZ = 8 })
+        goals = Roads.nearestLanes(x2, y2, z2, { radius = goalRadius, heading = opts.destHeading, maxZ = 8 })
+        if #goals == 0 and opts.goalFallback then
+            goals = Roads.nearestLanes(x2, y2, false, { radius = opts.goalFallback })
+        end
     end
     if #starts == 0 then return nil, "no_start_lane" end
     if #goals == 0 then return nil, "no_goal_lane" end
@@ -58,6 +102,7 @@ function Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     res.kind = "vehicle"
     res.profile = opts.profile or "car"
     if opts.gpsNodes then res.gpsNodes = Roads.routeGpsNodes(res.lanes) end
+    if opts.simplify then res.points = simplifyPoints(res.points, tonumber(opts.simplify)) end
     return res
 end
 

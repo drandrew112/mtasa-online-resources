@@ -19,8 +19,9 @@ end)
 ------------------------------------------------------------------------ routes
 
 -- vehicle route on the lane network. opts: profile ("car" | "truck" | "bike" | "bus" | "emergency" | "offroad" | "gps"),
--- heading, destHeading, radius, gpsNodes (true: add v_radar node ids), startLane / startU, goalLane / goalU (lane ids
--- instead of the nearest lanes; u = 0..1 along the lane), lanesOnly (lanes + connections only, no geometry)
+-- heading, destHeading, radius / startRadius / goalRadius / startFallback / goalFallback, gpsNodes (true: add GTA path node ids),
+-- startLane / startU, goalLane / goalU (lane ids instead of the nearest lanes; u = 0..1 along the lane), lanesOnly
+-- (lanes + connections only, no geometry), simplify (metres, thins the result points). z1 / z2 = false: no height.
 function findVehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     local r, why = Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     if not r then return false, why end
@@ -41,7 +42,7 @@ function findBoatRoute(x1, y1, z1, x2, y2, z2)
     return r
 end
 
--- GPS route for v_radar: car route with turn instructions and the v_radar vehiclenodes ids
+-- GPS route (v_radar navigation): car route with turn instructions and the GTA path node ids (area * 65536 + index)
 function findGpsRoute(x1, y1, z1, x2, y2, z2, opts)
     opts = opts or {}
     opts.profile = opts.profile or "gps"

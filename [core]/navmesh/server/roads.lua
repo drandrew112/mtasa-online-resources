@@ -373,7 +373,7 @@ function Roads.buildResult(r, x1, y1, z1, x2, y2, z2)
     }
 end
 
--- gps node ids (v_radar vehiclenodes: area * 65536 + index) along a route
+-- GTA path node ids (area * 65536 + index) along a route
 function Roads.routeGpsNodes(lanes)
     local out, last = {}, nil
     for _, id in ipairs(lanes) do

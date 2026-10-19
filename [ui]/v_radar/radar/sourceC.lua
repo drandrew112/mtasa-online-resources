@@ -177,54 +177,18 @@ function getShow3DBlips()
 	return settingsStorage.show3DBlips and true or false
 end
 
--- 3D navigation: a floating line above the road, following the GPS route nodes
--- (each raised by +6 on Z) and joined with dxDrawLine3D segments. Only visible
--- while a GPS route is active. gpsRoute / currentNode are globals from
--- radar/gps/sourceC.lua.
-local navigation3DColor = gps_color
-local navigation3DShadow = tocolor(0, 0, 0, 160)
-local NAVIGATION_3D_Z_OFFSET = 6
-
-local function draw3DRoute(route, startIndex, color)
-	startIndex = tonumber(startIndex) or 1
-	if startIndex < 1 then startIndex = 1 end
-
-	for i = startIndex, #route - 1 do
-		local a = route[i]
-		local b = route[i + 1]
-
-		if a and b then
-			local ax, ay, az = a.x, a.y, a.z + NAVIGATION_3D_Z_OFFSET
-			local bx, by, bz = b.x, b.y, b.z + NAVIGATION_3D_Z_OFFSET
-
-			dxDrawLine3D(ax, ay, az - 0.12, bx, by, bz - 0.12, navigation3DShadow, 6)
-			dxDrawLine3D(ax, ay, az, bx, by, bz, color, 4)
-		end
-	end
-end
-
-function render3DNavigation()
-	if not dimensionHasMap() then return end
-
-	-- Objective route (radar/objectives.lua) first, so the waypoint route draws on top.
-	if objectiveRoute then
-		draw3DRoute(objectiveRoute, objectiveRouteNode, objective_color)
-	end
-	if gpsRoute then
-		draw3DRoute(gpsRoute, currentNode, navigation3DColor)
-	end
-end
+-- 3D navigation: the GPS routes drawn on the road surface (radar/route3d.lua, renderRoutes3D).
 
 function applyEnable3DNavigation(state, skipSave)
 	state = state and true or false
 	settingsStorage.enable3DNavigation = state
 
 	if render3DNavigationAttached then
-		removeEventHandler("onClientPreRender", getRootElement(), render3DNavigation)
+		removeEventHandler("onClientPreRender", getRootElement(), renderRoutes3D)
 		render3DNavigationAttached = false
 	end
 	if state then
-		addEventHandler("onClientPreRender", getRootElement(), render3DNavigation)
+		addEventHandler("onClientPreRender", getRootElement(), renderRoutes3D)
 		render3DNavigationAttached = true
 	end
 
@@ -543,9 +507,8 @@ addEventHandler("onClientElementDataChange", getRootElement(),
 			elseif dataName == "gpsDestination" then
 				local dataValue = getElementData(source, dataName) or false
 
-				if dataValue then
-					gpsThread = coroutine.create(makeRoute)
-					coroutine.resume(gpsThread, unpack(dataValue))
+				if type(dataValue) == "table" then
+					makeRoute(dataValue[1], dataValue[2])
 				else
 					endRoute()
 				end
@@ -583,6 +546,43 @@ addEventHandler("onClientRender", getRootElement(),
 		end
 	end
 )
+
+-- Circle areas (radar/areas.lua): filled, see-through circles in map space. originX / originY = where the
+-- reference point (refMapX, refMapY, remapTheFirstWay space) is drawn, zoom = map pixels -> drawn pixels.
+-- Only circles touching the clip rectangle are drawn.
+local function drawCircleAreas(originX, originY, refMapX, refMapY, zoom, clipX, clipY, clipW, clipH)
+	if not circleAreas or #circleAreas == 0 then
+		return
+	end
+
+	local now = getTickCount()
+	for _, area in ipairs(circleAreas) do
+		local cx = originX + (refMapX - remapTheFirstWay(area.x)) * zoom
+		local cy = originY - (refMapY - remapTheFirstWay(area.y)) * zoom
+		local r = area.radius / mapRatio * zoom
+
+		if r >= 0.5 and cx + r >= clipX and cx - r <= clipX + clipW and cy + r >= clipY and cy - r <= clipY + clipH then
+			local alpha = area.a
+			if area.flashing then
+				alpha = alpha * (0.55 + 0.45 * sin(now / 250))
+			end
+			local fill = tocolor(area.r, area.g, area.b, alpha)
+			local segments = max(24, min(128, floor(r / 3)))
+
+			dxDrawCircle(cx, cy, r, 0, 360, fill, fill, segments)
+
+			-- rim: the same colour, stronger, so a big faint area still has a visible edge
+			local rim = tocolor(area.r, area.g, area.b, min(255, alpha * 2 + 40))
+			local step = 2 * math.pi / segments
+			local px, py = cx + r, cy
+			for i = 1, segments do
+				local nx, ny = cx + cos(i * step) * r, cy + sin(i * step) * r
+				dxDrawLine(px, py, nx, ny, rim, 2)
+				px, py = nx, ny
+			end
+		end
+	end
+end
 
 function renderMinimap(x, y, w, h)
 	local int = getElementInterior(localPlayer)
@@ -667,6 +667,8 @@ function renderMinimap(x, y, w, h)
 			-- game world bleed through and make the minimap map look washed out / faint.
 			dxDrawRectangle(0, 0, minimapRenderSize, minimapRenderSize, tocolor(84, 112, 126, 255))
 			drawMapSection(0, 0, minimapRenderSize, minimapRenderSize, remapTheSecondWay(playerPosX) - minimapRenderSize / minimapZoom / 2, remapTheFirstWay(playerPosY) - minimapRenderSize / minimapZoom / 2, minimapRenderSize / minimapZoom, minimapRenderSize / minimapZoom, getTexture("minimapMap"), 0, 0, 0, tocolor(255, 255, 255, 255))
+
+			drawCircleAreas(minimapRenderHalfSize, minimapRenderHalfSize, remapPlayerPosX, remapPlayerPosY, minimapZoom, 0, 0, minimapRenderSize, minimapRenderSize)
 
 			if objectiveRouteImage then
 				local d = objectiveRouteImageData
@@ -947,6 +949,8 @@ function renderTheBigmap()
 		end
 
 		drawMapSection(bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight, remapTheSecondWay(mapPlayerPosX) - bigmapWidth / bigmapZoom / 2, remapTheFirstWay(mapPlayerPosY) - bigmapHeight / bigmapZoom / 2, bigmapWidth / bigmapZoom, bigmapHeight / bigmapZoom, getTexture("bigmapMap"))
+
+		drawCircleAreas(bigmapCenterX, bigmapCenterY, remapTheFirstWay(mapPlayerPosX), remapTheFirstWay(mapPlayerPosY), bigmapZoom, bigmapPosX, bigmapPosY, bigmapWidth, bigmapHeight)
 
 		if objectiveRouteImage then
 			local d = objectiveRouteImageData
@@ -1464,6 +1468,11 @@ end
 
 function addGPSLine(x, y)
 	table.insert(gpsLines, {remapTheFirstWay(x), remapTheFirstWay(y)})
+end
+
+-- the whole waypoint line at once, already in map space (radar/gps/sourceC.lua)
+function setGPSMapLines(lines)
+	gpsLines = lines or {}
 end
 
 function processGPSLines()
