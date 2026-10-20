@@ -347,6 +347,8 @@ CREATE TABLE IF NOT EXISTS `med_shifts` (
 --   days             "1234567" (1 = Monday ... 7 = Sunday)
 --   hour_from / hour_to        [from, to) server time; 0-24 = all day, from > to wraps past midnight
 --   last_run         unix time of the last completed run; 3-day global cooldown from it (NULL = never ran)
+--   isRunning        1 = a run is in progress on a server sharing this database, nobody else may start it;
+--                    0 = startable. Set atomically on reservation, back to 0 when the run ends
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `gangwars` (
@@ -369,6 +371,7 @@ CREATE TABLE IF NOT EXISTS `gangwars` (
     `hour_from`      TINYINT      NOT NULL DEFAULT 0,
     `hour_to`        TINYINT      NOT NULL DEFAULT 24,
     `last_run`       INT          DEFAULT NULL,
+    `isRunning`      TINYINT(1)   NOT NULL DEFAULT 0,
     `created_by`     VARCHAR(50)  DEFAULT NULL,
     `created_at`     INT          DEFAULT NULL,
     `updated_by`     VARCHAR(50)  DEFAULT NULL,

@@ -11,7 +11,7 @@ GW = {
     TICK = 1000,                    -- ms: reservation / zone / distance checks
     CLEANUP_TICK = 2000,            -- ms: removing peds of a closed gang war (only while no camera sees them)
     CLEANUP_SEE_DIST = 300,         -- m: cameras farther than this do not keep a ped alive
-    RELOAD_INTERVAL = 5 * 60000,    -- ms: last_run re-read from the database (other servers sharing it)
+    RELOAD_INTERVAL = 60000,        -- ms: last_run / isRunning re-read from the database (other servers sharing it)
     HUD_RADIUS_FACTOR = 1.2,        -- helpers within zone_radius x this see the stat rows
     END_HUD_TIME = 8000,            -- ms: stat rows stay this long after the end
 

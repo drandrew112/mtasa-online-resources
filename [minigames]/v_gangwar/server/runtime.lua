@@ -15,6 +15,7 @@ end })
 Runs = {}
 local pedRun = {}       -- ped -> run
 local starterRun = {}   -- player -> run (one reservation per player)
+local claiming = {}     -- gang war id -> player, and player -> true: isRunning claim in flight (GangWars.claim)
 
 local function resourceRunning(name)
     local res = getResourceFromName(name)
@@ -140,6 +141,14 @@ local function releaseStarter(run)
     if run.starter and starterRun[run.starter] == run then starterRun[run.starter] = nil end
 end
 
+-- isRunning back to 0 (only a real run holds it; test runs never touch the database)
+local function releaseClaim(run)
+    if run.claimed then
+        run.claimed = nil
+        GangWars.release(run.gw.id)
+    end
+end
+
 -- reason: "left" | "expired" | "quit" | "admin" | "deleted" | "finished"
 local function close(run, reason)
     if run.state == "cleanup" then return end
@@ -147,6 +156,7 @@ local function close(run, reason)
     run.closedAt = getTickCount()
     removeCircle(run)
     releaseStarter(run)
+    releaseClaim(run)
     if reason == "finished" then
         -- the rows stay a little after the "Completed" banner
         local viewers = run.viewers
@@ -166,6 +176,7 @@ end
 local function reserve(gw, player, test, dimension)
     local run = {
         gw = gw, starter = player, state = "reserved", test = test or false, dimension = dimension or gw.dimension,
+        claimed = not test,
         reservedAt = getTickCount(), peds = {}, alive = 0, total = 0, kills = {}, viewers = {},
     }
     Runs[gw.id] = run
@@ -304,17 +315,43 @@ local function tickRun(run, now)
     refreshViewers(run)
 end
 
+-- may the player take this gang war right now (also re-checked when the isRunning claim answers)
+local function canReserve(player, gw, rt, ignoreRunning)
+    if starterRun[player] or Runs[gw.id] or isPedDead(player) or getElementData(player, "isLogged") ~= true then return false end
+    if gw.dimension ~= getElementDimension(player) or gw.interior ~= getElementInterior(player) then return false end
+    local px, py = getElementPosition(player)
+    return dist2(px, py, gw.x, gw.y) <= gw.trigger_radius ^ 2 and GangWars.isOpen(gw, rt, ignoreRunning)
+end
+
+-- the reservation starts only after isRunning was set to 1 in the database (no other server runs it)
+local function claimAndReserve(gw, player)
+    local id = gw.id
+    claiming[id], claiming[player] = player, true
+    GangWars.claim(id, function(ok)
+        claiming[id] = nil
+        if isElement(player) then claiming[player] = nil end
+        if not ok then return end
+        local cur = GangWars.get(id)
+        -- the flag is ours now, so isOpen is checked without it
+        if cur and isElement(player) and canReserve(player, cur, nil, true) and isPlayerArmed(player) then
+            reserve(cur, player)
+            return
+        end
+        GangWars.release(id)
+    end)
+end
+
 local function tryReserve(player, rt)
-    if starterRun[player] or isPedDead(player) or getElementData(player, "isLogged") ~= true then return end
+    if starterRun[player] or claiming[player] or isPedDead(player) or getElementData(player, "isLogged") ~= true then return end
     local px, py = getElementPosition(player)
     local dim, int = getElementDimension(player), getElementInterior(player)
     local armed
     for id, gw in pairs(GangWars.list) do
-        if not Runs[id] and gw.dimension == dim and gw.interior == int
+        if not Runs[id] and not claiming[id] and gw.dimension == dim and gw.interior == int
             and dist2(px, py, gw.x, gw.y) <= gw.trigger_radius ^ 2 and GangWars.isOpen(gw, rt) then
             if armed == nil then armed = isPlayerArmed(player) end
             if not armed then return end
-            reserve(gw, player)
+            claimAndReserve(gw, player)
             return
         end
     end
@@ -358,6 +395,7 @@ end
 --------------------------------------------------------------------------------
 
 addEventHandler("onPlayerQuit", root, function()
+    claiming[source] = nil
     local run = starterRun[source]
     if run then close(run, "quit") end
     for _, r in pairs(Runs) do r.viewers[source] = nil end
@@ -385,9 +423,13 @@ function Runtime_abort(id, reason)
     if run then close(run, reason or "admin") end
 end
 
+-- "remote": isRunning = 1 without a run here (another server runs it, or one crashed and left the flag set)
 function Runtime_status(id)
     local run = Runs[tonumber(id)]
-    if not run then return "idle" end
+    if not run then
+        local gw = GangWars.get(id)
+        return (gw and gw.isRunning and not claiming[gw.id]) and "remote" or "idle"
+    end
     return run.state, run.starter
 end
 
@@ -399,6 +441,7 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     for _, run in pairs(Runs) do
         removeCircle(run)
+        releaseClaim(run)
         for ped in pairs(run.peds) do
             if isElement(ped) then
                 if not (resourceRunning("ai_peds") and ai:destroyAIPed(ped)) then destroyElement(ped) end

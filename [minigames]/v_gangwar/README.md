@@ -8,8 +8,14 @@ starter gets the base reward. Every kill pays the killer at once, whether the ki
 
 The data lives in the MySQL table `gangwars`, accessed through v_mysql. The schema and the column notes are in
 `database.sql`, which is also part of the repo-root `main.sql`. The resource creates the table on start if it is
-missing. Every row is cached in `GangWars.list`. Every 5 minutes only `last_run` is read back, for servers that share
-the database.
+missing (an older table gets the `isRunning` column added). Every row is cached in `GangWars.list`. Every minute
+only `last_run` and `isRunning` are read back, for servers that share the database.
+
+`isRunning`: `0` = startable, `1` = a run is in progress on one of the servers sharing the database, so it cannot be
+started anywhere else. A reservation starts only after `UPDATE ... SET isRunning = 1 WHERE id = ? AND isRunning = 0`
+changed the row, so two servers can never both get it. The flag goes back to `0` when the run closes (finished,
+aborted, starter quit) and on resource stop. Test runs never touch it. If a server crashes during a run, the flag
+stays `1`: the editor shows "Running on another server" and offers "Clear running flag".
 
 Each gang war has a schedule:
 

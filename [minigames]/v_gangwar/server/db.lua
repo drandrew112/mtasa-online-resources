@@ -7,7 +7,7 @@ GangWars = { list = {}, loaded = false }
 
 local TABLE = "gangwars"
 local COLUMNS = "id, name, enabled, x, y, z, interior, dimension, trigger_radius, zone_radius, release_radius, gang, "
-    .. "attackers, reward_money, reward_xp, days, hour_from, hour_to, last_run, created_by, created_at, updated_by, updated_at"
+    .. "attackers, reward_money, reward_xp, days, hour_from, hour_to, last_run, isRunning, created_by, created_at, updated_by, updated_at"
 
 local function sql() return exports.v_mysql end
 
@@ -32,6 +32,7 @@ local function fromRow(r)
         days = tostring(r.days or GW.DEFAULTS.days),
         hour_from = tonumber(r.hour_from) or 0, hour_to = tonumber(r.hour_to) or 24,
         last_run = tonumber(r.last_run),
+        isRunning = tonumber(r.isRunning) == 1,
         created_by = r.created_by, created_at = tonumber(r.created_at),
         updated_by = r.updated_by, updated_at = tonumber(r.updated_at),
     }
@@ -40,8 +41,18 @@ local function fromRow(r)
     return gw
 end
 
-function GangWars.ensureTable()
-    sql():mysqlExec([[CREATE TABLE IF NOT EXISTS `gangwars` (
+-- cb(): the table exists and has every column (an older table gets isRunning added)
+function GangWars.ensureTable(cb)
+    MYSQL.query(function()
+        MYSQL.query(function(rows)
+            if type(rows) == "table" and #rows == 0 then
+                MYSQL.query(function() if cb then cb() end end,
+                    "ALTER TABLE `" .. TABLE .. "` ADD COLUMN `isRunning` TINYINT(1) NOT NULL DEFAULT 0 AFTER `last_run`")
+            elseif cb then
+                cb()
+            end
+        end, "SHOW COLUMNS FROM `" .. TABLE .. "` LIKE 'isRunning'")
+    end, [[CREATE TABLE IF NOT EXISTS `gangwars` (
         `id`             INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `name`           VARCHAR(64)  NOT NULL,
         `enabled`        TINYINT(1)   NOT NULL DEFAULT 1,
@@ -61,6 +72,7 @@ function GangWars.ensureTable()
         `hour_from`      TINYINT      NOT NULL DEFAULT 0,
         `hour_to`        TINYINT      NOT NULL DEFAULT 24,
         `last_run`       INT          DEFAULT NULL,
+        `isRunning`      TINYINT(1)   NOT NULL DEFAULT 0,
         `created_by`     VARCHAR(50)  DEFAULT NULL,
         `created_at`     INT          DEFAULT NULL,
         `updated_by`     VARCHAR(50)  DEFAULT NULL,
@@ -86,16 +98,20 @@ function GangWars.load(cb)
     end, "SELECT " .. COLUMNS .. " FROM `" .. TABLE .. "`")
 end
 
--- other servers may share the database: only last_run is refreshed (the editor writes the rest through here)
-function GangWars.refreshLastRun()
+-- other servers may share the database: only last_run and isRunning are refreshed (the editor writes the rest
+-- through here). isRunning of a run of this server stays set locally (GangWars.claim / release own it).
+function GangWars.refreshShared()
     MYSQL.query(function(rows)
         if type(rows) ~= "table" then return end
         for _, r in ipairs(rows) do
             local gw = GangWars.list[tonumber(r.id)]
-            local lr = tonumber(r.last_run)
-            if gw and lr and (not gw.last_run or lr > gw.last_run) then gw.last_run = lr end
+            if gw then
+                local lr = tonumber(r.last_run)
+                if lr and (not gw.last_run or lr > gw.last_run) then gw.last_run = lr end
+                if not gw.claimed then gw.isRunning = tonumber(r.isRunning) == 1 end
+            end
         end
-    end, "SELECT id, last_run FROM `" .. TABLE .. "`")
+    end, "SELECT id, last_run, isRunning FROM `" .. TABLE .. "`")
 end
 
 function GangWars.get(id) return GangWars.list[tonumber(id)] end
@@ -117,6 +133,7 @@ function GangWars.save(gw, by, cb)
     local old = gw.id and GangWars.list[gw.id]
     if old then
         gw.last_run, gw.created_by, gw.created_at = old.last_run, old.created_by, old.created_at
+        gw.isRunning, gw.claimed = old.isRunning, old.claimed
         gw.updated_by, gw.updated_at = by, t
         GangWars.list[gw.id] = gw
         sql():mysqlExec("UPDATE `" .. TABLE .. "` SET name = ?, enabled = ?, x = ?, y = ?, z = ?, interior = ?, dimension = ?, "
@@ -163,16 +180,40 @@ function GangWars.setLastRun(id, ts)
     return true
 end
 
+-- isRunning = 1: the gang war runs on a server (this one or another sharing the database), nobody else may start it.
+-- The flag is taken with a conditional UPDATE, so two servers cannot both get it. cb(ok)
+function GangWars.claim(id, cb)
+    local gw = GangWars.list[tonumber(id)]
+    if not gw then return cb(false) end
+    MYSQL.query(function(res, affected)
+        local ok = type(res) == "table" and tonumber(affected) == 1
+        if ok then gw.claimed = true end
+        -- ok: ours now; a table with 0 rows changed: another server holds it
+        if type(res) == "table" then gw.isRunning = true end
+        cb(ok)
+    end, "UPDATE `" .. TABLE .. "` SET isRunning = 1 WHERE id = ? AND isRunning = 0", gw.id)
+end
+
+-- the run of this server ended (or an admin clears a flag left behind by a crashed server)
+function GangWars.release(id)
+    local gw = GangWars.list[tonumber(id)]
+    if not gw then return false end
+    gw.isRunning, gw.claimed = false, nil
+    sql():mysqlExec("UPDATE `" .. TABLE .. "` SET isRunning = 0 WHERE id = ?", gw.id)
+    return true
+end
+
 -- seconds left of the cooldown (0 = available)
 function GangWars.cooldownLeft(gw, t)
     if not gw.last_run then return 0 end
     return math.max(0, gw.last_run + GW.COOLDOWN - (t or now()))
 end
 
--- may it appear now? (enabled, cooldown over, day and hour window)
-function GangWars.isOpen(gw, rt)
+-- may it appear now? (enabled, not running anywhere, cooldown over, day and hour window)
+-- ignoreRunning: the caller holds the isRunning flag itself
+function GangWars.isOpen(gw, rt, ignoreRunning)
     rt = rt or getRealTime()
-    if not gw.enabled or #gw.attackers == 0 then return false end
+    if not gw.enabled or (gw.isRunning and not ignoreRunning) or #gw.attackers == 0 then return false end
     if GangWars.cooldownLeft(gw, rt.timestamp) > 0 then return false end
     return GW.isDayAllowed(gw.days, rt.weekday) and GW.isHourAllowed(gw.hour_from, gw.hour_to, rt.hour)
 end

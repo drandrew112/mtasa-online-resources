@@ -204,7 +204,9 @@ function Pages.root()
     local items = { leaf(L("v_gangwar.editor.new_here"), { "new" }, L("v_gangwar.editor.new_here_desc")) }
     for _, gw in ipairs(E.list) do
         local status
-        if gw.state ~= "idle" then
+        if gw.state == "remote" then
+            status = L("v_gangwar.editor.status_remote")
+        elseif gw.state ~= "idle" then
             status = L("v_gangwar.editor.status_run", { state = gw.state, player = tostring(gw.starter or "-") })
         elseif gw.cooldown > 0 then
             status = L("v_gangwar.editor.status_cooldown", { time = fmtCooldown(gw.cooldown) })
@@ -216,7 +218,13 @@ function Pages.root()
             leaf(L("v_gangwar.editor.teleport"), { "tp", gw.x, gw.y, gw.z }),
             leaf(L("v_gangwar.editor.test_run"), { "test", gw.id }, L("v_gangwar.editor.test_run_desc")),
         }
-        if gw.state ~= "idle" then actions[#actions + 1] = leaf(L("v_gangwar.editor.abort_run"), { "abort", gw.id }) end
+        if gw.state == "remote" then
+            actions[#actions + 1] = sub(L("v_gangwar.editor.clear_running"), {
+                leaf(L("v_gangwar.editor.clear_running_confirm"), { "clearrun", gw.id }),
+            }, L("v_gangwar.editor.clear_running_desc"))
+        elseif gw.state ~= "idle" then
+            actions[#actions + 1] = leaf(L("v_gangwar.editor.abort_run"), { "abort", gw.id })
+        end
         if gw.cooldown > 0 then actions[#actions + 1] = leaf(L("v_gangwar.editor.reset_cooldown"), { "resetcd", gw.id }) end
         actions[#actions + 1] = sub(L("v_gangwar.editor.delete"), {
             leaf(L("v_gangwar.editor.delete_confirm", { name = gw.name }), { "delete", gw.id }),
@@ -485,6 +493,7 @@ function actions.test(v)
 end
 
 function actions.abort(v) triggerServerEvent("gangwar:editorAbort", resourceRoot, v[2]) end
+function actions.clearrun(v) triggerServerEvent("gangwar:editorClearRunning", resourceRoot, v[2]) end
 function actions.resetcd(v) triggerServerEvent("gangwar:editorResetCooldown", resourceRoot, v[2]) end
 function actions.delete(v) triggerServerEvent("gangwar:editorDelete", resourceRoot, v[2]) end
 

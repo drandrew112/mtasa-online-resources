@@ -158,6 +158,15 @@ on("gangwar:editorResetCooldown", function(player, id)
     end
 end)
 
+-- isRunning left at 1 by a server that crashed during a run
+on("gangwar:editorClearRunning", function(player, id)
+    local state = Runtime_status(id)
+    if state == "remote" and GangWars.release(id) then
+        notify(player, "v_gangwar.editor.running_cleared")
+    end
+    sendList(player)
+end)
+
 on("gangwar:editorAbort", function(player, id)
     Runtime_abort(id, "admin")
     sendList(player)
