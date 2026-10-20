@@ -72,9 +72,8 @@ local function build(w)
     else
         for _, j in ipairs(d.jobs) do
             text(j.name, pad, y, w * 0.5, COL.text, ui(1.2), "default-bold", "left", rowH)
-            text(L("v_weekly.panel.money", { money = fmt(j.money) }), w * 0.5, y, w * 0.68, COL.money, ui(1.2), "default-bold", "left", rowH)
-            text(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), w * 0.68, y, w * 0.8, COL.xp, ui(1.2), "default-bold", "left", rowH)
-            text(j.label or "", w * 0.8, y, w - pad, COL.dim, ui(1.0), "default", "right", rowH)
+            text(L("v_weekly.panel.money", { money = fmt(j.money) }), w * 0.5, y, w * 0.82, COL.money, ui(1.2), "default-bold", "right", rowH)
+            text(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), w * 0.82, y, w - pad, COL.xp, ui(1.2), "default-bold", "right", rowH)
             y = y + rowH
         end
     end
