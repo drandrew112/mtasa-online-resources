@@ -189,6 +189,7 @@
         { id: 'goto', label: 'Go to', perm: 'teleport', needGame: true },
         { id: 'gethere', label: 'Bring here', perm: 'teleport', needGame: true },
         { id: 'heal', label: 'Heal', perm: 'heal' },
+        { id: 'skin', label: 'Change skin', perm: 'skin', form: true },
         { group: 'Vehicle' },
         { id: 'fixveh', label: 'Fix vehicle', perm: 'vehicle' },
         { id: 'flipveh', label: 'Flip vehicle', perm: 'vehicle' },
@@ -326,6 +327,14 @@
         if (a.needGame && !S.inGame) return OSA.toast('You need to be online in game on this account.');
 
         if (a.menu) return levelMenu(p, btn);
+        if (a.id === 'skin') {
+            const r = await OSA.ui.form(`Change skin: ${p.name} (${p.id})`,
+                [{ name: 'skin', label: 'Skin ID', type: 'number', value: String(p.skin) }], 'Change',
+                'Valid ped model ID. A player on work duty is taken off duty first.');
+            if (!r) return;
+            if (!(Number(r.skin) >= 0) || r.skin === '') return OSA.toast('Enter a skin ID.');
+            return act('adminWebAction', 'skin', p.id, Number(r.skin));
+        }
         if (a.form) {
             const def = FORMS[a.id];
             const fields = [];

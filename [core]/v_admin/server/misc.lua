@@ -53,6 +53,57 @@ addCommandHandler("heal", function(player, cmd, idArg)
 end)
 
 -- ------------------------------------------------------------
+--  /setskin <ID> <skin>  – change a player's skin (ped model)
+--  A player on work duty is taken off duty first, so the new skin
+--  is the civilian one (that is what v_accounts saves).
+-- ------------------------------------------------------------
+local validSkins = {}
+for _, id in ipairs(getValidPedModels()) do validSkins[id] = true end
+
+function adminSetSkin(player, target, skin)
+    if not hasAdminLevel(player, ADMIN.perms.skin) then
+        return denyAccess(player, ADMIN.perms.skin)
+    end
+    if not isElement(target) then return end
+
+    skin = tonumber(skin)
+    if not skin or not validSkins[skin] then
+        return adminAlert(player, L.msg("v_admin.misc.invalid_skin_id"), 255, 90, 90)
+    end
+    if getElementModel(target) == skin then
+        return adminAlert(player, L.msg("v_admin.misc.already_wears_skin", { player = getPlayerName(target), skin = skin }), 255, 90, 90)
+    end
+
+    local workCore = getResourceFromName("work_core")
+    if workCore and getResourceState(workCore) == "running" and exports.work_core:getPlayerWork(target) then
+        exports.work_core:setPlayerOffDuty(target)
+    end
+
+    if not setElementModel(target, skin) then
+        return adminAlert(player, L.msg("v_admin.misc.invalid_skin_id"), 255, 90, 90)
+    end
+    adminLog(player, ("set %s skin to %d"):format(getPlayerName(target), skin))
+
+    if target ~= player then
+        adminAlert(target, L.msg("v_admin.misc.changed_your_skin", { player = actorName(player), skin = skin }))
+        adminAlert(player, L.msg("v_admin.misc.you_changed_skin", { player = getPlayerName(target), skin = skin }))
+    else
+        adminAlert(player, L.msg("v_admin.misc.you_changed_your_skin", { skin = skin }))
+    end
+end
+
+addCommandHandler("setskin", function(player, cmd, idArg, skinArg)
+    if not hasAdminLevel(player, ADMIN.perms.skin) then
+        return denyAccess(player, ADMIN.perms.skin)
+    end
+    if not skinArg then
+        return adminAlert(player, L.msg("v_admin.misc.usage_setskin"), 255, 90, 90)
+    end
+    local target = resolveTarget(player, idArg)
+    if target then adminSetSkin(player, target, skinArg) end
+end)
+
+-- ------------------------------------------------------------
 --  /money  – test money (admin)
 -- ------------------------------------------------------------
 addCommandHandler("money", function(player)

@@ -40,7 +40,7 @@ v_admin/
 │   ├── jail.lua            – /ajail, /ajailout + jail timers, escape checks
 │   ├── ban.lua             – /ban, /unban (account ban → v_accounts), /kick
 │   ├── mute.lua            – /mute, /unmute (chat mute → v_chat)
-│   ├── misc.lua            – /fly (gate), /heal, /money, /getid, /listacc
+│   ├── misc.lua            – /fly (gate), /heal, /setskin, /money, /getid, /listacc
 │   └── panel.lua           – admin panel data + actions (O key)
 │
 └── client/
@@ -118,6 +118,7 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 | `/flipveh [ID]` | 2 | Flip a vehicle back over. |
 | `/getout <ID>` | 2 | Remove that player from their vehicle. |
 | `/heal <ID>` | 1 | Restore that player's health and armour. |
+| `/setskin <ID> <skin>` | 2 | Change a player's skin (saved by v_accounts). A player on work duty is taken off duty first. |
 | `/fly` · **N key** | 2 | NoClip mode on/off. |
 | `/flyspd <0.1-20>` | – | NoClip speed (client). |
 | `/ajail <ID> <minutes> <reason>` | 2 | Admin jail. |

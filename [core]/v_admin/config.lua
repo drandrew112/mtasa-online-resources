@@ -46,6 +46,7 @@ ADMIN.perms = {
     teleport     = 1,   -- /goto, /gethere            (Trial Mod)
     vehicle      = 2,   -- /fixveh, /flipveh, /getout (Mod)
     heal         = 1,   -- /heal                      (Trial Mod)
+    skin         = 2,   -- /setskin                   (Mod)
     noclip       = 2,   -- /fly + N key               (Mod)
     jail         = 2,   -- /ajail, /ajailout          (Mod)
     mute         = 1,   -- /mute, /unmute             (Trial Mod)
@@ -73,6 +74,7 @@ ADMIN.commands = {
     { cmd = "/goto <ID>",                         perm = "teleport",     desc = L.text("v_admin.config.teleport_to_player_interior_dimension_too") },
     { cmd = "/gethere <ID>",                      perm = "teleport",     desc = L.text("v_admin.config.bring_player_to_you_with_their") },
     { cmd = "/heal <ID>",                         perm = "heal",         desc = L.text("v_admin.config.restore_player_s_health_and_armour") },
+    { cmd = "/setskin <ID> <skin>",               perm = "skin",         desc = L.text("v_admin.config.change_player_s_skin") },
     { cmd = "/mute <ID> <minutes> <reason>",      perm = "mute",         desc = L.text("v_admin.config.chat_mute_survives_relog_expires_on") },
     { cmd = "/unmute <ID>",                       perm = "mute",         desc = L.text("v_admin.config.lift_chat_mute_early") },
     { cmd = "/af <message>",                      perm = "adminCall",    desc = L.text("v_admin.config.admin_announcement_to_whole_server_adminannounce") },

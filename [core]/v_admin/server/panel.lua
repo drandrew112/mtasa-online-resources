@@ -184,6 +184,7 @@ local ACTIONS = {
     ["goto"]    = function(admin, t)       adminGoto(admin, t) end,
     ["gethere"] = function(admin, t)       adminGethere(admin, t) end,
     ["heal"]    = function(admin, t)       adminHeal(admin, t) end,
+    ["skin"]    = function(admin, t, a)    adminSetSkin(admin, t, a) end,
     ["mute"]    = function(admin, t, a, b) adminMute(admin, t, a, text(b)) end,
     ["unmute"]  = function(admin, t)       adminUnmute(admin, t) end,
     ["fixveh"]  = function(admin, t)       adminFixVeh(admin, t) end,

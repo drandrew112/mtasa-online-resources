@@ -22,6 +22,7 @@ ACTIONS = {
     { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
     { id = "gethere", label = L("v_admin.players.bring_here"),  perm = "teleport" },
     { id = "heal",    label = L("v_admin.players.heal"),        perm = "heal" },
+    { id = "skin",    label = L("v_admin.players.change_skin"), perm = "skin", form = "skin" },
     { group = L("v_admin.players.vehicle") },
     { id = "fixveh",  label = L("v_admin.players.fix_vehicle"),  perm = "vehicle" },
     { id = "flipveh", label = L("v_admin.players.flip_vehicle"), perm = "vehicle" },
@@ -47,6 +48,7 @@ FORMS = {
     jail = { title = L("v_admin.players.admin_jail"), minutes = true, chips = { 10, 30, 60, 120, 240 } },
     kick = { title = L("v_admin.players.kick"),       danger = true },
     ban  = { title = L("v_admin.players.ban_account"), danger = true, note = L("v_admin.players.permanent_account_ban_v_accounts_serial") },
+    skin = { title = L("v_admin.players.change_skin"), skin = true, note = L("v_admin.players.skin_form_note") },
 }
 end
 
@@ -251,13 +253,25 @@ local function openForm(kind, p)
     st.form = { kind = kind, targetId = p.id }
     AP.setField("pl_minutes", "")
     AP.setField("pl_reason", "")
-    AP.setFocus(FORMS[kind].minutes and "pl_minutes" or "pl_reason")
+    AP.setField("pl_skin", FORMS[kind].skin and tostring(p.skin) or "")
+    AP.setFocus(FORMS[kind].skin and "pl_skin" or FORMS[kind].minutes and "pl_minutes" or "pl_reason")
 end
 
 local function submitForm()
     local f = st.form
     if not f then return end
     local def = FORMS[f.kind]
+    if def.skin then
+        local skin = tonumber(AP.fieldText("pl_skin"))
+        if not skin then
+            AP.setFocus("pl_skin")
+            return AP.notify(L("v_admin.players.enter_skin_id"))
+        end
+        AP.sendAction(f.kind, f.targetId, skin)
+        st.form = nil
+        AP.setFocus(nil)
+        return
+    end
     local reason = AP.fieldText("pl_reason"):gsub("^%s+", ""):gsub("%s+$", "")
     local minutes = tonumber(AP.fieldText("pl_minutes"))
 
@@ -310,10 +324,17 @@ local function drawForm(p, x, y, w, h)
         cy = cy + S(60)
     end
 
-    AP.text(L("v_admin.players.reason"), ix, cy, iw, S(28), C.dim, 0.9)
-    cy = cy + S(30)
-    AP.field("pl_reason", ix, cy, iw, S(44), { placeholder = L("v_admin.players.reason_shown_to_player"), max = 120, onEnter = submitForm })
-    cy = cy + S(56)
+    if def.skin then
+        AP.text(L("v_admin.players.skin_id"), ix, cy, iw, S(28), C.dim, 0.9)
+        cy = cy + S(30)
+        AP.field("pl_skin", ix, cy, iw, S(44), { placeholder = L("v_admin.players.skin_id"), max = 5, numeric = true, onEnter = submitForm })
+        cy = cy + S(56)
+    else
+        AP.text(L("v_admin.players.reason"), ix, cy, iw, S(28), C.dim, 0.9)
+        cy = cy + S(30)
+        AP.field("pl_reason", ix, cy, iw, S(44), { placeholder = L("v_admin.players.reason_shown_to_player"), max = 120, onEnter = submitForm })
+        cy = cy + S(56)
+    end
 
     if def.note then
         local lines = AP.wrap(def.note, iw, 0.85)
