@@ -39,4 +39,7 @@
     <script src="lib/repoSync.lua" type="server" />
     <script src="updater.lua" type="server" />
     <script src="updateResources.lua" type="server" />
+
+    <!-- Join message -->
+    <script src="join.lua" type="server" />
 </meta>
