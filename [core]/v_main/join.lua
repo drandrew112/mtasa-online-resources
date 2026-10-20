@@ -7,10 +7,12 @@ addEventHandler("onPlayerJoin", root,
     function()
         local player = source
         local serverName = getServerInstanceName()
+        local version = getModVersion()
 
         local message = table.concat({
             "Welcome to FreeV!",
-            "You are on " .. WELCOME_COLOR .. serverName .. DEFAULT_COLOR .. "!",
+            "You are on " .. WELCOME_COLOR .. serverName .. DEFAULT_COLOR,
+            "Server version: " .. STATUS_COLOR .. tostring(version) .. DEFAULT_COLOR,
             STATUS_COLOR .. "Loading... Please wait!" .. DEFAULT_COLOR
         }, "\n")
 
