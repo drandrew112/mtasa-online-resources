@@ -1,4 +1,36 @@
 <catalog type="vehicle">
+	<group name="Modded">
+		<group name="Emergency">
+			<vehicle id="487" name="Air Ambulance (GTA5)" />
+			<vehicle id="407" name="Fire Truck (HU)" />
+			<vehicle id="596" name="Ford Crown Vic Police" />
+			<vehicle id="416" name="Mercedes Sprinter Ambulance (HU)" />
+			<vehicle id="456" name="Misson Row Ambulance" />
+			<vehicle id="497" name="Police Maverick (GTA5)" />
+			<vehicle id="599" name="Police Ranger (NYPD)" />
+			<vehicle id="427" name="Riot (GTA5)" />
+			<vehicle id="415" name="Skoda Octavia Blood Transporter" />
+		</group>
+		<group name="Civil">
+			<vehicle id="529" name="1999 Jeep Grand Cherokee" />
+			<vehicle id="426" name="2003 Audi A8" />
+			<vehicle id="405" name="2004 Jaguar XJ-8" />
+			<vehicle id="516" name="2006 Saab 9-7X" />
+			<vehicle id="560" name="2006 Subaru Impreza WRX STi" />
+			<vehicle id="585" name="Alfa Romeo 75" />
+			<vehicle id="562" name="BMW M3 GTR" />
+			<vehicle id="492" name="BMW X5" />
+			<vehicle id="538" name="BR 262" />
+			<vehicle id="506" name="Bugatti Veyron" />
+			<vehicle id="541" name="Koenigsegg CC 8S" />
+			<vehicle id="411" name="McLaren F1 LM" />
+			<vehicle id="547" name="Mercedes Benz C350 Avantgarde" />
+			<vehicle id="490" name="Mercedes V Class" />
+			<vehicle id="410" name="Mini Cooper S" />
+			<vehicle id="531" name="MTZ-80" />
+			<vehicle id="559" name="Porsche Carrera GT" />
+		</group>
+	</group>
 	<group name="Aircraft">
 		<group name="Helicopters">
 			<vehicle id="548" name="Cargobob" />
