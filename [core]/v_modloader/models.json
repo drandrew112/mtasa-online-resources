@@ -19,9 +19,9 @@
   "weapons": {
   },
   "objects": {
-    "1210": "medical_bag",
-    "1581": "lifepak15",
-    "2146": "stretcher",
-    "2969": "case"
+    "1210": "Medical bag",
+    "1581": "Lifepak 15",
+    "2146": "Strecher",
+    "2969": "Blood tranporter box"
   }
 }
