@@ -26,6 +26,7 @@
     <export function="getCurrentWeek" type="server" />
     <export function="getWeek" type="server" />
     <export function="getWeekStart" type="server" />
+    <export function="getWeeklyInfo" type="server" />
     <export function="getNextWeekChange" type="server" />
     <export function="getJobMultiplier" type="server" />
     <export function="getActiveTimetrial" type="server" />

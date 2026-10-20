@@ -26,6 +26,14 @@ function getWeek(offset)
     return ws, d, inherited
 end
 
+-- Everything that is "weekly" for a week, ready to display:
+-- { weekStart, from, to, news = {title, body}|nil, loginBonus = {money, xp}|nil,
+--   jobs = { {id, name, money, xp, label}, ... }, timetrial = {name, time, reward}|nil }
+-- offset: weeks from now (default 0 = running week)
+function getWeeklyInfo(offset)
+    return PANEL.payload(weekStartAt(tonumber(offset) or 0))
+end
+
 function getWeekStart(offset) return weekStartAt(tonumber(offset) or 0) end
 
 -- unix timestamp of the next Tuesday 10:00 UTC
