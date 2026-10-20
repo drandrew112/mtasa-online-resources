@@ -14,6 +14,11 @@ local function renderPanels()
         end
     end
 
+    -- Weekly updates card beside the login/register panel
+    if Weekly and (UIState.panel == "login" or UIState.panel == "register") then
+        Weekly.draw(Panels[UIState.panel])
+    end
+
     -- Drawn last so it sits on top of the background image.
     if Music then
         Music.drawToggle()

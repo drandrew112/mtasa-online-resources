@@ -1,9 +1,12 @@
--- Local per-player settings stored in userdata.xml (remembered login, music).
+-- Local per-player settings stored in userdata.xml (remember-me token, music).
+-- The token is "<account name>=<hash>" from the server (acc:rememberToken);
+-- the password itself is never stored.
 
 UserData = {}
 
 local FILE = "userdata.xml"
-local KEYS = { "username", "password", "music" }
+local KEYS = { "token", "music" }
+local LEGACY = { "username", "password" } -- old plaintext login, wiped on load
 local cache = {}
 
 local function ensureFile()
@@ -39,6 +42,12 @@ end
 local function load()
     local xml = ensureFile()
     if not xml then return end
+    local wiped = false
+    for _, key in ipairs(LEGACY) do
+        local node = xmlFindChild(xml, key, 0)
+        if node then xmlDestroyNode(node); wiped = true end
+    end
+    if wiped then xmlSaveFile(xml) end
     for _, key in ipairs(KEYS) do
         local node = xmlFindChild(xml, key, 0)
         cache[key] = (node and xmlNodeGetValue(node)) or ""

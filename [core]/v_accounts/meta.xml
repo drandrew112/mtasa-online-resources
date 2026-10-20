@@ -18,6 +18,7 @@
     <script src="client/panels/login.lua" type="client" />
     <script src="client/panels/register.lua" type="client" />
     <script src="client/panels/banned.lua" type="client" />
+    <script src="client/panels/weekly.lua" type="client" />
 
     <!-- Assets -->
     <config src="clog.xml" type="client" />

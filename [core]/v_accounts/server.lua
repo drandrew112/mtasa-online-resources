@@ -362,6 +362,24 @@ end
 -- Panel routing
 --------------------------------------------------------------------------------
 
+-- Weekly updates shown next to the login/register panels (v_weekly is optional:
+-- no include, it is only queried while running).
+local function sendWeekly(player)
+    local res = getResourceFromName("v_weekly")
+    if not (res and getResourceState(res) == "running") then return end
+    local ok, info = pcall(function() return exports.v_weekly:getWeeklyInfo(0) end)
+    if ok and type(info) == "table" then
+        triggerClientEvent(player, "acc:weekly", player, info)
+    end
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if getResourceName(res) ~= "v_weekly" then return end
+    for _, p in ipairs(getElementsByType("player")) do
+        if not nameOf(p) and getElementData(p, "banned") ~= true then sendWeekly(p) end
+    end
+end)
+
 addEvent("acc:requestPanel", true)
 addEventHandler("acc:requestPanel", root, function()
     local player = client
@@ -373,6 +391,7 @@ addEventHandler("acc:requestPanel", root, function()
         triggerClientEvent(player, "acc:setPanel", player, nil)
     else
         triggerClientEvent(player, "acc:setPanel", player, "login")
+        sendWeekly(player)
     end
 end)
 
@@ -531,6 +550,14 @@ local function loginError(player, key, params)
     triggerClientEvent(player, "acc:error", player, L.msg(key, params))
 end
 
+-- "Remember me" token, saved by the client as "<account name>=<hash>". The hash
+-- is sha256 of the stored bcrypt hash + the player's serial: it never contains
+-- the password, it does not work from another machine, and a password change
+-- invalidates it.
+local function rememberHash(player, passwordHash)
+    return hash("sha256", passwordHash .. "|" .. tostring(getPlayerSerial(player)))
+end
+
 -- Step 2: the account row arrived (server/db.lua fetchAccountAuthAsync).
 addEvent("acc:loginRow")
 addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
@@ -544,11 +571,15 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
         clearPending(player)
         if rows == false then return loginError(player, "v_accounts.server.database_query_error") end -- a DB error is not the player's fault
         recordLoginFail(player)
+        if pending.tokenHash then
+            triggerClientEvent(player, "acc:tokenInvalid", player)
+            return loginError(player, "v_accounts.server.saved_login_expired")
+        end
         return loginError(player, "v_accounts.server.wrong_username_or_password")
     end
     local canonical, accId = row.account_name, tonumber(row.id) or 0
 
-    passwordVerify(pending.password, row.password, {}, function(matches)
+    local function onVerified(matches)
         -- the pending login stays registered (until the data load answers, step 3)
         if loginPending[player] ~= pending then return end
         if not isElement(player) or getElementData(player, "isLogged") == true then return clearPending(player) end
@@ -556,10 +587,18 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
         if not matches then
             clearPending(player)
             recordLoginFail(player)
+            if pending.tokenHash then
+                triggerClientEvent(player, "acc:tokenInvalid", player)
+                return loginError(player, "v_accounts.server.saved_login_expired")
+            end
             return loginError(player, "v_accounts.server.wrong_username_or_password")
         end
         clearLoginFails(player)
         rememberAccountName(canonical)
+
+        if pending.remember then
+            triggerClientEvent(player, "acc:rememberToken", player, canonical .. "=" .. rememberHash(player, row.password))
+        end
 
         if isElement(playerOnAccount(canonical)) then
             clearPending(player)
@@ -580,7 +619,13 @@ addEventHandler("acc:loginRow", resourceRoot, function(id, rows)
         pending.canonical, pending.accId = canonical, accId
         pending.dataTries = 0
         requestLoginData(player)
-    end)
+    end
+
+    if pending.tokenHash then
+        onVerified(rememberHash(player, row.password) == pending.tokenHash)
+    else
+        passwordVerify(pending.password, row.password, {}, onVerified)
+    end
 end)
 
 local DATA_TRIES = 3
@@ -642,44 +687,38 @@ addEventHandler("acc:loginData", resourceRoot, function(id, ok)
     beginLoading(player, {}, spawnLoggedInPlayer)
 end)
 
--- Step 1: the client asks to log in.
-function login_player(username, password)
-    local player = client
-    if not isElement(player) then return end
-    if getElementData(player, "banned") == true then return end
-    if getElementData(player, "isLogged") == true then return end
-    if loginPending[player] then return end
+-- Common gate of both step-1 entry points; true if the player may attempt now.
+local function loginAllowed(player)
+    if not isElement(player) then return false end
+    if getElementData(player, "banned") == true then return false end
+    if getElementData(player, "isLogged") == true then return false end
+    if loginPending[player] then return false end
 
     local tick = getTickCount()
-    if lastAttempt[player] and tick - lastAttempt[player] < LOGIN_MIN_INTERVAL then return end
+    if lastAttempt[player] and tick - lastAttempt[player] < LOGIN_MIN_INTERVAL then return false end
     lastAttempt[player] = tick
 
     local wait = lockRemaining(player)
     if wait > 0 then
-        return loginError(player, "v_accounts.server.too_many_login_attempts", { seconds = wait })
+        loginError(player, "v_accounts.server.too_many_login_attempts", { seconds = wait })
+        return false
     end
+    return true
+end
 
-    if type(username) ~= "string" or type(password) ~= "string"
-    or username == "" or password == "" then
-        return loginError(player, "v_accounts.server.username_or_password_missing")
-    end
-    if #username > 64 or #password > 128 then
-        recordLoginFail(player)
-        return loginError(player, "v_accounts.server.wrong_username_or_password")
-    end
-
+-- Registers the pending login (password or tokenHash set) and fetches the row (step 2).
+local function startLogin(player, username, pending)
     loginSeq = loginSeq + 1
     local id = loginSeq
-    loginPending[player] = {
-        id = id, password = password,
-        timer = setTimer(function()
-            local p = loginPending[player]
-            if p and p.id == id then
-                if p.canonical then exports.v_mysql:flushAccData(p.canonical) end
-                clearPending(player)
-            end
-        end, LOGIN_TIMEOUT, 1),
-    }
+    pending.id = id
+    pending.timer = setTimer(function()
+        local p = loginPending[player]
+        if p and p.id == id then
+            if p.canonical then exports.v_mysql:flushAccData(p.canonical) end
+            clearPending(player)
+        end
+    end, LOGIN_TIMEOUT, 1)
+    loginPending[player] = pending
     pendingById[id] = player
 
     if not fetchAccountAuthAsync(username, "acc:loginRow", id) then
@@ -690,8 +729,45 @@ function login_player(username, password)
         end
     end
 end
+
+-- Step 1: the client asks to log in with a password. remember: answer with a
+-- remember-me token (acc:rememberToken) once the password is verified.
+function login_player(username, password, remember)
+    local player = client
+    if not loginAllowed(player) then return end
+
+    if type(username) ~= "string" or type(password) ~= "string"
+    or username == "" or password == "" then
+        return loginError(player, "v_accounts.server.username_or_password_missing")
+    end
+    if #username > 64 or #password > 128 then
+        recordLoginFail(player)
+        return loginError(player, "v_accounts.server.wrong_username_or_password")
+    end
+
+    startLogin(player, username, { password = password, remember = remember == true })
+end
 addEvent("login_player", true)
 addEventHandler("login_player", root, login_player)
+
+-- Step 1 (Continue as ...): the client logs in with its saved "<name>=<hash>" token.
+addEvent("login_token", true)
+addEventHandler("login_token", root, function(token)
+    local player = client
+    if not loginAllowed(player) then return end
+
+    local username, tokenHash
+    if type(token) == "string" and #token <= 160 then
+        username, tokenHash = token:match("^([^=]+)=(%x+)$")
+    end
+    if not username or #username > 64 or #tokenHash ~= 64 then
+        recordLoginFail(player)
+        triggerClientEvent(player, "acc:tokenInvalid", player)
+        return loginError(player, "v_accounts.server.saved_login_expired")
+    end
+
+    startLogin(player, username, { tokenHash = tokenHash:upper() })
+end)
 
 -- Registration runs without blocking the server (PERF-01):
 --   1. register_player       name check (async query)

@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Weekly news panel: shown on a week rollover and for admin preview. The
--- after-login display is handled by v_accounts via exports.v_weekly:getWeeklyInfo.
+-- login-screen display (next to login/register) is handled by v_accounts via exports.v_weekly:getWeeklyInfo.
 
 PANEL = {}
 
@@ -40,7 +40,9 @@ function PANEL.payload(ws)
         from = formatUtc(ws),
         to = formatUtc(weekStartAt(1, ws + 3.5 * 86400)),
         news = data.news,
-        loginBonus = data.loginBonus,
+        loginBonus = data.loginBonus and {
+            money = data.loginBonus.money, xp = data.loginBonus.xp, period = WEEKLY.LOGIN_BONUS_PERIOD,
+        } or nil,
         jobs = jobs,
         timetrial = timetrialInfo(data.timetrial),
     }

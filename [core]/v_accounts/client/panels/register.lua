@@ -25,6 +25,7 @@ function RegisterPanel:create()
     local btnH       = ui(40)
     local btnW       = math.floor((fieldW - ui(10)) / 2)
     local H          = (btnY + btnH + ui(8)) - Y + pad
+    self.X, self.Y, self.W = X, Y, W -- anchor for the weekly card
 
     self.user = DGS:dgsCreateEdit(cx, userY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
     self.pass = DGS:dgsCreateEdit(cx, passY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
