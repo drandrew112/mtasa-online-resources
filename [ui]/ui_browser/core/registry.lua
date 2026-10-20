@@ -86,13 +86,13 @@ local function site(url, folder, category, title, desc, extra)
     BR.registerSite(url, def)
 end
 
---[[
 site("lvcars.eu", "lvcars", "vehicles", "Las Venturas Cars",
-    "Certified used cars with warranty, ready to drive away today.")
+"Certified used cars with warranty, ready to drive away today.")
 
 site("legendary.eu", "legendary", "vehicles", "Legendary Wheels",
-    "Sport and luxury cars and bikes from the biggest showroom in the state.")
+"Hypercars from the most exclusive showroom in the state.")
 
+--[[
 site("vizair.eu", "vizair", "vehicles", "VizAir",
     "Private aircraft: helicopters, light planes and jets.")
 

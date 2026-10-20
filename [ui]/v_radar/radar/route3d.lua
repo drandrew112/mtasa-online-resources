@@ -256,7 +256,7 @@ end
 
 -- onClientPreRender (attached by applyEnable3DNavigation in radar/sourceC.lua)
 function renderRoutes3D()
-	if #layers == 0 then
+	if #layers == 0 or getElementData(localPlayer, "hideHUD") then
 		return
 	end
 	local px, py = getElementPosition(getPedOccupiedVehicle(localPlayer) or localPlayer)

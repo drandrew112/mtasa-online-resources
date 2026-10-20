@@ -1,24 +1,12 @@
 <page bg="#0b0b10" text="#efecf5" heading="#ffffff" muted="#9a94a8" link="#c084fc" accent="#e11d48" card="#161320" cardline="#33263f">
-    <siteheader title="Legendary Wheels" tagline="Sport and luxury. Four wheels or two." accent="#e11d48" />
+    <siteheader title="Legendary Wheels" tagline="Hypercars for the very few." accent="#e11d48" />
 
-    <tabs accent="#7c3aed">
-        <tab title="4-Wheel">
-            <catalog cols="3" sort="price">
-                <product id="turismo"  name="Turismo"  model="451" price="€185,000" img="turismo.png"  colors="red,black,purple,white">Mid-engine supercar, 0-60 in just over three seconds.</product>
-                <product id="cheetah"  name="Cheetah"  model="415" price="€142,000" img="cheetah.png"  colors="red,black,silver">Iconic rear-wheel-drive missile with brutal acceleration.</product>
-                <product id="bullet"   name="Bullet"   model="541" price="€96,000"  img="bullet.png"   colors="black,silver,blue">Clean lines, tuned for mountain roads.</product>
-                <product id="infernus" name="Infernus" model="411" price="€220,000" img="infernus.png" colors="purple,black,red,white">The benchmark exotic. Scissor doors, savage top end.</product>
-            </catalog>
-        </tab>
-        <tab title="2-Wheel">
-            <catalog cols="3" sort="price">
-                <product id="bati"    name="Bati 801" model="522" price="€15,000" img="bati.png"    colors="red,black,blue">Track-bred superbike, razor sharp handling.</product>
-                <product id="akuma"   name="Akuma"    model="461" price="€13,500" img="akuma.png"   colors="black,purple,red">Naked street bike with a punchy mid-range.</product>
-                <product id="sanchez" name="Sanchez"  model="468" price="€7,000"  img="sanchez.png" colors="red,black,green">Lightweight enduro, happiest in the dirt.</product>
-                <product id="faggio"  name="Faggio"   model="462" price="€1,200"  img="faggio.png"  colors="white,red,black">City scooter. Cheap, cheerful, impossible to kill.</product>
-            </catalog>
-        </tab>
-    </tabs>
+    <catalog cols="3" sort="price">
+        <product id="koenigsegg_cc8s" name="Koenigsegg CC 8S" model="541" price="€1,050,000" colors="white,silver,orange,black">Swedish supercharged V8, targa roof and dihedral doors.</product>
+        <product id="mclaren_f1lm"    name="McLaren F1 LM"    model="411" price="€2,100,000"    colors="orange,black,silver,white">Le Mans tribute with the centre seat and a screaming V12.</product>
+        <product id="bugatti_veyron"  name="Bugatti Veyron"   model="506" price="€1,600,000"     colors="blue,black,silver,red">Quad-turbo W16, over 1000 horsepower and 400 km/h.</product>
+        <product id="porsche_cgt"     name="Porsche Carrera GT" model="559" price="€320,000" colors="silver,black,red,yellow">Carbon-fibre V10 supercar with a howl like a race car.</product>
+    </catalog>
 
     <link href="home">Back to search</link>
 </page>

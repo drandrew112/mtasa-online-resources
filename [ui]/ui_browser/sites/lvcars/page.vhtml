@@ -2,12 +2,16 @@
     <siteheader title="Las Venturas Cars" tagline="Certified pre-owned, family run since '92" accent="#8a5a2b" />
 
     <catalog cols="3" sort="price">
-        <product id="blista"   name="Blista Compact" model="496" price="€12,500" img="blista.png"  colors="white,black,silver,red,blue">Compact city car with low running costs.</product>
-        <product id="bobcat"   name="Bobcat"         model="422" price="€9,800"  img="bobcat.png"  colors="white,black,red,green">Tough pickup, great for work and light off-road.</product>
-        <product id="sultan_rs" name="Sultan RS"     model="560" price="€48,000" img="sultan.png"  colors="black,silver,blue,red">All-wheel drive, sport suspension, turbo engine.</product>
-        <product id="premier"  name="Premier"        model="426" price="€22,000" img="premier.png" colors="black,white,silver">Reliable four-door saloon, cheap to insure.</product>
-        <product id="elegant"  name="Elegant"        model="507" price="€35,000" img="elegant.png" colors="black,white,silver,blue">Full-size cruiser with a smooth ride and big trunk.</product>
-        <product id="sadler"   name="Sadler"         model="543" price="€15,500" img="sadler.png"  colors="white,black,yellow,green">Double-cab utility truck, tow bar fitted.</product>
+        <product id="alfa75"        name="Alfa Romeo 75"                model="585" price="€14,500"      colors="red,black,silver,white">Rear-drive Italian saloon with a lot of character.</product>
+        <product id="mini_cooper_s" name="Mini Cooper S"                model="410" price="€19,500"        colors="red,white,black,green,blue">Supercharged city car, handles like a go-kart.</product>
+        <product id="jeep_gc"       name="1999 Jeep Grand Cherokee"     model="529" price="€18,000"        colors="black,white,green,silver">Proper 4x4 for the desert roads.</product>
+        <product id="saab_97x"      name="2006 Saab 9-7X"               model="516" price="€23,000"        colors="silver,black,blue,white">Roomy Swedish SUV with a big V8 option.</product>
+        <product id="audi_a8"       name="2003 Audi A8"                 model="426" price="€29,500"      colors="black,silver,grey,blue">Aluminium-bodied quattro limousine.</product>
+        <product id="jaguar_xj8"    name="2004 Jaguar XJ-8"             model="405" price="€32,000"      colors="black,silver,green,white">British luxury saloon, smooth and quiet.</product>
+        <product id="subaru_wrx"    name="2006 Subaru Impreza WRX STi"  model="560" price="€39,500"      colors="blue,white,black,silver">Rally-bred all-wheel drive with a turbo boxer.</product>
+        <product id="mercedes_c350" name="Mercedes Benz C350 Avantgarde" model="547" price="€46,500"   colors="black,silver,white,blue">Comfortable executive saloon, V6 power.</product>
+        <product id="bmw_x5"        name="BMW X5"                       model="492" price="€52,000"       colors="black,white,silver,blue">Sporty premium SUV, good on and off the road.</product>
+        <product id="bmw_m3gtr"     name="BMW M3 GTR"                   model="562" price="€118,000"       colors="silver,white,blue,black">Road-legal race homologation with a V8.</product>
     </catalog>
 
     <link href="home">Back to search</link>

@@ -39,8 +39,38 @@ local function pushLine(ctx, x, y, w, h, color)
     ctx.ops[#ctx.ops + 1] = { t = "rect", x = x, y = y, w = w, h = math.max(1, h), color = color }
 end
 
-local function pushImage(ctx, x, y, w, h, path)
-    ctx.ops[#ctx.ops + 1] = { t = "image", x = x, y = y, w = w, h = h, path = path }
+-- fit = "cover": keep the image's aspect ratio and crop the overflow (centred)
+-- instead of stretching it into the box.
+local function pushImage(ctx, x, y, w, h, path, fit)
+    ctx.ops[#ctx.ops + 1] = { t = "image", x = x, y = y, w = w, h = h, path = path, fit = fit }
+end
+
+-- Image file of a <product>: img/src if given, otherwise "<model id>.png".
+function BR.productImage(attrs)
+    local img = attrs.img or attrs.src
+    if (not img or img == "") and tonumber(attrs.model) then
+        img = attrs.model .. ".png"
+    end
+    return img
+end
+
+-- Textures for "cover" images (the crop needs the pixel size). Freed on close.
+local coverTextures = {}
+
+local function coverTexture(path)
+    local tex = coverTextures[path]
+    if tex == nil then
+        tex = dxCreateTexture(path, "argb", true, "clamp") or false
+        coverTextures[path] = tex
+    end
+    return tex or nil
+end
+
+function BR.releaseImages()
+    for _, tex in pairs(coverTextures) do
+        if isElement(tex) then destroyElement(tex) end
+    end
+    coverTextures = {}
 end
 
 local function pushTextOp(ctx, text, x, y, x2, y2, color, mult, font, ha, va)
@@ -448,7 +478,7 @@ handlers.product = function(ctx, node, x, w, y)
     local id = node.attrs.id or ""
     local name = node.attrs.name or L("ui_browser.layout.product")
     local price = node.attrs.price or ""
-    local path = resolveAsset(ctx, node.attrs.img or node.attrs.src)
+    local path = resolveAsset(ctx, BR.productImage(node.attrs))
     local hasImg = path and fileExists(path)
     local imgH = hasImg and S(124) or 0
     local desc = BR.nodeText(node)
@@ -465,7 +495,7 @@ handlers.product = function(ctx, node, x, w, y)
     local cy = y + pad
     if hasImg then
         pushRect(ctx, x + pad, cy, w - pad * 2, imgH, placeholderFill(ctx))
-        pushImage(ctx, x + pad, cy, w - pad * 2, imgH, path)
+        pushImage(ctx, x + pad, cy, w - pad * 2, imgH, path, "cover")
         cy = cy + imgH + S(10)
     end
     pushTextOp(ctx, name, x + pad, cy, x + w - pad, cy + nh, ctx.col.heading, 1.1, BR.fonts.bold, "left", "top")
@@ -486,7 +516,7 @@ handlers.productimage = function(ctx, node, x, w, y)
     local path = resolveAsset(ctx, node.attrs.src)
     pushRect(ctx, x, y, w, ih, placeholderFill(ctx))
     if path and fileExists(path) then
-        pushImage(ctx, x, y, w, ih, path)
+        pushImage(ctx, x, y, w, ih, path, "cover")
     else
         pushTextOp(ctx, node.attrs.alt or L("ui_browser.layout.no_image"), x, y, x + w, y + ih, ctx.col.muted, FS.small, BR.fonts.regular, "center", "center")
     end
@@ -668,7 +698,15 @@ function BR.renderLayout(ctx, scrollY, vw, vh)
             if op.t == "rect" then
                 dxDrawRectangle(op.x, y, op.w, op.h, op.color)
             elseif op.t == "image" then
-                dxDrawImage(op.x, y, op.w, op.h, op.path)
+                local tex = op.fit == "cover" and coverTexture(op.path)
+                if tex then
+                    local tw, th = dxGetMaterialSize(tex)
+                    local s = math.max(op.w / tw, op.h / th)
+                    local sw, sh = op.w / s, op.h / s
+                    dxDrawImageSection(op.x, y, op.w, op.h, (tw - sw) / 2, (th - sh) / 2, sw, sh, tex)
+                else
+                    dxDrawImage(op.x, y, op.w, op.h, op.path)
+                end
             elseif op.t == "text" then
                 dxDrawText(op.text, op.x, y, op.x2, y + (op.y2 - op.y),
                     op.color, op.scale, op.font, op.ha, op.va, false, false, false, false)

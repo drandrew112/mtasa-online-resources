@@ -263,6 +263,7 @@ function BR.close()
     st.open = false
     st.search.focused = false
     BR.webClose()
+    BR.releaseImages()
     removeEventHandler("onClientRender", root, onRender)
     showCursor(false)
     setElementData(localPlayer, "browserOpen", false, false)

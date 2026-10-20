@@ -1351,7 +1351,7 @@ function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistanc
 end
 
 function render3DBlips()
-	if dimensionHasMap() then
+	if dimensionHasMap() and not getElementData(localPlayer, "hideHUD") then
 		local playerPosX, playerPosY, playerPosZ = getElementPosition(localPlayer)
 
 		local blipTable = getElementsByType("blip")

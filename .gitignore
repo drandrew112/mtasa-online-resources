@@ -41,6 +41,7 @@
 /\[devtools\]/claude-mcp/
 /\[devtools\]/claude-mcp/mcp-server/node_modules/
 /\[devtools\]/claude-mcp/screenshots/
+/\[devtools\]/takeapic/
 
 # --- railway logs ---
 /\[railways\]/rw_core/logs/
