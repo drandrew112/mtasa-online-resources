@@ -51,25 +51,20 @@ function Music.isEnabled()
 end
 
 --------------------------------------------------------------------------------
--- Corner toggle button
+-- Toggle button
 --
--- Drawn by render.lua (after the background image, so it stays on top) and
--- clicked via onClientClick, so it needs no DGS element.
+-- Drawn by settings.lua inside the Settings card (which hands over the rect)
+-- and clicked via onClientClick, so it needs no DGS element.
 --------------------------------------------------------------------------------
 
-local function layout()
-    btn.w, btn.h = ui(170), ui(38)
-    btn.x, btn.y = ui(26), sh - btn.h - ui(26)
-end
-
 local function inButton(px, py)
-    return px and px >= btn.x and px <= btn.x + btn.w
+    return px and btn.w > 0 and px >= btn.x and px <= btn.x + btn.w
        and py >= btn.y and py <= btn.y + btn.h
 end
 
--- Called from render.lua while a panel is visible.
-function Music.drawToggle()
-    layout()
+-- Called from settings.lua while a panel is visible.
+function Music.drawToggle(x, y, w, h)
+    btn.x, btn.y, btn.w, btn.h = x, y, w, h
 
     local cx, cy = getCursorPosition()
     local hover = false
@@ -77,11 +72,11 @@ function Music.drawToggle()
         hover = inButton(cx * sw, cy * sh)
     end
 
-    dxDrawRectangle(btn.x, btn.y, btn.w, btn.h, hover and Theme.accent or tocolor(18, 21, 26, 235))
+    dxDrawRectangle(btn.x, btn.y, btn.w, btn.h, hover and Theme.accent or Theme.fieldBG)
     dxDrawRectangle(btn.x, btn.y, ui(3), btn.h, Theme.accent)
     dxDrawRectangle(btn.x + ui(15), btn.y + btn.h / 2 - ui(5), ui(10), ui(10),
         enabled and tocolor(90, 200, 120, 255) or tocolor(210, 90, 90, 255))
-    dxDrawText(enabled and L("v_accounts.music.music_on") or L("v_accounts.music.music_off"),
+    dxDrawText(enabled and L("v_accounts.settings.on") or L("v_accounts.settings.off"),
         btn.x + ui(34), btn.y, btn.x + btn.w - ui(8), btn.y + btn.h,
         Theme.text, ui(1.15), "default-bold", "left", "center")
 end
@@ -98,7 +93,6 @@ end)
 --------------------------------------------------------------------------------
 
 function Music.init()
-    layout()
     enabled = (UserData.get("music") ~= "0") -- default: enabled
     Music.update()
 end

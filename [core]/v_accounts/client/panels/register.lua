@@ -7,7 +7,7 @@ function RegisterPanel:create()
     -- Layout
     local W = ui(360)
     local X = math.floor(sw / 2 - W / 2)
-    local Y = math.floor(sh * 0.22)
+    local Y = math.floor(sh * 0.30)
     local pad = ui(22)
     local headerH = ui(46)
 

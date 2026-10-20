@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Language dropdown: sits next to the music toggle (bottom left) and opens a
--- list upwards. Choosing a language goes through v_locals (setLanguage), which
+-- Language dropdown: sits under the music toggle in the Settings card
+-- (settings.lua hands over the rect) and opens a list downwards. Choosing a language goes through v_locals (setLanguage), which
 -- remembers it on the client, stores it on the account once logged in, and
 -- fires v_locals:onClientLanguageChange. The panels' DGS elements keep their
 -- text, so they are rewritten by Lang.refreshAll() on that event; everything
@@ -10,7 +10,7 @@ Lang = {}
 
 local btn = { x = 0, y = 0, w = 0, h = 0 }
 local open = false
-local rowH = 0
+local rowH = ui(34)
 
 local function languages()
     return exports.v_locals:getLanguages() or {}
@@ -24,20 +24,13 @@ local function currentLabel()
     return tostring(code), code
 end
 
-local function layout()
-    local mw = ui(170) -- music button width (music.lua)
-    btn.w, btn.h = ui(150), ui(38)
-    btn.x, btn.y = ui(26) + mw + ui(10), sh - btn.h - ui(26)
-    rowH = ui(34)
-end
-
 local function inRect(px, py, x, y, w, h)
-    return px and px >= x and px <= x + w and py >= y and py <= y + h
+    return px and w > 0 and px >= x and px <= x + w and py >= y and py <= y + h
 end
 
 local function listRect(count)
     local h = rowH * count
-    return btn.x, btn.y - h - ui(4), btn.w, h
+    return btn.x, btn.y + btn.h + ui(4), btn.w, h
 end
 
 local function drawCaret(cx, cy, size, up)
@@ -51,15 +44,15 @@ local function drawCaret(cx, cy, size, up)
     dxDrawPrimitive("trianglefan", false, a[1], a[2], Theme.text, b[1], b[2], Theme.text, c[1], c[2], Theme.text)
 end
 
--- Called from render.lua after Music.drawToggle().
-function Lang.draw()
-    layout()
+-- Called from settings.lua, after the music toggle.
+function Lang.draw(x, y, w, h)
+    btn.x, btn.y, btn.w, btn.h = x, y, w, h
     local cx, cy = getCursorPosition()
     local mx, my
     if cx then mx, my = cx * sw, cy * sh end
 
     local hover = inRect(mx, my, btn.x, btn.y, btn.w, btn.h)
-    dxDrawRectangle(btn.x, btn.y, btn.w, btn.h, (hover or open) and Theme.accent or tocolor(18, 21, 26, 235))
+    dxDrawRectangle(btn.x, btn.y, btn.w, btn.h, (hover or open) and Theme.accent or Theme.fieldBG)
     dxDrawRectangle(btn.x, btn.y, ui(3), btn.h, Theme.accent)
     dxDrawText(currentLabel(), btn.x + ui(15), btn.y, btn.x + btn.w - ui(30), btn.y + btn.h,
         Theme.text, ui(1.15), "default-bold", "left", "center", true)
@@ -91,7 +84,6 @@ end
 addEventHandler("onClientClick", root, function(mouseButton, state, absX, absY)
     if mouseButton ~= "left" or state ~= "down" then return end
     if not (UIState and UIState.active) then return end
-    layout()
 
     if inRect(absX, absY, btn.x, btn.y, btn.w, btn.h) then
         open = not open

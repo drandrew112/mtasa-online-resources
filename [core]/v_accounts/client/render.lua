@@ -14,18 +14,16 @@ local function renderPanels()
         end
     end
 
-    -- Weekly updates card beside the login/register panel
-    if Weekly and (UIState.panel == "login" or UIState.panel == "register") then
-        Weekly.draw(Panels[UIState.panel])
-    end
+    local panel = Panels[UIState.panel]
+    local form = UIState.panel == "login" or UIState.panel == "register"
 
-    -- Drawn last so it sits on top of the background image.
-    if Music then
-        Music.drawToggle()
-    end
-    if Lang then
-        Lang.draw()
-    end
+    -- Logo + welcome above, weekly updates card right of the login/register panel
+    if form and Header then Header.draw(panel) end
+    if form and Weekly then Weekly.draw(panel) end
+
+    -- Settings card (music + language) left of the panel; last, so the
+    -- language list opens over everything else.
+    if Settings then Settings.draw(panel) end
 end
 
 -- attached only while a panel is up (setPanel calls this)

@@ -11,6 +11,8 @@
     <script src="client/main.lua" type="client" />
     <script src="client/music.lua" type="client" />
     <script src="client/language.lua" type="client" />
+    <script src="client/settings.lua" type="client" />
+    <script src="client/header.lua" type="client" />
     <script src="client/render.lua" type="client" />
     <script src="client/loading.lua" type="client" />
     <script src="client/loadWorld.lua" type="client" />
@@ -26,6 +28,9 @@
     <file src="audio/ui_btn_click.mp3" />
     <file src="audio/ui_btn_hover.mp3" />
     <file src="audio/main_menu.mp3" />
+
+    <file src="freev.png" />
+    <file src="rounded.fx" />
 
     <file src="bgs/1.png" />
     <file src="bgs/2.png" />

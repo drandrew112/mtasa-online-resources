@@ -56,3 +56,8 @@ local function load()
 end
 
 load()
+
+-- Account name of the saved remember-me token ("<name>=<hash>"), or nil.
+function getSavedAccountName()
+    return UserData.get("token"):match("^([^=]+)=%x+$")
+end

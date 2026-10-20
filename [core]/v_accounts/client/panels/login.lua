@@ -1,10 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 LoginPanel = {}
 
--- Account name of the saved remember-me token ("<name>=<hash>"), or nil.
-local function savedTokenName()
-    return UserData.get("token"):match("^([^=]+)=%x+$")
-end
+local savedTokenName = getSavedAccountName -- userdata.lua
 
 function LoginPanel:create()
     local self = {}
@@ -12,7 +9,7 @@ function LoginPanel:create()
     -- Layout
     local W = ui(360)
     local X = math.floor(sw / 2 - W / 2)
-    local Y = math.floor(sh * 0.24)
+    local Y = math.floor(sh * 0.30)
     local pad = ui(22)
     local headerH = ui(46)
 

@@ -9,6 +9,7 @@ function BannedPanel:create()
         local H = ui(300)
         local X = math.floor(sw / 2 - W / 2)
         local Y = math.floor(sh / 2 - H / 2)
+        self.X, self.Y, self.W = X, Y, W -- anchor for the settings card
         local cx = X + ui(24)
         local right = X + W - ui(24)
 
