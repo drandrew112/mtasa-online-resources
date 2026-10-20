@@ -137,7 +137,7 @@ function LoginPanel:create()
 
     -- init
     self:refreshTexts()
-    DGS:dgsCheckBoxSetSelected(self.form.remember, savedTokenName() ~= nil)
+    DGS:dgsCheckBoxSetSelected(self.form.remember, true) -- opt-out: untick to forget the saved login
     self:setVisible(false)
 
     return self
