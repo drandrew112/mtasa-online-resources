@@ -8,9 +8,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- the final total. Other resources (v_weekly) set them via the exports below.
 
 REWARDS = {
-    soloMoney = 500,                -- fixed cash when the match started with one player
-    race = { perKm = 200, minBase = 300, maxBase = 3000 },
-    deathmatch = { perMinute = 120, maxMinutes = 15, minBase = 200, maxBase = 1800, perKill = 150 },
+    soloMoney = 150,                -- fixed cash when the match started with one player
+    race = { perKm = 60, minBase = 90, maxBase = 900 },
+    deathmatch = { perMinute = 36, maxMinutes = 15, minBase = 60, maxBase = 540, perKill = 45 },
     playerBonus = 0.05,             -- x(1 + playerBonus * (players - 1)) ...
     playerBonusMax = 1.5,           -- ... capped here
     place = { 1.5, 1.25, 1.1 },     -- money multiplier by place, others x1.0

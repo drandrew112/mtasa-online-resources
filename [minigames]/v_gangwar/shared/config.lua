@@ -15,7 +15,7 @@ GW = {
     HUD_RADIUS_FACTOR = 1.2,        -- helpers within zone_radius x this see the stat rows
     END_HUD_TIME = 8000,            -- ms: stat rows stay this long after the end
 
-    KILL_MONEY = 1500,              -- per kill, paid to whoever killed (starter or helper), at once
+    KILL_MONEY = 450,               -- per kill, paid to whoever killed (starter or helper), at once
     KILL_XP = 500,
 
     CIRCLE_COLOR = { 220, 30, 30, 90 },
@@ -24,7 +24,7 @@ GW = {
     DEFAULTS = {
         name = "Gang war", gang = "gang", enabled = true,
         trigger_radius = 150, zone_radius = 60, release_radius = 250,
-        reward_money = 10000, reward_xp = 2000,
+        reward_money = 3000, reward_xp = 2000,
         days = "1234567", hour_from = 0, hour_to = 24,
     },
     ATTACKER = {

@@ -26,7 +26,7 @@ WEEKLY = {
 
     -- login bonus is paid once per "day" (UTC calendar day) or once per "week"
     LOGIN_BONUS_PERIOD = "day",
-    LOGIN_MAX_MONEY    = 1000000,
+    LOGIN_MAX_MONEY    = 300000, 
     LOGIN_MAX_XP       = 100000,
     LOGIN_KEY          = "weekly_login", -- accData: id of the last period paid
 

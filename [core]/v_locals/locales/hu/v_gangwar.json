@@ -118,7 +118,7 @@
   "v_gangwar.editor.release_radius": "Elengedési sugár: {v} m",
   "v_gangwar.editor.release_radius_desc": "Ha a starter ennél messzebb kerül, vége (szürke kör)",
   "v_gangwar.editor.reset_cooldown": "Cooldown nullázása",
-  "v_gangwar.editor.reward_desc": "A végén a starter kapja. Minden ölés további 1500-at és 500 XP-t ad annak, aki ölt.",
+  "v_gangwar.editor.reward_desc": "A végén a starter kapja. Minden ölés további 450-et és 500 XP-t ad annak, aki ölt.",
   "v_gangwar.editor.reward_money": "Alap pénz: {v}",
   "v_gangwar.editor.reward_xp": "Alap XP: {v}",
   "v_gangwar.editor.route_full": "Az útvonal megtelt ({max} pont).",

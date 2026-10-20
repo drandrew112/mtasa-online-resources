@@ -118,7 +118,7 @@
   "v_gangwar.editor.release_radius": "Release radius: {v} m",
   "v_gangwar.editor.release_radius_desc": "The starter beyond this ends the gang war (grey circle)",
   "v_gangwar.editor.reset_cooldown": "Reset cooldown",
-  "v_gangwar.editor.reward_desc": "Paid to the starter at the end. Every kill also pays 1500 and 500 XP to the killer.",
+  "v_gangwar.editor.reward_desc": "Paid to the starter at the end. Every kill also pays 450 and 500 XP to the killer.",
   "v_gangwar.editor.reward_money": "Base money: {v}",
   "v_gangwar.editor.reward_xp": "Base XP: {v}",
   "v_gangwar.editor.route_full": "The route is full ({max} points).",

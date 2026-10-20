@@ -73,12 +73,12 @@ Config.PAY = {
     -- credits the task (it still counts on the unit's Home page) without
     -- paying anything for it.
     RATES = {
-        handover        = { base = 5000, perMinute = 400 },  -- full hospital handover
-        released        = { base = 2000,  perMinute = 200 },  -- taken off the case by dispatch
-        left            = { base = 2000,  perMinute = 100 },  -- handed to another unit
-        ["task closed"] = { base = 2000,  perMinute = 100 },  -- case closed while still on it
-        ["shift ended"] = { base = 1000,   perMinute = 100 },  -- shift ended mid-case, no payout
-        default         = { base = 1000,  perMinute = 100 },
+        handover        = { base = 1500, perMinute = 120 },  -- full hospital handover
+        released        = { base = 600,   perMinute = 60  },  -- taken off the case by dispatch
+        left            = { base = 600,   perMinute = 30  },  -- handed to another unit
+        ["task closed"] = { base = 600,   perMinute = 30  },  -- case closed while still on it
+        ["shift ended"] = { base = 300,   perMinute = 30  },  -- shift ended mid-case, no payout
+        default         = { base = 300,   perMinute = 30  },
     },
 }
 end)

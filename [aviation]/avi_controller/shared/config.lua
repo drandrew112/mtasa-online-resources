@@ -40,18 +40,18 @@ CTL = {
     -- Pay after logging out of a position (bank, itemised receipt):
     --   actions pay = actions * PAY_PER_ACTION
     --   multiplied by (1 + minutes * PAY_MINUTE_BONUS), capped at PAY_MAX_MULT
-    PAY_PER_ACTION = 700,
+    PAY_PER_ACTION = 210,
     PAY_MINUTE_BONUS = 0.05,
     PAY_MAX_MULT = 3.0,
     PAY_MIN_ACTIONS = 1,       -- no payment below this many actions
     -- "Controlled traffic": every distinct aircraft the controller gave an accepted action to during
     -- the session pays this much (flat, not multiplied by the time)
-    PAY_PER_AIRCRAFT = 500,
+    PAY_PER_AIRCRAFT = 150,
 
     -- Mistakes: every separation loss (avi_traffic alerts.lua) on an aircraft of the position costs
     -- this much; the sum is the "Mistakes" item of the pay. A negative total is taken from the bank.
     --   GND = two ground aircraft head-on, TMA / CTA = closer than 0.1 nm (and 1000 ft) there
-    PENALTY = { GND = 500, TMA = 700, CTA = 1000 },
+    PENALTY = { GND = 150, TMA = 210, CTA = 300 },
 
     -- scope
     LEVEL_STEP  = 500,         -- ft between the cleared levels offered in the menu ...

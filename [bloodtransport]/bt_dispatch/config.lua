@@ -5,9 +5,9 @@ BTD = {
 
     -- Pay at the end of a service (work_core payWork, itemised receipt)
     PAY = {
-        BASE = 2000,            -- only when at least one task was delivered
-        DELIVERED = 4000,       -- per delivered task
-        IN_TRANSIT = -1500,     -- per task still on its way (picked up, not delivered) at the end
+        BASE = 600,             -- only when at least one task was delivered
+        DELIVERED = 1200,       -- per delivered task
+        IN_TRANSIT = -450,      -- per task still on its way (picked up, not delivered) at the end
     },
     XP_PER_DELIVERY = 40,       -- work_core XP of the work
 

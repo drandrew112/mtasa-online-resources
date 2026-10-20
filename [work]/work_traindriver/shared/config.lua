@@ -35,17 +35,17 @@ TRAINDRIVER = {
 
     -- Pay for a completed service (rw_timetable onRailServiceComplete), paid via work_core:payWork
     PAY = {
-        BASE = { RB = 2500, IC = 5000 },    -- by line prefix (rw_timetable line id prefix)
-        BASE_DEFAULT = 1500,
-        PER_STOP = 1000,                     -- per served stop
+        BASE = { RB = 750, IC = 1500 },    -- by line prefix (rw_timetable line id prefix)
+        BASE_DEFAULT = 450,
+        PER_STOP = 300,                     -- per served stop
         PUNCTUAL = {                        -- arrival delay (s) <= max -> bonus (first match)
-            { max = 60,  amount = 500, label = L.text("work_traindriver.config.punctuality_bonus") },
-            { max = 180, amount = 250, label = L.text("work_traindriver.config.punctuality_bonus_minor_delay") },
+            { max = 60,  amount = 150, label = L.text("work_traindriver.config.punctuality_bonus") },
+            { max = 180, amount = 75, label = L.text("work_traindriver.config.punctuality_bonus_minor_delay") },
         },
-        SKIP_FINE = 1000,                    -- per skipped stop
-        EARLY_FINE = 250,                   -- per early departure
+        SKIP_FINE = 300,                    -- per skipped stop
+        EARLY_FINE = 75,                   -- per early departure
         DELAY_FINE_FROM = false,            -- max delay (s) above which DELAY_FINE applies (false = off)
-        DELAY_FINE = 500,
+        DELAY_FINE = 150,
     },
 
     -- Duty markers (z = ground level)

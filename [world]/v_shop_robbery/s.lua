@@ -96,7 +96,7 @@ function completeRobbery(player)
 
     local npc = data.npc
     local shopID = (isElement(npc) and getElementData(npc, "shopID")) or getElementData(player, "robbing_shop")
-    local money = math.random(2000, 10000)
+    local money = math.random(600, 3000)
 
     if data.robTimer and isTimer(data.robTimer) then
         killTimer(data.robTimer)
