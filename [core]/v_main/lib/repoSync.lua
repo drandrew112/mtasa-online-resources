@@ -56,8 +56,10 @@ local IGNORE_EXACT = {
     ["[core]/v_mysql/config.lua"]                       = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
-local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~" }
+local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py" }
 local IGNORE_BASENAME = { ["Thumbs.db"] = true, ["desktop.ini"] = true }
+-- Dev-only subfolders, skipped at any depth (e.g. "[x]/res/tools/a.lua").
+local IGNORE_DIR      = { docs = true, tests = true, tools = true }
 
 -- ---------------------------------------------------------------------------
 -- Helpers
@@ -78,8 +80,12 @@ function RepoSync.isIgnored(repoPath)
     for _, p in ipairs(IGNORE_PREFIX) do
         if repoPath:sub(1, #p) == p then return true end
     end
+    local lower = repoPath:lower()
     for _, s in ipairs(IGNORE_SUFFIX) do
-        if repoPath:sub(-#s) == s then return true end
+        if lower:sub(-#s) == s then return true end
+    end
+    for dir in lower:gmatch("([^/]+)/") do
+        if IGNORE_DIR[dir] then return true end
     end
     return false
 end
