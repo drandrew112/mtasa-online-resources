@@ -83,9 +83,8 @@ function drawPanel()
     else
         for _, j in ipairs(d.jobs) do
             dxDrawText(j.name, x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold")
-            dxDrawText(L("v_weekly.panel.money", { money = fmt(j.money) }), x + w * 0.5, cy, x + w * 0.68, cy + rowH, COL.money, ui(1.2), "default-bold")
-            dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.68, cy, x + w * 0.8, cy + rowH, COL.xp, ui(1.2), "default-bold")
-            dxDrawText(j.label or "", x + w * 0.8, cy, x + w - pad, cy + rowH, COL.dim, ui(1.0), "default", "right")
+            dxDrawText(L("v_weekly.panel.money", { money = fmt(j.money) }), x + w * 0.5, cy, x + w * 0.82, cy + rowH, COL.money, ui(1.2), "default-bold", "right")
+            dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.82, cy, x + w - pad, cy + rowH, COL.xp, ui(1.2), "default-bold", "right")
             cy = cy + rowH
         end
     end
