@@ -59,6 +59,7 @@ local IGNORE_EXACT = {
     ["[player_interaction]/v_socialpanel/messages.xml"] = true,
     ["[core]/v_mysql/config.lua"]                       = true,
     ["[core]/v_modloader/meta.xml"]                     = true,
+    ["[core]/v_modloader/meta.changethis.xml"]          = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
 local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql" }
@@ -127,13 +128,16 @@ function RepoSync.contentMatches(data, repoSha)
     return false
 end
 
--- Resource roots = directories that directly contain a meta.xml.
+-- Resource roots = directories that directly contain a meta.xml
+-- (or a meta.changethis.xml template).
 -- Returned longest-first so the most specific root wins.
 function RepoSync.buildResourceRoots(tree)
     local roots = {}
     for _, entry in ipairs(tree) do
         if entry.type == "blob" and entry.path then
+            -- meta.changethis.xml = template of a locally generated (git-ignored) meta.xml
             local dir = entry.path:match("^(.+)/meta%.xml$")
+                     or entry.path:match("^(.+)/meta%.changethis%.xml$")
             if dir then
                 roots[#roots + 1] = { dir = dir, name = RepoSync.basename(dir) }
             end
