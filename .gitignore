@@ -11,7 +11,16 @@
 /\[player_interaction\]/v_socialpanel/messages.xml
 
 # --- Models ---
-/\[core\]/v_modloader/
+# --- v_modloader: the script is versioned; model files, the generated meta.xml and logs are not ---
+# (only meta.changethis.xml is in the repo - /modloader update builds meta.xml from it)
+/\[core\]/v_modloader/meta.xml
+/\[core\]/v_modloader/meta.new.xml
+/\[core\]/v_modloader/logs/
+/\[core\]/v_modloader/vehicles/*
+/\[core\]/v_modloader/skins/*
+/\[core\]/v_modloader/weapons/*
+/\[core\]/v_modloader/objects/*
+!/\[core\]/v_modloader/*/.gitkeep
 
 # --- v_ownveh: the /vehspawn collector file ---
 # (spawnpoints.lua is hand-maintained, so it is versioned; vehicle data now

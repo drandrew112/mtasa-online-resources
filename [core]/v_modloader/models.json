@@ -1,0 +1,27 @@
+{
+  "vehicles": {
+    "407": "Fire Truck (HU)",
+    "415": "Skoda Octavia Blood Transporter",
+    "416": "Mercedes Sprinter Ambulance (HU)",
+    "427": "Riot (GTA5)",
+    "456": "Misson Row Ambulance",
+    "487": "Air Ambulance (GTA5)",
+    "490": "Mercedes V Class",
+    "497": "Police Maverick (GTA5)",
+    "538": "BR 262",
+    "596": "Ford Crown Vic Police",
+    "599": "Police Ranger (NYPD)"
+  },
+  "skins": {
+    "275": "Paramedic Female",
+    "276": "Paramedic OMSZ"
+  },
+  "weapons": {
+  },
+  "objects": {
+    "1210": "medical_bag",
+    "1581": "lifepak15",
+    "2146": "stretcher",
+    "2969": "case"
+  }
+}

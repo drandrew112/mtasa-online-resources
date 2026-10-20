@@ -10,7 +10,6 @@ STRETCHER = {
         [456] = true,              -- Mission Row Ambulance
     },
     OBJECT_MODEL = 2146,           -- hospital trolley
-    enable_stretcher_model = true, -- load assets/stretcher.dff/.txd over OBJECT_MODEL (false = stock trolley)
 
     -- Size: SCALE is used as is (the custom model is modelled to size). Set SCALE = nil to fit
     -- the model instead: every client scales it so its longest side is TARGET_LENGTH metres.

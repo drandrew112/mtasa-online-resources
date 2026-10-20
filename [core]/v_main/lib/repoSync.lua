@@ -43,7 +43,11 @@ RepoSync.RAW_HEADERS = {
 -- ---------------------------------------------------------------------------
 local IGNORE_PREFIX = {
     "[tiktok]/",
-    "[core]/v_modloader/",
+    "[core]/v_modloader/vehicles/",   -- model files + generated meta are local only
+    "[core]/v_modloader/skins/",
+    "[core]/v_modloader/weapons/",
+    "[core]/v_modloader/objects/",
+    "[core]/v_modloader/logs/",
     "v_modmenu/",              -- local/dev only, git-ignored (ISSUES.md SEC-04)
     -- MTA's database-credentials protection blocks other resources from
     -- reading/writing v_mysql's files, so we cannot touch them from here.
@@ -54,6 +58,7 @@ local IGNORE_EXACT = {
     ["[player_interaction]/v_socialpanel/crews.xml"]    = true,
     ["[player_interaction]/v_socialpanel/messages.xml"] = true,
     ["[core]/v_mysql/config.lua"]                       = true,
+    ["[core]/v_modloader/meta.xml"]                     = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
 local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql" }
