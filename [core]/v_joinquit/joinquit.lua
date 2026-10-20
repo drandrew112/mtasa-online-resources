@@ -5,7 +5,6 @@ addEventHandler('onClientPlayerJoin', root,
 	function()
 		local name = getPlayerName(source)
 		uicore:addNotification(L("v_joinquit.joinquit.player_joined"), name)
-		outputChatBox("Loading... Please wait!", source)
 	end
 )
 
