@@ -24,7 +24,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
         allowed). We only look at files that exist in the repo.
       - Files on the IGNORE list (lib/repoSync.lua) are skipped. That list
         mirrors resources/.gitignore (runtime data + credentials), plus
-        *.md / *.py files and docs/, tests/, tools/ subfolders (dev only).
+        *.md / *.py / *.sql, .gitattributes, .gitignore, acl.xml and
+        docs/, tests/, tools/ subfolders (dev only).
       - core.autocrlf is "true" on this checkout, so text files have CRLF in
         the working tree but LF in the git blob. We therefore accept a file
         as up to date if either the raw bytes OR the CRLF->LF normalised

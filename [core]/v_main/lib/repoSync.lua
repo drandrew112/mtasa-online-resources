@@ -56,8 +56,11 @@ local IGNORE_EXACT = {
     ["[core]/v_mysql/config.lua"]                       = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
-local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py" }
-local IGNORE_BASENAME = { ["Thumbs.db"] = true, ["desktop.ini"] = true }
+local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql" }
+local IGNORE_BASENAME = {
+    ["Thumbs.db"] = true, ["desktop.ini"] = true,
+    [".gitattributes"] = true, [".gitignore"] = true, ["acl.xml"] = true,
+}
 -- Dev-only subfolders, skipped at any depth (e.g. "[x]/res/tools/a.lua").
 local IGNORE_DIR      = { docs = true, tests = true, tools = true }
 
