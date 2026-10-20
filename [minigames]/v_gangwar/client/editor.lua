@@ -1,6 +1,8 @@
 -- /gangwareditor client: ui_inac temp menus (one menu per page), positions from your own ped, preview peds,
 -- 3D circles and patrol lines, the zone on the radar. The server re-checks everything on save (server/sanitize.lua).
 -- Preview peds carry a local ui_interactobject menu (drag, duplicate, skin, delete).
+-- The server moves you into a private editor dimension; preview peds go there, the docs keep the world dimension
+-- you opened the editor in.
 
 local uicore = exports.ui_core
 local inac = exports.ui_inac
@@ -16,6 +18,8 @@ Editor = {
     menuId = nil,
     recording = false,  -- patrol recording of attacker `sel`
     drag = nil,         -- { index, ped, x, y, z, rot, copy } while an attacker follows your aim
+    dimension = 0,      -- your private editor dimension (preview peds)
+    worldDimension = 0, -- where you opened the editor: new / re-centered gang wars get this one
 }
 
 local E = Editor
@@ -125,7 +129,7 @@ local function rebuildPreviews()
     for i, a in ipairs(E.doc.attackers) do
         local ped = createPed(a.skin, a.x, a.y, a.z, a.rot)
         if ped then
-            setElementDimension(ped, E.doc.dimension or 0)
+            setElementDimension(ped, E.dimension)
             setElementInterior(ped, E.doc.interior or 0)
             setElementFrozen(ped, true)
             setElementCollisionsEnabled(ped, false)
@@ -455,7 +459,7 @@ function actions.new()
     local x, y, z = myPos()
     local d = deepcopy(GW.DEFAULTS)
     d.x, d.y, d.z = x, y, z
-    d.interior, d.dimension = getElementInterior(localPlayer), getElementDimension(localPlayer)
+    d.interior, d.dimension = getElementInterior(localPlayer), E.worldDimension
     d.attackers = {}
     setDoc(d)
     E.dirty = true
@@ -506,7 +510,7 @@ end
 function actions.center()
     local x, y, z = myPos()
     E.doc.x, E.doc.y, E.doc.z = x, y, z
-    E.doc.interior, E.doc.dimension = getElementInterior(localPlayer), getElementDimension(localPlayer)
+    E.doc.interior, E.doc.dimension = getElementInterior(localPlayer), E.worldDimension
     changed()
     Pages.doc()
 end
@@ -918,13 +922,14 @@ function Editor.stop()
 end
 
 addEvent("gangwar:editorStart", true)
-addEventHandler("gangwar:editorStart", resourceRoot, function(list)
+addEventHandler("gangwar:editorStart", resourceRoot, function(list, dimension, worldDimension)
     E.list = list or {}
+    E.dimension, E.worldDimension = dimension or getElementDimension(localPlayer), worldDimension or 0
     if E.active then return reopen() end
     E.active = true
     bindKey(GW.KEY_MENU, "down", menuKey)
     addEventHandler("onClientRender", root, render)
-    notify("v_gangwar.editor.opened", { key = GW.KEY_MENU:upper() })
+    notify("v_gangwar.editor.opened", { key = GW.KEY_MENU:upper(), dim = E.dimension })
     Pages.root()
 end)
 

@@ -3,6 +3,8 @@
 
 GW = {
     ADMIN_LEVEL = 5,                -- /gangwareditor
+    EDITOR_DIMENSION = 46000,       -- + slot: every editor works in a private dimension (preview + test run peds too)
+    EDITOR_SLOTS = 999,
 
     COOLDOWN = 3 * 86400,           -- s: a gang war comes back this long after its last completed run (global)
     RESERVE_TIMEOUT = 5 * 60000,    -- ms: a reservation whose starter never entered the zone expires

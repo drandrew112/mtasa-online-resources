@@ -49,8 +49,9 @@ function isPlayerArmed(player)
     return false
 end
 
-local function inWorldOf(player, gw)
-    return getElementDimension(player) == gw.dimension and getElementInterior(player) == gw.interior
+-- run.dimension: the gang war's own, or the admin's private editor dimension for a test run
+local function inWorldOf(player, run)
+    return getElementDimension(player) == run.dimension and getElementInterior(player) == run.gw.interior
 end
 
 local function playerDistance2(player, gw)
@@ -96,7 +97,7 @@ local function refreshViewers(run)
     local want = {}
     if isElement(run.starter) then want[run.starter] = true end
     for _, player in ipairs(getElementsByType("player")) do
-        if inWorldOf(player, gw) and playerDistance2(player, gw) <= r2 then want[player] = true end
+        if inWorldOf(player, run) and playerDistance2(player, gw) <= r2 then want[player] = true end
     end
     for player in pairs(run.viewers) do
         if not want[player] then hideHud(run, player) end
@@ -162,9 +163,9 @@ local function close(run, reason)
     if next(run.peds) == nil then Runs[run.gw.id] = nil end
 end
 
-local function reserve(gw, player, test)
+local function reserve(gw, player, test, dimension)
     local run = {
-        gw = gw, starter = player, state = "reserved", test = test or false,
+        gw = gw, starter = player, state = "reserved", test = test or false, dimension = dimension or gw.dimension,
         reservedAt = getTickCount(), peds = {}, alive = 0, total = 0, kills = {}, viewers = {},
     }
     Runs[gw.id] = run
@@ -186,7 +187,7 @@ local function spawn(run)
     ai:setAIGroupRelation(group, "player", "hostile")
     for _, a in ipairs(gw.attackers) do
         local opts = {
-            rot = a.rot, dimension = gw.dimension, interior = gw.interior,
+            rot = a.rot, dimension = run.dimension, interior = gw.interior,
             behaviour = "enemy", group = group, health = a.health, armor = a.armor, accuracy = a.accuracy,
             aggroRadius = a.aggro, leash = gw.release_radius, role = "free", speed = a.speed, keepBody = true,
         }
@@ -288,7 +289,7 @@ local function tickRun(run, now)
     if not isElement(starter) then return close(run, "quit") end
     local dead = isPedDead(starter)
     if not dead then
-        if not inWorldOf(starter, gw) or playerDistance2(starter, gw) > gw.release_radius ^ 2 then
+        if not inWorldOf(starter, run) or playerDistance2(starter, gw) > gw.release_radius ^ 2 then
             return close(run, "left")
         end
     end
@@ -362,13 +363,20 @@ addEventHandler("onPlayerQuit", root, function()
     for _, r in pairs(Runs) do r.viewers[source] = nil end
 end)
 
--- editor: start a test run for the admin (no cooldown / time / weapon check, no last_run, no rewards)
-function Runtime_testRun(gw, player)
+-- editor: start a test run for the admin in his private editor dimension (no cooldown / time / weapon check, no
+-- last_run, no rewards)
+function Runtime_testRun(gw, player, dimension)
     if Runs[gw.id] then return false, "busy" end
     if starterRun[player] then return false, "own_busy" end
     if #gw.attackers == 0 then return false, "no_attackers" end
-    reserve(gw, player, true)
+    reserve(gw, player, true, dimension)
     return true
+end
+
+-- editor closed: the admin's test run (if any) ends
+function Runtime_abortTestOf(player)
+    local run = starterRun[player]
+    if run and run.test then close(run, "admin") end
 end
 
 -- editor: the gang war changed or was deleted -> its run (if any) ends

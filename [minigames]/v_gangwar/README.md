@@ -50,8 +50,14 @@ them anywhere inside the release radius. Other players see them within `zone_rad
 You edit on foot, and every position is taken from your own ped. **R** opens the menu (it returns to the page you left). The menu is built from
 ui_inac temp menus, one menu per page.
 
+The editor moves you into a private dimension (`GW.EDITOR_DIMENSION` + slot, 46001+). The preview peds and the
+peds of a test run are created there, so nobody else sees them. New or re-centred gang wars get the dimension you
+opened the editor in. Closing the editor ends your test run and puts you back where you started. After a respawn
+you go back into the private dimension.
+
 - **List.** For each gang war you can edit, teleport, start a test run, stop the current run, reset the cooldown or
-  delete it. A test run has no time, cooldown or weapon check, pays no rewards and does not set `last_run`.
+  delete it. A test run has no time, cooldown or weapon check, pays no rewards and does not set `last_run`. It
+  runs in your private editor dimension.
 - **Gang war page.** Name, gang, enabled, move the centre here, the 3 radii, base money and XP, days, hours,
   attackers, and save.
 - **Attacker page.**
