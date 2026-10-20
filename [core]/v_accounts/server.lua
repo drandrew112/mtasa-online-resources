@@ -555,7 +555,7 @@ end
 -- the password, it does not work from another machine, and a password change
 -- invalidates it.
 local function rememberHash(player, passwordHash)
-    return hash("sha256", passwordHash .. "|" .. tostring(getPlayerSerial(player)))
+    return hash("sha256", passwordHash .. "|" .. tostring(getPlayerSerial(player))):lower()
 end
 
 -- Step 2: the account row arrived (server/db.lua fetchAccountAuthAsync).
@@ -766,7 +766,7 @@ addEventHandler("login_token", root, function(token)
         return loginError(player, "v_accounts.server.saved_login_expired")
     end
 
-    startLogin(player, username, { tokenHash = tokenHash:upper() })
+    startLogin(player, username, { tokenHash = tokenHash:lower() })
 end)
 
 -- Registration runs without blocking the server (PERF-01):
