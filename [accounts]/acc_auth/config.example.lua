@@ -1,4 +1,5 @@
 -- acc_auth configuration (SERVER ONLY - meta.xml type="server", never downloaded by clients).
+-- Copy to config.lua and fill in BREVO_API_KEY. config.lua is gitignored (it holds the key).
 
 AUTH = {
     LOGIN_MIN_INTERVAL    = 1000,       -- ms between two login attempts of one player

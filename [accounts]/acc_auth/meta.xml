@@ -9,7 +9,8 @@
     <script src="locals.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
-    <!-- config.lua holds the Brevo API key: server only, never sent to clients -->
+    <!-- config.lua holds the Brevo API key: server only, never sent to clients.
+         It is gitignored: copy config.example.lua to config.lua and fill it in. -->
     <script src="config.lua" type="server" />
     <script src="server/db.lua" type="server" />
     <script src="server/identity.lua" type="server" />
