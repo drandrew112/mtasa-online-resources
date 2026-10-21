@@ -56,9 +56,12 @@ local function codeHash(code, accountName)
     return hash("sha256", tostring(code):upper() .. "|" .. tostring(accountName):lower()):lower()
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
-    if not dbReady() then return end
-    exports.v_mysql:mysqlExec([[CREATE TABLE IF NOT EXISTS `]] .. RECOVERY.TABLE .. [[` (
+-- creates RECOVERY.TABLE once per run: on start, on a later mysql:connected,
+-- or right before the first use (whichever has a connection first)
+local tableReady = false
+local function ensureTable()
+    if tableReady or not dbReady() then return tableReady end
+    tableReady = exports.v_mysql:mysqlExec([[CREATE TABLE IF NOT EXISTS `]] .. RECOVERY.TABLE .. [[` (
         `id`           INT AUTO_INCREMENT PRIMARY KEY,
         `account_name` VARCHAR(50)  NOT NULL,
         `code_hash`    CHAR(64)     NOT NULL,
@@ -69,7 +72,18 @@ addEventHandler("onResourceStart", resourceRoot, function()
         `created_at`   INT          NOT NULL DEFAULT 0,
         `used_at`      INT          NOT NULL DEFAULT 0,
         KEY `idx_account` (`account_name`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]]) == true
+    if tableReady then outputServerLog("[acc_auth] `" .. RECOVERY.TABLE .. "` table checked/created") end
+    return tableReady
+end
+
+addEvent("mysql:connected")
+addEventHandler("mysql:connected", root, ensureTable)
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    if not ensureTable() then
+        outputServerLog("[acc_auth] v_mysql not connected yet, `" .. RECOVERY.TABLE .. "` will be created on mysql:connected")
+    end
     if RECOVERY.API_KEY:find("^CHANGE_ME") then
         outputServerLog("[acc_auth] RECOVERY.API_KEY in config.lua is not set: password reset emails will be refused by the PHP")
     end
@@ -125,6 +139,7 @@ addEventHandler("acc_auth:resetAccount", resourceRoot, function(id, rows)
     end
     accLog[#accLog + 1] = now()
 
+    ensureTable()
     local code = newCode(account .. tostring(req.serial))
     local t = now()
     -- one live code per account: older ones die
@@ -230,6 +245,7 @@ addEventHandler("acc_auth:resetConfirm", root, function(code, newPassword)
     if type(newPassword) ~= "string" or #newPassword > 128 then return end
     if #newPassword < AUTH.PASSWORD_MIN then return authError(player, "acc_auth.server.password_too_short") end
     if not dbReady() then return authError(player, "acc_auth.server.database_query_error") end
+    ensureTable()
 
     seq = seq + 1
     byId[seq] = { player = player, code = code, password = newPassword }
