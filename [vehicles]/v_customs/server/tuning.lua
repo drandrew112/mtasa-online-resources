@@ -178,7 +178,7 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
     text = tostring(text or ""):upper():gsub("[^%w %-]", ""):sub(1, 8)
     if text == "" then return end
 
-    local price = Customs.price(15000)
+    local price = Customs.price(Customs.CUSTOM_PLATE_PRICE)
     if getPlayerMoney(player) < price then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         return

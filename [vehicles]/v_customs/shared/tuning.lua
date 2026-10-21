@@ -65,11 +65,11 @@ end
 
 local function wheelSize(name, side)
     return { name = name, types = CARS, options = {
-        { name = L.text("v_customs.tuning.very_narrow"), price = 20000, kind = "wheelWidth", side = side, data = "verynarrow" },
-        { name = L.text("v_customs.tuning.narrow"),      price = 10000, kind = "wheelWidth", side = side, data = "narrow" },
-        { name = L.text("v_customs.menu.default"),     price = 5000,  kind = "wheelWidth", side = side, data = "default" },
-        { name = L.text("v_customs.tuning.wide"),        price = 10000, kind = "wheelWidth", side = side, data = "wide" },
-        { name = L.text("v_customs.tuning.very_wide"),   price = 20000, kind = "wheelWidth", side = side, data = "verywide" },
+        { name = L.text("v_customs.tuning.very_narrow"), price = 2400, kind = "wheelWidth", side = side, data = "verynarrow" },
+        { name = L.text("v_customs.tuning.narrow"),      price = 1400, kind = "wheelWidth", side = side, data = "narrow" },
+        { name = L.text("v_customs.menu.default"),     price = 600,  kind = "wheelWidth", side = side, data = "default" },
+        { name = L.text("v_customs.tuning.wide"),        price = 1400, kind = "wheelWidth", side = side, data = "wide" },
+        { name = L.text("v_customs.tuning.very_wide"),   price = 2400, kind = "wheelWidth", side = side, data = "verywide" },
     }}
 end
 
@@ -84,7 +84,7 @@ Customs.parts = {
         { {"engineAcceleration", 4}, {"maxVelocity", 16} },
         { {"engineAcceleration", 6}, {"maxVelocity", 23} },
         { {"engineAcceleration", 8}, {"maxVelocity", 30} },
-    }, { 0, 1500, 3000, 4500, 6000 }, MOTOR),
+    }, { 0, 700, 1800, 4800, 11000 }, MOTOR),
 
     pack(L.text("v_customs.tuning.turbo"), {
         { {"engineInertia"} },
@@ -92,7 +92,7 @@ Customs.parts = {
         { {"engineInertia", -16} },
         { {"engineInertia", -24} },
         { {"engineInertia", -32} },
-    }, { 0, 6000, 12000, 18000, 24000 }, MOTOR),
+    }, { 0, 3000, 5500, 9000, 14500 }, MOTOR),
 
     pack(L.text("v_customs.tuning.brakes"), {
         { {"brakeDeceleration"},       {"brakeBias"} },
@@ -100,7 +100,7 @@ Customs.parts = {
         { {"brakeDeceleration", 0.10}, {"brakeBias", 0.17} },
         { {"brakeDeceleration", 0.15}, {"brakeBias", 0.24} },
         { {"brakeDeceleration", 0.20}, {"brakeBias", 0.30} },
-    }, { 0, 4500, 9000, 12500, 16000 }),
+    }, { 0, 500, 1400, 3600, 10500 }),
 
     pack(L.text("v_customs.tuning.tires"), {
         { {"tractionMultiplier"},       {"tractionLoss"} },
@@ -108,7 +108,7 @@ Customs.parts = {
         { {"tractionMultiplier", 0.10}, {"tractionLoss", 0.03} },
         { {"tractionMultiplier", 0.15}, {"tractionLoss", 0.04} },
         { {"tractionMultiplier", 0.20}, {"tractionLoss", 0.05} },
-    }, { 0, 4500, 9000, 12500, 16000 }),
+    }, { 0, 700, 1200, 1800, 2600 }),
 
     pack(L.text("v_customs.tuning.weight_reduction"), {
         { {"mass"} },
@@ -116,59 +116,59 @@ Customs.parts = {
         { {"mass", -200} },
         { {"mass", -300} },
         { {"mass", -400} },
-    }, { 0, 4250, 7500, 11000, 15000 }),
+    }, { 0, 1000, 3000, 7000, 14000 }),
 
     -- Optical (flat) ----------------------------------------------------
-    { name = L.text("v_customs.tuning.hood"),       group = "optical", slot = 0,  price = 1000 },
-    { name = L.text("v_customs.tuning.exhaust"),    group = "optical", slot = 13, price = 2000 },
-    { name = L.text("v_customs.tuning.spoiler"),    group = "optical", slot = 2,  price = 1500 },
-    { name = L.text("v_customs.tuning.side_skirt"), group = "optical", slot = 3,  price = 1000 },
-    { name = L.text("v_customs.tuning.roof_scoop"), group = "optical", slot = 7,  price = 1000 },
-    { name = L.text("v_customs.tuning.hydraulics"), group = "optical", slot = 9,  price = 15000 },
+    { name = L.text("v_customs.tuning.hood"),       group = "optical", slot = 0,  price = 1200 },
+    { name = L.text("v_customs.tuning.exhaust"),    group = "optical", slot = 13, price = 1800 },
+    { name = L.text("v_customs.tuning.spoiler"),    group = "optical", slot = 2,  price = 950 },
+    { name = L.text("v_customs.tuning.side_skirt"), group = "optical", slot = 3,  price = 700 },
+    { name = L.text("v_customs.tuning.roof_scoop"), group = "optical", slot = 7,  price = 500 },
+    { name = L.text("v_customs.tuning.hydraulics"), group = "optical", slot = 9,  price = 4800 },
 
     -- Folders --------------------------------------------------------
     { name = L.text("v_customs.tuning.bumpers"), folder = true, items = {
-        { name = L.text("v_customs.tuning.front_bumper"), group = "optical", slot = 14, price = 1000 },
-        { name = L.text("v_customs.tuning.rear_bumper"),  group = "optical", slot = 15, price = 1000 },
+        { name = L.text("v_customs.tuning.front_bumper"), group = "optical", slot = 14, price = 1100 },
+        { name = L.text("v_customs.tuning.rear_bumper"),  group = "optical", slot = 15, price = 1100 },
     }},
 
     { name = L.text("v_customs.tuning.wheels"), folder = true, items = {
         wheelSize(L.text("v_customs.tuning.front_wheel_size"), "front"),
         wheelSize(L.text("v_customs.tuning.rear_wheel_size"), "rear"),
-        { name = L.text("v_customs.tuning.wheel_types"), group = "optical", slot = 12, price = 5000 },
+        { name = L.text("v_customs.tuning.wheel_types"), group = "optical", slot = 12, price = 1800 },
         { name = L.text("v_customs.tuning.drive_type"), types = CARS, options = {
-            { name = L.text("v_customs.tuning.front_wheel_drive"), price = 10000, kind = "handlingProp", prop = "driveType", data = "fwd" },
-            { name = L.text("v_customs.tuning.all_wheel_drive"),   price = 10000, kind = "handlingProp", prop = "driveType", data = "awd" },
-            { name = L.text("v_customs.tuning.rear_wheel_drive"),  price = 10000, kind = "handlingProp", prop = "driveType", data = "rwd" },
+            { name = L.text("v_customs.tuning.front_wheel_drive"), price = 9500, kind = "handlingProp", prop = "driveType", data = "fwd" },
+            { name = L.text("v_customs.tuning.all_wheel_drive"),   price = 9500, kind = "handlingProp", prop = "driveType", data = "awd" },
+            { name = L.text("v_customs.tuning.rear_wheel_drive"),  price = 9500, kind = "handlingProp", prop = "driveType", data = "rwd" },
         }},
         { name = L.text("v_customs.tuning.bulletproof_tires"), options = {
             { name = L.text("v_customs.tuning.off"), price = 0,     kind = "flagToggle", flag = "bulletproof", data = false },
-            { name = L.text("v_customs.tuning.on"),  price = 85000, kind = "flagToggle", flag = "bulletproof", data = true },
+            { name = L.text("v_customs.tuning.on"),  price = 6000,  kind = "flagToggle", flag = "bulletproof", data = true },
         }},
     }},
 
     { name = L.text("v_customs.tuning.respray"), folder = true, items = {
-        { name = L.text("v_customs.tuning.primary_color"),   group = "color", slot = "primary",   price = 10000 },
-        { name = L.text("v_customs.tuning.secondary_color"), group = "color", slot = "secondary", price = 10000 },
-        { name = L.text("v_customs.tuning.headlight_color"), group = "color", slot = "headlight", price = 8000, types = MOTOR },
+        { name = L.text("v_customs.tuning.primary_color"),   group = "color", slot = "primary",   price = 4000 },
+        { name = L.text("v_customs.tuning.secondary_color"), group = "color", slot = "secondary", price = 2400 },
+        { name = L.text("v_customs.tuning.headlight_color"), group = "color", slot = "headlight", price = 350, types = MOTOR },
     }},
 
     -- Extras (flat) ------------------------------------------------
     { name = L.text("v_customs.tuning.steering_lock"), options = {
-        { name = L.text("v_customs.menu.default"), price = 7500, kind = "handlingProp", prop = "steeringLock", data = false },
-        { name = "30 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 30 },
-        { name = "40 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 40 },
-        { name = "50 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 50 },
-        { name = "60 deg",  price = 7500, kind = "handlingProp", prop = "steeringLock", data = 60 },
+        { name = L.text("v_customs.menu.default"), price = 1200, kind = "handlingProp", prop = "steeringLock", data = false },
+        { name = "30 deg",  price = 1200, kind = "handlingProp", prop = "steeringLock", data = 30 },
+        { name = "40 deg",  price = 1200, kind = "handlingProp", prop = "steeringLock", data = 40 },
+        { name = "50 deg",  price = 1200, kind = "handlingProp", prop = "steeringLock", data = 50 },
+        { name = "60 deg",  price = 1200, kind = "handlingProp", prop = "steeringLock", data = 60 },
     }},
     { name = L.text("v_customs.tuning.lsd_doors"), types = CARS, needs = "door_lf_dummy", options = {
         { name = L.text("v_customs.tuning.off"), price = 0,     kind = "flagToggle", flag = "lsdDoor", data = false },
-        { name = L.text("v_customs.tuning.on"),  price = 35000, kind = "flagToggle", flag = "lsdDoor", data = true },
+        { name = L.text("v_customs.tuning.on"),  price = 2800,  kind = "flagToggle", flag = "lsdDoor", data = true },
     }},
     { name = L.text("v_customs.tuning.license_plate"), types = MOTOR, options = {
-        { name = L.text("v_customs.tuning.random_plate"),     price = 5000,  kind = "plate", data = "random" },
-        { name = L.text("v_customs.tuning.custom_plate"),  price = 15000, kind = "plate", data = "custom" },
-        { name = L.text("v_customs.tuning.reset_to_default"), price = 0,     kind = "plate", data = "default" },
+        { name = L.text("v_customs.tuning.random_plate"),     price = 120, kind = "plate", data = "random" },
+        { name = L.text("v_customs.tuning.custom_plate"),  price = Customs.CUSTOM_PLATE_PRICE, kind = "plate", data = "custom" },
+        { name = L.text("v_customs.tuning.reset_to_default"), price = 0,   kind = "plate", data = "default" },
     }},
     { name = L.text("v_customs.tuning.horn"), options = {
         { name = L.text("v_customs.tuning.horn_1"), price = 0, kind = "horn", data = 1 },

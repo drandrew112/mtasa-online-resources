@@ -2,12 +2,16 @@
 
 Customs = Customs or {}
 
--- Multiplies every price in shared/tuning.lua. 1.0 = the stock SA Customs prices.
+-- Multiplies every price in shared/tuning.lua. The catalogue is priced at
+-- roughly real-world euro prices plus ~20% (economy update 2026-10).
 Customs.PRICE_MULT = 1.0
+
+-- Custom plate text (catalogue option + server/tuning.lua setCustomPlate).
+Customs.CUSTOM_PLATE_PRICE = 360
 
 -- A damaged car (health < 1000) must be repaired before tuning:
 -- price = REPAIR_PRICE_PER_HP * lost health.
-Customs.REPAIR_PRICE_PER_HP = 2
+Customs.REPAIR_PRICE_PER_HP = 5
 
 function Customs.repairPrice(veh)
     if not isElement(veh) then return 0 end
