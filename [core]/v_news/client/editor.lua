@@ -335,6 +335,15 @@ addEventHandler("onClientKey", root, function(key, press)
         return
     end
     if key:find("^mouse") then return end
+    if focus and key == "v" and ctrlDown() then
+        -- MTA only fires onClientPaste for a "v" stroke that onClientKey did not cancel;
+        -- keep GTA's V (camera) quiet for that one press instead
+        if isControlEnabled("change_camera") then
+            toggleControl("change_camera", false)
+            setTimer(toggleControl, 250, 1, "change_camera", true)
+        end
+        return
+    end
     cancelEvent()
 
     if key == "s" and ctrlDown() then return save() end
@@ -355,7 +364,7 @@ addEventHandler("onClientKey", root, function(key, press)
                 setClipboard(sel)
                 if key == "x" then f:deleteSelection() end
             end
-        elseif key ~= "v" or not ctrlDown() then -- Ctrl+V arrives as onClientPaste
+        else
             f:key(key, getKeyState("lshift") or getKeyState("rshift"))
         end
         return

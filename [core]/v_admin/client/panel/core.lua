@@ -434,6 +434,15 @@ addEventHandler("onClientKey", root, function(key, press)
 
     if AP.focus then
         -- Typing: swallow every key (characters still arrive via onClientCharacter).
+        -- Except Ctrl+V: MTA only fires onClientPaste for a "v" stroke that onClientKey
+        -- did not cancel; keep GTA's V (camera) quiet for that one press instead
+        if key == "v" and (getKeyState("lctrl") or getKeyState("rctrl")) then
+            if isControlEnabled("change_camera") then
+                toggleControl("change_camera", false)
+                setTimer(toggleControl, 250, 1, "change_camera", true)
+            end
+            return
+        end
         if not key:find("^mouse") then cancelEvent() end
         local f = AP.fields[AP.focus]
         if key == "backspace" then

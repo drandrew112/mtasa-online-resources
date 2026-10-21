@@ -491,9 +491,18 @@ addEventHandler("onClientKey", root, function(key, press)
         return
     end
     if key:find("^mouse") then return end
+    local r = focusedReg()
+    if r and r.field and key == "v" and (getKeyState("lctrl") or getKeyState("rctrl")) then
+        -- MTA only fires onClientPaste for a "v" stroke that onClientKey did not cancel;
+        -- keep GTA's V (camera) quiet for that one press instead
+        if isControlEnabled("change_camera") then
+            toggleControl("change_camera", false)
+            setTimer(toggleControl, 250, 1, "change_camera", true)
+        end
+        return
+    end
     cancelEvent()
 
-    local r = focusedReg()
     if r and r.field then
         local f = r.field
         if getKeyState("lctrl") or getKeyState("rctrl") then
@@ -506,7 +515,7 @@ addEventHandler("onClientKey", root, function(key, press)
                 end
                 return
             end
-            if key == "v" or key == "c" or key == "x" then return end -- Ctrl+V arrives as onClientPaste
+            if key == "c" or key == "x" then return end
         end
         -- Backspace in an empty field goes back like everywhere else
         local editing = not (key == "backspace" and f:getText() == "")

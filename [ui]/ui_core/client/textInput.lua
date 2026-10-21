@@ -341,6 +341,15 @@ addEventHandler("onClientKey", root, function(key, press)
     local ti = UI.textInput
     if not ti.active then return end
     if key:find("^mouse%d") then return end   -- clicks go to onClientClick
+    if key == "v" and press and ctrlDown() then
+        -- MTA only fires onClientPaste for a "v" stroke that onClientKey did not cancel;
+        -- keep GTA's V (camera) quiet for that one press instead
+        if isControlEnabled("change_camera") then
+            toggleControl("change_camera", false)
+            setTimer(toggleControl, 250, 1, "change_camera", true)
+        end
+        return
+    end
     cancelEvent()
     if not press then return end
 
