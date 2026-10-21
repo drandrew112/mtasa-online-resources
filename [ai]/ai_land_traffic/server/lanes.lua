@@ -3,14 +3,18 @@
 --   * a car in the inner lane moves back to the outer lane as soon as there is room (unless it plans to
 --     turn left / u-turn soon, or it is still passing)
 --   * a car held up by a clearly slower leader in the outer lane passes through the inner lane
---   * a driver giving way to an emergency vehicle (els.lua, e.right) goes to the outer lane first
+--   * a driver giving way to an emergency vehicle (els.lua, e.right) goes to the outer lane first (also slow
+--     or held; no cooldown)
+-- Every lane change needs a free gap in the target lane: traffic and non-traffic obstacles (players, their
+-- vehicles, the emergency vehicle itself) alike.
 -- A lane change moves the agent onto the neighbouring lane at once (Agents.changeLane) with the old
 -- position as lateral offset; the offset then eases to the new lane centre (steered, no sliding).
 
 Lanes = {}
 
 local T = TRAFFIC
-local abs, max, random = math.abs, math.max, math.random
+local abs, max, random, sqrt = math.abs, math.max, math.random, math.sqrt
+local obsBuf = {}
 
 -- is the neighbouring lane free around the agent's position? relaxed: giving way to an emergency vehicle
 local function gapOK(ag, lane, s2, relaxed)
@@ -29,6 +33,32 @@ local function gapOK(ag, lane, s2, relaxed)
                     d = -d
                 end
                 if d < need then return false end
+            end
+        end
+    end
+    -- players, their vehicles, the emergency vehicle (obstacles.lua) beside the target position
+    local x, y, z, fx, fy = Geo.pose(lane, s2, 0)
+    local h = x and sqrt(fx * fx + fy * fy) or 0
+    if h > 1e-6 then
+        fx, fy = fx / h, fy / h
+        for i = #obsBuf, 1, -1 do obsBuf[i] = nil end
+        Obstacles.near(x, y, ag.half + 3 + base + 30 * (tv + tc), obsBuf)
+        for i = 1, #obsBuf do
+            local o = obsBuf[i]
+            if abs(o.z - z) < 4 then
+                local rx, ry = o.x - x, o.y - y
+                if abs(rx * fy - ry * fx) < T.ELS_CAR_HALF_WIDTH + o.hw + T.LANE_OBSTACLE_MARGIN then
+                    local d = rx * fx + ry * fy
+                    local ov = o.vx * fx + o.vy * fy
+                    local need = ag.half + o.hl + base
+                    if d >= 0 then
+                        need = need + ag.v * tv + max(0, ag.v - ov) * tc
+                    else
+                        need = need + max(0, ov) * tv + max(0, ov - ag.v) * tc
+                        d = -d
+                    end
+                    if d < need then return false end
+                end
             end
         end
     end
@@ -101,6 +131,19 @@ function Lanes.update(ag, now)
     if not left and not right then ag.slowSince = nil; return end
 
     local len = Geo.length(cur)
+    local e = ag.els
+    if e and e.expires > now then
+        -- giving way to an emergency vehicle: into the outer lane, whatever the gaps allow (relaxed); also slow,
+        -- held at a stop line (the sim.lua gate lets it roll on) and right after another lane change
+        if right and e.right and Net.lnext[right] and ag.v >= T.ELS_LANE_MIN_SPEED and not ag.overtake
+            and not ag.committed and len - ag.s >= 8 and abs(ag.lat) <= 1.5 then
+            local s2 = ag.s * Geo.length(right) / len
+            if gapOK(ag, right, s2, e.clear) then change(ag, right, now) end
+        end
+        ag.slowSince = nil
+        return
+    end
+
     -- nothing while stopped, held at a stop line, at the very end of a lane or in the middle of another manoeuvre
     if ag.v < T.LANE_MIN_SPEED or ag.hold or ag.overtake or ag.committed or len - ag.s < 8 or abs(ag.lat) > 1.5
         or now < (ag.laneFree or 0) then
@@ -113,17 +156,6 @@ function Lanes.update(ag, now)
     if want then
         local s2 = ag.s * Geo.length(want) / len
         if gapOK(ag, want, s2, false) then change(ag, want, now) end
-        return
-    end
-
-    local e = ag.els
-    local giving = e and e.expires > now
-    if giving then
-        -- giving way to an emergency vehicle: into the outer lane, whatever the gaps allow (relaxed)
-        if right and e.right and Net.lnext[right] then
-            local s2 = ag.s * Geo.length(right) / len
-            if gapOK(ag, right, s2, e.clear) then change(ag, right, now) end
-        end
         return
     end
 

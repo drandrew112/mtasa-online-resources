@@ -10,8 +10,9 @@
 --   * without one its lane is snapped and the road ahead is predicted (straight on where possible)
 --   * no lane (off-road, navmesh off): the old straight-line test (ahead within ELS_RANGE, 14 m to the side)
 -- Reactions of a driver who noticed it:
---   same direction, ahead of it on its route: back into the outer lane (multi-lane roads), then aside as far as
---     the ground next to the lane allows (navmesh walk grid: no wall, drop, water or steep slope), slow down /
+--   same direction, ahead of it on its route: back into the outer lane (multi-lane roads; when the outer lane
+--     is full, it stays and makes room in its own lane: innermost lane to the left, middle lanes a bit right),
+--     then aside as far as the ground next to the lane allows (navmesh walk grid: no wall, drop, water or steep slope), slow down /
 --     stop. No room here (bridge, walls): turn off into a side road on the right if one is close and not on the
 --     emergency route, otherwise drive on (ELS_SEEK_SPEED) to the next place with room
 --   oncoming on the same road: slow down and keep right
@@ -191,8 +192,8 @@ end
 
 -- room next to the lane (navmesh walk grid): the largest ELS_PULL_STEPS offset where the car's centre and right
 -- side stand on flat ground a few metres ahead (no wall / drop next to it, no water, no steep slope).
--- Cached per segment and 4 m of it (the map does not change).
-local roomCache, roomCount = {}, 0
+-- sign -1: the same to the left (ELS_LEFT_STEPS). Cached per side, segment and 4 m of it (the map does not change).
+local roomCache, roomCount = { [1] = {}, [-1] = {} }, 0
 local chainBuf = {}
 
 -- ground at (x, y) near the road height ref (the ground at the lane centre: lane z is GTA's node height, often
@@ -203,11 +204,13 @@ local function groundOK(x, y, z, ref)
     return not (info.edge or info.steep or info.surface == "water")
 end
 
-local function shoulderRoom(ag)
+local function shoulderRoom(ag, sign)
+    sign = sign or 1
     local plan = ag.plan
     local code = plan[1].code
     local bucket = floor(ag.s / 4)
-    local c = roomCache[code]
+    local cache = roomCache[sign]
+    local c = cache[code]
     if c and c[bucket] then return c[bucket] end
     local n = #plan
     for i = 1, n do chainBuf[i] = plan[i].code end
@@ -218,10 +221,10 @@ local function shoulderRoom(ag)
         refs[i] = x and (Navmesh.ground(x, y, z, 1.5) or z) or false
     end
     local room = 0
-    for _, L in ipairs(T.ELS_PULL_STEPS) do
+    for _, L in ipairs(sign > 0 and T.ELS_PULL_STEPS or T.ELS_LEFT_STEPS) do
         local ok = true
         for i, a in ipairs(T.ELS_PROBE_AHEAD) do
-            for _, off in ipairs({ L, L + T.ELS_CAR_HALF_WIDTH }) do
+            for _, off in ipairs({ L * sign, (L + T.ELS_CAR_HALF_WIDTH) * sign }) do
                 local x, y, z = Geo.poseOnChain(chainBuf, n, ag.s + a, off)
                 if not x or not refs[i] or not groundOK(x, y, z, refs[i]) then ok = false; break end
             end
@@ -229,9 +232,12 @@ local function shoulderRoom(ag)
         end
         if ok then room = L; break end
     end
-    if roomCount > 40000 then roomCache, roomCount = {}, 0 end
-    if not roomCache[code] then roomCache[code] = {} end
-    roomCache[code][bucket] = room
+    if roomCount > 40000 then
+        roomCache, roomCount = { [1] = {}, [-1] = {} }, 0
+        cache = roomCache[sign]
+    end
+    if not cache[code] then cache[code] = {} end
+    cache[code][bucket] = room
     roomCount = roomCount + 1
     return room
 end
@@ -261,12 +267,32 @@ local function turnOff(ag, e)
     return false
 end
 
--- pulling over always means going right: a car in the inner lane of a multi-lane carriageway first changes into
--- the outer lane (second result true, lanes.lua); a car in the outer lane or on a single lane road moves aside as
--- far as there is room. Third result false: no room here, keep driving (seek / turn off)
-local function pullOver(ag, e, seek)
+-- inner lane of a multi-lane carriageway, `along` m ahead of the emergency vehicle: try the outer lane (true)
+-- until ELS_MERGE_WAIT has passed or the emergency vehicle is too close, then give up (false) for this encounter
+local function tryMerge(ag, along, now)
+    local m = ag.elsMerge
+    if not m or now - m.at > T.ELS_HOLD then
+        m = { since = now }
+        ag.elsMerge = m
+    end
+    m.at = now
+    if not m.gaveUp and (now - m.since > T.ELS_MERGE_WAIT or along < T.ELS_MERGE_CLOSE) then m.gaveUp = true end
+    return not m.gaveUp
+end
+
+-- pulling over means going right: a car in the inner lane of a multi-lane carriageway first changes into the
+-- outer lane (second result true, lanes.lua); if that does not work out it makes room in its own lane (innermost
+-- lane: left as the ground allows, so the emergency vehicle passes on its right; middle lane: a bit right). A car
+-- in the outer lane or on a single lane road moves aside as far as there is room. Third result false: no room
+-- here, keep driving (seek / turn off)
+local function pullOver(ag, e, seek, along, now)
     local code = ag.plan[1].code
-    if code > 0 and Net.lright[code] then return 0, true, true end
+    if code > 0 and Net.lright[code] then
+        if tryMerge(ag, along, now) then return 0, true, true end
+        if Net.lleft[code] then return T.ELS_MIDDLE_PULL, false, true end
+        if not Navmesh.ok then return -T.ELS_LEFT_STEPS[#T.ELS_LEFT_STEPS], false, true end
+        return -shoulderRoom(ag, -1), false, true
+    end
     if not Navmesh.ok then return T.ELS_PULL_RIGHT, false, true end
     local room = shoulderRoom(ag)
     if room >= T.ELS_PULL_MIN or not seek then return room, false, true end
@@ -314,11 +340,11 @@ end
 local function giveWay(ag, e, level, along, now)
     if level == 2 then
         local vcap = along < T.ELS_STOP_DIST and 0 or T.ELS_CRAWL_SPEED * 2
-        local lat, right, room = pullOver(ag, e, true)
+        local lat, right, room = pullOver(ag, e, true, along, now)
         if not room then vcap = max(vcap, T.ELS_SEEK_SPEED) end
         setYield(ag, vcap, lat, now, true, right)
     else
-        local lat, right = pullOver(ag, e, false)
+        local lat, right = pullOver(ag, e, false, along, now)
         setYield(ag, T.ELS_LIGHTS_SPEED, lat * T.ELS_LIGHTS_PULL, now, false, right)
     end
 end

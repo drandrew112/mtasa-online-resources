@@ -110,7 +110,7 @@ TRAFFIC = {
     -- with navmesh: the route ahead of the emergency vehicle and the room next to the lane (walk grid)
     ELS_PATH_LENGTH = 160,      -- its route / predicted road this far ahead decides who gives way
     ELS_GPS_RETRY = 3000,       -- a new navmesh route (destination set, left the route) at most this often
-    ELS_PULL_STEPS = { 3.2, 2.4, 1.6, 1.0 },  -- lateral shifts tried, largest first: car centre and right side...
+    ELS_PULL_STEPS = { 3.2, 2.4, 1.6, 1.0, 0.6 },  -- lateral shifts tried, largest first: car centre and right side...
     ELS_PROBE_AHEAD = { 2, 7, 12 },           -- ...these many metres ahead must stand on flat ground
     ELS_CAR_HALF_WIDTH = 1.1,
     ELS_GROUND_DZ = 0.5,        -- ground higher / lower than the road by more than this: no room (kerbs are fine)
@@ -119,6 +119,14 @@ TRAFFIC = {
     ELS_TURNOFF_DIST = 45,      -- no room: a right turn off the emergency route within this distance is taken...
     ELS_TURNOFF_MIN = 8,        -- ...if it is at least this far (time to brake for it)
     ELS_HOLD = 2500,            -- keep the yield this long after the emergency vehicle passed
+    -- inner lane of a multi-lane road: into the outer lane first; when that does not work out within
+    -- ELS_MERGE_WAIT (full outer lane) or the emergency vehicle is closer than ELS_MERGE_CLOSE, stay in the lane
+    -- and make room there: the innermost lane moves left (ELS_LEFT_STEPS, walk grid), a middle lane a bit right
+    ELS_MERGE_WAIT = 2000,
+    ELS_MERGE_CLOSE = 25,
+    ELS_LEFT_STEPS = { 1.6, 1.0, 0.6 },
+    ELS_MIDDLE_PULL = 1.2,
+    ELS_LANE_MIN_SPEED = 1.0,   -- giving way: lane changes down to this speed (no cooldown, also while held)
     RETURN_SLOPE = 0.15,        -- steering back to the lane centre
 
     -- lanes on multi-lane carriageways: traffic keeps to the outer (rightmost) lane, the inner lane is for passing
@@ -129,6 +137,7 @@ TRAFFIC = {
     LANE_GAP_TIME = 0.7,        -- ...plus this many seconds of travel...
     LANE_GAP_CLOSING = 2.0,     -- ...plus this many seconds of closing speed (gap closes by the speed difference)
     LANE_GAP_RELAXED = 0.5,     -- gap factor for a driver giving way to an emergency vehicle
+    LANE_OBSTACLE_MARGIN = 1.0, -- players / their vehicles this close beside the target position block a lane change
     LANE_JUNCTION_DIST = 50,    -- no lane change when a junction (signal / conflicts) is this close ahead
     LANE_PASS_LEADER = 0.8,     -- passing: the leader drives below this fraction of the wanted speed...
     LANE_PASS_AFTER = 1500,     -- ...for this long

@@ -57,10 +57,13 @@ Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, 
     on that path gives way, measured along the road (curves, parallel roads, overpasses and side streets sort
     themselves out); oncoming traffic on the same road slows and keeps right. Without a lane (off-road, navmesh
     off) the old straight-line test is used.
-  - *Pulling over*: always to the right. A car in the inner lane of a multi-lane road first changes into the
-    outer lane; in the outer lane / on a single lane road it moves aside as far as the ground allows: the
+  - *Pulling over*: to the right. A car in the inner lane of a multi-lane road first changes into the
+    outer lane (also when slow or held, no cooldown, relaxed gaps). When the outer lane is full for
+    `ELS_MERGE_WAIT` or the emergency vehicle is closer than `ELS_MERGE_CLOSE`, it gives up merging for this
+    encounter and makes room in its own lane: the innermost lane moves left (`ELS_LEFT_STEPS`, walk grid), so
+    the emergency vehicle passes on its right, a middle lane moves `ELS_MIDDLE_PULL` right. In the outer lane / on a single lane road it moves aside as far as the ground allows: the
     navmesh walk grid is probed a few metres ahead for the car's centre and right side (`ELS_PULL_STEPS` 3.2 /
-    2.4 / 1.6 / 1.0 m; no wall or drop, water or steep slope, height within `ELS_GROUND_DZ` of the ground at the
+    2.4 / 1.6 / 1.0 / 0.6 m; no wall or drop, water or steep slope, height within `ELS_GROUND_DZ` of the ground at the
     lane centre; cached per 4 m). It stops once the emergency vehicle is close (`ELS_STOP_DIST`).
   - *No room* (bridges, walls, mountain roads): a random-traffic car turns off into a right side road within
     `ELS_TURNOFF_DIST` that is not on the emergency path; otherwise it drives on at `ELS_SEEK_SPEED` until there
@@ -71,7 +74,8 @@ Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, 
 - **Lanes** (`server/lanes.lua`): on multi-lane carriageways traffic keeps to the outer (rightmost) lane,
   and only spawns there. The inner lane is for passing: a car held up by a clearly slower leader changes
   into it when the gaps allow, and returns to the outer lane as soon as there is room (not while a left /
-  u-turn is planned or a junction is near). A lane change re-places the agent on the neighbouring lane at
+  u-turn is planned or a junction is near). The gap check covers traffic and non-traffic obstacles alike
+  (players, their vehicles, the emergency vehicle; `LANE_OBSTACLE_MARGIN`). A lane change re-places the agent on the neighbouring lane at
   once (`Agents.changeLane`, old position kept as lateral offset), then the offset eases out. `sim.dat`
   lists each lane's left / right neighbour.
 - **Lateral moves are steered**: lane offset changes (pulling over, passing a standing obstacle) are a
