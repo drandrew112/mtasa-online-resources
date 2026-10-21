@@ -98,7 +98,7 @@
   "rw_core.trainlabel.not_in_service": "Nem közlekedik",
   "rw_core.trainlabel.on_time": "időben",
   "rw_core.trainlabel.service_cancelled": "A járat törölve",
-  "rw_core.trainlabel.terminates_here_please_alight": "Itt végállomás - kérjük, szálljon le",
+  "rw_core.trainlabel.terminates_here_please_alight": "Végállomás - kérjük, szálljon le",
   "rw_core.trainlabel.train_info_boards_off": "Vonatinfó-táblák kikapcsolva.",
   "rw_core.trainlabel.train_info_boards_on": "Vonatinfó-táblák bekapcsolva."
 }
