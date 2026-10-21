@@ -8,7 +8,8 @@ Obstacles = { hash = {}, CELL = 40 }
 local O = Obstacles
 local floor = math.floor
 local sin, cos, rad = math.sin, math.cos, math.rad
-local RANGE = 250
+local GROUP = 30                            -- players this close share one scan...
+local RANGE = TRAFFIC.DESPAWN_RADIUS + GROUP   -- ...so the radius covers the traffic of every member
 local sizeByModel = {}
 
 -- half width / half length from the model's bounding box (default when the server cannot tell)
@@ -34,7 +35,7 @@ local function add(hash, seen, el, isPlayerish)
         o.hw, o.hl = vehicleSize(el)
         local _, _, rz = getElementRotation(el)
         o.fx, o.fy = -sin(rad(rz)), cos(rad(rz))
-        o.els = getElementData(el, TRAFFIC.ELS_DATA) == true
+        o.els = Els.active[el] == true   -- kept up to date from onElementDataChange (els.lua)
     else
         o.hw, o.hl = 0.45, 0.45
     end
@@ -44,9 +45,28 @@ local function add(hash, seen, el, isPlayerish)
     b[#b + 1] = o
 end
 
+-- everything non-traffic within RANGE of a point
+local function scan(hash, seen, x, y, z)
+    for _, v in ipairs(getElementsWithinRange(x, y, z, RANGE, "vehicle", 0, 0)) do
+        if not Agents.byVeh[v] and not seen[v] then
+            local driver = getVehicleOccupant(v, 0)
+            add(hash, seen, v, driver and getElementType(driver) == "player")
+        end
+    end
+    for _, ped in ipairs(getElementsWithinRange(x, y, z, RANGE, "ped", 0, 0)) do
+        if not Agents.byPed[ped] and not seen[ped] and not getPedOccupiedVehicle(ped) then
+            add(hash, seen, ped, false)
+        end
+    end
+    for _, pl in ipairs(getElementsWithinRange(x, y, z, RANGE, "player", 0, 0)) do
+        if not seen[pl] and not getPedOccupiedVehicle(pl) then add(hash, seen, pl, true) end
+    end
+end
+
 -- players: { { el, x, y, z }, ... } (active players from Traffic.activePlayers)
+-- A player within GROUP of one already scanned shares its area queries (RANGE covers the margin).
 function Obstacles.rebuild(players)
-    local hash, seen = {}, {}
+    local hash, seen, scanned = {}, {}, {}
     for _, p in ipairs(players) do
         local veh = getPedOccupiedVehicle(p.el)
         if veh then
@@ -54,19 +74,14 @@ function Obstacles.rebuild(players)
         else
             add(hash, seen, p.el, true)
         end
-        for _, v in ipairs(getElementsWithinRange(p.x, p.y, p.z, RANGE, "vehicle", 0, 0)) do
-            if not Agents.byVeh[v] and not seen[v] then
-                local driver = getVehicleOccupant(v, 0)
-                add(hash, seen, v, driver and getElementType(driver) == "player")
-            end
+        local covered = false
+        for i = 1, #scanned do
+            local q = scanned[i]
+            if (q.x - p.x) ^ 2 + (q.y - p.y) ^ 2 + (q.z - p.z) ^ 2 <= GROUP * GROUP then covered = true; break end
         end
-        for _, ped in ipairs(getElementsWithinRange(p.x, p.y, p.z, RANGE, "ped", 0, 0)) do
-            if not Agents.byPed[ped] and not seen[ped] and not getPedOccupiedVehicle(ped) then
-                add(hash, seen, ped, false)
-            end
-        end
-        for _, pl in ipairs(getElementsWithinRange(p.x, p.y, p.z, RANGE, "player", 0, 0)) do
-            if not seen[pl] and not getPedOccupiedVehicle(pl) then add(hash, seen, pl, true) end
+        if not covered then
+            scanned[#scanned + 1] = p
+            scan(hash, seen, p.x, p.y, p.z)
         end
     end
     O.hash = hash

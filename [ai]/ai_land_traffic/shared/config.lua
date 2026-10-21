@@ -5,9 +5,13 @@ TRAFFIC = {
     SIM_FILE = "data/runtime/sim.dat",   -- topology, server only
 
     -- simulation area: traffic only exists within SIM_RADIUS of online players (dimension 0, interior 0)
-    SIM_RADIUS = 300,
-    DESPAWN_RADIUS = 330,
+    SIM_RADIUS = 200,
+    DESPAWN_RADIUS = 230,       -- at most SIM_RADIUS + 50: farther vehicles get no state updates (sync range)
     TICK = 100,                 -- server simulation step
+    -- simulation LOD: vehicles farther than this from every player that no camera sees are decided
+    -- (car following, junctions, obstacles) only every SIM_FAR_EVERY-th tick, moved every tick
+    SIM_FAR_DIST = 140,
+    SIM_FAR_EVERY = 3,
     MAX_AGENTS = 140,           -- whole server
     MAX_PER_PLAYER = 20,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED); hard cap
                                 -- for EVERY player near a spawn point, so players together share one budget
@@ -18,7 +22,7 @@ TRAFFIC = {
     SPAWN_PER_PLAYER = 2,       -- spawn attempts per player per SPAWN_INTERVAL
     SPAWN_MIN_DIST = 120,       -- normally spawn this far from every player...
     SPAWN_MIN_DIST_EMPTY = 60,  -- ...but closer while the area is still almost empty (join, teleport)
-    SPAWN_VISIBLE_MIN = 200,    -- a spawn point a camera looks at must be at least this far from it
+    SPAWN_VISIBLE_MIN = 170,    -- a spawn point a camera looks at must be at least this far from it (< SIM_RADIUS)
     SPAWN_GAP = 14,             -- free space needed around a new vehicle
 
     -- spawn area = the player's expected route: the lanes reachable forward along the road graph
@@ -148,7 +152,20 @@ TRAFFIC = {
     SEND_POS_ERR = 0.3,         -- resend when the client prediction is this far off
     SEND_SPEED_ERR = 0.5,
     SEND_MAX_AGE = 2500,
-    SERVER_POS_REFRESH = 4000,  -- element position on the server (other resources, joiners)
+    -- ...the tolerances grow with the distance from the nearest player, up to these at SEND_FAR_TO
+    SEND_FAR_FROM = 40,
+    SEND_FAR_TO = 200,
+    SEND_POS_ERR_FAR = 2.0,
+    SEND_SPEED_ERR_FAR = 1.5,
+    SEND_MAX_AGE_FAR = 5000,
+    SERVER_POS_REFRESH = 5000,  -- element position on the server (other resources, joiners); every refresh
+    SERVER_POS_REFRESH_FAR = 20000, -- is a packet to every client, so rarer beyond SIM_FAR_DIST
+
+    -- client placement LOD (distance from the camera); streamed-out vehicles are moved every 500 ms
+    PLACE_NEAR = 60,            -- every frame
+    PLACE_MID = 150,            -- every PLACE_MID_EVERY ms, GTA moves it by its velocity in between
+    PLACE_MID_EVERY = 50,
+    PLACE_FAR_EVERY = 150,      -- beyond PLACE_MID
 
     -- releasing a vehicle from the simulation (it becomes a normal physics vehicle)
     CRASH_FORCE = 450,          -- onClientVehicleCollision force reported by the hitting player

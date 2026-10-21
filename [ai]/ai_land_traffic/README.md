@@ -8,7 +8,7 @@ Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, 
   segment (lane, or curved junction connection), distance `s`, speed, lateral offset, planned route.
   Car following is the Intelligent Driver Model; the most restrictive constraint wins each tick
   (leaders, curve speeds, stop lines, obstacles, emergency vehicles).
-- **Only on the players' routes** (`server/route.lua`): vehicles exist within `SIM_RADIUS` (300 m)
+- **Only on the players' routes** (`server/route.lua`): vehicles exist within `SIM_RADIUS` (200 m)
   of players in dimension 0 / interior 0. New ones only spawn on the player's expected route: the
   lanes reachable forward along the road graph within `ROUTE_LENGTH` (300 m, every branch) from the
   carriageway under the player (heading from the velocity, else the vehicle facing / camera; off-road:
@@ -16,21 +16,34 @@ Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, 
   With a v_radar GPS destination on the player's vehicle (`gpsDestination`) the navmesh route to it is the
   expected route instead of every branch (requested async, again when the player leaves it, `GPS_RETRY`).
   Density follows that lane length (`LANE_PER_VEHICLE`, `MAX_PER_PLAYER`) and drops to `STILL_FACTOR`
-  while the player stands. Spawns stay 120 m from players (60 m while nearly empty) and 200 m from
+  while the player stands. Spawns stay 120 m from players (60 m while nearly empty) and 170 m from
   any camera that looks at the spot. Players share one budget: a spawn point must be under the cap of
-  every player within 300 m (their own target, `MAX_PER_PLAYER` for the others), so two players in
+  every player within `SIM_RADIUS` (their own target, `MAX_PER_PLAYER` for the others), so two players in
   one place do not get twice the traffic. A regional limit (`AREA_MAX` vehicles within `AREA_RADIUS`,
   released vehicles included) keeps any one spot from filling up.
 - **Camera culling** (`server/views.lua`, `client/views.lua`): clients report their camera every
   300 ms. A vehicle that no player's camera sees (`VIEW_HALF_ANGLE` from the look direction) for
   `CULL_AFTER` and is farther than `CULL_MIN_DIST` from every player is removed; a player without a
-  fresh report counts as seeing everything. Everything past `DESPAWN_RADIUS` (330 m) is removed.
+  fresh report counts as seeing everything. Everything past `DESPAWN_RADIUS` (230 m) is removed.
 - **Clients are puppets** (`client/puppets.lua`): the server sends `(segment, s, v, a, lateral, next)`
   records only when the client prediction would drift (dead reckoning); every client places the
   vehicles each frame with the same geometry code (`shared/geometry.lua`). The vehicles and driver
   peds are real server elements with syncing turned off. Measured: ~1 record / vehicle / s,
   client-server position error mean 4 cm. Drivers get a tiny analog throttle on the client
   (`DRIVER_THROTTLE`): without input GTA brakes ped-driven cars, locking the wheels (skid marks).
+- **Level of detail** (for dense traffic):
+  - *Client placement*: within `PLACE_NEAR` of the camera every frame; up to `PLACE_MID` every
+    `PLACE_MID_EVERY` ms, beyond every `PLACE_FAR_EVERY` ms (staggered, GTA moves the car by its velocity
+    in between, ground probes 1 s); streamed-out vehicles every 500 ms. Pose = one `setElementMatrix`.
+  - *Sync*: the dead-reckoning tolerances (`SEND_POS_ERR`, `SEND_SPEED_ERR`, `SEND_MAX_AGE`) grow with the
+    distance from the nearest player up to the `_FAR` values at `SEND_FAR_TO`. Per player only the agents
+    in range are walked (spatial hash), buffers are reused.
+  - *Simulation*: a vehicle farther than `SIM_FAR_DIST` from every player that no camera sees is decided
+    (car following, junctions, obstacles, lane changes) only every `SIM_FAR_EVERY`-th tick, staggered; it
+    keeps its acceleration and junction approach entry in between and moves every tick. Scripted vehicles always full.
+  - *Server element position* (`SERVER_POS_REFRESH`, a packet to every client): beyond `SIM_FAR_DIST` only
+    every `SERVER_POS_REFRESH_FAR`.
+  - *Obstacles*: players within 30 m of each other share one set of area queries.
 - **Junctions**: one global traffic light cycle that also drives GTA's light objects
   (`setTrafficLightState`, phase 1 = north-south, 2 = east-west). Unsignalled: major road first,
   otherwise right-hand priority, left turns yield to oncoming. Conflicting paths are precomputed;

@@ -20,9 +20,10 @@ local function activePlayers()
 end
 
 local function refreshServerPositions(now)
+    local far2 = T.SIM_FAR_DIST * T.SIM_FAR_DIST
     for _, ag in pairs(Agents.list) do
         if now >= ag.posRefresh then
-            ag.posRefresh = now + T.SERVER_POS_REFRESH
+            ag.posRefresh = now + ((ag.near2 or 0) > far2 and T.SERVER_POS_REFRESH_FAR or T.SERVER_POS_REFRESH)
             if isElement(ag.veh) then
                 local rx, ry, rz = Geo.rotation(ag.fx, ag.fy, ag.fz)
                 setElementPosition(ag.veh, ag.x, ag.y, ag.z + 0.6, false)

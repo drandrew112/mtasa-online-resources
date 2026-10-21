@@ -267,6 +267,7 @@ local function accelOf(ag, now)
     local v0 = segSpeed(plan[1].code) * ag.v0f
     ag.hold = nil
     ag.blocker = nil
+    ag.approach = nil
 
     local sc = ag.script
     if sc then
@@ -355,7 +356,9 @@ local function accelOf(ag, now)
                 if dist < T.YIELD_WATCH + 10 then
                     local ap = approachNext[c]
                     if not ap then ap = {}; approachNext[c] = ap end
-                    ap[#ap + 1] = { ag = ag, dist = dStop, committed = ag.committed == c, hold = reason }
+                    local e = { ag = ag, dist = dStop, committed = ag.committed == c, hold = reason, conn = c }
+                    ap[#ap + 1] = e
+                    ag.approach = e
                 end
                 if reason then
                     ag.hold = reason
@@ -431,12 +434,43 @@ local function moveLateral(ag, ds, now)
     end
 end
 
+local tickNo = 0
+
+-- LOD: far from every player and seen by no camera -> decided only every SIM_FAR_EVERY-th tick
+-- (staggered by id); in between it keeps its acceleration and its junction approach entry.
+-- Sets ag.near2 (squared 2D distance to the nearest player), used by sync and the server position refresh.
+local function decidesNow(ag, players, now)
+    local best = math.huge
+    for i = 1, #players do
+        local p = players[i]
+        local dx, dy = ag.x - p.x, ag.y - p.y
+        local d = dx * dx + dy * dy
+        if d < best then best = d end
+    end
+    ag.near2 = best
+    if ag.script or best <= T.SIM_FAR_DIST * T.SIM_FAR_DIST or (ag.id + tickNo) % T.SIM_FAR_EVERY == 0 then
+        return true
+    end
+    return Views.anySees(players, ag.x, ag.y, ag.z + 1, now)
+end
+
 function Sim.step(dt, now)
     Signals.update(now)
+    tickNo = tickNo + 1
     approachPrev, approachNext = approachNext, {}
+    local players = Traffic.players
     for _, ag in pairs(Agents.list) do
-        ag.a = accelOf(ag, now)
-        Lanes.update(ag, now)
+        if decidesNow(ag, players, now) then
+            ag.a = accelOf(ag, now)
+            Lanes.update(ag, now)
+        else
+            local e = ag.approach
+            if e and ag.plan[1].code > 0 then   -- still before that junction
+                local ap = approachNext[e.conn]
+                if not ap then ap = {}; approachNext[e.conn] = ap end
+                ap[#ap + 1] = e
+            end
+        end
     end
     for _, ag in pairs(Agents.list) do
         local v0 = ag.v

@@ -17,6 +17,8 @@ local SNAP_ERR = 10        -- larger corrections snap
 local HEAD_SPAN = 1.8      -- heading is taken over +-this many metres (smooth across lane kinks)
 local FAR_UPDATE = 500     -- streamed-out vehicles are moved this often (keeps streaming right)
 local STALE = 10000
+local NEAR2, MID2 = T.PLACE_NEAR ^ 2, T.PLACE_MID ^ 2
+local GROUND_EVERY, GROUND_EVERY_FAR = 300, 1000   -- ms between ground probes (near / beyond PLACE_NEAR)
 
 local function predict(s, v, a, dt)
     local ta = dt < 1 and dt or 1
@@ -145,7 +147,25 @@ local function baseOf(veh)
     return b
 end
 
-local function place(veh, st, now, dt, full)
+-- one matrix call instead of position + rotation (no roll: right is horizontal)
+local matrix = { {}, {}, {}, {} }
+local function setPose(veh, x, y, z, fx, fy, fz)
+    local h = sqrt(fx * fx + fy * fy)
+    if h < 1e-3 then
+        setElementPosition(veh, x, y, z, false)
+        setElementRotation(veh, Geo.rotation(fx, fy, fz))
+        return
+    end
+    local m = matrix
+    m[1][1], m[1][2], m[1][3], m[1][4] = fy / h, -fx / h, 0, 0
+    m[2][1], m[2][2], m[2][3], m[2][4] = fx, fy, fz, 0
+    m[3][1], m[3][2], m[3][3], m[3][4] = -fx * fz / h, -fy * fz / h, h, 0
+    m[4][1], m[4][2], m[4][3], m[4][4] = x, y, z, 1
+    setElementMatrix(veh, m)
+end
+
+-- full: streamed in (pose, velocity, ground, driver); groundEvery: ms between ground probes
+local function place(veh, st, now, dt, full, groundEvery)
     local s, v = current(st, now)
     local dx = s - st.s     -- distance driven since the record
     local chain, n, base = chainOf(st)
@@ -155,6 +175,7 @@ local function place(veh, st, now, dt, full)
 
     local x, y, z = Geo.poseOnChain(chain, n, s, lat)
     if not x then return end
+    st.px, st.py, st.pz = x, y, z
     if not full then
         setElementPosition(veh, x, y, z + 1, false)
         return
@@ -174,7 +195,7 @@ local function place(veh, st, now, dt, full)
 
     -- ground correction: the lane z comes from the path nodes
     if now >= st.groundAt then
-        st.groundAt = now + 300 + math.random(100)
+        st.groundAt = now + groundEvery + math.random(100)
         local gz = getGroundPosition(x, y, z + 2.5)
         if gz and gz ~= 0 and abs(gz - z) < 2 then st.zfixTarget = gz - z end
     end
@@ -182,9 +203,7 @@ local function place(veh, st, now, dt, full)
     local zr = 2 * dt
     st.zfix = abs(dz) <= zr and st.zfixTarget or st.zfix + (dz > 0 and zr or -zr)
 
-    local rx, ry, rz = Geo.rotation(fx, fy, fz)
-    setElementPosition(veh, x, y, z + st.zfix + baseOf(veh), false)
-    setElementRotation(veh, rx, ry, rz)
+    setPose(veh, x, y, z + st.zfix + baseOf(veh), fx, fy, fz)
     setElementVelocity(veh, fx * v / 50, fy * v / 50, fz * v / 50)
     setElementAngularVelocity(veh, 0, 0, 0)
 
@@ -206,14 +225,31 @@ placePuppets = function()
     local dt = (now - (lastFrame or now)) / 1000
     lastFrame = now
     if dt > 0.2 then dt = 0.2 end
+    local cx, cy, cz = getCameraMatrix()
     for veh, st in pairs(P) do
         if not isElement(veh) or now - st.seen > STALE then
             P[veh] = nil
         elseif isElementStreamedIn(veh) then
-            place(veh, st, now, dt, true)
-        elseif now >= st.farAt then
-            st.farAt = now + FAR_UPDATE
-            place(veh, st, now, FAR_UPDATE / 1000, false)
+            if not st.streamed then st.streamed, st.farAt = true, 0 end   -- just streamed in: place it now
+            -- LOD by the distance from the camera where it was placed last (no position read)
+            local d2 = st.px and (st.px - cx) ^ 2 + (st.py - cy) ^ 2 + (st.pz - cz) ^ 2 or 0
+            if d2 <= NEAR2 then
+                place(veh, st, now, dt, true, GROUND_EVERY)
+                st.placedAt = now
+            elseif now >= st.farAt then
+                -- staggered: the vehicles of one band do not all come due in the same frame
+                local every = d2 <= MID2 and T.PLACE_MID_EVERY or T.PLACE_FAR_EVERY
+                st.farAt = now + every * (0.8 + math.random() * 0.4)
+                local pdt = (now - (st.placedAt or now)) / 1000
+                place(veh, st, now, pdt > 0.5 and 0.5 or pdt, true, GROUND_EVERY_FAR)
+                st.placedAt = now
+            end
+        else
+            st.streamed = false
+            if now >= st.farAt then
+                st.farAt = now + FAR_UPDATE
+                place(veh, st, now, FAR_UPDATE / 1000, false)
+            end
         end
     end
     if not next(P) then
