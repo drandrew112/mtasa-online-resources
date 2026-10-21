@@ -12,14 +12,14 @@ TRAFFIC = {
     -- (car following, junctions, obstacles) only every SIM_FAR_EVERY-th tick, moved every tick
     SIM_FAR_DIST = 140,
     SIM_FAR_EVERY = 3,
-    MAX_AGENTS = 140,           -- whole server
-    MAX_PER_PLAYER = 20,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED); hard cap
+    MAX_AGENTS = 700,           -- whole server
+    MAX_PER_PLAYER = 60,        -- vehicles within SIM_RADIUS of one player (moving at FULL_SPEED); hard cap
                                 -- for EVERY player near a spawn point, so players together share one budget
     AREA_RADIUS = 100,          -- regional limit: no new vehicle where this circle around the spawn point...
-    AREA_MAX = 9,               -- ...already holds this many (traffic + released vehicles)
-    LANE_PER_VEHICLE = 90,      -- metres of spawnable route lane per vehicle (density) before the cap
+    AREA_MAX = 27,              -- ...already holds this many (traffic + released vehicles)
+    LANE_PER_VEHICLE = 30,      -- metres of spawnable route lane per vehicle (density) before the cap
     SPAWN_INTERVAL = 500,
-    SPAWN_PER_PLAYER = 2,       -- spawn attempts per player per SPAWN_INTERVAL
+    SPAWN_PER_PLAYER = 6,       -- spawn attempts per player per SPAWN_INTERVAL
     SPAWN_MIN_DIST = 120,       -- normally spawn this far from every player...
     SPAWN_MIN_DIST_EMPTY = 60,  -- ...but closer while the area is still almost empty (join, teleport)
     SPAWN_VISIBLE_MIN = 170,    -- a spawn point a camera looks at must be at least this far from it (< SIM_RADIUS)
