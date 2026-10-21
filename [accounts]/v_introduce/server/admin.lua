@@ -41,7 +41,7 @@ addCommandHandler("intro", function(player, _, action, target, extra)
     if action == "reset" then
         if not target then return chat(player, L.msg("v_introduce.admin.intro_reset_player_account_xp")) end
         local p = findPlayer(target)
-        local who = p or exports.v_accounts:accountNameExists(target)
+        local who = p or exports.acc_auth:accountNameExists(target)
         if not who then return chat(player, L.msg("v_introduce.admin.no_such_player_or_account")) end
         Progress.reset(who, extra == "xp")
         return chat(player, L.msg("v_introduce.admin.introduction_progress_reset_for", { who = (p and getPlayerName(p) or who) }))

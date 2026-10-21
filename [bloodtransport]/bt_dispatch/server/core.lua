@@ -297,6 +297,7 @@ function onDelivered(taskId, player)
     if not task.tutorial then TotalDelivered = TotalDelivered + 1 end
     closeTask(task, "delivered")
     if not task.tutorial and isRunning("work_core") then exports.work_core:giveWorkXp(player, BTD.WORK_ID, BTD.XP_PER_DELIVERY) end
+    if not task.tutorial and isRunning("v_stats") then exports.v_stats:addStat(player, "bt_deliveries", 1) end
     notify(player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.delivered", { id = task.id, to = instName(task.to) }))
     return true
 end
@@ -323,7 +324,7 @@ function signOn(player)
     end
     if isPedDead(player) then return false, "dead" end
     local unit = (getVehiclePlateText(vehicle) or ""):gsub("^%s+", ""):gsub("%s+$", "")
-    local account = isRunning("v_accounts") and exports.v_accounts:getName(player) or nil
+    local account = isRunning("acc_auth") and exports.acc_auth:getName(player) or nil
     local shift = {
         player = player, vehicle = vehicle, unit = unit, name = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""),
         account = account or getPlayerName(player), windDown = false, order = {}, delivered = 0, startedTick = getTickCount(),

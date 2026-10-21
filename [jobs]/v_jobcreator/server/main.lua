@@ -19,7 +19,7 @@ local function notify(player, title, text)
 end
 
 local function accountName(player)
-    local name = exports.v_accounts:getName(player)
+    local name = exports.acc_auth:getName(player)
     return type(name) == "string" and name ~= "" and name or nil
 end
 

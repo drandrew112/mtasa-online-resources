@@ -369,7 +369,7 @@ Editor.onFrame("onClientPreRender", function()
     end
 end)
 
--- Kind labels load only once the player is loaded (v_accounts loading gate).
+-- Kind labels load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
@@ -380,7 +380,7 @@ local function loadTexts()
     Kinds.finish.label     = L("v_jobcreator.menus.finish")
     Kinds.marker.label     = L("v_jobcreator.view.job_marker")
     Kinds.camera.label     = L("v_jobcreator.view.finish_camera")
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

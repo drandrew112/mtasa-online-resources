@@ -171,7 +171,7 @@ function Session.start(player, opts)
     for i, def in ipairs(defs) do s.copies[i] = Intro.clientCopy(def) end
     sessions[player] = s
 
-    -- v_accounts saves this position instead of the stage
+    -- acc_savesys saves this position instead of the stage
     setElementData(player, "save.position", { x, y, z, s.saved.int, s.saved.dim }, false)
     setElementData(player, "intro.active", true)
 
@@ -389,7 +389,7 @@ end)
 addEventHandler("onPlayerQuit", root, function()
     clientReady[source] = nil
     local s = sessions[source]
-    if s then cleanup(s) end   -- the temporary loadout is gone with it; save.position stays: v_accounts saves the original position
+    if s then cleanup(s) end   -- the temporary loadout is gone with it; save.position stays: acc_savesys saves the original position
 end)
 
 ---------------------------------------------------------------- automatic start

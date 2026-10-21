@@ -9,7 +9,7 @@
     <include resource="ui_inac" />
     <include resource="ui_interactobject" />
     <include resource="v_mysql" />
-    <include resource="v_accounts" />
+    <include resource="acc_auth" />
 
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />

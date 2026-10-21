@@ -1,5 +1,5 @@
 -- Web tablet: the unit tablet (client/tablet.lua) as a web page, for crew members who are
--- signed in to a unit. Logs in with the v_accounts account (exports.v_accounts:httpLogin),
+-- signed in to a unit. Logs in with the acc_auth account (exports.acc_auth:httpLogin),
 -- a separate instance from the in-game tablet. English only (web UI).
 --
 -- The session only proves WHO the account is; the unit is looked up on every call from the
@@ -20,7 +20,7 @@ local fails = {}     -- [client] = { timestamps }
 local DENIED = { ok = false, error = "unauthorized" }
 
 local function accountsRunning()
-    local res = getResourceFromName("v_accounts")
+    local res = getResourceFromName("acc_auth")
     return res and getResourceState(res) == "running"
 end
 
@@ -78,7 +78,7 @@ local function unitOfAccount(account)
     if not accountsRunning() then return nil end
     for _, p in ipairs(getElementsByType("player")) do
         local u = Units.byPlayer[p]
-        if u and exports.v_accounts:getName(p) == account then return u, p end
+        if u and exports.acc_auth:getName(p) == account then return u, p end
     end
     return nil
 end
@@ -146,7 +146,7 @@ function ermTabletLogin(_, username, password)
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
     if not accountsRunning() then return { ok = false, error = "Account system is not available." } end
 
-    local ok, account = exports.v_accounts:httpLogin(username, password)
+    local ok, account = exports.acc_auth:httpLogin(username, password)
     if not ok then
         table.insert(fails[id], now())
         outputServerLog("[erm] failed web tablet login from " .. id)

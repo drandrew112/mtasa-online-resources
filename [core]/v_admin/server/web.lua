@@ -3,7 +3,7 @@
 --  Web admin panel: everything the in-game panel (O) offers, in the browser
 --  (http://<server>:<httpport>/v_admin/). English only.
 --
---  Login: the v_accounts account (exports.v_accounts:httpLogin). The admin level is
+--  Login: the acc_auth account (exports.acc_auth:httpLogin). The admin level is
 --  re-read regularly; every action runs through the SAME admin* functions as the
 --  commands and the in-game panel, with a "web actor" (see server/core.lua) in place
 --  of a player element, so ADMIN.perms / canPunish apply unchanged.
@@ -26,7 +26,7 @@ local DENIED = { ok = false, error = "unauthorized" }
 local function now() return getRealTime().timestamp end
 
 local function accountsRunning()
-    local res = getResourceFromName("v_accounts")
+    local res = getResourceFromName("acc_auth")
     return res and getResourceState(res) == "running"
 end
 
@@ -38,7 +38,7 @@ end
 local function playerOnAccount(account)
     if not accountsRunning() then return nil end
     for _, p in ipairs(getElementsByType("player")) do
-        if sameAccount(exports.v_accounts:getName(p), account) then return p end
+        if sameAccount(exports.acc_auth:getName(p), account) then return p end
     end
 end
 
@@ -125,7 +125,7 @@ function adminWebLogin(_, username, password)
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
     if not accountsRunning() then return { ok = false, error = "Account system is not available." } end
 
-    local ok, account = exports.v_accounts:httpLogin(username, password)
+    local ok, account = exports.acc_auth:httpLogin(username, password)
     local level = ok and adminLevelOf(account) or 0
     if not ok or level < ADMIN.perms.panel then
         table.insert(fails[id], now())

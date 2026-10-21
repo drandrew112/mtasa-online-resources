@@ -15,7 +15,7 @@ local newPointMarkers = {}
 local shownMarkers    = {}
 
 local function adminLevel(player)
-    if not exports.v_accounts:isLoggedIn(player) then return 0 end
+    if not exports.acc_auth:isLoggedIn(player) then return 0 end
     return tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0
 end
 

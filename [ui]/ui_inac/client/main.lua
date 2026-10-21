@@ -49,6 +49,44 @@ function registerMenus()
                 label = L("ui_inac.main.stats"),
                 type = "submenu",
                 target = "stats"
+            },
+            {
+                label = L("ui_inac.main.preferences"),
+                type = "submenu",
+                target = "preferences",
+                -- the value may have changed in the account menu since the menus were built
+                onOpen = function()
+                    local menu = MenuRegistry:get("preferences")
+                    local item = menu and menu.items[1]
+                    if item then
+                        item.value = getElementData(localPlayer, "pref.spawnLocation") == "random" and 2 or 1
+                    end
+                end
+            }
+        }
+    })
+
+    -- PREFERENCES (saved on the account by acc_savesys, through server/preferences.lua)
+    registerMenu({
+        id = "preferences",
+        title = L("ui_inac.main.preferences"),
+        back = "main",
+        items = {
+            {
+                label = L("ui_inac.main.spawn_location"),
+                type = "select",
+                desc = L("ui_inac.main.spawn_location_desc"),
+                value = getElementData(localPlayer, "pref.spawnLocation") == "random" and 2 or 1,
+                options = {
+                    {
+                        label = L("ui_inac.main.spawn_last_location"),
+                        action = function() triggerServerEvent("ui_inac:setPreference", localPlayer, "spawnLocation", "last") end
+                    },
+                    {
+                        label = L("ui_inac.main.spawn_random"),
+                        action = function() triggerServerEvent("ui_inac:setPreference", localPlayer, "spawnLocation", "random") end
+                    },
+                }
             }
         }
     })
@@ -249,7 +287,7 @@ function registerMenus()
 
     registerOwnvehMenu()
 
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, function()

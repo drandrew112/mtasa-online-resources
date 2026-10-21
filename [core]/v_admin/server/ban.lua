@@ -2,8 +2,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- ============================================================
 --  v_admin / server/ban.lua
 --  /ban, /unban, /kick
---  Bans are account bans handled by v_accounts and never expire
---  (see v_accounts). Banning an online player also stores their
+--  Bans are account bans handled by acc_bans and never expire
+--  (see acc_bans). Banning an online player also stores their
 --  serial. adminBan / adminUnban / adminKick are shared with the
 --  admin panel.
 -- ============================================================
@@ -12,7 +12,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 local function playerOnAccount(accName)
     local needle = tostring(accName):lower()
     for _, p in ipairs(getElementsByType("player")) do
-        local n = exports.v_accounts:getName(p)
+        local n = exports.acc_auth:getName(p)
         if n and n:lower() == needle then return p end
     end
 end
@@ -28,7 +28,7 @@ function adminBan(player, accName, reason)
     local online = playerOnAccount(accName)
     if online and not canPunish(player, online) then return end
 
-    local ok, err = exports.v_accounts:banAccount(accName, reason, actorName(player))
+    local ok, err = exports.acc_bans:banAccount(accName, reason, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.ban_failed_v_accounts_not_reachable")), 255, 90, 90)
     end
@@ -45,7 +45,7 @@ function adminUnban(player, accName)
         return adminAlert(player, L.msg("v_admin.ban.usage_unban_account"), 255, 90, 90)
     end
 
-    local ok, err = exports.v_accounts:unbanAccount(accName, actorName(player))
+    local ok, err = exports.acc_bans:unbanAccount(accName, actorName(player))
     if not ok then
         return adminAlert(player, "#FF5A5A" .. tostring(err or L.msg("v_admin.ban.unban_failed")), 255, 90, 90)
     end

@@ -81,7 +81,7 @@
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="v_main" />
     <include resource="v_mysql" />
-    <include resource="v_accounts" />
+    <include resource="acc_auth" />
     <include resource="ui_core" />
     <include resource="v_radar" />
 </meta>

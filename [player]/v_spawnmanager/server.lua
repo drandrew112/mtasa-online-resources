@@ -36,6 +36,41 @@ function getRespawnPoint(x, y)
     end
 end
 
+-- Exported. A random respawn point where nothing stands (no player, vehicle or
+-- ped within `radius` m, in interior 0 / dimension 0). Returns x, y, z, rot or
+-- false. After FREE_TRIES random picks the least crowded one tried is used.
+local FREE_TRIES = 25
+local FREE_TYPES = { "player", "vehicle", "ped" }
+
+local function crowdAt(x, y, z, radius)
+    local n = 0
+    for _, elementType in ipairs(FREE_TYPES) do
+        for _, element in ipairs(getElementsWithinRange(x, y, z, radius, elementType)) do
+            if getElementInterior(element) == 0 and getElementDimension(element) == 0 then
+                n = n + 1
+            end
+        end
+    end
+    return n
+end
+
+function getRandomFreeRespawnPoint(radius)
+    radius = tonumber(radius) or 4
+    local count = #respawn_points
+    if count == 0 then return false end
+
+    local best, bestCrowd
+    for _ = 1, math.min(FREE_TRIES, count) do
+        local point = respawn_points[math.random(1, count)]
+        local crowd = crowdAt(point[1], point[2], point[3], radius)
+        if crowd == 0 then
+            return point[1], point[2], point[3], math.random(0, 359)
+        end
+        if not bestCrowd or crowd < bestCrowd then best, bestCrowd = point, crowd end
+    end
+    return best[1], best[2], best[3], math.random(0, 359)
+end
+
 local savedWeapons = {} -- Halálkor eltárolt fegyverek játékosonként.
 
 -- A wp_manager futása alatt a fegyvereket az kezeli (spawnkor magától visszaadja), itt nincs teendő.

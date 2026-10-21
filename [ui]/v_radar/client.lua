@@ -353,7 +353,7 @@ local boundingBoxes = {
 	},
 }
 
--- Names load only once the player is loaded (v_accounts loading gate).
+-- Names load only once the player is loaded (acc_loading gate).
 local function loadBoundingBoxNames()
 	boundingBoxes[1].name = L("v_radar.client.health")
 	boundingBoxes[2].name = L("v_radar.client.body")
@@ -863,7 +863,7 @@ local function loadTexts()
 	if textsLoaded then return end
 	textsLoaded = true
 	loadBoundingBoxNames()
-	exports.v_accounts:resourceReady()
+	exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

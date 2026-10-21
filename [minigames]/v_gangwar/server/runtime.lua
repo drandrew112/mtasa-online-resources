@@ -157,6 +157,11 @@ local function close(run, reason)
     run.state = "cleanup"
     run.closedAt = getTickCount()
     removeCircle(run)
+    -- v_stats: a war that really started counts as played, a finished one as won
+    if run.startedAt and not run.test and isElement(run.starter) and resourceRunning("v_stats") then
+        exports.v_stats:addStat(run.starter, "gangwar_played", 1)
+        if reason == "finished" then exports.v_stats:addStat(run.starter, "gangwar_won", 1) end
+    end
     releaseStarter(run)
     releaseClaim(run)
     if reason == "finished" then

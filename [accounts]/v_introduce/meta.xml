@@ -63,5 +63,5 @@
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="v_mysql" />
-    <include resource="v_accounts" />
+    <include resource="acc_auth" />
 </meta>

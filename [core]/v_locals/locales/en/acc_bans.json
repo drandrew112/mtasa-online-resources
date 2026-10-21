@@ -1,0 +1,6 @@
+{
+  "acc_bans.server.account_not_found": "Account not found: {account_name}",
+  "acc_bans.server.ban_database_unavailable": "Ban database unavailable",
+  "acc_bans.server.invalid_account_name": "Invalid account name",
+  "acc_bans.server.no_active_ban_for_account": "No active ban for account: {account_name}"
+}

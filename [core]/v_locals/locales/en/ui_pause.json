@@ -1,5 +1,6 @@
 {
   "ui_pause.pausemenu.about": "ABOUT",
+  "ui_pause.pausemenu.activities": "Activities",
   "ui_pause.pausemenu.browse_available_deathmatch_jobs": "Browse the available Deathmatch jobs.",
   "ui_pause.pausemenu.browse_available_race_jobs": "Browse the available Race jobs.",
   "ui_pause.pausemenu.browse_every_open_lobby_game_mode": "Browse every open lobby: game, mode and host.",
@@ -79,6 +80,7 @@
   "ui_pause.pausemenu.type": "Type",
   "ui_pause.pausemenu.vehicle_lod": "Vehicle LOD",
   "ui_pause.pausemenu.vehicle_time": "Vehicle time",
+  "ui_pause.pausemenu.work": "Work",
   "ui_pause.pausemenu.xp_to_next_level": "XP to next level",
   "ui_pause.pausemenu.you_left_server": "You left the server.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "Your level, XP, played time and statistics.",

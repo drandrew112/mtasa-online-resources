@@ -7,8 +7,8 @@
     <include resource="ui_core" />
     <!-- Player report panel UI (/report) -->
     <include resource="dgs" />
-    <!-- /ban -> v_accounts, /mute + /unmute -> v_chat -->
-    <include resource="v_accounts" />
+    <!-- /ban -> acc_bans, /mute + /unmute -> v_chat -->
+    <include resource="acc_auth" />
     <include resource="v_chat" />
     <!-- admin_level + admin jail data live in the shared accounts table -->
     <include resource="v_mysql" />

@@ -5,6 +5,7 @@
     <script src="shared/registry.lua" type="shared" />
     <script src="server/spawn.lua" type="server" />
     <script src="server/ownveh.lua" type="server" />
+    <script src="server/preferences.lua" type="server" />
     <script src="client/state.lua" type="client" />
     <script src="client/api.lua" type="client" />
     <script src="client/input.lua" type="client" />

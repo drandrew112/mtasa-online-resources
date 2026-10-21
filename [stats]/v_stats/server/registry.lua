@@ -29,7 +29,7 @@ for i, src in ipairs(STATS.LIST) do
     elseif not text(src.name) then
         warn("'%s': name is required, skipped", id)
     else
-        local def = { id = id, name = src.name, unit = text(src.unit) or "", achStat = str(src.achStat) }
+        local def = { id = id, name = src.name, unit = text(src.unit) or "", category = str(src.category) or "other", achStat = str(src.achStat) }
         REG.byId[id] = def
         REG.list[#REG.list + 1] = def
     end

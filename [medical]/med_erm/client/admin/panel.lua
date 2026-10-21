@@ -397,7 +397,7 @@ addEventHandler("erm:admin:open", resourceRoot, function()
     if Admin.open then Admin.close() else Admin.show() end
 end)
 
--- Texts load only once the player is loaded (v_accounts loading gate).
+-- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
@@ -407,7 +407,7 @@ local function loadTexts()
     build_PLACEHOLDER()
     build_SHIFT_COLS()
     build_TASK_COLS()
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

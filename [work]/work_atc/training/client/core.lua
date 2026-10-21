@@ -460,12 +460,12 @@ end)
 
 function TRN.isActive() return T.active end
 
--- Texts load only once the player is loaded (v_accounts loading gate).
+-- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
-    pcall(function() exports.v_accounts:resourceReady() end)
+    pcall(function() exports.acc_loading:resourceReady() end)
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

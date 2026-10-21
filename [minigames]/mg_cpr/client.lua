@@ -384,13 +384,13 @@ addEventHandler("onClientPlayerWasted", localPlayer, function()
     if game and not game.sessionId then finish("died", false) end
 end)
 
--- Texts load only once the player is loaded (v_accounts loading gate).
+-- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
     build_FEEDBACK()
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

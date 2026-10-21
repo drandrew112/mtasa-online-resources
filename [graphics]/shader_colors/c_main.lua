@@ -297,14 +297,14 @@ end)
 
 addEventHandler("onClientResourceStop", resourceRoot, destroyResources)
 
--- Texts load only once the player is loaded (v_accounts loading gate).
+-- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
     CHAT_PREFIX = L("shader_colors.api.color_grading")
     loadPresetLabels()
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

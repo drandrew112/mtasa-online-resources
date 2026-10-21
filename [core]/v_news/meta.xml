@@ -1,0 +1,23 @@
+<meta>
+    <info author="DrAndrew112" name="News" version="1.0.0" type="script"
+          description="Server news (date, title, text) in MySQL; /news editor for admins, latest news for the login screen and the account menu" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="ui_core" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="config.lua" type="shared" />
+
+    <script src="server/store.lua" type="server" />
+    <script src="server/editor.lua" type="server" />
+
+    <script src="client/field.lua" type="client" />
+    <script src="client/editor.lua" type="client" />
+
+    <!-- getLatestNews(n = 5) -> { { id, date = unix, title, body }, ... } published ones, newest first
+         getAllNews()        -> same, every article incl. scheduled (date in the future)
+         event onNewsChanged (source = resourceRoot of v_news) after every change or when a scheduled one appears -->
+    <export function="getLatestNews" type="server" />
+    <export function="getAllNews" type="server" />
+</meta>

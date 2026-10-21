@@ -1,13 +1,22 @@
 {
+  "v_stats.config.bt_deliveries": "Vérszállítások",
   "v_stats.config.deaths_all": "Halálok (összes)",
   "v_stats.config.deaths_killed_by_players": "Halálok (játékos ölte meg)",
   "v_stats.config.distance_driven_land_vehicles": "Megtett távolság (szárazföldi járművek)",
   "v_stats.config.distance_flown_air_vehicles": "Megtett távolság (légi járművek)",
   "v_stats.config.distance_sailed_water_vehicles": "Megtett távolság (vízi járművek)",
   "v_stats.config.distance_walked": "Gyalog megtett távolság",
+  "v_stats.config.duty_time_atc": "Szolgálatban töltött idő (ATC)",
+  "v_stats.config.duty_time_bloodtransport": "Szolgálatban töltött idő (vérszállítás)",
+  "v_stats.config.duty_time_ems": "Szolgálatban töltött idő (mentő)",
+  "v_stats.config.duty_time_traindriver": "Szolgálatban töltött idő (mozdonyvezető)",
+  "v_stats.config.ems_patients": "Ellátott betegek (mentő)",
+  "v_stats.config.gangwar_played": "Indított bandaháborúk",
+  "v_stats.config.gangwar_won": "Megnyert bandaháborúk",
   "v_stats.config.kills_peds": "Ölések (pedek)",
   "v_stats.config.kills_players": "Ölések (játékosok)",
   "v_stats.config.time_driving_land_vehicles": "Vezetési idő (szárazföldi járművek)",
   "v_stats.config.time_flying_air_vehicles": "Repülési idő (légi járművek)",
-  "v_stats.config.time_sailing_water_vehicles": "Hajózási idő (vízi járművek)"
+  "v_stats.config.time_sailing_water_vehicles": "Hajózási idő (vízi járművek)",
+  "v_stats.config.train_shifts": "Vezetett vonatjáratok"
 }

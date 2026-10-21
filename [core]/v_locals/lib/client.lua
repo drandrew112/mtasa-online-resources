@@ -243,7 +243,7 @@ do
     -- Once the player is loaded (onClientLoadingStarted) and on every language
     -- change it runs again in a sandbox and only the texts (strings) are
     -- written into the existing tables, so references to them stay valid.
-    -- After the first rerun the resource reports exports.v_accounts:resourceReady().
+    -- After the first rerun the resource reports exports.acc_loading:resourceReady().
     local function mergeTexts(old, new, seen)
         if seen[new] then return end
         seen[new] = true
@@ -305,11 +305,11 @@ do
             if reported then return end
             reported = true
             rerun()
-            pcall(function() exports.v_accounts:resourceReady() end)
+            pcall(function() exports.acc_loading:resourceReady() end)
         end
         addEvent("onClientLoadingStarted", true)
         addEventHandler("onClientLoadingStarted", root, ready)
-        -- v_accounts asks for the ready reports (also covers a resource that
+        -- acc_loading asks for the ready reports (also covers a resource that
         -- started after the loading screen was already shown)
         addEvent("onClientReadyCheck", false)
         addEventHandler("onClientReadyCheck", root, ready)

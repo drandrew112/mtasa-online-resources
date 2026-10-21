@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="Account save system" version="1.0.0" type="script"
+          description="Saves and loads the players' basic data (position, health, money, skin, stats, weapons, collectibles, preferences)" />
+
+    <include resource="v_mysql" />
+    <include resource="acc_auth" />
+
+    <script src="config.lua" type="server" />
+    <script src="server/modules.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- getProfile(player) -> { account, money, level, xp, playtime, skin, position = { x, y, z, interior, dimension, zone },
+                                 collectibles = { [id] = n }, preferences = { spawnLocation = "last" | "random" } } | false
+         spawnFromSave(player, mode)  "normal" | "fresh" (brand-new account: default spawn); acc_loading calls it
+         savePlayer(player)           immediate save (only after the player is loaded)
+         getPreference(player, id) / setPreference(player, id, value) -> value | bool    ids: spawnLocation
+         getCollectibles(player) -> { { id, label, count, total }, ... } / addCollectible(player, id, amount)
+         event onPlayerDataReady (accountName)  source = player; the profile is ready, acc_menu opens -->
+    <export function="getProfile"      type="server" />
+    <export function="spawnFromSave"   type="server" />
+    <export function="savePlayer"      type="server" />
+    <export function="getPreference"   type="server" />
+    <export function="setPreference"   type="server" />
+    <export function="getCollectibles" type="server" />
+    <export function="addCollectible"  type="server" />
+</meta>

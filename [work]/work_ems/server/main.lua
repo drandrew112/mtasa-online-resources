@@ -128,6 +128,7 @@ addEventHandler("onErmUnitHandoverComplete", root, function(unitId, taskId)
         end
         if isElement(m.player) then
             exports.v_achievements:addStat(m.player, "ems_patients", 1)
+            if isRunning("v_stats") then exports.v_stats:addStat(m.player, "ems_patients", 1) end
         end
     end
 end)

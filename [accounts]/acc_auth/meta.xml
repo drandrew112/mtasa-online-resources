@@ -1,0 +1,50 @@
+<meta>
+    <info author="DrAndrew112" name="Account auth" version="1.0.0" type="script"
+          description="Login, registration (optional email), remember-me token, password reset by email, identity exports" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="acc_bans" />
+
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <!-- config.lua holds the password reset API key: server only, never sent to clients -->
+    <script src="config.lua" type="server" />
+    <script src="server/db.lua" type="server" />
+    <script src="server/identity.lua" type="server" />
+    <script src="server/login.lua" type="server" />
+    <script src="server/register.lua" type="server" />
+    <script src="server/email.lua" type="server" />
+    <script src="server/recovery.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/token.lua" type="client" />
+
+    <!-- Identity (the mod does not use MTA accounts). getName(player) -> account
+         name | false; isLoggedIn(player) -> bool; accountNameExists(name) ->
+         canonical name | false; getAllAccountNames() -> { name, ... }. -->
+    <export function="getName"            type="server" />
+    <export function="isLoggedIn"         type="server" />
+    <export function="accountNameExists"  type="server" />
+    <export function="getAllAccountNames" type="server" />
+    <!-- httpLogin(username, password) -> true, accountName | false, error. Credential check
+         without a player (web logins); does not log anyone in. -->
+    <export function="httpLogin"          type="server" />
+
+    <!-- Client API (acc_ui / acc_menu). Answers arrive as client events:
+           acc_auth:onClientAuthError (text)
+           acc_auth:onClientLoggedIn (accountName, isNewAccount)
+           acc_auth:onClientTokenInvalid ()
+           acc_auth:onClientResetState (step = "code" | "done" | "failed", info)
+           acc_auth:onClientEmail (maskedEmail | false, hasEmail, noticeText | nil) -->
+    <export function="login"                type="client" />
+    <export function="loginWithToken"       type="client" />
+    <export function="register"             type="client" />
+    <export function="getSavedAccountName"  type="client" />
+    <export function="forgetSavedLogin"     type="client" />
+    <export function="requestPasswordReset" type="client" />
+    <export function="confirmPasswordReset" type="client" />
+    <export function="requestEmail"         type="client" />
+    <export function="setEmail"             type="client" />
+</meta>

@@ -66,3 +66,6 @@ desktop.ini
 
 # --- v_main: per-instance server identity (copy server.example.json) ---
 /\[core\]/v_main/server.json
+
+# --- acc_auth password reset mailer: SMTP credentials + API key ---
+/\[accounts\]/acc_auth/web/forgotpasswd.config.php

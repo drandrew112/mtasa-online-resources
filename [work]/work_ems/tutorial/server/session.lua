@@ -300,7 +300,7 @@ function Tutorial.start(player)
     }
     sessions[player] = s
 
-    -- v_accounts saves this position instead of the tutorial one
+    -- acc_savesys saves this position instead of the tutorial one
     setElementData(player, "save.position", { x, y, z, s.saved.int, s.saved.dim }, false)
     if not exports.medsys:isPlayerMedic(player) then
         exports.medsys:setPlayerMedic(player, true)

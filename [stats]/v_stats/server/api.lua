@@ -72,7 +72,7 @@ end)
 --------------------------------------------------------------------------------
 
 local function publicDef(def)
-    return { id = def.id, name = def.name, unit = def.unit, achStat = def.achStat }
+    return { id = def.id, name = def.name, unit = def.unit, category = def.category, achStat = def.achStat }
 end
 
 function getStatDefinitions()

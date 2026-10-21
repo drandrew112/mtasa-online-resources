@@ -1,0 +1,6 @@
+{
+  "acc_bans.server.account_not_found": "A fiók nem található: {account_name}",
+  "acc_bans.server.ban_database_unavailable": "A tiltási adatbázis nem érhető el",
+  "acc_bans.server.invalid_account_name": "Érvénytelen fióknév",
+  "acc_bans.server.no_active_ban_for_account": "Nincs aktív tiltás ehhez a fiókhoz: {account_name}"
+}

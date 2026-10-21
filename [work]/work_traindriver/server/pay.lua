@@ -64,6 +64,8 @@ local function pay(player, summary)
     local ok, result = exports.work_core:payWork(player, TRAINDRIVER.WORK_ID, items, L.msg("work_traindriver.pay.service_completed", { number = tostring(summary.number) }))
     if ok then
         exports.work_core:giveWorkXp(player, TRAINDRIVER.WORK_ID, computeXp(summary))
+        local stats = getResourceFromName("v_stats")
+        if stats and getResourceState(stats) == "running" then exports.v_stats:addStat(player, "train_shifts", 1) end
         outputServerLog(("[work_traindriver] %s paid %d for %s"):format(getPlayerName(player), result, tostring(summary.number)))
     else
         outputServerLog(("[work_traindriver] payment for %s failed: %s"):format(getPlayerName(player), tostring(result)))

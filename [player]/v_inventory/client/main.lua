@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Shared client helpers: the text gate (v_accounts loading), scaling, fonts, drawing, item names
+-- Shared client helpers: the text gate (acc_loading), scaling, fonts, drawing, item names
 -- and icons, notifications, the ground snap of dropped items.
 
 local sw, sh = guiGetScreenSize()
@@ -8,7 +8,7 @@ SW, SH = sw, sh
 function S(v) return v * math.max(0.65, sh / 1080) end
 
 -- ---------------------------------------------------------------------------------------------
--- Texts load only once the player is loaded (v_accounts loading gate)
+-- Texts load only once the player is loaded (acc_loading gate)
 -- ---------------------------------------------------------------------------------------------
 
 TextsLoaded = false
@@ -16,7 +16,7 @@ TextsLoaded = false
 local function loadTexts()
     if TextsLoaded then return end
     TextsLoaded = true
-    pcall(function() exports.v_accounts:resourceReady() end)
+    pcall(function() exports.acc_loading:resourceReady() end)
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

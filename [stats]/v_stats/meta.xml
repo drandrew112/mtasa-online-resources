@@ -1,10 +1,10 @@
 <meta>
     <info author="DrAndrew112" name="Stats" version="1.0.0" type="script"
-          description="Per-player statistics (distance, drive time, kills, deaths) stored as JSON in account data" />
+          description="Per-player statistics (distance, drive time, kills, deaths, work, gang wars) stored as JSON in account data" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
-    <include resource="v_accounts" />
+    <include resource="acc_auth" />
 
     <script src="locals.lua" type="shared" />
     <script src="config.lua" type="shared" />
@@ -14,6 +14,7 @@
     <script src="server/api.lua" type="server" />
     <script src="server/tracker.lua" type="server" />
     <script src="server/events.lua" type="server" />
+    <script src="server/duty.lua" type="server" />
 
     <!-- definitions -->
     <export function="getStatDefinitions" type="server" />

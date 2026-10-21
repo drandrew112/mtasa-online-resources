@@ -134,7 +134,7 @@ end
 -- Tests
 -- ---------------------------------------------------------------------------------------------
 
-check(getPlayerWeapons(p) == false, "not loaded -> false (v_accounts keeps its copy)")
+check(getPlayerWeapons(p) == false, "not loaded -> false (acc_savesys keeps its copy)")
 p.weapons[5] = { id = 30, ammo = 90, clip = 30 } -- a stray GTA weapon from another script
 check(setPlayerWeapons(p, { { id = 31, ammo = 200, clip = 50 }, { 29, 120 }, { id = 16, ammo = 2 }, { id = 4, ammo = 0 }, { id = 17, ammo = 0 }, { id = 99, ammo = 5 } }), "setPlayerWeapons")
 check(isPlayerWeaponsLoaded(p), "loaded")
@@ -260,7 +260,7 @@ triggerEvent("onResourceStart", resourceRoot)
 check(p.data["wp.backup"] == nil, "backup consumed")
 check(isPlayerWeaponsLoaded(p) and #getPlayerWeapons(p) == 4 and getPlayerCurrentWeapon(p) == 31, "state restored after restart")
 
--- quit: kept until v_accounts saved, then dropped
+-- quit: kept until acc_savesys saved, then dropped
 triggerEvent("onPlayerQuit", p)
 check(getPlayerWeapons(p) ~= false, "still readable in the quit handlers")
 runTimers()

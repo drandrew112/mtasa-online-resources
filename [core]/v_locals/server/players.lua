@@ -93,9 +93,9 @@ addEventHandler("v_locals:requestLanguage", resourceRoot, function(code)
     persist(player, code)
 end)
 
--- account data is loaded: the account's language wins
-addEvent("onPlayerLoaded")
-addEventHandler("onPlayerLoaded", root, function()
+-- account data is loaded: the account's language wins (at the login - the
+-- account menu comes before onPlayerLoaded - and again when loaded)
+local function accountLanguage()
     local player = source
     local account = storedLanguage(player)
     if account then
@@ -103,7 +103,11 @@ addEventHandler("onPlayerLoaded", root, function()
     elseif LANG[player] then
         persist(player, LANG[player])
     end
-end)
+end
+addEvent("onPlayerAccountLogin")
+addEventHandler("onPlayerAccountLogin", root, accountLanguage)
+addEvent("onPlayerLoaded")
+addEventHandler("onPlayerLoaded", root, accountLanguage)
 
 addEventHandler("onPlayerQuit", root, function()
     LANG[source] = nil

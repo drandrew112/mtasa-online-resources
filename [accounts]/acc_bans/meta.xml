@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="Account bans" version="1.0.0" type="script"
+          description="Account / serial bans in the shared MySQL bans table: cache, cross-server refresh, ban state" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="server/bans.lua" type="server" />
+
+    <!-- banAccount(account_name, reason, admin_name) -> true | false, error
+         unbanAccount(account_name, admin_name)      -> true | false, error
+         (NOT banPlayer/unbanPlayer - those are built-in MTA function names) -->
+    <export function="banAccount"     type="server" />
+    <export function="unbanAccount"   type="server" />
+    <!-- getActiveBan(serial | nil, account_name | nil) -> { date, admin, reason, account } | false -->
+    <export function="getActiveBan"   type="server" />
+    <!-- applyBan(player, ban) puts the ban state on a player (frozen, ban panel);
+         isPlayerBanned(player) -> bool -->
+    <export function="applyBan"       type="server" />
+    <export function="isPlayerBanned" type="server" />
+</meta>

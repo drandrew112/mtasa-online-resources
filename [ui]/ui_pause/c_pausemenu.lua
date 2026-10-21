@@ -348,6 +348,11 @@ SETTINGS_TREE = {
 }
 end
 
+-- c_api.lua / c_settings.lua: the tree is needed before the loading (account menu)
+function ensureSettingsTree()
+    if #SETTINGS_TREE == 0 then buildSettingsTree() end
+end
+
 --------------------------------------------------------------------------------
 -- ui sounds
 --------------------------------------------------------------------------------
@@ -560,12 +565,14 @@ end
 -- STATS ------------------------------------------------------------------------
 
 -- Category ids are internal; the label is looked up when the list is built (D3).
-local STAT_CATS_ORDER = { "general", "distance", "vehicle_time", "combat", "other" }
+local STAT_CATS_ORDER = { "general", "distance", "vehicle_time", "combat", "work", "activities", "other" }
 local STAT_CAT_LABEL = {
     general      = "ui_pause.pausemenu.general",
     distance     = "ui_pause.pausemenu.distance",
     vehicle_time = "ui_pause.pausemenu.vehicle_time",
     combat       = "ui_pause.pausemenu.combat",
+    work         = "ui_pause.pausemenu.work",
+    activities   = "ui_pause.pausemenu.activities",
     other        = "ui_pause.pausemenu.other",
 }
 
@@ -591,6 +598,8 @@ local function formatStatValue(def, v)
 end
 
 local function statCategoryOf(def)
+    -- v_stats definitions carry their category
+    if def.category and STAT_CAT_LABEL[def.category] and def.category ~= "general" then return def.category end
     if def.unit == "km" then return "distance" end
     if def.unit == "s" then return "vehicle_time" end
     if def.id:find("^kills") or def.id:find("^deaths") then return "combat" end
@@ -1270,7 +1279,8 @@ addEventHandler("onClientResourceStop", resourceRoot, function()
 end)
 
 --------------------------------------------------------------------------------
--- texts: built once the player is loaded (v_accounts loading gate)
+-- texts: built once the player is loaded (acc_loading gate); the settings tree
+-- may already exist from the account menu (ensureSettingsTree)
 --------------------------------------------------------------------------------
 
 local textsBuilt = false
@@ -1279,7 +1289,7 @@ local function loadTexts()
     textsBuilt = true
     buildJobTexts()
     buildSettingsTree()
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

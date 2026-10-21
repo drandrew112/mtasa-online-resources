@@ -62,7 +62,8 @@
     <group name="PlayerControl">
         <acl name="PlayerControl"></acl>
         <object name="resource.v_admin"></object>
-        <object name="resource.v_accounts"></object>
+        <object name="resource.acc_auth"></object>
+        <object name="resource.acc_bans"></object>
         <object name="resource.ui_pause"></object>
         <object name="resource.v_chat"></object>
         <object name="resource.v_radar"></object>
@@ -72,6 +73,7 @@
         <object name="resource.v_discordmanager"></object>
         <object name="resource.claude-mcp"></object>
         <object name="resource.tiktok-live"></object>
+        <object name="resource.acc_auth"></object>
     </group>
     <group name="FileAccess">
         <acl name="FileAccess"></acl>

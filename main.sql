@@ -18,7 +18,7 @@
 
 
 -- ============================================================================
--- accounts  (owner: v_accounts, via v_mysql)
+-- accounts  (owner: acc_auth, via v_mysql)
 -- ----------------------------------------------------------------------------
 -- Replaces the old `global_account_data` table. One row per registered
 -- account.
@@ -27,7 +27,7 @@
 --                 pairs (type = string | int | float | boolean). This is what
 --                 exports.v_mysql:getAccData / setAccData read and write - the
 --                 replacement for MTA's own getAccountData / setAccountData.
---   password      account password hash (managed by v_accounts).
+--   password      account password hash (managed by acc_auth).
 --   email         optional contact e-mail.
 --   display_name  shown name, independent of the login/account name.
 --   admin_level   staff level, 0 = player (read by v_admin, v_levelsys, ...).
@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 
 
 -- ============================================================================
--- bans  (owner: v_accounts, via v_mysql)
+-- bans  (owner: acc_bans, via v_mysql)
 -- ----------------------------------------------------------------------------
--- Account bans, shared by every server on this database. v_accounts also
+-- Account bans, shared by every server on this database. acc_bans also
 -- creates the table on start (CREATE TABLE IF NOT EXISTS).
 --
 --   account_name  banned account.
@@ -376,4 +376,43 @@ CREATE TABLE IF NOT EXISTS `gangwars` (
     `created_at`     INT          DEFAULT NULL,
     `updated_by`     VARCHAR(50)  DEFAULT NULL,
     `updated_at`     INT          DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- password_resets  (acc_auth: forgotten password codes)
+-- ---------------------------------------------------------------------------
+-- One row per emailed code; only the sha256 of the code is stored. used_at = 0
+-- while the code is alive. acc_auth also creates the table on start.
+CREATE TABLE IF NOT EXISTS `password_resets` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `account_name` VARCHAR(50)  NOT NULL,
+    `code_hash`    CHAR(64)     NOT NULL,
+    `expires_at`   INT          NOT NULL DEFAULT 0,
+    `attempts`     INT          NOT NULL DEFAULT 0,
+    `serial`       VARCHAR(32)  DEFAULT NULL,
+    `ip`           VARCHAR(45)  DEFAULT NULL,
+    `created_at`   INT          NOT NULL DEFAULT 0,
+    `used_at`      INT          NOT NULL DEFAULT 0,
+    KEY `idx_account` (`account_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- accounts.email: one account per email (several NULLs are allowed).
+-- acc_auth adds it on start when it is missing:
+-- ALTER TABLE `accounts` ADD UNIQUE KEY `uniq_email` (`email`);
+
+-- ---------------------------------------------------------------------------
+-- news  (v_news: /news editor, login screen and account menu)
+-- ---------------------------------------------------------------------------
+-- published_at may be in the future (scheduled). deleted_at > 0 = deleted.
+-- v_news also creates the table on start.
+CREATE TABLE IF NOT EXISTS `news` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `published_at` INT          NOT NULL DEFAULT 0,
+    `title`        VARCHAR(255) NOT NULL DEFAULT '',
+    `body`         TEXT         NOT NULL,
+    `author`       VARCHAR(64)  NOT NULL DEFAULT '',
+    `created_at`   INT          NOT NULL DEFAULT 0,
+    `updated_at`   INT          NOT NULL DEFAULT 0,
+    `deleted_at`   INT          NOT NULL DEFAULT 0,
+    KEY `idx_published` (`published_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

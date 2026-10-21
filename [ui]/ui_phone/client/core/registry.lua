@@ -49,7 +49,7 @@ function PhoneApp.register(def)
 end
 
 -- Apps build their texts (L) inside a deferred function: PhoneApp.defer(fn).
--- The queue runs once the player is loaded (v_accounts loading gate), then the
+-- The queue runs once the player is loaded (acc_loading gate), then the
 -- resource reports ready.
 local deferred, loaded = {}, false
 
@@ -58,7 +58,7 @@ local function runDeferred()
     loaded = true
     for _, fn in ipairs(deferred) do fn() end
     deferred = {}
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 
 function PhoneApp.defer(fn)

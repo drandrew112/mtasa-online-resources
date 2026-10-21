@@ -39,6 +39,8 @@ end
 
 -- Applies a whole { id = value } map, keeping any that could not be applied.
 local function applyAll(values)
+    -- the values arrive at the login, before the loading built the tree
+    if ensureSettingsTree then ensureSettingsTree() end
     local deferred, anyDeferred = {}, false
     for id, value in pairs(values) do
         if applyOne(id, value) == false then

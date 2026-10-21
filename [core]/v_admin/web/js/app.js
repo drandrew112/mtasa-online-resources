@@ -210,7 +210,7 @@
         mute: { title: 'Mute', minutes: 30, submit: 'Mute', hint: 'The chat mute survives a relog and runs out on its own.' },
         jail: { title: 'Admin jail', minutes: 30, submit: 'Jail' },
         kick: { title: 'Kick', submit: 'Kick' },
-        ban: { title: 'Ban account', submit: 'Ban', hint: 'Permanent account ban (v_accounts), the serial is stored too.' },
+        ban: { title: 'Ban account', submit: 'Ban', hint: 'Permanent account ban (acc_bans), the serial is stored too.' },
     };
 
     const selected = () => S.players.find(p => p.id === S.selPlayer);

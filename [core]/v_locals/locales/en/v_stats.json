@@ -1,13 +1,22 @@
 {
+  "v_stats.config.bt_deliveries": "Blood deliveries",
   "v_stats.config.deaths_all": "Deaths (all)",
   "v_stats.config.deaths_killed_by_players": "Deaths (killed by players)",
   "v_stats.config.distance_driven_land_vehicles": "Distance driven (land vehicles)",
   "v_stats.config.distance_flown_air_vehicles": "Distance flown (air vehicles)",
   "v_stats.config.distance_sailed_water_vehicles": "Distance sailed (water vehicles)",
   "v_stats.config.distance_walked": "Distance walked",
+  "v_stats.config.duty_time_atc": "Time on duty (ATC)",
+  "v_stats.config.duty_time_bloodtransport": "Time on duty (blood transport)",
+  "v_stats.config.duty_time_ems": "Time on duty (EMS)",
+  "v_stats.config.duty_time_traindriver": "Time on duty (train driver)",
+  "v_stats.config.ems_patients": "EMS patients treated",
+  "v_stats.config.gangwar_played": "Gang wars started",
+  "v_stats.config.gangwar_won": "Gang wars won",
   "v_stats.config.kills_peds": "Kills (peds)",
   "v_stats.config.kills_players": "Kills (players)",
   "v_stats.config.time_driving_land_vehicles": "Time driving (land vehicles)",
   "v_stats.config.time_flying_air_vehicles": "Time flying (air vehicles)",
-  "v_stats.config.time_sailing_water_vehicles": "Time sailing (water vehicles)"
+  "v_stats.config.time_sailing_water_vehicles": "Time sailing (water vehicles)",
+  "v_stats.config.train_shifts": "Train services driven"
 }

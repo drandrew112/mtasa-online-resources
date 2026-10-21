@@ -315,7 +315,7 @@ function Training.start(player, id)
     }
     sessions[player] = s
 
-    -- v_accounts saves this position instead of the training one
+    -- acc_savesys saves this position instead of the training one
     local f = TRAINING.FINISH
     setElementData(player, "save.position", { f[1], f[2], f[3], f.interior, f.dimension }, false)
 

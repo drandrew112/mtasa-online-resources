@@ -1,5 +1,6 @@
 {
   "ui_pause.pausemenu.about": "INFÓ",
+  "ui_pause.pausemenu.activities": "Tevékenységek",
   "ui_pause.pausemenu.browse_available_deathmatch_jobs": "Az elérhető Deathmatch Jobok böngészése.",
   "ui_pause.pausemenu.browse_available_race_jobs": "Az elérhető Race Jobok böngészése.",
   "ui_pause.pausemenu.browse_every_open_lobby_game_mode": "Az összes nyitott lobby böngészése: játék, mód és házigazda.",
@@ -79,6 +80,7 @@
   "ui_pause.pausemenu.type": "Típus",
   "ui_pause.pausemenu.vehicle_lod": "Vehicle LOD",
   "ui_pause.pausemenu.vehicle_time": "Járműidő",
+  "ui_pause.pausemenu.work": "Munka",
   "ui_pause.pausemenu.xp_to_next_level": "XP a következő szintig",
   "ui_pause.pausemenu.you_left_server": "Kiléptél a szerverről.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "A szinted, XP-d, játszott időd és statisztikáid.",

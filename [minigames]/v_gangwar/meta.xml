@@ -3,7 +3,7 @@
           description="Gang wars: armed players reserve a gang territory, ai_peds gang members defend it; /gangwareditor" />
 
     <!-- soft dependencies (resolved at use time): v_radar (zone circle), wp_manager (armed check), v_levelsys (XP),
-         v_accounts (editor name) -->
+         acc_auth (editor name) -->
     <include resource="v_locals" />
     <include resource="v_mysql" />
     <include resource="ai_peds" />

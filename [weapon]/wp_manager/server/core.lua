@@ -4,7 +4,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- equipped one (GTA slots 0..10; 11 and 12 are left alone). A weapon with 0 ammo is still owned:
 -- it is handed to GTA with 1 bullet and the client switches the fire control off ("empty").
 --
--- Two sets per player: `base` is the persistent one (v_accounts saves it through
+-- Two sets per player: `base` is the persistent one (acc_savesys saves it through
 -- getPlayerWeapons), `temp` is a temporary loadout of a minigame (Jobs, the job creator) that
 -- hides `base` until it is cleared. Every ammo change goes to the active set.
 
@@ -204,7 +204,7 @@ addEventHandler("onPlayerWasted", root, function()
     end
 end)
 
--- v_accounts saves on quit: keep the state a moment longer so its handler can still read it
+-- acc_savesys saves on quit: keep the state a moment longer so its handler can still read it
 addEventHandler("onPlayerQuit", root, function()
     local player = source
     setTimer(function() Players[player] = nil end, 2000, 1)
@@ -219,7 +219,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
     end
 end)
 
--- Runs at load time (before any onResourceStart handler), so v_accounts sees the restored players
+-- Runs at load time (before any onResourceStart handler), so acc_savesys sees the restored players
 -- as loaded and does not read the older DB copy over them.
 for _, player in ipairs(getElementsByType("player")) do
     local b = getElementData(player, BACKUP_KEY)

@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Weekly news panel: shown on a week rollover and for admin preview. The
--- login-screen display (next to login/register) is handled by v_accounts via exports.v_weekly:getWeeklyInfo.
+-- login-screen display (next to login/register) is handled by acc_ui via exports.v_weekly:getWeeklyInfo.
 
 PANEL = {}
 

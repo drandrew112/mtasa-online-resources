@@ -1,12 +1,12 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- bt_dispatch client: the text gate (v_accounts loading), drawing helpers, notifications, state.
+-- bt_dispatch client: the text gate (acc_loading), drawing helpers, notifications, state.
 
 local sw, sh = guiGetScreenSize()
 SW, SH = sw, sh
 function S(v) return v * math.max(0.65, sh / 1080) end
 
 -- ---------------------------------------------------------------------------------------------
--- Texts load only once the player is loaded (v_accounts loading gate, like v_inventory)
+-- Texts load only once the player is loaded (acc_loading gate, like v_inventory)
 -- ---------------------------------------------------------------------------------------------
 
 TextsLoaded = false
@@ -14,7 +14,7 @@ local function loadTexts()
     if TextsLoaded then return end
     TextsLoaded = true
     if syncPanelRender then syncPanelRender() end -- client/panel.lua
-    pcall(function() exports.v_accounts:resourceReady() end)
+    pcall(function() exports.acc_loading:resourceReady() end)
     triggerServerEvent("btd:requestState", resourceRoot)
 end
 addEvent("onClientLoadingStarted", true)

@@ -83,7 +83,7 @@ function isClothesMenuOpen() return menu ~= nil end
 
 local GROUPS = {}
 
--- Texts load only once the player is loaded (v_accounts loading gate).
+-- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
@@ -92,7 +92,7 @@ local function loadTexts()
         { key = "male",   label = L("world_clothes_shop.main.men"),   title = L("world_clothes_shop.main.men_2") },
         { key = "female", label = L("world_clothes_shop.main.women"), title = L("world_clothes_shop.main.women_2") },
     }
-    exports.v_accounts:resourceReady()
+    exports.acc_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)

@@ -3,7 +3,7 @@
     <download_priority_group>1001</download_priority_group>
 
     <!-- Account language is stored in accData "locale.language" (v_mysql).
-         v_accounts is NOT included on purpose: v_accounts itself will consume
+         The acc_* resources are NOT included on purpose: they consume
          v_locals (login screen), so the dependency must point this way only. -->
     <include resource="v_mysql" />
 
@@ -82,7 +82,11 @@
     <file src="locales/en/ui_interactobject.json" />
     <file src="locales/en/ui_pause.json" />
     <file src="locales/en/ui_phone.json" />
-    <file src="locales/en/v_accounts.json" />
+    <file src="locales/en/acc_auth.json" />
+    <file src="locales/en/acc_bans.json" />
+    <file src="locales/en/acc_loading.json" />
+    <file src="locales/en/acc_menu.json" />
+    <file src="locales/en/acc_ui.json" />
     <file src="locales/en/v_achievements.json" />
     <file src="locales/en/v_admin.json" />
     <file src="locales/en/v_arenawar.json" />
@@ -106,6 +110,7 @@
     <file src="locales/en/v_socialpanel.json" />
     <file src="locales/en/v_stats.json" />
     <file src="locales/en/v_timetrial.json" />
+    <file src="locales/en/v_news.json" />
     <file src="locales/en/v_weekly.json" />
     <file src="locales/en/work_atc.json" />
     <file src="locales/en/work_core.json" />
@@ -161,7 +166,11 @@
     <file src="locales/hu/ui_interactobject.json" />
     <file src="locales/hu/ui_pause.json" />
     <file src="locales/hu/ui_phone.json" />
-    <file src="locales/hu/v_accounts.json" />
+    <file src="locales/hu/acc_auth.json" />
+    <file src="locales/hu/acc_bans.json" />
+    <file src="locales/hu/acc_loading.json" />
+    <file src="locales/hu/acc_menu.json" />
+    <file src="locales/hu/acc_ui.json" />
     <file src="locales/hu/v_achievements.json" />
     <file src="locales/hu/v_admin.json" />
     <file src="locales/hu/v_arenawar.json" />
@@ -185,6 +194,7 @@
     <file src="locales/hu/v_socialpanel.json" />
     <file src="locales/hu/v_stats.json" />
     <file src="locales/hu/v_timetrial.json" />
+    <file src="locales/hu/v_news.json" />
     <file src="locales/hu/v_weekly.json" />
     <file src="locales/hu/work_atc.json" />
     <file src="locales/hu/work_core.json" />
