@@ -15,6 +15,7 @@ local C = {
     head   = tocolor(25, 30, 38, 255),
     accent = tocolor(64, 156, 180, 255),
     sel    = tocolor(64, 156, 180, 50),
+    textSel= tocolor(64, 156, 180, 120),
     field  = tocolor(32, 36, 42, 255),
     text   = tocolor(228, 233, 238, 255),
     dim    = tocolor(146, 158, 170, 255),
@@ -36,6 +37,8 @@ local listScroll = 0
 local focus = nil        -- "date" | "time" | "title" | "body"
 local deleteArmed = 0    -- tick of the first Delete click (second click within 3 s deletes)
 local hits = {}
+local dragging = nil     -- field id while the left button is held after clicking into it (selection)
+local dragFrom = nil     -- press point; the selection only follows the mouse once it moved away
 
 local fields = {
     date  = TextField.new{ max = 10, filter = function(ch) return ch:match("[%d%.]") ~= nil end },
@@ -50,6 +53,7 @@ local function notify(text)
 end
 
 local function setFocus(id)
+    if focus and focus ~= id then fields[focus].anchor = nil end
     focus = id
     setElementData(localPlayer, "textInputOpen", id ~= nil, false)
 end
@@ -125,16 +129,19 @@ local function fieldBox(id, x, y, w, h)
     end
     dxDrawRectangle(x, y, s(3), h, C.accent)
     local pad = s(10)
-    local style = { font = "default", scale = s(1.1), color = C.text, caret = C.text }
+    local style = { font = "default", scale = s(1.1), color = C.text, caret = C.text, sel = C.textSel }
     if f.multiline then
         f:draw(x + pad, y + pad, w - pad * 2 - s(8), h - pad * 2, focused, style)
     else
         f:draw(x + pad, y, w - pad * 2, h, focused, style)
     end
     hit(x, y, w, h, function(px, py)
+        local shift = focus == id and (getKeyState("lshift") or getKeyState("rshift"))
         setFocus(id)
-        f:clickAt(px, py)
+        f:clickAt(px, py, shift)
+        dragging, dragFrom = id, { px, py }
     end)
+    hits[#hits].field = id
 end
 
 --------------------------------------------------------------------------------
@@ -142,6 +149,16 @@ end
 --------------------------------------------------------------------------------
 
 local function render()
+    if dragging then
+        if getKeyState("mouse1") and isCursorShowing() then
+            local cx, cy = getCursorPosition()
+            cx, cy = cx * sw, cy * sh
+            if dragFrom and math.abs(cx - dragFrom[1]) + math.abs(cy - dragFrom[2]) > 3 then dragFrom = nil end
+            if not dragFrom then fields[dragging]:dragTo(cx, cy) end
+        else
+            dragging = nil
+        end
+    end
     hits = {}
     local W, H = s(1260), s(760)
     local X, Y = math.floor((sw - W) / 2), math.floor((sh - H) / 2)
@@ -330,8 +347,16 @@ addEventHandler("onClientKey", root, function(key, press)
             nextField((getKeyState("lshift") or getKeyState("rshift")) and -1 or 1)
         elseif (key == "enter" or key == "num_enter") and not f.multiline then
             nextField(1)
-        else
-            f:key(key)
+        elseif key == "a" and ctrlDown() then
+            f:selectAll()
+        elseif (key == "c" or key == "x") and ctrlDown() then
+            local sel = f:getSelected()
+            if sel then
+                setClipboard(sel)
+                if key == "x" then f:deleteSelection() end
+            end
+        elseif key ~= "v" or not ctrlDown() then -- Ctrl+V arrives as onClientPaste
+            f:key(key, getKeyState("lshift") or getKeyState("rshift"))
         end
         return
     end
@@ -370,6 +395,18 @@ addEventHandler("onClientClick", root, function(btn, state, absX, absY)
         end
     end
     setFocus(nil)
+end)
+
+addEventHandler("onClientDoubleClick", root, function(btn, absX, absY)
+    if not open or btn ~= "left" then return end
+    for i = #hits, 1, -1 do
+        local h = hits[i]
+        if h.field and inRect(absX, absY, h.x, h.y, h.w, h.h) then
+            dragging = nil
+            fields[h.field]:selectWordAt(absX, absY)
+            return
+        end
+    end
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
