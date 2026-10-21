@@ -433,7 +433,10 @@ local function ensureRadarTextures()
 	local allReady = true
 	for name, file in pairs(radarTextureFiles) do
 		if not isElement(createdTextures[name]) then
-			local tex = dxCreateTexture(file)
+			-- No mipmaps: the lower mip levels made the map's transparency change with
+			-- the zoom level (the bigmap PNG averages opaque land with transparent water,
+			-- the 3072px minimap JPG is not a power of two), on both the minimap and bigmap.
+			local tex = dxCreateTexture(file, "argb", false, "clamp")
 			if isElement(tex) then
 				createdTextures[name] = tex
 				applyRadarTextureEdge(name)
