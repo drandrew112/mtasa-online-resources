@@ -162,11 +162,14 @@ function tile(layer, id, x, y, w, h, title, subtitle, content, activate, style)
         dxDrawRectangle(x + t, y + h - S(7), w - t * 2, S(4), C.accent)
     end
     local pad = S(18)
+    -- the clip box must fit the scaled font, or the bottom of the letters is cut
+    local ts = style == "join" and 2.1 or 1.15
+    local th = math.max(S(26), dxGetFontHeight(ts * fontScale(FONT.head), FONT.head))
     if title then
-        text(L.upper(title), x + pad, y + pad, w - pad * 2, S(26), C.white, style == "join" and 2.1 or 1.15, FONT.head, "left", "top")
+        text(L.upper(title), x + pad, y + pad, w - pad * 2, th, C.white, ts, FONT.head, "left", "top")
     end
     if subtitle then
-        text(subtitle, x + pad, y + pad + (style == "join" and S(44) or S(28)), w - pad * 2, S(20), style == "join" and C.text or C.dim, 0.95, FONT.row, "left", "top")
+        text(subtitle, x + pad, y + pad + (style == "join" and th + S(4) or S(28)), w - pad * 2, S(20), style == "join" and C.text or C.dim, 0.95, FONT.row, "left", "top")
     end
     if content then content(x + pad, y + pad, w - pad * 2, h - pad * 2, focused) end
     return focused
