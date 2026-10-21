@@ -1,12 +1,18 @@
 -- DX text field without ui_core: single or multi line, caret, word wrap,
 -- scrolling. Keyboard input is fed by the owner (editor.lua):
 --   onClientCharacter -> field:insert(ch), onClientPaste -> field:insert(text),
---   onClientKey       -> field:key(key) (backspace, delete, arrows, home, end, enter)
+--   onClientKey       -> field:key(key, shift) (backspace, delete, arrows, home, end, enter;
+--                        shift extends the selection)
 --
 --   local f = TextField.new{ max = 120, multiline = false, filter = fn(ch) -> bool }
 --   f:setText(s) / f:getText()
---   f:draw(x, y, w, h, focused, style)  style = { font, scale, color, caret, lineH }
---   f:clickAt(px, py)                   puts the caret under the cursor
+--   f:draw(x, y, w, h, focused, style)  style = { font, scale, color, caret, sel, lineH }
+--   f:clickAt(px, py, shift)            puts the caret under the cursor (shift: extend selection)
+--   f:dragTo(px, py)                    moves the caret, keeps the anchor (mouse drag selection)
+--   f:selectWordAt(px, py) / f:selectAll()
+--   f:getSelected() -> text or nil, f:deleteSelection()
+--
+-- Selection = the chars between `anchor` and `caret` (0-based positions); none when nil or equal.
 
 TextField = {}
 TextField.__index = TextField
@@ -19,7 +25,7 @@ function TextField.new(opts)
     opts = opts or {}
     return setmetatable({
         text = "", caret = 0, max = opts.max or 64, multiline = opts.multiline == true,
-        filter = opts.filter, layout = nil, layoutKey = nil, scroll = 0, desiredX = nil,
+        filter = opts.filter, layout = nil, layoutKey = nil, scroll = 0, desiredX = nil, anchor = nil,
     }, TextField)
 end
 
@@ -29,13 +35,41 @@ function TextField:setText(s)
     s = tostring(s or "")
     if not self.multiline then s = s:gsub("[\r\n]", " ") end
     if len(s) > self.max then s = usub(s, 1, self.max) end
-    self.text, self.caret, self.scroll, self.layout = s, len(s), 0, nil
+    self.text, self.caret, self.scroll, self.layout, self.anchor = s, len(s), 0, nil, nil
+end
+
+-- selection as 0-based positions a < b, or nil
+function TextField:selRange()
+    local a, b = self.anchor, self.caret
+    if not a or a == b then return nil end
+    if a > b then a, b = b, a end
+    return a, b
+end
+
+function TextField:getSelected()
+    local a, b = self:selRange()
+    if not a then return nil end
+    return usub(self.text, a + 1, b)
+end
+
+function TextField:deleteSelection()
+    local a, b = self:selRange()
+    self.anchor = nil
+    if not a then return false end
+    self.text = usub(self.text, 1, a) .. usub(self.text, b + 1)
+    self.caret, self.layout, self.desiredX = a, nil, nil
+    return true
+end
+
+function TextField:selectAll()
+    self.anchor, self.caret, self.desiredX = 0, len(self.text), nil
 end
 
 function TextField:insert(str)
     str = tostring(str or ""):gsub("\r\n?", "\n")
     if not self.multiline then str = str:gsub("\n", " ") end
     str = str:gsub("\t", "    ")
+    self:deleteSelection()
     local out, room = {}, self.max - len(self.text)
     for i = 1, len(str) do
         if room <= 0 then break end
@@ -118,7 +152,23 @@ local function colAtX(line, x, font, scale)
     return best
 end
 
-function TextField:key(key)
+local MOVES = { arrow_l = true, arrow_r = true, arrow_u = true, arrow_d = true, home = true, ["end"] = true }
+
+function TextField:key(key, shift)
+    if MOVES[key] then
+        local a, b = self:selRange()
+        if shift then
+            self.anchor = self.anchor or self.caret
+        else
+            self.anchor = nil
+            -- plain left/right on a selection: caret to its edge
+            if a and key == "arrow_l" then self.caret, self.desiredX = a, nil return end
+            if a and key == "arrow_r" then self.caret, self.desiredX = b, nil return end
+        end
+    elseif (key == "backspace" or key == "delete") and self:deleteSelection() then
+        return
+    end
+
     local total = len(self.text)
     if key == "backspace" then
         if self.caret > 0 then
@@ -171,12 +221,19 @@ function TextField:draw(x, y, w, h, focused, style)
         self.scroll = math.max(0, math.min(self.scroll, math.max(0, #lines - visible)))
     end
     self.drawRect = { x = x, y = y, w = w, h = h, lineH = lineH, visible = visible }
+    local sa, sb = self:selRange()
+    local selColor = style.sel or tocolor(64, 156, 180, 110)
 
     if not self.multiline then
         -- single line: shift left so the caret stays inside
         local before = usub(self.text, 1, self.caret)
         local shift = math.max(0, dxGetTextWidth(before, scale, font) - w + 2)
         self.shift = shift
+        if sa then
+            local x1 = math.max(x, x + dxGetTextWidth(usub(self.text, 1, sa), scale, font) - shift)
+            local x2 = math.min(x + w, x + dxGetTextWidth(usub(self.text, 1, sb), scale, font) - shift)
+            if x2 > x1 then dxDrawRectangle(x1, y + h * 0.15, x2 - x1, h * 0.7, selColor) end
+        end
         dxDrawText(self.text, x - shift, y, x + w, y + h, style.color, scale, font, "left", "center", true)
         if focused and getTickCount() % 1000 < 520 then
             local cx = x + dxGetTextWidth(before, scale, font) - shift
@@ -187,6 +244,17 @@ function TextField:draw(x, y, w, h, focused, style)
 
     for i = self.scroll + 1, math.min(#lines, self.scroll + visible) do
         local ly = y + (i - self.scroll - 1) * lineH
+        local l = lines[i]
+        if sa then
+            local base, stop = l.first - 1, l.first - 1 + l.count
+            local s0, e0 = math.max(sa, base), math.min(sb, stop)
+            if sb > base and sa <= stop and e0 >= s0 then
+                local x1 = x + dxGetTextWidth(usub(l.text, 1, s0 - base), scale, font)
+                local x2 = x + dxGetTextWidth(usub(l.text, 1, e0 - base), scale, font)
+                if sb > stop then x2 = x2 + 4 end -- selection goes on past the line end
+                if x2 > x1 then dxDrawRectangle(x1, ly + 1, x2 - x1, lineH - 2, selColor) end
+            end
+        end
         dxDrawText(lines[i].text, x, ly, x + w, ly + lineH, style.color, scale, font, "left", "top", true)
     end
     if focused and getTickCount() % 1000 < 520 and li > self.scroll and li <= self.scroll + visible then
@@ -208,16 +276,46 @@ function TextField:scrollBy(n)
     self.scroll = math.max(0, math.min(maxScroll, self.scroll + n))
 end
 
-function TextField:clickAt(px, py)
+-- text position under a screen point (nil before the first draw)
+function TextField:posAt(px, py)
     local r = self.drawRect
-    if not r or not self.layout then self.caret = len(self.text) return end
+    if not r or not self.layout then return nil end
     if not self.multiline then
-        self.caret = colAtX(self.layout[1], px - r.x + (self.shift or 0), self.font, self.scale)
-        return
+        return colAtX(self.layout[1], px - r.x + (self.shift or 0), self.font, self.scale)
     end
     local li = math.floor((py - r.y) / r.lineH) + 1 + self.scroll
     li = math.max(1, math.min(#self.layout, li))
     local l = self.layout[li]
-    self.caret = l.first - 1 + colAtX(l, px - r.x, self.font, self.scale)
-    self.desiredX = nil
+    return l.first - 1 + colAtX(l, px - r.x, self.font, self.scale)
+end
+
+function TextField:clickAt(px, py, shift)
+    local pos = self:posAt(px, py) or len(self.text)
+    if shift then
+        self.anchor = self.anchor or self.caret
+    else
+        self.anchor = pos
+    end
+    self.caret, self.desiredX = pos, nil
+end
+
+function TextField:dragTo(px, py)
+    local pos = self:posAt(px, py)
+    if not pos then return end
+    self.anchor = self.anchor or self.caret
+    self.caret, self.desiredX = pos, nil
+end
+
+function TextField:selectWordAt(px, py)
+    local pos = self:posAt(px, py)
+    if not pos then return end
+    local total = len(self.text)
+    local function isWord(i)
+        return i >= 1 and i <= total and not usub(self.text, i, i):match("[%s%p]")
+    end
+    if not isWord(pos) and not isWord(pos + 1) then return end
+    local a, b = pos, pos
+    while isWord(a) do a = a - 1 end
+    while isWord(b + 1) do b = b + 1 end
+    self.anchor, self.caret, self.desiredX = a, b, nil
 end

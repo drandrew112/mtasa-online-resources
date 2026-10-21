@@ -26,6 +26,7 @@ C = {
     join2    = tocolor(23, 72, 90, 255),
     accent   = tocolor(64, 156, 180, 255),
     accentDim= tocolor(64, 156, 180, 60),
+    textSel  = tocolor(64, 156, 180, 120),
     text     = tocolor(228, 233, 238, 255),
     white    = tocolor(255, 255, 255, 255),
     dim      = tocolor(146, 158, 170, 255),
@@ -192,21 +193,24 @@ end
 
 -- A text field (TextField from field.lua). onEnter(text) on Enter.
 function field(layer, id, x, y, w, h, tf, placeholder, onEnter, masked)
-    local focused = Menu.reg(layer, id, x, y, w, h, { field = tf, onEnter = onEnter })
+    local focused = Menu.reg(layer, id, x, y, w, h, { field = tf, onEnter = onEnter, masked = masked })
     dxDrawRectangle(x, y, w, h, C.field)
     dxDrawRectangle(x, y, S(3), h, C.accent)
     if focused then
         dxDrawRectangle(x, y + h - S(2), w, S(2), C.accent)
     end
     local pad = S(12)
-    local style = { font = FONT.row, scale = fontScale(FONT.row), color = C.text, caret = C.white }
+    local style = { font = FONT.row, scale = fontScale(FONT.row), color = C.text, caret = C.white, sel = C.textSel }
     if tf:getText() == "" and not focused then
         text(placeholder or "", x + pad, y, w - pad * 2, h, C.dim, 1.0, FONT.row)
     elseif masked then
         local shown = TextField.new{ max = 200 }
         shown:setText(("•"):rep(utf8.len(tf:getText()) or 0))
-        shown.caret = tf.caret
+        shown.caret, shown.anchor = tf.caret, tf.anchor
         shown:draw(x + pad, y, w - pad * 2, h, focused, style)
+        -- one dot per char: clicks / drags on tf map through the dots' layout
+        tf.drawRect, tf.layout, tf.layoutKey, tf.shift = shown.drawRect, shown.layout, nil, shown.shift
+        tf.font, tf.scale = shown.font, shown.scale
     else
         tf:draw(x + pad, y, w - pad * 2, h, focused, style)
     end
@@ -265,6 +269,8 @@ local function nearest(layer, from, dir)
 end
 
 function Menu.setFocus(layer, id)
+    local old = findReg(Menu.layer, Menu.focus[Menu.layer])
+    if old and old.field and old.id ~= id then old.field.anchor = nil end
     Menu.layer = layer
     Menu.focus[layer] = id
     local r = findReg(layer, id)
@@ -418,7 +424,18 @@ local function drawHint()
     end
 end
 
+local dragging, dragFrom = nil, nil -- TextField under a held left click / press point (selection)
+
 local function render()
+    if dragging then
+        if getKeyState("mouse1") and isCursorShowing() then
+            local cx, cy = cursorPos()
+            if dragFrom and math.abs(cx - dragFrom[1]) + math.abs(cy - dragFrom[2]) > 3 then dragFrom = nil end
+            if not dragFrom then dragging:dragTo(cx, cy) end
+        else
+            dragging = nil
+        end
+    end
     regs = { tabs = {}, page = {}, view = {} }
     wheels = {}
 
@@ -478,11 +495,24 @@ addEventHandler("onClientKey", root, function(key, press)
 
     local r = focusedReg()
     if r and r.field then
+        local f = r.field
+        if getKeyState("lctrl") or getKeyState("rctrl") then
+            if key == "a" then return f:selectAll() end
+            if (key == "c" or key == "x") and not r.masked then
+                local sel = f:getSelected()
+                if sel then
+                    setClipboard(sel)
+                    if key == "x" then f:deleteSelection() end
+                end
+                return
+            end
+            if key == "v" or key == "c" or key == "x" then return end -- Ctrl+V arrives as onClientPaste
+        end
         -- Backspace in an empty field goes back like everywhere else
-        local editing = not (key == "backspace" and r.field:getText() == "")
+        local editing = not (key == "backspace" and f:getText() == "")
         if editing and (key == "backspace" or key == "delete" or key == "home" or key == "end"
         or key == "arrow_l" or key == "arrow_r") then
-            return r.field:key(key)
+            return f:key(key, getKeyState("lshift") or getKeyState("rshift"))
         end
     end
 
@@ -524,15 +554,26 @@ addEventHandler("onClientClick", root, function(btn, state, absX, absY)
         for i = #list, 1, -1 do
             local r = list[i]
             if inRect(absX, absY, r) then
+                local shift = Menu.isFocused(layer, r.id) and (getKeyState("lshift") or getKeyState("rshift"))
                 Menu.setFocus(layer, r.id)
                 if r.field then
-                    r.field:clickAt(absX, absY)
+                    r.field:clickAt(absX, absY, shift)
+                    dragging, dragFrom = r.field, { absX, absY }
                 else
                     activate(r)
                 end
                 return
             end
         end
+    end
+end)
+
+addEventHandler("onClientDoubleClick", root, function(btn, absX, absY)
+    if not Menu.open or btn ~= "left" then return end
+    local r = focusedReg()
+    if r and r.field and inRect(absX, absY, r) then
+        dragging = nil
+        r.field:selectWordAt(absX, absY)
     end
 end)
 
