@@ -21,10 +21,10 @@ WS = {
     preview = {
         swing      = 35,                 -- degrees the weapon turns left/right
         swingSpeed = 0.0011,             -- radians per ms
-        distK      = 2.6,                -- camera distance = model radius * distK
-        minDist    = 0.75,
-        maxDist    = 2.4,
-        fov        = 60,
+        distK      = 3.4,                -- camera distance = model radius * distK
+        minDist    = 1.2,
+        maxDist    = 3.2,
+        fov        = 70,
     },
 
     -- Marker UI (3D label above the shop markers, work_core label look)
