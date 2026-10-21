@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- SETTINGS: the pause menu's settings through the ui_pause Settings API, plus
--- Preferences (acc_savesys, through the server) and Audio (acc_ui menu music).
+-- Preferences (acc_savesys, through the server).
 -- Category tiles on the page; a category opens as a view: Up / Down pick a
 -- setting, Left / Right (or Enter / click) change it right away.
 
@@ -8,11 +8,6 @@ local categories = nil   -- cached ui_pause categories (refreshed on change)
 
 local function pauseRunning()
     local res = getResourceFromName("ui_pause")
-    return res and getResourceState(res) == "running"
-end
-
-local function accUiRunning()
-    local res = getResourceFromName("acc_ui")
     return res and getResourceState(res) == "running"
 end
 
@@ -28,7 +23,6 @@ end)
 -- our own categories, after the ui_pause ones
 local function ownCategories()
     local prefs = (Menu.data.profile or {}).preferences or {}
-    local music = accUiRunning() and exports.acc_ui:isMusicEnabled()
     return {
         {
             id = "preferences", label = L("acc_menu.settings.preferences"), own = true,
@@ -37,15 +31,6 @@ local function ownCategories()
                   type = "choice", available = true,
                   valueText = prefs.spawnLocation == "random" and L("acc_menu.prefs.random") or L("acc_menu.prefs.last"),
                   step = function() togglePreference("spawnLocation") end },
-            },
-        },
-        {
-            id = "audio", label = L("acc_menu.settings.audio"), own = true,
-            items = {
-                { id = "menuMusic", label = L("acc_menu.settings.menu_music"), desc = L("acc_menu.settings.menu_music_desc"),
-                  type = "toggle", available = accUiRunning(), value = music,
-                  valueText = music and L("acc_menu.settings.on") or L("acc_menu.settings.off"),
-                  step = function() exports.acc_ui:setMusicEnabled(not exports.acc_ui:isMusicEnabled()) end },
             },
         },
     }

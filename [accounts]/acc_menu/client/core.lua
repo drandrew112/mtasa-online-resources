@@ -613,7 +613,7 @@ function Menu.show(data)
     setElementData(localPlayer, "hideHUD", true)
     showCursor(true)
     guiSetInputMode("no_binds")
-    accUi("setMusicActive", true)
+    accUi("setMusicActive", false) -- no music in the menu (stops the login music too)
 end
 
 function Menu.hide()
