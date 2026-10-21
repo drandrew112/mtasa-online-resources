@@ -161,7 +161,7 @@ watch these so they will not open on top of an already-open surface.
 ## Developer notes
 
 - Where a resource has its own detailed docs, they live in its `README.md` /
-  `readme.xml` (e.g. `[ui]/ui_browser`, `[core]/v_bank`, `[core]/v_mysql`,
+  `readme.xml` (e.g. `[ui]/ui_browser`, `[economy]/v_bank`, `[core]/v_mysql`,
   `[vehicles]/v_ownveh`).
 - Read/write account data with `exports.v_mysql:getAccData` / `setAccData`
   (never MTA's `getAccountData` / `setAccountData` — the mod is off the built-in

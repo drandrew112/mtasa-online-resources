@@ -151,13 +151,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Status:** OPEN
 - **Location:**
   - `[core]/v_mysql/scripts/accdata.lua:93` (`resolveName` → `getElementData(player, "accName")`)
-  - `[core]/v_accounts/server.lua:358` (`markLoggedIn` puts the identity into synced element data)
+  - `[accounts]/v_accounts/server.lua:358` (`markLoggedIn` puts the identity into synced element data)
   - Every `getAdminLevel`/`isAdmin` (≈25 copies, see MAINT-01) → `getAccData(player, "admin_level")` → `accName`
   - Direct trust of `admin_level` element data: `[ai]/ai_land_traffic/server/main.lua:134`, plus the
     fallback branches in `avi_core/server/admin.lua:4`, `med_erm/server/admin.lua:7`,
     `v_els/server/editor.lua:5`, `rw_core/server/role.lua:53` (13 reads in total)
   - `[core]/v_admin/server/jail.lua:79`: the escape check is skipped when `adminjail` element data is false
-  - `[core]/v_levelsys/server.lua:102`: `giveXp` reads `level`/`xp`/`next_xp` from element data
+  - `[player]/v_levelsys/server.lua:102`: `giveXp` reads `level`/`xp`/`next_xp` from element data
   - `mtaserver.conf`: `<elementdata_whitelisted>0`
 - **Problem:** In MTA a client can call `setElementData` on its own player element (and on other
   elements) and the change is synced to the server, unless a server `onElementDataChange`
@@ -260,7 +260,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Location:**
   - `[minigames]/v_arenawar/s_playermanager.lua:53` (`enterArena(player)`), `:91` (`exitArena(player, code)`), `:225` (`continueGame(player)`)
   - `[ui]/ui_pause/s_pausemenu.lua:3` (`pausemenu_joinArenawar` uses `source`)
-  - `[core]/v_spawnmanager/server.lua:81` (`respawnAfterWasted` uses `source`, no "is dead" check)
+  - `[player]/v_spawnmanager/server.lua:81` (`respawnAfterWasted` uses `source`, no "is dead" check)
 - **Problem:** The target player comes from the event argument or `source`, and either can be any element.
 - **Impact:** Force any player into or out of the arena, respawn anyone at any time (instant heal,
   teleport out of jail/arena/interiors), grief players.
@@ -273,13 +273,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** HIGH
 - **Status:** FIXED 2026-10-17
 - **Resolution (2026-10-17):** The `pos:saveToFile` event is gone. `/pos` now only sends
-  `pos:request`. The server (`[core]/v_spawnmanager/server.lua`) checks admin level ≥ 5 (from
+  `pos:request`. The server (`[player]/v_spawnmanager/server.lua`) checks admin level ≥ 5 (from
   v_mysql accData), applies a 1 s cooldown, reads the position **itself**, appends it to
   `positions.txt`, and answers with `pos:saved`. The client then prints it, copies it to the
   clipboard and places the marker and blip. This also fixes the old typo `local marker createMarker(...)`
   that left the blip without a marker. Players below level 5 get no reaction.
   Note: the admin level check still goes through `accName` (SEC-02).
-- **Location:** `[core]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:83` (`/pos` for everyone)
+- **Location:** `[player]/v_spawnmanager/server.lua:106` (`pos:saveToFile`), `client.lua:83` (`/pos` for everyone)
 - **Problem:** A remote event appends `text` to `positions.txt` with no permission check, no
   type/length check and no rate limit.
 - **Impact:** Disk exhaustion on the host (the event can be fired in a loop with megabyte strings).
@@ -335,7 +335,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
     v_mysql to the live server **by hand**, then restart v_mysql → v_accounts → v_locals.
     v_accounts needs the new v_mysql export.
   - `httpLogin` (web panels) is unchanged, see SEC-17.
-- **Location:** `[core]/v_accounts/server.lua:368` (`login_player`), `:416` (`register_player`); `server/db.lua:25,48` (sync queries)
+- **Location:** `[accounts]/v_accounts/server.lua:368` (`login_player`), `:416` (`register_player`); `server/db.lua:25,48` (sync queries)
 - **Problem:** Before logging in, a client can fire `login_player` as fast as it likes. Each call
   runs `accountNameExists` + `fetchAccountAuth` (2 blocking round trips to the remote MySQL)
   and then bcrypt. Only the HTTP login has a fail counter.
@@ -356,7 +356,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - The search runs in SQL (`account_name LIKE ? … LIMIT n`, `SPDB.searchAccountsAsync`), then
     loads the offline matches with one async prefetch. `getAllAccountNames` is no longer used here.
   - DM and crew message inserts are async; the row id is stored on the message when it arrives.
-- **Location:** `[player_interaction]/v_socialpanel/server.lua:510` (`sp:search`), `:614` (`sp:msg:send`); `[core]/v_accounts/server/db.lua:36` (`getAllAccountNames`)
+- **Location:** `[player_interaction]/v_socialpanel/server.lua:510` (`sp:search`), `:614` (`sp:msg:send`); `[accounts]/v_accounts/server/db.lua:36` (`getAllAccountNames`)
 - **Problem:** `sp:search` runs `SELECT account_name FROM accounts` (every row) and then 2
   blocking `getAccData` queries per offline match. Every DM or crew message is a blocking
   `mysqlInsert` (2 round trips). There is no throttle.
@@ -394,7 +394,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-12 — Debug/dev commands open to every player
 - **Severity:** HIGH
 - **Status:** OPEN
-- **Location:** `[core]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:83` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
+- **Location:** `[player]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:83` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
 - **Problem:** No permission checks. (`/pos` was fixed in SEC-07, the rest is still open.)
 - **Impact:** Instant full-health respawn and escape from arena/interiors/jobs. Together with
   SEC-02 also a jail escape. Free healing in fights.
@@ -457,7 +457,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-17 — Synchronous bcrypt in `httpLogin`, throttled only per username
 - **Severity:** MEDIUM
 - **Status:** OPEN
-- **Location:** `[core]/v_accounts/server.lua:254-277` (`passwordVerify` without a callback, line 269)
+- **Location:** `[accounts]/v_accounts/server.lua:254-277` (`passwordVerify` without a callback, line 269)
 - **Problem:** Each web login attempt blocks the main thread for a bcrypt verify (~50–150 ms)
   plus 2 sync queries. The fail counter is per **username**, so rotating usernames avoids it.
   v_admin/med_web/bt_web also count per caller id, but every attempt is still paid in full.
@@ -585,7 +585,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### BUG-05 — Bans are stored per server in `bans.xml`
 - **Severity:** MEDIUM
 - **Status:** FIXED
-- **Location:** `[core]/v_accounts/server.lua:11` (`BANS_FILE = "bans.xml"`), `:54`
+- **Location:** `[accounts]/v_accounts/server.lua:11` (`BANS_FILE = "bans.xml"`), `:54`
 - **Problem:** The account system is shared through MySQL, but bans are a local XML file. A ban
   on server 1 does not apply on server 2.
 - **Suggested fix:** Move bans into a `bans` table (account, serial, ip, until, reason, admin) and
@@ -741,7 +741,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Status:** OPEN — re-measured 2026-10-18: `v_modloader` is now 129 MB (the 63 MB `police_vg.txd`
   and 56 MB `ballas3.txd` are gone), `v_radar` 27 MB (`radar.png` 10.8 MB + `radar_3072.png`
   6.3 MB). None of the 28 `<file>` entries in v_modloader has `download="false"`.
-- **Location:** `[core]/v_modloader` (was 313 MB in the audit: `vehicles/police_vg.txd` 63 MB, `skins/ballas3.txd` 56 MB, `streak.txd` 16 MB, `ambulan.txd` 15 MB, `streak.dff` 14 MB, `cheetah.dff` 13.6 MB, …), `[ui]/v_radar` 21.6 MB (`radar.png` 10.7 MB **and** `radar.jpg` 3.7 MB), `[core]/v_accounts` 10.8 MB (`audio/main_menu.mp3` 5.5 MB), `[vehicles]/v_els` 7.7 MB (WAV sirens), `[maps]/map_ls_busstation` 5.7 MB
+- **Location:** `[core]/v_modloader` (was 313 MB in the audit: `vehicles/police_vg.txd` 63 MB, `skins/ballas3.txd` 56 MB, `streak.txd` 16 MB, `ambulan.txd` 15 MB, `streak.dff` 14 MB, `cheetah.dff` 13.6 MB, …), `[ui]/v_radar` 21.6 MB (`radar.png` 10.7 MB **and** `radar.jpg` 3.7 MB), `[accounts]/v_accounts` 10.8 MB (`audio/main_menu.mp3` 5.5 MB), `[vehicles]/v_els` 7.7 MB (WAV sirens), `[maps]/map_ls_busstation` 5.7 MB
 - **Problem:** Every file in `<file>` without `download="false"` must be downloaded before the
   player can play. The TXDs are very likely uncompressed or 4K. A GTA vehicle needs around
   2–8 MB.
@@ -796,7 +796,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   wp_manager controls (D4) and parachute skydiving (they need
   the control-lock API: `[ui]/ui_core/ControlLockAPI_DESIGN.MD`), v_inventory ports, the cable map
   line (move to v_radar, separate task).
-- **Location:** (line numbers from the 2026-10-17 audit, before the fixes above) Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[core]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[minigames]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
+- **Location:** (line numbers from the 2026-10-17 audit, before the fixes above) Examples: `[world]/world_cablecars/client.lua:26,34`, `[minigames]/v_arenawar/shared.lua:22`, `c_hud.lua:42`, `c_interface.lua:209`, `[player]/v_spawnmanager/client.lua:23,66`, `[core]/parachute/*` (3), `[railways]/rw_customtracks/client/*` (7), `[railways]/rw_passengers/client/*` (7), `[jobs]/v_jobcreator/client/*` (6, active even when nobody is editing), `[minigames]/v_timetrial/c_timetrial.lua:139`, `[world]/v_shop_robbery/c.lua:71` (`processLineOfSight` per frame while aiming), `v_modmenu/fr_client.lua:1130`
 - **Problem:** Every handler is called every frame, even when it returns early. The cost of the
   calls between VMs adds up. On low-end PCs this is several FPS.
 - **Suggested fix:** Attach handlers only while they are needed (UI open, player nearby, minigame
@@ -989,7 +989,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### MAINT-02 — Leftover files
 - **Severity:** LOW
 - **Status:** OPEN
-- **Location:** `v_modmenu/*.old` (3 files), `[core]/v_accounts/client.lua.old`, `[vehicles]/v_customs/old/` (11 Lua files with their own `meta.xml`), `[core]/v_spawnmanager/positions.txt` (runtime output)
+- **Location:** `v_modmenu/*.old` (3 files), `[accounts]/v_accounts/client.lua.old`, `[vehicles]/v_customs/old/` (11 Lua files with their own `meta.xml`), `[player]/v_spawnmanager/positions.txt` (runtime output)
 - **Correction (2026-10-17):** `*.old` and `v_customs/old/` are already git-ignored, so this is only local clutter, not repo content.
 - **Suggested fix:** Delete them, or move them to an `archive/` folder outside `resources/`.
   Git history keeps the old versions.

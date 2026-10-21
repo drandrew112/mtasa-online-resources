@@ -1,5 +1,5 @@
 # ai_land_traffic runtime data builder:  python tools/build_runtime.py [path/to/roads.nav]
-# The road network is navmesh's (resources/[core]/navmesh/data/runtime/roads.nav, built by its tools/build_roads.py).
+# The road network is navmesh's (resources/[ai]/navmesh/data/runtime/roads.nav, built by its tools/build_roads.py).
 # This turns it into the two compact files the resource loads, with the SAME lane and connection ids, so the
 # routes of the navmesh exports (lanes / connections) can be driven directly:
 #   data/runtime/geo.dat  - geometry (server + client, downloaded): lanes and curved connections
@@ -21,7 +21,7 @@ import collections, hashlib, math, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'data', 'runtime')
-NAV = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, '..', '..', '[core]', 'navmesh', 'data', 'runtime', 'roads.nav')
+NAV = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, '..', 'navmesh', 'data', 'runtime', 'roads.nav')
 
 A_LAT = 3.2          # m/s^2 comfortable lateral acceleration for the curve speed
 CONFLICT_DIST = 2.6  # m: two junction paths closer than this conflict (car width + margin)

@@ -1,6 +1,6 @@
 # ai_peds
 
-AI peds on the navmesh (`[core]/navmesh`, `<include>`; the calls go through pcall, so without it the peds still
+AI peds on the navmesh (`[ai]/navmesh`, `<include>`; the calls go through pcall, so without it the peds still
 run, with straight-line moves and no ped traffic). Modules:
 
 - **Ped traffic**: a few walkers on the sidewalks around players, only in built-up areas.

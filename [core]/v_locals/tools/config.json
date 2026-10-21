@@ -640,6 +640,6 @@
     "[railways]/rw_customtracks/data/network/files.json"
   ],
   "text_files": {
-    "[core]/v_introduce/rules.txt": "v_introduce/rules.txt"
+    "[accounts]/v_introduce/rules.txt": "v_introduce/rules.txt"
   }
 }

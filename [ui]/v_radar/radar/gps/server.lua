@@ -4,7 +4,7 @@
 
 local CHANNELS = { waypoint = true, objective = true }
 
--- navmesh findVehicleRoute opts (README of [core]/navmesh)
+-- navmesh findVehicleRoute opts (README of [ai]/navmesh)
 local ROUTE_OPTS = {
 	profile = "gps",
 	simplify = 0.5,        -- metres: thins the lane geometry (kept close: the 3D ribbon follows it)

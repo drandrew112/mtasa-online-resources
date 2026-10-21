@@ -1,6 +1,6 @@
 # ai_land_traffic
 
-Server-simulated AI road traffic on the navmesh lane network (`[core]/navmesh`, a required resource: `<include>`).
+Server-simulated AI road traffic on the navmesh lane network (`[ai]/navmesh`, a required resource: `<include>`).
 
 ## How it works
 

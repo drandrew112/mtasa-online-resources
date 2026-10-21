@@ -1,6 +1,6 @@
 -- GPS navigation on the navmesh road network.
 --
--- The routes come from the navmesh resource ([core]/navmesh, server side, lane-level roads): a route tracker asks
+-- The routes come from the navmesh resource ([ai]/navmesh, server side, lane-level roads): a route tracker asks
 -- the v_radar server (radar/gps/server.lua), which runs navmesh's async route search and sends the points back.
 -- A tracker follows the player along its route: passed points are dropped from the drawing, and when the player
 -- leaves the route (drove off, missed a turn) or drives against it, a new route is requested from the current

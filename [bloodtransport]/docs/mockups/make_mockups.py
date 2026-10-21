@@ -5,8 +5,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-FONT_R = os.path.join(RES, "[core]", "v_inventory", "client", "fonts", "Roboto.ttf")
-FONT_B = os.path.join(RES, "[core]", "v_inventory", "client", "fonts", "RobotoB.ttf")
+FONT_R = os.path.join(RES, "[player]", "v_inventory", "client", "fonts", "Roboto.ttf")
+FONT_B = os.path.join(RES, "[player]", "v_inventory", "client", "fonts", "RobotoB.ttf")
 RADAR = os.path.join(RES, "[ui]", "v_radar", "radar", "files", "radar.png")
 
 W, H = 1920, 1080
