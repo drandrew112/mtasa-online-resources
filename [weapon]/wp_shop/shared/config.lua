@@ -55,22 +55,112 @@ WS = {
             preview  = { x = 295.00, y = -39.50, z = 1001.88 },
             camera   = { x = 295.00, y = -37.70, z = 1002.45 },
         },
-        -- Not measured yet: only the stock arrival points (floor z + 0.95). Fill in
-        -- clerk / counter / preview / camera before a shop uses them.
-        [2] = { name = "Ammu-Nation", interior = 4, exit = { x = 285.80, y = -85.45, z = 1001.49, rot = 270 } },
-        [3] = { name = "Ammu-Nation", interior = 6, exit = { x = 296.92, y = -111.97, z = 1001.52, rot = 121 } },
-        [4] = { name = "Ammu-Nation", interior = 6, exit = { x = 316.53, y = -169.61, z = 999.61, rot = 0 } },
+        [2] = {
+            name     = "Ammu-Nation",
+            interior = 4,
+            -- measured live 2026-10-21: floor z 1000.52, glass counter top z 1001.53,
+            -- x 292.18..293.19, y -82..-86.5 (faces west); door (1537) in the south wall, y -87.14
+            exit     = { x = 285.60, y = -86.30, z = 1001.52, rot = 180 },
+            inside   = { x = 286.20, y = -84.50, z = 1001.52, rot = 0 },
+            clerk    = { x = 293.89, y = -84.25, z = 1001.52, rot = 90 },
+            counter  = { x = 291.46, y = -84.25, z = 1001.52 },
+            preview  = { x = 292.69, y = -84.25, z = 1001.88 },
+            camera   = { x = 290.89, y = -84.25, z = 1002.45 },
+        },
+        [3] = {
+            name     = "Ammu-Nation",
+            interior = 6,
+            -- measured live 2026-10-21: floor z 1000.52, counter top z 1001.53,
+            -- x 286..293.5, y -110.13..-111.16 (faces north), clerk stool at (290, -112);
+            -- door (1533) at the end of the south vestibule, y -112.42
+            exit     = { x = 296.90, y = -111.60, z = 1001.52, rot = 180 },
+            inside   = { x = 296.90, y = -109.80, z = 1001.52, rot = 90 },
+            clerk    = { x = 291.00, y = -111.86, z = 1001.52, rot = 0 },
+            counter  = { x = 291.00, y = -109.41, z = 1001.52 },
+            preview  = { x = 291.00, y = -110.65, z = 1001.88 },
+            camera   = { x = 291.00, y = -108.85, z = 1002.45 },
+        },
+        [4] = {
+            name     = "Ammu-Nation",
+            interior = 6,
+            -- measured live 2026-10-21: floor z 998.59, counter top z 999.67,
+            -- x 310..314.5, y -166.49..-167.41 (faces north, L arm down x 314.5);
+            -- door (1533) in the south wall, y -170.65
+            exit     = { x = 316.50, y = -169.80, z = 999.59, rot = 180 },
+            inside   = { x = 316.50, y = -168.00, z = 999.59, rot = 0 },
+            clerk    = { x = 312.25, y = -168.11, z = 999.59, rot = 0 },
+            counter  = { x = 312.25, y = -165.77, z = 999.59 },
+            preview  = { x = 312.25, y = -166.95, z = 1000.02 },
+            camera   = { x = 312.25, y = -165.15, z = 1000.59 },
+        },
+        -- Two-floor shop with the shooting range: no stock entrance in the world, not measured.
         [5] = { name = "Ammu-Nation", interior = 7, exit = { x = 315.39, y = -142.24, z = 1000.55, rot = 180 } },
     },
 
     -- Shops: entrance outside, template, fixed inside dimension, catalog.
     -- outside = arrival point when leaving (default: the entrance marker).
-    -- Other stock entrances of template 1: San Fierro (-2625.85, 208.35, 4.99).
+    -- Every stock Ammu-Nation entrance of the map, measured live 2026-10-21: enter = stock enex
+    -- point on the ground (+1 m, moved out to ~0.8 m from the door where it touched it),
+    -- outside = 1.6 m further out, facing away from the door.
     shops = {
+        -- template 1 (AMMUN1)
         {
-            id = "ammu_ls_market", interior = 1, dimension = 1, catalog = "default",
+            id = "ammu_ls_market", interior = 1, dimension = 2201, catalog = "default",
             enter   = { x = 1368.35, y = -1279.06, z = 13.55 },
-            outside = { x = 1368.35, y = -1280.70, z = 13.55, rot = 180 },
+            outside = { x = 1366.75, y = -1279.06, z = 13.55, rot = 90 },
+        },
+        {
+            id = "ammu_sf_oceanflats", interior = 1, dimension = 2202, catalog = "default",
+            enter   = { x = -2625.85, y = 208.35, z = 4.81 },
+            outside = { x = -2625.85, y = 209.95, z = 4.62, rot = 0 },
+        },
+        -- template 2 (AMMUN2)
+        {
+            id = "ammu_rc_blueberry", interior = 2, dimension = 2203, catalog = "default",
+            enter   = { x = 242.67, y = -178.48, z = 1.58 },
+            outside = { x = 241.07, y = -178.48, z = 1.58, rot = 90 },
+        },
+        {
+            id = "ammu_rc_palomino", interior = 2, dimension = 2204, catalog = "default",
+            enter   = { x = 2333.43, y = 61.52, z = 26.71 },
+            outside = { x = 2335.03, y = 61.52, z = 26.48, rot = 270 },
+        },
+        {
+            id = "ammu_lv_comealot", interior = 2, dimension = 2205, catalog = "default",
+            enter   = { x = 2159.10, y = 943.33, z = 10.82 },
+            outside = { x = 2157.50, y = 943.33, z = 10.82, rot = 90 },
+        },
+        {
+            id = "ammu_lv_oldstrip", interior = 2, dimension = 2206, catalog = "default",
+            enter   = { x = 2539.04, y = 2083.56, z = 10.82 },
+            outside = { x = 2537.44, y = 2083.56, z = 10.82, rot = 90 },
+        },
+        -- template 3 (AMMUN3)
+        {
+            id = "ammu_bc_bonecounty", interior = 3, dimension = 2207, catalog = "default",
+            enter   = { x = 777.23, y = 1871.47, z = 4.91 },
+            outside = { x = 778.83, y = 1871.47, z = 4.91, rot = 270 },
+        },
+        {
+            id = "ammu_bc_fortcarson", interior = 3, dimension = 2208, catalog = "default",
+            enter   = { x = -315.68, y = 829.87, z = 14.24 },
+            outside = { x = -314.08, y = 829.87, z = 14.24, rot = 270 },
+        },
+        {
+            id = "ammu_ws_angelpine", interior = 3, dimension = 2209, catalog = "default",
+            enter   = { x = -2093.35, y = -2464.59, z = 30.63 },
+            outside = { x = -2092.34, y = -2463.34, z = 30.63, rot = 321 },
+        },
+        {
+            id = "ammu_ls_willowfield", interior = 3, dimension = 2210, catalog = "default",
+            enter   = { x = 2400.50, y = -1981.48, z = 13.55 },
+            outside = { x = 2400.50, y = -1979.88, z = 13.55, rot = 0 },
+        },
+        -- template 4 (AMMUN5)
+        {
+            id = "ammu_tr_elquebrados", interior = 4, dimension = 2211, catalog = "default",
+            enter   = { x = -1508.89, y = 2610.20, z = 55.84 },
+            outside = { x = -1508.89, y = 2608.60, z = 55.84, rot = 180 },
         },
     },
 
