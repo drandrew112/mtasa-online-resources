@@ -67,6 +67,14 @@ Takes money from the account and hands it over as cash.
 > `takeBankMoney`), not `"not_enough_cash"`. If you need the `"not_enough_cash"`
 > string instead, it is a one-line change in `server.lua`.
 
+### `payMoney(player, amount)`
+Pays for a purchase: takes the amount from the **cash** when it covers it, otherwise
+from the **bank account** (shown in the ui_core money overlay like `forceTakeMoney`).
+Nothing is taken when neither covers it (no split between cash and bank).
+- `true, "cash"` / `true, "bank"` — paid, and from where (for refunds)
+- `false, "not_enough_money"` — neither the cash nor the account covers it
+- `false, "player_not_found"` — invalid player element or `amount`
+
 Every export rounds `amount` to a positive integer; `0` or a negative value
 returns `"player_not_found"` (invalid input).
 

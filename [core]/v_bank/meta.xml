@@ -15,6 +15,7 @@
     <export function="giveBankMoney" type="server" />
     <export function="depositMoney"  type="server" />
     <export function="withdrawMoney" type="server" />
+    <export function="payMoney"      type="server" />
 
     <!-- Sound effect. Server export fires it for a player (or all); the client
          export is for other client-side resources. -->

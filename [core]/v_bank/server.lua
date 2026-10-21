@@ -221,6 +221,30 @@ function withdrawMoney(player, amount)
     return true
 end
 
+-- Pays an amount from the cash, or when the cash is not enough, from the bank account.
+-- Nothing is taken when neither covers it. For shops and other purchases.
+-- -> true, "cash" | true, "bank" | false, "not_enough_money" | false, "player_not_found"
+function payMoney(player, amount)
+    player = resolvePlayer(player)
+    if not player then return false, "player_not_found" end
+
+    amount = normaliseAmount(amount)
+    if not amount then return false, "player_not_found" end
+
+    if getPlayerMoney(player) >= amount then
+        takePlayerMoney(player, amount)
+        return true, "cash"
+    end
+
+    local balance = getBankMoney(player)
+    if balance >= amount then
+        setBankMoney(player, balance - amount)
+        triggerClientEvent(player, "v_bank:moneyTaken", resourceRoot, amount)
+        return true, "bank"
+    end
+    return false, "not_enough_money"
+end
+
 -- Plays the "pickup money" sound effect for a player (or everyone when omitted).
 -- -> true | "player_not_found"
 function playPickupMoneySound(player)
