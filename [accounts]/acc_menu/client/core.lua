@@ -32,6 +32,7 @@ C = {
     dim      = tocolor(146, 158, 170, 255),
     faint    = tocolor(255, 255, 255, 140),
     money    = tocolor(110, 220, 130, 255),
+    bank     = tocolor(120, 180, 255, 255),
     xp       = tocolor(255, 200, 90, 255),
     bad      = tocolor(230, 100, 100, 255),
     field    = tocolor(32, 36, 42, 255),
@@ -401,6 +402,10 @@ local function drawTop()
     local money = "€ " .. fmtInt(p.money or 0)
     local mw = textW(money, 1.1, FONT.rowB)
     text(money, rx - mw, S(26), mw, S(40), C.money, 1.1, FONT.rowB, "right", "center")
+    rx = rx - mw - S(16)
+    local bank = "€ " .. fmtInt(p.bank or 0)
+    local bw = textW(bank, 1.1, FONT.rowB)
+    text(bank, rx - bw, S(26), bw, S(40), C.bank, 1.1, FONT.rowB, "right", "center")
 end
 
 local function drawHint()

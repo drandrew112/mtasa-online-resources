@@ -111,6 +111,8 @@ MODULES[#MODULES + 1] = {
     id = "money",
     profile = function(player, out)
         out.money = tonumber(getData(player, "money-BETA")) or 0
+        -- bank_money is owned by v_bank (saved on every change), read for the menu only
+        out.bank = math.floor(tonumber(getData(player, "bank_money")) or 0)
     end,
     apply = function(player)
         local money = tonumber(getData(player, "money-BETA"))
