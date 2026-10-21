@@ -16,15 +16,22 @@ function setPanel(name, handoff)
     if setPanelRendering then setPanelRendering(UIState.active) end
     if Music then Music.update() end
 
+    -- the cursor is per resource: ours stays on (and blocks the controls) until
+    -- we hide it ourselves, even when another screen takes over
+    showCursor(UIState.active)
+
     if handoff and not UIState.active then return end
 
     setElementData(localPlayer, "hideHUD", UIState.active)
-    showCursor(UIState.active)
     uicore:toggleMoveControls(not UIState.active)
     guiSetInputMode(UIState.active and "no_binds" or "allow_binds")
 
     -- A banned player must not be able to move or act at all.
-    toggleAllControls(localPlayer, not (UIState.panel == "banned"))
+    if UIState.panel == "banned" then
+        toggleAllControls(false, true, false)
+    else
+        toggleAllControls(true, true, true)
+    end
 
     if not UIState.active then
         setCameraTarget(localPlayer)
