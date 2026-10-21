@@ -146,6 +146,7 @@ addEventHandler("onResourceStart", resourceRoot, buildCatalog)
 local function charge(player, amount)
     if getPlayerMoney(player) >= amount then
         takePlayerMoney(player, amount)
+        exports.ui_core:showMoney(player, "take", amount, "cash")
         return "cash"
     end
     if bankReady() and exports.v_bank:takeBankMoney(player, amount) == true then
@@ -159,6 +160,7 @@ local function refund(player, amount, from)
         exports.v_bank:giveBankMoney(player, amount)
     else
         givePlayerMoney(player, amount)
+        exports.ui_core:showMoney(player, "add", amount, "cash")
     end
 end
 

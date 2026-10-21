@@ -28,7 +28,10 @@ function LOGIN.claim(player)
     exports.v_mysql:setAccData(name, WEEKLY.LOGIN_KEY, id)
 
     local money, xp = bonus.money, bonus.xp
-    if money > 0 then givePlayerMoney(player, money) end
+    if money > 0 then
+        givePlayerMoney(player, money)
+        exports.ui_core:showMoney(player, "add", money, "cash")
+    end
     if xp > 0 then
         local res = getResourceFromName("v_levelsys")
         if res and getResourceState(res) == "running" then

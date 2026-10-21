@@ -23,6 +23,13 @@ local function notify(text)
     end
 end
 
+local function alert(text)
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then
+        exports.ui_core:setAlert(text, 218, 54, 51, 3000)
+    end
+end
+
 -- id -> ammo of the owned weapons (active set)
 function ownedWeapons()
     local out = {}
@@ -211,7 +218,12 @@ addEventHandler("ui_inac:tempMenuClose", root, function(id)
     lockControls()   -- ui_inac turned the move controls back on
 end)
 
-addEventHandler("wp_shop:result", resourceRoot, function(ok, text, id)
+addEventHandler("wp_shop:result", resourceRoot, function(ok, text, id, reason)
+    if reason == "no_money" then
+        alert(tostring(text or ""))
+        playSoundFrontEnd(4)
+        return
+    end
     notify(tostring(text or ""))
     if ok and Browse and Browse.state == "menu" and tonumber(id) == currentWeapon()
         and not WS.weapons[currentWeapon()].thrown then

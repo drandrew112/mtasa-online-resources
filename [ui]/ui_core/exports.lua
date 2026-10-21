@@ -103,17 +103,35 @@ end
 -- Rovid ideig megmutatja az egyenleget es alatta a valtozast:
 --   kind      = "add"  -> + € <change>  (zold)
 --               "take" -> - € <change>  (piros)
---   moneyType = "cash" -> keszpenz sor (zold egyenleg)
---               "bank" -> bankszamla sor (kek egyenleg)
--- A moneyType kotelezo; hianyzo/rossz ertekre warning + "cash".
+--   change    = pozitiv osszeg
+--   moneyType = "cash" -> keszpenz blokk (zold egyenleg)
+--               "bank" -> bankszamla blokk (kek egyenleg)
+-- Mindharom kotelezo; rossz ertekre error + false, nem jelenik meg semmi.
+-- Szerver oldalrol: exports.ui_core:showMoney(player, kind, change, moneyType).
 function showMoney(kind, change, moneyType)
     uiLog("showMoney: %s | %s | %s", tostring(kind), tostring(change), tostring(moneyType))
+    local who = sourceResource and getResourceName(sourceResource) or "?"
+    if kind ~= "add" and kind ~= "take" then
+        outputDebugString(("[ui_core] showMoney (%s): kind must be \"add\" or \"take\" (got %s)"):format(who, tostring(kind)), 1)
+        return false
+    end
     if moneyType ~= "cash" and moneyType ~= "bank" then
-        outputDebugString(("[ui_core] showMoney: moneyType must be \"cash\" or \"bank\" (got %s), using \"cash\""):format(tostring(moneyType)), 2)
-        moneyType = "cash"
+        outputDebugString(("[ui_core] showMoney (%s): moneyType must be \"cash\" or \"bank\" (got %s)"):format(who, tostring(moneyType)), 1)
+        return false
+    end
+    change = tonumber(change)
+    if not change or change <= 0 then
+        outputDebugString(("[ui_core] showMoney (%s): change must be a positive number (got %s)"):format(who, tostring(change)), 1)
+        return false
     end
     return UI.yOverlay:showMoney(kind, change, moneyType)
 end
+
+-- exports_s.lua showMoney(player, ...) -> ide
+addEvent("ui_core:showMoney", true)
+addEventHandler("ui_core:showMoney", resourceRoot, function(kind, change, moneyType)
+    showMoney(kind, change, moneyType)
+end)
 
 -- textInput.lua defines openTextInput / closeTextInput / isTextInputOpen; wrap
 -- the opener so the console keeps a trace of what asked for input.

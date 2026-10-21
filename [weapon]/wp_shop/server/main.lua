@@ -9,8 +9,9 @@ addEvent("wp_shop:buy", true)
 local blips   = {}   -- entrance blips
 local markers = {}   -- shop marker -> shop id
 
-local function result(player, ok, msg, id)
-    triggerClientEvent(player, "wp_shop:result", resourceRoot, ok, msg, id)
+-- reason: optional code for the client ("no_money" = alert instead of a notification)
+local function result(player, ok, msg, id, reason)
+    triggerClientEvent(player, "wp_shop:result", resourceRoot, ok, msg, id, reason)
 end
 
 ---------------------------------------------------------------- interiors
@@ -73,11 +74,17 @@ addEventHandler("world_interiors:ready", root, registerShops)
 
 ---------------------------------------------------------------- buying
 
+-- Distance check, not isElementWithinMarker: the cylinder's colshape is only markerSize tall, so
+-- a player standing on the floor is right at its top edge and often counts as outside.
 local function inShopMarker(player, shopId)
+    local px, py, pz = getElementPosition(player)
     for m, id in pairs(markers) do
         if id == shopId and isElement(m) and getElementDimension(m) == getElementDimension(player)
-            and getElementInterior(m) == getElementInterior(player) and isElementWithinMarker(player, m) then
-            return true
+            and getElementInterior(m) == getElementInterior(player) then
+            local mx, my, mz = getElementPosition(m)
+            if getDistanceBetweenPoints2D(px, py, mx, my) <= WS.markerSize + 0.5 and math.abs(pz - mz) < 2.5 then
+                return true
+            end
         end
     end
     return false
@@ -99,7 +106,12 @@ local function pay(player, price)
 end
 
 local function refund(player, price, from)
-    if from == "bank" then exports.v_bank:giveBankMoney(player, price) else givePlayerMoney(player, price) end
+    if from == "bank" then
+        exports.v_bank:giveBankMoney(player, price) -- v_bank shows it itself
+    else
+        givePlayerMoney(player, price)
+        exports.ui_core:showMoney(player, "add", price, "cash")
+    end
 end
 
 -- kind: "weapon" | "ammo" | "thrown"; count: magazines / pieces
@@ -144,7 +156,7 @@ addEventHandler("wp_shop:buy", resourceRoot, function(shopId, id, kind, count)
     end
     local paidFrom = pay(player, price)
     if not paidFrom then
-        result(player, false, L.msg("wp_shop.msg.no_money"))
+        result(player, false, L.msg("wp_shop.msg.no_money"), id, "no_money")
         return
     end
 

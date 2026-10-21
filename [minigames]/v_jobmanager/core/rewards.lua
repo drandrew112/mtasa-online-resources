@@ -230,7 +230,10 @@ end
 -- reward.level = { xpFrom, xpTo, steps = { {level, min, max}, ... } }
 function payReward(player, reward)
     if not isElement(player) then return end
-    if reward.money.total > 0 then givePlayerMoney(player, reward.money.total) end
+    if reward.money.total > 0 then
+        givePlayerMoney(player, reward.money.total)
+        exports.ui_core:showMoney(player, "add", reward.money.total, "cash")
+    end
 
     if not levelsysReady() then return end
     local level, xpFrom = tonumber(getElementData(player, "level")), tonumber(getElementData(player, "xp"))

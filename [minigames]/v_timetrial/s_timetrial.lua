@@ -205,7 +205,10 @@ local function tryFinish(player, marker)
         return endRun(player, false)
     end
 
-    if not run.test then givePlayerMoney(player, run.trial.reward) end
+    if not run.test then
+        givePlayerMoney(player, run.trial.reward)
+        exports.ui_core:showMoney(player, "add", run.trial.reward, "cash")
+    end
     endRun(player, true)
 end
 

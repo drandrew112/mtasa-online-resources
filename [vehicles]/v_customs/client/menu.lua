@@ -307,9 +307,6 @@ end)
 
 addEventHandler("v_customs:repairResult", root, function(ok, charged)
     if not ok or menuMode ~= "repair" then return end
-    if tonumber(charged) and tonumber(charged) > 0 then
-        uicore:showMoney("take", tonumber(charged), "cash")
-    end
     if not openMain() then leave() end
 end)
 
@@ -320,9 +317,6 @@ end)
 addEventHandler("v_customs:buyResult", root, function(ok, path, charged)
     if not ok then return end
     if path and previewByPath[path] then Preview.commit(previewByPath[path]) end
-    if tonumber(charged) and tonumber(charged) > 0 then
-        uicore:showMoney("take", tonumber(charged), "cash")
-    end
 
     local node    = path and Customs.resolve(path)
     local oneShot = node and (node.kind == "plate" or node.kind == "horn")

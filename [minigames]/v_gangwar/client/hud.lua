@@ -65,11 +65,6 @@ addEventHandler("gangwar:notify", resourceRoot, function(title, text)
     uicore:addNotification(title, text)
 end)
 
-addEvent("gangwar:reward", true)
-addEventHandler("gangwar:reward", resourceRoot, function(money)
-    if tonumber(money) and money > 0 then uicore:showMoney("add", money, "cash") end
-end)
-
 addEvent("gangwar:summary", true)
 addEventHandler("gangwar:summary", resourceRoot, function(s)
     if s.test then

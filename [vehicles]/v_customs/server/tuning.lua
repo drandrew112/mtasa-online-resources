@@ -161,6 +161,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     local charged = 0
     if not custom and price > 0 then
         takePlayerMoney(player, price)
+        exports.ui_core:showMoney(player, "take", price, "cash")
         charged = price
     end
 
@@ -186,6 +187,7 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
 
     setVehiclePlateText(veh, text)
     takePlayerMoney(player, price)
+    exports.ui_core:showMoney(player, "take", price, "cash")
     triggerClientEvent(player, "v_customs:buyResult", player, true, nil, price)
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.custom_plate_installed"))
 end)
@@ -207,7 +209,10 @@ addEventHandler("v_customs:repair", root, function()
     end
 
     fixVehicle(veh)
-    if price > 0 then takePlayerMoney(player, price) end
+    if price > 0 then
+        takePlayerMoney(player, price)
+        exports.ui_core:showMoney(player, "take", price, "cash")
+    end
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.vehicle_repaired"))
     triggerClientEvent(player, "v_customs:repairResult", player, true, price)
 end)

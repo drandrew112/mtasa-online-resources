@@ -42,7 +42,9 @@ local function chargeFrom(player, pot, amount)
     if pot == "bank" then
         return exports.v_bank:takeBankMoney(player, amount) == true
     end
-    return takePlayerMoney(player, amount) ~= false
+    if takePlayerMoney(player, amount) == false then return false end
+    exports.ui_core:showMoney(player, "take", amount, "cash")
+    return true
 end
 
 local function insuranceCost()
@@ -153,11 +155,13 @@ PhoneServer.on("contacts:action", function(player, contactKey, actionKey)
 
     if contactKey == "julia" and actionKey == "heal" then
         takePlayerMoney(player, action.cost)
+        exports.ui_core:showMoney(player, "take", action.cost, "cash")
         setElementHealth(player, 100)
         PhoneServer.toast(player, L.msg("ui_phone.contacts.julia_patched_you_up"))
 
     elseif contactKey == "julia" and actionKey == "armor" then
         takePlayerMoney(player, action.cost)
+        exports.ui_core:showMoney(player, "take", action.cost, "cash")
         setPedArmor(player, 100)
         PhoneServer.toast(player, L.msg("ui_phone.contacts.julia_refilled_your_armour"))
 

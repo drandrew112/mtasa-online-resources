@@ -45,6 +45,7 @@
     <export function="drawCrewTagBox" type="client" />
     <export function="showLevelOverlay" type="client" />
     <export function="showMoney" type="client" />
+    <export function="showMoney" type="server" />
     <export function="drawCrewTagBoxForPlayer" type="client" />
     <export function="getCrewTagBoxSize" type="client" />
 

@@ -94,6 +94,15 @@ local function normaliseAmount(amount)
     return amount
 end
 
+-- Shows a money change on the player's HUD (ui_core money overlay).
+--   kind = "add" | "take", moneyType = "cash" | "bank"
+local function showMoney(player, kind, amount, moneyType)
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then
+        exports.ui_core:showMoney(player, kind, amount, moneyType)
+    end
+end
+
 --------------------------------------------------------------------------------
 -- Load / save lifecycle
 --------------------------------------------------------------------------------
@@ -152,6 +161,7 @@ function takeBankMoney(player, amount)
     end
 
     setBankMoney(player, balance - amount)
+    showMoney(player, "take", amount, "bank")
     return true
 end
 
@@ -166,7 +176,7 @@ function forceTakeMoney(player, amount)
     if not amount then return "player_not_found" end
 
     local balance = setBankMoney(player, getBankMoney(player) - amount)
-    triggerClientEvent(player, "v_bank:moneyTaken", resourceRoot, amount)
+    showMoney(player, "take", amount, "bank")
     return true, balance
 end
 
@@ -179,6 +189,7 @@ function giveBankMoney(player, amount)
     if not amount then return "player_not_found" end
 
     setBankMoney(player, getBankMoney(player) + amount)
+    showMoney(player, "add", amount, "bank")
     return true
 end
 
@@ -197,6 +208,8 @@ function depositMoney(player, amount)
 
     takePlayerMoney(player, amount)
     setBankMoney(player, getBankMoney(player) + amount)
+    showMoney(player, "take", amount, "cash")
+    showMoney(player, "add", amount, "bank")
     return true
 end
 
@@ -218,6 +231,8 @@ function withdrawMoney(player, amount)
 
     setBankMoney(player, balance - amount)
     givePlayerMoney(player, amount)
+    showMoney(player, "take", amount, "bank")
+    showMoney(player, "add", amount, "cash")
     return true
 end
 
@@ -233,13 +248,14 @@ function payMoney(player, amount)
 
     if getPlayerMoney(player) >= amount then
         takePlayerMoney(player, amount)
+        showMoney(player, "take", amount, "cash")
         return true, "cash"
     end
 
     local balance = getBankMoney(player)
     if balance >= amount then
         setBankMoney(player, balance - amount)
-        triggerClientEvent(player, "v_bank:moneyTaken", resourceRoot, amount)
+        showMoney(player, "take", amount, "bank")
         return true, "bank"
     end
     return false, "not_enough_money"
@@ -286,7 +302,8 @@ function createMoneyPickup(x, y, z, money, player)
 
         collected = true
         givePlayerMoney(hitPlayer, money)
-        triggerClientEvent(hitPlayer, "v_bank:playPickupMoneySound", hitPlayer, money)
+        showMoney(hitPlayer, "add", money, "cash")
+        triggerClientEvent(hitPlayer, "v_bank:playPickupMoneySound", hitPlayer)
         destroyElement(moneyBag)
     end)
 

@@ -13,12 +13,18 @@ UI.yOverlay = {
         fadeTime = 400,
     },
 
-    -- Csak a penz (egyenleg + valtozas) rovid megjelenitesehez, tipusonkent
-    -- kulon: "cash" (zold) es "bank" (kek). change elojeles, a gyors egymas
-    -- utani mozgasok osszeadodnak amig a sor latszik.
+    -- Penzmozgasok rovid megjelenitese, tipusonkent kulon blokk: "cash" (zold)
+    -- felul, "bank" (kek) alatta - egyszerre mindketto latszhat. Egy blokk =
+    -- egyenleg sor + alatta a valtozas sorok (legujabb felul, a regiek lefele
+    -- tolodnak). Azonos iranyu mozgas a legujabb sorba adodik amig az meg teljesen
+    -- latszik; ellenkezo iranyu (levonasra hozzaadas / forditva) uj sort nyit.
     moneyOnly = {
-        cash = { active = false, startTick = 0, duration = 3000, fadeTime = 400, change = 0 },
-        bank = { active = false, startTick = 0, duration = 3000, fadeTime = 400, change = 0 },
+        duration = 4000, -- egy valtozas sor elettartama (ms), osszeadaskor ujraindul
+        fadeTime = 400,
+        maxRows  = 4,    -- valtozas sorok blokkonkent; a legregebbi esik ki
+        lastTick = 0,
+        cash = { entries = {} },
+        bank = { entries = {} },
     },
 }
 
@@ -156,32 +162,41 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     end
 end)
 
--- ui_core export: rovid ideig megmutatja a valtozott egyenleget es alatta a
--- valtozast (+ € 100 zolddel, - € 100 pirossal).
+-- ui_core export: rovid ideig megmutatja az egyenleget es alatta a valtozast
+-- (+ € 100 zolddel, - € 100 pirossal).
 --   kind      = "add" vagy "take"
 --   moneyType = "cash" (keszpenz, getPlayerMoney) vagy "bank" (bank_money)
+-- Az ellenorzes az exports.lua-ban van, ide mar ervenyes ertek jon.
+local MONEY_TYPES = { "cash", "bank" }
 local MONEY_COLORS = {
     cash = { 50, 200, 50 },
     bank = { 120, 180, 255 },
 }
 
 function UI.yOverlay:showMoney(kind, change, moneyType)
-    local mo = self.moneyOnly[moneyType]
-    if not mo then return false end
+    local mo = self.moneyOnly
+    local block = mo[moneyType]
+    if not block then return false end
 
-    local amount = math.abs(tonumber(change) or 0)
-    local signed = (kind == "take") and -amount or amount
+    local amount = math.floor(math.abs(tonumber(change) or 0))
+    if amount == 0 then return false end
+    local sign = (kind == "take") and -1 or 1
     local now = getTickCount()
 
-    if mo.active and now < mo.startTick + mo.duration - mo.fadeTime then
-        -- meg teljesen latszik: osszeadjuk, es ujrainditjuk fade-in nelkul
-        mo.change = mo.change + signed
-        mo.startTick = now - mo.fadeTime
+    local last = block.entries[1]
+    if last and last.sign == sign and now < last.startTick + last.duration - last.fadeTime then
+        -- azonos irany, meg teljesen latszik: osszeadjuk, ujrainditjuk fade-in nelkul
+        last.amount = last.amount + amount
+        last.startTick = now - last.fadeTime
     else
-        mo.change = signed
-        mo.startTick = now
+        table.insert(block.entries, 1, {
+            sign = sign, amount = amount,
+            startTick = now, duration = mo.duration, fadeTime = mo.fadeTime,
+        })
+        while #block.entries > mo.maxRows do
+            table.remove(block.entries)
+        end
     end
-    mo.active = true
     return true
 end
 
@@ -192,39 +207,72 @@ local function moneyBalance(moneyType)
     return getPlayerMoney(localPlayer)
 end
 
--- Egy egyenleg + valtozas blokk; visszaadja a kovetkezo blokk y-jat.
-local function drawMoneyBlock(moneyType, mo, ty)
-    if not mo.active then return ty end
-    if getTickCount() > mo.startTick + mo.duration then
-        mo.active = false
-        return ty
-    end
+-- Sima mozgas a cel y fele; nil (uj sor) -> rogton a celra ugrik.
+local function approach(cur, target, k)
+    if not cur then return target end
+    return cur + (target - cur) * k
+end
 
-    local alpha = fadeAlpha(mo)
-    local c = MONEY_COLORS[moneyType]
-    local lh = drawMoneyRow("€ "..formatMoney(moneyBalance(moneyType)), ty, tocolor(c[1], c[2], c[3], alpha), alpha)
+-- A jobb felso penz-oszlop: blokkonkent egyenleg + valtozas sorok, egymas alatt.
+-- balanceAlpha: ha meg van adva (teljes Y overlay), mindket egyenleg sor ezzel
+-- latszik akkor is, ha nincs hozza valtozas; kulonben egy blokk csak akkor
+-- latszik, ha van elo valtozas sora, es annak alpha-jat koveti.
+local function drawMoneyStack(mo, balanceAlpha)
+    local now = getTickCount()
+    local dt = (mo.lastTick > 0) and math.min(now - mo.lastTick, 100) or 0
+    mo.lastTick = now
+    local k = 1 - math.exp(-dt / 70)
 
-    local sign, col
-    if mo.change < 0 then
-        sign, col = "- € ", tocolor(230, 60, 60, alpha)
-    else
-        sign, col = "+ € ", tocolor(60, 210, 60, alpha)
+    local tr = moneyMetrics()
+    local y = tr.y
+    for _, moneyType in ipairs(MONEY_TYPES) do
+        local block = mo[moneyType]
+        local entries = block.entries
+        for i = #entries, 1, -1 do
+            if now > entries[i].startTick + entries[i].duration then
+                table.remove(entries, i)
+            end
+        end
+
+        if balanceAlpha or #entries > 0 then
+            local alpha = balanceAlpha or 0
+            if not balanceAlpha then
+                for _, e in ipairs(entries) do alpha = math.max(alpha, fadeAlpha(e)) end
+            end
+
+            block.y = approach(block.y, y, k)
+            local c = MONEY_COLORS[moneyType]
+            y = y + drawMoneyRow("€ "..formatMoney(moneyBalance(moneyType)), block.y, tocolor(c[1], c[2], c[3], alpha), alpha)
+
+            for _, e in ipairs(entries) do
+                local a = fadeAlpha(e)
+                local prefix, col
+                if e.sign < 0 then
+                    prefix, col = "- € ", tocolor(230, 60, 60, a)
+                else
+                    prefix, col = "+ € ", tocolor(60, 210, 60, a)
+                end
+                e.y = approach(e.y, y, k)
+                y = y + drawMoneyRow(prefix..formatMoney(e.amount), e.y, col, a, MONEY_SCALE * 0.85)
+            end
+        else
+            block.y = nil
+        end
     end
-    local lh2 = drawMoneyRow(sign..formatMoney(math.abs(mo.change)), ty + lh, col, alpha, MONEY_SCALE * 0.85)
-    return ty + lh + lh2
 end
 
 function UI.yOverlay:drawMoneyOnly()
-    local mo = self.moneyOnly
-    if not (mo.cash.active or mo.bank.active) then return end
-
     -- ha a teljes Y overlay is fut, az rajzolja a penzt, ne duplazzuk
     if self.active then return end
+
+    local mo = self.moneyOnly
+    if #mo.cash.entries == 0 and #mo.bank.entries == 0 then
+        mo.lastTick = 0
+        return
+    end
     if getElementData(localPlayer, "hideHUD") then return end
 
-    local tr = moneyMetrics()
-    local y = drawMoneyBlock("cash", mo.cash, tr.y)
-    drawMoneyBlock("bank", mo.bank, y)
+    drawMoneyStack(mo)
 end
 
 -- ui_core export: rovid ideig (3 mp) megmutatja csak a szint savot.
@@ -264,15 +312,9 @@ function UI.yOverlay:draw()
     local sw, sh = UI.sw, UI.sh
 
     -- =========================
-    -- TOP RIGHT – MONEY (cash + bank)
+    -- TOP RIGHT – MONEY (cash + bank, alattuk az elo valtozasok)
     -- =========================
-    local tr = moneyMetrics()
-
-    local cash = getPlayerMoney(localPlayer)
-    local bank = tonumber(getElementData(localPlayer, "bank_money")) or 0
-
-    local lh = drawMoneyRow("€ "..formatMoney(cash), tr.y,       tocolor(50, 200, 50, alpha),  alpha)
-    drawMoneyRow("€ "..formatMoney(bank), tr.y + lh, tocolor(120, 180, 255, alpha), alpha)
+    drawMoneyStack(self.moneyOnly, alpha)
 
     -- =========================
     -- TOP CENTER – LEVEL / XP

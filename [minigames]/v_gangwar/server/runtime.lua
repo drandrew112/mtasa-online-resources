@@ -123,9 +123,11 @@ end
 
 local function pay(player, money, xp)
     if not isElement(player) then return end
-    if money > 0 then givePlayerMoney(player, money) end
+    if money > 0 then
+        givePlayerMoney(player, money)
+        exports.ui_core:showMoney(player, "add", money, "cash")
+    end
     if xp > 0 and resourceRunning("v_levelsys") then pcall(function() exports.v_levelsys:giveXp(player, xp) end) end
-    triggerClientEvent(player, "gangwar:reward", resourceRoot, money, xp)
 end
 
 --------------------------------------------------------------------------------

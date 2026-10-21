@@ -98,6 +98,7 @@ addEventHandler("clothes:buy", resourceRoot, function(skin)
     end
 
     takePlayerMoney(player, CLOTHES.price)
+    exports.ui_core:showMoney(player, "take", CLOTHES.price, "cash")
     setElementModel(player, skin)
     triggerClientEvent(player, "clothes:bought", resourceRoot, skin)
 end)

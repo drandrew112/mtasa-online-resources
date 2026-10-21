@@ -111,6 +111,7 @@ addCommandHandler("money", function(player)
         return denyAccess(player, ADMIN.perms.money)
     end
     givePlayerMoney(player, 2000)
+    exports.ui_core:showMoney(player, "add", 2000, "cash")
     adminAlert(player, L.msg("v_admin.misc.2000"))
 end)
 
