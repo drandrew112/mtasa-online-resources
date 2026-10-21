@@ -8,6 +8,7 @@
   "acc_ui.forgot.code_info": "Ha egy fiók a(z) {email} címet használja, elküldtük rá a kódot. 15 percig érvényes.",
   "acc_ui.forgot.code_missing": "Add meg a 6 karakteres kódot",
   "acc_ui.forgot.code_sent": "Nézd meg az emailjeidet a kódért.",
+  "acc_ui.forgot.sending": "Kód küldése...",
   "acc_ui.forgot.confirm_new_password": "ÚJ JELSZÓ MEGERŐSÍTÉSE",
   "acc_ui.forgot.email": "EMAIL",
   "acc_ui.forgot.email_info": "Add meg a fiókodhoz tartozó email címet. Küldünk egy 6 karakteres kódot.",

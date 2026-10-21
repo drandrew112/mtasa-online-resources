@@ -9,7 +9,7 @@
     <script src="locals.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
-    <!-- config.lua holds the password reset API key: server only, never sent to clients -->
+    <!-- config.lua holds the Brevo API key: server only, never sent to clients -->
     <script src="config.lua" type="server" />
     <script src="server/db.lua" type="server" />
     <script src="server/identity.lua" type="server" />
@@ -36,7 +36,7 @@
            acc_auth:onClientAuthError (text)
            acc_auth:onClientLoggedIn (accountName, isNewAccount)
            acc_auth:onClientTokenInvalid ()
-           acc_auth:onClientResetState (step = "code" | "done" | "failed", info)
+           acc_auth:onClientResetState (step = "sending" | "code" | "done" | "failed", info)
            acc_auth:onClientEmail (maskedEmail | false, hasEmail, noticeText | nil) -->
     <export function="login"                type="client" />
     <export function="loginWithToken"       type="client" />

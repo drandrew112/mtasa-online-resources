@@ -1,13 +1,16 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Forgotten password, two steps on one panel (only reachable from the normal
 -- login form, never from the "Continue as" panel):
---   "email"  email -> Send code      (acc_auth:requestPasswordReset)
+--   "email"  email -> Send code      (acc_auth:requestPasswordReset); stays here
+--            until acc_auth says the mail went out, a failed send never
+--            reaches the code step
 --   "code"   code + new password ×2  (acc_auth:confirmPasswordReset), Resend after a wait
 -- "Back to login" always returns to the normal login form.
 
 ForgotPanel = {}
 
 local RESEND_WAIT = 60 -- s; the server enforces its own limit too
+local SEND_TIMEOUT = 30000 -- ms; a send without an answer frees the button after this
 
 function ForgotPanel:create()
     local self = {}
@@ -47,6 +50,7 @@ function ForgotPanel:create()
     self.visible = false
     self.maskedEmail = ""
     self.sentAt = 0
+    self.sendingAt = nil -- tick of a send still waiting for the answer
 
     local function edit(y)
         return DGS:dgsCreateEdit(cx, y, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
@@ -133,6 +137,10 @@ function ForgotPanel:create()
         addEventHandler("onDgsMouseEnter", el, function() uiSound("audio/ui_btn_hover.mp3") end, false)
     end
 
+    local function busy()
+        return self.sendingAt ~= nil and getTickCount() - self.sendingAt < SEND_TIMEOUT
+    end
+
     local function back()
         self:setStep("email")
         setPanel("login")
@@ -142,13 +150,14 @@ function ForgotPanel:create()
     onClick(self.email.send, function()
         local mail = DGS:dgsGetText(self.email.mail)
         if mail == "" then return uicore:setInfobox(L("acc_ui.forgot.email_missing")) end
+        if busy() then return end
         exports.acc_auth:requestPasswordReset(mail)
     end)
     onClick(self.email.back, back)
     onClick(self.code.back, back)
 
     onClick(self.code.resend, function()
-        if resendLeft() > 0 then return end
+        if resendLeft() > 0 or busy() then return end
         exports.acc_auth:requestPasswordReset(DGS:dgsGetText(self.email.mail))
     end)
 
@@ -179,6 +188,12 @@ function ForgotPanel:create()
     -- acc_auth answers
     addEvent("acc_auth:onClientResetState", true)
     addEventHandler("acc_auth:onClientResetState", localPlayer, function(step, info)
+        if step == "sending" then
+            self.sendingAt = getTickCount()
+            uicore:setInfobox(L("acc_ui.forgot.sending"), 255, 255, 255)
+            return
+        end
+        self.sendingAt = nil
         if step == "code" then
             self.maskedEmail = type(info) == "table" and tostring(info.email or "") or ""
             self.sentAt = getTickCount()

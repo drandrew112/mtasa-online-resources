@@ -14,11 +14,15 @@ AUTH = {
     EMAIL_MIN_INTERVAL    = 2000,       -- ms between two email changes of one player
 }
 
--- Forgotten password: the server makes a code and POSTs it to API_URL, the PHP
--- script (web/forgotpasswd.php) emails it. API_KEY must match the key in the PHP file.
+-- Forgotten password: the server makes a code and sends it straight through the
+-- Brevo transactional email API. BREVO_API_KEY is a Brevo v3 API key
+-- (Brevo > SMTP & API > API Keys, "xkeysib-..."), NOT the SMTP key.
+-- SENDER_EMAIL must be a sender verified in Brevo.
 RECOVERY = {
-    API_URL          = "https://freev-mtasa.online/api/forgotpasswd.php",
-    API_KEY          = "05d4440b6e7b750e48f7813df2694f675cc23e79774f6e60777778a74bb8fc1b", -- same as api_key in web/forgotpasswd.config.php
+    BREVO_URL        = "https://api.brevo.com/v3/smtp/email",
+    BREVO_API_KEY    = "CHANGE_ME",
+    SENDER_EMAIL     = "noreply@freev-mtasa.online",
+    SENDER_NAME      = "FreeV",
     TABLE            = "password_resets",
     CODE_LENGTH      = 6,
     CODE_CHARS       = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", -- no 0/O, 1/I
