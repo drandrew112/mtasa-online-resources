@@ -144,17 +144,17 @@ function getAllNews() return STORE.all() end
 
 --------------------------------------------------------------------------------
 
+addEvent("mysql:connected")
+
 addEventHandler("onResourceStart", resourceRoot, function()
     if not STORE.load() then
-        outputServerLog("[v_news] could not load the news table (v_mysql not connected?)")
+        outputServerLog("[v_news] v_mysql not connected yet, waiting for mysql:connected")
     end
 end)
 
--- v_mysql (re)started after us
-addEventHandler("onResourceStart", root, function(res)
-    if getResourceName(res) == "v_mysql" and not loaded then
-        setTimer(function() if STORE.load() then changed() end end, 2000, 1)
-    end
+-- v_mysql (re)connected: load the table if we could not do it yet
+addEventHandler("mysql:connected", root, function()
+    if not loaded and STORE.load() then changed() end
 end)
 
 -- a scheduled article became public
