@@ -313,3 +313,12 @@ logs, Server, Commands). Built on `web_api`; English only; signs in with the gam
   `canPunish` apply unchanged, alerts are collected and returned to the page as toasts.
 * `/goto`, `/gethere` and the report teleport need the admin to be online in game on the same account.
 * A report claimed from the web stays claimed while that account has a live web session.
+
+## v_admin 3.0 (2026-10-21) – full-screen panel + pages
+
+* The O panel covers the whole screen: left menu by category (`ADMIN.categories`), pages register with `AP.addPage` (client/panel/*.lua).
+* Pages: Dashboard, Online players, Accounts, Reports, Bans & mutes, Server, Resources, Admin log, Weekly, News, Mail, Achievements, Commands. The web panel (`web/`) has the same pages.
+* Server: `server/pages.lua` (`PAGES.register`, `PAGES.run`, `REMOTE.call` for exports that answer later), page handlers in `server/pages/*.lua`; web: `adminWebCall` / `adminWebResult`.
+* `/weekly`, `/news`, `/mail` now open these pages (`ADMIN.pageCommands`); the old panels of v_weekly / v_news / v_mail were removed, those resources expose exports instead.
+* Every admin action goes to the MySQL table `admin_log` (`server/adminlog.lua`).
+* acc_auth stores `last_login`, `last_serial`, `last_ip` in accData on login.

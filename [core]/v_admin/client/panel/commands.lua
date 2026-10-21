@@ -1,7 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/commands.lua
---  Commands tab: the v_admin command reference (ADMIN.commands in
+--  Commands page: the v_admin command reference (ADMIN.commands in
 --  config.lua) with the level each command needs.
 -- ============================================================
 
@@ -9,8 +9,8 @@ local S, F, C = AP.S, AP.F, AP.C
 
 local scroll = 0
 
-AP.addTab({
-    id = "commands", label = function() return L("v_admin.commands.commands") end, perm = "panel", order = 4,
+AP.addPage({
+    id = "commands", category = "help", label = function() return L("v_admin.commands.commands") end, perm = "panel", order = 900,
     draw = function(x, y, w, h)
         local cmdW, lvlW = w * 0.3, S(250)
         local descX = x + cmdW + lvlW + S(20)

@@ -55,15 +55,60 @@ ADMIN.perms = {
     setLevel     = 4,   -- /setadminlevel             (SuperAdmin)
     money        = 4,   -- /money                     (SuperAdmin)
     listAccounts = 5,   -- /listacc                   (Dev)
+
+    -- admin panel pages (v_admin 3.0)
+    accounts     = 1,   -- Accounts page: list + details (Trial Mod)
+    fullEmail    = 5,   -- unmasked e-mail addresses   (Dev)
+    accountEdit  = 4,   -- money / level / XP / work level of an account, online or offline (SuperAdmin)
+    vehicles     = 4,   -- give / delete / restore an owned vehicle (SuperAdmin)
+    achievements = 4,   -- give / reset achievements   (SuperAdmin)
+    notes        = 1,   -- admin notes on an account   (Trial Mod)
+    adminLog     = 1,   -- Admin log page              (Trial Mod)
+    weekly       = 4,   -- Weekly page, /weekly        (SuperAdmin)
+    news         = 5,   -- News page, /news            (Dev)
+    mail         = 5,   -- Mail page, /mail            (Dev)
+    resources    = 5,   -- Resources page             (Dev)
 }
 
 -- Admin panel (O key). Data is never hidden: every admin who can open the
 -- panel sees every field; only the ACTIONS are gated by ADMIN.perms.
+-- (Exception: e-mail addresses are masked below ADMIN.perms.fullEmail.)
 ADMIN.panel = {
     key     = "o",
     refresh = 3000,     -- ms between player-list refreshes while the panel is open
-    size      = 0.83,   -- whole panel size multiplier (on top of the ui_core screen scale)
     fontScale = 1.5,    -- text size relative to the layout (effective text: size * fontScale ~ 1.25x)
+    sideWidth = 300,    -- left menu width (1080p pixels, scaled)
+}
+
+-- Left menu categories, top to bottom. Pages name their category (AP.addPage).
+ADMIN.categories = {
+    { id = "overview", label = L.text("v_admin.page.cat_overview") },
+    { id = "players",  label = L.text("v_admin.page.cat_players") },
+    { id = "server",   label = L.text("v_admin.page.cat_server") },
+    { id = "content",  label = L.text("v_admin.page.cat_content") },
+    { id = "help",     label = L.text("v_admin.page.cat_help") },
+}
+
+-- Commands of other resources that now open a page of this panel
+-- (the resources' own panels were removed in v_admin 3.0).
+ADMIN.pageCommands = {
+    weekly = "weekly",
+    news   = "news",
+    mail   = "mail",
+}
+
+-- Accounts page.
+ADMIN.accounts = {
+    pageSize  = 50,     -- rows per page
+    cacheTime = 30,     -- s: the account list is re-read from MySQL at most this often
+    notesMax  = 300,    -- characters of one admin note
+    notesKey  = "admin_notes", -- accData key (JSON list of { t, admin, text })
+}
+
+-- Admin log page (MySQL `admin_log`).
+ADMIN.log = {
+    table    = "admin_log",
+    pageSize = 60,
 }
 
 -- Command reference shown on the panel's "Commands" tab.
@@ -71,6 +116,9 @@ ADMIN.panel = {
 ADMIN.commands = {
     { cmd = "O key",                              perm = "panel",        desc = L.text("v_admin.config.open_close_admin_panel") },
     { cmd = "/reports",                           perm = "reports",      desc = L.text("v_admin.config.opens_admin_panel_on_reports_tab") },
+    { cmd = "/weekly",                            perm = "weekly",       desc = L.text("v_admin.config.opens_weekly_page") },
+    { cmd = "/news",                              perm = "news",         desc = L.text("v_admin.config.opens_news_page") },
+    { cmd = "/mail",                              perm = "mail",         desc = L.text("v_admin.config.opens_mail_page") },
     { cmd = "/goto <ID>",                         perm = "teleport",     desc = L.text("v_admin.config.teleport_to_player_interior_dimension_too") },
     { cmd = "/gethere <ID>",                      perm = "teleport",     desc = L.text("v_admin.config.bring_player_to_you_with_their") },
     { cmd = "/heal <ID>",                         perm = "heal",         desc = L.text("v_admin.config.restore_player_s_health_and_armour") },
@@ -130,6 +178,10 @@ ADMIN.events = {
     panelRequest  = "v_admin:panelRequest",    -- client -> server: open / refresh the panel
     panelData     = "v_admin:panelData",       -- server -> client: (players, myLevel, isRefresh, tab) / false = denied
     panelAction   = "v_admin:panelAction",     -- client -> server: (action, targetId, args...)
+
+    -- Admin panel pages (server/pages.lua)
+    pageCall      = "v_admin:pageCall",        -- client -> server: (requestId, page, action, args)
+    pageReply     = "v_admin:pageReply",       -- server -> client: (requestId, result | false, message | false)
 }
 
 -- Report limits.

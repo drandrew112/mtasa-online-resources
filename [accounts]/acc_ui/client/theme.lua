@@ -8,6 +8,7 @@ Theme = {
     label     = tocolor(146, 158, 170, 255),
     text      = tocolor(228, 233, 238, 255),
     danger    = tocolor(232, 96, 96, 255),
+    warning   = tocolor(255, 200, 90, 255),
     fieldBG   = tocolor(32, 36, 42, 255),
 
     -- button background per state: { normal, hover, pressed }

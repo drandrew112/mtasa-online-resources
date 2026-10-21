@@ -88,5 +88,7 @@
   "ui_pause.settings.language_desc": "A játék szövegeinek nyelve. - a nyelv megváltoztatása újracsatlakozást igényelhet",
   "ui_pause.settings.off": "KI",
   "ui_pause.settings.on": "BE",
-  "ui_pause.settings.unavailable": "nem elérhető"
+  "ui_pause.settings.unavailable": "nem elérhető",
+  "ui_pause.settings.update_mails": "Heti frissítés email",
+  "ui_pause.settings.update_mails_desc": "Minden kedden egy email a hét híreivel és a heti bónuszokkal a fiókod email címére."
 }

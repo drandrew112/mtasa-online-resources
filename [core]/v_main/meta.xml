@@ -21,6 +21,9 @@
     <script src="serverInfo.lua" type="server" />
     <export function="getServerInstanceId" type="server" />
     <export function="getServerInstanceName" type="server" />
+    <!-- v_admin Resources page -->
+    <export function="listResources" type="server" />
+    <export function="adminResourceAction" type="server" />
 
     <script src="locals.lua" type="server" />
     <script src="server.lua" type="server" />

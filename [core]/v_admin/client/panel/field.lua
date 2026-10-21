@@ -1,5 +1,5 @@
--- DX text field without ui_core: single or multi line, caret, word wrap,
--- scrolling. Keyboard input is fed by the owner (editor.lua):
+-- DX text field: single or multi line, caret, word wrap, selection, scrolling
+-- (moved here from v_mail / v_news in v_admin 3.0). Keyboard input is fed by client/panel/core.lua:
 --   onClientCharacter -> field:insert(ch), onClientPaste -> field:insert(text),
 --   onClientKey       -> field:key(key, shift) (backspace, delete, arrows, home, end, enter;
 --                        shift extends the selection)

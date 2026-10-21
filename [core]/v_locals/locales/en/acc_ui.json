@@ -9,6 +9,7 @@
   "acc_ui.forgot.code_missing": "Enter the 6-character code",
   "acc_ui.forgot.code_sent": "Check your email for the code.",
   "acc_ui.forgot.sending": "Sending the code...",
+  "acc_ui.forgot.spam_hint": "No email? Check your spam folder too.",
   "acc_ui.forgot.confirm_new_password": "CONFIRM NEW PASSWORD",
   "acc_ui.forgot.email": "EMAIL",
   "acc_ui.forgot.email_info": "Enter the email address of your account. We will send you a 6-character code.",

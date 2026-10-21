@@ -82,7 +82,7 @@ function adminSetSkin(player, target, skin)
     if not setElementModel(target, skin) then
         return adminAlert(player, L.msg("v_admin.misc.invalid_skin_id"), 255, 90, 90)
     end
-    adminLog(player, ("set %s skin to %d"):format(getPlayerName(target), skin))
+    adminLog(player, ("set %s skin to %d"):format(getPlayerName(target), skin), target)
 
     if target ~= player then
         adminAlert(target, L.msg("v_admin.misc.changed_your_skin", { player = actorName(player), skin = skin }))

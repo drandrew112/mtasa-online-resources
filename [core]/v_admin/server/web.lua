@@ -157,7 +157,9 @@ local function staticInfo()
             level = c.perm and ADMIN.perms[c.perm] or 0,
         }
     end
-    return { perms = ADMIN.perms, ranks = ranks, commands = commands, maxLevel = ADMIN.maxLevel }
+    local ok, languages = pcall(function() return exports.v_locals:getLanguages() end)
+    return { perms = ADMIN.perms, ranks = ranks, commands = commands, maxLevel = ADMIN.maxLevel,
+             languages = ok and type(languages) == "table" and languages or {} }
 end
 
 -- Everything the page shows, in one poll: players + reports + the caller.
@@ -236,3 +238,53 @@ function adminWebLogs(token, file)
     end
     return { ok = true, file = file, log = data }
 end
+
+---------------------------------------------------------------- pages (v_admin 3.0)
+
+-- Page requests (server/pages.lua) that answer later wait here until the page asks again.
+local jobs, jobSeq = {}, 0       -- [id] = { account, t, done, result, message, out }
+
+local function jobAnswer(job)
+    return {
+        ok = job.result ~= false,
+        result = job.result,
+        message = job.message,
+        messages = job.out,
+        error = (job.result == false and not job.message) and "Request failed." or nil,
+    }
+end
+
+-- One page request: { ok, result, message, messages } or { ok, pending = id } (ask adminWebResult).
+function adminWebCall(token, page, action, args)
+    local s = check(token)
+    if not s then return DENIED end
+    local actor = actorOf(s)
+    local job = { account = s.account, t = now(), out = actor.out }
+    PAGES.run(actor, tostring(page), tostring(action), type(args) == "table" and args or {}, function(result, message)
+        job.done = true
+        job.result = L.resolveDeep(result, "en")
+        job.message = message and (tostring(L.resolveFor("en", message)):gsub("#%x%x%x%x%x%x", "")) or nil
+    end)
+    if job.done then return jobAnswer(job) end
+    jobSeq = jobSeq + 1
+    jobs[jobSeq] = job
+    return { ok = true, pending = jobSeq }
+end
+
+function adminWebResult(token, id)
+    local s = check(token)
+    if not s then return DENIED end
+    id = tonumber(id)
+    local job = id and jobs[id]
+    if not job or not sameAccount(job.account, s.account) then return { ok = false, error = "Unknown request." } end
+    if not job.done then return { ok = true, pending = id } end
+    jobs[id] = nil
+    return jobAnswer(job)
+end
+
+setTimer(function()
+    local t = now()
+    for id, job in pairs(jobs) do
+        if t - job.t > 120 then jobs[id] = nil end
+    end
+end, 60000, 0)

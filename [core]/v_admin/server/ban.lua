@@ -34,7 +34,7 @@ function adminBan(player, accName, reason)
     end
 
     adminAlert(player, L.msg("v_admin.ban.you_banned_account_for", { acc_name = accName, reason = reason }))
-    adminLog(player, ("banned account %s (%s)"):format(accName, reason))
+    adminLog(player, ("banned account %s (%s)"):format(accName, reason), accName)
 end
 
 function adminUnban(player, accName)
@@ -51,7 +51,7 @@ function adminUnban(player, accName)
     end
 
     adminAlert(player, L.msg("v_admin.ban.you_unbanned_account", { acc_name = accName }))
-    adminLog(player, "unbanned account " .. accName)
+    adminLog(player, "unbanned account " .. accName, accName)
 end
 
 function adminKick(player, target, reason)
@@ -67,13 +67,14 @@ function adminKick(player, target, reason)
     if not canPunish(player, target) then return end
 
     local name = getPlayerName(target)
+    local acc = actorAccount(target)
     -- Needs function.kickPlayer: resource.v_admin is in the Admin ACL group.
     if not kickPlayer(target, actorName(player), reason) then
         return adminAlert(player, L.msg("v_admin.ban.kick_failed_v_admin_needs_function"), 255, 90, 90)
     end
 
     adminAlert(player, L.msg("v_admin.ban.you_kicked_for", { name = name, reason = reason }))
-    adminLog(player, ("kicked %s (%s)"):format(name, reason))
+    adminLog(player, ("kicked %s (%s)"):format(name, reason), acc)
 end
 
 -- ------------------------------------------------------------

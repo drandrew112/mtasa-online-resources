@@ -1,6 +1,6 @@
 <meta>
-    <info author="andrasxa" name="v_admin" type="script" version="2.0"
-          description="Admin panel (O), admin commands, admin jail and server-side ID manager" />
+    <info author="andrasxa" name="v_admin" type="script" version="3.0"
+          description="Admin panel (O, full screen) + web panel, admin commands, admin jail and server-side ID manager" />
 
     <!-- Messages are shown via the ui_core Alert element (chat is disabled) -->
     <include resource="v_locals" />
@@ -32,18 +32,36 @@
     <script src="server/mute.lua"         type="server" />
     <script src="server/misc.lua"         type="server" />
     <script src="server/panel.lua"        type="server" />
+    <!-- panel pages (v_admin 3.0): request dispatcher first, then the pages -->
+    <script src="server/pages.lua"          type="server" />
+    <script src="server/adminlog.lua"       type="server" />
+    <script src="server/pages/accounts.lua" type="server" />
+    <script src="server/pages/weekly.lua"   type="server" />
+    <script src="server/pages/news.lua"     type="server" />
+    <script src="server/pages/mail.lua"     type="server" />
+    <script src="server/pages/misc.lua"     type="server" />
     <script src="server/web.lua"          type="server" />
 
     <!-- Client side -->
     <script src="client/hud.lua"    type="client" />
     <script src="client/noclip.lua" type="client" />
     <script src="client/report.lua" type="client" />
-    <!-- Admin panel (O key): core first, then the tabs -->
-    <script src="client/panel/core.lua"     type="client" />
-    <script src="client/panel/players.lua"  type="client" />
-    <script src="client/panel/reports.lua"  type="client" />
-    <script src="client/panel/server.lua"   type="client" />
-    <script src="client/panel/commands.lua" type="client" />
+    <!-- Admin panel (O key): text field + core first, then the pages -->
+    <script src="client/panel/field.lua"        type="client" />
+    <script src="client/panel/core.lua"         type="client" />
+    <script src="client/panel/dashboard.lua"    type="client" />
+    <script src="client/panel/players.lua"      type="client" />
+    <script src="client/panel/accounts.lua"     type="client" />
+    <script src="client/panel/reports.lua"      type="client" />
+    <script src="client/panel/bans.lua"         type="client" />
+    <script src="client/panel/server.lua"       type="client" />
+    <script src="client/panel/resources.lua"    type="client" />
+    <script src="client/panel/adminlog.lua"     type="client" />
+    <script src="client/panel/weekly.lua"       type="client" />
+    <script src="client/panel/news.lua"         type="client" />
+    <script src="client/panel/mail.lua"         type="client" />
+    <script src="client/panel/achievements.lua" type="client" />
+    <script src="client/panel/commands.lua"     type="client" />
 
     <file src="pmalert.mp3" type="client" />
 
@@ -62,4 +80,7 @@
     <export function="adminWebAction" type="server" http="true" />
     <export function="adminWebReport" type="server" http="true" />
     <export function="adminWebLogs"   type="server" http="true" />
+    <!-- the pages (server/pages.lua): call = one request, result = the answer of a request that answers later -->
+    <export function="adminWebCall"   type="server" http="true" />
+    <export function="adminWebResult" type="server" http="true" />
 </meta>

@@ -135,7 +135,7 @@ function adminPlayerList(english)
     return list
 end
 
-local function sendPanel(admin, isRefresh, tab)
+local function sendPanel(admin, isRefresh, tab, arg)
     if not isElement(admin) then return end
     if not hasAdminLevel(admin, ADMIN.perms.panel) then
         triggerClientEvent(admin, E.panelData, resourceRoot, false)
@@ -144,15 +144,16 @@ local function sendPanel(admin, isRefresh, tab)
 
     local list = adminPlayerList()
 
-    triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false)
+    triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false, arg)
 end
 
---- Open the panel for an admin on a given tab (used by /reports).
-function openAdminPanel(admin, tab)
+--- Open the panel for an admin on a given page (/reports, /weekly, /news, /mail).
+--- arg goes to the page (e.g. an account name for "accounts").
+function openAdminPanel(admin, tab, arg)
     if not hasAdminLevel(admin, ADMIN.perms.panel) then
         return denyAccess(admin, ADMIN.perms.panel)
     end
-    sendPanel(admin, false, tab)
+    sendPanel(admin, false, tab, arg)
 end
 
 addEvent(E.panelRequest, true)

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/web_api/osa.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="osa-flex locked">
+<body class="locked">
     <div class="osa-login" id="login">
         <form class="osa-login-box" id="loginForm" autocomplete="off">
             <h1>Admin Panel</h1>
@@ -19,80 +19,237 @@
         </form>
     </div>
 
-    <header class="osa-topbar">
-        <div class="osa-brand">
-            <div>
-                <strong>Admin Panel</strong>
-                <small>Server administration</small>
+    <div class="app" id="app">
+        <!-- ============ left menu ============ -->
+        <aside class="side">
+            <div class="brand">
+                <b>Admin Panel</b>
+                <small id="who"></small>
             </div>
-        </div>
-        <nav class="osa-tabs" id="nav">
-            <button class="osa-tab active" data-tab="players">Players <b id="cntPlayers">0</b></button>
-            <button class="osa-tab" data-tab="reports">Reports <b id="cntReports" class="alert-count">0</b></button>
-            <button class="osa-tab" data-tab="server">Server</button>
-            <button class="osa-tab" data-tab="commands">Commands</button>
-        </nav>
-        <div class="osa-top-right" style="margin-left:auto">
-            <span class="who" id="who"></span>
-            <button class="osa-btn small" id="logoutBtn">Sign out</button>
-            <span class="osa-conn" id="conn" title="Connection"></span>
-            <span class="osa-clock" id="clock">--:--:--</span>
-        </div>
-    </header>
+            <nav class="nav" id="nav">
+                <div class="cat">Overview</div>
+                <button class="nav-item" data-page="dashboard">Dashboard</button>
+                <div class="cat">Players</div>
+                <button class="nav-item" data-page="players">Online players <b class="badge" id="cntPlayers">0</b></button>
+                <button class="nav-item" data-page="accounts" data-perm="accounts">Accounts</button>
+                <button class="nav-item" data-page="reports" data-perm="reports">Reports <b class="badge" id="cntReports">0</b></button>
+                <button class="nav-item" data-page="bans">Bans &amp; mutes</button>
+                <div class="cat">Server</div>
+                <button class="nav-item" data-page="server">Server</button>
+                <button class="nav-item" data-page="resources" data-perm="resources">Resources</button>
+                <button class="nav-item" data-page="adminlog" data-perm="adminLog">Admin log</button>
+                <div class="cat">Content</div>
+                <button class="nav-item" data-page="weekly" data-perm="weekly">Weekly</button>
+                <button class="nav-item" data-page="news" data-perm="news">News</button>
+                <button class="nav-item" data-page="mail" data-perm="mail">Mail</button>
+                <button class="nav-item" data-page="achievements">Achievements</button>
+                <div class="cat">Help</div>
+                <button class="nav-item" data-page="commands">Commands</button>
+            </nav>
+            <div class="side-foot">
+                <span class="osa-conn" id="conn" title="Connection"></span>
+                <span class="osa-clock" id="clock">--:--:--</span>
+                <button class="osa-btn small" id="logoutBtn">Sign out</button>
+            </div>
+        </aside>
 
-    <main class="osa-main" id="main">
-        <!-- ============ players ============ -->
-        <section class="tab-page" id="page-players">
-            <aside class="osa-panel pl-list">
-                <div class="osa-panel-head">
-                    <input class="osa-input grow" id="plFilter" type="search" placeholder="Filter: ID / name / account" autocomplete="off">
-                </div>
-                <div class="osa-scroll grow" id="plRows"></div>
-                <div class="osa-panel-foot" id="plFoot"></div>
-            </aside>
-            <div class="osa-panel pl-detail osa-scroll" id="plDetail"></div>
-            <aside class="osa-panel pl-actions osa-scroll" id="plActions"></aside>
-        </section>
+        <div class="content">
+            <header class="top">
+                <h1 id="pageTitle">Dashboard</h1>
+                <span class="crumb" id="pageCrumb"></span>
+                <span class="grow"></span>
+                <span class="pill" id="onlinePill"></span>
+            </header>
 
-        <!-- ============ reports ============ -->
-        <section class="tab-page" id="page-reports" hidden>
-            <aside class="osa-panel rp-list">
-                <div class="osa-panel-head">
-                    <div class="osa-tabs" id="rpMode">
-                        <button class="osa-tab active" data-mode="active">Active</button>
-                        <button class="osa-tab" data-mode="logs">Logs</button>
+            <main class="pages">
+                <!-- ============ dashboard ============ -->
+                <section class="tab-page" id="page-dashboard">
+                    <div class="tiles" id="dashTiles"></div>
+                    <div class="cols3">
+                        <div class="osa-panel card"><div class="osa-panel-head"><strong>This week</strong></div><div class="card-body" id="dashWeek"></div></div>
+                        <div class="osa-panel card"><div class="osa-panel-head"><strong>Admins online</strong></div><div class="card-body" id="dashAdmins"></div></div>
+                        <div class="osa-panel card"><div class="osa-panel-head"><strong>Latest admin actions</strong></div><div class="card-body osa-scroll" id="dashLog"></div></div>
                     </div>
-                </div>
-                <div class="osa-scroll grow" id="rpRows"></div>
-            </aside>
-            <div class="osa-panel rp-chat" id="rpChat"></div>
-        </section>
+                </section>
 
-        <!-- ============ server ============ -->
-        <section class="tab-page" id="page-server" hidden>
-            <div class="osa-panel sv-card">
-                <div class="osa-panel-head"><strong>Admin announcement</strong><span class="osa-muted" id="svAnnLevel"></span></div>
-                <div class="card-body">
-                    <p class="osa-muted">Sent to every player on the server.</p>
-                    <textarea class="osa-textarea" id="svAnnounce" maxlength="200" placeholder="Announcement text"></textarea>
-                    <div class="row"><span class="osa-muted" id="svAnnCount">0 / 200</span><button class="osa-btn primary" id="svAnnBtn">Send announcement</button></div>
-                </div>
-            </div>
-            <div class="osa-panel sv-card">
-                <div class="osa-panel-head"><strong>Unban account</strong><span class="osa-muted" id="svBanLevel"></span></div>
-                <div class="card-body">
-                    <p class="osa-muted">Lifts the acc_bans ban of an account.</p>
-                    <div class="row"><input class="osa-input grow" id="svUnban" type="text" maxlength="32" placeholder="Account name" autocomplete="off"><button class="osa-btn" id="svUnbanBtn">Unban</button></div>
-                </div>
-            </div>
-            <div class="osa-panel sv-card" id="svOverview"></div>
-        </section>
+                <!-- ============ players ============ -->
+                <section class="tab-page row-page" id="page-players" hidden>
+                    <aside class="osa-panel pl-list">
+                        <div class="osa-panel-head">
+                            <input class="osa-input grow" id="plFilter" type="search" placeholder="Filter: ID / name / account" autocomplete="off">
+                        </div>
+                        <div class="osa-scroll grow" id="plRows"></div>
+                        <div class="osa-panel-foot" id="plFoot"></div>
+                    </aside>
+                    <div class="osa-panel pl-detail osa-scroll" id="plDetail"></div>
+                    <aside class="osa-panel pl-actions osa-scroll" id="plActions"></aside>
+                </section>
 
-        <!-- ============ commands ============ -->
-        <section class="tab-page" id="page-commands" hidden>
-            <div class="osa-panel osa-scroll" id="cmdList"></div>
-        </section>
-    </main>
+                <!-- ============ accounts ============ -->
+                <section class="tab-page row-page" id="page-accounts" hidden>
+                    <div class="osa-panel acc-list">
+                        <div class="filters" id="accFilters"></div>
+                        <div class="conds" id="accConds"></div>
+                        <div class="meta" id="accMeta"></div>
+                        <div class="osa-scroll grow" id="accRows"></div>
+                        <div class="osa-panel-foot pager" id="accPager"></div>
+                    </div>
+                    <div class="osa-panel acc-detail" id="accDetail"></div>
+                </section>
+
+                <!-- ============ reports ============ -->
+                <section class="tab-page row-page" id="page-reports" hidden>
+                    <aside class="osa-panel rp-list">
+                        <div class="osa-panel-head">
+                            <div class="osa-tabs" id="rpMode">
+                                <button class="osa-tab active" data-mode="active">Active</button>
+                                <button class="osa-tab" data-mode="logs">Logs</button>
+                            </div>
+                        </div>
+                        <div class="osa-scroll grow" id="rpRows"></div>
+                    </aside>
+                    <div class="osa-panel rp-chat" id="rpChat"></div>
+                </section>
+
+                <!-- ============ bans ============ -->
+                <section class="tab-page row-page" id="page-bans" hidden>
+                    <div class="osa-panel grow3">
+                        <div class="filters">
+                            <input class="osa-input" id="bnSearch" type="search" placeholder="Account, serial, admin or reason" autocomplete="off">
+                            <button class="osa-btn active" id="bnActive">Active only</button>
+                            <button class="osa-btn" id="bnAll">All bans</button>
+                        </div>
+                        <div class="osa-scroll grow" id="bnRows"></div>
+                        <div class="osa-panel-foot pager" id="bnPager"></div>
+                    </div>
+                    <div class="osa-panel grow2">
+                        <div class="osa-panel-head"><strong>Muted / jailed online</strong></div>
+                        <div class="osa-scroll grow" id="bnOnline"></div>
+                    </div>
+                </section>
+
+                <!-- ============ server ============ -->
+                <section class="tab-page wrap-page" id="page-server" hidden>
+                    <div class="osa-panel sv-card">
+                        <div class="osa-panel-head"><strong>Admin announcement</strong><span class="osa-muted" id="svAnnLevel"></span></div>
+                        <div class="card-body">
+                            <p class="osa-muted">Sent to every player on the server.</p>
+                            <textarea class="osa-textarea" id="svAnnounce" maxlength="200" placeholder="Announcement text"></textarea>
+                            <div class="row"><span class="osa-muted" id="svAnnCount">0 / 200</span><button class="osa-btn primary" id="svAnnBtn">Send announcement</button></div>
+                        </div>
+                    </div>
+                    <div class="osa-panel sv-card">
+                        <div class="osa-panel-head"><strong>Unban account</strong><span class="osa-muted" id="svBanLevel"></span></div>
+                        <div class="card-body">
+                            <p class="osa-muted">Lifts the acc_bans ban of an account.</p>
+                            <div class="row"><input class="osa-input grow" id="svUnban" type="text" maxlength="32" placeholder="Account name" autocomplete="off"><button class="osa-btn" id="svUnbanBtn">Unban</button></div>
+                        </div>
+                    </div>
+                    <div class="osa-panel sv-card" id="svOverview"></div>
+                </section>
+
+                <!-- ============ resources ============ -->
+                <section class="tab-page col-page" id="page-resources" hidden>
+                    <div class="filters">
+                        <input class="osa-input" id="rsSearch" type="search" placeholder="Resource or [folder]" autocomplete="off">
+                        <span class="seg" id="rsMode"></span>
+                        <span class="grow"></span>
+                        <button class="osa-btn" id="rsReload">Reload</button>
+                    </div>
+                    <div class="osa-panel osa-scroll grow" id="rsRows"></div>
+                </section>
+
+                <!-- ============ admin log ============ -->
+                <section class="tab-page col-page" id="page-adminlog" hidden>
+                    <div class="filters">
+                        <input class="osa-input" id="alAdmin" placeholder="Admin account" autocomplete="off">
+                        <input class="osa-input" id="alTarget" placeholder="Target account" autocomplete="off">
+                        <input class="osa-input grow" id="alText" placeholder="Action text" autocomplete="off">
+                    </div>
+                    <div class="osa-panel osa-scroll grow" id="alRows"></div>
+                    <div class="pager" id="alPager"></div>
+                </section>
+
+                <!-- ============ weekly ============ -->
+                <section class="tab-page row-page" id="page-weekly" hidden>
+                    <aside class="osa-panel wk-weeks" id="wkWeeks"></aside>
+                    <div class="osa-panel grow3 wk-body" id="wkBody"></div>
+                </section>
+
+                <!-- ============ news ============ -->
+                <section class="tab-page row-page" id="page-news" hidden>
+                    <aside class="osa-panel nw-list">
+                        <div class="osa-panel-head"><button class="osa-btn primary" id="nwNew">New article</button></div>
+                        <div class="osa-scroll grow" id="nwRows"></div>
+                    </aside>
+                    <div class="osa-panel grow3 nw-edit">
+                        <div class="row left">
+                            <label>Date <input class="osa-input" id="nwDate" maxlength="10" placeholder="YYYY.MM.DD"></label>
+                            <label>Time <input class="osa-input" id="nwTime" maxlength="5" placeholder="HH:MM"></label>
+                            <button class="osa-btn" id="nwNow">Now</button>
+                            <span class="grow"></span>
+                            <span class="osa-muted" id="nwAuthor"></span>
+                        </div>
+                        <label>Title <input class="osa-input" id="nwTitle" maxlength="120"></label>
+                        <label class="grow col">Text <textarea class="osa-textarea grow" id="nwBody" maxlength="4000"></textarea></label>
+                        <div class="row">
+                            <span class="osa-muted" id="nwCount"></span>
+                            <span class="grow"></span>
+                            <button class="osa-btn danger" id="nwDelete">Delete</button>
+                            <button class="osa-btn primary" id="nwSave">Save</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ mail ============ -->
+                <section class="tab-page col-page" id="page-mail" hidden>
+                    <div class="osa-tabs" id="mlTabs">
+                        <button class="osa-tab active" data-tab="compose">Compose</button>
+                        <button class="osa-tab" data-tab="history">History</button>
+                        <button class="osa-tab" data-tab="updates">Updates</button>
+                    </div>
+                    <div class="row-page grow" id="mlCompose">
+                        <aside class="osa-panel ml-rcpt">
+                            <div class="osa-panel-head seg" id="mlMode"></div>
+                            <div class="osa-panel-head"><input class="osa-input grow" id="mlSearch" type="search" placeholder="Search account" autocomplete="off"></div>
+                            <div class="osa-scroll grow" id="mlNames"></div>
+                            <div class="osa-panel-foot row"><button class="osa-btn small" id="mlSelShown">Select shown</button><button class="osa-btn small" id="mlClear">Clear</button></div>
+                        </aside>
+                        <div class="osa-panel grow3 ml-edit">
+                            <div class="seg" id="mlLangs"></div>
+                            <label>Subject <input class="osa-input" id="mlSubject" maxlength="150"></label>
+                            <label class="grow col">Text <textarea class="osa-textarea grow" id="mlBody" maxlength="8000"></textarea></label>
+                            <p class="osa-muted" id="mlHint"></p>
+                            <div class="row"><span class="grow"></span><button class="osa-btn" id="mlTest">Send test to me</button><button class="osa-btn primary" id="mlSend">Send</button></div>
+                        </div>
+                    </div>
+                    <div class="row-page grow" id="mlHistory" hidden>
+                        <div class="osa-panel grow2"><div class="osa-scroll grow" id="mlGroups"></div><div class="osa-panel-foot pager" id="mlPager"></div></div>
+                        <div class="osa-panel grow2 col">
+                            <div class="osa-scroll grow" id="mlMails"></div>
+                            <pre class="mail-view osa-scroll" id="mlView">Select a mail</pre>
+                        </div>
+                    </div>
+                    <div class="grow osa-scroll" id="mlUpdates" hidden></div>
+                </section>
+
+                <!-- ============ achievements ============ -->
+                <section class="tab-page col-page" id="page-achievements" hidden>
+                    <div class="osa-panel osa-scroll grow" id="achRows"></div>
+                    <div class="filters">
+                        <span class="osa-muted grow" id="achSel">Select an achievement</span>
+                        <input class="osa-input" id="achAccount" placeholder="Account name" autocomplete="off">
+                        <button class="osa-btn primary" id="achGive">Give to account</button>
+                    </div>
+                </section>
+
+                <!-- ============ commands ============ -->
+                <section class="tab-page col-page" id="page-commands" hidden>
+                    <div class="osa-panel osa-scroll grow" id="cmdList"></div>
+                </section>
+            </main>
+        </div>
+    </div>
 
     <script src="/web_api/osa.js"></script>
     <script src="js/app.js"></script>

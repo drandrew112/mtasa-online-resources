@@ -16,7 +16,7 @@
         info: null,          // { perms, ranks, commands, maxLevel }
         players: [],
         reports: [],
-        tab: 'players',
+        tab: 'dashboard',
         selPlayer: null,     // player ID
         rpMode: 'active',    // active | logs
         selReport: null,     // report id
@@ -70,6 +70,7 @@
                 $('loginPass').value = '';
                 document.body.classList.remove('locked');
                 startPolling();
+                setTab('dashboard');
             } else {
                 loginError((r && r.error) || 'Login failed.');
                 $('loginPass').select();
@@ -98,6 +99,7 @@
             if (r && r.error === 'unauthorized') return leave();
             if (!r || !r.ok) throw new Error((r && r.error) || 'bad response');
             if (r.info) S.info = r.info;
+            if (r.time) OSA.time.sync(r.time);
             S.level = r.level;
             S.inGame = r.inGame;
             S.players = arr(r.players);
@@ -159,33 +161,96 @@
         }
     }
 
-    /* ============================================================ tabs */
+    /* ============================================================ pages (left menu) */
 
-    function setTab(tab) {
+    // A page request (server/pages.lua through adminWebCall). Resolves to { ok, result, message };
+    // a request that answers later is asked again (adminWebResult) until it is done.
+    async function page(name, action, args, quiet) {
+        try {
+            let r = await call('adminWebCall', name, action, args || {});
+            for (let i = 0; r && r.pending && i < 60; i++) {
+                await new Promise(res => setTimeout(res, 400));
+                r = await call('adminWebResult', r.pending);
+            }
+            if (r && r.error === 'unauthorized') { leave(); return { ok: false }; }
+            if (!r) return { ok: false };
+            for (const m of arr(r.messages)) OSA.toast(m.text, !m.bad);
+            if (r.message && !quiet) OSA.toast(r.message, r.ok);
+            else if (!r.ok && r.error && !quiet) OSA.toast(r.error);
+            return r;
+        } catch (e) {
+            if (!quiet) OSA.toast('Server unreachable: ' + e.message);
+            return { ok: false };
+        }
+    }
+
+    // grid table: cols = [{ key, label, cls, text(row) -> html, sort }], opts = { sel(row), click(row), sortKey, sortDir, onSort }
+    function grid(el, cols, rows, opts) {
+        opts = opts || {};
+        const head = cols.map(c => `<th class="${c.cls || ''}${c.sort ? ' sort' : ''}${opts.sortKey === c.key ? ' on' : ''}" data-k="${c.key}">${esc(c.label)}${
+            opts.sortKey === c.key ? (opts.sortDir === 'asc' ? ' ▲' : ' ▼') : ''}</th>`).join('');
+        const body = rows.map((r, i) => `<tr data-i="${i}" class="${opts.click ? 'click' : ''}${opts.sel && opts.sel(r) ? ' sel' : ''}">${
+            cols.map(c => `<td class="${c.cls || ''}">${c.text ? c.text(r) : val(r[c.key])}</td>`).join('')}</tr>`).join('');
+        el.innerHTML = rows.length ? `<table class="grid"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`
+            : `<div class="osa-empty">${esc(opts.empty || 'Nothing here.')}</div>`;
+        el.onclick = e => {
+            const th = e.target.closest('th.sort');
+            if (th && opts.onSort) return opts.onSort(th.dataset.k);
+            const tr = e.target.closest('tr[data-i]');
+            if (tr && opts.click) opts.click(rows[Number(tr.dataset.i)]);
+        };
+    }
+
+    // epoch seconds -> "5m ago" (server clock, synced on every poll)
+    const ago = ts => {
+        if (!ts) return '-';
+        const s = Math.max(0, OSA.time.now() - ts);
+        if (s < 60) return 'just now';
+        if (s < 3600) return Math.floor(s / 60) + ' min ago';
+        if (s < 86400) return Math.floor(s / 3600) + ' h ago';
+        return Math.floor(s / 86400) + ' days ago';
+    };
+    const money = n => '€' + fmtInt(n);
+    const PAGE_TITLES = {};
+    document.querySelectorAll('#nav .nav-item').forEach(b => { PAGE_TITLES[b.dataset.page] = b.childNodes[0].textContent.trim(); });
+    const PAGE_CATS = {};
+    { let cat = ''; document.querySelectorAll('#nav > *').forEach(n => { if (n.classList.contains('cat')) cat = n.textContent; else PAGE_CATS[n.dataset.page] = cat; }); }
+    const PAGES = {};      // [page] = { show(), render() }
+
+    function setTab(tab, arg) {
+        const b = document.querySelector(`#nav .nav-item[data-page="${tab}"]`);
+        if (b && b.dataset.perm && !can(b.dataset.perm)) return OSA.toast(`You need admin level ${perm(b.dataset.perm)}.`);
         S.tab = tab;
-        document.querySelectorAll('#nav .osa-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+        document.querySelectorAll('#nav .nav-item').forEach(x => x.classList.toggle('on', x.dataset.page === tab));
         document.querySelectorAll('.tab-page').forEach(p => { p.hidden = p.id !== 'page-' + tab; });
+        $('pageTitle').textContent = PAGE_TITLES[tab] || tab;
+        $('pageCrumb').textContent = `${PAGE_CATS[tab] || ''} › ${PAGE_TITLES[tab] || ''}`;
+        if (PAGES[tab] && PAGES[tab].show) PAGES[tab].show(arg);
         render();
     }
-    document.querySelectorAll('#nav .osa-tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+    document.querySelectorAll('#nav .nav-item').forEach(b => b.addEventListener('click', () => setTab(b.dataset.page)));
 
     function render() {
-        $('who').innerHTML = `<b>${esc(S.account)}</b> · ${esc(rankName(S.level))} (${S.level})`;
+        $('who').textContent = `${S.account} · ${rankName(S.level)} (${S.level})`;
         $('cntPlayers').textContent = S.players.length;
+        $('onlinePill').textContent = `Online ${S.players.length} · ${S.players.filter(p => !p.logged).length} not logged in`;
         const waiting = S.reports.filter(r => r.status !== 'claimed').length;
         const cr = $('cntReports');
         cr.textContent = waiting || S.reports.length;
-        cr.classList.toggle('has', waiting > 0);
+        cr.classList.toggle('hot', waiting > 0);
+        document.querySelectorAll('#nav .nav-item[data-perm]').forEach(b => b.classList.toggle('lock', !can(b.dataset.perm)));
         if (S.tab === 'players') renderPlayers();
         else if (S.tab === 'reports') renderReports();
         else if (S.tab === 'server') renderServer();
         else if (S.tab === 'commands') renderCommands();
+        else if (PAGES[S.tab] && PAGES[S.tab].render) PAGES[S.tab].render();
     }
 
     /* ============================================================ players */
 
     const ACTIONS = [
         { group: 'General' },
+        { id: 'account', label: 'Open account', perm: 'accounts', show: p => p.account, local: p => setTab('accounts', p.account) },
         { id: 'goto', label: 'Go to', perm: 'teleport', needGame: true },
         { id: 'gethere', label: 'Bring here', perm: 'teleport', needGame: true },
         { id: 'heal', label: 'Heal', perm: 'heal' },
@@ -326,6 +391,7 @@
         if (!can(a.perm)) return OSA.toast(`You need admin level ${perm(a.perm)}.`);
         if (a.needGame && !S.inGame) return OSA.toast('You need to be online in game on this account.');
 
+        if (a.local) return a.local(p);
         if (a.menu) return levelMenu(p, btn);
         if (a.id === 'skin') {
             const r = await OSA.ui.form(`Change skin: ${p.name} (${p.id})`,
@@ -562,4 +628,767 @@
             arr(S.info.commands).map(c => `<tr><td><code>${esc(c.cmd)}</code></td><td class="c">${c.level > 0 ? c.level : 'all'}</td><td>${esc(c.desc)}</td></tr>`).join('')
         }</tbody></table>`;
     }
+    /* ============================================================ dashboard */
+
+    const D = { data: null };
+    PAGES.dashboard = {
+        async show() {
+            const r = await page('dashboard', 'summary', {}, true);
+            if (r.ok) { D.data = r.result; PAGES.dashboard.render(); }
+        },
+        render() {
+            const d = D.data;
+            if (!d) { $('dashTiles').innerHTML = '<div class="osa-empty">Loading...</div>'; return; }
+            const tile = (label, value, cls, go) => `<div class="tile" data-go="${go || ''}"><span>${esc(label)}</span><b class="${cls || ''}">${esc(value)}</b></div>`;
+            $('dashTiles').innerHTML =
+                tile('Players online', `${d.online} / ${d.maxPlayers}`, 'good', 'players') +
+                tile('Reports waiting / active', `${d.reportsWaiting} / ${d.reports}`, d.reportsWaiting > 0 ? 'bad' : '', 'reports') +
+                tile('Active bans', fmtInt(d.activeBans), '', 'bans') +
+                tile('Accounts', d.accounts === false ? '-' : fmtInt(d.accounts), '', 'accounts') +
+                tile('Muted / jailed', `${d.muted} / ${d.jailed}`, d.muted + d.jailed > 0 ? 'warn' : '', 'bans');
+            const w = d.week;
+            $('dashWeek').innerHTML = w ? `<p class="dim">${esc(w.from)} – ${esc(w.to)}</p>
+                <p><span class="dim">Time trial:</span> ${val(w.timetrial)}</p>
+                <p><span class="dim">Login bonus:</span> ${w.loginBonus ? `<span class="good">${money(w.loginBonus.money)} + ${fmtInt(w.loginBonus.xp)} XP</span>` : '-'}</p>
+                <p class="dim">Job bonuses</p>${arr(w.jobs).map(j => `<p>${esc(j)}</p>`).join('') || '<p>-</p>'}
+                ${d.instance ? `<p class="dim">Server: ${esc(d.instance)}</p>` : ''}` : '<p>-</p>';
+            $('dashAdmins').innerHTML = (arr(d.admins).map(a => `<div class="row"><span>${esc(a.name)} (${a.id})</span><span class="gold">${esc(rankName(a.level))}</span></div>`).join('') || '<p>-</p>')
+                + `<div class="secttl">Resources failed to load</div>` + (arr(d.failed).map(n => `<p class="bad">${esc(n)}</p>`).join('') || '<p class="good">None</p>');
+            grid($('dashLog'), [
+                { key: 'ts', label: 'When', text: r => esc(ago(r.ts)) },
+                { key: 'admin', label: 'Admin' },
+                { key: 'action', label: 'Action' },
+            ], arr(d.log), { empty: 'No admin actions yet.', click: can('adminLog') ? () => setTab('adminlog') : null });
+        },
+    };
+    $('dashTiles').addEventListener('click', e => { const t = e.target.closest('.tile'); if (t && t.dataset.go) setTab(t.dataset.go); });
+
+    /* ============================================================ accounts */
+
+    const A = {
+        args: { admin: 'any', status: 'any', registered: 'any', email: 'any', updates: 'any', conds: [], sort: 'name', dir: 'asc', page: 0, search: '' },
+        data: null, sel: null, detail: null, tab: 'overview', tabData: {}, tabSel: {}, mail: null,
+    };
+    const ACC_FILTERS = [
+        { key: 'admin', label: 'Admin', values: () => [['any', 'Any'], ['admins', 'Admins only']].concat(
+            Array.from({ length: (S.info ? S.info.maxLevel : 6) + 1 }, (_, l) => [String(l), `${l} ${rankName(l)}`])) },
+        { key: 'status', label: 'Status', values: () => [['any', 'Any'], ['online', 'Online'], ['offline', 'Offline'], ['banned', 'Banned'], ['muted', 'Muted'], ['jailed', 'Jailed']] },
+        { key: 'registered', label: 'Registered', values: () => [['any', 'Any'], ['1', 'Last day'], ['7', 'Last 7 days'], ['30', 'Last 30 days'], ['365', 'Last year']] },
+        { key: 'email', label: 'E-mail', values: () => [['any', 'Any'], ['yes', 'Has e-mail'], ['no', 'No e-mail']] },
+        { key: 'updates', label: 'Update mails', values: () => [['any', 'Any'], ['yes', 'Subscribed'], ['no', 'Unsubscribed']] },
+    ];
+    const ACC_CONDS = [['money', 'Money'], ['level', 'Level'], ['xp', 'XP'], ['playtime', 'Playtime (h)'], ['vehicles', 'Vehicles'], ['adminLevel', 'Admin level'], ['id', 'Account ID']];
+
+    let accTimer = null;
+    async function accList(refresh) {
+        const r = await page('accounts', 'list', Object.assign({}, A.args, { refresh: !!refresh }), true);
+        if (r.ok) A.data = r.result;
+        accRender();
+    }
+
+    function accFilters() {
+        $('accFilters').innerHTML = `<input class="osa-input" id="accSearch" type="search" placeholder="Name, display name, e-mail or ID" value="${esc(A.args.search)}" autocomplete="off">`
+            + ACC_FILTERS.map(f => {
+                const v = f.values().find(x => x[0] === A.args[f.key]);
+                return `<button class="osa-btn${A.args[f.key] !== 'any' ? ' active' : ''}" data-f="${f.key}">${esc(f.label)}: ${esc(v ? v[1] : A.args[f.key])}</button>`;
+            }).join('')
+            + '<button class="osa-btn" id="accAddCond">+ Filter</button><button class="osa-btn" id="accClear">Clear</button><button class="osa-btn" id="accReload">Reload</button>';
+        $('accSearch').addEventListener('input', e => {
+            A.args.search = e.target.value.trim();
+            A.args.page = 0;
+            clearTimeout(accTimer);
+            accTimer = setTimeout(accList, 400);
+        });
+    }
+
+    $('accFilters').addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        const r = b.getBoundingClientRect();
+        if (b.dataset.f) {
+            const f = ACC_FILTERS.find(x => x.key === b.dataset.f);
+            OSA.ui.openMenu(r.left, r.bottom + 2, f.values().map(v => ({ label: v[1], action: () => { A.args[f.key] = v[0]; A.args.page = 0; accFilters(); accList(); } })));
+        } else if (b.id === 'accAddCond') {
+            OSA.ui.openMenu(r.left, r.bottom + 2, ACC_CONDS.map(c => ({ label: c[1], action: () => { A.args.conds.push({ key: c[0], op: '>=', value: '' }); accConds(); } })));
+        } else if (b.id === 'accClear') {
+            Object.assign(A.args, { admin: 'any', status: 'any', registered: 'any', email: 'any', updates: 'any', conds: [], page: 0, search: '' });
+            accFilters(); accConds(); accList();
+        } else if (b.id === 'accReload') accList(true);
+    });
+
+    function accConds() {
+        $('accConds').innerHTML = A.args.conds.map((c, i) => `<span class="cond" data-i="${i}">${esc((ACC_CONDS.find(x => x[0] === c.key) || [0, c.key])[1])}
+            <button data-op="${i}">${esc(c.op)}</button><input class="osa-input" data-v="${i}" value="${esc(c.value)}" inputmode="numeric"><button data-del="${i}">✕</button></span>`).join('');
+    }
+    $('accConds').addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        if (b.dataset.op !== undefined) {
+            const c = A.args.conds[Number(b.dataset.op)];
+            c.op = { '>=': '<=', '<=': '=', '=': '>=' }[c.op];
+        } else if (b.dataset.del !== undefined) A.args.conds.splice(Number(b.dataset.del), 1);
+        accConds();
+        A.args.page = 0;
+        accList();
+    });
+    $('accConds').addEventListener('change', e => {
+        if (e.target.dataset.v === undefined) return;
+        A.args.conds[Number(e.target.dataset.v)].value = e.target.value.replace(/[^\d]/g, '');
+        A.args.page = 0;
+        accList();
+    });
+
+    function accStatus(r) {
+        if (r.banned) return '<span class="bad">banned</span>';
+        if (r.jailed) return '<span class="warn">jailed</span>';
+        if (r.muted) return '<span class="warn">muted</span>';
+        return '<span class="dim">ok</span>';
+    }
+
+    function accRender() {
+        const d = A.data;
+        $('accMeta').textContent = d ? `${fmtInt(d.total)} matches of ${fmtInt(d.all)} accounts · list read ${ago(d.cachedAt)}` : 'Loading...';
+        grid($('accRows'), [
+            { key: 'name', label: 'Account', sort: true, text: r => `${r.online ? '<span class="good">●</span> ' : ''}<b>${esc(r.name)}</b>` },
+            { key: 'display', label: 'Display name', sort: true },
+            { key: 'adminLevel', label: 'Admin', sort: true, text: r => r.adminLevel > 0 ? `<span class="gold">${esc(rankName(r.adminLevel))}</span>` : '-' },
+            { key: 'money', label: 'Money', sort: true, cls: 'r', text: r => `<span class="good">${money(r.money)}</span>` },
+            { key: 'level', label: 'Level', sort: true, cls: 'r' },
+            { key: 'vehicles', label: 'Vehicles', sort: true, cls: 'r' },
+            { key: 'playtime', label: 'Playtime', sort: true, cls: 'r', text: r => `${Math.floor(r.playtime / 60)} h` },
+            { key: 'lastLogin', label: 'Last seen', sort: true, text: r => r.online ? `<span class="good">online · ID ${r.online}</span>` : esc(ago(r.lastLogin)) },
+            { key: 'status', label: 'Status', text: accStatus },
+        ], d ? arr(d.rows) : [], {
+            sortKey: A.args.sort, sortDir: A.args.dir,
+            onSort: k => {
+                if (A.args.sort === k) A.args.dir = A.args.dir === 'asc' ? 'desc' : 'asc';
+                else { A.args.sort = k; A.args.dir = (k === 'name' || k === 'display') ? 'asc' : 'desc'; }
+                A.args.page = 0;
+                accList();
+            },
+            sel: r => r.name === A.sel, click: r => accSelect(r.name), empty: d ? 'No account matches.' : 'Loading...',
+        });
+        $('accPager').innerHTML = d ? `<button class="osa-btn small" data-p="-1"${d.page > 0 ? '' : ' disabled'}>‹</button>
+            <span>Page ${d.page + 1} / ${d.pages}</span><button class="osa-btn small" data-p="1"${d.page < d.pages - 1 ? '' : ' disabled'}>›</button>` : '';
+        accDetail();
+    }
+    $('accPager').addEventListener('click', e => {
+        const b = e.target.closest('button[data-p]');
+        if (!b || b.disabled) return;
+        A.args.page += Number(b.dataset.p);
+        accList();
+    });
+
+    async function accLoadDetail() {
+        const name = A.sel;
+        const r = await page('accounts', 'detail', { name });
+        if (A.sel !== name) return;
+        A.detail = r.ok ? r.result : false;
+        accDetail();
+        if (A.tab !== 'overview' && A.tab !== 'notes') accLoadTab(A.tab);
+    }
+
+    async function accLoadTab(tab) {
+        const name = A.sel;
+        A.tabData[tab] = null;
+        const r = await page('accounts', 'tab', { name, tab }, true);
+        if (A.sel !== name) return;
+        A.tabData[tab] = r.ok ? r.result : { list: [] };
+        accDetail();
+    }
+
+    function accSelect(name) {
+        if (A.sel === name) return;
+        Object.assign(A, { sel: name, detail: null, tabData: {}, tabSel: {}, mail: null });
+        accRender();
+        accLoadDetail();
+    }
+
+    async function accEdit(what, extra) {
+        const r = await page('accounts', 'edit', Object.assign({ name: A.sel, what }, extra || {}));
+        if (r.ok) { accLoadDetail(); accList(true); }
+        return r;
+    }
+
+    async function accAsk(what, title, label, value, extra, numeric) {
+        const f = await OSA.ui.form(title, [{ name: 'v', label, type: numeric ? 'number' : (what === 'note' ? 'textarea' : 'text'), value: value === undefined ? '' : String(value) }], 'Save');
+        if (!f || f.v === '') return;
+        const key = what === 'ban' ? 'reason' : what === 'note' ? 'text' : what === 'vehgive' ? 'model' : 'value';
+        accEdit(what, Object.assign({ [key]: f.v }, extra || {}));
+    }
+
+    const ACC_TABS = [['overview', 'Overview'], ['stats', 'Stats'], ['vehicles', 'Vehicles'], ['mails', 'Mails'], ['punishments', 'Punishments'],
+        ['achievements', 'Achievements'], ['inventory', 'Inventory'], ['social', 'Social'], ['notes', 'Notes']];
+
+    function accDetail() {
+        const el = $('accDetail');
+        const d = A.detail;
+        if (!A.sel) { el.innerHTML = '<div class="empty-center">Select an account</div>'; return; }
+        if (d === null) { el.innerHTML = '<div class="empty-center">Loading...</div>'; return; }
+        if (d === false) { el.innerHTML = '<div class="empty-center bad">No such account</div>'; return; }
+        const kv = (l, v, cls) => `<div class="kvt"><span>${esc(l)}</span><b class="${cls || ''}">${val(v)}</b></div>`;
+        let body = '';
+        const t = A.tabData[A.tab];
+        const loading = '<div class="osa-empty">Loading...</div>';
+        if (A.tab === 'overview') {
+            body = `<div class="tilesgrid">
+                ${kv('E-mail', d.email)}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
+                ${kv('Money', money(d.money), 'good')}${kv('Level · XP', `${d.level} · ${fmtInt(d.xp)}`)}
+                ${kv('Playtime', d.playtimeText || `${Math.floor(d.playtime / 60)}h ${String(d.playtime % 60).padStart(2, '0')}m`)}
+                ${kv('Last login', d.online ? 'online now' : fmtDate(d.lastLogin))}
+                ${kv('Last serial', d.lastSerial)}${kv('Last IP', d.lastIp)}
+                ${kv('Achievements', d.achievements ? `${d.achievements.done} / ${d.achievements.total}` : '-')}${kv('Vehicles', d.vehicles)}
+            </div>${d.banned ? `<div class="banbar">Banned by ${esc(d.banned.admin || '?')}: ${esc(d.banned.reason || '?')}</div>` : ''}
+            <div class="secttl">Work levels</div>${arr(d.works).map(w => `<div class="row"><span>${esc(w.name)}</span><span class="dim">level ${w.level} / ${w.maxLevel} · ${fmtInt(w.xp)} XP</span>
+                ${can('accountEdit') ? `<button class="osa-btn small" data-workxp="${esc(w.id)}" data-xp="${w.xp}">Set XP</button>` : ''}</div>`).join('') || '<p class="dim">-</p>'}`;
+        } else if (A.tab === 'notes') {
+            body = `<div id="accTab"></div><div class="acc-actions"><button class="osa-btn" data-act="note">Add note</button></div>`;
+        } else {
+            body = t ? '<div id="accTab"></div>' : loading;
+        }
+        const actions = A.tab !== 'overview' ? '' : `<div class="acc-actions">
+            ${d.online && can('teleport') && S.inGame ? `<button class="osa-btn" data-act="goto">Go to</button>` : ''}
+            ${can('setLevel') ? '<button class="osa-btn" data-act="setlevel">Set admin level</button>' : ''}
+            ${can('accountEdit') ? '<button class="osa-btn" data-act="money">Edit money</button><button class="osa-btn" data-act="level">Edit level</button><button class="osa-btn" data-act="xp">Edit XP</button>' : ''}
+            ${can('mail') && d.hasEmail ? '<button class="osa-btn" data-act="mail">Send mail</button>' : ''}
+            ${can('mute') && d.muted ? '<button class="osa-btn" data-act="unmute">Unmute</button>' : ''}
+            ${can('ban') ? (d.banned ? '<button class="osa-btn" data-act="unban">Unban</button>' : '<button class="osa-btn danger" data-act="ban">Ban account</button>') : ''}
+        </div>`;
+        el.innerHTML = `<div class="acc-head"><div class="acc-av">${esc(d.name.charAt(0).toUpperCase())}</div><div>
+                <h2>${esc(d.name)} ${d.adminLevel > 0 ? `<small class="gold">${esc(rankName(d.adminLevel))}</small>` : ''}</h2>
+                <div class="sub">${val(d.display)} · #${d.id} · registered ${fmtDate(d.created)}${d.online ? ` · <span class="good">online, ID ${d.online}</span>` : ''}</div></div></div>
+            <div class="acc-tabs">${ACC_TABS.map(x => `<button data-tab="${x[0]}" class="${A.tab === x[0] ? 'on' : ''}">${x[1]}${
+                x[0] === 'vehicles' ? ' ' + d.vehicles : x[0] === 'notes' && arr(d.notes).length ? ' ' + arr(d.notes).length : ''}</button>`).join('')}</div>
+            <div class="acc-body">${body}</div>${actions}`;
+        const tb = $('accTab');
+        if (!tb) return;
+        const sel = A.tabSel[A.tab];
+        if (A.tab === 'stats') grid(tb, [{ key: 'name', label: 'Stat' }, { key: 'category', label: 'Category' }, { key: 'value', label: 'Value', cls: 'r', text: s => fmtInt(s.value) }], arr(t.list));
+        else if (A.tab === 'vehicles') {
+            grid(tb, [{ key: 'id', label: '#' }, { key: 'name', label: 'Model' }, { key: 'plate', label: 'Plate' },
+                { key: 'state', label: 'Status', text: v => v.destroyed ? '<span class="bad">destroyed</span>' : v.spawned ? '<span class="good">spawned</span>' : '<span class="dim">garage</span>' }],
+                arr(t.list), { sel: v => v.id === sel, click: v => { A.tabSel.vehicles = v.id; accDetail(); } });
+            const v = arr(t.list).find(x => x.id === sel);
+            tb.insertAdjacentHTML('beforeend', `<div class="acc-actions">${can('vehicles') ? '<button class="osa-btn" data-act="vehgive">Give vehicle</button>' : ''}
+                ${v && v.destroyed && can('vehicles') ? '<button class="osa-btn" data-act="vehrestore">Restore</button>' : ''}
+                ${v && can('vehicles') ? '<button class="osa-btn danger" data-act="vehdelete">Delete vehicle</button>' : ''}</div>`);
+        } else if (A.tab === 'mails') {
+            grid(tb, [{ key: 'ts', label: 'Date', text: m => fmtDate(m.ts) }, { key: 'kind', label: 'Kind' }, { key: 'subject', label: 'Subject' },
+                { key: 'status', label: 'Status', text: m => `<span class="${m.status === 'sent' ? 'good' : m.status === 'failed' ? 'bad' : 'warn'}">${esc(m.status)}</span>` }],
+                arr(t.list), { sel: m => A.mail && A.mail.id === m.id, click: async m => {
+                    const r = await page('accounts', 'mail', { id: m.id }, true);
+                    if (r.ok) { A.mail = r.result; accDetail(); }
+                } });
+            if (A.mail) tb.insertAdjacentHTML('beforeend', `<pre class="mail-view">${esc(A.mail.subject + '\n\n' + A.mail.body + (A.mail.error ? '\n\n[' + A.mail.error + ']' : ''))}</pre>`);
+        } else if (A.tab === 'punishments') {
+            tb.innerHTML = '<div class="secttl">Bans</div><div id="accBans"></div><div class="secttl">Admin actions</div><div id="accLog"></div>';
+            grid($('accBans'), [{ key: 'at', label: 'Date', text: b => fmtDate(b.at) }, { key: 'reason', label: 'Reason' }, { key: 'admin', label: 'Admin' },
+                { key: 'lifted', label: 'Status', text: b => b.lifted > 0 ? `<span class="dim">lifted by ${esc(b.liftedBy || '?')}</span>` : '<span class="bad">active</span>' }], arr(t.bans));
+            grid($('accLog'), [{ key: 'ts', label: 'Date', text: l => fmtDate(l.ts) }, { key: 'admin', label: 'Admin' }, { key: 'action', label: 'Action' }], arr(t.log));
+        } else if (A.tab === 'achievements') {
+            grid(tb, [{ key: 'name', label: 'Achievement' }, { key: 'progress', label: 'Progress', cls: 'r', text: a => `${a.progress} / ${a.goal}` },
+                { key: 'done', label: 'Unlocked', text: a => a.done ? `<span class="good">${fmtDate(a.at)}</span>` : '-' }],
+                arr(t.list), { sel: a => a.id === sel, click: a => { A.tabSel.achievements = a.id; accDetail(); } });
+            if (can('achievements')) tb.insertAdjacentHTML('beforeend', `<div class="acc-actions">${sel ? '<button class="osa-btn" data-act="achgive">Give</button><button class="osa-btn" data-act="achreset">Reset</button>' : ''}
+                <button class="osa-btn danger" data-act="achresetall">Reset all</button></div>`);
+        } else if (A.tab === 'inventory') {
+            if (!t.online) tb.innerHTML = '<div class="osa-empty">The inventory is only readable while the player is online.</div>';
+            else grid(tb, [{ key: 'name', label: 'Item', text: i => '&nbsp;'.repeat(i.depth * 4) + esc(i.name) }, { key: 'slot', label: 'Slot' }, { key: 'amount', label: 'Amount', cls: 'r' }], arr(t.list));
+        } else if (A.tab === 'social') {
+            tb.innerHTML = `<div class="kvt"><span>Crew</span><b>${val(t.crew)}</b></div><div class="secttl">Friends (${arr(t.friends).length})</div><div id="accFriends"></div>`;
+            grid($('accFriends'), [{ key: 'name', label: 'Account' }], arr(t.friends).map(n => ({ name: n })), { click: f => accSelect(f.name) });
+        } else if (A.tab === 'notes') {
+            const notes = arr(d.notes).map((n, i) => Object.assign({ i: i + 1 }, n));
+            grid(tb, [{ key: 't', label: 'Date', text: n => fmtDate(n.t) }, { key: 'admin', label: 'Admin' }, { key: 'text', label: 'Note', text: n => esc(n.text) }],
+                notes, { sel: n => n.i === sel, click: n => { A.tabSel.notes = n.i; accDetail(); }, empty: 'No notes.' });
+            if (sel && can('notes')) tb.insertAdjacentHTML('beforeend', '<div class="acc-actions"><button class="osa-btn danger" data-act="delnote">Delete note</button></div>');
+        }
+    }
+
+    $('accDetail').addEventListener('click', async e => {
+        const tabBtn = e.target.closest('.acc-tabs button');
+        if (tabBtn) {
+            A.tab = tabBtn.dataset.tab;
+            A.mail = null;
+            if (A.tab !== 'overview' && A.tab !== 'notes' && !A.tabData[A.tab]) accLoadTab(A.tab);
+            return accDetail();
+        }
+        const wx = e.target.closest('button[data-workxp]');
+        if (wx) return accAsk('workxp', 'Set work XP', 'XP', wx.dataset.xp, { work: wx.dataset.workxp }, true);
+        const b = e.target.closest('button[data-act]');
+        if (!b) return;
+        const d = A.detail, act = b.dataset.act, sel = A.tabSel[A.tab];
+        const reload = tab => setTimeout(() => accLoadTab(tab), 400);
+        if (act === 'goto') return act && actGoto(d.online);
+        if (act === 'setlevel') {
+            const max = S.info.maxLevel, maxGrant = S.level >= max ? max : S.level - 1;
+            const r = b.getBoundingClientRect();
+            const items = [{ header: `Admin level of ${d.name}` }];
+            for (let l = 0; l <= max; l++) items.push({ label: `${l}  ${rankName(l)}${l === d.adminLevel ? '  (current)' : ''}`, disabled: l > maxGrant || l === d.adminLevel, action: () => accEdit('setlevel', { value: l }) });
+            return OSA.ui.openMenu(r.left, r.bottom + 2, items);
+        }
+        if (act === 'money') return accAsk('money', 'Edit money', 'Money', d.money, null, true);
+        if (act === 'level') return accAsk('level', 'Edit level', 'Level', d.level, null, true);
+        if (act === 'xp') return accAsk('xp', 'Edit XP', 'XP', d.xp, null, true);
+        if (act === 'ban') return accAsk('ban', `Ban account ${d.name}`, 'Reason');
+        if (act === 'unban' || act === 'unmute') return accEdit(act);
+        if (act === 'mail') return setTab('mail', { recipients: [d.name] });
+        if (act === 'note') return accAsk('note', 'Add note', 'Note');
+        if (act === 'delnote') { A.tabSel.notes = null; return accEdit('delnote', { index: sel }); }
+        if (act === 'vehgive') { await accAsk('vehgive', 'Give vehicle', 'Model ID or name'); return reload('vehicles'); }
+        if (act === 'vehrestore') { await accEdit('vehrestore', { id: sel }); return reload('vehicles'); }
+        if (act === 'vehdelete') {
+            if (!(await OSA.ui.confirm('Delete vehicle', 'The vehicle is removed from the account for good.', 'Delete'))) return;
+            A.tabSel.vehicles = null;
+            await accEdit('vehdelete', { id: sel });
+            return reload('vehicles');
+        }
+        if (act === 'achgive') { await accEdit('achgive', { id: sel }); return reload('achievements'); }
+        if (act === 'achreset') { await accEdit('achreset', { id: sel }); return reload('achievements'); }
+        if (act === 'achresetall') {
+            if (!(await OSA.ui.confirm('Reset achievements', 'Every achievement of this account is reset.', 'Reset all'))) return;
+            await accEdit('achreset', {});
+            return reload('achievements');
+        }
+    });
+
+    function actGoto(id) { return act('adminWebAction', 'goto', id); }
+
+    PAGES.accounts = {
+        show(name) {
+            accFilters();
+            accConds();
+            if (typeof name === 'string' && name) {
+                A.args.search = name;
+                A.args.page = 0;
+                accFilters();
+                A.sel = null;
+                A.tab = 'overview';
+                accSelect(name);
+            }
+            accList();
+        },
+        render() { /* the list changes on its own requests only */ },
+    };
+
+    /* ============================================================ bans */
+
+    const B = { active: true, page: 0, search: '', data: null, sel: null };
+    async function bansLoad() {
+        const r = await page('bans', 'list', { active: B.active, page: B.page, search: B.search }, true);
+        if (r.ok) B.data = r.result;
+        bansRender();
+    }
+    function bansRender() {
+        const d = B.data;
+        grid($('bnRows'), [
+            { key: 'at', label: 'Date', text: b => fmtDate(b.at) },
+            { key: 'account', label: 'Account', text: b => `<b>${val(b.account)}</b>` },
+            { key: 'reason', label: 'Reason' },
+            { key: 'admin', label: 'Admin' },
+            { key: 'lifted', label: 'Status', text: b => b.lifted > 0 ? `<span class="dim">lifted by ${esc(b.liftedBy || '?')}</span>` : '<span class="bad">active</span>' },
+        ], d ? arr(d.rows) : [], { sel: b => b.id === B.sel, click: b => { B.sel = b.id; bansRender(); }, empty: d ? 'No bans.' : 'Loading...' });
+        const sel = d && arr(d.rows).find(b => b.id === B.sel);
+        $('bnPager').innerHTML = `<button class="osa-btn small" data-p="-1"${B.page > 0 ? '' : ' disabled'}>‹</button><span>${B.page + 1}</span>
+            <button class="osa-btn small" data-p="1"${d && d.more ? '' : ' disabled'}>›</button><span class="grow"></span>
+            ${sel ? `<span class="dim">Serial ${val(sel.serial)} · IP ${val(sel.ip)}</span>` : ''}
+            ${sel && sel.account && can('accounts') ? '<button class="osa-btn small" data-open="1">Open account</button>' : ''}
+            ${sel && sel.account && sel.lifted === 0 && can('ban') ? '<button class="osa-btn small primary" data-unban="1">Unban</button>' : ''}`;
+        const fmtLeft = s => { const m = Math.floor(Math.max(0, s) / 60); return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`; };
+        const rows = [];
+        for (const p of S.players) {
+            if (p.muted) rows.push({ p, kind: 'muted', left: fmtLeft(p.muteLeft), reason: p.muteReason, admin: p.muteAdmin });
+            if (p.jailed) rows.push({ p, kind: 'jailed', left: p.jailLeft + 'm', reason: p.jailReason, admin: p.jailAdmin });
+        }
+        grid($('bnOnline'), [
+            { key: 'name', label: 'Player', text: r => `<b>${esc(r.p.name)}</b> (${r.p.id})` },
+            { key: 'kind', label: 'Kind', text: r => `<span class="warn">${r.kind}</span>` },
+            { key: 'left', label: 'Left' },
+            { key: 'reason', label: 'Reason', text: r => `${esc(r.reason || '?')} <span class="dim">(${esc(r.admin || '?')})</span>` },
+        ], rows, { empty: 'Nobody is muted or jailed.' });
+    }
+    $('bnPager').addEventListener('click', async e => {
+        const b = e.target.closest('button');
+        if (!b || b.disabled) return;
+        const sel = B.data && arr(B.data.rows).find(x => x.id === B.sel);
+        if (b.dataset.p) { B.page += Number(b.dataset.p); return bansLoad(); }
+        if (b.dataset.open && sel) return setTab('accounts', sel.account);
+        if (b.dataset.unban && sel) { await page('bans', 'unban', { name: sel.account }); bansLoad(); }
+    });
+    let bnTimer = null;
+    $('bnSearch').addEventListener('input', e => { B.search = e.target.value.trim(); B.page = 0; clearTimeout(bnTimer); bnTimer = setTimeout(bansLoad, 400); });
+    $('bnActive').addEventListener('click', () => { B.active = true; B.page = 0; $('bnActive').classList.add('active'); $('bnAll').classList.remove('active'); bansLoad(); });
+    $('bnAll').addEventListener('click', () => { B.active = false; B.page = 0; $('bnAll').classList.add('active'); $('bnActive').classList.remove('active'); bansLoad(); });
+    PAGES.bans = { show: bansLoad, render: bansRender };
+
+    /* ============================================================ resources */
+
+    const R = { list: null, mode: 'all' };
+    async function resLoad() {
+        const r = await page('resources', 'list', {}, true);
+        if (r.ok) R.list = arr(r.result.list);
+        resRender();
+    }
+    function resRender() {
+        $('rsMode').innerHTML = [['all', 'All'], ['running', 'Running'], ['stopped', 'Stopped'], ['failed', 'Failed']]
+            .map(m => `<button class="osa-btn${R.mode === m[0] ? ' active' : ''}" data-m="${m[0]}">${m[1]}</button>`).join('');
+        const f = $('rsSearch').value.trim().toLowerCase();
+        const rows = (R.list || []).filter(r => (!f || r.name.toLowerCase().includes(f) || r.group.toLowerCase().includes(f))
+            && (R.mode === 'all' || (R.mode === 'running' && r.state === 'running') || (R.mode === 'stopped' && r.state === 'loaded') || (R.mode === 'failed' && r.state === 'failed to load')));
+        const stateCls = { running: 'good', loaded: 'dim', 'failed to load': 'bad' };
+        grid($('rsRows'), [
+            { key: 'name', label: 'Resource', text: r => `<b>${esc(r.name)}</b>${r.protected ? ' <span class="dim">[protected]</span>' : ''}` },
+            { key: 'group', label: 'Folder' },
+            { key: 'state', label: 'State', text: r => `<span class="${stateCls[r.state] || 'warn'}">${esc(r.state)}</span>` },
+            { key: 'act', label: '', cls: 'r', text: r => r.state !== 'running' ? `<button class="osa-btn small" data-a="start" data-n="${esc(r.name)}">Start</button>`
+                : r.protected ? '' : `<button class="osa-btn small" data-a="restart" data-n="${esc(r.name)}">Restart</button> <button class="osa-btn small danger" data-a="stop" data-n="${esc(r.name)}">Stop</button>` },
+        ], rows, { empty: R.list ? 'No resource matches.' : 'Loading...' });
+    }
+    $('rsMode').addEventListener('click', e => { const b = e.target.closest('button[data-m]'); if (b) { R.mode = b.dataset.m; resRender(); } });
+    $('rsSearch').addEventListener('input', resRender);
+    $('rsReload').addEventListener('click', resLoad);
+    $('rsRows').addEventListener('click', async e => {
+        const b = e.target.closest('button[data-a]');
+        if (!b) return;
+        e.stopPropagation();
+        if (b.dataset.a === 'stop' && !(await OSA.ui.confirm('Stop resource', `Stop ${b.dataset.n}?`, 'Stop'))) return;
+        await page('resources', 'action', { name: b.dataset.n, action: b.dataset.a });
+        setTimeout(resLoad, 800);
+    }, true);
+    PAGES.resources = { show: resLoad, render: () => {} };
+
+    /* ============================================================ admin log */
+
+    const AL = { page: 0, data: null };
+    async function alLoad() {
+        const r = await page('adminlog', 'list', { page: AL.page, admin: $('alAdmin').value, target: $('alTarget').value, text: $('alText').value }, true);
+        if (r.ok) AL.data = r.result;
+        grid($('alRows'), [
+            { key: 'ts', label: 'Date', text: l => fmtDate(l.ts) },
+            { key: 'admin', label: 'Admin', text: l => `<b>${esc(l.admin)}</b>` },
+            { key: 'level', label: 'Level', cls: 'r' },
+            { key: 'source', label: 'From', text: l => `<span class="${l.source === 'web' ? 'gold' : 'dim'}">${esc(l.source)}</span>` },
+            { key: 'action', label: 'Action' },
+            { key: 'target', label: 'Target', text: l => l.target ? `<span class="gold">${esc(l.target)}</span>` : '-' },
+        ], AL.data ? arr(AL.data.rows) : [], { empty: 'No admin actions.', click: l => { if (l.target && can('accounts')) setTab('accounts', l.target); } });
+        $('alPager').innerHTML = `<button class="osa-btn small" data-p="-1"${AL.page > 0 ? '' : ' disabled'}>‹</button><span>${AL.page + 1}</span>
+            <button class="osa-btn small" data-p="1"${AL.data && AL.data.more ? '' : ' disabled'}>›</button>`;
+    }
+    let alTimer = null;
+    ['alAdmin', 'alTarget', 'alText'].forEach(id => $(id).addEventListener('input', () => { AL.page = 0; clearTimeout(alTimer); alTimer = setTimeout(alLoad, 400); }));
+    $('alPager').addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) { AL.page += Number(b.dataset.p); alLoad(); } });
+    PAGES.adminlog = { show: () => { AL.page = 0; alLoad(); }, render: () => {} };
+
+    /* ============================================================ weekly */
+
+    const W = { data: null, week: 0, tab: 'jobs' };
+    async function wkLoad() {
+        const r = await page('weekly', 'overview', {}, true);
+        if (r.ok) W.data = r.result;
+        wkRender();
+    }
+    async function wkEdit(action, a, b, c) {
+        const w = W.data.weeks[W.week];
+        const r = await page('weekly', 'edit', { action, offset: w.offset, a, b, c });
+        if (r.result) W.data = r.result;
+        wkRender();
+    }
+    function wkRender() {
+        const d = W.data;
+        if (!d) { $('wkBody').innerHTML = '<div class="osa-empty">Loading...</div>'; return; }
+        W.week = Math.min(W.week, arr(d.weeks).length - 1);
+        const label = w => w.offset === 0 ? 'This week' : w.offset === 1 ? 'Next week' : `In ${w.offset} weeks`;
+        $('wkWeeks').innerHTML = `<p class="dim">Next change: ${esc(d.nextChange)} UTC</p>` + arr(d.weeks).map((w, i) =>
+            `<button class="wk-week${i === W.week ? ' on' : ''}" data-w="${i}"><b>${label(w)}</b><small>${esc(w.from)}${w.inherited ? ' (inherited)' : ''}</small></button>`).join('')
+            + '<span class="grow"></span><button class="osa-btn danger" id="wkReset">Reset week (inherit previous)</button>';
+        const w = d.weeks[W.week];
+        const tabs = [['jobs', 'Job multipliers'], ['trial', 'Time trial'], ['login', 'Login bonus'], ['news', 'Weekly news']];
+        let html = `<div class="osa-tabs">${tabs.map(t => `<button class="osa-tab${W.tab === t[0] ? ' active' : ''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div><div id="wkTab"></div>`;
+        $('wkBody').innerHTML = html;
+        const el = $('wkTab');
+        const mults = arr(d.multipliers);
+        if (W.tab === 'jobs') {
+            grid(el, [
+                { key: 'name', label: 'Job', text: j => `<b>${esc(j.name)}</b>` },
+                { key: 'money', label: 'Money', text: j => { const m = w.jobs[j.id]; const cur = m ? m.money : 1;
+                    return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-kind="money" data-x="${x}">${x}x</button>`).join('')}</span>`; } },
+                { key: 'xp', label: 'XP', text: j => { const m = w.jobs[j.id]; const cur = m ? m.xp : 1;
+                    return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-kind="xp" data-x="${x}">${x}x</button>`).join('')}</span>`; } },
+            ], arr(d.jobs), { empty: 'v_jobmanager has no official jobs.' });
+        } else if (W.tab === 'trial') {
+            grid(el, [
+                { key: 'name', label: 'Time trial', text: t => `<b>${esc(t.name)}</b>` },
+                { key: 'time', label: 'Limit', text: t => `${t.time || 0} s` },
+                { key: 'reward', label: 'Reward', cls: 'r', text: t => `<span class="good">${money(t.reward)}</span>` },
+                { key: 'sel', label: '', cls: 'r', text: t => w.timetrial === t.i ? '<span class="gold">active</span>' : `<button class="osa-btn small" data-trial="${t.i}">Select</button>` },
+            ], arr(d.trials).map((t, i) => Object.assign({ i: i + 1 }, t)), { empty: 'v_timetrial is not running.' });
+        } else if (W.tab === 'login') {
+            const b = w.loginBonus || { money: 0, xp: 0 };
+            el.innerHTML = `<div class="row left" style="margin-top:12px"><label>Money <input class="osa-input" id="wkMoney" type="number" min="0" value="${b.money}"></label>
+                <label>XP <input class="osa-input" id="wkXp" type="number" min="0" value="${b.xp}"></label><button class="osa-btn primary" id="wkLogin">Save</button></div>
+                <p class="dim">Paid once per ${esc(d.period)} to every player who logs in. Max ${money(d.maxMoney)} and ${fmtInt(d.maxXp)} XP.</p>`;
+        } else {
+            const n = w.news || { title: '', body: '' };
+            el.innerHTML = `<label class="col" style="margin-top:12px">Title <input class="osa-input" id="wkTitle" maxlength="60" value="${esc(n.title)}"></label>
+                <label class="col">Text <textarea class="osa-textarea" id="wkText" maxlength="600" rows="8">${esc(n.body)}</textarea></label>
+                <div class="row"><span></span><button class="osa-btn primary" id="wkNews">Save</button></div>`;
+        }
+    }
+    $('wkWeeks').addEventListener('click', async e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        if (b.dataset.w) { W.week = Number(b.dataset.w); return wkRender(); }
+        if (b.id === 'wkReset' && await OSA.ui.confirm('Reset week', 'The week loses its own settings and inherits the previous week.', 'Reset')) wkEdit('reset');
+    });
+    $('wkBody').addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        const w = W.data.weeks[W.week];
+        if (b.dataset.t) { W.tab = b.dataset.t; return wkRender(); }
+        if (b.dataset.job) {
+            const m = w.jobs[b.dataset.job] || { money: 1, xp: 1 };
+            const x = Number(b.dataset.x);
+            return wkEdit('job', b.dataset.job, b.dataset.kind === 'money' ? x : m.money, b.dataset.kind === 'xp' ? x : m.xp);
+        }
+        if (b.dataset.trial) return wkEdit('trial', Number(b.dataset.trial));
+        if (b.id === 'wkLogin') return wkEdit('login', Number($('wkMoney').value) || 0, Number($('wkXp').value) || 0);
+        if (b.id === 'wkNews') return wkEdit('news', $('wkTitle').value.trim(), $('wkText').value.trim());
+    });
+    PAGES.weekly = { show: wkLoad, render: () => {} };
+
+    /* ============================================================ news */
+
+    const N = { data: null, sel: null };
+    function nwFill(a) {
+        N.sel = a ? a.id : null;
+        $('nwDate').value = a ? a.dateText : (N.data ? N.data.nowDate : '');
+        $('nwTime').value = a ? a.timeText : (N.data ? N.data.nowTime : '');
+        $('nwTitle').value = a ? a.title : '';
+        $('nwBody').value = a ? a.body : '';
+        $('nwAuthor').textContent = a ? `#${a.id} · ${a.author || '-'}` : 'New article';
+        $('nwDelete').hidden = !a;
+        nwCount();
+        nwRows();
+    }
+    function nwCount() { $('nwCount').textContent = `${$('nwBody').value.length} / 4000 · a blank line starts a new paragraph`; }
+    function nwRows() {
+        grid($('nwRows'), [
+            { key: 'dateText', label: 'Date', text: a => `<span class="${a.scheduled ? 'warn' : 'dim'}">${esc(a.dateText)}</span>` },
+            { key: 'title', label: 'Title', text: a => `${a.scheduled ? '<span class="warn">[scheduled]</span> ' : ''}${esc(a.title)}` },
+        ], N.data ? arr(N.data.list) : [], { sel: a => a.id === N.sel, click: a => nwFill(a), empty: 'No articles yet.' });
+    }
+    function nwSet(r) {
+        if (!r) return;
+        N.data = r;
+        if (r.selected) nwFill(arr(r.list).find(a => a.id === r.selected));
+        else nwRows();
+    }
+    $('nwNew').addEventListener('click', () => nwFill(null));
+    $('nwNow').addEventListener('click', () => { $('nwDate').value = N.data.nowDate; $('nwTime').value = N.data.nowTime; });
+    $('nwBody').addEventListener('input', nwCount);
+    $('nwSave').addEventListener('click', async () => {
+        const r = await page('news', 'save', { id: N.sel, dateText: $('nwDate').value, timeText: $('nwTime').value, title: $('nwTitle').value, body: $('nwBody').value });
+        if (r.result) nwSet(r.result);
+    });
+    $('nwDelete').addEventListener('click', async () => {
+        if (!N.sel || !(await OSA.ui.confirm('Delete article', 'The article disappears from the news.', 'Delete'))) return;
+        const r = await page('news', 'delete', { id: N.sel });
+        if (r.result) { N.data = r.result; nwFill(null); }
+    });
+    PAGES.news = {
+        async show() {
+            const r = await page('news', 'list', {}, true);
+            if (r.ok) { N.data = r.result; if (!N.sel) nwFill(null); else nwRows(); }
+        },
+        render: () => {},
+    };
+
+    /* ============================================================ mail */
+
+    const M = { tab: 'compose', names: null, configured: true, chosen: new Set(), mode: 'all', langs: [], lang: null, texts: {},
+        hist: { page: 0, groups: null, more: false, group: null, mails: null, mailId: null }, status: null, testLang: 'en' };
+
+    function mlSaveText() {
+        if (!M.lang) return;
+        M.texts[M.lang] = { subject: $('mlSubject').value, body: $('mlBody').value };
+    }
+    function mlLangs() {
+        if (!M.langs.length) M.langs = S.info && arr(S.info.languages).length ? arr(S.info.languages) : [{ value: 'en', label: 'English' }];
+        M.lang = M.lang || M.langs[0].value;
+        $('mlLangs').innerHTML = M.langs.map(l => {
+            const t = M.texts[l.value] || {};
+            const st = t.subject && t.body ? 'done' : (t.subject || t.body ? 'partial' : '');
+            return `<button class="osa-btn langbtn ${st}${M.lang === l.value ? ' active' : ''}" data-l="${l.value}">${esc(l.label)} (${l.value.toUpperCase()})</button>`;
+        }).join('');
+        const t = M.texts[M.lang] || { subject: '', body: '' };
+        $('mlSubject').value = t.subject || '';
+        $('mlBody').value = t.body || '';
+        mlHint();
+    }
+    function mlHint() {
+        $('mlHint').textContent = `{name} = the account name · ${$('mlBody').value.length} / 8000 · a blank line starts a new paragraph`
+            + (M.configured ? ' · recipients without their language get English (or the first filled language)' : ' · MAIL IS NOT CONFIGURED (Brevo API key)');
+        const n = M.mode === 'all' ? (M.names ? M.names.length : 0) : M.chosen.size;
+        $('mlSend').textContent = `Send to ${n}`;
+    }
+    function mlNames() {
+        const total = M.names ? M.names.length : 0;
+        $('mlMode').innerHTML = `<button class="osa-btn${M.mode === 'all' ? ' active' : ''}" data-mode="all">All (${total})</button>
+            <button class="osa-btn${M.mode === 'selected' ? ' active' : ''}" data-mode="selected">Selected (${M.chosen.size})</button>`;
+        const f = $('mlSearch').value.trim().toLowerCase();
+        const shown = (M.names || []).filter(n => !f || n.toLowerCase().includes(f)).slice(0, 1500);
+        $('mlNames').innerHTML = !M.names ? '<div class="osa-empty">Loading...</div>' : shown.map(n => {
+            const on = M.mode === 'all' || M.chosen.has(n);
+            return `<div class="nm-row ${on ? 'on' : 'off'}" data-n="${esc(n)}">${on ? '☑' : '☐'} ${esc(n)}</div>`;
+        }).join('') || '<div class="osa-empty">No account.</div>';
+        mlHint();
+        return shown;
+    }
+    $('mlMode').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { M.mode = b.dataset.mode; mlNames(); } });
+    $('mlSearch').addEventListener('input', mlNames);
+    $('mlNames').addEventListener('click', e => {
+        const r = e.target.closest('.nm-row');
+        if (!r) return;
+        const n = r.dataset.n;
+        if (M.chosen.has(n)) M.chosen.delete(n); else M.chosen.add(n);
+        M.mode = 'selected';
+        mlNames();
+    });
+    $('mlSelShown').addEventListener('click', () => { for (const n of mlNames()) M.chosen.add(n); M.mode = 'selected'; mlNames(); });
+    $('mlClear').addEventListener('click', () => { M.chosen.clear(); mlNames(); });
+    $('mlLangs').addEventListener('click', e => { const b = e.target.closest('button[data-l]'); if (!b) return; mlSaveText(); M.lang = b.dataset.l; mlLangs(); });
+    ['mlSubject', 'mlBody'].forEach(id => $(id).addEventListener('input', () => { mlSaveText(); mlHint(); }));
+    ['mlSubject', 'mlBody'].forEach(id => $(id).addEventListener('change', mlLangs));
+    async function mlSend(mode) {
+        mlSaveText();
+        if (mode !== 'test') {
+            const n = mode === 'all' ? (M.names ? M.names.length : 0) : M.chosen.size;
+            if (!(await OSA.ui.confirm('Send circular', `The mail goes to ${n} account(s), each in its own language.`, 'Send'))) return;
+        }
+        await page('mail', 'send', { mode, names: mode === 'selected' ? Array.from(M.chosen) : null, texts: M.texts });
+    }
+    $('mlSend').addEventListener('click', () => mlSend(M.mode));
+    $('mlTest').addEventListener('click', () => mlSend('test'));
+
+    async function mlHistory(p) {
+        const h = M.hist;
+        h.page = p; h.groups = null;
+        mlHistRender();
+        const r = await page('mail', 'history', { page: p }, true);
+        if (r.ok) { h.groups = arr(r.result.groups); h.more = r.result.more; }
+        mlHistRender();
+    }
+    function mlHistRender() {
+        const h = M.hist;
+        grid($('mlGroups'), [
+            { key: 'date', label: 'Date' }, { key: 'kind', label: 'Kind' }, { key: 'subject', label: 'Subject' },
+            { key: 'total', label: 'Sent', cls: 'r', text: g => `<span class="${g.failed > 0 ? 'bad' : g.waiting > 0 ? 'warn' : 'good'}">${g.sent} / ${g.total}</span>` },
+        ], h.groups || [], { sel: g => g.key === h.group, empty: h.groups ? 'No mails yet.' : 'Loading...', click: async g => {
+            h.group = g.key; h.mails = null; h.mailId = null;
+            $('mlView').textContent = 'Select a mail';
+            mlHistRender();
+            const r = await page('mail', 'group', { key: g.key }, true);
+            if (r.ok && h.group === g.key) { h.mails = arr(r.result.mails); mlHistRender(); }
+        } });
+        $('mlPager').innerHTML = `<button class="osa-btn small" data-p="-1"${h.page > 0 ? '' : ' disabled'}>‹</button><span>${h.page + 1}</span>
+            <button class="osa-btn small" data-p="1"${h.more ? '' : ' disabled'}>›</button>`;
+        grid($('mlMails'), [
+            { key: 'account', label: 'Account' }, { key: 'language', label: 'Lang' }, { key: 'date', label: 'Date' },
+            { key: 'status', label: 'Status', text: m => `<span class="${m.status === 'sent' ? 'good' : m.status === 'failed' ? 'bad' : 'warn'}">${esc(m.status)}</span>` },
+        ], h.mails || [], { sel: m => m.id === h.mailId, empty: h.group ? 'Loading...' : 'Select a group', click: async m => {
+            h.mailId = m.id;
+            mlHistRender();
+            const r = await page('mail', 'mail', { id: m.id }, true);
+            if (r.ok) { const x = r.result.mail; $('mlView').textContent = `${x.subject}\n\n${x.body || ''}${x.error ? '\n\n[' + x.error + ']' : ''}`; }
+        } });
+    }
+    $('mlPager').addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) mlHistory(M.hist.page + Number(b.dataset.p)); });
+
+    async function mlStatus() {
+        const r = await page('mail', 'status', {}, true);
+        if (r.ok) M.status = r.result;
+        const s = M.status;
+        if (!s) { $('mlUpdates').innerHTML = '<div class="osa-empty">Loading...</div>'; return; }
+        const kv = (l, v, cls) => `<div class="kvt"><span>${esc(l)}</span><b class="${cls || ''}">${esc(v)}</b></div>`;
+        const last = s.lastRun;
+        $('mlUpdates').innerHTML = `<div class="tilesgrid" style="grid-template-columns:repeat(3,1fr);max-width:1100px">
+            ${kv('Brevo', s.configured ? 'configured' : 'NOT configured', s.configured ? 'good' : 'bad')}${kv('Queue', fmtInt(s.queued))}
+            ${kv('Server instance', `#${s.instance} (weekly updates are sent by #${s.sendingInstance})`, s.isSender ? 'good' : 'warn')}
+            ${kv('Next weekly update', fmtDate(s.nextRun))}${kv('Pending update mails', fmtInt(s.pending), s.pending > 0 ? 'warn' : '')}
+            ${kv('Sent in 24 h', `${s.sent24h} / ${s.dailyLimit}`)}${kv('Failed in 24 h', fmtInt(s.failed24h), s.failed24h > 0 ? 'bad' : '')}
+            ${kv('Last run', last ? `${last.sent}/${last.total} sent · ${last.failed} failed · ${last.waiting} waiting · ${last.skipped} skipped` : '-')}
+        </div>
+        <div class="osa-panel" style="max-width:1100px;margin-top:14px"><div class="osa-panel-head"><strong>Test the weekly update mail</strong></div><div class="card-body">
+            <p class="dim">Sends the weekly update mail as it would go out now (news of the last days + the running week) to the e-mail address of your own account only. It is not a part of any run and does not count in the daily limit.</p>
+            <div class="row left">${M.langs.map(l => `<button class="osa-btn${M.testLang === l.value ? ' active' : ''}" data-tl="${l.value}">${esc(l.label)}</button>`).join('')}
+            <span class="grow"></span><button class="osa-btn primary" id="mlUpdTest">Send test update to my e-mail</button><button class="osa-btn" id="mlUpdReload">Reload</button></div>
+        </div></div>`;
+    }
+    $('mlUpdates').addEventListener('click', async e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        if (b.dataset.tl) { M.testLang = b.dataset.tl; return mlStatus(); }
+        if (b.id === 'mlUpdTest') { await page('mail', 'updatetest', { lang: M.testLang }); return mlStatus(); }
+        if (b.id === 'mlUpdReload') mlStatus();
+    });
+
+    function mlTab(t) {
+        M.tab = t;
+        $('mlTabs').querySelectorAll('.osa-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+        $('mlCompose').hidden = t !== 'compose';
+        $('mlHistory').hidden = t !== 'history';
+        $('mlUpdates').hidden = t !== 'updates';
+        if (t === 'history') mlHistory(0);
+        if (t === 'updates') mlStatus();
+    }
+    $('mlTabs').addEventListener('click', e => { const b = e.target.closest('.osa-tab'); if (b) mlTab(b.dataset.tab); });
+
+    PAGES.mail = {
+        async show(arg) {
+            if (arg && arr(arg.recipients).length) {
+                M.chosen = new Set(arg.recipients);
+                M.mode = 'selected';
+                mlTab('compose');
+            }
+            mlLangs();
+            mlNames();
+            const r = await page('mail', 'recipients', {}, true);
+            if (r.ok) {
+                M.names = arr(r.result.names);
+                M.configured = r.result.configured !== false;
+                for (const n of Array.from(M.chosen)) if (!M.names.includes(n)) M.chosen.delete(n);
+            }
+            mlNames();
+        },
+        render: () => {},
+    };
+
+    /* ============================================================ achievements */
+
+    const AC = { list: null, sel: null };
+    function achRender() {
+        grid($('achRows'), [
+            { key: 'id', label: 'ID', text: a => `<span class="dim">${esc(a.id)}</span>` },
+            { key: 'name', label: 'Achievement', text: a => `<b>${esc(a.name)}</b>` },
+            { key: 'desc', label: 'Description' },
+            { key: 'category', label: 'Category' },
+            { key: 'goal', label: 'Goal', cls: 'r' },
+            { key: 'xp', label: 'XP', cls: 'r', text: a => `<span class="warn">${a.xp}</span>` },
+        ], AC.list || [], { sel: a => a.id === AC.sel, click: a => { AC.sel = a.id; achRender(); }, empty: AC.list ? 'No achievements.' : 'Loading...' });
+        $('achSel').textContent = AC.sel ? `Selected: ${AC.sel}` : 'Select an achievement';
+        $('achGive').disabled = !AC.sel || !can('achievements');
+    }
+    $('achGive').addEventListener('click', () => {
+        const name = $('achAccount').value.trim();
+        if (!AC.sel || !name) return OSA.toast('Select an achievement and enter an account name.');
+        page('achievements', 'give', { name, id: AC.sel });
+    });
+    PAGES.achievements = {
+        async show() {
+            const r = await page('achievements', 'list', {}, true);
+            if (r.ok) AC.list = arr(r.result.list);
+            achRender();
+        },
+        render: () => {},
+    };
 })();

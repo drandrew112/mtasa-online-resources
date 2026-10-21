@@ -88,5 +88,7 @@
   "ui_pause.settings.language_desc": "The language of the game texts. - change the language may require a reconnect",
   "ui_pause.settings.off": "OFF",
   "ui_pause.settings.on": "ON",
-  "ui_pause.settings.unavailable": "unavailable"
+  "ui_pause.settings.unavailable": "unavailable",
+  "ui_pause.settings.update_mails": "Weekly update email",
+  "ui_pause.settings.update_mails_desc": "Every Tuesday an email with the news of the week and the weekly bonuses, to the address of your account."
 }

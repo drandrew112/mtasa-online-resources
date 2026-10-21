@@ -38,7 +38,7 @@ function adminSetLevel(player, target, newLevel)
     setElementData(target, "admin_level", newLevel)
     adminAlert(player, L.msg("v_admin.admin_manage.admin_level_set_to", { player = getPlayerName(target), new_level = newLevel }))
     adminAlert(target, L.msg("v_admin.admin_manage.admin_set_your_level_to", { new_level = newLevel }))
-    adminLog(player, ("set %s admin level to %d"):format(getPlayerName(target), newLevel))
+    adminLog(player, ("set %s admin level to %d"):format(getPlayerName(target), newLevel), target)
 end
 
 addCommandHandler("setadminlevel", function(player, cmd, idArg, levelArg)

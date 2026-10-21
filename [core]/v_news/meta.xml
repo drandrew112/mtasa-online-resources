@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="News" version="1.0.0" type="script"
-          description="Server news (date, title, text) in MySQL; /news editor for admins, latest news for the login screen and the account menu" />
+          description="Server news (date, title, text) in MySQL; editor on the v_admin News page, latest news for the login screen and the account menu" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -12,12 +12,18 @@
     <script src="server/store.lua" type="server" />
     <script src="server/editor.lua" type="server" />
 
-    <script src="client/field.lua" type="client" />
-    <script src="client/editor.lua" type="client" />
 
     <!-- getLatestNews(n = 5) -> { { id, date = unix, title, body }, ... } published ones, newest first
          getAllNews()        -> same, every article incl. scheduled (date in the future)
          event onNewsChanged (source = resourceRoot of v_news) after every change or when a scheduled one appears -->
     <export function="getLatestNews" type="server" />
     <export function="getAllNews" type="server" />
+
+    <!-- v_admin News page (the /news editor lives there since v_admin 3.0):
+         newsAdminList() -> { list, nowDate, nowTime } | false
+         newsAdminSave(author, id | nil, "YYYY.MM.DD", "HH:MM", title, body) -> { ok, message, id }
+         newsAdminDelete(author, id) -> { ok, message } -->
+    <export function="newsAdminList" type="server" />
+    <export function="newsAdminSave" type="server" />
+    <export function="newsAdminDelete" type="server" />
 </meta>

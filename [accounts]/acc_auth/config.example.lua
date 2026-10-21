@@ -1,5 +1,5 @@
 -- acc_auth configuration (SERVER ONLY - meta.xml type="server", never downloaded by clients).
--- Copy to config.lua and fill in BREVO_API_KEY. config.lua is gitignored (it holds the key).
+-- Copy to config.lua. config.lua is gitignored.
 
 AUTH = {
     LOGIN_MIN_INTERVAL    = 1000,       -- ms between two login attempts of one player
@@ -15,15 +15,9 @@ AUTH = {
     EMAIL_MIN_INTERVAL    = 2000,       -- ms between two email changes of one player
 }
 
--- Forgotten password: the server makes a code and sends it straight through the
--- Brevo transactional email API. BREVO_API_KEY is a Brevo v3 API key
--- (Brevo > SMTP & API > API Keys, "xkeysib-..."), NOT the SMTP key.
--- SENDER_EMAIL must be a sender verified in Brevo.
+-- Forgotten password: the server makes a code and sends it by email through
+-- v_mail (the Brevo API key lives in v_mail/config.lua).
 RECOVERY = {
-    BREVO_URL        = "https://api.brevo.com/v3/smtp/email",
-    BREVO_API_KEY    = "CHANGE_ME",
-    SENDER_EMAIL     = "noreply@freev-mtasa.online",
-    SENDER_NAME      = "FreeV",
     TABLE            = "password_resets",
     CODE_LENGTH      = 6,
     CODE_CHARS       = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", -- no 0/O, 1/I
@@ -32,5 +26,4 @@ RECOVERY = {
     SERIAL_INTERVAL  = 60,       -- s between two code requests of one machine
     SERIAL_PER_HOUR  = 5,
     ACCOUNT_PER_HOUR = 5,
-    HTTP_TIMEOUT     = 10000,    -- ms
 }

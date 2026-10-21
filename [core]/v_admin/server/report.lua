@@ -112,6 +112,16 @@ local function reportList()
     return list
 end
 
+--- Active reports, and how many of them wait for an admin (Dashboard page).
+function adminReportCounts()
+    local total, waiting = 0, 0
+    for _, r in pairs(reports) do
+        total = total + 1
+        if r.status ~= "claimed" then waiting = waiting + 1 end
+    end
+    return total, waiting
+end
+
 --- Push the current admin list to every online report admin.
 local function syncAdmins()
     local list = reportList()

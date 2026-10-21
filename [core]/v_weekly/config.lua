@@ -1,7 +1,7 @@
 -- v_weekly :: shared config
 
 WEEKLY = {
-    -- /weekly admin menu: account admin_level (v_mysql accData) must be >= this
+    -- unused since v_admin 3.0 (the Weekly page uses v_admin ADMIN.perms.weekly)
     ADMIN_LEVEL = 4,
 
     -- a week runs from this weekday/hour (UTC) to the next.

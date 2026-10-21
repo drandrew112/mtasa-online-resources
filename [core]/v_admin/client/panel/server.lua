@@ -1,7 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/server.lua
---  Server tab: admin announcement, unban by account name and a
+--  Server page: admin announcement, unban by account name and a
 --  quick server overview (players / admins online).
 -- ============================================================
 
@@ -27,17 +27,7 @@ local function sendUnban()
     AP.setField("sv_unban", "")
 end
 
--- A card with a title and the level its action needs.
-local function card(x, y, w, h, title, perm)
-    dxDrawRectangle(x, y, w, h, C.side)
-    AP.text(title, x + S(18), y + S(12), w - S(36), S(36), C.head, 1.15, "default-bold")
-    if perm then
-        local need = AP.permLevel(perm)
-        AP.text(L("v_admin.panel.level", { need = need, perm = (AP.can(perm) and "" or L("v_admin.players.locked")) }),
-            x + S(18), y + S(12), w - S(36), S(36), AP.can(perm) and C.dim or C.bad, 0.85, "default", "right")
-    end
-    return x + S(18), y + S(58), w - S(36)
-end
+local card = AP.card
 
 local function drawAnnounce(x, y, w, h)
     local ix, iy, iw = card(x, y, w, h, L("v_admin.panel.admin_announcement"), "adminCall")
@@ -123,8 +113,8 @@ local function drawOverview(x, y, w, h)
     end
 end
 
-AP.addTab({
-    id = "server", label = function() return L("v_admin.panel.server_2") end, perm = "panel", order = 3,
+AP.addPage({
+    id = "server", category = "server", label = function() return L("v_admin.panel.server_2") end, perm = "panel", order = 100,
     draw = function(x, y, w, h)
         local gap = S(18)
         local leftW = (w - gap) * 0.6

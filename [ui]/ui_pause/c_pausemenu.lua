@@ -140,6 +140,11 @@ local function localsAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function mailAvailable()
+    local res = getResourceFromName("v_mail")
+    return res and getResourceState(res) == "running"
+end
+
 -- Language choice options (v_locals: { value, label } -> choice { id, label }).
 -- The list only changes with a v_locals restart, so it is fetched once.
 local languageOptions = nil
@@ -342,6 +347,15 @@ SETTINGS_TREE = {
                 -- flip on the way in and out.
                 get = function() return not getElementData(localPlayer, "toggleOwnNametag") end,
                 set = function(v) setElementData(localPlayer, "toggleOwnNametag", not v) end,
+            },
+            {
+                -- the weekly update email; v_mail stores it on the account itself
+                -- (accData receiveUpdateMails), so this id is not in PAUSE_SETTINGS
+                id = "receiveUpdateMails", label = L("ui_pause.settings.update_mails"), type = "toggle",
+                desc = L("ui_pause.settings.update_mails_desc"),
+                available = mailAvailable,
+                get = function() return mailAvailable() and exports.v_mail:getReceiveUpdateMails() end,
+                set = function(v) if mailAvailable() then exports.v_mail:setReceiveUpdateMails(v) end end,
             },
         },
     },

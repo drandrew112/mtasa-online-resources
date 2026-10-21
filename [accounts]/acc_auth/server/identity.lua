@@ -63,6 +63,12 @@ function markLoggedIn(player, username, accId, isNew, keepCache)
         -- server-only: a brand-new account (v_introduce ends its first introduction at the spawn)
         setElementData(player, "acc.registered", true, false)
     end
+    -- last login (v_admin Accounts page)
+    exports.v_mysql:setAccData(player, {
+        last_login  = getRealTime().timestamp,
+        last_serial = getPlayerSerial(player),
+        last_ip     = getPlayerIP(player),
+    })
     triggerClientEvent(player, "acc_auth:onClientLoggedIn", player, username, isNew == true)
     triggerEvent("onPlayerAccountLogin", player, username, isNew == true)
 end

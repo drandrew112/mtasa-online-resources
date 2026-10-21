@@ -61,6 +61,9 @@
     <export function="hasWorkLevel"            type="server" />
     <export function="setPlayerWorkLevel"      type="server" />
     <export function="setPlayerWorkXp"         type="server" />
+    <!-- account name, online or offline (v_admin Accounts page) -->
+    <export function="getAccountWorkLevels"    type="server" />
+    <export function="setAccountWorkXp"        type="server" />
     <export function="getWorkLevelInfo"        type="server" />
     <export function="getWorkLevelXp"          type="server" />
 

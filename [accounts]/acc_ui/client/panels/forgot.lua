@@ -34,7 +34,8 @@ function ForgotPanel:create()
     local emailH     = (back1Y + btnH) - Y + pad
 
     -- step "code"
-    local codeLabelY = infoY + ui(44)
+    local spamY      = infoY + ui(44)
+    local codeLabelY = spamY + ui(24)
     local codeY      = codeLabelY + ui(20)
     local passLabelY = codeY + fieldH + ui(12)
     local passY      = passLabelY + ui(20)
@@ -119,6 +120,8 @@ function ForgotPanel:create()
             drawPanelFrame(X, Y, W, codeH, L("acc_ui.forgot.title"))
             dxDrawText(L("acc_ui.forgot.code_info", { email = self.maskedEmail }), cx, infoY, cx + fieldW, infoY + ui(40),
                 Theme.label, ui(1.05), "default", "left", "top", true, true)
+            dxDrawText(L("acc_ui.forgot.spam_hint"), cx, spamY, cx + fieldW, spamY + ui(20),
+                Theme.warning, ui(1.05), "default", "left", "top", true, true)
             drawFieldLabel(L("acc_ui.forgot.code"), cx, codeLabelY, fieldW)
             drawFieldLabel(L("acc_ui.forgot.new_password"), cx, passLabelY, fieldW)
             drawFieldLabel(L("acc_ui.forgot.confirm_new_password"), cx, confLabelY, fieldW)

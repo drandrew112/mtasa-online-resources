@@ -1,19 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- /weekly admin menu backend. The client menu sends compact requests; every one
--- re-checks the admin level here.
-
-addEvent("weekly:adminOpen", true)
-addEvent("weekly:adminEdit", true)
-addEvent("weekly:adminPreview", true)
-
-local function isAdmin(player)
-    if getElementData(player, "isLogged") ~= true then return false end
-    return (tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0) >= WEEKLY.ADMIN_LEVEL
-end
-
-local function reply(player, text)
-    triggerClientEvent(player, "weekly:notify", player, text)
-end
+-- Admin backend of the weekly schedule. The editor is the Weekly page of the
+-- v_admin panel (v_admin 3.0, /weekly opens it there); it reads
+-- getWeeklyAdminOverview() and changes weeks through the setter exports
+-- (server/api.lua). The admin level is checked by v_admin (ADMIN.perms.weekly).
 
 local function overview()
     local weeks = {}
@@ -47,38 +36,16 @@ local function overview()
     }
 end
 
-addCommandHandler("weekly", function(player)
-    if not isAdmin(player) then return reply(player, L.msg("v_weekly.admin.you_have_no_permission")) end
-    if not STORE.isLoaded() then return reply(player, L.msg("v_weekly.admin.weekly_system_is_not_ready_yet")) end
-    triggerClientEvent(player, "weekly:openAdmin", player, overview())
-end)
+--- The Weekly page of the v_admin panel (the /weekly command opens it there):
+--- every configurable week with the lists the editor needs.
+function getWeeklyAdminOverview()
+    if not STORE.isLoaded() then return false end
+    return overview()
+end
 
-addEventHandler("weekly:adminPreview", root, function()
-    if not isAdmin(client) then return end
-    PANEL.show(client, true)
-end)
-
--- action: "job" (offset, jobId, money, xp) | "trial" (offset, index)
---         "news" (offset, title, body) | "login" (offset, money, xp) | "reset" (offset)
-addEventHandler("weekly:adminEdit", root, function(action, offset, a, b, c)
-    local player = client
-    if not isAdmin(player) then return end
-    local ok, err
-    if action == "job" then
-        ok, err = setJobMultiplier(offset, a, b, c)
-    elseif action == "login" then
-        ok, err = setLoginBonus(offset, a, b)
-    elseif action == "trial" then
-        ok, err = setActiveTimetrial(offset, a)
-    elseif action == "news" then
-        ok, err = setWeekNews(offset, a, b)
-    elseif action == "reset" then
-        ok, err = clearWeek(offset)
-    else
-        return
-    end
-    outputServerLog(("[v_weekly] %s: %s week+%s %s -> %s"):format(
-        tostring(getElementData(player, "accName")), action, tostring(offset), tostring(a), tostring(ok)))
-    reply(player, ok and "Saved." or (L.msg("v_weekly.admin.failed", { err = tostring(err) })))
-    triggerClientEvent(player, "weekly:openAdmin", player, overview(), true)
-end)
+--- Shows a player the weekly panel of the running week, as on login (v_admin "Preview").
+function showWeeklyPreview(player)
+    if not isElement(player) then return false end
+    PANEL.show(player, true)
+    return true
+end

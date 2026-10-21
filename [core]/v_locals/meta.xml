@@ -111,6 +111,7 @@
     <file src="locales/en/v_stats.json" />
     <file src="locales/en/v_timetrial.json" />
     <file src="locales/en/v_news.json" />
+    <file src="locales/en/v_mail.json" />
     <file src="locales/en/v_weekly.json" />
     <file src="locales/en/work_atc.json" />
     <file src="locales/en/work_core.json" />
@@ -195,6 +196,7 @@
     <file src="locales/hu/v_stats.json" />
     <file src="locales/hu/v_timetrial.json" />
     <file src="locales/hu/v_news.json" />
+    <file src="locales/hu/v_mail.json" />
     <file src="locales/hu/v_weekly.json" />
     <file src="locales/hu/work_atc.json" />
     <file src="locales/hu/work_core.json" />

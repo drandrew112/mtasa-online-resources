@@ -416,3 +416,51 @@ CREATE TABLE IF NOT EXISTS `news` (
     `deleted_at`   INT          NOT NULL DEFAULT 0,
     KEY `idx_published` (`published_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- mails  (v_mail: every mail the server sent; v_admin Mail page history; weekly updates)
+-- ---------------------------------------------------------------------------
+-- One row per mail. group_key joins the mails of one circular / one weekly
+-- update ("circular:<ts>:<admin>", "updates:<ts>"); NULL = a single mail.
+-- status: pending | sending | sent | failed | skipped. No email address is stored.
+-- v_mail also creates the table on start (after mysql:connected).
+CREATE TABLE IF NOT EXISTS `mails` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `group_key`    VARCHAR(64)  NULL DEFAULT NULL,
+    `kind`         VARCHAR(32)  NOT NULL DEFAULT '',
+    `sender`       VARCHAR(64)  NOT NULL DEFAULT '',
+    `server_id`    INT          NOT NULL DEFAULT 0,
+    `account_name` VARCHAR(64)  NULL DEFAULT NULL,
+    `language`     VARCHAR(8)   NOT NULL DEFAULT '',
+    `subject`      VARCHAR(255) NOT NULL DEFAULT '',
+    `body`         MEDIUMTEXT   NULL,
+    `template`     MEDIUMTEXT   NULL,
+    `status`       VARCHAR(16)  NOT NULL DEFAULT 'sent',
+    `message_id`   VARCHAR(128) NULL DEFAULT NULL,
+    `error`        VARCHAR(255) NULL DEFAULT NULL,
+    `created_at`   INT          NOT NULL DEFAULT 0,
+    `sent_at`      INT          NOT NULL DEFAULT 0,
+    KEY `idx_group` (`group_key`),
+    KEY `idx_kind_status` (`kind`, `status`),
+    KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- admin_log  (v_admin 3.0: every admin action from the game and the web panel)
+-- ---------------------------------------------------------------------------
+-- admin = the admin's account, admin_name = the nick at the time, source = game | web,
+-- target = the account the action was about (NULL = none). Admin log page + the
+-- Punishments tab of the Accounts page. v_admin also creates the table on start.
+CREATE TABLE IF NOT EXISTS `admin_log` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `ts`         INT          NOT NULL DEFAULT 0,
+    `admin`      VARCHAR(64)  NOT NULL DEFAULT '',
+    `admin_name` VARCHAR(64)  NOT NULL DEFAULT '',
+    `source`     VARCHAR(8)   NOT NULL DEFAULT 'game',
+    `level`      INT          NOT NULL DEFAULT 0,
+    `action`     VARCHAR(255) NOT NULL DEFAULT '',
+    `target`     VARCHAR(64)  NULL DEFAULT NULL,
+    KEY `idx_ts` (`ts`),
+    KEY `idx_admin` (`admin`),
+    KEY `idx_target` (`target`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

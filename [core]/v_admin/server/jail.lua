@@ -135,7 +135,7 @@ function adminJail(player, target, minutes, reason)
 
     adminAlert(target, L.msg("v_admin.jail.jailed_by_min_for", { admin_name = adminName, minutes = minutes, reason = reason }), 255, 90, 90, 8000)
     adminAlert(player, L.msg("v_admin.jail.you_jailed_min_for", { player = getPlayerName(target), minutes = minutes, reason = reason }))
-    adminLog(player, ("jailed %s for %d min (%s)"):format(getPlayerName(target), minutes, reason))
+    adminLog(player, ("jailed %s for %d min (%s)"):format(getPlayerName(target), minutes, reason), target)
 end
 
 function adminUnjail(player, target)
@@ -151,7 +151,7 @@ function adminUnjail(player, target)
     setPlayerInAJ(target, false)
     adminAlert(target, L.msg("v_admin.jail.released_from_admin_jail_by", { player = actorName(player) }), 85, 255, 85)
     adminAlert(player, L.msg("v_admin.jail.you_released_from_admin_jail", { player = getPlayerName(target) }))
-    adminLog(player, "released " .. getPlayerName(target) .. " from admin jail")
+    adminLog(player, "released " .. getPlayerName(target) .. " from admin jail", target)
 end
 
 -- ------------------------------------------------------------

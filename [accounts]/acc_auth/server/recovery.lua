@@ -3,7 +3,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 --   1. acc_auth:resetRequest (email)   "sending" at once, then account by
 --      email -> limits -> new code (only its hash is stored, RECOVERY.TABLE) ->
---      Brevo transactional email API (RECOVERY.BREVO_URL) sends it. The
+--      v_mail (Brevo transactional email API) sends it. The
 --      "code" step comes only when the mail went out; a failed send answers
 --      "failed" and the panel stays on the email step. An unknown email gets
 --      the same "code" step after a short random delay (the panel must not
@@ -97,8 +97,8 @@ addEventHandler("onResourceStart", resourceRoot, function()
     if not ensureTable() then
         outputServerLog("[acc_auth] v_mysql not connected yet, `" .. RECOVERY.TABLE .. "` will be created on mysql:connected")
     end
-    if RECOVERY.BREVO_API_KEY:find("^CHANGE_ME") then
-        outputServerLog("[acc_auth] RECOVERY.BREVO_API_KEY in config.lua is not set: password reset emails cannot be sent")
+    if not resourceRunning("v_mail") or exports.v_mail:isMailConfigured() ~= true then
+        outputServerLog("[acc_auth] v_mail is not running / not configured: password reset emails cannot be sent")
     end
 end)
 
@@ -123,66 +123,54 @@ local MAIL_TEXT = {
     },
 }
 
-local function htmlEscape(text)
-    return (tostring(text):gsub("[&<>\"']", { ["&"] = "&amp;", ["<"] = "&lt;", [">"] = "&gt;", ['"'] = "&quot;", ["'"] = "&#39;" }))
-end
-
--- { subject, textContent, htmlContent } of the reset mail
+-- the reset mail in v_mail's house layout (server/template.lua there)
 local function mailContent(lang, accountName, code)
     local t = MAIL_TEXT[lang] or MAIL_TEXT.en
-    local minutes = math.floor(RECOVERY.CODE_TTL / 60)
-    local hello, line2 = t.hello:format(accountName), t.line2:format(minutes)
-    local text = hello .. "\n\n" .. t.line1 .. "\n\n    " .. code .. "\n\n" .. line2 .. "\n\n" .. t.sign .. "\n"
-    local html = '<!doctype html><html><body style="margin:0;padding:24px;background:#101318;font-family:Arial,sans-serif;color:#e4e9ee">'
-        .. '<div style="max-width:520px;margin:0 auto;background:#181d24;padding:28px;border-left:4px solid #409cb4">'
-        .. '<p style="margin:0 0 14px;font-size:16px">' .. htmlEscape(hello) .. '</p>'
-        .. '<p style="margin:0 0 18px;font-size:15px;line-height:1.5">' .. htmlEscape(t.line1) .. '</p>'
-        .. '<p style="margin:0 0 18px;font-size:32px;font-weight:bold;letter-spacing:8px;color:#ffffff">' .. htmlEscape(code) .. '</p>'
-        .. '<p style="margin:0 0 18px;font-size:13px;line-height:1.5;color:#929eaa">' .. htmlEscape(line2) .. '</p>'
-        .. '<p style="margin:0;font-size:13px;color:#929eaa">' .. htmlEscape(t.sign) .. '</p>'
-        .. '</div></body></html>'
-    return t.subject, text, html
+    return t.subject, {
+        greeting = t.hello:format(accountName),
+        paragraphs = { t.line1 },
+        code = code,
+        note = t.line2:format(math.floor(RECOVERY.CODE_TTL / 60)),
+        signature = t.sign,
+    }
+end
+
+local mailReq = {} -- [requestId] = { player, accountName, email, rowId } while v_mail sends
+
+local function mailFailed(req)
+    exports.v_mysql:mysqlExec("UPDATE `" .. RECOVERY.TABLE .. "` SET used_at = ? WHERE id = ?", now(), req.rowId)
+    if isElement(req.player) and pendingEmail[req.player] == req.email then
+        resetState(req.player, "failed", L.msg("acc_auth.server.reset_mail_failed"))
+    end
 end
 
 local function sendMail(player, accountName, email, code, rowId)
     local lang = (resourceRunning("v_locals") and exports.v_locals:getPlayerLanguage(player)) or "en"
-    local subject, text, html = mailContent(lang, accountName, code)
-    local body = toJSON({
-        sender = { name = RECOVERY.SENDER_NAME, email = RECOVERY.SENDER_EMAIL },
-        to = { { email = email, name = accountName } },
-        subject = subject,
-        textContent = text,
-        htmlContent = html,
-    }, true):gsub("^%[(.*)%]$", "%1")
-    local ok = fetchRemote(RECOVERY.BREVO_URL, {
-        method = "POST",
-        postData = body,
-        headers = {
-            ["Content-Type"] = "application/json",
-            ["Accept"] = "application/json",
-            ["api-key"] = RECOVERY.BREVO_API_KEY,
-        },
-        connectTimeout = RECOVERY.HTTP_TIMEOUT,
-        connectionAttempts = 2,
-    }, function(response, info)
-        -- Brevo answers 201 {"messageId": "..."} when the mail is accepted
-        local status = type(info) == "table" and tonumber(info.statusCode) or 0
-        local good = type(info) == "table" and info.success == true and status >= 200 and status < 300
-            and tostring(response):find('"messageId"', 1, true) ~= nil
-        if good then return codeStep(player, email) end
-        outputServerLog(("[acc_auth] password reset mail for '%s' failed: HTTP %s %s"):format(accountName,
-            tostring(type(info) == "table" and info.statusCode or "?"), tostring(response):sub(1, 200)))
-        exports.v_mysql:mysqlExec("UPDATE `" .. RECOVERY.TABLE .. "` SET used_at = ? WHERE id = ?", now(), rowId)
-        if isElement(player) and pendingEmail[player] == email then
-            resetState(player, "failed", L.msg("acc_auth.server.reset_mail_failed"))
-        end
-    end)
+    local subject, template = mailContent(lang, accountName, code)
+    seq = seq + 1
+    local req = { player = player, accountName = accountName, email = email, rowId = rowId }
+    mailReq[seq] = req
+    local ok, err = false, "v_mail is not running"
+    if resourceRunning("v_mail") then
+        ok, err = exports.v_mail:sendMail({ to = email, toName = accountName, subject = subject, template = template,
+            log = { kind = "password_reset", language = lang } }, "acc_auth:resetMailSent", seq)
+    end
     if not ok then
-        outputServerLog("[acc_auth] fetchRemote refused the password reset request (ACL / URL?)")
-        exports.v_mysql:mysqlExec("UPDATE `" .. RECOVERY.TABLE .. "` SET used_at = ? WHERE id = ?", now(), rowId)
-        resetState(player, "failed", L.msg("acc_auth.server.reset_mail_failed"))
+        mailReq[seq] = nil
+        outputServerLog(("[acc_auth] password reset mail for '%s' not sent: %s"):format(accountName, tostring(err)))
+        mailFailed(req)
     end
 end
+
+-- answer of v_mail: the "code" step comes only when the mail went out
+addEvent("acc_auth:resetMailSent")
+addEventHandler("acc_auth:resetMailSent", resourceRoot, function(id, ok)
+    local req = mailReq[id]
+    mailReq[id] = nil
+    if not req then return end
+    if ok then return codeStep(req.player, req.email) end
+    mailFailed(req) -- v_mail logged the reason
+end)
 
 addEvent("acc_auth:resetAccount")
 addEventHandler("acc_auth:resetAccount", resourceRoot, function(id, rows)
@@ -190,7 +178,7 @@ addEventHandler("acc_auth:resetAccount", resourceRoot, function(id, rows)
     byId[id] = nil
     if not req then return end
     local row = type(rows) == "table" and rows[1] or nil
-    if not row or type(row.account_name) ~= "string" then return fakeCodeStep(player, req.email) end -- unknown email: nothing is sent
+    if not row or type(row.account_name) ~= "string" then return fakeCodeStep(req.player, req.email) end -- unknown email: nothing is sent
     local account = row.account_name
     local player = req.player
 

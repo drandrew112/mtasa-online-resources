@@ -127,11 +127,13 @@ function canPunish(player, target)
     return true
 end
 
---- One line per admin action in the server log.
-function adminLog(player, text)
+--- One line per admin action in the server log, and a row in the `admin_log`
+--- table (server/adminlog.lua, Admin log page). `target` = account name (optional).
+function adminLog(player, text, target)
     outputServerLog(("[v_admin] %s (lvl %d): %s"):format(
         isWebActor(player) and (player.account .. " (web)") or isElement(player) and getPlayerName(player) or "Console",
         getAdminLevel(player), text))
+    if ADMINLOG then ADMINLOG.add(player, text, target) end
 end
 
 -- ------------------------------------------------------------

@@ -196,6 +196,40 @@ function setPlayerWorkLevel(player, workId, level)
     return setPlayerWorkXp(player, workId, xp)
 end
 
+---------------------------------------------------------------- accounts (online or offline)
+
+local function playerOfAccount(name)
+    for p in pairs(progress) do
+        if isElement(p) and tostring(getElementData(p, "accName") or ""):lower() == tostring(name):lower() then return p end
+    end
+end
+
+-- Every work's level of an account, online or not (v_admin Accounts page):
+-- { [workId] = { name, level, xp, maxLevel } }
+function getAccountWorkLevels(name)
+    if type(name) ~= "string" or name == "" then return false end
+    local player = playerOfAccount(name)
+    local p = player and progress[player] or decode(exports.v_mysql:getAccData(name, WORK_DATA.LEVEL_STORAGE))
+    local out = {}
+    for id, w in pairs(Works) do
+        local xp = p[id] or 0
+        out[id] = { name = w.name or id, level = levelOf(w, xp), xp = xp, maxLevel = w.levels.maxLevel }
+    end
+    return out
+end
+
+-- Sets the XP of a work for an account, online or not.
+function setAccountWorkXp(name, workId, xp)
+    xp = tonumber(xp)
+    if not Works[workId] then return false, "unknown work" end
+    if not xp or xp < 0 then return false, "bad xp" end
+    local player = playerOfAccount(name)
+    if player then return setPlayerWorkXp(player, workId, xp) end
+    local p = decode(exports.v_mysql:getAccData(name, WORK_DATA.LEVEL_STORAGE))
+    p[workId] = math.floor(xp) > 0 and math.floor(xp) or nil
+    return exports.v_mysql:setAccData(name, WORK_DATA.LEVEL_STORAGE, toJSON(p, true)) and true or false
+end
+
 ---------------------------------------------------------------- admin commands
 
 local function isAdmin(player)

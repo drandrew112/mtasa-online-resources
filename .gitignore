@@ -70,3 +70,6 @@ desktop.ini
 # --- acc_auth password reset mailer: SMTP credentials + API key ---
 /\[accounts\]/acc_auth/web/forgotpasswd.config.php
 /\[accounts\]/acc_auth/config.lua
+
+# --- v_mail: config.lua holds the Brevo API key ---
+/\[core\]/v_mail/config.lua

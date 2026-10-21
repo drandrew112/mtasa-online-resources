@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ============================================================
 --  v_admin / client/panel/players.lua
---  Players tab: online player list | data | actions.
+--  Online players page: online player list | data | actions.
+--  "Open account" jumps to the Accounts page of the player's account.
 --  Actions that need input (mute, jail, kick, ban) open an inline
 --  form in the action column; the admin level is a dropdown.
 -- ============================================================
@@ -19,6 +20,8 @@ local ACTIONS = {}
 local function build_ACTIONS()
 ACTIONS = {
     { group = L("v_admin.players.general") },
+    { id = "account", label = L("v_admin.page.open_account"), perm = "accounts", show = function(p) return p.account end,
+      fn = function(p) AP.setPage("accounts", p.account) end },
     { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
     { id = "gethere", label = L("v_admin.players.bring_here"),  perm = "teleport" },
     { id = "heal",    label = L("v_admin.players.heal"),        perm = "heal" },
@@ -375,7 +378,9 @@ local function drawActions(p, x, y, w, h)
             local bx, by = ix + col * (bw + S(8)), cy
             local label = a.dropdown and (a.label .. ": " .. p.adminLevel .. "  ...") or a.label
             AP.button(bx, by, bw, bh, label, function()
-                if a.dropdown then
+                if a.fn then
+                    a.fn(p)
+                elseif a.dropdown then
                     openLevelDropdown(p, bx, by + bh + S(4), math.max(bw, S(300)))
                 elseif a.form then
                     openForm(a.form, p)
@@ -392,10 +397,11 @@ end
 -- tab
 --------------------------------------------------------------------------------
 
-AP.addTab({
-    id = "players", label = function() return L("common.players") end, perm = "panel", order = 1,
+AP.addPage({
+    id = "players", category = "players", label = function() return L("v_admin.page.online_players") end,
+    perm = "panel", order = 20, badge = function() return #AP.players end,
     draw = function(x, y, w, h)
-        local listW, actW, gap = S(380), S(420), S(18)
+        local listW, actW, gap = S(400), S(460), S(18)
         drawList(x, y, listW, h)
 
         local p = selectedPlayer()

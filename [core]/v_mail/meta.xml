@@ -1,0 +1,60 @@
+<meta>
+    <info author="DrAndrew112" name="Mail" version="1.2.0" type="script"
+          description="Email sending (Brevo transactional API) for other resources; circulars + weekly update mails (editor: v_admin Mail page)" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="ui_core" />
+
+    <script src="locals.lua"   type="shared" />
+    <script src="settings.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <!-- config.lua holds the Brevo API key: server only, never sent to clients.
+         It is gitignored: copy config.example.lua to config.lua and fill it in.
+         ACL: v_mail needs function.fetchRemote (RemoteAccess group). -->
+    <script src="config.lua"          type="server" />
+    <script src="server/store.lua"    type="server" />
+    <script src="server/template.lua" type="server" />
+    <script src="server/mail.lua"     type="server" />
+    <script src="server/circular.lua" type="server" />
+    <script src="server/updates.lua"  type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/updates.lua" type="client" />
+
+    <!-- sendMail(mail, eventName, requestId) -> true | false, error
+         mail = { to, toName, subject, text, html, template, replyTo, senderName, bulk, log }
+         (log = { kind, group, account, language, sender } for the `mails` table, false = not stored)
+         (to = address or { { email, name }, ... }; template = the house layout:
+         { title, greeting, paragraphs, code, note, signature }, see server/template.lua).
+         The answer is an event on the caller's resource root:
+         (requestId, ok, messageId | error). See server/mail.lua. -->
+    <export function="sendMail"         type="server" />
+    <!-- isMailConfigured() -> bool: the Brevo API key is set -->
+    <export function="isMailConfigured" type="server" />
+
+    <!-- weekly update mails (server/updates.lua), accData receiveUpdateMails (default true):
+         server: getReceiveUpdateMails(player | accountName) -> bool, setReceiveUpdateMails(player | accountName, bool) -> bool
+         client: getReceiveUpdateMails() -> bool, setReceiveUpdateMails(bool) -> true (saved by the server) -->
+    <export function="getReceiveUpdateMails" type="server" />
+    <export function="setReceiveUpdateMails" type="server" />
+    <export function="getReceiveUpdateMails" type="client" />
+    <export function="setReceiveUpdateMails" type="client" />
+
+    <!-- v_admin Mail page (the /mail editor lives there since v_admin 3.0). Each takes a request id
+         first and answers later with triggerEvent("v_admin:remoteResult", <caller root>, id, result):
+         mailAdminRecipients(id)                          -> { ok, names, configured }
+         mailAdminSend(id, admin, mode, names, texts)     -> { ok, message }   mode = all | selected | test
+         mailAdminHistory(id, page) / mailAdminGroup(id, key) / mailAdminMail(id, mailId)
+         mailAdminStatus(id)                              -> queue + weekly update state
+         mailAdminUpdateTest(id, admin, lang)             -> { ok, message }   the weekly update to the admin's own email
+         event onMailCircularDone (adminAccount, sent, failed, isTest) on root when a circular finished -->
+    <export function="mailAdminRecipients" type="server" />
+    <export function="mailAdminSend"       type="server" />
+    <export function="mailAdminHistory"    type="server" />
+    <export function="mailAdminGroup"      type="server" />
+    <export function="mailAdminMail"       type="server" />
+    <export function="mailAdminStatus"     type="server" />
+    <export function="mailAdminUpdateTest" type="server" />
+</meta>

@@ -307,12 +307,14 @@ end
 -- tab
 --------------------------------------------------------------------------------
 
-AP.addTab({
-    id = "reports", perm = "reports", order = 2,
-    label = function()
+AP.addPage({
+    id = "reports", category = "players", perm = "reports", order = 40,
+    label = function() return L("v_admin.page.reports") end,
+    badge = function()
         local n = waitingCount()
-        return n > 0 and (L("v_admin.reports.reports", { n = n })) or (L("v_admin.reports.reports_2", { active = #st.active }))
+        return n > 0 and n or #st.active
     end,
+    badgeHot = function() return waitingCount() > 0 end,
     onShow = function() setMode(st.mode) end,
     draw = function(x, y, w, h)
         local listW, gap = S(460), S(18)

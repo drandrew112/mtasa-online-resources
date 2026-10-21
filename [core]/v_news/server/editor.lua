@@ -1,17 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- /news editor backend. Every request re-checks the admin level. Dates travel
--- as text in the server's local time ("YYYY.MM.DD", "HH:MM"), converted here.
-
-addEvent("v_news:save", true)
-addEvent("v_news:delete", true)
-addEvent("v_news:close", true)
-
-local editors = {}   -- [player] = true while the editor is open
-
-local function isAdmin(player)
-    if not isElement(player) or getElementData(player, "isLogged") ~= true then return false end
-    return (tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0) >= NEWS.ADMIN_LEVEL
-end
+-- News editor backend. The editor is the News page of the v_admin panel
+-- (v_admin 3.0, /news opens it there); v_admin checks the admin level
+-- (ADMIN.perms.news) and calls the exports below. Dates travel as text in the
+-- server's local time ("YYYY.MM.DD", "HH:MM"), converted here.
 
 -- days since 1970-01-01 of a calendar date (proleptic Gregorian)
 local function daysFromCivil(y, m, d)
@@ -62,64 +53,47 @@ local function listFor()
     return out
 end
 
-local function push(player, selectId)
+local function result(ok, key, params, id)
+    return { ok = ok, message = L.msg(key, params), id = id }
+end
+
+--- Every article for the editor + the current date / time texts (defaults of a new article).
+--- -> { list, nowDate, nowTime } | false (not loaded)
+function newsAdminList()
+    if not STORE.isLoaded() and not STORE.load() then return false end
     local nowDate, nowTime = formatDate(getRealTime().timestamp)
-    triggerClientEvent(player, "v_news:data", player, listFor(), nowDate, nowTime, selectId)
+    return { list = listFor(), nowDate = nowDate, nowTime = nowTime }
 end
 
-local function reply(player, ok, key, params)
-    triggerClientEvent(player, "v_news:result", player, ok, L.msg(key, params))
-end
-
-addCommandHandler(NEWS.COMMAND, function(player)
-    if not isAdmin(player) then return end
-    if not STORE.isLoaded() and not STORE.load() then
-        return reply(player, false, "v_news.server.not_ready")
-    end
-    editors[player] = true
-    triggerClientEvent(player, "v_news:open", player)
-    push(player)
-end)
-
-addEventHandler("v_news:save", root, function(id, dateText, timeText, title, body)
-    local player = client
-    if not isAdmin(player) or not editors[player] then return end
+--- Creates (id = nil) or updates an article. -> { ok, message, id }
+function newsAdminSave(author, id, dateText, timeText, title, body)
+    if not STORE.isLoaded() and not STORE.load() then return result(false, "v_news.server.not_ready") end
     id = tonumber(id)
     title = tostring(title or ""):gsub("[\r\n\t]", " "):gsub("^%s+", ""):gsub("%s+$", "")
     body = tostring(body or ""):gsub("\r\n?", "\n"):gsub("^%s+", ""):gsub("%s+$", "")
 
-    if title == "" then return reply(player, false, "v_news.server.title_missing") end
+    if title == "" then return result(false, "v_news.server.title_missing") end
     if (utf8.len(title) or #title) > NEWS.TITLE_MAX then
-        return reply(player, false, "v_news.server.title_too_long", { max = NEWS.TITLE_MAX })
+        return result(false, "v_news.server.title_too_long", { max = NEWS.TITLE_MAX })
     end
-    if body == "" then return reply(player, false, "v_news.server.text_missing") end
+    if body == "" then return result(false, "v_news.server.text_missing") end
     if (utf8.len(body) or #body) > NEWS.BODY_MAX then
-        return reply(player, false, "v_news.server.text_too_long", { max = NEWS.BODY_MAX })
+        return result(false, "v_news.server.text_too_long", { max = NEWS.BODY_MAX })
     end
     local date = parseDate(dateText, timeText)
-    if not date then return reply(player, false, "v_news.server.bad_date") end
+    if not date then return result(false, "v_news.server.bad_date") end
 
-    local saved = STORE.save(id, date, title, body, getPlayerName(player))
-    if not saved then return reply(player, false, "v_news.server.save_failed") end
-    outputServerLog(("[v_news] %s %s article #%d '%s'"):format(getPlayerName(player), id and "edited" or "added", saved, title))
-    reply(player, true, "v_news.server.saved")
-    for p in pairs(editors) do push(p, p == player and saved or nil) end
-end)
+    author = tostring(author or "")
+    local saved = STORE.save(id, date, title, body, author)
+    if not saved then return result(false, "v_news.server.save_failed") end
+    outputServerLog(("[v_news] %s %s article #%d '%s'"):format(author, id and "edited" or "added", saved, title))
+    return result(true, "v_news.server.saved", nil, saved)
+end
 
-addEventHandler("v_news:delete", root, function(id)
-    local player = client
-    if not isAdmin(player) or not editors[player] then return end
+--- Soft-deletes an article. -> { ok, message }
+function newsAdminDelete(author, id)
     id = tonumber(id)
-    if not id or not STORE.delete(id) then return reply(player, false, "v_news.server.delete_failed") end
-    outputServerLog(("[v_news] %s deleted article #%d"):format(getPlayerName(player), id))
-    reply(player, true, "v_news.server.deleted")
-    for p in pairs(editors) do push(p) end
-end)
-
-addEventHandler("v_news:close", root, function()
-    editors[client] = nil
-end)
-
-addEventHandler("onPlayerQuit", root, function()
-    editors[source] = nil
-end)
+    if not id or not STORE.delete(id) then return result(false, "v_news.server.delete_failed") end
+    outputServerLog(("[v_news] %s deleted article #%d"):format(tostring(author or ""), id))
+    return result(true, "v_news.server.deleted")
+end

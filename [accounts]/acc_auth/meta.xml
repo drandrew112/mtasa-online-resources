@@ -5,12 +5,13 @@
     <include resource="v_locals" />
     <include resource="v_mysql" />
     <include resource="acc_bans" />
+    <include resource="v_mail" />
 
     <script src="locals.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
-    <!-- config.lua holds the Brevo API key: server only, never sent to clients.
-         It is gitignored: copy config.example.lua to config.lua and fill it in. -->
+    <!-- config.lua: server only. It is gitignored: copy config.example.lua to config.lua.
+         Reset emails go out through v_mail (it holds the Brevo API key). -->
     <script src="config.lua" type="server" />
     <script src="server/db.lua" type="server" />
     <script src="server/identity.lua" type="server" />

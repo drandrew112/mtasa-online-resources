@@ -20,7 +20,6 @@
     <script src="server/admin.lua" type="server" />
 
     <script src="client/panel.lua" type="client" />
-    <script src="client/admin.lua" type="client" />
 
     <!-- queries -->
     <export function="getCurrentWeek" type="server" />
@@ -45,4 +44,8 @@
     <export function="setWeek" type="server" />
     <export function="clearWeek" type="server" />
     <export function="reapplyWeek" type="server" />
+
+    <!-- v_admin Weekly page -->
+    <export function="getWeeklyAdminOverview" type="server" />
+    <export function="showWeeklyPreview" type="server" />
 </meta>
