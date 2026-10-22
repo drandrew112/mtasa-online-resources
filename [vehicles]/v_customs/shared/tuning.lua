@@ -179,7 +179,9 @@ Customs.parts = {
     }},
 }
 
-table.sort(Customs.parts, function(a, b) return tostring(a.name) < tostring(b.name) end)  -- names may be v_locals messages (server)
+-- Never sort this table: paths are catalogue indices shared with the server, and
+-- the L.config rerun merges texts by index, so the order must be the same on
+-- both sides and in every language. client/menu.lua sorts what it shows.
 
 --------------------------------------------------------------------------------
 -- Path resolution (shared)

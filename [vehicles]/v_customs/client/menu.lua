@@ -177,9 +177,22 @@ end
 
 -- Parts the vehicle can't use are left out (and folders left empty by that);
 -- paths keep the catalogue indices so the server resolves them unchanged.
+-- The top level is shown alphabetically in the player's language; folders keep
+-- their catalogue order (Front / Rear ...).
 local function buildLevel(nodes, prefix, uiPrefix)
+    local order = {}
+    for i = 1, #nodes do order[i] = i end
+    if prefix == "" then
+        table.sort(order, function(a, b)
+            local na, nb = tostring(nodes[a].name), tostring(nodes[b].name)
+            if na ~= nb then return na < nb end
+            return a < b
+        end)
+    end
+
     local items = {}
-    for i, node in ipairs(nodes) do
+    for _, i in ipairs(order) do
+        local node = nodes[i]
         local p  = prefix == "" and tostring(i) or (prefix .. "/" .. i)
         local n  = #items + 1
         local up = uiPrefix == "" and tostring(n) or (uiPrefix .. "/" .. n)
