@@ -8,6 +8,9 @@ AUTH = {
     LOGIN_LOCK            = 60,         -- s, first lockout (doubles every time)
     LOGIN_LOCK_MAX        = 15 * 60,    -- s
     LOGIN_TIMEOUT         = 15000,      -- ms, give up on a lost DB answer
+    ONLINE_CHECK          = true,       -- refuse a login while the account is online on another server instance
+    ONLINE_TABLE          = "online_players", -- kept by v_admin (server/instance.lua) on every instance
+    ONLINE_STALE          = 120,        -- s: rows not refreshed for this long = crashed server, ignored
     REGISTER_MIN_INTERVAL = 3000,       -- ms between two registration attempts of one player
     REGISTER_TIMEOUT      = 15000,      -- ms
     PASSWORD_MIN          = 5,

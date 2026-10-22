@@ -16,6 +16,7 @@
   "acc_auth.server.reset_too_many": "Túl sok kódkérés. Próbáld később.",
   "acc_auth.server.reset_wait": "{seconds|int} másodperc múlva kérhetsz új kódot.",
   "acc_auth.server.saved_login_expired": "A mentett bejelentkezés lejárt. Lépj be újra!",
+  "acc_auth.server.account_online_on_other_server": "Ez a fiók már be van jelentkezve egy másik szerveren ({server})",
   "acc_auth.server.this_account_is_already_in_use": "Ez a fiók már használatban van",
   "acc_auth.server.this_account_is_banned": "Ez a fiók ki van tiltva",
   "acc_auth.server.too_many_login_attempts": "Túl sok sikertelen próbálkozás. Próbáld újra {seconds|int} másodperc múlva.",

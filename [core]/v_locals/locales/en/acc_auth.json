@@ -16,6 +16,7 @@
   "acc_auth.server.reset_too_many": "Too many code requests. Try again later.",
   "acc_auth.server.reset_wait": "You can ask for a new code in {seconds|int} seconds.",
   "acc_auth.server.saved_login_expired": "Saved login expired. Please log in again.",
+  "acc_auth.server.account_online_on_other_server": "This account is already online on another server ({server})",
   "acc_auth.server.this_account_is_already_in_use": "This account is already in use",
   "acc_auth.server.this_account_is_banned": "This account is banned",
   "acc_auth.server.too_many_login_attempts": "Too many failed attempts. Try again in {seconds|int} seconds.",

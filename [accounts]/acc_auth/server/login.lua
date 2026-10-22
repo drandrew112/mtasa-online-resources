@@ -138,12 +138,24 @@ addEventHandler("acc_auth:loginRow", resourceRoot, function(id, rows)
             return authError(player, "acc_auth.server.this_account_is_banned")
         end
 
-        -- Step 3: read the account data BEFORE the player counts as logged in. If it
-        -- cannot be read the login is refused: a login on empty data would restart
-        -- the intro and the autosave would overwrite the real data with defaults.
-        pending.canonical, pending.accId = canonical, accId
-        pending.dataTries = 0
-        requestLoginData(player)
+        -- Online on another server instance (MySQL online_players, server/online.lua)?
+        onlineElsewhere(canonical, function(other)
+            if loginPending[player] ~= pending then return end
+            if not isElement(player) or getElementData(player, "isLogged") == true then return clearPending(player) end
+            if other then
+                clearPending(player)
+                outputServerLog(("[acc_auth] login of '%s' refused: online on server #%d"):format(canonical, other.server))
+                return authError(player, "acc_auth.server.account_online_on_other_server",
+                    { server = other.serverName or ("#" .. other.server) })
+            end
+
+            -- Step 3: read the account data BEFORE the player counts as logged in. If it
+            -- cannot be read the login is refused: a login on empty data would restart
+            -- the intro and the autosave would overwrite the real data with defaults.
+            pending.canonical, pending.accId = canonical, accId
+            pending.dataTries = 0
+            requestLoginData(player)
+        end)
     end
 
     if pending.tokenHash then
