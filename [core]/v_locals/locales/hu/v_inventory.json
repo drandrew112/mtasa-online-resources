@@ -5,6 +5,8 @@
   "v_inventory.item.backpack.name": "Hátizsák",
   "v_inventory.item.bandage.desc": "Kötözésenként egy",
   "v_inventory.item.bandage.name": "Kötszer",
+  "v_inventory.item.biz_supply_crate.desc": "Lopott készlet. Vidd a telephely bejáratához.",
+  "v_inventory.item.biz_supply_crate.name": "Készletláda",
   "v_inventory.item.bt_blood_box.desc": "Hűtve tartja a vérkészítményeket",
   "v_inventory.item.bt_blood_box.name": "Vérszállító doboz",
   "v_inventory.item.bt_ffp.desc": "Vérkészítmény, egy egység (450 ml)",

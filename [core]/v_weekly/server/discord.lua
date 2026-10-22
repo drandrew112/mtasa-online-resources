@@ -19,6 +19,7 @@ local CATEGORY = {
     official  = "🏁 Official Jobs",
     community = "👥 Community Jobs",
     work      = "💼 Work",
+    business  = "🏢 Business",
 }
 local FIELD_VALUE = 1024 -- Discord limit of one field value
 local BLANK = "\226\128\139" -- zero-width space: name of a follow-up field

@@ -6,7 +6,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 --  overview {}                                   -> v_weekly:getWeeklyAdminOverview()
 --  edit { action, offset, a, b, c }              -> fresh overview
---       action: job (jobId, money, xp) | work (workId, money, xp) | trial (index) | login (money, xp) | news (title, body) | reset
+--       action: job (jobId, money, xp) | work (workId, money, xp) | business (activity, multiplier) | trial (index) |
+--               login (money, xp) | news (title, body) | reset
 --  preview {}                                    shows the weekly panel to the admin in game
 -- ============================================================
 
@@ -19,6 +20,7 @@ end
 local SETTERS = {
     job   = function(o, a, b, c) return exports.v_weekly:setJobMultiplier(o, a, tonumber(b), tonumber(c)) end,
     work  = function(o, a, b, c) return exports.v_weekly:setWorkMultiplier(o, a, tonumber(b), tonumber(c)) end,
+    business = function(o, a, b) return exports.v_weekly:setBusinessMultiplier(o, a, tonumber(b)) end,
     trial = function(o, a)       return exports.v_weekly:setActiveTimetrial(o, tonumber(a)) end,
     login = function(o, a, b)    return exports.v_weekly:setLoginBonus(o, tonumber(a), tonumber(b)) end,
     news  = function(o, a, b)    return exports.v_weekly:setWeekNews(o, tostring(a or ""), tostring(b or "")) end,

@@ -58,4 +58,6 @@
     <export function="getScriptedVehicles"     type="server" />
     <export function="getScriptedTargets"      type="server" />
     <export function="getScriptedVehicleState" type="server" />
+    <export function="setScriptedPursuit"      type="server" />
+    <export function="engageScriptedVehicle"   type="server" />
 </meta>

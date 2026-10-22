@@ -41,6 +41,7 @@ ACH.CATEGORIES = {
     { id = "flying",  name = "Flying" },
     { id = "work",    name = "Work" },
     { id = "games",   name = "Games" },
+    { id = "business", name = "Business" },
 }
 
 -- unlocked by v_achievements itself on the player's first onPlayerLoaded
@@ -120,6 +121,32 @@ ACH.LIST = {
     --
     -- { id = "ems_treat_25", type = "progress", goal = 25, category = "work",
     --   name = "Life Saver", desc = "Treat 25 patients.", xp = 250 },
+
+    -- organizations (biz_core / biz_weed / biz_missions / biz_casino)
+    { id = "biz_registered", type = "once", category = "business",
+      name = "Registered", desc = "Found an organization.", xp = 300 },
+    { id = "biz_corner_office", type = "once", category = "business",
+      name = "Corner Office", desc = "Have your headquarters in an executive office.", xp = 400 },
+    { id = "biz_green_thumb", type = "once", category = "business",
+      name = "Green Thumb", desc = "Deliver weed as the founder of an organization.", xp = 300 },
+    { id = "biz_supply_runs_10", type = "progress", stat = "biz_supply_runs", goal = 10, category = "business",
+      unit = "runs", name = "Supply Run", desc = "Complete 10 supply steal missions.", xp = 500 },
+    { id = "biz_convoy", type = "once", category = "business",
+      name = "Convoy", desc = "Deliver 80 or more units with every van arriving.", xp = 600 },
+    { id = "biz_right_hand_5", type = "progress", stat = "biz_assoc_deliveries", goal = 5, category = "business",
+      unit = "deliveries", name = "Right-Hand Man", desc = "Deliver 5 vans as an associate.", xp = 400 },
+    { id = "biz_highwayman", type = "once", category = "business", hidden = true,
+      name = "Highwayman", desc = "Deliver a hijacked shipment.", xp = 400 },
+    { id = "biz_fully_equipped", type = "once", category = "business",
+      name = "Fully Equipped", desc = "Buy both weed farm upgrades.", xp = 400 },
+    { id = "biz_house_wins", type = "once", category = "business",
+      name = "House Always Wins", desc = "Buy a casino.", xp = 600 },
+    { id = "biz_clean_hands", type = "progress", stat = "biz_laundered", goal = 250000, category = "business",
+      unit = "€", name = "Clean Hands", desc = "Launder €250,000 in total.", xp = 500 },
+    { id = "biz_seven_figures", type = "progress", stat = "biz_value", goal = 1000000, category = "business",
+      unit = "€", name = "Seven Figures", desc = "Reach an organization value of €1,000,000.", xp = 600 },
+    { id = "biz_mogul", type = "progress", stat = "biz_value", goal = 10000000, category = "business",
+      unit = "€", name = "Mogul", desc = "Reach an organization value of €10,000,000.", xp = 1500 },
 }
 
 -- Distance sets. Fed by stat counters (exports addStat / setStat), the counters

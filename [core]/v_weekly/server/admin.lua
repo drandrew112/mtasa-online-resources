@@ -11,7 +11,7 @@ local function overview()
         local d, inherited = SCHED.resolve(ws)
         weeks[#weeks + 1] = {
             offset = off, from = formatUtc(ws), inherited = inherited,
-            jobs = d.jobs, works = d.works, timetrial = d.timetrial, news = d.news, loginBonus = d.loginBonus,
+            jobs = d.jobs, works = d.works, business = d.business, timetrial = d.timetrial, news = d.news, loginBonus = d.loginBonus,
         }
     end
 
@@ -58,6 +58,7 @@ local function overview()
     end
     return {
         weeks = weeks, jobs = jobs, communityJobs = communityJobs, works = works, trials = trials, nextChange = formatUtc(weekStartAt(1)),
+        business = WEEKLY.BUSINESS_ACTIVITIES, businessMultipliers = WEEKLY.BUSINESS_MULTIPLIERS,
         multipliers = WEEKLY.MULTIPLIERS, period = WEEKLY.LOGIN_BONUS_PERIOD,
         maxMoney = WEEKLY.LOGIN_MAX_MONEY, maxXp = WEEKLY.LOGIN_MAX_XP,
     }

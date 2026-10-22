@@ -27,6 +27,7 @@ ITEM_CATEGORIES = {
     tool = { 150, 156, 175 },
     blood = { 200, 40, 60 },
     sample = { 230, 150, 60 },
+    cargo = { 150, 110, 60 },
 }
 
 ITEMS = {
@@ -75,6 +76,18 @@ ITEMS = {
     bt_platelets = { category = "blood", weight = 0.5, stackable = true, glyph = "PL" },
     bt_lab_sample = { category = "sample", weight = 0.05, stackable = true, glyph = "LB" },
     bt_urgent_medicine = { category = "sample", weight = 0.3, stackable = true, icon = "icons/drug.png", glyph = "MD" },
+
+    -- ----------------------------------------------------------------------- organizations (biz_missions)
+    -- stolen supply of a supply mission: carried to the property's entrance in the hands
+    biz_supply_crate = {
+        category = "cargo", weight = 20, holdable = true, hand = "right", storable = false,
+        model = 2912, fallback = 1271, scale = 0.6,         -- temp_crate1 scaled down (untested)
+        offsets = {
+            right = { 0.15, 0.25, -0.15, 0, 0, 0 },
+            ground = { 0, 0, 0, 0, 0, 0 },
+        },
+        glyph = "SC",
+    },
 
     -- ----------------------------------------------------------------------- general
     backpack = {

@@ -31,6 +31,13 @@ WEEKLY = {
     -- allowed Job / Work money / XP multipliers (1 = no bonus)
     MULTIPLIERS = { 1, 2, 3 },
 
+    -- Business bonuses: sale multipliers of the supply/deliver organization
+    -- activities (biz_core setSaleMultiplier; the casino has none)
+    BUSINESS_MULTIPLIERS = { 1, 1.5, 2 },
+    BUSINESS_ACTIVITIES = {
+        { id = "weed", name = "Weed farm sales" },
+    },
+
     -- login bonus is paid once per "day" (UTC calendar day) or once per "week"
     LOGIN_BONUS_PERIOD = "day",
     LOGIN_MAX_MONEY    = 300000, 

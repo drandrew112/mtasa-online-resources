@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OrgOS</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/orgos.css">
+</head>
+<body>
+    <div class="os-screen">
+        <aside class="os-side">
+            <div class="os-brand">OrgOS<small id="osPlace">–</small></div>
+            <nav id="nav"></nav>
+            <div class="os-side-foot">
+                <div class="os-clock" id="clock">--:--</div>
+                <button class="osa-btn os-close" id="closeBtn" title="Close (Esc)">Shut down</button>
+            </div>
+        </aside>
+        <main class="os-main">
+            <div class="os-head">
+                <h1 id="title">–</h1>
+                <div class="os-head-right"><span class="osa-pill" id="statePill">–</span></div>
+            </div>
+            <div id="view" class="os-view"><div class="os-empty">Starting…</div></div>
+        </main>
+    </div>
+    <script src="/web_api/osa.js"></script>
+    <script src="js/orgos.js"></script>
+</body>
+</html>

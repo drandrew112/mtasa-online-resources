@@ -1,0 +1,23 @@
+<meta>
+    <info author="DrAndrew112" name="biz_pc" version="1.0.0" type="script"
+          description="OrgOS: the computer in organization offices and properties (overview, finance, properties, settings, activity apps), full-screen web_api page" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <include resource="v_locals" />
+    <include resource="web_api" />
+    <include resource="biz_core" />
+    <include resource="biz_int" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="server/main.lua" type="server" />
+    <script src="client/main.lua" type="client" />
+
+    <!-- in game only (no <html> entry): opened through web_api's loader -->
+    <file src="web/index.html"     type="client" />
+    <file src="web/css/orgos.css"  type="client" />
+    <file src="web/js/orgos.js"    type="client" />
+
+    <export function="pcState"  type="server" http="true" />
+    <export function="pcAction" type="server" http="true" />
+    <export function="pcClose"  type="server" http="true" />
+</meta>

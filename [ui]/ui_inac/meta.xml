@@ -5,6 +5,7 @@
     <script src="shared/registry.lua" type="shared" />
     <script src="server/spawn.lua" type="server" />
     <script src="server/ownveh.lua" type="server" />
+    <script src="server/business.lua" type="server" />
     <script src="server/preferences.lua" type="server" />
     <script src="client/state.lua" type="client" />
     <script src="client/api.lua" type="client" />
@@ -14,6 +15,7 @@
     <script src="client/main.lua" type="client" />
     <script src="client/vehicles.lua" type="client" />
     <script src="client/ownveh.lua" type="client" />
+    <script src="client/business.lua" type="client" />
 
     <export function="createTempMenu" type="client" />
     <export function="closeTempMenu" type="client" />

@@ -191,7 +191,7 @@ VIEWS.weekly = {
                 row("view", "wk_" .. n, cx, yy, cw, S(34), {})
                 text(j.name, cx + S(14), yy, cw * 0.5, S(34), C.white, 1.0, FONT.rowB)
                 text(L("acc_menu.weekly.money", { money = ("%g"):format(tonumber(j.money) or 1) }), cx + cw * 0.5, yy, cw * 0.25, S(34), C.money, 1.0, FONT.rowB, "right")
-                text(L("acc_menu.weekly.xp", { xp = ("%g"):format(tonumber(j.xp) or 1) }), cx + cw * 0.75, yy, cw * 0.25 - S(14), S(34), C.xp, 1.0, FONT.rowB, "right")
+                if j.xp then text(L("acc_menu.weekly.xp", { xp = ("%g"):format(tonumber(j.xp) or 1) }), cx + cw * 0.75, yy, cw * 0.25 - S(14), S(34), C.xp, 1.0, FONT.rowB, "right") end
                 yy = yy + S(38)
             end
             yy = yy + S(6)

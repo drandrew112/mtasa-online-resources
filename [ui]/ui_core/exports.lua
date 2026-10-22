@@ -76,8 +76,9 @@ function showLevelOverlay()
 end
 
 -- Stat trackers in the bottom-right corner, above the timer (client/stats.lua).
---   addStatTracker(id, label, value [, { order = n, color = {r,g,b} }])  - adds or replaces a row
---   updateStatTracker(id, value [, label])
+--   addStatTracker(id, label, value [, { order = n, color = {r,g,b}, progress = 0..1, barColor = {r,g,b} }])
+--       - adds or replaces a row; `progress` draws a bar under the row (nil = no bar)
+--   updateStatTracker(id, value [, label [, progress]])  - progress false removes the bar
 --   removeStatTracker(id)
 --   clearStatTrackers()  - every row of the calling resource
 -- The rows of a resource are removed when it stops.
@@ -86,9 +87,9 @@ function addStatTracker(id, label, value, opts)
     return UI.stats:set(tostring(id), txt(label), txt(value), opts, sourceResource or resource)
 end
 
-function updateStatTracker(id, value, label)
+function updateStatTracker(id, value, label, progress)
     if id == nil then return false end
-    return UI.stats:update(tostring(id), txt(value), txt(label))
+    return UI.stats:update(tostring(id), txt(value), txt(label), progress)
 end
 
 function removeStatTracker(id)

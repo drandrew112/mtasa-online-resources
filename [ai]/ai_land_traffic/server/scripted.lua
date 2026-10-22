@@ -16,6 +16,8 @@
 --   onTrafficVehicleTargetDeparted (veh, id, kind, tag, x, y, z)   stop: wait over, driving on
 --   onTrafficVehicleTargetFailed   (veh, id, kind, tag, reason)    no route to it, target dropped
 --   onTrafficVehicleRouteFinished  (veh, removeInMs)               last target done, removal timer started
+--   onTrafficVehiclePursuitEngage  (veh, target)                   pursuit: close to the target (see below)
+--   onTrafficVehiclePursuitLost    (veh, target)                   pursuit: target gone / too far for too long
 --   onTrafficVehicleRemoved        (veh, reason)                   vehicle left the scripted list: "timeout",
 --                                  "vehicle_destroyed", "crash" / "damage" / "enter" / "jacked" (released, now a physics
 --                                  vehicle) - not sent for destroyScriptedVehicle; veh may already be gone
@@ -27,9 +29,17 @@ local T = TRAFFIC
 local sqrt, abs, min, max = math.sqrt, math.abs, math.min, math.max
 local nextTargetId = 1
 
+-- Pursuit (biz_missions: enemies chasing a delivery van): a scripted vehicle with sc.pursuit follows a moving
+-- element. Every retargetMs its only target becomes a turn point on the lane nearest to where the target will be
+-- in a few seconds; it stays a lane-bound traffic agent (lights, car following), so it cannot follow a target off
+-- road. Close to the target (engageDist, or closeDist while the target is slow) it fires
+-- onTrafficVehiclePursuitEngage once and stops retargeting; the owner then usually calls engageScriptedVehicle
+-- (physics vehicle, the driver gets out as an ai_peds enemy of the target's driver).
+
 local EVENTS = {
     "onTrafficVehicleTargetReached", "onTrafficVehicleTargetDeparted", "onTrafficVehicleTargetFailed",
     "onTrafficVehicleRouteFinished", "onTrafficVehicleRemoved",
+    "onTrafficVehiclePursuitEngage", "onTrafficVehiclePursuitLost",
 }
 for _, name in ipairs(EVENTS) do addEvent(name) end
 
@@ -176,7 +186,55 @@ local function finishHead(ag)
     table.remove(sc.targets, 1)
     sc.dwell = nil
     reroute(ag)
-    if #sc.targets == 0 then startEndTimer(ag) end
+    if #sc.targets == 0 and not sc.pursuit then startEndTimer(ag) end
+end
+
+------------------------------------------------------------------------ pursuit
+
+local PURSUIT_DEFAULTS = { engageDist = 25, closeDist = 60, slowSpeed = 7, lostDist = 600, lostMs = 20000, retargetMs = 3000, lead = 3 }
+
+local function pursuitStep(ag, sc, now, ms)
+    local pu = sc.pursuit
+    if pu.done then return end
+    local tgt = pu.target
+    if not isElement(tgt) then
+        pu.done = true
+        emit("onTrafficVehiclePursuitLost", ag.veh, tgt)
+        return
+    end
+    local tx, ty, tz = getElementPosition(tgt)
+    local vx, vy = getElementVelocity(tgt)
+    vx, vy = (vx or 0) * 50, (vy or 0) * 50                 -- m/s
+    local speed = sqrt(vx * vx + vy * vy)
+    local d = sqrt((ag.x - tx) ^ 2 + (ag.y - ty) ^ 2)
+
+    if d <= pu.engageDist or (d <= pu.closeDist and speed < pu.slowSpeed) then
+        pu.done = true
+        emit("onTrafficVehiclePursuitEngage", ag.veh, tgt)
+        return
+    end
+    if d > pu.lostDist then
+        pu.farMs = (pu.farMs or 0) + ms
+        if pu.farMs >= pu.lostMs then
+            pu.done = true
+            emit("onTrafficVehiclePursuitLost", ag.veh, tgt)
+            return
+        end
+    else
+        pu.farMs = 0
+    end
+
+    if now < (pu.nextRetarget or 0) then return end
+    pu.nextRetarget = now + pu.retargetMs
+    local lead = min(pu.lead, d / max(5, speed + ag.v + 1))
+    local lane, s = snap(tx + vx * lead, ty + vy * lead, tz, nil, 80)
+    if not lane then lane, s = snap(tx, ty, tz, nil, 80) end
+    if not lane then return end
+    local px, py, pz = Geo.pose(lane, s, 0)
+    sc.targets = { { id = nextTargetId, kind = "turn", lane = lane, s = s, x = px, y = py, z = pz, wait = 0, hold = false, tag = "pursuit" } }
+    nextTargetId = nextTargetId + 1
+    sc.endLeft = nil
+    reroute(ag)
 end
 
 local function depart(ag, tgt)
@@ -204,6 +262,7 @@ function Scripted.step(now, dt)
         if not Agents.list[ag.id] then
             S.list[ag] = nil
         else
+            if sc.pursuit then pursuitStep(ag, sc, now, ms) end
             local tgt = sc.targets[1]
             if tgt then
                 local cur = ag.plan[1].code
@@ -269,7 +328,7 @@ end
 -- create a vehicle (with a driver) on the road nearest to x, y, z, standing; returns the vehicle and the
 -- driver ped, or false and a reason. options: heading (degrees, picks the lane direction), skin (driver),
 -- speedFactor (0.3 - 1.5, multiplies the wanted speed), profile (navmesh vehicle profile for the routes: "car"
--- (default), "bus", "truck", "emergency"...)
+-- (default), "bus", "truck", "emergency"...), pursuit = { target = element, ... } (see setScriptedPursuit)
 function createScriptedVehicle(model, x, y, z, options)
     options = type(options) == "table" and options or {}
     model, x, y, z = tonumber(model), tonumber(x), tonumber(y), tonumber(z)
@@ -289,6 +348,9 @@ function createScriptedVehicle(model, x, y, z, options)
     S.list[ag] = true
     S.count = S.count + 1
     setElementData(ag.veh, "ai_traffic_scripted", true)
+    if type(options.pursuit) == "table" and isElement(options.pursuit.target) then
+        setScriptedPursuit(ag.veh, options.pursuit.target, options.pursuit)
+    end
     return ag.veh, ag.ped
 end
 
@@ -403,4 +465,35 @@ function getScriptedVehicleState(veh)
     local sc = ag.script
     return { targets = #sc.targets, current = sc.targets[1] and sc.targets[1].id or nil, waiting = sc.dwell ~= nil,
              removeIn = sc.endLeft, speed = ag.v }
+end
+
+------------------------------------------------------------------------ pursuit exports
+
+-- the vehicle chases `target` (an element, usually a vehicle). opts (all optional): engageDist (25 m),
+-- closeDist (60 m: engage there while the target is slower than slowSpeed m/s, default 7), lostDist (600 m)
+-- for lostMs (20 s), retargetMs (3000), lead (s of target movement aimed ahead, 3). target = nil ends the chase.
+function setScriptedPursuit(veh, target, opts)
+    local ag = scripted(veh)
+    if not ag then return false end
+    local sc = ag.script
+    if not isElement(target) then
+        sc.pursuit = nil
+        sc.targets = {}
+        targetsEmptied(ag)
+        return true
+    end
+    opts = type(opts) == "table" and opts or {}
+    local pu = { target = target, nextRetarget = 0 }
+    for k, v in pairs(PURSUIT_DEFAULTS) do pu[k] = tonumber(opts[k]) or v end
+    sc.pursuit = pu
+    return true
+end
+
+-- ends a chase at once: the vehicle becomes an ordinary physics vehicle and its driver an ai_peds ped
+-- (behaviour "enemy" by default, attacking `culprit` - default: the chased target - or its driver)
+function engageScriptedVehicle(veh, culprit, behaviour)
+    local ag = scripted(veh)
+    if not ag then return false end
+    culprit = culprit or (ag.script.pursuit and ag.script.pursuit.target)
+    return Agents.release(ag, "ambush", culprit, behaviour or "enemy")
 end

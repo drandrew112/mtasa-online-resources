@@ -162,7 +162,7 @@ VIEWS.account = {
 -- Statistics: one tile per category (v_stats definitions + level / played time)
 --------------------------------------------------------------------------------
 
-local STAT_CATS = { "general", "distance", "vehicle_time", "combat", "work", "activities", "other" }
+local STAT_CATS = { "general", "distance", "vehicle_time", "combat", "work", "activities", "business", "other" }
 
 local function statCategories()
     local p = Menu.data.profile or {}

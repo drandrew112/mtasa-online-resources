@@ -36,6 +36,10 @@
   "v_weekly.admin.you_have_no_permission": "You have no permission.",
   "v_weekly.api.x_money": "{money}x money",
   "v_weekly.api.x_xp": "{xp}x XP",
+  "v_weekly.category.business": "Business",
+  "v_weekly.category.community": "Community Jobs",
+  "v_weekly.category.official": "Official Jobs",
+  "v_weekly.category.work": "Work",
   "v_weekly.panel.bonuses": "BONUSES",
   "v_weekly.panel.community_job": "{name} (community)",
   "v_weekly.panel.limit_s": "Limit: {time|int}s",
@@ -51,8 +55,5 @@
   "v_weekly.panel.xp": "XP {xp}",
   "v_weekly.panel.xp_2": "{xp|int} XP",
   "v_weekly.period.day": "day",
-  "v_weekly.period.week": "week",
-  "v_weekly.category.official": "Official Jobs",
-  "v_weekly.category.community": "Community Jobs",
-  "v_weekly.category.work": "Work"
+  "v_weekly.period.week": "week"
 }

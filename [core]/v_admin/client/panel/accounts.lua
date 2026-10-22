@@ -516,12 +516,20 @@ local function drawOverview(d, x, y, w, h)
         { L("v_admin.accounts.last_ip"), d.lastIp or "-" },
         { L("v_admin.accounts.achievements"), d.achievements and (d.achievements.done .. " / " .. d.achievements.total) or "-" },
         { L("v_admin.accounts.vehicles"), d.vehicles },
+        { L("v_admin.accounts.organization"), d.company and (d.company.name .. "  ·  €" .. AP.fmtInt(d.company.value)) or "-",
+          d.company and C.good or C.dim, org = d.company },
     }
     for i, t in ipairs(tiles) do
         local cx = x + ((i - 1) % cols) * (tw + gap)
         local cy = y + math.floor((i - 1) / cols) * (th + gap)
         AP.kv(cx, cy, tw, th, t[1], t[2], t[3])
         if t.buttons then tileButtons(cx, cy, tw, th, t.buttons) end
+        -- the Organization tile opens the Organizations page on that company
+        if t.org and AP.can("organizations") then
+            local label = L("v_admin.accounts.open")
+            local bw = L.width(label, F(0.75), "default-bold") + S(16)
+            miniButton(cx + tw - S(8) - bw, cy + (th - S(28)) / 2, bw, S(28), label, function() AP.setPage("organizations", t.org.id) end)
+        end
     end
     local ty = y + math.ceil(#tiles / cols) * (th + gap) + S(6)
     if d.banned then

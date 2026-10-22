@@ -32,6 +32,7 @@
                 <div class="cat">Players</div>
                 <button class="nav-item" data-page="players">Online players <b class="badge" id="cntPlayers">0</b></button>
                 <button class="nav-item" data-page="accounts" data-perm="accounts">Accounts</button>
+                <button class="nav-item" data-page="organizations" data-perm="organizations">Organizations</button>
                 <button class="nav-item" data-page="reports" data-perm="reports">Reports <b class="badge" id="cntReports">0</b></button>
                 <button class="nav-item" data-page="bans">Bans &amp; mutes</button>
                 <div class="cat">Server</div>
@@ -185,6 +186,18 @@
                 <section class="tab-page row-page" id="page-weekly" hidden>
                     <aside class="osa-panel wk-weeks" id="wkWeeks"></aside>
                     <div class="osa-panel grow3 wk-body" id="wkBody"></div>
+                </section>
+
+                <!-- ============ organizations ============ -->
+                <section class="tab-page row-page" id="page-organizations" hidden>
+                    <aside class="osa-panel org-list">
+                        <div class="osa-panel-head row left">
+                            <input class="osa-input grow" id="orgSearch" placeholder="Name, founder or #id">
+                            <select class="osa-select" id="orgStatus"><option value="active">Active</option><option value="sold">Sold</option><option value="all">All</option></select>
+                        </div>
+                        <div class="osa-scroll grow" id="orgRows"></div>
+                    </aside>
+                    <div class="osa-panel grow3 org-detail" id="orgDetail"><div class="osa-empty">Pick an organization.</div></div>
                 </section>
 
                 <!-- ============ news ============ -->

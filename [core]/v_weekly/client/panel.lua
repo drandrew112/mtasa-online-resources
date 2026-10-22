@@ -91,7 +91,7 @@ function drawPanel()
         for _, j in ipairs(c.items) do
             dxDrawText(j.name, x + pad + ui(10), cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold", "left", "top", true)
             dxDrawText(L("v_weekly.panel.money", { money = fmt(j.money) }), x + w * 0.5, cy, x + w * 0.82, cy + rowH, COL.money, ui(1.2), "default-bold", "right")
-            dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.82, cy, x + w - pad, cy + rowH, COL.xp, ui(1.2), "default-bold", "right")
+            if j.xp then dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.82, cy, x + w - pad, cy + rowH, COL.xp, ui(1.2), "default-bold", "right") end
             cy = cy + rowH
         end
     end

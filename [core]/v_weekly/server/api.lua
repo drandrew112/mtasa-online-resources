@@ -29,7 +29,8 @@ end
 -- Everything that is "weekly" for a week, ready to display:
 -- { weekStart, from, to, news = {title, body}|nil, loginBonus = {money, xp}|nil,
 --   jobs = { {id, name, money, xp, label, community}, ... }, works = { {id, name, money, xp}, ... },
---   bonuses = { { id = "official"|"community"|"work", items = {...} }, ... }  (non-empty categories),
+--   bonuses = { { id = "official"|"community"|"work"|"business", items = {...} }, ... }  (non-empty categories;
+--               business items have no xp),
 --   bonusCount, timetrial = {name, time, reward}|nil }
 -- offset: weeks from now (default 0 = running week)
 function getWeeklyInfo(offset)
@@ -125,6 +126,38 @@ function setWorkMultiplier(offset, workId, money, xp, label)
     end, caller())
 end
 
+-- Business bonus: sale multiplier of an organization activity (biz_core, supply/deliver
+-- activities only - the casino has none). 1 removes it. Values: WEEKLY.BUSINESS_MULTIPLIERS.
+local function allowedBusiness(v)
+    for _, m in ipairs(WEEKLY.BUSINESS_MULTIPLIERS) do if m == v then return true end end
+    return false
+end
+
+function setBusinessMultiplier(offset, activity, money, label)
+    return SCHED.edit(offset, function(d)
+        if type(activity) ~= "string" or activity == "" then return false, "bad activity" end
+        money = tonumber(money) or 1
+        if not allowedBusiness(money) then return false, "multiplier must be one of the allowed values" end
+        if money == 1 then
+            d.business[activity] = nil
+        else
+            d.business[activity] = { money = money,
+                label = (type(label) == "string" and label ~= "") and label:sub(1, 40) or nil }
+        end
+    end, caller())
+end
+
+function clearBusinessMultipliers(offset)
+    return SCHED.edit(offset, function(d) d.business = {} end, caller())
+end
+
+-- -> multiplier of the running week (1 = none)
+function getBusinessMultiplier(activity)
+    local d = SCHED.resolve(SCHED.currentWeek())
+    local m = d.business[activity]
+    return m and m.money or 1
+end
+
 function clearWorkMultiplier(offset, workId)
     return SCHED.edit(offset, function(d) d.works[workId] = nil end, caller())
 end
@@ -193,6 +226,13 @@ function setWeek(offset, data)
     if type(data) ~= "table" then return false, "bad data" end
     return SCHED.edit(offset, function(d)
         d.jobs, d.works, d.custom, d.news = {}, {}, {}, nil
+        d.business = {}
+        for activity, m in pairs(type(data.business) == "table" and data.business or {}) do
+            local money = type(m) == "table" and tonumber(m.money) or nil
+            if type(activity) == "string" and money and allowedBusiness(money) and money ~= 1 then
+                d.business[activity] = { money = money, label = type(m.label) == "string" and m.label:sub(1, 40) or nil }
+            end
+        end
         d.timetrial = tonumber(data.timetrial) or d.timetrial
         for jobId, m in pairs(type(data.jobs) == "table" and data.jobs or {}) do
             if type(jobId) == "string" and type(m) == "table" then

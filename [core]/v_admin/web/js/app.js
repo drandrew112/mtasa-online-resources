@@ -1226,7 +1226,7 @@
         const multCol = (key, label, act) => ({ key, label, text: j => { const m = (act === 'work' ? (w.works || {}) : w.jobs)[j.id]; const cur = m ? m[key] : 1;
             return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-act="${act}" data-kind="${key}" data-x="${x}">${x}x</button>`).join('')}</span>`; } });
         if (W.tab === 'bonuses') {
-            const subs = [['official', 'Official Jobs'], ['community', 'Community Jobs'], ['work', 'Work']];
+            const subs = [['official', 'Official Jobs'], ['community', 'Community Jobs'], ['work', 'Work'], ['business', 'Business']];
             el.innerHTML = `<div class="osa-tabs">${subs.map(t => `<button class="osa-tab${W.sub === t[0] ? ' active' : ''}" data-sub="${t[0]}">${t[1]}</button>`).join('')}</div><div id="wkSub"></div>`;
             const sub = $('wkSub');
             if (W.sub === 'official') {
@@ -1241,6 +1241,14 @@
                     { key: 'owner', label: 'Created by', text: j => `<span class="dim">${esc(j.owner || '-')}</span>` },
                     multCol('money', 'Money', 'job'), multCol('xp', 'XP', 'job'),
                 ], arr(d.communityJobs), { empty: 'There are no published community jobs.' });
+            } else if (W.sub === 'business') {
+                sub.innerHTML = '<p class="dim">Sale multipliers of the organization businesses (supply/deliver only: the casino has none).</p><div id="wkBiz"></div>';
+                const bm = arr(d.businessMultipliers);
+                grid($('wkBiz'), [
+                    { key: 'name', label: 'Business', text: a => `<b>${esc(a.name)}</b>` },
+                    { key: 'money', label: 'Sales', text: a => { const m = (w.business || {})[a.id]; const cur = m ? m.money : 1;
+                        return `<span class="mult">${bm.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-biz="${esc(a.id)}" data-x="${x}">${x}x</button>`).join('')}</span>`; } },
+                ], arr(d.business), { empty: 'No supply/deliver business is configured.' });
             } else {
                 sub.innerHTML = '<p class="dim">Works of work_core (EMS, train driver, ...). Money multiplies the work payment (an extra item on the receipt), XP the work XP.</p><div id="wkWorks"></div>';
                 grid($('wkWorks'), [
@@ -1285,11 +1293,124 @@
             const x = Number(b.dataset.x);
             return wkEdit(act, b.dataset.job, b.dataset.kind === 'money' ? x : m.money, b.dataset.kind === 'xp' ? x : m.xp);
         }
+        if (b.dataset.biz) return wkEdit('business', b.dataset.biz, Number(b.dataset.x));
         if (b.dataset.trial) return wkEdit('trial', Number(b.dataset.trial));
         if (b.id === 'wkLogin') return wkEdit('login', Number($('wkMoney').value) || 0, Number($('wkXp').value) || 0);
         if (b.id === 'wkNews') return wkEdit('news', $('wkTitle').value.trim(), $('wkText').value.trim());
     });
     PAGES.weekly = { show: wkLoad, render: () => {} };
+
+    /* ============================================================ organizations (biz_core) */
+
+    const O = { rows: null, sel: null, d: null, tab: 'ledger', catalog: null };
+    const oMoney = n => (n < 0 ? '-€' : '€') + fmtInt(Math.abs(Number(n) || 0));
+    async function orgList() {
+        const r = await page('organizations', 'list', { query: $('orgSearch').value.trim(), status: $('orgStatus').value }, true);
+        O.rows = r.ok && r.result ? arr(r.result.rows) : [];
+        orgRows();
+    }
+    function orgRows() {
+        grid($('orgRows'), [
+            { key: 'name', label: 'Organization', text: c => `<b>${esc(c.name)}</b>${c.online ? ' <span class="good">●</span>' : ''}` },
+            { key: 'founder', label: 'Founder', text: c => esc(c.founder) },
+            { key: 'value', label: 'Value', cls: 'r', text: c => `<span class="good">${oMoney(c.value)}</span>` },
+        ], O.rows || [], { sel: c => c.id === O.sel, click: c => orgOpen(c.id), empty: O.rows ? 'No organization.' : 'Loading...' });
+    }
+    async function orgOpen(id) {
+        O.sel = id;
+        O.d = null;
+        orgRows();
+        orgDetail();
+        const r = await page('organizations', 'detail', { id }, true);
+        if (r.ok && O.sel === id) { O.d = r.result; orgDetail(); }
+    }
+    async function orgEdit(action, args) {
+        const r = await page('organizations', action, Object.assign({ id: O.sel }, args || {}));
+        if (r.ok) { orgOpen(O.sel); orgList(); }
+    }
+    function orgDetail() {
+        const el = $('orgDetail');
+        if (!O.sel) { el.innerHTML = '<div class="osa-empty">Pick an organization.</div>'; return; }
+        if (!O.d) { el.innerHTML = '<div class="osa-empty">Loading...</div>'; return; }
+        const c = O.d.company;
+        const edit = can('organizationsEdit');
+        const state = c.status !== 'active' ? c.status : (c.online ? (c.paused ? 'paused (upkeep unpaid)' : 'running') : 'founder offline');
+        const tabs = [['ledger', 'Ledger'], ['units', `Properties (${arr(O.d.units).length})`], ['associates', 'Associates'], ['actions', 'Actions']];
+        el.innerHTML = `<div class="row left"><h2 style="margin:0">${esc(c.name)}</h2><span class="dim">#${c.id} · ${esc(state)}</span></div>
+            <div class="kv-grid">
+                <div><small>Founder</small><b>${esc(c.founder || '-')}</b></div>
+                <div><small>Value</small><b class="good">${oMoney(c.value)}</b></div>
+                <div><small>Clean</small><b>${oMoney(c.clean)}</b></div>
+                <div><small>Dirty</small><b>${oMoney(c.dirty)}${c.launder ? ` <span class="dim">(${oMoney(c.launder)} queued)</span>` : ''}</b></div>
+                <div><small>Founded</small><b>${esc(new Date(c.createdAt * 1000).toLocaleDateString())}</b></div>
+                <div><small>Online time</small><b>${Math.floor((c.activeSeconds || 0) / 3600)} h</b></div>
+            </div>
+            <div class="osa-tabs">${tabs.map(t => `<button class="osa-tab${O.tab === t[0] ? ' active' : ''}" data-ot="${t[0]}">${t[1]}</button>`).join('')}</div>
+            <div class="osa-scroll grow" id="orgTab"></div>`;
+        const tab = $('orgTab');
+        if (O.tab === 'ledger') {
+            grid(tab, [
+                { key: 'ts', label: 'Date', text: l => esc(new Date(l.ts * 1000).toLocaleString()) },
+                { key: 'category', label: 'Category', text: l => esc(l.category) },
+                { key: 'description', label: 'Description', text: l => esc(l.description) },
+                { key: 'amount', label: 'Amount', cls: 'r', text: l => `<span class="${l.amount < 0 ? 'bad' : 'good'}">${oMoney(l.amount)}${l.dirty ? ' D' : ''}</span>` },
+                { key: 'balance', label: 'Balance', cls: 'r', text: l => oMoney(l.balance) },
+            ], arr(O.d.ledger), { empty: 'No transactions.' });
+        } else if (O.tab === 'units') {
+            grid(tab, [
+                { key: 'name', label: 'Property', text: u => `<b>${esc(u.name)}</b>${u.id === c.hqUnit ? ' <span class="dim">(headquarters)</span>' : ''}` },
+                { key: 'kind', label: 'Kind', text: u => esc(u.kind || '') },
+                { key: 'paid', label: 'Paid', cls: 'r', text: u => oMoney((u.pricePaid || 0) + (u.upgradesPaid || 0)) },
+                { key: 'stock', label: 'Stock', cls: 'r', text: u => u.stockValue != null ? oMoney(u.stockValue) : '-' },
+                { key: 'x', label: '', cls: 'r', text: u => edit && u.id !== c.hqUnit ? `<button class="osa-btn small danger" data-rmunit="${u.id}">Remove</button>` : '' },
+            ], arr(O.d.units), { empty: 'No properties.' });
+            if (edit && O.catalog) {
+                tab.insertAdjacentHTML('beforeend', `<div class="row left" style="margin-top:10px"><select class="osa-select" id="orgGive">${
+                    arr(O.catalog).map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select>
+                    <button class="osa-btn primary" id="orgGiveBtn">Give for free</button></div>`);
+            }
+        } else if (O.tab === 'associates') {
+            if (!c.online) tab.innerHTML = '<div class="osa-empty">Associates only exist while the founder is online.</div>';
+            else grid(tab, [
+                { key: 'name', label: 'Associate', text: a => `<b>${esc(a.name)}</b>` },
+                { key: 'account', label: 'Account', text: a => esc(a.account || '-') },
+                { key: 'x', label: '', cls: 'r', text: a => edit ? `<button class="osa-btn small danger" data-kick="${esc(a.account || a.name)}">Remove</button>` : '' },
+            ], arr(c.associates), { empty: 'No associates right now.' });
+        } else if (!edit) {
+            tab.innerHTML = `<div class="osa-empty">Changes need admin level ${perm('organizationsEdit')}.</div>`;
+        } else {
+            tab.innerHTML = `<div class="col" style="gap:14px;margin-top:10px">
+                <div class="row left"><input class="osa-input grow" id="orgName" maxlength="32" value="${esc(c.name)}"><button class="osa-btn primary" id="orgRename">Rename</button></div>
+                <div class="row left"><input class="osa-input" id="orgAmount" type="number" placeholder="Amount (negative takes)">
+                    <select class="osa-select" id="orgPart"><option value="clean">Clean</option><option value="dirty">Dirty</option></select>
+                    <input class="osa-input grow" id="orgReason" maxlength="120" placeholder="Reason (required)"><button class="osa-btn primary" id="orgAdjust">Adjust balance</button></div>
+                <div class="row left"><input class="osa-input grow" id="orgAccount" maxlength="64" placeholder="New founder account (both offline)"><button class="osa-btn" id="orgTransfer">Transfer</button></div>
+                <div class="row left"><button class="osa-btn danger" id="orgSell">${c.online ? 'Force sale (normal payout)' : 'Close (founder offline: no payout)'}</button></div>
+            </div>`;
+        }
+    }
+    $('orgSearch').addEventListener('keydown', e => { if (e.key === 'Enter') orgList(); });
+    $('orgStatus').addEventListener('change', orgList);
+    $('orgDetail').addEventListener('click', async e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        if (b.dataset.ot) { O.tab = b.dataset.ot; return orgDetail(); }
+        if (b.dataset.rmunit && await OSA.ui.confirm('Remove property', 'The property and its stock are removed without a refund.', 'Remove')) return orgEdit('removeunit', { unitId: Number(b.dataset.rmunit) });
+        if (b.dataset.kick) return orgEdit('kick', { player: b.dataset.kick });
+        if (b.id === 'orgGiveBtn') return orgEdit('giveunit', { propertyId: $('orgGive').value });
+        if (b.id === 'orgRename') return orgEdit('rename', { name: $('orgName').value.trim() });
+        if (b.id === 'orgAdjust') return orgEdit('adjust', { amount: Number($('orgAmount').value), dirty: $('orgPart').value === 'dirty', reason: $('orgReason').value.trim() });
+        if (b.id === 'orgTransfer') return orgEdit('transfer', { account: $('orgAccount').value.trim() });
+        if (b.id === 'orgSell' && await OSA.ui.confirm('Sell organization', 'The organization ends now. This cannot be undone.', 'Sell')) return orgEdit('forcesell');
+    });
+    PAGES.organizations = {
+        async show(id) {
+            orgList();
+            if (!O.catalog) { const r = await page('organizations', 'catalog', {}, true); if (r.ok && r.result) O.catalog = arr(r.result.list); }
+            if (id) orgOpen(Number(id));
+        },
+        render: () => {},
+    };
 
     /* ============================================================ news */
 

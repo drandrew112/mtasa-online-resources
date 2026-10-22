@@ -1,0 +1,11 @@
+{
+  "biz_weed.hud.money": "{amount|money}",
+  "biz_weed.hud.product": "Termék",
+  "biz_weed.hud.supply": "Készlet",
+  "biz_weed.hud.value": "Érték",
+  "biz_weed.product_full": "Fűfarm: a termékraktár megtelt. Add el, hogy a termelés folytatódjon.",
+  "biz_weed.supply_arrived": "Fűfarm: megérkezett {units|int} egység készlet.",
+  "biz_weed.supply_empty": "Fűfarm: elfogyott a készlet, a termelés leállt.",
+  "biz_weed.supply_ordered": "Készlet megrendelve: {units|int} egység, {minutes|int} perc online idő múlva érkezik.",
+  "biz_weed.upgrade_done": "Fűfarm fejlesztés kész: {name}."
+}

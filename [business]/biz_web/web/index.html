@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>San Andreas Business Registry</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/registry.css">
+</head>
+<body>
+    <header class="br-top">
+        <div class="br-wrap br-top-in">
+            <div class="br-brand">
+                <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="8" fill="#12355b"/><path d="M11 29V17l9-6 9 6v12M16 29v-7h8v7" fill="none" stroke="#f2c14e" stroke-width="2.6" stroke-linejoin="round"/></svg>
+                <span><b>San Andreas Business Registry</b><small>Official register of organizations</small></span>
+            </div>
+            <nav class="br-nav" id="nav">
+                <a data-tab="register" class="on" id="tabRegister">Register</a>
+                <a data-tab="registry">Registry</a>
+                <a data-tab="top">Top organizations</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="br-wrap">
+        <!-- ============================================================ register / my organization -->
+        <section class="br-page" id="page-register">
+            <div id="regLoading" class="br-card br-empty">Loading…</div>
+
+            <div id="regForm" hidden>
+                <h1>Register an organization</h1>
+                <p class="br-lead">One organization per person. Pick a name and a headquarters; the fee is paid from your bank account.</p>
+                <div class="br-steps"><span id="st1" class="on">1 · Name</span><span id="st2">2 · Headquarters</span><span id="st3">3 · Payment</span></div>
+                <div class="br-grid">
+                    <div class="br-card br-mapcard">
+                        <section class="osa-map-wrap"><div id="map"></div></section>
+                        <div class="br-hint">Click a building to choose your headquarters.</div>
+                    </div>
+                    <div class="br-card br-side">
+                        <label for="orgName">Organization name</label>
+                        <input class="osa-input" id="orgName" maxlength="32" autocomplete="off">
+                        <div class="br-small" id="nameHint"></div>
+
+                        <label>Headquarters</label>
+                        <div id="officeList" class="br-offices"></div>
+
+                        <div class="br-sum">
+                            <div><span>Registration fee</span><b id="sumFee">–</b></div>
+                            <div><span id="sumOfficeLabel">Headquarters</span><b id="sumOffice">–</b></div>
+                            <div class="t"><span>Total (from bank)</span><b id="sumTotal">–</b></div>
+                            <div class="br-small">Your bank balance: <b id="bank">–</b></div>
+                        </div>
+                        <button class="osa-btn primary br-go" id="registerBtn" disabled>Register organization</button>
+                        <div class="br-msg" id="regMsg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="myOrg" hidden>
+                <h1 id="myName">–</h1>
+                <p class="br-lead">Your organization is registered. Manage it on the computer in your office.</p>
+                <div class="br-kpis">
+                    <div class="br-kpi"><span>Company value</span><b id="myValue">–</b></div>
+                    <div class="br-kpi"><span>Headquarters</span><b id="myHq">–</b></div>
+                    <div class="br-kpi"><span>Founded</span><b id="myFounded">–</b></div>
+                </div>
+                <h2>Move headquarters</h2>
+                <p class="br-small">The new office is paid from the company account; the old one is bought back at half its price.</p>
+                <div class="br-grid">
+                    <div class="br-card br-mapcard">
+                        <section class="osa-map-wrap"><div id="map2"></div></section>
+                    </div>
+                    <div class="br-card br-side">
+                        <div id="moveList" class="br-offices"></div>
+                        <button class="osa-btn primary br-go" id="moveBtn" disabled>Move headquarters</button>
+                        <div class="br-msg" id="moveMsg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ registry -->
+        <section class="br-page" id="page-registry" hidden>
+            <h1>Registry</h1>
+            <p class="br-lead">Every active organization of San Andreas.</p>
+            <div class="br-card"><input class="osa-input" id="search" placeholder="Search organizations or founders…" autocomplete="off"></div>
+            <div class="br-card br-tablecard">
+                <table class="br-table">
+                    <thead><tr><th>Organization</th><th>Founder</th><th>Headquarters</th><th>Activities</th><th>Founded</th></tr></thead>
+                    <tbody id="regRows"><tr><td colspan="5" class="br-empty">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================================================ top -->
+        <section class="br-page" id="page-top" hidden>
+            <h1>Top organizations</h1>
+            <p class="br-lead">Ranked by company value: properties, upgrades, stock and balance.</p>
+            <div class="br-card br-tablecard">
+                <table class="br-table">
+                    <thead><tr><th>#</th><th>Organization</th><th>Founder</th><th>Headquarters</th><th>Activities</th><th class="num">Value</th></tr></thead>
+                    <tbody id="topRows"><tr><td colspan="6" class="br-empty">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="br-foot br-wrap">San Andreas Business Registry · sabusinessregistry.eu</footer>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/registry.js"></script>
+</body>
+</html>

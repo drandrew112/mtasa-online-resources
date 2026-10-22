@@ -1,0 +1,24 @@
+<meta>
+    <info author="DrAndrew112" name="biz_weed" version="1.0.0" type="script"
+          description="Weed farm activity (illegal, supply/deliver): supply turns into product in the founder's online time, bought supply, capacity/staff upgrades, in-farm HUD" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="biz_core" />
+    <include resource="biz_int" />
+    <include resource="ui_core" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="server/main.lua" type="server" />
+    <script src="client/hud.lua" type="client" />
+
+    <export function="getUnitStockValue"  type="server" />
+    <export function="getPanelState"      type="server" />
+    <export function="panelAction"        type="server" />
+    <export function="getWeedState"       type="server" />
+    <export function="addSupply"          type="server" />
+    <export function="takeProduct"        type="server" />
+    <export function="returnProduct"      type="server" />
+    <export function="setMissionCooldown" type="server" />
+</meta>

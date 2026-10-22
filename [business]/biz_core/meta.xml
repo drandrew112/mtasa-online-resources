@@ -1,0 +1,112 @@
+<meta>
+    <info author="DrAndrew112" name="biz_core" version="1.0.0" type="script"
+          description="Organizations: companies, company account (clean/dirty) + ledger, property catalog, temporary associates, online-only simulation tick" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/properties.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/db.lua" type="server" />
+    <script src="server/stats.lua" type="server" />
+    <script src="server/activities.lua" type="server" />
+    <script src="server/companies.lua" type="server" />
+    <script src="server/notify.lua" type="server" />
+    <script src="server/money.lua" type="server" />
+    <script src="server/units.lua" type="server" />
+    <script src="server/members.lua" type="server" />
+    <script src="server/tick.lua" type="server" />
+    <script src="server/registry.lua" type="server" />
+    <script src="server/actions.lua" type="server" />
+    <script src="server/sales.lua" type="server" />
+    <script src="server/admin.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/notify.lua" type="client" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <!-- state -->
+    <export function="isReady"               type="server" />
+    <export function="getPlayerCompany"      type="server" />
+    <export function="getPlayerCompanyId"    type="server" />
+    <export function="getCompany"            type="server" />
+    <export function="getCompanyFounder"     type="server" />
+    <export function="getCompanyValue"       type="server" />
+    <export function="isCompanyActive"       type="server" />
+    <export function="isCompanyPaused"       type="server" />
+    <export function="getUpkeepInfo"         type="server" />
+    <!-- money -->
+    <export function="getCompanyBalance"     type="server" />
+    <export function="creditCompany"         type="server" />
+    <export function="debitCompany"          type="server" />
+    <export function="queueLaunder"          type="server" />
+    <export function="processLaunder"        type="server" />
+    <export function="getLaunderQueue"       type="server" />
+    <export function="clearLaunderQueue"     type="server" />
+    <!-- properties -->
+    <export function="getCatalog"            type="server" />
+    <export function="getProperty"           type="server" />
+    <export function="getBuildings"          type="server" />
+    <export function="getUnit"               type="server" />
+    <export function="getUnitCompany"        type="server" />
+    <export function="getCompanyUnits"       type="server" />
+    <export function="getUnitDimension"      type="server" />
+    <export function="getUnitOfDimension"    type="server" />
+    <export function="getAccessibleUnits"    type="server" />
+    <export function="canAccessUnit"         type="server" />
+    <export function="buyUnitUpgrade"        type="server" />
+    <export function="setUnitData"           type="server" />
+    <export function="getUnitData"           type="server" />
+    <!-- activities -->
+    <export function="registerActivity"      type="server" />
+    <export function="getActivityKind"       type="server" />
+    <export function="getActivityResource"   type="server" />
+    <export function="setSaleMultiplier"     type="server" />
+    <export function="clearSaleMultipliers"  type="server" />
+    <export function="getSaleMultiplier"     type="server" />
+    <export function="getSaleMultipliers"    type="server" />
+    <export function="paySaleDelivery"       type="server" />
+    <!-- associates -->
+    <export function="inviteAssociate"       type="server" />
+    <export function="acceptInvite"          type="server" />
+    <export function="declineInvite"         type="server" />
+    <export function="leaveCompany"          type="server" />
+    <export function="removeAssociate"       type="server" />
+    <export function="getPlayerRole"         type="server" />
+    <export function="getCompanyMembers"     type="server" />
+    <export function="getAssociateCount"     type="server" />
+    <export function="getPlayerMembership"   type="server" />
+    <export function="getMembershipState"    type="server" />
+    <!-- founder actions (website / computer / menu) -->
+    <export function="createCompany"         type="server" />
+    <export function="moveHeadquarters"      type="server" />
+    <export function="renameCompany"         type="server" />
+    <export function="depositToCompany"      type="server" />
+    <export function="withdrawFromCompany"   type="server" />
+    <export function="buyProperty"           type="server" />
+    <export function="sellProperty"          type="server" />
+    <export function="getCompanySaleQuote"   type="server" />
+    <export function="sellCompany"           type="server" />
+    <export function="getMyOrganization"     type="server" />
+    <export function="getCompanyLedger"      type="server" />
+    <export function="getCompanySummary"     type="server" />
+    <export function="getBizConfig"          type="server" />
+    <!-- registry -->
+    <export function="getRegistry"           type="server" />
+    <export function="getTopList"            type="server" />
+    <export function="getRegistryEntry"      type="server" />
+    <export function="getCompanyOfAccount"   type="server" />
+    <!-- notifications, stats -->
+    <export function="notifyPlayer"          type="server" />
+    <export function="notifyCompany"         type="server" />
+    <export function="addBizStat"            type="server" />
+    <export function="unlockBizAchievement"  type="server" />
+    <!-- v_admin -->
+    <export function="adminCall"             type="server" />
+    <export function="adminGetCatalog"       type="server" />
+</meta>

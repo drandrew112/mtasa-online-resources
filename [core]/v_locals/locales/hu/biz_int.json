@@ -1,0 +1,16 @@
+{
+  "biz_int.admin.saved": "Pozíció elmentve: {what}.",
+  "biz_int.admin.usage": "/bizpos <sablon> <spawn|exit|computer>  vagy  /bizpos building <id>",
+  "biz_int.choose.associate": "{name} ({company})",
+  "biz_int.choose.own": "{name} (saját)",
+  "biz_int.choose.title": "Hová?",
+  "biz_int.computer.title": "Számítógép",
+  "biz_int.computer.use": "Számítógép használata",
+  "biz_int.computer.use_desc": "OrgOS megnyitása",
+  "biz_int.enter.no_access_now": "Ehhez a helyhez már nincs hozzáférésed.",
+  "biz_int.enter.no_property": "Itt nincs telephelyed. Céget a sabusinessregistry.eu oldalon lehet bejegyezni.",
+  "biz_int.markers.enter": "Belépés",
+  "biz_int.markers.exit": "Kilépés",
+  "biz_int.markers.press": "Nyomd meg: {key} · {action}",
+  "biz_int.markers.step_into_marker": "Állj a markerbe"
+}

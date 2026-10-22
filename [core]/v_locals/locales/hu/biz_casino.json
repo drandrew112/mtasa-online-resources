@@ -1,0 +1,8 @@
+{
+  "biz_casino.event_inspection": "Szerencsejáték-ellenőrzés a kaszinódban: 5 000 € díj.",
+  "biz_casino.event_jackpot": "Egy vendég megütötte a főnyereményt a kaszinódban.",
+  "biz_casino.event_whale": "Egy nagy játékos töltötte az éjszakát a kaszinódban.",
+  "biz_casino.hour_minus": "Kaszinó óra: veszteséges óra, −{amount|money}.",
+  "biz_casino.hour_plus": "Kaszinó óra: +{amount|money}.",
+  "biz_casino.laundered": "{amount|money} mosva a kaszinón keresztül (díj: {fee|money})."
+}

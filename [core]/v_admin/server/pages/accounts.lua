@@ -316,6 +316,10 @@ local function detail(actor, name, reply)
             d.jailed = getElementData(player, "adminjail") and true or false
             d.playtimeText = getElementData(player, "Játékidő") or false
         end
+        if resourceRunning("biz_core") then
+            local okc, c = pcall(function() return exports.biz_core:getCompanyOfAccount(acc) end)
+            if okc and type(c) == "table" then d.company = c end
+        end
         if resourceRunning("v_achievements") then
             local ok2, s = pcall(function() return exports.v_achievements:getPlayerAchievementSummary(acc) end)
             if ok2 and type(s) == "table" then d.achievements = { done = s.done, total = s.total } end

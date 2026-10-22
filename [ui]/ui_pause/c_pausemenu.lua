@@ -579,7 +579,7 @@ end
 -- STATS ------------------------------------------------------------------------
 
 -- Category ids are internal; the label is looked up when the list is built (D3).
-local STAT_CATS_ORDER = { "general", "distance", "vehicle_time", "combat", "work", "activities", "other" }
+local STAT_CATS_ORDER = { "general", "distance", "vehicle_time", "combat", "work", "activities", "business", "other" }
 local STAT_CAT_LABEL = {
     general      = "ui_pause.pausemenu.general",
     distance     = "ui_pause.pausemenu.distance",
@@ -587,6 +587,7 @@ local STAT_CAT_LABEL = {
     combat       = "ui_pause.pausemenu.combat",
     work         = "ui_pause.pausemenu.work",
     activities   = "ui_pause.pausemenu.activities",
+    business     = "ui_pause.pausemenu.business",
     other        = "ui_pause.pausemenu.other",
 }
 

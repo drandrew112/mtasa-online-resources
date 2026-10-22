@@ -3,6 +3,7 @@
 -- A week's data:
 --   { jobs = { [jobId] = { money, xp, label } },      Jobs (race/DM; official + community)
 --     works = { [workId] = { money, xp, label } },    work_core works
+--     business = { [activity] = { money, label } },   biz_core sale multipliers (supply/deliver activities)
 --     timetrial = <index>, custom = { [key] = value }, news = { title, body } }
 -- A week without its own row inherits the latest earlier row (news excluded).
 
@@ -20,7 +21,7 @@ end
 SCHED.copy = copy
 
 local function blank()
-    return { jobs = {}, works = {}, timetrial = WEEKLY.DEFAULT_TIMETRIAL, custom = {} }
+    return { jobs = {}, works = {}, business = {}, timetrial = WEEKLY.DEFAULT_TIMETRIAL, custom = {} }
 end
 
 -- -> data (a copy), inherited (bool), sourceWeek|nil
@@ -29,6 +30,7 @@ function SCHED.resolve(ws)
     if own then
         local d = copy(own)
         d.jobs, d.works, d.custom = d.jobs or {}, d.works or {}, d.custom or {}
+        d.business = d.business or {}
         return d, false, ws
     end
     local src
@@ -37,6 +39,7 @@ function SCHED.resolve(ws)
     end
     local d = src and copy(STORE.get(src)) or blank()
     d.jobs, d.works, d.custom = d.jobs or {}, d.works or {}, d.custom or {}
+    d.business = d.business or {}
     d.news = nil
     return d, true, src
 end
@@ -65,6 +68,13 @@ function SCHED.apply()
         wc:clearWorkMultipliers()
         for workId, m in pairs(data.works) do
             wc:setWorkMultiplier(workId, m.money, m.xp, m.label)
+        end
+    end
+    if running("biz_core") then
+        local bc = exports.biz_core
+        bc:clearSaleMultipliers()
+        for activity, m in pairs(data.business) do
+            bc:setSaleMultiplier(activity, m.money)
         end
     end
     if running("v_timetrial") and data.timetrial then
@@ -110,6 +120,7 @@ function SCHED.edit(offset, fn, by)
     if not data then data = SCHED.resolve(ws) end -- seed from the inherited week
     data = copy(data)
     data.jobs, data.works, data.custom = data.jobs or {}, data.works or {}, data.custom or {}
+    data.business = data.business or {}
     local ok, err = fn(data)
     if ok == false then return false, err or "rejected" end
     STORE.set(ws, data, by)
@@ -178,7 +189,7 @@ end)
 -- the consumers lose their runtime state when restarted
 addEventHandler("onResourceStart", root, function(res)
     local name = getResourceName(res)
-    if (name == "v_jobmanager" or name == "v_timetrial" or name == "work_core") and currentWeek then
+    if (name == "v_jobmanager" or name == "v_timetrial" or name == "work_core" or name == "biz_core") and currentWeek then
         setTimer(SCHED.apply, 1000, 1)
     end
 end)

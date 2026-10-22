@@ -5,6 +5,8 @@
   "v_inventory.item.backpack.name": "Backpack",
   "v_inventory.item.bandage.desc": "One per dressing",
   "v_inventory.item.bandage.name": "Bandage",
+  "v_inventory.item.biz_supply_crate.desc": "Stolen supply. Carry it to the property's entrance.",
+  "v_inventory.item.biz_supply_crate.name": "Supply crate",
   "v_inventory.item.bt_blood_box.desc": "Keeps blood products cool",
   "v_inventory.item.bt_blood_box.name": "Blood transport box",
   "v_inventory.item.bt_ffp.desc": "Blood product, one unit (450 ml)",

@@ -343,19 +343,20 @@ end
 
 -- the driver goes to ai_peds (gets out properly, then flees or attacks the culprit); never teleported out.
 -- Without ai_peds the driver stays in the vehicle. Returns true when ai_peds took it.
-local function handOverDriver(ped, veh, reason, culprit)
+local function handOverDriver(ped, veh, reason, culprit, behaviour)
     if not isElement(ped) or isPedDead(ped) then return false end
     local res = getResourceFromName("ai_peds")
     if not res or getResourceState(res) ~= "running" then return false end
     local ok, taken = pcall(function()
-        return exports.ai_peds:adoptTrafficDriver(ped, veh, { reason = reason, culprit = culprit })
+        return exports.ai_peds:adoptTrafficDriver(ped, veh, { reason = reason, culprit = culprit, behaviour = behaviour })
     end)
     return ok and taken == true
 end
 
 -- the vehicle leaves the simulation and becomes an ordinary physics vehicle
--- reason: "crash" | "damage" | "enter" | "jacked" | "export"; culprit: the player (or element) that caused it
-function Agents.release(ag, reason, culprit)
+-- reason: "crash" | "damage" | "enter" | "jacked" | "export" | "ambush"; culprit: the player (or element) that
+-- caused it; behaviour: forced ai_peds behaviour of the driver ("enemy" for an ambush), nil = ai_peds decides
+function Agents.release(ag, reason, culprit, behaviour)
     if not A.list[ag.id] then return false end
     forget(ag, reason)
     local veh, ped = ag.veh, ag.ped
@@ -377,7 +378,7 @@ function Agents.release(ag, reason, culprit)
     Sync.release(ag, reason)
     if crashed then setVehicleEngineState(veh, false) end
     -- crash / damage / jacked / a player got in: the driver gets out (ai_peds owns it from now on)
-    if reason ~= "export" and handOverDriver(ped, veh, reason, culprit) then
+    if reason ~= "export" and handOverDriver(ped, veh, reason, culprit, behaviour) then
         A.released[veh].ped = nil
     end
     return true

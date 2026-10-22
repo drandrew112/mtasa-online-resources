@@ -1,0 +1,8 @@
+{
+  "biz_casino.event_inspection": "Gaming inspection at your casino: €5,000 in fees.",
+  "biz_casino.event_jackpot": "A guest hit the jackpot at your casino.",
+  "biz_casino.event_whale": "A high roller spent the night at your casino.",
+  "biz_casino.hour_minus": "Casino hour: a losing hour, −{amount|money}.",
+  "biz_casino.hour_plus": "Casino hour: +{amount|money}.",
+  "biz_casino.laundered": "{amount|money} laundered through the casino (fee {fee|money})."
+}

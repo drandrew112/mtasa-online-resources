@@ -1,0 +1,16 @@
+{
+  "biz_int.admin.saved": "Position saved: {what}.",
+  "biz_int.admin.usage": "/bizpos <template> <spawn|exit|computer>  or  /bizpos building <id>",
+  "biz_int.choose.associate": "{name} ({company})",
+  "biz_int.choose.own": "{name} (yours)",
+  "biz_int.choose.title": "Where to?",
+  "biz_int.computer.title": "Computer",
+  "biz_int.computer.use": "Use computer",
+  "biz_int.computer.use_desc": "Open OrgOS",
+  "biz_int.enter.no_access_now": "You no longer have access to this place.",
+  "biz_int.enter.no_property": "You have no property here. Organizations are registered on sabusinessregistry.eu.",
+  "biz_int.markers.enter": "Enter",
+  "biz_int.markers.exit": "Exit",
+  "biz_int.markers.press": "Press {key} · {action}",
+  "biz_int.markers.step_into_marker": "Step into the marker"
+}

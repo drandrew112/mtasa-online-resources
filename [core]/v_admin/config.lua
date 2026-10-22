@@ -71,6 +71,8 @@ ADMIN.perms = {
     news         = 5,   -- News page, /news            (Dev)
     mail         = 5,   -- Mail page, /mail            (Dev)
     resources    = 5,   -- Resources page             (Dev)
+    organizations = 3,  -- Organizations page (biz_core): view (Admin)
+    organizationsEdit = 5, -- rename / balance / founder / properties / force sale (Dev)
 }
 
 -- Admin panel (O key). Data is never hidden: every admin who can open the

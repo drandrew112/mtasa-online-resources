@@ -205,3 +205,10 @@ table.grid .narrow { width: 44px; }
     .row-page, .tab-page { flex-direction: column; }
     .pl-list, .pl-actions, .rp-list, .acc-detail, .nw-list, .ml-rcpt, .wk-weeks { width: auto; max-height: 60vh; }
 }
+
+/* organizations page */
+.org-list { flex: 2; min-width: 0; }
+.org-detail { gap: 10px; }
+.kv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.kv-grid > div { background: var(--osa-panel-2); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+.kv-grid small { color: var(--osa-dim); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }

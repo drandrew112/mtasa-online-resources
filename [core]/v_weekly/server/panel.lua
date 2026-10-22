@@ -64,6 +64,14 @@ function PANEL.payload(ws)
         return a.name < b.name
     end)
 
+    local business = {}
+    local bnames = {}
+    for _, a in ipairs(WEEKLY.BUSINESS_ACTIVITIES) do bnames[a.id] = a.name end
+    for activity, m in pairs(data.business or {}) do
+        business[#business + 1] = { id = activity, name = bnames[activity] or activity, money = m.money, label = m.label }
+    end
+    table.sort(business, byName)
+
     local wnames = workNames()
     local works = {}
     for workId, m in pairs(data.works) do
@@ -79,7 +87,7 @@ function PANEL.payload(ws)
         list[#list + 1] = j
     end
     local bonuses = {}
-    for _, c in ipairs({ { "official", official }, { "community", community }, { "work", works } }) do
+    for _, c in ipairs({ { "official", official }, { "community", community }, { "work", works }, { "business", business } }) do
         if #c[2] > 0 then bonuses[#bonuses + 1] = { id = c[1], items = c[2] } end
     end
     return {
@@ -92,8 +100,9 @@ function PANEL.payload(ws)
         } or nil,
         jobs = jobs,          -- official + community Jobs (community flag), kept for older readers
         works = works,
+        business = business,
         bonuses = bonuses,
-        bonusCount = #jobs + #works,
+        bonusCount = #jobs + #works + #business,
         timetrial = timetrialInfo(data.timetrial),
     }
 end

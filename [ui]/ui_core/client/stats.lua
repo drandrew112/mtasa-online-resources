@@ -7,11 +7,12 @@
 --   exports.ui_core:addStatTracker("gw_left", "Enemies left", 6, { order = 2 })
 --   exports.ui_core:updateStatTracker("gw_left", 5)
 --   exports.ui_core:removeStatTracker("gw_left")
+--   optional bar under a row: opts.progress (0..1) + opts.barColor, or updateStatTracker(id, value, nil, progress)
 
 local TIMER_GRACE = 250
 
 UI.stats = {
-    rows = {},          -- id -> { id, label, value, order, seq, color, owner }
+    rows = {},          -- id -> { id, label, value, order, seq, color, progress, barColor, owner }
     list = {},          -- sorted rows (bottom first)
     seq = 0,
     timerTick = 0,      -- set by UI:drawTimer
@@ -40,16 +41,20 @@ function UI.stats:set(id, label, value, opts, owner)
     row.value = tostring(value == nil and "" or value)
     row.order = tonumber(opts and opts.order) or row.order or 0
     row.color = opts and type(opts.color) == "table" and opts.color or row.color
+    row.progress = opts and tonumber(opts.progress) or nil
+    row.barColor = opts and type(opts.barColor) == "table" and opts.barColor or row.barColor
     row.owner = owner or row.owner
     rebuild()
     return true
 end
 
-function UI.stats:update(id, value, label)
+function UI.stats:update(id, value, label, progress)
     local row = self.rows[id]
     if not row then return false end
     if value ~= nil then row.value = tostring(value) end
     if label ~= nil then row.label = tostring(label) end
+    if progress == false then row.progress = nil
+    elseif progress ~= nil then row.progress = tonumber(progress) or row.progress end
     return true
 end
 
@@ -100,6 +105,13 @@ function UI.stats:draw()
         local col = c and tocolor(c[1] or 255, c[2] or 255, c[3] or 255) or tocolor(255, 255, 255)
         dxDrawText(row.label, x + pad, y, x + w - pad, y + h, tocolor(200, 200, 200), scale, "default", "left", "center", false, false, false, true)
         dxDrawText(row.value, x + pad, y, x + w - pad, y + h, col, scale, "default-bold", "right", "center", false, false, false, true)
+        if row.progress then
+            local p = math.max(0, math.min(1, row.progress))
+            local bh = math.max(2, ui(4))
+            local bc = row.barColor or c or { 0, 170, 220 }
+            dxDrawRectangle(x, y + h - bh, w, bh, tocolor(255, 255, 255, 40))
+            dxDrawRectangle(x, y + h - bh, w * p, bh, tocolor(bc[1] or 255, bc[2] or 255, bc[3] or 255, 230))
+        end
         y = y - gap
     end
 end

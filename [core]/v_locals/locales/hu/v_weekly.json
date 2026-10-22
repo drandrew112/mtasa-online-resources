@@ -36,6 +36,10 @@
   "v_weekly.admin.you_have_no_permission": "Nincs jogosultságod.",
   "v_weekly.api.x_money": "{money}x pénz",
   "v_weekly.api.x_xp": "{xp}x XP",
+  "v_weekly.category.business": "Üzlet",
+  "v_weekly.category.community": "Közösségi Jobok",
+  "v_weekly.category.official": "Hivatalos Jobok",
+  "v_weekly.category.work": "Munkák",
   "v_weekly.panel.bonuses": "BÓNUSZOK",
   "v_weekly.panel.community_job": "{name} (közösségi)",
   "v_weekly.panel.limit_s": "Limit: {time|int} mp",
@@ -51,8 +55,5 @@
   "v_weekly.panel.xp": "XP {xp}",
   "v_weekly.panel.xp_2": "{xp|int} XP",
   "v_weekly.period.day": "Naponta",
-  "v_weekly.period.week": "Hetente",
-  "v_weekly.category.official": "Hivatalos Jobok",
-  "v_weekly.category.community": "Közösségi Jobok",
-  "v_weekly.category.work": "Munkák"
+  "v_weekly.period.week": "Hetente"
 }

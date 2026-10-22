@@ -10,7 +10,7 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 --   name     (string, required)  shown in UI
 --   unit     (string)            "km" | "s" | "" (plain count)
 --   category (string)            "distance" | "vehicle_time" | "combat" | "work" |
---                                "activities" | "other" - groups the stats in the
+--                                "activities" | "business" | "other" - groups the stats in the
 --                                pause menu Stats tab and the account menu
 --   achStat  (string)            optional: v_achievements stat key. The stat's
 --                                value is pushed there (exports.v_achievements
@@ -66,6 +66,20 @@ STATS.LIST = {
     -- gang wars (v_gangwar)
     { id = "gangwar_played", name = L.text("v_stats.config.gangwar_played"), unit = "", category = "activities", achStat = "gangwar_played" },
     { id = "gangwar_won",    name = L.text("v_stats.config.gangwar_won"),    unit = "", category = "activities", achStat = "gangwar_won"    },
+
+    -- organizations (biz_*): exports.biz_core:addBizStat
+    { id = "biz_weed_sold", name = L.text("v_stats.config.biz_weed_sold"), unit = "", category = "business", achStat = "biz_weed_sold" },
+    { id = "biz_sales_income", name = L.text("v_stats.config.biz_sales_income"), unit = "", category = "business", achStat = "biz_sales_income" },
+    { id = "biz_deliveries", name = L.text("v_stats.config.biz_deliveries"), unit = "", category = "business", achStat = "biz_deliveries" },
+    { id = "biz_deliveries_lost", name = L.text("v_stats.config.biz_deliveries_lost"), unit = "", category = "business", achStat = "biz_deliveries_lost" },
+    { id = "biz_supply_runs", name = L.text("v_stats.config.biz_supply_runs"), unit = "", category = "business", achStat = "biz_supply_runs" },
+    { id = "biz_supply_stolen", name = L.text("v_stats.config.biz_supply_stolen"), unit = "", category = "business", achStat = "biz_supply_stolen" },
+    { id = "biz_supply_bought", name = L.text("v_stats.config.biz_supply_bought"), unit = "", category = "business", achStat = "biz_supply_bought" },
+    { id = "biz_hijacks", name = L.text("v_stats.config.biz_hijacks"), unit = "", category = "business", achStat = "biz_hijacks" },
+    { id = "biz_casino_income", name = L.text("v_stats.config.biz_casino_income"), unit = "", category = "business", achStat = "biz_casino_income" },
+    { id = "biz_laundered", name = L.text("v_stats.config.biz_laundered"), unit = "", category = "business", achStat = "biz_laundered" },
+    { id = "biz_assoc_deliveries", name = L.text("v_stats.config.biz_assoc_deliveries"), unit = "", category = "business", achStat = "biz_assoc_deliveries" },
+    { id = "biz_assoc_income", name = L.text("v_stats.config.biz_assoc_income"), unit = "", category = "business", achStat = "biz_assoc_income" },
 }
 
 -- work_core work id -> duty time stat id

@@ -30,6 +30,7 @@
     <export function="getNextWeekChange" type="server" />
     <export function="getJobMultiplier" type="server" />
     <export function="getWorkMultiplier" type="server" />
+    <export function="getBusinessMultiplier" type="server" />
     <export function="getActiveTimetrial" type="server" />
     <export function="isTimetrialActive" type="server" />
     <export function="getWeekValue" type="server" />
@@ -41,6 +42,8 @@
     <export function="setWorkMultiplier" type="server" />
     <export function="clearWorkMultiplier" type="server" />
     <export function="clearWorkMultipliers" type="server" />
+    <export function="setBusinessMultiplier" type="server" />
+    <export function="clearBusinessMultipliers" type="server" />
     <export function="setLoginBonus" type="server" />
     <export function="getLoginBonus" type="server" />
     <export function="setActiveTimetrial" type="server" />

@@ -110,14 +110,40 @@ local function drawWorks(x, y, w, h)
     drawJobList("wk_works", st.data.works or {}, L("v_admin.weekly.no_works"), false, x, y + S(36), w, h - S(36), "work")
 end
 
--- Bonuses: Official Jobs / Community Jobs / Work submenu
-local SUB = { official = drawJobs, community = drawCommunityJobs, work = drawWorks }
+-- Business: sale multipliers of the supply/deliver organization activities (biz_core); money only
+local function drawBusiness(x, y, w, h)
+    local data, week = st.data, curWeek()
+    AP.text(L("v_admin.weekly.business_hint"), x, y, w, S(30), C.dim, 0.85)
+    local list = data.business or {}
+    if #list == 0 then return AP.text(L("v_admin.weekly.no_business"), x, y + S(36), w, S(40), C.dim, 1.0) end
+    local mults = data.businessMultipliers or { 1, 2 }
+    local bw, bh = S(64), S(30)
+    local colW = (bw + S(6)) * #mults + S(20)
+    AP.table("wk_business", x, y + S(36), w, h - S(36), {
+        { key = "name", label = L("v_admin.weekly.activity"), bold = true },
+        { key = "money", label = L("v_admin.weekly.sale_multiplier"), w = colW, text = function() return "" end },
+    }, list, { rowH = S(46) })
+    local ly = y + S(36) + S(36)
+    for i, a in ipairs(list) do
+        local ry = ly + (i - 1) * S(46) + (S(46) - S(4) - bh) / 2
+        local m = (week.business or {})[a.id]
+        local cur = m and m.money or 1
+        for k, mult in ipairs(mults) do
+            AP.button(x + w - colW + S(10) + (k - 1) * (bw + S(6)), ry, bw, bh, ("%g"):format(mult) .. "x",
+                function() edit("business", a.id, mult) end, cur == mult and "active")
+        end
+    end
+end
+
+-- Bonuses: Official Jobs / Community Jobs / Work / Business submenu
+local SUB = { official = drawJobs, community = drawCommunityJobs, work = drawWorks, business = drawBusiness }
 
 local function drawBonuses(x, y, w, h)
     local items = {
         { id = "official", label = L("v_weekly.category.official") },
         { id = "community", label = L("v_weekly.category.community") },
         { id = "work", label = L("v_weekly.category.work") },
+        { id = "business", label = L("v_weekly.category.business") },
     }
     local th = AP.tabs(x, y, w, items, st.sub, function(id) st.sub = id end)
     SUB[st.sub](x, y + th, w, h - th)

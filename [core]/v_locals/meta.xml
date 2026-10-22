@@ -128,6 +128,12 @@
     <file src="locales/en/wp_manager.json" />
     <file src="locales/en/wp_selector.json" />
     <file src="locales/en/wp_shop.json" />
+    <file src="locales/en/biz_casino.json" />
+    <file src="locales/en/biz_core.json" />
+    <file src="locales/en/biz_int.json" />
+    <file src="locales/en/biz_missions.json" />
+    <file src="locales/en/biz_pc.json" />
+    <file src="locales/en/biz_weed.json" />
     <file src="locales/en/files/v_introduce/rules.txt" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/ai_peds.json" />
@@ -213,6 +219,12 @@
     <file src="locales/hu/wp_manager.json" />
     <file src="locales/hu/wp_selector.json" />
     <file src="locales/hu/wp_shop.json" />
+    <file src="locales/hu/biz_casino.json" />
+    <file src="locales/hu/biz_core.json" />
+    <file src="locales/hu/biz_int.json" />
+    <file src="locales/hu/biz_missions.json" />
+    <file src="locales/hu/biz_pc.json" />
+    <file src="locales/hu/biz_weed.json" />
     <file src="locales/hu/files/v_introduce/rules.txt" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->

@@ -238,19 +238,7 @@ function registerMenus()
         }
     })
 
-    -- BUSINESS
-    registerMenu({
-        id = "business",
-        title = L("ui_inac.main.my_business"),
-        back = "main",
-        items = {
-            {
-                label = L("ui_inac.main.under_development"),
-                type = "action",
-                action = function() end
-            }
-        }
-    })
+    -- BUSINESS: "My organization" (client/business.lua, inserted on top of the main menu)
 
     -- COLLECTIBLES
     registerMenu({
@@ -286,6 +274,7 @@ function registerMenus()
     })
 
     registerOwnvehMenu()
+    registerBusinessMenu()
 
     exports.acc_loading:resourceReady()
 end

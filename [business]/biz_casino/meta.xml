@@ -1,0 +1,15 @@
+<meta>
+    <info author="DrAndrew112" name="biz_casino" version="1.0.0" type="script"
+          description="Casino operation activity: hourly simulated result in the founder's online time, random events, money laundering queue" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="biz_core" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="server/main.lua" type="server" />
+
+    <export function="getPanelState" type="server" />
+    <export function="panelAction"   type="server" />
+    <export function="simulateHour"  type="server" />
+</meta>

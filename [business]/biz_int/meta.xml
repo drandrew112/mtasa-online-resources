@@ -1,0 +1,33 @@
+<meta>
+    <info author="DrAndrew112" name="biz_int" version="1.0.0" type="script"
+          description="Organization interiors: one entrance, a private inside per company unit (dimension 30000 + unit id), access control, owner-only blips, office computer" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="biz_core" />
+    <include resource="ui_inac" />
+    <include resource="ui_interactobject" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/fade.lua"    type="client" />
+    <script src="client/markers.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf"  type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- data/positions.json: written by /bizpos, read server-side only -->
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="getPlayerUnit"    type="server" />
+    <export function="getPlayersInUnit" type="server" />
+    <export function="enterUnit"        type="server" />
+    <export function="exitUnit"         type="server" />
+    <export function="refreshUnitProps" type="server" />
+    <export function="getUnitInside"    type="server" />
+</meta>

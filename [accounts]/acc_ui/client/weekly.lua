@@ -61,7 +61,7 @@ local function build(w)
         for _, j in ipairs(c.items) do
             text(j.name, pad + ui(10), y, w * 0.5, COL.text, ui(1.2), "default-bold", "left", rowH)
             text(L("v_weekly.panel.money", { money = fmt(j.money) }), w * 0.5, y, w * 0.82, COL.money, ui(1.2), "default-bold", "right", rowH)
-            text(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), w * 0.82, y, w - pad, COL.xp, ui(1.2), "default-bold", "right", rowH)
+            if j.xp then text(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), w * 0.82, y, w - pad, COL.xp, ui(1.2), "default-bold", "right", rowH) end
             y = y + rowH
         end
         y = y + ui(4)

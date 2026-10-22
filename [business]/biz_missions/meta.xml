@@ -1,0 +1,27 @@
+<meta>
+    <info author="DrAndrew112" name="biz_missions" version="1.0.0" type="script"
+          description="Supply/deliver missions of the organizations: supply steal (guards, van or crate) and multi-van product delivery (30 min, hijacking, enemy pursuit cars)" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="biz_core" />
+    <include resource="biz_weed" />
+    <include resource="ui_core" />
+    <include resource="v_radar" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="server/common.lua" type="server" />
+    <script src="server/enemies.lua" type="server" />
+    <script src="server/supply.lua" type="server" />
+    <script src="server/sell.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+    <script src="client/hud.lua" type="client" />
+
+    <!-- used when running: ai_peds (guards, ambushers), ai_land_traffic (pursuit), v_inventory (crate) -->
+
+    <export function="startSupplyMission" type="server" />
+    <export function="startSellMission"   type="server" />
+    <export function="getUnitMission"     type="server" />
+    <export function="cancelUnitMission"  type="server" />
+</meta>

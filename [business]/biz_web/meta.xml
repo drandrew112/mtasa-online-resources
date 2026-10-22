@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="biz_web" version="1.0.0" type="script"
+          description="sabusinessregistry.eu (in-game browser only): register an organization with a headquarters on the map, move headquarters, registry search, top organizations" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/api.lua" type="server" />
+
+    <!-- In game only: no <html> entry (not on web_manager / HTTP); ui_browser opens
+         the page through web_api's loader, and every export checks the caller player. -->
+    <file src="web/index.html"       type="client" />
+    <file src="web/css/registry.css" type="client" />
+    <file src="web/js/registry.js"   type="client" />
+
+    <!-- ================= EXPORTS (page API) ================= -->
+    <export function="bwState"            type="server" http="true" />
+    <export function="bwRegister"         type="server" http="true" />
+    <export function="bwMoveHeadquarters" type="server" http="true" />
+    <export function="bwRegistry"         type="server" http="true" />
+    <export function="bwTop"              type="server" http="true" />
+    <export function="bwEntry"            type="server" http="true" />
+
+    <include resource="web_api" />
+    <include resource="ui_browser" />
+    <include resource="biz_core" />
+</meta>

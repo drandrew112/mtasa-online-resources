@@ -1,0 +1,11 @@
+{
+  "biz_weed.hud.money": "{amount|money}",
+  "biz_weed.hud.product": "Product",
+  "biz_weed.hud.supply": "Supply",
+  "biz_weed.hud.value": "Value",
+  "biz_weed.product_full": "Weed farm: the product storage is full. Sell it to keep producing.",
+  "biz_weed.supply_arrived": "Weed farm: {units|int} units of supply arrived.",
+  "biz_weed.supply_empty": "Weed farm: out of supply, production stopped.",
+  "biz_weed.supply_ordered": "Supply ordered: {units|int} units, arriving in {minutes|int} minutes of online time.",
+  "biz_weed.upgrade_done": "Weed farm upgrade installed: {name}."
+}
