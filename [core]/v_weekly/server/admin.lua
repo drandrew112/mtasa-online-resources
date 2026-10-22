@@ -11,7 +11,7 @@ local function overview()
         local d, inherited = SCHED.resolve(ws)
         weeks[#weeks + 1] = {
             offset = off, from = formatUtc(ws), inherited = inherited,
-            jobs = d.jobs, timetrial = d.timetrial, news = d.news, loginBonus = d.loginBonus,
+            jobs = d.jobs, works = d.works, timetrial = d.timetrial, news = d.news, loginBonus = d.loginBonus,
         }
     end
 
@@ -29,6 +29,26 @@ local function overview()
         end
         table.sort(communityJobs, function(a, b) return tostring(a.name) < tostring(b.name) end)
     end
+    -- work_core works; a work with a multiplier that is not registered now is
+    -- listed too, so its bonus can still be removed
+    local works, seen = {}, {}
+    res = getResourceFromName("work_core")
+    if res and getResourceState(res) == "running" then
+        for id, w in pairs(exports.work_core:getWorks() or {}) do
+            works[#works + 1] = { id = id, name = w.name or id }
+            seen[id] = true
+        end
+    end
+    for _, wk in ipairs(weeks) do
+        for id in pairs(wk.works) do
+            if not seen[id] then
+                works[#works + 1] = { id = id, name = id, missing = true }
+                seen[id] = true
+            end
+        end
+    end
+    table.sort(works, function(a, b) return tostring(a.name) < tostring(b.name) end)
+
     local trials = {}
     res = getResourceFromName("v_timetrial")
     if res and getResourceState(res) == "running" then
@@ -37,7 +57,7 @@ local function overview()
         end
     end
     return {
-        weeks = weeks, jobs = jobs, communityJobs = communityJobs, trials = trials, nextChange = formatUtc(weekStartAt(1)),
+        weeks = weeks, jobs = jobs, communityJobs = communityJobs, works = works, trials = trials, nextChange = formatUtc(weekStartAt(1)),
         multipliers = WEEKLY.MULTIPLIERS, period = WEEKLY.LOGIN_BONUS_PERIOD,
         maxMoney = WEEKLY.LOGIN_MAX_MONEY, maxXp = WEEKLY.LOGIN_MAX_XP,
     }

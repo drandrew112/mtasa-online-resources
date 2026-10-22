@@ -74,5 +74,8 @@
   "v_mail.updates.timetrial": "A hét time trialje",
   "v_mail.updates.week": "Ezen a héten ({from} - {to})",
   "v_mail.updates.x_money": "{x}x pénz",
-  "v_mail.updates.x_xp": "{x}x XP"
+  "v_mail.updates.x_xp": "{x}x XP",
+  "v_mail.updates.bonus_official": "Hivatalos Job bónuszok",
+  "v_mail.updates.bonus_community": "Közösségi Job bónuszok",
+  "v_mail.updates.bonus_work": "Munka bónuszok"
 }

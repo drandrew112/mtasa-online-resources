@@ -1,13 +1,15 @@
 -- Week resolution, application to the other resources and the change timer.
 --
 -- A week's data:
---   { jobs = { [jobId] = { money, xp, label } }, timetrial = <index>,
---     custom = { [key] = value }, news = { title, body } }
+--   { jobs = { [jobId] = { money, xp, label } },      Jobs (race/DM; official + community)
+--     works = { [workId] = { money, xp, label } },    work_core works
+--     timetrial = <index>, custom = { [key] = value }, news = { title, body } }
 -- A week without its own row inherits the latest earlier row (news excluded).
 
 SCHED = {}
 
 local currentWeek = nil
+local lastApplied = nil -- JSON of the data last pushed by SCHED.apply
 
 local function copy(v)
     if type(v) ~= "table" then return v end
@@ -18,7 +20,7 @@ end
 SCHED.copy = copy
 
 local function blank()
-    return { jobs = {}, timetrial = WEEKLY.DEFAULT_TIMETRIAL, custom = {} }
+    return { jobs = {}, works = {}, timetrial = WEEKLY.DEFAULT_TIMETRIAL, custom = {} }
 end
 
 -- -> data (a copy), inherited (bool), sourceWeek|nil
@@ -26,7 +28,7 @@ function SCHED.resolve(ws)
     local own = STORE.get(ws)
     if own then
         local d = copy(own)
-        d.jobs, d.custom = d.jobs or {}, d.custom or {}
+        d.jobs, d.works, d.custom = d.jobs or {}, d.works or {}, d.custom or {}
         return d, false, ws
     end
     local src
@@ -34,7 +36,7 @@ function SCHED.resolve(ws)
         if s < ws then src = s else break end
     end
     local d = src and copy(STORE.get(src)) or blank()
-    d.jobs, d.custom = d.jobs or {}, d.custom or {}
+    d.jobs, d.works, d.custom = d.jobs or {}, d.works or {}, d.custom or {}
     d.news = nil
     return d, true, src
 end
@@ -46,7 +48,7 @@ local function running(name)
     return res and getResourceState(res) == "running"
 end
 
--- Pushes the current week to v_jobmanager / v_timetrial.
+-- Pushes the current week to v_jobmanager / work_core / v_timetrial.
 function SCHED.apply()
     local ws = SCHED.currentWeek()
     local data = SCHED.resolve(ws)
@@ -58,10 +60,18 @@ function SCHED.apply()
             jm:jobmanagerSetMultiplier(jobId, m.money, m.xp, m.label)
         end
     end
+    if running("work_core") then
+        local wc = exports.work_core
+        wc:clearWorkMultipliers()
+        for workId, m in pairs(data.works) do
+            wc:setWorkMultiplier(workId, m.money, m.xp, m.label)
+        end
+    end
     if running("v_timetrial") and data.timetrial then
         exports.v_timetrial:setActiveTimetrial(data.timetrial)
     end
 
+    lastApplied = toJSON(data, true)
     triggerEvent("onWeeklyChanged", resourceRoot, ws, copy(data))
 end
 
@@ -72,6 +82,7 @@ function SCHED.check()
     if ws == currentWeek then return false end
     local first = currentWeek == nil
     currentWeek = ws
+    SCHED.maintain()
     SCHED.apply()
     if not first then
         outputServerLog("[v_weekly] new week started: " .. formatUtc(ws))
@@ -96,7 +107,7 @@ function SCHED.edit(offset, fn, by)
     local data = STORE.get(ws)
     if not data then data = SCHED.resolve(ws) end -- seed from the inherited week
     data = copy(data)
-    data.jobs, data.custom = data.jobs or {}, data.custom or {}
+    data.jobs, data.works, data.custom = data.jobs or {}, data.works or {}, data.custom or {}
     local ok, err = fn(data)
     if ok == false then return false, err or "rejected" end
     STORE.set(ws, data, by)
@@ -110,8 +121,33 @@ function SCHED.clear(offset, by)
     local ws = weekStartAt(offset)
     if not STORE.get(ws) then return true end
     STORE.delete(ws)
-    if ws == SCHED.currentWeek() then SCHED.apply() end
+    if ws == SCHED.currentWeek() then
+        SCHED.maintain() -- the running week gets a fresh row inherited from the previous one
+        SCHED.apply()
+    end
     return true
+end
+
+--------------------------------------------------------------------------------
+-- table maintenance (see server/storage.lua)
+--------------------------------------------------------------------------------
+
+-- The running week always has its own row; the oldest rows are pruned.
+function SCHED.maintain()
+    local ws = SCHED.currentWeek()
+    if not STORE.get(ws) then
+        local d = SCHED.resolve(ws)
+        if STORE.seed(ws, d) then
+            outputServerLog("[v_weekly] weekly_schedule: row of the week " .. formatUtc(ws) .. " created")
+        end
+    end
+    STORE.prune(weekStartAt(-WEEKLY.KEEP_WEEKS, ws + 3600), ws)
+end
+
+-- another instance changed the table: the running week may have changed too
+local function synced()
+    local json = toJSON(SCHED.resolve(SCHED.currentWeek()), true)
+    if json ~= lastApplied then SCHED.apply() end
 end
 
 --------------------------------------------------------------------------------
@@ -129,6 +165,7 @@ local function boot()
     killTimer(bootTimer)
     SCHED.check()
     setTimer(SCHED.check, WEEKLY.CHECK_INTERVAL, 0)
+    setTimer(function() STORE.sync(synced) end, WEEKLY.SYNC_INTERVAL, 0)
     outputServerLog("[v_weekly] ready, week of " .. formatUtc(SCHED.currentWeek()))
 end
 
@@ -139,7 +176,7 @@ end)
 -- the consumers lose their runtime state when restarted
 addEventHandler("onResourceStart", root, function(res)
     local name = getResourceName(res)
-    if (name == "v_jobmanager" or name == "v_timetrial") and currentWeek then
+    if (name == "v_jobmanager" or name == "v_timetrial" or name == "work_core") and currentWeek then
         setTimer(SCHED.apply, 1000, 1)
     end
 end)

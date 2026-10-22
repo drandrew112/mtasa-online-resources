@@ -66,5 +66,7 @@
   "work_core.vehicles.vehicle_spawn_point_is_blocked": "A jármű spawn pontja el van torlaszolva.",
   "work_core.vehicles.you_are_not_in_work_vehicle": "Nem vagy munkajárműben.",
   "work_core.vehicles.you_must_be_on_duty_to": "Munkajármű igényléséhez szolgálatban kell lenned.",
-  "work_core.vehicles.your_current_work_vehicle_is_still": "A jelenlegi munkajárműved még használatban van."
+  "work_core.vehicles.your_current_work_vehicle_is_still": "A jelenlegi munkajárműved még használatban van.",
+  "work_core.payment.weekly_bonus": "Heti bónusz ({mult})",
+  "work_core.levels.xp_bonus": "+{amount|int} XP ({mult})"
 }

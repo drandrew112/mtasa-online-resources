@@ -51,5 +51,8 @@
   "v_weekly.panel.xp": "XP {xp}",
   "v_weekly.panel.xp_2": "{xp|int} XP",
   "v_weekly.period.day": "Naponta",
-  "v_weekly.period.week": "Hetente"
+  "v_weekly.period.week": "Hetente",
+  "v_weekly.category.official": "Hivatalos Jobok",
+  "v_weekly.category.community": "Közösségi Jobok",
+  "v_weekly.category.work": "Munkák"
 }

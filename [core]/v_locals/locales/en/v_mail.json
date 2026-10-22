@@ -74,5 +74,8 @@
   "v_mail.updates.timetrial": "Time trial of the week",
   "v_mail.updates.week": "This week ({from} - {to})",
   "v_mail.updates.x_money": "{x}x money",
-  "v_mail.updates.x_xp": "{x}x XP"
+  "v_mail.updates.x_xp": "{x}x XP",
+  "v_mail.updates.bonus_official": "Official Job bonuses",
+  "v_mail.updates.bonus_community": "Community Job bonuses",
+  "v_mail.updates.bonus_work": "Work bonuses"
 }

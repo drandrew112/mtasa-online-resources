@@ -28,7 +28,9 @@ end
 
 -- Everything that is "weekly" for a week, ready to display:
 -- { weekStart, from, to, news = {title, body}|nil, loginBonus = {money, xp}|nil,
---   jobs = { {id, name, money, xp, label}, ... }, timetrial = {name, time, reward}|nil }
+--   jobs = { {id, name, money, xp, label, community}, ... }, works = { {id, name, money, xp}, ... },
+--   bonuses = { { id = "official"|"community"|"work", items = {...} }, ... }  (non-empty categories),
+--   bonusCount, timetrial = {name, time, reward}|nil }
 -- offset: weeks from now (default 0 = running week)
 function getWeeklyInfo(offset)
     return PANEL.payload(weekStartAt(tonumber(offset) or 0))
@@ -45,6 +47,14 @@ function getJobMultiplier(jobId)
     local m = d.jobs[jobId]
     if not m then return 1, 1, false end
     return m.money, m.xp, m.label
+end
+
+-- -> money, xp, label|false  (running week; work_core works)
+function getWorkMultiplier(workId)
+    local d = SCHED.resolve(SCHED.currentWeek())
+    local m = d.works[workId]
+    if not m then return 1, 1, false end
+    return m.money, m.xp, m.label or false
 end
 
 function getActiveTimetrial()
@@ -94,6 +104,33 @@ function setJobMultiplier(offset, jobId, money, xp, label)
             d.jobs[jobId] = { money = money, xp = xp, label = label }
         end
     end, caller())
+end
+
+-- Multiplier of a work_core work (payWork money / giveWorkXp XP). Same values
+-- as the Jobs; 1 and 1 removes the entry. label: optional receipt text (work_core
+-- shows "Weekly bonus (2x)" without one).
+function setWorkMultiplier(offset, workId, money, xp, label)
+    return SCHED.edit(offset, function(d)
+        if type(workId) ~= "string" or workId == "" then return false, "bad work id" end
+        money, xp = tonumber(money) or 1, tonumber(xp) or 1
+        if not allowedMultiplier(money) or not allowedMultiplier(xp) then
+            return false, "multiplier must be one of the allowed values"
+        end
+        if money == 1 and xp == 1 then
+            d.works[workId] = nil
+        else
+            d.works[workId] = { money = money, xp = xp,
+                label = (type(label) == "string" and label ~= "") and label:sub(1, 40) or nil }
+        end
+    end, caller())
+end
+
+function clearWorkMultiplier(offset, workId)
+    return SCHED.edit(offset, function(d) d.works[workId] = nil end, caller())
+end
+
+function clearWorkMultipliers(offset)
+    return SCHED.edit(offset, function(d) d.works = {} end, caller())
 end
 
 -- Login bonus paid to every player who logs in (see server/login.lua).
@@ -151,11 +188,11 @@ function setWeekNews(offset, title, body)
     end, caller())
 end
 
--- replaces the whole week: { jobs, timetrial, custom, news }
+-- replaces the whole week: { jobs, works, timetrial, custom, news, loginBonus }
 function setWeek(offset, data)
     if type(data) ~= "table" then return false, "bad data" end
     return SCHED.edit(offset, function(d)
-        d.jobs, d.custom, d.news = {}, {}, nil
+        d.jobs, d.works, d.custom, d.news = {}, {}, {}, nil
         d.timetrial = tonumber(data.timetrial) or d.timetrial
         for jobId, m in pairs(type(data.jobs) == "table" and data.jobs or {}) do
             if type(jobId) == "string" and type(m) == "table" then
@@ -167,6 +204,17 @@ function setWeek(offset, data)
                         money = money, xp = xp,
                         label = type(m.label) == "string" and m.label:sub(1, 40) or defaultLabel(money, xp),
                     }
+                end
+            end
+        end
+        for workId, m in pairs(type(data.works) == "table" and data.works or {}) do
+            if type(workId) == "string" and type(m) == "table" then
+                local money, xp = tonumber(m.money) or 1, tonumber(m.xp) or 1
+                if not allowedMultiplier(money) then money = 1 end
+                if not allowedMultiplier(xp) then xp = 1 end
+                if money > 1 or xp > 1 then
+                    d.works[workId] = { money = money, xp = xp,
+                        label = type(m.label) == "string" and m.label ~= "" and m.label:sub(1, 40) or nil }
                 end
             end
         end

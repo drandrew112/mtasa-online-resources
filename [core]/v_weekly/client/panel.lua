@@ -49,7 +49,10 @@ function drawPanel()
         newsH = ui(20) + fontH + dxGetFontHeight(ui(1.2), "default") * 5 + ui(16)
         h = h + newsH
     end
-    h = h + ui(22) + math.max(1, #d.jobs) * rowH + ui(14)
+    local bonuses = d.bonuses or {}
+    h = h + ui(22) + ui(14)
+    if #bonuses == 0 then h = h + rowH end
+    for _, c in ipairs(bonuses) do h = h + ui(22) + #c.items * rowH end
     if d.loginBonus then h = h + ui(22) + rowH + ui(14) end
     if d.timetrial then h = h + ui(22) + rowH + ui(14) end
 
@@ -77,13 +80,16 @@ function drawPanel()
 
     dxDrawText(L("v_weekly.panel.bonuses"), x + pad, cy, x + w - pad, cy + ui(18), COL.head, ui(1.1), "default-bold")
     cy = cy + ui(22)
-    if #d.jobs == 0 then
+    if #bonuses == 0 then
         dxDrawText(L("v_weekly.panel.no_active_bonuses_this_week"), x + pad, cy, x + w - pad, cy + rowH, COL.dim, ui(1.2), "default")
         cy = cy + rowH
-    else
-        for _, j in ipairs(d.jobs) do
-            local name = j.community and L("v_weekly.panel.community_job", { name = j.name }) or j.name
-            dxDrawText(name, x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold", "left", "top", true)
+    end
+    -- one block per category: Official Jobs, Community Jobs, Work
+    for _, c in ipairs(bonuses) do
+        dxDrawText(L("v_weekly.category." .. c.id), x + pad, cy, x + w - pad, cy + ui(20), COL.dim, ui(1.0), "default-bold")
+        cy = cy + ui(22)
+        for _, j in ipairs(c.items) do
+            dxDrawText(j.name, x + pad + ui(10), cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold", "left", "top", true)
             dxDrawText(L("v_weekly.panel.money", { money = fmt(j.money) }), x + w * 0.5, cy, x + w * 0.82, cy + rowH, COL.money, ui(1.2), "default-bold", "right")
             dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.82, cy, x + w - pad, cy + rowH, COL.xp, ui(1.2), "default-bold", "right")
             cy = cy + rowH

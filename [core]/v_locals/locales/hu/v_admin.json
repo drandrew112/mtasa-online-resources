@@ -544,5 +544,10 @@
   "v_admin.weekly.community_multipliers": "Közösségi szorzók",
   "v_admin.weekly.created_by": "Készítette",
   "v_admin.weekly.community_hint": "A Job creatorban publikált, játékosok által készített pályák, a hivatalosaktól külön.",
-  "v_admin.weekly.no_community_jobs": "Nincs publikált közösségi job."
+  "v_admin.weekly.no_community_jobs": "Nincs publikált közösségi job.",
+  "v_admin.weekly.bonuses": "Bónuszok",
+  "v_admin.weekly.work": "MUNKA",
+  "v_admin.weekly.not_registered": "{name} (nincs regisztrálva)",
+  "v_admin.weekly.work_hint": "A work_core munkái. A pénzszorzó a munka kifizetését szorozza (külön tétel a nyugtán), az XP-szorzó a munka XP-t.",
+  "v_admin.weekly.no_works": "A work_core-ban nincs regisztrált munka."
 }

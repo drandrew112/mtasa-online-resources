@@ -51,5 +51,8 @@
   "v_weekly.panel.xp": "XP {xp}",
   "v_weekly.panel.xp_2": "{xp|int} XP",
   "v_weekly.period.day": "day",
-  "v_weekly.period.week": "week"
+  "v_weekly.period.week": "week",
+  "v_weekly.category.official": "Official Jobs",
+  "v_weekly.category.community": "Community Jobs",
+  "v_weekly.category.work": "Work"
 }

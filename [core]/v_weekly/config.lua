@@ -21,7 +21,14 @@ WEEKLY = {
     -- how often the schedule timer checks for a new week (ms)
     CHECK_INTERVAL = 30000,
 
-    -- allowed Job money / XP multipliers (1 = no bonus)
+    -- how often the weekly_schedule table is re-read, so edits made on another
+    -- server instance (or in the database) reach this one (ms)
+    SYNC_INTERVAL = 30000,
+
+    -- weeks of history kept in weekly_schedule (older rows are deleted)
+    KEEP_WEEKS = 26,
+
+    -- allowed Job / Work money / XP multipliers (1 = no bonus)
     MULTIPLIERS = { 1, 2, 3 },
 
     -- login bonus is paid once per "day" (UTC calendar day) or once per "week"

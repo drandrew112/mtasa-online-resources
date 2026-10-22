@@ -74,11 +74,17 @@ PAGES.defs.home = {
         local wx, wy, ww, wh = at(1, 3)
         local wk = Menu.data.weekly
         local best = 0
-        for _, j in ipairs(wk and wk.jobs or {}) do best = math.max(best, tonumber(j.money) or 0, tonumber(j.xp) or 0) end
+        local count = 0
+        for _, c in ipairs(wk and wk.bonuses or {}) do
+            for _, j in ipairs(c.items) do
+                count = count + 1
+                best = math.max(best, tonumber(j.money) or 0, tonumber(j.xp) or 0)
+            end
+        end
         tile("page", "home_weekly", wx, wy, ww, wh, L("acc_menu.home.weekly"), nil, function(cx, cy, cw, ch)
             if best > 1 then
                 bigNumber(("%gx"):format(best), cx, cy + ch - S(78), cw, C.money)
-                text(L("acc_menu.home.weekly_bonuses", { count = #wk.jobs }), cx, cy + ch - S(28), cw, S(26), C.dim, 0.9, FONT.row)
+                text(L("acc_menu.home.weekly_bonuses", { count = count }), cx, cy + ch - S(28), cw, S(26), C.dim, 0.9, FONT.row)
             else
                 text(L("acc_menu.home.weekly_none"), cx, cy + ch - S(28), cw, S(26), C.dim, 0.9, FONT.row)
             end
@@ -170,16 +176,25 @@ VIEWS.weekly = {
         yy = yy + S(40)
         heading(L("acc_menu.weekly.bonuses"), cx, yy, cw)
         yy = yy + S(32)
-        if #(wk.jobs or {}) == 0 then
+        local bonuses = wk.bonuses or {}
+        if #bonuses == 0 then
             text(L("acc_menu.home.weekly_none"), cx, yy, cw, S(26), C.dim)
             yy = yy + S(30)
         end
-        for i, j in ipairs(wk.jobs or {}) do
-            row("view", "wk_" .. i, cx, yy, cw, S(34), {})
-            text(j.name, cx + S(14), yy, cw * 0.5, S(34), C.white, 1.0, FONT.rowB)
-            text(L("acc_menu.weekly.money", { money = ("%g"):format(tonumber(j.money) or 1) }), cx + cw * 0.5, yy, cw * 0.25, S(34), C.money, 1.0, FONT.rowB, "right")
-            text(L("acc_menu.weekly.xp", { xp = ("%g"):format(tonumber(j.xp) or 1) }), cx + cw * 0.75, yy, cw * 0.25 - S(14), S(34), C.xp, 1.0, FONT.rowB, "right")
-            yy = yy + S(38)
+        -- one block per category: Official Jobs, Community Jobs, Work
+        local n = 0
+        for _, c in ipairs(bonuses) do
+            text(L("v_weekly.category." .. c.id), cx, yy, cw, S(28), C.dim, 0.95, FONT.rowB)
+            yy = yy + S(30)
+            for _, j in ipairs(c.items) do
+                n = n + 1
+                row("view", "wk_" .. n, cx, yy, cw, S(34), {})
+                text(j.name, cx + S(14), yy, cw * 0.5, S(34), C.white, 1.0, FONT.rowB)
+                text(L("acc_menu.weekly.money", { money = ("%g"):format(tonumber(j.money) or 1) }), cx + cw * 0.5, yy, cw * 0.25, S(34), C.money, 1.0, FONT.rowB, "right")
+                text(L("acc_menu.weekly.xp", { xp = ("%g"):format(tonumber(j.xp) or 1) }), cx + cw * 0.75, yy, cw * 0.25 - S(14), S(34), C.xp, 1.0, FONT.rowB, "right")
+                yy = yy + S(38)
+            end
+            yy = yy + S(6)
         end
         local b = wk.loginBonus
         if b then

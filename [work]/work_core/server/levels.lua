@@ -165,15 +165,24 @@ end
 
 -- giveWorkXp(player, workId, amount) -> true, newLevel | false, errorText
 -- Only positive amounts (use setPlayerWorkXp to lower). XP past the max level is kept but does
--- nothing more.
+-- nothing more. The XP multiplier of the work (setWorkMultiplier, set by v_weekly) applies.
 function giveWorkXp(player, workId, amount)
     amount = tonumber(amount)
     if not Works[workId] then return false, "unknown work" end
     if not amount or amount < 1 then return false, "bad amount" end
     if not isLogged(player) or not progress[player] then return false, "player not logged in" end
     amount = math.min(math.floor(amount), WORK.MAX_XP_PER_GRANT)
+    -- weekly work multiplier (server/multipliers.lua)
+    local _, mXp = getWorkMultiplier(workId)
+    local text
+    if mXp ~= 1 then
+        amount = math.max(1, math.floor(amount * mXp + 0.5))
+        text = L.msg("work_core.levels.xp_bonus", { amount = amount, mult = formatMultiplier(mXp) })
+    else
+        text = L.msg("work_core.levels.xp", { amount = amount })
+    end
     local total = (progress[player][workId] or 0) + amount
-    notifyPlayer(player, Works[workId].name, L.msg("work_core.levels.xp", { amount = amount }), true)
+    notifyPlayer(player, Works[workId].name, text, true)
     applyXp(player, workId, total)
     triggerEvent("onPlayerWorkXpGain", player, workId, amount, total)
     return true, getPlayerWorkLevel(player, workId)

@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="Weekly" version="1.0.0" type="script"
-          description="Weekly schedule (Tue 10:00 UTC): Job multipliers, active time trial, news panel" />
+          description="Weekly schedule (Tue 10:00 UTC): Job and Work multipliers, active time trial, news panel" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -28,6 +28,7 @@
     <export function="getWeeklyInfo" type="server" />
     <export function="getNextWeekChange" type="server" />
     <export function="getJobMultiplier" type="server" />
+    <export function="getWorkMultiplier" type="server" />
     <export function="getActiveTimetrial" type="server" />
     <export function="isTimetrialActive" type="server" />
     <export function="getWeekValue" type="server" />
@@ -36,6 +37,9 @@
     <export function="setJobMultiplier" type="server" />
     <export function="clearJobMultiplier" type="server" />
     <export function="clearJobMultipliers" type="server" />
+    <export function="setWorkMultiplier" type="server" />
+    <export function="clearWorkMultiplier" type="server" />
+    <export function="clearWorkMultipliers" type="server" />
     <export function="setLoginBonus" type="server" />
     <export function="getLoginBonus" type="server" />
     <export function="setActiveTimetrial" type="server" />

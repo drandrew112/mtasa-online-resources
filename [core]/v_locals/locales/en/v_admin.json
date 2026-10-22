@@ -544,5 +544,10 @@
   "v_admin.weekly.community_multipliers": "Community multipliers",
   "v_admin.weekly.created_by": "Created by",
   "v_admin.weekly.community_hint": "Player-made games published in the Job creator, listed apart from the official games.",
-  "v_admin.weekly.no_community_jobs": "There are no published community jobs."
+  "v_admin.weekly.no_community_jobs": "There are no published community jobs.",
+  "v_admin.weekly.bonuses": "Bonuses",
+  "v_admin.weekly.work": "WORK",
+  "v_admin.weekly.not_registered": "{name} (not registered)",
+  "v_admin.weekly.work_hint": "Works of work_core. Money multiplies the work payment (an extra item on the receipt), XP the work XP.",
+  "v_admin.weekly.no_works": "work_core has no registered works."
 }

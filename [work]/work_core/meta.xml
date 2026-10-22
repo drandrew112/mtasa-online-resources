@@ -15,6 +15,7 @@
     <script src="server/markers.lua"  type="server" />
     <script src="server/vehicles.lua" type="server" />
     <script src="server/requests.lua" type="server" />
+    <script src="server/multipliers.lua" type="server" />
     <script src="server/payment.lua"  type="server" />
 
     <!-- ================= CLIENT ================= -->
@@ -53,6 +54,12 @@
     <export function="getWorkVehicleOwner"     type="server" />
     <!-- payment -->
     <export function="payWork"                 type="server" />
+    <!-- multipliers (runtime; set by v_weekly) -->
+    <export function="setWorkMultiplier"       type="server" />
+    <export function="getWorkMultiplier"       type="server" />
+    <export function="getWorkMultipliers"      type="server" />
+    <export function="clearWorkMultiplier"     type="server" />
+    <export function="clearWorkMultipliers"    type="server" />
     <!-- levels -->
     <export function="giveWorkXp"              type="server" />
     <export function="getPlayerWorkLevel"      type="server" />

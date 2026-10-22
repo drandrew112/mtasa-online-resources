@@ -2,14 +2,14 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- ============================================================
 --  v_admin / client/panel/weekly.lua
 --  Weekly page (was the /weekly window of v_weekly): the upcoming weeks
---  on the left, Job multipliers / time trial / login bonus / weekly news
---  of the chosen week on the right. Every change goes to the server
+--  on the left, Bonuses (Official Jobs / Community Jobs / Work multipliers),
+--  time trial, login bonus and weekly news of the chosen week on the right. Every change goes to the server
 --  (server/pages/weekly.lua), which answers with a fresh overview.
 -- ============================================================
 
 local S, F, C = AP.S, AP.F, AP.C
 
-local st = { data = nil, week = 1, tab = "jobs", loadedWeek = nil }
+local st = { data = nil, week = 1, tab = "bonuses", sub = "official", loadedWeek = nil }
 
 local function curWeek() return st.data and st.data.weeks[st.week] end
 
@@ -52,16 +52,18 @@ end
 -- tabs
 --------------------------------------------------------------------------------
 
--- Multiplier table of one game list: official games (data.jobs) or the
--- player-made community games (data.communityJobs, with their creator).
-local function drawJobList(id, list, empty, community, x, y, w, h)
+-- Multiplier table of one list: official games (data.jobs), the player-made
+-- community games (data.communityJobs, with their creator) or the work_core
+-- works (data.works, kind = "work").
+local function drawJobList(id, list, empty, community, x, y, w, h, kind)
     local data, week = st.data, curWeek()
     if #list == 0 then
         return AP.text(empty, x, y, w, S(40), C.dim, 1.0)
     end
     local bw, bh = S(54), S(30)
     local cols = {
-        { key = "name", label = L("v_weekly.admin.job"), bold = true },
+        { key = "name", label = kind == "work" and L("v_admin.weekly.work") or L("v_weekly.admin.job"), bold = true,
+          text = function(j) return j.missing and L("v_admin.weekly.not_registered", { name = j.name }) or j.name end },
         { key = "money", label = L("v_weekly.admin.money"), w = (bw + S(6)) * #data.multipliers + S(20),
           text = function() return "" end },
         { key = "xp", label = L("v_weekly.admin.xp"), w = (bw + S(6)) * #data.multipliers + S(20),
@@ -82,13 +84,14 @@ local function drawJobList(id, list, empty, community, x, y, w, h)
         local j = list[first + i]
         if not j then break end
         local ry = ly + (i - 1) * rowH + (rowH - S(4) - bh) / 2
-        local m = week.jobs[j.id]
+        local action = kind or "job"
+        local m = (action == "work" and (week.works or {}) or week.jobs)[j.id]
         local curMoney, curXp = m and m.money or 1, m and m.xp or 1
         for k, mult in ipairs(data.multipliers) do
             AP.button(moneyX + S(10) + (k - 1) * (bw + S(6)), ry, bw, bh, mult .. "x",
-                function() edit("job", j.id, mult, curXp) end, curMoney == mult and "active")
+                function() edit(action, j.id, mult, curXp) end, curMoney == mult and "active")
             AP.button(xpX + S(10) + (k - 1) * (bw + S(6)), ry, bw, bh, mult .. "x",
-                function() edit("job", j.id, curMoney, mult) end, curXp == mult and "active")
+                function() edit(action, j.id, curMoney, mult) end, curXp == mult and "active")
         end
     end
 end
@@ -100,6 +103,24 @@ end
 local function drawCommunityJobs(x, y, w, h)
     AP.text(L("v_admin.weekly.community_hint"), x, y, w, S(30), C.dim, 0.85)
     drawJobList("wk_cjobs", st.data.communityJobs or {}, L("v_admin.weekly.no_community_jobs"), true, x, y + S(36), w, h - S(36))
+end
+
+local function drawWorks(x, y, w, h)
+    AP.text(L("v_admin.weekly.work_hint"), x, y, w, S(30), C.dim, 0.85)
+    drawJobList("wk_works", st.data.works or {}, L("v_admin.weekly.no_works"), false, x, y + S(36), w, h - S(36), "work")
+end
+
+-- Bonuses: Official Jobs / Community Jobs / Work submenu
+local SUB = { official = drawJobs, community = drawCommunityJobs, work = drawWorks }
+
+local function drawBonuses(x, y, w, h)
+    local items = {
+        { id = "official", label = L("v_weekly.category.official") },
+        { id = "community", label = L("v_weekly.category.community") },
+        { id = "work", label = L("v_weekly.category.work") },
+    }
+    local th = AP.tabs(x, y, w, items, st.sub, function(id) st.sub = id end)
+    SUB[st.sub](x, y + th, w, h - th)
 end
 
 local function drawTrial(x, y, w, h)
@@ -149,7 +170,7 @@ local function drawNews(x, y, w, h)
     end, "active")
 end
 
-local DRAW = { jobs = drawJobs, community = drawCommunityJobs, trial = drawTrial, login = drawLogin, news = drawNews }
+local DRAW = { bonuses = drawBonuses, trial = drawTrial, login = drawLogin, news = drawNews }
 
 --------------------------------------------------------------------------------
 -- page
@@ -191,8 +212,7 @@ AP.addPage({
         -- tabs + content
         local cx, cw = x + lw + S(24), w - lw - S(24)
         local items = {
-            { id = "jobs", label = L("v_admin.weekly.official_multipliers") },
-            { id = "community", label = L("v_admin.weekly.community_multipliers") },
+            { id = "bonuses", label = L("v_admin.weekly.bonuses") },
             { id = "trial", label = L("v_weekly.admin.time_trial") },
             { id = "login", label = L("v_weekly.admin.login_bonus") },
             { id = "news", label = L("v_weekly.admin.news") },

@@ -26,6 +26,21 @@ local function jobNames()
     return names, community
 end
 
+-- -> names[workId] of the registered work_core works
+local function workNames()
+    local names = {}
+    local res = getResourceFromName("work_core")
+    if res and getResourceState(res) == "running" then
+        local ok, list = pcall(function() return exports.work_core:getWorks() end)
+        if ok and type(list) == "table" then
+            for id, w in pairs(list) do names[id] = w.name end
+        end
+    end
+    return names
+end
+
+local function byName(a, b) return tostring(a.name) < tostring(b.name) end
+
 local function timetrialInfo(index)
     local res = getResourceFromName("v_timetrial")
     if not index or not res or getResourceState(res) ~= "running" then return nil end
@@ -48,6 +63,25 @@ function PANEL.payload(ws)
         if a.community ~= b.community then return not a.community end
         return a.name < b.name
     end)
+
+    local wnames = workNames()
+    local works = {}
+    for workId, m in pairs(data.works) do
+        works[#works + 1] = { id = workId, name = wnames[workId] or workId, money = m.money, xp = m.xp, label = m.label }
+    end
+    table.sort(works, byName)
+
+    -- the bonuses by category, empty categories left out:
+    -- { { id = "official" | "community" | "work", items = { {id, name, money, xp}, ... } }, ... }
+    local official, community = {}, {}
+    for _, j in ipairs(jobs) do
+        local list = j.community and community or official
+        list[#list + 1] = j
+    end
+    local bonuses = {}
+    for _, c in ipairs({ { "official", official }, { "community", community }, { "work", works } }) do
+        if #c[2] > 0 then bonuses[#bonuses + 1] = { id = c[1], items = c[2] } end
+    end
     return {
         weekStart = ws,
         from = formatUtc(ws),
@@ -56,7 +90,10 @@ function PANEL.payload(ws)
         loginBonus = data.loginBonus and {
             money = data.loginBonus.money, xp = data.loginBonus.xp, period = WEEKLY.LOGIN_BONUS_PERIOD,
         } or nil,
-        jobs = jobs,
+        jobs = jobs,          -- official + community Jobs (community flag), kept for older readers
+        works = works,
+        bonuses = bonuses,
+        bonusCount = #jobs + #works,
         timetrial = timetrialInfo(data.timetrial),
     }
 end

@@ -49,16 +49,22 @@ local function build(w)
 
     text(L("v_weekly.panel.bonuses"), pad, y, w - pad, COL.head, ui(1.1), "default-bold", "left", ui(18))
     y = y + ui(22)
-    if #d.jobs == 0 then
+    local bonuses = d.bonuses or {}
+    if #bonuses == 0 then
         text(L("v_weekly.panel.no_active_bonuses_this_week"), pad, y, w - pad, COL.dim, ui(1.2), "default", "left", rowH)
         y = y + rowH
-    else
-        for _, j in ipairs(d.jobs) do
-            text(j.name, pad, y, w * 0.5, COL.text, ui(1.2), "default-bold", "left", rowH)
+    end
+    -- one block per category: Official Jobs, Community Jobs, Work
+    for _, c in ipairs(bonuses) do
+        text(L("v_weekly.category." .. c.id), pad, y, w - pad, COL.dim, ui(1.0), "default-bold", "left", ui(20))
+        y = y + ui(22)
+        for _, j in ipairs(c.items) do
+            text(j.name, pad + ui(10), y, w * 0.5, COL.text, ui(1.2), "default-bold", "left", rowH)
             text(L("v_weekly.panel.money", { money = fmt(j.money) }), w * 0.5, y, w * 0.82, COL.money, ui(1.2), "default-bold", "right", rowH)
             text(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), w * 0.82, y, w - pad, COL.xp, ui(1.2), "default-bold", "right", rowH)
             y = y + rowH
         end
+        y = y + ui(4)
     end
     y = y + ui(14)
 

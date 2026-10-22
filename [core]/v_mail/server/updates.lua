@@ -130,7 +130,7 @@ local function collect(run)
     if week then
         local n = week.news
         week.hasNews = type(n) == "table" and (str(n.title) or str(n.body)) and true or false
-        week.empty = not week.hasNews and #(week.jobs or {}) == 0 and not week.loginBonus and not week.timetrial
+        week.empty = not week.hasNews and (tonumber(week.bonusCount) or #(week.jobs or {})) == 0 and not week.loginBonus and not week.timetrial
     end
     return news, week
 end
@@ -154,12 +154,13 @@ local function content(lang, run, news, week)
     if week and not week.empty then
         p[#p + 1] = { heading = T(lang, "week", { from = week.from, to = week.to }) }
         if week.hasNews then p[#p + 1] = { title = plain(week.news.title), text = plain(week.news.body) } end
-        if #(week.jobs or {}) > 0 then
+        -- one block per bonus category: Official Jobs, Community Jobs, Work
+        for _, c in ipairs(week.bonuses or {}) do
             local lines = {}
-            for _, j in ipairs(week.jobs) do
+            for _, j in ipairs(c.items) do
                 lines[#lines + 1] = "• " .. plain(j.name) .. ": " .. multipliers(lang, j.money, j.xp)
             end
-            p[#p + 1] = { title = T(lang, "jobs"), text = table.concat(lines, "\n") }
+            p[#p + 1] = { title = T(lang, "bonus_" .. c.id), text = table.concat(lines, "\n") }
         end
         local b = week.loginBonus
         if b then

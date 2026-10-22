@@ -81,6 +81,23 @@ spawn point `{ x, y, z, rot }`.
 | `getVehicleWork(vehicle)`, `getWorkVehicleOwner(vehicle)` | |
 | `payWork(player, workId, items [, reason])` → `true, total` \| `false, err` | `items`: `{ { label, amount }, ... }`, shown on the receipt in this order. The positive total is deposited via `exports.v_bank:giveBankMoney` (fails if `v_bank` is not running); a total `<= 0` is not paid but the receipt is still shown. `reason`: optional text shown under the total. `workId` only needs to resolve a name/colour for the receipt — it does not have to be the player's current work. |
 
+## Work multipliers
+
+Runtime only (never persisted). **v_weekly owns them**: it clears and sets them again on every
+week change and whenever work_core restarts, so change them through the v_weekly exports
+(`setWorkMultiplier(offset, workId, money, xp)`) or the v_admin Weekly page (Bonuses > Work).
+
+| Export | Notes |
+|---|---|
+| `setWorkMultiplier(workId, money, xp [, label])` → `bool` | Both 1 removes the entry. `label`: optional receipt text. |
+| `getWorkMultiplier(workId)` → `money, xp, label\|false` | `1, 1, false` when none. |
+| `getWorkMultipliers()` → `{ [workId] = { money, xp, label } }` | |
+| `clearWorkMultiplier(workId)` / `clearWorkMultipliers()` | |
+
+- Money: `payWork()` adds one extra receipt item `total * (money - 1)` ("Weekly bonus (2x)"),
+  only when the total of the work's own items is positive.
+- XP: `giveWorkXp()` multiplies the amount (after the `MAX_XP_PER_GRANT` cap).
+
 ## Work levels
 
 Each account has separate XP and a level for every work (levels start at 1). XP for level n+1 is

@@ -42,12 +42,21 @@ end
 --   not have to be a currently registered work (it is only used for the name/colour shown on
 --   the receipt; unknown ids fall back to the id text and the default colour). reason: optional
 --   text shown under the total (e.g. "Shift ended", "Call cancelled").
+--   A money multiplier of the work (setWorkMultiplier, set by v_weekly) adds one more item,
+--   total * (multiplier - 1), when the total is positive.
 function payWork(player, workId, items, reason)
     if not isElement(player) or getElementType(player) ~= "player" then
         return false, "bad player"
     end
     local list, total = normaliseItems(items)
     if #list == 0 then return false, "no payment items" end
+
+    -- weekly work multiplier (server/multipliers.lua): one extra item on top of the total
+    local bonus = workMultiplierItem(workId, total)
+    if bonus then
+        list[#list + 1] = bonus
+        total = total + bonus.amount
+    end
 
     if total > 0 then
         if not isResourceRunning("v_bank") then return false, "v_bank is not running" end

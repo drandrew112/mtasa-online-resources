@@ -1,7 +1,9 @@
 -- v_weekly :: database schema (also included in ../../main.sql)
+-- v_weekly creates / migrates this table by itself on start (server/storage.lua).
 --
 --   week_start  unix timestamp (UTC) of Tuesday 10:00 UTC
 --   data        JSON: { jobs = { [jobId] = { money, xp, label } },
+--                       works = { [workId] = { money, xp, label } },
 --                       timetrial = <index>, custom = { ... },
 --                       news = { title, body } }
 CREATE TABLE IF NOT EXISTS `weekly_schedule` (
