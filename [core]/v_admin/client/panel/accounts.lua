@@ -665,9 +665,11 @@ local function drawSocial(x, y, w, h)
     end
     AP.kv(x, y, w, S(58), L("v_admin.accounts.crew"), crew)
     local rows = {}
-    for i, n in ipairs(r.friends) do rows[i] = { name = n } end
+    for i, f in ipairs(r.friends) do rows[i] = type(f) == "table" and f or { name = f, side = "both" } end
     AP.table("acc_friends", x, y + S(70), w, h - S(70), {
         { key = "name", label = L("v_admin.accounts.friends", { n = #rows }) },
+        { key = "side", label = L("v_admin.accounts.friend_side"), w = S(260),
+          text = function(f) return L("v_admin.accounts.friend_side_" .. (f.side or "both")) end },
     }, rows, { rowH = S(34), onClick = function(f) AP.setField("acc_search", f.name); selectAccount(f.name) end })
 end
 
