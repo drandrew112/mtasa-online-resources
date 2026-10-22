@@ -79,7 +79,7 @@ function Peds.remove(p, reason, keepElement)
     p.removed = true
     if isElement(p.el) then
         triggerEvent("onAIPedRemoved", p.el, reason or "removed")
-        if p.syncer and isElement(p.syncer) then triggerClientEvent(p.syncer, EV_DROP, resourceRoot, p.el) end
+        if p.syncer and isElement(p.syncer) and P.ready[p.syncer] then triggerClientEvent(p.syncer, EV_DROP, resourceRoot, p.el) end
         if keepElement then
             removeElementData(p.el, "ai_peds")
         else
@@ -170,7 +170,8 @@ local function setSyncer(p, s)
     if p.syncer == s then return end
     local old = p.syncer
     p.syncer = s
-    if old and isElement(old) then triggerClientEvent(old, EV_DROP, resourceRoot, p.el) end
+    -- only clients whose scripts are loaded (EV_READY): a joining player has no handler yet
+    if old and isElement(old) and P.ready[old] then triggerClientEvent(old, EV_DROP, resourceRoot, p.el) end
     send(p)
 end
 

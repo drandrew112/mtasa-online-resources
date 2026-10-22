@@ -11,7 +11,7 @@ local S = Motor.list
 local T = AIPEDS
 local sqrt, atan2, deg, rad, sin, cos, abs, random = math.sqrt, math.atan2, math.deg, math.rad, math.sin, math.cos, math.abs, math.random
 local getTickCount = getTickCount
-local CONTROLS = { "forwards", "walk", "sprint", "fire", "aim_weapon", "enter_exit", "jump" }
+local CONTROLS = { "forwards", "walk", "sprint", "fire", "aim_weapon", "jump" }
 local ARRIVE = { walk = 0.9, run = 1.3, sprint = 1.8 }
 local TURN = { walk = 300, run = 420, sprint = 540 }   -- deg / s
 local attached = false
@@ -206,7 +206,8 @@ local function jackTarget(ped, st, now, t, tveh, d)
     if (vx * vx + vy * vy + vz * vz) * 2500 > T.JACK_MAX_SPEED ^ 2 then return false end
     setMove(ped, st, false)
     stopCombat(ped, st)
-    if setPedEnterVehicle and setPedEnterVehicle(ped, tveh, getPedOccupiedVehicleSeat(t) or 0) then
+    -- passenger = false: the driver seat, the only one GTA jacks (the target in another seat is not pulled out)
+    if getPedOccupiedVehicleSeat(t) == 0 and setPedEnterVehicle(ped, tveh, false) then
         st.jackV, st.jackEnd = tveh, now + T.JACK_TIMEOUT
         st.jackLeave = now + T.JACK_TIMEOUT + 5000   -- a late finished jack still gets out
         return true
@@ -278,34 +279,25 @@ end
 
 ------------------------------------------------------------------------ getting out
 
+-- only setPedExitVehicle: it asks the server, so every client and the server see the ped get out. The enter_exit
+-- control state would get it out on this client alone (server and the other clients keep it seated: a ped floating
+-- above the vehicle, immune to damage, that cannot be jacked). Refused (1500 ms after the last enter / exit, being
+-- jacked): tried again a moment later.
 local function exitVehicle(ped, st, now)
-    local c = st.cmd
-    if st.exitV == c.v then return end
-    st.exitV = c.v
-    st.wasInside = true
-    local done = false
-    if setPedExitVehicle then done = setPedExitVehicle(ped) end
-    if not done then
-        setPedControlState(ped, "enter_exit", true)
-        st.exitOff = now + 300
-    end
+    if now < (st.exitAt or 0) then return end
+    st.exitAt = now + (setPedExitVehicle(ped) and 3000 or 500)
 end
 
 -- sat down in the target's seat after a jack: straight out again (retried while the door / animation blocks it)
 local function leaveJacked(ped, st, now)
     if now < (st.jackOutAt or 0) then return end
-    st.jackOutAt = now + 1500
-    if not (setPedExitVehicle and setPedExitVehicle(ped)) then
-        setPedControlState(ped, "enter_exit", true)
-        st.exitOff = now + 300
-    end
+    st.jackOutAt = now + (setPedExitVehicle(ped) and 1500 or 500)
 end
 
 ------------------------------------------------------------------------ frame
 
 local function drive(ped, st, now, dt)
     if st.jumpOff and now >= st.jumpOff then st.jumpOff = nil; ctl(ped, st, "jump", false) end
-    if st.exitOff and now >= st.exitOff then st.exitOff = nil; setPedControlState(ped, "enter_exit", false) end
     local c = st.cmd
     if getPedOccupiedVehicle(ped) then
         if c.m == "exit" then exitVehicle(ped, st, now)
@@ -313,11 +305,15 @@ local function drive(ped, st, now, dt)
         return
     end
     if st.jackOutAt then st.jackV, st.jackOutAt, st.jackLeave = nil, nil, nil end
-    if st.wasInside then
-        st.wasInside = nil
-        report(ped, "exited")
-    end
     local x, y, z = getElementPosition(ped)
+    -- out here but the server still sends "exit" a second later (exit not confirmed there): tell it where
+    if c.m == "exit" then
+        if not st.exitedAt then st.exitedAt = now + 1000
+        elseif now >= st.exitedAt then
+            st.exitedAt = now + 1000
+            report(ped, "exited", { x, y, z })
+        end
+    end
     local m = c.m
     if m == "move" then
         stopCombat(ped, st)
@@ -374,7 +370,7 @@ addEventHandler(EV_CMD, resourceRoot, function(ped, cmd)
     local old = st.cmd
     st.cmd = cmd
     st.i = cmd.i or 1
-    st.stuckN, st.lx = 0, nil
+    st.stuckN, st.lx, st.exitedAt = 0, nil, nil
     if old and old.m == "combat" and (cmd.m ~= "combat" or old.t ~= cmd.t) then
         stopCombat(ped, st)
         st.burstEnd, st.meleeT0 = nil, nil

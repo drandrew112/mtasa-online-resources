@@ -4,9 +4,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
     Friends, friend requests, crews, profiles and private / crew messaging.
 
     Storage (all through v_mysql - see db.lua):
-      - Friends:        account data in the shared `accounts` table
-                        (exports.v_mysql:getAccData / setAccData, key
-                        SP.KEY_FRIENDS). Works for offline accounts too.
+      - Friends:        `friends` table, one row per friendship, so it is
+                        always stored for both accounts (offline ones too).
       - Friend requests: `friendRequests` table.
       - Crews:           `crews` table    (global, cached in memory).
       - Messages:        `messages` table (global, cached in memory) -> readable
@@ -70,14 +69,6 @@ local function getProgress(name, onlinePlayer, offlineOK)
         if h or m then playtime = SP.formatPlaytime(h, m) end
     end
     return tostring(level), tostring(playtime)
-end
-
-local function getListFor(name, key)
-    return SP.split(name and getData(name, key) or "")
-end
-
-local function setListFor(name, key, list)
-    if name then setData(name, key, SP.join(list)) end
 end
 
 local function notify(player, msg, r, g, b)
@@ -241,14 +232,14 @@ local function buildConversations(player, myName)
     return convos
 end
 
--- requests = the incoming friend requests, offlineOK = the offline accounts'
--- data was prefetched (see pushSnapshot).
-local function buildSnapshot(player, requests, offlineOK)
+-- friendList = the friends' account names, requests = the incoming friend
+-- requests, offlineOK = the offline accounts' data was prefetched (see pushSnapshot).
+local function buildSnapshot(player, friendList, requests, offlineOK)
     local myName = accName(player)
     if not myName then return nil end
 
     local friends = {}
-    for _, fn in ipairs(getListFor(myName, SP.KEY_FRIENDS)) do
+    for _, fn in ipairs(friendList) do
         friends[#friends + 1] = friendEntry(fn, offlineOK)
     end
     table.sort(friends, function(a, b)
@@ -298,9 +289,10 @@ local function buildSnapshot(player, requests, offlineOK)
     }
 end
 
--- The snapshot needs the friend requests and the data of every offline friend
--- / crew member. Both are fetched without blocking (PERF-01): the requests with
--- one async query, the offline accounts with one v_mysql prefetch, after which
+-- The snapshot needs the friends, the friend requests and the data of every
+-- offline friend / crew member. All are fetched without blocking (PERF-01): the
+-- friends first (their names feed the prefetch), then the requests with one
+-- async query and the offline accounts with one v_mysql prefetch, after which
 -- their getData reads are served from memory. A push asked for while one is in
 -- flight is folded into a single re-run when it completes.
 local snapState = {}   -- [player] = "busy" | "again"
@@ -315,35 +307,46 @@ local function pushSnapshot(player)
     if not myName then return end
     snapState[player] = "busy"
 
-    local names = {}
-    for _, fn in ipairs(getListFor(myName, SP.KEY_FRIENDS)) do names[#names + 1] = fn end
-    local myCrew = crewOf(myName)
-    if myCrew then
-        for _, mn in ipairs(myCrew.members) do names[#names + 1] = mn end
-    end
+    SPDB.getFriendsAsync(function(friendList)
+        if not isElement(player) then snapState[player] = nil return end
+        if not friendList then
+            -- the database failed: no snapshot rather than an empty friend list
+            local again = snapState[player] == "again"
+            snapState[player] = nil
+            if again then pushSnapshot(player) end
+            return
+        end
 
-    local waiting, requests, offlineOK = 2, {}, false
-    local function done()
-        waiting = waiting - 1
-        if waiting > 0 then return end
-        local again = snapState[player] == "again"
-        snapState[player] = nil
-        if not isElement(player) then return end
+        local names = {}
+        for _, fn in ipairs(friendList) do names[#names + 1] = fn end
+        local myCrew = crewOf(myName)
+        if myCrew then
+            for _, mn in ipairs(myCrew.members) do names[#names + 1] = mn end
+        end
 
-        applyCrewIdentity(player) -- keep crew name/tag/colour data in sync on every refresh
-        local snap = buildSnapshot(player, requests, offlineOK)
-        if snap then triggerClientEvent(player, "sp:push", player, snap) end
-        if again then pushSnapshot(player) end
-    end
+        local waiting, requests, offlineOK = 2, {}, false
+        local function done()
+            waiting = waiting - 1
+            if waiting > 0 then return end
+            local again = snapState[player] == "again"
+            snapState[player] = nil
+            if not isElement(player) then return end
 
-    SPDB.getRequestsForAsync(function(list)
-        requests = list
-        done()
+            applyCrewIdentity(player) -- keep crew name/tag/colour data in sync on every refresh
+            local snap = buildSnapshot(player, friendList, requests, offlineOK)
+            if snap then triggerClientEvent(player, "sp:push", player, snap) end
+            if again then pushSnapshot(player) end
+        end
+
+        SPDB.getRequestsForAsync(function(list)
+            requests = list
+            done()
+        end, myName)
+        MYSQL.prefetch(function(ok)
+            offlineOK = ok == true
+            done()
+        end, names)
     end, myName)
-    MYSQL.prefetch(function(ok)
-        offlineOK = ok == true
-        done()
-    end, names)
 end
 
 local function pushBoth(a, b)
@@ -440,7 +443,7 @@ addEventHandler("sp:friend:add", root, function(targetName)
     targetName = targetAcc
 
     local myAcc = myName
-    local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
+    local myFriends = SPDB.getFriends(myAcc)
     if SP.contains(myFriends, targetName) then
         return notify(player, L.msg("v_socialpanel.server.is_already_your_friend", { target_name = targetName }), 255, 200, 0)
     end
@@ -453,14 +456,7 @@ addEventHandler("sp:friend:add", root, function(targetName)
     local mine, mineExact = SP.contains(myIncoming, targetName)
     if mine then
         SPDB.removeRequest(mineExact, myAcc)
-        myFriends[#myFriends + 1] = targetName
-        setListFor(myAcc, SP.KEY_FRIENDS, myFriends)
-
-        local tFriends = getListFor(targetAcc, SP.KEY_FRIENDS)
-        if not SP.contains(tFriends, myName) then
-            tFriends[#tFriends + 1] = myName
-            setListFor(targetAcc, SP.KEY_FRIENDS, tFriends)
-        end
+        SPDB.addFriend(myAcc, targetAcc)
         notify(player, L.msg("v_socialpanel.server.you_are_now_friends_with", { target_name = targetName }), 0, 220, 0)
         local tp = onlinePlayerByAccount(targetName)
         notify(tp, L.msg("v_socialpanel.server.you_are_now_friends_with_2", { my_name = myName }), 0, 220, 0)
@@ -497,16 +493,7 @@ addEventHandler("sp:friend:accept", root, function(senderName)
     local senderAcc = accountByName(senderName)
     if not senderAcc then return notify(player, L.msg("v_socialpanel.server.that_account_no_longer_exists"), 255, 120, 120) end
 
-    local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
-    if not SP.contains(myFriends, senderName) then
-        myFriends[#myFriends + 1] = senderName
-        setListFor(myAcc, SP.KEY_FRIENDS, myFriends)
-    end
-    local sFriends = getListFor(senderAcc, SP.KEY_FRIENDS)
-    if not SP.contains(sFriends, myName) then
-        sFriends[#sFriends + 1] = myName
-        setListFor(senderAcc, SP.KEY_FRIENDS, sFriends)
-    end
+    SPDB.addFriend(myAcc, senderAcc)
 
     notify(player, L.msg("v_socialpanel.server.you_accepted_s_request", { sender_name = senderName }), 0, 220, 0)
     local sp = onlinePlayerByAccount(senderName)
@@ -536,16 +523,11 @@ addEventHandler("sp:friend:remove", root, function(friendName)
     if not allow(player, "action") then return slowDown(player) end
 
     local myAcc = myName
-    local myFriends = getListFor(myAcc, SP.KEY_FRIENDS)
-    local ok, exact = SP.contains(myFriends, friendName)
+    local ok, exact = SP.contains(SPDB.getFriends(myAcc), friendName)
     if not ok then return end
     friendName = exact
 
-    setListFor(myAcc, SP.KEY_FRIENDS, SP.removeValue(myFriends, friendName))
-    local fAcc = accountByName(friendName)
-    if fAcc then
-        setListFor(fAcc, SP.KEY_FRIENDS, SP.removeValue(getListFor(fAcc, SP.KEY_FRIENDS), myName))
-    end
+    SPDB.removeFriend(myAcc, friendName)
     notify(player, L.msg("v_socialpanel.server.removed_from_your_friend_list", { friend_name = friendName }), 255, 200, 0)
     local fp = onlinePlayerByAccount(friendName)
     notify(fp, L.msg("v_socialpanel.server.removed_you_from_their_friend_list", { my_name = myName }), 255, 200, 0)
@@ -575,19 +557,20 @@ addEventHandler("sp:profile:view", root, function(name)
         local online = onlinePlayerByAccount(name)
         local level, playtime = getProgress(name, online, ok == true)
         local crew = crewOf(name)
-        local myFriends = getListFor(myName, SP.KEY_FRIENDS)
-
-        triggerClientEvent(player, "sp:profile:show", player, {
-            name      = name,
-            online    = online ~= nil,
-            level     = level,
-            playtime  = playtime,
-            crew      = crew and crew.name or nil,
-            crewTag   = crew and crew.tag or nil,
-            crewColor = crew and crew.color or nil,
-            isFriend  = (SP.contains(myFriends, name)),
-            isSelf    = name:lower() == myName:lower(),
-        })
+        SPDB.getFriendsAsync(function(myFriends)
+            if not isElement(player) or accName(player) ~= myName then return end
+            triggerClientEvent(player, "sp:profile:show", player, {
+                name      = name,
+                online    = online ~= nil,
+                level     = level,
+                playtime  = playtime,
+                crew      = crew and crew.name or nil,
+                crewTag   = crew and crew.tag or nil,
+                crewColor = crew and crew.color or nil,
+                isFriend  = (SP.contains(myFriends or {}, name)),
+                isSelf    = name:lower() == myName:lower(),
+            })
+        end, myName)
     end, { name })
 end)
 
@@ -948,6 +931,7 @@ end)
 --------------------------------------------------------------------------------
 
 addEventHandler("onResourceStart", resourceRoot, function()
+    if SPDB.ensureFriendsTable() then SPDB.migrateFriends() end
     loadCrews()
     loadMessages()
     for _, player in ipairs(getElementsByType("player")) do

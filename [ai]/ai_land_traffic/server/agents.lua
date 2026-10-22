@@ -364,7 +364,13 @@ function Agents.release(ag, reason, culprit)
     setElementPosition(veh, ag.x, ag.y, ag.z + 0.6, false)
     setElementRotation(veh, rx, ry, rz)
     setElementSyncer(veh, true)
-    if isElement(ped) then setElementSyncer(ped, true) end
+    if isElement(ped) then
+        -- the server never moves a seated ped with its vehicle: it is still at the spawn point. MTA picks the ped's
+        -- syncer by this position, so a stale one far from every player leaves it unsynced (frozen, immune to damage,
+        -- left on the roof after a jack). warp = false keeps it in the seat (checked live)
+        setElementPosition(ped, ag.x, ag.y, ag.z + 0.6, false)
+        setElementSyncer(ped, true)
+    end
     setElementData(veh, "ai_traffic", "released")
     local crashed = reason == "crash" or reason == "damage"
     A.released[veh] = { ped = ped, at = getTickCount(), crashed = crashed }

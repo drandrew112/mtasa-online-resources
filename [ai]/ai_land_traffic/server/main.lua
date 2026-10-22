@@ -86,13 +86,15 @@ end)
 
 ------------------------------------------------------------------------ release triggers
 
+-- low priority: runs after the other resources' handlers, an entry they cancelled (v_inventory: item in hands,
+-- work_core: off duty) leaves the vehicle in the traffic
 addEventHandler("onVehicleStartEnter", root, function(player, seat, jacked)
     local ag = Agents.byVeh[source]
-    if not ag or getElementType(player) ~= "player" then return end
+    if not ag or getElementType(player) ~= "player" or wasEventCancelled() then return end
     -- a passenger seat of a scripted vehicle (bus) does not take it out of the simulation
     if ag.script and seat and seat > 0 and not jacked then return end
     Agents.release(ag, jacked and "jacked" or "enter", player)
-end)
+end, true, "low")
 
 addEventHandler("onVehicleExplode", root, function()
     local ag = Agents.byVeh[source]

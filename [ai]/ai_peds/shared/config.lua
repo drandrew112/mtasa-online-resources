@@ -70,7 +70,7 @@ AIPEDS = {
     ACCURACY = 0.55,            -- default 0..1 (aim spread on the client)
     MELEE_RANGE = 1.5,
     -- unarmed enemy vs a target sitting in a vehicle: pulls it out first (GTA jack), armed ones shoot
-    JACK_DIST = 12,             -- starts the jack closer than this...
+    JACK_DIST = 9,              -- starts the jack closer than this (setPedEnterVehicle: 10 m with a driver)...
     JACK_MAX_SPEED = 3,         -- ...while the vehicle is slower than this (m/s)
     JACK_TIMEOUT = 7000,        -- target still inside after this long: gives up for JACK_RETRY (fists)
     JACK_RETRY = 3000,

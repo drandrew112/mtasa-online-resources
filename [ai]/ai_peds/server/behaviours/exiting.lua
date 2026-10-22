@@ -42,6 +42,20 @@ Behaviours.exiting = {
         end
     end,
 
+    -- the syncer has the ped out but the server still has it seated (exit not confirmed): the server follows the
+    -- syncer, so the other clients do not keep drawing it in the seat
+    report = function(p, kind, data)
+        if kind ~= "exited" then return end
+        local veh = getPedOccupiedVehicle(p.el)
+        if not veh then return end
+        removePedFromVehicle(p.el)
+        local x, y, z = type(data) == "table" and tonumber(data[1]), tonumber(data and data[2]), tonumber(data and data[3])
+        if x and y and z then
+            local vx, vy, vz = getElementPosition(veh)
+            if (x - vx) ^ 2 + (y - vy) ^ 2 + (z - vz) ^ 2 < 10 * 10 then setElementPosition(p.el, x, y, z) end
+        end
+    end,
+
     threat = function(p, kind, src)
         -- shot at / attacked while still inside: the final behaviour turns on that attacker
         if src and Peds.alive(src) and p.b.finalArgs then
