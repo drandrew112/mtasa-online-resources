@@ -6,24 +6,31 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- ============================================================
 
 local nextId  = 0
-local usedIds = {}
+local usedIds = {}   -- [id] = player
+-- The "ID" element data outlives a restart of this resource, so the start
+-- re-registers the kept IDs first; a duplicate (two players, one ID) gets a new one.
 
 local function assignId(player)
     if not isElement(player) then return end
-    if getElementData(player, "ID") then return end   -- already has an ID
+    local current = tonumber(getElementData(player, "ID"))
+    if current and usedIds[current] == player then return end   -- already has an ID
+    if current and not usedIds[current] then                     -- kept over a resource restart
+        usedIds[current] = player
+        return
+    end
 
     repeat
         nextId = nextId + 1
     until not usedIds[nextId]
 
-    usedIds[nextId] = true
+    usedIds[nextId] = player
     setElementData(player, "ID", nextId)
     outputServerLog("[v_admin] ID " .. nextId .. " -> " .. getPlayerName(player))
 end
 
 local function releaseId(player)
     local id = tonumber(getElementData(player, "ID"))
-    if id then
+    if id and usedIds[id] == player then
         usedIds[id] = nil
     end
 end

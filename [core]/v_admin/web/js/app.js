@@ -251,9 +251,11 @@
 
     /* ============================================================ players */
 
+    // account actions only for a logged-in player (a guest has no account)
+    const hasAccount = p => !!(p.logged && p.account);
     const ACTIONS = [
         { group: 'General' },
-        { id: 'account', label: 'Open account', perm: 'accounts', show: p => p.account, local: p => setTab('accounts', p.account) },
+        { id: 'account', label: 'Open account', perm: 'accounts', show: hasAccount, local: p => hasAccount(p) && setTab('accounts', p.account) },
         { id: 'goto', label: 'Go to', perm: 'teleport', needGame: true },
         { id: 'gethere', label: 'Bring here', perm: 'teleport', needGame: true },
         { id: 'spectate', label: 'Spectate (in game)', perm: 'spectate', needGame: true },
@@ -271,9 +273,9 @@
         { id: 'unjail', label: 'Release from jail', perm: 'jail', show: p => p.jailed },
         { id: 'kick', label: 'Kick', perm: 'kick', form: true, danger: true },
         { group: 'Account' },
-        { id: 'ban', label: 'Ban account', perm: 'ban', form: true, danger: true, show: p => !p.banned },
+        { id: 'ban', label: 'Ban account', perm: 'ban', form: true, danger: true, show: p => hasAccount(p) && !p.banned },
         { id: 'unban', label: 'Unban account', perm: 'ban', show: p => p.banned },
-        { id: 'setlevel', label: 'Admin level', perm: 'setLevel', menu: true },
+        { id: 'setlevel', label: 'Admin level', perm: 'setLevel', menu: true, show: hasAccount },
     ];
 
     const FORMS = {

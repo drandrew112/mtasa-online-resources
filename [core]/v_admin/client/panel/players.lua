@@ -16,12 +16,15 @@ local st = {
 }
 
 -- Action buttons. perm = key in ADMIN.perms.
+-- Account actions only show for a logged-in player (a guest has no account).
+local function hasAccount(p) return p.logged and type(p.account) == "string" and p.account ~= "" end
+
 local ACTIONS = {}
 local function build_ACTIONS()
 ACTIONS = {
     { group = L("v_admin.players.general") },
-    { id = "account", label = L("v_admin.page.open_account"), perm = "accounts", show = function(p) return p.account end,
-      fn = function(p) AP.setPage("accounts", p.account) end },
+    { id = "account", label = L("v_admin.page.open_account"), perm = "accounts", show = hasAccount,
+      fn = function(p) if hasAccount(p) then AP.setPage("accounts", p.account) end end },
     { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
     { id = "spectate", label = L("v_admin.players.spectate"),   perm = "spectate",
       show = function(p) return p.id ~= tonumber(getElementData(localPlayer, "ID")) end,
@@ -39,10 +42,11 @@ ACTIONS = {
     { id = "jail",    label = L("v_admin.players.admin_jail"), perm = "jail", form = "jail", show = function(p) return not p.jailed end },
     { id = "unjail",  label = L("v_admin.players.release_jail"), perm = "jail", show = function(p) return p.jailed end },
     { id = "kick",    label = L("v_admin.players.kick"),   perm = "kick", form = "kick", danger = true },
-    { group = L("v_admin.players.account") },
-    { id = "ban",     label = L("v_admin.players.ban_account"),   perm = "ban", form = "ban", danger = true, show = function(p) return not p.banned end },
+    { group = L("v_admin.players.account"), show = function(p) return hasAccount(p) or p.banned end },
+    { id = "ban",     label = L("v_admin.players.ban_account"),   perm = "ban", form = "ban", danger = true,
+      show = function(p) return hasAccount(p) and not p.banned end },
     { id = "unban",   label = L("v_admin.players.unban_account"), perm = "ban", show = function(p) return p.banned end },
-    { id = "setlevel", label = L("v_admin.players.admin_level"), perm = "setLevel", dropdown = true },
+    { id = "setlevel", label = L("v_admin.players.admin_level"), perm = "setLevel", dropdown = true, show = hasAccount },
 }
 end
 
@@ -374,10 +378,12 @@ local function drawActions(p, x, y, w, h)
 
     for _, a in ipairs(ACTIONS) do
         if a.group then
-            if col > 0 then cy = cy + bh + gap end
-            col = 0
-            AP.text(a.group:upper(), ix, cy, iw, S(34), C.dim, 0.9, "default-bold")
-            cy = cy + S(36)
+            if not a.show or a.show(p) then
+                if col > 0 then cy = cy + bh + gap end
+                col = 0
+                AP.text(a.group:upper(), ix, cy, iw, S(34), C.dim, 0.9, "default-bold")
+                cy = cy + S(36)
+            end
         elseif not a.show or a.show(p) then
             if col >= 2 then col = 0; cy = cy + bh + gap end
             local need = AP.permLevel(a.perm)
