@@ -37,6 +37,18 @@ WEEKLY = {
     LOGIN_MAX_XP       = 100000,
     LOGIN_KEY          = "weekly_login", -- accData: id of the last period paid
 
+    -- Discord weekly update (server/discord.lua): an embed through v_discordmanager
+    -- when a new week starts. Webhook ids are keys of v_discordmanager/webhooks.json.
+    DISCORD_WEBHOOK      = "weekly",   -- "" = no automatic post
+    DISCORD_INSTANCE_ID  = 2,          -- only this v_main server instance posts automatically
+    DISCORD_POST_WINDOW  = 6 * 3600,   -- s after the week start; a server started later does not post that week
+    DISCORD_COLOR        = 0x0096FF,
+    DISCORD_MENTION      = "",         -- text above the embed, e.g. "@everyone" or "<@&roleId>" ("" = none)
+    DISCORD_FOOTER       = "",         -- "" = the server name
+    DISCORD_THUMBNAIL    = "",         -- image URL ("" = none)
+    DISCORD_TEST_WEBHOOK = "weekly",   -- /weeklydiscord sends here
+    DISCORD_ADMIN_LEVEL  = 3,          -- /weeklydiscord: Admin and above
+
     -- the default week when nothing was ever configured
     DEFAULT_TIMETRIAL = 5,
 }

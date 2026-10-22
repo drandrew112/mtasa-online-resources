@@ -201,6 +201,15 @@ CREATE TABLE IF NOT EXISTS `weekly_schedule` (
     `updated_at` INT          NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- weekly_discord  (owner: [core]/v_weekly) - one row per week whose Discord
+-- weekly update was posted; only the instance whose INSERT IGNORE went in posts.
+CREATE TABLE IF NOT EXISTS `weekly_discord` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `week_start` INT NOT NULL,
+    `sent_at`    INT NOT NULL DEFAULT 0,
+    UNIQUE KEY `uq_week` (`week_start`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- ============================================================================
 -- bt_tasks / bt_shifts  (owner: [bloodtransport]/bt_dispatch, via v_mysql)

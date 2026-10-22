@@ -88,6 +88,8 @@ function SCHED.check()
         outputServerLog("[v_weekly] new week started: " .. formatUtc(ws))
         PANEL.weekChanged()
     end
+    -- also on boot: a server that was down at the rollover still posts (once, see server/discord.lua)
+    DISCORD.weekStarted(ws)
     return true
 end
 

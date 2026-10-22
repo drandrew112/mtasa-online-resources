@@ -12,3 +12,12 @@ CREATE TABLE IF NOT EXISTS `weekly_schedule` (
     `updated_by` VARCHAR(50)  DEFAULT NULL,
     `updated_at` INT          NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Discord weekly update claim (server/discord.lua): one row per posted week;
+-- only the instance whose INSERT IGNORE went through posts the embed.
+CREATE TABLE IF NOT EXISTS `weekly_discord` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `week_start` INT NOT NULL,
+    `sent_at`    INT NOT NULL DEFAULT 0,
+    UNIQUE KEY `uq_week` (`week_start`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -5,6 +5,8 @@
 
 	<!-- server sendWebhook(id, message): id is a key in webhooks.json -->
 	<export function="sendWebhook" type="server"/>
+	<!-- server sendWebhookEmbed(id, embed | {embeds}, options): Discord embeds, see s_discordmanager.lua -->
+	<export function="sendWebhookEmbed" type="server"/>
 
 	<export function="setDiscordDetails" type="client"/>
 	<export function="setDiscordState" type="client"/>
