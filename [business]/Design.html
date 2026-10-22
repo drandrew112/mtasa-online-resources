@@ -1,0 +1,1314 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Business System Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (ledger-book feel), wide figures break out to 1100px; sticky contents on desktop */
+:root{
+  --bg:#f3f5f2; --paper:#ffffff; --fg:#17201b; --muted:#5b6a61; --line:#d6ddd7;
+  --accent:#0d6b4f; --accent-soft:#e1efe8; --gold:#9a6b00; --gold-soft:#f6ecd3;
+  --red:#b3261e; --red-soft:#f8e1df; --blue:#1f5fa8;
+  --f-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  /* in-game mockup colours (fixed look of the game UI, same in both themes) */
+  --g-bg:#0d1117; --g-panel:#161b22; --g-line:#2a323c; --g-fg:#e6edf3; --g-muted:#8b98a5; --g-acc:#00aadc; --g-head:#006496;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1512; --paper:#161e1a; --fg:#e4ebe6; --muted:#97a69c; --line:#2b3731;
+  --accent:#4cc79b; --accent-soft:#183329; --gold:#e0b24a; --gold-soft:#33290f;
+  --red:#f08b83; --red-soft:#3a1b19; --blue:#7fb2ee; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --paper:#161e1a; --fg:#e4ebe6; --muted:#97a69c; --line:#2b3731;
+  --accent:#4cc79b; --accent-soft:#183329; --gold:#e0b24a; --gold-soft:#33290f;
+  --red:#f08b83; --red-soft:#3a1b19; --blue:#7fb2ee; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}.toc{display:none}}
+.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:40px;font-size:13px}
+.toc b{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 0;border-left:2px solid transparent;padding-left:10px}
+.toc a:hover,.toc a:focus-visible{color:var(--accent);border-left-color:var(--accent);outline:none}
+main{min-width:0}
+header.hero{padding:48px 0 24px;border-bottom:1px solid var(--line)}
+.eyebrow{font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(30px,5vw,46px)/1.08 var(--f-display);margin:10px 0 14px;text-wrap:balance}
+h2{font:600 26px/1.2 var(--f-display);margin:0 0 6px;text-wrap:balance}
+h3{font:600 16px/1.3 var(--f-body);margin:26px 0 8px}
+p,li{max-width:68ch}
+section{padding:40px 0;border-bottom:1px solid var(--line);scroll-margin-top:16px}
+.lead{font-size:17px;color:var(--muted)}
+.sub{color:var(--muted);margin:0 0 18px}
+code,.mono{font:13px var(--f-mono)}
+code{background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+a{color:var(--accent)}
+.pill{display:inline-block;font:500 11px var(--f-mono);letter-spacing:.04em;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.pill.gold{background:var(--gold-soft);color:var(--gold)} .pill.red{background:var(--red-soft);color:var(--red)} .pill.gray{background:var(--line);color:var(--muted)}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tbl{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--f-body)} .box p,.box ul{margin:0;font-size:14px} .box ul{padding-left:18px}
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px}
+.note.q{border-left-color:var(--blue);background:var(--accent-soft)}
+figure{margin:20px 0}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:8px}
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+pre.mermaid{background:transparent;margin:0;text-align:center}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px}
+.res .box{padding:14px 16px}
+.res .box .name{font:600 14px var(--f-mono);color:var(--accent)}
+.res .box.ext .name{color:var(--gold)}
+ol.steps{padding-left:20px} ol.steps li{margin:4px 0}
+.phase{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.phase:last-child{border-bottom:0}
+.phase .tag{font:600 12px var(--f-mono);color:var(--accent)}
+@media (max-width:520px){.phase{grid-template-columns:minmax(0,1fr);gap:4px}}
+
+/* ---------- in-game mockups (fixed game look) ---------- */
+.game{background:var(--g-bg);color:var(--g-fg);border-radius:10px;overflow:hidden;font:13px/1.45 var(--f-body);border:1px solid #000}
+.game .muted{color:var(--g-muted)}
+.scene{position:relative;min-height:300px;background:
+  radial-gradient(ellipse at 30% 30%,#3c4a3a 0%,#1d241c 55%,#111510 100%);}
+.scene .lbl{position:absolute;left:16px;top:14px;font:500 11px var(--f-mono);color:#9fb09a;letter-spacing:.08em;text-transform:uppercase}
+.inac{position:absolute;left:24px;top:44px;width:250px;font-size:13px;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.inac .h{background:var(--g-head);color:#fff;font:700 18px var(--f-display);padding:12px 14px}
+.inac .t{background:rgba(0,0,0,.8);color:var(--g-acc);font:600 11px var(--f-mono);letter-spacing:.06em;padding:6px 14px;text-transform:uppercase;display:flex;justify-content:space-between}
+.inac .i{background:rgba(0,0,0,.67);padding:7px 14px;display:flex;justify-content:space-between;color:#fff}
+.inac .i.sel{background:#fff;color:#000;font-weight:600}
+.inac .i.new{outline:2px dashed #f5c542;outline-offset:-2px}
+.stats{position:absolute;right:18px;bottom:18px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.stat{display:flex;gap:18px;justify-content:space-between;min-width:230px;background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.75) 30%);padding:6px 12px;color:#fff;font:600 13px var(--f-body)}
+.stat span:first-child{color:#d0d7de;font-weight:500;text-transform:uppercase;font-size:11.5px;letter-spacing:.06em;align-self:center}
+.stat b{font:600 16px var(--f-mono)}
+.bar{height:6px;background:#2b333d;border-radius:3px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--g-acc)}
+.bar.green i{background:#3fb950} .bar.gold i{background:#d29922}
+
+/* OrgOS laptop */
+.os{display:grid;grid-template-columns:180px minmax(0,1fr);min-height:420px}
+@media (max-width:640px){.os{grid-template-columns:minmax(0,1fr)}.os nav{display:flex;overflow-x:auto}}
+.os nav{background:var(--g-panel);border-right:1px solid var(--g-line);padding:12px 0}
+.os nav .brand{font:700 15px var(--f-display);padding:4px 16px 14px;color:#fff;white-space:nowrap}
+.os nav a{display:block;padding:7px 16px;color:var(--g-muted);text-decoration:none;white-space:nowrap}
+.os nav a.on{color:#fff;background:#1f2731;box-shadow:inset 3px 0 var(--g-acc)}
+.os .body{padding:18px 20px;min-width:0}
+.os h5{margin:0 0 12px;font:600 18px var(--f-display);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.kpi{background:var(--g-panel);border:1px solid var(--g-line);border-radius:8px;padding:10px 12px}
+.kpi .k{font:500 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--g-muted)}
+.kpi .v{font:600 20px var(--f-mono);color:#fff;font-variant-numeric:tabular-nums}
+.kpi .v.pos{color:#3fb950} .kpi .v.neg{color:#f85149}
+.gt{width:100%;border-collapse:collapse;font-size:12.5px}
+.gt th{background:transparent;color:var(--g-muted);border-bottom:1px solid var(--g-line);padding:6px 8px;font:500 10.5px var(--f-mono);letter-spacing:.06em}
+.gt td{border-bottom:1px solid var(--g-line);padding:6px 8px;color:var(--g-fg)}
+.gt td.p{color:#3fb950;text-align:right;font-family:var(--f-mono)} .gt td.n{color:#f85149;text-align:right;font-family:var(--f-mono)}
+.gbtn{display:inline-block;background:var(--g-acc);color:#00131b;font-weight:600;padding:7px 12px;border-radius:6px;font-size:12.5px}
+.gbtn.ghost{background:transparent;color:var(--g-fg);border:1px solid var(--g-line)}
+.gbtn.red{background:#da3633;color:#fff}
+.wcard{background:var(--g-panel);border:1px solid var(--g-line);border-radius:8px;padding:14px}
+
+/* browser mockup */
+.br-top{display:flex;gap:8px;align-items:center;background:#e9ecef;color:#333;padding:8px 10px}
+.br-top .url{flex:1;background:#fff;border-radius:14px;padding:4px 12px;font:12px var(--f-mono);color:#555;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br-top .dot{width:22px;height:22px;border-radius:50%;background:#ced4da;display:grid;place-items:center;font-size:12px}
+.site{background:#f7f8fa;color:#1b2430;padding:18px;font:13px/1.5 var(--f-body)}
+.site .logo{font:700 18px var(--f-display);color:#12355b}
+.site .stepper{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.site .stepper span{font:500 11px var(--f-mono);padding:4px 10px;border-radius:99px;background:#e3e8ef;color:#4a5668}
+.site .stepper span.on{background:#12355b;color:#fff}
+.site .cols{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px}
+@media (max-width:640px){.site .cols{grid-template-columns:minmax(0,1fr)}}
+.site .card{background:#fff;border:1px solid #dde3ea;border-radius:8px;padding:12px}
+.site input{width:100%;font:13px var(--f-body);padding:7px 9px;border:1px solid #c4ccd6;border-radius:6px;background:#fff;color:#1b2430}
+.site .sum{display:flex;justify-content:space-between;padding:3px 0;font-variant-numeric:tabular-nums}
+.site .sum.t{border-top:1px solid #dde3ea;margin-top:6px;padding-top:8px;font-weight:700}
+.site .btn{display:block;text-align:center;background:#12355b;color:#fff;border-radius:6px;padding:8px;margin-top:10px;font-weight:600}
+/* admin mockup */
+.adm{display:grid;grid-template-columns:170px minmax(0,1fr);min-height:330px;background:#11151b;color:#dfe5ec;font-size:12.5px}
+@media (max-width:640px){.adm{grid-template-columns:minmax(0,1fr)}.adm .side{display:none}}
+.adm .side{background:#0b0e12;padding:10px 0}
+.adm .side .c{font:600 10px var(--f-mono);letter-spacing:.08em;color:#6b7785;padding:10px 14px 4px;text-transform:uppercase}
+.adm .side a{display:block;padding:5px 14px;color:#9aa6b2;text-decoration:none}
+.adm .side a.on{color:#fff;background:#1c232c;box-shadow:inset 3px 0 #e0a526}
+.adm .side a.new{color:#f5c542}
+.adm .main{padding:14px 16px;min-width:0}
+.acard{display:inline-flex;flex-direction:column;gap:2px;background:#1a2028;border:1px solid #2c3540;border-radius:8px;padding:10px 12px;min-width:180px}
+.acard.new{outline:2px dashed #f5c542;outline-offset:2px}
+.acard .k{font:500 10px var(--f-mono);letter-spacing:.07em;color:#7f8b98;text-transform:uppercase}
+.acard .v{font:600 14px var(--f-body);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+@media (prefers-reduced-motion:no-preference){.toc a{transition:color .15s}}
+
+/* phone mockup (ui_phone look, fixed) */
+.phones{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.phone{position:relative;width:240px;max-width:100%;background:#0b0f14;color:#e6edf3;border:8px solid #1d232b;border-radius:30px;padding:10px 12px 34px;font:12.5px/1.4 var(--f-body);min-height:430px}
+.ph-top{display:flex;justify-content:space-between;font:11px var(--f-mono);color:#8b98a5;padding:0 4px 8px}
+.ph-head{font:700 17px var(--f-display);color:#fff;padding:2px 4px 8px}
+.ph-tabs{display:flex;gap:6px;margin-bottom:10px}
+.ph-tabs span{font:500 11px var(--f-mono);padding:4px 9px;border-radius:99px;background:#1a2129;color:#8b98a5}
+.ph-tabs span.on{background:#00aadc;color:#00131b}
+.ph-sub{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:#8b98a5;margin:10px 4px 6px}
+.ph-row{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#141a21;border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.ph-row small,.ph-card small{display:block;color:#8b98a5;font-size:11px}
+.ph-card{background:#141a21;border:1px solid #26303b;border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.ph-btn{display:inline-block;background:#00aadc;color:#00131b;font-weight:600;font-size:11.5px;padding:5px 10px;border-radius:8px}
+.ph-btn.red{background:#da3633;color:#fff} .ph-btn.ghost{background:transparent;color:#e6edf3;border:1px solid #2f3a46}
+.ph-note{font-size:11.5px;color:#8b98a5;padding:4px}
+.ph-cap{position:absolute;left:0;right:0;bottom:8px;text-align:center;font:500 10.5px var(--f-mono);color:#6b7785}
+.dtag{font:500 10px var(--f-mono);background:#3a2a0c;color:#e0b24a;padding:1px 6px;border-radius:99px;margin-left:4px}
+.modal{background:#1b222b;border:1px solid #33404d;border-radius:10px;padding:14px;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.seg{display:inline-flex;border:1px solid #33404d;border-radius:8px;overflow:hidden}
+.seg span{padding:5px 16px;font:600 13px var(--f-mono);color:#8b98a5}
+.seg span.on{background:#00aadc;color:#00131b}
+.warn{margin-top:10px;background:#3a2a0c;border-left:3px solid #e0b24a;color:#f3e2b5;padding:8px 10px;border-radius:0 6px 6px 0;font-size:12.5px}
+.st{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
+.st th{background:transparent;color:#4a5668;font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #dde3ea;padding:6px 8px}
+.st td{border-bottom:1px solid #eef1f5;padding:6px 8px;color:#1b2430}
+</style>
+
+<div class="wrap">
+<aside class="toc" aria-label="Tartalom">
+  <b>Tartalom</b>
+  <a href="#dontesek">Döntések (v2)</a>
+  <a href="#attekintes">Áttekintés</a>
+  <a href="#resourceok">Resource-ok</a>
+  <a href="#adatmodell">Adatmodell</a>
+  <a href="#szimulacio">Online szimuláció</a>
+  <a href="#bizint">biz_int interiorok</a>
+  <a href="#tagsag">Ideiglenes tagság</a>
+  <a href="#helyszinek">Helyszínek</a>
+  <a href="#regisztracio">Regisztráció, cégjegyzék</a>
+  <a href="#szamitogep">Irodai számítógép</a>
+  <a href="#penzugy">Pénzügy, rezsi, mosás</a>
+  <a href="#fu">Fű termesztés</a>
+  <a href="#kuldetesek">Küldetések</a>
+  <a href="#ai">AI üldöző viselkedés</a>
+  <a href="#kaszino">Kaszinó</a>
+  <a href="#inac">ui_inac: My organization</a>
+  <a href="#ertesitesek">Értesítések</a>
+  <a href="#merfoldkovek">Statisztika, mérföldkövek</a>
+  <a href="#admin">Admin panel</a>
+  <a href="#instancek">Több instance</a>
+  <a href="#utemterv">Ütemterv</a>
+  <a href="#kerdesek">Nyitott kérdések</a>
+</aside>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">[business] · tervezési dokumentum · v2 · 2026-10-22</div>
+  <h1>Cég- és bizniszrendszer</h1>
+  <p class="lead">Játékos által alapított cégek saját interior-rendszerrel, céges számlával, irodai számítógéppel és tevékenységi körökkel. Az első két tevékenység a fű termesztés (supply/sell küldetésekkel) és a kaszinó (passzív bevétel). Minden szimuláció csak akkor fut, amikor a cégvezető online.</p>
+  <div class="meta-row"><span class="pill gold">Csak terv, kód nincs</span><span class="pill">7 új resource</span><span class="pill">8 meglévő bővül</span><span class="pill gray">UI szöveg: angol</span></div>
+</header>
+
+<!-- ============ DECISIONS ============ -->
+<section id="dontesek">
+  <h2>Döntések a v1 után</h2>
+  <p class="sub">A visszajelzésed alapján rögzített szabályok. A dokumentum többi része már ezeket követi.</p>
+  <div class="tbl"><table>
+    <tr><th>Téma</th><th>Döntés</th></tr>
+    <tr><td>Befizetés</td><td>A játékos a saját pénzéből feltöltheti a céges számlát.</td></tr>
+    <tr><td>Tagság</td><td>Csak ideiglenes. Akkor is működik, ha a tagnak van saját cége. Lecsatlakozáskor és kilépéskor megszűnik. Meghívás, elfogadás és kilépés egy új <code>ui_phone</code> appban.</td></tr>
+    <tr><td>Online szimuláció</td><td>Termelés, bevétel, rezsi és kaszinó csak akkor fut, ha a cégvezető online. A kaszinó óránként számol, nem naponta.</td></tr>
+    <tr><td>HUD</td><td>A <code>ui_core</code> stat tracker kap <code>progress</code> sávot. A Value sor is marad.</td></tr>
+    <tr><td>Fű eladás</td><td>Járművenként 40 egység. Egyedül 1 jármű és 40 a limit; minden online tag +1 jármű (+40), külön célpontokra. Figyelmeztetés indítás előtt. A tag a saját fuvarja 80%-át kapja, a cég 20%-ot.</td></tr>
+    <tr><td>Támadás</td><td>Eladásonként 50% esély az ellenségre; a szállítások felében nincs ellenség.</td></tr>
+    <tr><td>Határidő</td><td>Eladásnál 30 perc; utána a szállítmány elveszik.</td></tr>
+    <tr><td>Rezsi</td><td>Kétóránként (online időben) minden telephely és az iroda is fizet.</td></tr>
+    <tr><td>Pénzmosás</td><td>Lehet, de nem kötelező. A mosatlan pénz következményei később jönnek.</td></tr>
+    <tr><td>Fejlesztések</td><td>A telephely gépén egyszeri vásárlással: nagyobb kapacitás (nagyobb készlet) és staff (gyorsabb termelés).</td></tr>
+    <tr><td>Heti bónusz</td><td>Eladási szorzó csak supply/deliver típusú üzletekre; a kaszinó kimarad.</td></tr>
+    <tr><td>Statisztika, mérföldkövek</td><td>Új céges statisztikák és achievementek, működő feltételekkel.</td></tr>
+    <tr><td>Értesítések</td><td>Nincs e-mail. Minden eseményről <code>ui_core</code> értesítés.</td></tr>
+    <tr><td>Cégjegyzék</td><td>A regisztrációs oldalon kereshető lista és toplista cégérték szerint.</td></tr>
+    <tr><td>Látható szállítmány</td><td>Adott távolságon belül blip és értesítés más játékosoknak.</td></tr>
+    <tr><td>Lecsatlakozás küldetés közben</td><td>A rakomány 50%-a visszakerül a készletbe, a jármű eltűnik.</td></tr>
+    <tr><td>Helyszínek</td><td>A bizniszkaszinó a Redsands West-i „The Casino” (a Four Dragons a fő kaszinó lesz). A 6 iroda végleges.</td></tr>
+    <tr><td>Gazdaság</td><td>A v1 számai jók. Idegen kifizetése 60%.</td></tr>
+    <tr><td>Cég megszűnése</td><td>Csak eladással: a cégérték 60%-a a tulaj bankszámlájára.</td></tr>
+    <tr><td>Rendőrség</td><td>Később lesz; most nincs következmény.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section id="attekintes">
+  <h2>Áttekintés</h2>
+  <p class="sub">Egy mag (<code>biz_core</code>) és köré épülő, egymástól független modulok. Minden tevékenységi kör saját resource, amely a magba regisztrál.</p>
+  <figure class="fig">
+<pre class="mermaid">
+flowchart LR
+  subgraph NEW["Új resource-ok ([business])"]
+    CORE["biz_core<br/>cégek · számla · tagság · tick"]
+    INT["biz_int<br/>épületek · belsők · dimenziók"]
+    PC["biz_pc<br/>OrgOS számítógép (CEF)"]
+    WEB["biz_web<br/>regisztráció · cégjegyzék"]
+    WEED["biz_weed<br/>fű termesztés"]
+    CAS["biz_casino<br/>órás szimuláció · mosás"]
+    MIS["biz_missions<br/>supply + sell küldetések"]
+  end
+  subgraph EXIST["Meglévő resource-ok"]
+    MYSQL[(v_mysql)]
+    BANK[v_bank]
+    INAC[ui_inac]
+    PHONE[ui_phone]
+    UICORE[ui_core]
+    BRW[ui_browser + web_api]
+    ADM[v_admin]
+    WEEK[v_weekly]
+    STATS[v_stats + v_achievements]
+    PEDS[ai_peds]
+    TRAF[ai_land_traffic]
+    RADAR[v_radar]
+    IO[ui_interactobject]
+    INV[v_inventory]
+  end
+  CORE --> MYSQL
+  CORE --> BANK
+  CORE --> UICORE
+  CORE --> STATS
+  INT --> CORE
+  PC --> CORE
+  PC --> IO
+  WEB --> CORE
+  WEB --> BRW
+  WEED --> CORE
+  WEED --> INT
+  CAS --> CORE
+  MIS --> WEED
+  MIS --> PEDS
+  MIS --> TRAF
+  MIS --> RADAR
+  MIS --> INV
+  INAC -.-> CORE
+  PHONE -.-> CORE
+  ADM -.-> CORE
+  WEEK -.-> CORE
+</pre>
+    <figcaption>1. ábra – Függőségi térkép. Folytonos nyíl: hívja az exportjait. Szaggatott: a meglévő resource kap egy kis integrációt.</figcaption>
+  </figure>
+  <h3>Fogalmak</h3>
+  <div class="tbl"><table>
+    <tr><th>Fogalom</th><th>Jelentés</th></tr>
+    <tr><td><b>Cég</b> (organization)</td><td>Játékosonként legfeljebb egy. Van neve, alapítója, céges számlája (tiszta + piszkos rész), székhelye, tevékenységi körei és telephelyei.</td></tr>
+    <tr><td><b>Alapító</b> (founder)</td><td>A cég tulajdonosa. Csak az ő online ideje alatt fut a cég szimulációja.</td></tr>
+    <tr><td><b>Ideiglenes tag</b> (associate)</td><td>Meghívott játékos, aki addig segít, amíg online és nem lép ki. Nincs adatbázisban.</td></tr>
+    <tr><td><b>Tevékenységi kör</b> (activity)</td><td>Egy üzletág (<code>weed</code>, <code>casino</code>). Saját resource valósítja meg. Típusa <code>supply_deliver</code> vagy <code>passive</code>.</td></tr>
+    <tr><td><b>Telephely</b> (property)</td><td>Megvásárolható ingatlan a katalógusból: iroda, fűfarm, kaszinó. A katalógus konfigurációs fájl.</td></tr>
+    <tr><td><b>Egység</b> (unit)</td><td>A cég tulajdonában lévő telephely-példány (DB sor), saját dimenzióval.</td></tr>
+    <tr><td><b>Épület</b> (building)</td><td>Fizikai belépési pont. Egy épületben sok cég egysége lehet; mindenki csak oda jut be, ahová joga van.</td></tr>
+    <tr><td><b>Cégérték</b></td><td>Iroda + telephelyek + fejlesztések kifizetett ára + készlet értéke + egyenleg. Ez alapján megy a toplista és az eladás (60%).</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ RESOURCES ============ -->
+<section id="resourceok">
+  <h2>Resource-ok és felelősségek</h2>
+  <p class="sub">Új resource-ok a <code>[business]</code> mappában. A meglévőkhöz csak jól körülhatárolt kiegészítés kerül.</p>
+  <div class="res">
+    <div class="box"><div class="name">biz_core</div><p>Cégek, céges számla és főkönyv, befizetés/kivét, katalógus, vétel/eladás, cégeladás, ideiglenes tagság, online tick (termelés, rezsi), blipek, értesítések, statisztikák.</p></div>
+    <div class="box"><div class="name">biz_int</div><p>Saját interior-rendszer, a <code>world_interiors</code>-tól független. Épületek, belső sablonok, dimenziók, be/kilépés, hozzáférés (alapító + aktív tagok), belső objektumok.</p></div>
+    <div class="box"><div class="name">biz_pc</div><p>„OrgOS” számítógép CEF-ben a <code>web_api</code> eszközkészlettel. Iroda: cégkezelés. Telephely: a tevékenység appja és a fejlesztések.</p></div>
+    <div class="box"><div class="name">biz_web</div><p><code>sabusinessregistry.eu</code>: regisztráció, székhelyváltás, kereshető cégjegyzék, toplista. Csak játékon belül.</p></div>
+    <div class="box"><div class="name">biz_weed</div><p>Fű termesztés: supply → product az online tickben, supply vásárlás, kapacitás és staff fejlesztés, HUD, Weed app.</p></div>
+    <div class="box"><div class="name">biz_casino</div><p>Kaszinó: órás bevétel-szimuláció ingadozással, pénzmosás sora, kaszinó app.</p></div>
+    <div class="box"><div class="name">biz_missions</div><p>Supply lopás és többjárműves eladás: őrök, üldözők, 30 perces határidő, eltérítés, látható szállítmány, lecsatlakozás kezelése.</p></div>
+  </div>
+  <h3>Bővülő meglévő resource-ok</h3>
+  <div class="res">
+    <div class="box ext"><div class="name">ui_phone</div><p>Új <b>Organization</b> app (<code>client/apps/org.lua</code> + <code>server/apps/org.lua</code>): meghívás küldése, meghívás elfogadása/elutasítása, kilépés, tagok listája.</p></div>
+    <div class="box ext"><div class="name">ui_core</div><p>Stat tracker: opcionális <code>progress</code> (0–1) és sávszín. Visszafelé kompatibilis.</p></div>
+    <div class="box ext"><div class="name">ui_inac</div><p>Új <code>client/business.lua</code> (az <code>ownveh.lua</code> mintájára): „My organization” főmenüpont a Fast Travel fölött.</p></div>
+    <div class="box ext"><div class="name">ai_land_traffic</div><p>Új scripted viselkedés: <code>pursuit</code> mozgó célpont követésére.</p></div>
+    <div class="box ext"><div class="name">ai_peds</div><p><code>createAIPed</code> kap <code>vehicle, seat</code> opciót, hogy az üldöző autóban több fegyveres üljön.</p></div>
+    <div class="box ext"><div class="name">v_weekly</div><p>Új bónusz kategória <b>Business</b>: eladási szorzó supply/deliver tevékenységekre (most: weed).</p></div>
+    <div class="box ext"><div class="name">v_stats · v_achievements</div><p>Új „Business” statisztika-kategória és 12 céges achievement.</p></div>
+    <div class="box ext"><div class="name">v_admin</div><p>„Organizations” oldal (játék + web), fiók-részletekben „Organization” kártya.</p></div>
+  </div>
+</section>
+
+<!-- ============ DATA MODEL ============ -->
+<section id="adatmodell">
+  <h2>Adatmodell (MySQL)</h2>
+  <p class="sub">Minden tábla a közös <code>v_mysql</code> adatbázisban, a <code>biz_core</code> önmagát migrálja. Async lib (<code>MYSQL.query</code>), blokkoló hívás nincs. A tagság szándékosan nincs adatbázisban.</p>
+  <figure class="fig">
+<pre class="mermaid">
+erDiagram
+  biz_companies ||--o{ biz_units : "birtokol"
+  biz_companies ||--o{ biz_activities : "folytat"
+  biz_companies ||--o{ biz_ledger : "könyvel"
+  biz_units ||--o| biz_weed : "állapot"
+  biz_units ||--o{ biz_casino_hours : "órás eredmény"
+  biz_units ||--o{ biz_missions : "küldetés napló"
+  biz_companies {
+    int id PK
+    varchar owner_account UK
+    varchar name UK
+    bigint balance_clean
+    bigint balance_dirty
+    bigint launder_queue
+    int hq_unit_id FK
+    varchar status
+    int active_seconds
+    int upkeep_seconds
+    bigint peak_value
+    int created_at
+    int renamed_at
+  }
+  biz_units {
+    int id PK
+    int company_id FK
+    varchar property_id
+    bigint price_paid
+    bigint upgrades_paid
+    int purchased_at
+    text data_json
+  }
+  biz_activities {
+    int company_id PK
+    varchar activity PK
+    int started_at
+    text settings_json
+  }
+  biz_ledger {
+    bigint id PK
+    int company_id FK
+    int ts
+    bigint amount
+    tinyint dirty
+    bigint balance_after
+    varchar category
+    varchar description
+    varchar actor_account
+    varchar ref
+  }
+  biz_weed {
+    int unit_id PK
+    int supply
+    int product
+    int progress_seconds
+    tinyint capacity_level
+    tinyint staff_level
+    int pending_supply
+    int pending_seconds_left
+  }
+  biz_casino_hours {
+    bigint id PK
+    int unit_id FK
+    int ts
+    bigint revenue
+    bigint laundered
+    varchar event
+  }
+  biz_missions {
+    bigint id PK
+    int unit_id FK
+    varchar kind
+    varchar result
+    int amount
+    int vehicles
+    bigint payout_company
+    text payouts_json
+    int started_at
+    int ended_at
+  }
+</pre>
+    <figcaption>2. ábra – Táblák. Az egyenleg két részből áll (tiszta, piszkos); a főkönyv (<code>biz_ledger</code>) az igazság forrása. Minden időzítő „online másodpercben” számol, nem falióra-időben.</figcaption>
+  </figure>
+  <h3>Telephely-katalógus (konfig)</h3>
+  <p><code>biz_core/shared/properties.lua</code> – minden megvásárolható telephely egy bejegyzés.</p>
+  <div class="tbl"><table>
+    <tr><th>Mező</th><th>Példa</th><th>Leírás</th></tr>
+    <tr><td><code>id</code></td><td class="mono">weed_lasbrujas</td><td>Stabil azonosító, a <code>biz_units.property_id</code> erre mutat.</td></tr>
+    <tr><td><code>kind</code></td><td class="mono">office | weed | casino</td><td>Mi a telephely. <code>office</code> = székhely.</td></tr>
+    <tr><td><code>building</code> / <code>template</code></td><td class="mono">lasbrujas_barn / warehouse2</td><td>Bejárat épülete és a belső sablon.</td></tr>
+    <tr><td><code>price</code> / <code>sellRatio</code></td><td class="num">450 000 / 0.5</td><td>Vételár, egyedi eladáskor visszajáró arány.</td></tr>
+    <tr><td><code>upkeep</code></td><td class="num">3 000</td><td>Kétóránkénti rezsi (online időben).</td></tr>
+    <tr><td><code>upgrades</code></td><td class="mono">capacity, staff</td><td>Megvásárolható fejlesztések árral és hatással.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ ONLINE SIM ============ -->
+<section id="szimulacio">
+  <h2>Online-only szimuláció</h2>
+  <p class="sub">A cég „órája” csak akkor jár, ha az alapító online. Offline semmi nem nő és semmi nem fogy. A <code>biz_core</code> percenként egy tick-et futtat minden online alapító cégére azon az instance-on, ahol az alapító van.</p>
+  <figure class="fig">
+    <svg viewBox="0 0 720 230" width="100%" role="img" aria-label="Online idő alapú szimuláció idővonala">
+      <rect width="720" height="230" fill="var(--paper)"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muted)">
+        <text x="20" y="48">Alapító</text><text x="20" y="98">Termelés</text><text x="20" y="148">Kaszinó</text><text x="20" y="198">Rezsi</text>
+      </g>
+      <!-- time: x from 110 to 700 = 10 h, 59px per hour -->
+      <rect x="110" y="34" width="177" height="22" rx="4" fill="var(--accent)"/>
+      <rect x="287" y="34" width="236" height="22" rx="4" fill="var(--line)"/>
+      <rect x="523" y="34" width="177" height="22" rx="4" fill="var(--accent)"/>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5">
+        <text x="198" y="49" text-anchor="middle" fill="var(--paper)" font-weight="600">online 3 h</text>
+        <text x="405" y="49" text-anchor="middle" fill="var(--muted)">offline 4 h – minden áll</text>
+        <text x="611" y="49" text-anchor="middle" fill="var(--paper)" font-weight="600">online 3 h</text>
+      </g>
+      <!-- production ramp -->
+      <path d="M110 112 L287 92 L523 92 L700 72" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+      <!-- casino hour ticks -->
+      <g fill="var(--gold)">
+        <circle cx="169" cy="142" r="5"/><circle cx="228" cy="142" r="5"/><circle cx="287" cy="142" r="5"/>
+        <circle cx="582" cy="142" r="5"/><circle cx="641" cy="142" r="5"/><circle cx="700" cy="142" r="5"/>
+      </g>
+      <!-- upkeep at 2h online -->
+      <g fill="var(--red)">
+        <rect x="223" y="186" width="10" height="16"/><rect x="577" y="186" width="10" height="16"/>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--muted)">
+        <text x="236" y="198">2 h online</text><text x="590" y="198">4 h online</text>
+        <text x="300" y="86">termelés megáll, nem pótlódik</text>
+      </g>
+      <line x1="110" y1="214" x2="700" y2="214" stroke="var(--line)"/>
+    </svg>
+    <figcaption>3. ábra – 10 óra falióra, ebből 6 óra online. Kaszinó: 6 órás eredmény (pötty). Rezsi: 2 online óránként (piros). A 4 offline óra kimarad.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Számláló</th><th>Hol</th><th>Mi történik</th></tr>
+    <tr><td><code>progress_seconds</code></td><td>biz_weed</td><td>Ha eléri a termelési időt (alap 180 s, staff-fal 120 s): 1 supply → 1 product.</td></tr>
+    <tr><td><code>pending_seconds_left</code></td><td>biz_weed</td><td>Vásárolt supply visszaszámlálója (30 perc online idő), utána jóváírás.</td></tr>
+    <tr><td>casino hour (memória + DB)</td><td>biz_casino</td><td>Minden 3600 online másodpercben egy órás eredmény + mosás.</td></tr>
+    <tr><td><code>upkeep_seconds</code></td><td>biz_companies</td><td>Minden 7200 online másodpercben levonja az összes telephely és az iroda rezsijét.</td></tr>
+  </table></div>
+  <div class="note">Mentés: a tick percenként írja a számlálókat, kilépéskor azonnal. Szerver-összeomlásnál legfeljebb egy perc veszik el. Mivel az alapító egyszerre csak egy instance-on lehet, nincs ütközés.</div>
+</section>
+
+<!-- ============ BIZ_INT ============ -->
+<section id="bizint">
+  <h2>biz_int – saját interior-rendszer</h2>
+  <p class="sub">Egy bejárat sok belsőbe vihet. Minden egységnek saját dimenziója van, így egy épületben egyszerre több cégvezető lehet online, egymást nem látják, és mindenki csak oda jut be, ahová joga van.</p>
+  <figure class="fig">
+    <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="Egy épület, több dimenzió">
+      <rect x="0" y="0" width="760" height="300" fill="var(--paper)"/>
+      <rect x="40" y="60" width="150" height="200" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+      <g fill="var(--accent)" opacity=".35">
+        <rect x="60" y="80" width="30" height="22"/><rect x="110" y="80" width="30" height="22"/><rect x="60" y="120" width="30" height="22"/><rect x="110" y="120" width="30" height="22"/><rect x="60" y="160" width="30" height="22"/><rect x="110" y="160" width="30" height="22"/>
+      </g>
+      <rect x="95" y="215" width="40" height="45" fill="var(--accent)"/>
+      <text x="115" y="50" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="var(--fg)">LS Commerce Tower</text>
+      <text x="115" y="282" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muted)">bejárat (dim 0) · E gomb</text>
+      <g stroke="var(--muted)" stroke-width="1.5" fill="none">
+        <path d="M190 237 C 260 237, 270 70, 340 70"/>
+        <path d="M190 237 C 260 237, 270 140, 340 140"/>
+        <path d="M190 237 C 260 237, 270 210, 340 210"/>
+        <path d="M190 237 C 260 237, 270 270, 340 270" stroke-dasharray="4 4"/>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="12.5">
+        <rect x="340" y="48" width="400" height="44" rx="6" fill="var(--paper)" stroke="var(--accent)"/>
+        <text x="354" y="67" fill="var(--fg)" font-weight="600">Kovács Holding – iroda</text>
+        <text x="354" y="84" fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="11">unit #12 → dim 30012 · alapító + 1 tag bent</text>
+        <rect x="340" y="118" width="400" height="44" rx="6" fill="var(--paper)" stroke="var(--accent)"/>
+        <text x="354" y="137" fill="var(--fg)" font-weight="600">Desert Rose Ltd. – iroda</text>
+        <text x="354" y="154" fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="11">unit #57 → dim 30057 · alapító bent</text>
+        <rect x="340" y="188" width="400" height="44" rx="6" fill="var(--paper)" stroke="var(--accent)"/>
+        <text x="354" y="207" fill="var(--fg)" font-weight="600">Night Owl Org. – iroda</text>
+        <text x="354" y="224" fill="var(--muted)" font-family="IBM Plex Mono, monospace" font-size="11">unit #88 → dim 30088 · üres</text>
+        <rect x="340" y="252" width="400" height="40" rx="6" fill="var(--red-soft)" stroke="var(--red)" stroke-dasharray="4 4"/>
+        <text x="354" y="276" fill="var(--red)">Idegen játékos: „You have no office in this building.”</text>
+      </g>
+    </svg>
+    <figcaption>4. ábra – Egy épület, több cég. Dimenzió = <code>30000 + unit.id</code>.</figcaption>
+  </figure>
+  <figure class="fig">
+<pre class="mermaid">
+flowchart TD
+  A[Játékos a bejárat markerében, E] --> B{Szerver: marker + cooldown OK?}
+  B -- nem --> X[Semmi]
+  B -- igen --> C[biz_core: elérhető egységek ebben az épületben<br/>saját cég + az a cég, ahol most tag]
+  C --> D{Hány egység?}
+  D -- 0 --> E["Notification: You have no property here"]
+  D -- 1 --> F[Fade out → interior + dimenzió → fade in]
+  D -- több --> G["ui_inac temp menu: My office / Associate: Kovács Holding"]
+  G --> F
+  F --> H[onPlayerEnterBizUnit unitId, kind, role<br/>→ tevékenység resource: HUD, objektumok]
+</pre>
+    <figcaption>5. ábra – Belépés. A markerbe lépés nem elég, E gombot kell nyomni; a szerver újraellenőriz.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="box"><h4>Dimenziók</h4><ul>
+      <li>Tartomány: <b>30000–45999</b> (wp_shop 2201–2211, gangwar 46000+, 50000 és 65535 foglalt).</li>
+      <li><code>dim = 30000 + unit.id</code>, minden instance-on ugyanaz.</li>
+    </ul></div>
+    <div class="box"><h4>Exportok (szerver)</h4><ul class="mono" style="font-size:12.5px">
+      <li>enterUnit(player, unitId) · exitUnit(player)</li><li>getPlayerUnit(player) → unitId</li>
+      <li>getUnitDimension(unitId) · getPlayersInUnit(unitId)</li>
+      <li>event onPlayerEnterBizUnit / onPlayerExitBizUnit</li>
+    </ul></div>
+    <div class="box"><h4>Kiléptetés</h4><ul>
+      <li>Halál, kilépés a szerverről: következő spawn a bejáratnál.</li>
+      <li>Ha a tagság megszűnik, a tagot kitesszük a cég belsőiből.</li>
+      <li>Eladott egységből mindenkit kiteszünk.</li>
+    </ul></div>
+    <div class="box"><h4>Blipek</h4><p>Az irodaépületek alapból láthatatlanok. Blip csak annak, akinek ott egysége van, vagy aki épp tagja az ott egységgel rendelkező cégnek (<code>setElementVisibleTo</code>).</p></div>
+  </div>
+</section>
+
+<!-- ============ MEMBERSHIP ============ -->
+<section id="tagsag">
+  <h2>Ideiglenes tagság (ui_phone · Organization app)</h2>
+  <p class="sub">A tagság csak memóriában él a <code>biz_core</code>-ban (element data: <code>biz:member</code>). Nincs DB sor, így újraindításkor és lecsatlakozáskor magától eltűnik. A tagnak lehet saját cége is; a két szerep független.</p>
+  <figure>
+    <div class="phones">
+      <div class="phone"><div class="ph-top"><span>14:05</span><span>▮▮▮</span></div>
+        <div class="ph-head">Organization</div>
+        <div class="ph-tabs"><span class="on">Members</span><span>Invites</span></div>
+        <div class="ph-sub">DrAndrew112's organization · 1/3</div>
+        <div class="ph-row"><div><b>Laptop112</b><small>Associate · 24 min</small></div><span class="ph-btn red">Remove</span></div>
+        <div class="ph-sub">Invite a player</div>
+        <div class="ph-row"><div><b>NightOwl</b><small>120 m away</small></div><span class="ph-btn">Invite</span></div>
+        <div class="ph-row"><div><b>Vandor_HU</b><small>1.4 km away</small></div><span class="ph-btn">Invite</span></div>
+        <div class="ph-cap">Alapító nézet</div>
+      </div>
+      <div class="phone"><div class="ph-top"><span>14:05</span><span>▮▮▮</span></div>
+        <div class="ph-head">Organization</div>
+        <div class="ph-tabs"><span>Members</span><span class="on">Invites · 1</span></div>
+        <div class="ph-card"><b>Kovács Holding</b><small>Founder: Kovacs · weed farm, casino</small><small>Expires in 1:42</small>
+          <div style="display:flex;gap:6px;margin-top:8px"><span class="ph-btn">Accept</span><span class="ph-btn ghost">Decline</span></div></div>
+        <div class="ph-note">You keep your own organization. Membership ends when you leave or disconnect.</div>
+        <div class="ph-cap">Meghívott nézet</div>
+      </div>
+      <div class="phone"><div class="ph-top"><span>14:06</span><span>▮▮▮</span></div>
+        <div class="ph-head">Organization</div>
+        <div class="ph-tabs"><span class="on">Membership</span></div>
+        <div class="ph-card"><b>Kovács Holding</b><small>Associate since 14:06</small><small>Your share: 80% of your deliveries</small></div>
+        <div class="ph-row"><div><b>Kovacs</b><small>Founder · online</small></div></div>
+        <div class="ph-row"><div><b>Laptop112</b><small>Associate (you)</small></div></div>
+        <span class="ph-btn red" style="display:block;text-align:center;margin-top:12px">Leave organization</span>
+        <div class="ph-cap">Tag nézet</div>
+      </div>
+    </div>
+    <figcaption>6. ábra – Az új ui_phone app három nézete. A meghívottnak a telefon csenget és ui_core értesítést kap.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="box"><h4>Szabályok</h4><ul>
+      <li>Meghívni csak online, ugyanazon az instance-on lévő játékost lehet. A meghívás 2 perc után lejár.</li>
+      <li>Egy játékos egyszerre egy másik cég tagja lehet. A saját cégébe nem hívhatja magát.</li>
+      <li>Legfeljebb 3 tag cégenként (javaslat) → legfeljebb 4 szállító jármű, 160 egység.</li>
+    </ul></div>
+    <div class="box"><h4>Megszűnik, ha…</h4><ul>
+      <li>a tag kilép az appban,</li>
+      <li>a tag lecsatlakozik,</li>
+      <li>az alapító eltávolítja,</li>
+      <li>az alapító lecsatlakozik (a cég szimulációja leáll, így minden tagság is).</li>
+    </ul></div>
+    <div class="box"><h4>A tag megteheti</h4><ul>
+      <li>belép a cég irodájába és telephelyeire,</li>
+      <li>vezeti a szállító járművet, segít a küldetésekben,</li>
+      <li>látja a cég HUD-ját a telephelyen.</li>
+    </ul></div>
+    <div class="box"><h4>A tag nem teheti</h4><ul>
+      <li>pénzügyek, befizetés/kivét, vásárlás, eladás,</li>
+      <li>küldetés indítása (azt csak az alapító),</li>
+      <li>név- és székhelyváltás.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ============ LOCATIONS ============ -->
+<section id="helyszinek">
+  <h2>Helyszínek</h2>
+  <p class="sub">Végleges induló készlet: 6 iroda, 1 fűfarm, 1 kaszinó. A „~” jelű koordinátákat építéskor claude-mcp-vel mérjük be.</p>
+  <figure class="fig">
+    <svg viewBox="0 0 600 600" width="100%" style="max-width:600px;display:block;margin:0 auto" role="img" aria-label="San Andreas vázlatos térkép a helyszínekkel">
+      <rect width="600" height="600" fill="#cfe3ec"/>
+      <path d="M40 40 L 560 40 L 570 300 L 560 560 L 260 560 L 230 470 L 140 470 L 40 420 Z" fill="#e8e0c8" stroke="#b9ae8c"/>
+      <path d="M40 40 L 300 40 L 300 230 L 150 260 L 40 230 Z" fill="#e9cf9c" opacity=".85"/>
+      <path d="M40 230 L 110 250 L 120 330 L 40 350 Z" fill="#cfe3ec"/>
+      <rect x="370" y="60" width="170" height="150" rx="10" fill="#d9c4dc" opacity=".8"/>
+      <rect x="40" y="150" width="80" height="230" rx="10" fill="#c9d6e8" opacity=".95"/>
+      <rect x="350" y="390" width="200" height="150" rx="10" fill="#cfe0c6" opacity=".95"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#4b4636" font-weight="500">
+        <text x="455" y="80" text-anchor="middle">LAS VENTURAS</text>
+        <text x="80" y="398" text-anchor="middle">SAN FIERRO</text>
+        <text x="450" y="556" text-anchor="middle">LOS SANTOS</text>
+        <text x="200" y="175" text-anchor="middle" fill="#8a6a2a">BONE COUNTY</text>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#1b2430">
+        <circle cx="473" cy="464" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="484" y="468">Commerce Tower</text>
+        <circle cx="450" cy="432" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="461" y="428">Downtown Plaza</text>
+        <circle cx="111" cy="212" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="122" y="208">SF Financial</text>
+        <circle cx="57" cy="266" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="40" y="294" font-size="10.5">Queens Office</text>
+        <circle cx="541" cy="188" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="482" y="176">LV Civic</text>
+        <circle cx="490" cy="90" r="7" fill="#0d6b4f" stroke="#fff" stroke-width="2"/><text x="501" y="101">Redsands Tower</text>
+        <circle cx="261" cy="77" r="8" fill="#3f8f2e" stroke="#fff" stroke-width="2"/><text x="226" y="100" font-weight="600">Las Brujas farm</text>
+        <circle cx="466" cy="75" r="8" fill="#9a6b00" stroke="#fff" stroke-width="2"/><text x="396" y="58" font-weight="600">The Casino</text>
+      </g>
+    </svg>
+    <div class="legend"><span><i style="background:#0d6b4f"></i>Irodaépület (székhely)</span><span><i style="background:#3f8f2e"></i>Fűfarm</span><span><i style="background:#9a6b00"></i>Kaszinó</span></div>
+    <figcaption>7. ábra – Vázlatos térkép, a pozíciók a GTA koordináták arányában.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Telephely</th><th>Hely</th><th>Bejárat (kint)</th><th>Belső</th><th class="num">Ár (€)</th><th class="num">Rezsi / 2 h</th></tr>
+    <tr><td>Commerce Tower</td><td>Los Santos</td><td class="mono">1728, -1637, 20</td><td>Executive</td><td class="num">1 200 000</td><td class="num">5 000</td></tr>
+    <tr><td>Downtown Plaza</td><td>Los Santos</td><td class="mono">~1500, -1320</td><td>Standard</td><td class="num">650 000</td><td class="num">3 000</td></tr>
+    <tr><td>SF Financial</td><td>San Fierro</td><td class="mono">~-1890, 880</td><td>Executive</td><td class="num">950 000</td><td class="num">5 000</td></tr>
+    <tr><td>Queens Office</td><td>San Fierro</td><td class="mono">-2426, 338, 36</td><td>Standard</td><td class="num">450 000</td><td class="num">3 000</td></tr>
+    <tr><td>LV Civic</td><td>Las Venturas</td><td class="mono">2413, 1124, 10</td><td>Standard</td><td class="num">550 000</td><td class="num">3 000</td></tr>
+    <tr><td>Redsands Tower</td><td>Las Venturas</td><td class="mono">~1900, 2100</td><td>Starter</td><td class="num">250 000</td><td class="num">1 500</td></tr>
+    <tr><td>Las Brujas farm</td><td>Bone County</td><td class="mono">~-390, 2230, 42</td><td>Warehouse 2 (int 18)</td><td class="num">450 000</td><td class="num">3 000</td></tr>
+    <tr><td>The Casino</td><td>Redsands West</td><td class="mono">1659, 2250, 10</td><td>Casino (int 12)</td><td class="num">3 500 000</td><td class="num">12 000</td></tr>
+  </table></div>
+  <p><b>Irodai belsők:</b> <i>Executive</i> = „The Four Dragons Office” (interior 11), <i>Standard</i> = „Las Venturas Planning Dep.” (interior 3), <i>Starter</i> = „Record Label Hallway” (interior 3). A Four Dragons kaszinót (a fő kaszinó) nem használjuk.</p>
+</section>
+
+<!-- ============ WEB ============ -->
+<section id="regisztracio">
+  <h2>Webes regisztráció és cégjegyzék</h2>
+  <p class="sub"><code>biz_web</code>: <code>ui_browser</code> web-oldal (CEF) a <code>web_api</code> eszközkészlettel és térképével. Három oldal: Register, Registry (kereső), Top organizations.</p>
+  <figure>
+    <div class="game">
+      <div class="br-top"><span class="dot">‹</span><span class="url">sabusinessregistry.eu/register</span><span class="dot">✕</span></div>
+      <div class="site">
+        <div class="logo">San Andreas Business Registry</div>
+        <div class="stepper"><span>1 · Name</span><span class="on">2 · Headquarters</span><span>3 · Payment</span></div>
+        <div class="cols">
+          <div class="card">
+            <svg viewBox="0 0 400 260" width="100%" role="img" aria-label="Térképes székhelyválasztó">
+              <rect width="400" height="260" fill="#cfe3ec"/>
+              <path d="M20 15 L 385 15 L 390 140 L 385 245 L 170 245 L 150 205 L 90 205 L 20 180 Z" fill="#e8e0c8"/>
+              <path d="M20 15 L 200 15 L 200 100 L 100 110 L 20 100 Z" fill="#e9cf9c"/>
+              <g fill="#12355b" stroke="#fff" stroke-width="2"><circle cx="315" cy="200" r="6"/><circle cx="300" cy="186" r="6"/><circle cx="74" cy="94" r="6"/><circle cx="38" cy="116" r="6"/><circle cx="360" cy="82" r="6"/></g>
+              <circle cx="326" cy="40" r="10" fill="#e0a526" stroke="#fff" stroke-width="3"/>
+              <rect x="210" y="52" width="150" height="40" rx="4" fill="#fff" stroke="#c4ccd6"/>
+              <text x="218" y="68" font-family="IBM Plex Sans, sans-serif" font-size="11" font-weight="600" fill="#1b2430">Redsands Tower</text>
+              <text x="218" y="84" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4a5668">Starter · € 250,000</text>
+              <text x="10" y="252" font-family="IBM Plex Sans, sans-serif" font-size="8" fill="#4a5668">Provided by OpenSanAndreas</text>
+            </svg>
+          </div>
+          <div class="card">
+            <div style="font-weight:600;margin-bottom:6px">Organization name</div>
+            <input id="m-orgname" value="DrAndrew112's organization" aria-label="Organization name (példa)">
+            <div style="font-weight:600;margin:12px 0 4px">Summary</div>
+            <div class="sum"><span>Registration fee</span><span>€ 50,000</span></div>
+            <div class="sum"><span>Headquarters: Redsands Tower</span><span>€ 250,000</span></div>
+            <div class="sum t"><span>Total (from bank)</span><span>€ 300,000</span></div>
+            <div class="btn">Register organization</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>8. ábra – Regisztráció. A név alapértéke „&lt;playername&gt;'s organization”.</figcaption>
+  </figure>
+  <figure>
+    <div class="game">
+      <div class="br-top"><span class="dot">‹</span><span class="url">sabusinessregistry.eu/top</span><span class="dot">✕</span></div>
+      <div class="site">
+        <div class="logo">San Andreas Business Registry</div>
+        <div class="stepper"><span>Register</span><span>Registry</span><span class="on">Top organizations</span></div>
+        <div class="card" style="margin-bottom:10px"><input id="m-search" value="" placeholder="Search organizations or founders…" aria-label="Cégkereső (példa)"></div>
+        <div class="card" style="overflow-x:auto">
+          <table class="st">
+            <tr><th>#</th><th>Organization</th><th>Founder</th><th>Headquarters</th><th>Activities</th><th class="num">Value</th></tr>
+            <tr><td>1</td><td><b>Kovács Holding</b></td><td>Kovacs</td><td>Commerce Tower</td><td>Casino · Weed</td><td class="num">€ 6,940,000</td></tr>
+            <tr><td>2</td><td><b>DrAndrew112's organization</b></td><td>DrAndrew112</td><td>Redsands Tower</td><td>Casino · Weed</td><td class="num">€ 6,108,450</td></tr>
+            <tr><td>3</td><td><b>Desert Rose Ltd.</b></td><td>Laptop112</td><td>Commerce Tower</td><td>Weed</td><td class="num">€ 2,118,020</td></tr>
+            <tr><td>4</td><td><b>Night Owl Org.</b></td><td>NightOwl</td><td>Commerce Tower</td><td>–</td><td class="num">€ 1,204,900</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <figcaption>9. ábra – Toplista cégérték szerint. A Registry fül ugyanez a lista keresővel, név szerint rendezve, adatlappal (alapítás dátuma, székhely, tevékenységek).</figcaption>
+  </figure>
+  <h3>Szabályok</h3>
+  <ul>
+    <li>Játékosonként 1 cég. Ha már van, a Register oldal a „Move headquarters” lehetőséget adja.</li>
+    <li>Költség: 50 000 € regisztráció + az iroda ára a játékos bankszámlájáról. Utána minden kiadás a céges számláról megy.</li>
+    <li>Név: 3–32 karakter, egyedi, szűrt szavak.</li>
+    <li>Székhelyváltás: az új irodát a céges számla fizeti, a régi <code>sellRatio</code> szerint visszajár.</li>
+    <li>A jegyzékben nem látszik az egyenleg és a piszkos pénz, csak a cégérték összesen.</li>
+    <li>Csak játékon belül: nincs <code>&lt;html&gt;</code> bejegyzés a meta.xml-ben, és a szerverhívások csak a játékon belüli bridge-ről érkezhetnek.</li>
+  </ul>
+</section>
+
+<!-- ============ PC ============ -->
+<section id="szamitogep">
+  <h2>Irodai számítógép – OrgOS</h2>
+  <p class="sub">Az irodában egy számítógép objektum, rajta <code>ui_interactobject</code> menü: „Use computer”. Csak az alapító használhatja.</p>
+  <figure>
+    <div class="game">
+      <div class="os">
+        <nav><div class="brand">OrgOS</div><a class="on" href="#szamitogep">Overview</a><a href="#penzugy">Finance</a><a href="#szamitogep">Activities</a><a href="#szamitogep">Properties</a><a href="#szamitogep">Settings</a></nav>
+        <div class="body">
+          <h5>DrAndrew112's organization</h5>
+          <div class="kpis">
+            <div class="kpi"><div class="k">Balance</div><div class="v">€ 1,284,350</div><div class="k" style="margin-top:4px">clean 1,061,150 · dirty 223,200</div></div>
+            <div class="kpi"><div class="k">Income · 7 days</div><div class="v pos">+€ 412,900</div></div>
+            <div class="kpi"><div class="k">Expenses · 7 days</div><div class="v neg">−€ 138,400</div></div>
+            <div class="kpi"><div class="k">Company value</div><div class="v">€ 6,108,450</div></div>
+          </div>
+          <table class="gt">
+            <tr><th>DATE</th><th>CATEGORY</th><th>DESCRIPTION</th><th style="text-align:right">AMOUNT</th></tr>
+            <tr><td>10-22 14:05</td><td>Weed · sale <span class="dtag">dirty</span></td><td>Delivery by DrAndrew112 (40 units)</td><td class="p">+€ 60,000</td></tr>
+            <tr><td>10-22 14:03</td><td>Weed · sale <span class="dtag">dirty</span></td><td>Delivery by Laptop112 (40 units) · 20% share</td><td class="p">+€ 12,000</td></tr>
+            <tr><td>10-22 13:00</td><td>Casino · hour</td><td>The Casino, hour result</td><td class="p">+€ 21,640</td></tr>
+            <tr><td>10-22 12:40</td><td>Upkeep</td><td>3 properties, 2 h</td><td class="n">−€ 16,500</td></tr>
+            <tr><td>10-22 12:10</td><td>Deposit</td><td>From DrAndrew112's bank account</td><td class="p">+€ 50,000</td></tr>
+          </table>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><span class="gbtn">Deposit</span><span class="gbtn">Withdraw</span><span class="gbtn ghost">Buy property</span><span class="gbtn red">Sell organization</span></div>
+        </div>
+      </div>
+    </div>
+    <figcaption>10. ábra – OrgOS áttekintés.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>App</th><th>Mit tud</th></tr>
+    <tr><td>Overview</td><td>Egyenleg (tiszta/piszkos), 7 napos bevétel/kiadás, cégérték, utolsó tranzakciók, figyelmeztetések.</td></tr>
+    <tr><td>Finance</td><td>Főkönyv szűrőkkel, grafikon, <b>Deposit</b> (saját bankból), <b>Withdraw</b> (tiszta vagy piszkos részből), következő rezsi ideje.</td></tr>
+    <tr><td>Activities</td><td>Tevékenységi körök kártyái, állapot, aktív heti szorzó.</td></tr>
+    <tr><td>Properties</td><td>Saját telephelyek, eladás; katalógus árral, „Set GPS”.</td></tr>
+    <tr><td>Settings</td><td>Cégnév, székhelyváltás (weboldalra visz), <b>Sell organization</b> (megerősítő lépéssel, mutatja a 60%-os összeget).</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ FINANCE ============ -->
+<section id="penzugy">
+  <h2>Pénzügy, rezsi, pénzmosás, cégeladás</h2>
+  <p class="sub">Minden céges bevétel és kiadás a céges számlán megy. Kivétel: a regisztráció (a játékos fizeti), a befizetés (saját bank → cég) és a kivét (cég → saját bank).</p>
+  <div class="grid2">
+    <div class="box"><h4>biz_core pénz exportok</h4><ul class="mono" style="font-size:12.5px">
+      <li>getCompanyBalance(id) → clean, dirty</li>
+      <li>creditCompany(id, amount, category, desc, actor, {dirty})</li>
+      <li>debitCompany(id, amount, category, desc, actor)</li>
+      <li>depositFromPlayer(player, amount)</li>
+      <li>withdrawToPlayer(player, amount, part)</li>
+      <li>getCompanyValue(id) · sellCompany(player)</li>
+    </ul></div>
+    <div class="box"><h4>Tiszta és piszkos pénz</h4><ul>
+      <li>Illegális bevétel (fű eladás) a piszkos részbe megy.</li>
+      <li>Befizetés, kaszinó, telephely-eladás: tiszta.</li>
+      <li>Kiadás: előbb a tiszta részt terheli, utána a piszkosat. Így a piszkos pénz megmarad, amíg nem mossák vagy veszik ki.</li>
+      <li>Piszkos pénz kivétele engedélyezett. A fiók accDatájában gyűlik (<code>biz_dirty_withdrawn</code>), a későbbi következményekhez.</li>
+    </ul></div>
+    <div class="box"><h4>Pénzmosás (nem kötelező)</h4><ul>
+      <li>Feltétel: a cégnek van kaszinója.</li>
+      <li>A kaszinó gépén „Launder”: összeg a mosási sorba (<code>launder_queue</code>).</li>
+      <li>Minden kaszinóórában legfeljebb 40 000 € tisztul meg, 12% díjjal.</li>
+      <li>Így a mosás is csak online idő alatt halad.</li>
+    </ul></div>
+    <div class="box"><h4>Rezsi (2 óránként, online)</h4><ul>
+      <li>Iroda: 1 500 / 3 000 / 5 000 € (Starter / Standard / Executive).</li>
+      <li>Fűfarm: 3 000 €, kaszinó: 12 000 €.</li>
+      <li>Ha a számla nem fedezi: értesítés, a termelés és a kaszinó szünetel, amíg a következő tick ki nem tudja fizetni. A számla nem megy negatívba.</li>
+    </ul></div>
+  </div>
+  <h3>Cégeladás (a cég megszűnése)</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 700 150" width="100%" role="img" aria-label="Cégérték összetétele és a 60 százalékos kifizetés">
+      <rect width="700" height="150" fill="var(--paper)"/>
+      <!-- total 5,512,300 -> 640 px; parts: properties 4,450,000 (517px), upgrades 400,000 (46), stock 92,000 (11), balance 1,284,350? keep example sums -->
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5">
+        <rect x="30" y="30" width="440" height="34" fill="var(--accent)"/><text x="40" y="52" fill="var(--paper)" font-weight="600">Telephelyek 4 200 000</text>
+        <rect x="470" y="30" width="42" height="34" fill="var(--blue)"/>
+        <rect x="512" y="30" width="23" height="34" fill="var(--gold)"/>
+        <rect x="535" y="30" width="135" height="34" fill="var(--muted)"/><text x="543" y="52" fill="var(--paper)" font-weight="600">Egyenleg 1 284 350</text>
+        <text x="470" y="82" fill="var(--blue)">Fejlesztések 400 000</text>
+        <text x="470" y="98" fill="var(--gold)">Készlet 224 100 (87 product, 104 supply)</text>
+        <rect x="30" y="108" width="384" height="20" fill="var(--gold-soft)" stroke="var(--gold)"/>
+        <text x="40" y="122" fill="var(--fg)" font-weight="600">60% a bankszámlára: € 3 665 070</text>
+      </g>
+    </svg>
+    <figcaption>11. ábra – Példa: cégérték 6 108 450 €, a tulaj 3 665 070 €-t kap. Utána minden egység, a név és a főkönyv archiválódik (status = sold), a név felszabadul.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Kategória</th><th>Irány</th><th>Forrás</th></tr>
+    <tr><td><code>deposit</code> / <code>withdrawal</code></td><td>+ / −</td><td>befizetés és kivét</td></tr>
+    <tr><td><code>property.buy</code> / <code>property.sell</code> / <code>property.upgrade</code></td><td>− / + / −</td><td>biz_core, biz_weed</td></tr>
+    <tr><td><code>weed.supply</code></td><td>−</td><td>supply rendelés</td></tr>
+    <tr><td><code>weed.sale</code></td><td>+ (piszkos)</td><td>alapító fuvarja 100%, tag fuvarja 20%</td></tr>
+    <tr><td><code>casino.hour</code></td><td>+ / −</td><td>órás eredmény</td></tr>
+    <tr><td><code>launder</code></td><td>piszkos → tiszta, −díj</td><td>kaszinóóra</td></tr>
+    <tr><td><code>upkeep</code></td><td>−</td><td>2 óránként</td></tr>
+    <tr><td><code>admin.adjust</code></td><td>+ / −</td><td>v_admin, indoklással</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ WEED ============ -->
+<section id="fu">
+  <h2>Fű termesztés (<code>biz_weed</code>)</h2>
+  <p class="sub">Illegális supply/deliver üzlet. A supply az alapító online ideje alatt alakul termékké.</p>
+  <figure class="fig">
+<pre class="mermaid">
+flowchart LR
+  BUY["Supply vásárlás<br/>900 €/egység<br/>30 perc online idő után érkezik"] --> S[(Supply<br/>100 / 160)]
+  STEAL["Supply lopás<br/>küldetés · ingyen<br/>20–30 egység"] --> S
+  S -- "1 egység / 3 perc<br/>staff: 2 perc" --> P[(Product<br/>100 / 160)]
+  P --> SELL["Eladás: 40 egység / jármű<br/>+40 minden online tag után<br/>1 500 €/egység × heti szorzó"]
+  SELL -->|alapító| CA[Cég 100%]
+  SELL -->|tag| AS[Tag 80% · Cég 20%]
+  SELL -->|idegen| PL[Idegen 60% · Cég 0%]
+</pre>
+    <figcaption>12. ábra – Készlet-gazdaság. Online óránként 20 termék (staff-fal 30), azaz 30 000 € (45 000 €) alapérték.</figcaption>
+  </figure>
+  <h3>Fejlesztések (telephely gépén, egyszeri vásárlás)</h3>
+  <div class="tbl"><table>
+    <tr><th>Fejlesztés</th><th>Hatás</th><th class="num">Ár (€)</th></tr>
+    <tr><td>Capacity</td><td>Supply és product maximum 100 → 160</td><td class="num">220 000</td></tr>
+    <tr><td>Staff</td><td>Termelési idő 180 s → 120 s egységenként (+50% sebesség)</td><td class="num">180 000</td></tr>
+  </table></div>
+  <p>A fejlesztés ára a cégértékbe számít (<code>upgrades_paid</code>). Belül látszik is: a capacity több növényt és polcot, a staff 2–3 dolgozó pedet ad a farmra.</p>
+
+  <h3>HUD a telephelyen belül</h3>
+  <figure>
+    <div class="game"><div class="scene" style="min-height:240px">
+      <div class="lbl">Warehouse 2 · dimension 30044</div>
+      <div class="stats">
+        <div class="stat" style="flex-direction:column;align-items:stretch;gap:0"><div style="display:flex;justify-content:space-between"><span>Supply</span><b>104 / 160</b></div><div class="bar green"><i style="width:65%"></i></div></div>
+        <div class="stat" style="flex-direction:column;align-items:stretch;gap:0"><div style="display:flex;justify-content:space-between"><span>Product</span><b>87 / 160</b></div><div class="bar gold"><i style="width:54%"></i></div></div>
+        <div class="stat"><span>Value</span><b>€ 130,500</b></div>
+      </div>
+    </div></div>
+    <figcaption>13. ábra – <code>ui_core</code> stat trackerek az új <code>progress</code> sávval és a Value sorral. Tagoknak is látszik. Ha az alapító offline lenne, a tag be sem juthat (a tagság addigra megszűnt).</figcaption>
+  </figure>
+
+  <h3>Fűfarm számítógép (Weed app)</h3>
+  <figure>
+    <div class="game"><div class="os">
+      <nav><div class="brand">OrgOS</div><a class="on" href="#fu">Weed farm</a><a href="#fu">Upgrades</a><a href="#penzugy">Finance</a></nav>
+      <div class="body" style="position:relative">
+        <h5>Las Brujas farm</h5>
+        <div class="kpis">
+          <div class="wcard"><div class="muted" style="font-size:11px">SUPPLY</div><div style="font:600 20px var(--f-mono)">104 / 160</div><div class="bar green"><i style="width:65%"></i></div><div class="muted" style="font-size:11.5px;margin-top:6px">+20 arriving in 12 min</div></div>
+          <div class="wcard"><div class="muted" style="font-size:11px">PRODUCT</div><div style="font:600 20px var(--f-mono)">87 / 160</div><div class="bar gold"><i style="width:54%"></i></div><div class="muted" style="font-size:11.5px;margin-top:6px">Weekly bonus: sales ×1.5</div></div>
+        </div>
+        <div class="modal">
+          <b style="font-size:15px">Start delivery</b>
+          <div class="muted" style="margin:6px 0 10px">Associates online: 1 · max 80 units</div>
+          <div class="seg"><span>40</span><span class="on">80</span></div>
+          <div class="warn">80 units need <b>2 vehicles</b>. Each vehicle goes to a different buyer and needs its own driver. Undelivered cargo is lost after <b>30 minutes</b>. Associates receive 80% of their own delivery.</div>
+          <div style="display:flex;gap:8px;margin-top:12px"><span class="gbtn red">Start (2 vehicles)</span><span class="gbtn ghost">Cancel</span></div>
+        </div>
+      </div>
+    </div></div>
+    <figcaption>14. ábra – Eladás indítása egy online taggal: külön figyelmeztetés a több járműről. Egyedül a választó nem jelenik meg, a limit 40.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ MISSIONS ============ -->
+<section id="kuldetesek">
+  <h2>Küldetések (<code>biz_missions</code>)</h2>
+  <p class="sub">Külön resource, sablonokkal (helyszín, őrök, jármű/csomag). Instance-helyi. Csak az alapító indíthat; a tagok segíthetnek.</p>
+  <h3>Supply lopás</h3>
+  <figure class="fig">
+<pre class="mermaid">
+sequenceDiagram
+  participant P as Alapító (+ tagok)
+  participant PC as OrgOS (farm)
+  participant M as biz_missions
+  participant AI as ai_peds
+  participant W as biz_weed
+  P->>PC: Steal supply
+  PC->>M: startMission("weed_steal", unitId)
+  M->>AI: createAIPed × 4–8, behaviour enemy, task guard
+  M-->>P: v_radar objektív + kör terület, ui_core "Guards left 6"
+  P->>AI: lelövik az őröket
+  alt jármű változat
+    P->>M: beül a supply furgonba
+  else csomag változat
+    P->>M: felveszi a ládát (v_inventory tétel, kézben)
+  end
+  M-->>P: waypoint a farm bejáratához
+  P->>M: megérkezik a farm markerébe
+  M->>W: addSupply(unitId, 20–30)
+  M-->>P: Notification "Supply delivered: +24"
+</pre>
+    <figcaption>15. ábra – Supply lopás. Bukás: a jármű megsemmisül vagy a láda elvész.</figcaption>
+  </figure>
+
+  <h3>Eladás: több jármű, külön célpontok</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Két szállító jármű két külön vevőhöz">
+      <rect width="700" height="250" fill="var(--paper)"/>
+      <rect x="40" y="100" width="90" height="50" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+      <text x="85" y="122" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="var(--fg)">Las Brujas</text>
+      <text x="85" y="139" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)">80 egység</text>
+      <path d="M130 115 C 260 40, 420 40, 560 55" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+      <path d="M130 135 C 260 210, 420 210, 560 195" fill="none" stroke="var(--blue)" stroke-width="2.5"/>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="12">
+        <rect x="560" y="35" width="120" height="42" rx="6" fill="var(--paper)" stroke="var(--accent)"/>
+        <text x="570" y="52" fill="var(--fg)" font-weight="600">Buyer A · El Quebrados</text>
+        <text x="570" y="68" fill="var(--muted)" font-size="10.5" font-family="IBM Plex Mono, monospace">Van #1 · 40</text>
+        <rect x="560" y="175" width="120" height="42" rx="6" fill="var(--paper)" stroke="var(--blue)"/>
+        <text x="570" y="192" fill="var(--fg)" font-weight="600">Buyer B · Fort Carson</text>
+        <text x="570" y="208" fill="var(--muted)" font-size="10.5" font-family="IBM Plex Mono, monospace">Van #2 · 40</text>
+        <text x="300" y="42" fill="var(--accent)">Alapító vezet → cég 60 000 €</text>
+        <text x="290" y="222" fill="var(--blue)">Tag vezet → tag 48 000 € · cég 12 000 €</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--red)">
+        <text x="300" y="128">⏱ 30:00 közös határidő</text>
+        <text x="300" y="146">50% esély: üldözők</text>
+      </g>
+    </svg>
+    <figcaption>16. ábra – 80 egység két járművel, két különböző vevőhöz (egymástól legalább 600 m). Szorzó nélküli példa (40 × 1 500 €).</figcaption>
+  </figure>
+  <figure class="fig">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Spawn: Start (termék levonva, 50% dobás: lesz-e ellenség)
+  Spawn --> Driving: cég embere beül
+  Driving --> Attacked: ha a dobás igen, üldözők érkeznek
+  Attacked --> Driving: üldözők leszerelve
+  Driving --> Hijacked: idegen ül a volán mögé
+  Attacked --> Hijacked: idegen ül a volán mögé
+  Hijacked --> Driving: cég embere visszaszerzi
+  Driving --> Delivered: célba ér (alapító vagy tag)
+  Hijacked --> DeliveredThief: célba ér (idegen)
+  Driving --> Lost: 30 perc letelt / jármű megsemmisült
+  Hijacked --> Lost: 30 perc letelt / jármű megsemmisült
+  Driving --> Disconnected: a sofőr vagy az alapító lecsatlakozik
+  Delivered --> [*]: kifizetés a sofőr szerepe szerint
+  DeliveredThief --> [*]: 60% az idegen bankjába
+  Lost --> [*]: rakomány elveszett
+  Disconnected --> [*]: 50% vissza a készletbe, jármű eltűnik
+</pre>
+    <figcaption>17. ábra – Egy szállító jármű állapotai. Minden jármű külön fut, a határidő közös.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Ki szállítja le</th><th class="num">Sofőr kapja</th><th class="num">Cég kapja</th><th>Megjegyzés</th></tr>
+    <tr><td>Alapító</td><td class="num">–</td><td class="num">100%</td><td>Piszkos pénz a céges számlára.</td></tr>
+    <tr><td>Ideiglenes tag</td><td class="num">80%</td><td class="num">20%</td><td>A tag része a saját bankjába. Nem duplikálódik.</td></tr>
+    <tr><td>Idegen (eltérítő)</td><td class="num">60%</td><td class="num">0%</td><td>Azonos serial/IP esetén nincs kifizetés.</td></tr>
+  </table></div>
+  <p>A heti szorzó a teljes értékre vonatkozik, a felosztás előtt.</p>
+  <div class="grid2">
+    <div class="box"><h4>Látható szállítmány</h4><ul>
+      <li>Cégen kívüli játékos 800 m-en belül blipet lát minden szállító járművön, és egyszer értesítést kap: „A drug shipment is nearby”.</li>
+      <li>900 m felett a blip eltűnik (hiszterézis, ne villogjon).</li>
+      <li>A cég emberei mindig látják a saját járműveiket.</li>
+    </ul></div>
+    <div class="box"><h4>Eltérítés</h4><ul>
+      <li>Idegen a volánnál: „You stole a delivery. Bring it to …” + waypoint ugyanarra a vevőre.</li>
+      <li>A cég „Recover the van” objektívet kap.</li>
+      <li>A 30 perces határidő az idegenre is vonatkozik.</li>
+    </ul></div>
+    <div class="box"><h4>Lecsatlakozás</h4><ul>
+      <li>Tag lecsatlakozik: az ő járműve eltűnik, rakománya 50%-a vissza a készletbe.</li>
+      <li>Alapító lecsatlakozik: minden jármű eltűnik, mindegyik rakomány 50%-a vissza.</li>
+      <li>A visszaírás kapacitás fölé nem mehet.</li>
+    </ul></div>
+    <div class="box"><h4>Supply lopás határideje</h4><p>A 30 perces határidő az eladásra kötelező. A supply lopásra is javaslok 30 percet, hogy egy elhagyott küldetés ne blokkolja a farmot.</p></div>
+  </div>
+</section>
+
+<!-- ============ AI ============ -->
+<section id="ai">
+  <h2>Új AI viselkedés: üldöző jármű</h2>
+  <p class="sub">Csak az eladások 50%-ában. Az <code>ai_land_traffic</code> új <code>pursuit</code> viselkedése mozgó célelemet követ a sávhálón; közel érve megáll, a sofőr és utasok kiszállnak és <code>enemy</code>-ként támadnak.</p>
+  <figure class="fig">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Approach: createScriptedVehicle, behaviour pursuit, target = furgon
+  Approach --> Approach: 3 mp-enként új útvonal a cél<br/>előrejelzett pozíciójához
+  Approach --> Close: táv &lt; 60 m
+  Close --> Engage: táv &lt; 25 m vagy a cél lassú (&lt; 25 km/h)
+  Close --> Approach: táv &gt; 90 m
+  Engage --> [*]: onTrafficVehiclePursuitEngage<br/>→ release fizikai járművé<br/>→ adoptTrafficDriver, behaviour enemy
+  Approach --> Lost: táv &gt; 600 m vagy nincs útvonal 20 mp-ig
+  Lost --> [*]: onTrafficVehicleRemoved("lost")
+</pre>
+    <figcaption>18. ábra – Pursuit állapotgép.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Változás</th><th>Hol</th><th>Megjegyzés</th></tr>
+    <tr><td><code>behaviour = "pursuit"</code>, <code>target</code>, <code>engageDist</code>, <code>speedFactor</code>, <code>ignoreSignals</code></td><td>ai_land_traffic</td><td>1.3× sebesség, piros lámpán áthajthat.</td></tr>
+    <tr><td><code>onTrafficVehiclePursuitEngage</code></td><td>ai_land_traffic</td><td>A küldetés dönt a kiszállásról.</td></tr>
+    <tr><td>Spawn a látótéren kívül</td><td>biz_missions</td><td><code>isPointSeenByPlayers</code> + 250–400 m-re.</td></tr>
+    <tr><td>Utasok</td><td>ai_peds</td><td><code>createAIPed</code> <code>vehicle, seat</code> opcióval.</td></tr>
+    <tr><td>Hullámok</td><td>biz_missions</td><td>Járművenként 1–2 hullám, egyszerre max 2 üldöző / szállító.</td></tr>
+  </table></div>
+  <div class="note">Korlát: a puppet járművek sávhoz kötöttek, terepen nem üldöznek. A vevőpontok ezért úton elérhetőek.</div>
+</section>
+
+<!-- ============ CASINO ============ -->
+<section id="kaszino">
+  <h2>Kaszinó (<code>biz_casino</code>)</h2>
+  <p class="sub">Legális, passzív jövedelem, órás szimulációval, csak az alapító online ideje alatt. Heti bónusz nem vonatkozik rá.</p>
+  <figure class="fig">
+    <svg viewBox="0 0 640 260" width="100%" role="img" aria-label="Példa: 14 online óra kaszinó eredménye">
+      <rect width="640" height="260" fill="var(--paper)"/>
+      <!-- y: 0 at 170, 10k = 30px ; range -20k..+40k -->
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="60" y1="50" x2="620" y2="50"/><line x1="60" y1="110" x2="620" y2="110"/><line x1="60" y1="230" x2="620" y2="230"/>
+      </g>
+      <line x1="60" y1="170" x2="620" y2="170" stroke="var(--muted)" stroke-width="1.2"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)" text-anchor="end">
+        <text x="52" y="54">+40k</text><text x="52" y="114">+20k</text><text x="52" y="174">0</text><text x="52" y="234">−20k</text>
+      </g>
+      <!-- values (k): 21 25 18 23 -14 26 22 19 17 24 38 20 16 23 -->
+      <g fill="var(--accent)">
+        <rect x="72" y="107" width="28" height="63"/><rect x="112" y="95" width="28" height="75"/><rect x="152" y="116" width="28" height="54"/><rect x="192" y="101" width="28" height="69"/>
+        <rect x="272" y="92" width="28" height="78"/><rect x="312" y="104" width="28" height="66"/><rect x="352" y="113" width="28" height="57"/><rect x="392" y="119" width="28" height="51"/><rect x="432" y="98" width="28" height="72"/>
+        <rect x="512" y="110" width="28" height="60"/><rect x="552" y="122" width="28" height="48"/><rect x="592" y="101" width="28" height="69"/>
+      </g>
+      <rect x="232" y="170" width="28" height="42" fill="var(--red)"/>
+      <rect x="472" y="56" width="28" height="114" fill="var(--gold)"/>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11">
+        <text x="246" y="226" text-anchor="middle" fill="var(--red)">Jackpot</text>
+        <text x="486" y="48" text-anchor="middle" fill="var(--gold)">Whale</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)" text-anchor="middle">
+        <text x="86" y="250">1</text><text x="246" y="250">5</text><text x="446" y="250">10</text><text x="606" y="250">14</text>
+      </g>
+      <text x="340" y="22" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="var(--fg)">Órás eredmény rezsi előtt (példa, ezer €, online órák)</text>
+    </svg>
+    <figcaption>19. ábra – A modell átlaga ≈ 21 000 €/online óra (a példa 14 órája ≈ 20 000 €). A 12 000 € / 2 h rezsi után ≈ 15 000 €/óra nettó, megtérülés ≈ 230 online óra.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="box"><h4>Órás szimuláció</h4><ul>
+      <li>Eredmény = 22 000 € × napszak szorzó (este 1.2) × véletlen (normál, σ = 25%).</li>
+      <li>Események óránként 8% eséllyel: Jackpot (−10–25 000 €), Whale (+20–45 000 €), Inspection (−5 000 €).</li>
+      <li>Ugyanebben a lépésben fut a pénzmosás (max 40 000 €, 12% díj).</li>
+      <li>Ha szünetel (nincs rezsi fedezet), nincs órás eredmény.</li>
+    </ul></div>
+    <div class="box"><h4>Átszámolás a v1-hez</h4><p>A v1 napi számai (45 000 € bruttó, 20 000 € költség) mindig-futó szimulációra szóltak. Online-only módban órás értéket kell adni, különben a kaszinó sosem térülne meg. A fenti számokat úgy hangoltam, hogy a kaszinó online óránként a fűfarm fele-kétharmada legyen kockázat és küldetés nélkül.</p></div>
+  </div>
+</section>
+
+<!-- ============ INAC ============ -->
+<section id="inac">
+  <h2>ui_inac: My organization</h2>
+  <p class="sub">Legfelső menüpont a Fast Travel fölött, csak ha a játékosnak van cége (element data <code>biz:company</code>). A tagság nem itt, hanem a telefonon kezelhető.</p>
+  <figure>
+    <div class="game"><div class="scene" style="min-height:340px">
+      <div class="lbl">Interaction menu (M)</div>
+      <div class="inac">
+        <div class="h">Interaction Menu</div>
+        <div class="t"><span>Main</span><span>1/7</span></div>
+        <div class="i sel new"><span>My organization</span><span>›</span></div>
+        <div class="i"><span>Fast Travel</span><span>‹ LS Airport ›</span></div>
+        <div class="i"><span>Vehicle</span><span>›</span></div>
+        <div class="i"><span>Collectibles</span><span>›</span></div>
+        <div class="i"><span>Stats</span><span>›</span></div>
+        <div class="i"><span>Preferences</span><span>›</span></div>
+      </div>
+      <div class="inac" style="left:auto;right:24px">
+        <div class="h">My organization</div>
+        <div class="t"><span>DrAndrew112's org.</span><span>1/5</span></div>
+        <div class="i sel"><span>Rename organization</span><span>€ 10,000</span></div>
+        <div class="i"><span>Balance</span><span>€ 1,284,350</span></div>
+        <div class="i"><span>Set GPS</span><span>‹ Office ›</span></div>
+        <div class="i"><span>Properties</span><span>›</span></div>
+        <div class="i"><span>Associates</span><span>1/3 online</span></div>
+      </div>
+    </div></div>
+    <figcaption>20. ábra – Bal: új főmenüpont. Jobb: almenü. Az „Associates” sor csak kijelzés; a kezelés az Organization appban van.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ NOTIFICATIONS ============ -->
+<section id="ertesitesek">
+  <h2>Értesítések</h2>
+  <p class="sub">Nincs e-mail. Minden esemény <code>ui_core</code> értesítés (<code>addNotification</code>), a <code>biz_core</code> egy közös <code>notifyCompany(companyId, key, args, scope)</code> exporttal küldi. Scope: alapító, tagok, vagy mindkettő.</p>
+  <div class="tbl"><table>
+    <tr><th>Esemény</th><th>Ki kapja</th></tr>
+    <tr><td>Supply megérkezett · supply elfogyott · product megtelt</td><td>alapító, tagok</td></tr>
+    <tr><td>Rezsi levonva · rezsi nem fizethető, termelés szünetel</td><td>alapító</td></tr>
+    <tr><td>Kaszinó órás eredmény · mosás teljesült</td><td>alapító</td></tr>
+    <tr><td>Befizetés, kivét, vásárlás, eladás, fejlesztés, átnevezés</td><td>alapító</td></tr>
+    <tr><td>Meghívás érkezett · tag csatlakozott/kilépett/eltávolítva</td><td>érintett játékos, alapító</td></tr>
+    <tr><td>Küldetés: indult, ellenség érkezik, jármű eltérítve, leszállítva, elveszett, 5 perc van hátra</td><td>alapító, tagok</td></tr>
+    <tr><td>Szállítmány a közelben · ellopott szállítmány leszállítva</td><td>idegen játékos</td></tr>
+    <tr><td>Heti szorzó aktív (belépéskor)</td><td>alapító</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ STATS / ACHIEVEMENTS ============ -->
+<section id="merfoldkovek">
+  <h2>Statisztika és mérföldkövek</h2>
+  <p class="sub">Új <b>Business</b> kategória a <code>v_stats</code>-ban és 12 achievement a <code>v_achievements</code> configban. Mindegyik feltétel egy konkrét eseményhez kötött a <code>biz_*</code> resource-okban, így ténylegesen teljesíthető.</p>
+  <h3>Statisztikák (v_stats, „Business”)</h3>
+  <div class="tbl"><table>
+    <tr><th>Kulcs</th><th>Mit számol</th><th>Mikor nő</th></tr>
+    <tr><td><code>biz_value_peak</code></td><td>Legnagyobb cégérték</td><td>tick, vásárlás</td></tr>
+    <tr><td><code>biz_weed_sold</code></td><td>Eladott egységek</td><td>jármű leszállítva (alapító/tag)</td></tr>
+    <tr><td><code>biz_sales_income</code></td><td>Eladásból kapott pénz (saját rész)</td><td>kifizetés</td></tr>
+    <tr><td><code>biz_deliveries</code> / <code>biz_deliveries_lost</code></td><td>Sikeres / elveszett járművek</td><td>jármű vége</td></tr>
+    <tr><td><code>biz_supply_stolen</code> / <code>biz_supply_bought</code></td><td>Lopott / vett supply egység</td><td>jóváírás</td></tr>
+    <tr><td><code>biz_hijacks</code></td><td>Leszállított idegen szállítmány</td><td>eltérítő kifizetés</td></tr>
+    <tr><td><code>biz_casino_income</code></td><td>Kaszinó nettó</td><td>kaszinóóra</td></tr>
+    <tr><td><code>biz_laundered</code></td><td>Mosott összeg</td><td>kaszinóóra</td></tr>
+    <tr><td><code>biz_assoc_deliveries</code> / <code>biz_assoc_income</code></td><td>Tagként szállított járművek, kapott pénz</td><td>tag kifizetése</td></tr>
+  </table></div>
+  <h3>Achievementek (v_achievements)</h3>
+  <div class="tbl"><table>
+    <tr><th>Név (UI)</th><th>Feltétel</th><th>Típus</th></tr>
+    <tr><td>Registered</td><td>Céget alapít</td><td>egyszeri</td></tr>
+    <tr><td>Corner Office</td><td>Executive irodát birtokol</td><td>egyszeri</td></tr>
+    <tr><td>Green Thumb</td><td>Első fű eladás (alapítóként)</td><td>egyszeri</td></tr>
+    <tr><td>Supply Run</td><td>10 sikeres supply lopás</td><td>progress 10</td></tr>
+    <tr><td>Convoy</td><td>80+ egységes eladás minden járművel leszállítva</td><td>egyszeri</td></tr>
+    <tr><td>Right-Hand Man</td><td>5 jármű leszállítva tagként</td><td>progress 5</td></tr>
+    <tr><td>Highwayman</td><td>Eltérített szállítmány leszállítása</td><td>egyszeri</td></tr>
+    <tr><td>Fully Equipped</td><td>Mindkét farm fejlesztés megvan</td><td>egyszeri</td></tr>
+    <tr><td>House Always Wins</td><td>Kaszinót vásárol</td><td>egyszeri</td></tr>
+    <tr><td>Clean Hands</td><td>250 000 € mosott pénz összesen</td><td>progress 250 000</td></tr>
+    <tr><td>Seven Figures</td><td>Cégérték ≥ 1 000 000 €</td><td>egyszeri</td></tr>
+    <tr><td>Mogul</td><td>Cégérték ≥ 10 000 000 €</td><td>egyszeri</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ ADMIN ============ -->
+<section id="admin">
+  <h2>Admin panel bővítés</h2>
+  <p class="sub">Új oldal: <b>Organizations</b> a „Players” kategóriában (játék és web panel). A fiók részleteinél új <b>Organization</b> kártya.</p>
+  <figure>
+    <div class="game"><div class="adm">
+      <div class="side"><div class="c">Overview</div><a href="#admin">Dashboard</a><div class="c">Players</div><a href="#admin">Online players</a><a href="#admin">Accounts</a><a class="on new" href="#admin">Organizations</a><a href="#admin">Bans &amp; mutes</a><div class="c">Server</div><a href="#admin">Resources</a><a href="#admin">Admin log</a></div>
+      <div class="main">
+        <div style="font:600 16px var(--f-display);color:#fff;margin-bottom:10px">Organizations <span style="font:12px var(--f-mono);color:#7f8b98">· 42 total</span></div>
+        <table class="gt">
+          <tr><th>#</th><th>NAME</th><th>FOUNDER</th><th>HQ</th><th style="text-align:right">VALUE</th><th>STATE</th></tr>
+          <tr style="background:#1c232c"><td>12</td><td><b>DrAndrew112's organization</b></td><td>drandrew112</td><td>Redsands Tower</td><td class="p" style="color:#dfe5ec">€ 6,108,450</td><td>online · 1 assoc.</td></tr>
+          <tr><td>57</td><td>Desert Rose Ltd.</td><td>laptop112</td><td>Commerce Tower</td><td class="p" style="color:#dfe5ec">€ 2,118,020</td><td>offline</td></tr>
+          <tr><td>88</td><td>Night Owl Org.</td><td>nightowl</td><td>Commerce Tower</td><td class="p" style="color:#dfe5ec">€ 1,204,900</td><td>sold</td></tr>
+        </table>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><span class="gbtn ghost">Open</span><span class="gbtn ghost">Rename</span><span class="gbtn ghost">Adjust balance</span><span class="gbtn ghost">Transfer founder</span><span class="gbtn red">Force sell</span></div>
+        <div style="margin-top:18px;font:500 10.5px var(--f-mono);color:#7f8b98;letter-spacing:.07em">ACCOUNTS › DRANDREW112</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <div class="acard"><span class="k">Bank</span><span class="v">€ 82,400</span></div>
+          <div class="acard"><span class="k">Vehicles</span><span class="v">7</span></div>
+          <div class="acard new"><span class="k">Organization</span><span class="v">DrAndrew112's org. ›</span><span style="font-size:11px;color:#7f8b98">€ 6.1M · 3 properties</span></div>
+        </div>
+      </div>
+    </div></div>
+    <figcaption>21. ábra – Organizations lista és az új fiókkártya (sárga keret).</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Cég részletei – fülek</th><th>Admin műveletek</th></tr>
+    <tr><td>Info (név, alapító, státusz, székhely, cégérték)</td><td>Átnevezés, alapító átadása, kényszerített eladás</td></tr>
+    <tr><td>Finance (főkönyv, tiszta/piszkos, mosási sor)</td><td>Egyenleg módosítása indoklással (<code>admin.adjust</code>)</td></tr>
+    <tr><td>Properties (egységek, fejlesztések, készlet)</td><td>Egység elvétele / adása, fejlesztés adása, készlet beállítása</td></tr>
+    <tr><td>Associates (élő, csak online)</td><td>Tag eltávolítása</td></tr>
+    <tr><td>Missions (napló, kifizetések)</td><td>Futó küldetés megszakítása</td></tr>
+  </table></div>
+  <p>Minden admin művelet az <code>admin_log</code>-ba kerül. Megtekintés admin ≥ 3, módosítás admin ≥ 5 (javaslat).</p>
+</section>
+
+<!-- ============ INSTANCES ============ -->
+<section id="instancek">
+  <h2>Több szerver-instance</h2>
+  <div class="tbl"><table>
+    <tr><th>Adat / folyamat</th><th>Megoldás</th></tr>
+    <tr><td>Céges egyenleg</td><td>DB-ben, feltételes UPDATE (<code>WHERE balance_clean + balance_dirty &gt;= ?</code>). Befizetés kívülről (más instance-ról is) bármikor jöhet.</td></tr>
+    <tr><td>Tick (termelés, kaszinó, rezsi)</td><td>Azon az instance-on fut, ahol az alapító van. Egyszerre csak egy, így nincs ütközés.</td></tr>
+    <tr><td>Tagság</td><td>Instance-helyi memória; csak azonos instance-on lévő játékos hívható meg.</td></tr>
+    <tr><td>Küldetés</td><td>Instance-helyi, az alapítóhoz kötve.</td></tr>
+    <tr><td>Cégjegyzék, toplista</td><td>DB lekérdezés; a cégérték a tick-ben frissül (<code>peak_value</code> mellett egy <code>value_cache</code> oszlop).</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section id="utemterv">
+  <h2>Ütemterv</h2>
+  <div class="phase"><div class="tag">1. fázis</div><div><b>Alapok:</b> biz_core (táblák, pénz exportok tiszta/piszkos, befizetés/kivét, online tick, rezsi), biz_int, irodák, blipek, értesítések.</div></div>
+  <div class="phase"><div class="tag">2. fázis</div><div><b>Kezelés:</b> biz_web (regisztráció, székhelyváltás, cégjegyzék, toplista), biz_pc (Overview, Finance, Properties, Settings + cégeladás), ui_inac menüpont, v_admin oldal + kártya.</div></div>
+  <div class="phase"><div class="tag">3. fázis</div><div><b>Tagság:</b> ui_phone Organization app, biz_core tagság, biz_int hozzáférés tagoknak.</div></div>
+  <div class="phase"><div class="tag">4. fázis</div><div><b>Kaszinó:</b> órás szimuláció, kaszinó app, pénzmosás.</div></div>
+  <div class="phase"><div class="tag">5. fázis</div><div><b>Fűfarm:</b> termelés, supply vásárlás, fejlesztések, ui_core progress, HUD, Weed app, v_weekly Business szorzó.</div></div>
+  <div class="phase"><div class="tag">6. fázis</div><div><b>Supply lopás:</b> biz_missions keret, őrök, jármű és láda változat.</div></div>
+  <div class="phase"><div class="tag">7. fázis</div><div><b>Eladás:</b> többjárműves szállítás, 50% támadás, 30 perc, eltérítés, látható szállítmány, lecsatlakozás, ai_land_traffic pursuit, ai_peds ülés opció.</div></div>
+  <div class="phase"><div class="tag">8. fázis</div><div><b>Statisztika és achievementek</b> bekötése (a számlálók eseményei a korábbi fázisokban már megvannak).</div></div>
+</section>
+
+<!-- ============ QUESTIONS ============ -->
+<section id="kerdesek">
+  <h2>Nyitott kérdések</h2>
+  <p class="sub">Kevés maradt; ezekre a válasz előtt a tervben jelölt javaslat az alapértelmezés.</p>
+  <div class="note q"><b>1. Cégeladás és egyenleg.</b> Az egyenleg a cégérték része, így eladáskor csak 60%-a jár vissza, kivéttel viszont 100%. A játékosok eladás előtt ki fogják venni. Így maradjon, vagy az egyenleg 100%-ban járjon vissza eladáskor?</div>
+  <div class="note q"><b>2. Alapító lecsatlakozása.</b> Megszűnjön-e ilyenkor minden tagság (javaslat: igen, mert a cég szimulációja is leáll)?</div>
+  <div class="note q"><b>3. Tagok száma.</b> Legfeljebb 3 ideiglenes tag (4 jármű, 160 egység) jó?</div>
+  <div class="note q"><b>4. Kaszinó órás számai.</b> Online óránként ≈ 15 000 € nettó, megtérülés ≈ 230 online óra. Jó, vagy legyen gyorsabb?</div>
+</section>
+</main>
+</div>
+
+<!--claude-mermaid-runtime-begin:3477-->
+<style>.mermaid-diagram{margin-block:4px}.mermaid-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}</style>
+<script src="/_runtime/mermaid-11.16.1.min.js"></script>
+<script>(function(){
+var CFG={"palettes":{"light":{"surface":"#f4efe4","text":"#42392e","line":"#8a7f6d","border":"#7a6c52","bg":"#fffdf8"},"dark":{"surface":"#262b34","text":"#f2f3f5","line":"#a8adb8","border":"#9aa4b8","bg":"#1f232b"}}};
+if(typeof mermaid==='undefined')return;
+var pres=Array.prototype.slice.call(document.querySelectorAll('pre.mermaid')).filter(function(p){if(p.hasAttribute('data-claude-mermaid-claimed'))return false;p.setAttribute('data-claude-mermaid-claimed','1');return true;});
+if(!pres.length)return;
+var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+var root=document.documentElement;
+var items=pres.map(function(pre){
+var mount=document.createElement('div');mount.className='mermaid-diagram';
+return {pre:pre,mount:mount,src:pre.textContent||''};
+});
+var seq=0;
+var renderGen=0;
+var lastKey='';
+function pageBg(fallback){
+var els=[document.body,document.documentElement];
+for(var i=0;i<els.length;i++){
+var c=els[i]&&getComputedStyle(els[i]).backgroundColor;
+if(c&&c!=='transparent'&&c!=='rgba(0, 0, 0, 0)')return c;
+}
+return fallback;
+}
+function render(){
+var theme=root.getAttribute('data-theme');
+var dark=theme==='dark'||(!!(mq&&mq.matches)&&theme!=='light');
+var pal=dark?CFG.palettes.dark:CFG.palettes.light;
+var bg=pageBg(pal.bg);
+var key=(dark?'d':'l')+'|'+bg;
+if(key===lastKey)return;
+lastKey=key;
+var gen=++renderGen;
+var font=getComputedStyle(document.body).fontFamily||'sans-serif';
+var nat={useMaxWidth:false};
+mermaid.initialize({
+startOnLoad:false,securityLevel:'strict',theme:'base',
+flowchart:nat,sequence:nat,er:nat,state:nat,class:nat,pie:nat,
+gantt:nat,journey:nat,timeline:nat,gitGraph:nat,mindmap:nat,xyChart:nat,
+quadrantChart:nat,sankey:nat,c4:nat,requirement:nat,block:nat,
+packet:nat,kanban:nat,architecture:nat,radar:nat,
+themeVariables:{background:bg,mainBkg:pal.surface,primaryColor:pal.surface,
+primaryTextColor:pal.text,lineColor:pal.line,primaryBorderColor:pal.border,
+nodeBorder:pal.border,clusterBorder:pal.border,edgeLabelBackground:bg,
+clusterBkg:'rgba(127,127,127,0.07)',titleColor:pal.text,
+darkMode:dark,rowOdd:bg,rowEven:'rgba(127,127,127,0.07)',
+attributeBackgroundColorOdd:bg,attributeBackgroundColorEven:'rgba(127,127,127,0.07)',
+fontSize:'16px',fontFamily:font},
+themeCSS:'.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }'
+});
+items.forEach(function(it){
+var id='claude-mermaid-'+seq++;
+mermaid.render(id,it.src).then(function(r){
+if(gen!==renderGen)return;
+var prev=it.pre.previousElementSibling;
+if(prev&&prev.className==='mermaid-diagram'&&prev!==it.mount)return;
+it.mount.innerHTML=r.svg;
+if(!it.mount.parentNode)it.pre.parentNode.insertBefore(it.mount,it.pre);
+it.pre.style.display='none';
+},function(){
+var scratch=document.getElementById(id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+scratch=document.getElementById('d'+id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+if(gen!==renderGen)return;
+if(it.mount.parentNode)it.mount.parentNode.removeChild(it.mount);
+it.pre.style.display='';
+});
+});
+}
+render();
+if(mq&&mq.addEventListener)mq.addEventListener('change',render);
+if(typeof MutationObserver!=='undefined')new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+})();</script>
+<!--claude-mermaid-runtime-end-->
+
+</body></html>
