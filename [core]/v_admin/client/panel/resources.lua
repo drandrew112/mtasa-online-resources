@@ -107,8 +107,12 @@ local function drawUpdates(x, y, w, h)
     end
     AP.text(L("v_admin.res.run_info", { date = AP.fmtDate(rep.at), by = rep.by or "-", n = #(rep.lines or {}) }), x, ty, w, S(28), C.dim, 0.85)
     local rows = {}
-    for i, l in ipairs(rep.lines or {}) do rows[i] = { i = i, event = l.event or "status", text = tostring(l.text or "") } end
+    for i, l in ipairs(rep.lines or {}) do
+        local t = l.time and getRealTime(l.time)
+        rows[i] = { i = i, time = t and ("%02d:%02d"):format(t.hour, t.minute) or "-", event = l.event or "status", text = tostring(l.text or "") }
+    end
     AP.table("rs_lines", x, ty + S(34), w, y + h - ty - S(34), {
+        { key = "time", label = L("v_admin.res.time"), w = S(90) },
         { key = "event", label = L("v_admin.res.event"), w = S(130), color = function(l) return C[EVENT_COLOR[l.event] or "text"] end },
         { key = "text", label = L("v_admin.res.line") },
     }, rows, { rowH = S(30), onClick = function(l) setClipboard(l.text) AP.notify(L("v_admin.players.copied_to_clipboard", { label = l.event })) end })

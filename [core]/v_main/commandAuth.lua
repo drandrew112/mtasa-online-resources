@@ -53,7 +53,7 @@ end
 
 -- ---------------------------------------------------------------------------
 -- Report of the last update check / update (v_admin Resources page):
---   UPDATE_REPORT[kind] = { at, by, lines = { { event, text } } }, kind = "check" | "update"
+--   UPDATE_REPORT[kind] = { at, by, lines = { { time, event, text } } }, kind = "check" | "update"
 -- ---------------------------------------------------------------------------
 UPDATE_REPORT = { check = false, update = false }
 
@@ -66,5 +66,5 @@ end
 function reportLine(kind, event, text)
     local r = UPDATE_REPORT[kind]
     if not r or #r.lines >= REPORT_MAX then return end
-    r.lines[#r.lines + 1] = { event = event, text = text }
+    r.lines[#r.lines + 1] = { time = getRealTime().timestamp, event = event, text = text }
 end

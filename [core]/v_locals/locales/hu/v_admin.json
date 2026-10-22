@@ -496,6 +496,7 @@
   "v_admin.res.check_updates": "Frissítések keresése",
   "v_admin.res.count": "{n} / {all} resource",
   "v_admin.res.event": "Esemény",
+  "v_admin.res.time": "Idő",
   "v_admin.res.failed": "Hibás",
   "v_admin.res.group": "Mappa",
   "v_admin.res.install_updates": "Frissítések telepítése",

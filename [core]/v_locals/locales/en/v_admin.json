@@ -496,6 +496,7 @@
   "v_admin.res.check_updates": "Check updates",
   "v_admin.res.count": "{n} of {all} resources",
   "v_admin.res.event": "Event",
+  "v_admin.res.time": "Time",
   "v_admin.res.failed": "Failed",
   "v_admin.res.group": "Folder",
   "v_admin.res.install_updates": "Install updates",

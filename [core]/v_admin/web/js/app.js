@@ -1134,7 +1134,9 @@
         const rep = r[U.which];
         $('rsRunInfo').textContent = rep ? `${fmtDate(rep.at)} · ${rep.by} · ${arr(rep.lines).length} lines` : '';
         const cls = { outdated: 'warn', missing: 'bad', error: 'bad', complete: 'good', notinst: 'dim', loose: 'dim' };
+        const hm = ts => { if (!ts) return '-'; const d = new Date(ts * 1000), p = n => String(n).padStart(2, '0'); return `${p(d.getHours())}:${p(d.getMinutes())}`; };
         grid($('rsLines'), [
+            { key: 'time', label: 'Time', text: l => hm(l.time) },
             { key: 'event', label: 'Event', text: l => `<span class="${cls[l.event] || ''}">${esc(l.event || 'status')}</span>` },
             { key: 'text', label: 'Line' },
         ], rep ? arr(rep.lines) : [], { empty: U.report ? 'No run since the server started.' : 'Loading...' });
