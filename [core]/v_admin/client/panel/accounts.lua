@@ -358,17 +358,17 @@ local function drawList(x, y, w, h)
     ty = ty + S(32)
 
     local cols = {
-        { key = "name", label = L("v_admin.accounts.col_account"), sort = true, bold = true,
+        { key = "name", label = L("v_admin.accounts.col_account"), w = S(190), sort = true, bold = true,
           text = function(r) return (r.onServer and "● " or "") .. r.name end,
           color = function(r) return r.onServer and C.good or C.text end },
-        { key = "display", label = L("v_admin.accounts.col_display"), w = S(170), sort = true, text = function(r) return r.display or "-" end },
+        { key = "display", label = L("v_admin.accounts.col_display"), sort = true, text = function(r) return r.display or "-" end },
         { key = "adminLevel", label = L("v_admin.accounts.col_admin_short"), w = S(64), sort = true, align = "center", bold = true,
           text = function(r) return r.adminLevel > 0 and tostring(r.adminLevel) or "-" end,
           color = function(r) return r.adminLevel > 0 and C.gold or C.off end },
-        { key = "lastLogin", label = L("v_admin.accounts.col_last_seen"), w = S(140), sort = true,
+        { key = "lastLogin", label = L("v_admin.accounts.col_last_seen"), w = S(160), sort = true,
           text = function(r) return r.onServer and onServerText(r.onServer) or AP.ago(r.lastLogin, d and d.now) end,
           color = function(r) return r.onServer and C.good or C.dim end },
-        { key = "status", label = L("v_admin.accounts.col_status"), w = S(100),
+        { key = "status", label = L("v_admin.accounts.col_status"), w = S(120),
           text = function(r) return (statusOf(r)) end, color = function(r) return select(2, statusOf(r)) end },
     }
     local pagerH = S(44)
@@ -665,11 +665,9 @@ local function drawSocial(x, y, w, h)
     end
     AP.kv(x, y, w, S(58), L("v_admin.accounts.crew"), crew)
     local rows = {}
-    for i, f in ipairs(r.friends) do rows[i] = type(f) == "table" and f or { name = f, side = "both" } end
+    for i, n in ipairs(r.friends) do rows[i] = { name = n } end
     AP.table("acc_friends", x, y + S(70), w, h - S(70), {
         { key = "name", label = L("v_admin.accounts.friends", { n = #rows }) },
-        { key = "side", label = L("v_admin.accounts.friend_side"), w = S(260),
-          text = function(f) return L("v_admin.accounts.friend_side_" .. (f.side or "both")) end },
     }, rows, { rowH = S(34), onClick = function(f) AP.setField("acc_search", f.name); selectAccount(f.name) end })
 end
 
@@ -814,7 +812,7 @@ AP.addPage({
     end,
     onClose = function() st.form = nil end,
     draw = function(x, y, w, h)
-        local detailW = math.min(S(680), w * 0.45) + S(20) -- the list gives up 20 px
+        local detailW = math.min(S(800), w * 0.5) + S(20) -- the list gives up 20 px
         local gap = S(20)
         drawList(x, y, w - detailW - gap, h)
         drawDetail(x + w - detailW, y, detailW, h)

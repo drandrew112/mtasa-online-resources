@@ -2,8 +2,7 @@
 --
 -- Crews and every private / crew message now live in the shared MySQL database
 -- used by v_mysql (MYSQL_CONFIG.database), not in local crews.xml / messages.xml
--- anymore. Friend *lists* stay in account data (accounts.account_data, key
--- "socialpanel:friends"); friend *requests* get their own table below.
+-- anymore. Friends and friend requests have their own tables below too.
 --
 -- Run this once against that database:
 --
@@ -81,4 +80,24 @@ CREATE TABLE IF NOT EXISTS `friendRequests` (
     `created_at` INT         NOT NULL DEFAULT 0,
     UNIQUE KEY `unique_request` (`sender`, `recipient`),
     KEY `idx_friendrequests_recipient` (`recipient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- friends
+-- ----------------------------------------------------------------------------
+-- One row per friendship, shared by both accounts, so it can never be stored
+-- on one side only. account_a is the name that sorts first (case-insensitive),
+-- which makes (a, b) and (b, a) the same UNIQUE key. Created by v_socialpanel
+-- on start too; the old per-account lists (account_data "socialpanel:friends")
+-- are moved here once and deleted.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `friends` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `account_a`  VARCHAR(50) NOT NULL,
+    `account_b`  VARCHAR(50) NOT NULL,
+    `created_at` INT         NOT NULL DEFAULT 0,
+    UNIQUE KEY `unique_friendship` (`account_a`, `account_b`),
+    KEY `idx_friends_b` (`account_b`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

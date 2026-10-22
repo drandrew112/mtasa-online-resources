@@ -461,16 +461,6 @@ function TABS.inventory(actor, name, reply)
     reply({ online = true, list = out })
 end
 
---- The `socialpanel:friends` value out of a raw `account_data` blob (both
---- shapes v_mysql reads: plain object or one wrapped in an array).
-local function friendsFromBlob(raw)
-    local obj = fromJSON(tostring(raw or ""))
-    if type(obj) == "table" and type(obj[1]) == "table" and obj[1].v == nil and #obj == 1 then obj = obj[1] end
-    local rec = type(obj) == "table" and obj["socialpanel:friends"]
-    if type(rec) == "table" and rec.v == nil and type(rec[1]) == "table" then rec = rec[1] end
-    return type(rec) == "table" and tostring(rec.v or "") or ""
-end
-
 --- The crew comes from v_socialpanel's `crews` table (members = newline list);
 --- the accData key is only a copy that older crews may not have.
 local function socialCrew(name, list, reply)
@@ -495,34 +485,17 @@ local function socialCrew(name, list, reply)
     end, "SELECT name, tag, founder, members FROM `crews` WHERE members LIKE ?", "%" .. name .. "%")
 end
 
---- A friendship is stored on both accounts, but one side's write can be lost
---- (e.g. a stale cache on the other server instance), so the list is the union
---- of this account's own list and every account that lists this one.
---- side: "both" | "mine" (only on this account) | "theirs" (only on the other).
+--- Friends come from v_socialpanel's `friends` table (one row per friendship).
 function TABS.social(actor, name, reply)
-    local me = name:lower()
-    local byKey = {}
-    for n in tostring(exports.v_mysql:getAccData(name, "socialpanel:friends") or ""):gmatch("[^\n]+") do
-        byKey[n:lower()] = { name = n, side = "mine" }
-    end
-    MYSQL.query(function(accRows)
-        for _, r in ipairs(accRows or {}) do
-            local other = tostring(r.account_name)
-            if other:lower() ~= me then
-                for n in friendsFromBlob(r.account_data):gmatch("[^\n]+") do
-                    if n:lower() == me then
-                        local e = byKey[other:lower()]
-                        if e then e.side = "both" else byKey[other:lower()] = { name = other, side = "theirs" } end
-                        break
-                    end
-                end
-            end
-        end
+    MYSQL.query(function(rows)
         local list = {}
-        for _, e in pairs(byKey) do list[#list + 1] = e end
-        table.sort(list, function(a, b) return a.name:lower() < b.name:lower() end)
+        for _, r in ipairs(rows or {}) do
+            if type(r.friend) == "string" then list[#list + 1] = r.friend end
+        end
+        table.sort(list, function(a, b) return a:lower() < b:lower() end)
         socialCrew(name, list, reply)
-    end, "SELECT account_name, account_data FROM `accounts` WHERE account_data LIKE ?", "%" .. name .. "%")
+    end, "SELECT IF(account_a = ?, account_b, account_a) AS friend FROM `friends` WHERE account_a = ? OR account_b = ?",
+        name, name, name)
 end
 
 --------------------------------------------------------------------------------

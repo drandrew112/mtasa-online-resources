@@ -10,9 +10,12 @@
       - crews          one row per crew (members serialised, newline separated)
       - messages       one row per message (kind = 'dm' | 'crew')
       - friendRequests one row per pending incoming request
+      - friends        one row per friendship (both accounts on the same row)
 
-    Friends themselves stay in account data (exports.v_mysql:getAccData /
-    setAccData, key SP.KEY_FRIENDS) - only friend *requests* moved to a table.
+    A friendship is ONE row, so it always exists for both accounts or for
+    neither. The old per-account lists (account data, SP.KEY_FRIENDS) could end
+    up one-sided when one of the two writes was lost; SPDB.migrateFriends moves
+    them into the table (union of both sides) and deletes the key.
 
     The start-up loads and the friend-request checks of the friend actions are
     synchronous (mysqlQuerySync blocks for the round trip). Everything a player
@@ -252,4 +255,133 @@ end
 function SPDB.removeRequest(sender, recipient)
     if type(sender) ~= "string" or type(recipient) ~= "string" then return end
     exec("DELETE FROM `friendRequests` WHERE sender = ? AND recipient = ?", sender, recipient)
+end
+
+--------------------------------------------------------------------------------
+-- Friends
+--------------------------------------------------------------------------------
+
+-- Row order of a pair: account_a is the one that sorts first (case-insensitive),
+-- so (a, b) and (b, a) hit the same UNIQUE key.
+local function ordered(a, b)
+    if a:lower() <= b:lower() then return a, b end
+    return b, a
+end
+
+local FRIENDS_SQL =
+    "SELECT IF(account_a = ?, account_b, account_a) AS friend FROM `friends` " ..
+    "WHERE account_a = ? OR account_b = ?"
+
+local function friendNames(rows)
+    local out = {}
+    for _, row in ipairs(rows) do
+        if type(row.friend) == "string" then out[#out + 1] = row.friend end
+    end
+    return out
+end
+
+function SPDB.ensureFriendsTable()
+    if not mysqlReady() then return false end
+    return exports.v_mysql:mysqlQuerySync([[CREATE TABLE IF NOT EXISTS `friends` (
+        `id`         INT AUTO_INCREMENT PRIMARY KEY,
+        `account_a`  VARCHAR(50) NOT NULL,
+        `account_b`  VARCHAR(50) NOT NULL,
+        `created_at` INT         NOT NULL DEFAULT 0,
+        UNIQUE KEY `unique_friendship` (`account_a`, `account_b`),
+        KEY `idx_friends_b` (`account_b`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]]) ~= false
+end
+
+-- Account names `name` is friends with. Blocking: only for the friend actions,
+-- which must check before they write.
+function SPDB.getFriends(name)
+    if type(name) ~= "string" or name == "" then return {} end
+    return friendNames(query(FRIENDS_SQL, name, name, name))
+end
+
+-- Non-blocking variant: cb(list), or cb(false) when the database fails.
+function SPDB.getFriendsAsync(cb, name)
+    if type(name) ~= "string" or name == "" then return cb({}) end
+    MYSQL.query(function(rows)
+        cb(type(rows) == "table" and friendNames(rows) or false)
+    end, FRIENDS_SQL, name, name, name)
+end
+
+-- One row for both accounts; a pair that already exists is left alone.
+function SPDB.addFriend(a, b)
+    if type(a) ~= "string" or type(b) ~= "string" or a:lower() == b:lower() then return false end
+    a, b = ordered(a, b)
+    return exec("INSERT IGNORE INTO `friends` (account_a, account_b, created_at) VALUES (?, ?, ?)", a, b, now())
+end
+
+function SPDB.removeFriend(a, b)
+    if type(a) ~= "string" or type(b) ~= "string" then return false end
+    a, b = ordered(a, b)
+    return exec("DELETE FROM `friends` WHERE account_a = ? AND account_b = ?", a, b)
+end
+
+-- The SP.KEY_FRIENDS value of a raw account_data blob (v_mysql's shapes: a plain
+-- object or one wrapped in an array, a record or one wrapped in an array).
+local function blobFriends(raw)
+    local obj = fromJSON(tostring(raw or ""))
+    if type(obj) == "table" and type(obj[1]) == "table" and obj[1].v == nil and #obj == 1 then obj = obj[1] end
+    local rec = type(obj) == "table" and obj[SP.KEY_FRIENDS]
+    if type(rec) == "table" and rec.v == nil and type(rec[1]) == "table" then rec = rec[1] end
+    return SP.split(type(rec) == "table" and tostring(rec.v or "") or "")
+end
+
+-- Moves every per-account friend list into `friends` (a pair listed on either
+-- side becomes a friendship), then deletes the key from those accounts. Only
+-- deletes when every insert went through, so a failed run is redone next start.
+function SPDB.migrateFriends()
+    local rows = exports.v_mysql:mysqlQuerySync(
+        "SELECT account_name, account_data FROM `accounts` WHERE account_data LIKE ?", "%" .. SP.KEY_FRIENDS .. "%")
+    if type(rows) ~= "table" or #rows == 0 then return end
+
+    local pairs_, owners = {}, {}
+    for _, row in ipairs(rows) do
+        local owner = row.account_name
+        if type(owner) == "string" and owner ~= "" then
+            owners[#owners + 1] = owner
+            for _, friend in ipairs(blobFriends(row.account_data)) do
+                if friend:lower() ~= owner:lower() then
+                    local a, b = ordered(owner, friend)
+                    pairs_[a:lower() .. "|" .. b:lower()] = { a, b }
+                end
+            end
+        end
+    end
+
+    local list, ts = {}, now()
+    for _, p in pairs(pairs_) do list[#list + 1] = p end
+    for i = 1, #list, 200 do
+        local values, args = {}, {}
+        for j = i, math.min(i + 199, #list) do
+            values[#values + 1] = "(?, ?, ?)"
+            args[#args + 1], args[#args + 2], args[#args + 3] = list[j][1], list[j][2], ts
+        end
+        local ok = exports.v_mysql:mysqlInsert(
+            "INSERT IGNORE INTO `friends` (account_a, account_b, created_at) VALUES " .. table.concat(values, ", "), unpack(args))
+        if ok == false then
+            outputDebugString("[v_socialpanel] friend migration failed, the old lists are kept", 2)
+            return
+        end
+    end
+
+    for i = 1, #owners, 200 do
+        local chunk = { unpack(owners, i, math.min(i + 199, #owners)) }
+        local marks = ("?, "):rep(#chunk):sub(1, -3)
+        exports.v_mysql:mysqlInsert(
+            "UPDATE `accounts` SET account_data = IF(JSON_TYPE(account_data) = 'ARRAY', " ..
+            "JSON_REMOVE(account_data, '$[0].\"" .. SP.KEY_FRIENDS .. "\"'), " ..
+            "JSON_REMOVE(account_data, '$.\"" .. SP.KEY_FRIENDS .. "\"')) " ..
+            "WHERE account_name IN (" .. marks .. ")", unpack(chunk))
+    end
+    -- v_mysql's session cache of online accounts still holds the old value
+    for _, owner in ipairs(owners) do
+        for _, p in ipairs(getElementsByType("player")) do
+            if getElementData(p, "accName") == owner then exports.v_mysql:setAccData(owner, SP.KEY_FRIENDS, nil) end
+        end
+    end
+    outputDebugString(("[v_socialpanel] %d friendships moved from %d friend lists into `friends`"):format(#list, #owners))
 end

@@ -953,9 +953,7 @@
             else grid(tb, [{ key: 'name', label: 'Item', text: i => '&nbsp;'.repeat(i.depth * 4) + esc(i.name) }, { key: 'slot', label: 'Slot' }, { key: 'amount', label: 'Amount', cls: 'r' }], arr(t.list));
         } else if (A.tab === 'social') {
             tb.innerHTML = `<div class="kvt"><span>Crew</span><b>${val(t.crew)}</b></div><div class="secttl">Friends (${arr(t.friends).length})</div><div id="accFriends"></div>`;
-            const SIDE = { both: 'Both accounts', mine: '<span class="bad">Only on this account</span>', theirs: '<span class="bad">Only on their account</span>' };
-            grid($('accFriends'), [{ key: 'name', label: 'Account' }, { key: 'side', label: 'Stored on', text: f => SIDE[f.side] || SIDE.both }],
-                arr(t.friends).map(f => typeof f === 'string' ? { name: f, side: 'both' } : f), { click: f => accSelect(f.name) });
+            grid($('accFriends'), [{ key: 'name', label: 'Account' }], arr(t.friends).map(n => ({ name: n })), { click: f => accSelect(f.name) });
         } else if (A.tab === 'notes') {
             const notes = arr(d.notes).map((n, i) => Object.assign({ i: i + 1 }, n));
             grid(tb, [{ key: 't', label: 'Date', text: n => fmtDate(n.t) }, { key: 'admin', label: 'Admin' }, { key: 'text', label: 'Note', text: n => esc(n.text) }],
