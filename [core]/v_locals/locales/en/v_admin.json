@@ -549,5 +549,16 @@
   "v_admin.weekly.work": "WORK",
   "v_admin.weekly.not_registered": "{name} (not registered)",
   "v_admin.weekly.work_hint": "Works of work_core. Money multiplies the work payment (an extra item on the receipt), XP the work XP.",
-  "v_admin.weekly.no_works": "work_core has no registered works."
+  "v_admin.weekly.no_works": "work_core has no registered works.",
+  "v_admin.accounts.sanctions": "Sanctions",
+  "v_admin.accounts.col_duration": "Duration",
+  "v_admin.accounts.kind_ban": "Ban",
+  "v_admin.accounts.kind_mute": "Mute",
+  "v_admin.accounts.kind_jail": "Admin jail",
+  "v_admin.accounts.kind_kick": "Kick",
+  "v_admin.accounts.expired": "expired",
+  "v_admin.accounts.permanent": "permanent",
+  "v_admin.accounts.duration_m": "{m} min",
+  "v_admin.accounts.duration_hm": "{h} h {m} min",
+  "v_admin.accounts.crew_info": "{n} members, founder: {founder}"
 }

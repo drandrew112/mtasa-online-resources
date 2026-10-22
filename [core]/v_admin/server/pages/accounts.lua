@@ -340,7 +340,7 @@ function TABS.stats(actor, name, reply)
     local out = {}
     for _, def in ipairs(defs) do
         out[#out + 1] = { id = def.id, name = txt(actor, def.name or def.id),
-                          category = txt(actor, def.category or ""), value = values[def.id] or 0 }
+                          category = txt(actor, def.category or ""), value = values[def.id] or 0, unit = def.unit or "" }
     end
     reply({ list = out })
 end
@@ -367,19 +367,68 @@ function TABS.mails(actor, name, reply)
     end, "SELECT id, kind, subject, status, error, sender, created_at, sent_at FROM `mails` WHERE account_name = ? ORDER BY id DESC LIMIT 200", name)
 end
 
+-- admin log lines (server/mute.lua, jail.lua, ban.lua) that are sanctions
+local SANCTION_LOG = {
+    { "^muted .* for (%d+) min %((.*)%)$", "mute" },
+    { "^jailed .* for (%d+) min %((.*)%)$", "jail" },
+    { "^kicked .* %((.*)%)$", "kick" },
+}
+local LIFT_LOG = { { "^unmuted ", "mute" }, { "^released .* from admin jail$", "jail" } }
+-- the bans table has every ban (also the ones from acc_bans), so the log lines are left out
+local SKIP_LOG = { "^banned account ", "^unbanned account " }
+
+--- Sanctions: bans (table) + mutes / admin jails / kicks (admin log), newest first,
+--- each with its lift; the other admin actions go to `actions`.
+--- `bans` and `log` (every log line) are what the web panel reads.
 function TABS.punishments(actor, name, reply)
     MYSQL.query(function(bans)
         MYSQL.query(function(logs)
-            local b, l = {}, {}
+            local s, l, b, all = {}, {}, {}, {}
             for i, r in ipairs(bans or {}) do
                 b[i] = { reason = r.reason, admin = r.admin, at = tonumber(r.created_at), lifted = tonumber(r.lifted_at) or 0,
                          liftedBy = r.lifted_by or false }
+                s[#s + 1] = { kind = "ban", reason = r.reason, admin = r.admin, at = tonumber(r.created_at) or 0,
+                              lifted = b[i].lifted, liftedBy = b[i].liftedBy }
             end
             for i, r in ipairs(logs or {}) do
-                l[i] = { ts = tonumber(r.ts), admin = r.admin, action = r.action, source = r.source }
+                all[i] = { ts = tonumber(r.ts), admin = r.admin, action = r.action, source = r.source }
             end
-            reply({ bans = b, log = l })
-        end, "SELECT ts, admin, action, source FROM `" .. ADMIN.log.table .. "` WHERE target = ? ORDER BY id DESC LIMIT 200", name)
+            -- oldest first, so an unmute / release lifts the sanction before it
+            local open = {}
+            for i = #(logs or {}), 1, -1 do
+                local r = logs[i]
+                local action, ts, used = tostring(r.action or ""), tonumber(r.ts) or 0, false
+                for _, p in ipairs(SANCTION_LOG) do
+                    local a1, a2 = action:match(p[1])
+                    if a1 then
+                        local e = { kind = p[2], admin = r.admin, at = ts, lifted = 0, liftedBy = false }
+                        if p[2] == "kick" then e.reason = a1 else e.minutes, e.reason = tonumber(a1), a2 end
+                        s[#s + 1] = e
+                        if e.minutes then open[p[2]] = e end
+                        used = true
+                        break
+                    end
+                end
+                if not used then
+                    for _, p in ipairs(LIFT_LOG) do
+                        if action:find(p[1]) then
+                            local e = open[p[2]]
+                            if e and e.at + e.minutes * 60 > ts then e.lifted, e.liftedBy = ts, r.admin end
+                            open[p[2]] = nil
+                            used = true
+                            break
+                        end
+                    end
+                end
+                if not used then
+                    for _, p in ipairs(SKIP_LOG) do if action:find(p) then used = true break end end
+                end
+                if not used then l[#l + 1] = { ts = ts, admin = r.admin, action = action, source = r.source } end
+            end
+            table.sort(s, function(x, y) return x.at > y.at end)
+            table.sort(l, function(x, y) return x.ts > y.ts end)
+            reply({ sanctions = s, actions = l, bans = b, log = all, now = now() })
+        end, "SELECT ts, admin, action, source FROM `" .. ADMIN.log.table .. "` WHERE target = ? ORDER BY id DESC LIMIT 400", name)
     end, "SELECT reason, admin, created_at, lifted_at, lifted_by FROM `bans` WHERE account_name = ? ORDER BY id DESC", name)
 end
 
@@ -391,7 +440,7 @@ function TABS.achievements(actor, name, reply)
     for _, def in ipairs(defs) do
         local r = recs[def.id] or {}
         out[#out + 1] = { id = def.id, name = txt(actor, def.name or def.id), done = r.done and true or false,
-                          progress = r.progress or 0, goal = r.goal or 0, at = r.unlockedAt or false }
+                          progress = r.progress or 0, goal = r.goal or 0, at = r.unlockedAt or false, unit = def.unit or "" }
     end
     reply({ list = out })
 end
@@ -412,13 +461,32 @@ function TABS.inventory(actor, name, reply)
     reply({ online = true, list = out })
 end
 
+--- The crew comes from v_socialpanel's `crews` table (members = newline list);
+--- the accData key is only a copy that older crews may not have.
 function TABS.social(actor, name, reply)
     local friends = exports.v_mysql:getAccData(name, "socialpanel:friends")
-    local crew = exports.v_mysql:getAccData(name, "socialpanel:crew")
     local list = {}
     for n in tostring(friends or ""):gmatch("[^\n]+") do list[#list + 1] = n end
     table.sort(list, function(a, b) return a:lower() < b:lower() end)
-    reply({ friends = list, crew = type(crew) == "string" and crew ~= "" and crew or false })
+    MYSQL.query(function(rows)
+        local crew, me = false, name:lower()
+        for _, r in ipairs(rows or {}) do
+            for m in tostring(r.members or ""):gmatch("[^\n]+") do
+                if m:lower() == me then
+                    local n = 0
+                    for _ in tostring(r.members):gmatch("[^\n]+") do n = n + 1 end
+                    crew = { name = r.name, tag = r.tag, founder = r.founder, members = n }
+                    break
+                end
+            end
+            if crew then break end
+        end
+        if not crew then
+            local saved = exports.v_mysql:getAccData(name, "socialpanel:crew")
+            crew = type(saved) == "string" and saved ~= "" and { name = saved } or false
+        end
+        reply({ friends = list, crew = crew and crew.name or false, crewInfo = crew })
+    end, "SELECT name, tag, founder, members FROM `crews` WHERE members LIKE ?", "%" .. name .. "%")
 end
 
 --------------------------------------------------------------------------------

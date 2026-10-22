@@ -549,5 +549,16 @@
   "v_admin.weekly.work": "MUNKA",
   "v_admin.weekly.not_registered": "{name} (nincs regisztrálva)",
   "v_admin.weekly.work_hint": "A work_core munkái. A pénzszorzó a munka kifizetését szorozza (külön tétel a nyugtán), az XP-szorzó a munka XP-t.",
-  "v_admin.weekly.no_works": "A work_core-ban nincs regisztrált munka."
+  "v_admin.weekly.no_works": "A work_core-ban nincs regisztrált munka.",
+  "v_admin.accounts.sanctions": "Szankciók",
+  "v_admin.accounts.col_duration": "Időtartam",
+  "v_admin.accounts.kind_ban": "Ban",
+  "v_admin.accounts.kind_mute": "Némítás",
+  "v_admin.accounts.kind_jail": "Adminjail",
+  "v_admin.accounts.kind_kick": "Kick",
+  "v_admin.accounts.expired": "lejárt",
+  "v_admin.accounts.permanent": "végleges",
+  "v_admin.accounts.duration_m": "{m} perc",
+  "v_admin.accounts.duration_hm": "{h} óra {m} perc",
+  "v_admin.accounts.crew_info": "{n} tag, alapító: {founder}"
 }

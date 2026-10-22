@@ -272,12 +272,14 @@ function AP.kv(x, y, w, h, label, value, color)
     end)
 end
 
---- Horizontal tab strip: items = { { id, label } }; returns the height used.
+--- Horizontal tab strip: items = { { id, label } }; wraps into more rows when
+--- the tabs don't fit `w`. Returns the height used.
 function AP.tabs(x, y, w, items, active, onPick)
     local h = S(44)
-    local cx = x
+    local cx, y0 = x, y
     for _, it in ipairs(items) do
         local tw = L.width(it.label, F(0.95), "default-bold") + S(28)
+        if cx + tw > x + w and cx > x then cx, y = x, y + h end
         local on = it.id == active
         local hot = AP.hovered(cx, y, tw, h)
         AP.text(it.label, cx, y, tw, h, (on or hot) and C.text or C.dim, 0.95, "default-bold", "center")
@@ -286,7 +288,7 @@ function AP.tabs(x, y, w, items, active, onPick)
         cx = cx + tw + S(4)
     end
     dxDrawRectangle(x, y + h, w, S(1), C.line)
-    return h + S(10)
+    return y + h - y0 + S(10)
 end
 
 --- Scrolling rows.

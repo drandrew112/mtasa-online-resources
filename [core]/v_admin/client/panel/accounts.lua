@@ -17,6 +17,26 @@ local function onServerText(o, long)
     return L("v_admin.accounts.online_server", { server = o.server, id = o.id })
 end
 
+--- "12 h 05 min" from seconds
+local function fmtDuration(sec)
+    local m = math.floor((tonumber(sec) or 0) / 60)
+    if m < 60 then return L("v_admin.accounts.duration_m", { m = m }) end
+    return L("v_admin.accounts.duration_hm", { h = math.floor(m / 60), m = ("%02d"):format(m % 60) })
+end
+
+--- a stat / achievement value by its unit: "s" = time, otherwise rounded (1 decimal below 100)
+local function fmtValue(v, unit)
+    v = tonumber(v) or 0
+    if unit == "s" then return fmtDuration(v) end
+    local t
+    if v ~= math.floor(v) and math.abs(v) < 100 then
+        t = (("%.1f"):format(v):gsub("%.0$", ""))
+    else
+        t = AP.fmtInt(math.floor(v + 0.5))
+    end
+    return (unit and unit ~= "") and (t .. " " .. unit) or t
+end
+
 local st = {
     args     = { admin = "any", status = "any", registered = "any", email = "any", updates = "any",
                  conds = {}, sort = "name", dir = "asc", page = 0 },
@@ -186,11 +206,33 @@ local function applyConds()
     reqList()
 end
 
+-- left-to-right placement that wraps to a new row when `w` is full
+local function newFlow(x, y, w)
+    return { x = x, y = y, w = w, cx = x, cy = y, rowH = 0 }
+end
+
+local function place(fl, bw, bh)
+    if fl.cx + bw > fl.x + fl.w and fl.cx > fl.x then
+        fl.cx, fl.cy, fl.rowH = fl.x, fl.cy + fl.rowH + S(8), 0
+    end
+    local bx, by = fl.cx, fl.cy
+    fl.cx, fl.rowH = fl.cx + bw + S(8), math.max(fl.rowH, bh)
+    return bx, by
+end
+
+--- start the next group of controls on a fresh row
+local function breakRow(fl, gap)
+    if fl.rowH > 0 then fl.cx, fl.cy, fl.rowH = fl.x, fl.cy + fl.rowH + (gap or S(10)), 0 end
+end
+
 local function drawFilters(x, y, w)
+    local fl = newFlow(x, y, w)
+
     -- search + dropdown filters
     local h = S(40)
-    local sw = S(300)
-    AP.field("acc_search", x, y, sw, h, { placeholder = L("v_admin.accounts.search"), max = 64,
+    local sw = math.min(S(300), w)
+    local sx, sy = place(fl, sw, h)
+    AP.field("acc_search", sx, sy, sw, h, { placeholder = L("v_admin.accounts.search"), max = 64,
         onEnter = function(t) st.search = AP.trim(t); st.args.page = 0; reqList() end })
     local text = AP.trim(AP.fieldText("acc_search"))
     if text ~= st.search then
@@ -203,26 +245,24 @@ local function drawFilters(x, y, w)
         st.searchAt = 0
     end
 
-    local fx = x + sw + S(10)
     for _, f in ipairs(FILTERS) do
         local label = f.label() .. ": " .. valueLabel(f, st.args[f.key])
-        local bw = L.width(label, F(0.95), "default-bold") + S(30)
-        if fx + bw > x + w then break end
-        local bx = fx
-        AP.button(bx, y, bw, h, label, function()
+        local bw = math.min(L.width(label, F(0.95), "default-bold") + S(30), w)
+        local bx, by = place(fl, bw, h)
+        AP.button(bx, by, bw, h, label, function()
             local items = {}
             for _, it in ipairs(f.values()) do
                 items[#items + 1] = { label = it[2], active = st.args[f.key] == it[1], fn = function() setArg(f.key, it[1]) end }
             end
-            AP.openDropdown(bx, y + h + S(4), math.max(bw, S(240)), items)
+            AP.openDropdown(bx, by + h + S(4), math.max(bw, S(240)), items)
         end, st.args[f.key] ~= "any" and "active" or nil)
-        fx = fx + bw + S(8)
     end
+    breakRow(fl)
 
     -- numeric conditions
-    local cy = y + h + S(10)
-    local addW = S(150)
-    AP.button(x, cy, addW, S(36), L("v_admin.accounts.add_filter"), function()
+    local ch = S(36)
+    local ax, ay = place(fl, S(150), ch)
+    AP.button(ax, ay, S(150), ch, L("v_admin.accounts.add_filter"), function()
         local items = {}
         for _, k in ipairs(COND_KEYS) do
             items[#items + 1] = { label = k[2](), fn = function()
@@ -231,15 +271,14 @@ local function drawFilters(x, y, w)
                 AP.setFocus("acc_cond" .. #st.args.conds)
             end }
         end
-        AP.openDropdown(x, cy + S(40), S(240), items)
+        AP.openDropdown(ax, ay + ch + S(4), S(240), items)
     end)
-    local cx = x + addW + S(10)
     for i, c in ipairs(st.args.conds) do
         local lw = L.width(condLabel(c.key), F(0.85), "default-bold") + S(16)
         local cw = lw + S(44) + S(110) + S(36)
-        if cx + cw > x + w - S(640) then break end
-        dxDrawRectangle(cx, cy, cw, S(36), C.rowSel)
-        AP.text(condLabel(c.key), cx + S(8), cy, lw, S(36), C.text, 0.85, "default-bold")
+        local cx, cy = place(fl, cw, ch)
+        dxDrawRectangle(cx, cy, cw, ch, C.rowSel)
+        AP.text(condLabel(c.key), cx + S(8), cy, lw, ch, C.text, 0.85, "default-bold")
         AP.button(cx + lw, cy + S(3), S(40), S(30), c.op, function()
             local n = 1
             for k, op in ipairs(OPS) do if op == c.op then n = k end end
@@ -252,14 +291,28 @@ local function drawFilters(x, y, w)
             for k = i, #st.args.conds do AP.setField("acc_cond" .. k, st.args.conds[k].value) end
             applyConds()
         end, "danger")
-        cx = cx + cw + S(8)
     end
+    local bx, by = place(fl, S(100), ch)
+    AP.button(bx, by, S(100), ch, L("v_admin.accounts.apply"), applyConds, "active")
+    bx, by = place(fl, S(100), ch)
+    AP.button(bx, by, S(100), ch, L("v_admin.accounts.clear"), function()
+        st.args = { admin = "any", status = "any", registered = "any", email = "any", updates = "any",
+                    conds = {}, sort = st.args.sort, dir = st.args.dir, page = 0 }
+        st.search = ""
+        AP.setField("acc_search", "")
+        reqList()
+    end)
+    breakRow(fl, S(8))
+
     -- saved filters (accData of the admin's own account)
-    local fx2 = x + w - S(630)
-    AP.field("acc_filtername", fx2, cy, S(190), S(36), { placeholder = L("v_admin.accounts.filter_name"), max = 40,
+    local nw = math.min(S(190), w)
+    bx, by = place(fl, nw, ch)
+    AP.field("acc_filtername", bx, by, nw, ch, { placeholder = L("v_admin.accounts.filter_name"), max = 40,
         onEnter = function() saveFilter() end })
-    AP.button(fx2 + S(198), cy, S(100), S(36), L("v_admin.accounts.save_filter"), saveFilter)
-    AP.button(fx2 + S(306), cy, S(100), S(36), L("v_admin.accounts.saved_filters", { n = #st.filters }), function()
+    bx, by = place(fl, S(100), ch)
+    AP.button(bx, by, S(100), ch, L("v_admin.accounts.save_filter"), saveFilter)
+    bx, by = place(fl, S(100), ch)
+    AP.button(bx, by, S(100), ch, L("v_admin.accounts.saved_filters", { n = #st.filters }), function()
         local items = {}
         for _, sf in ipairs(st.filters) do
             items[#items + 1] = { label = sf.name, fn = function() applySaved(sf) end }
@@ -270,17 +323,9 @@ local function drawFilters(x, y, w)
             end }
         end
         if #items == 0 then items[1] = { label = L("v_admin.accounts.no_saved_filters"), disabled = true, fn = function() end } end
-        AP.openDropdown(fx2 + S(306), cy + S(40), S(320), items)
+        AP.openDropdown(bx, by + ch + S(4), S(320), items)
     end, #st.filters > 0 and nil or "off")
-    AP.button(x + w - S(210), cy, S(100), S(36), L("v_admin.accounts.apply"), applyConds, "active")
-    AP.button(x + w - S(100), cy, S(100), S(36), L("v_admin.accounts.clear"), function()
-        st.args = { admin = "any", status = "any", registered = "any", email = "any", updates = "any",
-                    conds = {}, sort = st.args.sort, dir = st.args.dir, page = 0 }
-        st.search = ""
-        AP.setField("acc_search", "")
-        reqList()
-    end)
-    return cy + S(36) + S(10)
+    return fl.cy + fl.rowH + S(10)
 end
 
 --------------------------------------------------------------------------------
@@ -320,8 +365,6 @@ local function drawList(x, y, w, h)
         { key = "adminLevel", label = L("v_admin.accounts.col_admin_short"), w = S(64), sort = true, align = "center", bold = true,
           text = function(r) return r.adminLevel > 0 and tostring(r.adminLevel) or "-" end,
           color = function(r) return r.adminLevel > 0 and C.gold or C.off end },
-        { key = "level", label = L("v_admin.accounts.col_level"), w = S(70), sort = true, align = "right" },
-        { key = "vehicles", label = L("v_admin.accounts.col_vehicles"), w = S(90), sort = true, align = "right" },
         { key = "lastLogin", label = L("v_admin.accounts.col_last_seen"), w = S(140), sort = true,
           text = function(r) return r.onServer and onServerText(r.onServer) or AP.ago(r.lastLogin, d and d.now) end,
           color = function(r) return r.onServer and C.good or C.dim end },
@@ -485,7 +528,7 @@ local function drawStats(x, y, w, h)
     AP.table("acc_stats", x, y, w, h, {
         { key = "name", label = L("v_admin.accounts.col_stat") },
         { key = "category", label = L("v_admin.accounts.col_category"), w = S(160) },
-        { key = "value", label = L("v_admin.accounts.col_value"), w = S(130), align = "right", text = function(s) return AP.fmtInt(s.value) end },
+        { key = "value", label = L("v_admin.accounts.col_value"), w = S(150), align = "right", text = function(s) return fmtValue(s.value, s.unit) end },
     }, r and r.list or {}, { rowH = S(34), empty = r and L("v_admin.page.no_rows") or L("common.loading") })
 end
 
@@ -538,25 +581,39 @@ local function drawMails(x, y, w, h)
     end
 end
 
+local function sanctionStatus(e, now)
+    if e.kind == "kick" then return "-", C.dim end
+    if e.lifted > 0 then return L("v_admin.accounts.lifted_by", { admin = e.liftedBy or "?" }), C.dim end
+    if e.minutes and e.at + e.minutes * 60 <= now then return L("v_admin.accounts.expired"), C.dim end
+    return L("v_admin.accounts.active"), C.bad
+end
+
 local function drawPunishments(x, y, w, h)
     local r = st.tabData.punishments
+    local now = r and r.now or getRealTime().timestamp
     local half = (h - S(20)) / 2
-    AP.text(L("v_admin.accounts.bans"):upper(), x, y, w, S(26), C.head, 0.8, "default-bold")
+    AP.text(L("v_admin.accounts.sanctions"):upper(), x, y, w, S(26), C.head, 0.8, "default-bold")
     AP.table("acc_bans", x, y + S(28), w, half - S(28), {
-        { key = "at", label = L("v_admin.accounts.col_date"), w = S(150), text = function(b) return AP.fmtDate(b.at) end },
+        { key = "at", label = L("v_admin.accounts.col_date"), w = S(140), text = function(e) return AP.fmtDate(e.at) end },
+        { key = "kind", label = L("v_admin.accounts.col_kind"), w = S(90), bold = true,
+          text = function(e) return L("v_admin.accounts.kind_" .. e.kind) end },
         { key = "reason", label = L("v_admin.players.reason") },
-        { key = "admin", label = L("v_admin.accounts.col_admin"), w = S(120) },
-        { key = "lifted", label = L("v_admin.accounts.col_status"), w = S(150),
-          text = function(b) return b.lifted > 0 and L("v_admin.accounts.lifted_by", { admin = b.liftedBy or "?" }) or L("v_admin.accounts.active") end,
-          color = function(b) return b.lifted > 0 and C.dim or C.bad end },
-    }, r and r.bans or {}, { rowH = S(34), empty = r and L("v_admin.page.no_rows") or L("common.loading") })
+        { key = "minutes", label = L("v_admin.accounts.col_duration"), w = S(90),
+          text = function(e)
+              if e.kind == "ban" then return L("v_admin.accounts.permanent") end
+              return e.minutes and fmtDuration(e.minutes * 60) or "-"
+          end },
+        { key = "admin", label = L("v_admin.accounts.col_admin"), w = S(110) },
+        { key = "lifted", label = L("v_admin.accounts.col_status"), w = S(140),
+          text = function(e) return (sanctionStatus(e, now)) end, color = function(e) return select(2, sanctionStatus(e, now)) end },
+    }, r and r.sanctions or {}, { rowH = S(34), empty = r and L("v_admin.page.no_rows") or L("common.loading") })
     local ly = y + half + S(20)
     AP.text(L("v_admin.accounts.admin_actions"):upper(), x, ly, w, S(26), C.head, 0.8, "default-bold")
     AP.table("acc_alog", x, ly + S(28), w, y + h - ly - S(28), {
         { key = "ts", label = L("v_admin.accounts.col_date"), w = S(150), text = function(l) return AP.fmtDate(l.ts) end },
         { key = "admin", label = L("v_admin.accounts.col_admin"), w = S(130) },
         { key = "action", label = L("v_admin.accounts.col_action") },
-    }, r and r.log or {}, { rowH = S(34), empty = r and L("v_admin.page.no_rows") or L("common.loading") })
+    }, r and r.actions or {}, { rowH = S(34), empty = r and L("v_admin.page.no_rows") or L("common.loading") })
 end
 
 local function drawAchievements(x, y, w, h)
@@ -565,8 +622,11 @@ local function drawAchievements(x, y, w, h)
     local bh = S(48)
     AP.table("acc_ach", x, y, w, h - bh, {
         { key = "name", label = L("v_admin.accounts.col_achievement"), bold = true },
-        { key = "progress", label = L("v_admin.accounts.col_progress"), w = S(120), align = "right",
-          text = function(a) return a.progress .. " / " .. a.goal end },
+        { key = "progress", label = L("v_admin.accounts.col_progress"), w = S(210), align = "right",
+          text = function(a)
+              if a.unit == "s" then return fmtValue(math.min(a.progress, a.goal), "s") .. " / " .. fmtValue(a.goal, "s") end
+              return fmtValue(math.min(a.progress, a.goal)) .. " / " .. fmtValue(a.goal, a.unit)
+          end },
         { key = "done", label = L("v_admin.accounts.col_status"), w = S(150),
           text = function(a) return a.done and AP.fmtDate(a.at, false) or "-" end,
           color = function(a) return a.done and C.good or C.off end },
@@ -595,7 +655,15 @@ end
 local function drawSocial(x, y, w, h)
     local r = st.tabData.social
     if not r then return AP.text(L("common.loading"), x, y, w, S(40), C.dim, 0.95) end
-    AP.kv(x, y, w, S(58), L("v_admin.accounts.crew"), r.crew or "-")
+    local c = r.crewInfo or r.crew
+    local crew = "-"
+    if type(c) == "table" then
+        crew = c.name .. (c.tag and (" [" .. c.tag .. "]") or "")
+        if c.members then crew = crew .. "  ·  " .. L("v_admin.accounts.crew_info", { n = c.members, founder = c.founder or "?" }) end
+    elseif type(c) == "string" then
+        crew = c
+    end
+    AP.kv(x, y, w, S(58), L("v_admin.accounts.crew"), crew)
     local rows = {}
     for i, n in ipairs(r.friends) do rows[i] = { name = n } end
     AP.table("acc_friends", x, y + S(70), w, h - S(70), {
@@ -744,7 +812,7 @@ AP.addPage({
     end,
     onClose = function() st.form = nil end,
     draw = function(x, y, w, h)
-        local detailW = math.min(S(680), w * 0.45)
+        local detailW = math.min(S(680), w * 0.45) + S(20) -- the list gives up 20 px
         local gap = S(20)
         drawList(x, y, w - detailW - gap, h)
         drawDetail(x + w - detailW, y, detailW, h)
