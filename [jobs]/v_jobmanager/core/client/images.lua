@@ -1,4 +1,4 @@
--- Community game thumbnails (see core/community.lua). Their `image` path points
+-- Creator thumbnails (stored in MySQL, see core/storage.lua). Their `image` path points
 -- into this resource's client folder ("community_img/<id>_<version>.jpg"); the
 -- file is fetched from the server the first time a job list / lobby mentions it.
 -- Every consumer already falls back to the default image while it is missing.

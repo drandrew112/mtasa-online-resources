@@ -48,19 +48,16 @@ local function weekLabel(w)
     return L("v_weekly.admin.in_weeks", { offset = w.offset })
 end
 
-local function jobName(id)
-    for _, j in ipairs(st.data.jobs) do if j.id == id then return j.name end end
-    return id
-end
-
 --------------------------------------------------------------------------------
 -- tabs
 --------------------------------------------------------------------------------
 
-local function drawJobs(x, y, w, h)
+-- Multiplier table of one game list: official games (data.jobs) or the
+-- player-made community games (data.communityJobs, with their creator).
+local function drawJobList(id, list, empty, community, x, y, w, h)
     local data, week = st.data, curWeek()
-    if #data.jobs == 0 then
-        return AP.text(L("v_weekly.admin.v_jobmanager_has_no_official_jobs"), x, y, w, S(40), C.dim, 1.0)
+    if #list == 0 then
+        return AP.text(empty, x, y, w, S(40), C.dim, 1.0)
     end
     local bw, bh = S(54), S(30)
     local cols = {
@@ -70,16 +67,19 @@ local function drawJobs(x, y, w, h)
         { key = "xp", label = L("v_weekly.admin.xp"), w = (bw + S(6)) * #data.multipliers + S(20),
           text = function() return "" end },
     }
-    AP.table("wk_jobs", x, y, w, h, cols, data.jobs, { rowH = S(46) })
+    if community then
+        table.insert(cols, 2, { key = "owner", label = L("v_admin.weekly.created_by"), w = S(200), color = function() return C.dim end })
+    end
+    AP.table(id, x, y, w, h, cols, list, { rowH = S(46) })
     -- multiplier buttons on top of the visible rows
-    local first = AP.scroll.wk_jobs or 0
+    local first = AP.scroll[id] or 0
     local rowH = S(46)
     local ly = y + S(36)
     local visible = math.max(1, math.floor((y + h - ly) / rowH))
-    local xpX = x + w - cols[3].w
-    local moneyX = xpX - cols[2].w
+    local xpX = x + w - cols[#cols].w
+    local moneyX = xpX - cols[#cols - 1].w
     for i = 1, visible do
-        local j = data.jobs[first + i]
+        local j = list[first + i]
         if not j then break end
         local ry = ly + (i - 1) * rowH + (rowH - S(4) - bh) / 2
         local m = week.jobs[j.id]
@@ -91,6 +91,15 @@ local function drawJobs(x, y, w, h)
                 function() edit("job", j.id, curMoney, mult) end, curXp == mult and "active")
         end
     end
+end
+
+local function drawJobs(x, y, w, h)
+    drawJobList("wk_jobs", st.data.jobs, L("v_weekly.admin.v_jobmanager_has_no_official_jobs"), false, x, y, w, h)
+end
+
+local function drawCommunityJobs(x, y, w, h)
+    AP.text(L("v_admin.weekly.community_hint"), x, y, w, S(30), C.dim, 0.85)
+    drawJobList("wk_cjobs", st.data.communityJobs or {}, L("v_admin.weekly.no_community_jobs"), true, x, y + S(36), w, h - S(36))
 end
 
 local function drawTrial(x, y, w, h)
@@ -140,7 +149,7 @@ local function drawNews(x, y, w, h)
     end, "active")
 end
 
-local DRAW = { jobs = drawJobs, trial = drawTrial, login = drawLogin, news = drawNews }
+local DRAW = { jobs = drawJobs, community = drawCommunityJobs, trial = drawTrial, login = drawLogin, news = drawNews }
 
 --------------------------------------------------------------------------------
 -- page
@@ -182,7 +191,8 @@ AP.addPage({
         -- tabs + content
         local cx, cw = x + lw + S(24), w - lw - S(24)
         local items = {
-            { id = "jobs", label = L("v_weekly.admin.job_multipliers") },
+            { id = "jobs", label = L("v_admin.weekly.official_multipliers") },
+            { id = "community", label = L("v_admin.weekly.community_multipliers") },
             { id = "trial", label = L("v_weekly.admin.time_trial") },
             { id = "login", label = L("v_weekly.admin.login_bonus") },
             { id = "news", label = L("v_weekly.admin.news") },

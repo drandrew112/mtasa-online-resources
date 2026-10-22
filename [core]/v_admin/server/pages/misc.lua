@@ -46,7 +46,9 @@ PAGES.register("dashboard", {
                 local ok, w = pcall(function() return exports.v_weekly:getWeeklyInfo(0) end)
                 if ok and type(w) == "table" then
                     local jobs = {}
-                    for _, j in ipairs(w.jobs or {}) do jobs[#jobs + 1] = txt(actor, j.name) .. " " .. txt(actor, j.label or "") end
+                    for _, j in ipairs(w.jobs or {}) do
+                        jobs[#jobs + 1] = txt(actor, j.name) .. (j.community and " [community]" or "") .. " " .. txt(actor, j.label or "")
+                    end
                     d.week = { from = w.from, to = w.to, jobs = jobs, timetrial = w.timetrial and txt(actor, w.timetrial.name) or false,
                                loginBonus = w.loginBonus or false }
                 end

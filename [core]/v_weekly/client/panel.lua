@@ -82,7 +82,8 @@ function drawPanel()
         cy = cy + rowH
     else
         for _, j in ipairs(d.jobs) do
-            dxDrawText(j.name, x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold")
+            local name = j.community and L("v_weekly.panel.community_job", { name = j.name }) or j.name
+            dxDrawText(name, x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold", "left", "top", true)
             dxDrawText(L("v_weekly.panel.money", { money = fmt(j.money) }), x + w * 0.5, cy, x + w * 0.82, cy + rowH, COL.money, ui(1.2), "default-bold", "right")
             dxDrawText(L("v_weekly.panel.xp", { xp = fmt(j.xp) }), x + w * 0.82, cy, x + w - pad, cy + rowH, COL.xp, ui(1.2), "default-bold", "right")
             cy = cy + rowH

@@ -76,6 +76,7 @@ function Menus.openStart()
 end
 
 local function statusText(entry)
+    if entry.official and not entry.published then return L("v_jobcreator.menus.official_not_published") end
     if entry.official then return entry.pending and L("v_jobcreator.menus.official_draft_not_published_yet") or L("v_jobcreator.menus.official") end
     if entry.published and entry.pending then return L("v_jobcreator.menus.published_newer_changes_saved") end
     if entry.published then return L("v_jobcreator.menus.published") end
@@ -89,17 +90,36 @@ addEventHandler("jobcreator:list", resourceRoot, function(scope, list)
     local items = {}
     for _, entry in ipairs(list) do
         local actions = { leaf(L("common.edit"), { "load", entry.id }) }
+        local officialAdmin = Editor.info.officialAdmin
         if entry.official then
-            if entry.pending then actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish_draft"), { "manage", entry.id, "publish" }) end
+            -- publishing / unpublishing official games: CREATOR.OFFICIAL_LEVEL
+            if officialAdmin then
+                if not entry.published then
+                    actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish"), { "manage", entry.id, "publish" })
+                elseif entry.pending then
+                    actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish_draft"), { "manage", entry.id, "publish" })
+                end
+                if entry.published then
+                    actions[#actions + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "manage", entry.id, "unpublish" }, L("v_jobcreator.menus.kept_as_draft"))
+                end
+            end
         elseif Editor.info.admin then
             if entry.published then
                 if entry.pending then actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish_changes"), { "manage", entry.id, "publish" }) end
-                actions[#actions + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "manage", entry.id, "unpublish" })
+                actions[#actions + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "manage", entry.id, "unpublish" }, L("v_jobcreator.menus.kept_as_draft"))
             else
                 actions[#actions + 1] = leaf(L("v_jobcreator.menus.publish"), { "manage", entry.id, "publish" })
             end
+            if officialAdmin then
+                actions[#actions + 1] = sub(L("v_jobcreator.menus.publish_as_official"), {
+                    leaf(L("v_jobcreator.menus.yes_make_official", { name = tostring(entry.name) }), { "manage", entry.id, "official" }),
+                }, L("v_jobcreator.menus.moves_game_to_official_games"))
+            end
         end
-        if not entry.official and (Editor.info.admin or not entry.published) then
+        local canDelete
+        if entry.official then canDelete = officialAdmin and not entry.published
+        else canDelete = Editor.info.admin or not entry.published end
+        if canDelete then
             actions[#actions + 1] = sub("Delete", { leaf(L("v_jobcreator.menus.yes_delete", { name = tostring(entry.name) }), { "manage", entry.id, "delete" }) })
         end
         local typeName = entry.type == "race" and L("common.race") or L("common.deathmatch")
@@ -247,11 +267,18 @@ function Menus.openHub()
     items[#items + 1] = leaf(L("v_jobcreator.menus.redo"), { "redo" }, L("v_jobcreator.menus.ctrl_y"), { closeOnSelect = false })
     items[#items + 1] = leaf(L("common.save"), { "save" }, official and L("v_jobcreator.menus.saves_draft_live_game_changes_on")
         or (admin and L("v_jobcreator.menus.saves_private_copy_not_live") or L("v_jobcreator.menus.only_admins_can_publish_games")))
-    if admin then
+    -- official games are published by CREATOR.OFFICIAL_LEVEL only
+    local officialAdmin = Editor.info.officialAdmin
+    if admin and (officialAdmin or not official) then
         items[#items + 1] = leaf(L("v_jobcreator.menus.save_publish"), { "publish" }, L("v_jobcreator.menus.makes_this_version_live"))
-        if Editor.meta and Editor.meta.published and not official then
-            items[#items + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "unpublish" }, L("v_jobcreator.menus.removes_it_from_job_list"))
-        end
+    end
+    if officialAdmin and not official then
+        items[#items + 1] = sub(L("v_jobcreator.menus.save_publish_as_official"), {
+            leaf(L("v_jobcreator.menus.yes_publish_as_official"), { "publishOfficial" }),
+        }, L("v_jobcreator.menus.moves_game_to_official_games"))
+    end
+    if admin and Editor.meta and Editor.meta.published and (officialAdmin or not official) then
+        items[#items + 1] = leaf(L("v_jobcreator.menus.unpublish"), { "unpublish" }, L("v_jobcreator.menus.removes_it_from_job_list"))
     end
     items[#items + 1] = sub("Close Game", {
         leaf(L("v_jobcreator.menus.save_and_close"), { "close", "save" }),
@@ -377,6 +404,7 @@ actions.close = function(v)
 end
 actions.save = function() Editor.save(false) end
 actions.publish = function() Editor.save(true) end
+actions.publishOfficial = function() Editor.save("official") end
 actions.unpublish = function()
     if Editor.meta and Editor.meta.id then
         triggerServerEvent("jobcreator:manage", resourceRoot, Editor.meta.id, "unpublish")

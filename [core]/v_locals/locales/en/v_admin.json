@@ -539,5 +539,10 @@
   "v_admin.accounts.online_server": "online · #{server} · ID {id}",
   "v_admin.accounts.online_server_long": "online · #{server} {name} · ID {id}",
   "v_admin.page.instance_pill": "Server #{id} · {name}",
-  "v_admin.log.server": "Server"
+  "v_admin.log.server": "Server",
+  "v_admin.weekly.official_multipliers": "Official multipliers",
+  "v_admin.weekly.community_multipliers": "Community multipliers",
+  "v_admin.weekly.created_by": "Created by",
+  "v_admin.weekly.community_hint": "Player-made games published in the Job creator, listed apart from the official games.",
+  "v_admin.weekly.no_community_jobs": "There are no published community jobs."
 }

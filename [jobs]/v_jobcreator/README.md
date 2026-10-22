@@ -1,8 +1,8 @@
 # v_jobcreator
 
 In-game creator for v_jobmanager games (race and deathmatch). It produces the
-same JSON as `v_jobmanager/games/*.json`. Community games are stored by
-v_jobmanager (`core/community.lua`) under `games/community/`.
+v_jobmanager game data. Every game is stored by v_jobmanager in MySQL
+(`core/storage.lua`: `jobs_draft`, `jobs_community`, `jobs_official`).
 
 ## Entering
 
@@ -31,7 +31,8 @@ health, armour and weapons are saved on entry and restored on exit.
 | who | can |
 |---|---|
 | any logged-in player | create games, save them privately (max `MAX_GAMES_PER_PLAYER`), edit and delete their own unpublished games |
-| admin level >= `CREATOR.ADMIN_LEVEL` (3) | publish / unpublish, open and delete anyone's games, place the world job marker |
+| admin level >= `CREATOR.ADMIN_LEVEL` (3) | publish / unpublish community games, open and delete anyone's games, place the world job marker, open official games and save drafts of them |
+| admin level >= `CREATOR.OFFICIAL_LEVEL` (5) | publish official games: an official draft, or any game with **Save & Publish as Official** / **Publish as Official** (a community game moves to the official games); unpublish and delete official games |
 
 A game can only be open in one editor at a time (`locks` in `server/main.lua`).
 If a non-admin saves a game, its job marker is always taken from the stored
@@ -39,23 +40,24 @@ copy, so non-admins cannot move or add one.
 
 ## Official games
 
-Admins (level >= 3) can also edit the official games (`games/<id>.json` in `games/index.json`) from **Official Games** in the start menu.
-- **Save** writes a draft to `games/drafts/<id>.json`. The live game does not change.
-- **Publish** validates the draft, overwrites `games/<id>.json`, registers the game live, then deletes the draft.
-- The editor never changes `id` and `createdBy`. The image is kept unless a new photo is taken (`games/img/<id>.jpg`).
-- Official games cannot be unpublished or deleted from the creator.
+Admins (level >= 3) can also open the official games (`jobs_official`) from **Official Games** in the start menu.
+- **Save** writes a draft (`jobs_draft`). The live game does not change.
+- **Publish** (level >= 5) validates the draft, writes it into `jobs_official`, registers the game live and deletes the draft.
+- **Unpublish** (level >= 5) takes the game out of the job list. It stays as an official draft, and only then can it be deleted.
+- The editor never changes `id` and `createdBy`. The image is kept unless a new photo is taken.
 - They may use any object, vehicle or weapon model, with bigger limits: 1000 objects, 300 checkpoints.
 
-## Storage (in v_jobmanager)
+## Storage (MySQL, through v_jobmanager `core/storage.lua`)
 
-- **Save** writes `games/community/private/<id>.json`. This copy is never loaded.
-- **Publish** validates the private copy with the same validator the loader
-  uses, writes `games/community/<id>.json` and registers the game live.
+- **Save** writes the game's row in `jobs_draft`. A draft is never a live game.
+- **Publish** validates the draft with the same validator the loader uses, writes it
+  into `jobs_community` (or `jobs_official`), registers the game live and deletes the draft.
   - Running lobbies and matches keep the old version.
   - A world marker is created or moved immediately.
-- **Saving a published game** only changes the private copy. The index marks it
-  `pending` until an admin publishes again.
-- **Thumbnails** go to `games/community/img/<id>.jpg` (640x360 JPEG). Clients
+- **Saving a published game** only writes the draft. The game is `pending` until an
+  admin publishes again.
+- **Unpublish** moves the live copy back into `jobs_draft`; nothing is lost.
+- **Thumbnails** (640x360 JPEG) are stored base64 in the `image` column. Clients
   download them on demand into `community_img/<id>_<version>.jpg` inside
   v_jobmanager (`core/client/images.lua`), so the lobby, the scoreboard and
   ui_pause show them through their usual `fileExists(image)` fallback.

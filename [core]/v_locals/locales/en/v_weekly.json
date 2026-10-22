@@ -37,6 +37,7 @@
   "v_weekly.api.x_money": "{money}x money",
   "v_weekly.api.x_xp": "{xp}x XP",
   "v_weekly.panel.bonuses": "BONUSES",
+  "v_weekly.panel.community_job": "{name} (community)",
   "v_weekly.panel.limit_s": "Limit: {time|int}s",
   "v_weekly.panel.login_bonus": "LOGIN BONUS",
   "v_weekly.panel.login_bonus_2": "Login bonus: {parts}",

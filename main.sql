@@ -464,3 +464,53 @@ CREATE TABLE IF NOT EXISTS `admin_log` (
     KEY `idx_admin` (`admin`),
     KEY `idx_target` (`target`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- jobs_official / jobs_community / jobs_draft  (v_jobmanager: race / DM games)
+-- ---------------------------------------------------------------------------
+-- Same columns in all three: data = game JSON (without id / createdBy), image =
+-- base64 creator thumbnail. jobs_draft = creator working copies (target = the
+-- table Publish writes; image NULL = same as live, '' = removed). v_jobmanager
+-- also creates the tables on start; [jobs]/v_jobmanager/import_official_games.sql
+-- loads the official races.
+CREATE TABLE IF NOT EXISTS `jobs_official` (
+    `id`            VARCHAR(64)  NOT NULL PRIMARY KEY,
+    `name`          VARCHAR(80)  NOT NULL,
+    `type`          VARCHAR(16)  NOT NULL,
+    `created_by`    VARCHAR(50)  NOT NULL,
+    `published_by`  VARCHAR(50)  DEFAULT NULL,
+    `data`          MEDIUMTEXT   NOT NULL,
+    `image`         MEDIUMTEXT   NULL,
+    `image_version` INT          NOT NULL DEFAULT 0,
+    `created_at`    INT          NOT NULL DEFAULT 0,
+    `updated_at`    INT          NOT NULL DEFAULT 0,
+    KEY `idx_created_by` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `jobs_community` (
+    `id`            VARCHAR(64)  NOT NULL PRIMARY KEY,
+    `name`          VARCHAR(80)  NOT NULL,
+    `type`          VARCHAR(16)  NOT NULL,
+    `created_by`    VARCHAR(50)  NOT NULL,
+    `published_by`  VARCHAR(50)  DEFAULT NULL,
+    `data`          MEDIUMTEXT   NOT NULL,
+    `image`         MEDIUMTEXT   NULL,
+    `image_version` INT          NOT NULL DEFAULT 0,
+    `created_at`    INT          NOT NULL DEFAULT 0,
+    `updated_at`    INT          NOT NULL DEFAULT 0,
+    KEY `idx_created_by` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `jobs_draft` (
+    `id`            VARCHAR(64)  NOT NULL PRIMARY KEY,
+    `name`          VARCHAR(80)  NOT NULL,
+    `type`          VARCHAR(16)  NOT NULL,
+    `created_by`    VARCHAR(50)  NOT NULL,
+    `target`        VARCHAR(16)  NOT NULL DEFAULT 'community',
+    `data`          MEDIUMTEXT   NOT NULL,
+    `image`         MEDIUMTEXT   NULL,
+    `image_version` INT          NOT NULL DEFAULT 0,
+    `created_at`    INT          NOT NULL DEFAULT 0,
+    `updated_at`    INT          NOT NULL DEFAULT 0,
+    KEY `idx_created_by` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

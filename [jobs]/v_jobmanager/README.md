@@ -34,11 +34,38 @@ match cleanup are all controlled on the server. `jobmanager:joinJob`,
 `jobmanager:startJob`, and `jobmanager:leaveJob` are safe integration points
 for the planned panel; they derive the player from the MTA `client` value.
 
-## Game files (`games/<id>.json`)
+## Games (MySQL: `jobs_official`, `jobs_community`, `jobs_draft`)
 
-Every game is a self-contained JSON file; the structure is the contract the
-future creator mode will write. Add the id to `games/index.json` and to the
-`<file>` list in `meta.xml`. Invalid games are skipped with a debug warning.
+Every game is a row in one of three tables with the same columns (`database.sql`,
+also in the repo-root `main.sql`; `core/storage.lua` creates them on start):
+
+| table | holds |
+|---|---|
+| `jobs_official` | the server's own live games |
+| `jobs_community` | live player-made games (published by an admin) |
+| `jobs_draft` | creator working copies: every Save writes here, a draft is never a live game |
+
+A draft next to a live row means unpublished changes (`pending`); a draft alone is a
+private or unpublished game. `jobs_draft.target` says which table Publish writes into.
+Columns: `id, name, type, created_by, data, image, image_version, created_at, updated_at`,
+plus `published_by` (live tables) or `target` (drafts).
+
+- `data` is the game JSON below without `id` / `createdBy` / `image`. Only
+  `assets/jobs/default.jpg` is a file: the fallback for games without a thumbnail.
+- `image` is the base64 JPEG thumbnail taken in the creator. The game's `image` then
+  becomes `community_img/<id>_<image_version>.jpg`, which clients download on demand
+  (`core/client/images.lua`). In `jobs_draft`, `NULL` means "same as the live copy" and
+  `''` means "removed".
+- `import_official_games.sql` loads the finished official races (casino_tour, canal_tour,
+  beach_motorcycling). It is re-runnable. ls_airport_dm is left out on purpose: it was a
+  debug game.
+
+All rows except images are cached in memory, so the exports answer right away; writes
+go to MySQL asynchronously and in order. The tables are shared by every server
+instance: every 30 s `updated_at` is polled and rows another instance changed are
+reloaded (live games are re-registered, the world marker follows).
+
+Game data:
 
 ```
 common:     id, name, type ("race"|"deathmatch"), createdBy, description, image,
@@ -52,30 +79,26 @@ race:       { vehicles:[model], spawnpoints:[[x,y,z,rot]], checkpoints:[[x,y,z,s
 deathmatch: { weapon, ammo, armour?, spawnpoints:[[x,y,z,rot]] }
 ```
 
-`createdBy` is required (existing games: `DrAndrew112`) and is shown in the lobby.
-Spawnpoints need at least `maxPlayers` entries. Loading lives in `core/games.lua`;
-each mode validates its own block via `JobModes[type].validate`.
+`createdBy` is required (official games: `DrAndrew112`) and is shown in the lobby.
+Spawnpoints need at least `maxPlayers` entries. Validation and registration live in
+`core/games.lua`; each mode validates its own block via `JobModes[type].validate`.
+Invalid games are skipped with a debug warning. Community games may have at most 300 objects.
 
-## Community games (`games/community/`, made in v_jobcreator)
-
-`core/community.lua` stores them and exposes server exports for the creator:
-- `jobmanagerCommunityList`, `jobmanagerCommunityLoad`, `jobmanagerCommunitySave`
-- `jobmanagerCommunityPublish`, `jobmanagerCommunityUnpublish`, `jobmanagerCommunityDelete`
-- `jobmanagerCommunityImage`, `jobmanagerValidateGame`
-
-Layout:
-- `index.json` lists every community game (owner, published, pending, imageVersion).
-- `private/<id>.json` is the saved working copy. It is never loaded.
-- `<id>.json` is the live copy. It is loaded at start and written on publish.
-- `img/<id>.jpg` is the thumbnail.
+Storage exports (`core/storage.lua`, used by v_jobcreator and v_weekly; permissions are
+the caller's job):
+- `jobmanagerStorageReady()`, `jobmanagerGameEntry(id)`
+- `jobmanagerCommunityList([owner])`, `jobmanagerOfficialList()`: entries
+  `{ id, name, type, owner, official, published, pending, imageVersion, updated }`
+- `jobmanagerGameLoad(id)`: the draft, else the live copy, and its entry
+- `jobmanagerGameSave(game, owner, image [, target])`: writes the draft
+- `jobmanagerGamePublish(id [, "official"] [, by])`: draft -> live. With `"official"`
+  a community game moves to `jobs_official`.
+- `jobmanagerGameUnpublish(id)`: live -> draft, nothing is lost
+- `jobmanagerGameDelete(id)`: not for live official games
+- `jobmanagerSendImage(player, id, eventName)`, `jobmanagerValidateGame(game)`
 
 Publishing registers the game live through `registerJob` and creates its world
-marker. Running lobbies keep the old version. Community games may have at most
-300 objects. See `v_jobcreator/README.md`.
-
-Official games can be edited by admins in the creator through `core/official.lua`:
-- exports: `jobmanagerOfficialList`, `jobmanagerOfficialLoad`, `jobmanagerOfficialSave`, `jobmanagerOfficialPublish`, `jobmanagerOfficialImage`;
-- Save writes a draft to `games/drafts/<id>.json`, and Publish overwrites `games/<id>.json` and re-registers the game.
+marker. Running lobbies keep the old version. See `v_jobcreator/README.md`.
 
 
 ## Rewards (core/rewards.lua)
@@ -92,7 +115,7 @@ Aborted matches (resource stop) pay nothing; players who quit get nothing.
 - Tuning lives in the `REWARDS` table.
 
 Runtime per-game multipliers (not persisted, applied to the final money / XP total;
-meant for v_weekly):
+set by v_weekly, for official and community games alike):
 
 ```lua
 exports.v_jobmanager:jobmanagerSetMultiplier(jobId, money, xp, label)  -- 1,1 removes it

@@ -1,6 +1,6 @@
--- Game loader. Every game (race / deathmatch) lives in its own JSON file under
--- games/ and is listed in games/index.json. The same file format is meant to be
--- produced by the future creator mode, so the structure is the contract:
+-- Game registry + validation. The games themselves live in MySQL (core/storage.lua:
+-- jobs_official / jobs_community / jobs_draft); a game's data is the contract the
+-- creator (v_jobcreator) writes:
 --
 --   id, name, type, createdBy, description, image, minPlayers, maxPlayers   (common)
 --   marker = {x, y, z}                         optional - without it the game is
@@ -11,19 +11,6 @@
 --   deathmatch = {weapon, ammo, armour?, spawnpoints}                          (type "deathmatch")
 --
 -- Each mode validates its own block through JobModes[type].validate(game).
-
-local INDEX_PATH = "games/index.json"
-
-function readJson(path)
-    if not fileExists(path) then return nil, "file not found" end
-    local file = fileOpen(path, true)
-    if not file then return nil, "cannot open" end
-    local text = fileRead(file, fileGetSize(file))
-    fileClose(file)
-    local data = fromJSON(text)
-    if data == nil then return nil, "invalid JSON" end
-    return data
-end
 
 local function isPoint(p, n)
     if type(p) ~= "table" then return false end
@@ -86,10 +73,9 @@ function validateGame(game)
     return validateCommon(game, true)
 end
 
--- Registers a game. A community game that is already registered is swapped in
--- place: running lobbies / matches keep their own reference to the old table,
--- only new lobbies get the new version.
--- replace: an already registered official game may be swapped (creator publish)
+-- Registers a game. A game that is already registered is swapped in place
+-- (community games always, others with `replace`): running lobbies / matches keep
+-- their own reference to the old table, only new lobbies get the new version.
 function registerJob(game, replace)
     local ok, err = validateCommon(game, game.community or replace)
     if not ok then return false, err end
@@ -115,22 +101,4 @@ function unregisterJob(id)
     end
     if onJobUnregistered then onJobUnregistered(old) end
     return true
-end
-
-function loadGames()
-    local index, err = readJson(INDEX_PATH)
-    if type(index) ~= "table" or type(index.games) ~= "table" then
-        outputDebugString("[v_jobmanager] cannot read " .. INDEX_PATH .. ": " .. tostring(err or "no 'games' list"), 1)
-        return
-    end
-    for _, id in ipairs(index.games) do
-        local game, readErr = readJson("games/" .. tostring(id) .. ".json")
-        local ok, regErr = false, readErr
-        if game then ok, regErr = registerJob(game) end
-        if not ok then
-            outputDebugString("[v_jobmanager] game '" .. tostring(id) .. "' skipped: " .. tostring(regErr), 2)
-        end
-    end
-    if loadCommunityGames then loadCommunityGames() end
-    outputDebugString("[v_jobmanager] loaded " .. #jobs .. " games")
 end

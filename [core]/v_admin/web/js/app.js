@@ -1213,19 +1213,26 @@
             `<button class="wk-week${i === W.week ? ' on' : ''}" data-w="${i}"><b>${label(w)}</b><small>${esc(w.from)}${w.inherited ? ' (inherited)' : ''}</small></button>`).join('')
             + '<span class="grow"></span><button class="osa-btn danger" id="wkReset">Reset week (inherit previous)</button>';
         const w = d.weeks[W.week];
-        const tabs = [['jobs', 'Job multipliers'], ['trial', 'Time trial'], ['login', 'Login bonus'], ['news', 'Weekly news']];
+        const tabs = [['jobs', 'Official multipliers'], ['community', 'Community multipliers'], ['trial', 'Time trial'], ['login', 'Login bonus'], ['news', 'Weekly news']];
         let html = `<div class="osa-tabs">${tabs.map(t => `<button class="osa-tab${W.tab === t[0] ? ' active' : ''}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div><div id="wkTab"></div>`;
         $('wkBody').innerHTML = html;
         const el = $('wkTab');
         const mults = arr(d.multipliers);
+        // official games and the player-made community games are two separate lists
+        const multCol = (key, label) => ({ key, label, text: j => { const m = w.jobs[j.id]; const cur = m ? m[key] : 1;
+            return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-kind="${key}" data-x="${x}">${x}x</button>`).join('')}</span>`; } });
         if (W.tab === 'jobs') {
             grid(el, [
-                { key: 'name', label: 'Job', text: j => `<b>${esc(j.name)}</b>` },
-                { key: 'money', label: 'Money', text: j => { const m = w.jobs[j.id]; const cur = m ? m.money : 1;
-                    return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-kind="money" data-x="${x}">${x}x</button>`).join('')}</span>`; } },
-                { key: 'xp', label: 'XP', text: j => { const m = w.jobs[j.id]; const cur = m ? m.xp : 1;
-                    return `<span class="mult">${mults.map(x => `<button class="osa-btn small${cur === x ? ' active' : ''}" data-job="${esc(j.id)}" data-kind="xp" data-x="${x}">${x}x</button>`).join('')}</span>`; } },
+                { key: 'name', label: 'Official job', text: j => `<b>${esc(j.name)}</b>` },
+                multCol('money', 'Money'), multCol('xp', 'XP'),
             ], arr(d.jobs), { empty: 'v_jobmanager has no official jobs.' });
+        } else if (W.tab === 'community') {
+            el.innerHTML = '<p class="dim">Player-made games published in the Job creator. Their bonuses are listed apart from the official games.</p><div id="wkCJobs"></div>';
+            grid($('wkCJobs'), [
+                { key: 'name', label: 'Community job', text: j => `<b>${esc(j.name)}</b>` },
+                { key: 'owner', label: 'Created by', text: j => `<span class="dim">${esc(j.owner || '-')}</span>` },
+                multCol('money', 'Money'), multCol('xp', 'XP'),
+            ], arr(d.communityJobs), { empty: 'There are no published community jobs.' });
         } else if (W.tab === 'trial') {
             grid(el, [
                 { key: 'name', label: 'Time trial', text: t => `<b>${esc(t.name)}</b>` },

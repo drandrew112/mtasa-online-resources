@@ -2,14 +2,14 @@
     <info author="DrAndrew112, rewritten by Codex" name="v_jobmanager" type="script" version="2.0.0" />
 
     <include resource="v_locals" />
+    <include resource="v_mysql" />
     <script src="locals.lua" type="shared" />
     <script src="shared/config/jobs.lua" type="shared" />
 
     <script src="mode_race/server.lua" type="server" />
     <script src="mode_dm/server.lua" type="server" />
     <script src="core/games.lua" type="server" />
-    <script src="core/community.lua" type="server" />
-    <script src="core/official.lua" type="server" />
+    <script src="core/storage.lua" type="server" />
     <script src="core/rewards.lua" type="server" />
     <script src="core/server.lua" type="server" />
 
@@ -22,21 +22,19 @@
     <export function="jobmanagerLeave" type="server" />
     <export function="jobmanagerGetState" type="server" />
     <export function="jobmanagerAcceptInvite" type="server" />
-    <!-- community games (v_jobcreator); see core/community.lua -->
+    <!-- game storage in MySQL (jobs_official / jobs_community / jobs_draft), used by
+         v_jobcreator and v_weekly; see core/storage.lua -->
+    <export function="jobmanagerStorageReady" type="server" />
+    <export function="jobmanagerGameEntry" type="server" />
     <export function="jobmanagerCommunityList" type="server" />
-    <export function="jobmanagerCommunityLoad" type="server" />
-    <export function="jobmanagerCommunitySave" type="server" />
-    <export function="jobmanagerCommunityPublish" type="server" />
-    <export function="jobmanagerCommunityUnpublish" type="server" />
-    <export function="jobmanagerCommunityDelete" type="server" />
-    <export function="jobmanagerCommunityImage" type="server" />
-    <export function="jobmanagerValidateGame" type="server" />
-    <!-- official games (admin editing in v_jobcreator); see core/official.lua -->
     <export function="jobmanagerOfficialList" type="server" />
-    <export function="jobmanagerOfficialLoad" type="server" />
-    <export function="jobmanagerOfficialSave" type="server" />
-    <export function="jobmanagerOfficialPublish" type="server" />
-    <export function="jobmanagerOfficialImage" type="server" />
+    <export function="jobmanagerGameLoad" type="server" />
+    <export function="jobmanagerGameSave" type="server" />
+    <export function="jobmanagerGamePublish" type="server" />
+    <export function="jobmanagerGameUnpublish" type="server" />
+    <export function="jobmanagerGameDelete" type="server" />
+    <export function="jobmanagerSendImage" type="server" />
+    <export function="jobmanagerValidateGame" type="server" />
     <!-- runtime per-game reward multipliers (v_weekly); see core/rewards.lua -->
     <export function="jobmanagerSetMultiplier" type="server" />
     <export function="jobmanagerGetMultiplier" type="server" />
@@ -51,19 +49,10 @@
     <export function="jobmanagerJoinLobby" type="client" />
     <export function="jobmanagerQuickJob" type="client" />
     <export function="jobmanagerInLobby" type="client" />
-    <file src="games/index.json" type="server" download="false" />
-    <file src="games/casino_tour.json" type="server" download="false" />
-    <file src="games/canal_tour.json" type="server" download="false" />
-    <file src="games/beach_motorcycling.json" type="server" download="false" />
-    <file src="games/ls_airport_dm.json" type="server" download="false" />
     <file src="assets/sounds/select.wav" type="client" />
     <file src="assets/sounds/click.wav" type="client" />
     <file src="assets/sounds/btnfail.wav" type="client" />
     <file src="assets/fonts/Roboto.ttf" type="client" />
     <file src="assets/fonts/RobotoB.ttf" type="client" />
     <file src="assets/jobs/default.jpg" type="client" />
-    <file src="assets/jobs/casino_tour.jpg" type="client" />
-    <file src="assets/jobs/canal_tour.jpg" type="client" />
-    <file src="assets/jobs/beach_motorcycling.jpg" type="client" />
-    <file src="assets/jobs/ls_airport_dm.jpg" type="client" />
 </meta>

@@ -197,10 +197,11 @@ end)
 addEvent("jobcreator:notify", true)
 addEventHandler("jobcreator:notify", resourceRoot, function(_, text) notify(text) end)
 
+-- publish: false | true (its own job list) | "official" (publish as an official game)
 function Editor.save(publish, afterSave)
     if not Editor.doc then return end
     Editor.afterSave = afterSave
-    triggerServerEvent("jobcreator:save", resourceRoot, Editor.doc, publish == true)
+    triggerServerEvent("jobcreator:save", resourceRoot, Editor.doc, publish == "official" and "official" or publish == true)
 end
 
 -- Back to the start menu (the doc is dropped).

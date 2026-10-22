@@ -6,16 +6,24 @@ PANEL = {}
 
 addEvent("onPlayerLoaded")
 
+-- -> names[jobId], community[jobId] = true for player-made (community) games
 local function jobNames()
-    local names = {}
+    local names, community = {}, {}
     local res = getResourceFromName("v_jobmanager")
     if res and getResourceState(res) == "running" then
-        local ok, list = pcall(function() return exports.v_jobmanager:jobmanagerOfficialList() end)
-        if ok and type(list) == "table" then
-            for _, g in ipairs(list) do names[g.id] = g.name end
+        for _, fn in ipairs({ "jobmanagerOfficialList", "jobmanagerCommunityList" }) do
+            local ok, list = pcall(function() return exports.v_jobmanager[fn](exports.v_jobmanager) end)
+            if ok and type(list) == "table" then
+                for _, g in ipairs(list) do
+                    if g.published then
+                        names[g.id] = g.name
+                        community[g.id] = not g.official or nil
+                    end
+                end
+            end
         end
     end
-    return names
+    return names, community
 end
 
 local function timetrialInfo(index)
@@ -29,12 +37,17 @@ end
 
 function PANEL.payload(ws)
     local data = SCHED.resolve(ws)
-    local names = jobNames()
+    local names, community = jobNames()
     local jobs = {}
     for jobId, m in pairs(data.jobs) do
-        jobs[#jobs + 1] = { id = jobId, name = names[jobId] or jobId, money = m.money, xp = m.xp, label = m.label }
+        jobs[#jobs + 1] = { id = jobId, name = names[jobId] or jobId, money = m.money, xp = m.xp, label = m.label,
+            community = community[jobId] or false }
     end
-    table.sort(jobs, function(a, b) return a.name < b.name end)
+    -- official games first, then the community ones
+    table.sort(jobs, function(a, b)
+        if a.community ~= b.community then return not a.community end
+        return a.name < b.name
+    end)
     return {
         weekStart = ws,
         from = formatUtc(ws),

@@ -37,6 +37,7 @@
   "v_weekly.api.x_money": "{money}x pénz",
   "v_weekly.api.x_xp": "{xp}x XP",
   "v_weekly.panel.bonuses": "BÓNUSZOK",
+  "v_weekly.panel.community_job": "{name} (közösségi)",
   "v_weekly.panel.limit_s": "Limit: {time|int} mp",
   "v_weekly.panel.login_bonus": "BELÉPÉSI BÓNUSZ",
   "v_weekly.panel.login_bonus_2": "Belépési bónusz: {parts}",

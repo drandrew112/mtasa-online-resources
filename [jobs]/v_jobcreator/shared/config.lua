@@ -2,6 +2,10 @@ CREATOR = {
     -- admin level (v_mysql accData "admin_level") for publishing, opening anyone's
     -- game and placing the world marker
     ADMIN_LEVEL = 3,
+    -- admin level for publishing official games (also: publishing a community game
+    -- as official, unpublishing / deleting official games). ADMIN_LEVEL may still
+    -- open official games and save drafts of them.
+    OFFICIAL_LEVEL = 5,
     -- games one (non-admin) account may own
     MAX_GAMES_PER_PLAYER = 10,
 

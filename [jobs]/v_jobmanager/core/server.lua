@@ -573,17 +573,25 @@ local function sendMarkers(player)
     triggerClientEvent(player, "jobmanager:markers", resourceRoot, list)
 end
 
--- Live (re)registration from core/games.lua (community publish / unpublish).
+-- Clients get one marker list per burst of (un)registrations (the MySQL load
+-- registers every game at once).
+local markerTimer
+local function markersChanged()
+    if isTimer(markerTimer) then return end
+    markerTimer = setTimer(function() markerTimer = nil sendMarkers(root) end, 100, 1)
+end
+
+-- Live (re)registration from core/games.lua (MySQL load, publish / unpublish, instance sync).
 function onJobRegistered(job)
     if not resourceStarted then return end
     createJobMarker(job)
-    sendMarkers(root)
+    markersChanged()
 end
 
 function onJobUnregistered(job)
     if not resourceStarted then return end
     removeJobMarker(job.id)
-    sendMarkers(root)
+    markersChanged()
 end
 
 addEvent("jobmanager:requestMarkers", true)

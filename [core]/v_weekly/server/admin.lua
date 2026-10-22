@@ -15,12 +15,19 @@ local function overview()
         }
     end
 
-    local jobs = {}
+    -- official and community (player-made) games are listed apart; live games only
+    local jobs, communityJobs = {}, {}
     local res = getResourceFromName("v_jobmanager")
     if res and getResourceState(res) == "running" then
         for _, g in ipairs(exports.v_jobmanager:jobmanagerOfficialList() or {}) do
-            jobs[#jobs + 1] = { id = g.id, name = g.name }
+            if g.published then jobs[#jobs + 1] = { id = g.id, name = g.name, type = g.type } end
         end
+        for _, g in ipairs(exports.v_jobmanager:jobmanagerCommunityList() or {}) do
+            if g.published then
+                communityJobs[#communityJobs + 1] = { id = g.id, name = g.name, type = g.type, owner = g.owner }
+            end
+        end
+        table.sort(communityJobs, function(a, b) return tostring(a.name) < tostring(b.name) end)
     end
     local trials = {}
     res = getResourceFromName("v_timetrial")
@@ -30,7 +37,7 @@ local function overview()
         end
     end
     return {
-        weeks = weeks, jobs = jobs, trials = trials, nextChange = formatUtc(weekStartAt(1)),
+        weeks = weeks, jobs = jobs, communityJobs = communityJobs, trials = trials, nextChange = formatUtc(weekStartAt(1)),
         multipliers = WEEKLY.MULTIPLIERS, period = WEEKLY.LOGIN_BONUS_PERIOD,
         maxMoney = WEEKLY.LOGIN_MAX_MONEY, maxXp = WEEKLY.LOGIN_MAX_XP,
     }
