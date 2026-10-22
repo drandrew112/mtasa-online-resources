@@ -72,6 +72,8 @@ table.grid tr.click:hover td { background: var(--osa-panel-3); }
 table.grid tr.sel td { background: #1d2b44; }
 table.grid tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--osa-accent); }
 table.grid td.r, table.grid th.r { text-align: right; }
+table.grid td.c, table.grid th.c { text-align: center; }
+table.grid .narrow { width: 44px; }
 .good { color: #57d172; } .warn { color: var(--osa-warn); } .bad { color: var(--osa-danger-text); } .dim { color: var(--osa-dim); } .gold { color: #ffbb00; }
 
 /* ------------------------------------------------------------ dashboard */

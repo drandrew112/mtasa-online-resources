@@ -5,7 +5,7 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 --  The smaller pages:
 --    dashboard     summary { }                                  -> counters + latest admin actions
 --    bans          list { search, active, page } / unban { name }
---    resources     list { } / action { name, action }           (v_main exports)
+--    resources     list { } / action { name, action } / updates / checkupdates / updateresources (v_main exports)
 --    achievements  list { } / give { name, id }                 (v_achievements exports)
 -- ============================================================
 
@@ -141,6 +141,26 @@ PAGES.register("resources", {
             local ok, message = exports.v_main:adminResourceAction(actorName(actor) .. (isWebActor(actor) and " (web)" or ""), action, name)
             if ok then adminLog(actor, ("%s resource %s"):format(action, name)) end
             reply(ok and true or false, message or nil)
+        end,
+
+        -- GitHub update check / update (v_main updater.lua, updateResources.lua)
+        updates = function(actor, args, reply)
+            if not resourceRunning("v_main") then return reply(false, L.msg("v_admin.page.resource_missing", { name = "v_main" })) end
+            reply(exports.v_main:getUpdateReport() or {})
+        end,
+
+        checkupdates = function(actor, args, reply)
+            if not resourceRunning("v_main") then return reply(false, L.msg("v_admin.page.resource_missing", { name = "v_main" })) end
+            if not exports.v_main:adminCheckUpdates(actorName(actor)) then return reply(false, L.msg("v_admin.res.busy")) end
+            adminLog(actor, "started an update check")
+            reply(true, L.msg("v_admin.res.check_started"))
+        end,
+
+        updateresources = function(actor, args, reply)
+            if not resourceRunning("v_main") then return reply(false, L.msg("v_admin.page.resource_missing", { name = "v_main" })) end
+            if not exports.v_main:adminUpdateResources(actorName(actor)) then return reply(false, L.msg("v_admin.res.busy")) end
+            adminLog(actor, "started updateresources (download + apply repo changes)")
+            reply(true, L.msg("v_admin.res.update_started"))
         end,
     },
 })

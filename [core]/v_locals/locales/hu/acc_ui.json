@@ -47,5 +47,6 @@
   "acc_ui.settings.off": "KI",
   "acc_ui.settings.on": "BE",
   "acc_ui.settings.title": "BEÁLLÍTÁSOK",
-  "acc_ui.weekly.title": "EZEN A HÉTEN"
+  "acc_ui.weekly.title": "EZEN A HÉTEN",
+  "acc_ui.forgot.have_code": "Már van kódom"
 }

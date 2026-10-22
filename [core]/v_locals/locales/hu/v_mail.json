@@ -51,6 +51,8 @@
   "v_mail.server.not_configured": "Az emailküldés nincs beállítva a szerveren.",
   "v_mail.server.nothing_sent": "Egy levelet sem sikerült sorba állítani.",
   "v_mail.server.queued": "{count} levél sorba állítva, küldés…",
+  "v_mail.server.retry_nothing": "Nincs újraküldhető hibás levél.",
+  "v_mail.server.retry_queued": "{count} hibás levél újraküldése folyamatban.",
   "v_mail.server.subject_too_long": "{lang}: túl hosszú a tárgy (max. {max} karakter).",
   "v_mail.server.test_done": "Tesztlevél: {sent} elküldve, {failed} sikertelen.",
   "v_mail.server.test_queued": "Tesztlevél sorba állítva.",

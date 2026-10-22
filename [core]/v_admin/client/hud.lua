@@ -16,6 +16,24 @@ addEventHandler(ADMIN.events.alert, root, function(text, r, g, b, duration)
 end)
 
 -- ------------------------------------------------------------
+--  Spectate line (server/spectate.lua)
+-- ------------------------------------------------------------
+local function drawSpectate()
+    local name = getElementData(localPlayer, "adminSpectating")
+    if not name or getElementData(localPlayer, "adminPanelOpen") then return end
+    local w, h = guiGetScreenSize()
+    dxDrawText(L("v_admin.hud.spectating", { name = name }), 0, h * 0.86, w, h * 0.86 + 30,
+        tocolor(255, 255, 255, 230), 1.4, "default-bold", "center", "center")
+end
+addEvent("v_admin:spectating", true)
+addEventHandler("v_admin:spectating", resourceRoot, function(name)
+    -- local copy for the panel's "Stop spectating" button (the server's is not synced)
+    setElementData(localPlayer, "adminSpectating", name or false, false)
+    removeEventHandler("onClientRender", root, drawSpectate)
+    if name then addEventHandler("onClientRender", root, drawSpectate) end
+end)
+
+-- ------------------------------------------------------------
 --  Admin jail HUD (centre of the screen)
 -- ------------------------------------------------------------
 local sx, sy = guiGetScreenSize()

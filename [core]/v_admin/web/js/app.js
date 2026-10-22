@@ -253,6 +253,8 @@
         { id: 'account', label: 'Open account', perm: 'accounts', show: p => p.account, local: p => setTab('accounts', p.account) },
         { id: 'goto', label: 'Go to', perm: 'teleport', needGame: true },
         { id: 'gethere', label: 'Bring here', perm: 'teleport', needGame: true },
+        { id: 'spectate', label: 'Spectate (in game)', perm: 'spectate', needGame: true },
+        { id: 'specoff', label: 'Stop spectating', perm: 'spectate', needGame: true, global: true },
         { id: 'heal', label: 'Heal', perm: 'heal' },
         { id: 'skin', label: 'Change skin', perm: 'skin', form: true },
         { group: 'Vehicle' },
@@ -392,6 +394,7 @@
         if (a.needGame && !S.inGame) return OSA.toast('You need to be online in game on this account.');
 
         if (a.local) return a.local(p);
+        if (a.global) return act('adminWebAction', a.id, null);
         if (a.menu) return levelMenu(p, btn);
         if (a.id === 'skin') {
             const r = await OSA.ui.form(`Change skin: ${p.name} (${p.id})`,
@@ -667,7 +670,7 @@
 
     const A = {
         args: { admin: 'any', status: 'any', registered: 'any', email: 'any', updates: 'any', conds: [], sort: 'name', dir: 'asc', page: 0, search: '' },
-        data: null, sel: null, detail: null, tab: 'overview', tabData: {}, tabSel: {}, mail: null,
+        data: null, sel: null, detail: null, tab: 'overview', tabData: {}, tabSel: {}, mail: null, filters: [],
     };
     const ACC_FILTERS = [
         { key: 'admin', label: 'Admin', values: () => [['any', 'Any'], ['admins', 'Admins only']].concat(
@@ -677,7 +680,7 @@
         { key: 'email', label: 'E-mail', values: () => [['any', 'Any'], ['yes', 'Has e-mail'], ['no', 'No e-mail']] },
         { key: 'updates', label: 'Update mails', values: () => [['any', 'Any'], ['yes', 'Subscribed'], ['no', 'Unsubscribed']] },
     ];
-    const ACC_CONDS = [['money', 'Money'], ['level', 'Level'], ['xp', 'XP'], ['playtime', 'Playtime (h)'], ['vehicles', 'Vehicles'], ['adminLevel', 'Admin level'], ['id', 'Account ID']];
+    const ACC_CONDS = [['money', 'Cash'], ['bank', 'Bank'], ['level', 'Level'], ['xp', 'XP'], ['playtime', 'Playtime (h)'], ['vehicles', 'Vehicles'], ['adminLevel', 'Admin level'], ['id', 'Account ID']];
 
     let accTimer = null;
     async function accList(refresh) {
@@ -692,7 +695,8 @@
                 const v = f.values().find(x => x[0] === A.args[f.key]);
                 return `<button class="osa-btn${A.args[f.key] !== 'any' ? ' active' : ''}" data-f="${f.key}">${esc(f.label)}: ${esc(v ? v[1] : A.args[f.key])}</button>`;
             }).join('')
-            + '<button class="osa-btn" id="accAddCond">+ Filter</button><button class="osa-btn" id="accClear">Clear</button><button class="osa-btn" id="accReload">Reload</button>';
+            + '<button class="osa-btn" id="accAddCond">+ Filter</button><button class="osa-btn" id="accClear">Clear</button><button class="osa-btn" id="accReload">Reload</button><button class="osa-btn" id="accExport">Export CSV</button>'
+            + `<button class="osa-btn" id="accSaved"${A.filters.length ? '' : ' disabled'}>Saved filters (${A.filters.length})</button><button class="osa-btn" id="accSave">Save filter</button>`;
         $('accSearch').addEventListener('input', e => {
             A.args.search = e.target.value.trim();
             A.args.page = 0;
@@ -714,7 +718,51 @@
             Object.assign(A.args, { admin: 'any', status: 'any', registered: 'any', email: 'any', updates: 'any', conds: [], page: 0, search: '' });
             accFilters(); accConds(); accList();
         } else if (b.id === 'accReload') accList(true);
+        else if (b.id === 'accExport') accExport();
+        else if (b.id === 'accSave') accSaveFilter();
+        else if (b.id === 'accSaved') {
+            const items = A.filters.map(f => ({ label: f.name, action: () => accApplyFilter(f) }));
+            if (items.length) items.push({ header: 'Delete' });
+            for (const f of A.filters) items.push({ label: `Delete "${f.name}"`, danger: true, action: async () => {
+                const r = await page('accounts', 'delfilter', { name: f.name }, true);
+                if (r.ok) { A.filters = arr(r.result.list); accFilters(); }
+            } });
+            OSA.ui.openMenu(r.left, r.bottom + 2, items);
+        }
     });
+
+    async function accExport() {
+        const args = Object.assign({}, A.args);
+        delete args.page;
+        const r = await page('accounts', 'export', args, true);
+        if (!r.ok || !r.result || !r.result.csv) return OSA.toast(r.message || 'Export failed.');
+        const url = URL.createObjectURL(new Blob(['﻿' + r.result.csv], { type: 'text/csv;charset=utf-8' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `accounts_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        OSA.toast(`${r.result.count} of ${r.result.total} accounts exported.`, true);
+    }
+
+    async function accSaveFilter() {
+        const f = await OSA.ui.form('Save filter', [{ name: 'name', label: 'Name', type: 'text' }], 'Save');
+        if (!f || !f.name) return;
+        const filter = Object.assign({}, A.args, { conds: A.args.conds.map(c => Object.assign({}, c)) });
+        delete filter.page;
+        const r = await page('accounts', 'savefilter', { name: f.name, filter });
+        if (r.ok) { A.filters = arr(r.result.list); accFilters(); }
+    }
+
+    function accApplyFilter(sf) {
+        const f = sf.filter || {};
+        Object.assign(A.args, { admin: f.admin || 'any', status: f.status || 'any', registered: f.registered || 'any', email: f.email || 'any',
+            updates: f.updates || 'any', conds: arr(f.conds).map(c => ({ key: c.key, op: c.op || '>=', value: String(c.value || '') })),
+            sort: f.sort || 'name', dir: f.dir || 'asc', search: f.search || '', page: 0 });
+        accFilters(); accConds(); accList();
+    }
 
     function accConds() {
         $('accConds').innerHTML = A.args.conds.map((c, i) => `<span class="cond" data-i="${i}">${esc((ACC_CONDS.find(x => x[0] === c.key) || [0, c.key])[1])}
@@ -751,11 +799,9 @@
         grid($('accRows'), [
             { key: 'name', label: 'Account', sort: true, text: r => `${r.online ? '<span class="good">●</span> ' : ''}<b>${esc(r.name)}</b>` },
             { key: 'display', label: 'Display name', sort: true },
-            { key: 'adminLevel', label: 'Admin', sort: true, text: r => r.adminLevel > 0 ? `<span class="gold">${esc(rankName(r.adminLevel))}</span>` : '-' },
-            { key: 'money', label: 'Money', sort: true, cls: 'r', text: r => `<span class="good">${money(r.money)}</span>` },
+            { key: 'adminLevel', label: 'Adm', sort: true, cls: 'c narrow', text: r => r.adminLevel > 0 ? `<b class="gold" title="${esc(rankName(r.adminLevel))}">${r.adminLevel}</b>` : '-' },
             { key: 'level', label: 'Level', sort: true, cls: 'r' },
             { key: 'vehicles', label: 'Vehicles', sort: true, cls: 'r' },
-            { key: 'playtime', label: 'Playtime', sort: true, cls: 'r', text: r => `${Math.floor(r.playtime / 60)} h` },
             { key: 'lastLogin', label: 'Last seen', sort: true, text: r => r.online ? `<span class="good">online · ID ${r.online}</span>` : esc(ago(r.lastLogin)) },
             { key: 'status', label: 'Status', text: accStatus },
         ], d ? arr(d.rows) : [], {
@@ -833,7 +879,7 @@
         if (A.tab === 'overview') {
             body = `<div class="tilesgrid">
                 ${kv('E-mail', d.email)}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
-                ${kv('Money', money(d.money), 'good')}${kv('Level · XP', `${d.level} · ${fmtInt(d.xp)}`)}
+                ${kv('Cash', money(d.money), 'good')}${kv('Bank', money(d.bank), 'good')}${kv('Level · XP', `${d.level} · ${fmtInt(d.xp)}`)}
                 ${kv('Playtime', d.playtimeText || `${Math.floor(d.playtime / 60)}h ${String(d.playtime % 60).padStart(2, '0')}m`)}
                 ${kv('Last login', d.online ? 'online now' : fmtDate(d.lastLogin))}
                 ${kv('Last serial', d.lastSerial)}${kv('Last IP', d.lastIp)}
@@ -849,7 +895,9 @@
         const actions = A.tab !== 'overview' ? '' : `<div class="acc-actions">
             ${d.online && can('teleport') && S.inGame ? `<button class="osa-btn" data-act="goto">Go to</button>` : ''}
             ${can('setLevel') ? '<button class="osa-btn" data-act="setlevel">Set admin level</button>' : ''}
-            ${can('accountEdit') ? '<button class="osa-btn" data-act="money">Edit money</button><button class="osa-btn" data-act="level">Edit level</button><button class="osa-btn" data-act="xp">Edit XP</button>' : ''}
+            ${can('accountEdit') ? '<button class="osa-btn" data-act="money">Edit cash</button><button class="osa-btn" data-act="bank">Edit bank</button><button class="osa-btn" data-act="level">Edit level</button><button class="osa-btn" data-act="xp">Edit XP</button>' : ''}
+            ${can('email') ? '<button class="osa-btn" data-act="email">Set e-mail</button>' : ''}
+            ${can('passwordReset') && d.hasEmail ? '<button class="osa-btn" data-act="pwreset">Send password reset</button>' : ''}
             ${can('mail') && d.hasEmail ? '<button class="osa-btn" data-act="mail">Send mail</button>' : ''}
             ${can('mute') && d.muted ? '<button class="osa-btn" data-act="unmute">Unmute</button>' : ''}
             ${can('ban') ? (d.banned ? '<button class="osa-btn" data-act="unban">Unban</button>' : '<button class="osa-btn danger" data-act="ban">Ban account</button>') : ''}
@@ -927,11 +975,22 @@
             for (let l = 0; l <= max; l++) items.push({ label: `${l}  ${rankName(l)}${l === d.adminLevel ? '  (current)' : ''}`, disabled: l > maxGrant || l === d.adminLevel, action: () => accEdit('setlevel', { value: l }) });
             return OSA.ui.openMenu(r.left, r.bottom + 2, items);
         }
-        if (act === 'money') return accAsk('money', 'Edit money', 'Money', d.money, null, true);
+        if (act === 'money') return accAsk('money', 'Edit cash', 'Cash', d.money, null, true);
+        if (act === 'bank') return accAsk('bank', 'Edit bank money', 'Bank', d.bank, null, true);
         if (act === 'level') return accAsk('level', 'Edit level', 'Level', d.level, null, true);
         if (act === 'xp') return accAsk('xp', 'Edit XP', 'XP', d.xp, null, true);
         if (act === 'ban') return accAsk('ban', `Ban account ${d.name}`, 'Reason');
         if (act === 'unban' || act === 'unmute') return accEdit(act);
+        if (act === 'email') {
+            const f = await OSA.ui.form(`E-mail of ${d.name}`, [{ name: 'v', label: 'New e-mail address (empty = remove)', type: 'text' }], 'Save',
+                'The address must not belong to another account. The player gets no mail about the change.');
+            if (f) accEdit('email', { value: f.v || '' });
+            return;
+        }
+        if (act === 'pwreset') {
+            if (!(await OSA.ui.confirm('Send password reset', `A reset code is mailed to the e-mail address of ${d.name}. With it the player sets a new password in the game (Forgot password > I already have a code).`, 'Send'))) return;
+            return accEdit('pwreset');
+        }
         if (act === 'mail') return setTab('mail', { recipients: [d.name] });
         if (act === 'note') return accAsk('note', 'Add note', 'Note');
         if (act === 'delnote') { A.tabSel.notes = null; return accEdit('delnote', { index: sel }); }
@@ -956,6 +1015,7 @@
 
     PAGES.accounts = {
         show(name) {
+            page('accounts', 'filters', {}, true).then(r => { if (r.ok) { A.filters = arr(r.result.list); accFilters(); } });
             accFilters();
             accConds();
             if (typeof name === 'string' && name) {
@@ -1055,7 +1115,46 @@
         await page('resources', 'action', { name: b.dataset.n, action: b.dataset.a });
         setTimeout(resLoad, 800);
     }, true);
-    PAGES.resources = { show: resLoad, render: () => {} };
+    // GitHub update check / update of v_main (checkupdates, updateresources)
+    const U = { report: null, which: 'check', view: false, timer: null };
+    async function updLoad() {
+        const r = await page('resources', 'updates', {}, true);
+        if (r.ok) U.report = r.result;
+        updRender();
+        clearTimeout(U.timer);
+        if (U.view && S.tab === 'resources' && U.report && (U.report.checkRunning || U.report.updateRunning)) U.timer = setTimeout(updLoad, 2500);
+    }
+    function updRender() {
+        const r = U.report || {};
+        const busy = r.checkRunning || r.updateRunning;
+        $('rsCheck').disabled = !!busy;
+        $('rsInstall').disabled = !!busy;
+        $('rsWhich').innerHTML = [['check', 'Last check' + (r.checkRunning ? ' …' : '')], ['update', 'Last update' + (r.updateRunning ? ' …' : '')]]
+            .map(w => `<button class="osa-btn${U.which === w[0] ? ' active' : ''}" data-w="${w[0]}">${w[1]}</button>`).join('');
+        const rep = r[U.which];
+        $('rsRunInfo').textContent = rep ? `${fmtDate(rep.at)} · ${rep.by} · ${arr(rep.lines).length} lines` : '';
+        const cls = { outdated: 'warn', missing: 'bad', error: 'bad', complete: 'good', notinst: 'dim', loose: 'dim' };
+        grid($('rsLines'), [
+            { key: 'event', label: 'Event', text: l => `<span class="${cls[l.event] || ''}">${esc(l.event || 'status')}</span>` },
+            { key: 'text', label: 'Line' },
+        ], rep ? arr(rep.lines) : [], { empty: U.report ? 'No run since the server started.' : 'Loading...' });
+    }
+    $('rsView').addEventListener('click', () => {
+        U.view = !U.view;
+        $('rsView').textContent = U.view ? 'Resources' : 'Updates';
+        $('rsRows').hidden = U.view;
+        $('rsUpd').hidden = !U.view;
+        if (U.view) updLoad();
+    });
+    $('rsWhich').addEventListener('click', e => { const b = e.target.closest('button[data-w]'); if (b) { U.which = b.dataset.w; updRender(); } });
+    $('rsCheck').addEventListener('click', async () => { await page('resources', 'checkupdates', {}); U.which = 'check'; setTimeout(updLoad, 800); });
+    $('rsInstall').addEventListener('click', async () => {
+        if (!(await OSA.ui.confirm('Install updates', 'Downloads every changed repo file and writes it over the local copy (v_main updateresources). Changed resources may need a restart.', 'Install'))) return;
+        await page('resources', 'updateresources', {});
+        U.which = 'update';
+        setTimeout(updLoad, 800);
+    });
+    PAGES.resources = { show: () => { resLoad(); if (U.view) updLoad(); }, render: () => {} };
 
     /* ============================================================ admin log */
 
@@ -1290,8 +1389,10 @@
             const r = await page('mail', 'group', { key: g.key }, true);
             if (r.ok && h.group === g.key) { h.mails = arr(r.result.mails); mlHistRender(); }
         } });
+        const selG = (h.groups || []).find(g => g.key === h.group);
         $('mlPager').innerHTML = `<button class="osa-btn small" data-p="-1"${h.page > 0 ? '' : ' disabled'}>‹</button><span>${h.page + 1}</span>
-            <button class="osa-btn small" data-p="1"${h.more ? '' : ' disabled'}>›</button>`;
+            <button class="osa-btn small" data-p="1"${h.more ? '' : ' disabled'}>›</button><span class="grow"></span>
+            ${selG && selG.failed > 0 ? `<button class="osa-btn small primary" data-retry="1">Retry ${selG.failed} failed</button>` : ''}`;
         grid($('mlMails'), [
             { key: 'account', label: 'Account' }, { key: 'language', label: 'Lang' }, { key: 'date', label: 'Date' },
             { key: 'status', label: 'Status', text: m => `<span class="${m.status === 'sent' ? 'good' : m.status === 'failed' ? 'bad' : 'warn'}">${esc(m.status)}</span>` },
@@ -1302,7 +1403,17 @@
             if (r.ok) { const x = r.result.mail; $('mlView').textContent = `${x.subject}\n\n${x.body || ''}${x.error ? '\n\n[' + x.error + ']' : ''}`; }
         } });
     }
-    $('mlPager').addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) mlHistory(M.hist.page + Number(b.dataset.p)); });
+    $('mlPager').addEventListener('click', async e => {
+        const r = e.target.closest('button[data-retry]');
+        if (r) {
+            const key = M.hist.group;
+            if (!key || !(await OSA.ui.confirm('Retry failed mails', 'The failed mails of this group are sent again to the current e-mail address of each account.', 'Retry'))) return;
+            await page('mail', 'retry', { key });
+            return setTimeout(() => mlHistory(M.hist.page), 1500);
+        }
+        const b = e.target.closest('button[data-p]');
+        if (b && !b.disabled) mlHistory(M.hist.page + Number(b.dataset.p));
+    });
 
     async function mlStatus() {
         const r = await page('mail', 'status', {}, true);

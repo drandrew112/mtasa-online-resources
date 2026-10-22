@@ -1,5 +1,7 @@
 {
   "acc_auth.server.account_already_exists": "Ez a fiók már létezik",
+  "acc_auth.server.account_has_no_email": "A fióknak nincs e-mail címe.",
+  "acc_auth.server.account_not_found": "Nincs ilyen fiók.",
   "acc_auth.server.database_query_error": "Adatbázis lekérdezési hiba. Próbáld újra!",
   "acc_auth.server.email_in_use": "Ezt az email címet már egy másik fiók használja",
   "acc_auth.server.email_removed": "Email cím törölve.",

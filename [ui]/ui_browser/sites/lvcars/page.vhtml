@@ -3,7 +3,13 @@
 
     <catalog cols="3" sort="price">
         <product id="alfa75"        name="Alfa Romeo 75"                model="585" price="€14,500"      colors="red,black,silver,white">Rear-drive Italian saloon with a lot of character.</product>
-        <product id="mini_cooper_s" name="Mini Cooper S"                model="410" price="€19,500"        colors="red,white,black,green,blue">Supercharged city car, handles like a go-kart.</product>
+        <product id="ford_festiva"  name="1987 Ford Festiva"            model="410" price="€4,500"       colors="red,white,blue,silver">Tiny, cheap and cheerful city runabout.</product>
+        <product id="honda_civic93" name="1993 Honda Civic"             model="580" price="€8,500"       colors="white,red,black,silver">Reliable hatchback with a free-revving engine.</product>
+        <product id="dodge_dart"    name="2013 Dodge Dart"              model="540" price="€13,500"      colors="black,white,silver,red">Roomy American compact with an Italian platform.</product>
+        <product id="subaru_rc"     name="Subaru Impreza RC Sport"      model="466" price="€16,500"      colors="blue,white,silver,black">Nineties rally-bred coupe with all-wheel drive.</product>
+        <product id="renault_talisman" name="Renault Talisman"          model="421" price="€21,500"      colors="grey,black,white,red">Comfortable French executive saloon.</product>
+        <product id="mitsubishi_evo10" name="Mitsubishi Lancer Evolution X" model="550" price="€36,500"  colors="white,black,red,silver">Twin-clutch, turbo, all-wheel-drive rally weapon.</product>
+        <product id="hyundai_tucson" name="Hyundai Tucson Hybrid"       model="551" price="€38,000"      colors="white,grey,black,blue">Modern hybrid SUV, quiet and efficient.</product>
         <product id="jeep_gc"       name="1999 Jeep Grand Cherokee"     model="529" price="€18,000"        colors="black,white,green,silver">Proper 4x4 for the desert roads.</product>
         <product id="saab_97x"      name="2006 Saab 9-7X"               model="516" price="€23,000"        colors="silver,black,blue,white">Roomy Swedish SUV with a big V8 option.</product>
         <product id="audi_a8"       name="2003 Audi A8"                 model="426" price="€29,500"      colors="black,silver,grey,blue">Aluminium-bodied quattro limousine.</product>

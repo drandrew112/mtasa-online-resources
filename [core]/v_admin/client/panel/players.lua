@@ -23,6 +23,9 @@ ACTIONS = {
     { id = "account", label = L("v_admin.page.open_account"), perm = "accounts", show = function(p) return p.account end,
       fn = function(p) AP.setPage("accounts", p.account) end },
     { id = "goto",    label = L("v_admin.players.go_to"),       perm = "teleport" },
+    { id = "spectate", label = L("v_admin.players.spectate"),   perm = "spectate",
+      show = function(p) return p.id ~= tonumber(getElementData(localPlayer, "ID")) end,
+      fn = function(p) AP.sendAction("spectate", p.id) AP.close() end },
     { id = "gethere", label = L("v_admin.players.bring_here"),  perm = "teleport" },
     { id = "heal",    label = L("v_admin.players.heal"),        perm = "heal" },
     { id = "skin",    label = L("v_admin.players.change_skin"), perm = "skin", form = "skin" },
@@ -363,6 +366,11 @@ local function drawActions(p, x, y, w, h)
     local ix, iw = x + pad, w - pad * 2
     local bw, bh, gap = (iw - S(8)) / 2, S(56), S(8)
     local col, cy = 0, y + pad - S(4)
+    local spec = getElementData(localPlayer, "adminSpectating")
+    if spec then
+        AP.button(ix, cy, iw, S(48), L("v_admin.players.stop_spectating", { name = spec }), function() AP.sendAction("specoff") end, "active")
+        cy = cy + S(56)
+    end
 
     for _, a in ipairs(ACTIONS) do
         if a.group then

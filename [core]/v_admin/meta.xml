@@ -26,6 +26,7 @@
     <script src="server/admin_manage.lua" type="server" />
     <script src="server/report.lua"       type="server" />
     <script src="server/teleport.lua"     type="server" />
+    <script src="server/spectate.lua"     type="server" />
     <script src="server/vehicle.lua"      type="server" />
     <script src="server/jail.lua"         type="server" />
     <script src="server/ban.lua"          type="server" />

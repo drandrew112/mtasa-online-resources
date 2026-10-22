@@ -23,6 +23,7 @@ local st = {
     search   = "",
     searchAt = 0,
     mail     = nil,      -- opened mail text
+    filters  = {},       -- saved filters { { name, filter } }
 }
 
 local function reqList(refresh)
@@ -35,6 +36,46 @@ local function reqList(refresh)
         st.loading = false
         if r then st.data = r end
     end)
+end
+
+-- the current filter as it is saved / applied
+local function currentFilter()
+    local f = {}
+    for k, v in pairs(st.args) do
+        if k ~= "page" and k ~= "conds" then f[k] = v end
+    end
+    f.conds = {}
+    for i, c in ipairs(st.args.conds) do f.conds[i] = { key = c.key, op = c.op, value = c.value } end
+    f.search = st.search
+    return f
+end
+
+local function saveFilter()
+    local name = AP.trim(AP.fieldText("acc_filtername"))
+    if name == "" then
+        AP.setFocus("acc_filtername")
+        return AP.notify(L("v_admin.accounts.filter_name_missing"))
+    end
+    AP.call("accounts", "savefilter", { name = name, filter = currentFilter() }, function(r)
+        if type(r) == "table" then
+            st.filters = r.list or {}
+            AP.setField("acc_filtername", "")
+        end
+    end)
+end
+
+local function applySaved(sf)
+    local f = sf.filter or {}
+    st.args = { admin = f.admin or "any", status = f.status or "any", registered = f.registered or "any",
+                email = f.email or "any", updates = f.updates or "any", conds = {}, sort = f.sort or "name",
+                dir = f.dir or "asc", page = 0 }
+    for i, c in ipairs(type(f.conds) == "table" and f.conds or {}) do
+        st.args.conds[i] = { key = c.key, op = c.op or ">=", value = tostring(c.value or "") }
+        AP.setField("acc_cond" .. i, st.args.conds[i].value)
+    end
+    st.search = f.search or ""
+    AP.setField("acc_search", st.search)
+    reqList()
 end
 
 local function loadTab(tab)
@@ -102,7 +143,8 @@ local FILTERS = {
 }
 
 local COND_KEYS = {
-    { "money", function() return L("v_admin.accounts.c_money") end },
+    { "money", function() return L("v_admin.accounts.c_cash") end },
+    { "bank", function() return L("v_admin.accounts.c_bank") end },
     { "level", function() return L("v_admin.accounts.c_level") end },
     { "xp", function() return L("v_admin.accounts.c_xp") end },
     { "playtime", function() return L("v_admin.accounts.c_playtime") end },
@@ -187,7 +229,7 @@ local function drawFilters(x, y, w)
     for i, c in ipairs(st.args.conds) do
         local lw = L.width(condLabel(c.key), F(0.85), "default-bold") + S(16)
         local cw = lw + S(44) + S(110) + S(36)
-        if cx + cw > x + w - S(220) then break end
+        if cx + cw > x + w - S(640) then break end
         dxDrawRectangle(cx, cy, cw, S(36), C.rowSel)
         AP.text(condLabel(c.key), cx + S(8), cy, lw, S(36), C.text, 0.85, "default-bold")
         AP.button(cx + lw, cy + S(3), S(40), S(30), c.op, function()
@@ -204,6 +246,24 @@ local function drawFilters(x, y, w)
         end, "danger")
         cx = cx + cw + S(8)
     end
+    -- saved filters (accData of the admin's own account)
+    local fx2 = x + w - S(630)
+    AP.field("acc_filtername", fx2, cy, S(190), S(36), { placeholder = L("v_admin.accounts.filter_name"), max = 40,
+        onEnter = function() saveFilter() end })
+    AP.button(fx2 + S(198), cy, S(100), S(36), L("v_admin.accounts.save_filter"), saveFilter)
+    AP.button(fx2 + S(306), cy, S(100), S(36), L("v_admin.accounts.saved_filters", { n = #st.filters }), function()
+        local items = {}
+        for _, sf in ipairs(st.filters) do
+            items[#items + 1] = { label = sf.name, fn = function() applySaved(sf) end }
+        end
+        for _, sf in ipairs(st.filters) do
+            items[#items + 1] = { label = L("v_admin.accounts.delete_filter", { name = sf.name }), fn = function()
+                AP.call("accounts", "delfilter", { name = sf.name }, function(r) if type(r) == "table" then st.filters = r.list or {} end end, true)
+            end }
+        end
+        if #items == 0 then items[1] = { label = L("v_admin.accounts.no_saved_filters"), disabled = true, fn = function() end } end
+        AP.openDropdown(fx2 + S(306), cy + S(40), S(320), items)
+    end, #st.filters > 0 and nil or "off")
     AP.button(x + w - S(210), cy, S(100), S(36), L("v_admin.accounts.apply"), applyConds, "active")
     AP.button(x + w - S(100), cy, S(100), S(36), L("v_admin.accounts.clear"), function()
         st.args = { admin = "any", status = "any", registered = "any", email = "any", updates = "any",
@@ -226,18 +286,22 @@ local function statusOf(r)
     return L("v_admin.accounts.ok"), C.dim
 end
 
-local function playtimeText(min)
-    min = tonumber(min) or 0
-    return ("%d h"):format(math.floor(min / 60))
-end
-
 local function drawList(x, y, w, h)
     local ty = drawFilters(x, y, w)
     local d = st.data
     local info = d and L("v_admin.accounts.matches", { n = AP.fmtInt(d.total), all = AP.fmtInt(d.all) }) or L("common.loading")
     if d and d.cachedAt then info = info .. "   ·   " .. L("v_admin.accounts.cached", { ago = AP.ago(d.cachedAt, d.now) }) end
-    AP.text(info, x, ty, w - S(120), S(26), C.dim, 0.8)
+    AP.text(info, x, ty, w - S(330), S(26), C.dim, 0.8)
     AP.button(x + w - S(110), ty - S(2), S(110), S(28), L("v_admin.accounts.reload"), function() reqList(true) end)
+    -- CSV of every matching account; in game it goes to the clipboard
+    AP.button(x + w - S(310), ty - S(2), S(190), S(28), L("v_admin.accounts.export_csv"), function()
+        local args = currentFilter()
+        AP.call("accounts", "export", args, function(r)
+            if type(r) ~= "table" or not r.csv then return end
+            setClipboard(r.csv)
+            AP.notify(L("v_admin.accounts.export_copied", { n = r.count, total = r.total }))
+        end, true)
+    end)
     ty = ty + S(32)
 
     local cols = {
@@ -245,15 +309,11 @@ local function drawList(x, y, w, h)
           text = function(r) return (r.online and "● " or "") .. r.name end,
           color = function(r) return r.online and C.good or C.text end },
         { key = "display", label = L("v_admin.accounts.col_display"), w = S(170), sort = true, text = function(r) return r.display or "-" end },
-        { key = "adminLevel", label = L("v_admin.accounts.col_admin"), w = S(110), sort = true,
-          text = function(r) return r.adminLevel > 0 and AP.rankName(r.adminLevel) or "-" end,
+        { key = "adminLevel", label = L("v_admin.accounts.col_admin_short"), w = S(64), sort = true, align = "center", bold = true,
+          text = function(r) return r.adminLevel > 0 and tostring(r.adminLevel) or "-" end,
           color = function(r) return r.adminLevel > 0 and C.gold or C.off end },
-        { key = "money", label = L("v_admin.accounts.col_money"), w = S(150), sort = true, align = "right",
-          text = function(r) return "€" .. AP.fmtInt(r.money) end, color = function() return C.good end },
         { key = "level", label = L("v_admin.accounts.col_level"), w = S(70), sort = true, align = "right" },
         { key = "vehicles", label = L("v_admin.accounts.col_vehicles"), w = S(90), sort = true, align = "right" },
-        { key = "playtime", label = L("v_admin.accounts.col_playtime"), w = S(100), sort = true, align = "right",
-          text = function(r) return playtimeText(r.playtime) end },
         { key = "lastLogin", label = L("v_admin.accounts.col_last_seen"), w = S(140), sort = true,
           text = function(r) return r.online and (L("v_admin.accounts.online_id", { id = r.online })) or AP.ago(r.lastLogin, d and d.now) end,
           color = function(r) return r.online and C.good or C.dim end },
@@ -307,7 +367,7 @@ local function submitForm()
     local f = st.form
     if not f then return end
     local v = AP.trim(AP.fieldText("acc_form"))
-    if v == "" then return AP.notify(L("v_admin.accounts.enter_value")) end
+    if v == "" and f.what ~= "email" then return AP.notify(L("v_admin.accounts.enter_value")) end
     local extra = {}
     for k, val in pairs(f.extra or {}) do extra[k] = val end
     if f.what == "ban" then extra.reason = v
@@ -369,7 +429,8 @@ local function drawOverview(d, x, y, w, h)
         { L("v_admin.players.e_mail"), d.email or "-" },
         { L("v_admin.accounts.update_mails"), d.hasEmail and (d.updates and L("v_admin.accounts.subscribed") or L("v_admin.accounts.unsubscribed")) or "-",
           d.updates and C.good or C.dim },
-        { L("v_admin.accounts.money"), "€" .. AP.fmtInt(d.money), C.good },
+        { L("v_admin.accounts.cash"), "€" .. AP.fmtInt(d.money), C.good },
+        { L("v_admin.accounts.bank"), "€" .. AP.fmtInt(d.bank), C.good },
         { L("v_admin.accounts.level_xp"), d.level .. "  ·  " .. AP.fmtInt(d.xp) },
         { L("common.played_time"), played },
         { L("v_admin.accounts.last_login"), d.online and L("v_admin.accounts.online_now") or AP.fmtDate(d.lastLogin) },
@@ -603,12 +664,18 @@ local function drawDetail(x, y, w, h)
             { label = L("v_admin.accounts.online_page"), hide = not d.online,
               fn = function() AP.setPage("players") end },
             { label = L("v_admin.accounts.set_admin_level"), perm = "setLevel", fn = function(bx, by) levelDropdown(d, bx, by) end },
-            { label = L("v_admin.accounts.edit_money"), perm = "accountEdit",
-              fn = function() openForm("money", L("v_admin.accounts.edit_money"), true, d.money) end },
+            { label = L("v_admin.accounts.edit_cash"), perm = "accountEdit",
+              fn = function() openForm("money", L("v_admin.accounts.edit_cash"), true, d.money) end },
+            { label = L("v_admin.accounts.edit_bank"), perm = "accountEdit",
+              fn = function() openForm("bank", L("v_admin.accounts.edit_bank"), true, d.bank) end },
             { label = L("v_admin.accounts.edit_level"), perm = "accountEdit",
               fn = function() openForm("level", L("v_admin.accounts.edit_level"), true, d.level) end },
             { label = L("v_admin.accounts.edit_xp"), perm = "accountEdit",
               fn = function() openForm("xp", L("v_admin.accounts.edit_xp"), true, d.xp) end },
+            { label = L("v_admin.accounts.set_email"), perm = "email",
+              fn = function() openForm("email", L("v_admin.accounts.set_email_hint"), false, "") end },
+            { label = L("v_admin.accounts.pwreset"), perm = "passwordReset", hide = not d.hasEmail,
+              fn = function() edit("pwreset") end },
             { label = L("v_admin.accounts.send_mail"), perm = "mail", hide = not d.hasEmail,
               fn = function() AP.setPage("mail", { recipients = { d.name } }) end },
             { label = L("v_admin.players.unmute"), perm = "mute", hide = not d.muted, fn = function() edit("unmute") end },
@@ -665,6 +732,7 @@ AP.addPage({
             st.tab = "overview"
         end
         reqList()
+        AP.call("accounts", "filters", {}, function(r) if type(r) == "table" then st.filters = r.list or {} end end, true)
     end,
     onClose = function() st.form = nil end,
     draw = function(x, y, w, h)

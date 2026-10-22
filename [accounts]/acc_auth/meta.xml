@@ -33,6 +33,9 @@
     <!-- httpLogin(username, password) -> true, accountName | false, error. Credential check
          without a player (web logins); does not log anyone in. -->
     <export function="httpLogin"          type="server" />
+    <!-- v_admin Accounts page: adminSendPasswordReset(account, adminName), adminSetAccountEmail(account, email | "") -> true | false, errorKey -->
+    <export function="adminSendPasswordReset" type="server" />
+    <export function="adminSetAccountEmail"   type="server" />
 
     <!-- Client API (acc_ui / acc_menu). Answers arrive as client events:
            acc_auth:onClientAuthError (text)
@@ -47,6 +50,7 @@
     <export function="forgetSavedLogin"     type="client" />
     <export function="requestPasswordReset" type="client" />
     <export function="confirmPasswordReset" type="client" />
+    <export function="usePasswordResetCode" type="client" />
     <export function="requestEmail"         type="client" />
     <export function="setEmail"             type="client" />
 </meta>

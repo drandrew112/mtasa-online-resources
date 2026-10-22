@@ -62,6 +62,11 @@ function requestPasswordReset(email)
     triggerServerEvent("acc_auth:resetRequest", localPlayer, tostring(email or ""))
 end
 
+-- step 2 with a code the player already has (mailed by an admin)
+function usePasswordResetCode(email)
+    triggerServerEvent("acc_auth:resetHaveCode", localPlayer, tostring(email or ""))
+end
+
 function confirmPasswordReset(code, newPassword)
     triggerServerEvent("acc_auth:resetConfirm", localPlayer, tostring(code or ""), tostring(newPassword or ""))
 end

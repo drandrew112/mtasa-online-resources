@@ -12,7 +12,9 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 --  detail  { name }        -> the account's Overview data
 --  tab     { name, tab }   -> stats | vehicles | mails | punishments | achievements | inventory | social
 --  mail    { id }          -> one mail's text
---  edit    { name, what, ... } -> setlevel | money | level | xp | workxp | note | delnote |
+--  export  { filter... }   -> { csv, count, total } every matching account (ADMIN.accounts.exportMax) as CSV
+--  filters / savefilter { name, filter } / delfilter { name } -> the admin's saved filters
+--  edit    { name, what, ... } -> setlevel | money | bank | level | xp | workxp | note | delnote |
 --                                 vehgive | vehdelete | vehrestore | achgive | achreset |
 --                                 ban | unban | unmute
 -- ============================================================
@@ -61,6 +63,7 @@ end
 
 local LIST_SQL = "SELECT id, account_name, email, display_name, admin_level, created_at, updated_at, "
     .. jsonKey("money-BETA") .. " AS money, "
+    .. jsonKey("bank_money") .. " AS bank, "
     .. jsonKey("level") .. " AS level, "
     .. jsonKey("xp") .. " AS xp, "
     .. jsonKey("Online.hours") .. " AS hours, "
@@ -95,7 +98,7 @@ local function loadList(cb)
                     email = type(r.email) == "string" and r.email ~= "" and r.email or false,
                     adminLevel = tonumber(r.admin_level) or 0,
                     created = tonumber(r.created_at) or 0, updated = tonumber(r.updated_at) or 0,
-                    money = tonumber(r.money) or 0, level = tonumber(r.level) or 0, xp = tonumber(r.xp) or 0,
+                    money = tonumber(r.money) or 0, bank = tonumber(r.bank) or 0, level = tonumber(r.level) or 0, xp = tonumber(r.xp) or 0,
                     playtime = (tonumber(r.hours) or 0) * 60 + (tonumber(r.minutes) or 0),
                     lastLogin = tonumber(r.last_login) or tonumber(r.updated_at) or 0,
                     updates = r.upd ~= "false",
@@ -143,6 +146,7 @@ local function onlineInfo()
             out[name:lower()] = {
                 id = tonumber(getElementData(p, "ID")) or 0,
                 money = getPlayerMoney(p),
+                bank = tonumber(getElementData(p, "bank_money")),
                 level = tonumber(getElementData(p, "level")),
                 xp = tonumber(getElementData(p, "xp")),
                 muted = muteUntil and muteUntil > t or false,
@@ -153,7 +157,7 @@ local function onlineInfo()
     return out
 end
 
-local NUMERIC = { money = true, level = true, xp = true, playtime = true, vehicles = true, adminLevel = true, id = true }
+local NUMERIC = { money = true, bank = true, level = true, xp = true, playtime = true, vehicles = true, adminLevel = true, id = true }
 
 local function compare(a, op, b)
     if op == ">=" then return a >= b end
@@ -179,7 +183,7 @@ local function buildRows(actor, args)
         local o = online[e.name:lower()]
         local r = {
             id = e.id, name = e.name, display = e.display, adminLevel = e.adminLevel, created = e.created,
-            money = o and o.money or e.money, level = o and o.level or e.level, xp = o and o.xp or e.xp,
+            money = o and o.money or e.money, bank = o and o.bank or e.bank, level = o and o.level or e.level, xp = o and o.xp or e.xp,
             playtime = e.playtime, vehicles = e.vehicles, lastLogin = o and t or e.lastLogin,
             online = o and o.id or false, banned = e.banned, muted = o and o.muted or false, jailed = o and o.jailed or false,
             hasEmail = e.email and true or false, updates = e.updates,
@@ -281,7 +285,7 @@ local function detail(actor, name, reply)
             email = showEmail(actor, row.email), hasEmail = type(row.email) == "string" and row.email ~= "",
             adminLevel = tonumber(row.admin_level) or 0, created = tonumber(row.created_at) or 0,
             updated = tonumber(row.updated_at) or 0,
-            money = tonumber(data["money-BETA"]) or 0, level = tonumber(data.level) or 0, xp = tonumber(data.xp) or 0,
+            money = tonumber(data["money-BETA"]) or 0, bank = tonumber(data.bank_money) or 0, level = tonumber(data.level) or 0, xp = tonumber(data.xp) or 0,
             playtime = (tonumber(data["Online.hours"]) or 0) * 60 + (tonumber(data["Online.minutes"]) or 0),
             lastLogin = tonumber(data.last_login) or false, lastSerial = data.last_serial or false, lastIp = data.last_ip or false,
             updates = data.receiveUpdateMails ~= false, skin = tonumber(data.skin) or false,
@@ -293,6 +297,7 @@ local function detail(actor, name, reply)
             local muteUntil = tonumber(getElementData(player, "mute_until"))
             d.online = tonumber(getElementData(player, "ID")) or 0
             d.money = getPlayerMoney(player)
+            d.bank = tonumber(getElementData(player, "bank_money")) or d.bank
             d.level = tonumber(getElementData(player, "level")) or d.level
             d.xp = tonumber(getElementData(player, "xp")) or d.xp
             d.lastSerial, d.lastIp = getPlayerSerial(player), getPlayerIP(player)
@@ -410,9 +415,10 @@ end
 --------------------------------------------------------------------------------
 
 local EDIT_PERM = {
-    setlevel = "setLevel", money = "accountEdit", level = "accountEdit", xp = "accountEdit", workxp = "accountEdit",
+    setlevel = "setLevel", money = "accountEdit", bank = "accountEdit", level = "accountEdit", xp = "accountEdit", workxp = "accountEdit",
     note = "notes", delnote = "notes", vehgive = "vehicles", vehdelete = "vehicles", vehrestore = "vehicles",
     achgive = "achievements", achreset = "achievements", ban = "ban", unban = "ban", unmute = "mute",
+    email = "email", pwreset = "passwordReset",
 }
 
 local function ok(msgKey, params) return true, L.msg(msgKey, params) end
@@ -443,7 +449,18 @@ function EDIT.money(actor, name, a)
     local player = playerOfAccount(name)
     if player then setPlayerMoney(player, v)
     elseif not exports.v_mysql:setAccData(name, "money-BETA", v) then return fail("v_admin.page.save_failed") end
-    adminLog(actor, ("set money of %s to %d"):format(name, v), name)
+    adminLog(actor, ("set cash of %s to %d"):format(name, v), name)
+    return ok("v_admin.page.saved")
+end
+
+-- bank_money belongs to v_bank: online it lives in element data (v_bank saves it on quit), offline in accData
+function EDIT.bank(actor, name, a)
+    local v = math.floor(tonumber(a.value) or -1)
+    if v < 0 or v > 999999999 then return fail("v_admin.page.bad_number") end
+    local player = playerOfAccount(name)
+    if player then setElementData(player, "bank_money", v) end
+    if not exports.v_mysql:setAccData(player or name, "bank_money", v) then return fail("v_admin.page.save_failed") end
+    adminLog(actor, ("set bank money of %s to %d"):format(name, v), name)
     return ok("v_admin.page.saved")
 end
 
@@ -560,11 +577,49 @@ function EDIT.unban(actor, name)
     return true
 end
 
+-- the address goes through acc_auth (format, UNIQUE check, its cache); "" removes it
+function EDIT.email(actor, name, a)
+    if not resourceRunning("acc_auth") then return fail("v_admin.page.resource_missing", { name = "acc_auth" }) end
+    local mail = argText(a.value)
+    local done, err = exports.acc_auth:adminSetAccountEmail(name, mail)
+    if not done then return false, L.msg(err or "v_admin.page.save_failed") end
+    adminLog(actor, mail == "" and ("removed the e-mail of " .. name) or ("set the e-mail of " .. name), name)
+    return ok(mail == "" and "v_admin.accounts.email_removed" or "v_admin.accounts.email_saved")
+end
+
+function EDIT.pwreset(actor, name)
+    if not resourceRunning("acc_auth") then return fail("v_admin.page.resource_missing", { name = "acc_auth" }) end
+    local done, err = exports.acc_auth:adminSendPasswordReset(name, actorAccount(actor) or actorName(actor))
+    if not done then return false, L.msg(err or "v_admin.page.request_failed") end
+    adminLog(actor, "mailed a password reset code to " .. name, name)
+    return ok("v_admin.accounts.pwreset_sent")
+end
+
 function EDIT.unmute(actor, name)
     local player = playerOfAccount(name)
     if not player then return fail("v_admin.admin_manage.that_player_is_not_logged_in") end
     adminUnmute(actor, player)
     return true
+end
+
+--------------------------------------------------------------------------------
+-- saved filters: accData ADMIN.accounts.filtersKey of the admin's own account
+--------------------------------------------------------------------------------
+
+local function savedFilters(actor)
+    local account = actorAccount(actor)
+    local raw = account and exports.v_mysql:getAccData(account, ACC.filtersKey)
+    local list = type(raw) == "string" and fromJSON(raw) or nil
+    local out = {}
+    for _, f in ipairs(type(list) == "table" and list or {}) do
+        if type(f) == "table" and type(f.name) == "string" and type(f.filter) == "table" then out[#out + 1] = f end
+    end
+    return out
+end
+
+local function storeFilters(actor, list)
+    local account = actorAccount(actor)
+    return account and exports.v_mysql:setAccData(account, ACC.filtersKey, toJSON(list, true)) and true or false
 end
 
 --------------------------------------------------------------------------------
@@ -597,6 +652,56 @@ PAGES.register("accounts", {
             local name, fn = argText(args.name), TABS[args.tab]
             if name == "" or not fn then return reply(false) end
             fn(actor, name, reply)
+        end,
+
+        export = function(actor, args, reply)
+            withList(false, function(loaded)
+                if not loaded then return reply(false, L.msg("v_admin.page.database_error")) end
+                local rows = buildRows(actor, args)
+                local max = ACC.exportMax or 5000
+                local function cell(v)
+                    v = tostring(v == nil and "" or v)
+                    if v:find('[",\r\n;]') then v = '"' .. v:gsub('"', '""') .. '"' end
+                    return v
+                end
+                local function day(ts) return (tonumber(ts) or 0) > 0 and os.date("!%Y-%m-%d %H:%M", ts) or "" end
+                local lines = { "id,account,display_name,admin_level,email,update_mails,cash,bank,level,xp,playtime_hours,vehicles,registered_utc,last_seen_utc,online_id,banned,muted,jailed" }
+                for i = 1, math.min(#rows, max) do
+                    local r = rows[i]
+                    local e = cache.byName and cache.byName[r.name:lower()]
+                    lines[#lines + 1] = table.concat({
+                        cell(r.id), cell(r.name), cell(r.display or ""), cell(r.adminLevel),
+                        cell(e and showEmail(actor, e.email) or ""), cell(r.hasEmail and (r.updates and "yes" or "no") or ""),
+                        cell(r.money), cell(r.bank), cell(r.level), cell(r.xp), cell(math.floor((r.playtime or 0) / 60)), cell(r.vehicles),
+                        cell(day(r.created)), cell(day(r.lastLogin)), cell(r.online or ""),
+                        cell(r.banned and "yes" or "no"), cell(r.muted and "yes" or "no"), cell(r.jailed and "yes" or "no"),
+                    }, ",")
+                end
+                adminLog(actor, ("exported %d accounts to CSV"):format(math.min(#rows, max)))
+                reply({ csv = table.concat(lines, "\r\n") .. "\r\n", count = math.min(#rows, max), total = #rows })
+            end)
+        end,
+
+        filters = function(actor, args, reply)
+            reply({ list = savedFilters(actor) })
+        end,
+
+        savefilter = function(actor, args, reply)
+            local name = utf8.sub(argText(args.name), 1, 40)
+            if name == "" or type(args.filter) ~= "table" then return reply(false, L.msg("v_admin.accounts.filter_name_missing")) end
+            local list = savedFilters(actor)
+            for i = #list, 1, -1 do if list[i].name:lower() == name:lower() then table.remove(list, i) end end
+            table.insert(list, 1, { name = name, filter = args.filter })
+            while #list > 20 do table.remove(list) end
+            if not storeFilters(actor, list) then return reply(false, L.msg("v_admin.page.save_failed")) end
+            reply({ list = list }, L.msg("v_admin.page.saved"))
+        end,
+
+        delfilter = function(actor, args, reply)
+            local name, list = argText(args.name):lower(), savedFilters(actor)
+            for i = #list, 1, -1 do if list[i].name:lower() == name then table.remove(list, i) end end
+            storeFilters(actor, list)
+            reply({ list = list })
         end,
 
         mail = function(actor, args, reply)

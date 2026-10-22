@@ -3,7 +3,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- login form, never from the "Continue as" panel):
 --   "email"  email -> Send code      (acc_auth:requestPasswordReset); stays here
 --            until acc_auth says the mail went out, a failed send never
---            reaches the code step
+--            reaches the code step. "I already have a code" (a code an admin
+--            mailed, acc_auth:usePasswordResetCode) goes to the code step without a mail
 --   "code"   code + new password ×2  (acc_auth:confirmPasswordReset), Resend after a wait
 -- "Back to login" always returns to the normal login form.
 
@@ -66,7 +67,8 @@ function ForgotPanel:create()
     self.email = {
         mail = edit(mailY),
         send = primary(cx, sendY, fieldW, L("acc_ui.forgot.send_code")),
-        back = ghost(cx, back1Y, fieldW, L("acc_ui.forgot.back_to_login")),
+        have = ghost(cx, back1Y, halfW, L("acc_ui.forgot.have_code")),
+        back = ghost(cx + halfW + ui(10), back1Y, halfW, L("acc_ui.forgot.back_to_login")),
     }
     DGS:dgsSetProperty(self.email.mail, "maxLength", 254)
 
@@ -156,6 +158,11 @@ function ForgotPanel:create()
         if busy() then return end
         exports.acc_auth:requestPasswordReset(mail)
     end)
+    onClick(self.email.have, function()
+        local mail = DGS:dgsGetText(self.email.mail)
+        if mail == "" then return uicore:setInfobox(L("acc_ui.forgot.email_missing")) end
+        exports.acc_auth:usePasswordResetCode(mail)
+    end)
     onClick(self.email.back, back)
     onClick(self.code.back, back)
 
@@ -184,6 +191,7 @@ function ForgotPanel:create()
     function self:refreshTexts()
         DGS:dgsSetText(self.email.send, L("acc_ui.forgot.send_code"))
         DGS:dgsSetText(self.email.back, L("acc_ui.forgot.back_to_login"))
+        DGS:dgsSetText(self.email.have, L("acc_ui.forgot.have_code"))
         DGS:dgsSetText(self.code.set, L("acc_ui.forgot.set_password"))
         DGS:dgsSetText(self.code.back, L("acc_ui.forgot.back_to_login"))
     end
@@ -199,9 +207,11 @@ function ForgotPanel:create()
         self.sendingAt = nil
         if step == "code" then
             self.maskedEmail = type(info) == "table" and tostring(info.email or "") or ""
-            self.sentAt = getTickCount()
+            local haveCode = type(info) == "table" and info.haveCode
+            -- an admin's code: nothing was sent now, so Resend is free at once
+            self.sentAt = haveCode and (getTickCount() - RESEND_WAIT * 1000) or getTickCount()
             self:setStep("code")
-            uicore:setInfobox(L("acc_ui.forgot.code_sent"), 255, 255, 255)
+            if not haveCode then uicore:setInfobox(L("acc_ui.forgot.code_sent"), 255, 255, 255) end
         elseif step == "failed" then
             if info then uicore:setInfobox(info, 255, 255, 255) end
         elseif step == "done" then

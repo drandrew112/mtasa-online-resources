@@ -51,6 +51,8 @@
   "v_mail.server.not_configured": "Email sending is not configured on the server.",
   "v_mail.server.nothing_sent": "No mail could be queued.",
   "v_mail.server.queued": "{count} mails queued, sending…",
+  "v_mail.server.retry_nothing": "Nothing to retry (no failed mail that can be sent again).",
+  "v_mail.server.retry_queued": "{count} failed mail(s) are being sent again.",
   "v_mail.server.subject_too_long": "{lang}: the subject is too long (max {max} characters).",
   "v_mail.server.test_done": "Test mail: {sent} sent, {failed} failed.",
   "v_mail.server.test_queued": "Test mail queued.",

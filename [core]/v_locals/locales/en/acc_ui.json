@@ -47,5 +47,6 @@
   "acc_ui.settings.off": "OFF",
   "acc_ui.settings.on": "ON",
   "acc_ui.settings.title": "SETTINGS",
-  "acc_ui.weekly.title": "THIS WEEK"
+  "acc_ui.weekly.title": "THIS WEEK",
+  "acc_ui.forgot.have_code": "I have a code"
 }

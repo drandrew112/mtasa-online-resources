@@ -1,6 +1,6 @@
 # v_admin 3.0 – frissítési terv (2026-10-21)
 
-Állapot: **implementálva 2026-10-21** (szintaxis + offline füstpróbák rendben, játékban és élő weben még nem tesztelve). Mentett szűrők: nincs kész.
+Állapot: **implementálva 2026-10-21** (szintaxis + offline füstpróbák rendben, játékban és élő weben még nem tesztelve). Mentett szűrők kész (accData admin_filters); a fiók lista pénz/játékidő oszlop nélkül, készpénz és bank külön a részletlapon.
 
 ## 1. Elrendezés
 

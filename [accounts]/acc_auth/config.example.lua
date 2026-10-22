@@ -22,6 +22,7 @@ RECOVERY = {
     CODE_LENGTH      = 6,
     CODE_CHARS       = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", -- no 0/O, 1/I
     CODE_TTL         = 15 * 60,  -- s
+    ADMIN_CODE_TTL   = 24 * 3600, -- s; a code an admin mailed (v_admin Accounts page); 24 h when missing
     MAX_ATTEMPTS     = 5,        -- wrong codes before the code is dropped
     SERIAL_INTERVAL  = 60,       -- s between two code requests of one machine
     SERIAL_PER_HOUR  = 5,

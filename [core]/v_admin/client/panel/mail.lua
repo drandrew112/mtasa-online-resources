@@ -208,6 +208,17 @@ local function drawHistory(x, y, w, h)
     AP.text(L("v_admin.accounts.page", { page = hs.page + 1, pages = hs.more and "..." or hs.page + 1 }), x + S(50), py, S(160), S(36), C.dim, 0.9, "default", "center")
     AP.button(x + S(216), py, S(44), S(36), ">", function() loadHistory(hs.page + 1) end, hs.more and nil or "off")
     AP.button(x + gw - S(120), py, S(120), S(36), L("v_admin.accounts.reload"), function() loadHistory(hs.page) end)
+    local sel
+    for _, g in ipairs(hs.groups or {}) do if g.key == hs.group then sel = g end end
+    if sel and sel.failed > 0 then
+        AP.confirmButton("ml_retry", x + gw - S(390), py, S(260), S(36), L("v_admin.mail.retry_failed", { n = sel.failed }),
+            L("v_admin.page.click_again"), function()
+                local key = sel.key
+                AP.call("mail", "retry", { key = key }, function()
+                    setTimer(function() loadHistory(hs.page) openGroup(key) end, 1500, 1)
+                end)
+            end, "active")
+    end
 
     local mx, mw = x + gw + S(20), w - gw - S(20)
     if not hs.group then return AP.text(L("v_admin.mail.pick_group"), mx, y, mw, S(40), C.dim, 1.0) end

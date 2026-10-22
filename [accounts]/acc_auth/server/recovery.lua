@@ -317,3 +317,116 @@ addEventHandler("onPlayerQuit", root, function()
     pendingEmail[source] = nil
     confirmBusy[source] = nil
 end)
+
+--------------------------------------------------------------------------------
+-- a code the player got some other way (sent by an admin): step 2 without a new mail
+--------------------------------------------------------------------------------
+
+-- The panel's "I already have a code": the email is only remembered for step 2,
+-- nothing is looked up or sent, so it reveals nothing about the address.
+addEvent("acc_auth:resetHaveCode", true)
+addEventHandler("acc_auth:resetHaveCode", root, function(email)
+    local player = client
+    if not isElement(player) or nameOf(player) or getElementData(player, "banned") == true then return end
+    local mail = normalizeEmail(email)
+    if not mail then return authError(player, "acc_auth.server.invalid_email") end
+    pendingEmail[player] = mail
+    resetState(player, "code", { email = maskEmail(mail), wait = 0, haveCode = true })
+end)
+
+--------------------------------------------------------------------------------
+-- admin exports (v_admin Accounts page; v_admin checks the admin level)
+--------------------------------------------------------------------------------
+
+local ADMIN_MAIL_TEXT = {
+    en = {
+        subject = "FreeV password reset",
+        hello   = "Hi %s,",
+        line1   = "An admin started a password reset for your FreeV account. In the game click \"Forgot password\", then \"I already have a code\", enter this email address and the code below:",
+        line2   = "The code is valid for %d hours. If you did not ask for it, you can ignore this email: your password stays the same.",
+    },
+    hu = {
+        subject = "FreeV jelszó-visszaállítás",
+        hello   = "Szia %s!",
+        line1   = "Egy admin jelszó-visszaállítást indított a FreeV fiókodhoz. A játékban kattints az \"Elfelejtett jelszó\", majd a \"Már van kódom\" gombra, add meg ezt az e-mail címet és az alábbi kódot:",
+        line2   = "A kód %d óráig érvényes. Ha nem te kérted, hagyd figyelmen kívül ezt a levelet: a jelszavad nem változik.",
+    },
+}
+
+local function accountRow(accountName)
+    local rows = exports.v_mysql:mysqlQuerySync(
+        "SELECT account_name, email, SUBSTRING(account_data, LOCATE('\"locale.language\"', account_data), 120) AS loc "
+        .. "FROM `accounts` WHERE account_name = ? LIMIT 1", accountName)
+    return type(rows) == "table" and rows[1] or nil
+end
+
+--- Mails a password reset code to the account's own email (valid RECOVERY.ADMIN_CODE_TTL).
+--- -> true | false, errorKey (acc_auth.server.*)
+function adminSendPasswordReset(accountName, adminName)
+    if type(accountName) ~= "string" or accountName == "" then return false, "acc_auth.server.account_not_found" end
+    if not dbReady() then return false, "acc_auth.server.database_query_error" end
+    if not resourceRunning("v_mail") or exports.v_mail:isMailConfigured() ~= true then return false, "acc_auth.server.reset_mail_failed" end
+    local row = accountRow(accountName)
+    if not row then return false, "acc_auth.server.account_not_found" end
+    local email = type(row.email) == "string" and row.email ~= "" and row.email or nil
+    if not email then return false, "acc_auth.server.account_has_no_email" end
+    local account = row.account_name
+
+    ensureTable()
+    local ttl = tonumber(RECOVERY.ADMIN_CODE_TTL) or 24 * 3600
+    local code = newCode(account .. tostring(adminName))
+    local t = now()
+    exports.v_mysql:mysqlExec("UPDATE `" .. RECOVERY.TABLE .. "` SET used_at = ? WHERE account_name = ? AND used_at = 0", t, account)
+    local rowId = exports.v_mysql:mysqlInsert("INSERT INTO `" .. RECOVERY.TABLE
+        .. "` (account_name, code_hash, expires_at, serial, ip, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+        account, codeHash(code, account), t + ttl, "admin", tostring(adminName or "admin"):sub(1, 45), t)
+    if type(rowId) ~= "number" then return false, "acc_auth.server.database_query_error" end
+
+    local lang = type(row.loc) == "string" and row.loc:match('^"locale%.language"%s*:%s*%[?%s*{[^}]-"v"%s*:%s*"([%w_%-]+)"') or "en"
+    local text = ADMIN_MAIL_TEXT[lang] or ADMIN_MAIL_TEXT.en
+    local ok, err = exports.v_mail:sendMail({
+        to = email, toName = account, subject = text.subject,
+        template = {
+            greeting = text.hello:format(account),
+            paragraphs = { text.line1 },
+            code = code,
+            note = text.line2:format(math.floor(ttl / 3600)),
+            signature = "FreeV MTA:SA",
+        },
+        log = { kind = "password_reset", language = lang, sender = tostring(adminName or "admin") },
+    })
+    if not ok then
+        exports.v_mysql:mysqlExec("UPDATE `" .. RECOVERY.TABLE .. "` SET used_at = ? WHERE id = ?", now(), rowId)
+        outputServerLog(("[acc_auth] admin password reset mail for '%s' not sent: %s"):format(account, tostring(err)))
+        return false, "acc_auth.server.reset_mail_failed"
+    end
+    outputServerLog(("[acc_auth] password reset code for '%s' mailed by admin %s"):format(account, tostring(adminName)))
+    return true
+end
+
+--- Sets (or with "" removes) the email of an account; an address another account has is refused.
+--- -> true | false, errorKey (acc_auth.server.*)
+function adminSetAccountEmail(accountName, email)
+    if type(accountName) ~= "string" or accountName == "" then return false, "acc_auth.server.account_not_found" end
+    if not dbReady() then return false, "acc_auth.server.database_query_error" end
+    local mail = normalizeEmail(email)
+    if mail == false then return false, "acc_auth.server.invalid_email" end
+    local row = accountRow(accountName)
+    if not row then return false, "acc_auth.server.account_not_found" end
+    if mail then
+        local other = exports.v_mysql:mysqlQuerySync("SELECT account_name FROM `accounts` WHERE email = ? AND account_name <> ? LIMIT 1",
+            mail, row.account_name)
+        if type(other) ~= "table" then return false, "acc_auth.server.database_query_error" end
+        if other[1] then return false, "acc_auth.server.email_in_use" end
+    end
+    -- through v_mysql so its account cache stays right (email is a promoted UNIQUE column; nil = NULL)
+    if not exports.v_mysql:setAccData(row.account_name, "email", mail) then return false, "acc_auth.server.database_query_error" end
+    -- a logged in player sees the new (masked) address in the account menu
+    for _, p in ipairs(getElementsByType("player")) do
+        local n = nameOf(p)
+        if n and n:lower() == row.account_name:lower() then
+            triggerClientEvent(p, "acc_auth:onClientEmail", p, maskEmail(mail), mail ~= nil)
+        end
+    end
+    return true
+end

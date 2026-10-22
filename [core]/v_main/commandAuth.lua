@@ -44,8 +44,27 @@ end
 --- Feedback line that reaches the caller whether it is the console or a player
 --- (chat is disabled mod-wide, so players get it in their F8 console).
 function commandFeedback(player, tag, msg)
+    if tag == "update" then reportLine("update", "status", msg) end
     outputServerLog(("[v_main:%s] %s"):format(tag, msg))
     if isElement(player) then
         outputConsole(("[%s] %s"):format(tag, msg), player)
     end
+end
+
+-- ---------------------------------------------------------------------------
+-- Report of the last update check / update (v_admin Resources page):
+--   UPDATE_REPORT[kind] = { at, by, lines = { { event, text } } }, kind = "check" | "update"
+-- ---------------------------------------------------------------------------
+UPDATE_REPORT = { check = false, update = false }
+
+local REPORT_MAX = 400
+
+function reportStart(kind, by)
+    UPDATE_REPORT[kind] = { at = getRealTime().timestamp, by = tostring(by), lines = {} }
+end
+
+function reportLine(kind, event, text)
+    local r = UPDATE_REPORT[kind]
+    if not r or #r.lines >= REPORT_MAX then return end
+    r.lines[#r.lines + 1] = { event = event, text = text }
 end

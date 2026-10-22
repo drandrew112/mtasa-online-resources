@@ -304,3 +304,57 @@ function mailAdminMail(id, mailId)
     end)
     return true
 end
+
+--------------------------------------------------------------------------------
+-- retry: the failed mails of a history group (or one mail) go out again
+--------------------------------------------------------------------------------
+
+local RETRY_MAX = 500
+local NO_RETRY = { password_reset = true, test = true }   -- a reset code is masked in the stored text
+
+-- key = a history group key ("#<id>" = one mail). The stored plain text is sent
+-- again to the account's CURRENT email; the same row gets the new answer.
+-- Answer: { ok, message, count }
+function mailAdminRetry(id, admin, key)
+    local answer = answerer()
+    local function done(ok, k, params, count) local r = message(ok, k, params) r.count = count answer(id, r) end
+    if type(key) ~= "string" or key == "" then return false end
+    if not isMailConfigured() then done(false, "v_mail.server.not_configured") return true end
+    if not dbReady() then done(false, "v_mail.server.database_error") return true end
+    local where, arg = "group_key = ?", key
+    local single = key:match("^#(%d+)$")
+    if single then where, arg = "id = ?", tonumber(single) end
+
+    MYSQL.query(function(rows)
+        if not rows then return done(false, "v_mail.server.database_error") end
+        local list, names, seen = {}, {}, {}
+        for _, r in ipairs(rows) do
+            if not NO_RETRY[r.kind] and type(r.account_name) == "string" and type(r.body) == "string" and r.body ~= "" then
+                list[#list + 1] = r
+                if not seen[r.account_name] then seen[r.account_name] = true names[#names + 1] = r.account_name end
+            end
+        end
+        if #list == 0 then return done(false, "v_mail.server.retry_nothing") end
+        MYSQL.query(function(accounts)
+            if not accounts then return done(false, "v_mail.server.database_error") end
+            local email = {}
+            for _, a in ipairs(accounts) do email[a.account_name] = a.email end
+            local queued = 0
+            for _, r in ipairs(list) do
+                local to = email[r.account_name]
+                if validEmail(to) then
+                    MYSQL.query(nil, "UPDATE `" .. MAILER.TABLE .. "` SET status = 'sending', error = NULL WHERE id = ?", tonumber(r.id))
+                    local ok, err = queueMail({ to = to, toName = r.account_name, subject = r.subject, text = r.body,
+                        bulk = true, log = { rowId = tonumber(r.id) } }, nil, "v_mail retry")
+                    if ok then queued = queued + 1 else MAILDB.finish(tonumber(r.id), "failed", err) end
+                else
+                    MAILDB.finish(tonumber(r.id), "skipped", "the account has no email any more")
+                end
+            end
+            outputServerLog(("[v_mail] %s retried %d failed mail(s) of %s"):format(tostring(admin), queued, key))
+            done(queued > 0, queued > 0 and "v_mail.server.retry_queued" or "v_mail.server.retry_nothing", { count = queued }, queued)
+        end, "SELECT account_name, email FROM `accounts` WHERE account_name IN (" .. ("?,"):rep(#names):sub(1, -2) .. ")", unpack(names))
+    end, "SELECT id, kind, account_name, subject, body FROM `" .. MAILER.TABLE .. "` WHERE " .. where
+        .. " AND status = 'failed' ORDER BY id LIMIT ?", arg, RETRY_MAX)
+    return true
+end

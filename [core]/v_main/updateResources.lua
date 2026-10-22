@@ -181,6 +181,7 @@ local function runUpdate(triggeredBy, player)
         return
     end
     busy = true
+    reportStart("update", triggeredBy)
 
     commandFeedback(player, "update", L.msg("v_main.updateresources.update_started_repo", { triggered_by = triggeredBy, user = RepoSync.USER, name = RepoSync.NAME, branch = RepoSync.BRANCH }))
 
@@ -286,3 +287,19 @@ addCommandHandler("updateresources", function(player)
 
     runUpdate(who, player)
 end, false, false)
+
+-- ---------------------------------------------------------------------------
+-- v_admin Resources page
+-- ---------------------------------------------------------------------------
+--- Downloads and applies the repo changes (lines go to UPDATE_REPORT.update). -> false when one runs already
+function adminUpdateResources(actorText)
+    if busy then return false end
+    runUpdate(tostring(actorText or "v_admin") .. " (v_admin)")
+    return true
+end
+
+--- { check = report | false, update = report | false, checkRunning, updateRunning }
+function getUpdateReport()
+    return { check = UPDATE_REPORT.check, update = UPDATE_REPORT.update,
+             checkRunning = isUpdateCheckRunning(), updateRunning = busy }
+end

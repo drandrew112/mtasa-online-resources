@@ -1,5 +1,7 @@
 {
   "acc_auth.server.account_already_exists": "Account already exists",
+  "acc_auth.server.account_has_no_email": "The account has no e-mail address.",
+  "acc_auth.server.account_not_found": "No such account.",
   "acc_auth.server.database_query_error": "Database query error. Try again!",
   "acc_auth.server.email_in_use": "This email is already used by another account",
   "acc_auth.server.email_removed": "Email removed.",

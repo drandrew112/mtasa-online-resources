@@ -48,6 +48,7 @@ ADMIN.perms = {
     heal         = 1,   -- /heal                      (Trial Mod)
     skin         = 2,   -- /setskin                   (Mod)
     noclip       = 2,   -- /fly + N key               (Mod)
+    spectate     = 1,   -- /spec, /specoff, Online players page (Trial Mod)
     jail         = 2,   -- /ajail, /ajailout          (Mod)
     mute         = 1,   -- /mute, /unmute             (Trial Mod)
     kick         = 3,   -- /kick                      (Admin)
@@ -63,6 +64,8 @@ ADMIN.perms = {
     vehicles     = 4,   -- give / delete / restore an owned vehicle (SuperAdmin)
     achievements = 4,   -- give / reset achievements   (SuperAdmin)
     notes        = 1,   -- admin notes on an account   (Trial Mod)
+    passwordReset = 3,  -- mail a password reset code to the account's own e-mail (Admin)
+    email        = 5,   -- set / remove the e-mail address of an account (Dev)
     adminLog     = 1,   -- Admin log page              (Trial Mod)
     weekly       = 4,   -- Weekly page, /weekly        (SuperAdmin)
     news         = 5,   -- News page, /news            (Dev)
@@ -103,6 +106,8 @@ ADMIN.accounts = {
     cacheTime = 30,     -- s: the account list is re-read from MySQL at most this often
     notesMax  = 300,    -- characters of one admin note
     notesKey  = "admin_notes", -- accData key (JSON list of { t, admin, text })
+    exportMax = 5000,   -- rows of one CSV export
+    filtersKey = "admin_filters", -- accData key of the ADMIN's account: saved filters (JSON list of { name, filter })
 }
 
 -- Admin log page (MySQL `admin_log`).
@@ -121,6 +126,8 @@ ADMIN.commands = {
     { cmd = "/mail",                              perm = "mail",         desc = L.text("v_admin.config.opens_mail_page") },
     { cmd = "/goto <ID>",                         perm = "teleport",     desc = L.text("v_admin.config.teleport_to_player_interior_dimension_too") },
     { cmd = "/gethere <ID>",                      perm = "teleport",     desc = L.text("v_admin.config.bring_player_to_you_with_their") },
+    { cmd = "/spec <ID>",                         perm = "spectate",     desc = L.text("v_admin.config.spectate_player") },
+    { cmd = "/specoff",                           perm = "spectate",     desc = L.text("v_admin.config.stop_spectating") },
     { cmd = "/heal <ID>",                         perm = "heal",         desc = L.text("v_admin.config.restore_player_s_health_and_armour") },
     { cmd = "/setskin <ID> <skin>",               perm = "skin",         desc = L.text("v_admin.config.change_player_s_skin") },
     { cmd = "/mute <ID> <minutes> <reason>",      perm = "mute",         desc = L.text("v_admin.config.chat_mute_survives_relog_expires_on") },

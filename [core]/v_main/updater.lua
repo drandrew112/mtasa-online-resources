@@ -80,6 +80,7 @@ local function runCheck(triggeredBy, player)
         local line = (EVENT_PREFIX[event] or "") .. tostring(text)
         if event == "missing" then line = L.msg("v_main.updater.in_repo_not_found_locally", { line = line }) end
         log(line)
+        reportLine("check", event, line)
         if echo then outputConsole("[updater] " .. line, echo) end
         if checker then checker:pushEvent(event, text) end
     end
@@ -89,6 +90,7 @@ local function runCheck(triggeredBy, player)
         return
     end
     running = true
+    reportStart("check", triggeredBy)
     emit("status", ("Update check started (%s). Repo: %s/%s @ %s")
         :format(triggeredBy, RepoSync.USER, RepoSync.NAME, RepoSync.BRANCH))
 
@@ -211,3 +213,15 @@ addCommandHandler("checkupdates", function(player)
 
     runCheck(who, player)
 end, false, false)
+
+-- ---------------------------------------------------------------------------
+-- v_admin Resources page
+-- ---------------------------------------------------------------------------
+function isUpdateCheckRunning() return running end
+
+--- Starts a check (the result lines go to UPDATE_REPORT.check). -> false when one runs already
+function adminCheckUpdates(actorText)
+    if running then return false end
+    runCheck(tostring(actorText or "v_admin") .. " (v_admin)")
+    return true
+end

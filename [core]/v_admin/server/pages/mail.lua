@@ -11,6 +11,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --  mail       { id }                       -> { mail }
 --  status     {}                           -> queue + weekly update state
 --  updatetest { lang }                     the weekly update mail to the admin's own email
+--  retry      { key }                      the failed mails of a history group ("#<id>" = one mail) again
 --
 --  A finished circular (onMailCircularDone) is told to the admin if online.
 -- ============================================================
@@ -47,6 +48,15 @@ PAGES.register("mail", {
         group   = function(actor, args, reply) remote("mailAdminGroup", reply, tostring(args.key or "")) end,
         mail    = function(actor, args, reply) remote("mailAdminMail", reply, tonumber(args.id) or 0) end,
         status  = function(actor, args, reply) remote("mailAdminStatus", reply) end,
+
+        retry = function(actor, args, reply)
+            local key = argText(args.key)
+            if key == "" then return reply(false) end
+            remote("mailAdminRetry", function(r, msg)
+                if r then adminLog(actor, ("mail: retried %d failed mail(s) of %s"):format(tonumber(r.count) or 0, key)) end
+                reply(r, msg)
+            end, actorAccount(actor) or actorName(actor), key)
+        end,
 
         updatetest = function(actor, args, reply)
             local account = actorAccount(actor)
