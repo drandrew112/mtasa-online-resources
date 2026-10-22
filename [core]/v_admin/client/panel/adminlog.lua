@@ -41,6 +41,9 @@ AP.addPage({
         local bh = S(52)
         AP.table("al_list", x, y + S(52), w, h - S(52) - bh, {
             { key = "ts", label = L("v_admin.accounts.col_date"), w = S(170), text = function(r) return AP.fmtDate(r.ts) end },
+            { key = "server", label = L("v_admin.log.server"), w = S(80), align = "center",
+              text = function(r) return r.server > 0 and ("#" .. r.server) or "-" end,
+              color = function(r) return d and r.server ~= d.server and C.gold or C.dim end },
             { key = "admin", label = L("v_admin.accounts.col_admin"), w = S(170), bold = true },
             { key = "level", label = L("v_admin.log.level"), w = S(70), align = "right" },
             { key = "source", label = L("v_admin.log.source"), w = S(80), color = function(r) return r.source == "web" and C.head or C.dim end },

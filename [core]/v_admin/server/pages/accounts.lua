@@ -6,6 +6,8 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 --  paged here; the client only gets one page. The list is read in one go
 --  (a few account_data keys through JSON_EXTRACT) and kept for
 --  ADMIN.accounts.cacheTime seconds; online players' values are live.
+--  online   = player ID on THIS instance (goto, inventory, unmute need that)
+--  onServer = { server, serverName, id } on any instance (server/instance.lua)
 --
 --  list    { search, admin, status, registered, email, updates, conds = { { key, op, value } },
 --            sort, dir, page, refresh } -> { rows, total, page, pages, now, cachedAt }
@@ -134,6 +136,13 @@ end
 --- Forget the cached list (after an edit).
 local function dirty() cache.tick = 0 end
 
+--- { server, serverName, id } of the instance the account is online on, or false.
+local function onServerOf(name, localId)
+    if localId then return { server = INSTANCE.id(), serverName = INSTANCE.name(), id = localId, here = true } end
+    local r = INSTANCE.remoteOnline(name)
+    return r and { server = r.server, serverName = r.serverName, id = r.id } or false
+end
+
 -- live values of online players
 local function onlineInfo()
     local out = {}
@@ -181,11 +190,12 @@ local function buildRows(actor, args)
     local out = {}
     for _, e in ipairs(cache.rows) do
         local o = online[e.name:lower()]
+        local on = onServerOf(e.name, o and o.id)
         local r = {
             id = e.id, name = e.name, display = e.display, adminLevel = e.adminLevel, created = e.created,
             money = o and o.money or e.money, bank = o and o.bank or e.bank, level = o and o.level or e.level, xp = o and o.xp or e.xp,
-            playtime = e.playtime, vehicles = e.vehicles, lastLogin = o and t or e.lastLogin,
-            online = o and o.id or false, banned = e.banned, muted = o and o.muted or false, jailed = o and o.jailed or false,
+            playtime = e.playtime, vehicles = e.vehicles, lastLogin = on and t or e.lastLogin,
+            online = o and o.id or false, onServer = on, banned = e.banned, muted = o and o.muted or false, jailed = o and o.jailed or false,
             hasEmail = e.email and true or false, updates = e.updates,
         }
         local keep = true
@@ -196,8 +206,8 @@ local function buildRows(actor, args)
         if keep and admin == "admins" then keep = e.adminLevel > 0
         elseif keep and tonumber(admin) then keep = e.adminLevel == tonumber(admin) end
         if keep and status and status ~= "any" then
-            if status == "online" then keep = r.online and true
-            elseif status == "offline" then keep = not r.online
+            if status == "online" then keep = r.onServer and true
+            elseif status == "offline" then keep = not r.onServer
             elseif status == "banned" then keep = r.banned
             elseif status == "muted" then keep = r.muted
             elseif status == "jailed" then keep = r.jailed end
@@ -291,11 +301,12 @@ local function detail(actor, name, reply)
             updates = data.receiveUpdateMails ~= false, skin = tonumber(data.skin) or false,
             language = data["locale.language"] or false,
             works = workLevels(actor, acc), notes = notesOf(data), now = now(),
-            online = false,
+            online = false, onServer = onServerOf(acc, nil),
         }
         if player then
             local muteUntil = tonumber(getElementData(player, "mute_until"))
             d.online = tonumber(getElementData(player, "ID")) or 0
+            d.onServer = onServerOf(acc, d.online)
             d.money = getPlayerMoney(player)
             d.bank = tonumber(getElementData(player, "bank_money")) or d.bank
             d.level = tonumber(getElementData(player, "level")) or d.level
@@ -665,7 +676,7 @@ PAGES.register("accounts", {
                     return v
                 end
                 local function day(ts) return (tonumber(ts) or 0) > 0 and os.date("!%Y-%m-%d %H:%M", ts) or "" end
-                local lines = { "id,account,display_name,admin_level,email,update_mails,cash,bank,level,xp,playtime_hours,vehicles,registered_utc,last_seen_utc,online_id,banned,muted,jailed" }
+                local lines = { "id,account,display_name,admin_level,email,update_mails,cash,bank,level,xp,playtime_hours,vehicles,registered_utc,last_seen_utc,online_id,online_server,banned,muted,jailed" }
                 for i = 1, math.min(#rows, max) do
                     local r = rows[i]
                     local e = cache.byName and cache.byName[r.name:lower()]
@@ -673,7 +684,7 @@ PAGES.register("accounts", {
                         cell(r.id), cell(r.name), cell(r.display or ""), cell(r.adminLevel),
                         cell(e and showEmail(actor, e.email) or ""), cell(r.hasEmail and (r.updates and "yes" or "no") or ""),
                         cell(r.money), cell(r.bank), cell(r.level), cell(r.xp), cell(math.floor((r.playtime or 0) / 60)), cell(r.vehicles),
-                        cell(day(r.created)), cell(day(r.lastLogin)), cell(r.online or ""),
+                        cell(day(r.created)), cell(day(r.lastLogin)), cell(r.online or ""), cell(r.onServer and r.onServer.server or ""),
                         cell(r.banned and "yes" or "no"), cell(r.muted and "yes" or "no"), cell(r.jailed and "yes" or "no"),
                     }, ",")
                 end

@@ -3,7 +3,7 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 --  v_admin / server/adminlog.lua
 --  Every admin action (adminLog in server/core.lua) also goes into the
 --  MySQL table ADMIN.log.table, shown on the Admin log page:
---    ts, admin (account), admin_name, source (game | web), level, action, target
+--    ts, server (v_main instance id), admin (account), admin_name, source (game | web), level, action, target
 -- ============================================================
 
 ADMINLOG = {}
@@ -19,6 +19,7 @@ local function ensure()
     exports.v_mysql:mysqlExec([[CREATE TABLE IF NOT EXISTS `]] .. TABLE .. [[` (
         `id`         INT AUTO_INCREMENT PRIMARY KEY,
         `ts`         INT          NOT NULL DEFAULT 0,
+        `server`     INT          NOT NULL DEFAULT 0,
         `admin`      VARCHAR(64)  NOT NULL DEFAULT '',
         `admin_name` VARCHAR(64)  NOT NULL DEFAULT '',
         `source`     VARCHAR(8)   NOT NULL DEFAULT 'game',
@@ -29,6 +30,12 @@ local function ensure()
         KEY `idx_admin` (`admin`),
         KEY `idx_target` (`target`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]])
+    -- tables made before the server column
+    MYSQL.query(function(rows)
+        if rows and #rows == 0 then
+            exports.v_mysql:mysqlExec("ALTER TABLE `" .. TABLE .. "` ADD COLUMN `server` INT NOT NULL DEFAULT 0 AFTER `ts`")
+        end
+    end, "SHOW COLUMNS FROM `" .. TABLE .. "` LIKE 'server'")
     ready = true
     return true
 end
@@ -47,20 +54,20 @@ function ADMINLOG.add(actor, text, target)
     local account = (isElement(actor) or isWebActor(actor)) and actorAccount(actor) or "console"
     local name = strip(isElement(actor) and getPlayerName(actor) or isWebActor(actor) and actor.name or "Console")
     -- no nil among the query arguments: an action without a target stores NULL literally
-    local sql = "INSERT INTO `" .. TABLE .. "` (ts, admin, admin_name, source, level, action, target) VALUES (?,?,?,?,?,?,"
+    local sql = "INSERT INTO `" .. TABLE .. "` (ts, server, admin, admin_name, source, level, action, target) VALUES (?,?,?,?,?,?,?,"
         .. (target and "?)" or "NULL)")
     if target then
-        MYSQL.query(nil, sql, now(), cut(account, 64), cut(name, 64), isWebActor(actor) and "web" or "game",
+        MYSQL.query(nil, sql, now(), INSTANCE.id(), cut(account, 64), cut(name, 64), isWebActor(actor) and "web" or "game",
             getAdminLevel(actor), cut(text, 255), cut(target, 64))
     else
-        MYSQL.query(nil, sql, now(), cut(account, 64), cut(name, 64), isWebActor(actor) and "web" or "game",
+        MYSQL.query(nil, sql, now(), INSTANCE.id(), cut(account, 64), cut(name, 64), isWebActor(actor) and "web" or "game",
             getAdminLevel(actor), cut(text, 255))
     end
 end
 
 --------------------------------------------------------------------------------
 -- page: adminlog
---   list { page, admin, target, text } -> { rows, more, now }
+--   list { page, admin, target, text } -> { rows, more, now, server }
 --------------------------------------------------------------------------------
 
 PAGES.register("adminlog", {
@@ -84,10 +91,10 @@ PAGES.register("adminlog", {
                 local out = {}
                 for i = 1, math.min(#rows, size) do
                     local r = rows[i]
-                    out[i] = { id = tonumber(r.id), ts = tonumber(r.ts), admin = r.admin, adminName = r.admin_name,
+                    out[i] = { id = tonumber(r.id), ts = tonumber(r.ts), server = tonumber(r.server) or 0, admin = r.admin, adminName = r.admin_name,
                                source = r.source, level = tonumber(r.level), action = r.action, target = r.target or false }
                 end
-                reply({ rows = out, more = #rows > size, page = page, now = now() })
+                reply({ rows = out, more = #rows > size, page = page, now = now(), server = INSTANCE.id() })
             end, "SELECT * FROM `" .. TABLE .. "`" .. (#where > 0 and (" WHERE " .. table.concat(where, " AND ")) or "")
                 .. " ORDER BY id DESC LIMIT ? OFFSET ?", unpack(params))
         end,

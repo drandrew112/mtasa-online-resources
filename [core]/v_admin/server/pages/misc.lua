@@ -38,7 +38,7 @@ PAGES.register("dashboard", {
             table.sort(d.admins, function(a, b) return a.level > b.level end)
             d.maxPlayers = getMaxPlayers()
             d.reports, d.reportsWaiting = adminReportCounts()
-            d.instance = resourceRunning("v_main") and exports.v_main:getServerInstanceName() or false
+            d.instance = INSTANCE.name()
             d.accounts = accountsSummary() or false
 
             -- running week

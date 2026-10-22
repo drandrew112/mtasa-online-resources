@@ -144,7 +144,8 @@ local function sendPanel(admin, isRefresh, tab, arg)
 
     local list = adminPlayerList()
 
-    triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false, arg)
+    triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false, arg,
+        { id = INSTANCE.id(), name = INSTANCE.name() })
 end
 
 --- Open the panel for an admin on a given page (/reports, /weekly, /news, /mail).

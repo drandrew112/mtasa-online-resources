@@ -14,6 +14,8 @@
     <include resource="v_mysql" />
     <!-- web admin panel (http://<server>:<httpport>/v_admin/) -->
     <include resource="web_api" />
+    <!-- server instance id / name (admin log, online on other instances) -->
+    <include resource="v_main" />
 
     <!-- Shared configuration (both sides) -->
     <script src="locals.lua" type="shared" />
@@ -35,6 +37,7 @@
     <script src="server/panel.lua"        type="server" />
     <!-- panel pages (v_admin 3.0): request dispatcher first, then the pages -->
     <script src="server/pages.lua"          type="server" />
+    <script src="server/instance.lua"       type="server" />
     <script src="server/adminlog.lua"       type="server" />
     <script src="server/pages/accounts.lua" type="server" />
     <script src="server/pages/weekly.lua"   type="server" />

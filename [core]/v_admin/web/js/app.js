@@ -233,6 +233,9 @@
     function render() {
         $('who').textContent = `${S.account} · ${rankName(S.level)} (${S.level})`;
         $('cntPlayers').textContent = S.players.length;
+        const inst = S.info && S.info.instance;
+        $('instancePill').hidden = !(inst && inst.name);
+        if (inst && inst.name) $('instancePill').textContent = `Server #${inst.id} · ${inst.name}`;
         $('onlinePill').textContent = `Online ${S.players.length} · ${S.players.filter(p => !p.logged).length} not logged in`;
         const waiting = S.reports.filter(r => r.status !== 'claimed').length;
         const cr = $('cntReports');
@@ -793,16 +796,22 @@
         return '<span class="dim">ok</span>';
     }
 
+    // "online · #2 · ID 5" (long: with the instance name); onServer = { server, serverName, id, here }
+    function onServerText(o, long) {
+        const srv = long && o.serverName ? `#${o.server} ${o.serverName}` : `#${o.server}`;
+        return `online · ${srv} · ID ${o.id}`;
+    }
+
     function accRender() {
         const d = A.data;
         $('accMeta').textContent = d ? `${fmtInt(d.total)} matches of ${fmtInt(d.all)} accounts · list read ${ago(d.cachedAt)}` : 'Loading...';
         grid($('accRows'), [
-            { key: 'name', label: 'Account', sort: true, text: r => `${r.online ? '<span class="good">●</span> ' : ''}<b>${esc(r.name)}</b>` },
+            { key: 'name', label: 'Account', sort: true, text: r => `${r.onServer ? '<span class="good">●</span> ' : ''}<b>${esc(r.name)}</b>` },
             { key: 'display', label: 'Display name', sort: true },
             { key: 'adminLevel', label: 'Adm', sort: true, cls: 'c narrow', text: r => r.adminLevel > 0 ? `<b class="gold" title="${esc(rankName(r.adminLevel))}">${r.adminLevel}</b>` : '-' },
             { key: 'level', label: 'Level', sort: true, cls: 'r' },
             { key: 'vehicles', label: 'Vehicles', sort: true, cls: 'r' },
-            { key: 'lastLogin', label: 'Last seen', sort: true, text: r => r.online ? `<span class="good">online · ID ${r.online}</span>` : esc(ago(r.lastLogin)) },
+            { key: 'lastLogin', label: 'Last seen', sort: true, text: r => r.onServer ? `<span class="good" title="${esc(r.onServer.serverName || '')}">${esc(onServerText(r.onServer))}</span>` : esc(ago(r.lastLogin)) },
             { key: 'status', label: 'Status', text: accStatus },
         ], d ? arr(d.rows) : [], {
             sortKey: A.args.sort, sortDir: A.args.dir,
@@ -881,7 +890,7 @@
                 ${kv('E-mail', d.email)}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
                 ${kv('Cash', money(d.money), 'good')}${kv('Bank', money(d.bank), 'good')}${kv('Level · XP', `${d.level} · ${fmtInt(d.xp)}`)}
                 ${kv('Playtime', d.playtimeText || `${Math.floor(d.playtime / 60)}h ${String(d.playtime % 60).padStart(2, '0')}m`)}
-                ${kv('Last login', d.online ? 'online now' : fmtDate(d.lastLogin))}
+                ${kv('Last login', d.onServer ? onServerText(d.onServer, true) : fmtDate(d.lastLogin))}
                 ${kv('Last serial', d.lastSerial)}${kv('Last IP', d.lastIp)}
                 ${kv('Achievements', d.achievements ? `${d.achievements.done} / ${d.achievements.total}` : '-')}${kv('Vehicles', d.vehicles)}
             </div>${d.banned ? `<div class="banbar">Banned by ${esc(d.banned.admin || '?')}: ${esc(d.banned.reason || '?')}</div>` : ''}
@@ -904,7 +913,7 @@
         </div>`;
         el.innerHTML = `<div class="acc-head"><div class="acc-av">${esc(d.name.charAt(0).toUpperCase())}</div><div>
                 <h2>${esc(d.name)} ${d.adminLevel > 0 ? `<small class="gold">${esc(rankName(d.adminLevel))}</small>` : ''}</h2>
-                <div class="sub">${val(d.display)} · #${d.id} · registered ${fmtDate(d.created)}${d.online ? ` · <span class="good">online, ID ${d.online}</span>` : ''}</div></div></div>
+                <div class="sub">${val(d.display)} · #${d.id} · registered ${fmtDate(d.created)}${d.onServer ? ` · <span class="good">${esc(onServerText(d.onServer, true))}</span>` : ''}</div></div></div>
             <div class="acc-tabs">${ACC_TABS.map(x => `<button data-tab="${x[0]}" class="${A.tab === x[0] ? 'on' : ''}">${x[1]}${
                 x[0] === 'vehicles' ? ' ' + d.vehicles : x[0] === 'notes' && arr(d.notes).length ? ' ' + arr(d.notes).length : ''}</button>`).join('')}</div>
             <div class="acc-body">${body}</div>${actions}`;
@@ -1166,6 +1175,7 @@
         if (r.ok) AL.data = r.result;
         grid($('alRows'), [
             { key: 'ts', label: 'Date', text: l => fmtDate(l.ts) },
+            { key: 'server', label: 'Server', cls: 'c narrow', text: l => l.server ? `<span class="${l.server === AL.data.server ? '' : 'gold'}">#${l.server}</span>` : '-' },
             { key: 'admin', label: 'Admin', text: l => `<b>${esc(l.admin)}</b>` },
             { key: 'level', label: 'Level', cls: 'r' },
             { key: 'source', label: 'From', text: l => `<span class="${l.source === 'web' ? 'gold' : 'dim'}">${esc(l.source)}</span>` },

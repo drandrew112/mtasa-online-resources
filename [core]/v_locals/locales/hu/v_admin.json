@@ -535,5 +535,9 @@
   "v_admin.vehicle.you_repaired_s_vehicle": "#FFFFFFMegjavítottad #FFFF00{player}#FFFFFF járművét.",
   "v_admin.weekly.limit": "Időkorlát",
   "v_admin.weekly.not_ready": "A heti rendszer nem elérhető (v_weekly).",
-  "v_admin.weekly.reward": "Jutalom"
+  "v_admin.weekly.reward": "Jutalom",
+  "v_admin.accounts.online_server": "online · #{server} · ID {id}",
+  "v_admin.accounts.online_server_long": "online · #{server} {name} · ID {id}",
+  "v_admin.page.instance_pill": "Szerver #{id} · {name}",
+  "v_admin.log.server": "Szerver"
 }

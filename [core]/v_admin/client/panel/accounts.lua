@@ -9,6 +9,14 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 local S, F, C = AP.S, AP.F, AP.C
 
+--- "online · #2 · ID 5" (long: with the instance name); o = row.onServer { server, serverName, id }
+local function onServerText(o, long)
+    if long and o.serverName then
+        return L("v_admin.accounts.online_server_long", { server = o.server, name = o.serverName, id = o.id })
+    end
+    return L("v_admin.accounts.online_server", { server = o.server, id = o.id })
+end
+
 local st = {
     args     = { admin = "any", status = "any", registered = "any", email = "any", updates = "any",
                  conds = {}, sort = "name", dir = "asc", page = 0 },
@@ -306,8 +314,8 @@ local function drawList(x, y, w, h)
 
     local cols = {
         { key = "name", label = L("v_admin.accounts.col_account"), sort = true, bold = true,
-          text = function(r) return (r.online and "● " or "") .. r.name end,
-          color = function(r) return r.online and C.good or C.text end },
+          text = function(r) return (r.onServer and "● " or "") .. r.name end,
+          color = function(r) return r.onServer and C.good or C.text end },
         { key = "display", label = L("v_admin.accounts.col_display"), w = S(170), sort = true, text = function(r) return r.display or "-" end },
         { key = "adminLevel", label = L("v_admin.accounts.col_admin_short"), w = S(64), sort = true, align = "center", bold = true,
           text = function(r) return r.adminLevel > 0 and tostring(r.adminLevel) or "-" end,
@@ -315,8 +323,8 @@ local function drawList(x, y, w, h)
         { key = "level", label = L("v_admin.accounts.col_level"), w = S(70), sort = true, align = "right" },
         { key = "vehicles", label = L("v_admin.accounts.col_vehicles"), w = S(90), sort = true, align = "right" },
         { key = "lastLogin", label = L("v_admin.accounts.col_last_seen"), w = S(140), sort = true,
-          text = function(r) return r.online and (L("v_admin.accounts.online_id", { id = r.online })) or AP.ago(r.lastLogin, d and d.now) end,
-          color = function(r) return r.online and C.good or C.dim end },
+          text = function(r) return r.onServer and onServerText(r.onServer) or AP.ago(r.lastLogin, d and d.now) end,
+          color = function(r) return r.onServer and C.good or C.dim end },
         { key = "status", label = L("v_admin.accounts.col_status"), w = S(100),
           text = function(r) return (statusOf(r)) end, color = function(r) return select(2, statusOf(r)) end },
     }
@@ -433,7 +441,7 @@ local function drawOverview(d, x, y, w, h)
         { L("v_admin.accounts.bank"), "€" .. AP.fmtInt(d.bank), C.good },
         { L("v_admin.accounts.level_xp"), d.level .. "  ·  " .. AP.fmtInt(d.xp) },
         { L("common.played_time"), played },
-        { L("v_admin.accounts.last_login"), d.online and L("v_admin.accounts.online_now") or AP.fmtDate(d.lastLogin) },
+        { L("v_admin.accounts.last_login"), d.onServer and onServerText(d.onServer, true) or AP.fmtDate(d.lastLogin) },
         { L("v_admin.accounts.last_serial"), d.lastSerial or "-" },
         { L("v_admin.accounts.last_ip"), d.lastIp or "-" },
         { L("v_admin.accounts.achievements"), d.achievements and (d.achievements.done .. " / " .. d.achievements.total) or "-" },
@@ -640,8 +648,8 @@ local function drawDetail(x, y, w, h)
     end
     local sub = (d.display or "-") .. "  ·  #" .. d.id .. "  ·  " .. L("v_admin.accounts.registered_at", { date = AP.fmtDate(d.created, false) })
     AP.text(sub, x + av + S(14), y + S(34), w - av - S(14), S(26), C.dim, 0.8)
-    if d.online then
-        AP.text(L("v_admin.accounts.online_id", { id = d.online }), x, y + S(34), w, S(26), C.good, 0.8, "default-bold", "right")
+    if d.onServer then
+        AP.text(onServerText(d.onServer, true), x, y + S(34), w, S(26), C.good, 0.8, "default-bold", "right")
     end
     local cy = y + av + S(14)
 

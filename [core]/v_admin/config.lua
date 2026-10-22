@@ -116,6 +116,13 @@ ADMIN.log = {
     pageSize = 60,
 }
 
+-- Players online on every server instance (MySQL `online_players`, server/instance.lua).
+ADMIN.instances = {
+    table      = "online_players",
+    heartbeat  = 30,    -- s: this instance refreshes its rows + re-reads the others this often
+    staleAfter = 120,   -- s: rows of an instance not refreshed for this long are ignored (crashed server)
+}
+
 -- Command reference shown on the panel's "Commands" tab.
 -- perm = key in ADMIN.perms (the level shown is read from there); false = everyone.
 ADMIN.commands = {

@@ -580,6 +580,15 @@ local function drawTopBar(x, sw)
     local px = sw - S(30) - closeW - pw
     dxDrawRectangle(px, (h - S(36)) / 2, pw, S(36), C.row)
     AP.text(pill, px, 0, pw, h, C.dim, 0.8, "default-bold", "center")
+    -- the server instance this panel runs on (v_main)
+    local inst = AP.instance
+    if inst and inst.name then
+        local it = L("v_admin.page.instance_pill", { id = inst.id, name = inst.name })
+        local iw = L.width(it, F(0.8), "default-bold") + S(24)
+        px = px - S(10) - iw
+        dxDrawRectangle(px, (h - S(36)) / 2, iw, S(36), C.row)
+        AP.text(it, px, 0, iw, h, C.gold, 0.8, "default-bold", "center")
+    end
     return h
 end
 
@@ -660,10 +669,11 @@ local function openPanel(page, arg)
 end
 
 addEvent(E.panelData, true)
-addEventHandler(E.panelData, resourceRoot, function(players, myLevel, isRefresh, page, arg)
+addEventHandler(E.panelData, resourceRoot, function(players, myLevel, isRefresh, page, arg, instance)
     if not players then return AP.close() end
     AP.players = players
     AP.myLevel = myLevel
+    AP.instance = instance or AP.instance
     if AP.open then
         if page then AP.setPage(page, arg) end
         return

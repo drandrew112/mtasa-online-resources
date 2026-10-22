@@ -159,6 +159,7 @@ local function staticInfo()
     end
     local ok, languages = pcall(function() return exports.v_locals:getLanguages() end)
     return { perms = ADMIN.perms, ranks = ranks, commands = commands, maxLevel = ADMIN.maxLevel,
+             instance = { id = INSTANCE.id(), name = INSTANCE.name() },
              languages = ok and type(languages) == "table" and languages or {} }
 end
 

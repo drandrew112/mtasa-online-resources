@@ -535,5 +535,9 @@
   "v_admin.vehicle.you_repaired_s_vehicle": "#FFFFFFYou repaired #FFFF00{player}#FFFFFF's vehicle.",
   "v_admin.weekly.limit": "Limit",
   "v_admin.weekly.not_ready": "The weekly system is not ready (v_weekly).",
-  "v_admin.weekly.reward": "Reward"
+  "v_admin.weekly.reward": "Reward",
+  "v_admin.accounts.online_server": "online · #{server} · ID {id}",
+  "v_admin.accounts.online_server_long": "online · #{server} {name} · ID {id}",
+  "v_admin.page.instance_pill": "Server #{id} · {name}",
+  "v_admin.log.server": "Server"
 }
