@@ -126,4 +126,6 @@
     <object id="object (kmb_keypad) (1)" breakable="true" interior="0" alpha="255" dimension="0" model="2922" scale="1" doublesided="false" collisions="true" frozen="false" posX="1587.1" posY="-1694.2998" posZ="14" rotX="0" rotY="0" rotZ="270"></object>
     <object id="object (kmb_keypad) (2)" breakable="true" interior="0" alpha="255" dimension="0" model="2922" scale="1" doublesided="false" collisions="true" frozen="false" posX="1591.6" posY="-1694.2998" posZ="14" rotX="0" rotY="0" rotZ="270"></object>
     <object id="object (kmb_keypad) (3)" breakable="true" interior="0" alpha="255" dimension="0" model="2922" scale="1" doublesided="false" collisions="true" frozen="false" posX="1596.1" posY="-1694.2998" posZ="14" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (lift_dr) (1)" breakable="true" interior="0" alpha="255" dimension="0" model="3051" scale="1" doublesided="true" collisions="true" frozen="true" posX="1582" posY="-1674.593" posZ="16.562" rotX="0" rotY="0" rotZ="46.2"></object>
+    <object id="object (lift_dr) (2)" breakable="true" interior="0" alpha="255" dimension="0" model="3051" scale="1" doublesided="true" collisions="true" frozen="true" posX="1582" posY="-1675.803" posZ="16.562" rotX="0" rotY="0" rotZ="46.2"></object>
 </map>
