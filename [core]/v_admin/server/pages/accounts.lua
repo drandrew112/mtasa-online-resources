@@ -345,11 +345,17 @@ function TABS.stats(actor, name, reply)
     reply({ list = out })
 end
 
+-- display name from veh_manager (models.json), GTA name as fallback
+local function vehName(model)
+    local n = resourceRunning("veh_manager") and exports.veh_manager:getModelName(model)
+    return n or getVehicleNameFromModel(tonumber(model) or 0) or tostring(model)
+end
+
 function TABS.vehicles(actor, name, reply)
     if not resourceRunning("v_ownveh") then return reply({ list = {} }) end
     local out = {}
     for _, v in ipairs(exports.v_ownveh:getOwnedVehicles(name) or {}) do
-        out[#out + 1] = { id = v.id, model = v.model, name = getVehicleNameFromModel(v.model) or tostring(v.model),
+        out[#out + 1] = { id = v.id, model = v.model, name = vehName(v.model),
                           plate = v.plate or false, destroyed = v.isDestroyed, spawned = v.spawned }
     end
     reply({ list = out })
@@ -613,7 +619,7 @@ function EDIT.vehgive(actor, name, a)
     if not model then return fail("v_admin.page.bad_model") end
     local id, err = exports.v_ownveh:giveVehicle(name, model)
     if not id then return false, L.msg("v_admin.page.failed_reason", { reason = tostring(err) }) end
-    adminLog(actor, ("gave %s a %s"):format(name, getVehicleNameFromModel(model)), name)
+    adminLog(actor, ("gave %s a %s"):format(name, vehName(model)), name)
     return ok("v_admin.page.saved")
 end
 
@@ -627,7 +633,7 @@ function EDIT.vehdelete(actor, name, a)
     if not d then return fail("v_admin.page.no_such_vehicle") end
     local done, err = exports.v_ownveh:deleteVehicle(d.id)
     if not done then return false, L.msg("v_admin.page.failed_reason", { reason = tostring(err) }) end
-    adminLog(actor, ("deleted vehicle #%d (%s) of %s"):format(d.id, getVehicleNameFromModel(d.model) or d.model, name), name)
+    adminLog(actor, ("deleted vehicle #%d (%s) of %s"):format(d.id, vehName(d.model), name), name)
     return ok("v_admin.page.saved")
 end
 
