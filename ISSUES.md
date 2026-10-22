@@ -45,6 +45,11 @@ were written recently (medsys, med_*, wp_manager, v_inventory, bt_*, work_*) val
 remote events well wherever they were spot-checked. Most problems are in shared infrastructure
 (v_mysql, v_accounts, web_api, claude-mcp) and in older or legacy resources.
 
+**Resource moves since the audit (2026-10-21).** `v_accounts` was split into `[accounts]/acc_auth`,
+`acc_bans`, `acc_ui`, `acc_menu`, `acc_loading`, `acc_savesys`. `v_stats` and `v_playedtime` moved to
+`[stats]/`. Paths and line numbers in older entries (written against `v_accounts`) are historical;
+the 2026-10-22 re-check notes give the current locations.
+
 **Suggested fix order:** SEC-01 → SEC-02 → SEC-03 → SEC-04 → the other HIGH items → PERF-01/02 → the rest.
 
 ---
@@ -77,7 +82,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [BUG-02](#bug-02) | MEDIUM | v_mysql: writes silently lost during a DB outage; fragile `LAST_INSERT_ID`; `accounts.id` gaps | FIXED 2026-10-18 |
 | [BUG-03](#bug-03) | MEDIUM | v_arenawar disables interior sounds for everyone, every frame | OPEN (per-frame call removed) |
 | [BUG-04](#bug-04) | MEDIUM | v_arenawar `random()` reseeds every call and returns the wrong range | FIXED 2026-10-18 |
-| [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED |
+| [BUG-05](#bug-05) | MEDIUM | Bans are stored per server in `bans.xml` | FIXED 2026-10-17 |
 | [BUG-06](#bug-06) | LOW | v_playedtime keeps a timer in synced element data | FIXED 2026-10-18 |
 | [BUG-07](#bug-07) | LOW | v_chat bypasses `onPlayerChat`; webhook ignores Discord rate limits | FIXED 2026-10-18 |
 | [BUG-08](#bug-08) | LOW | world_cablecars draws its cables always, map line uses hard-coded pixels | FIXED 2026-10-18 |
@@ -85,7 +90,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-01](#perf-01) | HIGH | Blocking `dbPoll(-1)` queries to a **remote** MySQL host on the main thread | IN PROGRESS |
 | [PERF-02](#perf-02) | HIGH | `setAccData` writes straight to MySQL on every call (no write-behind) | OPEN (per-key patch since BUG-01) |
 | [PERF-03](#perf-03) | HIGH | ~400 MB mandatory client download (v_modloader alone 313 MB) | OPEN |
-| [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | OPEN |
+| [PERF-04](#perf-04) | MEDIUM | 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as client script (one with `cache="false"`) | FIXED 2026-10-19 |
 | [PERF-05](#perf-05) | MEDIUM | ~100 always-attached `onClientRender`/`PreRender` handlers | IN PROGRESS |
 | [PERF-06](#perf-06) | MEDIUM | Nametags do all-player loops, LOS rays and `setPlayerNametagShowing` every frame | FIXED 2026-10-17 |
 | [PERF-07](#perf-07) | MEDIUM | Synced element data used for local UI state (`hideHUD`, `showChat`, …) | OPEN |
@@ -94,7 +99,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | [PERF-10](#perf-10) | LOW | accData `isOnline()` scans all players on every load | OPEN |
 | [PERF-11](#perf-11) | LOW | v_socialpanel loads every message ever sent into memory | OPEN |
 | [PERF-12](#perf-12) | LOW | v_radar walks all blips every frame | OPEN |
-| [SCALE-01](#scale-01) | HIGH | Data storage in local files (two-server setup) | OPEN (bans, med_erm, bt_dispatch on MySQL; 4 global items left) |
+| [SCALE-01](#scale-01) | HIGH | Data storage in local files (two-server setup) | OPEN (bans, med_erm, bt_dispatch, v_jobmanager on MySQL; 3 global items left) |
 | [SCALE-02](#scale-02) | MEDIUM | v_main autostarts everything (devtools, freeroam, editors) | OPEN (claude-mcp, v_modmenu no longer deployed) |
 | [SCALE-03](#scale-03) | MEDIUM | Global caps sized for few players (AI traffic, maxplayers 32) | OPEN |
 | [SCALE-04](#scale-04) | MEDIUM | Client memory pressure from oversized TXD/DFF mods | OPEN |
@@ -182,6 +187,13 @@ remote events well wherever they were spot-checked. Most problems are in shared 
      per-key client change policy). Check the wiki for your server build before relying on it.
 - **Verify:** On a test client, `setElementData(localPlayer, "accName", "<other>")` must be
   reverted immediately, and `getAdminLevel` must keep returning the real level.
+- **Re-check 2026-10-22:** still OPEN, the model is unchanged. Current locations after the `acc_*` split:
+  `[accounts]/acc_auth/server/identity.lua:58` (`setElementData(player, "accName", username)`, still synced),
+  `[core]/v_mysql/scripts/accdata.lua:116,129,165,309` (`resolveName`, `isOnline` read `accName` element data),
+  `acc_bans/server/bans.lua:37`, `acc_loading/server/flow.lua:29`, `acc_savesys/server/main.lua:29`.
+  There is no server-side `player → account` table and no `getPlayerAccount` export; `elementdata_whitelisted` is still `0`.
+  `adminjail`, `level` and `xp` are still read from element data (`v_admin/server/jail.lua`, `v_levelsys/server.lua:106-108`).
+  14 direct `getElementData(…, "admin_level")` reads remain (MAINT-01).
 
 <a id="sec-03"></a>
 ### SEC-03 — Discord webhook URL committed to the public repo, and an open relay event
@@ -261,6 +273,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - `[minigames]/v_arenawar/s_playermanager.lua:53` (`enterArena(player)`), `:91` (`exitArena(player, code)`), `:225` (`continueGame(player)`)
   - `[ui]/ui_pause/s_pausemenu.lua:3` (`pausemenu_joinArenawar` uses `source`)
   - `[player]/v_spawnmanager/server.lua:81` (`respawnAfterWasted` uses `source`, no "is dead" check)
+- **Re-check 2026-10-22:** still OPEN. `enterArena(player)`, `exitArena(player, code)` and `continueGame(player)` still take the
+  player from the event argument (`s_playermanager.lua:53,91,236`); `pausemenu_joinArenawar` still passes `source`;
+  `respawnAfterWasted` (`v_spawnmanager/server.lua:115`) still uses `source` with no dead check.
 - **Problem:** The target player comes from the event argument or `source`, and either can be any element.
 - **Impact:** Force any player into or out of the arena, respawn anyone at any time (instant heal,
   teleport out of jail/arena/interiors), grief players.
@@ -396,6 +411,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Status:** OPEN
 - **Location:** `[player]/v_spawnmanager/server.lua:94` (`spawnfix` → `spawnPlayer` at 0,0,0), `:98` (`fixme` → dimension/interior 0), `:3` (`showrespawnpoints`); `client.lua:83` (`pos`); `[minigames]/v_arenawar/s_playermanager.lua:88-89` (`fadetrue`/`fadefalse`)
 - **Problem:** No permission checks. (`/pos` was fixed in SEC-07, the rest is still open.)
+- **Re-check 2026-10-22:** still OPEN, unchanged: `spawnfix` (`v_spawnmanager/server.lua:129`), `fixme` (`:133`),
+  `showrespawnpoints` (`:3`), `fadetrue`/`fadefalse` (`v_arenawar/s_playermanager.lua:88-89`).
 - **Impact:** Instant full-health respawn and escape from arena/interiors/jobs. Together with
   SEC-02 also a jail escape. Free healing in fights.
 - **Suggested fix:** Remove these, or gate them behind the admin level check. If players need a
@@ -407,6 +424,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** MEDIUM
 - **Status:** OPEN
 - **Location:** `[world]/v_shop_robbery/s.lua:25` (`startRobbing`), `:44` (80 ms infinite timer), `:51`
+- **Re-check 2026-10-22:** still OPEN, `s.lua` unchanged (80 ms timer at `:44`, `isRobbing` still client-writable element data).
 - **Update (2026-10-18):** `startRobbing` already uses `client` (not the event argument), and the
   client-side per-frame LOS check is gone (PERF-05). Still open: everything below.
 - **Problem:** `startRobbing` does not check the distance to the NPC, whether the player is
@@ -423,6 +441,8 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** MEDIUM
 - **Status:** OPEN
 - **Location:** `[ui]/ui_inac/client/main.lua:104-194` (`sirenType`, bypasses the validated `siren:setData` in v_els), `[vehicles]/v_customs/client/preview.lua:99` (`tuning.lsdDoor`), `[ui]/v_radar/radar/sourceC.lua:1142` (`gpsDestination`), `[vehicles]/v_radio/s_radio.lua:1` (`radio:setStation`: the element is now checked to be a vehicle, but still **any** vehicle, any value, no `client` check)
+- **Re-check 2026-10-22:** still OPEN. `ui_inac/client/main.lua:142-178` still sets `sirenType` directly, `radio:setStation`
+  (`v_radio/s_radio.lua:2-6`) still accepts any vehicle and any value, `gpsDestination` is still set by the client.
 - **Impact:** Players change other players' vehicle state (siren, radio stream, preview tuning
   that sticks). Values are not validated (e.g. an arbitrary radio "station" value).
 - **Suggested fix:** Route every change through a validated server event (driver = `client`,
@@ -434,6 +454,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** MEDIUM
 - **Status:** OPEN
 - **Location:** `[core]/v_admin/server/web.lua:63`, `[medical]/med_erm/server/webadmin.lua:48`, `[medical]/med_erm/server/webtablet.lua:54`, `[bloodtransport]/bt_web/server/http.lua:86`
+- **Re-check 2026-10-22:** still OPEN in all four files (`math.random(1, 2 ^ 30)` twice).
 - **Problem:** `sha256(tick .. time .. account .. math.random() .. math.random())`. The inputs
   are mostly predictable and `math.random` is not a CSPRNG.
 - **Impact:** An attacker who knows roughly when an admin logged in has a much smaller search
@@ -446,7 +467,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="sec-16"></a>
 ### SEC-16 — Over-privileged ACL
 - **Severity:** MEDIUM
-- **Status:** OPEN (re-checked 2026-10-18: `claude-mcp`, `ui_pause`, `v_chat`, `web_api` are still in the Admin group, `claude-mcp` also in runcode)
+- **Status:** OPEN (re-checked 2026-10-22: `claude-mcp`, `ui_pause`, `v_chat`, `web_api` are still in the Admin group, `claude-mcp` also in runcode)
 - **Location:** `mods/deathmatch/acl.xml` (not in this repo): group `Admin` contains `resource.claude-mcp`, `resource.v_chat`, `resource.ui_pause`, `resource.web_api`…; group `runcode` contains `resource.claude-mcp`
 - **Problem:** Resources get full Admin rights when they only need one or two (v_chat only needs
   `function.fetchRemote`, ui_pause needs `kickPlayer`). Any bug in them becomes an admin-level bug.
@@ -457,7 +478,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-17 — Synchronous bcrypt in `httpLogin`, throttled only per username
 - **Severity:** MEDIUM
 - **Status:** OPEN
-- **Location:** `[accounts]/v_accounts/server.lua:254-277` (`passwordVerify` without a callback, line 269)
+- **Location:** `[accounts]/acc_auth/server/identity.lua:104-125` (`httpLogin`; `passwordVerify` without a callback at `:119`, plus the sync `accountNameExists` / `fetchAccountAuth`). Was `v_accounts/server.lua:254-277` before the 2026-10-21 split. Re-checked 2026-10-22: still OPEN, the fail counter is still per username only.
 - **Problem:** Each web login attempt blocks the main thread for a bcrypt verify (~50–150 ms)
   plus 2 sync queries. The fail counter is per **username**, so rotating usernames avoids it.
   v_admin/med_web/bt_web also count per caller id, but every attempt is still paid in full.
@@ -469,7 +490,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-18 — Nametags show account login names to everyone
 - **Severity:** LOW
 - **Status:** OPEN
-- **Location:** `[player_interaction]/v_nametags/sourceC.lua:84`
+- **Location:** `[player_interaction]/v_nametags/sourceC.lua:70` (`buildEntry`: `name = getElementData(p, "accName")`; re-checked 2026-10-22, unchanged)
 - **Problem:** The login name is public, which makes credential stuffing against the web panels
   (v_admin, ERM admin, BT admin) easier.
 - **Suggested fix:** Show `display_name` (already in the `accounts` table), and keep login names private.
@@ -487,7 +508,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### SEC-20 — Self-updater pulls code from GitHub `main` without pinning
 - **Severity:** LOW
 - **Status:** OPEN
-- **Location:** `[core]/v_main/lib/repoSync.lua`, `updateResources.lua`
+- **Location:** `[core]/v_main/lib/repoSync.lua` (`RepoSync.BRANCH = "main"`, re-checked 2026-10-22), `updateResources.lua`
 - **Problem:** `updateresources` downloads whatever is on `main` and writes it into the resources.
   A compromised GitHub account or a bad push goes straight to the server. (It is gated by admin
   level 5 or the console, which is good.)
@@ -561,6 +582,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Status:** OPEN — partly done 2026-10-17 (PERF-05): the per-frame call is gone, it now runs once
   at client start and on every spawn. Still open: it is still off for everyone, not only inside
   the arena.
+- **Re-check 2026-10-22:** unchanged. `shared.lua:13-15` calls `setInteriorSoundsEnabled(false)` at client start and on every spawn, for everyone.
 - **Location:** `[minigames]/v_arenawar/shared.lua:22-29`
 - **Problem:** `setInteriorSoundsEnabled(false)` runs in an always-on `onClientPreRender` for
   every player on the server, not only inside the arena.
@@ -584,7 +606,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="bug-05"></a>
 ### BUG-05 — Bans are stored per server in `bans.xml`
 - **Severity:** MEDIUM
-- **Status:** FIXED
+- **Status:** FIXED 2026-10-17
 - **Location:** `[accounts]/v_accounts/server.lua:11` (`BANS_FILE = "bans.xml"`), `:54`
 - **Problem:** The account system is shared through MySQL, but bans are a local XML file. A ban
   on server 1 does not apply on server 2.
@@ -647,6 +669,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### BUG-09 — rw_core railway log: hold line written every tick
 - **Severity:** MEDIUM
 - **Status:** OPEN (found 2026-10-18)
+- **Re-check 2026-10-22:** the code is unchanged (`log.lua` last touched 2026-10-12; `h.reason ~= reason` still compares the
+  raw value). The file size has been normal since (3.5–5.5 MB/day), but the spam still happens at a lower rate:
+  `now held by table: 0x…` lines per day: 10-18 16,397; 10-20 1,752; 10-21 121. It will return with heavy train traffic.
 - **Location:** `[railways]/rw_core/server/log.lua:233-241` (`if h.reason ~= reason`), `holdReason` at `:148`
 - **Problem:** `logs/rail_2026-10-17.log` is **1.02 GB** (a normal day is 1.5–4 MB; 12 Oct was 54 MB).
   In the first 60 MB, 565,000 of ~600,000 lines are `INFO hold [..] still standing, now held by
@@ -724,7 +749,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   (`JSON_MERGE_PATCH`), no longer the whole blob. `v_playedtime` writes both values in one call
   (BUG-06) and `save_all` in `savesys.lua` uses one table write. Still open: no write-behind
   cache (every `setAccData` is a DB write), and `saveLvl` in `v_levelsys/server.lua:82` still
-  does 3 separate writes.
+  does 3 separate writes (re-checked 2026-10-22: it still does, `v_levelsys/server.lua:82-97`).
 - **Location:** `[core]/v_mysql/scripts/accdata.lua:138` (`persist`), `:186` (`setAccData`). Heavy callers: `v_levelsys/server.lua:82` (`saveLvl`, 3 writes), `v_playedtime` (2 writes/min/player), `v_accounts/savesys.lua` (periodic `save_all`), v_achievements, v_stats, v_socialpanel
 - **Problem:** Each `setAccData(player, key, value)` re-encodes the full blob (inventory-sized
   JSON) and sends a full `INSERT … ON DUPLICATE KEY UPDATE` row. Callers write key by key.
@@ -741,6 +766,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Status:** OPEN — re-measured 2026-10-18: `v_modloader` is now 129 MB (the 63 MB `police_vg.txd`
   and 56 MB `ballas3.txd` are gone), `v_radar` 27 MB (`radar.png` 10.8 MB + `radar_3072.png`
   6.3 MB). None of the 28 `<file>` entries in v_modloader has `download="false"`.
+  **Re-measured 2026-10-22 — it got bigger again:** `v_modloader` is **296 MB** (`vehicles/` 290 MB; 78 `<file>`
+  entries, none with `download="false"`) after the new modloader and the model-list updates. `v_radar` is 23 MB:
+  `radar.png` (10.8 MB) **and** `radar.jpg` (3.7 MB) are both still in `meta.xml`, `radar_3072.png` is on disk.
+  `acc_ui` is 25 MB (the 5.5 MB menu music was removed 2026-10-21).
 - **Location:** `[core]/v_modloader` (was 313 MB in the audit: `vehicles/police_vg.txd` 63 MB, `skins/ballas3.txd` 56 MB, `streak.txd` 16 MB, `ambulan.txd` 15 MB, `streak.dff` 14 MB, `cheetah.dff` 13.6 MB, …), `[ui]/v_radar` 21.6 MB (`radar.png` 10.7 MB **and** `radar.jpg` 3.7 MB), `[accounts]/v_accounts` 10.8 MB (`audio/main_menu.mp3` 5.5 MB), `[vehicles]/v_els` 7.7 MB (WAV sirens), `[maps]/map_ls_busstation` 5.7 MB
 - **Problem:** Every file in `<file>` without `download="false"` must be downloaded before the
   player can play. The TXDs are very likely uncompressed or 4K. A GTA vehicle needs around
@@ -758,7 +787,11 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="perf-04"></a>
 ### PERF-04 — 4.7 MB `vehiclenodes.lua` duplicated 4×, shipped as a client script
 - **Severity:** MEDIUM
-- **Status:** OPEN (re-checked 2026-10-18: still 4 identical copies of 4,747,048 bytes; 2026-10-19: the ai_land_traffic copy is deleted, 3 left)
+- **Status:** FIXED 2026-10-19
+- **Resolution (re-checked 2026-10-22):** the `v_radar` copy is gone (the GPS runs on the navmesh now) and the
+  `ai_land_traffic` copy was deleted, so no resource that players download carries `vehiclenodes.lua` any more.
+  Two copies remain, both in git-ignored dev resources: `[devtools]/claude-mcp/assets/vehiclenodes.lua`
+  and `[tiktok]/ai_autoplayer/shared/vehicle_nodes.lua`. Neither is deployed.
 - **Location:** `[ui]/v_radar/radar/gps/vehiclenodes.lua` (client script), `[tiktok]/ai_autoplayer/shared/vehicle_nodes.lua` (client, `cache="false"` → downloaded again on **every** join), `[devtools]/claude-mcp/assets/vehiclenodes.lua`
 - **Problem:** A 307,772-line Lua table is downloaded, compiled and kept in memory per resource on
   each client (compiling a table that size costs a noticeable hitch at start).
@@ -863,7 +896,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### PERF-10 — accData `isOnline()` scans all players on every load
 - **Severity:** LOW
 - **Status:** OPEN
-- **Location:** `[core]/v_mysql/scripts/accdata.lua:109`
+- **Location:** `[core]/v_mysql/scripts/accdata.lua:127` (`isOnline`: still a scan of all players with an `accName` read each; re-checked 2026-10-22)
 - **Suggested fix:** Keep a `online[name] = player` map, updated on login and quit. This is also
   the natural home for SEC-02's server-side identity table.
 
@@ -871,7 +904,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 ### PERF-11 — v_socialpanel loads every message ever sent into memory
 - **Severity:** LOW
 - **Status:** OPEN
-- **Location:** `[player_interaction]/v_socialpanel/db.lua:115` (`SPDB.loadMessages`)
+- **Location:** `[player_interaction]/v_socialpanel/db.lua:119` (`SPDB.loadMessages`: `SELECT * FROM messages ORDER BY id ASC`; re-checked 2026-10-22)
 - **Problem:** Memory and start-up time grow without limit. `trimHistory` trims memory but not the DB.
 - **Suggested fix:** Load threads on demand (last N per thread with `LIMIT`) and add a DB retention job (e.g. 90 days).
 
@@ -900,17 +933,18 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   - ~~`v_accounts` `bans.xml`~~ → `bans` table (BUG-05, FIXED 2026-10-17)
   - ~~`med_erm/server/db.lua` (`data/erm.db` SQLite)~~ → `med_tasks` / `med_shifts` (FIXED 2026-10-17)
   - ~~`bt_dispatch/server/db.lua` (SQLite)~~ → `bt_tasks` / `bt_shifts` (FIXED 2026-10-17)
+  - ~~`v_jobmanager` `core/community.lua` + `core/official.lua` (`games/*.json`)~~ → `jobs_official` /
+    `jobs_community` / `jobs_draft` (`core/storage.lua`, FIXED 2026-10-22)
 - **Global — still local files, should move to MySQL:**
 
   | Resource | File(s) | What | Priority |
   |---|---|---|---|
-  | `v_jobmanager` | `core/community.lua` → `index.json`, `<id>.json`, `private/<id>.json` | Player-made community jobs (published + pending) | HIGH |
   | `bt_stock` | `server/main.lua` → `BTS.FILE` (JSON) | Blood stock (economy state) | HIGH |
   | `v_admin` | `server/report.lua` → `report_logs/index.json` + one JSON per closed report | Closed report logs (staff work on both servers) | MEDIUM |
   | `med_scenemanager` | `server/variety.lua` → `MSM.VARIETY.FILE` | Scene history, also per account (which scenes a player already got) | LOW |
 
 - **Content — edited in-game editors, written into the resource (keep as files, sync via git):**
-  `v_jobmanager/core/official.lua` (`games/`, drafts), `avi_nav/server/nav.lua`
+  `avi_nav/server/nav.lua`
   (`data/nav.json`), `rw_customtracks/server/network.lua` (`custom.json`), `v_els/server/layouts.lua`
   (`lights.json`, /elseditor), `med_scenemanager` scene JSONs (`server/util.lua` writer). An edit
   made on one server only reaches the other after a commit + pull; edit on one server only.
@@ -922,8 +956,10 @@ remote events well wherever they were spot-checked. Most problems are in shared 
   `v_radar/client.lua` + `radar/sourceC.lua`, `v_jobmanager/core/client/images.lua`,
   `dynamic_lighting` helper cache.
 - **Dead code:** `v_radar/savepositions.lua` (`saved_tags/positions.xml`) is not in `meta.xml`;
-  delete it.
-- **Suggested fix:** Move the four global items to MySQL tables through v_mysql (create the
+  delete it (still there on 2026-10-22).
+- **Re-check 2026-10-22:** all four global items are still local files (`v_jobmanager/core/community.lua`,
+  `bt_stock/server/main.lua`, `v_admin/server/report.lua`, `med_scenemanager/server/util.lua`). Bans are now `acc_bans` (MySQL).
+- **Suggested fix:** Move the remaining global items to MySQL tables through v_mysql (create the
   table on start + add it to `main.sql`, like `bans`). Write the per-item decision into each
   resource's DESIGN.md.
 
@@ -943,8 +979,9 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 <a id="scale-03"></a>
 ### SCALE-03 — Global caps sized for few players
 - **Severity:** MEDIUM
-- **Status:** OPEN
-- **Location:** `mtaserver.conf` `<maxplayers>32`; `[ai]/ai_land_traffic/shared/config.lua:11-12` (`MAX_AGENTS = 140` for the whole server, `MAX_PER_PLAYER = 20`)
+- **Status:** OPEN — partly: the caps were raised on 2026-10-21 ("3x more traffic"): `MAX_AGENTS = 700`, `MAX_PER_PLAYER = 60`
+  (`ai_land_traffic/shared/config.lua:15-16`). They are still fixed numbers, not sized from the player count, and `maxplayers` is still 32.
+- **Location:** `mtaserver.conf` `<maxplayers>32`; `[ai]/ai_land_traffic/shared/config.lua:15-16` (was `MAX_AGENTS = 140` / `MAX_PER_PLAYER = 20` at audit time)
 - **Problem:** With 7+ players spread across the map, the global agent cap is used up and areas
   stay empty. With more agents, the per-player 10 Hz state events grow as players × agents.
 - **Suggested fix:** Size the budget dynamically (`min(cap, players × perPlayer)` with a per-area
@@ -981,6 +1018,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** LOW
 - **Status:** OPEN
 - **Location:** e.g. `avi_core/server/admin.lua:4`, `med_erm/server/admin.lua:7`, `med_hospitals/server/exports.lua:112`, `rw_core/server/role.lua:53`, `v_els/server/editor.lua:5`, `v_ownveh/commands.lua:17`, `work_core/server/levels.lua:201`, `work_core/server/markers.lua:184`, `v_levelsys/server.lua:128`, `ai_land_traffic/server/main.lua:134`, `rw_customtracks/server/network.lua:15` (falls back to the ACL `command.kick`)
+- **Re-check 2026-10-22:** 28 files still define their own helper; 14 direct `getElementData(…, "admin_level")` reads (was 13).
 - **Problem:** Each copy falls back differently (element data, ACL, 0). Fixing SEC-02 needs every one of them changed.
 - **Suggested fix:** One export, `exports.v_admin:getAdminLevel(player)` (backed by the server
   cache from SEC-02), and replace all the copies.
@@ -990,6 +1028,7 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 - **Severity:** LOW
 - **Status:** OPEN
 - **Location:** `v_modmenu/*.old` (3 files), `[accounts]/v_accounts/client.lua.old`, `[vehicles]/v_customs/old/` (11 Lua files with their own `meta.xml`), `[player]/v_spawnmanager/positions.txt` (runtime output)
+- **Re-check 2026-10-22:** `v_accounts/client.lua.old` and `v_customs/old/` are gone. Left: `v_modmenu/*.old` (3 files, git-ignored) and `v_spawnmanager/positions.txt`.
 - **Correction (2026-10-17):** `*.old` and `v_customs/old/` are already git-ignored, so this is only local clutter, not repo content.
 - **Suggested fix:** Delete them, or move them to an `archive/` folder outside `resources/`.
   Git history keeps the old versions.
@@ -1036,3 +1075,4 @@ remote events well wherever they were spot-checked. Most problems are in shared 
 | 2026-10-18 | Second pass: PERF-03, PERF-04, PERF-07, SEC-16 re-measured; new BUG-09 and MAINT-05 (rail log 1 GB) |
 | 2026-10-18 | Review of all open items against the code: PERF-02, SEC-13, SEC-14, SCALE-02 annotated |
 | 2026-10-17 | SEC-01 WONTFIX (not on the public server). SEC-04 untracked + ignored. SEC-05, SEC-07, SEC-08, SEC-09 fixed |
+| 2026-10-22 | Re-check of every open item against the code after the `acc_*` split. PERF-04 FIXED; BUG-05 dated; PERF-03 grew to 296 MB; SCALE-03 caps raised; BUG-09 still happens at a lower rate; MAINT-02 partly cleaned; locations refreshed |
