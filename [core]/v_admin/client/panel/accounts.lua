@@ -472,17 +472,44 @@ local function drawButtons(x, y, w, list)
     return cy + bh - y
 end
 
+-- small button inside a tile (smaller text than AP.button)
+local function miniButton(x, y, w, h, label, fn)
+    local hot = AP.hovered(x, y, w, h)
+    dxDrawRectangle(x, y, w, h, hot and C.btnHot or C.btn)
+    AP.text(label, x, y, w, h, C.text, 0.75, "default-bold", "center")
+    AP.area(x, y, w, h, fn)
+end
+
+--- edit buttons on the right side of a tile: list = { { label, fn } }
+local function tileButtons(x, y, w, h, list)
+    if not AP.can("accountEdit") then return end
+    local bh, gap = S(28), S(6)
+    local bx = x + w - S(8)
+    for i = #list, 1, -1 do
+        local b = list[i]
+        local bw = L.width(b[1], F(0.75), "default-bold") + S(16)
+        bx = bx - bw
+        miniButton(bx, y + (h - bh) / 2, bw, bh, b[1], b[2])
+        bx = bx - gap
+    end
+end
+
 local function drawOverview(d, x, y, w, h)
     local cols, gap = 2, S(10)
     local tw, th = (w - gap) / 2, S(58)
     local played = d.playtimeText or (("%dh %02dm"):format(math.floor(d.playtime / 60), d.playtime % 60))
+    local editLabel = L("v_admin.accounts.edit")
     local tiles = {
         { L("v_admin.players.e_mail"), d.email or "-" },
         { L("v_admin.accounts.update_mails"), d.hasEmail and (d.updates and L("v_admin.accounts.subscribed") or L("v_admin.accounts.unsubscribed")) or "-",
           d.updates and C.good or C.dim },
-        { L("v_admin.accounts.cash"), "€" .. AP.fmtInt(d.money), C.good },
-        { L("v_admin.accounts.bank"), "€" .. AP.fmtInt(d.bank), C.good },
-        { L("v_admin.accounts.level_xp"), d.level .. "  ·  " .. AP.fmtInt(d.xp) },
+        { L("v_admin.accounts.cash"), "€" .. AP.fmtInt(d.money), C.good, buttons = {
+            { editLabel, function() openForm("money", L("v_admin.accounts.edit_cash"), true, d.money) end } } },
+        { L("v_admin.accounts.bank"), "€" .. AP.fmtInt(d.bank), C.good, buttons = {
+            { editLabel, function() openForm("bank", L("v_admin.accounts.edit_bank"), true, d.bank) end } } },
+        { L("v_admin.accounts.level_xp"), d.level .. "  ·  " .. AP.fmtInt(d.xp), buttons = {
+            { L("v_admin.accounts.c_level"), function() openForm("level", L("v_admin.accounts.edit_level"), true, d.level) end },
+            { L("v_admin.accounts.c_xp"), function() openForm("xp", L("v_admin.accounts.edit_xp"), true, d.xp) end } } },
         { L("common.played_time"), played },
         { L("v_admin.accounts.last_login"), d.onServer and onServerText(d.onServer, true) or AP.fmtDate(d.lastLogin) },
         { L("v_admin.accounts.last_serial"), d.lastSerial or "-" },
@@ -494,6 +521,7 @@ local function drawOverview(d, x, y, w, h)
         local cx = x + ((i - 1) % cols) * (tw + gap)
         local cy = y + math.floor((i - 1) / cols) * (th + gap)
         AP.kv(cx, cy, tw, th, t[1], t[2], t[3])
+        if t.buttons then tileButtons(cx, cy, tw, th, t.buttons) end
     end
     local ty = y + math.ceil(#tiles / cols) * (th + gap) + S(6)
     if d.banned then
@@ -730,35 +758,28 @@ local function drawDetail(x, y, w, h)
         if not st.tabData[id] then loadTab(id) end
     end)
 
-    -- actions at the bottom (overview)
+    -- actions at the bottom (overview: account, mails: e-mail)
     local actionsH = 0
     local buttons
     if st.tab == "overview" then
         buttons = {
-            { label = L("v_admin.players.go_to"), perm = "teleport", hide = not d.online,
-              fn = function() AP.sendAction("goto", d.online) end },
-            { label = L("v_admin.accounts.online_page"), hide = not d.online,
-              fn = function() AP.setPage("players") end },
             { label = L("v_admin.accounts.set_admin_level"), perm = "setLevel", fn = function(bx, by) levelDropdown(d, bx, by) end },
-            { label = L("v_admin.accounts.edit_cash"), perm = "accountEdit",
-              fn = function() openForm("money", L("v_admin.accounts.edit_cash"), true, d.money) end },
-            { label = L("v_admin.accounts.edit_bank"), perm = "accountEdit",
-              fn = function() openForm("bank", L("v_admin.accounts.edit_bank"), true, d.bank) end },
-            { label = L("v_admin.accounts.edit_level"), perm = "accountEdit",
-              fn = function() openForm("level", L("v_admin.accounts.edit_level"), true, d.level) end },
-            { label = L("v_admin.accounts.edit_xp"), perm = "accountEdit",
-              fn = function() openForm("xp", L("v_admin.accounts.edit_xp"), true, d.xp) end },
+            { label = L("v_admin.players.unmute"), perm = "mute", hide = not d.muted, fn = function() edit("unmute") end },
+            { label = L("v_admin.players.unban_account"), perm = "ban", hide = not d.banned, fn = function() edit("unban") end },
+            { label = L("v_admin.players.ban_account"), perm = "ban", style = "danger", hide = d.banned and true or false,
+              fn = function() openForm("ban", L("v_admin.accounts.ban_reason"), false) end },
+        }
+    elseif st.tab == "mails" then
+        buttons = {
             { label = L("v_admin.accounts.set_email"), perm = "email",
               fn = function() openForm("email", L("v_admin.accounts.set_email_hint"), false, "") end },
             { label = L("v_admin.accounts.pwreset"), perm = "passwordReset", hide = not d.hasEmail,
               fn = function() edit("pwreset") end },
             { label = L("v_admin.accounts.send_mail"), perm = "mail", hide = not d.hasEmail,
               fn = function() AP.setPage("mail", { recipients = { d.name } }) end },
-            { label = L("v_admin.players.unmute"), perm = "mute", hide = not d.muted, fn = function() edit("unmute") end },
-            { label = L("v_admin.players.unban_account"), perm = "ban", hide = not d.banned, fn = function() edit("unban") end },
-            { label = L("v_admin.players.ban_account"), perm = "ban", style = "danger", hide = d.banned and true or false,
-              fn = function() openForm("ban", L("v_admin.accounts.ban_reason"), false) end },
         }
+    end
+    if buttons then
         -- measure: draw off the bottom first (rows wrap), then place
         local bw = 0
         local rows = 1

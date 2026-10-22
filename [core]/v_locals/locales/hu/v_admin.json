@@ -54,6 +54,7 @@
   "v_admin.accounts.delete_note": "Megjegyzés törlése",
   "v_admin.accounts.delete_vehicle": "Jármű törlése",
   "v_admin.accounts.destroyed": "megsemmisült",
+  "v_admin.accounts.edit": "Módosít",
   "v_admin.accounts.edit_bank": "Bankszámla módosítása",
   "v_admin.accounts.edit_cash": "Készpénz módosítása",
   "v_admin.accounts.edit_level": "Szint módosítása",

@@ -882,13 +882,17 @@
         if (d === null) { el.innerHTML = '<div class="empty-center">Loading...</div>'; return; }
         if (d === false) { el.innerHTML = '<div class="empty-center bad">No such account</div>'; return; }
         const kv = (l, v, cls) => `<div class="kvt"><span>${esc(l)}</span><b class="${cls || ''}">${val(v)}</b></div>`;
+        // a tile with small edit buttons on its right side: btns = [[act, label]]
+        const kvb = (l, v, cls, btns) => !can('accountEdit') ? kv(l, v, cls) : `<div class="kvt kvt-btns"><div><span>${esc(l)}</span><b class="${cls || ''}">${val(v)}</b></div>
+            <div class="kvt-acts">${btns.map(b => `<button class="osa-btn small" data-act="${b[0]}">${b[1]}</button>`).join('')}</div></div>`;
         let body = '';
         const t = A.tabData[A.tab];
         const loading = '<div class="osa-empty">Loading...</div>';
         if (A.tab === 'overview') {
             body = `<div class="tilesgrid">
                 ${kv('E-mail', d.email)}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
-                ${kv('Cash', money(d.money), 'good')}${kv('Bank', money(d.bank), 'good')}${kv('Level · XP', `${d.level} · ${fmtInt(d.xp)}`)}
+                ${kvb('Cash', money(d.money), 'good', [['money', 'Edit']])}${kvb('Bank', money(d.bank), 'good', [['bank', 'Edit']])}
+                ${kvb('Level · XP', `${d.level} · ${fmtInt(d.xp)}`, '', [['level', 'Level'], ['xp', 'XP']])}
                 ${kv('Playtime', d.playtimeText || `${Math.floor(d.playtime / 60)}h ${String(d.playtime % 60).padStart(2, '0')}m`)}
                 ${kv('Last login', d.onServer ? onServerText(d.onServer, true) : fmtDate(d.lastLogin))}
                 ${kv('Last serial', d.lastSerial)}${kv('Last IP', d.lastIp)}
@@ -901,16 +905,15 @@
         } else {
             body = t ? '<div id="accTab"></div>' : loading;
         }
-        const actions = A.tab !== 'overview' ? '' : `<div class="acc-actions">
-            ${d.online && can('teleport') && S.inGame ? `<button class="osa-btn" data-act="goto">Go to</button>` : ''}
+        const actions = A.tab === 'overview' ? `<div class="acc-actions">
             ${can('setLevel') ? '<button class="osa-btn" data-act="setlevel">Set admin level</button>' : ''}
-            ${can('accountEdit') ? '<button class="osa-btn" data-act="money">Edit cash</button><button class="osa-btn" data-act="bank">Edit bank</button><button class="osa-btn" data-act="level">Edit level</button><button class="osa-btn" data-act="xp">Edit XP</button>' : ''}
+            ${can('mute') && d.muted ? '<button class="osa-btn" data-act="unmute">Unmute</button>' : ''}
+            ${can('ban') ? (d.banned ? '<button class="osa-btn" data-act="unban">Unban</button>' : '<button class="osa-btn danger" data-act="ban">Ban account</button>') : ''}
+        </div>` : A.tab === 'mails' ? `<div class="acc-actions">
             ${can('email') ? '<button class="osa-btn" data-act="email">Set e-mail</button>' : ''}
             ${can('passwordReset') && d.hasEmail ? '<button class="osa-btn" data-act="pwreset">Send password reset</button>' : ''}
             ${can('mail') && d.hasEmail ? '<button class="osa-btn" data-act="mail">Send mail</button>' : ''}
-            ${can('mute') && d.muted ? '<button class="osa-btn" data-act="unmute">Unmute</button>' : ''}
-            ${can('ban') ? (d.banned ? '<button class="osa-btn" data-act="unban">Unban</button>' : '<button class="osa-btn danger" data-act="ban">Ban account</button>') : ''}
-        </div>`;
+        </div>` : '';
         el.innerHTML = `<div class="acc-head"><div class="acc-av">${esc(d.name.charAt(0).toUpperCase())}</div><div>
                 <h2>${esc(d.name)} ${d.adminLevel > 0 ? `<small class="gold">${esc(rankName(d.adminLevel))}</small>` : ''}</h2>
                 <div class="sub">${val(d.display)} · #${d.id} · registered ${fmtDate(d.created)}${d.onServer ? ` · <span class="good">${esc(onServerText(d.onServer, true))}</span>` : ''}</div></div></div>
@@ -976,7 +979,6 @@
         if (!b) return;
         const d = A.detail, act = b.dataset.act, sel = A.tabSel[A.tab];
         const reload = tab => setTimeout(() => accLoadTab(tab), 400);
-        if (act === 'goto') return act && actGoto(d.online);
         if (act === 'setlevel') {
             const max = S.info.maxLevel, maxGrant = S.level >= max ? max : S.level - 1;
             const r = b.getBoundingClientRect();

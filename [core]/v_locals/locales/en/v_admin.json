@@ -54,6 +54,7 @@
   "v_admin.accounts.delete_note": "Delete note",
   "v_admin.accounts.delete_vehicle": "Delete vehicle",
   "v_admin.accounts.destroyed": "destroyed",
+  "v_admin.accounts.edit": "Edit",
   "v_admin.accounts.edit_bank": "Edit bank",
   "v_admin.accounts.edit_cash": "Edit cash",
   "v_admin.accounts.edit_level": "Edit level",
