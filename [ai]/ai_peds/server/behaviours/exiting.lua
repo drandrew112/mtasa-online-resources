@@ -24,6 +24,7 @@ Behaviours.exiting = {
         local b = p.b
         local veh = getPedOccupiedVehicle(p.el)
         if not veh then
+            p.outAt = now
             Peds.setBehaviour(p, b.final, b.finalArgs)
             return
         end
@@ -57,8 +58,11 @@ Behaviours.seated = {
         p.b.final, p.b.finalArgs = args.final or "scared", args.finalArgs or {}
         Peds.idle(p)
     end,
-    update = function(p)
-        if not getPedOccupiedVehicle(p.el) then Peds.setBehaviour(p, p.b.final, p.b.finalArgs) end
+    update = function(p, now)
+        if not getPedOccupiedVehicle(p.el) then
+            p.outAt = now
+            Peds.setBehaviour(p, p.b.final, p.b.finalArgs)
+        end
     end,
 }
 

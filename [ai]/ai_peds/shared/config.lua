@@ -104,6 +104,7 @@ AIPEDS = {
     DRIVER_JACK_WAIT = 6000,    -- jacked: GTA pulls the ped out; still inside after this long -> it gets out itself
     DRIVER_EXIT_RETRY = 4000,   -- exit order repeated after this long
     DRIVER_EXIT_GIVEUP = 25000, -- still inside: left alone in the vehicle (never teleported out)
+    DRIVER_CULL_GRACE = 20000,  -- a driver that just got out is never culled for this long
 
     -- bodies
     BODY_LIFE = 30000,          -- dead traffic / driver peds are removed after this (when nobody is near)

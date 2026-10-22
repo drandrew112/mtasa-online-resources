@@ -114,10 +114,13 @@ function PedTraffic.spawn(players, now)
     end
 end
 
--- walkers and adopted drivers: removed far from every player, or unseen for CULL_AFTER (not while fighting)
+-- walkers and adopted drivers: removed far from every player, or unseen for CULL_AFTER (not while fighting).
+-- A driver that just got out stays for DRIVER_CULL_GRACE (its server position may still lag behind the syncer's).
 function PedTraffic.cull(players, now)
     for _, p in pairs(Peds.list) do
-        if p.kind ~= "scripted" and p.behaviour ~= "exiting" then
+        if p.outAt and now - p.outAt < T.DRIVER_CULL_GRACE then
+            p.seenAt = now
+        elseif p.kind ~= "scripted" and p.behaviour ~= "exiting" then
             local near, seen = math.huge, false
             local dim = getElementDimension(p.el)
             for _, pl in ipairs(players) do

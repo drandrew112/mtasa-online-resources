@@ -24,7 +24,10 @@ local function tick()
         if not isElement(el) then
             Peds.remove(p, "destroyed")
         else
-            p.x, p.y, p.z = getElementPosition(el)
+            -- a ped sitting in a vehicle is not synced (its own server position is stale, e.g. the spawn point of a
+            -- traffic driver): the vehicle's position stands for it
+            local veh = getPedOccupiedVehicle(el)
+            p.x, p.y, p.z = getElementPosition(veh or el)
             -- peds without a syncer stand still: nothing to decide (dead bodies still get cleaned up)
             if p.syncer or p.dead or p.behaviour == "exiting" then
                 local b = Behaviours[p.behaviour]

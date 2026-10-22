@@ -57,6 +57,7 @@ function Drivers.adopt(ped, veh, opts)
     if isElement(veh) and getPedOccupiedVehicle(ped) == veh then
         Peds.setBehaviour(p, "exiting", { vehicle = veh, jacked = jacked, final = final, finalArgs = finalArgs })
     else
+        p.outAt = getTickCount()
         Peds.setBehaviour(p, final, finalArgs)
     end
     return true
