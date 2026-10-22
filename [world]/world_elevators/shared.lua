@@ -25,9 +25,9 @@ elevators = {
             },
             {
                 name = L.text("world_elevators.shared.garage"),
-                x = 1582.53467,
-                y = -1677.79980,
-                z = 5.89437,
+                x = 1568.69092,
+                y = -1691.07312,
+                z = 5.89062,
             },
         }
     }
