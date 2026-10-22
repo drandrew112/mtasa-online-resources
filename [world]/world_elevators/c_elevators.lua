@@ -3,7 +3,6 @@ uicore = exports.ui_core
 
 local elevatorId = nil   -- elevator the player is currently standing in
 local menuId     = nil   -- id of the open ui_inac temp menu (nil = none)
-local showHelp   = false
 
 addEvent("ui_inac:tempMenuSelect")
 addEvent("ui_inac:tempMenuClose")
@@ -56,30 +55,11 @@ addEventHandler("ui_inac:tempMenuClose", root, function(id)
     if id == menuId then menuId = nil end
 end)
 
-local function drawHelp()
-    if not menuId then
-        local sw, sh = guiGetScreenSize()
-        dxDrawText(L("world_elevators.elevators.press_e_to_use_elevator"), sw / 2, sh * 0.12, _, _,
-            tocolor(255, 255, 255, 255), 1.4, "default", "center", "center")
-    end
-end
-
--- the hint is attached only while the player stands in an elevator colshape
-local function setHelp(on)
-    if on == showHelp then return end
-    showHelp = on
-    if on then
-        addEventHandler("onClientRender", root, drawHelp)
-    else
-        removeEventHandler("onClientRender", root, drawHelp)
-    end
-end
-
 addEventHandler("onClientColShapeHit", getResourceRootElement(), function(hitElement)
     if hitElement ~= localPlayer then return end
     if getElementData(source, "elevator") then
         elevatorId = getElementData(source, "elevator_id")
-        setHelp(true)
+        uicore:setInfobox(L("world_elevators.elevators.press_e_to_use_elevator"), 255, 255, 255)
         bindKey("e", "down", toggleSelector)
     end
 end)
@@ -89,7 +69,6 @@ addEventHandler("onClientColShapeLeave", getResourceRootElement(), function(leav
     if getElementData(source, "elevator") then
         unbindKey("e", "down", toggleSelector)
         closeSelector()
-        setHelp(false)
         elevatorId = nil
     end
 end)
