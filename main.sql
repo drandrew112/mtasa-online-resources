@@ -169,8 +169,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- friendRequests  (owner: [player_interaction]/v_socialpanel)
 -- ----------------------------------------------------------------------------
 -- One row per pending incoming friend request. Removed when accepted, declined,
--- or when the reverse request turns the pair into friends. Friend *lists*
--- themselves stay in account_data (key "socialpanel:friends").
+-- or when the reverse request turns the pair into friends.
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `friendRequests` (
@@ -180,6 +179,26 @@ CREATE TABLE IF NOT EXISTS `friendRequests` (
     `created_at` INT         NOT NULL DEFAULT 0,
     UNIQUE KEY `unique_request` (`sender`, `recipient`),
     KEY `idx_friendrequests_recipient` (`recipient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- friends  (owner: [player_interaction]/v_socialpanel)
+-- ----------------------------------------------------------------------------
+-- One row per friendship, shared by both accounts, so it can never be stored
+-- on one side only. account_a is the name that sorts first (case-insensitive),
+-- which makes (a, b) and (b, a) the same UNIQUE key. Created by v_socialpanel
+-- on start too; the old per-account lists (account_data "socialpanel:friends")
+-- are moved here once and deleted.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `friends` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `account_a`  VARCHAR(50) NOT NULL,
+    `account_b`  VARCHAR(50) NOT NULL,
+    `created_at` INT         NOT NULL DEFAULT 0,
+    UNIQUE KEY `unique_friendship` (`account_a`, `account_b`),
+    KEY `idx_friends_b` (`account_b`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
