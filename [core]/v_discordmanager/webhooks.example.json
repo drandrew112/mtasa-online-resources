@@ -1,3 +1,4 @@
 {
-    "chat": "https://discord.com/api/webhooks/<id>/<token>"
+    "chat": "https://discord.com/api/webhooks/<id>/<token>",
+    "weekly": "https://discord.com/api/webhooks/<id>/<token>"
 }
