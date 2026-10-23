@@ -472,6 +472,7 @@ addCommandHandler("bizpos", function(player, _, a, b)
         if b == "computer" then pos[3] = pos[3] - 1 end   -- desk origin on the floor, the player stands 1 m higher
         POS.templates[a] = POS.templates[a] or {}
         POS.templates[a][b] = pos
+        if b == "exit" then POS.templates[a].spawn = pos end   -- players arrive at the exit marker
         savePositions()
         for id, inst in pairs(INST) do
             if inst.templateId == a then

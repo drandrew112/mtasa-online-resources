@@ -11,7 +11,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Template fields:
 --   interior   GTA interior id
 --   spawn      arrival point inside {x, y, z, rot}
---   exit       exit marker inside (defaults to spawn)
+--   exit       exit marker inside (defaults to spawn); /bizpos exit also moves spawn here
 --   computer   desk position {x, y, z, rot}: a desk, a PC and a chair are
 --              created there; the PC carries the "Use computer" menu
 --   objects    extra props { model, x, y, z, rx, ry, rz, flag }
