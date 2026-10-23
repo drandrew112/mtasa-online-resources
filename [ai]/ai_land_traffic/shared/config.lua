@@ -38,6 +38,9 @@ TRAFFIC = {
     STILL_SPEED = 2,            -- m/s: below this the player counts as standing (heading from vehicle/camera)
     FULL_SPEED = 14,            -- m/s: full density from this speed
     STILL_FACTOR = 0.35,        -- density factor while standing (linear up to FULL_SPEED)
+    -- outside the cities (getZoneName city level) density target and AREA_MAX are multiplied by this
+    CITIES = { ["Los Santos"] = true, ["San Fierro"] = true, ["Las Venturas"] = true },
+    RURAL_FACTOR = 1 / 3,
 
     -- cameras: clients report their camera; a vehicle no camera can see (behind / far to the side)
     -- disappears after CULL_AFTER if it is farther than CULL_MIN_DIST from every player

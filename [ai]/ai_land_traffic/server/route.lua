@@ -13,6 +13,11 @@ local floor, min, max, sqrt, rad, sin, cos = math.floor, math.min, math.max, mat
 local areas = {}       -- [player] = area
 local opposite = {}    -- [lane] = { lane, ... } (built when first needed)
 
+-- is the point inside one of the cities (T.CITIES, getZoneName city level)
+function Route.inCity(x, y, z)
+    return T.CITIES[getZoneName(x, y, z, true)] == true
+end
+
 -- unit direction (2D) and length of a lane
 local function laneDir(id)
     local dx, dy = Geo.lx2[id] - Geo.lx1[id], Geo.ly2[id] - Geo.ly1[id]
@@ -227,6 +232,8 @@ local function build(p, hx, hy, speed, now)
     end
     -- fewer vehicles while the player stands
     local f = T.STILL_FACTOR + (1 - T.STILL_FACTOR) * min(1, max(0, speed - T.STILL_SPEED) / (T.FULL_SPEED - T.STILL_SPEED))
+    -- and fewer outside the cities, where they would only pile up
+    if not Route.inCity(p.x, p.y, p.z) then f = f * T.RURAL_FACTOR end
     area.factor = f
     area.target = floor(min(T.MAX_PER_PLAYER, area.total / T.LANE_PER_VEHICLE) * f + 0.5)
     return area
