@@ -10,20 +10,14 @@
 <body>
     <div class="os-screen">
         <aside class="os-side">
-            <div class="os-brand">OrgOS<small id="osPlace">–</small></div>
+            <div class="os-brand"><b>OrgOS</b><small id="osPlace">–</small></div>
             <nav id="nav"></nav>
             <div class="os-side-foot">
                 <div class="os-clock" id="clock">--:--</div>
-                <button class="osa-btn os-close" id="closeBtn" title="Close (Esc)">Shut down</button>
+                <button class="os-off" id="closeBtn" title="Close (Esc)">Shut down</button>
             </div>
         </aside>
-        <main class="os-main">
-            <div class="os-head">
-                <h1 id="title">–</h1>
-                <div class="os-head-right"><span class="osa-pill" id="statePill">–</span></div>
-            </div>
-            <div id="view" class="os-view"><div class="os-empty">Starting…</div></div>
-        </main>
+        <main id="view" class="os-main"><div class="os-empty">Starting…</div></main>
     </div>
     <script src="/web_api/osa.js"></script>
     <script src="js/orgos.js"></script>

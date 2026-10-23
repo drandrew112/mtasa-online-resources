@@ -47,12 +47,23 @@
     }
     for (const a of document.querySelectorAll('#nav a')) a.addEventListener('click', () => show(a.dataset.tab));
 
+    // ------------------------------------------------------------ building photos (biz_core/img/buildings)
+    // a missing picture hides itself and leaves the tinted frame
+    const photo = (building, alt) => building
+        ? `<img src="/biz_core/img/buildings/${esc(building)}.jpg" alt="${esc(alt || '')}" onerror="this.classList.add('noimg')">` : '';
+    const tierName = o => o.tier ? o.tier[0].toUpperCase() + o.tier.slice(1) : '';
+
+    function setPhoto(el, o, sub) {
+        el.hidden = !o;
+        if (o) el.innerHTML = `${photo(o.building, o.name)}<div class="cap"><b>${esc(o.name)}</b><small>${esc(sub)}</small></div>`;
+    }
+
     // ------------------------------------------------------------ office lists + maps
     function officeRow(o, on, cur) {
-        const tier = o.tier ? o.tier[0].toUpperCase() + o.tier.slice(1) : '';
         return `<div class="br-office${on ? ' on' : ''}${cur ? ' cur' : ''}" data-id="${esc(o.id)}">
-            <b>${esc(o.name)}</b><span class="p">${money(o.price)}</span>
-            <small>${esc(o.city || '')} · ${esc(tier)} · upkeep ${money(o.upkeep)} / 2 h online</small></div>`;
+            <span class="th">${photo(o.building)}</span>
+            <b>${esc(o.name)}</b><span class="p">${cur ? 'current' : money(o.price)}</span>
+            <small>${esc(o.city || '')} · ${esc(tierName(o))} · upkeep ${money(o.upkeep)} / 2 h online</small></div>`;
     }
 
     function drawPins(m, prefix, current, chosen, onPick) {
@@ -74,6 +85,7 @@
         drawPins(map, 'o:', null, selected, pick);
 
         const o = state.offices.find(x => x.id === selected);
+        setPhoto($('pickPhoto'), o, o ? `${o.city || ''} · ${tierName(o)} office` : '');
         $('sumFee').textContent = money(state.regFee);
         $('sumOfficeLabel').textContent = o ? 'Headquarters: ' + o.name : 'Headquarters';
         $('sumOffice').textContent = o ? money(o.price) : '–';
@@ -97,11 +109,15 @@
     function renderMine() {
         const c = state.company;
         const hq = OSA.arr(c.units).find(u => u.id === c.hqUnit);
+        const cur = hq ? hq.propertyId : null;
+        const hqOffice = state.offices.find(x => x.id === cur);
         $('myName').textContent = c.name;
+        $('myHeroImg').innerHTML = photo(hq && hq.building, hq ? hq.name : '');
+        $('myHeroSub').textContent = (hq ? `Headquarters: ${hq.name}${hqOffice && hqOffice.city ? ', ' + hqOffice.city : ''} · ` : '') +
+            'Manage it on the computer in your office.';
         $('myValue').textContent = money(c.value);
         $('myHq').textContent = hq ? hq.name : '–';
         $('myFounded').textContent = date(c.createdAt);
-        const cur = hq ? hq.propertyId : null;
         const list = $('moveList');
         list.innerHTML = state.offices.map(o => officeRow(o, o.id === moveTo, o.id === cur)).join('');
         for (const el of list.querySelectorAll('.br-office')) {
@@ -179,6 +195,10 @@
     });
 
     // ------------------------------------------------------------ registry / top
+    function hqCell(e) {
+        if (!e.hq) return '–';
+        return `<div class="br-hq"><span class="th">${photo(e.hqBuilding)}</span><span>${esc(e.hq)}${e.hqCity ? `<div class="br-small">${esc(e.hqCity)}</div>` : ''}</span></div>`;
+    }
     let searchTimer = null;
     async function loadRegistry() {
         let r;
@@ -186,7 +206,7 @@
         const rows = r && r.ok ? OSA.arr(r.rows) : [];
         $('regRows').innerHTML = rows.length ? rows.map(e => `<tr>
             <td><b>${esc(e.name)}</b></td><td>${esc(OSA.clean(e.founder))}</td>
-            <td>${esc(e.hq || '–')}${e.hqCity ? `<div class="br-small">${esc(e.hqCity)}</div>` : ''}</td>
+            <td>${hqCell(e)}</td>
             <td>${tags(e.activities)}</td><td>${date(e.createdAt)}</td></tr>`).join('')
             : `<tr><td colspan="5" class="br-empty">${r && r.ok ? 'No organization found.' : esc(errText(r))}</td></tr>`;
     }
@@ -198,7 +218,7 @@
         const rows = r && r.ok ? OSA.arr(r.rows) : [];
         $('topRows').innerHTML = rows.length ? rows.map(e => `<tr>
             <td class="rank">${e.rank}</td><td><b>${esc(e.name)}</b></td><td>${esc(OSA.clean(e.founder))}</td>
-            <td>${esc(e.hq || '–')}</td><td>${tags(e.activities)}</td><td class="num"><b>${money(e.value)}</b></td></tr>`).join('')
+            <td>${hqCell(e)}</td><td>${tags(e.activities)}</td><td class="num"><b>${money(e.value)}</b></td></tr>`).join('')
             : `<tr><td colspan="6" class="br-empty">${r && r.ok ? 'No organization yet.' : esc(errText(r))}</td></tr>`;
     }
 

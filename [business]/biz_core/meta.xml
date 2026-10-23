@@ -29,6 +29,20 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/notify.lua" type="client" />
 
+    <!-- ================= IMAGES ================= -->
+    <!-- /biz_core/img/... for biz_pc and biz_web: buildings/<building>.jpg (tools/compress_photos.py),
+         upgrades/<activity>_<upgrade>.jpg (tools/draw_upgrades.py) -->
+    <file src="img/buildings/ls_commerce.jpg" type="client" />
+    <file src="img/buildings/ls_downtown.jpg" type="client" />
+    <file src="img/buildings/sf_financial.jpg" type="client" />
+    <file src="img/buildings/sf_queens.jpg" type="client" />
+    <file src="img/buildings/lv_civic.jpg" type="client" />
+    <file src="img/buildings/lv_redsands.jpg" type="client" />
+    <file src="img/buildings/bc_castillo.jpg" type="client" />
+    <file src="img/buildings/lv_casino.jpg" type="client" />
+    <file src="img/upgrades/weed_capacity.jpg" type="client" />
+    <file src="img/upgrades/weed_staff.jpg" type="client" />
+
     <!-- ================= SERVER EXPORTS ================= -->
     <!-- state -->
     <export function="isReady"               type="server" />

@@ -37,6 +37,7 @@
                         <div class="br-hint">Click a building to choose your headquarters.</div>
                     </div>
                     <div class="br-card br-side">
+                        <div class="br-pick-photo" id="pickPhoto" hidden></div>
                         <label for="orgName">Organization name</label>
                         <input class="osa-input" id="orgName" maxlength="32" autocomplete="off">
                         <div class="br-small" id="nameHint"></div>
@@ -57,8 +58,11 @@
             </div>
 
             <div id="myOrg" hidden>
-                <h1 id="myName">–</h1>
-                <p class="br-lead">Your organization is registered. Manage it on the computer in your office.</p>
+                <div class="br-hero">
+                    <div class="br-hero-img" id="myHeroImg"></div>
+                    <span class="br-hero-tag">Registered</span>
+                    <div class="br-hero-text"><h1 id="myName">–</h1><p id="myHeroSub">Manage it on the computer in your office.</p></div>
+                </div>
                 <div class="br-kpis">
                     <div class="br-kpi"><span>Company value</span><b id="myValue">–</b></div>
                     <div class="br-kpi"><span>Headquarters</span><b id="myHq">–</b></div>

@@ -8,7 +8,7 @@ artifact (v2 + the user's decisions). **Not tested in game yet.**
 | --- | --- |
 | `biz_core` | Companies, company account (clean + dirty) and ledger, property catalog, buying/selling, selling the organization, temporary associates, the online tick (upkeep, activity ticks), registry/top list cache, notifications, stats, admin API |
 | `biz_int` | Own interior system (independent of `world_interiors`): entrances, one private inside per unit (dimension `30000 + unit id`), access control, owner-only blips, computer + props per inside, `/bizpos` |
-| `biz_pc` | OrgOS – the computer of offices and properties (full-screen `web_api` page): Overview, Finance, Properties, Settings + the activity app (Weed farm / Casino) |
+| `biz_pc` | OrgOS – the computer of offices and properties (full-screen `web_api` page). Office: Overview, Finance, Properties (buy), Settings. Site (only that site): weed farm = Overview / Supply / Stock / Sales / Upgrades / Sell property, casino = Overview / Laundering / Sell property |
 | `biz_web` | `sabusinessregistry.eu` (in-game browser only): register, move headquarters, registry search, top organizations |
 | `biz_weed` | Weed farm activity (illegal, supply/deliver): supply → product in online time, bought supply, Capacity / Staff upgrades, HUD |
 | `biz_casino` | Casino activity (legal, passive): one result per online hour, events, money laundering queue |
@@ -35,6 +35,14 @@ tile, Weekly → Business tab), `acc_menu` / `ui_pause` (Business stat category)
 - Delivery payout: founder → company 100%; associate → 80% his bank / 20% company; stranger → 60% his bank.
 - Weekly Business bonus: sale multipliers for supply/deliver activities only (not the casino).
 - Every business event is a ui_core notification (no e-mail).
+
+## Images
+
+`biz_core/img/buildings/<building>.jpg` (one photo per `BIZ.BUILDINGS` key, 1280x720) and
+`biz_core/img/upgrades/<activity>_<upgrade>.jpg` (800x500), client files used by biz_pc and biz_web
+as `/biz_core/img/...`. New building photo: take it with `/takeapic free`, name the PNG after the
+building key and run `python tools/compress_photos.py`. Upgrade pictures: `tools/draw_upgrades.py`
+(SVG, saved as JPEG). A missing picture leaves an empty dark frame.
 
 ## Data (MySQL, self-created)
 

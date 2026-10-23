@@ -5,6 +5,10 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- app opened full screen in game) calls the exports below; each one checks
 -- that the caller is the founder standing inside that unit.
 --
+-- The office computer manages the company (finance, buying properties,
+-- settings, selling the organization). A site computer (weed farm, casino)
+-- manages only that site: its activity app and selling the site itself.
+--
 -- Activity apps (Weed farm, Casino) come from the activity resources:
 --   exports.<resource>:getPanelState(unitId)                 -> table for the page
 --   exports.<resource>:panelAction(player, unitId, action, args) -> { ok, error, ... }
@@ -88,6 +92,9 @@ function pcState(unitId)
         catalog = core():getCatalog() or {}, bank = tonumber(getElementData(player, "bank_money")) or 0,
         multipliers = core():getSaleMultipliers() or {},
     }
+    for _, u in ipairs(my.company.units or {}) do
+        if u.id == unitId then state.site = u end   -- refund / stock value of this unit
+    end
     local res = activityResource(unit)
     if res then
         local ok, panel = pcall(call, getResourceFromName(res), "getPanelState", unitId)
@@ -96,15 +103,25 @@ function pcState(unitId)
     return state
 end
 
-local ACTIONS = {
+-- office computer: the company
+local OFFICE_ACTIONS = {
     deposit   = function(p, a) return core():depositToCompany(p, a.amount) end,
     withdraw  = function(p, a) return core():withdrawFromCompany(p, a.amount, a.part) end,
     buy       = function(p, a) return core():buyProperty(p, a.propertyId) end,
-    sell      = function(p, a) return core():sellProperty(p, a.unitId) end,
     rename    = function(p, a) return core():renameCompany(p, a.name) end,
     quote     = function(p)    return core():getCompanySaleQuote(p) end,
     sellorg   = function(p, a) return core():sellCompany(p, a.confirm) end,
     ledger    = function(p, a) return core():getCompanyLedger(p, a.category, 200) end,
+}
+
+-- site computer: only this site
+local SITE_ACTIONS = {
+    sell = function(p, a, unitId)
+        if running("biz_missions") and exports.biz_missions:getUnitMission(unitId) then
+            return { ok = false, error = "mission_running" }
+        end
+        return core():sellProperty(p, unitId)
+    end,
 }
 
 function pcAction(unitId, action, args)
@@ -113,13 +130,16 @@ function pcAction(unitId, action, args)
     if not player then return DENIED end
     args = type(args) == "table" and args or {}
     action = tostring(action or "")
-    local fn = ACTIONS[action]
-    if fn then return fn(player, args) or { ok = false, error = "failed" } end
+    local unit = core():getUnit(unitId)
+    if not unit then return DENIED end
+    local fn = (unit.kind == "office" and OFFICE_ACTIONS or SITE_ACTIONS)[action]
+    if fn then return fn(player, args, unitId) or { ok = false, error = "failed" } end
+    if OFFICE_ACTIONS[action] or SITE_ACTIONS[action] then return { ok = false, error = "wrong_computer" } end
 
     -- "activity:<name>" goes to the unit's activity resource
     local sub = action:match("^activity:([%w_]+)$")
     if sub then
-        local res = activityResource(core():getUnit(unitId))
+        local res = activityResource(unit)
         if not res then return { ok = false, error = "activity_offline" } end
         local ok, r = pcall(call, getResourceFromName(res), "panelAction", player, unitId, sub, args)
         if not ok then

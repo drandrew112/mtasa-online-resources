@@ -38,7 +38,7 @@ local function entry(e)
     local c = CO.byId[e.id]
     local out = {
         id = e.id, name = c and c.name or e.name, founder = e.founder, value = c and c.valueCache or e.value,
-        createdAt = e.createdAt, hq = nil, hqCity = nil, activities = {},
+        createdAt = e.createdAt, hq = nil, hqCity = nil, hqBuilding = nil, activities = {},
     }
     local props = e.properties
     local hq = e.hqProperty
@@ -52,6 +52,7 @@ local function entry(e)
         local p = BIZ.property(hq)
         local b = p and BIZ.BUILDINGS[p.building]
         out.hqCity = b and b.city or nil
+        out.hqBuilding = p and p.building or nil
     end
     local seen = {}
     for _, pid in ipairs(props) do

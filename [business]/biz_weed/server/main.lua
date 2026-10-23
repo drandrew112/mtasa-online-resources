@@ -316,10 +316,16 @@ function getPanelState(unitId)
         mission = mission(st.unitId), perVehicle = WEED.PER_VEHICLE, associates = associates,
         maxSell = WEED.PER_VEHICLE * (1 + associates), multiplier = core():getSaleMultiplier("weed") or 1,
         paused = core():isCompanyPaused(st.companyId),
+        -- image: /biz_core/img/upgrades/<image>.jpg; desc = hover text, effects = highlighted lines
         upgrades = {
-            { id = "capacity", label = "Bigger grow room", desc = ("Supply and product capacity %d → %d."):format(WEED.BASE_CAPACITY, WEED.UPGRADES.capacity.capacity),
+            { id = "capacity", label = "Bigger grow room", image = "weed_capacity",
+              desc = "More tables, lamps and storage in the back room.",
+              effects = { ("Supply and product capacity %d → %d"):format(WEED.BASE_CAPACITY, WEED.UPGRADES.capacity.capacity) },
               price = WEED.UPGRADES.capacity.price, owned = flag(st.unitId, "capacity") },
-            { id = "staff", label = "Hire staff", desc = ("One unit every %d s instead of %d s."):format(WEED.UPGRADES.staff.unitSeconds, WEED.UNIT_SECONDS),
+            { id = "staff", label = "Hire staff", image = "weed_staff",
+              desc = "Two trimmers process the harvest, so supply turns into product faster.",
+              effects = { ("One unit every %d s instead of %d s"):format(WEED.UPGRADES.staff.unitSeconds, WEED.UNIT_SECONDS),
+                          ("Production speed +%d%%"):format(math.floor((WEED.UNIT_SECONDS / WEED.UPGRADES.staff.unitSeconds - 1) * 100 + 0.5)) },
               price = WEED.UPGRADES.staff.price, owned = flag(st.unitId, "staff") },
         },
     }

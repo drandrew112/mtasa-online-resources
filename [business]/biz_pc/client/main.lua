@@ -1,5 +1,5 @@
 -- biz_pc / client/main.lua
--- Opens OrgOS centred at 80% of the screen: a CEF browser on web_api's loader, so the page
+-- Opens OrgOS full screen: a CEF browser on web_api's loader, so the page
 -- talks to biz_pc's exports through the web_api bridge exactly like a
 -- ui_browser site. Esc or the page's close button closes it.
 
@@ -28,8 +28,7 @@ end
 addEventHandler("bizpc:open", resourceRoot, function(unitId, kind)
     close()
     local sw, sh = guiGetScreenSize()
-    local w, h = math.floor(sw * 0.8), math.floor(sh * 0.8)
-    gui = guiCreateBrowser(math.floor((sw - w) / 2), math.floor((sh - h) / 2), w, h, true, false, false)
+    gui = guiCreateBrowser(0, 0, sw, sh, true, false, false)
     if not gui then return end
     browser = guiGetBrowser(gui)
     openUnit = unitId
