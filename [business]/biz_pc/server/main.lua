@@ -92,9 +92,8 @@ function pcState(unitId)
         catalog = core():getCatalog() or {}, bank = tonumber(getElementData(player, "bank_money")) or 0,
         multipliers = core():getSaleMultipliers() or {},
     }
-    for _, u in ipairs(my.company.units or {}) do
-        if u.id == unitId then state.site = u end   -- refund / stock value of this unit
-    end
+    -- the page finds this unit's refund / stock value in company.units: a second
+    -- reference to the same table would reach it as a toJSON "^T^n" string
     local res = activityResource(unit)
     if res then
         local ok, panel = pcall(call, getResourceFromName(res), "getPanelState", unitId)

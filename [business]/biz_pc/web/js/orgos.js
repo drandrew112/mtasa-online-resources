@@ -321,8 +321,14 @@
     };
 
     // ------------------------------------------------------------ sell property (every site)
+    // this unit with its refund / stock value (company.units) over the plain unit data
+    function siteUnit() {
+        const own = OSA.arr(S.company.units).find(u => u && u.id === S.unit.id);
+        return Object.assign({}, S.unit, typeof own === 'object' ? own : {});
+    }
+
     function sellView() {
-        const u = S.site || S.unit;
+        const u = siteUnit();
         const a = S.activity;
         const lost = [];
         if (a && a.kind === 'weed') {
@@ -346,7 +352,7 @@
     }
     function sellBind() {
         $('sellSite').onclick = async () => {
-            const u = S.site || S.unit;
+            const u = siteUnit();
             if (!await OSA.ui.confirm('Sell property', `Sell ${u.name} for ${money(u.refund)}? Its upgrades and stock are lost. This cannot be undone.`, 'Sell')) return;
             const r = await act('sell', {}, 'Property sold');
             if (r && r.ok) setTimeout(close, 1500);
