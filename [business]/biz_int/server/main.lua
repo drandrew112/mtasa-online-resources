@@ -76,6 +76,9 @@ local function template(id)
     for _, f in ipairs({ "spawn", "exit", "computer" }) do
         if type(o[f]) == "table" and tonumber(o[f][1]) then copy[f] = o[f] end
     end
+    -- a moved exit without its own spawn: players arrive at the exit marker
+    local function set(v) return type(v) == "table" and tonumber(v[1]) end
+    if set(o.exit) and not set(o.spawn) then copy.spawn = o.exit end
     return copy
 end
 
