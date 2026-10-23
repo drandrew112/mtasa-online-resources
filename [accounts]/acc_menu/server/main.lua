@@ -45,7 +45,8 @@ local function collect(player)
     end
     data.vehicles = vehicles
 
-    local news = try("v_news", function() return exports.v_news:getLatestNews(NEWS_COUNT) end) or {}
+    -- in the player's language; every language rides along in a.texts for a language change in the menu
+    local news = try("v_news", function() return exports.v_news:getLatestNews(NEWS_COUNT, player) end) or {}
     for _, a in ipairs(news) do a.dateText = dateText(a.date) end
     data.news = news
 

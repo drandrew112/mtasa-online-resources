@@ -5,6 +5,8 @@
   "v_news.panel.delete": "Törlés",
   "v_news.panel.editor_title": "Hírszerkesztő",
   "v_news.panel.hint": "Enter: új sor · Tab: következő mező · Ctrl+S: mentés · Esc: kilépés a mezőből · {count} / {max}",
+  "v_news.panel.lang_hint": "Minden nyelv opcionális. A játékosok a saját nyelvükön olvassák; ha az hiányzik, angolul (vagy az első megírt nyelven).",
+  "v_news.panel.languages": "NYELV",
   "v_news.panel.new_article": "+ Új hír",
   "v_news.panel.no_articles": "Még nincs hír.",
   "v_news.panel.now": "Most",
@@ -16,11 +18,12 @@
   "v_news.server.bad_date": "Hibás dátum vagy idő. Formátum: ÉÉÉÉ.HH.NN és ÓÓ:PP.",
   "v_news.server.delete_failed": "A hírt nem sikerült törölni.",
   "v_news.server.deleted": "Hír törölve.",
+  "v_news.server.no_language": "Legalább egy nyelven írd meg a hírt.",
   "v_news.server.not_ready": "A hír adatbázis nem érhető el.",
   "v_news.server.save_failed": "A hírt nem sikerült menteni.",
   "v_news.server.saved": "Hír mentve.",
-  "v_news.server.text_missing": "A szöveg üres.",
-  "v_news.server.text_too_long": "A szöveg túl hosszú (max {max} karakter).",
-  "v_news.server.title_missing": "A cím üres.",
-  "v_news.server.title_too_long": "A cím túl hosszú (max {max} karakter)."
+  "v_news.server.text_missing": "{lang}: a szöveg üres.",
+  "v_news.server.text_too_long": "{lang}: a szöveg túl hosszú (max {max} karakter).",
+  "v_news.server.title_missing": "{lang}: a cím üres.",
+  "v_news.server.title_too_long": "{lang}: a cím túl hosszú (max {max} karakter)."
 }

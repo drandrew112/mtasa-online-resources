@@ -148,7 +148,9 @@ local function content(lang, run, news, week)
     if #news > 0 then
         p[#p + 1] = { heading = T(lang, "news") }
         for _, a in ipairs(news) do
-            p[#p + 1] = { title = plain(a.title), text = os.date("!%Y.%m.%d", a.date) .. "\n" .. plain(a.body) }
+            -- the article in the mail's language, else v_news' default pick (English or the first written)
+            local t = type(a.texts) == "table" and a.texts[lang] or a
+            p[#p + 1] = { title = plain(t.title), text = os.date("!%Y.%m.%d", a.date) .. "\n" .. plain(t.body) }
         end
     end
     if week and not week.empty then

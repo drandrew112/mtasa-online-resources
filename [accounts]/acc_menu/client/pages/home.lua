@@ -17,6 +17,13 @@ local function spawnText()
     return prefs.spawnLocation == "random" and L("acc_menu.prefs.random") or L("acc_menu.prefs.last")
 end
 
+-- title, body of a v_news article in the current language (else the server's pick)
+local function newsText(a)
+    local t = type(a.texts) == "table" and a.texts[L.lang()]
+    if t then return t.title, t.body end
+    return a.title, a.body
+end
+
 local function bigNumber(str, x, y, w, color)
     text(str, x, y, w, S(48), color or C.white, 1, FONT.big, "left", "center")
 end
@@ -63,8 +70,9 @@ PAGES.defs.home = {
         local first = (Menu.data.news or {})[1]
         tile("page", "home_news", nx, ny, nw, nh, L("acc_menu.home.news"), nil, function(cx, cy, cw, ch)
             if first then
-                text(first.title, cx, cy + S(40), cw, S(28), C.white, 1.15, FONT.rowB)
-                text(first.dateText .. "  ·  " .. first.body, cx, cy + S(72), cw, ch - S(72), C.dim, 0.95, FONT.row, "left", "top", true, true)
+                local title, body = newsText(first)
+                text(title, cx, cy + S(40), cw, S(28), C.white, 1.15, FONT.rowB)
+                text(first.dateText .. "  ·  " .. body, cx, cy + S(72), cw, ch - S(72), C.dim, 0.95, FONT.row, "left", "top", true, true)
             else
                 text(L("acc_menu.news.none"), cx, cy + S(40), cw, S(28), C.dim, 1.0, FONT.row)
             end
@@ -149,15 +157,16 @@ VIEWS.news = {
             local focused = row("view", "news_" .. i, x, ry, lw, rh - S(2), { activate = function() newsSel = i end })
             if focused then newsSel = i end
             text(a.dateText, x + S(16), ry + S(8), lw - S(32), S(20), C.dim, 0.85, FONT.row)
-            text(a.title, x + S(16), ry + S(28), lw - S(32), S(28), C.white, 1.05, FONT.rowB)
+            text((newsText(a)), x + S(16), ry + S(28), lw - S(32), S(28), C.white, 1.05, FONT.rowB)
         end
         local a = list[newsSel]
         local rx, rw = x + lw + S(14), w - lw - S(14)
         panelBox(rx, y, rw, h)
         if a then
+            local title, body = newsText(a)
             text(a.dateText, rx + S(24), y + S(20), rw - S(48), S(22), C.dim, 0.9, FONT.row)
-            text(a.title, rx + S(24), y + S(44), rw - S(48), S(36), C.white, 1.5, FONT.head)
-            text(a.body, rx + S(24), y + S(94), rw - S(48), h - S(110), C.text, 1.05, FONT.row, "left", "top", true, true)
+            text(title, rx + S(24), y + S(44), rw - S(48), S(36), C.white, 1.5, FONT.head)
+            text(body, rx + S(24), y + S(94), rw - S(48), h - S(110), C.text, 1.05, FONT.row, "left", "top", true, true)
         end
     end,
 }

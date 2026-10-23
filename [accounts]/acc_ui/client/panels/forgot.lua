@@ -18,7 +18,7 @@ function ForgotPanel:create()
 
     local W = ui(360)
     local X = math.floor(sw / 2 - W / 2)
-    local Y = math.floor(sh * 0.30)
+    local Y = math.floor(sh * 0.18)
     local pad = ui(22)
     local headerH = ui(46)
     local fieldW = W - pad * 2

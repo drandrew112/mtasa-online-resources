@@ -5,6 +5,8 @@
   "v_news.panel.delete": "Delete",
   "v_news.panel.editor_title": "News editor",
   "v_news.panel.hint": "Enter: new line · Tab: next field · Ctrl+S: save · Esc: leave field · {count} / {max}",
+  "v_news.panel.lang_hint": "Every language is optional. Players read their own language; if it is missing, English (or the first written one).",
+  "v_news.panel.languages": "LANG",
   "v_news.panel.new_article": "+ New article",
   "v_news.panel.no_articles": "No articles yet.",
   "v_news.panel.now": "Now",
@@ -16,11 +18,12 @@
   "v_news.server.bad_date": "Invalid date or time. Use YYYY.MM.DD and HH:MM.",
   "v_news.server.delete_failed": "The article could not be deleted.",
   "v_news.server.deleted": "Article deleted.",
+  "v_news.server.no_language": "Write the article in at least one language.",
   "v_news.server.not_ready": "The news database is not available.",
   "v_news.server.save_failed": "The article could not be saved.",
   "v_news.server.saved": "Article saved.",
-  "v_news.server.text_missing": "The text is empty.",
-  "v_news.server.text_too_long": "The text is too long (max {max} characters).",
-  "v_news.server.title_missing": "The title is empty.",
-  "v_news.server.title_too_long": "The title is too long (max {max} characters)."
+  "v_news.server.text_missing": "{lang}: the text is empty.",
+  "v_news.server.text_too_long": "{lang}: the text is too long (max {max} characters).",
+  "v_news.server.title_missing": "{lang}: the title is empty.",
+  "v_news.server.title_too_long": "{lang}: the title is too long (max {max} characters)."
 }

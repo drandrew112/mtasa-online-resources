@@ -445,6 +445,17 @@ CREATE TABLE IF NOT EXISTS `news` (
     KEY `idx_published` (`published_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- news_texts (v_news): an article's title + text per language; news.title / body keep
+-- the default language's copy. Articles from before the languages are copied in as 'en'
+-- when v_news starts.
+CREATE TABLE IF NOT EXISTS `news_texts` (
+    `news_id` INT          NOT NULL,
+    `lang`    VARCHAR(8)   NOT NULL,
+    `title`   VARCHAR(255) NOT NULL DEFAULT '',
+    `body`    TEXT         NOT NULL,
+    PRIMARY KEY (`news_id`, `lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- ---------------------------------------------------------------------------
 -- mails  (v_mail: every mail the server sent; v_admin Mail page history; weekly updates)
 -- ---------------------------------------------------------------------------

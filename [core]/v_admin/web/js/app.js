@@ -1414,23 +1414,53 @@
 
     /* ============================================================ news */
 
-    const N = { data: null, sel: null };
+    // one title + text per v_locals language (each optional, at least one); N.texts = { [lang]: { title, body } }
+    const N = { data: null, sel: null, lang: null, texts: {} };
+    function nwLangList() {
+        const l = N.data && arr(N.data.languages);
+        return l && l.length ? l : [{ value: 'en', label: 'English' }];
+    }
+    function nwSaveText() {
+        if (N.lang) N.texts[N.lang] = { title: $('nwTitle').value, body: $('nwBody').value };
+    }
+    function nwLangs() {
+        const list = nwLangList();
+        if (!N.lang || !list.some(l => l.value === N.lang)) N.lang = list[0].value;
+        $('nwLangs').innerHTML = list.map(l => {
+            const t = N.texts[l.value] || {};
+            const st = t.title && t.body ? 'done' : (t.title || t.body ? 'partial' : '');
+            return `<button class="osa-btn langbtn ${st}${N.lang === l.value ? ' active' : ''}" data-l="${l.value}">${esc(l.label)} (${l.value.toUpperCase()})</button>`;
+        }).join('');
+        const t = N.texts[N.lang] || { title: '', body: '' };
+        $('nwTitle').value = t.title || '';
+        $('nwBody').value = t.body || '';
+        nwCount();
+    }
     function nwFill(a) {
         N.sel = a ? a.id : null;
         $('nwDate').value = a ? a.dateText : (N.data ? N.data.nowDate : '');
         $('nwTime').value = a ? a.timeText : (N.data ? N.data.nowTime : '');
-        $('nwTitle').value = a ? a.title : '';
-        $('nwBody').value = a ? a.body : '';
+        N.texts = {};
+        for (const [code, t] of Object.entries(a && a.texts && typeof a.texts === 'object' ? a.texts : {})) N.texts[code] = { title: t.title || '', body: t.body || '' };
+        // stay on the open language if the article has it, else open its first written one
+        if (!(a && N.texts[N.lang])) {
+            const first = nwLangList().find(l => N.texts[l.value]);
+            N.lang = first ? first.value : nwLangList()[0].value;
+        }
         $('nwAuthor').textContent = a ? `#${a.id} · ${a.author || '-'}` : 'New article';
         $('nwDelete').hidden = !a;
-        nwCount();
+        nwLangs();
         nwRows();
     }
-    function nwCount() { $('nwCount').textContent = `${$('nwBody').value.length} / 4000 · a blank line starts a new paragraph`; }
+    function nwCount() {
+        $('nwCount').textContent = `${$('nwBody').value.length} / 4000 · a blank line starts a new paragraph`
+            + ' · every language is optional; players read their own language, else English (or the first written one)';
+    }
     function nwRows() {
         grid($('nwRows'), [
             { key: 'dateText', label: 'Date', text: a => `<span class="${a.scheduled ? 'warn' : 'dim'}">${esc(a.dateText)}</span>` },
             { key: 'title', label: 'Title', text: a => `${a.scheduled ? '<span class="warn">[scheduled]</span> ' : ''}${esc(a.title)}` },
+            { key: 'langs', label: 'Lang', text: a => `<span class="dim">${esc(a.langs || '')}</span>` },
         ], N.data ? arr(N.data.list) : [], { sel: a => a.id === N.sel, click: a => nwFill(a), empty: 'No articles yet.' });
     }
     function nwSet(r) {
@@ -1441,9 +1471,14 @@
     }
     $('nwNew').addEventListener('click', () => nwFill(null));
     $('nwNow').addEventListener('click', () => { $('nwDate').value = N.data.nowDate; $('nwTime').value = N.data.nowTime; });
-    $('nwBody').addEventListener('input', nwCount);
+    $('nwLangs').addEventListener('click', e => { const b = e.target.closest('button[data-l]'); if (!b) return; nwSaveText(); N.lang = b.dataset.l; nwLangs(); });
+    ['nwTitle', 'nwBody'].forEach(id => $(id).addEventListener('input', () => { nwSaveText(); nwCount(); }));
+    ['nwTitle', 'nwBody'].forEach(id => $(id).addEventListener('change', nwLangs));
     $('nwSave').addEventListener('click', async () => {
-        const r = await page('news', 'save', { id: N.sel, dateText: $('nwDate').value, timeText: $('nwTime').value, title: $('nwTitle').value, body: $('nwBody').value });
+        nwSaveText();
+        const texts = {};
+        for (const l of nwLangList()) texts[l.value] = N.texts[l.value] || { title: '', body: '' };
+        const r = await page('news', 'save', { id: N.sel, dateText: $('nwDate').value, timeText: $('nwTime').value, texts });
         if (r.result) nwSet(r.result);
     });
     $('nwDelete').addEventListener('click', async () => {

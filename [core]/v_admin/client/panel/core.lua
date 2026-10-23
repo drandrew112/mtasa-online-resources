@@ -364,10 +364,17 @@ function AP.setFocus(id)
     setElementData(localPlayer, "textInputOpen", id and true or false, false)
 end
 
+-- A field filled by AP.setField before its first AP.field call doesn't know its max / multiline
+-- yet: it keeps the text as is (no 64-char cut, no newline flattening) until AP.field configures it.
 local function getField(id, opts)
     local f = AP.fields[id]
     if not f then
-        f = TextField.new({ max = opts and opts.max or 64, multiline = opts and opts.multiline })
+        if opts then
+            f = TextField.new({ max = opts.max or 64, multiline = opts.multiline })
+        else
+            f = TextField.new({ max = math.huge, multiline = true })
+            f.unconfigured = true
+        end
         AP.fields[id] = f
     end
     return f
@@ -388,6 +395,12 @@ local function digitsOnly(ch) return ch:match("^%d$") ~= nil end
 function AP.field(id, x, y, w, h, opts)
     opts = opts or {}
     local f = getField(id, opts)
+    if f.unconfigured then
+        f.unconfigured = nil
+        f.max = opts.max or 64
+        f.multiline = opts.multiline == true
+        f:setText(f.text)  -- apply the real limits to the text set early
+    end
     f.max = opts.max or f.max
     f.multiline = opts.multiline == true
     f.filter = opts.numeric and digitsOnly or nil

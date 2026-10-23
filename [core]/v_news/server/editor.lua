@@ -47,7 +47,11 @@ local function listFor()
     local t, out = getRealTime().timestamp, {}
     for i, a in ipairs(STORE.all()) do
         local dateText, timeText = formatDate(a.date)
+        local codes = {}
+        for code in pairs(a.texts) do codes[#codes + 1] = code end
+        table.sort(codes)
         out[i] = { id = a.id, dateText = dateText, timeText = timeText, title = a.title, body = a.body,
+                   texts = a.texts, langs = table.concat(codes, " "):upper(),
                    author = a.author, scheduled = a.date > t }
     end
     return out
@@ -57,36 +61,63 @@ local function result(ok, key, params, id)
     return { ok = ok, message = L.msg(key, params), id = id }
 end
 
---- Every article for the editor + the current date / time texts (defaults of a new article).
---- -> { list, nowDate, nowTime } | false (not loaded)
+--- Every article for the editor + the current date / time texts (defaults of a new article)
+--- + the languages an article can be written in ({ { value, label }, ... }).
+--- -> { list, nowDate, nowTime, languages } | false (not loaded)
 function newsAdminList()
     if not STORE.isLoaded() and not STORE.load() then return false end
     local nowDate, nowTime = formatDate(getRealTime().timestamp)
-    return { list = listFor(), nowDate = nowDate, nowTime = nowTime }
+    local ok, languages = pcall(function() return exports.v_locals:getLanguages() end)
+    return { list = listFor(), nowDate = nowDate, nowTime = nowTime,
+             languages = ok and type(languages) == "table" and languages or { { value = NEWS.DEFAULT_LANG, label = "English" } } }
 end
 
---- Creates (id = nil) or updates an article. -> { ok, message, id }
-function newsAdminSave(author, id, dateText, timeText, title, body)
+-- { [lang] = { title, body } } of the editor -> cleaned texts | nil, error result
+local function cleanTexts(texts)
+    local enabled = STORE.languages().enabled
+    local out, count = {}, 0
+    for code, t in pairs(type(texts) == "table" and texts or {}) do
+        if enabled[code] and type(t) == "table" then
+            local title = tostring(t.title or ""):gsub("[\r\n\t]", " "):gsub("^%s+", ""):gsub("%s+$", "")
+            local body = tostring(t.body or ""):gsub("\r\n?", "\n"):gsub("^%s+", ""):gsub("%s+$", "")
+            local lang = code:upper()
+            if title ~= "" or body ~= "" then
+                if title == "" then return nil, result(false, "v_news.server.title_missing", { lang = lang }) end
+                if (utf8.len(title) or #title) > NEWS.TITLE_MAX then
+                    return nil, result(false, "v_news.server.title_too_long", { lang = lang, max = NEWS.TITLE_MAX })
+                end
+                if body == "" then return nil, result(false, "v_news.server.text_missing", { lang = lang }) end
+                if (utf8.len(body) or #body) > NEWS.BODY_MAX then
+                    return nil, result(false, "v_news.server.text_too_long", { lang = lang, max = NEWS.BODY_MAX })
+                end
+                out[code], count = { title = title, body = body }, count + 1
+            end
+        end
+    end
+    if count == 0 then return nil, result(false, "v_news.server.no_language") end
+    return out
+end
+
+--- Creates (id = nil) or updates an article. `texts` = { [lang] = { title, body } }
+--- of the enabled v_locals languages; an empty language is left out (removed).
+--- -> { ok, message, id }
+function newsAdminSave(author, id, dateText, timeText, texts)
     if not STORE.isLoaded() and not STORE.load() then return result(false, "v_news.server.not_ready") end
     id = tonumber(id)
-    title = tostring(title or ""):gsub("[\r\n\t]", " "):gsub("^%s+", ""):gsub("%s+$", "")
-    body = tostring(body or ""):gsub("\r\n?", "\n"):gsub("^%s+", ""):gsub("%s+$", "")
-
-    if title == "" then return result(false, "v_news.server.title_missing") end
-    if (utf8.len(title) or #title) > NEWS.TITLE_MAX then
-        return result(false, "v_news.server.title_too_long", { max = NEWS.TITLE_MAX })
-    end
-    if body == "" then return result(false, "v_news.server.text_missing") end
-    if (utf8.len(body) or #body) > NEWS.BODY_MAX then
-        return result(false, "v_news.server.text_too_long", { max = NEWS.BODY_MAX })
-    end
+    local clean, err = cleanTexts(texts)
+    if not clean then return err end
     local date = parseDate(dateText, timeText)
     if not date then return result(false, "v_news.server.bad_date") end
 
     author = tostring(author or "")
-    local saved = STORE.save(id, date, title, body, author)
+    local saved = STORE.save(id, date, clean, author)
     if not saved then return result(false, "v_news.server.save_failed") end
-    outputServerLog(("[v_news] %s %s article #%d '%s'"):format(author, id and "edited" or "added", saved, title))
+    local codes = {}
+    for code in pairs(clean) do codes[#codes + 1] = code end
+    table.sort(codes)
+    local main = clean[NEWS.DEFAULT_LANG] or clean[codes[1]]
+    outputServerLog(("[v_news] %s %s article #%d '%s' (%s)"):format(author, id and "edited" or "added", saved, main.title,
+        table.concat(codes, ",")))
     return result(true, "v_news.server.saved", nil, saved)
 end
 

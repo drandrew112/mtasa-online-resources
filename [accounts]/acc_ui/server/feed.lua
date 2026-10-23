@@ -2,7 +2,7 @@
 -- (v_news latest articles, v_weekly info). Both resources are optional: no
 -- include, they are only queried while running.
 
-local NEWS_COUNT = 3
+local NEWS_COUNT = 10 -- candidates; the client shows as many as fit its screen
 
 local function resourceRunning(name)
     local res = getResourceFromName(name)
@@ -28,8 +28,10 @@ local function newsList()
     local out = {}
     for i, a in ipairs(list) do
         local t = getRealTime(tonumber(a.date) or 0)
+        -- title / body = the default language; texts = every language, the client picks its own
         out[i] = { dateText = ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday),
-                   title = tostring(a.title or ""), body = tostring(a.body or "") }
+                   title = tostring(a.title or ""), body = tostring(a.body or ""),
+                   texts = type(a.texts) == "table" and a.texts or {} }
     end
     return out
 end
