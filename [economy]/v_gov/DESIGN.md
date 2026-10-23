@@ -26,8 +26,14 @@ of section 8.
 
 ## 3. Panel pages
 
-Own DX panel, built like the v_admin panel (page list on the left, page modules; server handlers
-answer `reply(result, message)`), English UI text.
+A full-screen CEF page (`web/index.html` + `web/js/gov.js`, opened through web_api's loader for
+osa.css / osa.js and cache busting; no HTTP entry). `client/panel.lua` only relays: the page calls
+`mta.triggerEvent("v_gov:pageCall", id, action, args)`, the client sends the same `v_gov:call` as
+before, server handlers answer `reply(result, message)` and the client hands the result (or the
+translated error) back to `GOV._resolve`. Texts stay in v_locals: on start the page sends the keys it
+uses and gets them back translated. Values are typed into inline inputs (Save / Default per row);
+the payer of a work is chosen with a company picker (state payers filtered in the page, private
+companies searched by name or #id through `findCompanies`).
 
 | Page | Content | Edit |
 | --- | --- | --- |
@@ -113,7 +119,7 @@ Initial parameters (from today's configs):
 ### 5.2 Payer
 
 Per work: **system** (money from nothing – the **default** for every work), the **treasury**, a
-**state company** or a **private company** (a biz_core organization's account, picked by name).
+**state company** or a **private company** (a biz_core organization's account, chosen in the picker; stored as `company:<id>`).
 
 - `exports.v_gov:getWorkPayer(workId)` → v_bank account id or `"system"`; without v_gov: system.
 - Seeded by the earlier decisions (changeable like any other value): `ems`, `bloodtransport` →

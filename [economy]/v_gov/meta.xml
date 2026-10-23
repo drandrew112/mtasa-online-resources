@@ -4,6 +4,7 @@
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
+    <include resource="web_api" />
 
     <!-- ================= SHARED ================= -->
     <script src="locals.lua" type="shared" />
@@ -20,6 +21,11 @@
 
     <!-- ================= CLIENT ================= -->
     <script src="client/panel.lua" type="client" />
+
+    <!-- the /gov page: in game only, opened through web_api's loader (no <html> entry) -->
+    <file src="web/index.html" type="client" />
+    <file src="web/css/gov.css" type="client" />
+    <file src="web/js/gov.js" type="client" />
 
     <!-- settings -->
     <export function="getSetting" type="server" />

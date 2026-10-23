@@ -120,6 +120,9 @@ addEventHandler("ui_core:textInputResult", root, function(token, text)
     BR.refresh()
 end)
 
+-- registered here too: this file loads before core/browser.lua, and a handler of an event that
+-- is not added yet is dropped
+addEvent("ui_browser:action", false)
 addEventHandler("ui_browser:action", localPlayer, function(_, verb, arg)
     if verb == "bank_select" then
         BANK.selected = tonumber(arg)

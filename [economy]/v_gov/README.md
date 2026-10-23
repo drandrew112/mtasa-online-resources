@@ -1,10 +1,10 @@
 # v_gov — the state
 
-`/gov` opens the government panel: taxes, work pay, fees and fines, state healthcare, state
-companies, members and the change log. The money is the **State Treasury** of v_bank. Design and
+`/gov` opens the government panel (a full-screen CEF page, `web/`): taxes, work pay, fees and
+fines, state healthcare, state companies, members and the change log. The money is the **State Treasury** of v_bank. Design and
 decisions: [DESIGN.md](DESIGN.md).
 
-Depends on `v_mysql` and `v_locals` (`<include>`); uses v_bank, work_core, medsys, biz_core when
+Depends on `v_mysql`, `v_locals` and `web_api` (`<include>`); uses v_bank, work_core, medsys, biz_core when
 they run.
 
 ## Roles

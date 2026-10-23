@@ -10,6 +10,7 @@ addEvent("v_gov:call", true)
 local NEED = {
     overview = "viewer", treasuryLedger = "viewer", taxes = "viewer", works = "viewer", fees = "viewer",
     health = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
+    findCompanies = "viewer",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
@@ -117,8 +118,42 @@ local function payerOptions()
     return out
 end
 
+--- id -> name of the biz_core companies in `ids` (async)
+local function companyNames(ids, cb)
+    if #ids == 0 then return cb({}) end
+    local marks = {}
+    for i = 1, #ids do marks[i] = "?" end
+    DB.query(function(rows)
+        local names = {}
+        for _, r in ipairs(rows or {}) do
+            names[tostring(int(r.id))] = { name = tostring(r.name), active = r.status == "active" }
+        end
+        cb(names)
+    end, "SELECT id, name, status FROM biz_companies WHERE id IN (" .. table.concat(marks, ",") .. ")", unpack(ids))
+end
+
 function A.works(p, args, reply)
-    reply({ works = workList(), payers = payerOptions(), taxKeys = GOV.get("tax.income_keys") or {} })
+    local list = workList()
+    local ids, seen = {}, {}
+    for _, w in ipairs(list) do
+        local id = tonumber(w.payer:match("^company:(%d+)$"))
+        if id and not seen[id] then seen[id] = true; ids[#ids + 1] = id end
+    end
+    companyNames(ids, function(names)
+        reply({ works = list, payers = payerOptions(), taxKeys = GOV.get("tax.income_keys") or {}, companies = names })
+    end)
+end
+
+--- the company picker: active biz_core companies by name or id: { q } -> { list = { {id, name}, ... } }
+function A.findCompanies(p, args, reply)
+    local q = DB.clip(tostring(args.q or ""):gsub("^%s+", ""):gsub("%s+$", ""), 48)
+    local like = "%" .. q:gsub("[\\%%_]", "\\%0") .. "%"
+    DB.query(function(rows)
+        local list = {}
+        for i, r in ipairs(rows or {}) do list[i] = { id = int(r.id), name = tostring(r.name) } end
+        reply({ list = list })
+    end, "SELECT id, name FROM biz_companies WHERE status = 'active' AND (name LIKE ? OR id = ?) ORDER BY name LIMIT 25",
+        like, tonumber(q) or 0)
 end
 
 function A.taxes(p, args, reply)
@@ -233,15 +268,15 @@ function A.setWork(p, args, reply, actor)
             GOV.set("work." .. workId .. ".payer", spec, actor)
             return reply(true)
         end
-        -- a private company by name
-        local name = spec:match("^company:(.+)$")
-        if not name then return reply(false, "v_gov.err.bad_payer") end
+        -- a private company (the picker sends its id)
+        local id = tonumber(spec:match("^company:(%d+)$"))
+        if not id then return reply(false, "v_gov.err.bad_payer") end
         DB.query(function(rows)
             local r = rows and rows[1]
             if not r then return reply(false, "v_gov.err.no_company") end
             GOV.set("work." .. workId .. ".payer", "company:" .. int(r.id), actor)
             reply(true)
-        end, "SELECT id FROM biz_companies WHERE (name_key = LOWER(?) OR id = ?) AND status = 'active' LIMIT 1", name, tonumber(name) or 0)
+        end, "SELECT id FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", id)
         return
     elseif field == "multiplier" then
         local v = tonumber(args.value)
