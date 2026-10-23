@@ -68,5 +68,7 @@
   "work_core.vehicles.you_must_be_on_duty_to": "Munkajármű igényléséhez szolgálatban kell lenned.",
   "work_core.vehicles.your_current_work_vehicle_is_still": "A jelenlegi munkajárműved még használatban van.",
   "work_core.payment.weekly_bonus": "Heti bónusz ({mult})",
-  "work_core.levels.xp_bonus": "+{amount|int} XP ({mult})"
+  "work_core.levels.xp_bonus": "+{amount|int} XP ({mult})",
+  "work_core.payment.wage_multiplier": "Bérszorzó ({mult})",
+  "work_core.payment.income_tax": "Személyi jövedelemadó ({rate}%)"
 }

@@ -18,13 +18,47 @@ local function workCoreRunning()
     return res and getResourceState(res) == "running"
 end
 
-local function rateFor(outcome)
-    return Config.PAY.RATES[outcome] or Config.PAY.RATES.default
+-- the rates are adjustable on the /gov Works page (v_gov); Config.PAY.RATES are the defaults.
+-- param keys: <outcome>.base / <outcome>.per_minute (spaces of the outcome code -> "_")
+local function paramKey(outcome, field) return outcome:gsub(" ", "_") .. "." .. field end
+
+local WAGE_PARAMS = {}
+do
+    local outcomes = {}
+    for outcome in pairs(Config.PAY.RATES) do outcomes[#outcomes + 1] = outcome end
+    table.sort(outcomes)
+    for _, outcome in ipairs(outcomes) do
+        local r = Config.PAY.RATES[outcome]
+        WAGE_PARAMS[#WAGE_PARAMS + 1] = { key = paramKey(outcome, "base"), label = "Base pay: " .. outcome, default = r.base }
+        WAGE_PARAMS[#WAGE_PARAMS + 1] = { key = paramKey(outcome, "per_minute"), label = "Per minute: " .. outcome, default = r.perMinute }
+    end
+end
+
+local function govRunning()
+    local res = getResourceFromName("v_gov")
+    return res and getResourceState(res) == "running"
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if (res == getThisResource() or getResourceName(res) == "v_gov") and govRunning() then
+        exports.v_gov:registerWage(Config.PAY.WORK_ID, WAGE_PARAMS)
+    end
+end)
+
+local function rateValue(outcome, field, default)
+    if govRunning() then
+        local v = exports.v_gov:getWage(Config.PAY.WORK_ID, paramKey(outcome, field))
+        if v then return v end
+    end
+    return default
 end
 
 local function taskAmount(c)
-    local rate = rateFor(c.outcome)
-    return rate.base + (c.duration or 0) / 60 * rate.perMinute
+    local outcome = Config.PAY.RATES[c.outcome] and c.outcome or "default"
+    local rate = Config.PAY.RATES[outcome]
+    local base = rateValue(outcome, "base", rate.base)
+    local perMinute = rateValue(outcome, "per_minute", rate.perMinute)
+    return base + (c.duration or 0) / 60 * perMinute
 end
 
 -- closedTasks outcome code -> shown word (the codes are also the Config.PAY.RATES keys)

@@ -135,6 +135,8 @@
     <file src="locales/en/biz_pc.json" />
     <file src="locales/en/biz_weed.json" />
     <file src="locales/en/files/v_introduce/rules.txt" />
+    <file src="locales/en/v_bank.json" />
+    <file src="locales/en/v_gov.json" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/ai_peds.json" />
     <file src="locales/hu/avi_core.json" />
@@ -226,6 +228,8 @@
     <file src="locales/hu/biz_pc.json" />
     <file src="locales/hu/biz_weed.json" />
     <file src="locales/hu/files/v_introduce/rules.txt" />
+    <file src="locales/hu/v_bank.json" />
+    <file src="locales/hu/v_gov.json" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->
     <export function="import"            type="client" />

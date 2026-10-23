@@ -66,7 +66,8 @@ end
 
 -- The pay rules, for the tutorial's explanation
 function getPayRules()
-    return { base = BTD.PAY.BASE, delivered = BTD.PAY.DELIVERED, inTransit = BTD.PAY.IN_TRANSIT }
+    local pay = BTD.currentPay()
+    return { base = pay.BASE, delivered = pay.DELIVERED, inTransit = pay.IN_TRANSIT }
 end
 
 addEventHandler("onPlayerQuit", root, function() TutorialOf[source] = nil end)

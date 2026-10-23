@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- ui_browser :: server.lua
 -- Server-side export wrappers + the action router. Liberty Bank goes through the
--- v_bank exports; balance persistence is entirely v_bank's job.
+-- v_bank exports (accounts, statements, transfers: core/bank.lua on the client);
+-- balances and the ledger are entirely v_bank's job.
 
 addEvent("ui_browser:action", true)
 
@@ -49,7 +50,7 @@ local function bankTransaction(player, kind, arg)
         if kind == "bank_deposit" then
             amount = getPlayerMoney(player)
         else
-            amount = tonumber(getElementData(player, "bank_money")) or 0
+            amount = tonumber(exports.v_bank:getPlayerBalance(player)) or 0
         end
     else
         amount = tonumber(arg)
@@ -68,12 +69,27 @@ local function bankTransaction(player, kind, arg)
     if result == true then
         notify(player, L.msg("ui_browser.server.liberty_bank"),
             (kind == "bank_deposit" and L.msg("ui_browser.server.deposited") or L.msg("ui_browser.server.withdrew")) .. amount .. ".")
-        triggerClientEvent(player, "ui_browser:refresh", resourceRoot)
+        exports.v_bank:requestBankAccounts(player)   -- fresh balance + statement on the page
     else
+        notify(player, L.msg("ui_browser.server.liberty_bank"), L.msg("v_bank.error." .. tostring(result)))
         outputServerLog(("[ui_browser] Liberty Bank %s %s failed: %s")
             :format(kind, amount, tostring(result)))
     end
 end
+
+-- requests of the bank page (core/bank.lua); v_bank answers with v_bank:* client events
+addEvent("ui_browser:bank", true)
+addEventHandler("ui_browser:bank", resourceRoot, function(op, a1, a2, a3, a4, a5)
+    local player = client
+    if not isElement(player) or not bankReady() then return end
+    if op == "accounts" then
+        exports.v_bank:requestBankAccounts(player)
+    elseif op == "ledger" then
+        exports.v_bank:requestLedger(player, tonumber(a1), tonumber(a2), type(a3) == "string" and a3 or nil)
+    elseif op == "transfer" then
+        exports.v_bank:requestTransfer(player, tonumber(a1), tostring(a2 or ""), tonumber(a3), tostring(a4 or ""), a5 == true)
+    end
+end)
 
 --------------------------------------------------------------------------------
 -- action router
@@ -87,6 +103,7 @@ addEventHandler("ui_browser:action", root, function(url, verb, arg, category)
         bankTransaction(player, verb, arg)
         return
     end
+    if verb:sub(1, 5) == "bank_" then return end   -- page-only actions of core/bank.lua
 
     if verb == "buy" then
         -- arg is "<productId>" or "<productId>:<colour>"

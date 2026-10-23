@@ -2,7 +2,8 @@
 -- Elements are tables; events run synchronously; MySQL is answered by
 -- TEST.db(sql, ...) which tests replace.
 
-TEST = { events = {}, data = {}, now = 1000000, tick = 0, sent = {}, execs = {}, notifies = {}, bank = {}, timers = {} }
+TEST = { events = {}, data = {}, now = 1000000, tick = 0, sent = {}, execs = {}, notifies = {}, bank = {}, timers = {},
+         acc = {}, cash = {} }
 
 utf8 = utf8 or { len = function(s) return #s end }
 
@@ -55,6 +56,7 @@ function triggerClientEvent(player, name, _, title, msg)
     return true
 end
 function fromJSON() return nil end
+function givePlayerMoney(p, a) TEST.cash[p] = (TEST.cash[p] or 0) + a return true end
 function toJSON() return "[]" end
 
 function getResourceFromName(n) return { name = n } end
@@ -65,17 +67,43 @@ function call() return 0 end
 
 -- exports.<res>:fn(...)
 local EXP = {
-    v_locals = { import = function() return "L = setmetatable({}, { __call = function(_, k) return k end }); L.msg = function(k, p) return { t = k, p = p } end; L.text = L.msg" end },
+    v_locals = { import = function() return "L = setmetatable({}, { __call = function(_, k) return k end }); L.msg = function(k, p) return { t = k, p = p } end; L.text = L.msg; L.has = function() return false end; L.lang = function() return \"en\" end; L.forPlayer = function(_, k) return k end" end },
     v_mysql = {
         importAsync = function() return "MYSQL = { query = function(cb, sql, ...) cb(TEST.db(sql, ...)) end, insert = function(cb, sql, ...) cb(TEST.insert(sql, ...)) end }" end,
         mysqlExec = function(sql, ...) table.insert(TEST.execs, { sql = sql, args = { ... } }) return true end,
         getAccData = function() return 0 end, setAccData = function() return true end,
     },
     acc_auth = { getName = function(p) return p.account end },
-    v_bank = {
-        takeBankMoney = function(p, a) local b = TEST.bank[p] or 0; if b < a then return "not_enough_money" end TEST.bank[p] = b - a return true end,
-        giveBankMoney = function(p, a) TEST.bank[p] = (TEST.bank[p] or 0) + a return true end,
-    },
+    -- v_bank: accounts in TEST.acc[id]; company account id = "c:<id>", personal = "p:<name>"
+    v_bank = (function()
+        local function book(id, delta, key, params)
+            TEST.acc[id] = (TEST.acc[id] or 0) + delta
+            triggerEvent("onBankBalanceChanged", resourceRoot, id, TEST.acc[id], delta, key, params or {})
+        end
+        local force = { ["biz.casino_loss"] = true, ["tax.company_income"] = true }
+        local function move(from, to, a, key, params)
+            if from and (TEST.acc[from] or 0) < a and not force[key] then return false, "not_enough_money" end
+            if from then book(from, -a, key, params) end
+            if to then book(to, a, key, params) end
+            return true
+        end
+        return {
+            isBankReady = function() return true end,
+            getCompanyAccount = function(cid) return "c:" .. tostring(cid) end,
+            getPlayerAccount = function(p) return "p:" .. p.name end,
+            getBalance = function(id) return TEST.acc[id] or 0 end,
+            getPlayerBalance = function(p) return TEST.acc["p:" .. p.name] or 0 end,
+            credit = function(id, a, key, params) return move(nil, id, a, key, params) end,
+            debit = function(id, a, key, params) return move(id, nil, a, key, params) end,
+            transfer = function(f, t, a, key, params) return move(f, t, a, key, params) end,
+            takeBankMoney = function(p, a, key, params) local ok, err = move("p:" .. p.name, nil, a, key, params) return ok or err end,
+            giveBankMoney = function(p, a, key, params) return move(nil, "p:" .. p.name, a, key, params) end,
+            createCompanyAccount = function() return true end,
+            closeAccount = function() return true end,
+            setAccess = function() return true end,
+            setAccountStatus = function() return true end,
+        }
+    end)(),
     v_stats = { addStat = function() return true end },
     v_achievements = { unlockAchievement = function() return true end, setStat = function() return true end },
 }

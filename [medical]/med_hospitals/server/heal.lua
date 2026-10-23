@@ -1,6 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Free treatment marker: a player standing in it for HOSP.HEAL_TIME (15 s) is healed completely
 -- (medsys healCompletely: injuries, bleeding, vitals; plus full health). Leaving cancels it.
+-- Free for the player: the State Treasury pays it (v_gov chargeHealthcare, state healthcare).
 
 addEvent("onHospitalPlayerHealed", false)  -- (player, hospitalId)
 
@@ -36,6 +37,8 @@ local function finish(player, p)
     procs[player] = nil
     stopProgress(player)
     local h = p.point.hospital
+    -- billed to the treasury before the patient is healed (the cost is what is healed)
+    if isResourceRunning("v_gov") then exports.v_gov:chargeHealthcare(player, h.name) end
     if isResourceRunning("medsys") then exports.medsys:healCompletely(player) end
     setElementHealth(player, 100)
     notify(player, L.msg("med_hospitals.heal.you_were_treated_at_get_well", { name = h.name }))

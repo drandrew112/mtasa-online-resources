@@ -111,8 +111,10 @@ MODULES[#MODULES + 1] = {
     id = "money",
     profile = function(player, out)
         out.money = tonumber(getData(player, "money-BETA")) or 0
-        -- bank_money is owned by v_bank (saved on every change), read for the menu only
-        out.bank = math.floor(tonumber(getData(player, "bank_money")) or 0)
+        -- the bank balance is owned by v_bank (bank_accounts table), read for the menu only
+        local bank = getResourceFromName("v_bank")
+        local balance = bank and getResourceState(bank) == "running" and exports.v_bank:getPlayerBalance(player)
+        out.bank = math.floor(tonumber(balance) or tonumber(getElementData(player, "bank_money")) or 0)
     end,
     apply = function(player)
         local money = tonumber(getData(player, "money-BETA"))

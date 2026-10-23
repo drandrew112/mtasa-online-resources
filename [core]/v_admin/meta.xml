@@ -44,6 +44,7 @@
     <script src="server/pages/news.lua"     type="server" />
     <script src="server/pages/mail.lua"     type="server" />
     <script src="server/pages/organizations.lua" type="server" />
+    <script src="server/pages/bank.lua"     type="server" />
     <script src="server/pages/misc.lua"     type="server" />
     <script src="server/web.lua"          type="server" />
 
@@ -58,6 +59,7 @@
     <script src="client/panel/players.lua"      type="client" />
     <script src="client/panel/accounts.lua"     type="client" />
     <script src="client/panel/organizations.lua" type="client" />
+    <script src="client/panel/bank.lua"         type="client" />
     <script src="client/panel/reports.lua"      type="client" />
     <script src="client/panel/bans.lua"         type="client" />
     <script src="client/panel/server.lua"       type="client" />

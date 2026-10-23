@@ -18,6 +18,43 @@ local function running(name)
     return res and getResourceState(res) == "running"
 end
 
+-- pay, fine and XP numbers: adjustable on the /gov Works page (v_gov), the CTL values are the defaults
+local WAGE_PARAMS = {
+    { key = "per_action",   label = "Pay per traffic action",          default = CTL.PAY_PER_ACTION },
+    { key = "minute_bonus", label = "Time bonus per minute (factor)",  default = CTL.PAY_MINUTE_BONUS },
+    { key = "max_mult",     label = "Max time multiplier",             default = CTL.PAY_MAX_MULT },
+    { key = "per_aircraft", label = "Pay per controlled aircraft",     default = CTL.PAY_PER_AIRCRAFT },
+    { key = "penalty_gnd",  label = "Mistake: head-on on the ground",  default = CTL.PENALTY.GND },
+    { key = "penalty_tma",  label = "Mistake: separation lost in TMA", default = CTL.PENALTY.TMA },
+    { key = "penalty_cta",  label = "Mistake: separation lost in CTA", default = CTL.PENALTY.CTA },
+    { key = "xp_default",   label = "XP per action (default)",         default = CTL.XP_DEFAULT, kind = "xp" },
+}
+local xpActions = {}
+for action in pairs(CTL.XP_ACTIONS) do xpActions[#xpActions + 1] = action end
+table.sort(xpActions)
+for _, action in ipairs(xpActions) do
+    WAGE_PARAMS[#WAGE_PARAMS + 1] = { key = "xp_" .. action, label = "XP: " .. action, default = CTL.XP_ACTIONS[action], kind = "xp" }
+end
+local wageDefault = {}
+for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
+
+local function wage(key)
+    if running("v_gov") then
+        local v = exports.v_gov:getWage(CTL.WORK_ID, key)
+        if v then return v end
+    end
+    return wageDefault[key]
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if (res == getThisResource() or getResourceName(res) == "v_gov") and running("v_gov") then
+        exports.v_gov:registerWage(CTL.WORK_ID, WAGE_PARAMS)
+    end
+end)
+
+local PENALTY_KEY = { GND = "penalty_gnd", TMA = "penalty_tma", CTA = "penalty_cta" }
+local function penalty(kind) return PENALTY_KEY[kind] and wage(PENALTY_KEY[kind]) or nil end
+
 local function call(resName, fn, ...)
     if not running(resName) then return nil end
     local ok, a, b = pcall(function(...) return exports[resName][fn](exports[resName], ...) end, ...)
@@ -160,8 +197,8 @@ local function sessionItems(sess)
     local items = {}
     if sess.actions >= CTL.PAY_MIN_ACTIONS then
         local minutes = (getTickCount() - sess.start) / 60000
-        local mult = math.min(1 + minutes * CTL.PAY_MINUTE_BONUS, CTL.PAY_MAX_MULT)
-        local base = sess.actions * CTL.PAY_PER_ACTION
+        local mult = math.min(1 + minutes * wage("minute_bonus"), wage("max_mult"))
+        local base = sess.actions * wage("per_action")
         local bonus = math.floor(base * mult + 0.5) - base
         items[#items + 1] = { label = ("Traffic actions (%d)"):format(sess.actions), amount = base }
         if bonus > 0 then
@@ -169,7 +206,7 @@ local function sessionItems(sess)
         end
         if sess.aircraftCount > 0 then
             items[#items + 1] = { label = ("Controlled traffic (%d)"):format(sess.aircraftCount),
-                amount = sess.aircraftCount * CTL.PAY_PER_AIRCRAFT }
+                amount = sess.aircraftCount * wage("per_aircraft") }
         end
     end
     if sess.mistakes > 0 then
@@ -178,14 +215,14 @@ local function sessionItems(sess)
     return items
 end
 
--- pay for the finished position session. Mistakes are always paid for: a negative total comes from the bank.
+-- pay for the finished position session (payer: SA Control, set on the /gov Works page). Mistakes
+-- are always paid for: payWork takes a negative total from the bank too (chargeNegative, may go
+-- into debt), and that money goes to the payer.
 local function paySession(player, sess)
     if not sess then return end
     local items = sessionItems(sess)
     if #items == 0 then return end
-    local ok, total = call("work_core", "payWork", player, CTL.WORK_ID, items, "Position closed")
-    -- payWork pays only a positive total; the rest of the fines is taken here (may go into debt)
-    if ok and total and total < 0 then call("v_bank", "forceTakeMoney", player, -total) end
+    call("work_core", "payWork", player, CTL.WORK_ID, items, "Position closed", { chargeNegative = true })
 end
 
 function logoutATC(player, silent)
@@ -399,7 +436,7 @@ addEventHandler("avi:ctlCmd", resourceRoot, function(action, id, value)
         triggerEvent("onATCTutorialCommand", resourceRoot, player, action, id, value)
         return
     end
-    call("work_core", "giveWorkXp", player, CTL.WORK_ID, CTL.XP_ACTIONS[action] or CTL.XP_DEFAULT)
+    call("work_core", "giveWorkXp", player, CTL.WORK_ID, wage("xp_" .. tostring(action)) or wage("xp_default"))
 end)
 
 -- separation loss on aircraft of these positions (avi_traffic): a mistake for each staffing controller
@@ -407,7 +444,7 @@ local SEP_TEXT = { GND = "head-on on the ground", TMA = "separation lost in the 
 
 addEvent("onAviSeparationLoss")
 addEventHandler("onAviSeparationLoss", root, function(kind, positions, cs1, cs2)
-    local amount = CTL.PENALTY[kind]
+    local amount = penalty(kind)
     if not amount or type(positions) ~= "table" then return end
     for _, posId in ipairs(positions) do
         local player = staff[posId]
@@ -424,7 +461,7 @@ end)
 addEvent("onAviTutorialSeparationLoss")
 addEventHandler("onAviTutorialSeparationLoss", root, function(owner, kind, cs1, cs2)
     local sess = isElement(owner) and sessions[owner]
-    local amount = CTL.PENALTY[kind]
+    local amount = penalty(kind)
     if not (sess and sess.tutorial and amount) then return end
     sess.mistakes = sess.mistakes + amount
     sess.mistakeCount = sess.mistakeCount + 1
@@ -482,9 +519,9 @@ end
 
 -- the pay and fine rules (CTL.PAY_*, CTL.PENALTY, CTL.XP_*) for texts that explain them
 function getATCPayRules()
-    return { perAction = CTL.PAY_PER_ACTION, minuteBonus = CTL.PAY_MINUTE_BONUS, maxMult = CTL.PAY_MAX_MULT,
-        perAircraft = CTL.PAY_PER_AIRCRAFT, minActions = CTL.PAY_MIN_ACTIONS, xp = CTL.XP_DEFAULT,
-        penalty = { GND = CTL.PENALTY.GND, TMA = CTL.PENALTY.TMA, CTA = CTL.PENALTY.CTA } }
+    return { perAction = wage("per_action"), minuteBonus = wage("minute_bonus"), maxMult = wage("max_mult"),
+        perAircraft = wage("per_aircraft"), minActions = CTL.PAY_MIN_ACTIONS, xp = wage("xp_default"),
+        penalty = { GND = penalty("GND"), TMA = penalty("TMA"), CTA = penalty("CTA") } }
 end
 
 -- tutorial session of the player (logged in through useTutorialConsole)

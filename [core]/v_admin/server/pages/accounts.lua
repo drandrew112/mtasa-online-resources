@@ -65,7 +65,8 @@ end
 
 local LIST_SQL = "SELECT id, account_name, email, display_name, admin_level, created_at, updated_at, "
     .. jsonKey("money-BETA") .. " AS money, "
-    .. jsonKey("bank_money") .. " AS bank, "
+    -- the bank balance is v_bank's (bank_accounts), not account data
+    .. "(SELECT b.balance FROM bank_accounts b WHERE b.kind = 'personal' AND b.owner_ref = LOWER(`accounts`.account_name)) AS bank, "
     .. jsonKey("level") .. " AS level, "
     .. jsonKey("xp") .. " AS xp, "
     .. jsonKey("Online.hours") .. " AS hours, "
@@ -269,7 +270,9 @@ end
 local function fetchAccount(name, cb)
     MYSQL.query(function(rows)
         cb(rows and rows[1] or nil, rows ~= false and rows ~= nil)
-    end, "SELECT id, account_name, email, display_name, admin_level, created_at, updated_at, account_data FROM `accounts` WHERE account_name = ? LIMIT 1", name)
+    end, "SELECT id, account_name, email, display_name, admin_level, created_at, updated_at, account_data, "
+        .. "(SELECT b.balance FROM bank_accounts b WHERE b.kind = 'personal' AND b.owner_ref = LOWER(`accounts`.account_name)) AS bank "
+        .. "FROM `accounts` WHERE account_name = ? LIMIT 1", name)
 end
 
 local function workLevels(actor, name)
@@ -295,7 +298,7 @@ local function detail(actor, name, reply)
             email = showEmail(actor, row.email), hasEmail = type(row.email) == "string" and row.email ~= "",
             adminLevel = tonumber(row.admin_level) or 0, created = tonumber(row.created_at) or 0,
             updated = tonumber(row.updated_at) or 0,
-            money = tonumber(data["money-BETA"]) or 0, bank = tonumber(data.bank_money) or 0, level = tonumber(data.level) or 0, xp = tonumber(data.xp) or 0,
+            money = tonumber(data["money-BETA"]) or 0, bank = tonumber(row.bank) or 0, level = tonumber(data.level) or 0, xp = tonumber(data.xp) or 0,
             playtime = (tonumber(data["Online.hours"]) or 0) * 60 + (tonumber(data["Online.minutes"]) or 0),
             lastLogin = tonumber(data.last_login) or false, lastSerial = data.last_serial or false, lastIp = data.last_ip or false,
             updates = data.receiveUpdateMails ~= false, skin = tonumber(data.skin) or false,
@@ -551,13 +554,26 @@ function EDIT.money(actor, name, a)
     return ok("v_admin.page.saved")
 end
 
--- bank_money belongs to v_bank: online it lives in element data (v_bank saves it on quit), offline in accData
+-- the bank balance belongs to v_bank: setting it books the difference as an admin credit / debit
+-- (visible in the statement); works for offline accounts too
 function EDIT.bank(actor, name, a)
     local v = math.floor(tonumber(a.value) or -1)
     if v < 0 or v > 999999999 then return fail("v_admin.page.bad_number") end
-    local player = playerOfAccount(name)
-    if player then setElementData(player, "bank_money", v) end
-    if not exports.v_mysql:setAccData(player or name, "bank_money", v) then return fail("v_admin.page.save_failed") end
+    if not resourceRunning("v_bank") then return fail("v_admin.page.save_failed") end
+    local rows = exports.v_mysql:mysqlQuerySync("SELECT id, balance FROM bank_accounts WHERE kind = 'personal' AND owner_ref = ? LIMIT 1", name:lower())
+    local r = rows and rows[1]
+    if not r then return fail("v_admin.page.save_failed") end
+    local id = tonumber(r.id)
+    local current = tonumber(exports.v_bank:getBalance(id)) or tonumber(r.balance) or 0
+    local diff = v - current
+    if diff ~= 0 then
+        local admin = actorAccount(actor) or "admin"
+        local params = { note = "Balance set by an admin", admin = admin }
+        local done
+        if diff > 0 then done = exports.v_bank:credit(id, diff, "admin.credit", params, admin)
+        else done = exports.v_bank:debit(id, -diff, "admin.debit", params, admin) end
+        if done ~= true then return fail("v_admin.page.save_failed") end
+    end
     adminLog(actor, ("set bank money of %s to %d"):format(name, v), name)
     return ok("v_admin.page.saved")
 end

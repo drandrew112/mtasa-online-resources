@@ -1,27 +1,67 @@
 <meta>
-    <info author="andrasxa" name="Bank kezelo" version="1.0.0" type="script" />
+    <info author="DrAndrew112" name="Bank kezelo" version="2.0.0" type="script"
+          description="Bank accounts (personal, company, state) in MySQL bank_accounts + bank_ledger, transaction keys, State Treasury" />
 
     <include resource="v_mysql" />
 
-    <script src="server.lua" type="server" />
-    <script src="client.lua" type="client" />
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/keys.lua" type="shared" />
 
+    <!-- ================= SERVER ================= -->
+    <script src="server/db.lua" type="server" />
+    <script src="server/accounts.lua" type="server" />
+    <script src="server/bookings.lua" type="server" />
+    <script src="server/migrate.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+    <script src="server/queries.lua" type="server" />
+    <script src="server/cash.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client.lua" type="client" />
     <file src="sounds/pickup_money.wav" />
 
-    <!-- Server-side bank API. Cash is handled through GTA's built-in
-         take/givePlayerMoney; bank_money lives in the account + element data. -->
+    <!-- accounts -->
+    <export function="isBankReady" type="server" />
+    <export function="getTaxableKeys" type="server" />
+    <export function="getPlayerAccount" type="server" />
+    <export function="getPlayerBalance" type="server" />
+    <export function="getCompanyAccount" type="server" />
+    <export function="getStateAccount" type="server" />
+    <export function="getStateAccounts" type="server" />
+    <export function="getAccountInfo" type="server" />
+    <export function="getBalance" type="server" />
+    <export function="createCompanyAccount" type="server" />
+    <export function="createStateAccount" type="server" />
+    <export function="renameAccount" type="server" />
+    <export function="setAccountStatus" type="server" />
+    <export function="setAllowNegative" type="server" />
+    <export function="closeAccount" type="server" />
+    <export function="setAccess" type="server" />
+    <export function="hasAccess" type="server" />
+
+    <!-- bookings (key from shared/keys.lua) -->
+    <export function="credit" type="server" />
+    <export function="debit" type="server" />
+    <export function="transfer" type="server" />
+
+    <!-- player wrappers -->
+    <export function="giveBankMoney" type="server" />
     <export function="takeBankMoney" type="server" />
     <export function="forceTakeMoney" type="server" />
-    <export function="giveBankMoney" type="server" />
-    <export function="depositMoney"  type="server" />
+    <export function="depositMoney" type="server" />
     <export function="withdrawMoney" type="server" />
-    <export function="payMoney"      type="server" />
+    <export function="payMoney" type="server" />
 
-    <!-- Sound effect. Server export fires it for a player (or all); the client
-         export is for other client-side resources. -->
+    <!-- bank website (answers with client events) and admin / v_gov (answers later) -->
+    <export function="requestBankAccounts" type="server" />
+    <export function="requestLedger" type="server" />
+    <export function="requestTransfer" type="server" />
+    <export function="bankCall" type="server" />
+
+    <!-- cash helpers -->
     <export function="playPickupMoneySound" type="server" />
     <export function="playPickupMoneySound" type="client" />
-
-    <!-- Spawns a money bag pickup; auto-gives cash + plays the sound on collect. -->
     <export function="createMoneyPickup" type="server" />
 </meta>

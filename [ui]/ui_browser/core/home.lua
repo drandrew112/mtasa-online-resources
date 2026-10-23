@@ -1,6 +1,6 @@
 -- ui_browser :: core/home.lua
--- Builds the markup for the home page ("Open SE"), the Liberty Bank page and
--- the error page. These all go through the shared layout engine; only their
+-- Builds the markup for the home page ("Open SE") and the error page (Liberty Bank:
+-- core/bank.lua). These all go through the shared layout engine; only their
 -- markup is generated.
 
 local function esc(s)
@@ -172,56 +172,6 @@ function BR.buildProduct(pageAttrs, site, product, selColor)
     b[#b + 1] = ('<link href="%s">Back to %s</link>'):format(esc(site.url), esc(site.title or site.url))
     b[#b + 1] = '</col>'
     b[#b + 1] = '</row>'
-    b[#b + 1] = '</page>'
-    return table.concat(b, "\n")
-end
-
---------------------------------------------------------------------------------
--- Liberty Bank
---------------------------------------------------------------------------------
-
-function BR.buildBank(query)
-    local bankMoney = tonumber(getElementData(localPlayer, "bank_money")) or 0
-    local cash = getPlayerMoney(localPlayer) or 0
-
-    local b = {}
-    b[#b + 1] = '<page bg="#0a1a3a" text="#e8f0fc" heading="#ffffff" muted="#9ab5d8" ' ..
-        'link="#7cc4ff" accent="#38bdf8" card="#12244a" cardline="#2a3f66">'
-    b[#b + 1] = '<siteheader title="Liberty Bank" tagline="Personal current account" accent="#38bdf8" />'
-
-    b[#b + 1] = '<row gap="16">'
-    b[#b + 1] = ('<card accent="#0891b2"><small class="muted">BANK BALANCE</small><h1>%s</h1></card>')
-        :format(esc(money(bankMoney)))
-    b[#b + 1] = ('<card><small class="muted">CASH ON HAND</small><h1>%s</h1></card>')
-        :format(esc(money(cash)))
-    b[#b + 1] = '</row>'
-    b[#b + 1] = '<space h="6" />'
-
-    b[#b + 1] = '<card>'
-    b[#b + 1] = '<h3>Deposit cash</h3>'
-    b[#b + 1] = '<p class="muted">Move money from your pocket into the bank.</p>'
-    b[#b + 1] = '<buttons gap="10">'
-    for _, amt in ipairs({ 100, 500, 1000, 5000 }) do
-        b[#b + 1] = ('<button class="btn-primary" action="bank_deposit:%d">%s</button>')
-            :format(amt, esc(money(amt)))
-    end
-    b[#b + 1] = ('<button class="btn-dark" action="bank_deposit:all">Deposit all</button>')
-    b[#b + 1] = '</buttons>'
-    b[#b + 1] = '</card>'
-
-    b[#b + 1] = '<card>'
-    b[#b + 1] = '<h3>Withdraw cash</h3>'
-    b[#b + 1] = '<p class="muted">Move money from the bank into your pocket.</p>'
-    b[#b + 1] = '<buttons gap="10">'
-    for _, amt in ipairs({ 100, 500, 1000, 5000 }) do
-        b[#b + 1] = ('<button class="btn-buy" action="bank_withdraw:%d">%s</button>')
-            :format(amt, esc(money(amt)))
-    end
-    b[#b + 1] = ('<button class="btn-dark" action="bank_withdraw:all">Withdraw all</button>')
-    b[#b + 1] = '</buttons>'
-    b[#b + 1] = '</card>'
-
-    b[#b + 1] = '<link href="home">Back to search</link>'
     b[#b + 1] = '</page>'
     return table.concat(b, "\n")
 end

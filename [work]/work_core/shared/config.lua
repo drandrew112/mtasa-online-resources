@@ -12,6 +12,10 @@ WORK = {
 
     DEFAULT_COLOR = { 245, 166, 35 },  -- work colour when registerWork gets none
 
+    -- payWork without v_gov: income tax rate and the exempt works (v_gov owns these normally);
+    -- the payer is then always "system"
+    GOV_FALLBACK = { incomeTax = 0.12, exempt = { ems = true, bloodtransport = true } },
+
     -- A player counts as "in" a marker within size / 2 + this (metres, 2D) ...
     MARKER_EXTRA_RADIUS = 0.5,
     -- ... and when the player's feet are between marker z - 1 and marker z + this

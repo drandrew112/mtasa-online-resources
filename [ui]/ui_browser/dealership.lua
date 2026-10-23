@@ -143,21 +143,21 @@ addEventHandler("onResourceStart", resourceRoot, buildCatalog)
 
 -- Charge `amount` from cash first, then from the bank.
 -- -> "cash" | "bank" | nil (could not pay in full from either)
-local function charge(player, amount)
+local function charge(player, amount, item)
     if getPlayerMoney(player) >= amount then
         takePlayerMoney(player, amount)
         exports.ui_core:showMoney(player, "take", amount, "cash")
         return "cash"
     end
-    if bankReady() and exports.v_bank:takeBankMoney(player, amount) == true then
+    if bankReady() and exports.v_bank:takeBankMoney(player, amount, "shop.vehicle", { item = item }) == true then
         return "bank"
     end
     return nil
 end
 
-local function refund(player, amount, from)
+local function refund(player, amount, from, item)
     if from == "bank" and bankReady() then
-        exports.v_bank:giveBankMoney(player, amount)
+        exports.v_bank:giveBankMoney(player, amount, "shop.vehicle_refund", { item = item })
     else
         givePlayerMoney(player, amount)
         exports.ui_core:showMoney(player, "add", amount, "cash")
@@ -188,7 +188,7 @@ function Dealership.purchase(player, id, colourKey, url)
     end
 
     local price = item.price
-    local paidFrom = charge(player, price)
+    local paidFrom = charge(player, price, item.name)
     if not paidFrom then
         notify(player, L.msg("ui_browser.dealership.dealership"),
             L.msg("ui_browser.dealership.you_cannot_afford_cash_and_bank", { name = item.name, price = money(price) }))
@@ -199,7 +199,7 @@ function Dealership.purchase(player, id, colourKey, url)
         colours and { colors = colours } or nil)
 
     if not vehId then
-        refund(player, price, paidFrom)
+        refund(player, price, paidFrom, item.name)
         notify(player, L.msg("ui_browser.dealership.dealership"), L.msg("ui_browser.dealership.sale_could_not_be_completed_you"))
         outputServerLog(("[ui_browser] dealership: giveVehicle failed for %s (model %s): %s")
             :format(getPlayerName(player), item.model, tostring(err)))

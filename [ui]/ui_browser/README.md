@@ -32,7 +32,7 @@ A simplified **virtual browser** for MTA:SA. "Websites" are HTML-like markup fil
 - **Home page search box** – click it, type an address / a category / any words,
   press Enter. Escape or a click elsewhere unfocuses it.
 - A **cash / bank HUD** shows top-right of the screen while the browser is open
-  (bank balance = account data `bank_money`).
+  (bank balance = the `bank_money` element data mirror of v_bank).
 - `/browser [address]` – for testing.
 
 Website addresses end in `.eu` by convention (e.g. `lvcars.eu`); it is not
@@ -256,4 +256,4 @@ Everything else is only logged; hook it from your own resource.
 | `bizmarket.eu` | business | BizMarket (text listings) |
 | `fiero.eu` | business | Fiero Markets – "investments unavailable" placeholder |
 | `diamond.eu` | entertainment | Diamond Casino – about page, "not opened yet" |
-| `libertybank.eu` | finance | Liberty Bank – dynamic deposit/withdraw page |
+| `libertybank.eu` | finance | Liberty Bank (core/bank.lua) – accounts, statement, deposit/withdraw, transfers (v_bank) |

@@ -102,12 +102,12 @@ local function runHour(st)
     local result, e = simulateHour()
     local label = e and e.label or ""
     if result > 0 then
-        core():creditCompany(cid, result, "casino.hour", "The Casino: hour result" .. (e and (" (" .. label .. ")") or ""), "")
+        core():creditCompany(cid, result, "casino.hour", "The Casino: hour result" .. (e and (" (" .. label .. ")") or ""), "", false, nil, { event = label })
     elseif result < 0 then
         -- a losing hour takes what the account has
         local clean, dirty = core():getCompanyBalance(cid)
         local take = math.min(-result, (clean or 0) + (dirty or 0))
-        if take > 0 then core():debitCompany(cid, take, "casino.hour", "The Casino: losing hour" .. (e and (" (" .. label .. ")") or ""), "") end
+        if take > 0 then core():debitCompany(cid, take, "casino.hour", "The Casino: losing hour" .. (e and (" (" .. label .. ")") or ""), "", nil, { event = label }) end
     end
     local laundered = core():processLaunder(cid, CFG.LAUNDER_PER_HOUR, CFG.LAUNDER_FEE) or 0
     local ts = getRealTime().timestamp

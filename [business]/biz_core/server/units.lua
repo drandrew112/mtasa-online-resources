@@ -20,14 +20,16 @@ function UNIT.buy(c, propertyId, actor, cb, opts)
 
     local price = opts.free and 0 or p.price
     if price > 0 then
-        local ok, err = MONEY.debit(c, price, "property.buy", desc("Bought %s", BIZ.propertyName(propertyId)), actor)
+        local ok, err = MONEY.debit(c, price, "biz.property_buy", { property = BIZ.propertyName(propertyId) },
+            desc("Bought %s", BIZ.propertyName(propertyId)), actor)
         if not ok then return cb(false, err) end
     end
     local now = BIZ.now()
     DB.insert(function(id, err)
         if not id or id == true then
             if price > 0 and CO.byId[c.id] == c then
-                MONEY.credit(c, price, "property.refund", desc("Refund: %s", BIZ.propertyName(propertyId)), actor)
+                MONEY.credit(c, price, "biz.property_refund", { property = BIZ.propertyName(propertyId) },
+                    desc("Refund: %s", BIZ.propertyName(propertyId)), actor)
             end
             outputDebugString("[biz_core] unit insert failed: " .. tostring(err), 1)
             return cb(false, "db")
@@ -51,7 +53,8 @@ function UNIT.remove(c, u, reason, refund, actor)
     DB.exec("DELETE FROM biz_units WHERE id = ?", u.id)
     triggerEvent("onBizUnitRemoved", resourceRoot, u.id, u.propertyId, c.id, reason or "sold")
     if refund and refund > 0 then
-        MONEY.credit(c, refund, "property.sell", desc("Sold %s", BIZ.propertyName(u.propertyId)), actor)
+        MONEY.credit(c, refund, "biz.property_sell", { property = BIZ.propertyName(u.propertyId) },
+            desc("Sold %s", BIZ.propertyName(u.propertyId)), actor)
     end
     CO.accessChanged(c)
     CO.saveValue(c)
@@ -186,7 +189,8 @@ function buyUnitUpgrade(unitId, amount, label, actor)
     local c = u and CO.byId[u.companyId]
     amount = math.floor(tonumber(amount) or 0)
     if not c or amount <= 0 then return false, "invalid" end
-    local ok, err = MONEY.debit(c, amount, "property.upgrade",
+    local ok, err = MONEY.debit(c, amount, "biz.property_upgrade",
+        { property = BIZ.propertyName(u.propertyId), upgrade = tostring(label or "upgrade") },
         desc("%s: %s", BIZ.propertyName(u.propertyId), tostring(label or "upgrade")), actor or "")
     if not ok then return false, err end
     u.upgradesPaid = u.upgradesPaid + amount

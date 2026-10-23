@@ -22,17 +22,22 @@ tile, Weekly → Business tab), `acc_menu` / `ui_pause` (Business stat category)
 
 ## Rules (user decisions)
 
-- One organization per player. Registration 50 000 € + the office, paid from the player's bank.
-  Everything after that is paid by the company account.
+- One organization per player. Registration 50 000 € (v_gov fee, to the State Treasury) + the office
+  (disappears), paid from the player's bank. Everything after that is paid by the company account.
+- **The clean money is the company's v_bank account** (since 2026-10-23, v_bank DESIGN 6.3); only the
+  dirty money is kept by biz_core (`balance_dirty`, `biz_ledger`). The computer's ledger shows both.
+  Every hour v_gov takes 10% company income tax of the legal income (now: the casino result).
 - **Online only:** production, casino, laundering and upkeep run only while the founder is online
   (biz_core ticks per online minute; every counter is in online seconds). The casino works per hour.
 - Upkeep every 2 online hours for every property and the office; unpaid → paused until the account covers it.
-- Deposit from the founder's bank is allowed. Dirty money can be withdrawn (logged in accData
-  `biz_dirty_withdrawn` for later consequences) or laundered through a casino (40 000 € / casino hour, 12%).
+- Deposit from the founder's bank is allowed (a bank transfer). Clean money is withdrawn to the bank;
+  dirty money only as **cash** (logged in accData `biz_dirty_withdrawn` for later consequences) or
+  laundered through a casino (40 000 € / casino hour, 12%).
 - Temporary associates: founder + max 3, memory only; the membership ends on leave / disconnect / removal
   and when the founder disconnects. An associate may own an organization of his own.
-- Selling the organization ends it: full balance + 60% of properties, upgrades and stock.
-- Delivery payout: founder → company 100%; associate → 80% his bank / 20% company; stranger → 60% his bank.
+- Selling the organization ends it: the clean balance + 60% of properties, upgrades and stock; the
+  dirty money is lost; the company bank account is closed.
+- Delivery payout: founder → company 100% (dirty); associate → 80% cash / 20% company; stranger → 60% cash.
 - Weekly Business bonus: sale multipliers for supply/deliver activities only (not the casino).
 - Every business event is a ui_core notification (no e-mail).
 

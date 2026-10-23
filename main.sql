@@ -553,3 +553,103 @@ CREATE TABLE IF NOT EXISTS `jobs_draft` (
     `updated_at`    INT          NOT NULL DEFAULT 0,
     KEY `idx_created_by` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- bank_accounts / bank_account_access / bank_ledger  (owner: [economy]/v_bank)
+-- ----------------------------------------------------------------------------
+-- Every bank balance: personal (one per player account), company (one per
+-- biz_core organization, clean money only) and state (State Treasury, state
+-- companies like SA Control). Every change is one bank_ledger row with a
+-- transaction key (v_bank shared/keys.lua). v_bank creates the tables itself
+-- and migrates the old accData bank_money / biz_companies.balance_clean.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `bank_accounts` (
+    `id`             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `number`         VARCHAR(20)  NULL,
+    `kind`           VARCHAR(16)  NOT NULL,
+    `owner_ref`      VARCHAR(64)  NOT NULL,
+    `name`           VARCHAR(64)  NOT NULL DEFAULT '',
+    `balance`        BIGINT       NOT NULL DEFAULT 0,
+    `allow_negative` TINYINT      NOT NULL DEFAULT 0,
+    `status`         VARCHAR(16)  NOT NULL DEFAULT 'active',
+    `created_at`     INT UNSIGNED NOT NULL DEFAULT 0,
+    `created_by`     VARCHAR(64)  NOT NULL DEFAULT '',
+    `closed_at`      INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_number` (`number`),
+    UNIQUE KEY `uq_owner` (`kind`, `owner_ref`),
+    KEY `idx_kind` (`kind`, `status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `bank_account_access` (
+    `account_id`   INT UNSIGNED NOT NULL,
+    `account_name` VARCHAR(64)  NOT NULL,
+    `role`         VARCHAR(16)  NOT NULL,
+    `granted_by`   VARCHAR(64)  NOT NULL DEFAULT '',
+    `granted_at`   INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`account_id`, `account_name`),
+    KEY `idx_name` (`account_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `bank_ledger` (
+    `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `account_id`    INT UNSIGNED NOT NULL,
+    `ts`            INT UNSIGNED NOT NULL,
+    `amount`        BIGINT       NOT NULL,
+    `balance_after` BIGINT       NULL,
+    `tx_key`        VARCHAR(48)  NOT NULL,
+    `params`        VARCHAR(255) NOT NULL DEFAULT '',
+    `counter_id`    INT UNSIGNED NULL,
+    `ref`           VARCHAR(32)  NOT NULL DEFAULT '',
+    `actor`         VARCHAR(64)  NOT NULL DEFAULT '',
+    `instance`      VARCHAR(16)  NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    KEY `idx_account` (`account_id`, `id`),
+    KEY `idx_key` (`tx_key`, `ts`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- gov_settings / gov_members / gov_tax_runs / gov_log  (owner: [economy]/v_gov)
+-- ----------------------------------------------------------------------------
+-- The /gov panel: state settings (JSON values, defaults in v_gov
+-- shared/config.lua), gov roles, the claimed hours of the hourly company tax
+-- (one instance runs an hour) and the change log.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `gov_settings` (
+    `skey`       VARCHAR(64)  NOT NULL,
+    `value`      TEXT         NOT NULL,
+    `updated_by` VARCHAR(64)  NOT NULL DEFAULT '',
+    `updated_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`skey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_members` (
+    `account_name` VARCHAR(64)  NOT NULL,
+    `role`         VARCHAR(16)  NOT NULL,
+    `granted_by`   VARCHAR(64)  NOT NULL DEFAULT '',
+    `granted_at`   INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`account_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_tax_runs` (
+    `period_start` INT UNSIGNED NOT NULL,
+    `instance`     VARCHAR(16)  NOT NULL,
+    `companies`    INT UNSIGNED NOT NULL DEFAULT 0,
+    `total`        BIGINT       NOT NULL DEFAULT 0,
+    `finished_at`  INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`period_start`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_log` (
+    `id`     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ts`     INT UNSIGNED NOT NULL,
+    `actor`  VARCHAR(64)  NOT NULL,
+    `action` VARCHAR(48)  NOT NULL,
+    `detail` VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    KEY `idx_ts` (`ts`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

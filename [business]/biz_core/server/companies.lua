@@ -3,10 +3,11 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Loaded companies. A company is loaded on the instance where its founder is
 -- online (login / resource start) and unloaded when the founder leaves. Only
 -- loaded companies run: money is changed in memory first (synchronous exports)
--- and written to MySQL as deltas right after.
+-- and written to MySQL as deltas right after. The clean money is the company's
+-- v_bank account (server/money.lua); balance_clean is not used any more.
 --
 -- Company record (CO.byId[id]):
---   id, account (owner), founderAccount, name, clean, dirty, launder, hqUnit,
+--   id, account (owner), founderAccount, name, clean (v_bank mirror), dirty, launder, hqUnit, bankId,
 --   status, activeSeconds, upkeepSeconds, valueCache, peakValue, createdAt,
 --   renamedAt, founder (player element or nil), units = { [unitId] = unit },
 --   ledger = { newest first }, paused, sync = { clean, dirty } (resync deltas)
@@ -72,12 +73,12 @@ CO.unitFromRow = unitFromRow
 local function companyFromRow(r)
     return {
         id = int(r.id), account = r.owner_account, founderAccount = r.founder_account,
-        name = tostring(r.name), clean = int(r.balance_clean), dirty = int(r.balance_dirty),
+        name = tostring(r.name), clean = 0, dirty = int(r.balance_dirty),
         launder = int(r.launder_queue), hqUnit = int(r.hq_unit_id), status = tostring(r.status),
         activeSeconds = int(r.active_seconds), upkeepSeconds = int(r.upkeep_seconds),
         valueCache = int(r.value_cache), peakValue = int(r.peak_value),
         createdAt = int(r.created_at), renamedAt = int(r.renamed_at),
-        units = {}, ledger = {}, paused = false, sync = { clean = 0, dirty = 0 },
+        units = {}, ledger = {}, paused = false, sync = { dirty = 0 },
     }
 end
 CO.companyFromRow = companyFromRow
@@ -142,10 +143,11 @@ function CO.value(c)
     return CO.balance(c) + CO.assets(c)
 end
 
---- payout of selling the organization: full balance + SALE_ASSET_RATIO of the rest
+--- payout of selling the organization: the clean balance + SALE_ASSET_RATIO of the assets
+--- (the dirty money is lost at a sale)
 function CO.salePayout(c)
     local assets = CO.assets(c)
-    return CO.balance(c) + math.floor(assets * BIZ.SALE_ASSET_RATIO), assets
+    return c.clean + math.floor(assets * BIZ.SALE_ASSET_RATIO), assets
 end
 
 function CO.saveValue(c)
@@ -257,6 +259,11 @@ function CO.load(account, player, cb)
     DB.query(function(rows)
         if not rows or not rows[1] then return finish(nil) end
         local c = companyFromRow(rows[1])
+        -- the clean money: the v_bank account (created here if it is missing)
+        MONEY.refreshClean(c)
+        local bankId = MONEY.accountId(c)
+        local b = MONEY.bank()
+        if not bankId and b and b:isBankReady() then b:createCompanyAccount(c.id, c.name, c.account) end
         DB.query(function(urows)
             for _, r in ipairs(urows or {}) do
                 local u = unitFromRow(r)
@@ -265,7 +272,21 @@ function CO.load(account, player, cb)
             end
             DB.query(function(lrows)
                 for _, r in ipairs(lrows or {}) do c.ledger[#c.ledger + 1] = ledgerFromRow(r) end
-                finish(c)
+                local function done() finish(c) end
+                if not bankId then return done() end
+                -- clean rows of the bank account, merged in by time
+                DB.query(function(brows)
+                    for _, r in ipairs(brows or {}) do
+                        local params = r.params and r.params ~= "" and fromJSON(tostring(r.params)) or {}
+                        local bal = r.balance_after ~= nil and r.balance_after ~= false and tonumber(r.balance_after) or nil
+                        c.ledger[#c.ledger + 1] = MONEY.cleanRow(c, int(r.ts), int(r.amount), bal, tostring(r.tx_key),
+                            type(params) == "table" and params or {}, r.actor)
+                    end
+                    table.sort(c.ledger, function(x, y) return x.ts > y.ts end)
+                    while #c.ledger > BIZ.LEDGER_CACHE do table.remove(c.ledger) end
+                    done()
+                end, "SELECT ts, amount, balance_after, tx_key, params, actor FROM bank_ledger WHERE account_id = ? ORDER BY id DESC LIMIT "
+                    .. BIZ.LEDGER_CACHE, bankId)
             end, "SELECT * FROM biz_ledger WHERE company_id = ? ORDER BY id DESC LIMIT " .. BIZ.LEDGER_CACHE, c.id)
         end, "SELECT * FROM biz_units WHERE company_id = ?", c.id)
     end, "SELECT * FROM biz_companies WHERE owner_account = ? AND status = 'active' LIMIT 1", account)
@@ -294,28 +315,28 @@ function CO.ofPlayer(player)
 end
 
 --------------------------------------------------------------------------------
--- resync: balances of loaded companies re-read every RESYNC_MS, so an admin
--- change made on another instance shows up here. Local deltas issued after the
--- SELECT was sent are added on top of the answer (same connection = FIFO).
+-- resync: dirty balance and launder queue of loaded companies re-read every
+-- RESYNC_MS, so an admin change made on another instance shows up here. Local
+-- deltas issued after the SELECT was sent are added on top of the answer (same
+-- connection = FIFO). The clean part is re-read by v_bank itself.
 --------------------------------------------------------------------------------
 
 function CO.resync()
     for _, c in pairs(CO.byId) do
         local id = c.id
-        c.sync = { clean = 0, dirty = 0, launder = 0 }
+        c.sync = { dirty = 0, launder = 0 }
         DB.query(function(rows)
             local cur = CO.byId[id]
             if not cur or not rows or not rows[1] then return end
             local r = rows[1]
             if r.status ~= "active" then return end
-            local clean = int(r.balance_clean) + (cur.sync.clean or 0)
             local dirty = int(r.balance_dirty) + (cur.sync.dirty or 0)
             local launder = int(r.launder_queue) + (cur.sync.launder or 0)
-            if clean ~= cur.clean or dirty ~= cur.dirty or launder ~= cur.launder then
-                cur.clean, cur.dirty, cur.launder = clean, dirty, launder
+            if dirty ~= cur.dirty or launder ~= cur.launder then
+                cur.dirty, cur.launder = dirty, launder
                 CO.publish(cur)
             end
-        end, "SELECT balance_clean, balance_dirty, launder_queue, status FROM biz_companies WHERE id = ?", id)
+        end, "SELECT balance_dirty, launder_queue, status FROM biz_companies WHERE id = ?", id)
     end
 end
 

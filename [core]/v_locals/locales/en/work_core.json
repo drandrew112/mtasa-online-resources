@@ -68,5 +68,7 @@
   "work_core.vehicles.you_must_be_on_duty_to": "You must be on duty to request a work vehicle.",
   "work_core.vehicles.your_current_work_vehicle_is_still": "Your current work vehicle is still in use.",
   "work_core.payment.weekly_bonus": "Weekly bonus ({mult})",
-  "work_core.levels.xp_bonus": "+{amount|int} XP ({mult})"
+  "work_core.levels.xp_bonus": "+{amount|int} XP ({mult})",
+  "work_core.payment.wage_multiplier": "Wage multiplier ({mult})",
+  "work_core.payment.income_tax": "Income tax ({rate}%)"
 }

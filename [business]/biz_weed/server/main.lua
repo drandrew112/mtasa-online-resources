@@ -339,7 +339,7 @@ function ACTIONS.buy(player, st, args)
     if not pack then return { ok = false, error = "bad_amount" } end
     if st.pending > 0 then return { ok = false, error = "pending" } end
     if st.supply + pack.units > capacity(st) then return { ok = false, error = "no_space" } end
-    local ok, err = core():debitCompany(st.companyId, pack.price, "weed.supply", ("Supply order: %d units"):format(pack.units), "")
+    local ok, err = core():debitCompany(st.companyId, pack.price, "weed.supply", ("Supply order: %d units"):format(pack.units), "", nil, { units = pack.units })
     if not ok then return { ok = false, error = err } end
     st.pending, st.pendingLeft = pack.units, pack.seconds
     save(st)

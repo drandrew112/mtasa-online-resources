@@ -22,5 +22,5 @@ addEventHandler("v_bank:playPickupMoneySound", root, function()
     playPickupMoneySound()
 end)
 
--- The money HUD (ui_core showMoney) is triggered from server.lua for every
--- export that changes cash or bank_money.
+-- The money HUD (ui_core showMoney) is triggered by the server for every booking on the
+-- own account (server/accounts.lua) and every cash change of the exports.

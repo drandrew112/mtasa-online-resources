@@ -21,6 +21,15 @@ local nextId = 1
 
 addEvent("onAviTrafficSpawn")    -- source: resourceRoot, args: id, callsign
 addEvent("onAviTrafficRemove")   -- source: resourceRoot, args: id, callsign, reason
+addEvent("onAviFlightFee")       -- source: resourceRoot, args: kind ("takeoff" | "landing" | "overflight"), callsign, airport ICAO | false
+                                 -- airspace usage fee moments of the live traffic (server/fees.lua books them)
+
+local function flightFee(ac, kind, icao)
+    if ac.tut or ac.feePaid and ac.feePaid[kind] then return end
+    ac.feePaid = ac.feePaid or {}
+    ac.feePaid[kind] = true
+    triggerEvent("onAviFlightFee", resourceRoot, kind, ac.cs, icao or false)
+end
 
 local KT_MS = 0.514444
 
@@ -151,6 +160,10 @@ end
 function removeAircraft(ac, reason)
     if not AIRCRAFT[ac.id] then return end
     AIRCRAFT[ac.id] = nil
+    -- an external -> external flight that left the airspace: overflight fee
+    if (reason == "left the airspace" or reason == "left the CTA") and not airport(ac.dep) and not airport(ac.arr) then
+        flightFee(ac, "overflight")
+    end
     triggerEvent("onAviTrafficRemove", resourceRoot, ac.id, ac.cs, reason or "removed")
 end
 
@@ -665,6 +678,7 @@ local function tickTakeoff(ac, dt)
         ac.climbOut = true
         ac.rwy, ac.onRwy, ac.rwyClr = nil, nil, {}
         takeOffClearance(ac)
+        flightFee(ac, "takeoff", ac.dep)
     end
 end
 
@@ -1200,6 +1214,7 @@ local function tickFinal(ac, dt)
     if d < 25 or along > 0 then
         ac.phase = "landing"
         ac.gndApt = ac.arr
+        flightFee(ac, "landing", ac.arr)
         ac.onRwy = e.runway
         ac.rwyClr = { [e.runway] = true }
         ac.alt, ac.vs = elev, 0

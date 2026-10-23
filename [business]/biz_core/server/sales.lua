@@ -42,9 +42,11 @@ local function sameMachine(a, b)
     return getPlayerSerial(a) == getPlayerSerial(b) or getPlayerIP(a) == getPlayerIP(b)
 end
 
-local function bankGive(player, amount)
-    if amount <= 0 or not BIZ.running("v_bank") then return end
-    exports.v_bank:giveBankMoney(player, amount)
+--- the delivery share of an associate / outside thief: dirty money, paid as cash (never banked)
+local function cashGive(player, amount)
+    if amount <= 0 or not isElement(player) then return end
+    givePlayerMoney(player, amount)
+    if BIZ.running("ui_core") then exports.ui_core:showMoney(player, "add", amount, "cash") end
 end
 
 function paySaleDelivery(companyId, player, baseValue, units, activity)
@@ -58,15 +60,15 @@ function paySaleDelivery(companyId, player, baseValue, units, activity)
 
     if c.founder == player then
         out.role, out.toCompany = "founder", value
-        MONEY.credit(c, value, (activity or "sale") .. ".sale", ("Delivery by %s (%d units)"):format(name, units), c.account, true)
+        MONEY.credit(c, value, (activity or "sale") .. ".sale", nil, ("Delivery by %s (%d units)"):format(name, units), c.account, true)
         STAT.add(player, STAT.IDS.sales_income, value)
     elseif MEM.of[player] == c.id then
         out.role = "associate"
         out.toPlayer = math.floor(value * BIZ.ASSOCIATE_SHARE)
         out.toCompany = value - out.toPlayer
-        bankGive(player, out.toPlayer)
+        cashGive(player, out.toPlayer)
         ACTION.addDirtyAcc(player, BIZ.ACC_DIRTY_RECEIVED, out.toPlayer)
-        MONEY.credit(c, out.toCompany, (activity or "sale") .. ".sale",
+        MONEY.credit(c, out.toCompany, (activity or "sale") .. ".sale", nil,
             ("Delivery by %s (%d units), %d%% share"):format(name, units, math.floor((1 - BIZ.ASSOCIATE_SHARE) * 100 + 0.5)), c.account, true)
         STAT.add(player, STAT.IDS.assoc_deliveries, 1)
         STAT.add(player, STAT.IDS.assoc_income, out.toPlayer)
@@ -76,7 +78,7 @@ function paySaleDelivery(companyId, player, baseValue, units, activity)
         out.role = "stranger"
         if not sameMachine(player, c.founder) then
             out.toPlayer = math.floor(value * BIZ.THIEF_SHARE)
-            bankGive(player, out.toPlayer)
+            cashGive(player, out.toPlayer)
             ACTION.addDirtyAcc(player, BIZ.ACC_DIRTY_RECEIVED, out.toPlayer)
             STAT.add(player, STAT.IDS.hijacks, 1)
             STAT.unlock(player, "biz_highwayman")

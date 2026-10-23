@@ -189,6 +189,11 @@ local function completeProc(player)
     -- listeners can still read the patient (medsys state etc.)
     triggerEvent("onHospitalPatientHandover", resourceRoot, h.id, p.unitId, patient, player, taskId)
 
+    -- state healthcare: the treasury pays the treatment of the patient (player or NPC)
+    if isElement(patient) and isResourceRunning("v_gov") then
+        exports.v_gov:chargeHealthcare(patient, h.name, taskId or nil)
+    end
+
     if isElement(patient) then
         if getElementType(patient) == "player" then
             exports.med_stretcher:takePatientOff(p.obj)

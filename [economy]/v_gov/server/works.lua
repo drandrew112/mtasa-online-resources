@@ -1,0 +1,106 @@
+-- v_gov / server/works.lua
+-- Everything about a work's pay (DESIGN.md 5): payer, pay + XP parameters, multiplier, income tax
+-- rate key. Settings: work.<id>.payer | work.<id>.multiplier | work.<id>.taxKey | work.<id>.p.<param>
+--
+-- A work resource registers its parameters (current config values = defaults) with
+--   exports.v_gov:registerWage(workId, { { key = "base", label = "Base pay", default = 600 }, ... })
+-- on its start and on v_gov's start, and reads a value with exports.v_gov:getWage(workId, key)
+-- (nil = no override, use the default). Without v_gov it simply pays its defaults.
+
+WAGES = {}   -- [workId] = { params = { {key, label, default, kind}, ... }, byKey = {} }
+
+local function workKey(workId, field) return ("work.%s.%s"):format(workId, field) end
+
+function registerWage(workId, params)
+    if type(workId) ~= "string" or workId == "" or type(params) ~= "table" then return false end
+    local w = { params = {}, byKey = {} }
+    for _, p in ipairs(params) do
+        if type(p) == "table" and type(p.key) == "string" and tonumber(p.default) then
+            local e = { key = p.key, label = tostring(p.label or p.key), default = tonumber(p.default),
+                        kind = p.kind == "xp" and "xp" or "pay" }
+            w.params[#w.params + 1] = e
+            w.byKey[p.key] = e
+        end
+    end
+    WAGES[workId] = w
+    return true
+end
+
+--- the /gov override of a pay / XP parameter, or nil (= use the default)
+function getWage(workId, key)
+    local v = SETTINGS[workKey(workId, "p." .. tostring(key))]
+    return tonumber(v)
+end
+
+--- the stored payer spec: "system" | "state:<code>" | "company:<id>"
+function GOV.payerSpec(workId)
+    local v = SETTINGS[workKey(workId, "payer")]
+    if type(v) == "string" then return v end
+    local d = GOV_WORK_DEFAULTS[workId]
+    return d and d.payer or "system"
+end
+
+--- v_bank account id of the payer, or "system"
+function getWorkPayer(workId)
+    local spec = GOV.payerSpec(workId)
+    local bank = GOV.bank()
+    if spec == "system" or not bank then return "system" end
+    local kind, ref = spec:match("^(%a+):(.+)$")
+    local id
+    if kind == "state" then id = bank:getStateAccount(ref)
+    elseif kind == "company" then id = bank:getCompanyAccount(ref) end
+    if not id then
+        outputDebugString(("[v_gov] payer %s of work %s does not exist, paid from system"):format(spec, tostring(workId)), 2)
+        return "system"
+    end
+    local info = bank:getAccountInfo(id)
+    if not info or info.status == "closed" then return "system" end
+    return id
+end
+
+function getWorkMultiplier(workId)
+    local v = tonumber(SETTINGS[workKey(workId, "multiplier")])
+    return v or 1
+end
+
+--- rate, key of the work's income tax rate key
+function getIncomeTaxRate(workId)
+    local key = SETTINGS[workKey(workId, "taxKey")]
+    if type(key) ~= "string" then
+        local d = GOV_WORK_DEFAULTS[workId]
+        key = d and d.taxKey or "standard"
+    end
+    local keys = GOV.get("tax.income_keys") or {}
+    local rate = tonumber(keys[key])
+    if not rate then key, rate = "standard", tonumber(keys.standard) or 0 end
+    return rate, key
+end
+
+function getCompanyTaxRate()
+    return tonumber(GOV.get("tax.company")) or 0
+end
+
+function getFee(key)
+    return tonumber(GOV.get("fee." .. tostring(key))) or 0
+end
+
+function getSetting(key)
+    return GOV.get(key)
+end
+
+--- a private company that is sold / closed while it pays a work: back to system (checked with
+--- every settings re-read)
+function GOV.checkPayers()
+    local bank = GOV.bank()
+    if not bank or not bank:isBankReady() then return end
+    for key, v in pairs(SETTINGS) do
+        local workId = key:match("^work%.([^%.]+)%.payer$")
+        if workId and type(v) == "string" and v:match("^company:") then
+            local id = bank:getCompanyAccount(v:match("^company:(.+)$"))
+            local info = id and bank:getAccountInfo(id)
+            if info and info.status == "closed" then
+                GOV.set(key, "system", "system")
+            end
+        end
+    end
+end

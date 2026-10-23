@@ -1,4 +1,7 @@
 TR = {
+    -- airspace usage fees (server/fees.lua), used when v_gov does not run (its /gov values win)
+    FEES = { takeoff = 1500, landing = 2000, overflight = 800 },
+    FEE_ACCOUNT = "sacontrol",         -- v_bank state account that collects them
     TICK = 1000,              -- simulation step (ms)
 
     -- The GTA map is ~1/10 of a real area, so aircraft move slower than their shown speed:

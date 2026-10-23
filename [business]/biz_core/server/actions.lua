@@ -16,6 +16,16 @@ end
 
 local function bank() return BIZ.running("v_bank") and exports.v_bank end
 
+--- a fee of the state (v_gov /gov, else the config value)
+local function fee(key, fallback)
+    if BIZ.running("v_gov") then
+        local v = tonumber(exports.v_gov:getFee(key))
+        if v then return math.floor(v) end
+    end
+    return fallback
+end
+BIZ.fee = fee
+
 local function playerName(p)
     return (getPlayerName(p):gsub("#%x%x%x%x%x%x", ""))
 end
@@ -60,9 +70,18 @@ function createCompany(player, name, officeId)
     local b = bank()
     if not b then return fail("unavailable") end
 
-    local total = BIZ.REG_FEE + p.price
-    local paid = b:takeBankMoney(player, total)
-    if paid ~= true then return fail("not_enough_money", { total = total }) end
+    -- the registration fee goes to the State Treasury, the office price disappears
+    local regFee = fee("register", BIZ.REG_FEE)
+    local total = regFee + p.price
+    if (tonumber(b:getPlayerBalance(player)) or 0) < total then return fail("not_enough_money", { total = total }) end
+    local office = BIZ.propertyName(officeId)
+    if regFee > 0 and b:takeBankMoney(player, regFee, "biz.register_fee", { company = clean }) ~= true then
+        return fail("not_enough_money", { total = total })
+    end
+    if b:takeBankMoney(player, p.price, "biz.office_purchase", { property = office }) ~= true then
+        if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
+        return fail("not_enough_money", { total = total })
+    end
 
     local key = acc:lower()
     ACTION.creating[key] = true
@@ -71,7 +90,8 @@ function createCompany(player, name, officeId)
     local function refund(code)
         ACTION.creating[key] = nil
         if isElement(player) then
-            b:giveBankMoney(player, total)
+            if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
+            b:giveBankMoney(player, p.price, "biz.office_refund", { property = office })
             NOTIFY.player(player, L.msg("biz_core.register.failed_" .. code))
         end
     end
@@ -87,11 +107,13 @@ function createCompany(player, name, officeId)
                 return refund("db")
             end
             DB.exec("UPDATE biz_companies SET hq_unit_id = ? WHERE id = ?", unitId, id)
+            -- the bank account of the clean money; the record picks it up on onBankAccountReady
+            b:createCompanyAccount(id, clean, acc)
             CO.load(acc, player, function(c)
                 ACTION.creating[key] = nil
                 if not c then return end
                 c.hqUnit = unitId
-                MONEY.apply(c, 0, 0, "founded", ("Organization founded, headquarters %s (paid by the founder: € %d)"):format(BIZ.propertyName(officeId), total), acc)
+                MONEY.applyDirty(c, 0, "founded", ("Organization founded, headquarters %s (paid by the founder: € %d)"):format(BIZ.propertyName(officeId), total), acc)
                 CO.publish(c)
                 REG.refresh()
                 if isElement(player) then
@@ -151,7 +173,8 @@ function renameCompany(player, name)
     if REG.nameTaken(clean, c.id) then return fail("name_taken") end
     local wait = c.renamedAt + BIZ.RENAME_COOLDOWN - BIZ.now()
     if wait > 0 then return fail("rename_cooldown", { wait = wait }) end
-    if CO.balance(c) < BIZ.RENAME_COST then return fail("not_enough_money", { total = BIZ.RENAME_COST }) end
+    local renameCost = fee("rename", BIZ.RENAME_COST)
+    if CO.balance(c) < renameCost then return fail("not_enough_money", { total = renameCost }) end
 
     -- the unique key decides: rename only after MySQL accepted the new name
     local id, oldName = c.id, c.name
@@ -162,7 +185,7 @@ function renameCompany(player, name)
             NOTIFY.player(player, L.msg("biz_core.rename.taken"))
             return
         end
-        if not MONEY.debit(cur, BIZ.RENAME_COST, "rename", ("Renamed from %s"):format(oldName), cur.account) then
+        if renameCost > 0 and not MONEY.debit(cur, renameCost, "biz.rename_fee", { name = clean }, ("Renamed from %s"):format(oldName), cur.account) then
             -- spent meanwhile: keep the new name, the fee is skipped (rare race)
             outputDebugString("[biz_core] rename fee of company " .. id .. " could not be taken", 2)
         end
@@ -183,27 +206,34 @@ function depositToCompany(player, amount)
     amount = math.floor(tonumber(amount) or 0)
     if amount <= 0 then return fail("bad_amount") end
     local b = bank()
-    if not b then return fail("unavailable") end
-    if b:takeBankMoney(player, amount) ~= true then return fail("not_enough_money", { total = amount }) end
-    MONEY.credit(c, amount, "deposit", ("Deposit from %s"):format(playerName(player)), c.account)
+    local from, to = b and b:getPlayerAccount(player), MONEY.accountId(c)
+    if not from or not to then return fail("unavailable") end
+    local ok, err = b:transfer(from, to, amount, "biz.deposit", { company = c.name, player = playerName(player) }, c.account)
+    if not ok then return fail(err == "not_enough_money" and "not_enough_money" or "unavailable", { total = amount }) end
     NOTIFY.player(player, L.msg("biz_core.money.deposited", { amount = amount }))
     return { ok = true }
 end
 
---- part: "clean" (default) | "dirty"
+--- part: "clean" (default, to the bank account of the founder) | "dirty" (always as cash)
 function withdrawFromCompany(player, amount, part)
     local c, e = own(player)
     if not c then return e end
     amount = math.floor(tonumber(amount) or 0)
     if amount <= 0 then return fail("bad_amount") end
     part = part == "dirty" and "dirty" or "clean"
-    local b = bank()
-    if not b then return fail("unavailable") end
-    local ok, err = MONEY.debitPart(c, part, amount, "withdrawal",
-        ("Withdrawal to %s (%s)"):format(playerName(player), part), c.account)
-    if not ok then return fail(err) end
-    b:giveBankMoney(player, amount)
-    if part == "dirty" then addDirtyAcc(player, BIZ.ACC_DIRTY_WITHDRAWN, amount) end
+    if part == "dirty" then
+        if c.dirty < amount then return fail("not_enough_money") end
+        MONEY.applyDirty(c, -amount, "withdrawal", ("Withdrawal to %s (dirty, cash)"):format(playerName(player)), c.account)
+        givePlayerMoney(player, amount)
+        if BIZ.running("ui_core") then exports.ui_core:showMoney(player, "add", amount, "cash") end
+        addDirtyAcc(player, BIZ.ACC_DIRTY_WITHDRAWN, amount)
+    else
+        local b = bank()
+        local from, to = MONEY.accountId(c), b and b:getPlayerAccount(player)
+        if not from or not to then return fail("unavailable") end
+        local ok, err = b:transfer(from, to, amount, "biz.withdraw", { company = c.name, player = playerName(player) }, c.account)
+        if not ok then return fail(err == "not_enough_money" and "not_enough_money" or "unavailable") end
+    end
     NOTIFY.player(player, L.msg(part == "dirty" and "biz_core.money.withdrawn_dirty" or "biz_core.money.withdrawn", { amount = amount }))
     return { ok = true }
 end
@@ -256,9 +286,10 @@ function sellCompany(player, confirmName)
     if not c then return e end
     if confirmName ~= nil and tostring(confirmName) ~= c.name then return fail("confirm_mismatch") end
     local b = bank()
-    if not b then return fail("unavailable") end
+    local bankId, playerAcc = MONEY.accountId(c), b and b:getPlayerAccount(player)
+    if not bankId or not playerAcc then return fail("unavailable") end
     local payout, assets = CO.salePayout(c)
-    local dirty = c.dirty
+    local assetPart = math.floor(assets * BIZ.SALE_ASSET_RATIO)
 
     -- no partial tick after this point: the company ends now
     if isTimer(c.tickTimer) then killTimer(c.tickTimer) end
@@ -273,16 +304,30 @@ function sellCompany(player, confirmName)
         triggerEvent("onBizUnitRemoved", resourceRoot, u.id, u.propertyId, c.id, "company_sold")
     end
     DB.exec("DELETE FROM biz_units WHERE company_id = ?", c.id)
-    DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, ?, 0, 0, 'company.sell', ?, ?)",
-        c.id, BIZ.now(), -CO.balance(c), ("Organization sold, € %d paid to the founder (assets € %d)"):format(payout, assets), c.account)
+    -- the dirty money is lost
+    DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, ?, 1, 0, 'company.sell', ?, ?)",
+        c.id, BIZ.now(), -c.dirty, ("Organization sold, € %d paid to the founder (assets € %d), dirty money lost"):format(payout, assets), c.account)
     DB.exec("UPDATE biz_companies SET status = 'sold', owner_account = NULL, name_key = NULL, sold_at = ?, balance_clean = 0, balance_dirty = 0, launder_queue = 0, value_cache = 0, hq_unit_id = NULL WHERE id = ?",
         BIZ.now(), c.id)
+
+    -- the bank account: a debt is paid from the asset part (the rest is written off), a positive
+    -- clean balance goes to the founder, then the account is closed
+    local name = c.name
+    local clean = c.clean
+    if clean < 0 then
+        local cover = math.min(assetPart, -clean)
+        if cover > 0 then b:credit(bankId, cover, "biz.property_sell", { property = "Liquidation" }, c.account) end
+        assetPart = assetPart - cover
+        if clean + cover < 0 then b:credit(bankId, -(clean + cover), "biz.write_off", { company = name }, c.account) end
+    elseif clean > 0 then
+        b:transfer(bankId, playerAcc, clean, "biz.close_payout", { company = name }, c.account)
+    end
+    if assetPart > 0 then b:giveBankMoney(player, assetPart, "biz.asset_sale", { company = name }) end
+    b:closeAccount(bankId)
+    payout = math.max(0, clean) + assetPart
     c.clean, c.dirty, c.launder = 0, 0, 0
 
-    local name = c.name
     CO.unload(c, "sold")
-    if payout > 0 then b:giveBankMoney(player, payout) end
-    addDirtyAcc(player, BIZ.ACC_DIRTY_WITHDRAWN, dirty)
     REG.refresh()
     NOTIFY.player(player, L.msg("biz_core.sell.done", { name = name, amount = payout }))
     return { ok = true, payout = payout }

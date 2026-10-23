@@ -28,7 +28,7 @@ end
 -- Which pot can cover `amount` in full - bank money first, then cash.
 -- -> "bank" | "cash" | nil
 local function fundingSource(player, amount)
-    if bankReady() and (tonumber(getElementData(player, "bank_money")) or 0) >= amount then
+    if bankReady() and (tonumber(exports.v_bank:getPlayerBalance(player)) or 0) >= amount then
         return "bank"
     end
     if (getPlayerMoney(player) or 0) >= amount then
@@ -40,7 +40,7 @@ end
 -- Deduct `amount` from the chosen pot. -> true | false
 local function chargeFrom(player, pot, amount)
     if pot == "bank" then
-        return exports.v_bank:takeBankMoney(player, amount) == true
+        return exports.v_bank:takeBankMoney(player, amount, "phone.service", { contact = "Insurance" }) == true
     end
     if takePlayerMoney(player, amount) == false then return false end
     exports.ui_core:showMoney(player, "take", amount, "cash")

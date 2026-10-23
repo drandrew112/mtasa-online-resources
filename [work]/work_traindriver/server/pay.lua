@@ -8,9 +8,80 @@ addEvent("onRailServiceComplete")
 
 local Paid = {}        -- [tripId] = tick, guards against a double event
 
+-- pay and XP numbers: adjustable on the /gov Works page (v_gov); TRAINDRIVER.PAY / XP are the
+-- defaults. A PAY.BASE / XP.BASE line prefix gets "base_<prefix>" / "xp_base_<prefix>".
+local WAGE_PARAMS = {}
+do
+    local P, X = TRAINDRIVER.PAY, TRAINDRIVER.XP
+    local function add(key, label, default, kind)
+        WAGE_PARAMS[#WAGE_PARAMS + 1] = { key = key, label = label, default = default, kind = kind }
+    end
+    local prefixes = {}
+    for prefix in pairs(P.BASE) do prefixes[#prefixes + 1] = prefix end
+    table.sort(prefixes)
+    for _, prefix in ipairs(prefixes) do add("base_" .. prefix:lower(), "Base pay: " .. prefix, P.BASE[prefix]) end
+    add("base_default", "Base pay: other lines", P.BASE_DEFAULT)
+    add("per_stop", "Per served stop", P.PER_STOP)
+    for i, tier in ipairs(P.PUNCTUAL) do add("punctual_" .. i, ("Punctuality bonus (<= %d s)"):format(tier.max), tier.amount) end
+    add("skip_fine", "Fine per skipped stop", P.SKIP_FINE)
+    add("early_fine", "Fine per early departure", P.EARLY_FINE)
+    add("delay_fine", "Delay fine", P.DELAY_FINE)
+    prefixes = {}
+    for prefix in pairs(X.BASE) do prefixes[#prefixes + 1] = prefix end
+    table.sort(prefixes)
+    for _, prefix in ipairs(prefixes) do add("xp_base_" .. prefix:lower(), "XP: " .. prefix, X.BASE[prefix], "xp") end
+    add("xp_base_default", "XP: other lines", X.BASE_DEFAULT, "xp")
+    add("xp_per_stop", "XP per served stop", X.PER_STOP, "xp")
+    add("xp_punctual", "XP punctuality bonus", X.PUNCTUAL_BONUS, "xp")
+    add("xp_skip_penalty", "XP penalty per skipped stop", X.SKIP_PENALTY, "xp")
+end
+local wageDefault = {}
+for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
+
+local function govRunning()
+    local res = getResourceFromName("v_gov")
+    return res and getResourceState(res) == "running"
+end
+
+local function wage(key)
+    if govRunning() then
+        local v = exports.v_gov:getWage(TRAINDRIVER.WORK_ID, key)
+        if v then return v end
+    end
+    return wageDefault[key]
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if (res == getThisResource() or getResourceName(res) == "v_gov") and govRunning() then
+        exports.v_gov:registerWage(TRAINDRIVER.WORK_ID, WAGE_PARAMS)
+    end
+end)
+
+--- TRAINDRIVER.PAY with the /gov values
+local function currentPay()
+    local P = TRAINDRIVER.PAY
+    local t = { BASE = {}, BASE_DEFAULT = wage("base_default"), PER_STOP = wage("per_stop"), PUNCTUAL = {},
+        SKIP_FINE = wage("skip_fine"), EARLY_FINE = wage("early_fine"),
+        DELAY_FINE_FROM = P.DELAY_FINE_FROM, DELAY_FINE = wage("delay_fine") }
+    for prefix in pairs(P.BASE) do t.BASE[prefix] = wage("base_" .. prefix:lower()) end
+    for i, tier in ipairs(P.PUNCTUAL) do
+        t.PUNCTUAL[i] = { max = tier.max, label = tier.label, amount = wage("punctual_" .. i) }
+    end
+    return t
+end
+
+--- TRAINDRIVER.XP with the /gov values
+local function currentXp()
+    local X = TRAINDRIVER.XP
+    local t = { BASE = {}, BASE_DEFAULT = wage("xp_base_default"), PER_STOP = wage("xp_per_stop"),
+        PUNCTUAL_BONUS = wage("xp_punctual"), SKIP_PENALTY = wage("xp_skip_penalty") }
+    for prefix in pairs(X.BASE) do t.BASE[prefix] = wage("xp_base_" .. prefix:lower()) end
+    return t
+end
+
 -- -> items (payWork format) | nil
 function computePay(summary)
-    local P = TRAINDRIVER.PAY
+    local P = currentPay()
     local number = tostring(summary.number or "?")      -- "RB 1101" / "IC 2101"
     local base = P.BASE[number:match("^(%a+)")] or P.BASE_DEFAULT
 
@@ -38,7 +109,7 @@ end
 
 -- XP for a completed service (TRAINDRIVER.XP)
 function computeXp(summary)
-    local X = TRAINDRIVER.XP
+    local X = currentXp()
     local number = tostring(summary.number or "?")
     local xp = X.BASE[number:match("^(%a+)")] or X.BASE_DEFAULT
     xp = xp + (summary.served or 0) * X.PER_STOP

@@ -31,6 +31,35 @@ local function isRunning(name)
     return res and getResourceState(res) == "running"
 end
 
+-- pay and XP: adjustable on the /gov Works page (v_gov), the BTD values are the defaults
+local WAGE_PARAMS = {
+    { key = "base",        label = "Base pay (per service)",    default = BTD.PAY.BASE },
+    { key = "delivered",   label = "Per delivered task",        default = BTD.PAY.DELIVERED },
+    { key = "in_transit",  label = "Per task still in transit", default = BTD.PAY.IN_TRANSIT },
+    { key = "xp_delivery", label = "XP per delivery",           default = BTD.XP_PER_DELIVERY, kind = "xp" },
+}
+local wageDefault = {}
+for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
+
+local function wage(key)
+    if isRunning("v_gov") then
+        local v = exports.v_gov:getWage(BTD.WORK_ID, key)
+        if v then return v end
+    end
+    return wageDefault[key]
+end
+
+--- the pay table of BTLogic.pay with the /gov values
+function BTD.currentPay()
+    return { BASE = wage("base"), DELIVERED = wage("delivered"), IN_TRANSIT = wage("in_transit") }
+end
+
+addEventHandler("onResourceStart", root, function(res)
+    if (res == getThisResource() or getResourceName(res) == "v_gov") and isRunning("v_gov") then
+        exports.v_gov:registerWage(BTD.WORK_ID, WAGE_PARAMS)
+    end
+end)
+
 function BTC()
     if not C and isRunning("bt_core") then
         C = exports.bt_core:getConfig()
@@ -296,7 +325,7 @@ function onDelivered(taskId, player)
     shift.delivered = shift.delivered + 1
     if not task.tutorial then TotalDelivered = TotalDelivered + 1 end
     closeTask(task, "delivered")
-    if not task.tutorial and isRunning("work_core") then exports.work_core:giveWorkXp(player, BTD.WORK_ID, BTD.XP_PER_DELIVERY) end
+    if not task.tutorial and isRunning("work_core") then exports.work_core:giveWorkXp(player, BTD.WORK_ID, wage("xp_delivery")) end
     if not task.tutorial and isRunning("v_stats") then exports.v_stats:addStat(player, "bt_deliveries", 1) end
     notify(player, L.msg("bt_dispatch.notify.title"), L.msg("bt_dispatch.notify.delivered", { id = task.id, to = instName(task.to) }))
     return true
@@ -360,7 +389,7 @@ end
 function estimatePay(shift)
     local inTransit = 0
     for _, t in ipairs(openTasksOf(shift)) do if t.status == "transit" then inTransit = inTransit + 1 end end
-    local items, total = BTLogic.pay(BTD.PAY, shift.delivered, inTransit)
+    local items, total = BTLogic.pay(BTD.currentPay(), shift.delivered, inTransit)
     return total, items
 end
 
@@ -377,7 +406,7 @@ function endShift(player, reason)
     local open = openTasksOf(shift)
     local inTransit = 0
     for _, t in ipairs(open) do if t.status == "transit" then inTransit = inTransit + 1 end end
-    local items, total = BTLogic.pay(BTD.PAY, shift.delivered, inTransit)
+    local items, total = BTLogic.pay(BTD.currentPay(), shift.delivered, inTransit)
 
     Shifts[player], ShiftById[shift.id] = nil, nil
     if cancelOffersOf then cancelOffersOf(shift) end

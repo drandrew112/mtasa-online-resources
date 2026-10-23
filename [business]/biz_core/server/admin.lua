@@ -18,12 +18,19 @@ local function answer(root, id, result)
     if isElement(root) then triggerEvent("v_admin:remoteResult", root, id, result) end
 end
 
+--- clean balance of a company from its v_bank account (0 without one)
+function bankClean(companyId)
+    local b = MONEY.bank()
+    local id = b and b:getCompanyAccount(companyId)
+    return id and tonumber(b:getBalance(id)) or 0
+end
+
 local function summary(r)
     local c = CO.byId[int(r.id)]
     return {
         id = int(r.id), name = c and c.name or tostring(r.name), founder = tostring(r.founder_account),
         status = tostring(r.status), value = c and c.valueCache or int(r.value_cache),
-        balance = c and CO.balance(c) or int(r.balance_clean) + int(r.balance_dirty),
+        balance = c and CO.balance(c) or bankClean(int(r.id)) + int(r.balance_dirty),
         online = c ~= nil, associates = c and MEM.count(c.id) or 0, createdAt = int(r.created_at),
         hq = r.hq_property and BIZ.propertyName(r.hq_property) or "", properties = int(r.props),
     }
@@ -78,7 +85,7 @@ function A.detail(args, done)
                     ok = true,
                     company = {
                         id = c.id, name = c.name, founder = c.founderAccount, owner = c.account, status = c.status,
-                        clean = c.clean, dirty = c.dirty, launder = c.launder, online = live ~= nil,
+                        clean = live and live.clean or bankClean(c.id), dirty = c.dirty, launder = c.launder, online = live ~= nil,
                         paused = live and live.paused or false, value = live and CO.value(live) or c.valueCache,
                         peakValue = c.peakValue, activeSeconds = c.activeSeconds, createdAt = c.createdAt,
                         hqUnit = c.hqUnit, associates = live and MEM.publicList(id) or {},
@@ -100,7 +107,7 @@ function A.rename(args, done, admin)
         if c then
             c.name = name
             CO.publish(c)
-            MONEY.apply(c, 0, 0, "admin.rename", ("Renamed by an admin to %s"):format(name), admin)
+            MONEY.applyDirty(c, 0, "admin.rename", ("Renamed by an admin to %s"):format(name), admin)
             NOTIFY.company(c, "all", L.msg("biz_core.rename.done", { name = name }))
         end
         REG.refresh()
@@ -117,23 +124,36 @@ function A.adjust(args, done, admin)
     if reason == "" then return done({ ok = false, error = "reason_required" }) end
     local desc = ("Admin adjustment: %s"):format(reason)
     local c = CO.byId[id]
+    -- clean money: an admin booking on the v_bank account of the company (loaded or not)
+    if not dirty then
+        local b = MONEY.bank()
+        local bankId = b and b:getCompanyAccount(id)
+        if not bankId then return done({ ok = false, error = "unavailable" }) end
+        local params = { note = reason, admin = admin }
+        local ok, err
+        if amount > 0 then ok, err = b:credit(bankId, amount, "admin.credit", params, admin)
+        else ok, err = b:debit(bankId, -amount, "admin.debit", params, admin) end
+        if not ok then return done({ ok = false, error = err or "failed" }) end
+        if c then NOTIFY.company(c, "founder", L.msg("biz_core.admin.adjusted", { amount = amount })) end
+        return done({ ok = true })
+    end
     if c then
-        if amount < 0 and (dirty and c.dirty or c.clean) < -amount then return done({ ok = false, error = "not_enough_money" }) end
-        MONEY.apply(c, dirty and 0 or amount, dirty and amount or 0, "admin.adjust", desc, admin)
+        if amount < 0 and c.dirty < -amount then return done({ ok = false, error = "not_enough_money" }) end
+        MONEY.applyDirty(c, amount, "admin.adjust", desc, admin)
         NOTIFY.company(c, "founder", L.msg("biz_core.admin.adjusted", { amount = amount }))
         return done({ ok = true })
     end
-    -- offline company: delta on the row, ledger row with the new balance
-    local col = dirty and "balance_dirty" or "balance_clean"
+    -- offline company: delta on the dirty column, ledger row with the new balance
+    local col = "balance_dirty"
     DB.query(function(res, affected)
         if res == false or tonumber(affected) ~= 1 then return done({ ok = false, error = "not_enough_money" }) end
         DB.query(function(rows)
             local r = rows and rows[1]
-            local bal = r and (int(r.balance_clean) + int(r.balance_dirty)) or 0
+            local bal = r and int(r.balance_dirty) or 0
             DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, ?, ?, ?, 'admin.adjust', ?, ?)",
                 id, BIZ.now(), amount, dirty and 1 or 0, bal, desc, DB.clip(admin, 64))
             done({ ok = true })
-        end, "SELECT balance_clean, balance_dirty FROM biz_companies WHERE id = ?", id)
+        end, "SELECT balance_dirty FROM biz_companies WHERE id = ?", id)
     end, "UPDATE biz_companies SET " .. col .. " = " .. col .. " + ? WHERE id = ? AND status = 'active' AND " .. col .. " + ? >= 0",
         amount, id, amount)
 end
@@ -148,13 +168,23 @@ function A.transfer(args, done, admin)
     local canon = BIZ.running("acc_auth") and exports.acc_auth:accountNameExists(acc)
     if not canon then return done({ ok = false, error = "no_account" }) end
     if CO.playerOf(canon) then return done({ ok = false, error = "target_online" }) end
-    DB.query(function(res, affected)
-        if res == false or tonumber(affected) ~= 1 then return done({ ok = false, error = "target_has_company" }) end
-        DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, 0, 0, 0, 'admin.transfer', ?, ?)",
-            id, BIZ.now(), ("Founder changed to %s by an admin"):format(canon), DB.clip(admin, 64))
-        REG.refresh()
-        done({ ok = true })
-    end, "UPDATE biz_companies SET owner_account = ?, founder_account = ? WHERE id = ? AND status = 'active'", canon, canon, id)
+    DB.query(function(orows)
+        local oldOwner = orows and orows[1] and orows[1].owner_account
+        DB.query(function(res, affected)
+            if res == false or tonumber(affected) ~= 1 then return done({ ok = false, error = "target_has_company" }) end
+            DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, 0, 0, 0, 'admin.transfer', ?, ?)",
+                id, BIZ.now(), ("Founder changed to %s by an admin"):format(canon), DB.clip(admin, 64))
+            -- the bank account follows the founder
+            local b = MONEY.bank()
+            local bankId = b and b:getCompanyAccount(id)
+            if bankId then
+                if oldOwner then b:setAccess(bankId, tostring(oldOwner), nil, admin) end
+                b:setAccess(bankId, canon, "owner", admin)
+            end
+            REG.refresh()
+            done({ ok = true })
+        end, "UPDATE biz_companies SET owner_account = ?, founder_account = ? WHERE id = ? AND status = 'active'", canon, canon, id)
+    end, "SELECT owner_account FROM biz_companies WHERE id = ?", id)
 end
 
 function A.forcesell(args, done, admin)
@@ -172,6 +202,10 @@ function A.forcesell(args, done, admin)
         if res == false or tonumber(affected) ~= 1 then return done({ ok = false, error = "not_found" }) end
         DB.exec("INSERT INTO biz_ledger (company_id, ts, amount, dirty, balance_after, category, description, actor_account) VALUES (?, ?, 0, 0, 0, 'admin.close', 'Closed by an admin (founder offline, no payout)', ?)",
             id, BIZ.now(), DB.clip(admin, 64))
+        -- its bank account is frozen with the money on it (the admin moves it on the Bank page)
+        local b = MONEY.bank()
+        local bankId = b and b:getCompanyAccount(id)
+        if bankId then b:setAccountStatus(bankId, "frozen") end
         REG.refresh()
         done({ ok = true, payout = 0 })
     end, "UPDATE biz_companies SET status = 'closed', owner_account = NULL, name_key = NULL, sold_at = ?, hq_unit_id = NULL WHERE id = ? AND status = 'active'",

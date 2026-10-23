@@ -97,17 +97,18 @@ local function ownedAmmo(player, id)
     return nil
 end
 
--- Cash, or the bank account when the cash is not enough (v_bank payMoney). -> "cash" | "bank" | false
-local function pay(player, price)
+-- Cash, or the bank account when the cash is not enough (v_bank payMoney, key shop.weapon; the
+-- money disappears). -> "cash" | "bank" | false
+local function pay(player, price, item)
     local bank = getResourceFromName("v_bank")
     if not bank or getResourceState(bank) ~= "running" then return false end
-    local ok, from = exports.v_bank:payMoney(player, price)
+    local ok, from = exports.v_bank:payMoney(player, price, "shop.weapon", { item = item })
     return ok == true and from or false
 end
 
-local function refund(player, price, from)
+local function refund(player, price, from, item)
     if from == "bank" then
-        exports.v_bank:giveBankMoney(player, price) -- v_bank shows it itself
+        exports.v_bank:giveBankMoney(player, price, "shop.weapon_refund", { item = item }) -- v_bank shows it itself
     else
         givePlayerMoney(player, price)
         exports.ui_core:showMoney(player, "add", price, "cash")
@@ -154,14 +155,15 @@ addEventHandler("wp_shop:buy", resourceRoot, function(shopId, id, kind, count)
         result(player, false, L.msg("wp_shop.msg.too_much_ammo"))
         return
     end
-    local paidFrom = pay(player, price)
+    local item = getWeaponNameFromID(id) or tostring(id)
+    local paidFrom = pay(player, price, item)
     if not paidFrom then
         result(player, false, L.msg("wp_shop.msg.no_money"), id, "no_money")
         return
     end
 
     if not exports.wp_manager:givePlayerWeapon(player, id, ammo, false) then
-        refund(player, price, paidFrom)
+        refund(player, price, paidFrom, item)
         result(player, false, L.msg("wp_shop.msg.failed"))
         return
     end

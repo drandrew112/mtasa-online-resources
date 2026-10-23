@@ -29,7 +29,7 @@ local function payUpkeep(c)
     end
     local n = 0
     for _ in pairs(c.units) do n = n + 1 end
-    local ok = MONEY.debit(c, total, "upkeep", ("Upkeep of %d properties (2 h)"):format(n), "")
+    local ok = MONEY.debit(c, total, "biz.upkeep", { count = n }, ("Upkeep of %d properties (2 h)"):format(n), "")
     if ok then
         c.upkeepSeconds = c.upkeepSeconds - BIZ.UPKEEP_INTERVAL
         NOTIFY.company(c, "founder", L.msg("biz_core.upkeep.paid", { amount = total }))

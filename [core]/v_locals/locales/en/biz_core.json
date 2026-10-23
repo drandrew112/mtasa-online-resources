@@ -26,5 +26,6 @@
   "biz_core.sell.done": "{name} was sold. {amount|money} was paid to your bank account.",
   "biz_core.upkeep.paid": "Upkeep paid: {amount|money}.",
   "biz_core.upkeep.resumed": "Upkeep paid, business is running again.",
-  "biz_core.upkeep.unpaid": "The upkeep ({amount|money}) could not be paid. Production is stopped until the company account covers it."
+  "biz_core.upkeep.unpaid": "The upkeep ({amount|money}) could not be paid. Production is stopped until the company account covers it.",
+  "biz_core.tax.paid": "Company income tax: {amount|money} on {base|money} legal income of the last hour."
 }

@@ -1,0 +1,52 @@
+# v_gov — the state
+
+`/gov` opens the government panel: taxes, work pay, fees and fines, state healthcare, state
+companies, members and the change log. The money is the **State Treasury** of v_bank. Design and
+decisions: [DESIGN.md](DESIGN.md).
+
+Depends on `v_mysql` and `v_locals` (`<include>`); uses v_bank, work_core, medsys, biz_core when
+they run.
+
+## Roles
+`viewer` (read) < `official` (healthcare prices, state companies) < `minister` (taxes, works,
+fees, members, treasury transfers). Admins with level ≥ `GOV.ADMIN_LEVEL` (5) are ministers.
+Roles live in `gov_members` (Members page).
+
+## What it does
+- **Company income tax**: every full hour (+30 s) the taxable ledger rows of each company account
+  (now: the casino result, net) of the hour that ended are summed; a positive base pays
+  `floor(base * rate)` (default 10 %) to the treasury (`tax.company_income`). One instance runs an
+  hour (`gov_tax_runs` claim); missed hours of the last 24 h are caught up on start.
+- **Works** (per work, Works page): payer (system by default, treasury, a state or a private
+  company), every pay and XP parameter the work registered, wage multiplier, income tax rate key.
+- **Income tax rate keys** (Taxes page): `standard` 12 %, `exempt` 0 %, more can be added; work_core
+  `payWork` takes the tax of the work's key from the whole positive wage.
+- **Fees & fines**: company registration fee (→ treasury), rename fee, ambulance bay fine,
+  airspace fees takeoff / landing / overflight (→ SA Control).
+- **State healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
+  players and NPC patients) to the treasury: missing HP × price + injury prices.
+- **State companies**: create, rename, close (balance moved to the treasury first), members (bank
+  access), overdraft.
+
+## Server exports
+| Export | |
+| --- | --- |
+| `getSetting(key)` | a setting (stored or default) |
+| `getFee(key)` | `register`, `rename`, `bay_fine`, `airspace.takeoff` / `.landing` / `.overflight` |
+| `getCompanyTaxRate()` | 0..1 |
+| `getGovRole(player)` | `"viewer" \| "official" \| "minister" \| false` |
+| `registerWage(workId, params)` | a work's pay / XP parameters `{ {key, label, default, kind = "xp"?}, ... }` |
+| `getWage(workId, key)` | the /gov override or nil (= use the default) |
+| `getWorkPayer(workId)` | v_bank account id or `"system"` |
+| `getWorkMultiplier(workId)` | number |
+| `getIncomeTaxRate(workId)` | rate, key |
+| `healthcareCost(patient)` | amount, `{ hp, injuries }` (books nothing) |
+| `chargeHealthcare(patient, hospitalName [, taskId])` | true, amount \| false, err |
+
+A work resource registers its parameters on its start and on v_gov's start (see med_erm
+`server/payment.lua`, bt_dispatch `server/core.lua`, work_traindriver `server/pay.lua`,
+avi_controller `server/main.lua`) and reads them with `getWage`, falling back to its config.
+
+## Events (server)
+`onGovSettingChanged(key, value)`, `onGovTaxRun(periodStart, companies, total)`,
+`onGovCompanyTaxed(companyId, tax, base, periodStart)`.

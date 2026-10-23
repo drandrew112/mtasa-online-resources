@@ -26,5 +26,6 @@
   "biz_core.sell.done": "{name} eladva. {amount|money} a bankszámládra került.",
   "biz_core.upkeep.paid": "Rezsi kifizetve: {amount|money}.",
   "biz_core.upkeep.resumed": "A rezsi kifizetve, az üzlet újra működik.",
-  "biz_core.upkeep.unpaid": "A rezsit ({amount|money}) nem lehetett kifizetni. A termelés áll, amíg a céges számla nem fedezi."
+  "biz_core.upkeep.unpaid": "A rezsit ({amount|money}) nem lehetett kifizetni. A termelés áll, amíg a céges számla nem fedezi.",
+  "biz_core.tax.paid": "Társasági adó: {amount|money} az elmúlt óra {base|money} legális bevétele után."
 }

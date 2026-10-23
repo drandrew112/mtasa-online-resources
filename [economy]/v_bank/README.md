@@ -1,24 +1,41 @@
-# v_bank — bank manager
+# v_bank — bank accounts
 
-Server-side bank account manager. `bank_money` lives on the player element data
-at runtime and is mirrored into the shared `accounts` table
-(`exports.v_mysql:getAccData` / `setAccData`), so it survives reconnects and
-resource restarts. **Cash** is GTA's own money and is only moved by the built-in
-`takePlayerMoney` / `givePlayerMoney`.
+Every bank balance of the server lives in MySQL (`bank_accounts`); every change of a balance is
+one row in `bank_ledger` with a **transaction key** from `shared/keys.lua`. Design and decisions:
+[DESIGN.md](DESIGN.md). Taxes, wages, fees and state companies are set in **v_gov** (`/gov`).
 
-Depends on `v_mysql` (`<include resource="v_mysql" />`).
+- **personal** account: one per player account (created on the first login, or by the migration)
+- **company** account: one per biz_core organization — the **clean** money only (dirty money stays
+  in biz_core)
+- **state** accounts: the **State Treasury** (`treasury`) and the state companies (`sacontrol` =
+  SA Control, more from `/gov`)
 
-## Persistence
+**Cash is not tracked.** It is GTA's own money; the ledger only sees it at deposit / withdrawal.
 
-| Event | Action |
-| --- | --- |
-| `onPlayerLoaded`, `onResourceStart` | account → element data load (first login: 0) |
-| `onPlayerQuit`, `onResourceStop` | element data → account save |
-| every 5 minutes | save every logged-in player |
-| every export that modifies the balance | immediate save of that player |
+Depends on `v_mysql` (`<include>`). Works on both server instances at once: every booking is a
+delta, the cache re-reads the shared accounts every 30 s.
 
-For a player who is not logged in, `bank_money` only exists at runtime and is
-never saved.
+## Start and migration
+
+On start: schema → migration (`server/migrate.lua`, idempotent, may run on both instances) →
+accounts. The migration
+1. creates the state accounts (treasury, SA Control; both on the overdraft list),
+2. gives every player account without a bank account one, with the old account-data `bank_money`
+   as opening balance (`migration.opening` row),
+3. removes `bank_money` from the account data (from now on only the table + cache hold it),
+4. gives every active organization a company account with its `balance_clean` (then zeroed).
+
+Until the accounts are loaded every booking answers `"unavailable"`.
+
+## Transaction keys
+
+`shared/keys.lua` lists every possible booking: the paying side (`from`) and the receiving side
+(`to`) — an account kind, `"system"` (money created / disappearing), `"cash"`, `"treasury"`
+(filled in by v_bank), `"settled"` (the caller books the income later) or `"payer"` (a state /
+company account or system). `force` keys may push the payer below 0; accounts on the **overdraft
+list** (`allow_negative`) may always go below 0. An unknown key, or an account on a side the key
+does not allow, is refused (`"bad_key"`). The ledger text is `v_bank.tx.<key>[.in|.out]` in
+v_locals, shown in the viewer's language.
 
 ## Server exports
 
@@ -26,78 +43,58 @@ never saved.
 local bank = exports.v_bank
 ```
 
-### `takeBankMoney(player, amount)`
-Removes money from the bank account.
-- `true` — success
-- `"not_enough_money"` — not enough money on the account
-- `"player_not_found"` — invalid player element or `amount`
+### Accounts
+| Export | Returns |
+| --- | --- |
+| `isBankReady()` | accounts loaded |
+| `getPlayerAccount(player)` | account id \| false |
+| `getPlayerBalance(player)` | number \| false |
+| `getCompanyAccount(companyId)` / `getStateAccount(code)` | account id \| false |
+| `getAccountInfo(id)` | `{ id, number, kind, ownerRef, name, balance, status, allowNegative }` \| false |
+| `getBalance(id)` | number \| false |
+| `getStateAccounts()` | list of infos |
+| `getTaxableKeys()` | keys counting as legal company income (v_gov) |
+| `createCompanyAccount(companyId, name, founderAccount)` | true (async: `onBankAccountReady`) |
+| `createStateAccount(code, name, allowNegative, actor)` | true \| false, err |
+| `renameAccount(id, name)`, `setAccountStatus(id, "active"\|"frozen")`, `setAllowNegative(id, bool)`, `closeAccount(id)` | |
+| `setAccess(id, accountName, "owner"\|"manager"\|"viewer"\|nil, actor)`, `hasAccess(player, id, "view"\|"use")` | |
 
-### `forceTakeMoney(player, amount)`
-Takes the amount from the bank account whatever the balance is: the balance may
-go **negative** (debt). Deposits / `giveBankMoney` add to it as usual, so the next
-money the player puts in pays the debt off first. Use it for fines. The player sees
-`- € <amount>` under their bank balance in the ui_core money overlay
-(`showMoney("take", amount, "bank")` via the
-`v_bank:moneyTaken` client event).
-- `true, newBalance` — always succeeds for a valid player
-- `"player_not_found"` — invalid player element or `amount`
+### Bookings
+`credit(id, amount, key, params, actor [, fromId])`, `debit(id, amount, key, params, actor [, toId])`,
+`transfer(fromId, toId, amount, key, params, actor)` → `true, ref | false, err`
+(`"bad_amount" | "bad_key" | "unavailable" | "not_enough_money" | "account_closed" | "frozen" | "same_account"`).
 
-While the balance is negative, `takeBankMoney` and `withdrawMoney` fail with
-`"not_enough_money"`.
+### Player wrappers
+| Export | Returns |
+| --- | --- |
+| `giveBankMoney(player, amount, key, params [, payerId])` | true \| err |
+| `takeBankMoney(player, amount, key, params [, payeeId])` | true \| err (not for force keys) |
+| `forceTakeMoney(player, amount, key, params [, payeeId])` | true, newBalance \| err (force keys only) |
+| `depositMoney(player, amount)` / `withdrawMoney(player, amount)` | true \| `"not_enough_cash"` / `"not_enough_money"` \| err |
+| `payMoney(player, amount, key, params)` | true, `"cash"`\|`"bank"` \| false, err — cash first (not booked), else the bank |
 
-### `giveBankMoney(player, amount)`
-Adds money to the bank account.
-- `true` — success
-- `"player_not_found"` — invalid player element or `amount`
+Every booking on a player's own account shows on the ui_core money HUD.
 
-### `depositMoney(player, amount)`
-Takes cash and adds it to the account.
-- `true` — success
-- `"not_enough_cash"` — not enough cash
-- `"player_not_found"` — invalid player element or `amount`
+### Website / admin
+- `requestBankAccounts(player)`, `requestLedger(player, id, beforeId, group)`,
+  `requestTransfer(player, fromId, number, amount, note, confirm)` — answer with the client events
+  `v_bank:accounts`, `v_bank:ledger`, `v_bank:transfer` (ui_browser Liberty Bank).
+- `bankCall(requestId, action, args, actor)` — admin panel / v_gov requests that answer later with
+  `triggerEvent("<caller>:remoteResult", <caller root>, requestId, result)`; actions: search,
+  account, ledger, stats, byNumber, adjust, transfer, status, overdraft, access, rename, close,
+  createState.
 
-### `withdrawMoney(player, amount)`
-Takes money from the account and hands it over as cash.
-- `true` — success
-- `"not_enough_money"` — not enough money on the account
-- `"player_not_found"` — invalid player element or `amount`
+### Cash helpers
+`playPickupMoneySound([player])` (server + client), `createMoneyPickup(x, y, z, money [, player])`.
 
-> **Deviation from the spec:** `withdrawMoney` checks the bank balance, so its
-> insufficient-funds error is `"not_enough_money"` (consistent with
-> `takeBankMoney`), not `"not_enough_cash"`. If you need the `"not_enough_cash"`
-> string instead, it is a one-line change in `server.lua`.
+## Events (server, source = v_bank resourceRoot)
+- `onBankBalanceChanged(accountId, balance, amount, key, params)`
+- `onBankAccountReady(accountId, kind, ownerRef)`
 
-### `payMoney(player, amount)`
-Pays for a purchase: takes the amount from the **cash** when it covers it, otherwise
-from the **bank account** (shown in the ui_core money overlay like `forceTakeMoney`).
-Nothing is taken when neither covers it (no split between cash and bank).
-- `true, "cash"` / `true, "bank"` — paid, and from where (for refunds)
-- `false, "not_enough_money"` — neither the cash nor the account covers it
-- `false, "player_not_found"` — invalid player element or `amount`
+## Element data
+`bank_money` (balance) and `bank_account` (number) on the player: a read-only mirror for the HUDs;
+a client cannot change them.
 
-Every export rounds `amount` to a positive integer; `0` or a negative value
-returns `"player_not_found"` (invalid input).
-
-### `playPickupMoneySound([player])`
-Plays the "pickup money" sound.
-
-- **Server export:** `exports.v_bank:playPickupMoneySound(player)` — plays for the
-  given player. Without `player` it plays for everyone. Returns `true` or
-  `"player_not_found"`.
-- **Client export:** `exports.v_bank:playPickupMoneySound()` — plays for the local
-  player, returns the sound element (or `false`).
-
-### `createMoneyPickup(x, y, z, money [, player])` — server
-Creates a money bag pickup (model `1550`). When a player walks into it: they get
-`money` cash, the pickup sound plays for them, `ui_core:showMoney("add", money, "cash")`
-runs on their client, and the pickup is destroyed.
-
-- `money` — positive integer
-- `player` — optional; when given, only that player can collect it; `nil` = anyone
-- Returns: the pickup element, or `false` (invalid arguments)
-
-## Client event
-
-`v_bank:playPickupMoneySound` (triggered by the server) plays the sound on the
-client; when it carries a `money` argument it also calls
-`exports.ui_core:showMoney("add", money, "cash")`.
+## Tests
+`python tests/run.py` (lupa, Lua 5.1): bookings, keys, sides, overdraft, transfers, resync with
+deltas in flight, player wrappers.

@@ -60,6 +60,7 @@
         'weed.sale': 'Weed · sale', 'weed.supply': 'Weed · supply', 'casino.hour': 'Casino', launder: 'Laundering',
         upkeep: 'Upkeep', deposit: 'Deposit', withdrawal: 'Withdrawal', rename: 'Rename', founded: 'Founded',
         'admin.adjust': 'Admin', 'admin.rename': 'Admin', 'company.sell': 'Sale',
+        tax: 'Tax', transfer: 'Transfer', wages: 'Wages', opening: 'Opening balance',
     };
     const KIND = { office: 'Office', weed: 'Weed farm', casino: 'Casino' };
 
@@ -247,13 +248,14 @@
                 <div class="os-flex"><input class="input" id="wdAmount" type="number" min="1" placeholder="Amount" style="width:220px">
                 <select class="input" id="wdPart"><option value="clean">Clean money</option><option value="dirty">Dirty money</option></select>
                 <button class="btn primary" id="wdBtn">Withdraw</button></div>
-                <div class="os-note" style="margin-top:14px">Dirty money can be withdrawn, but unlaundered money may have consequences later. Launder it in a casino first.</div></div>
+                <div class="os-note" style="margin-top:14px">Clean money goes to your bank account. Dirty money is paid out in cash only, and unlaundered money may have consequences later. Launder it in a casino first.</div></div>
         </div>
         <div class="os-card"><h2>Ledger
             <select class="input" id="ledFilter" style="font-size:16px;height:42px">
                 <option value="">All categories</option><option value="weed">Weed</option><option value="casino">Casino</option>
                 <option value="launder">Laundering</option><option value="upkeep">Upkeep</option><option value="property">Properties</option>
-                <option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option></select></h2>
+                <option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option>
+                <option value="tax">Taxes</option><option value="transfer">Transfers</option></select></h2>
             <div id="ledger">${ledgerTable(S.ledger)}</div></div>`;
     };
     OFFICE.finance.bind = () => {

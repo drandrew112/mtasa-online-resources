@@ -1,0 +1,40 @@
+<meta>
+    <info author="DrAndrew112" name="v_gov" version="1.0.0" type="script"
+          description="The state: /gov panel, taxes (hourly company tax, income tax rate keys), work pay settings, fees, state healthcare, state companies" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/db.lua" type="server" />
+    <script src="server/settings.lua" type="server" />
+    <script src="server/works.lua" type="server" />
+    <script src="server/tax.lua" type="server" />
+    <script src="server/health.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/panel.lua" type="client" />
+
+    <!-- settings -->
+    <export function="getSetting" type="server" />
+    <export function="getFee" type="server" />
+    <export function="getCompanyTaxRate" type="server" />
+    <export function="getGovRole" type="server" />
+
+    <!-- works -->
+    <export function="registerWage" type="server" />
+    <export function="getWage" type="server" />
+    <export function="getWorkPayer" type="server" />
+    <export function="getWorkMultiplier" type="server" />
+    <export function="getIncomeTaxRate" type="server" />
+
+    <!-- healthcare -->
+    <export function="healthcareCost" type="server" />
+    <export function="chargeHealthcare" type="server" />
+</meta>
