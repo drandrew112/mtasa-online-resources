@@ -165,7 +165,7 @@ addEventHandler("onClientRender", root, function()
             local x, y, z = getElementPosition(m)
             local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
             if dist <= maxDist then
-                local lz = z + 1 + BINT.labelHeight
+                local lz = z + BINT.labelHeight
                 if isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
                     local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
                     if sx then

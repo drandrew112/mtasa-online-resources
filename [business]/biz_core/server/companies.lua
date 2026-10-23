@@ -161,13 +161,19 @@ end
 -- element data for the founder (ui_inac, phone, HUD read it) - synced to him only
 --------------------------------------------------------------------------------
 
+--- element data only this player receives ("local" on the server would sync to nobody)
+function setOwnData(player, key, value)
+    addElementDataSubscriber(player, key, player)
+    return setElementData(player, key, value, "subscribe")
+end
+
 function CO.publish(c)
     if not c or not isElement(c.founder) then return end
-    setElementData(c.founder, "biz:company", {
+    setOwnData(c.founder, "biz:company", {
         id = c.id, name = c.name, clean = c.clean, dirty = c.dirty, paused = c.paused,
         associates = MEM.count(c.id), maxAssociates = BIZ.MAX_ASSOCIATES,
         office = c.units[c.hqUnit] and c.units[c.hqUnit].propertyId or nil,
-    }, "local")
+    })
 end
 
 --- copy for other resources / the web pages (no element references)

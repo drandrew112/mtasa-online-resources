@@ -30,6 +30,7 @@ function getElementsByType(kind)
 end
 
 function setElementData(e, k, v) TEST.data[e] = TEST.data[e] or {}; TEST.data[e][k] = v; return true end
+function addElementDataSubscriber() return true end
 function getElementData(e, k) return TEST.data[e] and TEST.data[e][k] end
 function removeElementData(e, k) if TEST.data[e] then TEST.data[e][k] = nil end return true end
 

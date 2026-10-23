@@ -66,6 +66,7 @@ end
 
 --- template with the /bizpos overrides applied
 local function template(id)
+    id = BINT.TEMPLATE_ALIASES[id] or id
     local t = BINT.TEMPLATES[id]
     if not t then return nil end
     local o = POS.templates[id]
@@ -83,7 +84,7 @@ end
 --------------------------------------------------------------------------------
 
 local function makeMarker(x, y, z, int, dim, color, kind, name, extra)
-    local m = createMarker(x, y, z - 1, BINT.markerType, BINT.markerSize, color[1], color[2], color[3], color[4])
+    local m = createMarker(x, y, z, BINT.markerType, BINT.markerSize, color[1], color[2], color[3], color[4])
     setElementInterior(m, int)
     setElementDimension(m, dim)
     setElementData(m, "bizint:kind", kind)
@@ -102,6 +103,7 @@ local function buildBuildings()
         local o = POS.buildings[id]
         if type(o) == "table" and tonumber(o[1]) then
             b.x, b.y, b.z, b.rot = tonumber(o[1]), tonumber(o[2]), tonumber(o[3]), tonumber(o[4]) or b.rot
+            pcall(function() core():setBuildingPosition(id, b.x, b.y, b.z, b.rot) end)   -- catalog, web map, mission spawns
         end
         b.marker = makeMarker(b.x, b.y, b.z, 0, 0, BINT.enterColor, "enter", b.name, { ["bizint:building"] = id })
         BUILD[id] = b
@@ -141,7 +143,7 @@ local function createProps(inst)
 
     -- exit marker
     local e = t.exit or t.spawn
-    add(makeMarker(e[1], e[2], e[3], int, dim, BINT.exitColor, "exit", inst.name, { ["bizint:unit"] = inst.unitId }))
+    add(makeMarker(e[1], e[2], e[3] - 1, int, dim, BINT.exitColor, "exit", inst.name, { ["bizint:unit"] = inst.unitId }))
 
     -- desk + PC + chair, the PC carries the menu
     local c = t.computer
@@ -151,7 +153,7 @@ local function createProps(inst)
         local px, py = rotOffset(c[1], c[2], rot, BINT.pcOffset[1], BINT.pcOffset[2])
         inst.pc = add(createObject(BINT.pcModel, px, py, c[3] + BINT.pcOffset[3], 0, 0, rot))
         local cx, cy = rotOffset(c[1], c[2], rot, BINT.chairOffset[1], BINT.chairOffset[2])
-        add(createObject(BINT.chairModel, cx, cy, c[3] + BINT.chairOffset[3], 0, 0, rot))
+        add(createObject(BINT.chairModel, cx, cy, c[3] + BINT.chairOffset[3], 0, 0, rot + 180))
         setElementData(inst.pc, "bizint:computer", inst.unitId)
         if running("ui_interactobject") then
             inst.menuId = exports.ui_interactobject:addInteractMenu(inst.pc, {
@@ -197,7 +199,7 @@ local function ensureInstance(info)
     end
     local t = template(info.template)
     if not t then return nil end
-    inst = { unitId = info.unitId, dim = info.dimension, template = t, templateId = info.template, name = info.name,
+    inst = { unitId = info.unitId, dim = info.dimension, template = t, templateId = BINT.TEMPLATE_ALIASES[info.template] or info.template, name = info.name,
              building = info.building, players = {}, elements = {} }
     INST[info.unitId] = inst
     createProps(inst)
@@ -235,13 +237,17 @@ end
 local function outsideOf(buildingId)
     local b = BUILD[buildingId]
     if not b then return nil end
-    return b.x, b.y, b.z, b.rot or 0
+    return b.x, b.y, b.z + 1, b.rot or 0   -- b.z is the ground
 end
 
 local function doEnter(player, info)
     if not isElement(player) then return end
     local inst = ensureInstance(info)
-    if not inst then return end
+    if not inst then
+        outputDebugString("biz_int: no template '" .. tostring(info.template) .. "' for unit " .. tostring(info.unitId), 2)
+        triggerClientEvent(player, "bizint:fadeIn", resourceRoot)
+        return
+    end
     local s = inst.template.spawn
     teleport(player, s[1], s[2], s[3], s[4], inst.template.interior, inst.dim)
     PU[player] = info.unitId
@@ -455,9 +461,11 @@ addCommandHandler("bizpos", function(player, _, a, b)
     local _, _, rz = getElementRotation(player)
     local pos = { math.floor(x * 100 + 0.5) / 100, math.floor(y * 100 + 0.5) / 100, math.floor(z * 100 + 0.5) / 100, math.floor(rz) }
     if a == "building" and b and BUILD[b] then
+        pos[3] = pos[3] - 1                               -- building z is the ground, the player stands 1 m higher
         POS.buildings[b] = pos
         savePositions()
         buildBuildings()
+        for _, p in ipairs(getElementsByType("player")) do refreshBlips(p) end
         return notify(player, "biz_int.admin.saved", { what = "building " .. b })
     end
     if a and BINT.TEMPLATES[a] and (b == "spawn" or b == "exit" or b == "computer") then

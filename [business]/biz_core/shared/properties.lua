@@ -21,15 +21,15 @@ BIZ.BUILDINGS = {
 
 -- kind:     office | weed | casino
 -- activity: the activity resource key (biz_weed registers "weed", biz_casino "casino")
--- tier:     offices only (starter / standard / executive)
+-- tier:     offices only (standard / exclusive; one interior per tier)
 -- upkeep:   paid every BIZ.UPKEEP_INTERVAL online seconds
 BIZ.PROPERTIES = {
-    { id = "office_commerce",     kind = "office", tier = "executive", building = "ls_commerce",  template = "office_executive", price = 1200000, upkeep = 5000 },
+    { id = "office_commerce",     kind = "office", tier = "exclusive", building = "ls_commerce",  template = "office_exclusive", price = 1200000, upkeep = 5000 },
     { id = "office_downtown_ls",  kind = "office", tier = "standard",  building = "ls_downtown",  template = "office_standard",  price = 650000,  upkeep = 3000 },
-    { id = "office_sf_financial", kind = "office", tier = "executive", building = "sf_financial", template = "office_executive", price = 950000,  upkeep = 5000 },
+    { id = "office_sf_financial", kind = "office", tier = "exclusive", building = "sf_financial", template = "office_exclusive", price = 950000,  upkeep = 5000 },
     { id = "office_sf_queens",    kind = "office", tier = "standard",  building = "sf_queens",    template = "office_standard",  price = 450000,  upkeep = 3000 },
     { id = "office_lv_civic",     kind = "office", tier = "standard",  building = "lv_civic",     template = "office_standard",  price = 550000,  upkeep = 3000 },
-    { id = "office_lv_redsands",  kind = "office", tier = "starter",   building = "lv_redsands",  template = "office_starter",   price = 250000,  upkeep = 1500 },
+    { id = "office_lv_redsands",  kind = "office", tier = "standard",  building = "lv_redsands",  template = "office_standard",  price = 250000,  upkeep = 1500 },
 
     { id = "weed_castillo",   kind = "weed",   activity = "weed",   building = "bc_castillo", template = "weed_farm", price = 450000,  upkeep = 3000,  illegal = true },
     { id = "casino_redsands", kind = "casino", activity = "casino", building = "lv_casino",   template = "casino",    price = 3500000, upkeep = 12000 },

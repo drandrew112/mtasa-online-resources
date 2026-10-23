@@ -110,8 +110,8 @@ addCommandHandler("money", function(player)
     if not hasAdminLevel(player, ADMIN.perms.money) then
         return denyAccess(player, ADMIN.perms.money)
     end
-    givePlayerMoney(player, 2000)
-    exports.ui_core:showMoney(player, "add", 2000, "cash")
+    givePlayerMoney(player, 1000000)
+    exports.ui_core:showMoney(player, "add", 1000000, "cash")
     adminAlert(player, L.msg("v_admin.misc.2000"))
 end)
 

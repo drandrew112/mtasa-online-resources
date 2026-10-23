@@ -97,7 +97,7 @@ function createCompany(player, name, officeId)
                 if isElement(player) then
                     NOTIFY.player(player, L.msg("biz_core.register.done", { name = c.name, office = BIZ.propertyName(officeId) }))
                     STAT.unlock(player, "biz_registered")
-                    if p.tier == "executive" then STAT.unlock(player, "biz_corner_office") end
+                    if p.tier == "exclusive" then STAT.unlock(player, "biz_corner_office") end
                 end
             end)
         end, "INSERT INTO biz_units (company_id, property_id, price_paid, purchased_at) VALUES (?, ?, ?, ?)", id, officeId, p.price, now)
@@ -137,7 +137,7 @@ function moveHeadquarters(player, officeId)
         CO.publish(c)
         REG.refresh()
         NOTIFY.company(c, "founder", L.msg("biz_core.hq.moved", { office = BIZ.propertyName(officeId) }))
-        if p.tier == "executive" then STAT.unlock(player, "biz_corner_office") end
+        if p.tier == "exclusive" then STAT.unlock(player, "biz_corner_office") end
     end, { office = true })
     return { ok = true, pending = true }
 end
@@ -169,7 +169,7 @@ function renameCompany(player, name)
         cur.name = clean
         cur.renamedAt = BIZ.now()
         CO.publish(cur)
-        for p in pairs(MEM.membersOf(id)) do setElementData(p, "biz:member", { id = id, name = clean }, "local") end
+        for p in pairs(MEM.membersOf(id)) do setOwnData(p, "biz:member", { id = id, name = clean }) end
         REG.refresh()
         NOTIFY.company(cur, "all", L.msg("biz_core.rename.done", { name = clean }))
     end, "UPDATE biz_companies SET name = ?, name_key = ?, renamed_at = ? WHERE id = ? AND status = 'active'",

@@ -129,6 +129,16 @@ function getBuildings()
     return out
 end
 
+--- moves an entrance (biz_int /bizpos overrides); z is the ground. Not saved
+--- here: biz_int pushes its overrides again on every start / biz_core:ready.
+function setBuildingPosition(id, x, y, z, rot)
+    local b = BIZ.BUILDINGS[id]
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    if not b or not x or not y or not z then return false end
+    b.x, b.y, b.z, b.rot = x, y, z, tonumber(rot) or b.rot
+    return true
+end
+
 --- units this player may enter in a building: own company (founder) and the
 --- company he is an associate of. { {unitId, propertyId, kind, template, name,
 --- companyId, companyName, role, dimension}, ... }

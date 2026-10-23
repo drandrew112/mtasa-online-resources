@@ -52,6 +52,7 @@
     <export function="getCatalog"            type="server" />
     <export function="getProperty"           type="server" />
     <export function="getBuildings"          type="server" />
+    <export function="setBuildingPosition"   type="server" />
     <export function="getUnit"               type="server" />
     <export function="getUnitCompany"        type="server" />
     <export function="getCompanyUnits"       type="server" />

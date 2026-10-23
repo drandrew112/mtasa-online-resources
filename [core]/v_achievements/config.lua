@@ -126,7 +126,7 @@ ACH.LIST = {
     { id = "biz_registered", type = "once", category = "business",
       name = "Registered", desc = "Found an organization.", xp = 300 },
     { id = "biz_corner_office", type = "once", category = "business",
-      name = "Corner Office", desc = "Have your headquarters in an executive office.", xp = 400 },
+      name = "Corner Office", desc = "Have your headquarters in an exclusive office.", xp = 400 },
     { id = "biz_green_thumb", type = "once", category = "business",
       name = "Green Thumb", desc = "Deliver weed as the founder of an organization.", xp = 300 },
     { id = "biz_supply_runs_10", type = "progress", stat = "biz_supply_runs", goal = 10, category = "business",

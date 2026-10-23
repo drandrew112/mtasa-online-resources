@@ -52,6 +52,12 @@ BINT = {
     chairOffset = { 0.0, -0.95, 0.0 },
 }
 
+-- old template ids (a biz_core that was not restarted still sends these)
+BINT.TEMPLATE_ALIASES = {
+    office_executive = "office_exclusive",
+    office_starter   = "office_standard",
+}
+
 local function grid(model, x0, y0, z, cols, rows, dx, dy, flag)
     local out = {}
     for r = 0, rows - 1 do
@@ -71,23 +77,19 @@ local function join(...)
 end
 
 BINT.TEMPLATES = {
-    -- The Four Dragons Office
-    office_executive = {
-        interior = 11,
-        spawn    = { 2011.60, 1017.02, 39.09, 0 },
-        computer = { 2014.20, 1019.60, 38.09, 180 },      -- verify
+    -- Offices: one interior per tier, every exclusive office looks the same
+    -- inside and so does every standard one.
+    -- Exclusive: Wu Zi Mu's office (Chinatown betting place, upstairs)
+    office_exclusive = {
+        interior = 1,
+        spawn    = { -2159.12, 641.52, 1052.38, 90 },
+        computer = { -2162.60, 643.40, 1051.38, 270 },    -- verify
     },
-    -- Las Venturas Planning Dep.
+    -- Standard: Las Venturas Planning Dep.
     office_standard = {
         interior = 3,
         spawn    = { 390.87, 173.81, 1007.39, 270 },
         computer = { 386.80, 175.60, 1007.38, 90 },       -- verify
-    },
-    -- Record Label Hallway
-    office_starter = {
-        interior = 3,
-        spawn    = { 1038.22, 6.99, 1001.28, 0 },
-        computer = { 1036.40, 10.20, 1000.28, 90 },       -- verify
     },
     -- Warehouse 2: grow room
     weed_farm = {

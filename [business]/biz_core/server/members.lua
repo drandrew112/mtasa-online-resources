@@ -48,7 +48,7 @@ end
 local function setMemberData(player, c)
     if not isElement(player) then return end
     if c then
-        setElementData(player, "biz:member", { id = c.id, name = c.name }, "local")
+        setOwnData(player, "biz:member", { id = c.id, name = c.name })
     else
         removeElementData(player, "biz:member")
     end
