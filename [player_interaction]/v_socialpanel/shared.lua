@@ -13,6 +13,8 @@ SP = {
     CREW_TAG_MIN     = 2,
     CREW_TAG_MAX     = 5,
     CREW_DESC_MAX    = 140,
+    DISPLAY_MIN      = 3,
+    DISPLAY_MAX      = 24,
     MSG_MAX_LEN      = 200,
     MSG_HISTORY      = 200,   -- messages kept per conversation
     SEARCH_MIN       = 2,     -- min query length for player search
@@ -104,6 +106,17 @@ function SP.validateCrewTag(tag)
         return false, L.text("v_socialpanel.shared.tag_may_only_contain_letters_and")
     end
     return true, tag:upper()
+end
+
+-- Display name validation. Returns true, cleanValue  OR  false, errorMessage.
+function SP.validateDisplayName(name)
+    if type(name) ~= "string" then return false, L.text("v_socialpanel.shared.invalid_display_name") end
+    name = name:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
+    local len = utf8.len(name)
+    if not len or len < SP.DISPLAY_MIN or len > SP.DISPLAY_MAX or name:find("[%z\1-\31#]") then
+        return false, L.text("v_socialpanel.shared.display_name_must_be_characters", { display_min = SP.DISPLAY_MIN, display_max = SP.DISPLAY_MAX })
+    end
+    return true, name
 end
 
 -- Trims and length-caps a chat message. Returns cleanText or nil.

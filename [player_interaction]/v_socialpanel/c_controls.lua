@@ -121,7 +121,8 @@ function UI.input(id, x, y, w, h, opts)
     dxDrawRectangle(x, y, w, h, active and tocolor(255, 200, 0, 40) or tocolor(0, 0, 0, 0))
     dxDrawRectangle(x, y + h - 2, w, 2, active and tocolor(255, 200, 0, 255) or tocolor(180, 180, 180, 255))
 
-    local shown = field.text
+    field.max = opts.max
+    local shown = opts.mask and string.rep("*", utf8.len(field.text) or #field.text) or field.text
     local color = tocolor(20, 20, 20, 255)
     if shown == "" and not active then
         shown = opts.placeholder or ""
@@ -251,7 +252,7 @@ addEventHandler("onClientCharacter", root, function(char)
     if not show_socialpanel or not UI.activeField then return end
     local field = UI.fields[UI.activeField]
     if not field then return end
-    local max = 32
+    local max = field.max or 32
     if #field.text >= max then return end
     if char:byte() >= 32 then
         field.text = field.text .. char

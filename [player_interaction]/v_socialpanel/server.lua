@@ -281,6 +281,7 @@ local function buildSnapshot(player, friendList, requests, offlineOK)
 
     return {
         account       = myName,
+        displayName   = getData(myName, "display_name") or myName,
         friends       = friends,
         requests      = requests or {},
         crew          = crewData,
@@ -419,6 +420,20 @@ addEventHandler("sp:pull", root, function()
     if not isElement(client) then return end
     pushSnapshot(client)
     pushAchievements(client)
+end)
+
+-- Account settings: the display name (the account name never changes)
+addEvent("sp:display:set", true)
+addEventHandler("sp:display:set", root, function(name)
+    local player = client
+    local myName = accName(player)
+    if not myName then return end
+    if not allow(player, "action") then return slowDown(player) end
+    local ok, clean = SP.validateDisplayName(name)
+    if not ok then return triggerClientEvent(player, "sp:display:result", player, false, clean) end
+    setData(myName, "display_name", clean)
+    triggerClientEvent(player, "sp:display:result", player, true, L.msg("v_socialpanel.server.display_name_saved"))
+    pushSnapshot(player)
 end)
 
 --------------------------------------------------------------------------------

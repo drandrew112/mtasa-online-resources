@@ -4,7 +4,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
     Social panel rendering. Pure DX, immediate-mode (see c_controls.lua / UI).
 
     Views (content_id):
-      1 = HOME     2 = HELP     3 = ACHIEVEMENTS     4 = SOCIAL     5 = PROFILE
+      1 = HOME     3 = ACHIEVEMENTS     4 = SOCIAL     5 = PROFILE     6 = ACCOUNT (settings of the own profile)
+      (2 was HELP, it moved to its own panel)
 ]]
 
 show_socialpanel = false
@@ -33,107 +34,10 @@ local C = {
 }
 
 local TABS = {}
+local TAB_LEFT = { 1, 3, 4 }   -- view ids shown on the left; PROFILE sits on the right
 local function build_TABS()
-TABS = { L("v_socialpanel.ui.home"), L("v_socialpanel.ui.help"), L("v_socialpanel.ui.achievements"), L("v_socialpanel.ui.social"), L("v_socialpanel.ui.profile") }
+TABS = { [1] = L("v_socialpanel.ui.home"), [3] = L("v_socialpanel.ui.achievements"), [4] = L("v_socialpanel.ui.social"), [5] = L("v_socialpanel.ui.profile") }
 end
-
---------------------------------------------------------------------------------
--- HELP content
---------------------------------------------------------------------------------
-
--- tab ids are the keys of HELP_TEXT; the shown label comes from v_locals
-local HELP_TABS = { "BASICS", "INAC MENU", "MINIGAMES", "VEHICLES", "RULES" }
-local HELP_LABEL = {
-    ["BASICS"]    = "v_socialpanel.ui.basics",
-    ["INAC MENU"] = "v_socialpanel.ui.inac_menu",
-    ["MINIGAMES"] = "v_socialpanel.ui.minigames",
-    ["VEHICLES"]  = "v_socialpanel.ui.vehicles",
-    ["RULES"]     = "v_socialpanel.ui.rules",
-}
-local HELP_TEXT = {}
-local function build_HELP_TEXT()
-HELP_TEXT = {
-    ["BASICS"] = {
-        L("v_socialpanel.ui.three_menus_run_everything_on_server"),
-        "",
-        L("v_socialpanel.ui.inac_menu_press_m"),
-        L("v_socialpanel.ui.your_personal_hub_fast_travel_spawn"),
-        L("v_socialpanel.ui.and_your_stats_level_played_time"),
-        "",
-        L("v_socialpanel.ui.social_panel_press_home_or_num"),
-        L("v_socialpanel.ui.friends_player_profiles_crews_and_private"),
-        "",
-        L("v_socialpanel.ui.pause_menu_press_p"),
-        L("v_socialpanel.ui.server_pause_menu_settings_player_list"),
-        "",
-        L("v_socialpanel.ui.close_any_panel_with_esc"),
-    },
-    ["INAC MENU"] = {
-        L("v_socialpanel.ui.open_it_with_m_move_with"),
-        L("v_socialpanel.ui.go_back_with_backspace"),
-        "",
-        L("v_socialpanel.ui.what_you_can_do_here"),
-        L("v_socialpanel.ui.fast_travel_jump_to_ls_lv"),
-        L("v_socialpanel.ui.vehicle_spawn_any_game_vehicle_to"),
-        L("v_socialpanel.ui.temporary_and_cannot_be_tuned_or"),
-        L("v_socialpanel.ui.collectibles_track_your_stunt_jumps_and"),
-        L("v_socialpanel.ui.stats_your_current_level_and_total"),
-        "",
-        L("v_socialpanel.ui.inac_menu_is_about_your_character"),
-        L("v_socialpanel.ui.is_about_other_players"),
-    },
-    ["MINIGAMES"] = {
-        L("v_socialpanel.ui.game_modes_on_server"),
-        "",
-        L("v_socialpanel.ui.jobs_heading"),
-        L("v_socialpanel.ui.gta_online_style_lobby_system_pick"),
-        L("v_socialpanel.ui.then_everyone_starts_together_two_types"),
-        L("v_socialpanel.ui.race_checkpoint_racing_to_finish_line"),
-        L("v_socialpanel.ui.dm_deathmatch_last_player_team_standing"),
-        "",
-        L("v_socialpanel.ui.arena_war"),
-        L("v_socialpanel.ui.vehicle_combat_in_closed_arena_take"),
-        L("v_socialpanel.ui.other_players_respawn_and_keep_fighting"),
-        "",
-        L("v_socialpanel.ui.time_trial"),
-        L("v_socialpanel.ui.solo_race_against_clock_only_one"),
-        L("v_socialpanel.ui.it_rotates_to_new_one_every"),
-        L("v_socialpanel.ui.your_best_lap_is_saved"),
-    },
-    ["VEHICLES"] = {
-        L("v_socialpanel.ui.two_kinds_of_vehicles"),
-        "",
-        L("v_socialpanel.ui.spawned_vehicles_inac_menu"),
-        L("v_socialpanel.ui.any_vehicle_in_game_can_be"),
-        L("v_socialpanel.ui.are_throwaway_no_tuning_no_modifications"),
-        "",
-        L("v_socialpanel.ui.owned_vehicles_phone"),
-        L("v_socialpanel.ui.buy_your_own_vehicles_with_in"),
-        L("v_socialpanel.ui.you_can_spawn_them_from_phone"),
-        "",
-        L("v_socialpanel.ui.tuning"),
-        L("v_socialpanel.ui.only_owned_vehicles_can_be_modified"),
-        L("v_socialpanel.ui.garage_to_change_parts_paint_and"),
-        "",
-        L("v_socialpanel.ui.every_vehicle_has_working_radio_and"),
-    },
-    ["RULES"] = {
-        L("v_socialpanel.ui.rule_1"),
-        L("v_socialpanel.ui.gives_advantage_is_forbidden"),
-        "",
-        L("v_socialpanel.ui.rule_2"),
-        L("v_socialpanel.ui.killing_same_person_again_and_again"),
-        "",
-        L("v_socialpanel.ui.rule_3"),
-        L("v_socialpanel.ui.nationality_orientation"),
-        "",
-        L("v_socialpanel.ui.rule_4"),
-        "",
-        L("v_socialpanel.ui.breaking_rules_can_get_you_banned"),
-    },
-}
-end
-local help_tab = 1
 
 --------------------------------------------------------------------------------
 -- SOCIAL sub-tabs
@@ -299,28 +203,42 @@ local function renderSocialPanel()
     dxDrawText(L("v_socialpanel.ui.social_panel"), X, 0, X, TOPBAR, C.white, 1.5, "default-bold", "left", "center")
 
     local tabX = X + L.width(L("v_socialpanel.ui.social_panel"), 1.5, "default-bold") + 55
-    for i, name in ipairs(TABS) do
-        local label = (name == "PROFILE") and (snapshot.account or getPlayerName(localPlayer)) or name
+    for _, id in ipairs(TAB_LEFT) do
+        local label = TABS[id]
         local tw = L.width(label, 1.4, "default-bold") + 30
         if UI.button(tabX, 0, tw, TOPBAR, label, {
             font = "default-bold", bg = C.bar, txt = C.white,
             hoverBg = C.bar, hoverTxt = C.accent,
-            selected = (i == content_id), selTxt = C.accent,
+            selected = (id == content_id), selTxt = C.accent,
         }) then
-            content_id = i
-            if i == 3 then triggerServerEvent("sp:ach:pull", localPlayer) end
-            if i == 5 then viewedProfile = nil end
+            content_id = id
+            if id == 3 then triggerServerEvent("sp:ach:pull", localPlayer) end
         end
         tabX = tabX + tw
+    end
+
+    -- PROFILE on the right edge, the display name next to it
+    local pLabel = TABS[5]
+    local pw = L.width(pLabel, 1.4, "default-bold") + 30
+    local px = X + W - pw
+    local nameText = ellipsis(snapshot.displayName or snapshot.account or getPlayerName(localPlayer), 1.2, "default", 220)
+    dxDrawText(nameText, px - 230, 0, px - 8, TOPBAR, tocolor(200, 200, 200, 255), 1.2, "default", "right", "center")
+    if UI.button(px, 0, pw, TOPBAR, pLabel, {
+        font = "default-bold", bg = C.bar, txt = C.white,
+        hoverBg = C.bar, hoverTxt = C.accent,
+        selected = (content_id == 5 or content_id == 6) and viewedProfile == nil, selTxt = C.accent,
+    }) then
+        content_id = 5
+        viewedProfile = nil
     end
 
     dxDrawRectangle(X, Y, W, H, C.bg)
 
     if content_id == 1 then renderHome()
-    elseif content_id == 2 then renderHelp()
     elseif content_id == 3 then renderAchievements()
     elseif content_id == 4 then renderSocial()
-    elseif content_id == 5 then renderProfile() end
+    elseif content_id == 5 then renderProfile()
+    elseif content_id == 6 then renderAccount() end
 
     dxDrawText(L("v_socialpanel.ui.esc_close"), X, Y + H + 6, X + W, Y + H + 26, C.white, 1.3, "default-bold", "right", "top")
 end
@@ -383,32 +301,6 @@ function renderHome()
         end
     end
     UI.endScroll()
-end
-
---------------------------------------------------------------------------------
--- HELP
---------------------------------------------------------------------------------
-
-function renderHelp()
-    local sideW = W * 0.26
-    local rowH = H / #HELP_TABS
-    for i, name in ipairs(HELP_TABS) do
-        if UI.button(X, Y + (i - 1) * rowH, sideW, rowH, L(HELP_LABEL[name]), {
-            bg = C.grey, txt = C.dark, hoverBg = C.white,
-            selected = (i == help_tab), selBg = C.white, selTxt = C.dark,
-        }) then
-            help_tab = i
-        end
-        if i == help_tab then
-            dxDrawRectangle(X + sideW - 4, Y + (i - 1) * rowH, 4, rowH, C.accent)
-        end
-    end
-
-    local cx, cw = X + sideW + 24, W - sideW - 48
-    local name = HELP_TABS[help_tab]
-    dxDrawText(L(HELP_LABEL[name]), cx, Y + 18, cx + cw, Y + 50, C.dark, 2.1, "default-bold", "left", "top")
-    dxDrawRectangle(cx, Y + 54, cw, 2, C.line)
-    para(HELP_TEXT[name] or { "..." }, cx, Y + 70, cw)
 end
 
 --------------------------------------------------------------------------------
@@ -914,7 +806,7 @@ function renderProfile()
     local name, level, playtime, online, crewName, crewTag, crewCol, isFriend, isSelf
 
     if isOwn then
-        name = snapshot.account or getPlayerName(localPlayer)
+        name = snapshot.displayName or snapshot.account or getPlayerName(localPlayer)
         level = getElementData(localPlayer, "level") or "n/a"
         playtime = getElementData(localPlayer, "Játékidő") or "n/a"
         online = true
@@ -936,7 +828,11 @@ function renderProfile()
     dxDrawText(online and L("v_socialpanel.ui.online_2") or L("v_socialpanel.ui.offline_2"), X + 140, Y + 78, X + W - 20, Y + 100,
         online and tocolor(0, 120, 0, 255) or tocolor(150, 40, 40, 255), 1.4, "default-bold", "left", "top")
 
-    if not isOwn then
+    if isOwn then
+        if UI.button(X + W - 170, Y + 20, 150, 34, L("v_socialpanel.ui.account"), { size = 1.3, bg = C.dark, txt = C.white, hoverBg = C.panel, hoverTxt = C.dark }) then
+            openAccount()
+        end
+    else
         if UI.button(X + W - 130, Y + 20, 110, 30, L("common.back"), { size = 1.3, bg = C.panel }) then
             viewedProfile = nil
             content_id = 4
@@ -988,13 +884,127 @@ function renderProfile()
     end
 end
 
+--------------------------------------------------------------------------------
+-- ACCOUNT (settings of the own profile): display name, email, password.
+-- The account name itself can never be changed. Email and password go to
+-- acc_auth (it checks the current password), the display name to the server
+-- of this resource.
+--------------------------------------------------------------------------------
+
+local accEmail = { masked = false, has = false }
+local accStatus = nil      -- { text, ok }
+
+local function setAccStatus(text, ok)
+    accStatus = { text = tostring(text or ""), ok = ok }
+end
+
+function openAccount()
+    content_id = 6
+    accStatus = nil
+    UI.setInput("acc_display", snapshot.displayName or snapshot.account or "")
+    for _, id in ipairs({ "acc_email", "acc_email_pw", "acc_pw_cur", "acc_pw_new", "acc_pw_new2" }) do
+        UI.clearInput(id)
+    end
+    exports.acc_auth:requestEmail()
+end
+
+addEvent("acc_auth:onClientEmail", true)
+addEventHandler("acc_auth:onClientEmail", localPlayer, function(masked, has, notice)
+    accEmail.masked, accEmail.has = masked, has and true or false
+    if notice and content_id == 6 then
+        setAccStatus(notice, true)
+        UI.clearInput("acc_email"); UI.clearInput("acc_email_pw")
+    end
+end)
+
+addEvent("acc_auth:onClientSettings", true)
+addEventHandler("acc_auth:onClientSettings", localPlayer, function(kind, ok, text)
+    if content_id ~= 6 then return end
+    setAccStatus(text, ok)
+    if ok and kind == "password" then
+        UI.clearInput("acc_pw_cur"); UI.clearInput("acc_pw_new"); UI.clearInput("acc_pw_new2")
+    end
+end)
+
+addEvent("acc_auth:onClientAuthError", true)
+addEventHandler("acc_auth:onClientAuthError", localPlayer, function(msg)
+    if content_id == 6 then setAccStatus(msg, false) end
+end)
+
+addEvent("sp:display:result", true)
+addEventHandler("sp:display:result", localPlayer, function(ok, msg)
+    if content_id == 6 then setAccStatus(L.resolve(msg), ok) end
+end)
+
+function renderAccount()
+    local leftW = W * 0.4
+    dxDrawRectangle(X, Y, leftW, H, C.grey)
+
+    local lx, lw = X + 20, leftW - 40
+    dxDrawText(L("v_socialpanel.ui.account_settings"), lx, Y + 16, lx + lw, Y + 44, C.dark, 1.7, "default-bold", "left", "top")
+    dxDrawText(L("v_socialpanel.ui.account_settings_intro"), lx, Y + 52, lx + lw, Y + 120, C.sub, 1.15, "default", "left", "top", false, true)
+
+    dxDrawText(L("v_socialpanel.ui.account_name"), lx, Y + 140, lx + lw, Y + 160, C.sub, 1.15, "default", "left", "top")
+    dxDrawRectangle(lx, Y + 164, lw, 34, tocolor(228, 228, 228, 255))
+    dxDrawText(snapshot.account or getPlayerName(localPlayer), lx + 8, Y + 164, lx + lw - 8, Y + 198, C.sub, 1.3, "default", "left", "center")
+    dxDrawText(L("v_socialpanel.ui.account_name_locked"), lx, Y + 204, lx + lw, Y + 224, C.sub, 1.05, "default", "left", "top")
+
+    if UI.button(lx, Y + H - 56, 120, 34, L("v_socialpanel.ui.back_to_profile"), { size = 1.25, bg = C.panel }) then
+        content_id = 5
+    end
+
+    local rx, rw = X + leftW + 20, W - leftW - 40
+    local bw = 100
+    local function head(txt, y) dxDrawText(txt, rx, Y + y, rx + rw, Y + y + 24, C.dark, 1.5, "default-bold", "left", "top") end
+
+    -- display name
+    head(L("v_socialpanel.ui.display_name"), 14)
+    local display = UI.input("acc_display", rx, Y + 42, rw - bw - 8, 34, { max = 72 })
+    if UI.button(rx + rw - bw, Y + 42, bw, 34, L("v_socialpanel.ui.save"), { size = 1.2, bg = C.accent, hoverBg = C.dark, hoverTxt = C.white }) then
+        triggerServerEvent("sp:display:set", localPlayer, display)
+    end
+    dxDrawText(L("v_socialpanel.ui.display_name_hint"), rx, Y + 82, rx + rw, Y + 100, C.sub, 1.05, "default", "left", "top")
+
+    -- email
+    head(L("v_socialpanel.ui.email_address"), 120)
+    dxDrawText(accEmail.has and accEmail.masked or L("v_socialpanel.ui.no_email_set"), rx, Y + 148, rx + rw, Y + 168,
+        accEmail.has and C.dark or C.sub, 1.2, "default", "left", "top")
+    local mail = UI.input("acc_email", rx, Y + 174, rw - bw - 8, 34, { placeholder = L("v_socialpanel.ui.new_email"), max = 120 })
+    local mailPw = ""
+    if accEmail.has then
+        mailPw = UI.input("acc_email_pw", rx, Y + 214, rw, 34, { placeholder = L("v_socialpanel.ui.email_password_needed"), mask = true, max = 128 })
+    end
+    if UI.button(rx + rw - bw, Y + 174, bw, 34, L("v_socialpanel.ui.save"), { size = 1.2, bg = C.accent, hoverBg = C.dark, hoverTxt = C.white }) then
+        if mail ~= "" then exports.acc_auth:setEmail(mail, mailPw) end
+    end
+
+    -- password
+    head(L("v_socialpanel.ui.change_password"), 268)
+    local cur  = UI.input("acc_pw_cur", rx, Y + 296, rw, 34, { placeholder = L("v_socialpanel.ui.current_password"), mask = true, max = 128 })
+    local half = (rw - 8) / 2
+    local new1 = UI.input("acc_pw_new", rx, Y + 336, half, 34, { placeholder = L("v_socialpanel.ui.new_password"), mask = true, max = 128 })
+    local new2 = UI.input("acc_pw_new2", rx + half + 8, Y + 336, half, 34, { placeholder = L("v_socialpanel.ui.new_password_again"), mask = true, max = 128 })
+    if UI.button(rx, Y + 380, 140, 36, L("v_socialpanel.ui.save"), { size = 1.25, bg = C.accent, hoverBg = C.dark, hoverTxt = C.white }) then
+        if cur == "" or new1 == "" then
+            -- nothing to send
+        elseif new1 ~= new2 then
+            setAccStatus(L("v_socialpanel.ui.passwords_do_not_match"), false)
+        else
+            triggerServerEvent("acc_auth:changePassword", localPlayer, cur, new1)
+        end
+    end
+
+    if accStatus then
+        dxDrawText(accStatus.text, rx, Y + 432, rx + rw, Y + 490, accStatus.ok and C.green or C.red, 1.2, "default-bold", "left", "top", false, true)
+    end
+end
+
 -- Texts load only once the player is loaded (acc_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
     build_TABS()
-    build_HELP_TEXT()
     build_SOCIAL_TABS()
     exports.acc_loading:resourceReady()
 end
