@@ -38,5 +38,9 @@
   "gov_treasury.ui.so_pause": "Szüneteltet",
   "gov_treasury.ui.so_resume": "Folytat",
   "gov_treasury.ui.so_paused": "szünetel",
-  "gov_treasury.ui.confirm_delete_so": "Törlöd ezt a rendszeres átutalást?"
+  "gov_treasury.ui.confirm_delete_so": "Törlöd ezt a rendszeres átutalást?",
+  "gov_treasury.ui.so_edit": "Szerkeszt",
+  "gov_treasury.ui.so_editing": "#{id} szerkesztése",
+  "gov_treasury.ui.so_save": "Módosítás mentése",
+  "gov_treasury.ui.so_cancel": "Mégse"
 }

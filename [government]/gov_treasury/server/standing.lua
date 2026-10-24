@@ -112,6 +112,24 @@ function GOV.standingCreate(d, actor, cb)
         DB.clip(d.note, 48), DB.clip(actor, 64), now)
 end
 
+--- edit an order: same fields as standingCreate + id -> cb(ok, errKey)
+--- a changed interval restarts the countdown (next_run = now + interval), otherwise next_run stays
+function GOV.standingUpdate(id, d, actor, cb)
+    local interval = int(d.interval)
+    local amount = int(d.amount)
+    if not KIND_KEY[d.kind] then return cb(false, "bad_field") end
+    if amount < GOV_RANGE.standingAmount[1] or amount > GOV_RANGE.standingAmount[2] then return cb(false, "bad_number") end
+    if interval < GOV_RANGE.standingInterval[1] or interval > GOV_RANGE.standingInterval[2] then return cb(false, "bad_number") end
+    local now = GOV.now()
+    DB.query(function(res, affected)
+        if res == false or tonumber(affected) == 0 then return cb(false, "bad_field") end
+        GOV.log(actor, "standing.update", { id = int(id), kind = d.kind, from = d.fromName, to = d.toName, amount = amount, every = interval })
+        cb(true)
+    end, "UPDATE gov_standing_orders SET kind = ?, from_ref = ?, to_ref = ?, amount = ?, "
+        .. "next_run = IF(interval_sec = ?, next_run, ?), interval_sec = ?, note = ? WHERE id = ?",
+        d.kind, int(d.from), int(d.to), amount, interval, now + interval, interval, DB.clip(d.note, 48), int(id))
+end
+
 function GOV.standingSetEnabled(id, enabled, actor, cb)
     local now = GOV.now()
     DB.query(function(res, affected)

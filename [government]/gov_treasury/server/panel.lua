@@ -142,16 +142,21 @@ end
 
 --- standing order (recurring transfer): { kind = state | pay | collect, from, to, amount, interval (s), note }
 --- ids as in moneyTransfer (state side = state bank account id, private side = biz_core company id)
-function A.createStanding(p, args, reply, actor)
+--- with args.id an existing order is edited instead (updateStanding)
+local function saveStanding(args, reply, actor)
     local kind = args.kind
     local function done(ok, err) if not ok then return reply(false, err) end reply(true) end
     local d = { kind = kind, amount = args.amount, interval = args.interval, note = DB.clip(tostring(args.note or ""), 48) }
+    local function save()
+        if args.id then return GOV.standingUpdate(args.id, d, actor, done) end
+        GOV.standingCreate(d, actor, done)
+    end
     if kind == "state" then
         local from, to = stateOf(args.from), stateOf(args.to)
         if not from or not to then return reply(false, "bad_company") end
         if from.id == to.id then return reply(false, "v_bank.error.same_account") end
         d.from, d.to, d.fromName, d.toName = from.id, to.id, from.name, to.name
-        return GOV.standingCreate(d, actor, done)
+        return save()
     end
     if kind ~= "pay" and kind ~= "collect" then return reply(false, "bad_field") end
     local state = stateOf(kind == "pay" and args.from or args.to)
@@ -167,8 +172,18 @@ function A.createStanding(p, args, reply, actor)
         else
             d.from, d.to, d.fromName, d.toName = int(r.id), state.id, name, state.name
         end
-        GOV.standingCreate(d, actor, done)
+        save()
     end, "SELECT id, name FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
+end
+
+function A.createStanding(p, args, reply, actor)
+    args.id = nil
+    saveStanding(args, reply, actor)
+end
+
+function A.updateStanding(p, args, reply, actor)
+    if not tonumber(args.id) then return reply(false, "bad_field") end
+    saveStanding(args, reply, actor)
 end
 
 function A.toggleStanding(p, args, reply, actor)
@@ -183,7 +198,7 @@ GOV.module({
     actions = {
         overview = "viewer", treasuryLedger = "viewer", budget = "viewer", transfers = "viewer",
         treasuryTransfer = "minister", moneyTransfer = "minister",
-        createStanding = "minister", toggleStanding = "minister", deleteStanding = "minister",
+        createStanding = "minister", updateStanding = "minister", toggleStanding = "minister", deleteStanding = "minister",
     },
     pages = {
         { id = "overview",  category = "top",     order = 10, script = "web/js/pages.js" },

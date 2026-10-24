@@ -38,5 +38,9 @@
   "gov_treasury.ui.so_pause": "Pause",
   "gov_treasury.ui.so_resume": "Resume",
   "gov_treasury.ui.so_paused": "paused",
-  "gov_treasury.ui.confirm_delete_so": "Delete this standing order?"
+  "gov_treasury.ui.confirm_delete_so": "Delete this standing order?",
+  "gov_treasury.ui.so_edit": "Edit",
+  "gov_treasury.ui.so_editing": "Editing order #{id}",
+  "gov_treasury.ui.so_save": "Save changes",
+  "gov_treasury.ui.so_cancel": "Cancel"
 }

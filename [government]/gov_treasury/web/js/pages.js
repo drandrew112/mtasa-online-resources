@@ -104,7 +104,7 @@
         keys: GOV.keys('gov_treasury', ['tf_state', 'tf_pay', 'tf_collect', 'tf_collect_hint', 'tf_from', 'tf_to', 'tf_send', 'tf_pay_btn',
             'tf_collect_btn', 'tf_recent', 'tf_kind', 'tf_pick_company', 'confirm_transfer',
             'so_title', 'so_hint', 'so_every', 'so_hours', 'so_days', 'so_create', 'so_next', 'so_last', 'so_runs',
-            'so_pause', 'so_resume', 'so_paused', 'confirm_delete_so']),
+            'so_pause', 'so_resume', 'so_paused', 'confirm_delete_so', 'so_edit', 'so_editing', 'so_save', 'so_cancel']),
         render(d) {
             const m = GOV.can('minister');
             const states = arr(d.states).filter(s => s.status !== 'closed');
@@ -136,11 +136,13 @@
             const every = sec => sec % 86400 === 0 ? `${sec / 86400} ${T('so_days')}` : `${Math.round(sec / 360) / 10} ${T('so_hours')}`;
             const orders = arr(d.orders);
             h += `<div class="gv-card"><h2>${esc(T('so_title'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('so_hint'))}</div>`;
+            if (sel.soEdit && !orders.some(o => o.id === sel.soEdit)) sel.soEdit = null;   // deleted meanwhile
             if (m) {
                 GOV.usePicker('soCo', { state: () => [], current: () => sel.soCo && sel.soCo.spec, choose: it => { sel.soCo = it; GOV.render(); } });
                 const k = sel.soKind;
                 const first = states[0] && states[0].id, second = states[1] ? states[1].id : first;
-                h += `<div class="gv-row">${select('soKind', [['state', T('tf_state')], ['pay', T('tf_pay')], ['collect', T('tf_collect')]], k, 'soKind', true)}</div>` +
+                h += `<div class="gv-row">${select('soKind', [['state', T('tf_state')], ['pay', T('tf_pay')], ['collect', T('tf_collect')]], k, 'soKind', true)}` +
+                    (sel.soEdit ? `<b>${esc(T('so_editing', { id: sel.soEdit }))}</b>` : '') + '</div>' +
                     `<div class="gv-row" style="margin-top:10px"><label class="dim">${esc(T('tf_from'))}</label>` +
                     (k === 'collect' ? GOV.pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soFrom', first)) +
                     `<label class="dim">${esc(T('tf_to'))}</label>` +
@@ -148,14 +150,16 @@
                     `<div class="gv-row" style="margin-top:10px">${amountNote('so')}<label class="dim">${esc(T('so_every'))}</label>` +
                     `<input class="osa-input num" id="soEvery" value="1" data-keep="1">` +
                     select('soUnit', [['3600', T('so_hours')], ['86400', T('so_days')]], '86400', '', true).replace('<select ', '<select data-keep="1" ') +
-                    btn(T('so_create'), 'soCreate', {}, 'primary') + '</div>';
+                    (sel.soEdit ? btn(T('so_save'), 'soCreate', {}, 'primary') + btn(T('so_cancel'), 'soCancel')
+                        : btn(T('so_create'), 'soCreate', {}, 'primary')) + '</div>';
             }
             h += table([[T('tf_kind')], [T('tf_from')], [T('tf_to')], [T('amount'), 'r'], [T('so_every')], [T('so_next')], [T('so_last')], [T('note')], ['', 'act']],
-                orders.map(o => `<tr${o.enabled ? '' : ' class="dim"'}><td>${esc(kindName('transfer.' + o.kind))}</td><td>${esc(o.fromName)}</td><td>${esc(o.toName)}</td>` +
+                orders.map(o => `<tr${o.enabled ? '' : ' class="dim"'}${o.id === sel.soEdit ? ' style="outline:1px solid currentColor"' : ''}><td>${esc(kindName('transfer.' + o.kind))}</td><td>${esc(o.fromName)}</td><td>${esc(o.toName)}</td>` +
                     `<td class="r mono">${money(o.amount)}</td><td>${esc(every(o.interval))}</td>` +
                     `<td class="mono dim">${o.enabled ? stamp(o.nextRun) : esc(T('so_paused'))}</td>` +
                     `<td class="dim">${o.lastRun ? `${stamp(o.lastRun)} ${esc(o.lastStatus)}` : '-'} (${esc(T('so_runs'))}: ${o.runs})</td><td class="dim">${esc(o.note)}</td>` +
-                    `<td class="act">${m ? btn(T(o.enabled ? 'so_pause' : 'so_resume'), 'soToggle', { id: o.id, value: o.enabled ? 'false' : 'true' }) +
+                    `<td class="act">${m ? btn(T('so_edit'), 'soEdit', { id: o.id }) + ' ' +
+                        btn(T(o.enabled ? 'so_pause' : 'so_resume'), 'soToggle', { id: o.id, value: o.enabled ? 'false' : 'true' }) +
                         ' ' + btn(T('delete'), 'soDelete', { id: o.id }, 'danger') : ''}</td></tr>`)) + '</div>';
             return h + `<div class="gv-card"><h2>${esc(T('tf_recent'))}</h2>` +
                 table([[T('time')], [T('tf_kind')], [T('tf_from')], [T('tf_to')], [T('amount'), 'r'], [T('note')], [T('actor')]], arr(d.list).map(r => {
@@ -201,11 +205,39 @@
                 else if (kind === 'pay') { args.from = Number(val('soFrom')); args.to = Number(sel.soCo.spec.split(':')[1]); from = stateName(args.from); to = sel.soCo.name; }
                 else { args.from = Number(val('soFrom')); args.to = Number(val('soTo')); from = stateName(args.from); to = stateName(args.to); }
                 const per = ev + ' ' + (val('soUnit') === '3600' ? T('so_hours') : T('so_days'));
+                if (sel.soEdit) args.id = sel.soEdit;
                 if (!await OSA.ui.confirm(T('so_title'), T('confirm_transfer', { amount: money(n), from, to }) + ' / ' + per, T('save'))) return;
-                if (await GOV.change('createStanding', args)) {
+                if (await GOV.change(args.id ? 'updateStanding' : 'createStanding', args)) {
+                    sel.soEdit = null;
                     $('soAmount') && ($('soAmount').value = '');
                     $('soNote') && ($('soNote').value = '');
+                    GOV.render();
                 }
+            },
+            // loads an order into the form above; Save then edits it (updateStanding)
+            soEdit(b) {
+                const o = arr((D.transfers || {}).orders).find(x => x.id === Number(b.dataset.id));
+                if (!o) return;
+                sel.soEdit = o.id;
+                sel.soKind = o.kind;
+                sel.soCo = o.kind === 'pay' ? { spec: 'company:' + o.to, name: o.toName }
+                    : o.kind === 'collect' ? { spec: 'company:' + o.from, name: o.fromName } : null;
+                GOV.render();
+                const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+                if (o.kind !== 'collect') set('soFrom', o.from);
+                if (o.kind !== 'pay') set('soTo', o.to);
+                const days = o.interval % 86400 === 0;
+                set('soUnit', days ? '86400' : '3600');
+                set('soEvery', days ? o.interval / 86400 : Math.round(o.interval / 36) / 100);
+                set('soAmount', o.amount);
+                set('soNote', o.note);
+                $('soKind') && $('soKind').scrollIntoView({ block: 'center' });
+            },
+            soCancel() {
+                sel.soEdit = null;
+                $('soAmount') && ($('soAmount').value = '');
+                $('soNote') && ($('soNote').value = '');
+                GOV.render();
             },
             soToggle(b) { GOV.change('toggleStanding', { id: Number(b.dataset.id), enabled: b.dataset.value === 'true' }); },
             async soDelete(b) {
