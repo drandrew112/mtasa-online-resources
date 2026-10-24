@@ -9,6 +9,7 @@
 --   "treasury" - the State Treasury (filled in by v_bank when the caller gives none)
 --   "payer"    - a state or company account given by the caller, or system when none
 --   "payee"    - a state account given by the caller, or system (the money disappears) when none
+--   "org"      - a state or company account given by the caller, or system when none (either side)
 --   { personal = true, company = true, state = true } - an account of these kinds
 --
 --   force   = the paying account may go below 0 (debt, paid off by its next income)
@@ -79,9 +80,17 @@ TX_KEYS = {
     ["tax.vat"]            = { from = "system", to = "payee", params = { "group", "item", "net", "rate" } },
     -- property tax of an organization, every 24 online hours (biz_core)
     ["tax.property"]       = { from = C, to = "payee", force = true, params = { "count", "value", "rate" } },
-    ["health.care"]        = { from = "treasury", to = "system", force = true,
+    -- healthcare (v_gov, per hospital on the /gov Healthcare page): the payer (system, a state or a
+    -- private company) pays the receiver (system = nobody, a state or a private company), or the
+    -- patient pays it from the bank (may go into debt)
+    ["health.care"]        = { from = "org", to = "org", force = true,
                                params = { "patient", "account", "hospital", "hp", "injuries", "task" } },
+    ["health.patient"]     = { from = P, to = "org", force = true, params = { "hospital", "hp", "injuries" } },
+    -- /gov Transfers page: state <-> state, state -> private company, collection from a private
+    -- company (forced, it may go into debt)
     ["gov.transfer"]       = { from = S, to = S, force = true, params = { "note" } },
+    ["gov.company_payment"] = { from = S, to = C, params = { "note" } },
+    ["gov.collection"]     = { from = C, to = S, force = true, params = { "note" } },
     -- airspace usage fees, paid by the AI flight's airline (money from nothing) to the fee's account
     ["atc.fee_takeoff"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
     ["atc.fee_landing"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },

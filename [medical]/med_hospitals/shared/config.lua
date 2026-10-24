@@ -28,7 +28,7 @@ HOSP = {
     -- false = visible to everyone. Everyone sees it while work_core is stopped.
     HANDOVER_WORK = "ems",
 
-    -- Free treatment (heal) marker: 15 s, medsys healCompletely
+    -- Treatment (heal) marker: 15 s, medsys healCompletely; free unless the patient pays (v_gov)
     HEAL_SIZE = 1.4,
     HEAL_TIME = 15000,
     HEAL_COLOR = { 46, 160, 67, 110 },
@@ -57,6 +57,7 @@ HOSP_DATA = {
     OCCUPIED = "hosp.occupied",    -- bay: a vehicle is parked in it
     RESTRICTED = "hosp.restricted",-- bay: a non-ambulance vehicle is in it (red marker)
     TUTORIAL = "hosp.tutorial",    -- private tutorial marker: labelled regardless of HANDOVER_WORK
+    PAID = "hosp.paid",            -- heal: the patient pays the treatment (v_gov payer "player")
 }
 
 HOSP_TEXT = {
@@ -65,5 +66,6 @@ HOSP_TEXT = {
     bayRestricted = { title = L.text("med_hospitals.config.ambulances_only"),
                       hint = L.text("med_hospitals.config.leave_bay_fine_every_s", { bay_fine = HOSP.BAY_FINE, bay_fine_interval = HOSP.BAY_FINE_INTERVAL / 1000 }) },
     heal     = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_free_of_charge", { heal_time = HOSP.HEAL_TIME / 1000 }) },
+    healPaid = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_patient_pays", { heal_time = HOSP.HEAL_TIME / 1000 }) },
 }
 end)

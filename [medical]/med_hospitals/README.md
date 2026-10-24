@@ -10,7 +10,7 @@ is defined in `hospitals.json`.
 |---|---|---|
 | **Ambulance Bay** (`bays`, any number) | yellow | An ERM unit with an active case stops its vehicle here (below `BAY_MAX_SPEED`) with a patient on its stretcher, and the unit becomes **Handover**. Without a patient the ambulance simply drives through. An occupied bay's marker has alpha 0, and it has no label. |
 | **Patient Handover** (`handover`, any number) | blue | A medic pushes the patient in on the stretcher. After **5 s** the ped disappears, the ERM handover completes, and the task closes. |
-| **Treatment** (`heal`, one) | green | A player standing here for **15 s** is healed completely (medsys `healCompletely` + full health). It is free. |
+| **Treatment** (`heal`, one) | green | A player standing here for **15 s** is healed completely (medsys `healCompletely` + full health). Free, unless the hospital's payer on the /gov Healthcare page is the patient (marker data `hosp.paid`, the label then has no "free of charge"). |
 
 ### Handover flow
 

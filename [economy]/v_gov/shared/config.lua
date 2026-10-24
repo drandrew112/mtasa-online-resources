@@ -46,6 +46,9 @@ GOV_DEFAULTS = {
 
     ["health.enabled"] = true,
     ["health.hp_price"] = 50,
+    -- who pays the treatment, per med_hospitals hospital id: { payer, receiver } (server/health.lua;
+    -- a hospital without a row: the treasury pays, nobody receives)
+    ["health.hospitals"] = {},
     -- injury / condition type -> price by severity 1 / 2 / 3 ("default" for types not listed)
     ["health.injuries"] = {
         gunshot = { 800, 2000, 4500 },

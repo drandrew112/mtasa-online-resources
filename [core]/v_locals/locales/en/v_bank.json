@@ -78,5 +78,8 @@
   "v_bank.tx.work.deduction.in": "Work deduction received: {work}",
   "v_bank.tx.work.deduction.out": "Work deduction: {work}",
   "v_bank.tx.work.pay.in": "Wage: {work}",
-  "v_bank.tx.work.pay.out": "Wage paid: {work}"
+  "v_bank.tx.work.pay.out": "Wage paid: {work}",
+  "v_bank.tx.health.patient": "Treatment: {hospital}",
+  "v_bank.tx.gov.company_payment": "State payment",
+  "v_bank.tx.gov.collection": "State collection"
 }

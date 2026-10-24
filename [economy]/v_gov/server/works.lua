@@ -40,21 +40,28 @@ function GOV.payerSpec(workId)
     return d and d.payer or "system"
 end
 
---- v_bank account id of the payer, or "system"
-function getWorkPayer(workId)
-    local spec = GOV.payerSpec(workId)
+--- v_bank account id of a payer / receiver spec ("system" | "state:<code>" | "company:<id>"):
+--- the id, "system", or false (the account does not exist / is closed)
+function GOV.specAccount(spec)
     local bank = GOV.bank()
     if spec == "system" or not bank then return "system" end
-    local kind, ref = spec:match("^(%a+):(.+)$")
+    local kind, ref = tostring(spec):match("^(%a+):(.+)$")
     local id
     if kind == "state" then id = bank:getStateAccount(ref)
     elseif kind == "company" then id = bank:getCompanyAccount(ref) end
+    local info = id and bank:getAccountInfo(id)
+    if not info or info.status == "closed" then return false end
+    return id
+end
+
+--- v_bank account id of the payer, or "system"
+function getWorkPayer(workId)
+    local spec = GOV.payerSpec(workId)
+    local id = GOV.specAccount(spec)
     if not id then
         outputDebugString(("[v_gov] payer %s of work %s does not exist, paid from system"):format(spec, tostring(workId)), 2)
         return "system"
     end
-    local info = bank:getAccountInfo(id)
-    if not info or info.status == "closed" then return "system" end
     return id
 end
 
@@ -117,14 +124,23 @@ end
 function GOV.checkPayers()
     local bank = GOV.bank()
     if not bank or not bank:isBankReady() then return end
+    local function closed(spec)
+        if type(spec) ~= "string" or not spec:match("^company:") then return false end
+        local id = bank:getCompanyAccount(spec:match("^company:(.+)$"))
+        local info = id and bank:getAccountInfo(id)
+        return info and info.status == "closed"
+    end
     for key, v in pairs(SETTINGS) do
         local workId = key:match("^work%.([^%.]+)%.payer$")
-        if workId and type(v) == "string" and v:match("^company:") then
-            local id = bank:getCompanyAccount(v:match("^company:(.+)$"))
-            local info = id and bank:getAccountInfo(id)
-            if info and info.status == "closed" then
-                GOV.set(key, "system", "system")
-            end
+        if workId and closed(v) then GOV.set(key, "system", "system") end
+    end
+    -- healthcare: a closed company payer / receiver goes back to the default
+    local hospitals, changed = GOV.get("health.hospitals") or {}, false
+    for _, row in pairs(hospitals) do
+        if type(row) == "table" then
+            if closed(row.payer) then row.payer, changed = nil, true end
+            if closed(row.receiver) then row.receiver, changed = nil, true end
         end
     end
+    if changed then GOV.set("health.hospitals", hospitals, "system") end
 end

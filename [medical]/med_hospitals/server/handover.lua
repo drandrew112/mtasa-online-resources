@@ -189,9 +189,10 @@ local function completeProc(player)
     -- listeners can still read the patient (medsys state etc.)
     triggerEvent("onHospitalPatientHandover", resourceRoot, h.id, p.unitId, patient, player, taskId)
 
-    -- state healthcare: the treasury pays the treatment of the patient (player or NPC)
+    -- healthcare: the hospital's payer (v_gov /gov Healthcare page) pays the treatment (player or NPC)
     if isElement(patient) and isResourceRunning("v_gov") then
-        exports.v_gov:chargeHealthcare(patient, h.name, taskId or nil)
+        local ok, amount, paid = exports.v_gov:chargeHealthcare(patient, h.name, taskId or nil, h.id)
+        if ok and paid and amount > 0 then notify(patient, L.msg("med_hospitals.heal.you_paid_for_treatment", { amount = amount })) end
     end
 
     if isElement(patient) then

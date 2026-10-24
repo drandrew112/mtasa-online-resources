@@ -9,7 +9,7 @@
     const $ = id => document.getElementById(id);
     const view = $('view');
 
-    const PAGES = ['overview', 'treasury', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'news', 'members', 'log'];
+    const PAGES = ['overview', 'treasury', 'transfers', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'news', 'members', 'log'];
     const VAT_GROUPS = ['weapons', 'clothing', 'vehicles', 'tuning', 'repair', 'services', 'real_estate'];
     const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'transfer', 'admin'];
     const ROLE_LEVEL = { viewer: 1, official: 2, minister: 3 };
@@ -31,7 +31,11 @@
             'vote_title', 'vote_description', 'vote_options', 'vote_options_hint', 'vote_hours', 'vote_ends', 'voters_n',
             'close_vote', 'cancel_vote', 'status_open', 'status_closed', 'status_cancelled', 'results_after_close',
             'winner', 'created', 'daily', 'day', 'new_news', 'news_title', 'news_body', 'news_send', 'news_hint',
-            'news_not_mailed', 'confirm_delete_news', 'tax_target', 'tax_target_none', 'tax_target_missing']
+            'news_not_mailed', 'confirm_delete_news', 'tax_target', 'tax_target_none', 'tax_target_missing',
+            'hospitals', 'receiver', 'patient_pays', 'receiver_none', 'payer_system', 'search_payer', 'search_private',
+            'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint',
+            'tf_state', 'tf_pay', 'tf_collect', 'tf_collect_hint', 'tf_from', 'tf_to', 'tf_send', 'tf_pay_btn',
+            'tf_collect_btn', 'tf_recent', 'tf_kind', 'tf_pick_company', 'confirm_transfer']
             .map(k => 'v_gov.ui.' + k),
         ...PAGES.map(p => 'v_gov.page.' + p),
         ...['viewer', 'official', 'minister'].map(r => 'v_gov.role.' + r),
@@ -101,15 +105,15 @@
     // Esc reaches both the page (osa.js closes its dialog) and client/panel.lua (-> _escape), in
     // either order: the panel closes only when no dialog / list was open at that key press
     let escOverlayAt = 0;
-    const overlayOpen = () => !!document.querySelector('.osa-modal-back:not([hidden])') || picker.open;
+    const overlayOpen = () => !!document.querySelector('.osa-modal-back:not([hidden])') || anyPickerOpen();
     document.addEventListener('keydown', e => {
         if (e.key !== 'Escape') return;
         if (overlayOpen()) escOverlayAt = Date.now();
-        picker.hide();
+        hidePickers();
     }, true);
     GOV._escape = () => {
         if (document.querySelector('.osa-modal-back:not([hidden])')) { OSA.ui.closeModal(); return; }
-        if (picker.open) { picker.hide(); return; }
+        if (anyPickerOpen()) { hidePickers(); return; }
         if (Date.now() - escOverlayAt < 500) return;
         close();
     };
@@ -118,7 +122,8 @@
     // ------------------------------------------------------------ state + navigation
     let page = 'overview';
     const D = {};             // data per page
-    const sel = { treasury: null, group: 'all', work: null, company: null, workQ: '', logQ: '', newsDraft: null };
+    const sel = { treasury: null, group: 'all', work: null, company: null, workQ: '', logQ: '', newsDraft: null,
+        hospital: null, tfPay: null, tfCol: null };
     let busy = false;
 
     function nav() {
@@ -131,7 +136,7 @@
 
     function show(p) {
         page = p;
-        picker.hide();
+        hidePickers();
         nav();
         if (!D[p]) view.innerHTML = `<h1>${esc(T('v_gov.page.' + p))}</h1><div class="gv-empty">${esc(T('loading'))}</div>`;
         else render();
@@ -187,7 +192,7 @@
             if (f.tagName === 'INPUT') f.setSelectionRange(f.value.length, f.value.length);
         }
         view.scrollTop = scroll;
-        if (page === 'works') picker.mount();
+        mountPickers();
     }
 
     // ------------------------------------------------------------ building blocks
@@ -334,6 +339,11 @@
         const list = works.filter(w => !q || w.name.toLowerCase().includes(q) || w.id.includes(q));
         const w = works.find(x => x.id === sel.work) || works[0];
         if (w) sel.work = w.id;
+        if (w && m) usePicker('pick', {
+            state: () => arr(d.payers),
+            current: () => w.payer,
+            choose: it => change('setWork', { work: sel.work, field: 'payer', value: it.spec }),
+        });
         let h = head(T('v_gov.page.works')) + `<div class="gv-split"><div><input class="osa-input wide" id="workQ" placeholder="${esc(T('search_work'))}" value="${esc(sel.workQ)}" style="margin-bottom:8px">` +
             `<div class="gv-list">${list.map(x => {
                 const p = payerName(d, x.payer);
@@ -343,11 +353,7 @@
         const p = payerName(d, w.payer);
         const keys = Object.keys(d.taxKeys || {}).sort();
         h += `<div class="gv-card"><h2 style="font-size:22px;color:var(--osa-text)">${esc(w.name)} <span class="dim mono" style="font-size:14px">${esc(w.id)}</span></h2>` +
-            `<div class="gv-field"><label>${esc(T('payer'))}</label><div class="gv-picker" id="picker"><div class="cur">` +
-            `<b>${esc(p.name)}</b>${p.tag ? `<span class="tag ${p.tag}">${esc(p.tag === 'state' ? T('state_payers') : T('private_companies'))}</span>` : ''}` +
-            `${p.inactive ? `<span class="tag bad">${esc(T('inactive'))}</span>` : ''}</div>` +
-            (m ? `<input class="osa-input wide" id="pickQ" placeholder="${esc(T('search_company'))}" autocomplete="off"><div class="gv-pick-list" id="pickList" hidden></div>` : '') +
-            `</div></div>` +
+            `<div class="gv-field"><label>${esc(T('payer'))}</label>${pickerBox('pick', p, m, T('search_company'))}</div>` +
             `<div class="gv-field"><label>${esc(T('multiplier'))}</label><div>${edit('wMul', w.multiplier, 'workMul', {}, { allowed: m, unit: '×', reset: 'workMulReset', shown: '×' + w.multiplier })}</div></div>` +
             `<div class="gv-field"><label>${esc(T('tax_key'))}</label><div>${m ? select('wTax', keys.map(k => [k, `${k} (${pct(d.taxKeys[k])})`]), w.taxKey, 'workTax', true)
                 : esc(`${w.taxKey} (${pct(w.taxRate)})`)}</div></div>` +
@@ -383,7 +389,83 @@
                     `<td class="act">${o && type !== 'default' ? btn(T('delete'), 'removeInjury', { type }, 'danger') : ''}</td></tr>`;
             }));
         if (o) h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="newInjury" placeholder="${esc(T('injury_type'))}" maxlength="24" data-keep="1" data-enter="addInjury">${btn(T('add_injury'), 'addInjury', {}, 'primary')}</div>`;
+        return hospitalsCard(d, o) + h + '</div>';
+    };
+
+    // who pays the treatment, per hospital: payer (system / the patient / state / private company)
+    // and receiver (nobody / state / private company)
+    const payerOpts = d => arr(d.payers).map(x => x.spec === 'system' ? { spec: 'system', name: T('payer_system') } : x);
+    const receiverOpts = d => arr(d.payers).map(x => x.spec === 'system' ? { spec: 'system', name: T('receiver_none') } : x);
+    function healthSpecName(d, spec, side) {
+        if (spec === 'player') return { name: T('patient_pays'), tag: '' };
+        if (spec === 'system') return { name: side === 'receiver' ? T('receiver_none') : T('payer_system'), tag: '' };
+        return payerName(d, spec);
+    }
+    function hospitalsCard(d, o) {
+        const list = arr(d.hospitals);
+        const hs = list.find(x => x.id === sel.hospital) || list[0];
+        if (hs) sel.hospital = hs.id;
+        let h = `<div class="gv-card"><h2>${esc(T('hospitals'))}</h2>`;
+        if (!d.hospitalsRunning) h += `<div class="gv-sub" style="margin:-6px 0 10px"><span class="tag bad">${esc(T('hospitals_offline'))}</span></div>`;
+        if (!hs) return h + empty() + '</div>';
+        if (o) {
+            const pick = (side, opts) => usePicker(side === 'payer' ? 'hpPay' : 'hpRecv', {
+                state: () => opts,
+                current: () => hs[side],
+                choose: it => change('setHealth', { field: 'hospital', id: hs.id, side, value: it.spec }),
+            });
+            pick('payer', [{ spec: 'player', name: T('patient_pays') }, ...payerOpts(d)]);
+            pick('receiver', receiverOpts(d));
+        }
+        const payer = healthSpecName(d, hs.payer, 'payer'), recv = healthSpecName(d, hs.receiver, 'receiver');
+        h += `<div class="gv-split"><div class="gv-list">${list.map(x => `<a data-act="pickHospital" data-id="${esc(x.id)}" class="${x === hs ? 'on' : ''}">` +
+            `<span>${esc(x.name)}</span><small>${esc(healthSpecName(d, x.payer, 'payer').name)}</small></a>`).join('')}</div>` +
+            `<div><h2 style="font-size:20px;color:var(--osa-text)">${esc(hs.name)} <span class="dim mono" style="font-size:13px">${esc(hs.id)}</span></h2>` +
+            (hs.missing ? `<div class="gv-sub"><span class="tag bad">${esc(T('hospital_missing'))}</span></div>` : '') +
+            (!hs.missing && hs.heal === false ? `<div class="gv-sub">${esc(T('no_heal_marker'))}</div>` : '') +
+            `<div class="gv-field"><label>${esc(T('payer'))}</label>${pickerBox('hpPay', payer, o, T('search_payer'))}</div>` +
+            `<div class="gv-field"><label>${esc(T('receiver'))}</label>${pickerBox('hpRecv', recv, o, T('search_payer'))}</div>` +
+            (hs.payer === 'player' ? `<div class="gv-sub">${esc(T('patient_pays_hint'))}</div>` : '') +
+            (o ? `<div class="gv-field"><label></label><div>${btn(T('default_payer'), 'hospitalReset', { id: hs.id })}</div></div>` : '') +
+            '</div></div>';
         return h + '</div>';
+    }
+
+    // ------------------------------------------------------------ Transfers page
+    PAGE.transfers = d => {
+        const m = can('minister');
+        const states = arr(d.states).filter(s => s.status !== 'closed');
+        const opts = states.map(s => [s.id, `${s.name} (${money(s.balance)})`]);
+        const amountNote = k => `<input class="osa-input num" id="${k}Amount" placeholder="${esc(T('amount'))}" data-keep="1">` +
+            `<input class="osa-input mid" id="${k}Note" placeholder="${esc(T('note'))}" maxlength="48" data-keep="1">`;
+        const keepSel = (id, v) => select(id, opts, v, '', true).replace('<select ', '<select data-keep="1" ');
+        const coName = c => c ? { name: c.name, tag: 'company' } : { name: T('tf_pick_company'), tag: '' };
+        let h = head(T('v_gov.page.transfers'), esc(T('history_note', { days: 30 })));
+        if (m) {
+            usePicker('tfPay', { state: () => [], current: () => sel.tfPay && sel.tfPay.spec, choose: it => { sel.tfPay = it; render(); } });
+            usePicker('tfCol', { state: () => [], current: () => sel.tfCol && sel.tfCol.spec, choose: it => { sel.tfCol = it; render(); } });
+            const first = states[0] && states[0].id, second = states[1] ? states[1].id : first;
+            h += `<div class="gv-card"><h2>${esc(T('tf_state'))}</h2><div class="gv-row">` +
+                `<label class="dim">${esc(T('tf_from'))}</label>${keepSel('tfsFrom', first)}<label class="dim">${esc(T('tf_to'))}</label>${keepSel('tfsTo', second)}</div>` +
+                `<div class="gv-row" style="margin-top:10px">${amountNote('tfs')}${btn(T('tf_send'), 'tfSend', { kind: 'state' }, 'primary')}</div></div>` +
+                `<div class="gv-card"><h2>${esc(T('tf_pay'))}</h2><div class="gv-field"><label>${esc(T('tf_from'))}</label><div>${keepSel('tfpFrom', first)}</div></div>` +
+                `<div class="gv-field"><label>${esc(T('tf_to'))}</label>${pickerBox('tfPay', coName(sel.tfPay), true, T('search_private'))}</div>` +
+                `<div class="gv-row" style="margin-top:10px">${amountNote('tfp')}${btn(T('tf_pay_btn'), 'tfSend', { kind: 'pay' }, 'primary')}</div></div>` +
+                `<div class="gv-card"><h2>${esc(T('tf_collect'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('tf_collect_hint'))}</div>` +
+                `<div class="gv-field"><label>${esc(T('tf_from'))}</label>${pickerBox('tfCol', coName(sel.tfCol), true, T('search_private'))}</div>` +
+                `<div class="gv-field"><label>${esc(T('tf_to'))}</label><div>${keepSel('tfcTo', first)}</div></div>` +
+                `<div class="gv-row" style="margin-top:10px">${amountNote('tfc')}${btn(T('tf_collect_btn'), 'tfSend', { kind: 'collect' }, 'danger')}</div></div>`;
+        } else {
+            h += `<div class="gv-card">` + table([[T('account')], [T('balance'), 'r']], states.map(s =>
+                `<tr><td>${esc(s.name)} <span class="dim mono">${esc(s.number || '')}</span></td><td class="r mono ${cls(s.balance)}">${money(s.balance)}</td></tr>`)) + '</div>';
+        }
+        const kindName = a => T({ 'transfer.state': 'tf_state', 'transfer.pay': 'tf_pay', 'transfer.collect': 'tf_collect' }[a] || a);
+        return h + `<div class="gv-card"><h2>${esc(T('tf_recent'))}</h2>` +
+            table([[T('time')], [T('tf_kind')], [T('tf_from')], [T('tf_to')], [T('amount'), 'r'], [T('note')], [T('actor')]], arr(d.list).map(r => {
+                const x = r.detail || {};
+                return `<tr><td class="mono dim">${stamp(r.ts)}</td><td>${esc(kindName(r.action))}</td><td>${esc(x.from ?? '')}</td><td>${esc(x.to ?? '')}</td>` +
+                    `<td class="r mono">${money(x.amount)}</td><td class="dim">${esc(x.note || '')}</td><td><b>${esc(r.actor)}</b></td></tr>`;
+            })) + '</div>';
     };
 
     PAGE.companies = d => {
@@ -498,82 +580,113 @@
                 `<td class="mono dim" style="word-break:break-all">${esc(r.detail)}</td></tr>`)) + '</div>';
     };
 
-    // ------------------------------------------------------------ company picker (Works -> payer)
-    // State payers are filtered locally, private companies are searched on the server
-    // (findCompanies, by name or id). Arrow keys + Enter work too.
-    const picker = {
-        open: false, items: [], hot: -1, timer: null, seq: 0, found: null, loading: false,
-        mount() {
-            const q = $('pickQ');
-            if (!q) return;
-            q.addEventListener('focus', () => this.show());
-            q.addEventListener('input', () => { this.hot = -1; this.search(); this.draw(); });
-            q.addEventListener('keydown', e => {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const n = this.items.length;
-                    if (n) this.hot = (this.hot + (e.key === 'ArrowDown' ? 1 : n - 1) + (this.hot < 0 && e.key === 'ArrowUp' ? 1 : 0)) % n;
-                    this.draw();
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const it = this.items[this.hot >= 0 ? this.hot : 0];
-                    if (it) this.choose(it.spec);
-                }
-            });
-            if (this.open) { this.open = false; this.show(); }
-        },
-        show() {
-            if (!$('pickList')) return;
-            this.open = true;
-            $('pickList').hidden = false;
-            this.search();
-            this.draw();
-        },
-        hide() {
-            this.open = false;
-            if ($('pickList')) $('pickList').hidden = true;
-        },
-        search() {
-            clearTimeout(this.timer);
-            const q = ($('pickQ') || {}).value || '';
-            this.loading = true;
-            const id = ++this.seq;
-            this.timer = setTimeout(async () => {
-                let list = [];
-                try { list = arr((await GOV.call('findCompanies', { q: q.trim() })).list); } catch (e) { /* shown as no match */ }
-                if (id !== this.seq) return;
-                this.found = list;
-                this.loading = false;
+    // ------------------------------------------------------------ payer / company pickers
+    // One picker per id (Works payer, hospital payer / receiver, Transfers companies). The state
+    // options (opts.state) are filtered locally, private companies are searched on the server
+    // (findCompanies, by name or id). Arrow keys + Enter work too. A page calls usePicker(id, opts)
+    // while rendering and puts pickerBox(id, ...) in its HTML; render() mounts them.
+    const pickers = {};
+    let usedPickers = new Set();
+    const anyPickerOpen = () => Object.values(pickers).some(p => p.open);
+    const hidePickers = () => Object.values(pickers).forEach(p => p.hide());
+
+    // the current choice + the search box ({ name, tag: state | company, inactive })
+    const pickerBox = (id, cur, allowed, placeholder) => `<div class="gv-picker" id="${id}"><div class="cur">` +
+        `<b>${esc(cur.name)}</b>${cur.tag ? `<span class="tag ${cur.tag}">${esc(cur.tag === 'state' ? T('state_payers') : T('private_companies'))}</span>` : ''}` +
+        `${cur.inactive ? `<span class="tag bad">${esc(T('inactive'))}</span>` : ''}</div>` +
+        (allowed ? `<input class="osa-input wide" id="${id}Q" placeholder="${esc(placeholder)}" autocomplete="off"><div class="gv-pick-list" id="${id}List" hidden></div>` : '') +
+        '</div>';
+
+    function usePicker(id, opts) {
+        const p = pickers[id] || (pickers[id] = makePicker(id));
+        p.opts = opts;
+        usedPickers.add(id);
+        return p;
+    }
+    function mountPickers() {
+        for (const id in pickers) if (usedPickers.has(id)) pickers[id].mount(); else pickers[id].open = false;
+        usedPickers = new Set();
+    }
+
+    function makePicker(id) {
+        return {
+            id, opts: null, open: false, items: [], hot: -1, timer: null, seq: 0, found: null, loading: false,
+            el(suffix) { return $(id + suffix); },
+            mount() {
+                const q = this.el('Q');
+                if (!q) return;
+                q.addEventListener('focus', () => this.show());
+                q.addEventListener('input', () => { this.hot = -1; this.search(); this.draw(); });
+                q.addEventListener('keydown', e => {
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const n = this.items.length;
+                        if (n) this.hot = (this.hot + (e.key === 'ArrowDown' ? 1 : n - 1) + (this.hot < 0 && e.key === 'ArrowUp' ? 1 : 0)) % n;
+                        this.draw();
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const it = this.items[this.hot >= 0 ? this.hot : 0];
+                        if (it) this.choose(it);
+                    }
+                });
+                if (this.open) { this.open = false; this.show(); }
+            },
+            show() {
+                if (!this.el('List')) return;
+                hidePickers();
+                this.open = true;
+                this.el('List').hidden = false;
+                this.search();
                 this.draw();
-            }, 220);
-        },
-        draw() {
-            const el = $('pickList');
-            if (!el || !this.open) return;
-            const d = D.works || {};
-            const w = arr(d.works).find(x => x.id === sel.work);
-            const q = (($('pickQ') || {}).value || '').trim().toLowerCase();
-            const state = arr(d.payers).filter(p => !q || p.name.toLowerCase().includes(q) || p.spec.includes(q));
-            const priv = arr(this.found).map(c => ({ spec: 'company:' + c.id, name: c.name, sub: '#' + c.id }));
-            this.items = [...state, ...priv];
-            if (this.hot >= this.items.length) this.hot = this.items.length - 1;
-            let i = 0;
-            const row = it => `<div class="it${i === this.hot ? ' hot' : ''}${w && w.payer === it.spec ? ' sel' : ''}" data-spec="${esc(it.spec)}" data-i="${i++}">` +
-                `<span>${esc(it.name)}</span><small>${esc(it.sub || (it.spec === 'system' ? '' : it.spec.replace(/^state:/, '')))}</small></div>`;
-            el.innerHTML = `<div class="grp">${esc(T('state_payers'))}</div>` + (state.map(row).join('') || `<div class="none">${esc(T('no_match'))}</div>`) +
-                `<div class="grp">${esc(T('private_companies'))}</div>` +
-                (priv.length ? priv.map(row).join('') : `<div class="none">${esc(this.loading ? T('searching') : T('no_match'))}</div>`);
-        },
-        async choose(spec) {
-            this.hide();
-            await change('setWork', { work: sel.work, field: 'payer', value: spec });
-        },
-    };
+            },
+            hide() {
+                this.open = false;
+                if (this.el('List')) this.el('List').hidden = true;
+            },
+            search() {
+                clearTimeout(this.timer);
+                const q = (this.el('Q') || {}).value || '';
+                this.loading = true;
+                const n = ++this.seq;
+                this.timer = setTimeout(async () => {
+                    let list = [];
+                    try { list = arr((await GOV.call('findCompanies', { q: q.trim() })).list); } catch (e) { /* shown as no match */ }
+                    if (n !== this.seq) return;
+                    this.found = list;
+                    this.loading = false;
+                    this.draw();
+                }, 220);
+            },
+            draw() {
+                const el = this.el('List');
+                if (!el || !this.open || !this.opts) return;
+                const cur = this.opts.current();
+                const q = ((this.el('Q') || {}).value || '').trim().toLowerCase();
+                const all = arr(this.opts.state());
+                const state = all.filter(p => !q || p.name.toLowerCase().includes(q) || p.spec.includes(q));
+                const priv = arr(this.found).map(c => ({ spec: 'company:' + c.id, name: c.name, sub: '#' + c.id }));
+                this.items = [...state, ...priv];
+                if (this.hot >= this.items.length) this.hot = this.items.length - 1;
+                let i = 0;
+                const row = it => `<div class="it${i === this.hot ? ' hot' : ''}${cur === it.spec ? ' sel' : ''}" data-i="${i++}">` +
+                    `<span>${esc(it.name)}</span><small>${esc(it.sub || (it.spec.startsWith('state:') ? it.spec.slice(6) : ''))}</small></div>`;
+                el.innerHTML = (all.length ? `<div class="grp">${esc(T('state_payers'))}</div>` + (state.map(row).join('') || `<div class="none">${esc(T('no_match'))}</div>`) : '') +
+                    `<div class="grp">${esc(T('private_companies'))}</div>` +
+                    (priv.length ? priv.map(row).join('') : `<div class="none">${esc(this.loading ? T('searching') : T('no_match'))}</div>`);
+            },
+            async choose(it) {
+                this.hide();
+                await this.opts.choose(it);
+            },
+        };
+    }
     document.addEventListener('mousedown', e => {
-        if (!picker.open) return;
-        const it = e.target.closest('#pickList .it');
-        if (it) { e.preventDefault(); picker.choose(it.dataset.spec); return; }
-        if (!e.target.closest('#picker')) picker.hide();
+        for (const p of Object.values(pickers)) {
+            if (!p.open) continue;
+            const it = e.target.closest(`#${p.id}List .it`);
+            if (it) { e.preventDefault(); const x = p.items[Number(it.dataset.i)]; if (x) p.choose(x); return; }
+            if (!e.target.closest('#' + p.id)) p.hide();
+        }
     });
 
     // ------------------------------------------------------------ actions
@@ -622,7 +735,31 @@
             if (await change('setTaxKey', { key: val('newKey'), value: n })) { $('newKey').value = ''; $('newKeyRate').value = ''; }
         },
         deleteTaxKey(b) { change('deleteTaxKey', { key: b.dataset.key }); },
-        pickWork(a) { sel.work = a.dataset.id; picker.hide(); render(); },
+        pickWork(a) { sel.work = a.dataset.id; hidePickers(); render(); },
+        pickHospital(a) { sel.hospital = a.dataset.id; hidePickers(); render(); },
+        hospitalReset(b) { change('setHealth', { field: 'hospital', id: b.dataset.id, side: 'all' }); },
+        async tfSend(b) {
+            const kind = b.dataset.kind;
+            const k = { state: 'tfs', pay: 'tfp', collect: 'tfc' }[kind];
+            const n = numOf(k + 'Amount');
+            if (n === null) return;
+            const args = { kind, amount: n, note: val(k + 'Note') };
+            const stateName = id => { const s = arr((D.transfers || {}).states).find(x => String(x.id) === String(id)); return s ? s.name : id; };
+            let from, to;
+            if (kind === 'state') { args.from = Number(val('tfsFrom')); args.to = Number(val('tfsTo')); from = stateName(args.from); to = stateName(args.to); }
+            else if (kind === 'pay') {
+                if (!sel.tfPay) return OSA.toast(T('tf_pick_company'), false);
+                args.from = Number(val('tfpFrom')); args.to = Number(sel.tfPay.spec.split(':')[1]); from = stateName(args.from); to = sel.tfPay.name;
+            } else {
+                if (!sel.tfCol) return OSA.toast(T('tf_pick_company'), false);
+                args.from = Number(sel.tfCol.spec.split(':')[1]); args.to = Number(val('tfcTo')); from = sel.tfCol.name; to = stateName(args.to);
+            }
+            if (!await OSA.ui.confirm(T('v_gov.page.transfers'), T('confirm_transfer', { amount: money(n), from, to }), T('save'))) return;
+            if (await change('moneyTransfer', args)) {
+                $(k + 'Amount') && ($(k + 'Amount').value = '');
+                $(k + 'Note') && ($(k + 'Note').value = '');
+            }
+        },
         workMul() { const n = numOf('wMul'); if (n !== null) change('setWork', { work: sel.work, field: 'multiplier', value: n }); },
         workMulReset() { change('setWork', { work: sel.work, field: 'multiplier' }); },
         workTax: el => change('setWork', { work: sel.work, field: 'taxKey', value: el.value }),

@@ -11,11 +11,11 @@ addEvent("v_gov:call", true)
 local NEED = {
     overview = "viewer", treasuryLedger = "viewer", taxes = "viewer", works = "viewer", fees = "viewer",
     health = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
-    findCompanies = "viewer", budget = "viewer", votes = "viewer", news = "viewer",
+    findCompanies = "viewer", budget = "viewer", votes = "viewer", news = "viewer", transfers = "viewer",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
     setPropertyTax = "minister", setTaxTarget = "minister", setFeeTarget = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
-    postNews = "minister", deleteNews = "minister",
+    postNews = "minister", deleteNews = "minister", moneyTransfer = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
     describeCompany = "official", companyMember = "official", companyOverdraft = "minister",
     voteList = "public", voteCast = "public",
@@ -255,9 +255,39 @@ function A.fees(p, args, reply)
     reply({ fees = list, targets = targetsOf("fee.targets", FEES), targetOptions = targetOptions() })
 end
 
+--- payer / receiver of every med_hospitals hospital (+ rows of hospitals no longer in hospitals.json)
+local function hospitalList()
+    local list, seen = {}, {}
+    if isResourceRunning("med_hospitals") then
+        for _, h in ipairs(exports.med_hospitals:getHospitals() or {}) do
+            local pay = GOV.hospitalPayment(h.id)
+            list[#list + 1] = { id = h.id, name = h.name, payer = pay.payer, receiver = pay.receiver, heal = h.heal }
+            seen[h.id] = true
+        end
+    end
+    for id in pairs(GOV.get("health.hospitals") or {}) do
+        if not seen[id] then
+            local pay = GOV.hospitalPayment(id)
+            list[#list + 1] = { id = id, name = id, payer = pay.payer, receiver = pay.receiver, missing = true }
+        end
+    end
+    return list
+end
+
 function A.health(p, args, reply)
-    reply({ enabled = GOV.get("health.enabled") ~= false, hpPrice = tonumber(GOV.get("health.hp_price")) or 0,
-        injuries = GOV.get("health.injuries") or {} })
+    local hospitals = hospitalList()
+    local ids, seen = {}, {}
+    for _, h in ipairs(hospitals) do
+        for _, spec in ipairs({ h.payer, h.receiver }) do
+            local id = tonumber(spec:match("^company:(%d+)$"))
+            if id and not seen[id] then seen[id] = true; ids[#ids + 1] = id end
+        end
+    end
+    companyNames(ids, function(names)
+        reply({ enabled = GOV.get("health.enabled") ~= false, hpPrice = tonumber(GOV.get("health.hp_price")) or 0,
+            injuries = GOV.get("health.injuries") or {}, hospitals = hospitals, payers = payerOptions(), companies = names,
+            hospitalsRunning = isResourceRunning("med_hospitals") })
+    end)
 end
 
 function A.companies(p, args, reply)
@@ -456,6 +486,40 @@ function A.setHealth(p, args, reply, actor)
         prices[math.floor(sev)] = math.floor(clamp(v, GOV_RANGE.injuryPrice))
         list[t] = prices
         GOV.set("health.injuries", list, actor)
+    elseif args.field == "hospital" then
+        -- { id, side = payer | receiver | all, value = spec } (value nil = back to the default)
+        local id, side, spec = tostring(args.id or ""), args.side, args.value
+        if id == "" or #id > 48 then return reply(false, "v_gov.err.bad_key") end
+        if side == "all" then
+            local list = GOV.get("health.hospitals") or {}
+            list[id] = nil
+            GOV.set("health.hospitals", list, actor)
+            return reply(true)
+        end
+        if side ~= "payer" and side ~= "receiver" then return reply(false, "v_gov.err.bad_field") end
+        local function store(value)
+            local list = GOV.get("health.hospitals") or {}
+            local row = type(list[id]) == "table" and list[id] or {}
+            row[side] = value
+            list[id] = next(row) and row or nil
+            GOV.set("health.hospitals", list, actor)
+            reply(true)
+        end
+        if spec == nil then return store(nil) end
+        spec = tostring(spec)
+        if spec == "system" or (spec == "player" and side == "payer") then return store(spec) end
+        local code = spec:match("^state:([a-z0-9_]+)$")
+        if code then
+            if code ~= "treasury" and not GOV.companyByCode(code) then return reply(false, "v_gov.err.bad_company") end
+            return store(spec)
+        end
+        local cid = tonumber(spec:match("^company:(%d+)$"))
+        if not cid then return reply(false, "v_gov.err.bad_payer") end
+        DB.query(function(rows)
+            if not (rows and rows[1]) then return reply(false, "v_gov.err.no_company") end
+            store("company:" .. int(rows[1].id))
+        end, "SELECT id FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
+        return
     elseif args.field == "remove_injury" then
         local t = tostring(args.type or "")
         if t == "default" then return reply(false, "v_gov.err.key_protected") end
@@ -487,8 +551,73 @@ function A.treasuryTransfer(p, args, reply, actor)
     if args.dir == "from" then from, to = cid, tid end
     local ok, err = bank:transfer(from, to, amount, "gov.transfer", { note = tostring(args.note or "") }, actor)
     if not ok then return reply(false, "v_bank.error." .. tostring(err)) end
-    GOV.log(actor, "treasury.transfer", { company = cid, amount = amount, dir = args.dir or "to" })
+    -- the same log row as a state transfer of the Transfers page
+    local fromInfo, toInfo = isStateAccount(from), isStateAccount(to)
+    GOV.log(actor, "transfer.state", { from = fromInfo and fromInfo.name or from, to = toInfo and toInfo.name or to,
+        amount = amount, note = DB.clip(tostring(args.note or ""), 48) })
     reply(true)
+end
+
+--------------------------------------------------------------------------------
+-- Transfers page: state <-> state, state -> private company, collection from a private company
+--------------------------------------------------------------------------------
+
+function A.transfers(p, args, reply)
+    DB.query(function(rows)
+        local list = {}
+        for i, r in ipairs(rows or {}) do
+            list[i] = { ts = int(r.ts), actor = tostring(r.actor), action = tostring(r.action), detail = fromJSON(tostring(r.detail)) or {} }
+        end
+        reply({ states = stateAccounts(), list = list })
+    end, "SELECT ts, actor, action, detail FROM gov_log WHERE action LIKE 'transfer.%' AND ts >= ? ORDER BY id DESC LIMIT 50",
+        GOV.historySince())
+end
+
+--- { kind = state | pay | collect, from, to, amount, note }
+---   state:   from / to = state bank account ids (treasury or state company)
+---   pay:     from = state account id, to = biz_core company id (gov.company_payment, needs the money)
+---   collect: from = biz_core company id, to = state account id (gov.collection, forced: may go into debt)
+function A.moneyTransfer(p, args, reply, actor)
+    local bank = GOV.bank()
+    if not bank then return reply(false, "v_bank.error.unavailable") end
+    local amount = math.floor(tonumber(args.amount) or 0)
+    if amount <= 0 then return reply(false, "v_bank.error.bad_amount") end
+    local note = DB.clip(tostring(args.note or ""), 48)
+    local kind = args.kind
+    local function book(fromId, toId, key, detail)
+        local ok, err = bank:transfer(fromId, toId, amount, key, { note = note }, actor)
+        if not ok then return reply(false, "v_bank.error." .. tostring(err)) end
+        detail.amount, detail.note = amount, note
+        GOV.log(actor, "transfer." .. kind, detail)
+        reply(true)
+    end
+    local function stateOf(id)
+        local a = isStateAccount(tonumber(id))
+        return a and a.status ~= "closed" and a or nil
+    end
+    if kind == "state" then
+        local from, to = stateOf(args.from), stateOf(args.to)
+        if not from or not to then return reply(false, "v_gov.err.bad_company") end
+        if from.id == to.id then return reply(false, "v_bank.error.same_account") end
+        return book(from.id, to.id, "gov.transfer", { from = from.name, to = to.name })
+    end
+    if kind ~= "pay" and kind ~= "collect" then return reply(false, "v_gov.err.bad_field") end
+    local state = stateOf(kind == "pay" and args.from or args.to)
+    if not state then return reply(false, "v_gov.err.bad_company") end
+    local cid = tonumber(kind == "pay" and args.to or args.from)
+    if not cid then return reply(false, "v_gov.err.no_company") end
+    DB.query(function(rows)
+        local r = rows and rows[1]
+        if not r then return reply(false, "v_gov.err.no_company") end
+        local accId = bank:getCompanyAccount(int(r.id))
+        if not accId then return reply(false, "v_gov.err.no_company") end
+        local name = tostring(r.name) .. " #" .. int(r.id)
+        if kind == "pay" then
+            book(state.id, accId, "gov.company_payment", { from = state.name, to = name })
+        else
+            book(accId, state.id, "gov.collection", { from = name, to = state.name })
+        end
+    end, "SELECT id, name FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
 end
 
 function A.createCompany(p, args, reply, actor)

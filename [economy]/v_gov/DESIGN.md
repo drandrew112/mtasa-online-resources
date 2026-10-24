@@ -47,10 +47,11 @@ companies searched by name or #id through `findCompanies`).
 | --- | --- | --- |
 | **Overview** | treasury balance, income / expense of the last 24 h and 7 days by category (company tax, income tax, fines, registration fees, healthcare, wages), last tax run | – |
 | **Treasury** | treasury statement (paged ledger, filter by key), transfer to a state company | minister |
+| **Transfers** | money between any two state accounts (treasury, state companies; `gov.transfer`), payment from a state account to a private company (`gov.company_payment`, needs the money), collection from a private company to a state account (`gov.collection`, forced: the company may go into debt); the last 30 days of these (gov_log `transfer.*`) | minister |
 | **Taxes** | company income tax rate (**10 %**), the personal income tax **rate keys** (5.3: `standard` 12 %, `exempt` 0 %, new ones can be added), history of the hourly runs | minister |
 | **Works** | per work, everything (section 5): payer (system / treasury / state company / private company), every pay and XP parameter, wage multiplier, income tax rate key | minister |
 | **Fees & fines** | company registration fee (**€ 50 000**, → treasury), rename fee, hospital bay fine, airspace usage fees: takeoff / landing / overflight (→ SA Control) | minister |
-| **Healthcare** | on / off, price per HP (**€ 50**), injury price list (type × severity), totals per hospital, last bills | official |
+| **Healthcare** | on / off, price per HP (**€ 50**), injury price list (type × severity), payer + receiver per hospital (7) | official |
 | **State companies** | list (code, name, balance, members, overdraft), create, rename, delete, members, overdraft on / off, transfer treasury ↔ company | official |
 | **Members** | gov roles | minister |
 | **Log** | every change made on the panel (who, when, old → new) | – |
@@ -170,7 +171,19 @@ the ledger row). Each resource keeps its own config value as fallback.
 
 ## 7. State healthcare
 
-Treatment at a hospital is **free for the patient**; the state pays it from the treasury.
+Who pays is set **per hospital** (med_hospitals id) on the Healthcare page, setting
+`health.hospitals` = `{ [hospitalId] = { payer, receiver } }`; a hospital without a row uses the
+default: the **treasury pays, nobody receives**.
+
+- **payer:** `system` (nobody: free, money from nothing), `player` (the patient pays from their
+  bank, forced – may go into debt; an NPC patient pays nothing), `state:<code>` (treasury or a
+  state company), `company:<id>` (a private company).
+- **receiver:** `system` (nobody: the money disappears), `state:<code>`, `company:<id>` – e.g. a
+  private hospital company that is paid by the treasury or by its patients.
+- With `player` the treatment marker label says "you pay the treatment" instead of "free of
+  charge" (med_hospitals marker data `hosp.paid`, refreshed on `onGovSettingChanged`), and the
+  patient gets a chat line with the amount.
+- A closed private company payer / receiver goes back to the default (`GOV.checkPayers`).
 
 - **Billed:**
   - the free treatment marker (med_hospitals `server/heal.lua` `finish`);
@@ -181,9 +194,9 @@ Treatment at a hospital is **free for the patient**; the state pays it from the 
   injury by type × severity (from `medsys:getMedicalState`). Proposed starting prices per severity
   1 / 2 / 3: gunshot 800 / 2 000 / 4 500, fracture 500 / 1 200 / 2 500, burn 400 / 1 500 / 4 000,
   head injury 700 / 2 000 / 5 000, other conditions 300 / 800 / 2 000.
-- **Booking:** one `health.care` debit on the treasury per treatment (counter system), params
-  `{ patient, account, hospital, hp, injuries, task }` → one treasury line, e.g.
-  "Healthcare: John_Smith, All Saints General Hospital".
+- **Booking:** one `health.care` row per treatment (payer → receiver, either may be system),
+  params `{ patient, account, hospital, hp, injuries, task }` → e.g. "Healthcare: John_Smith, All
+  Saints General Hospital"; the patient paying: `health.patient` `{ hospital, hp, injuries }`.
 - Cost 0 → nothing booked. Healthcare switched off → nothing booked (still free for the patient).
 - Players have no injuries now (`medsys PLAYER_PATIENTS = false`), so for players the bill is HP
   only; NPC patients do have injuries, their bills use the price list.
@@ -194,8 +207,11 @@ Treatment at a hospital is **free for the patient**; the state pays it from the 
 | --- | --- | --- | --- | --- |
 | `tax.company_income` `{hour, base, rate}` | out (force) | company | tax target (payee) | hourly run |
 | `tax.income` `{work, key, rate}` | out | personal | tax target (payee) | payWork |
-| `health.care` `{patient, account, hospital, hp, injuries, task}` | out | state (treasury) | system | med_hospitals |
-| `gov.transfer` `{note}` | pair | state ↔ state | account | treasury ↔ state company |
+| `health.care` `{patient, account, hospital, hp, injuries, task}` | pair (force) | system / state / company | system / state / company | med_hospitals |
+| `health.patient` `{hospital, hp, injuries}` | out (force) | personal | system / state / company | med_hospitals |
+| `gov.transfer` `{note}` | pair | state ↔ state | account | Treasury + Transfers pages |
+| `gov.company_payment` `{note}` | pair | state → company | account | Transfers page |
+| `gov.collection` `{note}` | pair (force) | company → state | account | Transfers page |
 
 v_bank's key format gets the flag `taxable = true`; for now only on `biz.casino_hour`.
 
@@ -302,7 +318,9 @@ getIncomeTaxRate(workId)             -> rate, key     -- the work's rate key, e.
 getWorkMultiplier(workId)            -> number
 getFee(key)                          -> number        -- "register", "rename", "bay_fine", "airspace.takeoff", ...
 healthcareCost(patient)              -> amount, details    -- player or ped; books nothing
-chargeHealthcare(patient, hospitalId, taskId) -> true, amount | false, err
+chargeHealthcare(patient, hospitalName, taskId, hospitalId) -> true, amount, paidByPatient | false, err
+getHealthcarePayer(hospitalId)       -> "system" | "player" | "state:<code>" | "company:<id>"
+isHealthcarePaidByPatient(hospitalId) -> bool       -- false while healthcare is off
 getGovRole(player)                   -> "viewer" | "official" | "minister" | false
 ```
 

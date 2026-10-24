@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Free treatment marker: a player standing in it for HOSP.HEAL_TIME (15 s) is healed completely
+-- Treatment marker: a player standing in it for HOSP.HEAL_TIME (15 s) is healed completely
 -- (medsys healCompletely: injuries, bleeding, vitals; plus full health). Leaving cancels it.
--- Free for the player: the State Treasury pays it (v_gov chargeHealthcare, state healthcare).
+-- Billed through v_gov chargeHealthcare: the payer is set per hospital on the /gov Healthcare page
+-- (free for the player, unless the patient pays there: marker data hosp.paid, server/hospitals.lua).
 
 addEvent("onHospitalPlayerHealed", false)  -- (player, hospitalId)
 
@@ -37,8 +38,11 @@ local function finish(player, p)
     procs[player] = nil
     stopProgress(player)
     local h = p.point.hospital
-    -- billed to the treasury before the patient is healed (the cost is what is healed)
-    if isResourceRunning("v_gov") then exports.v_gov:chargeHealthcare(player, h.name) end
+    -- billed before the patient is healed (the cost is what is healed)
+    if isResourceRunning("v_gov") then
+        local ok, amount, paid = exports.v_gov:chargeHealthcare(player, h.name, nil, h.id)
+        if ok and paid and amount > 0 then notify(player, L.msg("med_hospitals.heal.you_paid_for_treatment", { amount = amount })) end
+    end
     if isResourceRunning("medsys") then exports.medsys:healCompletely(player) end
     setElementHealth(player, 100)
     notify(player, L.msg("med_hospitals.heal.you_were_treated_at_get_well", { name = h.name }))
@@ -57,7 +61,8 @@ local function update()
                 if not reason then
                     procs[player] = { point = point, ends = now + HOSP.HEAL_TIME }
                     startProgress(player, point.marker, HOSP.HEAL_TIME, L.msg("med_hospitals.heal.treatment_in_progress"))
-                    notify(player, L.msg("med_hospitals.heal.treatment_started_stay_in_marker_for", { heal_time = HOSP.HEAL_TIME / 1000 }))
+                    notify(player, L.msg(isPaidHospital(point.hospital) and "med_hospitals.heal.treatment_started_paid"
+                        or "med_hospitals.heal.treatment_started_stay_in_marker_for", { heal_time = HOSP.HEAL_TIME / 1000 }))
                 elseif reason ~= "" then
                     done[player] = point
                     notify(player, reason)

@@ -51,5 +51,8 @@
   "med_hospitals.tutorial.handover_cancelled": "Az átadás megszakítva: {obj}",
   "med_hospitals.tutorial.handover_cancelled_you_left_handover_marker": "Az átadás megszakítva: elhagytad az átadási markert.",
   "med_hospitals.tutorial.has_no_handover_marker": "{id}-nek nincs átadási markere",
-  "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Használd a mentőd hordágyát."
+  "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Használd a mentőd hordágyát.",
+  "med_hospitals.config.stand_here_s_patient_pays": "Állj ide · {heal_time|int} mp · a kezelést te fizeted",
+  "med_hospitals.heal.treatment_started_paid": "A kezelés elkezdődött - maradj a markerben {heal_time|int} másodpercig. A kezelést a bankszámládról fizeted.",
+  "med_hospitals.heal.you_paid_for_treatment": "A kezelésért {amount|money} összeget fizettél."
 }

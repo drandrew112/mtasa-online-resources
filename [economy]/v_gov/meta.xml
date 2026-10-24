@@ -64,4 +64,6 @@
     <!-- healthcare -->
     <export function="healthcareCost" type="server" />
     <export function="chargeHealthcare" type="server" />
+    <export function="getHealthcarePayer" type="server" />
+    <export function="isHealthcarePaidByPatient" type="server" />
 </meta>

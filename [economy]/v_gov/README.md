@@ -24,8 +24,12 @@ Roles live in `gov_members` (Members page).
 - **Fees & fines**: company registration fee, rename fee, ambulance bay fine, airspace fees
   takeoff / landing / overflight. Each goes to the state account chosen for it on the Fees page
   (setting `fee.targets`, export `getFeeTarget`); none chosen (default) = the money disappears.
-- **State healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
-  players and NPC patients) to the treasury: missing HP × price + injury prices.
+- **Healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
+  players and NPC patients): missing HP × price + injury prices. Per hospital (Healthcare page): who
+  pays (nobody / the patient / treasury / state company / private company; default treasury) and who
+  receives it (nobody / state / private company). Patient pays → the marker is not "free of charge".
+- **Transfers** page: money between state accounts, payments to private companies, collection
+  (inkasszó, forced) from private companies.
 - **VAT** (Taxes page): a rate per product group, added on top of every shop price, booked to the
   tax's account (`tax.vat`). Shops: `<include resource="v_gov" />` and
   `if not VAT then loadstring(exports.v_gov:importVat())() end`, then `VAT.gross` / `VAT.split` /
@@ -63,7 +67,8 @@ Roles live in `gov_members` (Members page).
 | `getPropertyTaxRate()` | 0..1, per 24 online hours |
 | `getPublicState()` | the gov_web snapshot (30 days, no account names) |
 | `healthcareCost(patient)` | amount, `{ hp, injuries }` (books nothing) |
-| `chargeHealthcare(patient, hospitalName [, taskId])` | true, amount \| false, err |
+| `chargeHealthcare(patient, hospitalName [, taskId [, hospitalId]])` | true, amount, paidByPatient \| false, err (the hospital's payer pays) |
+| `getHealthcarePayer(hospitalId)` / `isHealthcarePaidByPatient(hospitalId)` | payer spec / does the patient pay there |
 
 A work resource registers its parameters on its start and on v_gov's start (see med_erm
 `server/payment.lua`, bt_dispatch `server/core.lua`, work_traindriver `server/pay.lua`,

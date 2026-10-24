@@ -20,6 +20,7 @@ local STYLE = {
     bay      = { color = { 230, 190, 40 },  icon = "P" },
     handover = { color = { 56, 132, 244 },  icon = "cross" },
     heal     = { color = { 46, 160, 67 },   icon = "cross" },
+    healPaid = { color = { 46, 160, 67 },   icon = "cross" },
     bayRestricted = { color = { 218, 54, 51 }, icon = "!" },
 }
 
@@ -159,6 +160,8 @@ addEventHandler("onClientRender", root, function()
             if kind == "bay" and getElementData(m, HOSP_DATA.RESTRICTED) then
                 kind, occupied = "bayRestricted", false
             end
+            -- the patient pays here: no "free of charge" hint
+            if kind == "heal" and getElementData(m, HOSP_DATA.PAID) then kind = "healPaid" end
 
             if STYLE[kind] and dist <= maxDist and not occupied and (kind ~= "handover" or seesHandover or getElementData(m, HOSP_DATA.TUTORIAL)) then
                 local lz = z + HOSP.LABEL_HEIGHT

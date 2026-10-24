@@ -192,8 +192,11 @@ Text: `L.msg("v_bank.tx.<key>", params)` in the **viewer's** language. Params ho
 | `biz.weed_supply` `{units}` | out | company | system | biz_weed |
 | `tax.company_income` `{hour, base, rate}` | out (force) | company | treasury | v_gov hourly company tax |
 | `tax.income` `{work, key, rate}` | out | personal | treasury | work_core `payWork` (income tax) |
-| `health.care` `{patient, account, hospital, hp, injuries}` | out | state | system | v_gov / med_hospitals |
+| `health.care` `{patient, account, hospital, hp, injuries}` | pair (force) | system / state / company | system / state / company | v_gov / med_hospitals (per-hospital payer) |
+| `health.patient` `{hospital, hp, injuries}` | out (force) | personal | system / state / company | v_gov / med_hospitals (the patient pays) |
 | `gov.transfer` `{note}` | pair | state ↔ state | account | v_gov panel |
+| `gov.company_payment` `{note}` | pair | state → company | account | v_gov Transfers page |
+| `gov.collection` `{note}` | pair (force) | company → state | account | v_gov Transfers page (inkasszó) |
 | `admin.credit` / `admin.debit` `{note}` | in / out (force) | all | system | admin panel |
 | `admin.transfer` `{note}` | pair | all | account | admin panel |
 | `migration.opening` | in | all | system | one-time migration (section 7) |

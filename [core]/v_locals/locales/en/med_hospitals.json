@@ -51,5 +51,8 @@
   "med_hospitals.tutorial.handover_cancelled": "Handover cancelled: {obj}",
   "med_hospitals.tutorial.handover_cancelled_you_left_handover_marker": "Handover cancelled: you left the handover marker.",
   "med_hospitals.tutorial.has_no_handover_marker": "{id} has no handover marker",
-  "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Use the stretcher of your ambulance."
+  "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Use the stretcher of your ambulance.",
+  "med_hospitals.config.stand_here_s_patient_pays": "Stand here · {heal_time|int} s · you pay the treatment",
+  "med_hospitals.heal.treatment_started_paid": "Treatment started - stay in the marker for {heal_time|int} seconds. You pay the treatment from your bank account.",
+  "med_hospitals.heal.you_paid_for_treatment": "You paid {amount|money} for the treatment."
 }
