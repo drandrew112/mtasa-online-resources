@@ -54,6 +54,17 @@ local function accountByName(name)
     return canonical or nil
 end
 
+-- Display name of an account, for showing only (account names stay the keys
+-- everywhere else). offlineOK = false: an offline account is not prefetched, so
+-- do not read it (that would block on the database) and show the account name.
+local function dispOf(name, offlineOK)
+    if type(name) ~= "string" then return name end
+    local online = onlinePlayerByAccount(name)
+    if online then return exports.acc_auth:getDisplayName(online) end
+    if offlineOK == false then return name end
+    return exports.acc_auth:getDisplayName(name)
+end
+
 -- level + played time: prefer live element data, fall back to account data.
 -- offlineOK = false skips the account-data read of an offline account (its
 -- prefetch failed, so a read would block on the database): "n/a" then.
@@ -189,7 +200,7 @@ local function friendEntry(name, offlineOK)
 end
 
 -- Builds the "conversations" list for a player (DM partners + crew).
-local function buildConversations(player, myName)
+local function buildConversations(player, myName, offlineOK)
     local convos = {}
     local myLower = myName:lower()
 
@@ -223,7 +234,7 @@ local function buildConversations(player, myName)
         end
         convos[#convos + 1] = {
             kind = "crew", with = myCrew.name, crewTag = myCrew.tag, crewColor = myCrew.color,
-            last = last and (last.from .. ": " .. last.text) or L.msg("v_socialpanel.server.no_messages_yet"),
+            last = last and (dispOf(last.from, offlineOK) .. ": " .. last.text) or L.msg("v_socialpanel.server.no_messages_yet"),
             time = last and last.time or 0, unread = unread,
         }
     end
@@ -238,8 +249,20 @@ local function buildSnapshot(player, friendList, requests, offlineOK)
     local myName = accName(player)
     if not myName then return nil end
 
+    -- displayNames[lower account] = display name, only where it differs; the
+    -- client draws names through it and keeps using the account names as keys
+    local dnames = {}
+    local function reg(name)
+        if type(name) ~= "string" then return end
+        local d = dispOf(name, offlineOK)
+        if d ~= name then dnames[name:lower()] = d end
+    end
+    reg(myName)
+    for _, rn in ipairs(requests or {}) do reg(rn) end
+
     local friends = {}
     for _, fn in ipairs(friendList) do
+        reg(fn)
         friends[#friends + 1] = friendEntry(fn, offlineOK)
     end
     table.sort(friends, function(a, b)
@@ -254,6 +277,7 @@ local function buildSnapshot(player, friendList, requests, offlineOK)
         for _, mn in ipairs(myCrew.members) do
             local online = onlinePlayerByAccount(mn)
             local level, playtime = getProgress(mn, online, offlineOK)
+            reg(mn)
             members[#members + 1] = {
                 name = mn, online = online ~= nil, level = level, playtime = playtime,
                 isFounder = mn:lower() == myCrew.founder:lower(),
@@ -274,19 +298,24 @@ local function buildSnapshot(player, friendList, requests, offlineOK)
 
     local dir = {}
     for _, crew in pairs(crews) do
+        reg(crew.founder)
         dir[#dir + 1] = { name = crew.name, tag = crew.tag, color = crew.color,
             founder = crew.founder, members = #crew.members }
     end
     table.sort(dir, function(a, b) return a.name:lower() < b.name:lower() end)
 
+    local convos = buildConversations(player, myName, offlineOK)
+    for _, c in ipairs(convos) do if c.kind == "dm" then reg(c.with) end end
+
     return {
         account       = myName,
-        displayName   = getData(myName, "display_name") or myName,
+        displayName   = dispOf(myName, offlineOK),
         friends       = friends,
         requests      = requests or {},
         crew          = crewData,
         crews         = dir,
-        conversations = buildConversations(player, myName),
+        conversations = convos,
+        names         = dnames,
     }
 end
 
@@ -325,10 +354,8 @@ local function pushSnapshot(player)
             for _, mn in ipairs(myCrew.members) do names[#names + 1] = mn end
         end
 
-        local waiting, requests, offlineOK = 2, {}, false
+        local requests, offlineOK = {}, false
         local function done()
-            waiting = waiting - 1
-            if waiting > 0 then return end
             local again = snapState[player] == "again"
             snapState[player] = nil
             if not isElement(player) then return end
@@ -339,14 +366,25 @@ local function pushSnapshot(player)
             if again then pushSnapshot(player) end
         end
 
+        -- the display names of the requests' senders, the DM partners and the crew
+        -- founders are shown too: they join the one prefetch
         SPDB.getRequestsForAsync(function(list)
             requests = list
-            done()
+            for _, rn in ipairs(requests) do names[#names + 1] = rn end
+            local mine = myName:lower()
+            for key, msgs in pairs(dms) do
+                local a, b = key:match("^(.-)\1(.+)$")
+                local last = msgs[#msgs]
+                if last and (a == mine or b == mine) then
+                    names[#names + 1] = (last.from:lower() == mine) and last.to or last.from
+                end
+            end
+            for _, crew in pairs(crews) do names[#names + 1] = crew.founder end
+            MYSQL.prefetch(function(ok)
+                offlineOK = ok == true
+                done()
+            end, names)
         end, myName)
-        MYSQL.prefetch(function(ok)
-            offlineOK = ok == true
-            done()
-        end, names)
     end, myName)
 end
 
@@ -432,6 +470,7 @@ addEventHandler("sp:display:set", root, function(name)
     local ok, clean = SP.validateDisplayName(name)
     if not ok then return triggerClientEvent(player, "sp:display:result", player, false, clean) end
     setData(myName, "display_name", clean)
+    setElementData(player, "displayName", clean)
     triggerClientEvent(player, "sp:display:result", player, true, L.msg("v_socialpanel.server.display_name_saved"))
     pushSnapshot(player)
 end)
@@ -453,14 +492,14 @@ addEventHandler("sp:friend:add", root, function(targetName)
 
     local targetAcc = accountByName(targetName)
     if not targetAcc then
-        return notify(player, L.msg("v_socialpanel.server.no_such_player", { target_name = targetName }), 255, 120, 120)
+        return notify(player, L.msg("v_socialpanel.server.no_such_player", { target_name = dispOf(targetName) }), 255, 120, 120)
     end
     targetName = targetAcc
 
     local myAcc = myName
     local myFriends = SPDB.getFriends(myAcc)
     if SP.contains(myFriends, targetName) then
-        return notify(player, L.msg("v_socialpanel.server.is_already_your_friend", { target_name = targetName }), 255, 200, 0)
+        return notify(player, L.msg("v_socialpanel.server.is_already_your_friend", { target_name = dispOf(targetName) }), 255, 200, 0)
     end
     if #myFriends >= SP.MAX_FRIENDS then
         return notify(player, L.msg("v_socialpanel.server.your_friend_list_is_full"), 255, 120, 120)
@@ -472,9 +511,9 @@ addEventHandler("sp:friend:add", root, function(targetName)
     if mine then
         SPDB.removeRequest(mineExact, myAcc)
         SPDB.addFriend(myAcc, targetAcc)
-        notify(player, L.msg("v_socialpanel.server.you_are_now_friends_with", { target_name = targetName }), 0, 220, 0)
+        notify(player, L.msg("v_socialpanel.server.you_are_now_friends_with", { target_name = dispOf(targetName) }), 0, 220, 0)
         local tp = onlinePlayerByAccount(targetName)
-        notify(tp, L.msg("v_socialpanel.server.you_are_now_friends_with_2", { my_name = myName }), 0, 220, 0)
+        notify(tp, L.msg("v_socialpanel.server.you_are_now_friends_with_2", { my_name = dispOf(myName) }), 0, 220, 0)
         return pushBoth(player, tp)
     end
 
@@ -482,10 +521,10 @@ addEventHandler("sp:friend:add", root, function(targetName)
         return notify(player, L.msg("v_socialpanel.server.you_already_sent_them_request"), 255, 200, 0)
     end
     SPDB.addRequest(myName, targetAcc)
-    notify(player, L.msg("v_socialpanel.server.friend_request_sent_to", { target_name = targetName }), 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.friend_request_sent_to", { target_name = dispOf(targetName) }), 0, 220, 0)
     local tp = onlinePlayerByAccount(targetName)
     if tp then
-        notify(tp, L.msg("v_socialpanel.server.sent_you_friend_request", { my_name = myName }), 0, 220, 0)
+        notify(tp, L.msg("v_socialpanel.server.sent_you_friend_request", { my_name = dispOf(myName) }), 0, 220, 0)
         pushSnapshot(tp)
     end
 end)
@@ -510,9 +549,9 @@ addEventHandler("sp:friend:accept", root, function(senderName)
 
     SPDB.addFriend(myAcc, senderAcc)
 
-    notify(player, L.msg("v_socialpanel.server.you_accepted_s_request", { sender_name = senderName }), 0, 220, 0)
+    notify(player, L.msg("v_socialpanel.server.you_accepted_s_request", { sender_name = dispOf(senderName) }), 0, 220, 0)
     local sp = onlinePlayerByAccount(senderName)
-    notify(sp, L.msg("v_socialpanel.server.accepted_your_friend_request", { my_name = myName }), 0, 220, 0)
+    notify(sp, L.msg("v_socialpanel.server.accepted_your_friend_request", { my_name = dispOf(myName) }), 0, 220, 0)
     pushBoth(player, sp)
 end)
 
@@ -543,9 +582,9 @@ addEventHandler("sp:friend:remove", root, function(friendName)
     friendName = exact
 
     SPDB.removeFriend(myAcc, friendName)
-    notify(player, L.msg("v_socialpanel.server.removed_from_your_friend_list", { friend_name = friendName }), 255, 200, 0)
+    notify(player, L.msg("v_socialpanel.server.removed_from_your_friend_list", { friend_name = dispOf(friendName) }), 255, 200, 0)
     local fp = onlinePlayerByAccount(friendName)
-    notify(fp, L.msg("v_socialpanel.server.removed_you_from_their_friend_list", { my_name = myName }), 255, 200, 0)
+    notify(fp, L.msg("v_socialpanel.server.removed_you_from_their_friend_list", { my_name = dispOf(myName) }), 255, 200, 0)
     pushBoth(player, fp)
 end)
 
@@ -576,6 +615,7 @@ addEventHandler("sp:profile:view", root, function(name)
             if not isElement(player) or accName(player) ~= myName then return end
             triggerClientEvent(player, "sp:profile:show", player, {
                 name      = name,
+                display   = dispOf(name),
                 online    = online ~= nil,
                 level     = level,
                 playtime  = playtime,
@@ -623,7 +663,7 @@ addEventHandler("sp:search", root, function(query)
         if nm and nm:lower():find(needle, 1, true) then
             seen[nm:lower()] = true
             results[#results + 1] = {
-                name = nm, online = true,
+                name = nm, display = dispOf(nm), online = true,
                 level = tostring(getElementData(p, "level") or "n/a"),
                 playtime = tostring(getElementData(p, "Játékidő") or "n/a"),
             }
@@ -661,7 +701,7 @@ addEventHandler("sp:search", root, function(query)
                     level = tostring(getData(nm, "level") or "n/a")
                     playtime = (h or m) and SP.formatPlaytime(h, m) or "n/a"
                 end
-                results[#results + 1] = { name = nm, online = false, level = level, playtime = playtime }
+                results[#results + 1] = { name = nm, display = dispOf(nm, ok == true), online = false, level = level, playtime = playtime }
             end
             finish()
         end, offline)
@@ -754,7 +794,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
 
         local tp = onlinePlayerByAccount(target)
         if tp then
-            triggerClientEvent(tp, "sp:notify", tp, "dm", myName, text)
+            triggerClientEvent(tp, "sp:notify", tp, "dm", dispOf(myName), text)
             triggerClientEvent(tp, "sp:msg:data", tp, "dm", myName, collectThread(target, "dm", myName))
             pushSnapshot(tp)
         end
@@ -772,7 +812,7 @@ addEventHandler("sp:msg:send", root, function(kind, target, text)
             local mp = onlinePlayerByAccount(mn)
             if mp then
                 if mp ~= player then
-                    triggerClientEvent(mp, "sp:notify", mp, "crew", myName, text, crew.tag)
+                    triggerClientEvent(mp, "sp:notify", mp, "crew", dispOf(myName), text, crew.tag)
                 end
                 triggerClientEvent(mp, "sp:msg:data", mp, "crew", crew.name, collectThread(mn, "crew", crew.name))
                 pushSnapshot(mp)
@@ -831,7 +871,7 @@ addEventHandler("sp:crew:join", root, function(crewName)
     notify(player, L.msg("v_socialpanel.server.you_joined_crew", { name = crew.name }), 0, 220, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
-        if mp and mp ~= player then notify(mp, L.msg("v_socialpanel.server.joined_crew", { my_name = myName }), 0, 220, 0) end
+        if mp and mp ~= player then notify(mp, L.msg("v_socialpanel.server.joined_crew", { my_name = dispOf(myName) }), 0, 220, 0) end
         if mp then pushSnapshot(mp) end
     end
 end)
@@ -869,7 +909,7 @@ local function leaveCrew(player, silent)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
         if mp then
-            notify(mp, L.msg("v_socialpanel.server.left_crew", { my_name = myName }), 255, 200, 0)
+            notify(mp, L.msg("v_socialpanel.server.left_crew", { my_name = dispOf(myName) }), 255, 200, 0)
             pushSnapshot(mp)
         end
     end
@@ -901,7 +941,7 @@ addEventHandler("sp:crew:kick", root, function(memberName)
     local kp = onlinePlayerByAccount(exact)
     notify(kp, L.msg("v_socialpanel.server.you_were_kicked_from_crew", { name = crew.name }), 255, 120, 120)
     if kp then pushSnapshot(kp) end
-    notify(player, exact .. " kicked.", 255, 200, 0)
+    notify(player, dispOf(exact) .. " kicked.", 255, 200, 0)
     for _, mn in ipairs(crew.members) do
         local mp = onlinePlayerByAccount(mn)
         if mp then pushSnapshot(mp) end

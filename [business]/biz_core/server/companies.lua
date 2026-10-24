@@ -36,6 +36,13 @@ local function running(name)
 end
 BIZ.running = running
 
+--- name shown to people (display name, else the nick; no colour codes). Display only, never stored.
+function CO.displayOf(player)
+    local d = getElementData(player, "displayName")
+    if type(d) ~= "string" or d == "" then d = getPlayerName(player) end
+    return (d:gsub("#%x%x%x%x%x%x", ""))
+end
+
 --- account name of a logged-in player, or nil
 function CO.accountOf(player)
     if not isElement(player) or getElementType(player) ~= "player" then return nil end

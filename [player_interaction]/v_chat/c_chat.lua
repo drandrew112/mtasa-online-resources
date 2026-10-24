@@ -17,7 +17,7 @@ outputDebugString("chat/hide_message="..hide_message)
 
 function addMessage(sender, text)
     local msg_id = #messages+1
-    table.insert( messages, msg_id, { sender=getPlayerName(sender), text=text, show=true, timer = nil } )
+    table.insert( messages, msg_id, { sender=getElementData(sender, "displayName") or getPlayerName(sender), text=text, show=true, timer = nil } )
     messages[msg_id].timer = setTimer(function()
         messages[msg_id].show = false
     end, hide_message*1000, 1)

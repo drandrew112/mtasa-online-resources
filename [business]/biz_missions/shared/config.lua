@@ -22,6 +22,16 @@ MIS = {
 
     -- sell
     SELL_VAN = 482,                -- Burrito
+    -- the only places sell vans may spawn, per building (spawned at z + 1, physics drops them)
+    VAN_SPAWNS = {
+        bc_castillo = {
+            { x = -378.95, y = 2251.86, z = 41.28, rot = 102 },
+            { x = -379.97, y = 2234.92, z = 41.05, rot = 194 },
+            { x = -372.85, y = 2233.38, z = 41.29, rot = 106 },
+            { x = -370.97, y = 2228.22, z = 41.29, rot = 100 },
+            { x = -370.44, y = 2222.61, z = 41.29, rot = 104 },
+        },
+    },
     BUYER_RADIUS = 10,
     BUYER_MIN_DIST = 800,          -- from the property
     BUYER_SPREAD = 600,            -- buyers of one delivery at least this far from each other

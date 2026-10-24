@@ -14,6 +14,31 @@
 
 local function int(v) return DB.int(v) end
 
+--- cb(map): lower-case account name -> display name, for the website only (the
+--- tables keep the account name). Online players come from element data, the rest
+--- from one query; an account without a display name is left out of the map.
+local function displayNames(refs, cb)
+    local map, need, seen = {}, {}, {}
+    for _, ref in ipairs(refs) do
+        local key = tostring(ref):lower()
+        if key ~= "" and not seen[key] then
+            seen[key] = true
+            local online = exports.acc_auth:playerOnAccount(key)
+            local d = online and getElementData(online, "displayName")
+            if type(d) == "string" and d ~= "" then map[key] = d
+            elseif not online then need[#need + 1] = key end
+        end
+    end
+    if #need == 0 then return cb(map) end
+    local marks = string.rep("?,", #need):sub(1, -2)
+    DB.query(function(rows)
+        for _, r in ipairs(rows or {}) do
+            if type(r.display_name) == "string" and r.display_name ~= "" then map[tostring(r.k):lower()] = r.display_name end
+        end
+        cb(map)
+    end, "SELECT LOWER(account_name) AS k, display_name FROM accounts WHERE LOWER(account_name) IN (" .. marks .. ")", unpack(need))
+end
+
 --- a ledger row for the UI
 local function ledgerRow(r)
     local params = {}
@@ -29,10 +54,10 @@ local function ledgerRow(r)
 end
 
 --- cb(rows, hasMore) of one account, newest first
-local function queryLedger(id, beforeId, group, limit, cb, since)
+local function queryLedger(id, beforeId, group, limit, cb, since, display)
     limit = math.max(1, math.min(BANK.LEDGER_MAX, math.floor(tonumber(limit) or BANK.LEDGER_PAGE)))
     local sql = "SELECT l.id, l.ts, l.amount, l.balance_after, l.tx_key, l.params, l.actor, "
-        .. "c.number AS counter_number, c.name AS counter_name, c.kind AS counter_kind "
+        .. "c.number AS counter_number, c.name AS counter_name, c.kind AS counter_kind, c.owner_ref AS counter_owner "
         .. "FROM bank_ledger l LEFT JOIN bank_accounts c ON c.id = l.counter_id WHERE l.account_id = ?"
     local args = { tonumber(id) or 0 }
     if tonumber(beforeId) then
@@ -50,9 +75,20 @@ local function queryLedger(id, beforeId, group, limit, cb, since)
     sql = sql .. " ORDER BY l.id DESC LIMIT " .. (limit + 1)
     DB.query(function(rows)
         if not rows then return cb(false) end
-        local out = {}
-        for i = 1, math.min(#rows, limit) do out[i] = ledgerRow(rows[i]) end
-        cb(out, #rows > limit)
+        local out, refs = {}, {}
+        for i = 1, math.min(#rows, limit) do
+            out[i] = ledgerRow(rows[i])
+            if out[i].counter and out[i].counter.kind == "personal" then refs[#refs + 1] = tostring(rows[i].counter_owner or "") end
+        end
+        if not display then return cb(out, #rows > limit) end
+        -- the website shows display names of personal counter accounts
+        displayNames(refs, function(map)
+            for i, row in ipairs(out) do
+                local c = row.counter
+                if c and c.kind == "personal" then c.name = map[tostring(rows[i].counter_owner or ""):lower()] or c.name end
+            end
+            cb(out, #rows > limit)
+        end)
     end, sql, unpack(args))
 end
 
@@ -103,7 +139,16 @@ function requestBankAccounts(player)
                 list[#list + 1] = info
             end
         end
-        toClient(player, "v_bank:accounts", list)
+        local refs = {}
+        for _, info in ipairs(list) do
+            if info.kind == "personal" then refs[#refs + 1] = info.ownerRef end
+        end
+        displayNames(refs, function(map)
+            for _, info in ipairs(list) do
+                if info.kind == "personal" then info.name = map[info.ownerRef:lower()] or info.name end
+            end
+            toClient(player, "v_bank:accounts", list)
+        end)
     end)
     return true
 end
@@ -113,7 +158,7 @@ function requestLedger(player, id, beforeId, group)
     if not isElement(player) or not id or not hasAccessRole(player, id, "view") then return false end
     queryLedger(id, beforeId, group, BANK.LEDGER_PAGE, function(rows, more)
         toClient(player, "v_bank:ledger", id, rows or {}, more == true, tonumber(beforeId) or false)
-    end)
+    end, nil, true)
     return true
 end
 
@@ -145,12 +190,21 @@ function requestTransfer(player, fromId, number, amount, note, confirm)
         local from = getAcc(fromId)
         if not from then return fail("unavailable") end
         local data = { from = from.number, to = to.number, toName = to.name, toKind = to.kind, amount = amount, note = note }
-        if not confirm then
-            return toClient(player, "v_bank:transfer", "preview", data)
+        local function show()
+            if not confirm then
+                return toClient(player, "v_bank:transfer", "preview", data)
+            end
+            local ok, err = BOOK.move(fromId, to.id, amount, "transfer.account", { note = note }, BANK.accountOf(player) or "")
+            if not ok then return fail(err) end
+            toClient(player, "v_bank:transfer", "done", data)
         end
-        local ok, err = BOOK.move(fromId, to.id, amount, "transfer.account", { note = note }, BANK.accountOf(player) or "")
-        if not ok then return fail(err) end
-        toClient(player, "v_bank:transfer", "done", data)
+        if to.kind ~= "personal" then return show() end
+        -- the recipient is shown by display name (never booked: the ledger keeps the account)
+        displayNames({ to.ownerRef }, function(map)
+            if not isElement(player) then return end
+            data.toName = map[to.ownerRef:lower()] or data.toName
+            show()
+        end)
     end)
     return true
 end

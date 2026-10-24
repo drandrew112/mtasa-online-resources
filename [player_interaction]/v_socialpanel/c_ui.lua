@@ -61,6 +61,12 @@ local ach_tab = 1     -- 1 = ALL, 2.. = achData.categories[ach_tab - 1]
 --------------------------------------------------------------------------------
 
 local snapshot = { account = nil, friends = {}, requests = {}, crew = nil, crews = {}, conversations = {} }
+-- shown name of an account: its display name when it has one (snapshot.names);
+-- the account name stays the key in every event
+local function dn(account)
+    local names = snapshot.names
+    return (names and names[tostring(account):lower()]) or account
+end
 local viewedProfile = nil          -- nil = own profile; otherwise server data
 local searchResults, searchNote = {}, nil
 local openConv = nil               -- { kind = "dm"/"crew", with = name }
@@ -292,7 +298,7 @@ function renderHome()
         if ry + rowH > listY and ry < listY + areaH then
             dxDrawRectangle(rx, ry, rw, rowH, C.panel)
             dxDrawRectangle(rx, ry, 4, rowH, C.green)
-            dxDrawText(f.name, rx + 14, ry + 8, rx + rw, ry + 28, C.dark, 1.4, "default-bold", "left", "top")
+            dxDrawText(dn(f.name), rx + 14, ry + 8, rx + rw, ry + 28, C.dark, 1.4, "default-bold", "left", "top")
             dxDrawText(L("v_socialpanel.ui.level", { level = f.level, playtime = f.playtime }), rx + 14, ry + 30, rx + rw, ry + 48,
                 C.sub, 1.15, "default", "left", "top")
             if UI.button(rx + rw - 92, ry + 12, 84, rowH - 24, L("v_socialpanel.ui.profile_2"), { size = 1.2, bg = C.bg }) then
@@ -473,7 +479,7 @@ function socialFriends(cx, cy, cw)
         if ry + rowH > listY and ry < listY + areaH then
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, f.online and C.green or C.grey)
-            dxDrawText(f.name, cx + 14, ry + 7, cx + cw, ry + 27, C.dark, 1.4, "default-bold", "left", "top")
+            dxDrawText(dn(f.name), cx + 14, ry + 7, cx + cw, ry + 27, C.dark, 1.4, "default-bold", "left", "top")
             dxDrawText(L("v_socialpanel.ui.level_2", { online = f.online and L("v_socialpanel.ui.online") or L("v_socialpanel.ui.offline"), level = f.level, playtime = f.playtime }),
                 cx + 14, ry + 29, cx + cw, ry + 47, C.sub, 1.1, "default", "left", "top")
             if UI.button(cx + cw - 270, ry + 12, 82, rowH - 24, L("v_socialpanel.ui.profile_2"), { size = 1.15, bg = C.bg }) then
@@ -501,7 +507,7 @@ function socialRequests(cx, cy, cw)
     for i, name in ipairs(reqs) do
         local ry = listY + (i - 1) * (rowH + gap)
         dxDrawRectangle(cx, ry, cw, rowH, C.panel)
-        dxDrawText(name, cx + 14, ry, cx + cw, ry + rowH, C.dark, 1.4, "default-bold", "left", "center")
+        dxDrawText(dn(name), cx + 14, ry, cx + cw, ry + rowH, C.dark, 1.4, "default-bold", "left", "center")
         if UI.button(cx + cw - 200, ry + 10, 92, rowH - 20, L("v_socialpanel.ui.accept"), { size = 1.2, bg = C.bg, hoverBg = C.green, hoverTxt = C.white }) then
             triggerServerEvent("sp:friend:accept", localPlayer, name)
         end
@@ -537,7 +543,7 @@ function socialFindPlayer(cx, cy, cw)
         if ry + rowH > listY and ry < listY + areaH then
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, r.online and C.green or C.grey)
-            dxDrawText(r.name, cx + 14, ry + 6, cx + cw, ry + 26, C.dark, 1.35, "default-bold", "left", "top")
+            dxDrawText(r.display or r.name, cx + 14, ry + 6, cx + cw, ry + 26, C.dark, 1.35, "default-bold", "left", "top")
             dxDrawText(L("v_socialpanel.ui.level_2", { online = r.online and L("v_socialpanel.ui.online") or L("v_socialpanel.ui.offline"), level = r.level, playtime = r.playtime }),
                 cx + 14, ry + 28, cx + cw, ry + 46, C.sub, 1.1, "default", "left", "top")
             if UI.button(cx + cw - 270, ry + 11, 82, rowH - 22, L("v_socialpanel.ui.profile_2"), { size = 1.1, bg = C.bg }) then
@@ -576,7 +582,7 @@ function socialMessages(cx, cy, cw)
             local isOpen = openConv and openConv.kind == c.kind and openConv.with:lower() == c.with:lower()
             dxDrawRectangle(cx, ry, convW - 6, rowH, C.panel)
             if isOpen then dxDrawRectangle(cx, ry, 3, rowH, C.accent) end
-            local title = (c.kind == "crew") and ("[" .. (c.crewTag or L("v_socialpanel.ui.crew")) .. "] " .. c.with) or c.with
+            local title = (c.kind == "crew") and ("[" .. (c.crewTag or L("v_socialpanel.ui.crew")) .. "] " .. c.with) or dn(c.with)
             dxDrawText(ellipsis(title, 1.25, "default-bold", convW - 60), cx + 10, ry + 6, cx + convW, ry + 24,
                 isOpen and C.accent or C.dark, 1.25, "default-bold", "left", "top")
             dxDrawText(ellipsis(c.last or "", 1.0, "default", convW - 24), cx + 10, ry + 26, cx + convW, ry + 44,
@@ -605,7 +611,7 @@ function socialMessages(cx, cy, cw)
         return
     end
 
-    local header = (openConv.kind == "crew") and (L("v_socialpanel.ui.crew_chat", { with = openConv.with })) or (L("v_socialpanel.ui.chat_with", { with = openConv.with }))
+    local header = (openConv.kind == "crew") and (L("v_socialpanel.ui.crew_chat", { with = openConv.with })) or (L("v_socialpanel.ui.chat_with", { with = dn(openConv.with) }))
     dxDrawText(header, tx + 12, cy + 10, tx + tw - 12, cy + 34, C.dark, 1.5, "default-bold", "left", "top")
     dxDrawRectangle(tx + 12, cy + 38, tw - 24, 2, C.line)
 
@@ -636,7 +642,7 @@ function socialMessages(cx, cy, cw)
             local bx = mine and (tx + tw - 20 - bubbleW * 0.82) or (tx + 20)
             local bw = bubbleW * 0.82
             dxDrawRectangle(bx, yy, bw, hgt, mine and tocolor(255, 235, 170, 255) or C.bg)
-            dxDrawText((mine and L("v_socialpanel.ui.you") or m.from) .. "  " .. clock(m.time), bx + 8, yy + 4, bx + bw - 8, yy + 18,
+            dxDrawText((mine and L("v_socialpanel.ui.you") or dn(m.from)) .. "  " .. clock(m.time), bx + 8, yy + 4, bx + bw - 8, yy + 18,
                 C.sub, 1.0, "default", mine and "right" or "left", "top")
             dxDrawText(m.text or "", bx + 8, yy + 18, bx + bw - 8, yy + hgt - 4, C.dark, size, font,
                 "left", "top", false, true)
@@ -706,7 +712,7 @@ function socialMyCrew(cx, cy, cw)
     dxDrawRectangle(cx, cy, 6, 60, col)
     dxDrawText(crew.name, cx + 18, cy + 6, cx + cw, cy + 32, C.dark, 1.8, "default-bold", "left", "top")
     dxDrawText("[" .. crew.tag .. "]", cx + 18, cy + 34, cx + cw, cy + 54, col, 1.3, "default-bold", "left", "top")
-    dxDrawText(L("v_socialpanel.ui.founder_members", { founder = crew.founder, members = #crew.members, value = 30 }),
+    dxDrawText(L("v_socialpanel.ui.founder_members", { founder = dn(crew.founder), members = #crew.members, value = 30 }),
         cx + cw - 340, cy + 8, cx + cw - 10, cy + 28, C.sub, 1.15, "default", "right", "top")
     if UI.button(cx + cw - 210, cy + 28, 100, 26, L("v_socialpanel.ui.crew_chat_2"), { size = 1.1, bg = C.bg, hoverBg = C.blue, hoverTxt = C.white }) then
         openConversation("crew", crew.name)
@@ -730,7 +736,7 @@ function socialMyCrew(cx, cy, cw)
         if ry + rowH > listY and ry < listY + half then
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, m.online and C.green or C.grey)
-            dxDrawText((m.isFounder and "* " or "") .. m.name, cx + 14, ry, cx + 210, ry + rowH,
+            dxDrawText((m.isFounder and "* " or "") .. dn(m.name), cx + 14, ry, cx + 210, ry + rowH,
                 C.dark, 1.3, "default-bold", "left", "center")
             dxDrawText(L("v_socialpanel.ui.level", { level = m.level, playtime = m.playtime }), cx + 220, ry, cx + cw - 160, ry + rowH,
                 C.sub, 1.05, "default", "left", "center")
@@ -785,7 +791,7 @@ function socialFindCrew(cx, cy, cw)
             dxDrawRectangle(cx, ry, cw, rowH, C.panel)
             dxDrawRectangle(cx, ry, 4, rowH, col)
             dxDrawText(cr.name .. "  [" .. cr.tag .. "]", cx + 14, ry + 7, cx + cw, ry + 27, C.dark, 1.35, "default-bold", "left", "top")
-            dxDrawText(L("v_socialpanel.ui.founder_members_30", { founder = cr.founder, members = cr.members }),
+            dxDrawText(L("v_socialpanel.ui.founder_members_30", { founder = dn(cr.founder), members = cr.members }),
                 cx + 14, ry + 29, cx + cw, ry + 47, C.sub, 1.1, "default", "left", "top")
             if UI.button(cx + cw - 130, ry + 12, 120, rowH - 24, hasCrew and L("v_socialpanel.ui.in_crew") or L("v_socialpanel.ui.join"),
                 { size = 1.2, bg = C.bg, hoverBg = C.green, hoverTxt = C.white, disabled = hasCrew }) then
@@ -815,7 +821,7 @@ function renderProfile()
         end
         isSelf = true
     else
-        name, level, playtime, online = p.name, p.level, p.playtime, p.online
+        name, level, playtime, online = p.display or p.name, p.level, p.playtime, p.online
         crewName, crewTag, crewCol = p.crew, p.crewTag, p.crewColor
         isFriend, isSelf = p.isFriend, p.isSelf
     end

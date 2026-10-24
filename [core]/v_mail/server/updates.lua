@@ -304,6 +304,11 @@ local function sendRows(list)
                     MAILDB.finish(r.id, "failed", "stored template unreadable")
                     one("failed")
                 else
+                    -- the mail addresses the player by display name, applied only now: the
+                    -- stored rows keep the account name
+                    if type(acc.display_name) == "string" and acc.display_name ~= "" and type(r.language) == "string" and r.language ~= "" then
+                        tpl.greeting = T(r.language, "greeting", { account = acc.display_name })
+                    end
                     local queued, err = queueMail({
                         to = acc.email, toName = r.account_name, subject = r.subject, template = tpl,
                         bulk = true, log = { rowId = r.id },
@@ -314,7 +319,7 @@ local function sendRows(list)
                     end
                 end
             end
-        end, "SELECT account_name, email, " .. SNIPPET .. " FROM `accounts` WHERE account_name IN (" .. inList(#names) .. ")",
+        end, "SELECT account_name, display_name, email, " .. SNIPPET .. " FROM `accounts` WHERE account_name IN (" .. inList(#names) .. ")",
             unpack(names))
     end, "UPDATE `" .. MAILER.TABLE .. "` SET status = 'sending', sent_at = ? WHERE id IN (" .. inList(#ids)
         .. ") AND status = 'pending'", now(), unpack(ids))
@@ -329,7 +334,7 @@ sendDue = function()
         MYSQL.query(function(list)
             if not list or #list == 0 then return release() end
             sendRows(list)
-        end, "SELECT id, account_name, subject, template FROM `" .. MAILER.TABLE
+        end, "SELECT id, account_name, language, subject, template FROM `" .. MAILER.TABLE
             .. "` WHERE kind = ? AND status = 'pending' ORDER BY id LIMIT ?", KIND, room)
     end, "SELECT COUNT(*) AS n FROM `" .. MAILER.TABLE .. "` WHERE kind = ? AND status IN ('sending', 'sent') AND sent_at > ?",
         KIND, now() - DAY)

@@ -10,7 +10,7 @@ addEventHandler('onClientPlayerJoin', root,
 
 addEventHandler('onClientPlayerQuit', root,
 	function(reason)
-		local name = getPlayerName(source)
+		local name = getElementData(source, "displayName") or getPlayerName(source)
 		local title = L("v_joinquit.joinquit.player_left")
 		if 		reason=="Unknown" then title = L("v_joinquit.joinquit.player_swallowed_by_black_hole")
 		elseif	reason=="Quit" then title = L("v_joinquit.joinquit.player_left")

@@ -24,7 +24,7 @@ for ev, fn in pairs({
     ["v_socialpanel:onClientProfile"] = function(profile, name)
         if profile then
             Social.profile = profile
-            if Menu.open then Menu.openView("player", { name = profile.name }) end
+            if Menu.open then Menu.openView("player", { name = profile.display or profile.name }) end
         elseif Menu.open then
             notify(L("acc_menu.social.no_such_player", { name = tostring(name) }))
         end
@@ -47,6 +47,13 @@ for ev, fn in pairs({
 end
 
 local function snap() return Social.snapshot or {} end
+
+-- shown name of an account: its display name (snapshot.names), else the account
+-- name; the account name stays the key in every call
+local function dn(account)
+    local names = snap().names
+    return (names and names[tostring(account):lower()]) or account
+end
 
 local function openThread(kind, with)
     Social.conv = { kind = kind, with = with }
@@ -112,7 +119,7 @@ PAGES.defs.social = {
 local function personRow(prefix, i, x, y, w, h, p, buttons)
     row("view", prefix .. i, x, y, w, h, { activate = buttons[1] and buttons[1].fn })
     dxDrawRectangle(x + S(16), y + h / 2 - S(5), S(10), S(10), p.online and C.money or tocolor(90, 90, 90, 255))
-    text(p.name, x + S(38), y, w * 0.3, h, C.white, 1.0, FONT.rowB)
+    text(p.display or dn(p.name), x + S(38), y, w * 0.3, h, C.white, 1.0, FONT.rowB)
     if p.level or p.playtime then
         text(L("acc_menu.social.level_played", { level = tostring(p.level or "-"), played = tostring(p.playtime or "-") }),
             x + w * 0.3, y, w * 0.3, h, C.dim, 0.9)
@@ -190,7 +197,7 @@ VIEWS.crew = {
             local col = crew.color or { 255, 255, 255 }
             text("[" .. tostring(crew.tag) .. "]", cx, y + S(18), cw, S(48), tocolor(col[1] or 255, col[2] or 255, col[3] or 255, 255), 1, FONT.big)
             text(crew.name, cx, y + S(72), cw, S(30), C.white, 1.2, FONT.head)
-            text(L("acc_menu.social.founder", { name = crew.founder }), cx, y + S(106), cw, S(24), C.dim, 0.95)
+            text(L("acc_menu.social.founder", { name = dn(crew.founder) }), cx, y + S(106), cw, S(24), C.dim, 0.95)
             if crew.desc and crew.desc ~= "" then
                 text(crew.desc, cx, y + S(134), cw, S(50), C.text, 0.92, FONT.row, "left", "top", true, true)
             end
@@ -267,7 +274,7 @@ VIEWS.messages = {
             local isOpen = Social.conv and Social.conv.kind == c.kind and Social.conv.with:lower() == tostring(c.with):lower()
             row("view", "cv_" .. i, x, ry, lw, rh - S(2), { activate = function() openThread(c.kind, c.with) end })
             if isOpen then dxDrawRectangle(x, ry, S(3), rh - S(2), C.white) end
-            local title = c.kind == "crew" and ("[" .. tostring(c.crewTag or "") .. "] " .. tostring(c.with)) or tostring(c.with)
+            local title = c.kind == "crew" and ("[" .. tostring(c.crewTag or "") .. "] " .. tostring(c.with)) or tostring(dn(c.with))
             text(title, x + S(18), ry + S(8), lw - S(80), S(24), C.white, 1.0, FONT.rowB)
             text(L.resolve(c.last) or "", x + S(18), ry + S(32), lw - S(36), S(22), C.dim, 0.85)
             if (c.unread or 0) > 0 then chip(tostring(c.unread), x + lw - S(50), ry + S(10), C.money, tocolor(110, 220, 130, 40)) end
@@ -279,7 +286,7 @@ VIEWS.messages = {
         if not conv then
             return text(L("acc_menu.social.pick_conversation"), rx + S(24), y + S(10), rw - S(48), S(40), C.dim)
         end
-        text(conv.kind == "crew" and L("acc_menu.social.crew_chat", { name = conv.with }) or conv.with, rx + S(20), y + S(10), rw - S(40), S(30), C.white, 1.15, FONT.head)
+        text(conv.kind == "crew" and L("acc_menu.social.crew_chat", { name = conv.with }) or dn(conv.with), rx + S(20), y + S(10), rw - S(40), S(30), C.white, 1.15, FONT.head)
 
         local msgs = Social.thread or {}
         local top, bottom = y + S(50), y + h - S(70)
@@ -295,7 +302,7 @@ VIEWS.messages = {
             local bx = m.mine and (rx + rw - S(20) - bw) or (rx + S(20))
             dxDrawRectangle(bx, my, bw, lineH - S(8), m.mine and tocolor(36, 86, 106, 255) or tocolor(35, 42, 51, 255))
             if conv.kind == "crew" and not m.mine then
-                text(m.from, bx + S(10), my + S(2), bw - S(20), S(16), C.dim, 0.75, FONT.rowB)
+                text(dn(m.from), bx + S(10), my + S(2), bw - S(20), S(16), C.dim, 0.75, FONT.rowB)
                 text(m.text, bx + S(10), my + S(16), bw - S(20), lineH - S(26), C.text, 0.95)
             else
                 text(m.text, bx + S(14), my, bw - S(28), lineH - S(8), C.text, 0.95)
@@ -350,7 +357,7 @@ VIEWS.player = {
         local pw = math.min(w, S(620))
         panelBox(x, y, pw, S(300))
         local cx, cw = x + S(28), pw - S(56)
-        text(p.name, cx, y + S(20), cw, S(48), C.white, 1, FONT.big)
+        text(p.display or p.name, cx, y + S(20), cw, S(48), C.white, 1, FONT.big)
         chip(p.online and L("acc_menu.social.online_now") or L("acc_menu.social.offline"), cx, y + S(76),
             p.online and C.money or C.dim, p.online and tocolor(110, 220, 130, 40) or nil)
         local yy = y + S(116)

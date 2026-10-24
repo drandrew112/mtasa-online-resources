@@ -122,6 +122,7 @@ function queueMail(mail, onDone, from)
             stored = renderTemplate(masked)
         end
     end
+    if type(mail.logTemplate) == "table" then stored = (renderTemplate(mail.logTemplate)) end -- the log keeps the account-name version
     if not text and not html then return false, "missing body" end
     stored = stored or html:gsub("<br>", "\n"):gsub("</p>", "\n\n"):gsub("<[^>]+>", "")
     if #urgent + #bulk >= MAIL.MAX_QUEUE then
@@ -144,7 +145,7 @@ function queueMail(mail, onDone, from)
                     sender = type(log.sender) == "string" and log.sender or (from or "v_mail"),
                     account = type(log.account) == "string" and log.account or to[1].name,
                     language = type(log.language) == "string" and log.language or "",
-                    subject = mail.subject,
+                    subject = type(mail.logSubject) == "string" and mail.logSubject or mail.subject,
                     body = stored,
                 }, ok, info)
             end

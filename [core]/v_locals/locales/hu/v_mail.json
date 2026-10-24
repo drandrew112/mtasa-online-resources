@@ -28,7 +28,7 @@
   "v_mail.panel.confirm_send": "Küldés {count} címzettnek? Kattints újra",
   "v_mail.panel.editor_title": "Körlevél",
   "v_mail.panel.fallback_hint": "Mindenki a fiókja nyelvén kapja; ha azon nincs szöveg: angolul, különben az első kitöltött nyelven.",
-  "v_mail.panel.hint": "{tag} = fióknév · üres sor: új bekezdés · Tab: következő mező · Esc: kilépés a mezőből · {count} / {max}",
+  "v_mail.panel.hint": "{tag} = a játékos megjelenített neve · üres sor: új bekezdés · Tab: következő mező · Esc: kilépés a mezőből · {count} / {max}",
   "v_mail.panel.loading": "Betöltés…",
   "v_mail.panel.mode_all": "Mindenki ({count})",
   "v_mail.panel.mode_selected": "Kijelöltek ({count})",

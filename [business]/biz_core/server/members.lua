@@ -37,7 +37,7 @@ function MEM.publicList(companyId, withPlayers)
     local out = {}
     for p, since in pairs(MEM.list[companyId] or {}) do
         if isElement(p) then
-            out[#out + 1] = { name = getPlayerName(p):gsub("#%x%x%x%x%x%x", ""), account = CO.accountOf(p), since = since,
+            out[#out + 1] = { name = CO.displayOf(p), account = CO.accountOf(p), since = since,
                               player = withPlayers and p or nil }
         end
     end
@@ -78,7 +78,7 @@ function MEM.invitesOf(player)
         if c then
             out[#out + 1] = {
                 companyId = id, name = c.name,
-                founder = isElement(c.founder) and getPlayerName(c.founder):gsub("#%x%x%x%x%x%x", "") or "",
+                founder = isElement(c.founder) and CO.displayOf(c.founder) or "",
                 expiresIn = math.max(0, math.floor((exp - getTickCount()) / 1000)),
             }
         end
@@ -100,8 +100,8 @@ function MEM.invite(founder, target)
     MEM.invites[target] = MEM.invites[target] or {}
     MEM.invites[target][c.id] = getTickCount() + BIZ.INVITE_TTL * 1000
     triggerEvent("onBizInvitesChanged", target)
-    NOTIFY.player(target, L.msg("biz_core.members.invited_you", { company = c.name, founder = getPlayerName(founder) }))
-    NOTIFY.player(founder, L.msg("biz_core.members.invite_sent", { player = getPlayerName(target) }))
+    NOTIFY.player(target, L.msg("biz_core.members.invited_you", { company = c.name, founder = CO.displayOf(founder) }))
+    NOTIFY.player(founder, L.msg("biz_core.members.invite_sent", { player = CO.displayOf(target) }))
     return true
 end
 
@@ -121,7 +121,7 @@ function MEM.accept(player, companyId)
     setMemberData(player, c)
     triggerEvent("onBizInvitesChanged", player)
     changed(player, c.id, true, "joined")
-    NOTIFY.company(c, "all", L.msg("biz_core.members.joined", { player = getPlayerName(player) }))
+    NOTIFY.company(c, "all", L.msg("biz_core.members.joined", { player = CO.displayOf(player) }))
     return true
 end
 
@@ -133,7 +133,7 @@ function MEM.decline(player, companyId)
     triggerEvent("onBizInvitesChanged", player)
     local c = CO.byId[companyId]
     if c and isElement(c.founder) then
-        NOTIFY.player(c.founder, L.msg("biz_core.members.declined", { player = getPlayerName(player) }))
+        NOTIFY.player(c.founder, L.msg("biz_core.members.declined", { player = CO.displayOf(player) }))
     end
     return true
 end
@@ -146,7 +146,7 @@ function MEM.leave(player, reason)
     if MEM.list[id] then MEM.list[id][player] = nil end
     if isElement(player) and reason ~= "quit" then setMemberData(player, nil) end
     local c = CO.byId[id]
-    local name = isElement(player) and getPlayerName(player) or "?"
+    local name = isElement(player) and CO.displayOf(player) or "?"
     if reason ~= "quit" then
         local key = reason == "removed" and "biz_core.members.you_were_removed"
             or (reason == "founder_quit" or reason == "sold") and "biz_core.members.company_closed"
@@ -240,7 +240,7 @@ function getMembershipState(player)
             if p ~= player and CO.accountOf(p) and MEM.of[p] ~= own.id and not getElementData(p, "intro.active") then
                 local x, y, z = getElementPosition(p)
                 candidates[#candidates + 1] = {
-                    player = p, name = getPlayerName(p):gsub("#%x%x%x%x%x%x", ""),
+                    player = p, name = CO.displayOf(p),
                     distance = math.floor(getDistanceBetweenPoints3D(fx, fy, fz, x, y, z)),
                     busy = MEM.of[p] and true or false,
                     invited = MEM.invites[p] and MEM.invites[p][own.id] and MEM.invites[p][own.id] > getTickCount() or false,
@@ -255,7 +255,7 @@ function getMembershipState(player)
     if mc then
         state.member = {
             id = mc.id, name = mc.name, since = MEM.list[mc.id] and MEM.list[mc.id][player] or 0,
-            founder = isElement(mc.founder) and getPlayerName(mc.founder):gsub("#%x%x%x%x%x%x", "") or "",
+            founder = isElement(mc.founder) and CO.displayOf(mc.founder) or "",
             associates = MEM.publicList(mc.id), share = BIZ.ASSOCIATE_SHARE,
         }
     end

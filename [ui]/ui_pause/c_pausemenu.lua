@@ -1266,7 +1266,7 @@ local function drawPanel()
     -- its right. Colours come from ui_core's yOverlay (C.cash / C.bank).
     local moneyL = fx + fw * 0.30
     local moneyR = fx + fw - S(16)
-    dxDrawText(stripHex(getPlayerName(localPlayer)), moneyL, fy + S(7), moneyR, fy + S(27),
+    dxDrawText(stripHex(getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)), moneyL, fy + S(7), moneyR, fy + S(27),
         C.txt, S(1.1), FONT.name, "right", "top")
 
     local moneyScale = S(1.05)

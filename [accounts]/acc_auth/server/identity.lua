@@ -49,6 +49,33 @@ local function setAccountName(player, name)
     scriptedRename[player] = nil
 end
 
+-- Display name shown to players (nametag, chat, scoreboards, lists). Display only:
+-- databases always store the account name. Mirrored into the replicated element
+-- data "displayName" (falls back to the account name) so clients can read it.
+function syncDisplayName(player, accountName)
+    local d = exports.v_mysql:getAccData(accountName, "display_name")
+    if type(d) ~= "string" or d == "" then d = accountName end
+    setElementData(player, "displayName", d)
+    return d
+end
+
+-- Display name of an online player or of an account name (online or offline; an
+-- offline account reads v_mysql, so prefetch it in loops). Falls back to the account name.
+function getDisplayName(who)
+    if isElement(who) then
+        local d = getElementData(who, "displayName")
+        if type(d) == "string" and d ~= "" then return d end
+        local n = nameOf(who)
+        return n or getPlayerName(who)
+    end
+    if type(who) ~= "string" or who == "" then return false end
+    local online = playerOnAccount(who)
+    if online then return getDisplayName(online) end
+    local d = exports.v_mysql:getAccData(who, "display_name")
+    if type(d) == "string" and d ~= "" then return d end
+    return who
+end
+
 -- Marks the player logged in and announces it (onPlayerAccountLogin).
 -- keepCache: the login already loaded the row fresh - keep that v_mysql cache.
 function markLoggedIn(player, username, accId, isNew, keepCache)
@@ -58,6 +85,7 @@ function markLoggedIn(player, username, accId, isNew, keepCache)
     setElementData(player, "accName", username)
     setElementData(player, "accID", accId or 0)
     setElementData(player, "isLogged", true)
+    syncDisplayName(player, username)
     setAccountName(player, username)
     if isNew then
         -- server-only: a brand-new account (v_introduce ends its first introduction at the spawn)

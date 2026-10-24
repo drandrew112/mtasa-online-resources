@@ -22,7 +22,12 @@ function M.rand(range) return math.random(range[1], range[2]) end
 
 function M.pick(list) return list[math.random(1, #list)] end
 
-function M.name(p) return isElement(p) and (getPlayerName(p):gsub("#%x%x%x%x%x%x", "")) or "?" end
+function M.name(p)
+    if not isElement(p) then return "?" end
+    local d = getElementData(p, "displayName")
+    if type(d) ~= "string" or d == "" then d = getPlayerName(p) end
+    return (d:gsub("#%x%x%x%x%x%x", ""))
+end
 
 --- founder + associates online
 function M.team(m)

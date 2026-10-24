@@ -29,6 +29,9 @@
          name | false; isLoggedIn(player) -> bool; accountNameExists(name) ->
          canonical name | false; getAllAccountNames() -> { name, ... }. -->
     <export function="getName"            type="server" />
+    <export function="getDisplayName"     type="server" />
+    <export function="playerOnAccount"    type="server" />
+    <export function="syncDisplayName"    type="server" />
     <export function="isLoggedIn"         type="server" />
     <export function="accountNameExists"  type="server" />
     <export function="getAllAccountNames" type="server" />

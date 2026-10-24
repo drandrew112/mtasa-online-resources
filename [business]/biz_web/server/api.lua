@@ -41,7 +41,7 @@ function bwState()
         ok = true,
         regFee = cfg.regFee or 0,
         bank = tonumber(getElementData(player, "bank_money")) or 0,
-        player = (getPlayerName(player):gsub("#%x%x%x%x%x%x", "")),
+        player = (tostring(getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "")),
         company = my.company or false,
         creating = my.creating or false,
         defaultName = my.defaultName or "",

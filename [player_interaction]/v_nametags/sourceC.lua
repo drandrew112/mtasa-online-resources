@@ -62,7 +62,7 @@ local NEARBY_RANGE = 50
 
 -- element data keys that affect what is displayed
 local watchedKeys = {
-	admin_level = true, accName = true, adminDuty = true, admin_name = true,
+	admin_level = true, accName = true, displayName = true, adminDuty = true, admin_name = true,
 	level = true, isChat = true, voice = true,
 }
 
@@ -71,7 +71,7 @@ local function buildEntry(p, entry)
 	entry = entry or {}
 	local adminlevel = tonumber(getElementData(p, "admin_level")) or 0
 
-	local name = getElementData(p, "accName")
+	local name = getElementData(p, "displayName") or getElementData(p, "accName")
 	if getElementData(p, "adminDuty") == true then
 		name = getElementData(p, "admin_name")
 	end

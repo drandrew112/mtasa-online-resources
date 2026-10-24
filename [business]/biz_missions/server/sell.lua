@@ -274,6 +274,8 @@ function SELL.start(founder, unitId, state, amount, unitValue, perVehicle)
     local p = u and M.core():getProperty(u.propertyId)
     if not p then return false, "activity_offline" end
     perVehicle = math.max(1, perVehicle or 40)
+    local spawns = MIS.VAN_SPAWNS[u.building]
+    if spawns then perVehicle = math.max(perVehicle, math.ceil(amount / #spawns)) end   -- one van per spawn spot at most
     local n = math.ceil(amount / perVehicle)
     local buyers = pickBuyers(n, p.x, p.y)
     if #buyers < n then return false, "failed" end
@@ -295,8 +297,12 @@ function SELL.start(founder, unitId, state, amount, unitValue, perVehicle)
         local units = math.min(perVehicle, left)
         left = left - units
         local side = (i - (n + 1) / 2) * 4
-        local x, y = p.x + fx * 7 + rx * side, p.y + fy * 7 + ry * side
-        local veh = createVehicle(MIS.SELL_VAN, x, y, p.z + 0.8, 0, 0, rot)
+        local x, y, z, vrot = p.x + fx * 7 + rx * side, p.y + fy * 7 + ry * side, p.z + 0.8, rot
+        if spawns then
+            local s = spawns[i]
+            x, y, z, vrot = s.x, s.y, s.z + 1, s.rot
+        end
+        local veh = createVehicle(MIS.SELL_VAN, x, y, z, 0, 0, vrot)
         if veh then
             setElementData(veh, "biz:mission", m.id)
             setVehicleColor(veh, 40, 40, 40, 40, 40, 40)
@@ -313,6 +319,12 @@ function SELL.start(founder, unitId, state, amount, unitValue, perVehicle)
     if #m.vans == 0 then
         M.finish(m, "cancelled")
         return false, "failed"
+    end
+    -- everyone inside the unit goes out to the entrance
+    if M.running("biz_int") then
+        for _, pl in ipairs(exports.biz_int:getPlayersInUnit(unitId) or {}) do
+            exports.biz_int:exitUnit(pl)
+        end
     end
     local warnKey = #m.vans > 1 and "biz_missions.sell.start_many" or "biz_missions.sell.start_one"
     M.notifyTeam(m, warnKey, { vans = #m.vans, units = amount })

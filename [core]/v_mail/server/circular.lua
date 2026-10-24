@@ -9,7 +9,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- v_locals). Every recipient gets one mail of their own (nobody sees the other
 -- addresses) in their account language (accData "locale.language"), else its
 -- fallback, else English, else the first language that was filled in.
--- In the text "{name}" becomes the account name; a blank line starts a new paragraph.
+-- In the text "{name}" becomes the display name (the log keeps the account name); a blank line starts a new paragraph.
 --
 -- The mailAdmin* exports answer later: their first argument is a request id and
 -- the answer is triggerEvent("v_admin:remoteResult", <caller resource root>, id, result).
@@ -173,15 +173,24 @@ local function sendRows(admin, rows, texts, test)
         local lang = pickLanguage(rowLanguage(r.loc), texts, info)
         local t = texts[lang]
         if t and type(r.account_name) == "string" and validEmail(r.email) then
+            -- "{name}" is the display name in the mail itself; the `mails` log keeps the account name
+            local shown = (type(r.display_name) == "string" and r.display_name ~= "") and r.display_name or r.account_name
+            local note = exports.v_locals:translate(lang, "v_mail.mail.footer", { account = r.account_name })
             local queued = queueMail({
                 to = r.email,
                 toName = r.account_name,
-                subject = t.subject:gsub("{name}", function() return r.account_name end),
+                subject = t.subject:gsub("{name}", function() return shown end),
+                logSubject = t.subject:gsub("{name}", function() return r.account_name end),
                 bulk = not test,
                 template = {
+                    title = t.subject:gsub("{name}", function() return shown end),
+                    paragraphs = paragraphs(t.body, shown),
+                    note = note,
+                },
+                logTemplate = {
                     title = t.subject:gsub("{name}", function() return r.account_name end),
                     paragraphs = paragraphs(t.body, r.account_name),
-                    note = exports.v_locals:translate(lang, "v_mail.mail.footer", { account = r.account_name }),
+                    note = note,
                 },
                 log = { kind = test and "test" or "circular", group = group, account = r.account_name,
                         language = lang, sender = admin },
@@ -212,7 +221,7 @@ function mailAdminSend(id, admin, mode, names, texts)
     local checked, key, params = checkTexts(texts)
     if not checked then done(false, key, params) return true end
 
-    local cols = "SELECT account_name, email, SUBSTRING(account_data, LOCATE('\"locale.language\"', account_data), 120) AS loc "
+    local cols = "SELECT account_name, display_name, email, SUBSTRING(account_data, LOCATE('\"locale.language\"', account_data), 120) AS loc "
         .. "FROM `accounts` WHERE email IS NOT NULL AND email <> ''"
     if mode == "test" then
         if not query({ done = function(rows)

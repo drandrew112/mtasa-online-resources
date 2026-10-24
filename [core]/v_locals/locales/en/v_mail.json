@@ -28,7 +28,7 @@
   "v_mail.panel.confirm_send": "Send to {count}? Click again",
   "v_mail.panel.editor_title": "Circular email",
   "v_mail.panel.fallback_hint": "Everyone gets the language of their account; without a text in it: English, else the first filled language.",
-  "v_mail.panel.hint": "{tag} = account name · empty line: new paragraph · Tab: next field · Esc: leave field · {count} / {max}",
+  "v_mail.panel.hint": "{tag} = player's display name · empty line: new paragraph · Tab: next field · Esc: leave field · {count} / {max}",
   "v_mail.panel.loading": "Loading…",
   "v_mail.panel.mode_all": "Everyone ({count})",
   "v_mail.panel.mode_selected": "Selected ({count})",

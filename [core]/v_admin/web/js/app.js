@@ -1517,7 +1517,7 @@
         mlHint();
     }
     function mlHint() {
-        $('mlHint').textContent = `{name} = the account name · ${$('mlBody').value.length} / 8000 · a blank line starts a new paragraph`
+        $('mlHint').textContent = `{name} = the player's display name · ${$('mlBody').value.length} / 8000 · a blank line starts a new paragraph`
             + (M.configured ? ' · recipients without their language get English (or the first filled language)' : ' · MAIL IS NOT CONFIGURED (Brevo API key)');
         const n = M.mode === 'all' ? (M.names ? M.names.length : 0) : M.chosen.size;
         $('mlSend').textContent = `Send to ${n}`;

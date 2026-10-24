@@ -79,12 +79,17 @@ local function createLobby(job)
     return lobby
 end
 
+-- Display name for UI/messages only (never stored); falls back to the nick
+local function displayNameOf(player)
+    return getElementData(player, "displayName") or getPlayerName(player)
+end
+
 local function syncLobby(lobby)
     if not lobby then return end
     local names = {}
     for _, player in ipairs(lobby.players) do
         table.insert(names, {
-            name = getPlayerName(player),
+            name = displayNameOf(player),
             host = player == lobby.host,
             crewTag = getElementData(player, "crewTag") or "",
             crewColor = getElementData(player, "crewColor"),
@@ -303,7 +308,7 @@ local function startMatch(lobby)
     clearLobbyInvites(lobby)
     lobbies[lobby.id] = nil
     for _, player in ipairs(match.players) do
-        match.playerNames[player] = getPlayerName(player)
+        match.playerNames[player] = displayNameOf(player)
         match.crewTags[player] = getElementData(player, "crewTag") or ""
         match.crewColors[player] = getElementData(player, "crewColor")
         local state = playerState[player]
@@ -396,7 +401,7 @@ addEventHandler("jobmanager:requestLobbies", resourceRoot, function()
             table.insert(list, {
                 moneyMult = mMoney, xpMult = mXp, multLabel = mLabel or nil,
                 id = lobby.id, jobId = lobby.job.id, jobName = lobby.job.name, type = lobby.job.type,
-                hostName = lobby.host and getPlayerName(lobby.host) or "?",
+                hostName = lobby.host and displayNameOf(lobby.host) or "?",
                 count = #lobby.players, max = lobby.job.maxPlayers,
                 image = lobby.job.image, description = lobby.job.description, createdBy = lobby.job.createdBy,
             })
@@ -442,7 +447,7 @@ addEventHandler("jobmanager:requestInvitablePlayers", resourceRoot, function()
     local list = {}
     for _, player in ipairs(getElementsByType("player")) do
         if player ~= client and not playerState[player] then
-            list[#list + 1] = { player = player, name = getPlayerName(player) }
+            list[#list + 1] = { player = player, name = displayNameOf(player) }
         end
     end
     table.sort(list, function(a, b) return a.name:lower() < b.name:lower() end)
@@ -456,7 +461,7 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
     if not isElement(target) or getElementType(target) ~= "player" then return end
     if target == client then return end
     if playerState[target] then
-        message(client, L.msg("v_jobmanager.core.is_already_in_lobby_or_match", { player = getPlayerName(target) }), 255, 200, 100)
+        message(client, L.msg("v_jobmanager.core.is_already_in_lobby_or_match", { player = displayNameOf(target) }), 255, 200, 100)
         return
     end
     if lobby.locked or #lobby.players >= lobby.job.maxPlayers then
@@ -472,7 +477,7 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
         target,
         tostring(lobby.id),
         lobby.job.name .. " lobby",
-        L.msg("v_jobmanager.core.invited_you_players", { player = getPlayerName(client), players = #lobby.players, max_players = lobby.job.maxPlayers }),
+        L.msg("v_jobmanager.core.invited_you_players", { player = displayNameOf(client), players = #lobby.players, max_players = lobby.job.maxPlayers }),
         "v_jobmanager",
         "jobmanagerAcceptInvite"
     )
@@ -483,8 +488,8 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
 
     lobby.invited = lobby.invited or {}
     lobby.invited[target] = true
-    message(client, L.msg("v_jobmanager.core.invited", { player = getPlayerName(target) }))
-    message(target, L.msg("v_jobmanager.core.invited_you_to_lobby_open_your", { player = getPlayerName(client), name = lobby.job.name }), 120, 200, 255)
+    message(client, L.msg("v_jobmanager.core.invited", { player = displayNameOf(target) }))
+    message(target, L.msg("v_jobmanager.core.invited_you_to_lobby_open_your", { player = displayNameOf(client), name = lobby.job.name }), 120, 200, 255)
 end)
 
 addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
@@ -502,7 +507,7 @@ addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
 
     match.eliminated[source] = true
     local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-    if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = getPlayerName(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
+    if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = displayNameOf(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
 end)
 
 addEventHandler("onPlayerQuit", root, function()
@@ -516,7 +521,7 @@ addEventHandler("onPlayerQuit", root, function()
             if match.job.type == JOB_TYPE_DM then
                 match.eliminated[source] = true
                 local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-                if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = getPlayerName(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
+                if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = displayNameOf(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
             elseif match.job.type == JOB_TYPE_RACE then
                 -- A player who disconnects mid-race must still count as "finished"
                 -- (with no time), otherwise the race waits forever for them.
