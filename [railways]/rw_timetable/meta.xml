@@ -1,11 +1,13 @@
 <meta>
-    <info author="DrAndrew112" name="Railway timetable" version="1.0.0" type="script"
-          description="Sunline Rail timetables: stations, lines, services (trips), stop / door / delay monitoring, station displays" />
+    <info author="DrAndrew112" name="Railway timetable" version="1.1.0" type="script"
+          description="Sunline Rail timetables: stations, lines, the timetable (MySQL rw_timetable, edited on /gov Railways), services (trips), stop / door / delay monitoring, station displays" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
     <include resource="v_locals" />
+    <include resource="v_mysql" />
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua"    type="shared" />
+    <script src="server/schedule.lua"  type="server" />
     <script src="server/stations.lua"  type="server" />
     <script src="server/services.lua"  type="server" />
     <script src="server/displays.lua"  type="server" />
@@ -36,6 +38,12 @@
     <export function="getTripPlan"           type="server" />
     <export function="cancelTrip"            type="server" />
     <export function="isTripCancelled"       type="server" />
+    <!-- the timetable (MySQL rw_timetable, edited on the /gov Railways page of gov_railways) -->
+    <export function="getTimetableLines"     type="server" />
+    <export function="getScheduleRows"       type="server" />
+    <export function="checkScheduleRow"      type="server" />
+    <export function="getDayTimetable"       type="server" />
+    <export function="reloadTimetable"       type="server" />
     <!-- station displays -->
     <export function="getStationBoard"       type="server" />
     <export function="getStationBoards"      type="server" />

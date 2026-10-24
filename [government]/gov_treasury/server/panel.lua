@@ -1,5 +1,6 @@
 -- gov_treasury / server/panel.lua
--- The Overview, Treasury, Transfers and Budget pages of /gov and the registration with gov_core.
+-- The Overview, Treasury, Transfers and Budget pages of /gov and the registration with gov_core
+-- (the Budget plan page: server/plan.lua).
 
 local A = GOV.A
 
@@ -195,8 +196,10 @@ function A.deleteStanding(p, args, reply, actor)
 end
 
 GOV.module({
+    settings = { prefixes = { "plan." }, defaults = { ["plan.items"] = {} } },
     actions = {
-        overview = "viewer", treasuryLedger = "viewer", budget = "viewer", transfers = "viewer",
+        overview = "viewer", treasuryLedger = "viewer", budget = "viewer", transfers = "viewer", budgetPlan = "viewer",
+        savePlanItem = "minister", deletePlanItem = "minister",
         treasuryTransfer = "minister", moneyTransfer = "minister",
         createStanding = "minister", updateStanding = "minister", toggleStanding = "minister", deleteStanding = "minister",
     },
@@ -205,5 +208,6 @@ GOV.module({
         { id = "treasury",  category = "economy", order = 10, script = "web/js/pages.js" },
         { id = "transfers", category = "economy", order = 20, script = "web/js/pages.js" },
         { id = "budget",    category = "economy", order = 30, script = "web/js/pages.js" },
+        { id = "budgetPlan", category = "economy", order = 35, script = "web/js/pages.js" },
     },
 })

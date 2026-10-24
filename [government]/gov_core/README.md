@@ -6,12 +6,13 @@ old design: [DESIGN.md](DESIGN.md)).
 | Resource | What it owns | /gov pages |
 | --- | --- | --- |
 | **gov_core** | settings, roles + members, change log, state companies, the /gov shell, the module lib | State companies, Members, Log |
-| gov_treasury | overview, statements, transfers, standing orders, budget | Overview, Treasury, Transfers, Budget |
+| gov_treasury | overview, statements, transfers, standing orders, budget, weekly budget plan | Overview, Treasury, Transfers, Budget, Budget plan |
 | gov_loans | state loans from the bank (eco_loan) | Loans |
 | gov_tax | company tax (hourly), income tax keys, VAT, property tax, fees, where each goes | Taxes, Fees |
 | gov_works | work pay (payer, parameters, multiplier, tax key) | Works |
 | gov_health | state healthcare | Healthcare |
 | gov_transport | public transport fares + running costs | Public transport |
+| gov_railways | railway operator company, the whole rw_timetable timetable | Railways |
 | gov_votes | state votes, `/vote` | Votes |
 | gov_news | government news (phone mails) | News |
 | gov_web | public website gov.sa (`/gov_web/`) | – |
@@ -22,6 +23,15 @@ menu items are gone, the others fall back). Tables keep their v_gov names (`gov_
 ## Roles
 `viewer` (read) < `official` (healthcare, state companies) < `minister` (everything else). Admins
 with level ≥ `GOV.ADMIN_LEVEL` (5) are ministers. Roles live in `gov_members` (Members page).
+
+## Sectors
+A module may hand a public service to a company: `GOV.module{ sectors = { { id, setting } } }`.
+The module's setting holds the operator (`"state:<code>"` | `"company:<id>"`, anything else =
+nobody); everyone with bank access to that company's account (a state company's Members, a
+private company's founder / managers) gets the module's pages with `sector = <id>` and may use
+its actions declared as `{ role = "...", sector = <id> }` - without a /gov role (their role shows
+as "sector"; the page checks `GOV.canSector(id)`). Export `isGovSectorMember(player, sector)`.
+Used by gov_railways (`railways`, setting `rail.operator`).
 
 ## The /gov panel
 One CEF window (`web/index.html`, `web/js/gov.js`). The side menu is grouped by category

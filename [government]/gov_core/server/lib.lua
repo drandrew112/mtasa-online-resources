@@ -298,8 +298,9 @@ end
 local MOD
 
 --- def = { settings = { prefixes = {...}, defaults = { key = value } },
----         actions = { name = "viewer" | "official" | "minister" | "public" },
----         pages = { { id, category, order, need, script }, ... }, categories = { {id, order}, ... } }
+---         actions = { name = "viewer" | "official" | "minister" | "public" | { role, sector } },
+---         pages = { { id, category, order, need, script, sector? }, ... }, categories = { {id, order}, ... },
+---         sectors = { { id, setting }, ... } }   (gov_core README "Sectors")
 --- the handlers of the actions are GOV.A[name]
 function GOV.module(def)
     MOD = def

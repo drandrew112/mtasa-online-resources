@@ -63,6 +63,7 @@
   "gov_core.role.viewer": "Viewer",
   "gov_core.role.official": "Official",
   "gov_core.role.minister": "Minister",
+  "gov_core.role.sector": "Public service operator",
   "gov_core.err.unknown": "The request failed.",
   "gov_core.err.no_right": "You have no right to do this.",
   "gov_core.err.bad_number": "Not a valid number.",

@@ -1,0 +1,17 @@
+<meta>
+    <info author="DrAndrew112" name="gov_railways" version="1.0.0" type="script"
+          description="The railway as a public service: the operator company (its members edit the timetable), the whole timetable of rw_timetable (MySQL rw_timetable: interval rows + single departures per line, stretch and days); /gov page Railways" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/railways.lua" type="server" />
+
+    <!-- the Railways page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <export function="getRailOperator" type="server" />
+</meta>

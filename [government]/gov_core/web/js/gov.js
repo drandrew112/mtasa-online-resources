@@ -27,7 +27,7 @@
             'receiver_none', 'patient_pays', 'search_payer', 'search_private', 'private_company', 'history_note', 'period',
             'companies', 'created', 'tax_key', 'tax_runs']
             .map(k => 'gov_core.ui.' + k),
-        ...['viewer', 'official', 'minister'].map(r => 'gov_core.role.' + r),
+        ...['viewer', 'official', 'minister', 'sector'].map(r => 'gov_core.role.' + r),
         'gov_core.err.bad_number',
     ];
     let STR = {};
@@ -81,7 +81,10 @@
     };
 
     let role = 'viewer';
+    let sectors = [];          // the sectors the player's company runs (gov_core GOV.inSector)
     const can = need => (ROLE_LEVEL[role] || 0) >= ROLE_LEVEL[need];
+    // the change actions of a sector: ministers, or a member of the company that runs it
+    const canSector = id => can('minister') || sectors.includes(id);
 
     // ------------------------------------------------------------ pages of the modules
     const PAGE = {};           // id -> def (GOV.page)
@@ -110,6 +113,7 @@
 
     GOV._init = async data => {
         role = data.role || 'viewer';
+        sectors = arr(data.sectors);
         STR = data.strings || {};
         MENU = arr(data.pages);
         CATS = arr(data.categories);
@@ -413,6 +417,7 @@
     GOV.D = D;
     GOV.sel = sel;
     GOV.can = can;
+    GOV.canSector = canSector;
     GOV.load = load;
     GOV.change = change;
     GOV.render = render;

@@ -41,6 +41,7 @@
     <export function="getStoredSettings" type="server" />
     <export function="getGovRole" type="server" />
     <export function="canGov" type="server" />
+    <export function="isGovSectorMember" type="server" />
     <export function="log" type="server" />
     <export function="openGovPanel" type="server" />
 

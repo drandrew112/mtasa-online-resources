@@ -1,4 +1,4 @@
-// gov_treasury - the Overview, Treasury, Transfers and Budget pages of /gov (see gov_core
+// gov_treasury - the Overview, Treasury, Transfers, Budget and Budget plan pages of /gov (see gov_core
 // web/js/gov.js GOV.page).
 (function () {
     'use strict';
@@ -263,6 +263,199 @@
                     table([[T('group')], [T('income'), 'r'], [T('expense'), 'r'], [T('net'), 'r']], arr(r.groups).map(g =>
                         `<tr><td>${esc(T('v_bank.group.' + g.group))}</td><td class="r mono pos">+${money(g.inSum)}</td><td class="r mono neg">-${money(g.outSum)}</td>` +
                         `<td class="r mono ${cls(g.inSum - g.outSum)}">${signed(g.inSum - g.outSum)}</td></tr>`)) + '</div>').join('');
+        },
+    });
+
+    // ------------------------------------------------------------ Budget plan
+    // A 24-hour plan for every day of the week (the next 7 days, Monday first): one for the whole
+    // state, then one per state account (treasury + every state company). Rows: plan items of the
+    // minister, standing orders, the railway running costs (timetable × cost settings).
+    const PLAN_KEYS = ['plan_hint', 'plan_income', 'plan_expense', 'plan_net', 'plan_week', 'plan_items', 'plan_items_hint',
+        'plan_item_name', 'plan_kind', 'plan_kind_income', 'plan_kind_expense', 'plan_add', 'plan_save', 'plan_cancel', 'plan_editing',
+        'plan_fill', 'plan_edit', 'plan_rail', 'plan_rail_detail', 'plan_rail_hint', 'plan_rail_trips', 'plan_rail_stops', 'plan_rail_run',
+        'plan_rail_stop', 'plan_rail_total', 'plan_rail_flow', 'plan_rail_not_state', 'plan_rail_none', 'plan_rail_offline',
+        'plan_today', 'confirm_delete_plan', 'plan_none', 'plan_whole', 'plan_whole_hint', 'plan_account', 'plan_internal',
+        'plan_internal_hint', 'plan_so_to', 'plan_so_from', 'plan_empty_account', 'plan_rail_internal',
+        'day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6', 'day_7'];
+    const stateCode = spec => (String(spec || '').match(/^state:(.+)$/) || [])[1] || null;
+
+    GOV.page('budgetPlan', {
+        keys: [...GOV.keys('gov_treasury', PLAN_KEYS), 'gov_treasury.err.bad_plan_kind'],
+        render(d) {
+            const m = GOV.can('minister');
+            const days = arr(d.days).slice().sort((a, b) => a.weekday - b.weekday);
+            const today = arr(d.days)[0];
+            const accounts = arr(d.accounts);
+            const items = arr(d.items);
+            const orders = arr(d.orders);
+            const accName = code => (accounts.find(a => a.code === code) || {}).name || code;
+            const itemAcc = i => i.account || 'treasury';
+            const amt = (it, day) => Number(arr(it.amounts)[day.weekday - 1]) || 0;
+            const orderAmt = (o, day) => Number((day.orders || {})[String(o.id)]) || 0;
+            const specLabel = spec => spec === 'system' ? '-' : GOV.ui.payerName(d, spec).name;
+            const note = s => s ? ` <span class="dim">${esc(s)}</span>` : '';
+
+            const rail0 = today && today.rail;
+            const anyRail = days.some(x => x.rail);
+            const railPayer = rail0 && rail0.booked ? stateCode(rail0.payer) : null;
+            const railReceiver = rail0 && rail0.booked ? stateCode(rail0.receiver) : null;
+            const railTotal = x => x.rail ? x.rail.total || 0 : 0;
+            const railNote = !anyRail ? T('plan_rail_offline') : !rail0.booked ? T('plan_rail_none')
+                : T('plan_rail_flow', { payer: specLabel(rail0.payer), receiver: specLabel(rail0.receiver) });
+
+            const colHead = [[''], ...days.map(x => [`${T('day_' + x.weekday)} ${x.date.slice(5).replace('-', '.')}${today && x.ts === today.ts ? ' · ' + T('plan_today') : ''}`, 'r']), [T('plan_week'), 'r']];
+            const cells = (f, sign, c) => {
+                let sum = 0;
+                const tds = days.map(x => { const v = f(x); sum += v; return `<td class="r mono ${v ? c : 'dim'}">${v ? sign + money(v) : '-'}</td>`; }).join('');
+                return tds + `<td class="r mono ${sum ? c : 'dim'}"><b>${sum ? sign + money(sum) : '-'}</b></td>`;
+            };
+            const sec = label => `<tr><td colspan="${days.length + 2}" class="dim" style="padding-top:12px"><b>${esc(label)}</b></td></tr>`;
+
+            // the rows of a plan: { label (html), f(day), side: in | out | info }; code = null -> the whole state
+            function planRows(code) {
+                const rows = [];
+                for (const i of items) {
+                    if (code && itemAcc(i) !== code) continue;
+                    rows.push({ label: esc(i.name) + note(code ? i.note : `${accName(itemAcc(i))}${i.note ? ' · ' + i.note : ''}`), f: x => amt(i, x), side: i.kind === 'income' ? 'in' : 'out' });
+                }
+                for (const o of orders) {
+                    const to = `${T('plan_so_to', { name: o.toName || '?' })}${o.note ? ' · ' + o.note : ''}`;
+                    const from = `${T('plan_so_from', { name: o.fromName || '?' })}${o.note ? ' · ' + o.note : ''}`;
+                    const f = x => orderAmt(o, x);
+                    if (code) {
+                        if (o.fromCode === code) rows.push({ label: esc(to), f, side: 'out' });
+                        if (o.toCode === code) rows.push({ label: esc(from), f, side: 'in' });
+                    } else if (o.kind === 'pay') rows.push({ label: esc(to), f, side: 'out' });
+                    else if (o.kind === 'collect') rows.push({ label: esc(from), f, side: 'in' });
+                }
+                if (!code) {
+                    const internal = orders.filter(o => o.kind === 'state');
+                    if (internal.length) rows.push({ label: esc(T('plan_internal')) + note(T('plan_internal_hint')), f: x => internal.reduce((s, o) => s + orderAmt(o, x), 0), side: 'info' });
+                }
+                if (anyRail) {
+                    const label = esc(T('plan_rail')) + note(railNote);
+                    if (code) {
+                        if (railPayer === code) rows.push({ label, f: railTotal, side: 'out' });
+                        if (railReceiver === code) rows.push({ label, f: railTotal, side: 'in' });
+                    } else if (railPayer && railReceiver) rows.push({ label: esc(T('plan_rail')) + note(railNote + ' · ' + T('plan_rail_internal')), f: railTotal, side: 'info' });
+                    else if (railPayer) rows.push({ label, f: railTotal, side: 'out' });
+                    else if (railReceiver) rows.push({ label, f: railTotal, side: 'in' });
+                    else rows.push({ label: esc(T('plan_rail')) + note(railNote + (rail0 && rail0.booked ? ' · ' + T('plan_rail_not_state') : '')), f: railTotal, side: 'info' });
+                }
+                return rows;
+            }
+
+            function planTable(rows) {
+                const inc = x => rows.filter(r => r.side === 'in').reduce((s, r) => s + r.f(x), 0);
+                const exp = x => rows.filter(r => r.side === 'out').reduce((s, r) => s + r.f(x), 0);
+                const line = r => `<tr${r.side === 'info' ? ' class="dim"' : ''}><td>${r.label}</td>${cells(r.f,
+                    r.side === 'in' ? '+' : r.side === 'out' ? '-' : '', r.side === 'in' ? 'pos' : r.side === 'out' ? 'neg' : '')}</tr>`;
+                const ins = rows.filter(r => r.side === 'in'), outs = rows.filter(r => r.side === 'out'), infos = rows.filter(r => r.side === 'info');
+                const week = days.reduce((s, x) => s + inc(x) - exp(x), 0);
+                return table(colHead, [
+                    ...(ins.length ? [sec(T('plan_income')), ...ins.map(line)] : []),
+                    ...(outs.length ? [sec(T('plan_expense')), ...outs.map(line)] : []),
+                    ...infos.map(line),
+                    sec(T('plan_net')),
+                    `<tr><td>${esc(T('plan_income'))}</td>${cells(inc, '+', 'pos')}</tr>`,
+                    `<tr><td>${esc(T('plan_expense'))}</td>${cells(exp, '-', 'neg')}</tr>`,
+                    `<tr><td><b>${esc(T('plan_net'))}</b></td>${days.map(x => { const n = inc(x) - exp(x); return `<td class="r mono ${cls(n)}"><b>${signed(n)}</b></td>`; }).join('')}` +
+                        `<td class="r mono"><b class="${cls(week)}">${signed(week)}</b></td></tr>`,
+                ]);
+            }
+
+            let h = head(GOV.title('budgetPlan'), esc(T('plan_hint')));
+            h += `<div class="gv-card"><h2>${esc(T('plan_whole'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('plan_whole_hint'))}</div>${planTable(planRows(null))}</div>`;
+            for (const a of accounts) {
+                const rows = planRows(a.code);
+                h += `<div class="gv-card"><div class="gv-head"><div><h2 style="margin:0">${esc(a.name)}</h2><div class="gv-sub mono">${esc(a.code)}</div></div></div>` +
+                    (rows.length ? planTable(rows) : `<div class="gv-empty">${esc(T('plan_empty_account'))}</div>`) + '</div>';
+            }
+
+            // railway detail: trips per category, stops, run + stop fees per day
+            if (anyRail) {
+                const cats = [...new Set(days.flatMap(x => Object.keys((x.rail && x.rail.categories) || {})))].sort();
+                const num = f => days.map(x => `<td class="r mono">${x.rail ? f(x.rail) : '-'}</td>`).join('') +
+                    `<td class="r mono"><b>${days.reduce((s, x) => s + (x.rail ? f(x.rail) : 0), 0)}</b></td>`;
+                const cash = f => days.map(x => `<td class="r mono">${x.rail ? money(f(x.rail)) : '-'}</td>`).join('') +
+                    `<td class="r mono"><b>${money(days.reduce((s, x) => s + (x.rail ? f(x.rail) : 0), 0))}</b></td>`;
+                h += `<div class="gv-card"><h2>${esc(T('plan_rail_detail'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('plan_rail_hint'))} ${esc(railNote)}</div>` +
+                    table(colHead, [
+                        ...cats.map(c => `<tr><td>${esc(T('plan_rail_trips', { cat: c }))}</td>${num(r => (r.categories[c] || {}).trips || 0)}</tr>`),
+                        `<tr><td>${esc(T('plan_rail_stops'))}</td>${num(r => r.stops || 0)}</tr>`,
+                        `<tr><td>${esc(T('plan_rail_run'))}</td>${cash(r => r.run || 0)}</tr>`,
+                        `<tr><td>${esc(T('plan_rail_stop'))}</td>${cash(r => r.stop || 0)}</tr>`,
+                        `<tr><td><b>${esc(T('plan_rail_total'))}</b></td>${cash(r => r.total || 0)}</tr>`,
+                    ]) + '</div>';
+            }
+
+            // plan items: form (minister) + list
+            if (sel.planEdit && !items.some(i => i.id === sel.planEdit)) sel.planEdit = null;
+            h += `<div class="gv-card"><h2>${esc(T('plan_items'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('plan_items_hint'))}</div>`;
+            if (m) {
+                const inp = (id, ph, c) => `<input class="osa-input ${c || 'num'}" id="${id}" placeholder="${esc(ph)}" data-keep="1">`;
+                h += `<div class="gv-row">${select('planAccount', accounts.map(a => [a.code, a.name]), sel.planAccount || 'treasury', 'planAccount', true)}` +
+                    inp('planName', T('plan_item_name'), 'mid') +
+                    select('planKind', [['expense', T('plan_kind_expense')], ['income', T('plan_kind_income')]], sel.planKind || 'expense', 'planKind', true) +
+                    `<input class="osa-input mid" id="planNote" placeholder="${esc(T('note'))}" maxlength="64" data-keep="1">` +
+                    (sel.planEdit ? `<b>${esc(T('plan_editing', { id: sel.planEdit }))}</b>` : '') + '</div>' +
+                    `<div class="gv-row">${[1, 2, 3, 4, 5, 6, 7].map(k => `<label class="dim">${esc(T('day_' + k))}</label>${inp('planD' + k, '0')}`).join('')}</div>` +
+                    `<div class="gv-row">${inp('planFill', '€')}${btn(T('plan_fill'), 'planFill')}` +
+                    (sel.planEdit ? btn(T('plan_save'), 'planSave', {}, 'primary') + btn(T('plan_cancel'), 'planCancel') : btn(T('plan_add'), 'planSave', {}, 'primary')) + '</div>';
+            }
+            h += items.length ? table([[T('plan_account')], [T('plan_item_name')], [T('plan_kind')], ...[1, 2, 3, 4, 5, 6, 7].map(k => [T('day_' + k), 'r']), [T('note')], ['', 'act']],
+                items.map(i => `<tr${i.id === sel.planEdit ? ' style="outline:1px solid currentColor"' : ''}><td>${esc(accName(itemAcc(i)))}</td><td>${esc(i.name)}</td>` +
+                    `<td class="${i.kind === 'income' ? 'pos' : 'neg'}">${esc(T('plan_kind_' + i.kind))}</td>` +
+                    [0, 1, 2, 3, 4, 5, 6].map(k => `<td class="r mono">${money(arr(i.amounts)[k] || 0)}</td>`).join('') +
+                    `<td class="dim">${esc(i.note || '')}</td><td class="act">${m ? btn(T('plan_edit'), 'planEdit', { id: i.id }) + ' ' +
+                        btn(T('delete'), 'planDelete', { id: i.id }, 'danger') : ''}</td></tr>`))
+                : `<div class="gv-empty">${esc(T('plan_none'))}</div>`;
+            return h + '</div>';
+        },
+        actions: {
+            planKind: el => { sel.planKind = el.value; },
+            planAccount: el => { sel.planAccount = el.value; },
+            planFill() {
+                const v = val('planFill');
+                for (let k = 1; k <= 7; k++) if ($('planD' + k)) $('planD' + k).value = v;
+            },
+            async planSave() {
+                const amounts = [];
+                for (let k = 1; k <= 7; k++) {
+                    const s = val('planD' + k);
+                    const n = s === '' ? 0 : GOV.ui.num(s);
+                    if (n === null || n < 0) return OSA.toast(T('gov_core.err.bad_number'), false);
+                    amounts.push(Math.round(n));
+                }
+                const args = { account: val('planAccount') || 'treasury', name: val('planName'), kind: val('planKind') || 'expense', amounts, note: val('planNote') };
+                if (sel.planEdit) args.id = sel.planEdit;
+                if (await GOV.change('savePlanItem', args)) {
+                    sel.planEdit = null;
+                    for (const id of ['planName', 'planNote', 'planFill', 'planD1', 'planD2', 'planD3', 'planD4', 'planD5', 'planD6', 'planD7']) if ($(id)) $(id).value = '';
+                    GOV.render();
+                }
+            },
+            planEdit(b) {
+                const it = arr((D.budgetPlan || {}).items).find(x => x.id === Number(b.dataset.id));
+                if (!it) return;
+                sel.planEdit = it.id;
+                sel.planKind = it.kind;
+                sel.planAccount = it.account || 'treasury';
+                GOV.render();
+                const set = (id, v) => { const el = $(id); if (el) el.value = v; };
+                set('planName', it.name);
+                set('planNote', it.note || '');
+                for (let k = 1; k <= 7; k++) set('planD' + k, arr(it.amounts)[k - 1] || 0);
+                $('planName') && $('planName').scrollIntoView({ block: 'center' });
+            },
+            planCancel() {
+                sel.planEdit = null;
+                for (const id of ['planName', 'planNote', 'planFill', 'planD1', 'planD2', 'planD3', 'planD4', 'planD5', 'planD6', 'planD7']) if ($(id)) $(id).value = '';
+                GOV.render();
+            },
+            async planDelete(b) {
+                if (await OSA.ui.confirm(GOV.title('budgetPlan'), T('confirm_delete_plan'), T('delete'))) GOV.change('deletePlanItem', { id: Number(b.dataset.id) });
+            },
         },
     });
 })();

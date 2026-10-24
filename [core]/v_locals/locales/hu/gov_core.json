@@ -63,6 +63,7 @@
   "gov_core.role.viewer": "Megtekintő",
   "gov_core.role.official": "Hivatalnok",
   "gov_core.role.minister": "Miniszter",
+  "gov_core.role.sector": "Közszolgáltatás-üzemeltető",
   "gov_core.err.unknown": "A kérés nem sikerült.",
   "gov_core.err.no_right": "Ehhez nincs jogod.",
   "gov_core.err.bad_number": "Érvénytelen szám.",

@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="gov_treasury" version="1.0.0" type="script"
-          description="State money: overview, State Treasury + state company statements, transfers (state, payment, collection), standing orders, budget (30 days); /gov pages Overview, Treasury, Transfers, Budget" />
+          description="State money: overview, State Treasury + state company statements, transfers (state, payment, collection), standing orders, budget (30 days), weekly 24-hour budget plan (plan items + railway running costs + standing orders); /gov pages Overview, Treasury, Transfers, Budget, Budget plan" />
 
     <include resource="gov_core" />
     <include resource="v_locals" />
@@ -10,6 +10,7 @@
     <script src="locals.lua" type="server" />
     <script src="server/standing.lua" type="server" />
     <script src="server/budget.lua" type="server" />
+    <script src="server/plan.lua" type="server" />
     <script src="server/panel.lua" type="server" />
 
     <!-- the pages, loaded by the /gov shell of gov_core -->

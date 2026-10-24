@@ -22,8 +22,11 @@ TT = {
     },
     ROUTE_TRACKS = { 0, 3, 5, 6 },    -- 5 / 6 = Cranberry hall tracks 3 / 4 (dead ends)
 
-    -- Lines. Times in minutes from the departure of the trip. A trip leaves every `headway`
-    -- minutes from `first` (minutes after midnight) until `last`. Trip numbers: base + 2*k.
+    -- Lines = the fixed routes. Times in minutes from the departure at the first stop. WHEN a
+    -- line runs is the timetable in MySQL `rw_timetable` (server/schedule.lua, edited on the
+    -- /gov Railways page; TT.SEED below fills an empty table). Trip numbers: base + 2*n.
+    -- origins = the other stations a trip of the line may start at: station -> rw_core spawn
+    -- point (the line's own `from` uses auto.spawn). A trip may end at any later stop.
     -- chain = the line whose next trip the same train runs on from the terminus (rw_auto
     -- keeps the train instead of removing it; `chainWindow` minutes at most).
     --
@@ -51,38 +54,57 @@ TT = {
     LINES = {
         -- RB: LS -> SF on the main line, into Cranberry track 4
         { id = "SL1", prefix = "RB", base = 1101, name = L.text("rw_timetable.config.sunline_regional"), from = "unity", to = "cranberry",
-          first = 0, last = 24 * 60 - 1, headway = 15, track = 0,
+          track = 0,
           stops = { { station = "unity", dep = 0 }, { station = "market", arr = 2, dep = 3 }, { station = "cranberry", arr = 7, track = 6 } },
           consist = { locos = { "br232" }, minPassenger = 1, maxPassenger = 4 }, auto = { preset = "re3", spawn = "unity_1" } },
         -- RB: SF -> LS from Cranberry track 3 (W21, main line, W19 onto the second track)
         { id = "SL2", prefix = "RB", base = 1102, name = L.text("rw_timetable.config.sunline_regional"), from = "cranberry", to = "unity",
-          first = 10, last = 24 * 60 - 1, headway = 15, track = 3,
+          track = 3,
           stops = { { station = "cranberry", dep = 0, track = 5 }, { station = "market", arr = 4, dep = 5 }, { station = "unity", arr = 7 } },
           consist = { locos = { "br232" }, minPassenger = 1, maxPassenger = 4 }, auto = { preset = "re3", spawn = "cranb_3" } },
         -- IC clockwise circle: Unity - Market - Cranberry - Yellow Bell - Linden - Unity (main line)
         { id = "SL3", prefix = "IC", base = 2101, name = L.text("rw_timetable.config.sunline_circle"), from = "unity", to = "unity",
-          first = 6, last = 24 * 60 - 1, headway = 30, track = 0,
+          track = 0,
           stops = { { station = "unity", dep = 0 }, { station = "market", arr = 2, dep = 3 }, { station = "cranberry", arr = 7, dep = 8 },
                     { station = "yellowbell", arr = 12, dep = 13 }, { station = "linden", arr = 16, dep = 17 }, { station = "unity", arr = 21 } },
-          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "unity_1" } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, origins = { cranberry = "cranb_1", yellowbell = "yb_lv", linden = "lin_ls" },
+          auto = { preset = "re4", spawn = "unity_1" } },
         -- IC anticlockwise circle: Unity - Linden - Yellow Bell - Cranberry - Market - Unity (second track)
         { id = "SL4", prefix = "IC", base = 2102, name = L.text("rw_timetable.config.sunline_circle"), from = "unity", to = "unity",
-          first = 5, last = 24 * 60 - 1, headway = 30, track = 3,
+          track = 3,
           stops = { { station = "unity", dep = 0 }, { station = "linden", arr = 4, dep = 5 }, { station = "yellowbell", arr = 8, dep = 9 },
                     { station = "cranberry", arr = 13, dep = 14 }, { station = "market", arr = 18, dep = 19 }, { station = "unity", arr = 21 } },
-          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "unity_2" } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, origins = { cranberry = "cranb_2t" },
+          auto = { preset = "re4", spawn = "unity_2" } },
         -- IC clockwise circle from SF: Cranberry - Yellow Bell - Linden - Unity - Market - Cranberry (main line, track 1)
         { id = "SL5", prefix = "IC", base = 2201, name = L.text("rw_timetable.config.sunline_circle"), from = "cranberry", to = "cranberry",
-          first = 10, last = 24 * 60 - 1, headway = 30, track = 0,
+          track = 0,
           stops = { { station = "cranberry", dep = 0 }, { station = "yellowbell", arr = 4, dep = 5 }, { station = "linden", arr = 8, dep = 9 },
                     { station = "unity", arr = 13, dep = 14 }, { station = "market", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },
-          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "cranb_1" } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, origins = { unity = "unity_1", yellowbell = "yb_lv", linden = "lin_ls" },
+          auto = { preset = "re4", spawn = "cranb_1" } },
         -- IC anticlockwise circle from SF: Cranberry - Market - Unity - Linden - Yellow Bell - Cranberry (second track, track 2)
         { id = "SL6", prefix = "IC", base = 2202, name = L.text("rw_timetable.config.sunline_circle"), from = "cranberry", to = "cranberry",
-          first = 15, last = 24 * 60 - 1, headway = 30, track = 3,
+          track = 3,
           stops = { { station = "cranberry", dep = 0 }, { station = "market", arr = 4, dep = 5 }, { station = "unity", arr = 7, dep = 8 },
                     { station = "linden", arr = 12, dep = 13 }, { station = "yellowbell", arr = 16, dep = 17 }, { station = "cranberry", arr = 21 } },
-          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, auto = { preset = "re4", spawn = "cranb_2t" } },
+          consist = { locos = { "br232" }, minPassenger = 2, maxPassenger = 4 }, origins = { unity = "unity_2" },
+          auto = { preset = "re4", spawn = "cranb_2t" } },
+    },
+
+    -- The timetable that fills an empty `rw_timetable` table (= the timetable before the table
+    -- existed, TIMETABLE.md). Minutes after midnight (last = the last departure); the whole line, every day.
+    SEED = {
+        { line = "SL1", kind = "interval", first = 0, last = 1425, headway = 15 },
+        { line = "SL2", kind = "interval", first = 10, last = 1435, headway = 15 },
+        { line = "SL3", kind = "interval", first = 6, last = 1416, headway = 30 },
+        { line = "SL4", kind = "interval", first = 5, last = 1415, headway = 30 },
+        { line = "SL5", kind = "interval", first = 10, last = 1420, headway = 30 },
+        { line = "SL6", kind = "interval", first = 15, last = 1425, headway = 30 },
+    },
+    SCHEDULE = {
+        RELOAD = 60,         -- s: the table is re-read (the other instance / a /gov change)
+        MIN_HEADWAY = 3,     -- min: the shortest interval of a row
     },
 
     TAKE_BEFORE = 15 * 60,   -- a trip can be taken this long before its departure (s)

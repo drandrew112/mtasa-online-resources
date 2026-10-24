@@ -151,16 +151,20 @@ GOV.registerModule("gov_core", {
 --------------------------------------------------------------------------------
 
 --- export: opens (or closes, when open) the /gov panel of a player; also used by the
---- gov_office computers. Without a role the player gets the "no right" notification.
+--- gov_office computers. Without a role the player gets the "no right" notification - unless
+--- they are a member of a company that runs a sector (role "sector": only those pages).
 function openGovPanel(player)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
     local role = getGovRole(player)
-    if not role then
+    local sectors = GOV.sectorsOf(player)
+    if not role and not next(sectors) then
         triggerClientEvent(player, "gov_core:denied", resourceRoot)
         return false
     end
-    local pages, categories = GOV.menuFor(role)
-    triggerClientEvent(player, "gov_core:open", resourceRoot, role, pages, categories)
+    local pages, categories = GOV.menuFor(role or "sector", sectors)
+    local list = {}
+    for id in pairs(sectors) do list[#list + 1] = id end
+    triggerClientEvent(player, "gov_core:open", resourceRoot, role or "sector", pages, categories, list)
     return true
 end
 

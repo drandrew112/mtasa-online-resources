@@ -19,6 +19,11 @@ addEvent("onRailServiceCancel")     -- source: lead|root, (consistId, tripId, re
 
 local function now() return getRealTime().timestamp end
 
+-- a train runs (or ran) this trip: a timetable change keeps its trip as it was (stations.lua)
+function tripInUse(tripId)
+    return taken[tripId] ~= nil or finished[tripId] ~= nil
+end
+
 local function tell(player, text, ok)
     if isElement(player) then triggerClientEvent(player, "rw:tt:notify", resourceRoot, text, ok and true or false) end
 end
@@ -148,8 +153,7 @@ local function routeTarget(s, c)
     local stop = s.trip.stops[k]
     if not stop then return nil end
     local st = Stations[stop.station]
-    local line = s.trip.line
-    for _, track in ipairs({ line.stops and line.stops[k] and line.stops[k].track, line.track, c.track }) do
+    for _, track in ipairs({ stop.track, s.trip.line.track, c.track }) do
         local z = track and st.zones[track]
         if z then
             local tp = z.center + c.dir * ROUTE_STOP_AHEAD
@@ -541,12 +545,12 @@ function getTripPlan(tripId)
     local stops = {}
     local line = trip.line
     for i, st in ipairs(trip.stops) do
-        stops[i] = { station = st.station, arr = st.arr, dep = st.dep, track = line.stops[i] and line.stops[i].track or nil }
+        stops[i] = { station = st.station, arr = st.arr, dep = st.dep, track = st.track }
     end
     return { id = trip.id, number = trip.number, line = line.id, from = trip.from, to = trip.to, dep = trip.dep, arr = trip.arr,
         track = line.track,
         stops = stops, chain = line.chain or false, chainWindow = line.chainWindow or 0,
-        auto = line.auto and { preset = line.auto.preset, spawn = line.auto.spawn } or false }
+        auto = trip.auto and { preset = trip.auto.preset, spawn = trip.auto.spawn } or false }
 end
 
 ------------------------------------------------------------------ depot applications
@@ -559,7 +563,7 @@ function getDepotServices(spawnIds)
     local t = now()
     local out = {}
     for _, trip in ipairs(tripsBetween(t + TT.TAKE_LEAD, t + TT.TAKE_BEFORE)) do
-        local a = trip.line.auto
+        local a = trip.auto
         if a and set[a.spawn] then
             local ok, reason = true, nil
             if taken[trip.id] then ok, reason = false, L.msg("rw_timetable.services.already_running")

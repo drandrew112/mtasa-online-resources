@@ -10,10 +10,10 @@ local B = TT.BOARD
 local function now() return getRealTime().timestamp end
 
 -- the track a trip normally uses at stop i
-local function plannedTrack(line, i)
-    local stop = line.stops[i]
+local function plannedTrack(trip, i)
+    local stop = trip.stops[i]
     if stop and stop.track then return stop.track end
-    return line.track or TT.ROUTE_TRACKS[1]
+    return trip.line.track or TT.ROUTE_TRACKS[1]
 end
 
 local function trackLabel(st, track)
@@ -49,7 +49,7 @@ function getStationBoard(stationId, rows)
             if stop.station == stationId then
                 local s, fin = tripRuntime(trip.id)
                 local rec = s and s.stops[i]
-                local track = plannedTrack(trip.line, i)
+                local track = plannedTrack(trip, i)
                 -- a train of this trip standing in the station: its real track
                 if s then
                     local c = core:getConsist(s.consist)

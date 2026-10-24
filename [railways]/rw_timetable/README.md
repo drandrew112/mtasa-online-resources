@@ -1,8 +1,31 @@
 # rw_timetable
 
 Stations, lines and services of Sunline Rail (see `../README.md`). Configuration:
-`shared/config.lua` (stations with platform zones, lines with stop times in minutes,
-headway, consist requirements).
+`shared/config.lua` (stations with platform zones, lines = the fixed routes with stop times in
+minutes, consist requirements, start stations).
+
+## Timetable (MySQL `rw_timetable`)
+
+WHEN the lines run is the table `rw_timetable` (`server/schedule.lua`), edited on the /gov
+**Railways** page ([gov_railways](../../[government]/gov_railways/README.md)). One row = a line,
+the stretch (from / to station: any later stop; the start needs a spawn point, `origins`), the
+departures (`interval`: first .. last every N min, or `single`: one train), the days (bit mask
+Mon 1 .. Sun 64), optionally one date (`on_date`) and, for a single train, its own number.
+Several rows may cover one line (e.g. every 30 min at night, every 15 min by day). Two
+departures of a line in the same minute are one train. Train numbers: base + 2 × the n-th train of
+the line that day. Trip ids: `SL1-20261024-0615` (line, service day, departure).
+
+An empty table is filled with `TT.SEED` (the old built-in timetable, [TIMETABLE.md](TIMETABLE.md)).
+The table is re-read every `TT.SCHEDULE.RELOAD` s and on `reloadTimetable()`; a changed trip is
+built again unless a train already runs it. Until the first read the seed runs.
+
+| export | |
+| --- | --- |
+| `getTimetableLines()` | the routes: stops with minutes, start stations |
+| `getScheduleRows()` | the rows, + whether they come from the table |
+| `checkScheduleRow(row)` | the clean row or `false, errorKey` (gov_railways writes it) |
+| `getDayTimetable([ts])` | the departures of a day as the trains run |
+| `reloadTimetable()` | re-reads the table |
 
 Server exports:
 

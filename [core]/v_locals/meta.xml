@@ -148,6 +148,7 @@
     <file src="locales/en/gov_office.json" />
     <file src="locales/en/gov_news.json" />
     <file src="locales/en/gov_loans.json" />
+    <file src="locales/en/gov_railways.json" />
     <file src="locales/en/pt_tickets.json" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/ai_peds.json" />
@@ -253,6 +254,7 @@
     <file src="locales/hu/gov_office.json" />
     <file src="locales/hu/gov_news.json" />
     <file src="locales/hu/gov_loans.json" />
+    <file src="locales/hu/gov_railways.json" />
     <file src="locales/hu/pt_tickets.json" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->

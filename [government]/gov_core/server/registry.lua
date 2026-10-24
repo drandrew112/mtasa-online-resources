@@ -14,6 +14,7 @@ MODULES = {}     -- [resource name] = def
 ACTIONS = {}     -- [action] = { res, need }
 PAGES = {}       -- [page id] = { id, res, category, order, need, script, title }
 CATEGORIES = {}  -- [id] = { id, order, key }
+SECTORS = {}     -- [id] = { id, res, setting } (a public service run by a company, see GOV.inSector)
 
 local NEEDS = { viewer = true, official = true, minister = true, public = true }
 
@@ -28,6 +29,7 @@ local function unregister(resName)
     for name, a in pairs(ACTIONS) do if a.res == resName then ACTIONS[name] = nil end end
     for id, p in pairs(PAGES) do if p.res == resName then PAGES[id] = nil end end
     for id, c in pairs(CATEGORIES) do if c.res == resName then CATEGORIES[id] = nil end end
+    for id, sc in pairs(SECTORS) do if sc.res == resName then SECTORS[id] = nil end end
     GOV.setDefaults(resName, {}, {})
 end
 
@@ -37,14 +39,22 @@ function GOV.registerModule(resName, def)
     MODULES[resName] = def
     local s = type(def.settings) == "table" and def.settings or {}
     GOV.setDefaults(resName, s.prefixes, s.defaults)
+    for _, sc in ipairs(type(def.sectors) == "table" and def.sectors or {}) do
+        if type(sc) == "table" and type(sc.id) == "string" and type(sc.setting) == "string" then
+            SECTORS[sc.id] = { id = sc.id, res = resName, setting = sc.setting }
+        end
+    end
     for name, need in pairs(type(def.actions) == "table" and def.actions or {}) do
         name = tostring(name)
+        -- { role = "...", sector = "<id>" }: the role, or a member of the sector's company
+        local sector
+        if type(need) == "table" then need, sector = need.role, need.sector end
         if not NEEDS[need] then
             outputDebugString(("[gov_core] %s: action %s has an unknown role %s"):format(resName, name, tostring(need)), 2)
         elseif ACTIONS[name] then
             outputDebugString(("[gov_core] %s: action %s is taken by %s"):format(resName, name, ACTIONS[name].res), 2)
         else
-            ACTIONS[name] = { res = resName, need = need }
+            ACTIONS[name] = { res = resName, need = need, sector = type(sector) == "string" and sector or nil }
         end
     end
     for _, c in ipairs(type(def.categories) == "table" and def.categories or {}) do
@@ -64,6 +74,7 @@ function GOV.registerModule(resName, def)
                 end
                 PAGES[p.id] = { id = p.id, res = resName, category = cat, order = tonumber(p.order) or 100,
                     need = GOV.ROLES[p.need] and p.need or "viewer", script = p.script,
+                    sector = type(p.sector) == "string" and p.sector or nil,
                     title = type(p.title) == "string" and p.title or (resName .. ".page." .. p.id) }
             end
         end
@@ -78,12 +89,14 @@ function registerModule(def)
     return GOV.registerModule(res, def)
 end
 
---- the pages + categories a role sees (running modules only), for the client
-function GOV.menuFor(role)
+--- the pages + categories a role sees (running modules only), for the client; `sectors` = the
+--- sectors the player runs ({ [id] = true }): their pages are shown whatever the role
+function GOV.menuFor(role, sectors)
     local level = GOV.ROLES[role] or 0
+    sectors = sectors or {}
     local pages, used = {}, {}
     for _, p in pairs(PAGES) do
-        if level >= GOV.ROLES[p.need] and (p.res == "gov_core" or isResourceRunning(p.res)) then
+        if (level >= GOV.ROLES[p.need] or (p.sector and sectors[p.sector])) and (p.res == "gov_core" or isResourceRunning(p.res)) then
             pages[#pages + 1] = { id = p.id, res = p.res, category = p.category, order = p.order, need = p.need,
                 script = p.script, title = p.title }
             used[p.category] = true
@@ -121,7 +134,7 @@ addEventHandler("gov_core:call", resourceRoot, function(requestId, action, args)
     if not GOV.ready then return fail("v_bank.error.unavailable") end
     if a.need == "public" then
         if not GOV.accountOf(player) then return fail("gov_core.err.no_right") end
-    elseif not GOV.can(player, a.need) then
+    elseif not GOV.can(player, a.need) and not (a.sector and GOV.inSector(player, a.sector)) then
         return fail("gov_core.err.no_right")
     end
     local res = getResourceFromName(a.res)
@@ -165,3 +178,40 @@ addEventHandler("onResourceStop", root, function(res)
 end)
 
 function isGovReady() return GOV.ready == true end
+
+--------------------------------------------------------------------------------
+-- sectors: a public service (gov_railways: the railway) run by a company the minister picks.
+-- The module keeps the company in its own setting ("state:<code>" | "company:<id>", anything
+-- else = nobody); everyone with bank access to that company's account (the Members of a state
+-- company, the founder / managers of a private one) may open the sector's pages and use its
+-- actions marked { role, sector }.
+--------------------------------------------------------------------------------
+
+function GOV.inSector(player, sector)
+    local sc = SECTORS[tostring(sector)]
+    if not sc or not isResourceRunning(sc.res) or not GOV.accountOf(player) then return false end
+    local spec = GOV.get(sc.setting)
+    if type(spec) ~= "string" or not (spec:match("^state:") or spec:match("^company:")) then return false end
+    local id = tonumber(GOV.specAccount(spec))
+    local bank = GOV.bank()
+    if bank and id and bank:hasAccess(player, id, "view") then return true end
+    -- a private company's founder, also before the company account had its access rows
+    local cid = tonumber(spec:match("^company:(%d+)$"))
+    if cid and isResourceRunning("biz_core") then
+        local ok, mine = pcall(function() return exports.biz_core:getPlayerCompanyId(player) end)
+        return ok and tonumber(mine) == cid or false
+    end
+    return false
+end
+
+--- { [sector id] = true } of the sectors a player runs
+function GOV.sectorsOf(player)
+    local out = {}
+    for id in pairs(SECTORS) do
+        if GOV.inSector(player, id) then out[id] = true end
+    end
+    return out
+end
+
+--- export: is the player a member of the company that runs this sector?
+function isGovSectorMember(player, sector) return GOV.inSector(player, sector) end

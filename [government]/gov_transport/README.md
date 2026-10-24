@@ -16,3 +16,4 @@ tickets, rw_timetable charges the costs.
 | `getTransportFare(mode, km, category)` | price (`"IC"` adds the supplement), details |
 | `bookFareIncome(mode, amount, params)` | the paid ticket money to the fare receiver |
 | `chargeTransportCost(mode, kind, params)` | `"run"` (`params.category`) or `"stop"` (`params.count`) |
+| `getRailDayCosts(ts)` | planned railway running costs of a day (rw_timetable timetable × cost settings, every stop served) |

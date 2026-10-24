@@ -749,3 +749,31 @@ CREATE TABLE IF NOT EXISTS `eco_loan_payments` (
     PRIMARY KEY (id),
     KEY idx_loan (loan_id, id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================================
+-- rw_timetable (owner: [railways]/rw_timetable): the railway timetable, one row
+-- per departure rule of a line (routes + minutes between the stops are fixed in
+-- rw_timetable shared/config.lua). kind interval = first_min..last_min every
+-- headway min, single = one train at first_min; days = bit mask Mon 1 .. Sun 64;
+-- on_date = only that day; number = fixed train number (single). Edited on the
+-- /gov Railways page (gov_railways). rw_timetable creates the table itself and
+-- fills an empty one with its seed (the old built-in timetable).
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `rw_timetable` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `line` VARCHAR(16) NOT NULL,
+    `kind` VARCHAR(8) NOT NULL DEFAULT 'interval',
+    `from_station` VARCHAR(24) NOT NULL,
+    `to_station` VARCHAR(24) NOT NULL,
+    `first_min` SMALLINT NOT NULL DEFAULT 0,
+    `last_min` SMALLINT NOT NULL DEFAULT 0,
+    `headway` SMALLINT NOT NULL DEFAULT 0,
+    `days` TINYINT NOT NULL DEFAULT 127,
+    `on_date` VARCHAR(10) NULL DEFAULT NULL,
+    `number` INT NULL DEFAULT NULL,
+    `active` TINYINT NOT NULL DEFAULT 1,
+    `note` VARCHAR(128) NOT NULL DEFAULT '',
+    `updated_at` INT NOT NULL DEFAULT 0,
+    `updated_by` VARCHAR(64) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

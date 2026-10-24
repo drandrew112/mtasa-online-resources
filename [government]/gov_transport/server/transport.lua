@@ -126,3 +126,29 @@ function chargeTransportCost(mode, kind, params)
     if not ok then return false, err end
     return true, amount
 end
+
+--- the planned railway running costs of a day (the day of timestamp ts) from the rw_timetable
+--- timetable and the pt.rail cost settings, every stop of every trip counted as served:
+--- { trips, stops, run, stop, total, categories = { IC = { trips, run }, ... }, payer, receiver,
+---   booked } | false (rw_timetable does not run). booked = false: from nobody to nowhere.
+function getRailDayCosts(ts)
+    local s = GOV.ptSettings("rail")
+    if not s or not isResourceRunning("rw_timetable") then return false end
+    local ok, deps = pcall(function() return exports.rw_timetable:getDayTimetable(ts) end)
+    if not ok or type(deps) ~= "table" then return false end
+    local out = { trips = #deps, stops = 0, run = 0, stop = 0, categories = {},
+        payer = s.cost_payer, receiver = s.cost_receiver,
+        booked = not (s.cost_payer == "system" and s.cost_receiver == "system") and s.cost_payer ~= s.cost_receiver }
+    for _, d in ipairs(deps) do
+        local cat = tostring(d.category or "RB"):upper()
+        local fee = math.floor(tonumber(s["cost_" .. cat:lower()]) or 0)
+        local c = out.categories[cat] or { trips = 0, run = 0 }
+        out.categories[cat] = c
+        c.trips, c.run = c.trips + 1, c.run + fee
+        out.run = out.run + fee
+        out.stops = out.stops + math.floor(tonumber(d.stops) or 0)
+    end
+    out.stop = out.stops * s.cost_stop
+    out.total = out.run + out.stop
+    return out
+end

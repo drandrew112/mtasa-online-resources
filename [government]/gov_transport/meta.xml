@@ -19,4 +19,6 @@
     <export function="getTransportFare" type="server" />
     <export function="bookFareIncome" type="server" />
     <export function="chargeTransportCost" type="server" />
+    <!-- gov_treasury budget plan, gov_railways: the planned railway costs of a day -->
+    <export function="getRailDayCosts" type="server" />
 </meta>

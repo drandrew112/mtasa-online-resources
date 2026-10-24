@@ -13,7 +13,7 @@
 -- opened with the client export openGovPage(resource, page) and use the same relay.
 
 local gui, browser
-local role, pages, categories = "viewer", {}, {}
+local role, pages, categories, sectors = "viewer", {}, {}, {}
 
 addEvent("gov_core:pageCall", false)    -- from the page (source = the browser)
 addEvent("gov_core:pageReady", false)
@@ -77,7 +77,7 @@ end)
 
 addEventHandler("gov_core:pageReady", root, function(keysJson)
     if source ~= browser then return end
-    js("_init", { role = role, pages = pages, categories = categories, strings = stringsOf(keysJson) })
+    js("_init", { role = role, pages = pages, categories = categories, sectors = sectors, strings = stringsOf(keysJson) })
     focusBrowser(browser)
 end)
 
@@ -143,8 +143,9 @@ addEventHandler("onClientKey", root, function(key, press)
 end)
 
 addEvent("gov_core:open", true)
-addEventHandler("gov_core:open", resourceRoot, function(r, p, c)
+addEventHandler("gov_core:open", resourceRoot, function(r, p, c, sc)
     role = r
+    sectors = type(sc) == "table" and sc or {}
     pages = type(p) == "table" and p or {}
     categories = type(c) == "table" and c or {}
     if gui then close() else open("gov_core", "web/index.html") end
