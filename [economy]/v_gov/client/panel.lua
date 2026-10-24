@@ -75,9 +75,24 @@ end)
 -- open / close
 --------------------------------------------------------------------------------
 
+-- Destroying a CEF browser synchronously crashes the client (CTD) when it still has input focus
+-- or when it happens inside one of its own events (the page's close button / Esc arrive as
+-- mta.triggerEvent from the page). So: drop focus, hide and detach now, destroy a bit later.
+local function disposeBrowser(g, b)
+    if isElement(b) then
+        focusBrowser(nil)
+        setBrowserRenderingPaused(b, true)
+    end
+    if isElement(g) then
+        guiSetVisible(g, false)
+        guiSetEnabled(g, false)
+        setTimer(function() if isElement(g) then destroyElement(g) end end, 100, 1)
+    end
+end
+
 local function close()
     if not gui then return end
-    if isElement(gui) then destroyElement(gui) end
+    disposeBrowser(gui, browser)
     gui, browser, reqs = nil, nil, {}
     showCursor(false)
     guiSetInputMode("allow_binds")
@@ -94,6 +109,7 @@ local function open(page)
     guiSetInputMode("no_binds")
     setElementData(localPlayer, "browserOpen", true, false)
     addEventHandler("onClientBrowserCreated", browser, function()
+        if source ~= browser then return end   -- closed before CEF was ready
         loadBrowserURL(source, ("http://mta/web_api/loader.html?app=%s&page=web/%s&v=%d"):format(
             getResourceName(resource), page, getTickCount()))
         focusBrowser(source)
