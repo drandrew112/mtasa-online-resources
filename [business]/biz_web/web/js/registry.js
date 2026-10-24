@@ -23,7 +23,7 @@
     const errText = r => (r && ERRORS[r.error]) || 'Something went wrong. Try again.';
     const money = n => '€ ' + Math.round(Number(n) || 0).toLocaleString('en-US');
     const date = ts => ts ? new Date(ts * 1000).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' }) : '–';
-    const ACT = { weed: 'Weed', casino: 'Casino' };
+    const ACT = { casino: 'Casino' };
     const tags = list => (OSA.arr(list).map(a => `<span class="br-tag ${esc(a)}">${esc(ACT[a] || a)}</span>`).join('')) || '<span class="br-small">–</span>';
 
     let state = null;

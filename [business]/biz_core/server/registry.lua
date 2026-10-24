@@ -2,7 +2,8 @@
 -- Public registry of every active organization (all instances), re-read every
 -- BIZ.REGISTRY_REFRESH_MS. The website's Registry / Top organizations pages
 -- and the admin list read this cache, so their exports answer synchronously.
--- Companies loaded on this instance show their live value.
+-- Companies loaded on this instance show their live value. Illegal activities
+-- (weed) are never listed; the value already leaves illegal properties out.
 
 REG = { list = {}, byId = {}, nameKeys = {}, loadedAt = 0 }
 
@@ -57,7 +58,8 @@ local function entry(e)
     local seen = {}
     for _, pid in ipairs(props) do
         local p = BIZ.property(pid)
-        if p and p.activity and not seen[p.activity] then
+        -- public registry: legal activities only (illegal sites stay hidden)
+        if p and p.activity and not p.illegal and not seen[p.activity] then
             seen[p.activity] = true
             out.activities[#out.activities + 1] = p.activity
         end

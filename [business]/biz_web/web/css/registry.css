@@ -84,7 +84,6 @@ h2 { font-size: 19px; margin: 26px 0 4px; color: #12355b; }
 .br-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .br-table .rank { font-weight: 800; color: #12355b; }
 .br-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--osa-panel-3); color: var(--osa-dim); margin: 0 4px 2px 0; }
-.br-tag.weed { background: #e1f0df; color: #2f6b25; }
 .br-tag.casino { background: #f6ecd3; color: #7a5300; }
 
 /* building photos (biz_core/img/buildings); a missing one leaves the tinted frame */
