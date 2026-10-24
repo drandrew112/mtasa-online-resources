@@ -15,6 +15,7 @@
 # (only meta.changethis.xml is in the repo - /modloader update builds meta.xml from it)
 /\[core\]/v_modloader/meta.xml
 /\[core\]/v_modloader/meta.new.xml
+/\[core\]/v_modloader/manifest.json
 /\[core\]/v_modloader/logs/
 /\[core\]/v_modloader/vehicles/*
 /\[core\]/v_modloader/skins/*
