@@ -23,6 +23,7 @@
 
 local interiors = {}   -- id -> record
 local busy      = {}   -- player -> getTickCount() of the last transfer (fade in progress / cooldown)
+local savedOut  = {}   -- player -> true while our "save.position" (the outside point) is set
 
 addEvent("world_interiors:ready", false)
 addEvent("world_interiors:use", true)
@@ -143,7 +144,22 @@ function getPlayerInterior(player)
     return best or false
 end
 
+-- acc_savesys saves "save.position" instead of the real position: a player who quits
+-- inside an interior comes back at its enter marker (like biz_int)
+local function setSavedOutside(player, rec)
+    local o = rec.outside
+    setElementData(player, "save.position", { o.x, o.y, o.z, o.interior, rec.enter.dimension }, false)
+    savedOut[player] = true
+end
+
+local function clearSavedOutside(player)
+    if not savedOut[player] then return end
+    savedOut[player] = nil
+    if isElement(player) then removeElementData(player, "save.position") end
+end
+
 local function teleport(player, p, dim)
+    clearSavedOutside(player)
     setElementPosition(player, p.x, p.y, p.z)
     setElementRotation(player, 0, 0, p.rot or 0)
     setElementInterior(player, p.interior)
@@ -156,6 +172,7 @@ local function doTransfer(player, rec, toInside)
     if not isElement(player) then return end
     local p = toInside and rec.inside or rec.outside
     teleport(player, p, toInside and rec.dimension or rec.enter.dimension)
+    if toInside then setSavedOutside(player, rec) end
     triggerClientEvent(player, "world_interiors:fadeIn", resourceRoot)
 end
 
@@ -191,7 +208,10 @@ addEventHandler("world_interiors:use", resourceRoot, function(marker)
     if kind == "enter" then enterInterior(p, id) else exitInterior(p, id) end
 end)
 
-addEventHandler("onPlayerQuit", root, function() busy[source] = nil end)
+-- only the table entry goes on quit: acc_savesys still saves the outside point from the element data
+addEventHandler("onPlayerQuit", root, function() busy[source] = nil; savedOut[source] = nil end)
+-- respawned somewhere else (death): the outside point no longer applies
+addEventHandler("onPlayerSpawn", root, function() clearSavedOutside(source) end)
 
 addEventHandler("onResourceStop", root, function(res)
     if res == resource then return end
