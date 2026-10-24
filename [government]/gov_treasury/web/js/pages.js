@@ -5,7 +5,7 @@
     const { esc, arr, $, money, signed, cls, stamp, val, numOf, head, kpi, empty, table, btn, select, runsTable } = GOV.ui;
     const T = GOV.tr('gov_treasury');
     const D = GOV.D, sel = GOV.sel;
-    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'pt', 'transfer', 'admin'];
+    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'pt', 'loan', 'transfer', 'admin'];
     const GROUP_KEYS = [...GROUPS, 'shop', 'cash', 'other'].map(g => 'v_bank.group.' + g);
     sel.group = sel.group || 'all';
     sel.soKind = sel.soKind || 'state';

@@ -7,6 +7,7 @@ old design: [DESIGN.md](DESIGN.md)).
 | --- | --- | --- |
 | **gov_core** | settings, roles + members, change log, state companies, the /gov shell, the module lib | State companies, Members, Log |
 | gov_treasury | overview, statements, transfers, standing orders, budget | Overview, Treasury, Transfers, Budget |
+| gov_loans | state loans from the bank (eco_loan) | Loans |
 | gov_tax | company tax (hourly), income tax keys, VAT, property tax, fees, where each goes | Taxes, Fees |
 | gov_works | work pay (payer, parameters, multiplier, tax key) | Works |
 | gov_health | state healthcare | Healthcare |

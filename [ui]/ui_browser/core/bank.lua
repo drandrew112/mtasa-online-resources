@@ -160,7 +160,7 @@ end)
 -- page
 --------------------------------------------------------------------------------
 
-local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "pt", "gov", "admin" }
+local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "pt", "gov", "loan", "admin" }
 
 local function rowText(r)
     local base = "v_bank.tx." .. tostring(r.key)
@@ -247,7 +247,7 @@ function BR.buildBank(query)
     local b = {}
     b[#b + 1] = '<page bg="#0a1a3a" text="#e8f0fc" heading="#ffffff" muted="#9ab5d8" ' ..
         'link="#7cc4ff" accent="#38bdf8" card="#12244a" cardline="#2a3f66">'
-    b[#b + 1] = '<siteheader title="Liberty Bank" tagline="Accounts, statements and transfers" accent="#38bdf8" />'
+    b[#b + 1] = '<siteheader title="Liberty Bank" tagline="Accounts, statements, transfers and loans" accent="#38bdf8" />'
 
     if not BANK.accounts then
         b[#b + 1] = '<card><p class="muted">Loading your accounts...</p></card>'
@@ -305,6 +305,7 @@ function BR.buildBank(query)
     end
 
     if canUse(a) and a.status == "active" then transferMarkup(b, a) end
+    if BANKLOAN then BANKLOAN.markup(b, a) end
     ledgerMarkup(b)
 
     b[#b + 1] = '<link href="home">Back to search</link>'

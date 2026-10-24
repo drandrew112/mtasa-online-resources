@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="gov_loans" version="1.0.0" type="script"
+          description="State loans: the treasury / state companies borrow from the bank and repay them (eco_loan, every 24 h); /gov page Loans" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="eco_loan" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the Loans page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+</meta>
