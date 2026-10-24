@@ -228,5 +228,18 @@
   "v_gov.ui.fare_receiver": "Ticket money goes to",
   "v_gov.ui.cost_payer": "Running costs paid by",
   "v_gov.ui.cost_receiver": "Running costs paid to",
-  "v_gov.ui.pt_nothing_booked": "From nobody to nowhere: no running costs are booked."
+  "v_gov.ui.pt_nothing_booked": "From nobody to nowhere: no running costs are booked.",
+  "v_gov.ui.so_title": "Standing orders (recurring transfers)",
+  "v_gov.ui.so_hint": "The system books the amount automatically at the chosen interval, e.g. to fund public transport. A payment that cannot be made (not enough money) is skipped until the next interval.",
+  "v_gov.ui.so_every": "Every",
+  "v_gov.ui.so_hours": "hours",
+  "v_gov.ui.so_days": "days",
+  "v_gov.ui.so_create": "Add order",
+  "v_gov.ui.so_next": "Next",
+  "v_gov.ui.so_last": "Last",
+  "v_gov.ui.so_runs": "runs",
+  "v_gov.ui.so_pause": "Pause",
+  "v_gov.ui.so_resume": "Resume",
+  "v_gov.ui.so_paused": "paused",
+  "v_gov.ui.confirm_delete_so": "Delete this standing order?"
 }

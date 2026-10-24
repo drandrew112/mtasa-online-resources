@@ -38,6 +38,8 @@
             'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint',
             'tf_state', 'tf_pay', 'tf_collect', 'tf_collect_hint', 'tf_from', 'tf_to', 'tf_send', 'tf_pay_btn',
             'tf_collect_btn', 'tf_recent', 'tf_kind', 'tf_pick_company', 'confirm_transfer',
+            'so_title', 'so_hint', 'so_every', 'so_hours', 'so_days', 'so_create', 'so_next', 'so_last', 'so_runs',
+            'so_pause', 'so_resume', 'so_paused', 'confirm_delete_so',
             'pt_fares', 'pt_fares_hint', 'pt_costs', 'pt_costs_hint', 'pt_fare_example', 'fare_receiver', 'cost_payer',
             'cost_receiver', 'pt_nothing_booked']
             .map(k => 'v_gov.ui.' + k),
@@ -129,7 +131,7 @@
     let page = 'overview';
     const D = {};             // data per page
     const sel = { treasury: null, group: 'all', work: null, company: null, workQ: '', logQ: '', newsDraft: null,
-        hospital: null, tfPay: null, tfCol: null };
+        hospital: null, tfPay: null, tfCol: null, soKind: 'state' };
     let busy = false;
 
     function nav() {
@@ -482,6 +484,7 @@
         const amountNote = k => `<input class="osa-input num" id="${k}Amount" placeholder="${esc(T('amount'))}" data-keep="1">` +
             `<input class="osa-input mid" id="${k}Note" placeholder="${esc(T('note'))}" maxlength="48" data-keep="1">`;
         const keepSel = (id, v) => select(id, opts, v, '', true).replace('<select ', '<select data-keep="1" ');
+        const kindName = a => T({ 'transfer.state': 'tf_state', 'transfer.pay': 'tf_pay', 'transfer.collect': 'tf_collect' }[a] || a);
         const coName = c => c ? { name: c.name, tag: 'company' } : { name: T('tf_pick_company'), tag: '' };
         let h = head(T('v_gov.page.transfers'), esc(T('history_note', { days: 30 })));
         if (m) {
@@ -502,7 +505,30 @@
             h += `<div class="gv-card">` + table([[T('account')], [T('balance'), 'r']], states.map(s =>
                 `<tr><td>${esc(s.name)} <span class="dim mono">${esc(s.number || '')}</span></td><td class="r mono ${cls(s.balance)}">${money(s.balance)}</td></tr>`)) + '</div>';
         }
-        const kindName = a => T({ 'transfer.state': 'tf_state', 'transfer.pay': 'tf_pay', 'transfer.collect': 'tf_collect' }[a] || a);
+        const every = sec => sec % 86400 === 0 ? `${sec / 86400} ${T('so_days')}` : `${Math.round(sec / 360) / 10} ${T('so_hours')}`;
+        const orders = arr(d.orders);
+        h += `<div class="gv-card"><h2>${esc(T('so_title'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('so_hint'))}</div>`;
+        if (m) {
+            usePicker('soCo', { state: () => [], current: () => sel.soCo && sel.soCo.spec, choose: it => { sel.soCo = it; render(); } });
+            const k = sel.soKind;
+            const first = states[0] && states[0].id, second = states[1] ? states[1].id : first;
+            h += `<div class="gv-row">${select('soKind', [['state', T('tf_state')], ['pay', T('tf_pay')], ['collect', T('tf_collect')]], k, 'soKind', true)}</div>` +
+                `<div class="gv-row" style="margin-top:10px"><label class="dim">${esc(T('tf_from'))}</label>` +
+                (k === 'collect' ? pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soFrom', first)) +
+                `<label class="dim">${esc(T('tf_to'))}</label>` +
+                (k === 'pay' ? pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soTo', k === 'state' ? second : first)) + '</div>' +
+                `<div class="gv-row" style="margin-top:10px">${amountNote('so')}<label class="dim">${esc(T('so_every'))}</label>` +
+                `<input class="osa-input num" id="soEvery" value="1" data-keep="1">` +
+                select('soUnit', [['3600', T('so_hours')], ['86400', T('so_days')]], '86400', '', true).replace('<select ', '<select data-keep="1" ') +
+                btn(T('so_create'), 'soCreate', {}, 'primary') + '</div>';
+        }
+        h += table([[T('tf_kind')], [T('tf_from')], [T('tf_to')], [T('amount'), 'r'], [T('so_every')], [T('so_next')], [T('so_last')], [T('note')], ['', 'act']],
+            orders.map(o => `<tr${o.enabled ? '' : ' class="dim"'}><td>${esc(kindName('transfer.' + o.kind))}</td><td>${esc(o.fromName)}</td><td>${esc(o.toName)}</td>` +
+                `<td class="r mono">${money(o.amount)}</td><td>${esc(every(o.interval))}</td>` +
+                `<td class="mono dim">${o.enabled ? stamp(o.nextRun) : esc(T('so_paused'))}</td>` +
+                `<td class="dim">${o.lastRun ? `${stamp(o.lastRun)} ${esc(o.lastStatus)}` : '-'} (${esc(T('so_runs'))}: ${o.runs})</td><td class="dim">${esc(o.note)}</td>` +
+                `<td class="act">${m ? btn(T(o.enabled ? 'so_pause' : 'so_resume'), 'soToggle', { id: o.id, value: o.enabled ? 'false' : 'true' }) +
+                    ' ' + btn(T('delete'), 'soDelete', { id: o.id }, 'danger') : ''}</td></tr>`)) + '</div>';
         return h + `<div class="gv-card"><h2>${esc(T('tf_recent'))}</h2>` +
             table([[T('time')], [T('tf_kind')], [T('tf_from')], [T('tf_to')], [T('amount'), 'r'], [T('note')], [T('actor')]], arr(d.list).map(r => {
                 const x = r.detail || {};
@@ -802,6 +828,30 @@
                 $(k + 'Amount') && ($(k + 'Amount').value = '');
                 $(k + 'Note') && ($(k + 'Note').value = '');
             }
+        },
+        soKind: el => { sel.soKind = el.value; sel.soCo = null; render(); },
+        async soCreate() {
+            const n = numOf('soAmount'), ev = numOf('soEvery');
+            if (n === null || ev === null) return;
+            const kind = sel.soKind;
+            const states = arr((D.transfers || {}).states);
+            const stateName = id => { const x = states.find(y => String(y.id) === String(id)); return x ? x.name : id; };
+            const args = { kind, amount: n, note: val('soNote'), interval: Math.round(ev * Number(val('soUnit'))) };
+            let from, to;
+            if (kind !== 'state' && !sel.soCo) return OSA.toast(T('tf_pick_company'), false);
+            if (kind === 'collect') { args.from = Number(sel.soCo.spec.split(':')[1]); args.to = Number(val('soTo')); from = sel.soCo.name; to = stateName(args.to); }
+            else if (kind === 'pay') { args.from = Number(val('soFrom')); args.to = Number(sel.soCo.spec.split(':')[1]); from = stateName(args.from); to = sel.soCo.name; }
+            else { args.from = Number(val('soFrom')); args.to = Number(val('soTo')); from = stateName(args.from); to = stateName(args.to); }
+            const per = ev + ' ' + (val('soUnit') === '3600' ? T('so_hours') : T('so_days'));
+            if (!await OSA.ui.confirm(T('so_title'), T('confirm_transfer', { amount: money(n), from, to }) + ' / ' + per, T('save'))) return;
+            if (await change('createStanding', args)) {
+                $('soAmount') && ($('soAmount').value = '');
+                $('soNote') && ($('soNote').value = '');
+            }
+        },
+        soToggle(b) { change('toggleStanding', { id: Number(b.dataset.id), enabled: b.dataset.value === 'true' }); },
+        async soDelete(b) {
+            if (await OSA.ui.confirm(T('so_title'), T('confirm_delete_so'), T('delete'))) change('deleteStanding', { id: Number(b.dataset.id) });
         },
         workMul() { const n = numOf('wMul'); if (n !== null) change('setWork', { work: sel.work, field: 'multiplier', value: n }); },
         workMulReset() { change('setWork', { work: sel.work, field: 'multiplier' }); },

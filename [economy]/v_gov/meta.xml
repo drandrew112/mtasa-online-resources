@@ -22,6 +22,7 @@
     <script src="server/companies.lua" type="server" />
     <script src="server/votes.lua" type="server" />
     <script src="server/news.lua" type="server" />
+    <script src="server/standing.lua" type="server" />
     <script src="server/budget.lua" type="server" />
     <script src="server/panel.lua" type="server" />
     <script src="server/main.lua" type="server" />

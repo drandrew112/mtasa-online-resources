@@ -14,6 +14,7 @@ GOV = {
     VOTE_CHECK_MS = 60000,    -- open votes past their end are closed this often
     VOTE_MAX_OPTIONS = 10,
     VOTE_MAX_HOURS = 24 * 14,
+    STANDING_CHECK_MS = 30000, -- due standing orders (recurring transfers) are booked this often
     PUBLIC_REFRESH_MS = 60000, -- the gov_web snapshot (getPublicState) is rebuilt this often
 }
 
@@ -93,5 +94,7 @@ GOV_RANGE = {
     hpPrice = { 0, 100000 },
     injuryPrice = { 0, 1000000 },
     ptMoney = { 0, 1000000 },
+    standingAmount = { 1, 100000000 },
+    standingInterval = { 600, 365 * 86400 },   -- s between two bookings
     wageFactor = 10,          -- a wage parameter may be at most this many times its default (abs)
 }

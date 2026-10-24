@@ -91,6 +91,26 @@ local SCHEMA = {
         PRIMARY KEY (id),
         KEY idx_list (deleted_at, id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+    -- standing orders = recurring transfers (server/standing.lua); from_ref / to_ref = v_bank state
+    -- account id, or biz_core company id on the private side (kind pay: to, collect: from)
+    [[CREATE TABLE IF NOT EXISTS gov_standing_orders (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        kind VARCHAR(16) NOT NULL,
+        from_ref INT UNSIGNED NOT NULL,
+        to_ref INT UNSIGNED NOT NULL,
+        amount BIGINT NOT NULL,
+        interval_sec INT UNSIGNED NOT NULL,
+        next_run INT UNSIGNED NOT NULL,
+        last_run INT UNSIGNED NOT NULL DEFAULT 0,
+        last_status VARCHAR(32) NOT NULL DEFAULT '',
+        runs INT UNSIGNED NOT NULL DEFAULT 0,
+        enabled TINYINT NOT NULL DEFAULT 1,
+        note VARCHAR(48) NOT NULL DEFAULT '',
+        created_by VARCHAR(64) NOT NULL DEFAULT '',
+        created_at INT UNSIGNED NOT NULL DEFAULT 0,
+        PRIMARY KEY (id),
+        KEY idx_due (enabled, next_run)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 }
 
 addEvent("v_gov:dbReady", false)

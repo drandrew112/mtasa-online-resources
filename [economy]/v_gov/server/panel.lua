@@ -17,6 +17,7 @@ local NEED = {
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
     setPropertyTax = "minister", setTaxTarget = "minister", setFeeTarget = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
     postNews = "minister", deleteNews = "minister", moneyTransfer = "minister",
+    createStanding = "minister", toggleStanding = "minister", deleteStanding = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
     describeCompany = "official", companyMember = "official", companyOverdraft = "minister",
     voteList = "public", voteCast = "public",
@@ -624,7 +625,9 @@ function A.transfers(p, args, reply)
         for i, r in ipairs(rows or {}) do
             list[i] = { ts = int(r.ts), actor = tostring(r.actor), action = tostring(r.action), detail = fromJSON(tostring(r.detail)) or {} }
         end
-        reply({ states = stateAccounts(), list = list })
+        GOV.standingList(function(orders)
+            reply({ states = stateAccounts(), list = list, orders = orders })
+        end)
     end, "SELECT ts, actor, action, detail FROM gov_log WHERE action LIKE 'transfer.%' AND ts >= ? ORDER BY id DESC LIMIT 50",
         GOV.historySince())
 end
@@ -674,6 +677,49 @@ function A.moneyTransfer(p, args, reply, actor)
             book(accId, state.id, "gov.collection", { from = name, to = state.name })
         end
     end, "SELECT id, name FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
+end
+
+--- standing order (recurring transfer): { kind = state | pay | collect, from, to, amount, interval (s), note }
+--- ids as in moneyTransfer (state side = state bank account id, private side = biz_core company id)
+function A.createStanding(p, args, reply, actor)
+    local kind = args.kind
+    local function stateOf(id)
+        local a = isStateAccount(tonumber(id))
+        return a and a.status ~= "closed" and a or nil
+    end
+    local function done(ok, err) if not ok then return reply(false, "v_gov.err." .. tostring(err)) end reply(true) end
+    local d = { kind = kind, amount = args.amount, interval = args.interval, note = DB.clip(tostring(args.note or ""), 48) }
+    if kind == "state" then
+        local from, to = stateOf(args.from), stateOf(args.to)
+        if not from or not to then return reply(false, "v_gov.err.bad_company") end
+        if from.id == to.id then return reply(false, "v_bank.error.same_account") end
+        d.from, d.to, d.fromName, d.toName = from.id, to.id, from.name, to.name
+        return GOV.standingCreate(d, actor, done)
+    end
+    if kind ~= "pay" and kind ~= "collect" then return reply(false, "v_gov.err.bad_field") end
+    local state = stateOf(kind == "pay" and args.from or args.to)
+    if not state then return reply(false, "v_gov.err.bad_company") end
+    local cid = tonumber(kind == "pay" and args.to or args.from)
+    if not cid then return reply(false, "v_gov.err.no_company") end
+    DB.query(function(rows)
+        local r = rows and rows[1]
+        if not r then return reply(false, "v_gov.err.no_company") end
+        local name = tostring(r.name) .. " #" .. int(r.id)
+        if kind == "pay" then
+            d.from, d.to, d.fromName, d.toName = state.id, int(r.id), state.name, name
+        else
+            d.from, d.to, d.fromName, d.toName = int(r.id), state.id, name, state.name
+        end
+        GOV.standingCreate(d, actor, done)
+    end, "SELECT id, name FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
+end
+
+function A.toggleStanding(p, args, reply, actor)
+    GOV.standingSetEnabled(args.id, args.enabled == true, actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
+end
+
+function A.deleteStanding(p, args, reply, actor)
+    GOV.standingDelete(args.id, actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
 end
 
 function A.createCompany(p, args, reply, actor)

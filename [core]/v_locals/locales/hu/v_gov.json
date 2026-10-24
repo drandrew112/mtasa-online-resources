@@ -228,5 +228,18 @@
   "v_gov.ui.fare_receiver": "A jegybevétel kié",
   "v_gov.ui.cost_payer": "A költséget fizeti",
   "v_gov.ui.cost_receiver": "A költséget kapja",
-  "v_gov.ui.pt_nothing_booked": "Senkitől sehova: fenntartási költség nem kerül könyvelésre."
+  "v_gov.ui.pt_nothing_booked": "Senkitől sehova: fenntartási költség nem kerül könyvelésre.",
+  "v_gov.ui.so_title": "Rendszeres átutalások",
+  "v_gov.ui.so_hint": "A rendszer a megadott időközönként automatikusan átutalja az összeget, pl. a tömegközlekedés finanszírozására. Ha az utalás nem teljesíthető (nincs elég pénz), a következő időközig kimarad.",
+  "v_gov.ui.so_every": "Időköz",
+  "v_gov.ui.so_hours": "óra",
+  "v_gov.ui.so_days": "nap",
+  "v_gov.ui.so_create": "Hozzáadás",
+  "v_gov.ui.so_next": "Következő",
+  "v_gov.ui.so_last": "Utolsó",
+  "v_gov.ui.so_runs": "lefutott",
+  "v_gov.ui.so_pause": "Szüneteltet",
+  "v_gov.ui.so_resume": "Folytat",
+  "v_gov.ui.so_paused": "szünetel",
+  "v_gov.ui.confirm_delete_so": "Törlöd ezt a rendszeres átutalást?"
 }
