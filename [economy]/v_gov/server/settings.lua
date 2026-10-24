@@ -14,6 +14,7 @@ local function decode(s)
 end
 
 local function encode(v)
+    if v == nil then return "null" end   -- toJSON(nil) is a bad argument
     return toJSON(v, true) or "null"
 end
 
