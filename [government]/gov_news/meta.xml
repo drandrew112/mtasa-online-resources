@@ -1,0 +1,16 @@
+<meta>
+    <info author="DrAndrew112" name="gov_news" version="1.0.0" type="script"
+          description="Government news: ministers write it in every language (/gov News page), it goes to every account as a phone mail; deleting it takes the mails back" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/news.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the News page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+</meta>

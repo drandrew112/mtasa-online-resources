@@ -14,7 +14,7 @@
 --
 --   force   = the paying account may go below 0 (debt, paid off by its next income)
 --   admin   = also works on frozen / closed accounts
---   taxable = legal company income for the hourly company tax (v_gov)
+--   taxable = legal company income for the hourly company tax (gov_tax)
 --   params  = the params kept in the ledger row (anything else is dropped)
 --
 -- Text: "v_bank.tx.<key>.in" / ".out" (the side of the viewer), falling back to "v_bank.tx.<key>".
@@ -71,16 +71,16 @@ TX_KEYS = {
     ["biz.weed_supply"]      = { from = C, to = "system", params = { "units" } },
     ["biz.write_off"]        = { from = "system", to = C, admin = true, params = { "company" } },
 
-    -- state (v_gov): every tax goes to the state account set for it on the /gov Taxes page
-    -- (exports.v_gov:getTaxTarget), or disappears when none is set
+    -- state (gov_tax): every tax goes to the state account set for it on the /gov Taxes page
+    -- (exports.gov_tax:getTaxTarget), or disappears when none is set
     ["tax.company_income"] = { from = C, to = "payee", force = true, params = { "hour", "base", "rate" } },
     ["tax.income"]         = { from = P, to = "payee", force = true, params = { "work", "key", "rate" } },
     -- VAT on top of a shop price: the buyer paid net + VAT to the shop (that money disappears or
-    -- went to the shop side); v_gov books the VAT part to the tax's account from nothing
+    -- went to the shop side); gov_tax books the VAT part to the tax's account from nothing
     ["tax.vat"]            = { from = "system", to = "payee", params = { "group", "item", "net", "rate" } },
     -- property tax of an organization, every 24 online hours (biz_core)
     ["tax.property"]       = { from = C, to = "payee", force = true, params = { "count", "value", "rate" } },
-    -- healthcare (v_gov, per hospital on the /gov Healthcare page): the payer (system, a state or a
+    -- healthcare (gov_health, per hospital on the /gov Healthcare page): the payer (system, a state or a
     -- private company) pays the receiver (system = nobody, a state or a private company), or the
     -- patient pays it from the bank (may go into debt)
     ["health.care"]        = { from = "org", to = "org", force = true,
@@ -96,8 +96,8 @@ TX_KEYS = {
     ["atc.fee_landing"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
     ["atc.fee_overflight"] = { from = "system", to = "payee", params = { "callsign", "airline" } },
 
-    -- public transport (pt_tickets + v_gov /gov Transport page): the passenger pays the ticket
-    -- (cash or bank, the money disappears), v_gov books the same sum from nothing to the fare
+    -- public transport (pt_tickets + gov_transport /gov Public transport page): the passenger pays the ticket
+    -- (cash or bank, the money disappears), gov_transport books the same sum from nothing to the fare
     -- receiver set for the mode (none = nobody gets it); running costs of a service (run fee per
     -- IC / RB trip, stop fee per served stop) go from the cost payer to the cost receiver
     ["pt.ticket"]          = { from = P, to = "system", params = { "line", "from", "to" } },

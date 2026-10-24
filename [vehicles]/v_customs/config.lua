@@ -1,5 +1,5 @@
 -- v_customs :: configuration (shared)
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 
 Customs = Customs or {}
 

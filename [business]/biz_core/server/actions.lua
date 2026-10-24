@@ -16,10 +16,10 @@ end
 
 local function bank() return BIZ.running("v_bank") and exports.v_bank end
 
---- a fee of the state (v_gov /gov, else the config value)
+--- a fee of the state (gov_tax /gov, else the config value)
 local function fee(key, fallback)
-    if BIZ.running("v_gov") then
-        local v = tonumber(exports.v_gov:getFee(key))
+    if BIZ.running("gov_tax") then
+        local v = tonumber(exports.gov_tax:getFee(key))
         if v then return math.floor(v) end
     end
     return fallback
@@ -28,8 +28,8 @@ BIZ.fee = fee
 
 --- v_bank account id a fee goes to (the /gov Fees page), or nil = the money disappears
 local function feeTarget(key)
-    if not BIZ.running("v_gov") then return nil end
-    return tonumber(exports.v_gov:getFeeTarget(key)) or nil
+    if not BIZ.running("gov_tax") then return nil end
+    return tonumber(exports.gov_tax:getFeeTarget(key)) or nil
 end
 BIZ.feeTarget = feeTarget
 

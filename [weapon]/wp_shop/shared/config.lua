@@ -1,5 +1,5 @@
 -- wp_shop / shared/config.lua
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 -- Weapon shops (Ammu-Nation). Interior templates are registered through world_interiors, one
 -- fixed dimension per shop. Inside: a clerk ped behind the counter and a shop marker in front of
 -- it. E in the shop marker = the camera looks at a 3D weapon above the counter (arrows switch,

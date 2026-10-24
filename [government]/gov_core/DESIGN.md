@@ -1,4 +1,12 @@
-# v_gov – design
+# v_gov – design (now the gov_* resources)
+
+**2026-10-24: v_gov was split into the `[government]/gov_*` resources** (gov_core, gov_treasury,
+gov_tax, gov_works, gov_health, gov_transport, gov_votes, gov_news; gov_web moved here too). The
+design below is unchanged; where it says v_gov, read the resource that now owns the part: settings,
+roles, log, state companies, the panel → gov_core; company tax, income tax keys, VAT, property tax,
+fees → gov_tax; work pay → gov_works; healthcare → gov_health; public transport → gov_transport;
+treasury, transfers, standing orders, budget → gov_treasury; votes → gov_votes; news → gov_news.
+How the split works: [SPLIT_PLAN.md](SPLIT_PLAN.md), [README.md](README.md).
 
 Status: **implemented 2026-10-23** together with v_bank 2, offline-tested only; not yet tested
 in-game. Decisions in section 14. Author in meta.xml: `DrAndrew112`.

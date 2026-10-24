@@ -1,4 +1,4 @@
-// gov_web - Open government of San Andreas. One read-only call (govWebState = v_gov's public
+// gov_web - Open government of San Andreas. One read-only call (govWebState = the gov_* modules' public
 // snapshot, money data of the last 30 days) every minute; the same page over HTTP and in game.
 (function () {
     'use strict';

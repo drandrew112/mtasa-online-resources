@@ -1,5 +1,5 @@
 TR = {
-    -- airspace usage fees (server/fees.lua), used when v_gov does not run (its /gov values win)
+    -- airspace usage fees (server/fees.lua), used when gov_tax does not run (its /gov values win)
     FEES = { takeoff = 1500, landing = 2000, overflight = 800 },
     TICK = 1000,              -- simulation step (ms)
 

@@ -1,0 +1,45 @@
+<meta>
+    <info author="DrAndrew112" name="gov_tax" version="1.0.0" type="script"
+          description="State revenue: hourly company income tax, personal income tax rate keys, VAT (importVat lib for the shops), property tax, where each tax goes, fees and fines + where each fee goes; /gov pages Taxes and Fees" />
+    <!-- before every client that imports VAT on load (ui_browser 997, ui_core 999); after v_locals 1001.
+         The client side is only shared/vat.lua: it must not call gov_core or v_locals on load. -->
+    <download_priority_group>1000</download_priority_group>
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/vat.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/config.lua" type="server" />
+    <script src="server/tax.lua" type="server" />
+    <script src="server/vat.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the Taxes + Fees pages, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- taxes -->
+    <export function="getCompanyTaxRate" type="server" />
+    <export function="getTaxTarget" type="server" />
+    <export function="getIncomeTaxKeys" type="server" />
+    <export function="getTaxRuns" type="server" />
+    <export function="getPropertyTaxRate" type="server" />
+
+    <!-- VAT (shops: loadstring(exports.gov_tax:importVat())(), see shared/vat.lua) -->
+    <export function="importVat" type="server" />
+    <export function="importVat" type="client" />
+    <export function="getVatRate" type="server" />
+    <export function="getVatRates" type="server" />
+    <export function="bookVat" type="server" />
+
+    <!-- fees -->
+    <export function="getFee" type="server" />
+    <export function="getFeeTarget" type="server" />
+
+    <!-- gov_web -->
+    <export function="getPublicTaxes" type="server" />
+</meta>

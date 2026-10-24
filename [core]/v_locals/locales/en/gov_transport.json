@@ -1,0 +1,19 @@
+{
+  "gov_transport.page.transport": "Public transport",
+  "gov_transport.pt.rail": "Railway",
+  "gov_transport.pt.fare_km": "Fare per km",
+  "gov_transport.pt.fare_min": "Minimum fare",
+  "gov_transport.pt.ic_supplement": "IC supplement (once per ticket)",
+  "gov_transport.pt.cost_ic": "Running cost per IC trip",
+  "gov_transport.pt.cost_rb": "Running cost per RB trip",
+  "gov_transport.pt.cost_stop": "Stop fee (per served stop)",
+  "gov_transport.ui.pt_fares": "Ticket prices",
+  "gov_transport.ui.pt_fares_hint": "Passengers buy a ticket before boarding. Price = distance (straight line between the stops) × fare per km, at least the minimum fare, + the IC supplement on IC trains.",
+  "gov_transport.ui.pt_fare_example": "Example, {km} km: RB {rb}, IC {ic}",
+  "gov_transport.ui.pt_costs": "Running costs",
+  "gov_transport.ui.pt_costs_hint": "Every trip pays its run fee (IC / RB) when it starts and the stop fee at every served stop, also the automatic trains.",
+  "gov_transport.ui.fare_receiver": "Ticket money goes to",
+  "gov_transport.ui.cost_payer": "Running costs paid by",
+  "gov_transport.ui.cost_receiver": "Running costs paid to",
+  "gov_transport.ui.pt_nothing_booked": "From nobody to nowhere: no running costs are booked."
+}

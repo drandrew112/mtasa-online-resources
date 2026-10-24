@@ -1,0 +1,15 @@
+{
+  "gov_health.ui.health_enabled": "State healthcare",
+  "gov_health.ui.hp_price": "Price of 1 HP",
+  "gov_health.ui.injury_prices": "Injury prices by severity (1 / 2 / 3)",
+  "gov_health.ui.add_injury": "Add injury type",
+  "gov_health.ui.injury_type": "Injury type (medsys id, e.g. gunshot)",
+  "gov_health.ui.severity_n": "Severity {n}",
+  "gov_health.page.health": "Healthcare",
+  "gov_health.ui.hospitals": "Who pays the treatment (per hospital)",
+  "gov_health.ui.default_payer": "Back to default (State Treasury pays)",
+  "gov_health.ui.hospital_missing": "Not in hospitals.json any more",
+  "gov_health.ui.hospitals_offline": "med_hospitals is not running: only the saved hospitals are listed",
+  "gov_health.ui.no_heal_marker": "This hospital has no treatment marker, only ambulance handovers are billed here.",
+  "gov_health.ui.patient_pays_hint": "The patient pays from their bank account (it may go into debt). The treatment marker does not say \"free of charge\". NPC patients pay nothing."
+}

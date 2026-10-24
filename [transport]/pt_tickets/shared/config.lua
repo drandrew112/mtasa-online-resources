@@ -1,12 +1,12 @@
 -- pt_tickets settings (server + client). See README.md.
--- Prices and who gets the ticket money are set on the /gov Transport page (v_gov setting
--- pt.<mode>); FALLBACK is used only while v_gov is not running.
+-- Prices and who gets the ticket money are set on the /gov Transport page (gov_transport setting
+-- pt.<mode>); FALLBACK is used only while gov_transport is not running.
 
 PTT = {
     OFFER_TIME = 60,          -- s: an open ticket sale (panel) expires after this
     SALE_RANGE = 15,          -- m: walking this far from where the panel opened closes it
 
-    FALLBACK = {              -- v_gov offline
+    FALLBACK = {              -- gov_transport offline
         rail = { fare_km = 100, fare_min = 50, ic_supplement = 500 },
     },
 

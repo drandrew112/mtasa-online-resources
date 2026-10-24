@@ -18,7 +18,7 @@ local function workCoreRunning()
     return res and getResourceState(res) == "running"
 end
 
--- the rates are adjustable on the /gov Works page (v_gov); Config.PAY.RATES are the defaults.
+-- the rates are adjustable on the /gov Works page (gov_works); Config.PAY.RATES are the defaults.
 -- param keys: <outcome>.base / <outcome>.per_minute (spaces of the outcome code -> "_")
 local function paramKey(outcome, field) return outcome:gsub(" ", "_") .. "." .. field end
 
@@ -35,19 +35,19 @@ do
 end
 
 local function govRunning()
-    local res = getResourceFromName("v_gov")
+    local res = getResourceFromName("gov_works")
     return res and getResourceState(res) == "running"
 end
 
 addEventHandler("onResourceStart", root, function(res)
-    if (res == getThisResource() or getResourceName(res) == "v_gov") and govRunning() then
-        exports.v_gov:registerWage(Config.PAY.WORK_ID, WAGE_PARAMS)
+    if (res == getThisResource() or getResourceName(res) == "gov_works") and govRunning() then
+        exports.gov_works:registerWage(Config.PAY.WORK_ID, WAGE_PARAMS)
     end
 end)
 
 local function rateValue(outcome, field, default)
     if govRunning() then
-        local v = exports.v_gov:getWage(Config.PAY.WORK_ID, paramKey(outcome, field))
+        local v = exports.gov_works:getWage(Config.PAY.WORK_ID, paramKey(outcome, field))
         if v then return v end
     end
     return default

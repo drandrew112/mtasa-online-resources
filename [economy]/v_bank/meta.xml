@@ -54,7 +54,7 @@
     <export function="withdrawMoney" type="server" />
     <export function="payMoney" type="server" />
 
-    <!-- bank website (answers with client events) and admin / v_gov (answers later) -->
+    <!-- bank website (answers with client events) and admin / gov_* (answers later) -->
     <export function="requestBankAccounts" type="server" />
     <export function="requestLedger" type="server" />
     <export function="requestTransfer" type="server" />

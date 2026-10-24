@@ -284,7 +284,7 @@ function getLaunderQueue(id)
     return c and c.launder or 0
 end
 
--- v_gov hourly company income tax: the founder is told (the row itself comes from v_bank)
+-- gov_tax hourly company income tax: the founder is told (the row itself comes from v_bank)
 addEvent("onGovCompanyTaxed", false)
 addEventHandler("onGovCompanyTaxed", root, function(companyId, tax, base)
     local c = CO.byId[tonumber(companyId)]

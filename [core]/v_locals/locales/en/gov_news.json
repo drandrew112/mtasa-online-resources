@@ -1,0 +1,15 @@
+{
+  "gov_news.page.news": "News",
+  "gov_news.ui.new_news": "New government news",
+  "gov_news.ui.news_title": "Title",
+  "gov_news.ui.news_body": "Text",
+  "gov_news.ui.news_send": "Send to everyone",
+  "gov_news.ui.news_hint": "Every player gets the news as a phone email in their own language. A language left empty falls back to another one.",
+  "gov_news.ui.news_not_mailed": "not mailed",
+  "gov_news.ui.confirm_delete_news": "Delete this news? The emails are taken back from every phone too.",
+  "gov_news.mail.sender": "Government of San Andreas",
+  "gov_news.err.news_empty": "Write the title and the text in at least one language.",
+  "gov_news.err.news_title": "Every filled-in language needs a title (max 120 characters).",
+  "gov_news.err.news_body": "Every filled-in language needs a text (max 4000 characters).",
+  "gov_news.err.news_unknown": "Unknown news."
+}

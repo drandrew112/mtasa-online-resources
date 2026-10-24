@@ -6,7 +6,7 @@
     <include resource="ui_core" />
     <include resource="ui_inac" />
     <include resource="v_ownveh" />
-    <include resource="v_gov" />
+    <include resource="gov_tax" />
 
     <!-- shared catalogue + config -->
     <script src="locals.lua" type="shared" />

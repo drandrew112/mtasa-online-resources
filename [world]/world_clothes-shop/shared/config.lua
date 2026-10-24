@@ -1,5 +1,5 @@
 -- world_clothes-shop / shared/config.lua
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 -- Clothes shops: interiors registered through world_interiors, a radar blip on every entrance,
 -- and skin changer markers inside. Every outfit costs the same (CLOTHES.price, cash).
 

@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 -- ui_browser :: dealership.lua (server)
 -- Turns a "buy" action fired on a vehicles-category site into a real purchase:
 -- charges the player (cash first, then Liberty Bank) and registers the car with

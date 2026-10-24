@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- biz_core / shared/config.lua
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 -- Tunables of the organization system. Prices are in euro, times in seconds
 -- unless the name says ms. Every simulation counter runs in ONLINE seconds of
 -- the founder (nothing happens while the founder is offline).
@@ -22,7 +22,7 @@ BIZ = {
     -- online simulation
     TICK_MS          = 60000,       -- one tick per online minute of the founder
     UPKEEP_INTERVAL  = 2 * 3600,    -- upkeep of every property + the office, in online seconds
-    PROPERTY_TAX_INTERVAL = 24 * 3600, -- property tax (v_gov rate x property price), in online seconds
+    PROPERTY_TAX_INTERVAL = 24 * 3600, -- property tax (gov_tax rate x property price), in online seconds
 
     -- temporary associates (founder + 3 associates = 4 members)
     MAX_ASSOCIATES   = 3,
@@ -52,7 +52,7 @@ BIZ = {
 BIZ.KIND_SUPPLY_DELIVER = "supply_deliver"
 BIZ.KIND_PASSIVE        = "passive"
 
---- the price of a property with VAT "real_estate" (v_gov) on top -> gross, vat. Illegal sites
+--- the price of a property with VAT "real_estate" (gov_tax) on top -> gross, vat. Illegal sites
 --- are bought without VAT (the state does not know about them).
 function BIZ.grossPrice(p)
     if not p then return 0, 0 end

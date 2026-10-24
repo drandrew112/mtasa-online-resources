@@ -15,7 +15,7 @@ function isBankReady()
     return BANK.started == true
 end
 
---- keys that count as legal company income for the hourly company tax (v_gov)
+--- keys that count as legal company income for the hourly company tax (gov_tax)
 function getTaxableKeys()
     local out = {}
     for key, def in pairs(TX_KEYS) do
@@ -56,7 +56,7 @@ function getBalance(id)
     return a and a.balance or false
 end
 
---- every cached state account: { info, ... } (v_gov)
+--- every cached state account: { info, ... } (gov_core)
 function getStateAccounts()
     local out = {}
     for _, a in pairs(ACC) do
@@ -78,7 +78,7 @@ function createCompanyAccount(companyId, name, founderAccountName)
     return true
 end
 
---- creates a state company account (v_gov; async: onBankAccountReady) -> true | false, err
+--- creates a state company account (gov_core; async: onBankAccountReady) -> true | false, err
 function createStateAccount(code, name, allowNegative, actor)
     code = tostring(code or ""):lower()
     if not code:match("^[a-z0-9_]+$") or #code < 3 or #code > 24 then return false, "bad_code" end

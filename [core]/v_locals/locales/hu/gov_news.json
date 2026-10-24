@@ -1,0 +1,15 @@
+{
+  "gov_news.page.news": "Hírek",
+  "gov_news.ui.new_news": "Új kormányzati hír",
+  "gov_news.ui.news_title": "Cím",
+  "gov_news.ui.news_body": "Szöveg",
+  "gov_news.ui.news_send": "Küldés mindenkinek",
+  "gov_news.ui.news_hint": "Minden játékos telefonos e-mailben kapja meg a hírt, a saját nyelvén. Az üresen hagyott nyelv helyett egy másik nyelvű változatot kap.",
+  "gov_news.ui.news_not_mailed": "nincs elküldve",
+  "gov_news.ui.confirm_delete_news": "Törlöd ezt a hírt? Az e-maileket is visszavonja minden telefonról.",
+  "gov_news.mail.sender": "San Andreas Kormánya",
+  "gov_news.err.news_empty": "Legalább egy nyelven add meg a címet és a szöveget.",
+  "gov_news.err.news_title": "Minden kitöltött nyelvhez kell cím (max. 120 karakter).",
+  "gov_news.err.news_body": "Minden kitöltött nyelvhez kell szöveg (max. 4000 karakter).",
+  "gov_news.err.news_unknown": "Ismeretlen hír."
+}

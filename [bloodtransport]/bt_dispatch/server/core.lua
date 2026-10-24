@@ -31,7 +31,7 @@ local function isRunning(name)
     return res and getResourceState(res) == "running"
 end
 
--- pay and XP: adjustable on the /gov Works page (v_gov), the BTD values are the defaults
+-- pay and XP: adjustable on the /gov Works page (gov_works), the BTD values are the defaults
 local WAGE_PARAMS = {
     { key = "base",        label = "Base pay (per service)",    default = BTD.PAY.BASE },
     { key = "delivered",   label = "Per delivered task",        default = BTD.PAY.DELIVERED },
@@ -42,8 +42,8 @@ local wageDefault = {}
 for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
 
 local function wage(key)
-    if isRunning("v_gov") then
-        local v = exports.v_gov:getWage(BTD.WORK_ID, key)
+    if isRunning("gov_works") then
+        local v = exports.gov_works:getWage(BTD.WORK_ID, key)
         if v then return v end
     end
     return wageDefault[key]
@@ -55,8 +55,8 @@ function BTD.currentPay()
 end
 
 addEventHandler("onResourceStart", root, function(res)
-    if (res == getThisResource() or getResourceName(res) == "v_gov") and isRunning("v_gov") then
-        exports.v_gov:registerWage(BTD.WORK_ID, WAGE_PARAMS)
+    if (res == getThisResource() or getResourceName(res) == "gov_works") and isRunning("gov_works") then
+        exports.gov_works:registerWage(BTD.WORK_ID, WAGE_PARAMS)
     end
 end)
 

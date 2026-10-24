@@ -1,0 +1,29 @@
+<meta>
+    <info author="DrAndrew112" name="gov_works" version="1.0.0" type="script"
+          description="Work pay set by the state: payer (system / state account / private company), pay + XP parameters, wage multiplier, income tax rate key per work; /gov page Works" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/works.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the Works page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- works (work_core, the work resources) -->
+    <export function="registerWage" type="server" />
+    <export function="getWage" type="server" />
+    <export function="getWorkPayer" type="server" />
+    <export function="getWorkMultiplier" type="server" />
+    <export function="getIncomeTaxRate" type="server" />
+
+    <!-- the other gov_* resources -->
+    <export function="getWorkList" type="server" />
+    <export function="getWorkTaxKeys" type="server" />
+    <export function="getStatePayerWorks" type="server" />
+    <export function="getPublicWorks" type="server" />
+</meta>

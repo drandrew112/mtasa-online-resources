@@ -8,7 +8,7 @@ addEvent("onRailServiceComplete")
 
 local Paid = {}        -- [tripId] = tick, guards against a double event
 
--- pay and XP numbers: adjustable on the /gov Works page (v_gov); TRAINDRIVER.PAY / XP are the
+-- pay and XP numbers: adjustable on the /gov Works page (gov_works); TRAINDRIVER.PAY / XP are the
 -- defaults. A PAY.BASE / XP.BASE line prefix gets "base_<prefix>" / "xp_base_<prefix>".
 local WAGE_PARAMS = {}
 do
@@ -39,21 +39,21 @@ local wageDefault = {}
 for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
 
 local function govRunning()
-    local res = getResourceFromName("v_gov")
+    local res = getResourceFromName("gov_works")
     return res and getResourceState(res) == "running"
 end
 
 local function wage(key)
     if govRunning() then
-        local v = exports.v_gov:getWage(TRAINDRIVER.WORK_ID, key)
+        local v = exports.gov_works:getWage(TRAINDRIVER.WORK_ID, key)
         if v then return v end
     end
     return wageDefault[key]
 end
 
 addEventHandler("onResourceStart", root, function(res)
-    if (res == getThisResource() or getResourceName(res) == "v_gov") and govRunning() then
-        exports.v_gov:registerWage(TRAINDRIVER.WORK_ID, WAGE_PARAMS)
+    if (res == getThisResource() or getResourceName(res) == "gov_works") and govRunning() then
+        exports.gov_works:registerWage(TRAINDRIVER.WORK_ID, WAGE_PARAMS)
     end
 end)
 

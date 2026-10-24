@@ -1,0 +1,20 @@
+<meta>
+    <info author="DrAndrew112" name="gov_treasury" version="1.0.0" type="script"
+          description="State money: overview, State Treasury + state company statements, transfers (state, payment, collection), standing orders, budget (30 days); /gov pages Overview, Treasury, Transfers, Budget" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/standing.lua" type="server" />
+    <script src="server/budget.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the pages, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- gov_web -->
+    <export function="getPublicFinance" type="server" />
+</meta>

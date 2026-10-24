@@ -1,0 +1,8 @@
+{
+  "gov_works.ui.multiplier": "Bérszorzó",
+  "gov_works.ui.params": "Bér- és XP-paraméterek",
+  "gov_works.ui.search_work": "Munka keresése...",
+  "gov_works.page.works": "Munkák",
+  "gov_works.err.bad_work": "Ismeretlen munka.",
+  "gov_works.err.bad_param": "Ismeretlen paraméter."
+}

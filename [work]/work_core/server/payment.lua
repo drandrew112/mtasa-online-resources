@@ -1,10 +1,10 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Work payments. Every work resource computes its own amounts and calls payWork() with an
 -- itemised breakdown; this module totals the items, applies the work's /gov wage multiplier, the
--- weekly multiplier and the income tax (v_gov rate key of the work), books the wage into the
--- player's bank account from the work's payer (v_gov: system / treasury / state or private
+-- weekly multiplier and the income tax (gov_works rate key of the work), books the wage into the
+-- player's bank account from the work's payer (gov_works: system / treasury / state or private
 -- company) and shows a timed, itemised receipt on the client (client/payment.lua). v_bank is a
--- soft dependency: payWork() fails cleanly while it is not running. Without v_gov the fallbacks
+-- soft dependency: payWork() fails cleanly while it is not running. Without gov_works / gov_tax the fallbacks
 -- of WORK.GOV_FALLBACK apply.
 --
 -- Event (source = the player):
@@ -37,11 +37,12 @@ function isResourceRunning(name)
     return res and getResourceState(res) == "running"
 end
 
-local function gov() return isResourceRunning("v_gov") and exports.v_gov or nil end
+local function gov() return isResourceRunning("gov_works") and exports.gov_works or nil end
+local function govTax() return isResourceRunning("gov_tax") and exports.gov_tax or nil end
 
 --- v_bank account id the income tax goes to, or nil = it disappears (the /gov Taxes page)
 local function incomeTaxTarget()
-    local g = gov()
+    local g = govTax()
     return g and tonumber(g:getTaxTarget("income")) or nil
 end
 

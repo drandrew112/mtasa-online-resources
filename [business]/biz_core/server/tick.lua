@@ -7,7 +7,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --   * every UPKEEP_INTERVAL online seconds the upkeep of every property and
 --     the office is paid; without money the company pauses (no production, no
 --     casino) and the payment is retried every tick
---   * every PROPERTY_TAX_INTERVAL online seconds the property tax (v_gov rate x the price of every
+--   * every PROPERTY_TAX_INTERVAL online seconds the property tax (gov_tax rate x the price of every
 --     legal property) goes to the State Treasury; it is forced (the account may go negative)
 --   * while not paused: onBizCompanyTick (companyId, seconds) for the activities
 
@@ -54,8 +54,8 @@ addEvent("onBizCompanyPaused", false)   -- (companyId, paused)
 
 --- the property tax of one interval -> amount, value (sum of the legal property prices), count
 local function propertyTaxOf(c)
-    local res = getResourceFromName("v_gov")
-    local rate = res and getResourceState(res) == "running" and tonumber(exports.v_gov:getPropertyTaxRate()) or 0
+    local res = getResourceFromName("gov_tax")
+    local rate = res and getResourceState(res) == "running" and tonumber(exports.gov_tax:getPropertyTaxRate()) or 0
     local value, n = 0, 0
     for _, u in pairs(c.units) do
         local p = BIZ.property(u.propertyId)
@@ -70,8 +70,8 @@ local function payPropertyTax(c)
     local tax, value, n, rate = propertyTaxOf(c)
     if tax <= 0 then return end
     -- to the state account set on the /gov Taxes page (none = the money disappears)
-    local res = getResourceFromName("v_gov")
-    local target = res and getResourceState(res) == "running" and tonumber(exports.v_gov:getTaxTarget("property")) or nil
+    local res = getResourceFromName("gov_tax")
+    local target = res and getResourceState(res) == "running" and tonumber(exports.gov_tax:getTaxTarget("property")) or nil
     local ok, err = MONEY.debitClean(c, tax, "tax.property",
         { count = n, value = value, rate = math.floor(rate * 1000 + 0.5) / 10 }, "", target)
     if not ok then

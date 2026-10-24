@@ -2,7 +2,7 @@
 
 Every bank balance of the server lives in MySQL (`bank_accounts`); every change of a balance is
 one row in `bank_ledger` with a **transaction key** from `shared/keys.lua`. Design and decisions:
-[DESIGN.md](DESIGN.md). Taxes, wages, fees and state companies are set in **v_gov** (`/gov`).
+[DESIGN.md](DESIGN.md). Taxes, wages, fees and state companies are set in the **gov_*** resources (`/gov`, `[government]`).
 
 - **personal** account: one per player account (created on the first login, or by the migration)
 - **company** account: one per biz_core organization — the **clean** money only (dirty money stays
@@ -54,7 +54,7 @@ local bank = exports.v_bank
 | `getAccountInfo(id)` | `{ id, number, kind, ownerRef, name, balance, status, allowNegative }` \| false |
 | `getBalance(id)` | number \| false |
 | `getStateAccounts()` | list of infos |
-| `getTaxableKeys()` | keys counting as legal company income (v_gov) |
+| `getTaxableKeys()` | keys counting as legal company income (gov_tax) |
 | `createCompanyAccount(companyId, name, founderAccount)` | true (async: `onBankAccountReady`) |
 | `createStateAccount(code, name, allowNegative, actor)` | true \| false, err |
 | `renameAccount(id, name)`, `setAccountStatus(id, "active"\|"frozen")`, `setAllowNegative(id, bool)`, `closeAccount(id)` | |
@@ -80,7 +80,7 @@ Every booking on a player's own account shows on the ui_core money HUD.
 - `requestBankAccounts(player)`, `requestLedger(player, id, beforeId, group)`,
   `requestTransfer(player, fromId, number, amount, note, confirm)` — answer with the client events
   `v_bank:accounts`, `v_bank:ledger`, `v_bank:transfer` (ui_browser Liberty Bank).
-- `bankCall(requestId, action, args, actor)` — admin panel / v_gov requests that answer later with
+- `bankCall(requestId, action, args, actor)` — admin panel / gov_* requests that answer later with
   `triggerEvent("<caller>:remoteResult", <caller root>, requestId, result)`; actions: search,
   account, ledger, stats, byNumber, adjust, transfer, status, overdraft, access, rename, close,
   createState.

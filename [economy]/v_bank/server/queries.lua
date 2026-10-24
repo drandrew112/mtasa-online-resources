@@ -8,7 +8,7 @@
 --   requestTransfer(player, fromId, number, amount, note, confirm)
 --                                                        -> "v_bank:transfer"  (stage, data)
 --
--- Admin / v_gov (answers later, like v_admin REMOTE.call):
+-- Admin / gov_* (answers later, like v_admin REMOTE.call):
 --   bankCall(requestId, action, args, actorAccount) -> true | false
 --   answer: triggerEvent("<caller resource>:remoteResult", <caller root>, requestId, result)
 
@@ -210,7 +210,7 @@ function requestTransfer(player, fromId, number, amount, note, confirm)
 end
 
 --------------------------------------------------------------------------------
--- admin panel / v_gov
+-- admin panel / gov_*
 --------------------------------------------------------------------------------
 
 local A = {}

@@ -3,7 +3,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 -- A vehicle in a bay that is not an on-duty ERM unit's vehicle (an off-duty ambulance or anything
 -- else) turns the bay marker red and its driver is warned. While it stays, the driver is fined
--- the bay fine (v_gov fee "bay_fine", fallback HOSP.BAY_FINE) every HOSP.BAY_FINE_INTERVAL through
+-- the bay fine (gov_tax fee "bay_fine", fallback HOSP.BAY_FINE) every HOSP.BAY_FINE_INTERVAL through
 -- v_bank forceTakeMoney (from the bank account, which may go negative). Getting out does not help:
 -- the fines go to whoever drove it in (or drives it now). The money reaches the State Treasury in
 -- one sum per offender when the vehicle has left the bay (fine.hospital_bay_income).
@@ -13,10 +13,10 @@ addEvent("onHospitalBayFine", false)  -- (player, vehicle, hospitalId, amount)
 
 local violators = {}  -- [vehicle] = { offender, nextFine, hospital, fined = { [name] = { total, count } } }
 
---- the fine per interval: /gov (v_gov fee), else the config
+--- the fine per interval: /gov (gov_tax fee), else the config
 local function bayFine()
-    if isResourceRunning("v_gov") then
-        local v = tonumber(exports.v_gov:getFee("bay_fine"))
+    if isResourceRunning("gov_tax") then
+        local v = tonumber(exports.gov_tax:getFee("bay_fine"))
         if v and v > 0 then return math.floor(v) end
     end
     return HOSP.BAY_FINE
@@ -26,7 +26,7 @@ end
 --- (no account set = the money just disappears)
 local function settle(v)
     if not v.fined or not isResourceRunning("v_bank") then return end
-    local target = isResourceRunning("v_gov") and tonumber(exports.v_gov:getFeeTarget("bay_fine")) or nil
+    local target = isResourceRunning("gov_tax") and tonumber(exports.gov_tax:getFeeTarget("bay_fine")) or nil
     if not target then v.fined = nil return end
     for name, f in pairs(v.fined) do
         if f.total > 0 then

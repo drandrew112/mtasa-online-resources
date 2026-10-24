@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
-if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
+if not VAT then loadstring(exports.gov_tax:importVat())() end -- VAT lib of gov_tax (shared/vat.lua)
 -- ui_browser :: core/util.lua
 -- Kozos segedfuggvenyek a virtualis bongeszohoz (szin- es URL-elemzes,
 -- szoveg-tordeles). Minden a globalis BR tablaba kerul, hogy a tobbi
@@ -8,7 +8,7 @@ if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov 
 BR = BR or {}
 
 -- The shown price of a <product>: a vehicle (model="...", sold by dealership.lua) costs its
--- markup price plus VAT "vehicles" (v_gov); every other product shows its markup text.
+-- markup price plus VAT "vehicles" (gov_tax); every other product shows its markup text.
 function BR.productPrice(attrs)
     local price = attrs.price or ""
     local net = attrs.model and tonumber((price:gsub("[^%d]", "")))

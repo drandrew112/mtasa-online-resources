@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="gov_transport" version="1.0.0" type="script"
+          description="Public transport money set by the state: fares (per km, minimum, IC supplement) + fare receiver, running costs per trip / stop + payer and receiver, per mode (rail now); /gov page Public transport" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/transport.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the Public transport page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- pt_tickets (fares), rw_timetable (running costs) -->
+    <export function="getTransportSettings" type="server" />
+    <export function="getTransportFare" type="server" />
+    <export function="bookFareIncome" type="server" />
+    <export function="chargeTransportCost" type="server" />
+</meta>

@@ -1,0 +1,53 @@
+<meta>
+    <info author="DrAndrew112" name="gov_core" version="1.0.0" type="script"
+          description="The state, foundation of the gov_* resources: settings (owned per module), roles + members, change log, state companies, the /gov panel shell (grouped menu, pages of the modules), the module helper lib (importLib)" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="web_api" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/lib.lua" type="server" />
+    <script src="server/config.lua" type="server" />
+    <script src="server/db.lua" type="server" />
+    <script src="server/settings.lua" type="server" />
+    <script src="server/companies.lua" type="server" />
+    <script src="server/registry.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/panel.lua" type="client" />
+
+    <!-- the /gov page: in game only, opened through web_api's loader (no <html> entry); the
+         pages of the modules are loaded by web/js/gov.js from the module resources -->
+    <file src="web/index.html" type="client" />
+    <file src="web/css/gov.css" type="client" />
+    <file src="web/js/gov.js" type="client" />
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- the module lib + registration (gov_* resources) -->
+    <export function="importLib" type="server" />
+    <export function="registerModule" type="server" />
+    <export function="reply" type="server" />
+    <export function="isGovReady" type="server" />
+
+    <!-- settings, roles, log -->
+    <export function="getSetting" type="server" />
+    <export function="setSetting" type="server" />
+    <export function="getStoredSettings" type="server" />
+    <export function="getGovRole" type="server" />
+    <export function="canGov" type="server" />
+    <export function="log" type="server" />
+
+    <!-- state companies -->
+    <export function="getStateCompanies" type="server" />
+    <export function="getStateCompany" type="server" />
+    <export function="getStateCompanyById" type="server" />
+
+    <!-- client: a page of another gov_* resource on the same relay (gov_votes /vote) -->
+    <export function="openGovPage" type="client" />
+</meta>

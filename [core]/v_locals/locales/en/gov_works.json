@@ -1,0 +1,8 @@
+{
+  "gov_works.ui.multiplier": "Wage multiplier",
+  "gov_works.ui.params": "Pay and XP parameters",
+  "gov_works.ui.search_work": "Search works...",
+  "gov_works.page.works": "Works",
+  "gov_works.err.bad_work": "Unknown work.",
+  "gov_works.err.bad_param": "Unknown parameter."
+}

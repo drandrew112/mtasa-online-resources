@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="Public transport tickets" version="1.0.0" type="script"
-          description="Ticket sales for public transport: DX ticket panel, distance fares + IC supplement (v_gov), railway adapter (rw_passengers boarding, put off at the ticket's last stop); buses later" />
+          description="Ticket sales for public transport: DX ticket panel, distance fares + IC supplement (gov_transport), railway adapter (rw_passengers boarding, put off at the ticket's last stop); buses later" />
     <min_mta_version server="1.6.0" client="1.6.0" />
 
     <!-- ================= SHARED ================= -->

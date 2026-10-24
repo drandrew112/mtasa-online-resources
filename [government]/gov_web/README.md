@@ -9,8 +9,10 @@ income tax, property tax, personal income tax keys, VAT per product group), fees
 healthcare prices, public pay (payer, multiplier, income tax key per work) and the state votes (open
 ones with the number of voters, closed ones with the results).
 
-Read only, no login. The only export, `govWebState` (`http="true"`), returns
-`exports.v_gov:getPublicState()`: a snapshot v_gov rebuilds every minute, with money data of the last
-30 days only and no account names.
+Read only, no login. The only export, `govWebState` (`http="true"`), returns a snapshot gov_web
+rebuilds every minute from the public exports of the gov_* modules (`gov_treasury:getPublicFinance`,
+`gov_tax:getPublicTaxes`, `gov_works:getPublicWorks`, `gov_health:getPublicHealth`,
+`gov_votes:getPublicVotes`): money data of the last 30 days only, no account names. A module that
+does not run leaves its part empty.
 
-Depends on `web_api`, `ui_browser`, `v_gov` (`<include>`).
+Depends on `web_api`, `ui_browser`, `gov_core` (`<include>`). Lives in `[government]` since 2026-10-24.

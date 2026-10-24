@@ -636,10 +636,10 @@ CREATE TABLE IF NOT EXISTS `bank_ledger` (
 
 
 -- ============================================================================
--- gov_settings / gov_members / gov_tax_runs / gov_log  (owner: [economy]/v_gov)
+-- gov_settings / gov_members / gov_log (owner: [government]/gov_core), gov_tax_runs (gov_tax)
 -- ----------------------------------------------------------------------------
--- The /gov panel: state settings (JSON values, defaults in v_gov
--- shared/config.lua), gov roles, the claimed hours of the hourly company tax
+-- The /gov panel: state settings (JSON values, defaults in the owner gov_*
+-- module's config), gov roles, the claimed hours of the hourly company tax
 -- (one instance runs an hour) and the change log.
 -- ============================================================================
 

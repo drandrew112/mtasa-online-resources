@@ -1,0 +1,15 @@
+{
+  "gov_health.ui.health_enabled": "Állami egészségügy",
+  "gov_health.ui.hp_price": "1 HP ára",
+  "gov_health.ui.injury_prices": "Sérülések ára súlyosság szerint (1 / 2 / 3)",
+  "gov_health.ui.add_injury": "Új sérüléstípus",
+  "gov_health.ui.injury_type": "Sérüléstípus (medsys azonosító, pl. gunshot)",
+  "gov_health.ui.severity_n": "{n}. fokozat",
+  "gov_health.page.health": "Egészségügy",
+  "gov_health.ui.hospitals": "Ki fizeti a kezelést (kórházanként)",
+  "gov_health.ui.default_payer": "Vissza az alapértékre (a Kincstár fizet)",
+  "gov_health.ui.hospital_missing": "Már nincs benne a hospitals.json-ban",
+  "gov_health.ui.hospitals_offline": "A med_hospitals nem fut: csak a mentett kórházak látszanak",
+  "gov_health.ui.no_heal_marker": "Ennek a kórháznak nincs kezelési markere, itt csak a mentős átadás számlázódik.",
+  "gov_health.ui.patient_pays_hint": "A beteg a bankszámlájáról fizet (mínuszba is mehet). A kezelési markeren nem szerepel, hogy ingyenes. NPC betegek nem fizetnek."
+}

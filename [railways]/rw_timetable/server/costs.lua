@@ -1,18 +1,18 @@
--- Running costs of the services (v_gov /gov Transport page, setting pt.rail): every trip pays its
+-- Running costs of the services (gov_transport /gov Transport page, setting pt.rail): every trip pays its
 -- run fee by train category (IC / RB) when it starts and the stop fee for every served stop
--- (doors open for DOOR_MIN). Who pays it to whom is set in v_gov; "from nobody to nowhere"
+-- (doors open for DOOR_MIN). Who pays it to whom is set in gov_transport; "from nobody to nowhere"
 -- books nothing. Auto trains (rw_auto) pay the same as player-driven ones.
 
 local charged = {}      -- [consistId] = { trip, stops = served stops already charged }
 
 local function govRunning()
-    local r = getResourceFromName("v_gov")
+    local r = getResourceFromName("gov_transport")
     return r and getResourceState(r) == "running"
 end
 
 local function charge(kind, params)
     if not govRunning() then return end
-    local ok, err = pcall(function() return exports.v_gov:chargeTransportCost("rail", kind, params) end)
+    local ok, err = pcall(function() return exports.gov_transport:chargeTransportCost("rail", kind, params) end)
     if not ok then outputDebugString("[rw_timetable] running cost: " .. tostring(err), 2) end
 end
 

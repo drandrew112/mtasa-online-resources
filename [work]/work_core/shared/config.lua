@@ -12,7 +12,7 @@ WORK = {
 
     DEFAULT_COLOR = { 245, 166, 35 },  -- work colour when registerWork gets none
 
-    -- payWork without v_gov: income tax rate and the exempt works (v_gov owns these normally);
+    -- payWork without gov_works / gov_tax: income tax rate and the exempt works (gov_works / gov_tax own these normally);
     -- the payer is then always "system"
     GOV_FALLBACK = { incomeTax = 0.12, exempt = { ems = true, bloodtransport = true } },
 

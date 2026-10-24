@@ -1,0 +1,25 @@
+<meta>
+    <info author="DrAndrew112" name="gov_health" version="1.0.0" type="script"
+          description="State healthcare: treatment prices (HP + injuries by severity), who pays and who receives per hospital, charging med_hospitals treatments; /gov page Healthcare" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="locals.lua" type="server" />
+    <script src="server/health.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- the Healthcare page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- med_hospitals -->
+    <export function="healthcareCost" type="server" />
+    <export function="chargeHealthcare" type="server" />
+    <export function="getHealthcarePayer" type="server" />
+    <export function="isHealthcarePaidByPatient" type="server" />
+
+    <!-- gov_web -->
+    <export function="getPublicHealth" type="server" />
+</meta>

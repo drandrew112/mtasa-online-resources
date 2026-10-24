@@ -18,7 +18,7 @@ local function running(name)
     return res and getResourceState(res) == "running"
 end
 
--- pay, fine and XP numbers: adjustable on the /gov Works page (v_gov), the CTL values are the defaults
+-- pay, fine and XP numbers: adjustable on the /gov Works page (gov_works), the CTL values are the defaults
 local WAGE_PARAMS = {
     { key = "per_action",   label = "Pay per traffic action",          default = CTL.PAY_PER_ACTION },
     { key = "minute_bonus", label = "Time bonus per minute (factor)",  default = CTL.PAY_MINUTE_BONUS },
@@ -39,16 +39,16 @@ local wageDefault = {}
 for _, p in ipairs(WAGE_PARAMS) do wageDefault[p.key] = p.default end
 
 local function wage(key)
-    if running("v_gov") then
-        local v = exports.v_gov:getWage(CTL.WORK_ID, key)
+    if running("gov_works") then
+        local v = exports.gov_works:getWage(CTL.WORK_ID, key)
         if v then return v end
     end
     return wageDefault[key]
 end
 
 addEventHandler("onResourceStart", root, function(res)
-    if (res == getThisResource() or getResourceName(res) == "v_gov") and running("v_gov") then
-        exports.v_gov:registerWage(CTL.WORK_ID, WAGE_PARAMS)
+    if (res == getThisResource() or getResourceName(res) == "gov_works") and running("gov_works") then
+        exports.gov_works:registerWage(CTL.WORK_ID, WAGE_PARAMS)
     end
 end)
 

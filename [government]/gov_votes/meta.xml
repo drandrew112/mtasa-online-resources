@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="gov_votes" version="1.0.0" type="script"
+          description="State votes: ministers open them (/gov Votes page), every logged-in player votes with /vote, results after the close; public part of gov_web" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/votes.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/vote.lua" type="client" />
+
+    <!-- the Votes page (loaded by the /gov shell of gov_core) and the /vote page (gov_core:openGovPage) -->
+    <file src="web/js/pages.js" type="client" />
+    <file src="web/vote.html" type="client" />
+    <file src="web/js/vote.js" type="client" />
+
+    <!-- gov_web -->
+    <export function="getPublicVotes" type="server" />
+</meta>

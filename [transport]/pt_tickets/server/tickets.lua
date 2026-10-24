@@ -1,8 +1,8 @@
 -- Ticket sales of every public transport mode. A mode adapter (server/rail.lua; buses later,
 -- in this file or from another resource through openTicketSale) builds an offer = the stops the
--- player can travel to from where the vehicle stands now; this file prices it (v_gov
+-- player can travel to from where the vehicle stands now; this file prices it (gov_transport
 -- getTransportFare), shows the DX panel (client/panel.lua), takes the money (v_bank pt.ticket,
--- cash first, then the bank) and books the same sum to the fare receiver (v_gov bookFareIncome).
+-- cash first, then the bank) and books the same sum to the fare receiver (gov_transport bookFareIncome).
 --
 -- offer = {
 --   mode = "rail", ref = <trip / run id>, line = "IC 2101", title = <name, text or message>,
@@ -45,8 +45,8 @@ end
 ------------------------------------------------------------------ prices
 
 function PT.fare(mode, km, category)
-    if running("v_gov") then
-        local ok, price = pcall(function() return exports.v_gov:getTransportFare(mode, km, category) end)
+    if running("gov_transport") then
+        local ok, price = pcall(function() return exports.gov_transport:getTransportFare(mode, km, category) end)
         if ok and tonumber(price) then return math.floor(tonumber(price)) end
     end
     local f = PTT.FALLBACK[mode] or PTT.FALLBACK.rail
@@ -125,9 +125,9 @@ addEventHandler("pt:sale:buy", resourceRoot, function(i)
                 or L.msg("pt_tickets.sale.payment_failed", { error = tostring(err) }))
             return
         end
-        if running("v_gov") then
+        if running("gov_transport") then
             params.player = getPlayerName(player):gsub("#%x%x%x%x%x%x", "")
-            pcall(function() exports.v_gov:bookFareIncome(offer.mode, price, params) end)
+            pcall(function() exports.gov_transport:bookFareIncome(offer.mode, price, params) end)
         end
     end
     offers[player] = nil

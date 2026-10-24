@@ -110,7 +110,7 @@ Account number: `LB-<kind digit>-<6-digit id>` – `1` personal, `2` company, `9
 (e.g. `LB-9-000001` treasury). Built from the id, so it never collides.
 
 Taxes, healthcare billing, wage payers and the management of state companies belong to **v_gov**
-(`[economy]/v_gov/DESIGN.md`); v_bank only books.
+(`[government]/gov_core/DESIGN.md`; since 2026-10-24 split into the gov_* resources); v_bank only books.
 
 Closing: a sold company's account is emptied by the sale (6.3) and set to `closed`. Closed and frozen
 accounts refuse every booking except `admin.*` keys.
@@ -262,7 +262,7 @@ requestLedger(player, id, beforeId, limit, keyPrefix) -> true | false, err
 
 ### 6.1 Work wages
 
-The payer of every work is a v_gov setting (`exports.v_gov:getWorkPayer(workId)`, Works page):
+The payer of every work is a v_gov setting (`exports.gov_works:getWorkPayer(workId)`, Works page):
 system (the default), the treasury, a state company or a private company. Seeded: `ems`,
 `bloodtransport` → treasury, `atc` → SA Control. Without v_gov every work is paid from system.
 
@@ -362,9 +362,9 @@ the "bank" edit becomes an `admin.credit`/`admin.debit` of the difference.
 | --- | --- | --- |
 | **v_bank** | all | rewrite: `server/db.lua` (schema, migration), `server/accounts.lua` (cache, resync), `server/ledger.lua`, `server/exports.lua`, `shared/keys.lua`, `locals.lua` (tx texts), README |
 | main.sql | – | the three tables |
-| **v_gov** (new) | – | taxes, healthcare billing, wage payers, state companies, `/gov` panel – see `v_gov/DESIGN.md` |
+| **v_gov** (new) | – | taxes, healthcare billing, wage payers, state companies, `/gov` panel – see `[government]/gov_core/DESIGN.md` |
 | **work_core** | `server/payment.lua`, `shared/config.lua` | payer per work (6.1), income tax line, `chargeNegative` |
-| med_hospitals | `server/heal.lua`, `server/handover.lua` | `v_gov:chargeHealthcare` before `healCompletely` |
+| med_hospitals | `server/heal.lua`, `server/handover.lua` | `gov_health:chargeHealthcare` before `healCompletely` |
 | avi_controller | `server/main.lua:186-188` | drop own `forceTakeMoney`, `payWork(..., { chargeNegative = true })`; wages from SA Control |
 | avi_traffic, avi_controller | `server/sim.lua` + a fee handler | `onAviFlightFee` at takeoff / landing / overflight exit; `atc.airspace_fee` into SA Control (6.5) |
 | med_hospitals | `server/restricted.lua` | per-violation sum, one treasury credit when the bay is left (6.4) |

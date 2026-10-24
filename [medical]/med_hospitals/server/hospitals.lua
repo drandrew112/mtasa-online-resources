@@ -2,7 +2,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Loads hospitals.json and builds the world elements of every hospital:
 --   bays      ambulance parking markers (handover status of the unit, server/handover.lua)
 --   handover  stretcher handover markers (patient handed over, server/handover.lua)
---   heal      treatment marker (server/heal.lua); hosp.paid = the patient pays it (v_gov)
+--   heal      treatment marker (server/heal.lua); hosp.paid = the patient pays it (gov_health)
 --
 -- hospital = { id, name, interior, dimension, x, y, z (objective point),
 --              bays = { point }, handover = { point }, heal = point | nil, release = point | nil }
@@ -168,10 +168,10 @@ local function buildHospital(h)
     if h.heal then buildPoint(h, h.heal, "heal", 1, HOSP.HEAL_COLOR) end
 end
 
--- Does the patient pay the treatment at this hospital? (v_gov per-hospital payer; free without v_gov)
+-- Does the patient pay the treatment at this hospital? (gov_health per-hospital payer; free without gov_health)
 function isPaidHospital(h)
-    if not isResourceRunning("v_gov") then return false end
-    return exports.v_gov:isHealthcarePaidByPatient(h.id) == true
+    if not isResourceRunning("gov_health") then return false end
+    return exports.gov_health:isHealthcarePaidByPatient(h.id) == true
 end
 
 -- marker data hosp.paid of every treatment marker: the label says free / paid by the patient
@@ -270,13 +270,13 @@ addEventHandler("onResourceStart", resourceRoot, function()
 end)
 
 addEventHandler("onResourceStart", root, function(res)
-    if getResourceName(res) == "v_gov" then return refreshHealPayment() end
+    if getResourceName(res) == "gov_health" then return refreshHealPayment() end
     if getResourceName(res) ~= "work_core" then return end
     for point in eachPoint("handover") do setHandoverVisibility(point.marker) end
 end)
 
 addEventHandler("onResourceStop", root, function(res)
-    if getResourceName(res) == "v_gov" then
+    if getResourceName(res) == "gov_health" then
         for point in eachPoint("heal") do
             if isElement(point.marker) then setElementData(point.marker, HOSP_DATA.PAID, false) end
         end
