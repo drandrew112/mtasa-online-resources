@@ -78,6 +78,7 @@
     <file src="locales/en/ui_browser.json" />
     <file src="locales/en/ui_core.json" />
     <file src="locales/en/ui_download.json" />
+    <file src="locales/en/v_modloader.json" />
     <file src="locales/en/ui_inac.json" />
     <file src="locales/en/ui_interactobject.json" />
     <file src="locales/en/ui_pause.json" />
@@ -172,6 +173,7 @@
     <file src="locales/hu/ui_browser.json" />
     <file src="locales/hu/ui_core.json" />
     <file src="locales/hu/ui_download.json" />
+    <file src="locales/hu/v_modloader.json" />
     <file src="locales/hu/ui_inac.json" />
     <file src="locales/hu/ui_interactobject.json" />
     <file src="locales/hu/ui_pause.json" />

@@ -23,6 +23,12 @@ PAUSE_SETTINGS = {
     { id = "gfx_detail",         type = "boolean" },
     { id = "gfx_dynamicsky",     type = "boolean" },
     { id = "gfx_vehiclelights",  type = "boolean" },
+    -- Settings > Models (v_modloader reads these keys too, for its own restart)
+    { id = "models_vehicles",    type = "boolean" },
+    { id = "models_objects",     type = "boolean" },
+    { id = "models_weapons",     type = "boolean" },
+    { id = "models_skins",       type = "boolean" },
+    { id = "models_autoupdate",  type = "boolean" },
 }
 
 -- Strings come from the client, so only short identifiers are accepted.

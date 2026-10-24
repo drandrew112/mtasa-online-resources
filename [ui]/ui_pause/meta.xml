@@ -27,4 +27,5 @@
 	<export function="getSettingValue" type="client" />
 	<export function="setSettingValue" type="client" />
 	<export function="stepSetting" type="client" />
+	<export function="runSettingAction" type="client" />
 </meta>

@@ -145,6 +145,54 @@ local function mailAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function modloaderAvailable()
+    local res = getResourceFromName("v_modloader")
+    return res and getResourceState(res) == "running"
+end
+
+-- Settings > Models: a toggle kept by v_modloader
+local function modelToggle(id, key)
+    return {
+        id = id, label = L(key), type = "toggle", desc = L(key .. "_desc"),
+        available = modloaderAvailable,
+        get = function() return modloaderAvailable() and exports.v_modloader:getModelOption(id) end,
+        set = function(v) if modloaderAvailable() then exports.v_modloader:setModelOption(id, v) end end,
+    }
+end
+
+local function mbText(bytes)
+    return ("%.1f MB"):format((tonumber(bytes) or 0) / 1048576)
+end
+
+-- "3 new · 24.1 MB" / "Up to date"
+local function modelDownloadValue()
+    if not modloaderAvailable() then return nil end
+    local s = exports.v_modloader:getModelStatus("vehicles")
+    if not s then return nil end
+    if s.checking then return L("ui_pause.settings.models_checking") end
+    if exports.v_modloader:isModelDownloadActive() then return L("ui_pause.settings.models_downloading") end
+    local pending = (s.new or 0) + (s.outdated or 0)
+    if pending == 0 then return L("ui_pause.settings.models_up_to_date") end
+    return L("ui_pause.settings.models_pending", { count = pending, size = mbText(s.bytes) })
+end
+
+-- the downloaded count and the names of the models still to download
+local function modelDownloadDesc()
+    local base = L("ui_pause.settings.models_download_desc")
+    if not modloaderAvailable() then return base end
+    local s = exports.v_modloader:getModelStatus("vehicles")
+    if not s then return base end
+    local text = base .. "\n" .. L("ui_pause.settings.models_downloaded", { ok = s.ok or 0, total = s.total or 0, size = mbText(s.totalBytes) })
+    local names = s.names or {}
+    if #names > 0 then
+        local shown = {}
+        for i = 1, math.min(#names, 8) do shown[i] = names[i] end
+        if #names > 8 then shown[#shown + 1] = L("ui_pause.settings.models_more", { count = #names - 8 }) end
+        text = text .. "\n" .. L("ui_pause.settings.models_new", { names = table.concat(shown, ", ") })
+    end
+    return text
+end
+
 -- Language choice options (v_locals: { value, label } -> choice { id, label }).
 -- The list only changes with a v_locals restart, so it is fetched once.
 local languageOptions = nil
@@ -304,6 +352,27 @@ SETTINGS_TREE = {
                 available = vehLightsAvailable,
                 get = function() return vehLightsAvailable() and exports.dynamic_lighting_vehicles:isVehicleLightsEnabled() end,
                 set = function(v) if vehLightsAvailable() then exports.dynamic_lighting_vehicles:setVehicleLightsEnabled(v) end end,
+            },
+        },
+    },
+    {
+        -- v_modloader keeps the values; the ids are in PAUSE_SETTINGS (saved on the account)
+        id = "models", label = L("ui_pause.settings.models"),
+        items = {
+            modelToggle("models_vehicles", "ui_pause.settings.models_vehicles"),
+            modelToggle("models_objects", "ui_pause.settings.models_objects"),
+            modelToggle("models_weapons", "ui_pause.settings.models_weapons"),
+            modelToggle("models_skins", "ui_pause.settings.models_skins"),
+            modelToggle("models_autoupdate", "ui_pause.settings.models_autoupdate"),
+            {
+                -- an action row: Enter starts the download (the menu hides meanwhile)
+                id = "models_download", label = L("ui_pause.settings.models_download"), type = "action",
+                desc = modelDownloadDesc,
+                available = modloaderAvailable,
+                valueText = modelDownloadValue,
+                run = function()
+                    if modloaderAvailable() then exports.v_modloader:downloadModels("vehicles") end
+                end,
             },
         },
     },
@@ -701,6 +770,11 @@ local function handleSettingsKey(key)
         local enabled = (not item.available) or item.available()
         if not enabled then return end
 
+        if item.type == "action" then
+            if key == "enter" and item.run then item.run() end
+            return
+        end
+
         local newValue
         if item.type == "toggle" then
             newValue = not (item.get() and true or false)
@@ -753,6 +827,9 @@ addEventHandler("onClientKey", root, function(key, press)
 
     -- Same while the virtual browser (ui_browser) is open.
     if getElementData(localPlayer, "browserOpen") then return end
+
+    -- the download screen (v_modloader models) is up; the menu comes back after it
+    if getElementData(localPlayer, "download_screen") then return end
 
     if not pauseMenuOpen then
         -- v_introduce: while the server introduction runs only the panel it teaches may open
@@ -1114,6 +1191,7 @@ local function drawSettingsTab(x, y, w, h)
         if enabled and item.valueText then
             value = item.valueText() or value
         end
+        if enabled and item.type == "action" and value == "" then value = ">" end
         local selector = enabled and (item.type == "toggle" or item.type == "range" or item.type == "choice")
         itemRows[i] = { label = item.label, value = value, selector = selector, dim = not enabled }
     end
@@ -1161,7 +1239,10 @@ local function contextHelp()
             return c and (L("ui_pause.pausemenu.open_settings", { label = c.label })) or ""
         end
         local item = SETTINGS_TREE[settingsCat].items[settingsSel]
-        return item and item.desc or ""
+        local desc = item and item.desc
+        if type(desc) == "function" then desc = desc() end
+        -- one line in the footer
+        return desc and tostring(desc):gsub("\n", "  ·  ") or ""
     end
     return ""
 end
@@ -1291,6 +1372,36 @@ addEventHandler("onClientResourceStop", resourceRoot, function()
     if pauseMenuOpen then
         setPauseMenuOpen(false)
     end
+end)
+
+--------------------------------------------------------------------------------
+-- Settings > Models download: the menu hides for the download screen and comes
+-- back on the same row (v_modloader events)
+--------------------------------------------------------------------------------
+
+local reopenAfterDownload = nil -- { tab, cat, sel } while hidden for a download
+
+addEvent("onClientModelDownloadStart")
+addEventHandler("onClientModelDownloadStart", root, function()
+    if not pauseMenuOpen then return end
+    reopenAfterDownload = { tab = selectedTab, cat = settingsCat, sel = settingsSel }
+    setPauseMenuOpen(false)
+    -- no walking around under the download screen
+    uicore:toggleMoveControls(false)
+end)
+
+addEvent("onClientModelDownloadFinish")
+addEventHandler("onClientModelDownloadFinish", root, function()
+    local r = reopenAfterDownload
+    if not r then return end
+    reopenAfterDownload = nil
+    if not getElementData(localPlayer, "loaded") then
+        uicore:toggleMoveControls(true)
+        return
+    end
+    setPauseMenuOpen(true)
+    selectedTab, settingsCat, settingsSel = r.tab, r.cat, r.sel
+    focus = "content"
 end)
 
 --------------------------------------------------------------------------------

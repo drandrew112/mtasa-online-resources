@@ -137,5 +137,11 @@
   "acc_menu.weekly.money": "Money {money}x",
   "acc_menu.weekly.time_trial": "Time trial of the week",
   "acc_menu.weekly.trial_line": "{name} · limit {time} s · reward €{reward}",
-  "acc_menu.weekly.xp": "XP {xp}x"
+  "acc_menu.weekly.xp": "XP {xp}x",
+  "acc_menu.models.reminder": "{count} vehicle models are not downloaded ({size})",
+  "acc_menu.models.reminder_hint": "SETTINGS › MODELS  ›",
+  "acc_menu.models.notice_title": "Vehicle models are not downloaded",
+  "acc_menu.models.notice_body": "The custom vehicle models of the server are not downloaded automatically. Download them in Settings › Models (about {size}), then turn on Custom vehicle models.\n\nTurn on Auto-update there to get every new vehicle model when you log in.",
+  "acc_menu.models.notice_open": "Open Models settings",
+  "acc_menu.models.notice_later": "Later"
 }

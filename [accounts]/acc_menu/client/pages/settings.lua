@@ -20,6 +20,12 @@ addEventHandler("ui_pause:onClientSettingChanged", localPlayer, function()
     if Menu.open then refresh() end
 end)
 
+-- Settings > Models: the download state shown in the rows / description changed
+addEvent("onClientModelStatusChange")
+addEventHandler("onClientModelStatusChange", localPlayer, function()
+    if Menu.open and categories then refresh() end
+end)
+
 -- our own categories, after the ui_pause ones
 local function ownCategories()
     local prefs = (Menu.data.profile or {}).preferences or {}
@@ -100,10 +106,12 @@ VIEWS.settings_cat = {
         for i, item in ipairs(cat.items) do
             local ry = y + (i - 1) * rh
             if ry + rh > y + h then break end
+            local isAction = item.type == "action"
             local focused = row("view", "si_" .. tostring(item.id), x, ry, lw, rh - S(4), {
                 activate = function() stepItem(cat, item, 1) end,
-                left = function() stepItem(cat, item, -1) end,
-                right = function() stepItem(cat, item, 1) end,
+                -- an action only runs on Enter / click, the arrows move the focus
+                left = (not isAction) and function() stepItem(cat, item, -1) end or nil,
+                right = (not isAction) and function() stepItem(cat, item, 1) end or nil,
             })
             if focused then focusedItem = item end
             local color = item.available and C.white or C.dim
@@ -119,6 +127,10 @@ VIEWS.settings_cat = {
             elseif item.type == "toggle" then
                 chip(item.valueText, vx + vw - textW(item.valueText, 0.85, FONT.rowB) - S(14), ry + (rh - S(4)) / 2 - S(11),
                     item.value and C.money or C.dim, item.value and tocolor(110, 220, 130, 40) or nil)
+            elseif item.type == "action" then
+                -- Enter / click runs it (Settings > Models > Download)
+                local label = tostring(item.valueText or "") .. "   ›"
+                chip(label, vx + vw - textW(label, 0.85, FONT.rowB) - S(14), ry + (rh - S(4)) / 2 - S(11), C.white, C.accentDim)
             else
                 text("‹   " .. tostring(item.valueText) .. "   ›", vx, ry, vw, rh - S(4), C.white, 1.0, FONT.rowB, "right")
             end

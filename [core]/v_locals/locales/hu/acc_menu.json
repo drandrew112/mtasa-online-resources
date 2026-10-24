@@ -137,5 +137,11 @@
   "acc_menu.weekly.money": "Pénz {money}x",
   "acc_menu.weekly.time_trial": "A hét időfutama",
   "acc_menu.weekly.trial_line": "{name} · limit {time} mp · jutalom €{reward}",
-  "acc_menu.weekly.xp": "XP {xp}x"
+  "acc_menu.weekly.xp": "XP {xp}x",
+  "acc_menu.models.reminder": "{count} jármű modell nincs letöltve ({size})",
+  "acc_menu.models.reminder_hint": "BEÁLLÍTÁSOK › MODELLEK  ›",
+  "acc_menu.models.notice_title": "A jármű modellek nincsenek letöltve",
+  "acc_menu.models.notice_body": "A szerver egyedi jármű modelljei nem töltődnek le automatikusan. Töltsd le őket a Beállítások › Modellek alatt (kb. {size}), majd kapcsold be az Egyedi jármű modellek opciót.\n\nAz automatikus frissítést ott bekapcsolva minden új jármű modell letöltődik belépéskor.",
+  "acc_menu.models.notice_open": "Modellek beállításai",
+  "acc_menu.models.notice_later": "Később"
 }

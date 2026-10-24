@@ -17,5 +17,11 @@
 	<file src="bgs/1.png" type="client" />
 
 	<export function="isDownloadingActive" type="client" />
+	<!-- external download screen (v_modloader): beginExternal(title, cancellable),
+	     setExternalProgress(doneBytes, totalBytes, label), endExternal();
+	     Backspace -> local event onClientDownloadCancel on the caller's resource root -->
+	<export function="beginExternal" type="client" />
+	<export function="setExternalProgress" type="client" />
+	<export function="endExternal" type="client" />
 </meta>
 

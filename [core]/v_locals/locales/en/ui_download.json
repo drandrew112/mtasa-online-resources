@@ -23,5 +23,8 @@
   "ui_download.mg.win_continue": "Press Enter to keep playing",
   "ui_download.mg.snake_start": "Press any arrow key to start",
   "ui_download.mg.controls_move": "Arrow keys / WASD: move",
-  "ui_download.mg.controls_back": "Backspace: back to menu"
+  "ui_download.mg.controls_back": "Backspace: back to menu",
+  "ui_download.client.downloading_external": "Downloading {label}  ({progresz}%)",
+  "ui_download.client.cancel_hint": "Press BACKSPACE to cancel the download",
+  "ui_download.client.cancel_leave_game": "Leave the mini-game (BACKSPACE) to cancel the download"
 }

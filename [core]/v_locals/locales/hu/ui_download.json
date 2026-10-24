@@ -23,5 +23,8 @@
   "ui_download.mg.win_continue": "Nyomj Entert a folytatáshoz",
   "ui_download.mg.snake_start": "Nyomj egy nyílbillentyűt az indításhoz",
   "ui_download.mg.controls_move": "Nyilak / WASD: mozgás",
-  "ui_download.mg.controls_back": "Backspace: vissza a menübe"
+  "ui_download.mg.controls_back": "Backspace: vissza a menübe",
+  "ui_download.client.downloading_external": "Letöltés: {label}  ({progresz}%)",
+  "ui_download.client.cancel_hint": "A letöltés megszakításához nyomd meg a BACKSPACE-t",
+  "ui_download.client.cancel_leave_game": "A letöltés megszakításához előbb lépj ki a minijátékból (BACKSPACE)"
 }

@@ -5,5 +5,6 @@
   "acc_loading.screen.setting_up": "Erőforrások beállítása",
   "acc_loading.screen.streaming": "betöltés",
   "acc_loading.screen.waiting": "várakozás",
-  "acc_loading.screen.world": "Világ"
+  "acc_loading.screen.world": "Világ",
+  "acc_loading.screen.custom_models": "Egyedi modellek"
 }

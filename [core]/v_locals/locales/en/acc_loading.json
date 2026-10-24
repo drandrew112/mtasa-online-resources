@@ -5,5 +5,6 @@
   "acc_loading.screen.setting_up": "Setting up resources",
   "acc_loading.screen.streaming": "loading",
   "acc_loading.screen.waiting": "waiting",
-  "acc_loading.screen.world": "World"
+  "acc_loading.screen.world": "World",
+  "acc_loading.screen.custom_models": "Custom models"
 }

@@ -1,0 +1,9 @@
+{
+  "v_modloader.title": "Modellek",
+  "v_modloader.download.title_vehicles": "Jármű modellek",
+  "v_modloader.download.progress": "{title}: {index}/{count} fájl · {done} / {total} MB",
+  "v_modloader.download.done": "{count} jármű modell letöltve.",
+  "v_modloader.download.failed": "A letöltés véget ért, {count} fájl hibás. Próbáld újra később.",
+  "v_modloader.download.cancelled": "Letöltés megszakítva · {ok} / {total} jármű modell letöltve",
+  "v_modloader.download.up_to_date": "Minden jármű modell naprakész."
+}

@@ -1,16 +1,18 @@
--- v_modloader (server): scans the model folders, validates the files, keeps meta.xml and
--- models.json up to date (/modloader update) and tells clients which mods to load.
+-- v_modloader (server): scans the model folders, validates the files, keeps meta.xml,
+-- models.json and manifest.json up to date (/modloader update) and sends clients the
+-- manifest of the mods (files, sizes, md5). The client decides what to download / load.
 -- One broken file never stops anything: it is logged, skipped and the rest goes on.
 
 local META, TEMPLATE, META_TMP = "meta.xml", "meta.changethis.xml", "meta.new.xml"
 local EXTS = { "dff", "txd", "col" }
 local EXT_CODE = { dff = "d", txd = "t", col = "c" }
 
-local served = {}           -- [category][id] = "dtc" subset, mods that are in meta.xml (downloaded by clients)
+local served = {}           -- [category][id] = { c = "dtc" subset, f = { {p, s, h} }, n = name, a = added }, mods in meta.xml
 local pendingCount = 0      -- valid mods on disk that are not in meta.xml yet
 local scanErrors = {}       -- last scan: error lines
 local clientErrors = {}     -- [key] = { count = n, text = "..." }
 local lastServed = {}       -- [player] = tick of last list sent
+local playerStatus = {}     -- [player] = { [category] = { ok = n, total = n } } (client reports)
 
 -- ---------------------------------------------------------------------------
 -- Logging (console + logs/modloader.log)
@@ -200,6 +202,91 @@ local function syncNames(mods)
 end
 
 -- ---------------------------------------------------------------------------
+-- manifest.json (path -> size, md5, added); clients compare it with their downloads
+-- ---------------------------------------------------------------------------
+
+local function readWhole(path)
+    local ok, data, size = pcall(function()
+        local f = fileOpen(path, true)
+        if not f then return nil end
+        local n = fileGetSize(f)
+        local d = fileRead(f, n)
+        fileClose(f)
+        return d, n
+    end)
+    if ok then return data, size end
+end
+
+local function fileSize(path)
+    local ok, size = pcall(function()
+        local f = fileOpen(path, true)
+        if not f then return nil end
+        local n = fileGetSize(f)
+        fileClose(f)
+        return n
+    end)
+    return ok and size or nil
+end
+
+local function loadManifest()
+    if not fileExists(MODLOADER.MANIFEST_FILE) then return {} end
+    local text = readWhole(MODLOADER.MANIFEST_FILE)
+    local data = text and text ~= "" and fromJSON(text)
+    if type(data) ~= "table" then
+        log("WARN", MODLOADER.MANIFEST_FILE .. " is not valid JSON - rebuilt")
+        return {}
+    end
+    return data
+end
+
+local function saveManifest(manifest)
+    local paths = {}
+    for p in pairs(manifest) do paths[#paths + 1] = p end
+    table.sort(paths)
+    local out = { "{" }
+    for i, p in ipairs(paths) do
+        local e = manifest[p]
+        out[#out + 1] = ('  %s: { "size": %d, "md5": %s, "added": %d }%s'):format(
+            jsonString(p), tonumber(e.size) or 0, jsonString(e.md5 or ""), tonumber(e.added) or 0, i < #paths and "," or "")
+    end
+    out[#out + 1] = "}"
+    local f = fileCreate(MODLOADER.MANIFEST_FILE)
+    if not f then log("ERROR", "cannot write " .. MODLOADER.MANIFEST_FILE); return false end
+    fileWrite(f, table.concat(out, "\n") .. "\n")
+    fileClose(f)
+    return true
+end
+
+--- Brings the manifest in line with the valid files on disk. rehash = hash every file
+--- (/modloader update), else only new files and files whose size changed (startup).
+local function syncManifest(files, rehash)
+    local manifest = loadManifest()
+    local now, changed = getRealTime().timestamp, false
+    local present = {}
+    for _, path in ipairs(files) do
+        present[path] = true
+        local e = manifest[path]
+        local size = fileSize(path)
+        if not e or rehash or tonumber(e.size) ~= size or not e.md5 or e.md5 == "" then
+            local data = readWhole(path)
+            local hash = data and md5(data)
+            if hash and (not e or e.md5 ~= hash or tonumber(e.size) ~= size) then
+                -- "added" moves with every content change: the model counts as new again
+                manifest[path] = { size = size or #data, md5 = hash, added = now }
+                changed = true
+            elseif not hash then
+                log("ERROR", path .. ": cannot hash file")
+            end
+        end
+    end
+    for path in pairs(manifest) do
+        if not present[path] then manifest[path] = nil; changed = true end
+    end
+    if changed or not fileExists(MODLOADER.MANIFEST_FILE) then saveManifest(manifest) end
+    return manifest
+end
+
+-- ---------------------------------------------------------------------------
 -- meta.xml regeneration
 -- ---------------------------------------------------------------------------
 
@@ -222,6 +309,11 @@ local function rebuildMeta()
     for _, path in ipairs(res.files) do
         local node = xmlCreateChild(root, "file")
         xmlNodeSetAttribute(node, "src", path)
+        local cat = modloaderCategory(path:match("^(%a+)/"))
+        if cat and cat.download == "manual" then
+            -- not downloaded on join; the client asks for it (downloadFile)
+            xmlNodeSetAttribute(node, "download", "false")
+        end
         now[path] = true
     end
     xmlSaveFile(root)
@@ -235,6 +327,7 @@ local function rebuildMeta()
     for p in pairs(before) do if not now[p] then removed = removed + 1 end end
 
     syncNames(res.mods)
+    syncManifest(res.files, true)
     log("INFO", ("meta.xml rebuilt: %d file(s) (+%d / -%d), %d error(s), %d warning(s)"):format(
         #res.files, added, removed, #res.errors, #res.warnings))
     flushLog()
@@ -256,18 +349,29 @@ addEventHandler("onResourceStart", resourceRoot, function()
         inMeta = {}
     end
 
+    local manifest = syncManifest(res.files, false)
+    local names = loadNames() or {}
+
     local total = 0
     for _, cat in ipairs(MODLOADER.categories) do
         served[cat.name] = {}
         for id, files in pairs(res.mods[cat.name]) do
-            local codes, complete = "", true
+            local codes, complete, list, added = "", true, {}, 0
             for _, ext in ipairs(EXTS) do
                 if files[ext] then
-                    if inMeta[files[ext]] then codes = codes .. EXT_CODE[ext] else complete = false end
+                    if inMeta[files[ext]] then
+                        codes = codes .. EXT_CODE[ext]
+                        local e = manifest[files[ext]] or {}
+                        list[#list + 1] = { p = files[ext], s = tonumber(e.size) or 0, h = e.md5 or "" }
+                        added = math.max(added, tonumber(e.added) or 0)
+                    else
+                        complete = false
+                    end
                 end
             end
             if complete then
-                served[cat.name][id] = codes
+                local name = names[cat.name] and names[cat.name][tostring(id)]
+                served[cat.name][id] = { c = codes, f = list, n = (name and name ~= "") and name or nil, a = added }
                 total = total + 1
             else
                 pendingCount = pendingCount + 1
@@ -297,6 +401,25 @@ addEventHandler("onResourceStop", resourceRoot, flushLog)
 -- Client sync
 -- ---------------------------------------------------------------------------
 
+-- The Settings > Models values are ui_pause settings (accData "uipause.setting.<id>", 1 / 0).
+-- ui_pause pushes them after the login; they ride along here too, so a restart of this
+-- resource keeps the player's choice. Not logged in: nothing (config defaults).
+local SETTING_KEY = "uipause.setting."
+
+local function savedOptions(player)
+    if getElementData(player, "isLogged") ~= true then return nil end
+    local ids = { MODLOADER.AUTOUPDATE_SETTING }
+    for _, cat in ipairs(MODLOADER.categories) do ids[#ids + 1] = cat.setting end
+    local out = {}
+    for _, id in ipairs(ids) do
+        local ok, raw = pcall(function() return exports.v_mysql:getAccData(player, SETTING_KEY .. id) end)
+        if ok and raw ~= nil and raw ~= false then
+            out[id] = raw == 1 or raw == "1" or raw == true
+        end
+    end
+    return out
+end
+
 addEvent("modloader:request", true)
 addEventHandler("modloader:request", resourceRoot, function()
     local player = client
@@ -304,10 +427,38 @@ addEventHandler("modloader:request", resourceRoot, function()
     local now = getTickCount()
     if lastServed[player] and now - lastServed[player] < 5000 then return end
     lastServed[player] = now
-    triggerClientEvent(player, "modloader:mods", resourceRoot, served)
+    triggerClientEvent(player, "modloader:mods", resourceRoot, served, savedOptions(player))
 end)
 
-addEventHandler("onPlayerQuit", root, function() lastServed[source] = nil end)
+addEventHandler("onPlayerQuit", root, function()
+    lastServed[source] = nil
+    playerStatus[source] = nil
+end)
+
+-- the client's download state per category (after its check and after every download)
+addEvent("modloader:status", true)
+addEventHandler("modloader:status", resourceRoot, function(status)
+    local player = client
+    if not isElement(player) or type(status) ~= "table" then return end
+    local clean = {}
+    for _, cat in ipairs(MODLOADER.categories) do
+        local s = status[cat.name]
+        if type(s) == "table" then
+            clean[cat.name] = { ok = math.floor(tonumber(s.ok) or 0), total = math.floor(tonumber(s.total) or 0) }
+        end
+    end
+    playerStatus[player] = clean
+end)
+
+-- one finished / cancelled download of a client
+addEvent("modloader:downloaded", true)
+addEventHandler("modloader:downloaded", resourceRoot, function(files, bytes, failed, cancelled)
+    local player = client
+    if not isElement(player) then return end
+    log("INFO", ("client %s: download %s, %d file(s), %.1f MB, %d failed"):format(getPlayerName(player),
+        cancelled == true and "cancelled" or "finished", tonumber(files) or 0, (tonumber(bytes) or 0) / 1048576, tonumber(failed) or 0))
+    flushLog()
+end)
 
 addEvent("modloader:report", true)
 addEventHandler("modloader:report", resourceRoot, function(errors)
@@ -356,7 +507,17 @@ addCommandHandler("modloader", function(player, _, sub)
         for _, cat in ipairs(MODLOADER.categories) do
             local n = 0
             for _ in pairs(served[cat.name] or {}) do n = n + 1 end
-            say(player, ("%s (%d-%d): %d active"):format(cat.name, cat.min, cat.max, n))
+            local full, partial, none = 0, 0, 0
+            for _, st in pairs(playerStatus) do
+                local s = st[cat.name]
+                if s then
+                    if s.total > 0 and s.ok >= s.total then full = full + 1
+                    elseif s.ok > 0 then partial = partial + 1
+                    else none = none + 1 end
+                end
+            end
+            say(player, ("%s (%d-%d, %s download): %d active | online players: %d complete, %d partial, %d none"):format(
+                cat.name, cat.min, cat.max, cat.download, n, full, partial, none))
         end
         local ce = 0
         for _ in pairs(clientErrors) do ce = ce + 1 end

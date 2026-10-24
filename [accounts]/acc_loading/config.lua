@@ -6,7 +6,7 @@
 LOADING_REQUIRED = {
     "ui_inac", "ui_pause", "ui_phone", "v_admin", "v_introduce", "v_weekly",
     "v_socialpanel", "v_jobmanager", "v_jobcreator", "v_arenawar",
-    "med_erm", "work_ems", "rw_loco", "shader_colors",
+    "med_erm", "work_ems", "rw_loco", "shader_colors", "v_modloader",
     "world_clothes-shop", "world_ferriswheel",
     -- resources whose shared configs / tables hold texts (v_locals L.config or own gate)
     "v_stats", "v_radar", "v_nametags", "v_customs", "v_els",

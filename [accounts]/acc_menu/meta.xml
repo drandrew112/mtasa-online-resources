@@ -18,6 +18,7 @@
     <script src="client/pages/profile.lua" type="client" />
     <script src="client/pages/social.lua" type="client" />
     <script src="client/pages/settings.lua" type="client" />
+    <script src="client/pages/models.lua" type="client" />
 
     <file src="files/Roboto.ttf" />
     <file src="files/RobotoB.ttf" />

@@ -48,6 +48,17 @@ local function draw()
     local bx, bw = sw / 2 - 230 * S, 460 * S
     dxDrawRectangle(bx, y + 27 * S, bw, 4 * S, C_BAR)
     dxDrawRectangle(bx, y + 27 * S, bw * ((worldStage or setupDone) and 1 or (total > 0 and done / total or 0)), 4 * S, C_ACC)
+    -- v_modloader: the enabled + downloaded custom models being loaded
+    local res = getResourceFromName("v_modloader")
+    if res and getResourceState(res) == "running" then
+        local ok, mDone, mTotal, mFinished, mActive = pcall(function() return exports.v_modloader:getLoadProgress() end)
+        if ok then
+            y = y + 40 * S
+            local value = mFinished and "✓" or (mActive and ("%d / %d"):format(mDone or 0, mTotal or 0) or L("acc_loading.screen.waiting"))
+            row(y, L("acc_loading.screen.custom_models"), value, mFinished and C_OK or (mActive and C_TEXT or C_DIM),
+                mActive and not mFinished and C_TEXT or C_DIM)
+        end
+    end
     if mode ~= "fresh" then
         y = y + 40 * S
         row(y, L("acc_loading.screen.world"), worldStage and L("acc_loading.screen.streaming") or L("acc_loading.screen.waiting"),

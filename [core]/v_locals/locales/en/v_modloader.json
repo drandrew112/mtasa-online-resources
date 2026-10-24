@@ -1,0 +1,9 @@
+{
+  "v_modloader.title": "Models",
+  "v_modloader.download.title_vehicles": "Vehicle models",
+  "v_modloader.download.progress": "{title}: {index}/{count} files · {done} / {total} MB",
+  "v_modloader.download.done": "{count} vehicle models downloaded.",
+  "v_modloader.download.failed": "Download finished, {count} file(s) failed. Try again later.",
+  "v_modloader.download.cancelled": "Download cancelled · {ok} / {total} vehicle models downloaded",
+  "v_modloader.download.up_to_date": "Every vehicle model is up to date."
+}

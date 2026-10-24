@@ -59,8 +59,10 @@ function getSettingsCategories()
         local items = {}
         for ii, item in ipairs(cat.items) do
             local value = currentValue(item)
+            local desc = item.desc
+            if type(desc) == "function" then desc = desc() end
             items[ii] = {
-                id = item.id, label = item.label, desc = item.desc, type = item.type,
+                id = item.id, label = item.label, desc = desc, type = item.type,
                 min = item.min, max = item.max, step = item.step, suffix = item.suffix,
                 options = optionsOf(item), value = value, valueText = valueTextOf(item, value),
                 available = isAvailable(item),
@@ -75,6 +77,15 @@ function getSettingValue(id)
     local item = findItem(id)
     if not item then return nil end
     return currentValue(item)
+end
+
+-- runs an "action" item (e.g. Settings > Models > Download vehicle models)
+function runSettingAction(id)
+    local item = findItem(id)
+    if not item or item.type ~= "action" or not item.run or not isAvailable(item) then return false end
+    item.run()
+    triggerEvent("ui_pause:onClientSettingChanged", localPlayer, item.id, nil)
+    return true
 end
 
 function setSettingValue(id, value)
@@ -105,6 +116,10 @@ end
 function stepSetting(id, dir)
     local item = findItem(id)
     if not item or not isAvailable(item) then return nil end
+    if item.type == "action" then
+        runSettingAction(id)
+        return nil
+    end
     dir = (tonumber(dir) or 1) < 0 and -1 or 1
     local cur = currentValue(item)
     local new

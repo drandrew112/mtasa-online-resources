@@ -55,7 +55,12 @@ addEvent("download:finished", true)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     local download_active = exports["ui_download"]:isDownloadingActive()
     if download_active then
-        addEventHandler("download:finished", root, init_panels)
+        -- one-shot: a later download (resource restart, v_modloader) must not rebuild the panels
+        local function onFinished()
+            removeEventHandler("download:finished", root, onFinished)
+            init_panels()
+        end
+        addEventHandler("download:finished", root, onFinished)
     else
         init_panels()
     end
