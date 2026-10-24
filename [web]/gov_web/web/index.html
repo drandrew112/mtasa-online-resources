@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>State of San Andreas - Open government</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/gov_web.css">
+</head>
+<body>
+    <header class="osa-topbar gw-top">
+        <a class="gw-brand" href="#overview">
+            <svg class="gw-logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="10" fill="var(--gw-accent)"/><path d="M8 30h24M10 27h20M12 17v9M17 17v9M23 17v9M28 17v9M9 15l11-7 11 7z" stroke="#1a1300" stroke-width="2.4" stroke-linejoin="round" fill="none"/></svg>
+            <span><b>State of San Andreas</b><small>Open government</small></span>
+        </a>
+        <nav class="gw-nav">
+            <a href="#overview">Overview</a>
+            <a href="#budget">Budget</a>
+            <a href="#taxes">Taxes</a>
+            <a href="#fees">Fees</a>
+            <a href="#works">Public pay</a>
+            <a href="#votes">Votes</a>
+        </nav>
+        <div class="gw-updated" id="updated">–</div>
+    </header>
+
+    <main class="gw-wrap">
+        <section id="overview">
+            <h1>The state at a glance</h1>
+            <p class="gw-lead" id="lead">Loading…</p>
+            <div class="gw-kpis" id="kpis"></div>
+            <div class="gw-card"><h2>Treasury: daily income and expense</h2><div id="daily"></div>
+                <div class="gw-legend"><span><i class="in"></i>Income</span><span><i class="out"></i>Expense</span></div></div>
+            <div class="gw-card"><h2>Treasury by category</h2><div id="treasuryGroups"></div></div>
+        </section>
+
+        <section id="budget">
+            <h1>Budget of the state companies</h1>
+            <p class="gw-lead">Income and expense of every state company. Wages of the public works they pay are listed under each one.</p>
+            <div class="gw-grid" id="companies"></div>
+        </section>
+
+        <section id="taxes">
+            <h1>Taxes</h1>
+            <div class="gw-grid">
+                <div class="gw-card"><h2>Company and property tax</h2><div id="corpTax"></div></div>
+                <div class="gw-card"><h2>Personal income tax keys</h2><div id="incomeTax"></div></div>
+            </div>
+            <div class="gw-card"><h2>VAT by product group</h2><p class="gw-muted">VAT is added on top of the shop price and goes to the State Treasury.</p><div id="vat"></div></div>
+        </section>
+
+        <section id="fees">
+            <h1>Fees, fines and healthcare</h1>
+            <div class="gw-grid">
+                <div class="gw-card"><h2>Fees and fines</h2><div id="feeList"></div></div>
+                <div class="gw-card"><h2>State healthcare</h2><div id="health"></div></div>
+            </div>
+        </section>
+
+        <section id="works">
+            <h1>Public pay</h1>
+            <p class="gw-lead">Who pays each work, its wage multiplier and its income tax key.</p>
+            <div class="gw-card"><div id="workList"></div></div>
+        </section>
+
+        <section id="votes">
+            <h1>State votes</h1>
+            <p class="gw-lead">Citizens vote in game with <b>/vote</b>. Results are published when a vote closes.</p>
+            <div id="voteList"></div>
+        </section>
+
+        <footer class="gw-foot" id="foot">Money data of the last 30 days only.</footer>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/gov_web.js"></script>
+</body>
+</html>

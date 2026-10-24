@@ -70,6 +70,11 @@ TX_KEYS = {
     -- state (v_gov)
     ["tax.company_income"] = { from = C, to = "treasury", force = true, params = { "hour", "base", "rate" } },
     ["tax.income"]         = { from = P, to = "treasury", force = true, params = { "work", "key", "rate" } },
+    -- VAT on top of a shop price: the buyer paid net + VAT to the shop (that money disappears or
+    -- went to the shop side); v_gov books the VAT part to the treasury from nothing
+    ["tax.vat"]            = { from = "system", to = "treasury", params = { "group", "item", "net", "rate" } },
+    -- property tax of an organization, every 24 online hours (biz_core)
+    ["tax.property"]       = { from = C, to = "treasury", force = true, params = { "count", "value", "rate" } },
     ["health.care"]        = { from = "treasury", to = "system", force = true,
                                params = { "patient", "account", "hospital", "hp", "injuries", "task" } },
     ["gov.transfer"]       = { from = S, to = S, force = true, params = { "note" } },

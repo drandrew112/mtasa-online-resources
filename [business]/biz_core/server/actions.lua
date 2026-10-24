@@ -72,13 +72,14 @@ function createCompany(player, name, officeId)
 
     -- the registration fee goes to the State Treasury, the office price disappears
     local regFee = fee("register", BIZ.REG_FEE)
-    local total = regFee + p.price
+    local gross, vat = BIZ.grossPrice(p)
+    local total = regFee + gross
     if (tonumber(b:getPlayerBalance(player)) or 0) < total then return fail("not_enough_money", { total = total }) end
     local office = BIZ.propertyName(officeId)
     if regFee > 0 and b:takeBankMoney(player, regFee, "biz.register_fee", { company = clean }) ~= true then
         return fail("not_enough_money", { total = total })
     end
-    if b:takeBankMoney(player, p.price, "biz.office_purchase", { property = office }) ~= true then
+    if b:takeBankMoney(player, gross, "biz.office_purchase", { property = office }) ~= true then
         if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
         return fail("not_enough_money", { total = total })
     end
@@ -91,7 +92,7 @@ function createCompany(player, name, officeId)
         ACTION.creating[key] = nil
         if isElement(player) then
             if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
-            b:giveBankMoney(player, p.price, "biz.office_refund", { property = office })
+            b:giveBankMoney(player, gross, "biz.office_refund", { property = office })
             NOTIFY.player(player, L.msg("biz_core.register.failed_" .. code))
         end
     end
@@ -107,6 +108,7 @@ function createCompany(player, name, officeId)
                 return refund("db")
             end
             DB.exec("UPDATE biz_companies SET hq_unit_id = ? WHERE id = ?", unitId, id)
+            VAT.book("real_estate", p.price, vat, office)
             -- the bank account of the clean money; the record picks it up on onBankAccountReady
             b:createCompanyAccount(id, clean, acc)
             CO.load(acc, player, function(c)
@@ -146,7 +148,8 @@ function moveHeadquarters(player, officeId)
     if not p or p.kind ~= "office" then return fail("bad_office") end
     local old = CO.office(c)
     if old and old.propertyId == officeId then return fail("already_owned") end
-    if CO.balance(c) < p.price then return fail("not_enough_money", { total = p.price }) end
+    local gross = BIZ.grossPrice(p)
+    if CO.balance(c) < gross then return fail("not_enough_money", { total = gross }) end
     local acc = c.account
     UNIT.buy(c, officeId, acc, function(u, err)
         if not u then
@@ -246,7 +249,8 @@ function buyProperty(player, propertyId)
     if p.kind == "office" then return fail("use_move_hq") end
     if CO.hasProperty(c, propertyId) then return fail("already_owned") end
     if p.activity and not ACT.list[p.activity] then return fail("activity_offline") end
-    if CO.balance(c) < p.price then return fail("not_enough_money", { total = p.price }) end
+    local gross = BIZ.grossPrice(p)
+    if CO.balance(c) < gross then return fail("not_enough_money", { total = gross }) end
     UNIT.buy(c, propertyId, c.account, function(u, err)
         if not u then
             NOTIFY.player(player, L.msg("biz_core.property.buy_failed"))

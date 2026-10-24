@@ -156,6 +156,8 @@ addEventHandler("wp_shop:buy", resourceRoot, function(shopId, id, kind, count)
         return
     end
     local item = getWeaponNameFromID(id) or tostring(id)
+    local net, vat = price, 0
+    price, vat = VAT.split("weapons", net)   -- the VAT is on top of the list price
     local paidFrom = pay(player, price, item)
     if not paidFrom then
         result(player, false, L.msg("wp_shop.msg.no_money"), id, "no_money")
@@ -167,6 +169,7 @@ addEventHandler("wp_shop:buy", resourceRoot, function(shopId, id, kind, count)
         result(player, false, L.msg("wp_shop.msg.failed"))
         return
     end
+    VAT.book("weapons", net, vat, item)
     local msg = kind == "weapon" and L.msg("wp_shop.msg.bought_weapon", { price = price })
         or L.msg("wp_shop.msg.bought_ammo", { ammo = ammo, price = price })
     result(player, true, msg, id)

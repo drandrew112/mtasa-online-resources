@@ -47,9 +47,12 @@ local function chargeFrom(player, pot, amount)
     return true
 end
 
+--- the claim price with VAT "services" on top -> gross, vat, net
 local function insuranceCost()
     local c = PHONE_CONFIG.contactByKey("insurance")
-    return (c and tonumber(c.claimCost)) or 1000
+    local net = (c and tonumber(c.claimCost)) or 1000
+    local gross, vat = VAT.split("services", net)
+    return gross, vat, net
 end
 
 -- The caller's wrecked vehicles: { { id, modelName, plate }, ... }
@@ -100,7 +103,7 @@ local function insuranceClaim(player, idStr)
         return
     end
 
-    local cost = insuranceCost()
+    local cost, vat, net = insuranceCost()
     local pot = fundingSource(player, cost)
     if not pot then
         PhoneServer.toast(player, L.msg("ui_phone.contacts.not_enough_money_need_in_bank", { cost = cost }))
@@ -121,6 +124,7 @@ local function insuranceClaim(player, idStr)
         return
     end
 
+    VAT.book("services", net, vat, "Insurance claim")
     PhoneServer.toast(player, L.msg("ui_phone.contacts.insurance_restored_your_for_from", { model_name = target.modelName, cost = cost, pot = pot == "bank" and L.msg("ui_phone.contacts.your_bank") or "cash" }))
     pushInsurance(player)   -- row disappears; the list may now be empty
 end
@@ -148,20 +152,23 @@ PhoneServer.on("contacts:action", function(player, contactKey, actionKey)
     local action = PHONE_CONFIG.contactActionByKey(contactKey, actionKey)
     if not action then return end
 
-    if action.cost and getPlayerMoney(player) < action.cost then
-        PhoneServer.toast(player, L.msg("ui_phone.contacts.not_enough_money_need", { cost = action.cost }))
+    local cost, vat = VAT.split("services", action.cost or 0)
+    if action.cost and getPlayerMoney(player) < cost then
+        PhoneServer.toast(player, L.msg("ui_phone.contacts.not_enough_money_need", { cost = cost }))
         return
     end
 
     if contactKey == "julia" and actionKey == "heal" then
-        takePlayerMoney(player, action.cost)
-        exports.ui_core:showMoney(player, "take", action.cost, "cash")
+        takePlayerMoney(player, cost)
+        exports.ui_core:showMoney(player, "take", cost, "cash")
+        VAT.book("services", action.cost, vat, "Julia: heal")
         setElementHealth(player, 100)
         PhoneServer.toast(player, L.msg("ui_phone.contacts.julia_patched_you_up"))
 
     elseif contactKey == "julia" and actionKey == "armor" then
-        takePlayerMoney(player, action.cost)
-        exports.ui_core:showMoney(player, "take", action.cost, "cash")
+        takePlayerMoney(player, cost)
+        exports.ui_core:showMoney(player, "take", cost, "cash")
+        VAT.book("services", action.cost, vat, "Julia: armour")
         setPedArmor(player, 100)
         PhoneServer.toast(player, L.msg("ui_phone.contacts.julia_refilled_your_armour"))
 

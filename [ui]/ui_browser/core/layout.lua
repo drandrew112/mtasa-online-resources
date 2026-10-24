@@ -477,7 +477,7 @@ handlers.product = function(ctx, node, x, w, y)
 
     local id = node.attrs.id or ""
     local name = node.attrs.name or L("ui_browser.layout.product")
-    local price = node.attrs.price or ""
+    local price = BR.productPrice(node.attrs)
     local path = resolveAsset(ctx, BR.productImage(node.attrs))
     local hasImg = path and fileExists(path)
     local imgH = hasImg and S(124) or 0

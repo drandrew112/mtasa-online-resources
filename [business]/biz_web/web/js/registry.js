@@ -62,7 +62,7 @@
     function officeRow(o, on, cur) {
         return `<div class="br-office${on ? ' on' : ''}${cur ? ' cur' : ''}" data-id="${esc(o.id)}">
             <span class="th">${photo(o.building)}</span>
-            <b>${esc(o.name)}</b><span class="p">${cur ? 'current' : money(o.price)}</span>
+            <b>${esc(o.name)}</b><span class="p">${cur ? 'current' : money((o.gross ?? o.price))}</span>
             <small>${esc(o.city || '')} · ${esc(tierName(o))} · upkeep ${money(o.upkeep)} / 2 h online</small></div>`;
     }
 
@@ -88,8 +88,8 @@
         setPhoto($('pickPhoto'), o, o ? `${o.city || ''} · ${tierName(o)} office` : '');
         $('sumFee').textContent = money(state.regFee);
         $('sumOfficeLabel').textContent = o ? 'Headquarters: ' + o.name : 'Headquarters';
-        $('sumOffice').textContent = o ? money(o.price) : '–';
-        $('sumTotal').textContent = o ? money(state.regFee + o.price) : '–';
+        $('sumOffice').textContent = o ? money((o.gross ?? o.price)) : '–';
+        $('sumTotal').textContent = o ? money(state.regFee + (o.gross ?? o.price)) : '–';
         $('bank').textContent = money(state.bank);
         const name = $('orgName').value.trim();
         const nameOk = name.length >= (state.nameMin || 3);
@@ -127,7 +127,7 @@
         drawPins(map2, 'm:', cur, moveTo, id => { if (id !== cur) { moveTo = id; renderMine(); } });
         const o = state.offices.find(x => x.id === moveTo);
         $('moveBtn').disabled = !o;
-        $('moveBtn').textContent = o ? 'Move headquarters (' + money(o.price) + ')' : 'Move headquarters';
+        $('moveBtn').textContent = o ? 'Move headquarters (' + money((o.gross ?? o.price)) + ')' : 'Move headquarters';
     }
 
     async function load() {
@@ -184,7 +184,7 @@
         if (!moveTo) return;
         const o = state.offices.find(x => x.id === moveTo);
         const ok = await OSA.ui.confirm('Move headquarters',
-            `Move to ${o.name} for ${money(o.price)} from the company account? The current office is bought back at half its price.`, 'Move');
+            `Move to ${o.name} for ${money((o.gross ?? o.price))} from the company account? The current office is bought back at half its price.`, 'Move');
         if (!ok) return;
         let r;
         try { r = await api.call('bwMoveHeadquarters', moveTo); } catch (e) { r = null; }

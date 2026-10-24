@@ -284,8 +284,8 @@
         <div class="props">${owned.map(u => propCard(Object.assign({}, catalogEntry(u.propertyId), u),
             `<div class="pr own">${u.id === c.hqUnit ? 'Headquarters' : 'Owned'}</div>`, '', true)).join('')}</div>
         <div class="sect">Available</div>
-        ${buyable.length ? `<div class="props">${buyable.map(p => propCard(p, `<div class="pr">${money(p.price)}</div>`,
-            `data-buy="${esc(p.id)}" data-name="${esc(p.name)}" data-price="${p.price}" data-upkeep="${p.upkeep}"`)).join('')}</div>`
+        ${buyable.length ? `<div class="props">${buyable.map(p => propCard(p, `<div class="pr">${money(p.gross ?? p.price)}</div>`,
+            `data-buy="${esc(p.id)}" data-name="${esc(p.name)}" data-price="${p.gross ?? p.price}" data-upkeep="${p.upkeep}"`)).join('')}</div>`
             : '<div class="os-empty">You own every available property. Offices are changed on sabusinessregistry.eu.</div>'}`;
     };
     OFFICE.properties.bind = () => {

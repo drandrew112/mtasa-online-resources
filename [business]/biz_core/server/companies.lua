@@ -75,7 +75,7 @@ local function companyFromRow(r)
         id = int(r.id), account = r.owner_account, founderAccount = r.founder_account,
         name = tostring(r.name), clean = 0, dirty = int(r.balance_dirty),
         launder = int(r.launder_queue), hqUnit = int(r.hq_unit_id), status = tostring(r.status),
-        activeSeconds = int(r.active_seconds), upkeepSeconds = int(r.upkeep_seconds),
+        activeSeconds = int(r.active_seconds), upkeepSeconds = int(r.upkeep_seconds), taxSeconds = int(r.tax_seconds),
         valueCache = int(r.value_cache), peakValue = int(r.peak_value),
         createdAt = int(r.created_at), renamedAt = int(r.renamed_at),
         units = {}, ledger = {}, paused = false, sync = { dirty = 0 },

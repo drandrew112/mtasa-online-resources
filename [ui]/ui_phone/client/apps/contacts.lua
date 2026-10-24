@@ -188,7 +188,8 @@ PhoneApp.register({
         for i, a in ipairs(actions) do
             local y = top + (i - 1) * rowH
             if call.sel == i then PhoneUI.selection("call_row_" .. i, x, y, w, rowH - u(6)) end
-            PhoneUI.text(a.label, x + u(14), y, w - u(24), rowH - u(6),
+            local label = a.label or L(a.labelKey, { price = VAT.gross("services", a.cost) })
+            PhoneUI.text(label, x + u(14), y, w - u(24), rowH - u(6),
                 PhoneUI.C.white, u(1.05), "default-bold", "left", "center")
         end
         PhoneUI.text(L("ui_phone.contacts.backspace_back"), scr.x, scr.y + scr.h - u(22), scr.w, u(18),

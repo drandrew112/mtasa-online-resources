@@ -67,12 +67,30 @@ local SCHEMA = {
 
 addEvent("biz_core:dbReady", false)
 
-local function runSchema(i)
-    if i > #SCHEMA then
+-- columns added after the first release: { table, column, definition }
+local COLUMNS = {
+    { "biz_companies", "tax_seconds", "INT UNSIGNED NOT NULL DEFAULT 0" },   -- property tax clock
+}
+
+local function addColumns(i)
+    if i > #COLUMNS then
         DB.ready = true
         triggerEvent("biz_core:dbReady", resourceRoot)
         return
     end
+    local t, col, def = unpack(COLUMNS[i])
+    MYSQL.query(function(rows)
+        if rows == false then return setTimer(addColumns, 10000, 1, i) end
+        if rows and rows[1] and tonumber(rows[1].n) and tonumber(rows[1].n) > 0 then return addColumns(i + 1) end
+        MYSQL.query(function(ok, err)
+            if ok == false then outputDebugString("[biz_core] add column " .. col .. " failed: " .. tostring(err), 1) end
+            addColumns(i + 1)
+        end, "ALTER TABLE " .. t .. " ADD COLUMN " .. col .. " " .. def)
+    end, "SELECT COUNT(*) AS n FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?", t, col)
+end
+
+local function runSchema(i)
+    if i > #SCHEMA then return addColumns(1) end
     MYSQL.query(function(ok, err)
         if ok == false then
             outputDebugString("[biz_core] schema " .. i .. " failed: " .. tostring(err), 1)

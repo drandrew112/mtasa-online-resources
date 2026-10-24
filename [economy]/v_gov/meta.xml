@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="v_gov" version="1.0.0" type="script"
-          description="The state: /gov panel, taxes (hourly company tax, income tax rate keys), work pay settings, fees, state healthcare, state companies" />
+          description="The state: /gov panel, taxes (hourly company tax, income tax rate keys, VAT, property tax), work pay settings, fees, state healthcare, state companies, votes (/vote)" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -9,6 +9,7 @@
     <!-- ================= SHARED ================= -->
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
+    <script src="shared/vat.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
     <script src="server/db.lua" type="server" />
@@ -16,6 +17,10 @@
     <script src="server/works.lua" type="server" />
     <script src="server/tax.lua" type="server" />
     <script src="server/health.lua" type="server" />
+    <script src="server/vat.lua" type="server" />
+    <script src="server/companies.lua" type="server" />
+    <script src="server/votes.lua" type="server" />
+    <script src="server/budget.lua" type="server" />
     <script src="server/panel.lua" type="server" />
     <script src="server/main.lua" type="server" />
 
@@ -26,6 +31,8 @@
     <file src="web/index.html" type="client" />
     <file src="web/css/gov.css" type="client" />
     <file src="web/js/gov.js" type="client" />
+    <file src="web/vote.html" type="client" />
+    <file src="web/js/vote.js" type="client" />
 
     <!-- settings -->
     <export function="getSetting" type="server" />
@@ -39,6 +46,17 @@
     <export function="getWorkPayer" type="server" />
     <export function="getWorkMultiplier" type="server" />
     <export function="getIncomeTaxRate" type="server" />
+
+    <!-- VAT (shops: loadstring(exports.v_gov:importVat())(), see shared/vat.lua) + property tax -->
+    <export function="importVat" type="server" />
+    <export function="importVat" type="client" />
+    <export function="getVatRate" type="server" />
+    <export function="getVatRates" type="server" />
+    <export function="bookVat" type="server" />
+    <export function="getPropertyTaxRate" type="server" />
+
+    <!-- gov_web -->
+    <export function="getPublicState" type="server" />
 
     <!-- healthcare -->
     <export function="healthcareCost" type="server" />

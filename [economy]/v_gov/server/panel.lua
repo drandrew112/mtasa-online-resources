@@ -7,14 +7,17 @@
 
 addEvent("v_gov:call", true)
 
+-- "public" = any logged-in player (the /vote page)
 local NEED = {
     overview = "viewer", treasuryLedger = "viewer", taxes = "viewer", works = "viewer", fees = "viewer",
     health = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
-    findCompanies = "viewer",
+    findCompanies = "viewer", budget = "viewer", votes = "viewer",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
-    setFee = "minister", setMember = "minister", treasuryTransfer = "minister",
+    setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
+    setPropertyTax = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
-    companyMember = "official", companyOverdraft = "minister",
+    describeCompany = "official", companyMember = "official", companyOverdraft = "minister",
+    voteList = "public", voteCast = "public",
 }
 
 local function int(v) return DB.int(v) end
@@ -56,6 +59,27 @@ local function treasuryId()
     return bank and bank:getStateAccount("treasury")
 end
 
+--- the accounts of the Treasury page: the treasury, then every state company (bank info)
+local function stateAccounts()
+    local bank = GOV.bank()
+    local out = {}
+    local tid = treasuryId()
+    local t = bank and tid and bank:getAccountInfo(tid)
+    if t then out[1] = t end
+    for _, c in ipairs(GOV.companyList()) do
+        local info = bank and c.accountId and bank:getAccountInfo(c.accountId)
+        if info and info.status ~= "closed" then
+            info.name = c.name
+            out[#out + 1] = info
+        end
+    end
+    return out
+end
+
+local function isStateAccount(id)
+    for _, a in ipairs(stateAccounts()) do if a.id == id then return a end end
+end
+
 function A.overview(p, args, reply, actor)
     local bank = GOV.bank()
     local tid = treasuryId()
@@ -69,25 +93,25 @@ function A.overview(p, args, reply, actor)
                     runs[i] = { period = int(r.period_start), companies = int(r.companies), total = int(r.total), instance = tostring(r.instance) }
                 end
                 reply({ treasury = bank:getAccountInfo(tid), day = day.stats or {}, week = week.stats or {}, runs = runs,
-                    states = bank:getStateAccounts() })
+                    states = stateAccounts() })
             end, "SELECT period_start, companies, total, instance FROM gov_tax_runs ORDER BY period_start DESC LIMIT 24")
         end)
     end)
 end
 
+--- the statement of the treasury or a state company: only the last GOV.HISTORY_DAYS days
 function A.treasuryLedger(p, args, reply, actor)
     local id = tonumber(args.id) or treasuryId()
-    local bank = GOV.bank()
-    local info = bank and bank:getAccountInfo(id)
-    if not info or info.kind ~= "state" then return reply(false, "v_bank.error.no_access") end
-    GOV.bankCall("ledger", { id = id, before = tonumber(args.before), group = args.group, limit = 40 }, actor, function(r)
+    if not id or not isStateAccount(id) then return reply(false, "v_bank.error.no_access") end
+    GOV.bankCall("ledger", { id = id, before = tonumber(args.before), group = args.group, limit = 40,
+        since = GOV.historySince() }, actor, function(r)
         if not r.ok then return reply(false, "v_bank.error." .. tostring(r.error)) end
         reply({ id = id, rows = r.rows, more = r.more })
     end)
 end
 
 --- works of work_core + the registered pay parameters + their settings
-local function workList()
+function GOV.workList()
     local names = {}
     if isResourceRunning("work_core") then
         for id, w in pairs(exports.work_core:getWorks() or {}) do names[id] = tostring(w.name or id) end
@@ -108,13 +132,15 @@ local function workList()
     table.sort(list, function(a, b) return a.name < b.name end)
     return list
 end
+local workList = GOV.workList
 
 local function payerOptions()
     local out = { { spec = "system", name = "System (money from nothing)" } }
     local bank = GOV.bank()
-    for _, s in ipairs(bank and bank:getStateAccounts() or {}) do
-        if s.status ~= "closed" then out[#out + 1] = { spec = "state:" .. s.ownerRef, name = s.name } end
-    end
+    local tid = treasuryId()
+    local t = bank and tid and bank:getAccountInfo(tid)
+    out[2] = { spec = "state:treasury", name = t and t.name or "State Treasury" }
+    for _, c in ipairs(GOV.companyList()) do out[#out + 1] = { spec = "state:" .. c.code, name = c.name } end
     return out
 end
 
@@ -167,11 +193,16 @@ function A.taxes(p, args, reply)
         for i, r in ipairs(rows or {}) do
             runs[i] = { period = int(r.period_start), companies = int(r.companies), total = int(r.total) }
         end
-        reply({ company = getCompanyTaxRate(), keys = GOV.get("tax.income_keys") or {}, used = used, runs = runs })
-    end, "SELECT period_start, companies, total FROM gov_tax_runs ORDER BY period_start DESC LIMIT 24")
+        local vat = {}
+        for i, g in ipairs(GOV_VAT_GROUPS) do vat[i] = { group = g, rate = getVatRate(g), default = GOV_DEFAULTS["tax.vat"][g] or 0 } end
+        reply({ company = getCompanyTaxRate(), keys = GOV.get("tax.income_keys") or {}, used = used, runs = runs,
+            vat = vat, property = getPropertyTaxRate(), propertyDefault = GOV_DEFAULTS["tax.property"] })
+    end, "SELECT period_start, companies, total FROM gov_tax_runs WHERE period_start >= ? ORDER BY period_start DESC LIMIT 48",
+        GOV.historySince())
 end
 
-local FEES = { "register", "rename", "bay_fine", "airspace.takeoff", "airspace.landing", "airspace.overflight" }
+GOV.FEES = { "register", "rename", "bay_fine", "airspace.takeoff", "airspace.landing", "airspace.overflight" }
+local FEES = GOV.FEES
 
 function A.fees(p, args, reply)
     local list = {}
@@ -185,8 +216,7 @@ function A.health(p, args, reply)
 end
 
 function A.companies(p, args, reply)
-    local bank = GOV.bank()
-    if not bank then return reply(false, "v_bank.error.unavailable") end
+    if not GOV.bank() then return reply(false, "v_bank.error.unavailable") end
     local payers = {}
     for _, w in ipairs(workList()) do
         if w.payer:match("^state:") then
@@ -195,13 +225,38 @@ function A.companies(p, args, reply)
             table.insert(payers[code], w.name)
         end
     end
-    reply({ list = bank:getStateAccounts(), payers = payers })
+    reply({ list = GOV.companyList(), payers = payers })
 end
 
+--- one state company (gov_companies id) with its bank account and the bank access list
 function A.company(p, args, reply, actor)
-    GOV.bankCall("account", { id = tonumber(args.id) }, actor, function(r)
+    local c = GOV.companyById(args.id)
+    if not c then return reply(false, "v_gov.err.bad_company") end
+    GOV.bankCall("account", { id = c.accountId }, actor, function(r)
         if not r.ok then return reply(false, "v_bank.error." .. tostring(r.error)) end
-        reply({ account = r.account })
+        local a = r.account
+        reply({ company = { id = c.id, code = c.code, name = c.name, description = c.description, accountId = c.accountId,
+            number = a.number, balance = a.balance, allowNegative = a.allowNegative, access = a.access or {},
+            createdAt = c.createdAt, createdBy = c.createdBy } })
+    end)
+end
+
+--- income / expense of the treasury and every state company in the last HISTORY_DAYS days
+function A.budget(p, args, reply)
+    GOV.budget(function(b)
+        local rows = {}
+        local function add(name, code, accountId, balance)
+            local a = b.accounts[accountId] or { inSum = 0, outSum = 0, groups = {} }
+            local groups = {}
+            for g, x in pairs(a.groups) do groups[#groups + 1] = { group = g, inSum = x.inSum, outSum = x.outSum } end
+            table.sort(groups, function(x, y) return x.group < y.group end)
+            rows[#rows + 1] = { name = name, code = code, balance = balance, inSum = a.inSum, outSum = a.outSum, groups = groups }
+        end
+        local bank = GOV.bank()
+        local t = b.treasury and bank and bank:getAccountInfo(b.treasury)
+        if t then add(t.name, "treasury", t.id, t.balance) end
+        for _, c in ipairs(GOV.companyList()) do add(c.name, c.code, c.accountId, c.balance) end
+        reply({ days = GOV.HISTORY_DAYS, rows = rows, daily = b.daily })
     end)
 end
 
@@ -225,6 +280,27 @@ end
 --------------------------------------------------------------------------------
 -- changes
 --------------------------------------------------------------------------------
+
+--- { group, value (%) } (value nil = default)
+function A.setVat(p, args, reply, actor)
+    local g = tostring(args.group or "")
+    local known = false
+    for _, x in ipairs(GOV_VAT_GROUPS) do if x == g then known = true end end
+    if not known then return reply(false, "v_gov.err.bad_key") end
+    local v = tonumber(args.value)
+    if args.value ~= nil and not v then return reply(false, "v_gov.err.bad_number") end
+    local rates = GOV.get("tax.vat") or {}
+    rates[g] = v and clamp(v / 100, GOV_RANGE.vat) or GOV_DEFAULTS["tax.vat"][g]
+    GOV.set("tax.vat", rates, actor)
+    reply(true)
+end
+
+function A.setPropertyTax(p, args, reply, actor)
+    local v = tonumber(args.value)
+    if args.value ~= nil and not v then return reply(false, "v_gov.err.bad_number") end
+    GOV.set("tax.property", v and clamp(v / 100, GOV_RANGE.propertyTax) or nil, actor)
+    reply(true)
+end
 
 function A.setCompanyTax(p, args, reply, actor)
     local v = tonumber(args.value)
@@ -350,12 +426,13 @@ function A.setMember(p, args, reply, actor)
     reply(true)
 end
 
---- money between the treasury and a state company: { id, amount, dir = "to" | "from", note }
+--- money between the treasury and a state company: { id (bank account), amount, dir = "to" | "from", note }
 function A.treasuryTransfer(p, args, reply, actor)
     local bank = GOV.bank()
     local tid, cid = treasuryId(), tonumber(args.id)
     local amount = math.floor(tonumber(args.amount) or 0)
     if not bank or not tid or not cid then return reply(false, "v_bank.error.unavailable") end
+    if cid == tid or not isStateAccount(cid) then return reply(false, "v_gov.err.bad_company") end
     if amount <= 0 then return reply(false, "v_bank.error.bad_amount") end
     local from, to = tid, cid
     if args.dir == "from" then from, to = cid, tid end
@@ -366,34 +443,37 @@ function A.treasuryTransfer(p, args, reply, actor)
 end
 
 function A.createCompany(p, args, reply, actor)
-    GOV.bankCall("createState", { code = args.code, name = args.name, allowNegative = args.allowNegative == true }, actor, function(r)
-        if not r.ok then return reply(false, "v_gov.err." .. tostring(r.error)) end
-        GOV.log(actor, "company.create", { code = args.code, name = args.name })
+    GOV.createCompany(args.code, args.name, args.description, args.allowNegative == true, actor, function(ok, err)
+        if not ok then return reply(false, "v_gov.err." .. tostring(err)) end
         reply(true)
     end)
 end
 
 function A.renameCompany(p, args, reply, actor)
-    local bank = GOV.bank()
-    local info = bank and bank:getAccountInfo(tonumber(args.id))
-    local name = tostring(args.name or ""):gsub("^%s+", ""):gsub("%s+$", "")
-    if not info or info.kind ~= "state" then return reply(false, "v_gov.err.bad_company") end
-    if name == "" or #name > 64 then return reply(false, "v_gov.err.bad_name") end
-    bank:renameAccount(info.id, name)
-    GOV.log(actor, "company.rename", { code = info.ownerRef, name = name })
+    local c = GOV.companyById(args.id)
+    if not c then return reply(false, "v_gov.err.bad_company") end
+    local ok, err = GOV.renameCompany(c, args.name, actor)
+    if not ok then return reply(false, "v_gov.err." .. tostring(err)) end
+    reply(true)
+end
+
+function A.describeCompany(p, args, reply, actor)
+    local c = GOV.companyById(args.id)
+    if not c then return reply(false, "v_gov.err.bad_company") end
+    GOV.describeCompany(c, args.description, actor)
     reply(true)
 end
 
 --- closes a state company; { id, move = true } first moves its balance to the treasury
 function A.deleteCompany(p, args, reply, actor)
     local bank = GOV.bank()
-    local info = bank and bank:getAccountInfo(tonumber(args.id))
-    if not info or info.kind ~= "state" then return reply(false, "v_gov.err.bad_company") end
-    if info.ownerRef == "treasury" then return reply(false, "v_gov.err.key_protected") end
+    local c = GOV.companyById(args.id)
+    if not bank or not c then return reply(false, "v_gov.err.bad_company") end
     for _, w in ipairs(workList()) do
-        if w.payer == "state:" .. info.ownerRef then return reply(false, "v_gov.err.company_pays_work") end
+        if w.payer == "state:" .. c.code then return reply(false, "v_gov.err.company_pays_work") end
     end
-    if info.balance ~= 0 then
+    local info = c.accountId and bank:getAccountInfo(c.accountId)
+    if info and info.balance ~= 0 then
         if not args.move then return reply(false, "v_gov.err.company_not_empty") end
         local tid = treasuryId()
         local from, to, amount = info.id, tid, info.balance
@@ -401,30 +481,68 @@ function A.deleteCompany(p, args, reply, actor)
         local ok, err = bank:transfer(from, to, amount, "gov.transfer", { note = "Company closed" }, actor)
         if not ok then return reply(false, "v_bank.error." .. tostring(err)) end
     end
-    local ok, err = bank:closeAccount(info.id)
+    local ok, err = GOV.closeCompany(c, actor)
     if not ok then return reply(false, "v_gov.err." .. tostring(err)) end
-    GOV.log(actor, "company.delete", { code = info.ownerRef })
     reply(true)
 end
 
 function A.companyMember(p, args, reply, actor)
     local bank = GOV.bank()
-    local info = bank and bank:getAccountInfo(tonumber(args.id))
-    if not info or info.kind ~= "state" then return reply(false, "v_gov.err.bad_company") end
+    local c = GOV.companyById(args.id)
+    if not bank or not c or not c.accountId then return reply(false, "v_gov.err.bad_company") end
     local role = args.role
     if role == "none" then role = nil end
-    if not bank:setAccess(info.id, tostring(args.account or ""), role, actor) then return reply(false, "v_gov.err.bad_member") end
-    GOV.log(actor, "company.member", { code = info.ownerRef, account = args.account, role = role or "none" })
+    if not bank:setAccess(c.accountId, tostring(args.account or ""), role, actor) then return reply(false, "v_gov.err.bad_member") end
+    GOV.log(actor, "company.member", { code = c.code, account = args.account, role = role or "none" })
     reply(true)
 end
 
 function A.companyOverdraft(p, args, reply, actor)
     local bank = GOV.bank()
-    local info = bank and bank:getAccountInfo(tonumber(args.id))
-    if not info or info.kind ~= "state" then return reply(false, "v_gov.err.bad_company") end
-    bank:setAllowNegative(info.id, args.allow == true)
-    GOV.log(actor, "company.overdraft", { code = info.ownerRef, allow = args.allow == true })
+    local c = GOV.companyById(args.id)
+    if not bank or not c or not c.accountId then return reply(false, "v_gov.err.bad_company") end
+    bank:setAllowNegative(c.accountId, args.allow == true)
+    GOV.log(actor, "company.overdraft", { code = c.code, allow = args.allow == true })
     reply(true)
+end
+
+--------------------------------------------------------------------------------
+-- votes
+--------------------------------------------------------------------------------
+
+function A.votes(p, args, reply)
+    GOV.votes("all", function(list) reply({ list = list, maxOptions = GOV.VOTE_MAX_OPTIONS, maxHours = GOV.VOTE_MAX_HOURS }) end)
+end
+
+--- { title, description, options = {...}, hours }
+function A.openVote(p, args, reply, actor)
+    GOV.openVote(args, actor, function(ok, err)
+        if not ok then return reply(false, "v_gov.err." .. tostring(err)) end
+        reply(true)
+    end)
+end
+
+function A.closeVote(p, args, reply, actor)
+    GOV.endVote(args.id, "closed", actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
+end
+
+function A.cancelVote(p, args, reply, actor)
+    GOV.endVote(args.id, "cancelled", actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
+end
+
+-- /vote (any logged-in player)
+function A.voteList(p, args, reply, actor)
+    GOV.openVotesFor(actor, function(list)
+        for _, v in ipairs(list) do v.createdBy = nil end
+        reply({ list = list, now = GOV.now() })
+    end)
+end
+
+function A.voteCast(p, args, reply, actor)
+    GOV.castVote(actor, args.id, args.option, function(ok, err)
+        if not ok then return reply(false, "v_gov.err." .. tostring(err)) end
+        reply(true)
+    end)
 end
 
 --------------------------------------------------------------------------------
@@ -440,7 +558,11 @@ addEventHandler("v_gov:call", resourceRoot, function(requestId, action, args)
     local fn, need = A[tostring(action)], NEED[tostring(action)]
     if not fn or not need then return reply(false, "v_gov.err.unknown") end
     if not GOV.ready then return reply(false, "v_bank.error.unavailable") end
-    if not GOV.can(player, need) then return reply(false, "v_gov.err.no_right") end
+    if need == "public" then
+        if not GOV.accountOf(player) then return reply(false, "v_gov.err.no_right") end
+    elseif not GOV.can(player, need) then
+        return reply(false, "v_gov.err.no_right")
+    end
     local ok, err = pcall(fn, player, type(args) == "table" and args or {}, reply, GOV.accountOf(player) or "?")
     if not ok then
         outputDebugString("[v_gov] " .. tostring(action) .. ": " .. tostring(err), 1)

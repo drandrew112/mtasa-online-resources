@@ -223,9 +223,12 @@ function Customs.isPartAvailable(veh, part)
 end
 
 -- Applies Customs.PRICE_MULT (rounded to whole euros).
-function Customs.price(base)
+function Customs.netPrice(base)
     return math.floor((tonumber(base) or 0) * (Customs.PRICE_MULT or 1) + 0.5)
 end
+
+-- the price with VAT "tuning" on top (shown and charged)
+function Customs.price(base) return VAT.gross("tuning", Customs.netPrice(base)) end
 
 --------------------------------------------------------------------------------
 -- Handling-flag / value maps used by preview (client) and apply (server)

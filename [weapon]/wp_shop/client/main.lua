@@ -166,14 +166,14 @@ local function buildMenu()
             items[#items + 1] = {
                 label = L("wp_shop.menu.pieces", { count = n, name = weaponName(id) }),
                 desc = own and L("wp_shop.menu.thrown_have", { count = own }) or L("wp_shop.menu.thrown_desc"),
-                value = { k = "thrown", n = n }, price = def.price * n, closeOnSelect = false,
+                value = { k = "thrown", n = n }, price = VAT.gross("weapons", def.price * n), closeOnSelect = false,
             }
         end
     else
         items[1] = {
             label = L("wp_shop.menu.buy_weapon", { name = weaponName(id) }),
             desc = own and L("wp_shop.menu.weapon_owned") or (def.mag and L("wp_shop.menu.weapon_desc_empty") or L("wp_shop.menu.weapon_desc")),
-            value = { k = "weapon" }, price = def.price, checked = own ~= nil or nil, closeOnSelect = false,
+            value = { k = "weapon" }, price = VAT.gross("weapons", def.price), checked = own ~= nil or nil, closeOnSelect = false,
         }
         if def.mag then
             for _, n in ipairs(WS.ammoPacks) do
@@ -181,7 +181,7 @@ local function buildMenu()
                 items[#items + 1] = {
                     label = L(key, { count = n, rounds = def.mag * n }),
                     desc = own and L("wp_shop.menu.ammo_have", { ammo = own }) or L("wp_shop.menu.buy_weapon_first"),
-                    value = { k = "ammo", n = n }, price = def.magPrice * n, closeOnSelect = false,
+                    value = { k = "ammo", n = n }, price = VAT.gross("weapons", def.magPrice * n), closeOnSelect = false,
                 }
             end
         end

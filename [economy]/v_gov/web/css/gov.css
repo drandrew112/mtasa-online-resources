@@ -103,6 +103,33 @@ html, body { height: 100%; margin: 0; background: var(--osa-bg); color: var(--os
 .tag.company { background: #3e9bff26; color: #6db3ff; }
 .tag.bad { background: #e5484d26; color: #ff8589; }
 
+/* budget: daily bars (income / expense) */
+.gv-bars { display: flex; align-items: flex-end; gap: 4px; height: 160px; }
+.gv-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; gap: 1px; }
+.gv-bar i { flex: 1; min-height: 1px; border-radius: 2px 2px 0 0; }
+.gv-bar i.in { background: var(--pos); }
+.gv-bar i.out { background: var(--neg); }
+
+/* votes */
+.gv-desc { white-space: pre-wrap; color: var(--osa-dim); margin: 10px 0; }
+.gv-opts { margin: 8px 0; padding-left: 20px; }
+.gv-res { padding: 6px 0; }
+.gv-res.win b, .gv-res.win span:first-child { font-weight: 700; }
+.gv-meter { height: 8px; background: var(--osa-panel-3); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.gv-meter i { display: block; height: 100%; background: var(--osa-accent); }
+
+/* /vote page */
+body.gv-vote-page { overflow-y: auto; background: rgba(8, 11, 16, .92); }
+.gv-vote-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 18px; }
+.gv-vote-wrap h1 { margin: 0; font-size: 30px; color: var(--osa-accent); }
+#view { display: flex; flex-direction: column; gap: 16px; }
+.gv-choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 12px; }
+.gv-choice { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px;
+    border: 1px solid var(--osa-line); background: var(--osa-panel-2); color: var(--osa-text); font: inherit; font-size: 16px; cursor: pointer; text-align: left; }
+.gv-choice:hover { background: var(--osa-panel-3); }
+.gv-choice.on { border-color: var(--osa-accent); background: #d9a93a22; font-weight: 700; }
+.gv-choice small { color: var(--osa-accent); font-size: 12px; white-space: nowrap; }
+
 @media (max-width: 1400px) {
     .gv-grid2 { grid-template-columns: minmax(0, 1fr); }
     .gv-split { grid-template-columns: 240px minmax(0, 1fr); }

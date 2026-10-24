@@ -110,5 +110,7 @@
   "ui_phone.settings.active": "Active",
   "ui_phone.settings.enter_apply_backspace_back": "[Enter] apply    [Backspace] back",
   "ui_phone.settings.settings": "Settings",
-  "ui_phone.settings.wallpaper": "Wallpaper"
+  "ui_phone.settings.wallpaper": "Wallpaper",
+  "ui_phone.config.heal": "Heal  -  €{price}",
+  "ui_phone.config.refill_armour": "Refill armour  -  €{price}"
 }

@@ -40,6 +40,45 @@ local SCHEMA = {
         PRIMARY KEY (id),
         KEY idx_ts (ts)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+
+    -- state companies (their money: the v_bank state account `account_id`, owner_ref = code)
+    [[CREATE TABLE IF NOT EXISTS gov_companies (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        code VARCHAR(24) NOT NULL,
+        name VARCHAR(64) NOT NULL,
+        description VARCHAR(255) NOT NULL DEFAULT '',
+        account_id INT UNSIGNED NULL,
+        status VARCHAR(16) NOT NULL DEFAULT 'active',
+        created_at INT UNSIGNED NOT NULL DEFAULT 0,
+        created_by VARCHAR(64) NOT NULL DEFAULT '',
+        closed_at INT UNSIGNED NOT NULL DEFAULT 0,
+        PRIMARY KEY (id),
+        UNIQUE KEY uq_code (code),
+        KEY idx_status (status)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+
+    [[CREATE TABLE IF NOT EXISTS gov_votes (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        title VARCHAR(120) NOT NULL,
+        description TEXT NOT NULL,
+        options TEXT NOT NULL,
+        created_by VARCHAR(64) NOT NULL DEFAULT '',
+        created_at INT UNSIGNED NOT NULL DEFAULT 0,
+        ends_at INT UNSIGNED NOT NULL DEFAULT 0,
+        status VARCHAR(16) NOT NULL DEFAULT 'open',
+        closed_at INT UNSIGNED NOT NULL DEFAULT 0,
+        PRIMARY KEY (id),
+        KEY idx_status (status, ends_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+
+    [[CREATE TABLE IF NOT EXISTS gov_vote_ballots (
+        vote_id INT UNSIGNED NOT NULL,
+        account_name VARCHAR(64) NOT NULL,
+        option_idx TINYINT UNSIGNED NOT NULL,
+        ts INT UNSIGNED NOT NULL DEFAULT 0,
+        PRIMARY KEY (vote_id, account_name),
+        KEY idx_account (account_name)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 }
 
 addEvent("v_gov:dbReady", false)

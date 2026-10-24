@@ -92,13 +92,15 @@ addEventHandler("clothes:buy", resourceRoot, function(skin)
         status(player, L.msg("world_clothes_shop.main.you_are_already_wearing_this_outfit"))
         return
     end
-    if getPlayerMoney(player) < CLOTHES.price then
+    local price, vat = VAT.split("clothing", CLOTHES.price)
+    if getPlayerMoney(player) < price then
         status(player, L.msg("world_clothes_shop.main.you_don_t_have_enough_money"))
         return
     end
 
-    takePlayerMoney(player, CLOTHES.price)
-    exports.ui_core:showMoney(player, "take", CLOTHES.price, "cash")
+    takePlayerMoney(player, price)
+    exports.ui_core:showMoney(player, "take", price, "cash")
+    VAT.book("clothing", CLOTHES.price, vat, "Outfit " .. skin)
     setElementModel(player, skin)
     triggerClientEvent(player, "clothes:bought", resourceRoot, skin)
 end)

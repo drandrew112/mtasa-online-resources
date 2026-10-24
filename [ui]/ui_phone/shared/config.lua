@@ -1,3 +1,4 @@
+if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 L.config(function()  -- texts are refreshed once the player is loaded (v_locals L.config)
 --[[
@@ -53,8 +54,9 @@ PHONE_CONFIG.contacts = {
     {
         key = "julia", name = "Julia", photo = "img/contacts/julia.png",
         actions = {
-            { key = "heal",  label = L.text("ui_phone.config.heal_200"),          cost = 200 },
-            { key = "armor", label = L.text("ui_phone.config.refill_armour_500"), cost = 500 },
+            -- cost = net; the label shows it with VAT "services" (client/apps/contacts.lua)
+            { key = "heal",  labelKey = "ui_phone.config.heal",          cost = 200 },
+            { key = "armor", labelKey = "ui_phone.config.refill_armour", cost = 500 },
         },
     },
     {

@@ -18,7 +18,7 @@ local function infoText(id, def, own)
         return own and L("wp_shop.panel.thrown_have", { count = own }) or L("wp_shop.panel.thrown")
     elseif def.mag then
         local key = def.box and "wp_shop.panel.box" or "wp_shop.panel.magazine"
-        return L(key, { rounds = def.mag, price = def.magPrice })
+        return L(key, { rounds = def.mag, price = VAT.gross("weapons", def.magPrice) })
     end
     return L("wp_shop.panel.melee")
 end
@@ -47,7 +47,8 @@ addEventHandler("onClientRender", root, function()
     if own and not def.thrown then
         drawTick(x + w - ui(20), ry + rowH / 2, ui(7), tocolor(0, 0, 0, 255))
     else
-        local price = def.thrown and L("wp_shop.panel.each", { price = def.price }) or L.money(def.price)
+        local gross = VAT.gross("weapons", def.price)
+        local price = def.thrown and L("wp_shop.panel.each", { price = gross }) or L.money(gross)
         dxDrawText(price, x + padX, ry, x + w - padX, ry + rowH, tocolor(0, 0, 0, 255), itemSize, "default", "right", "center")
     end
 

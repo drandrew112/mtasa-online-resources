@@ -9,12 +9,26 @@ GOV = {
     TAX_CATCHUP_HOURS = 24,   -- unclaimed hours caught up on start
 
     ROLES = { viewer = 1, official = 2, minister = 3 },
+
+    HISTORY_DAYS = 30,        -- financial rows / sums are shown at most this far back (/gov + gov_web)
+    VOTE_CHECK_MS = 60000,    -- open votes past their end are closed this often
+    VOTE_MAX_OPTIONS = 10,
+    VOTE_MAX_HOURS = 24 * 14,
+    PUBLIC_REFRESH_MS = 60000, -- the gov_web snapshot (getPublicState) is rebuilt this often
 }
+
+-- VAT product groups (tax.vat keys), in the order of the Taxes page. The shops name their group
+-- (VAT.gross / VAT.split of the importVat lib); a new group needs a shop that uses it.
+GOV_VAT_GROUPS = { "weapons", "clothing", "vehicles", "tuning", "repair", "services", "real_estate" }
 
 -- setting key -> default value
 GOV_DEFAULTS = {
     ["tax.company"] = 0.10,                                 -- hourly company income tax
     ["tax.income_keys"] = { standard = 0.12, exempt = 0 },  -- personal income tax rate keys
+    -- VAT on top of the shop price, per product group
+    ["tax.vat"] = { weapons = 0.27, clothing = 0.27, vehicles = 0.27, tuning = 0.27, repair = 0.27,
+                    services = 0.27, real_estate = 0.05 },
+    ["tax.property"] = 0.005,                               -- of the property price, every 24 online hours
 
     ["fee.register"] = 50000,          -- company registration fee -> treasury
     ["fee.rename"] = 10000,            -- company rename fee -> disappears
@@ -45,6 +59,8 @@ GOV_WORK_DEFAULTS = {
 
 GOV_RANGE = {
     tax = { 0, 0.5 },
+    vat = { 0, 0.5 },
+    propertyTax = { 0, 0.1 },
     multiplier = { 0, 5 },
     fee = { 0, 10000000 },
     hpPrice = { 0, 100000 },

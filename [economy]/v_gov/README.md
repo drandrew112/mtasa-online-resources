@@ -25,7 +25,16 @@ Roles live in `gov_members` (Members page).
   airspace fees takeoff / landing / overflight (→ SA Control).
 - **State healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
   players and NPC patients) to the treasury: missing HP × price + injury prices.
-- **State companies**: create, rename, close (balance moved to the treasury first), members (bank
+- **VAT** (Taxes page): a rate per product group, added on top of every shop price, booked to the
+  treasury (`tax.vat`). Shops: `<include resource="v_gov" />` and
+  `if not VAT then loadstring(exports.v_gov:importVat())() end`, then `VAT.gross` / `VAT.split` /
+  `VAT.book` (shared/vat.lua).
+- **Property tax** (Taxes page): biz_core pays `rate × property prices` every 24 online hours.
+- **Votes** (Votes page, minister): title, description, options, length; players vote with `/vote`;
+  results after the close.
+- **Budget**: treasury + every state company, income / expense by group. Money data of /gov is
+  limited to the last 30 days (`GOV.HISTORY_DAYS`).
+- **State companies** (`gov_companies` + a v_bank state account each): create, rename, describe, close (balance moved to the treasury first), members (bank
   access), overdraft.
 
 ## Server exports
@@ -40,6 +49,11 @@ Roles live in `gov_members` (Members page).
 | `getWorkPayer(workId)` | v_bank account id or `"system"` |
 | `getWorkMultiplier(workId)` | number |
 | `getIncomeTaxRate(workId)` | rate, key |
+| `importVat()` (server + client) | the VAT lib source (shared/vat.lua) |
+| `getVatRate(group)` / `getVatRates()` | 0..1 |
+| `bookVat(group, net, vat, item)` | the VAT of a purchase to the treasury |
+| `getPropertyTaxRate()` | 0..1, per 24 online hours |
+| `getPublicState()` | the gov_web snapshot (30 days, no account names) |
 | `healthcareCost(patient)` | amount, `{ hp, injuries }` (books nothing) |
 | `chargeHealthcare(patient, hospitalName [, taskId])` | true, amount \| false, err |
 

@@ -9,7 +9,8 @@
     const $ = id => document.getElementById(id);
     const view = $('view');
 
-    const PAGES = ['overview', 'treasury', 'taxes', 'works', 'fees', 'health', 'companies', 'members', 'log'];
+    const PAGES = ['overview', 'treasury', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'members', 'log'];
+    const VAT_GROUPS = ['weapons', 'clothing', 'vehicles', 'tuning', 'repair', 'services', 'real_estate'];
     const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'transfer', 'admin'];
     const ROLE_LEVEL = { viewer: 1, official: 2, minister: 3 };
     const ACC_ROLES = ['manager', 'viewer', 'owner'];
@@ -25,12 +26,18 @@
             'state_payers', 'private_companies', 'no_match', 'searching', 'state_accounts', 'income', 'expense',
             'group', 'time', 'description', 'balance', 'period', 'total', 'actor', 'action', 'detail', 'filter',
             'current_payer', 'inactive', 'confirm_close_company', 'confirm_delete', 'severity_n', 'value', 'default',
-            'account', 'search_work', 'overdraft', 'create', 'companies']
+            'account', 'search_work', 'overdraft', 'create', 'companies', 'vat', 'vat_hint', 'property_tax',
+            'property_tax_hint', 'history_note', 'net', 'company_description', 'votes_open', 'votes_closed', 'new_vote',
+            'vote_title', 'vote_description', 'vote_options', 'vote_options_hint', 'vote_hours', 'vote_ends', 'voters_n',
+            'close_vote', 'cancel_vote', 'status_open', 'status_closed', 'status_cancelled', 'results_after_close',
+            'winner', 'created', 'daily', 'day']
             .map(k => 'v_gov.ui.' + k),
         ...PAGES.map(p => 'v_gov.page.' + p),
         ...['viewer', 'official', 'minister'].map(r => 'v_gov.role.' + r),
         ...FEE_KEYS.map(k => 'v_gov.fee.' + k),
         ...GROUPS.map(g => 'v_bank.group.' + g),
+        ...['shop', 'cash', 'other'].map(g => 'v_bank.group.' + g),
+        ...VAT_GROUPS.map(g => 'v_gov.vat.' + g),
         'v_gov.err.bad_number',
     ];
     let STR = {};
@@ -138,7 +145,7 @@
                 sel.treasury = D.treasury.id;
             } else if (p === 'companies') {
                 D.companies = await GOV.call('companies');
-                if (sel.company) D.company = (await GOV.call('company', { id: sel.company })).account;
+                if (sel.company) D.company = (await GOV.call('company', { id: sel.company })).company;
             } else {
                 D[p] = await GOV.call(p);
             }
@@ -248,7 +255,7 @@
     PAGE.treasury = d => {
         const states = arr(D.overview && D.overview.states).filter(s => s.status !== 'closed');
         const cur = states.find(s => s.id === d.id);
-        let h = head(T('v_gov.page.treasury'), null, cur ? `<div class="big ${cls(cur.balance)}">${money(cur.balance)}</div>` : '') +
+        let h = head(T('v_gov.page.treasury'), esc(T('history_note', { days: 30 })), cur ? `<div class="big ${cls(cur.balance)}">${money(cur.balance)}</div>` : '') +
             `<div class="gv-row">${select('trAcc', states.map(s => [s.id, s.name]), d.id, 'trAcc', true)}` +
             select('trGroup', GROUPS.map(g => [g, T('v_bank.group.' + g)]), sel.group, 'trGroup', true) + '</div>';
         if (can('minister') && cur && cur.ownerRef !== 'treasury') {
@@ -282,7 +289,16 @@
             h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="newKey" placeholder="${esc(T('key_name'))}" maxlength="24" data-keep="1">` +
                 `<input class="osa-input num" id="newKeyRate" placeholder="%" data-keep="1" data-enter="addTaxKey">${btn(T('add_key'), 'addTaxKey', {}, 'primary')}</div>`;
         }
-        return h + `</div><div class="gv-card"><h2>${esc(T('tax_runs'))}</h2>${runsTable(d.runs)}</div>`;
+        h += `</div><div class="gv-card"><h2>${esc(T('vat'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('vat_hint'))}</div>` +
+            table([[T('group')], [T('default'), 'r'], [T('value'), 'r']], arr(d.vat).map(v =>
+                `<tr><td>${esc(T('v_gov.vat.' + v.group))}</td><td class="r mono dim">${pct(v.default)}</td>` +
+                `<td class="r">${edit('vat_' + v.group, Math.round(v.rate * 1000) / 10, 'vat', { group: v.group },
+                    { allowed: m, unit: '%', reset: 'vatReset', shown: pct(v.rate) })}</td></tr>`)) + '</div>' +
+            `<div class="gv-card"><div class="gv-field"><label>${esc(T('property_tax'))}</label><div>` +
+            edit('propTax', Math.round((d.property || 0) * 10000) / 100, 'propTax', {}, { allowed: m, unit: '%', reset: 'propTaxReset',
+                shown: (Math.round((d.property || 0) * 10000) / 100) + '%' }) +
+            `<div class="gv-sub">${esc(T('property_tax_hint'))}</div></div></div></div>`;
+        return h + `<div class="gv-card"><h2>${esc(T('tax_runs'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('history_note', { days: 30 }))}</div>${runsTable(d.runs)}</div>`;
     };
 
     function payerName(d, spec) {
@@ -356,25 +372,77 @@
 
     PAGE.companies = d => {
         const o = can('official'), m = can('minister');
-        const list = arr(d.list).filter(c => c.status !== 'closed');
+        const list = arr(d.list);
         const a = D.company && D.company.id === sel.company ? D.company : null;
         let h = head(T('v_gov.page.companies'), null, o ? btn(T('create_company'), 'createCompany', {}, 'primary') : '') +
             `<div class="gv-split"><div class="gv-list">${list.map(c => `<a data-act="pickCompany" data-id="${c.id}" class="${c.id === sel.company ? 'on' : ''}">` +
                 `<span>${esc(c.name)}</span><small class="mono ${cls(c.balance)}">${money(c.balance)}</small></a>`).join('') || empty()}</div>`;
         if (!a) return h + `<div class="gv-card dim">${esc(T('empty'))}</div></div>`;
-        const pays = arr(d.payers && d.payers[a.ownerRef]);
-        h += `<div class="gv-card"><div class="gv-head"><div><h1>${esc(a.name)}</h1><div class="gv-sub mono">${esc(a.number || '')} · ${esc(a.ownerRef)}</div></div>` +
+        const pays = arr(d.payers && d.payers[a.code]);
+        h += `<div class="gv-card"><div class="gv-head"><div><h1>${esc(a.name)}</h1><div class="gv-sub mono">${esc(a.number || '')} · ${esc(a.code)}` +
+            `${a.createdAt ? ` · ${esc(T('created'))} ${stamp(a.createdAt)}` : ''}</div></div>` +
             `<div class="big ${cls(a.balance)}">${money(a.balance)}</div></div>` +
             `<div class="gv-sub" style="margin:8px 0 6px">${esc(T('pays_works', { works: pays.join(', ') || '-' }))}</div>` +
             `<div class="gv-field"><label>${esc(T('company_name'))}</label><div>${edit('cName', a.name, 'renameCompany', {}, { allowed: o, cls: 'mid' })}</div></div>` +
+            `<div class="gv-field"><label>${esc(T('company_description'))}</label><div>${edit('cDesc', a.description || '', 'describeCompany', {}, { allowed: o, cls: 'wide', shown: a.description || '-' })}</div></div>` +
             `<div class="gv-field"><label>${esc(T('overdraft'))}</label><div>${toggle(!!a.allowNegative, 'overdraft', {}, m, [T('overdraft_on'), T('overdraft_off')])}</div></div>` +
-            (o && a.ownerRef !== 'treasury' ? `<div class="gv-field"><label></label><div>${btn(T('delete_company'), 'closeCompany', {}, 'danger')}</div></div>` : '') +
+            (o ? `<div class="gv-field"><label></label><div>${btn(T('delete_company'), 'closeCompany', {}, 'danger')}</div></div>` : '') +
             `<h2 style="margin-top:18px">${esc(T('members'))}</h2>` +
             table([[T('account')], [T('role')], ['', 'act']], arr(a.access).map(x =>
                 `<tr><td><b>${esc(x.account)}</b></td><td class="dim">${esc(x.role)}</td><td class="act">${o ? btn(T('remove'), 'companyMemberRemove', { account: x.account }, 'danger') : ''}</td></tr>`));
         if (o) h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="cmAcc" placeholder="${esc(T('account_name'))}" maxlength="64" data-keep="1" data-enter="companyMemberAdd">` +
             select('cmRole', ACC_ROLES.map(r => [r, r]), 'manager', '', true) + btn(T('add_member'), 'companyMemberAdd', {}, 'primary') + '</div>';
         return h + '</div></div>';
+    };
+
+    PAGE.budget = d => {
+        const rows = arr(d.rows);
+        const daily = arr(d.daily);
+        const max = Math.max(1, ...daily.map(x => Math.max(x.inSum, x.outSum)));
+        const bars = daily.length ? `<div class="gv-bars">${daily.map(x => `<div class="gv-bar" title="${esc(new Date(x.day * 1000).toLocaleDateString('en-GB'))}: +${money(x.inSum)} / -${money(x.outSum)}">` +
+            `<i class="in" style="height:${Math.round(x.inSum / max * 100)}%"></i><i class="out" style="height:${Math.round(x.outSum / max * 100)}%"></i></div>`).join('')}</div>` : empty();
+        return head(T('v_gov.page.budget'), esc(T('history_note', { days: d.days || 30 }))) +
+            `<div class="gv-card"><h2>${esc(T('daily'))} · ${esc(rows[0] ? rows[0].name : '')}</h2>${bars}</div>` +
+            rows.map(r => `<div class="gv-card"><div class="gv-head"><div><h2 style="margin:0">${esc(r.name)}</h2><div class="gv-sub mono">${esc(r.code)}</div></div>` +
+                `<div class="gv-row"><span class="mono pos">+${money(r.inSum)}</span><span class="mono neg">-${money(r.outSum)}</span>` +
+                `<b class="mono ${cls(r.inSum - r.outSum)}">${signed(r.inSum - r.outSum)}</b></div></div>` +
+                table([[T('group')], [T('income'), 'r'], [T('expense'), 'r'], [T('net'), 'r']], arr(r.groups).map(g =>
+                    `<tr><td>${esc(T('v_bank.group.' + g.group))}</td><td class="r mono pos">+${money(g.inSum)}</td><td class="r mono neg">-${money(g.outSum)}</td>` +
+                    `<td class="r mono ${cls(g.inSum - g.outSum)}">${signed(g.inSum - g.outSum)}</td></tr>`)) + '</div>').join('');
+    };
+
+    PAGE.votes = d => {
+        const m = can('minister');
+        const list = arr(d.list);
+        const now = Date.now() / 1000;
+        const card = v => {
+            const opts = arr(v.options);
+            const res = arr(v.results);
+            const total = res.reduce((t, n) => t + n, 0);
+            const best = Math.max(0, ...res);
+            const status = v.status === 'open' && v.endsAt <= now ? 'closed' : v.status;
+            let body;
+            if (v.status === 'closed') {
+                body = opts.map((o, i) => {
+                    const n = res[i] || 0, p = total ? Math.round(n / total * 1000) / 10 : 0;
+                    return `<div class="gv-res${n === best && n > 0 ? ' win' : ''}"><div class="gv-row" style="justify-content:space-between"><span>${esc(o)}` +
+                        `${n === best && n > 0 ? ` <span class="tag state">${esc(T('winner'))}</span>` : ''}</span><span class="mono">${n} · ${p}%</span></div>` +
+                        `<div class="gv-meter"><i style="width:${p}%"></i></div></div>`;
+                }).join('');
+            } else {
+                body = `<ul class="gv-opts">${opts.map(o => `<li>${esc(o)}</li>`).join('')}</ul>` +
+                    (v.status === 'open' ? `<div class="gv-sub">${esc(T('results_after_close'))}</div>` : '');
+            }
+            return `<div class="gv-card"><div class="gv-head"><div><h2 style="margin:0">${esc(v.title)}</h2>` +
+                `<div class="gv-sub"><span class="tag ${status === 'open' ? 'state' : status === 'cancelled' ? 'bad' : ''}">${esc(T('status_' + status))}</span> ` +
+                `${esc(T('voters_n', { n: v.voters }))} · ${esc(T('vote_ends'))} ${stamp(v.status === 'open' ? v.endsAt : (v.closedAt || v.endsAt))} · ${esc(v.createdBy)}</div></div>` +
+                (m && v.status === 'open' ? `<div class="gv-row">${btn(T('close_vote'), 'closeVote', { id: v.id })}${btn(T('cancel_vote'), 'cancelVote', { id: v.id }, 'danger')}</div>` : '') +
+                `</div>${v.description ? `<p class="gv-desc">${esc(v.description)}</p>` : ''}${body}</div>`;
+        };
+        const open = list.filter(v => v.status === 'open'), done = list.filter(v => v.status !== 'open');
+        return head(T('v_gov.page.votes'), null, m ? btn(T('new_vote'), 'newVote', {}, 'primary') : '') +
+            `<h2>${esc(T('votes_open'))}</h2>${open.map(card).join('') || empty()}` +
+            `<h2 style="margin-top:8px">${esc(T('votes_closed'))}</h2>${done.map(card).join('') || empty()}`;
     };
 
     PAGE.members = d => {
@@ -509,6 +577,10 @@
             } catch (e) { OSA.toast(e.message, false); }
         },
         companyTax() { const n = numOf('companyTax'); if (n !== null) change('setCompanyTax', { value: n }); },
+        vat(b) { const n = numOf(b.dataset.input); if (n !== null) change('setVat', { group: b.dataset.group, value: n }); },
+        vatReset(b) { change('setVat', { group: b.dataset.group }); },
+        propTax() { const n = numOf('propTax'); if (n !== null) change('setPropertyTax', { value: n }); },
+        propTaxReset() { change('setPropertyTax', {}); },
         taxKey(b) { const n = numOf(b.dataset.input); if (n !== null) change('setTaxKey', { key: b.dataset.key, value: n }); },
         async addTaxKey() {
             const n = numOf('newKeyRate');
@@ -545,10 +617,24 @@
             const r = await OSA.ui.form(T('create_company'), [
                 { name: 'code', label: T('company_code') },
                 { name: 'name', label: T('company_name') },
+                { name: 'description', label: T('company_description'), type: 'textarea' },
             ], T('create'));
-            if (r) change('createCompany', { code: r.code.toLowerCase(), name: r.name, allowNegative: false });
+            if (r) change('createCompany', { code: r.code.toLowerCase(), name: r.name, description: r.description, allowNegative: false });
         },
         renameCompany() { if (val('cName')) change('renameCompany', { id: sel.company, name: val('cName') }); },
+        describeCompany() { change('describeCompany', { id: sel.company, description: val('cDesc') }); },
+        async newVote() {
+            const r = await OSA.ui.form(T('new_vote'), [
+                { name: 'title', label: T('vote_title') },
+                { name: 'description', label: T('vote_description'), type: 'textarea' },
+                { name: 'options', label: T('vote_options'), type: 'textarea', placeholder: T('vote_options_hint') },
+                { name: 'hours', label: T('vote_hours'), type: 'number', value: '24' },
+            ], T('create'));
+            if (r) change('openVote', { title: r.title, description: r.description, hours: Number(r.hours),
+                options: r.options.split('\n').map(x => x.trim()).filter(Boolean) });
+        },
+        async closeVote(b) { if (await OSA.ui.confirm(T('close_vote'), '', T('close_vote'))) change('closeVote', { id: Number(b.dataset.id) }); },
+        async cancelVote(b) { if (await OSA.ui.confirm(T('cancel_vote'), '', T('cancel_vote'))) change('cancelVote', { id: Number(b.dataset.id) }); },
         overdraft(b) { change('companyOverdraft', { id: sel.company, allow: b.dataset.value === 'true' }); },
         async closeCompany() {
             const a = D.company;

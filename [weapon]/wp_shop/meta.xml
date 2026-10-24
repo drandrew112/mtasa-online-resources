@@ -22,4 +22,5 @@
     <include resource="ui_inac" />
     <include resource="wp_manager" />
     <include resource="v_bank" />
+    <include resource="v_gov" />
 </meta>

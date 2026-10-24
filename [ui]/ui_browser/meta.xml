@@ -4,6 +4,7 @@
 
     <include resource="v_locals" />
     <include resource="ui_core" />
+    <include resource="v_gov" />
 
     <!-- CORE (client) -->
     <script src="locals.lua" type="shared" />

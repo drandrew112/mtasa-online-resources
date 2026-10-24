@@ -18,22 +18,25 @@ function UNIT.buy(c, propertyId, actor, cb, opts)
     if p.kind == "office" and not opts.office then return cb(false, "use_move_hq") end
     if p.activity and not ACT.list[p.activity] then return cb(false, "activity_offline") end
 
-    local price = opts.free and 0 or p.price
-    if price > 0 then
-        local ok, err = MONEY.debit(c, price, "biz.property_buy", { property = BIZ.propertyName(propertyId) },
+    local price = opts.free and 0 or p.price          -- net: price_paid and the company value
+    local gross, vat = BIZ.grossPrice(p)
+    if opts.free then gross, vat = 0, 0 end
+    if gross > 0 then
+        local ok, err = MONEY.debit(c, gross, "biz.property_buy", { property = BIZ.propertyName(propertyId) },
             desc("Bought %s", BIZ.propertyName(propertyId)), actor)
         if not ok then return cb(false, err) end
     end
     local now = BIZ.now()
     DB.insert(function(id, err)
         if not id or id == true then
-            if price > 0 and CO.byId[c.id] == c then
-                MONEY.credit(c, price, "biz.property_refund", { property = BIZ.propertyName(propertyId) },
+            if gross > 0 and CO.byId[c.id] == c then
+                MONEY.credit(c, gross, "biz.property_refund", { property = BIZ.propertyName(propertyId) },
                     desc("Refund: %s", BIZ.propertyName(propertyId)), actor)
             end
             outputDebugString("[biz_core] unit insert failed: " .. tostring(err), 1)
             return cb(false, "db")
         end
+        VAT.book("real_estate", price, vat, BIZ.propertyName(propertyId))
         local u = { id = id, companyId = c.id, propertyId = propertyId, pricePaid = price, upgradesPaid = 0, purchasedAt = now, data = {} }
         if CO.byId[c.id] ~= c then return cb(u) end   -- unloaded meanwhile (row stays, loads next time)
         c.units[id] = u
@@ -104,9 +107,10 @@ function getCatalog()
     local out = {}
     for _, p in ipairs(BIZ.PROPERTIES) do
         local b = BIZ.BUILDINGS[p.building] or {}
+        local gross, vat = BIZ.grossPrice(p)
         out[#out + 1] = {
             id = p.id, kind = p.kind, tier = p.tier, activity = p.activity, building = p.building,
-            template = p.template, price = p.price, upkeep = p.upkeep, illegal = p.illegal and true or false,
+            template = p.template, price = p.price, gross = gross, vat = vat, upkeep = p.upkeep, illegal = p.illegal and true or false,
             name = BIZ.propertyName(p.id), city = b.city, x = b.x, y = b.y, z = b.z,
         }
     end
@@ -117,9 +121,10 @@ function getProperty(propertyId)
     local p = BIZ.property(propertyId)
     if not p then return false end
     local b = BIZ.BUILDINGS[p.building] or {}
+    local gross, vat = BIZ.grossPrice(p)
     return {
         id = p.id, kind = p.kind, tier = p.tier, activity = p.activity, building = p.building,
-        template = p.template, price = p.price, upkeep = p.upkeep, illegal = p.illegal and true or false,
+        template = p.template, price = p.price, gross = gross, vat = vat, upkeep = p.upkeep, illegal = p.illegal and true or false,
         name = BIZ.propertyName(p.id), city = b.city, x = b.x, y = b.y, z = b.z,
     }
 end

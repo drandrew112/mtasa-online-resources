@@ -236,8 +236,12 @@ value applies it at once), so a change reaches the other server within a minute.
 
 ## 10. State companies
 
-A state company is a v_bank `state` account (code, name, access rows, overdraft flag) – v_bank
-DESIGN 3.1. Managed here:
+Since 2026-10-23 a state company is a row of **`gov_companies`** (id, code, name, description,
+account_id, status, created_at / created_by, closed_at); its money is still a v_bank `state` account
+(owner_ref = code, access rows, overdraft flag – v_bank DESIGN 3.1). The State Treasury is a state
+account but not a company. Creating a company whose code already has an open state account links
+that account (the accounts made before the table keep their balance and ledger); a code whose
+account was closed cannot be used again. Managed here:
 
 - **Create:** code (`[a-z0-9_]{3,24}`, unique, never changes), name, overdraft flag, first members
   (`exports.v_bank:createStateAccount`).
@@ -250,6 +254,29 @@ DESIGN 3.1. Managed here:
   out, overdraft allowed.
 
 v_admin keeps its Bank page for *all* accounts (statements, add / take money, freeze, overdraft list).
+
+## 10a. VAT, property tax, votes, budget, 30 days (2026-10-23)
+
+- **VAT** (`tax.vat`, per product group of `GOV_VAT_GROUPS`: weapons, clothing, vehicles, tuning,
+  repair, services, real_estate; default 27 %, real estate 5 %) is **on top of** the shop price.
+  The rates are root element data `v_gov.vat`; a shop includes v_gov and imports the lib
+  (`loadstring(exports.v_gov:importVat())()`): it shows and charges `VAT.gross(group, net)` and after
+  a successful purchase calls `VAT.book(group, net, vat, item)` → v_bank `tax.vat` (system → treasury).
+  Wired into wp_shop, world_clothes-shop, v_customs (tuning, custom plate, repair), the ui_browser car
+  sites, ui_phone (insurance, Julia) and biz_core (office / property purchase; illegal sites and
+  upgrades have no VAT).
+- **Property tax** (`tax.property`, default 0.5 %): biz_core charges `rate × the price of every legal
+  property` every 24 online hours of the founder (`biz_companies.tax_seconds`), v_bank `tax.property`
+  (company → treasury, forced).
+- **Votes** (`gov_votes`, `gov_vote_ballots`): a minister / admin opens one (title, description, 2–10
+  options, 1–336 hours); every logged-in player votes with `/vote` (CEF page, may change the vote
+  until it closes); open votes close by themselves; results only after the close (/gov Votes page,
+  gov_web).
+- **Budget** page: income / expense of the treasury and every state company by ledger group, daily
+  bars of the treasury (read from `bank_ledger`).
+- **30 days**: every money list / sum of /gov and gov_web covers at most `GOV.HISTORY_DAYS` (30) days
+  (the ledger request passes `since`, tax runs and the budget are filtered). `getPublicState()` is the
+  read-only snapshot gov_web shows (rebuilt every minute, no account names).
 
 ## 11. Exports (server)
 

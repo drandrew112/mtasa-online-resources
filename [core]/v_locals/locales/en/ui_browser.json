@@ -21,5 +21,6 @@
   "ui_browser.server.order_noted": "Order noted: {id}{colour}",
   "ui_browser.server.purchase": "Purchase",
   "ui_browser.server.request_noted": "Request noted: {id}",
-  "ui_browser.server.withdrew": "Withdrew €"
+  "ui_browser.server.withdrew": "Withdrew €",
+  "ui_browser.layout.price_incl_vat": "€{price} (incl. {rate} VAT)"
 }

@@ -1,9 +1,10 @@
 -- world_clothes-shop / shared/config.lua
+if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
 -- Clothes shops: interiors registered through world_interiors, a radar blip on every entrance,
 -- and skin changer markers inside. Every outfit costs the same (CLOTHES.price, cash).
 
 CLOTHES = {
-    price      = 500,                    -- every outfit, taken from cash
+    price      = 500,                    -- every outfit (net; VAT "clothing" on top), taken from cash
     key        = "e",                    -- open the outfit list in a changer marker
     blip       = 12,                     -- v_radar blip icon on the entrances
     blipRange  = 300,                    -- blip visible distance (radar)
@@ -89,3 +90,6 @@ CLOTHES.forSale = {}
 for _, list in pairs(CLOTHES.skins) do
     for _, s in ipairs(list) do CLOTHES.forSale[s] = true end
 end
+
+--- what an outfit costs with VAT (shown and charged)
+function CLOTHES.gross() return VAT.gross("clothing", CLOTHES.price) end

@@ -1,4 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
 -- ui_browser :: dealership.lua (server)
 -- Turns a "buy" action fired on a vehicles-category site into a real purchase:
 -- charges the player (cash first, then Liberty Bank) and registers the car with
@@ -187,7 +188,7 @@ function Dealership.purchase(player, id, colourKey, url)
         colours = ("%d,%d,%d"):format(c[1], c[2], c[3])
     end
 
-    local price = item.price
+    local price, vat = VAT.split("vehicles", item.price)   -- the site shows the price with VAT
     local paidFrom = charge(player, price, item.name)
     if not paidFrom then
         notify(player, L.msg("ui_browser.dealership.dealership"),
@@ -206,6 +207,7 @@ function Dealership.purchase(player, id, colourKey, url)
         return true
     end
 
+    VAT.book("vehicles", item.price, vat, item.name)
     notify(player, L.msg("ui_browser.dealership.dealership"),
         L.msg("ui_browser.dealership.you_bought_for_it_is_registered", { name = item.name, price = money(price) }))
     triggerClientEvent(player, "ui_browser:refresh", resourceRoot)

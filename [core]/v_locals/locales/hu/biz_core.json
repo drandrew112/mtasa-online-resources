@@ -27,5 +27,6 @@
   "biz_core.upkeep.paid": "Rezsi kifizetve: {amount|money}.",
   "biz_core.upkeep.resumed": "A rezsi kifizetve, az üzlet újra működik.",
   "biz_core.upkeep.unpaid": "A rezsit ({amount|money}) nem lehetett kifizetni. A termelés áll, amíg a céges számla nem fedezi.",
-  "biz_core.tax.paid": "Társasági adó: {amount|money} az elmúlt óra {base|money} legális bevétele után."
+  "biz_core.tax.paid": "Társasági adó: {amount|money} az elmúlt óra {base|money} legális bevétele után.",
+  "biz_core.tax.property_paid": "Ingatlanadó kifizetve: {amount|money} ({count} ingatlan)."
 }

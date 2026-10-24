@@ -19,4 +19,5 @@
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="world_interiors" />
     <include resource="ui_inac" />
+    <include resource="v_gov" />
 </meta>

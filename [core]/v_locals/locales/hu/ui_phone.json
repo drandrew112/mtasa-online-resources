@@ -110,5 +110,7 @@
   "ui_phone.settings.active": "Aktív",
   "ui_phone.settings.enter_apply_backspace_back": "[Enter] alkalmaz    [Backspace] vissza",
   "ui_phone.settings.settings": "Beállítások",
-  "ui_phone.settings.wallpaper": "Háttérkép"
+  "ui_phone.settings.wallpaper": "Háttérkép",
+  "ui_phone.config.heal": "Gyógyítás  -  €{price}",
+  "ui_phone.config.refill_armour": "Páncél feltöltése  -  €{price}"
 }

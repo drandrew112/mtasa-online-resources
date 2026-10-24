@@ -129,7 +129,7 @@ local KEY_CATEGORY = {
     ["biz.upkeep"] = "upkeep", ["biz.rename_fee"] = "rename", ["biz.launder"] = "launder",
     ["biz.casino_hour"] = "casino.hour", ["biz.casino_loss"] = "casino.hour", ["biz.weed_supply"] = "weed.supply",
     ["biz.close_payout"] = "company.sell", ["biz.write_off"] = "company.sell",
-    ["tax.company_income"] = "tax", ["transfer.account"] = "transfer",
+    ["tax.company_income"] = "tax", ["tax.property"] = "tax", ["transfer.account"] = "transfer",
     ["work.pay"] = "wages", ["work.deduction"] = "wages",
     ["admin.credit"] = "admin.adjust", ["admin.debit"] = "admin.adjust", ["admin.transfer"] = "admin.adjust",
     ["migration.opening"] = "opening",

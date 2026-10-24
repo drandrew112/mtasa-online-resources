@@ -29,7 +29,7 @@ local function ledgerRow(r)
 end
 
 --- cb(rows, hasMore) of one account, newest first
-local function queryLedger(id, beforeId, group, limit, cb)
+local function queryLedger(id, beforeId, group, limit, cb, since)
     limit = math.max(1, math.min(BANK.LEDGER_MAX, math.floor(tonumber(limit) or BANK.LEDGER_PAGE)))
     local sql = "SELECT l.id, l.ts, l.amount, l.balance_after, l.tx_key, l.params, l.actor, "
         .. "c.number AS counter_number, c.name AS counter_name, c.kind AS counter_kind "
@@ -38,6 +38,10 @@ local function queryLedger(id, beforeId, group, limit, cb)
     if tonumber(beforeId) then
         sql = sql .. " AND l.id < ?"
         args[#args + 1] = math.floor(tonumber(beforeId))
+    end
+    if tonumber(since) then
+        sql = sql .. " AND l.ts >= ?"
+        args[#args + 1] = math.floor(tonumber(since))
     end
     if type(group) == "string" and group:match("^[%w_]+$") then
         sql = sql .. " AND l.tx_key LIKE ?"
@@ -201,7 +205,7 @@ function A.ledger(args, done)
     queryLedger(args.id, args.before, args.group, args.limit or BANK.LEDGER_PAGE, function(rows, more)
         if not rows then return done({ ok = false, error = "db" }) end
         done({ ok = true, rows = rows, more = more == true })
-    end)
+    end, args.since)
 end
 
 --- sums by key since a timestamp: { [key] = { inSum, outSum, n } }

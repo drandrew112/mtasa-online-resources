@@ -110,7 +110,7 @@ local function openMenu()
             if own then wornPath = g .. "/" .. i end
             items[i] = {
                 label = L("world_clothes_shop.main.outfit", { skin = skin }), desc = L("world_clothes_shop.main.buy_and_wear_this_outfit"), value = skin,
-                price = CLOTHES.price, checked = own or nil, closeOnSelect = false,
+                price = CLOTHES.gross(), checked = own or nil, closeOnSelect = false,
             }
         end
         groups[g] = { label = group.label, desc = L("world_clothes_shop.main.s_outfits", { label = group.label }), title = group.title, items = items }
@@ -173,7 +173,7 @@ end)
 
 -- The outfit is bought: it becomes the menu's base model and the list marks it as worn
 addEventHandler("clothes:bought", resourceRoot, function(skin)
-    setStatus(L("world_clothes_shop.main.outfit_bought", { price = CLOTHES.price }), true)
+    setStatus(L("world_clothes_shop.main.outfit_bought", { price = CLOTHES.gross() }), true)
     if not menu then return end
     menu.previewFrom = skin
     if menu.wornPath then exports.ui_inac:updateTempMenuItem(menu.wornPath, { checked = false }) end

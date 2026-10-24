@@ -44,11 +44,11 @@ local function labelFor(marker)
     if marker == ChangerMarker and Status and getTickCount() < Status.untilTick then
         color, hint = Status.ok and GREEN or RED, Status.text
     elseif isClothesMenuOpen() then
-        hint = L("world_clothes_shop.label.every_outfit_enter_buy_backspace_back", { price = CLOTHES.price })
+        hint = L("world_clothes_shop.label.every_outfit_enter_buy_backspace_back", { price = CLOTHES.gross() })
     elseif marker == ChangerMarker then
-        hint = L("world_clothes_shop.label.press_browse_outfits_each", { key = CLOTHES.key:upper(), price = CLOTHES.price })
+        hint = L("world_clothes_shop.label.press_browse_outfits_each", { key = CLOTHES.key:upper(), price = CLOTHES.gross() })
     else
-        hint = L("world_clothes_shop.label.outfits_each", { price = CLOTHES.price })
+        hint = L("world_clothes_shop.label.outfits_each", { price = CLOTHES.gross() })
     end
     return color, L.upper(L.sub(name, 1, 1)), name, L("world_clothes_shop.label.changing_room"), hint
 end

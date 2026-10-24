@@ -16,11 +16,13 @@ end
 
 addEventHandler("v_gov:dbReady", resourceRoot, function()
     loadSettings(function()
-        GOV.ready = true
-        startTaxesWhenBankReady()
+        GOV.loadCompanies(function()
+            GOV.ready = true
+            startTaxesWhenBankReady()
+        end)
     end)
     setTimer(function()
-        loadSettings(GOV.checkPayers)
+        loadSettings(function() GOV.loadCompanies(GOV.checkPayers) end)
     end, GOV.RESYNC_MS, 0)
 end)
 

@@ -7,7 +7,7 @@
 --   page   mta.triggerEvent("v_gov:pageReady", "[[keys]]") -> GOV._init({ role, strings })
 --
 -- Texts stay in v_locals: the page asks for the keys it uses, error keys are translated here.
--- /gov again, Esc or the page's close button closes it.
+-- /gov again, Esc or the page's close button closes it. /vote opens web/vote.html the same way.
 
 local gui, browser, role
 
@@ -84,7 +84,7 @@ local function close()
     setElementData(localPlayer, "browserOpen", false, false)
 end
 
-local function open()
+local function open(page)
     close()
     local sw, sh = guiGetScreenSize()
     gui = guiCreateBrowser(0, 0, sw, sh, true, false, false)
@@ -94,8 +94,8 @@ local function open()
     guiSetInputMode("no_binds")
     setElementData(localPlayer, "browserOpen", true, false)
     addEventHandler("onClientBrowserCreated", browser, function()
-        loadBrowserURL(source, ("http://mta/web_api/loader.html?app=%s&page=web/index.html&v=%d"):format(
-            getResourceName(resource), getTickCount()))
+        loadBrowserURL(source, ("http://mta/web_api/loader.html?app=%s&page=web/%s&v=%d"):format(
+            getResourceName(resource), page, getTickCount()))
         focusBrowser(source)
     end)
 end
@@ -114,7 +114,18 @@ end)
 addEvent("v_gov:open", true)
 addEventHandler("v_gov:open", resourceRoot, function(r)
     role = r
-    if gui then close() else open() end
+    if gui then close() else open("index.html") end
+end)
+
+-- /vote: the open state votes (any logged-in player)
+addEvent("v_gov:openVote", true)
+addEventHandler("v_gov:openVote", resourceRoot, function()
+    if gui then close() else open("vote.html") end
+end)
+
+addEvent("v_gov:voteOpened", true)
+addEventHandler("v_gov:voteOpened", resourceRoot, function(title)
+    pcall(function() exports.ui_core:addNotification(text("v_gov.ui.vote_new"), tostring(title) .. "  -  /vote") end)
 end)
 
 addEvent("v_gov:denied", true)

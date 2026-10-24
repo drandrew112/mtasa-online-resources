@@ -144,7 +144,8 @@ addEventHandler("v_customs:buy", root, function(veh, path)
 
     -- first option of an optical group ("Default") is free
     local freeReset = node.group == "optical" and optIdx == 1
-    local price = freeReset and 0 or Customs.price(node.price or 0)
+    local net = freeReset and 0 or Customs.netPrice(node.price or 0)
+    local price, vat = VAT.split("tuning", net)
 
     if price > 0 and getPlayerMoney(player) < price then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
@@ -162,6 +163,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     if not custom and price > 0 then
         takePlayerMoney(player, price)
         exports.ui_core:showMoney(player, "take", price, "cash")
+        VAT.book("tuning", net, vat, node.name)
         charged = price
     end
 
@@ -179,7 +181,8 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
     text = tostring(text or ""):upper():gsub("[^%w %-]", ""):sub(1, 8)
     if text == "" then return end
 
-    local price = Customs.price(Customs.CUSTOM_PLATE_PRICE)
+    local net = Customs.netPrice(Customs.CUSTOM_PLATE_PRICE)
+    local price, vat = VAT.split("tuning", net)
     if getPlayerMoney(player) < price then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         return
@@ -188,6 +191,7 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
     setVehiclePlateText(veh, text)
     takePlayerMoney(player, price)
     exports.ui_core:showMoney(player, "take", price, "cash")
+    VAT.book("tuning", net, vat, "Custom plate")
     triggerClientEvent(player, "v_customs:buyResult", player, true, nil, price)
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.custom_plate_installed"))
 end)
@@ -201,7 +205,8 @@ addEventHandler("v_customs:repair", root, function()
     local veh = Customs.sessionVehicle(player)
     if not veh then return end
 
-    local price = Customs.repairPrice(veh)
+    local net = Customs.repairNet(veh)
+    local price, vat = VAT.split("repair", net)
     if price > 0 and getPlayerMoney(player) < price then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         triggerClientEvent(player, "v_customs:repairResult", player, false)
@@ -212,6 +217,7 @@ addEventHandler("v_customs:repair", root, function()
     if price > 0 then
         takePlayerMoney(player, price)
         exports.ui_core:showMoney(player, "take", price, "cash")
+        VAT.book("repair", net, vat, "Repair")
     end
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.vehicle_repaired"))
     triggerClientEvent(player, "v_customs:repairResult", player, true, price)

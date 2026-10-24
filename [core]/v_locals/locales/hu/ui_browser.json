@@ -21,5 +21,6 @@
   "ui_browser.server.order_noted": "Megrendelés rögzítve: {id}{colour}",
   "ui_browser.server.purchase": "Vásárlás",
   "ui_browser.server.request_noted": "Kérés rögzítve: {id}",
-  "ui_browser.server.withdrew": "Kivéve: €"
+  "ui_browser.server.withdrew": "Kivéve: €",
+  "ui_browser.layout.price_incl_vat": "€{price} ({rate} ÁFÁ-val)"
 }

@@ -1,4 +1,5 @@
 -- v_customs :: configuration (shared)
+if not VAT then loadstring(exports.v_gov:importVat())() end -- VAT lib of v_gov (shared/vat.lua)
 
 Customs = Customs or {}
 
@@ -13,12 +14,15 @@ Customs.CUSTOM_PLATE_PRICE = 360
 -- price = REPAIR_PRICE_PER_HP * lost health.
 Customs.REPAIR_PRICE_PER_HP = 5
 
-function Customs.repairPrice(veh)
+function Customs.repairNet(veh)
     if not isElement(veh) then return 0 end
     local lost = 1000 - getElementHealth(veh)
     if lost < 1 then return 0 end
     return math.ceil(lost * Customs.REPAIR_PRICE_PER_HP)
 end
+
+-- with VAT "repair" on top (shown and charged)
+function Customs.repairPrice(veh) return VAT.gross("repair", Customs.repairNet(veh)) end
 
 -- Map blip of every workshop.
 Customs.BLIP_ICON = 27
